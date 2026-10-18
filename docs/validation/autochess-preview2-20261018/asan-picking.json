@@ -1,0 +1,50 @@
+[
+  {
+    "name": "picking_bounds",
+    "exit_code": 0,
+    "seconds": 14.338616189023014,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/asan-game",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/picking_bounds.gd"
+    ],
+    "environment": {
+      "ASAN_OPTIONS": "verify_asan_link_order=0:detect_leaks=0",
+      "UBSAN_OPTIONS": "halt_on_error=1"
+    },
+    "summary": [
+      "PICKING_BOUNDS checks=432 failures=0"
+    ]
+  },
+  {
+    "name": "picking_deformation",
+    "exit_code": 0,
+    "seconds": 16.392379884957336,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/asan-game",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/picking_deformation.gd"
+    ],
+    "environment": {
+      "ASAN_OPTIONS": "verify_asan_link_order=0:detect_leaks=0",
+      "UBSAN_OPTIONS": "halt_on_error=1"
+    },
+    "summary": [
+      "PICKING_DEFORMATION checks=1558 failures=0 native_us=2856 script_us=7499"
+    ]
+  }
+]

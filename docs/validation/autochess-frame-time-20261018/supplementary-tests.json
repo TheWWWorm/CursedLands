@@ -1,0 +1,88 @@
+[
+  {
+    "log": "final-render-roster-en.log",
+    "summary": [
+      "ARENA_ROSTER_UI en checks=139 failures=[]"
+    ],
+    "clean_exit": true
+  },
+  {
+    "log": "final-render-roster-ru.log",
+    "summary": [
+      "ARENA_ROSTER_UI ru checks=157 failures=[]"
+    ],
+    "clean_exit": true
+  },
+  {
+    "log": "final-render-roster-de.log",
+    "summary": [
+      "ARENA_ROSTER_UI de checks=157 failures=[]"
+    ],
+    "clean_exit": true
+  },
+  {
+    "log": "final-render-text-en.log",
+    "summary": [
+      "SCALED_TEXT en 19 checks; failures=[]"
+    ],
+    "clean_exit": true
+  },
+  {
+    "log": "final-render-text-ru.log",
+    "summary": [
+      "SCALED_TEXT ru 19 checks; failures=[]"
+    ],
+    "clean_exit": true
+  },
+  {
+    "log": "final-render-text-de.log",
+    "summary": [
+      "SCALED_TEXT de 19 checks; failures=[]"
+    ],
+    "clean_exit": true
+  },
+  {
+    "log": "final-render-profile-ui.log",
+    "summary": [
+      "PLAYER_PROFILE 24 checks; failures=[]"
+    ],
+    "clean_exit": true
+  },
+  {
+    "log": "preferences-1-2.log",
+    "summary": [
+      "ARENA_PREFERENCES expected=1 next=2; failures=[]"
+    ],
+    "clean_exit": true
+  },
+  {
+    "log": "preferences-2-1.log",
+    "summary": [
+      "ARENA_PREFERENCES expected=2 next=1; failures=[]"
+    ],
+    "clean_exit": true
+  },
+  {
+    "log": "effect-quality-complete.log",
+    "summary": [
+      "ARENA_EFFECT_QUALITY 5 checks; failures=0"
+    ],
+    "clean_exit": true
+  },
+  {
+    "log": "animation-warmup.log",
+    "summary": [
+      "ARENA_ANIMATION_WARMUP 5674452 checks; failures=[]"
+    ],
+    "clean_exit": true
+  },
+  {
+    "log": "translations-acceptance.log",
+    "summary": [
+      "Wiki world text: 180 entries in EN/RU/DE",
+      "Wiki reference text: 3886 source-checked EN/DE entries; RU uses original archives",
+      "Translations: 2651 entries; 141 dynamic wiki keys; 151 dynamic arena keys; 0 errors"
+    ],
+    "clean_exit": null
+  }
+]

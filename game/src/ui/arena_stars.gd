@@ -1,6 +1,8 @@
 class_name ArenaStars
 extends Control
 ## Evolution rank is one visual language on the board, shelf and reserves.
+const PAPER_STAR: Texture2D = preload("res://assets/arena/star_paper.svg")
+const GOLD_STAR: Texture2D = preload("res://assets/arena/star_gold.svg")
 var count := 1
 
 
@@ -15,15 +17,12 @@ static func add_to(parent: Control, rank: int, at: Vector2) -> ArenaStars:
 
 
 static func draw_rank(canvas: CanvasItem, at: Vector2, rank: int, scale_factor := 1.0) -> void:
+	# The 18 combatants can have 54 moving stars. Reuse the authored shape
+	# instead of tessellating a filled polygon and antialiased outline per star.
+	var texture: Texture2D = PAPER_STAR if rank == 1 else GOLD_STAR
 	for i in clampi(rank, 1, 3):
-		var points := PackedVector2Array()
-		var center := at + Vector2(i * 14 + 6, 6) * scale_factor
-		for vertex in 10:
-			var angle := -PI / 2 + vertex * PI / 5
-			points.append(center + Vector2(cos(angle), sin(angle)) * (5.5 if vertex % 2 == 0 else 2.5) * scale_factor)
-		canvas.draw_colored_polygon(points, ArenaCreatureCard.PAPER if rank == 1 else ArenaCreatureCard.GOLD)
-		points.append(points[0])
-		canvas.draw_polyline(points, Color("302819"), scale_factor, true)
+		canvas.draw_texture_rect(texture, Rect2(at + Vector2(i * 14, 0) * scale_factor,
+			Vector2(12, 12) * scale_factor), false)
 
 
 func _draw() -> void:

@@ -1,0 +1,35 @@
+[
+  {
+    "name": "selfplay",
+    "exit_code": 0,
+    "seconds": 319.95672898204066,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/benchmarks/arena_bot_tournaments.gd",
+      "--all-new",
+      "--games=4"
+    ]
+  },
+  {
+    "name": "legacy",
+    "exit_code": 0,
+    "seconds": 359.7898011240177,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/benchmarks/arena_bot_tournaments.gd",
+      "--games=4"
+    ]
+  }
+]

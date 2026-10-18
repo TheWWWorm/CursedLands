@@ -5,6 +5,7 @@ extends RefCounted
 
 const META := &"ei_figure_geometry"
 const PARTS := &"ei_figure_parts"
+static var _kernel: Object = ClassDB.instantiate("FigureGeometryKernel") if ClassDB.class_exists("FigureGeometryKernel") else null
 
 
 static func _f(v: float) -> float:
@@ -90,6 +91,11 @@ static func of(model: Node3D) -> Dictionary:
 		return {}
 	if model is EIUnitModel:
 		model.flush_pending_pose()
+	if _kernel: return _kernel.measure(model)
+	return _of_script(model)
+
+
+static func _of_script(model: Node3D) -> Dictionary:
 	var parts: Array = []
 	var inside := model.is_inside_tree()
 	var inv := model.global_transform.affine_inverse() if inside else Transform3D.IDENTITY

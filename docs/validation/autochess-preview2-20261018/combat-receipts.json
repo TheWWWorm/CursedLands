@@ -1,0 +1,118 @@
+[
+  {
+    "name": "roster",
+    "exit_code": 0,
+    "seconds": 2.5678288969793357,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_roster.gd"
+    ]
+  },
+  {
+    "name": "evolution",
+    "exit_code": 0,
+    "seconds": 2.567783944949042,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_bot_planner.gd"
+    ]
+  },
+  {
+    "name": "duels-2",
+    "exit_code": 0,
+    "seconds": 251.91850659099873,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/benchmarks/arena_roster_matchups.gd",
+      "--rank=2",
+      "--from=0",
+      "--opponents=40"
+    ]
+  },
+  {
+    "name": "duels-0",
+    "exit_code": 0,
+    "seconds": 64.4216516870074,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/benchmarks/arena_roster_matchups.gd",
+      "--rank=0",
+      "--from=30",
+      "--opponents=40"
+    ]
+  },
+  {
+    "name": "duels-1",
+    "exit_code": 0,
+    "seconds": 142.09978359902743,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/benchmarks/arena_roster_matchups.gd",
+      "--rank=1",
+      "--from=30",
+      "--opponents=40"
+    ]
+  },
+  {
+    "name": "teams-2",
+    "exit_code": 0,
+    "seconds": 57.810861147008836,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/benchmarks/arena_roster_teams.gd",
+      "--rank=2"
+    ]
+  },
+  {
+    "name": "teams-1",
+    "exit_code": 0,
+    "seconds": 82.0535854640184,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/benchmarks/arena_roster_teams.gd",
+      "--rank=1"
+    ]
+  }
+]

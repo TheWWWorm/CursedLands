@@ -1,0 +1,362 @@
+[
+  {
+    "name": "soft_ground_mesh",
+    "exit_code": 0,
+    "seconds": 2.9185592849971727,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/soft_ground_mesh.gd"
+    ],
+    "summary": [
+      "SOFT_GROUND_MESH checks=3044 failures=0 native_us=23630 script_us=364912"
+    ]
+  },
+  {
+    "name": "soft_ground_capacity",
+    "exit_code": 0,
+    "seconds": 2.868600982008502,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/soft_ground_capacity.gd"
+    ],
+    "summary": [
+      "DENSE_CAPACITY checks=24 failures=0"
+    ]
+  },
+  {
+    "name": "soft_ground_paint",
+    "exit_code": 0,
+    "seconds": 3.018523995997384,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/soft_ground_paint.gd"
+    ],
+    "summary": []
+  },
+  {
+    "name": "soft_ground_material",
+    "exit_code": 0,
+    "seconds": 2.467406809970271,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/soft_ground_material.gd"
+    ],
+    "summary": [
+      "SOFT_GROUND_MATERIAL checks=8 failures=0"
+    ]
+  },
+  {
+    "name": "soft_ground_seams",
+    "exit_code": 0,
+    "seconds": 58.2563098630053,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/soft_ground_seams.gd"
+    ],
+    "summary": []
+  },
+  {
+    "name": "ground_dense_colors",
+    "exit_code": 0,
+    "seconds": 4.221116706030443,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/ground_dense_colors.gd"
+    ],
+    "summary": [
+      "DENSE_DISPATCHER checks=85 failures=0 vertices=19584"
+    ]
+  },
+  {
+    "name": "scaled_menu_arena_text",
+    "exit_code": 0,
+    "seconds": 18.293422450020444,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/scaled_menu_arena_text.gd"
+    ],
+    "summary": [
+      "SCALED_TEXT ru 19 checks; failures=[]"
+    ]
+  },
+  {
+    "name": "hidden_presentation",
+    "exit_code": 0,
+    "seconds": 3.9710242049768567,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/hidden_presentation.gd"
+    ],
+    "summary": [
+      "HIDDEN_PRESENTATION checks=69 failures=0"
+    ]
+  },
+  {
+    "name": "unit_presentation",
+    "exit_code": 0,
+    "seconds": 3.9206706900149584,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/unit_presentation.gd"
+    ],
+    "summary": [
+      "UNIT_PRESENTATION checks=40969 failures=0"
+    ]
+  },
+  {
+    "name": "arena_online",
+    "exit_code": 0,
+    "seconds": 9.880821662954986,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_online.gd"
+    ],
+    "summary": [
+      "ARENA_ONLINE 64 checks; failures=[]"
+    ]
+  },
+  {
+    "name": "picking_bounds",
+    "exit_code": 0,
+    "seconds": 4.07132523303153,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/picking_bounds.gd"
+    ],
+    "summary": [
+      "PICKING_BOUNDS checks=432 failures=0"
+    ]
+  },
+  {
+    "name": "arena_picking",
+    "exit_code": 0,
+    "seconds": 11.483320952975191,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_picking.gd"
+    ],
+    "summary": [
+      "ARENA_PICKING checks=3331 failures=0 bounds=57294 -> 24864"
+    ]
+  },
+  {
+    "name": "arena_solo_worker",
+    "exit_code": 0,
+    "seconds": 75.64826934196753,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_solo_worker.gd"
+    ],
+    "summary": [
+      "ARENA_SOLO_WORKER 47 checks; failures=[]"
+    ]
+  },
+  {
+    "name": "picking_deformation",
+    "exit_code": 0,
+    "seconds": 4.520666781987529,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/picking_deformation.gd"
+    ],
+    "summary": [
+      "PICKING_DEFORMATION checks=1558 failures=0 native_us=435 script_us=6484"
+    ]
+  },
+  {
+    "name": "arena_overview_cadence",
+    "exit_code": 0,
+    "seconds": 4.2720163890044205,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_overview_cadence.gd"
+    ],
+    "summary": [
+      "ARENA_OVERVIEW_CADENCE checks=31 failures=0"
+    ]
+  },
+  {
+    "name": "arena_camera",
+    "exit_code": 0,
+    "seconds": 9.732344357005786,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_camera.gd"
+    ],
+    "summary": [
+      "ARENA_CAMERA 21 checks; failures=[]"
+    ]
+  },
+  {
+    "name": "arena_feedback_ui",
+    "exit_code": 0,
+    "seconds": 20.94920957396971,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_feedback_ui.gd",
+      "--arena-resolution=ru,1920,1080"
+    ],
+    "summary": [
+      "ARENA_FEEDBACK_UI 64 checks; failures=[] errors=[]"
+    ]
+  },
+  {
+    "name": "arena_round_lifecycle",
+    "exit_code": 0,
+    "seconds": 19.49725566402776,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_round_lifecycle.gd"
+    ],
+    "summary": [
+      "ARENA_ROUND_LIFECYCLE 699 checks; failures=[]"
+    ]
+  },
+  {
+    "name": "figure_geometry",
+    "exit_code": 0,
+    "seconds": 6.64132294600131,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/figure_geometry.gd"
+    ],
+    "summary": [
+      "FIGURE_GEOMETRY checks=952 failures=0 models=112 native_us=9258 script_us=25139"
+    ]
+  },
+  {
+    "name": "lightning_geometry",
+    "asan": false,
+    "exit_code": 0,
+    "seconds": 4.271310811047442,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/lightning_geometry.gd"
+    ],
+    "summary": [
+      "LIGHTNING_GEOMETRY {\"checks\":1271,\"failures\":[],\"native_us\":54483,\"peak_error\":0.0,\"script_us\":240726,\"vertices\":279936}"
+    ]
+  }
+]

@@ -8,6 +8,8 @@ signal board_received(data: Dictionary)
 signal effects_received(data: Dictionary)
 signal notice(text: String)
 signal closed(text: String)
+signal solo_prepared(data: Dictionary)
+signal solo_result(data: Dictionary)
 const PORT := 27016
 const LAN_PORT := 27018   # 27016 is the autochess game socket / campaign discovery port
 const PROTOCOL := 1
@@ -43,6 +45,9 @@ var _sequence := 0
 var _dirty := true
 var _state_left := 0.0
 var _last_frame_at := 0
+var _solo_running := false
+var _solo_pending: Array[Dictionary] = []
+var _solo_view_group := 0
 
 func _ready() -> void:
 	view.submit = request
@@ -69,18 +74,19 @@ func host_shown(port := PORT, use_websocket := false) -> Error:
 func host(port := PORT, use_websocket := false) -> Error:
 	if peer != null: return ERR_ALREADY_IN_USE
 	if OS.has_feature("web"): return ERR_UNAVAILABLE
-	if port < 1 or port > 65535: return ERR_INVALID_PARAMETER
+	if port < (0 if local_host.solo_combat else 1) or port > 65535: return ERR_INVALID_PARAMETER
 	websocket = use_websocket
 	peer = Session._websocket_peer() if websocket else ENetMultiplayerPeer.new()
+	if local_host.solo_combat and peer is ENetMultiplayerPeer: peer.set_bind_ip("127.0.0.1")
 	var error: Error = peer.create_server(port) if websocket else peer.create_server(port, 12)
 	if error != OK: peer = null; return error
 	if peer is ENetMultiplayerPeer: peer.get_host().compress(ENetConnection.COMPRESS_RANGE_CODER)
-	is_host = true; my_seat = 0; host_port = port
+	is_host = true; my_seat = 0; host_port = peer.get_host().get_local_port() if peer is ENetMultiplayerPeer else port
 	members[1] = {"seat":0,"name":clean_name(player_name),"ready":true}
 	_views[1] = 0
 	peer.peer_connected.connect(_peer_connected); peer.peer_disconnected.connect(_peer_disconnected)
-	if not websocket and GameData.option("net_upnp") == 1 and not Array(OS.get_cmdline_user_args()).any(func(arg): return arg.begins_with("--tool=")): upnp.open(port)
-	if GameData.option("net_lan") == 1: lan.listen()
+	if not local_host.solo_combat and not websocket and GameData.option("net_upnp") == 1 and not Array(OS.get_cmdline_user_args()).any(func(arg): return arg.begins_with("--tool=")): upnp.open(port)
+	if not local_host.solo_combat and GameData.option("net_lan") == 1: lan.listen()
 	_connected = true; lobby_changed.emit()
 	return OK
 
@@ -154,7 +160,7 @@ func _process(dt: float) -> void:
 	while peer and peer.get_available_packet_count() > 0 and processed < 256:
 		var sender := peer.get_packet_peer()
 		var bytes := peer.get_packet(); processed += 1
-		if bytes.size() > (4096 if is_host else MAX_PACKET): continue
+		if bytes.size() > (MAX_PACKET if local_host.solo_combat else 4096 if is_host else MAX_PACKET): continue
 		var data = bytes_to_var(bytes)
 		if not data is Dictionary or not data.get("t") is String: continue
 		if is_host: _from_client(sender, data)
@@ -168,15 +174,22 @@ func _process(dt: float) -> void:
 		if Time.get_ticks_msec() - int(_pending[id]) > HELLO_TIMEOUT * 1000:
 			peer.disconnect_peer(id); _pending.erase(id)
 	if game == null: return
+	if local_host.solo_combat and not _solo_running: return
 	_send_left -= dt; _state_left -= dt
 	if _send_left > 0: return
-	_send_left = 0.1
-	if _dirty or _state_left <= 0:
+	# A private overview has one viewer. Send one board per worker slice so
+	# applying three simultaneous spell volleys cannot crowd one render frame.
+	# Each board still receives ten updates per real second.
+	var solo_overview := local_host.solo_combat and int(_views.get(local_host.owner_peer, 0)) < 0
+	_send_left = maxf(0.0, _send_left + 0.1 / 9.0) if solo_overview else 0.1
+	var delivered_seats := []
+	if not local_host.solo_combat and (_dirty or _state_left <= 0):
 		_dirty = false; _state_left = 0.5
 		for id: int in members: _deliver(id, game.state_for(int(members[id].seat), _names()))
 	for id: int in members:
 		var selected := int(_views.get(id, members[id].seat))
 		var seats := range(9) if selected < 0 else [selected]
+		if solo_overview: seats = [_solo_view_group]
 		if not _sent_boards.has(id): _sent_boards[id] = {}
 		for seat: int in seats:
 			if game.encounter(seat) == null: continue
@@ -186,13 +199,19 @@ func _process(dt: float) -> void:
 			_sent_boards[id][seat] = key
 			if not game.events.get(seat, []).is_empty():
 				_deliver(id, {"t":"effects","seat":seat,"round":game.run.wave,"generation":key,"events":game.events[seat].duplicate(true)})
-	game.events.clear()
+			delivered_seats.append(seat)
+	if solo_overview:
+		# Keep the other groups' events until their snapshots are delivered.
+		for seat: int in delivered_seats: game.events.erase(seat)
+		_solo_view_group = (_solo_view_group + 1) % 9
+	else: game.events.clear()
 
 func _from_client(id: int, data: Dictionary) -> void:
 	if data.t == "hello":
 		if members.has(id) or not _pending.has(id): return
 		var reason := ""
 		if data.get("protocol") != PROTOCOL or data.get("version") != ProjectSettings.get_setting("application/config/version") or data.get("hash") != NetStatus.world_hash(): reason = ERRORS[0]
+		elif local_host.solo_combat and not data.has("owner"): reason = ERRORS[6]
 		elif started: reason = ERRORS[1]
 		elif members.size() >= 9 and not data.has("owner"): reason = ERRORS[2]
 		elif data.get("password") != password.left(64): reason = ERRORS[3]
@@ -221,7 +240,10 @@ func _from_client(id: int, data: Dictionary) -> void:
 				if now - int(budget.at) >= 1000: budget = {"at":now,"count":0}
 				budget.count += 1; _view_budgets[id] = budget
 				if budget.count > 8: return
-				_views[id] = int(data.seat); _sent_boards.erase(id)
+				_views[id] = int(data.seat)
+				# Solo already installed every complete frozen army at the bell.
+				# Current snapshots suffice when scouting those same generations.
+				if not local_host.solo_combat: _sent_boards.erase(id)
 		return
 	if data.t != "command" or not data.get("action") is String or not data.get("args") is Array or data.args.size() > 2 or not ArenaRun._integer(data.get("seq"),1,2147483647): return
 	if int(data.seq) <= int(_sequences.get(id,0)): return
@@ -296,7 +318,7 @@ func _send(id: int, data: Dictionary, reliable := true) -> void:
 	var bytes := var_to_bytes(data)
 	if bytes.size() > MAX_PACKET: return
 	peer.set_target_peer(id)
-	peer.transfer_mode = MultiplayerPeer.TRANSFER_MODE_RELIABLE if reliable else MultiplayerPeer.TRANSFER_MODE_UNRELIABLE
+	peer.transfer_mode = MultiplayerPeer.TRANSFER_MODE_RELIABLE if reliable or bytes.size()>1200 else MultiplayerPeer.TRANSFER_MODE_UNRELIABLE
 	peer.put_packet(bytes)
 
 func _deliver(id: int, data: Dictionary, reliable := true) -> void:
@@ -318,6 +340,8 @@ func _from_host(data: Dictionary) -> void:
 			view.apply_state(data)
 			started = true
 			if first: match_started.emit()
+		"solo_prepared": solo_prepared.emit(data)
+		"solo_result": solo_result.emit(data)
 		"board": board_received.emit(data)
 		"effects": effects_received.emit(data)
 
@@ -345,3 +369,57 @@ func close() -> void:
 	if is_instance_valid(upnp): upnp.close()
 
 func _exit_tree() -> void: close()
+
+
+func solo_packet(id: int, data: Dictionary) -> bool:
+	if not local_host.solo_combat or id != local_host.owner_peer: return false
+	if data.t == "solo_prepare" and data.get("snapshot") is Dictionary:
+		if game == null:
+			game = ArenaOnlineGame.new(); add_child(game)
+			game.begin(int(data.snapshot.seed), {0:""})
+		_solo_running = false; _solo_pending.clear(); _solo_view_group = 0; _send_left = 0.0; game.set_process(false)
+		if not game.run.restore(data.snapshot):
+			_deliver(id,{"t":"solo_prepared","round":int(data.snapshot.get("wave",0)),"error":true})
+			return true
+		game.battle_speed = clampi(int(data.get("speed",1)),1,2)
+		game._prepare()
+		for player in game.run.alive_players():
+			var battle := game.encounter(player)
+			if not battle.has_meta("solo_results"):
+				battle.set_meta("solo_results",true)
+				battle.finished.connect(func(winner): _solo_finished(player,winner))
+		game.start_round(); game.set_process(false)
+		var initial := []
+		for player in game.run.alive_players():
+			initial.append(game.board_frame(player,true))
+			if game.run.board_results.has(player) and not _solo_pending.any(func(result): return int(result.seat)==player):
+				_solo_finished(player,int(game.run.board_results[player].winner))
+		_sent_boards.clear();_sent_boards[id]={}
+		for board: Dictionary in initial:_sent_boards[id][int(board.seat)]=String(board.generation)
+		game.events.clear()
+		_deliver(id,{"t":"solo_prepared","round":game.run.wave,"boards":initial})
+		return true
+	if data.t == "solo_clock" and game and data.get("round") == game.run.wave:
+		_solo_running = true
+		for result: Dictionary in _solo_pending: _deliver(id,result)
+		_solo_pending.clear()
+		game.battle_speed = clampi(int(data.get("speed",1)),1,2)
+		game.set_process(not bool(data.get("paused",true)) and game.run.stage=="fight")
+		return true
+	return false
+
+func _solo_finished(player: int, winner: int) -> void:
+	var battle := game.encounter(player)
+	var survivors := [0,0]
+	for unit: GameUnit in battle.world.unit_rows():
+		if not unit.dead:
+			var placement: Dictionary=unit.get_meta("arena_placement",{})
+			survivors[int(placement.get("team",0))]+=int(placement.get("rank",0))+1
+	# Full final state precedes settlement, including boards not being watched.
+	var result := {"t":"solo_result","round":game.run.wave,"seat":player,
+		"winner":winner,"survivors":survivors,"time":battle.world.time,"damage":battle.damage.duplicate()}
+	if _solo_running:
+		_deliver(local_host.owner_peer, game.board_frame(player,true))
+		_deliver(local_host.owner_peer,result)
+	else: _solo_pending.append(result)
+	if game.run.stage != "fight": game.set_process(false)

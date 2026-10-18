@@ -55,8 +55,9 @@ func _ready() -> void:
 	resized.connect(_resize_preview)
 
 
-func show_model(descriptor: Dictionary) -> bool:
-	clear()
+func show_model(descriptor: Dictionary, reuse_creature_view := false) -> bool:
+	var retained: bool = reuse_creature_view and descriptor.get("kind", "") == "creature" and is_instance_valid(creature)
+	if not retained: clear()
 	_descriptor = descriptor
 	_turn = 0.0
 	_zoom = 1.0
@@ -92,10 +93,13 @@ func show_model(descriptor: Dictionary) -> bool:
 		_resize_preview()
 		return true
 	if descriptor.kind == "creature":
-		creature = Paperdoll.new()
-		creature.view_size = Vector2i(180, 220)
-		creature.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		add_child(creature)
+		if not retained:
+			creature = Paperdoll.new()
+			creature.view_size = Vector2i(180, 220)
+			creature.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			add_child(creature)
+		else:
+			creature.camp_angle = 0.0
 		creature.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT if fit_slot else Control.PRESET_FULL_RECT)
 		_sync_resolution()
 		creature.mouse_filter = Control.MOUSE_FILTER_IGNORE

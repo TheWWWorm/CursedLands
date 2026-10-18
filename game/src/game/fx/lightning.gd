@@ -33,6 +33,17 @@ var _mesh := ImmediateMesh.new()
 var _amp := 1.0
 var _bolts: Array = []     # {a_f, b_f, shift, width, keys: [[k0,k1,k2],[k0,k1,k2]], band}
 var _tick := 0
+var _geometry: Object = ClassDB.instantiate("LightningGeometryKernel") if ClassDB.class_exists("LightningGeometryKernel") and not OS.get_cmdline_user_args().has("--ei-script-lightning") else null
+var _packed_mesh := ArrayMesh.new()
+var _vertices := PackedVector3Array()
+var _uvs := PackedVector2Array()
+var _colors := PackedColorArray()
+var _surface_material: Material
+var _overview_draw_at := 0
+var _surfaces: Array = []
+var _surface_sizes := PackedInt32Array()
+var _buffer_layout := false
+var _dynamic_surfaces := _geometry != null and _geometry.has_method("surface_data") and DisplayServer.get_name() != "headless"
 
 
 static func _load_tables() -> void:
@@ -49,7 +60,8 @@ static func _load_tables() -> void:
 		_tables.append(t)
 
 
-func _init(owner, pa: Vector3, pb: Vector3, prm: float) -> void:
+func _init(owner, pa: Vector3, pb: Vector3, prm: float, script_geometry := false) -> void:
+	if script_geometry: _geometry = null
 	_load_tables()
 	fx = owner
 	a = pa
@@ -60,6 +72,9 @@ func _init(owner, pa: Vector3, pb: Vector3, prm: float) -> void:
 	node.top_level = true
 	node.extra_cull_margin = 16384.0
 	_amp = 1.5 if param > 0.0 else (2.0 if param == 0.0 else 1.0)
+	if _geometry and _geometry.has_method("new_bolts"):
+		_bolts = _geometry.new_bolts(a,b,param,fx._rng)
+		return
 	var w := absf(param) * (1.5 if param < 0.0 else 1.0)
 	if param == 0.0:
 		w = 4.0
@@ -101,6 +116,9 @@ func update_tick() -> void:
 	if to and is_instance_valid(to) and to is GameUnit and to.is_inside_tree():
 		b = fx.unit_point(to, 0)
 	if _tick % 4 == 0:
+		if _geometry and _geometry.has_method("advance_keys"):
+			_geometry.advance_keys(_bolts,_amp,fx._rng)
+			return
 		for bolt: Dictionary in _bolts:
 			for ax in 2:
 				var k: Array = bolt.keys[ax]
@@ -109,6 +127,10 @@ func update_tick() -> void:
 
 
 func _points(bolt: Dictionary, frac: float) -> PackedVector3Array:
+	var fine := [16 + fx.rnd() % 16, 16 + fx.rnd() % 16]
+	if _geometry:
+		var packed: PackedVector3Array = _geometry.points(a,b,bolt,_tick,frac,_tables,PackedInt32Array(fine))
+		if not packed.is_empty(): return packed
 	var pa: Vector3 = b.lerp(a, bolt.f) if bolt.f > 0.0 else a
 	pa += bolt.shift
 	var pb: Vector3 = b + bolt.shift
@@ -123,7 +145,6 @@ func _points(bolt: Dictionary, frac: float) -> PackedVector3Array:
 	var Q := d.cross(P).normalized() * P.length()
 	var t := fmod(float(_tick) + frac, 4.0) / 4.0
 	var bw := [0.5 - t + t * t * 0.5, t + 0.5 - t * t, t * t * 0.5]
-	var fine := [16 + fx.rnd() % 16, 16 + fx.rnd() % 16]
 	var out := PackedVector3Array()
 	out.resize(n + 1)
 	var step := d / float(n)
@@ -251,6 +272,11 @@ static func glow_slices(point: Vector3, eye: Vector3, size: float, world_tick: i
 
 ## Native display equivalent; called with a surface already open.
 func _draw_strip(cam: Camera3D, points: PackedVector3Array, width: float, repeat: float, band: float) -> void:
+	if _geometry:
+		var packed: Array = _geometry.strip(cam.get_camera_transform(),cam.global_transform.affine_inverse(),cam.get_camera_projection(),cam.get_viewport().get_visible_rect().size,points,width,repeat,band)
+		if packed.size()==3:
+			_vertices.append_array(packed[0]);_uvs.append_array(packed[1]);_colors.append_array(packed[2])
+			return
 	var n := points.size()
 	if n < 2:
 		return
@@ -268,46 +294,127 @@ func _draw_strip(cam: Camera3D, points: PackedVector3Array, width: float, repeat
 
 
 func draw(frac: float) -> void:
-	_mesh.clear_surfaces()
+	if fx.world and fx.world.arena_overview:
+		var now := Time.get_ticks_usec()
+		if _overview_draw_at == 0:
+			# A one-tick flash can expire before a distant update slot. Draw
+			# its first frame immediately, then stagger subsequent geometry.
+			_overview_draw_at = now + 1 + int(node.get_instance_id() % 127) * 50000 / 127
+		else:
+			if now < _overview_draw_at: return
+			_overview_draw_at += (int((now-_overview_draw_at) / 50000) + 1) * 50000
+	else: _overview_draw_at = 0
+	if _geometry:
+		_surfaces.clear(); node.mesh=_packed_mesh
+	else:
+		_mesh.clear_surfaces(); node.mesh=_mesh
 	var cam: Camera3D = node.get_viewport().get_camera_3d() if node.is_inside_tree() else null
 	if cam == null:
 		return
-	_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES, _strip_mat(demon))
+	var origin := fx.display_origin()
+	var to_world := Transform3D(Basis(Vector3(1,0,0),Vector3(0,0,-1),Vector3(0,1,0)),origin)
+	_begin_surface(_strip_mat(demon))
 	for bolt: Dictionary in _bolts:
 		var pts := _points(bolt, frac)
 		var n := pts.size()
 		var len := (pts[n - 1] - pts[0]).length()
 		var vrep := 0.0 if param < 0.0 else len * 0.6
 		var u0: float = 0.0 if param < 0.0 else bolt.band
-		var g := PackedVector3Array()
-		for p in pts:
-			g.append(Vector3(p.x, p.z, -p.y) + fx.display_origin())
+		var g := to_world * pts
 		_draw_strip(cam, g, bolt.width, vrep, u0)
-	_mesh.surface_end()
+	_end_surface()
 	if param >= 0.0:
 		var sz := glow_size(a, b, param)
 		var now := roundi(fx.world.time / ParticleFx.TICK) if fx.world else fx.tick
-		_mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES, _glow_mat(demon))
-		for p in glow_ends(a, b, param):
-			var slices := glow_slices(p + ParticleFx.ei(fx.display_origin()), ParticleFx.ei(cam.global_position), sz, now)
-			for i in 8:
-				var v: Vector4 = slices.points[i]
-				var uv: Vector4 = slices.uvs[i]
-				var c := Vector3(v.x, v.z, -v.y)
-				# Display expands size*rhw*viewportHalfWidth pixels:
-				# under the original frustum that is size/cos(pi/7) metres.
-				var half := v.w / cos(PI / 7.0)
-				var right := cam.global_transform.basis.x * half
-				var up := cam.global_transform.basis.y * half
-				_quad(c - right + up, c + right + up, c - right - up, c + right - up,
-					Vector2(uv.x, uv.y), Vector2(uv.z, uv.y), Vector2(uv.x, uv.w), Vector2(uv.z, uv.w),
-					160.0 / 255.0, 160.0 / 255.0)
-		_mesh.surface_end()
+		_begin_surface(_glow_mat(demon))
+		if _geometry and _geometry.has_method("glows"):
+			var packed: Array = _geometry.glows(PackedVector3Array(glow_ends(a,b,param)),ParticleFx.ei(origin),ParticleFx.ei(cam.global_position),cam.global_transform.basis,sz,now)
+			if packed.size() == 3:
+				_vertices.append_array(packed[0]); _uvs.append_array(packed[1]); _colors.append_array(packed[2])
+		else:
+			_draw_glows_script(cam,sz,now)
+		_end_surface()
+	if _geometry:
+		_install_surfaces()
+		_surfaces.clear()
+
+
+func _draw_glows_script(cam: Camera3D, sz: float, now: int) -> void:
+	for p in glow_ends(a, b, param):
+		var slices := glow_slices(p + ParticleFx.ei(fx.display_origin()), ParticleFx.ei(cam.global_position), sz, now)
+		for i in 8:
+			var v: Vector4 = slices.points[i]
+			var uv: Vector4 = slices.uvs[i]
+			var c := Vector3(v.x, v.z, -v.y)
+			# Display expands size*rhw*viewportHalfWidth pixels:
+			# under the original frustum that is size/cos(pi/7) metres.
+			var half := v.w / cos(PI / 7.0)
+			var right := cam.global_transform.basis.x * half
+			var up := cam.global_transform.basis.y * half
+			_quad(c - right + up, c + right + up, c - right - up, c + right - up,
+				Vector2(uv.x, uv.y), Vector2(uv.z, uv.y), Vector2(uv.x, uv.w), Vector2(uv.z, uv.w),
+				160.0 / 255.0, 160.0 / 255.0)
+
+
+func _begin_surface(material: Material) -> void:
+	if _geometry:
+		_vertices=PackedVector3Array();_uvs=PackedVector2Array();_colors=PackedColorArray();_surface_material=material
+	else: _mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES,material)
+
+
+func _end_surface() -> void:
+	if _geometry:
+		if _vertices.is_empty(): return
+		var arrays:=[];arrays.resize(Mesh.ARRAY_MAX)
+		arrays[Mesh.ARRAY_VERTEX]=_vertices;arrays[Mesh.ARRAY_TEX_UV]=_uvs;arrays[Mesh.ARRAY_COLOR]=_colors
+		_surfaces.append([arrays,_surface_material])
+	else: _mesh.surface_end()
+
+
+func _install_surfaces() -> void:
+	var reuse := _dynamic_surfaces and _buffer_layout and _surface_sizes.size() == _surfaces.size()
+	if reuse:
+		for i in _surfaces.size():
+			if _surface_sizes[i] != _surfaces[i][0][Mesh.ARRAY_VERTEX].size(): reuse = false; break
+	if not reuse:
+		_packed_mesh.clear_surfaces(); _packed_mesh.custom_aabb = AABB()
+		_surface_sizes.clear(); _buffer_layout = true
+		for surface: Array in _surfaces:
+			_packed_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,surface[0],[],{},Mesh.ARRAY_FLAG_USE_DYNAMIC_UPDATE)
+			var index := _packed_mesh.get_surface_count()-1
+			_packed_mesh.surface_set_material(index,surface[1])
+			var count: int = surface[0][Mesh.ARRAY_VERTEX].size()
+			_surface_sizes.append(count)
+			_buffer_layout = _buffer_layout and _updatable_layout(_packed_mesh.surface_get_format(index),count)
+		return
+	var bounds := AABB()
+	for i in _surfaces.size():
+		var arrays: Array = _surfaces[i][0]
+		var data: Array = _geometry.surface_data(arrays[Mesh.ARRAY_VERTEX],arrays[Mesh.ARRAY_TEX_UV],arrays[Mesh.ARRAY_COLOR])
+		if data.size() != 3: return
+		_packed_mesh.surface_update_vertex_region(i,0,data[0])
+		_packed_mesh.surface_update_attribute_region(i,0,data[1])
+		bounds = data[2] if i == 0 else bounds.merge(data[2])
+		if _packed_mesh.surface_get_material(i) != _surfaces[i][1]: _packed_mesh.surface_set_material(i,_surfaces[i][1])
+	_packed_mesh.custom_aabb = bounds
+
+
+static func _updatable_layout(format: int, count: int) -> bool:
+	return not (format & Mesh.ARRAY_FLAG_COMPRESS_ATTRIBUTES) \
+		and RenderingServer.mesh_surface_get_format_vertex_stride(format,count) == 12 \
+		and RenderingServer.mesh_surface_get_format_attribute_stride(format,count) == 12 \
+		and RenderingServer.mesh_surface_get_format_offset(format,count,Mesh.ARRAY_COLOR) == 0 \
+		and RenderingServer.mesh_surface_get_format_offset(format,count,Mesh.ARRAY_TEX_UV) == 4
 
 
 ## Two triangles: a-b is one edge, c-d the next (uv per corner).
 ## a0 / a1: vertex alpha of the a-b and c-d edges.
 func _quad(pa: Vector3, pb: Vector3, pc: Vector3, pd: Vector3, ua: Vector2, ub: Vector2, uc: Vector2, ud: Vector2, a0 := 1.0, a1 := 1.0) -> void:
+	if _geometry:
+		_vertices.append_array(PackedVector3Array([pa,pb,pc,pc,pb,pd]))
+		_uvs.append_array(PackedVector2Array([ua,ub,uc,uc,ub,ud]))
+		_colors.append_array(PackedColorArray([Color(1,1,1,a0),Color(1,1,1,a0),Color(1,1,1,a1),Color(1,1,1,a1),Color(1,1,1,a0),Color(1,1,1,a1)]))
+		return
 	for v in [[pa, ua, a0], [pb, ub, a0], [pc, uc, a1], [pc, uc, a1], [pb, ub, a0], [pd, ud, a1]]:
 		_mesh.surface_set_color(Color(1, 1, 1, v[2]))
 		_mesh.surface_set_uv(v[1])

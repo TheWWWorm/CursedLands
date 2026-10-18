@@ -11,6 +11,8 @@ const SOURCE_LIMIT := 32 * 1024 * 1024
 const RECT_LIMIT := 8 * 1024 * 1024
 const META_LIMIT := 4096
 static var _kernel: RefCounted = _make_kernel()
+static var _native_deform := _kernel != null and _kernel.has_method("deform_vertices")
+static var _native_state := _kernel != null and _kernel.has_method("deformation_state")
 
 
 static func _make_kernel() -> RefCounted:
@@ -65,7 +67,7 @@ static func _mesh_data(mesh: Mesh) -> Dictionary:
 				bytes += vertices.size() * 12 + 64
 		var surface := {"vertices": a[Mesh.ARRAY_VERTEX], "indices": a[Mesh.ARRAY_INDEX],
 			"bones": a[Mesh.ARRAY_BONES], "weights": a[Mesh.ARRAY_WEIGHTS],
-			"shapes": shapes, "primitive": mesh.surface_get_primitive_type(i), "extrema": _extrema(a[Mesh.ARRAY_VERTEX])}
+			"shapes": shapes, "primitive": mesh.surface_get_primitive_type(i), "extrema": [] if _kernel else _extrema(a[Mesh.ARRAY_VERTEX])}
 		surfaces.append(surface)
 		bytes += surface.vertices.size() * 12 + 512
 		for array in [surface.indices, surface.bones, surface.weights]:
@@ -328,9 +330,18 @@ static func of_context(mi: MeshInstance3D, cam: Camera3D, view: Dictionary) -> R
 	var xf := mi.get_global_transform_interpolated()
 	var data := _mesh_meta(mi.mesh)
 	var weights := PackedFloat64Array()
-	for i in mi.mesh.get_blend_shape_count():
-		weights.append(mi.get_blend_shape_value(i))
-	var key := [data.revision, view.revision, xf, weights, _skin_poses(mi) if mi.skin != null else []]
+	var poses: Array[Transform3D] = []
+	var has_skin := false
+	if _kernel != null and _native_state:
+		var state: Array = _kernel.deformation_state(mi)
+		weights = state[0]; poses = state[1]; has_skin = state[2]
+	else:
+		for i in mi.mesh.get_blend_shape_count():
+			weights.append(mi.get_blend_shape_value(i))
+		if mi.skin != null:
+			poses = _skin_poses(mi)
+			has_skin = mi.get_node_or_null(mi.skeleton) is Skeleton3D
+	var key := [data.revision, view.revision, xf, weights, poses]
 	var id := mi.get_instance_id()
 	if _rects.has(id) and _rects[id].ref.get_ref() == mi and _rects[id].key == key:
 		_stamp += 1
@@ -340,7 +351,15 @@ static func of_context(mi: MeshInstance3D, cam: Camera3D, view: Dictionary) -> R
 	if _kernel != null:
 		var surfaces := []
 		for s: Dictionary in data.surfaces:
-			surfaces.append([xf * _posed(mi, s), s.indices if s.indices != null else PackedInt32Array(), s.primitive])
+			var vertices: PackedVector3Array
+			if _native_deform:
+				var skin := has_skin and s.bones != null and s.weights != null
+				vertices = _kernel.deform_vertices(s.vertices, s.shapes, weights,
+					mi.mesh is ArrayMesh and mi.mesh.blend_shape_mode == Mesh.BLEND_SHAPE_MODE_NORMALIZED,
+					s.bones if skin else PackedInt32Array(), s.weights if skin else PackedFloat32Array(), key[4])
+			else:
+				vertices = _posed(mi, s)
+			surfaces.append([xf * vertices, s.indices if s.indices != null else PackedInt32Array(), s.primitive])
 		return _remember(mi, key, _kernel.bounds(surfaces, planes, view.projection, view.inverse_basis, view.origin, view.size))
 	var deforming := mi.skin != null
 	for value in weights:

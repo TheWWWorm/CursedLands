@@ -5,6 +5,7 @@ extends ArenaHudPanel
 
 var scope: Control
 var world_hint: Callable
+var viewport_pointer: Callable
 var _heading: Label
 var _body: Label
 var _key: Variant
@@ -68,7 +69,7 @@ func _process(_dt: float) -> void:
 		for line in label.text.split("\n"):
 			width = maxf(width, label.get_theme_font("font").get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, label.get_theme_font_size("font_size")).x + 24)
 	size = Vector2(minf(310, width), 0)
-	var pointer := scope.get_local_mouse_position()
+	var pointer: Vector2 = scope.get_global_transform_with_canvas().affine_inverse() * viewport_pointer.call() if viewport_pointer.is_valid() else scope.get_local_mouse_position()
 	var at := pointer + Vector2(18, 24)
 	if at.y + size.y > scope.size.y - 12: at.y = pointer.y - size.y - 16
 	position = at.clamp(Vector2(12, 12), (scope.size - size - Vector2(12, 12)).max(Vector2(12, 12)))

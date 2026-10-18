@@ -4,6 +4,8 @@ extends Node3D
 ## hit when it arrives; on clients it is only a visual.
 
 const SPEED := 28.0
+static var _shaft: CylinderMesh
+static var _material: StandardMaterial3D
 
 var world: GameWorld
 var source: GameUnit
@@ -50,19 +52,27 @@ static func launch(w: GameWorld, a: GameUnit, b: GameUnit, hit: bool) -> Project
 
 ## The shaft's material (also drawn by ShaderWarmup).
 static func material() -> StandardMaterial3D:
-	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color(0.45, 0.3, 0.15)
-	return mat
+	if _material == null:
+		_material = StandardMaterial3D.new()
+		_material.albedo_color = Color(0.45, 0.3, 0.15)
+	return _material
+
+
+## Arrows differ only in transform. Retain their immutable surface/material
+## so repeated shots reuse the renderer's pipelines instead of rebuilding them.
+static func shaft_mesh() -> CylinderMesh:
+	if _shaft == null:
+		_shaft = CylinderMesh.new()
+		_shaft.top_radius = 0.015
+		_shaft.bottom_radius = 0.015
+		_shaft.height = 0.9
+		_shaft.material = material()
+	return _shaft
 
 
 func _ready() -> void:
 	_mesh = MeshInstance3D.new()
-	var m := CylinderMesh.new()
-	m.top_radius = 0.015
-	m.bottom_radius = 0.015
-	m.height = 0.9
-	m.material = material()
-	_mesh.mesh = m
+	_mesh.mesh = shaft_mesh()
 	_mesh.rotation_degrees = Vector3(90, 0, 0)
 	add_child(_mesh)
 

@@ -158,5 +158,28 @@ func _ready() -> void:
 	soft.free()
 	check(node.mesh == mesh, "node removal joins workers and restores geometry")
 	terrain.free(); reference.free()
+	# Two worlds can finish worker jobs together. The rendered path must
+	# publish only one complete surface/shadow pair in a frame, then deliver
+	# the other without changing its geometry or losing a contact.
+	var owners: Array[Capture] = []
+	for index in 2:
+		var owner := Capture.new()
+		var kernel: Object = ClassDB.instantiate("SoftGroundMeshJob")
+		kernel.configure(source, {index:null})
+		var task := WorkerThreadPool.add_task(Callable(kernel, "run"), false)
+		while not WorkerThreadPool.is_task_completed(task): await get_tree().process_frame
+		owner.sectors[Vector2i.ZERO] = {"generation":1,"revision":0,"building":true,"tiles":{index:null}}
+		owner._mesh_jobs.append({"key":Vector2i.ZERO,"generation":1,"revision":0,"kernel":kernel,"task":task})
+		owners.append(owner)
+	await get_tree().process_frame
+	await get_tree().process_frame
+	for owner: Capture in owners: owner._finish_mesh_jobs()
+	check(owners.filter(func(owner):return not owner.result.is_empty()).size()==1,"concurrent worlds share one mesh publication per frame")
+	await get_tree().process_frame
+	for owner: Capture in owners: owner._finish_mesh_jobs()
+	check(owners.all(func(owner):return owner._mesh_jobs.is_empty() and not owner.result.is_empty()),"deferred publication completes on the following frame")
+	for index in 2:
+		equal_arrays(owners[index].sectors[Vector2i.ZERO].tiles[index],tile_reference(source,index),"deferred native tile " + str(index))
+		owners[index].sectors.clear(); owners[index].free()
 	print("SOFT_GROUND_MESH checks=", checks, " failures=", failures, " native_us=", native_us, " script_us=", script_us)
 	get_tree().quit(1 if failures else 0)

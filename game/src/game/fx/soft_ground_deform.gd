@@ -20,8 +20,10 @@ const LINK_DISTANCE := 2.5 # never connect teleports or widely separated contact
 const LIFE := 240.0
 const FADE := 60.0
 const TRAIL_SUPPORT := 2.6 # feathered, irregular shoulders around the swept floor
+const MESH_INTERVAL_US := 50000 # coalesce new tiles; existing tracks update every frame
 
 static var _edge_noise: FastNoiseLite
+static var _installed_frame := -1
 
 var terrain: EITerrain
 var field: SoftGroundField
@@ -31,6 +33,7 @@ var _age := 0.0
 var _refresh := 0.0
 var _walkers := {} # rendered foot identity -> most recent grounded contact
 var _native_mesh := ClassDB.class_exists("SoftGroundMeshJob") and not OS.get_cmdline_user_args().has("--ei-script-soft-ground")
+var _paint_kernel: Object = ClassDB.instantiate("SoftGroundPaintKernel") if ClassDB.class_exists("SoftGroundPaintKernel") and not OS.get_cmdline_user_args().has("--ei-script-soft-ground") else null
 var _mesh_jobs: Array[Dictionary] = []
 var _generation := 0
 var _material_shader: Shader
@@ -350,6 +353,7 @@ func _sector(key: Vector2i) -> Dictionary:
 		"tiles": {}, "touched": {}, "steps": [], "pending": [], "last": _age, "image": image,
 		"shadow": weakref(shadow), "margin": node.extra_cull_margin,
 		"generation": _generation, "revision": 0, "building": false, "build_pending": false,
+		"next_build_us": 0,
 		"texture": field.texture, "layer": layer, "key": key,
 		"material": _copy_material(), "dirty": false}
 	node.extra_cull_margin = maxf(node.extra_cull_margin, DEPTH)
@@ -416,9 +420,19 @@ func _apply_mesh(rec: Dictionary, arrays: Array, shadow_arrays: Array) -> void:
 
 
 func _finish_mesh_jobs(wait := false) -> void:
-	for i in range(_mesh_jobs.size() - 1, -1, -1):
+	# Mesh construction runs on workers, but publishing both surfaces still
+	# uploads large vertex buffers on the render thread. Several completed
+	# sectors must not all publish in the same frame (including other boards).
+	if wait:
+		# Explicit blocking drains (fallback/setup) also release pending
+		# coalesced work, even if no worker happened to be running yet.
+		for rec: Dictionary in sectors.values(): rec.next_build_us = 0
+	elif _installed_frame == Engine.get_process_frames(): return
+	var i := 0
+	while i < _mesh_jobs.size():
 		var job: Dictionary = _mesh_jobs[i]
 		if not wait and not WorkerThreadPool.is_task_completed(job.task):
+			i += 1
 			continue
 		WorkerThreadPool.wait_for_task_completion(job.task)
 		_mesh_jobs.remove_at(i)
@@ -435,6 +449,8 @@ func _finish_mesh_jobs(wait := false) -> void:
 		for id: int in result[2]:
 			rec.tiles[id] = result[2][id]
 		_apply_mesh(rec, result[0], result[1])
+		_installed_frame = Engine.get_process_frames()
+		if not wait: return
 
 
 func _build_meshes(changed: Dictionary) -> void:
@@ -448,6 +464,7 @@ func _build_meshes(changed: Dictionary) -> void:
 		var rec: Dictionary = sectors[key]
 		if rec.building or not rec.build_pending or _mesh_jobs.size() >= MAX_SECTORS:
 			continue
+		if Time.get_ticks_usec() < int(rec.next_build_us): continue
 		var kernel: Object = ClassDB.instantiate("SoftGroundMeshJob")
 		if not kernel.configure(rec.arrays, rec.tiles):
 			# Preserve the ordinary script path for an unsupported mesh layout.
@@ -460,6 +477,7 @@ func _build_meshes(changed: Dictionary) -> void:
 			return
 		rec.building = true
 		rec.build_pending = false
+		rec.next_build_us = Time.get_ticks_usec() + MESH_INTERVAL_US
 		var task := WorkerThreadPool.add_task(Callable(kernel, "run"), false, "soft-ground mesh")
 		_mesh_jobs.append({"key": key, "generation": rec.generation, "revision": rec.revision,
 			"kernel": kernel, "task": task})
@@ -564,6 +582,11 @@ func _build_script(changed: Dictionary) -> void:
 
 func _paint_pending(key: Vector2i, rec: Dictionary) -> void:
 	var image: Image = rec.image
+	if _paint_kernel and not rec.pending.is_empty():
+		_prepare_edge_noise()
+		if _paint_kernel.paint(image, rec.pending, Vector2(key * SECTOR), _edge_noise):
+			rec.pending.clear()
+			return
 	for s: Dictionary in rec.pending:
 		var stamp := float(s.time)
 		if s.has("to"):
@@ -603,6 +626,15 @@ static func paint(image: Image, p: Vector2, extent: Vector2, angle: float, stren
 			image.set_pixel(x, y, Color(maxf(prev.r * fade, depression), maxf(prev.g * fade, rim), stamp, 1))
 
 
+static func _prepare_edge_noise() -> void:
+	if _edge_noise == null:
+		_edge_noise = FastNoiseLite.new()
+		_edge_noise.seed = 73129
+		_edge_noise.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+		_edge_noise.fractal_type = FastNoiseLite.FRACTAL_NONE
+		_edge_noise.frequency = 2.4
+
+
 static func paint_trail(image: Image, from: Vector2, to: Vector2, width: float, strength: float, stamp := 0.0, origin := Vector2.ZERO) -> void:
 	var scale := float(RESOLUTION - 1) / SECTOR
 	var radius := width * TRAIL_SUPPORT
@@ -610,12 +642,7 @@ static func paint_trail(image: Image, from: Vector2, to: Vector2, width: float, 
 	var hi := Vector2i(((from.max(to) + Vector2.ONE * radius) * scale).ceil()).clamp(Vector2i.ZERO, image.get_size() - Vector2i.ONE)
 	var along := to - from
 	var length_sq := maxf(along.length_squared(), 1e-6)
-	if _edge_noise == null:
-		_edge_noise = FastNoiseLite.new()
-		_edge_noise.seed = 73129
-		_edge_noise.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
-		_edge_noise.fractal_type = FastNoiseLite.FRACTAL_NONE
-		_edge_noise.frequency = 2.4
+	_prepare_edge_noise()
 	for y in range(lo.y, hi.y + 1):
 		for x in range(lo.x, hi.x + 1):
 			var p := Vector2(x, y) / scale

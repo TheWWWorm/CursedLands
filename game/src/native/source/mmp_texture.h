@@ -16,8 +16,23 @@ class MmpTextureKernel : public RefCounted {
 protected:
     static void _bind_methods() {
         ClassDB::bind_method(D_METHOD("decode_raw", "data", "width", "height"), &MmpTextureKernel::decode_raw);
+        ClassDB::bind_method(D_METHOD("colorize_rgba", "data", "red", "green", "blue"), &MmpTextureKernel::colorize_rgba);
     }
 public:
+    // Preserve the redress layer's alpha exactly. PackedByteArray detaches on
+    // write, so the caller's decoded image and any cached copies stay intact.
+    PackedByteArray colorize_rgba(const PackedByteArray &data, int64_t red, int64_t green, int64_t blue) const {
+        if (data.size() % 4 != 0) return PackedByteArray();
+        PackedByteArray output = data;
+        uint8_t *out = output.ptrw();
+        for (int64_t i = 0; i < output.size(); i += 4) {
+            out[i] = uint8_t(red);
+            out[i + 1] = uint8_t(green);
+            out[i + 2] = uint8_t(blue);
+        }
+        return output;
+    }
+
     PackedByteArray decode_raw(const PackedByteArray &data, int64_t width, int64_t height) const {
         PackedByteArray output;
         if (data.size() < 76 || width <= 0 || height <= 0 || width > 16384 || height > 16384 ||

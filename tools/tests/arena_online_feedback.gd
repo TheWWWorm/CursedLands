@@ -55,6 +55,22 @@ func _ready() -> void:
 	replica.apply_board(host.game.board_frame(0,true))
 	check(replica.formation_motion.movers.is_empty() and not replica.world.authority,"combat clears local motion without authority")
 	var survivor: GameUnit = host.game.home.world.unit_rows()[0]
+	var exact_replica: GameUnit = replica.world.units[survivor.uid]
+	var losses := []
+	replica.world.combat_event.connect(func(kind,_source,target,amount):
+		if kind == "hp_loss" and target == exact_replica: losses.append(amount))
+	survivor.hp -= 0.123456
+	replica.apply_board(host.game.board_frame(0,false))
+	check(exact_replica.hp == survivor.hp,"arena damage uses exact authoritative health")
+	check(range(survivor.parts.size()).all(func(i):return exact_replica.parts[i].cur == survivor.parts[i].cur),"exact body parts survive snapshot application")
+	losses.clear(); exact_replica._pose_dirty = false; exact_replica._wounds_dirty = false
+	for repeat in 5: replica.apply_board(host.game.board_frame(0,false))
+	check(losses.is_empty(),"unchanged fractional health creates no repeated damage feedback")
+	check(not exact_replica._pose_dirty and not exact_replica._wounds_dirty,"unchanged exact health does not dirty poses or wound textures")
+	survivor.heal(0.05); replica.apply_board(host.game.board_frame(0,false))
+	check(exact_replica.hp == survivor.hp and losses.is_empty(),"exact healing is retained without false damage events")
+	survivor._set_max_hp(survivor.max_hp+0.123456); replica.apply_board(host.game.board_frame(0,false))
+	check(exact_replica.max_hp == survivor.max_hp and exact_replica.hp == survivor.hp,"fractional maximum and body health remain exact")
 	survivor._set_action("run");survivor._moving=true;survivor._move_speed=3.0
 	for actor: GameUnit in host.game.home.world.unit_rows():
 		if actor.faction==2:actor.dead=true

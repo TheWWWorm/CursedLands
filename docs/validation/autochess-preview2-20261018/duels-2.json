@@ -1,0 +1,9882 @@
+[
+	{
+		"family": 0,
+		"name": "Boars",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 41.3599999999998,
+				"wins": 1
+			},
+			{
+				"draws": 1,
+				"family": 1,
+				"seconds": 44.0000000000001,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 69.1625000000003,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 60.1974999999997,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 17.7099999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 40.9749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 5.03249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 4.3175,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 3.685,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 2.9425,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 5.4725,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 4.95,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 27.2249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 24.0899999999999,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 14,
+				"seconds": 24.3099999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 23.9249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 9.15749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 17.8749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 2.145,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 8.60749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 34.1274999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 12.265,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 3.63,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 6.59999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 19.7174999999999,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 25,
+				"seconds": 12.595,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 3.575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 6.32499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 8.77249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 6.26999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 14.08,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 3.4375,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 4.01500000000001,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 6.02249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 2.145,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 4.29,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 11.165,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 5.5825,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 2.53,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 7.39749999999999,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 1,
+		"name": "Tribal fighters",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 61.3525000000005,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 41.2499999999998,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 43.5874999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 29.8099999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 13.0625,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 27.1974999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 8.77249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 2.97,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 3.6575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 4.23499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 4.2075,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 3.4375,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 18.8374999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 18.6449999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 67.127500000001,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 12.4575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 6.02249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 21.8074999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 2.0075,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 9.76249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 21.6149999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 10.725,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 3.355,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 6.59999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 15.4549999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 35.6399999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 3.575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 7.53499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 7.25999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 4.675,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 22.3849999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 7.09499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 3.98750000000001,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 4.51,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 2.0075,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 4.235,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 1.265,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 3.685,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 6.32499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 2.7775,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 2,
+		"name": "Wolves",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 84.4800000000022,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 43.0924999999998,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 2,
+				"seconds": 60.6099999999997,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 43.3399999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 17.6274999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 40.9749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 8.74499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 5.3625,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 3.6575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 4.1525,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 5.335,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 4.895,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 24.4474999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 23.9799999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 92.3175000000032,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 21.4224999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 13.5575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 17.8199999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 2.0625,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 10.9175,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 24.7224999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 15.2349999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 3.575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 6.59999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 18.2049999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 70.1250000000005,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 3.575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 6.10499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 5.74749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 4.6475,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 15.8124999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 9.18499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 3.98750000000001,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 5.8575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 2.0625,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 4.29,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 11.11,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 5.5,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 6.37999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 7.34249999999999,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 3,
+		"name": "Tribal shooters",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 75.5975000000011,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 38.4174999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 39.4624999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 108.570000000005,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 12.43,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 27.3899999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 1.5675,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 6.43499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 3.63,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 4.3725,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 4.895,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 3.685,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 14.1625,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 19.1949999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 34.3474999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 18.5349999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 9.70749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 14.1075,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 2.42,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 8.85499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 21.9174999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 9.40499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 3.63,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 6.54499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 16.3624999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 22.8799999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 3.575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 9.07499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 5.39,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 7.67249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 22.3849999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 9.98249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 3.96,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 8.13999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 2.42,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 4.62,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 6.40749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 4.29,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 6.59999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 2.7775,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 4,
+		"name": "Bats",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 17.7099999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 12.4575,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 17.6274999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 12.43,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 22.9349999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 17.8749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 13.3375,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 7.78249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 3.74,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 4.4,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 4.9775,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 4.95,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 45.8149999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 7.39749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 17.5999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 27.9674999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 14.74,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 15.5649999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 10.0925,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 23.6774999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 40.7824999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 16.9949999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 2.365,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 8.96499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 28.0224999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 23.3749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 3.575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 9.23999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 8.49749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 6.70999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 28.4899999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 13.585,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 4.07,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 8.11249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 10.0925,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 4.785,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 11.88,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 5.6375,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 6.59999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 7.78249999999999,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 5,
+		"name": "Toads",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 40.9749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 26.8949999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 40.9749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 27.3899999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 17.5724999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 58.1899999999997,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 9.26749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 7.47999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 3.6025,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 4.345,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 4.785,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 4.84,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 15.3724999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 16.1424999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 40.9474999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 16.5824999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 11.715,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 15.6199999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 2.3375,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 13.8325,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 24.8599999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 10.78,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 3.52,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 6.59999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 23.0174999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 20.6799999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 5.06,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 7.50749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 7.97499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 5.1975,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 23.9799999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 13.365,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 3.9325,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 5.225,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 2.3375,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 4.5925,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 1.43,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 5.445,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 6.54499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 2.7225,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 6,
+		"name": "White tigers",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 9.04749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 10.67,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 12.76,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 9.37749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 13.86,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 7.36999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 65.5599999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 17.6549999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 15.2074999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 9.54249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 13.5025,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 10.1475,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 8.71749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 5.445,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 7.01249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 54.9724999999997,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 28.3799999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 16.8849999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 13.09,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 12.485,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 26.3174999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 35.3649999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 9.73499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 1,
+				"family": 23,
+				"seconds": 23.5674999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 14.5475,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 13.31,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 17.5999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 22.7699999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 9.84499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 17.1049999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 18.9474999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 48.3724999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 16.8849999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 20.7349999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 13.09,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 14.63,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 36.3274999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 10.725,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 10.285,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 21.0099999999999,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 7,
+		"name": "Blue trolls",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 4.3175,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 4.18,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 6.57249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 5.225,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 5.3625,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 2.64,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 14.025,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 30.9649999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 33.6874999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 20.0749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 64.7074999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 24.8599999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 4.0975,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 5.3625,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 2.8325,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 9.34999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 7.83749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 5.665,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 7.78249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 3.8775,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 11.385,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 12.2925,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 5.005,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 8.02999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 4.345,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 8.08499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 14.63,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 77.5225000000014,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 34.5949999999998,
+				"wins": 2
+			},
+			{
+				"draws": 1,
+				"family": 29,
+				"seconds": 109.422500000005,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 8.11249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 13.97,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 9.73499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 48.4274999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 20.1024999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 89.5400000000029,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 36,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 25.5749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 38,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 45.3199999999998,
+				"wins": 2
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 8,
+		"name": "Stony harpies",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 3.7125,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 3.6575,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 3.6575,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 3.63,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 3.74,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 3.6025,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 15.2074999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 39.1874999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 52.1949999999998,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 16.8024999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 42.1574999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 20.4049999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 8.27749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 1.43,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 3.6575,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 12.87,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 8.30499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 3.85,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 3.685,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 8.24999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 8.30499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 8.22249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 3.685,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 10.78,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 5.99499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 3.85,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 17.4899999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 86.8450000000025,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 40.6449999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 79.3925000000016,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 3.85,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 17.5174999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 31.3774999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 40.6174999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 12.925,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 58.9874999999997,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 102.327500000004,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 21.6149999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 50.8749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 53.5699999999998,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 9,
+		"name": "Sand ogres",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 4.3175,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 4.18,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 4.1525,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 4.37249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 4.4,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 1.705,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 9.37749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 29.5624999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 19.2224999999999,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 9,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 32.6149999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 28.0774999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 4.2625,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 1.76,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 4.235,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 7.09499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 5.61,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 4.455,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 4.4,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 4.0425,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 7.14999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 8.08499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 1.6775,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 4.4,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 4.235,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 5.83,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 12.155,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 38.7199999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 20.1299999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 14.85,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 4.565,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 5.58249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 8.27749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 16.1149999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 10.065,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 25.4649999999999,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 36,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 22.9899999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 44.3574999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 17.9024999999999,
+				"wins": 2
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 10,
+		"name": "Spiders",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 4.29,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 6.57249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 5.335,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 4.895,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 4.9775,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 4.785,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 8.96499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 50.1874999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 33.6599999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 23.3749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 27.8849999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 47.1899999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 2.9425,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 4.9775,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 4.07,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 8.00249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 3.025,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 5.225,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 4.95,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 5.115,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 8.49749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 16.8849999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 4.785,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 5.06,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 4.345,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 7.47999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 7.89249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 22.2199999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 21.0099999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 75.9550000000012,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 6.35249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 8.88249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 8.22249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 28.1874999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 12.1,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 53.2674999999998,
+				"wins": 2
+			},
+			{
+				"draws": 1,
+				"family": 36,
+				"seconds": 119.295000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 47.4374999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 59.4274999999997,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 35.6399999999998,
+				"wins": 2
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 11,
+		"name": "Grey harpies",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 4.95,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 3.4375,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 4.895,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 3.685,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 4.95,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 4.84,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 10.1475,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 24.8599999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 20.4049999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 17.6274999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 47.3549999999998,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 11,
+				"seconds": 20.4049999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 6.07749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 3.245,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 4.895,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 9.21249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 8.16749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 5.28,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 4.95,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 7.42499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 8.16749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 7.75499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 4.895,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 5.17,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 6.10499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 6.04999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 9.45999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 13.2825,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 13.915,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 17.7924999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 6.04999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 10.3675,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 8.24999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 13.915,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 7.53499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 20.2674999999999,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 36,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 21.0099999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 20.4049999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 13.0625,
+				"wins": 2
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 12,
+		"name": "Skeletons",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 20.3774999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 23.1274999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 17.8474999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 16.5824999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 53.7899999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 34.2924999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 10.615,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 4.0975,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 8.27749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 5.4725,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 4.125,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 6.07749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 85.0850000000023,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 18.2599999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 28.2699999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 30.3874999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 24.1174999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 37.1249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 5.665,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 25.8774999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 67.1550000000009,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 18.2049999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 5.445,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 13.86,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 32.9174999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 51.0949999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 4.3725,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 8.85499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 7.17749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 7.39749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 56.8149999999997,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 12.7325,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 9.12999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 7.14999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 5.665,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 4.235,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 8.57999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 4.95,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 6.37999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 11.88,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 13,
+		"name": "Wisps",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 24.0899999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 18.6449999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 23.9799999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 19.1399999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 7.39749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 16.4449999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 5.445,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 2.9425,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 1.43,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 1.87,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 2.6125,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 3.245,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 10.12,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 11.33,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 23.9799999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 9.65249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 5.28,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 10.3675,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 2.5575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 9.26749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 16.1974999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 7.91999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 3.245,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 4.125,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 13.6125,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 23.8149999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 0.77,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 6.43499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 5.3625,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 3.6025,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 12.815,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 6.26999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 1.485,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 2.7225,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 2.5575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 2.035,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 1.595,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 3.9325,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 2.75,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 2.9425,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 14,
+		"name": "Red tigers",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 53.5149999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 46.8324999999998,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 2,
+				"seconds": 60.5274999999997,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 58.2174999999997,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 17.5999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 40.9474999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 8.68999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 5.2525,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 3.6575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 2.805,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 4.07,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 4.895,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 32.3124999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 23.9799999999999,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 14,
+				"seconds": 24.1999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 14.5475,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 13.475,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 17.8474999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 2.035,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 11.165,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 31.0474999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 9.15749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 3.6025,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 6.59999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 25.4374999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 41.0299999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 5.005,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 8.79999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 5.7475,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 4.50999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 23.8424999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 9.37749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 3.96,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 4.37249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 2.035,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 4.29,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 6.18749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 5.4725,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 6.37999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 7.31499999999999,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 15,
+		"name": "Banshees",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 10.395,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 16.9674999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 12.4025,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 16.2799999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 23.4574999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 11.5225,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 97.9550000000039,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 11.935,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 12.87,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 6.87499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 8.00249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 9.10249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 25.8774999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 14.1625,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 16.8024999999999,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 15,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 104.967500000005,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 9.84499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 18,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 27.9124999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 47.9874999999998,
+				"wins": 2
+			},
+			{
+				"draws": 1,
+				"family": 21,
+				"seconds": 90.8325000000032,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 12.5125,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 18.5899999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 21.6974999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 28.1049999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 14.575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 22.1924999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 15.7024999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 16.3624999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 32.6149999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 43.3124999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 14.355,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 14.355,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 34,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 53.3499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 22.8799999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 9.78999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 18.0949999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 16.5549999999999,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 16,
+		"name": "Lizardfolk",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 15.2074999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 15.0975,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 13.8325,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 12.7325,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 17.3249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 11.3025,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 24.9699999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 7.83749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 8.30499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 4.23499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 10.12,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 8.16749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 25.9049999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 8.30499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 11.9625,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 82.417500000002,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 16,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 11.44,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 9.45999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 22.5774999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 32.4774999999999,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 21,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 7.75499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 16.2799999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 19.7724999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 8.41499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 13.09,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 17.4074999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 12.6775,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 14.52,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 5.39,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 18.8924999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 9.15749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 16.8849999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 9.45999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 9.40499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 22.8524999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 8.77249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 8.33249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 11.935,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 17,
+		"name": "Orc shamans",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 17.7649999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 22.2474999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 18.0399999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 14.2175,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 15.5649999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 15.7024999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 9.51499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 8.08499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 3.85,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 5.775,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 7.47999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 5.28,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 34.4299999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 10.4225,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 17.8199999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 23.4024999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 9.92749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 10.285,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 2.97,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 12.4575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 25.6849999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 11.1375,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 4.62,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 6.90249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 26.5099999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 16.9949999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 2.2,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 9.56999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 7.03999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 6.81999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 19.4699999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 9.62499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 4.125,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 6.95749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 2.97,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 4.565,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 1.815,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 6.21499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 4.785,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 7.86499999999999,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 18,
+		"name": "Evil eyes",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 2.145,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 2.0075,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 2.0625,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 2.42,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 10.0925,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 2.3375,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 13.09,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 7.78249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 3.685,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 4.4,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 4.95,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 4.95,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 5.665,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 2.5575,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 2.035,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 15,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 9.45999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 2.97,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 24.8049999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 5.7475,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 9.87249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 9.40499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 7.53499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 8.96499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 5.775,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 6.65499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 3.575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 12.595,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 13.6125,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 7.50749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 2.97,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 16.8024999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 4.07,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 8.11249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 24.8324999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 15.1249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 11.385,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 5.6375,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 6.59999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 7.50749999999999,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 19,
+		"name": "Armadillos",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 13.53,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 16.8574999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 20.3774999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 11.22,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 36.0524999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 18.3149999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 12.375,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 6.29749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 8.24999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 6.73749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 6.29749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 7.42499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 36.9324999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 14.19,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 13.64,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 16.6374999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 16.3899999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 12.4575,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 5.7475,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 27.3349999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 46.7224999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 21.2574999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 7.01249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 11.44,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 22.8249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 23.0999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 7.78249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 12.815,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 6.98499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 7.14999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 18.4249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 14.63,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 9.10249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 8.30499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 5.7475,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 6.87499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 18.2049999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 8.00249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 10.285,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 11.8525,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 20,
+		"name": "Woodsfolk archers",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 27.8024999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 27.6649999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 18.9749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 18.8924999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 40.7824999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 9.73499999999997,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 26.3174999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 10.2025,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 8.30499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 7.03999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 7.31499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 8.16749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 43.2574999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 16.0874999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 22.1924999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 59.2900000000003,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 38.5549999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 16.2799999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 9.87249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 32.5324999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 118.800000000006,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 67.0450000000002,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 7.78249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 16.2249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 30.8549999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 22.3299999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 10.78,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 10.615,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 9.62499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 14.795,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 46.5299999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 24.9699999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 9.15749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 16.4449999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 9.87249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 9.73499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 10.0375,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 8.79999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 14.41,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 12.0175,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 21,
+		"name": "Hill ogres",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 15.2349999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 12.1825,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 13.7225,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 13.9425,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 26.2899999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 17.5449999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 61.8749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 9.87249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 8.22249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 4.01500000000001,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 9.78999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 7.75499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 12,
+				"seconds": 19.4424999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 7.91999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 16.6099999999999,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 15,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 16,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 14.08,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 9.40499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 27.1699999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 76.2850000000012,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 21,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 7.31499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 13.86,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 22.8524999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 29.1499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 11.77,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 11.33,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 16.5274999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 9.87249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 26.9224999999999,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 31,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 9.10249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 5.555,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 9.40499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 6.84749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 22.6874999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 8.35999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 14.2725,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 11.7975,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 22,
+		"name": "Red harpies",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 3.63,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 3.355,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 3.575,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 3.63,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 2.365,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 3.52,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 9.73499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 7.42499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 3.685,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 4.3175,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 4.785,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 4.895,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 5.445,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 3.245,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 3.6025,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 18.8374999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 7.75499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 4.62,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 7.53499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 7.01249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 7.78249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 7.31499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 22,
+				"seconds": 4.895,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 5.72,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 5.4725,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 5.99499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 5.06,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 10.56,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 7.97499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 8.05749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 5.94,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 9.95499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 3.98750000000001,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 8.52499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 20.4599999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 7.36999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 11.5775,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 5.5,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 6.59999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 7.36999999999999,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 23,
+		"name": "Wormheads",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 6.59999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 6.59999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 6.54499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 6.54499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 8.96499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 7.20499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 24.0899999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 8.13999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 10.78,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 5.72,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 6.24249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 5.17,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 13.86,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 4.125,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 6.59999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 18.5899999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 16.2799999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 6.90249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 8.96499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 11.44,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 16.2249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 13.86,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 5.72,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 16.5549999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 8.96499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 9.56999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 11.11,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 9.40499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 11.055,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 6.65499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 9.51499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 28.8199999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 11.88,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 8.19499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 21.5599999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 12.32,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 6.70999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 6.10499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 2.805,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 16.9949999999999,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 24,
+		"name": "Brigands",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 22.9349999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 19.6624999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 21.1199999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 17.6549999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 28.3249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 18.9749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 10.7525,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 5.555,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 5.94,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 4.235,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 6.70999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 6.10499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 52.9374999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 19.1399999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 12.5125,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 21.6974999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 28.8474999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 15.2349999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 5.775,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 21.7524999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 40.0124999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 19.9374999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 5.4725,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 8.96499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 18.3699999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 60.7749999999997,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 6.21499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 10.5875,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 7.42499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 7.69999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 35.3374999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 13.0625,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 6.59999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 5.99499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 5.775,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 4.2075,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 16.9124999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 5.0325,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 10.175,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 7.39749999999999,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 25,
+		"name": "Marksmen",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 41.1674999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 49.2249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 63.4974999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 22.4399999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 23.3749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 61.1599999999997,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 7.50749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 5.66499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 3.85,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 5.83,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 7.47999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 6.04999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 42.5424999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 16.4999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 40.1774999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 14.575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 17.4899999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 17.7649999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 6.65499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 10.0925,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 22.3299999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 15.4824999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 5.99499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 9.56999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 13.8325,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 87.2850000000026,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 4.5925,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 9.56999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 5.61,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 9.62499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 33.7699999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 9.87249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 4.18,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 6.98499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 6.65499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 4.62,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 11.605,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 6.98499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 8.66249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 7.86499999999999,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 26,
+		"name": "Battle mages",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 3.465,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 3.795,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 5.06,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 3.575,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 3.575,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 4.84,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 17.3249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 23.7599999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 17.4899999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 9.62499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 13.805,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 9.45999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 7.01249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 0.88,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 3.685,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 13.2825,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 11.7975,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 2.2,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 3.575,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 9.29499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 9.21249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 11.825,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 6.43499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 7.03999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 6.43499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 3.4925,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 26.7299999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 77.1925000000031,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 30.7449999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 25.9324999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 3.52,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 16.0049999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 19.2499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 26.6749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 20.5149999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 14.8499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 29.8924999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 9.10249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 14.245,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 21.0924999999999,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 27,
+		"name": "Zombies",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 9.12999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 4.72999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 7.50749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 7.67249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 9.84499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 6.10499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 19.9649999999999,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 7,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 88.3025000000027,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 28.2149999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 22.2199999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 12.54,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 7.45249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 6.43499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 5.99499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 16.8849999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 13.2,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 9.56999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 20.9274999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 7.20499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 13.42,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 14.135,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 7.45249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 13.6125,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 4.97749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 13.7775,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 33.0549999999999,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 27,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 28,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 1,
+				"family": 29,
+				"seconds": 118.690000000006,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 9.62499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 24.5574999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 20.2674999999999,
+				"wins": 2
+			},
+			{
+				"draws": 1,
+				"family": 33,
+				"seconds": 102.740000000004,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 31.6799999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 24.8599999999999,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 36,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 14.1075,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 93.9950000000034,
+				"wins": 0
+			},
+			{
+				"draws": 1,
+				"family": 39,
+				"seconds": 102.795000000005,
+				"wins": 1
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 28,
+		"name": "Guards",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 7.39749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 3.08,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 5.7475,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 8.13999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 5.4725,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 5.17,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 20.8449999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 66.2475000000001,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 42.7074999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 18.8649999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 20.8999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 13.915,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 4.3725,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 5.3625,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 4.31749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 11.7975,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 15.4824999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 8.30499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 8.16749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 6.87499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 15.07,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 6.90249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 7.97499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 5.445,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 4.61999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 9.70749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 28.0224999999999,
+				"wins": 2
+			},
+			{
+				"draws": 1,
+				"family": 27,
+				"seconds": 106.260000000005,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 76.1750000000012,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 70.0700000000004,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 8.30499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 19.5799999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 16.4999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 51.3149999999998,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 33.0274999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 32.6424999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 92.4825000000032,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 19.2499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 38.4174999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 48.4824999999998,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 29,
+		"name": "Ice elementals",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 7.67249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 6.07749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 8.85499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 6.26999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 6.70999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 6.29749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 21.3124999999999,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 7,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 56.7324999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 24.1724999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 71.8575000000018,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 16.0874999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 4.5925,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 6.40749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 4.51,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 15.8674999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 10.3125,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 6.81999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 9.78999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 5.7475,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 13.3925,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 11.275,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 7.45249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 6.65499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 6.29749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 11.0275,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 31.5424999999999,
+				"wins": 2
+			},
+			{
+				"draws": 1,
+				"family": 27,
+				"seconds": 117.287500000006,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 95.7825000000036,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 29,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 15.2899999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 16.3074999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 20.4049999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 72.9025000000008,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 35.5849999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 76.6150000000013,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 36,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 16.7749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 1,
+				"family": 38,
+				"seconds": 97.9000000000039,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 62.9749999999998,
+				"wins": 2
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 30,
+		"name": "Apprentices",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 22.3299999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 22.3849999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 24.8599999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 22.3849999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 33.6049999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 8.19499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 15.0425,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 3.245,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 3.85,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 4.455,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 2.805,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 6.04999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 30.7174999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 12.815,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 33.7699999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 41.6349999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 19.0024999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 19.4699999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 2.97,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 16.0599999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 64.6800000000001,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 18.8649999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 5.94,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 9.51499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 38.6649999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 30.3049999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 3.575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 12.43,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 11.165,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 9.70749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 50.9299999999998,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 5.91249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 4.125,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 8.30499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 2.97,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 4.565,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 1.815,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 7.31499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 2.805,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 7.80999999999999,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 31,
+		"name": "Hounds",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 9.04749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 5.72,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 7.31499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 9.48749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 13.5575,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 5.885,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 42.7624999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 13.805,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 17.5174999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 9.54249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 14.795,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 10.3675,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 14.52,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 6.26999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 7.01249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 67.7325000000003,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 35.6674999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 13.365,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 16.8024999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 16.7474999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 28.7374999999999,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 21,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 9.73499999999998,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 6.32499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 13.53,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 11.99,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 18.7274999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 32.9449999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 16.7749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 25.7124999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 17.5999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 54.3399999999997,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 19.4974999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 20.8724999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 16.8024999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 14.575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 24.1724999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 10.175,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 14.41,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 21.0374999999999,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 32,
+		"name": "Woodsfolk mystics",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 4.01500000000001,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 3.98750000000001,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 3.98750000000001,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 3.9325,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 4.07,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 3.9325,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 16.8849999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 9.73499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 31.6799999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 9.54249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 9.40499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 8.24999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 9.12999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 1.485,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 3.96,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 14.355,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 9.15749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 4.125,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 4.07,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 9.10249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 9.15749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 9.10249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 3.98750000000001,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 11.88,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 6.59999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 4.18,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 19.4699999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 20.7899999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 19.2499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 15.5924999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 4.125,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 19.4974999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 34.9799999999998,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 24.6399999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 13.4475,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 9.78999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 11.275,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 8.85499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 14.41,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 48.4274999999998,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 33,
+		"name": "Ghouls",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 7.39749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 3.08,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 5.7475,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 8.13999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 5.4725,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 5.17,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 20.8449999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 66.2475000000001,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 42.7074999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 18.8649999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 20.8999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 13.915,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 4.3725,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 5.3625,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 4.31749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 11.7975,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 15.4824999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 8.30499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 8.16749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 6.87499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 15.07,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 6.90249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 7.97499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 5.445,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 4.61999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 9.70749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 28.0224999999999,
+				"wins": 2
+			},
+			{
+				"draws": 1,
+				"family": 27,
+				"seconds": 106.260000000005,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 76.1750000000012,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 70.0700000000004,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 8.30499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 19.5799999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 16.4999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 51.3149999999998,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 33.0274999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 32.6424999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 92.4825000000032,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 19.2499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 38.4174999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 48.4824999999998,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 34,
+		"name": "Red eyes",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 2.145,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 2.0075,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 2.0625,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 2.42,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 10.0925,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 2.3375,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 13.09,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 17.6824999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 12.925,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 9.67999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 14.685,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 7.53499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 5.665,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 2.5575,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 2.035,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 15,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 9.45999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 2.97,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 24.8324999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 5.7475,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 9.87249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 9.40499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 20.4599999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 21.5599999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 5.775,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 6.65499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 20.5149999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 31.6249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 30.1399999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 18.7274999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 2.97,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 16.8024999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 13.4475,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 30.1949999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 76.3950000000012,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 35.8049999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 23.0449999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 8.22249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 14.41,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 16.6374999999999,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 35,
+		"name": "Dragons",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 4.29,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 4.235,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 4.29,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 4.565,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 4.785,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 4.5925,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 14.63,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 91.1350000000031,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 61.9024999999997,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 20.2949999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 42.7899999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 20.2674999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 4.235,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 2.035,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 4.29,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 53.2949999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 9.40499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 4.565,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 15.1249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 6.87499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 9.73499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 6.84749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 7.36999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 12.32,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 4.18,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 4.565,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 14.52,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 24.8599999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 32.6699999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 80.1075000000017,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 4.565,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 14.575,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 9.78999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 32.6699999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 35.8049999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 43.4499999999998,
+				"wins": 1
+			},
+			{
+				"draws": 2,
+				"family": 36,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 20.8449999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 87.7800000000026,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 31.0749999999999,
+				"wins": 2
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 36,
+		"name": "Cyclopes",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 8.52499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 8.41499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 13.365,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 6.40749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 9.23999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 8.57999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 32.5324999999999,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 7,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 82.225000000002,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 9,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 10,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 97.6800000000039,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 13.2825,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 1.595,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 13.6125,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 1.485,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 18.2874999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 11.605,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 8.74499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 15.5649999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 20.7624999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 39.6274999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 8.79999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 8.96499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 9.76249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 18.7549999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 46.8324999999998,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 27,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 114.565000000006,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 29,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 11.605,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 27.6649999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 33.1099999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 84.8375000000023,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 32.8624999999999,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 35,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 36,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 98.1200000000039,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 38,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 1,
+				"family": 39,
+				"seconds": 101.805000000004,
+				"wins": 1
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 37,
+		"name": "Shadows",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 5.5825,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 3.685,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 5.5,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 4.29,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 5.6375,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 5.445,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 10.725,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 37.2074999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 21.0099999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 12.32,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 47.8224999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 21.0099999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 4.95,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 3.9325,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 5.4725,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 9.78999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 8.77249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 6.21499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 5.6375,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 8.00249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 8.79999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 8.35999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 5.5,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 6.10499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 5.0325,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 6.98499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 9.10249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 14.1075,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 19.2499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 16.7749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 7.31499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 10.175,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 8.85499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 19.8549999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 8.22249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 20.8449999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 104.775000000005,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 31.8999999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 21.3399999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 13.7225,
+				"wins": 2
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 38,
+		"name": "Imperial archers",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 7.14999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 2.475,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 7.20499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 6.54499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 6.54499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 7.58999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 17.7099999999999,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 7,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 47.1899999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 44.1099999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 67.9525000000002,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 20.3499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 9.59749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 3.025,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 6.48999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 10.4225,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 15.6199999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 6.65499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 6.65499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 12.9525,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 10.395,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 10.395,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 6.54499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 6.59999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 6.32499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 7.03999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 15.8399999999999,
+				"wins": 2
+			},
+			{
+				"draws": 1,
+				"family": 27,
+				"seconds": 115.197500000006,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 33.9074999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 109.835000000005,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 11.275,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 18.3699999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 14.245,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 33.4124999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 20.0749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 116.380000000006,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 36,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 32.1199999999999,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 38,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 42.8449999999998,
+				"wins": 2
+			}
+		],
+		"rank": 2
+	},
+	{
+		"family": 39,
+		"name": "Storm banshees",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 7.39749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 2.7775,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 7.34249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 2.7775,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 7.78249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 2.7225,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 21.0099999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 39.3524999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 53.0199999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 16.6374999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 21.4499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 13.7225,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 11.88,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 2.9425,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 7.31499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 16.5549999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 11.935,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 7.86499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 7.50749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 11.8525,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 12.0175,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 11.7975,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 7.36999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 16.9949999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 7.39749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 7.86499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 21.0924999999999,
+				"wins": 2
+			},
+			{
+				"draws": 1,
+				"family": 27,
+				"seconds": 97.0200000000038,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 48.4824999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 84.2325000000022,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 30,
+				"seconds": 7.80999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 31,
+				"seconds": 21.0374999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 32,
+				"seconds": 48.4274999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 48.4824999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 16.6374999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 30.4699999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 36,
+				"seconds": 97.7350000000039,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 13.7225,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 30.6899999999999,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 39,
+				"seconds": 120.010000000007,
+				"wins": 0
+			}
+		],
+		"rank": 2
+	}
+]

@@ -31,12 +31,46 @@ var ui_scale := 1.0
 var numeric_health := false
 var _bounds_frame := -1
 var _screen_bounds := {}
+var _unit_markers := {} # unit instance id -> retained canvas commands, no unit references
+var _pointer_viewport := Vector2.ZERO
+
+
+class UnitMarker extends Control:
+	var state: Array = []
+	var bar: StyleBoxFlat
+
+	func update_marker(at: Vector2, values: Array) -> void:
+		position = at
+		if state == values: return
+		state = values
+		queue_redraw()
+
+	func _draw() -> void:
+		if state.is_empty(): return
+		var k: float = state[0]
+		var color: Color = state[1]
+		var fraction: float = state[2]
+		var rank: int = state[3]
+		var text: String = state[4]
+		draw_style_box(bar, Rect2(Vector2(-27, -3) * k, Vector2(54, 6) * k))
+		draw_rect(Rect2(Vector2(-25, -1) * k, Vector2(50 * fraction, 2) * k), color)
+		if rank >= 0: ArenaStars.draw_rank(self, Vector2(-((rank + 1) * 14 - 2) / 2.0, -38) * k, rank + 1, k)
+		if not text.is_empty():
+			var font := ThemeDB.fallback_font
+			var pixels := roundi(14 * k)
+			var width := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, pixels).x
+			var at := Vector2(-width / 2, -8 * k)
+			draw_string_outline(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, pixels, maxi(3, roundi(3 * k)), Color("10151b"))
+			draw_string(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, pixels, ArenaCreatureCard.PAPER)
 
 
 func _ready() -> void:
 	clip_contents = true
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	focus_mode = Control.FOCUS_CLICK
+	_refresh_pointer()
+	mouse_entered.connect(_refresh_pointer)
+	get_viewport().size_changed.connect(_refresh_pointer)
 	var container := SubViewportContainer.new()
 	container.stretch = true
 	container.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -186,9 +220,9 @@ func unit_rects(unit: GameUnit) -> Array:
 
 func _pick(at: Vector2) -> GameUnit:
 	if match_state == null or not is_instance_valid(match_state.world): return null
-	var exact: Array = []
 	var nearby: Array = []
 	var headers: Array = []
+	var candidates: Array = []
 	var to_view := camera.global_transform.affine_inverse()
 	for unit: GameUnit in match_state.world.unit_rows():
 		if unit.dead or unit.hidden or not unit.visible or camera.is_position_behind(unit.global_position): continue
@@ -197,24 +231,29 @@ func _pick(at: Vector2) -> GameUnit:
 			if Rect2(head - Vector2(29, 40) * ui_scale, Vector2(58, 44) * ui_scale).has_point(at):
 				headers.append([at.distance_to(head - Vector2(0, 15) * ui_scale), unit])
 		if not unit.may_cover(camera, at, 10 * ui_scale): continue
+		candidates.append([-(to_view * unit.global_position).z, unit])
+	# Health markers have priority regardless of which bodies overlap them.
+	# Resolve that before requesting any posed per-vertex body bounds.
+	if not headers.is_empty():
+		headers.sort_custom(func(a,b): return a[0] < b[0])
+		return headers[0][1]
+	# Every exact part hit has zero distance to its union. Visiting nearest
+	# first lets us return the same winning silhouette without projecting
+	# all the creatures behind it. Empty-space/nearby clicks still check all.
+	candidates.sort_custom(func(a,b): return a[0] < b[0])
+	for candidate: Array in candidates:
+		var unit: GameUnit = candidate[1]
 		var rects := unit_rects(unit)
 		if rects.is_empty(): continue
 		var rect := Rect2(rects[0])
 		var distance := at.distance_to(at.clamp(rect.position, rect.end))
 		if distance > 10 * ui_scale: continue
-		var depth := -(to_view * unit.global_position).z
-		var part_hit := false
 		for part in rects.slice(1):
-			if Rect2(part).has_point(at): part_hit = true; break
-		(exact if part_hit else nearby).append([distance, depth, unit])
-	# The visible HP marker remains a reliable target when bodies overlap.
-	if not headers.is_empty():
-		headers.sort_custom(func(a,b): return a[0] < b[0])
-		return headers[0][1]
-	var hits := exact if not exact.is_empty() else nearby
-	if hits.is_empty(): return null
-	hits.sort_custom(func(a, b): return a[0] < b[0] if not is_equal_approx(a[0], b[0]) else a[1] < b[1])
-	return hits[0][2]
+			if Rect2(part).has_point(at): return unit
+		nearby.append([distance, candidate[0], unit])
+	if nearby.is_empty(): return null
+	nearby.sort_custom(func(a, b): return a[0] < b[0] if not is_equal_approx(a[0], b[0]) else a[1] < b[1])
+	return nearby[0][2]
 
 
 func _gui_input(event: InputEvent) -> void:
@@ -245,10 +284,35 @@ func _gui_input(event: InputEvent) -> void:
 		accept_event()
 
 
+func _refresh_pointer() -> void:
+	if is_inside_tree(): _pointer_viewport = get_viewport().get_mouse_position()
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouse: _pointer_viewport = event.position
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_IN: _refresh_pointer()
+
+
+func viewport_pointer() -> Vector2:
+	return _pointer_viewport
+
+
+func pointer_position() -> Vector2:
+	# Input already supplies current viewport coordinates. Querying the OS
+	# again every frame can block on the display server while it presents 3D.
+	# Reapply the current canvas transform so resizing/moving UI stays exact.
+	return get_global_transform_with_canvas().affine_inverse() * _pointer_viewport
+
+
 func _process(_dt: float) -> void:
-	if match_state == null or not is_instance_valid(match_state.world): return
+	if match_state == null or not is_instance_valid(match_state.world):
+		_clear_unit_markers()
+		return
 	if get_viewport().gui_get_hovered_control() == self:
-		hovered = _pick(get_local_mouse_position())
+		hovered = _pick(pointer_position())
 	else:
 		hovered = null
 	if ghost:
@@ -259,6 +323,7 @@ func _process(_dt: float) -> void:
 			ghost.position = Vector3(hover_point.x, match_state.world.terrain.height_at(hover_point.x, hover_point.y), -hover_point.y)
 			ghost.rotation.y = GameUnit.MODEL_YAW_OFFSET if team == 0 else GameUnit.MODEL_YAW_OFFSET + PI
 	if _ground_material: _ground_material.set_shader_parameter("deploying", match_state.phase == ArenaMatch.Phase.DEPLOY)
+	_sync_unit_markers()
 	overlay.queue_redraw()
 
 
@@ -274,9 +339,52 @@ func health_anchor(unit: GameUnit) -> Vector2:
 	return camera.unproject_position(unit.global_position + Vector3.UP * EnemyBars.head_top(unit)) - Vector2(0, 10 * ui_scale)
 
 
+func _unit_markers_visible() -> bool:
+	return true
+
+
+func _clear_unit_markers() -> void:
+	for marker: UnitMarker in _unit_markers.values():
+		marker.hide()
+		marker.queue_free()
+	_unit_markers.clear()
+
+
+func _sync_unit_markers() -> void:
+	if not _unit_markers_visible():
+		_clear_unit_markers()
+		return
+	var live := {}
+	for u: GameUnit in match_state.world.unit_rows():
+		if u.dead or u.hidden or not u.visible or camera.is_position_behind(u.global_position): continue
+		var id := u.get_instance_id()
+		live[id] = true
+		var marker: UnitMarker = _unit_markers.get(id)
+		if marker == null:
+			marker = UnitMarker.new()
+			marker.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			marker.bar = _bar_style()
+			overlay.add_child(marker)
+			_unit_markers[id] = marker
+		var rank := -1
+		if numeric_health:
+			var placement: Dictionary = u.get_meta("arena_placement", {})
+			rank = int(placement.rank) if placement.has("rank") else ArenaUnitInfo.rank_of(String(u.info.get("prototype", "")))
+		var text := "%d/%d" % [maxi(0, ceili(u.hp)), ceili(u.max_hp)] if numeric_health else u.display_name if u == hovered else ""
+		# Move retained commands each frame; re-shape text and tessellate the
+		# health frame only when its contents change, not as the unit walks.
+		marker.update_marker(health_anchor(u), [ui_scale, BLUE if u.faction == 1 else RED,
+			clampf(u.hp / maxf(1, u.max_hp), 0, 1), rank, text])
+	for id: int in _unit_markers.keys():
+		if not live.has(id):
+			var marker: UnitMarker = _unit_markers[id]
+			marker.hide()
+			marker.queue_free()
+			_unit_markers.erase(id)
+
+
 func _draw_overlay() -> void:
 	if match_state == null or not is_instance_valid(match_state.world): return
-	var font := ThemeDB.fallback_font
 	var k := ui_scale
 	for u: GameUnit in match_state.world.unit_rows():
 		if u.dead or not u.visible or camera.is_position_behind(u.global_position): continue
@@ -287,20 +395,6 @@ func _draw_overlay() -> void:
 		elif u == hovered or selected:
 			var rects := unit_rects(u)
 			if not rects.is_empty(): _selection_corners(Rect2(rects[0]).grow(5 * k), ArenaCreatureCard.GOLD if selected else color)
-		var p := health_anchor(u)
-		overlay.draw_style_box(_bar_style(), Rect2(p - Vector2(27, 3) * k, Vector2(54, 6) * k))
-		overlay.draw_rect(Rect2(p - Vector2(25, 1) * k, Vector2(50 * clampf(u.hp / maxf(1, u.max_hp), 0, 1), 2) * k), color)
-		if numeric_health:
-			var placement: Dictionary = u.get_meta("arena_placement", {})
-			var rank := int(placement.get("rank", ArenaUnitInfo.rank_of(String(u.info.get("prototype", "")))))
-			if rank >= 0: ArenaStars.draw_rank(overlay, p - Vector2(((rank + 1) * 14 - 2) / 2.0, 38) * k, rank + 1, k)
-		if numeric_health or u == hovered:
-			var text := "%d/%d" % [maxi(0, ceili(u.hp)), ceili(u.max_hp)] if numeric_health else u.display_name
-			var pixels := roundi(14 * k)
-			var width := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, pixels).x
-			var at := p - Vector2(width / 2, 8 * k)
-			overlay.draw_string_outline(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, pixels, maxi(3, roundi(3 * k)), Color("10151b"))
-			overlay.draw_string(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, pixels, ArenaCreatureCard.PAPER)
 
 	if ghost and ghost.visible:
 		var valid := match_state.placement_error(hover_point).is_empty()

@@ -48,10 +48,29 @@ class GroundInk extends Node2D:
 
 var _ink: SubViewport
 var _color: Texture2DArray
+var arena_world: WeakRef
+var publish_environment := true
+
+
+func _update_wind_parameters(refresh := false) -> void:
+	if publish_environment: super._update_wind_parameters(refresh)
+
+
+func _update_cloud_parameters() -> void:
+	if publish_environment: super._update_cloud_parameters()
+
+
+func game_world() -> GameWorld:
+	return arena_world.get_ref() as GameWorld if arena_world else super.game_world()
 
 
 func bind_ground_marks(marks: GroundMarks) -> void:
-	if RenderingServer.get_current_rendering_method() == "forward_plus" or _ink != null: return
+	if RenderingServer.get_current_rendering_method() == "forward_plus": return
+	if _ink != null:
+		var canvas := _ink.get_child(0) as GroundInk
+		canvas.marks = marks; canvas.rows.clear(); canvas.signature = 0
+		canvas.queue_redraw(); _ink.render_target_update_mode = SubViewport.UPDATE_ONCE
+		return
 	_ink = SubViewport.new()
 	_ink.name = "GroundInk"
 	_ink.size = Vector2i(2048, 2048)

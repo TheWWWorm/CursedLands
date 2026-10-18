@@ -48,7 +48,9 @@ static var _scaled := {}
 ## Only the newest screen owns the cursor. An outgoing screen may leave
 ## the tree after its replacement has already set the new cursor.
 static var _owner: GameCursor
+var _previous_owner: WeakRef
 var kind := ""
+var control_shapes: Array[int] = [Input.CURSOR_ARROW]
 var _t := 0.0
 ## Frame index per cursor (the strip's), kept across switches.
 var _frame := {}
@@ -67,7 +69,9 @@ static var _camera_textures := {}
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	if is_instance_valid(_owner):
+		_previous_owner = weakref(_owner)
 		_owner.end_camera_drag(false)
+		_owner._clear_shapes()
 	_owner = self
 
 
@@ -124,7 +128,7 @@ func set_kind(k: String) -> void:
 		if OS.has_feature("web"):
 			WebCursor.off()
 		else:
-			Input.set_custom_mouse_cursor(null)
+			_clear_shapes()
 
 
 func camera_drag_active() -> bool:
@@ -206,7 +210,7 @@ func _process(dt: float) -> void:
 		elif OS.has_feature("web"):
 			WebCursor.show(k, i, px, hs)   # a CSS cursor: see WebCursor
 		else:
-			Input.set_custom_mouse_cursor(f[i], Input.CURSOR_ARROW, hs)
+			for shape: int in control_shapes: Input.set_custom_mouse_cursor(f[i], shape, hs)
 
 
 func _exit_tree() -> void:
@@ -217,4 +221,12 @@ func _exit_tree() -> void:
 	if OS.has_feature("web"):
 		WebCursor.clear()
 	else:
-		Input.set_custom_mouse_cursor(null)
+		_clear_shapes()
+	var previous: GameCursor = _previous_owner.get_ref() if _previous_owner else null
+	if is_instance_valid(previous) and previous.is_inside_tree() and not previous.is_queued_for_deletion():
+		_owner=previous;previous._shown=-1;previous._process(0)
+
+
+func _clear_shapes() -> void:
+	if DisplayServer.get_name()=="headless" or OS.has_feature("web"): return
+	for shape: int in control_shapes: Input.set_custom_mouse_cursor(null,shape)

@@ -1,0 +1,15 @@
+{
+  "exit_code": 0,
+  "seconds": 3.4201516719767824,
+  "command": [
+    "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+    "--headless",
+    "--render-thread",
+    "safe",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/picking_deformation.gd"
+  ],
+  "log": "Godot Engine v4.7.stable.custom_build - https://godotengine.org\n\n[trace 16:15:48 +2082ms] session 0b4c098cc37f: 1.16.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan\n[trace 16:15:48 +2082ms] previous session 4fedaa8de6dc ended unexpectedly in (menu); its log: user://logs/godot2026-10-18T16.15.46.log\nPICKING_DEFORMATION checks=753 failures=0 native_us=431 script_us=6461\n[trace 16:15:49 +3201ms] clean exit\n"
+}

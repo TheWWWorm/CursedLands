@@ -53,7 +53,7 @@ func _ready() -> void:
 	check(not run.can_undo(), "combat spending cannot undo settled combat")
 	run.gold = 0
 	run.resolve(1, 20, [10, 20])
-	check(run.gold == 8 and run.last_result.income.victory == 0 and run.last_result.income.streak == 0, "loss earns base plus committed interest only")
+	check(run.gold == 10 and run.last_result.income.interest == 5 and run.last_result.income.victory == 0 and run.last_result.income.streak == 0, "loss earns base plus committed interest only")
 	bank = run.gold
 	run.resolve(1, 20, [10, 20])
 	check(run.gold == bank and run.lives == 2, "loss settles exactly once")
@@ -87,7 +87,7 @@ func _ready() -> void:
 	timed.world.time = 120.0
 	timed._process(0)
 	check(run.stage == "result" and run.lives == 2 and run.last_result.winner != 0, "two minutes resolves as a player loss")
-	check(run.last_result.gold == 8 and run.last_result.income.victory == 0, "timeout earns defeat income")
+	check(run.last_result.gold == 10 and run.last_result.income.interest == 5 and run.last_result.income.victory == 0, "timeout earns defeat income")
 	bank = run.gold
 	timed._process(5)
 	check(run.gold == bank and run.history.size() == 1, "timeout settles exactly once")

@@ -179,6 +179,7 @@ var _look_from := -2    # remake: Original look switched on here over this detec
 var _came_from := 0     # remake: the group button whose page was shown last (a sub-page's way back)
 ## Remake: the "Game files…" row can be used (opened from the main menu).
 var game_files := false
+var _profile: PlayerProfileDialog
 var _game_setup: DifficultyPanel
 var _preset_picker: OptionButton
 var _preset_scale := Vector2.ZERO
@@ -390,6 +391,8 @@ func _show_group(g: int) -> void:
 			"label": "« " + _section_label(_parent(_group)), "tip": ""}
 		if _group in LOOK_PAGES:
 			_rows[PRESET_ROW] = _look_row()
+		if _group == COOP_GROUP:
+			_rows[4] = {"kind":"link","name":"","profile":true,"label":RemakeText.t("Player name…"),"tip":RemakeText.t(PlayerProfileDialog.HELP)}
 		if _group == CAMERA_GROUP:
 			_rows[12] = _section_link(DIRECT_GROUP)
 		elif _group == DIRECT_GROUP:
@@ -598,7 +601,11 @@ func _toggle(r: int) -> void:
 			_set_value(row.name, (int(_values.get(row.name, 0)) + 1) % int(row.max))
 		"link":
 			sound("messbox\\ok" if row.get("preset", false) else "save\\select")   # Original look: a switch's sound
-			if row.get("mods", false):
+			if row.get("profile",false):
+				_profile=PlayerProfileDialog.new();add_child(_profile)
+				_profile.closed.connect(func():_profile=null;queue_redraw())
+				_profile.open()
+			elif row.get("mods", false):
 				_game_setup = DifficultyPanel.new()
 				add_child(_game_setup)
 				_game_setup.closed.connect(func():
@@ -758,7 +765,7 @@ func _ask_experimental(was: int) -> void:
 
 func _sync_preset_picker() -> void:
 	if _preset_picker == null: return
-	_preset_picker.visible = _group == 0 and not hide_text and not MessageBox.is_up(_box) and not (is_instance_valid(_game_setup) and _game_setup.visible)
+	_preset_picker.visible = _group == 0 and not hide_text and not MessageBox.is_up(_box) and not ((is_instance_valid(_game_setup) and _game_setup.visible) or is_instance_valid(_profile))
 	if not _preset_picker.visible: return
 	var rect := r8(Rect2(530, _row_y(GFX_LOOK_ROW), 160, 24))
 	_preset_picker.position = rect.position
@@ -896,7 +903,7 @@ func _get_tooltip(at: Vector2) -> String:
 
 
 func _gui_input(e: InputEvent) -> void:
-	if not visible or MessageBox.is_up(_box) or _tutorial.visible or (is_instance_valid(_game_setup) and _game_setup.visible):
+	if not visible or MessageBox.is_up(_box) or _tutorial.visible or ((is_instance_valid(_game_setup) and _game_setup.visible) or is_instance_valid(_profile)):
 		return
 	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT:
 		if not e.pressed:
@@ -973,7 +980,7 @@ func _process(dt: float) -> void:
 func _unhandled_key_input(e: InputEvent) -> void:
 	if not visible or not (e is InputEventKey and e.pressed):
 		return
-	if MessageBox.is_up(_box) or _tutorial.visible or (is_instance_valid(_game_setup) and _game_setup.visible):
+	if MessageBox.is_up(_box) or _tutorial.visible or ((is_instance_valid(_game_setup) and _game_setup.visible) or is_instance_valid(_profile)):
 		return
 	if _waiting:
 		_key_pressed(e)

@@ -1,0 +1,102 @@
+[
+  {
+    "name": "fire_particles",
+    "exit_code": 0,
+    "seconds": 15.841843338042963,
+    "summary": [
+      "FIRE_PARTICLES checks=43389 failures=0 native_us=173250 script_us=223868"
+    ],
+    "command": [
+      "godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/asan-game",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/fire_particles.gd"
+    ]
+  },
+  {
+    "name": "spell_particles",
+    "exit_code": 0,
+    "seconds": 19.09772660897579,
+    "summary": [
+      "SPELL_PARTICLES checks=101055 failures=0 native_ticks=16754 native_us=1694042 script_us=1971026"
+    ],
+    "command": [
+      "godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/asan-game",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/spell_particles.gd"
+    ]
+  },
+  {
+    "name": "surface_material_color",
+    "exit_code": 0,
+    "seconds": 15.040415557974484,
+    "summary": [
+      "SURFACE_MATERIAL_COLOR 5290 checks 0 failures"
+    ],
+    "command": [
+      "godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/asan-game",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/surface_material_color.gd"
+    ]
+  },
+  {
+    "name": "soft_ground_paint",
+    "exit_code": 0,
+    "seconds": 16.141180695965886,
+    "summary": [
+      "SOFT_GROUND_PAINT {\"checks\":26,\"failures\":[],\"native_us\":127353,\"peak_error\":0.0000000596046447753906,\"samples\":6291456,\"script_us\":290197}"
+    ],
+    "command": [
+      "godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/asan-game",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/soft_ground_paint.gd"
+    ]
+  },
+  {
+    "name": "lightning_geometry",
+    "exit_code": 0,
+    "seconds": 16.343741506978404,
+    "summary": [
+      "LIGHTNING_GEOMETRY {\"checks\":1117,\"failures\":[],\"native_us\":229596,\"peak_error\":0.0,\"script_us\":699480,\"vertices\":292032}"
+    ],
+    "command": [
+      "godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/asan-game",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/lightning_geometry.gd"
+    ]
+  }
+]

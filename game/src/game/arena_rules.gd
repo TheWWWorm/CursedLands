@@ -53,6 +53,24 @@ const FAMILIES := [
 	{"name": "Red harpies", "role": "Magic", "cost": 4, "tier": 3, "copies": [2, 3], "forms": ["succubredm9", "succubredm10", "succubredm11"]},
 	{"name": "Wormheads", "role": "Magic", "cost": 5, "tier": 4, "copies": [2, 3], "forms": ["octopuskaniam11", "octopuskaniam12", "octopuskaniam15"]},
 
+	# Native human equipment and undead/elemental bodies use the same combat rules.
+	{"name":"Brigands","role":"Melee","cost":1,"tier":1,"copies":[3,3],"forms":["human gipath brigand f1","human gipath brigand f3","human kania gang f8"]},
+	{"name":"Marksmen","role":"Ranged","cost":2,"tier":2,"copies":[2,3],"forms":["human gipath brigand a1","human gipath brigand a3","human kania citizen a7"]},
+	{"name":"Battle mages","role":"Magic","cost":4,"tier":3,"copies":[3,3],"forms":["human hadagan students m10","human hadagan guards m14","human hadagan guards m17"]},
+	{"name":"Zombies","role":"Melee","cost":4,"tier":3,"copies":[3,3],"forms":["zombiemalef10","zombiefemalef14","zombiemalef16"]},
+	{"name":"Guards","role":"Melee","cost":6,"tier":4,"copies":[2,3],"forms":["human kania police f10","human hadagan guards f14","human hadagan guards f17"]},
+	{"name":"Ice elementals","role":"Melee","cost":6,"tier":4,"copies":[2,3],"forms":["elementalicef9","elementalicef11","elementalicef15"]},
+	# Broaden each stage, especially the previously two-family top tier.
+	{"name":"Apprentices","role":"Magic","cost":1,"tier":1,"copies":[3,3],"forms":["human hadagan peasants a1","human gipath npc wife m3","driaddarkm9"]},
+	{"name":"Hounds","role":"Melee","cost":3,"tier":2,"copies":[3,3],"forms":["doggreyf6","doggreyf8","dogredf14"]},
+	{"name":"Woodsfolk mystics","role":"Magic","cost":3,"tier":3,"copies":[2,3],"forms":["driadgreenm7","driaddarkm9","unicornwhitem15"]},
+	{"name":"Ghouls","role":"Melee","cost":6,"tier":4,"copies":[2,3],"forms":["undeadf13","undeadf15","undeadf17"]},
+	{"name":"Red eyes","role":"Magic","cost":7,"tier":4,"copies":[2,3],"forms":["evileyeredm12","evileyeredm14","evileyeredm16"]},
+	{"name":"Dragons","role":"Magic","cost":9,"tier":5,"copies":[2,3],"forms":["dragongreenm12","dragonbluem14","dragonbrownm16"],"evolved_spells":[["lightning {e2;e2;e2;e2}"],["fireball {e2;e2;e2;e2}","arrow {e2;e2;e2;e2}"]]},
+	{"name":"Cyclopes","role":"Ranged","cost":10,"tier":5,"copies":[3,3],"forms":["cyclopsa16","cyclopsa18","cyclopsa20"]},
+	{"name":"Shadows","role":"Magic","cost":8,"tier":5,"copies":[2,3],"forms":["shadowm13","shadowm17","shadowm20"]},
+	{"name":"Imperial archers","role":"Ranged","cost":8,"tier":5,"copies":[2,3],"forms":["human hadagan guards a14","human hadagan guards a17","human hadagan guards a20"]},
+	{"name":"Storm banshees","role":"Magic","cost":7,"tier":4,"copies":[2,3],"forms":["bansheedarkm12","bansheedarkm14","bansheedarkm16"],"evolved_spells":[["lightning {e2;e2;e2}"],["lightning {e2;e2;e2;e2}"]]},
 ]
 # Ordered encounters. Different seeds mirror the enemy formation; all details
 # are visible before commitment. Counts/composition are tuning inputs, not stats.
@@ -136,16 +154,27 @@ static func recruit_health(family: int, health: float, rank := 0) -> float:
 
 static func recruit_stats(family: int, rank: int, stats: Dictionary) -> void:
 	if family == 15 and rank < 2: stats.attack_rate = 1.5
+	# These original level-20 bosses have 150 base armor instead of the 44
+	# used by their peers. Retain their elemental resistance ratios without
+	# making bought final evolutions immune to other complete armies.
+	if family in [11, 36] and rank == 2:
+		for type in stats.armor.size(): stats.armor[type] *= 44.0 / 150.0
 
 
 ## Six red harpies should buy a stronger spellcaster, not just a few melee
 ## stats. Use native effect runes, so AI, spell ticks and restored effects all
 ## consume the same spell definition. Only the actor receives this copy.
 static func recruit_prototype(family: int, rank: int, proto: Dictionary) -> Dictionary:
-	if family != 22 or rank < 1: return proto
+	if rank < 1 or family < 0 or family >= FAMILIES.size(): return proto
+	var spells: Array = []
+	if family == 22:
+		var runes := "e2;e2;e2;e1" if rank == 1 else "e2;e2;e2;e2;e2;e2;e1"
+		spells = ["firewall{%s}" % runes, "arrow{%s}" % runes]
+	elif FAMILIES[family].has("evolved_spells"):
+		spells = FAMILIES[family].evolved_spells[rank-1]
+	else: return proto
 	var tuned := proto.duplicate(true)
-	var runes := "e2;e2;e2;e1" if rank == 1 else "e2;e2;e2;e2;e2;e2;e1"
-	tuned.spells = ["firewall{%s}" % runes, "arrow{%s}" % runes]
+	tuned.spells = spells.duplicate()
 	tuned["_spell_cache_key"] = "%s:trials:%d" % [proto.name, rank]
 	return tuned
 

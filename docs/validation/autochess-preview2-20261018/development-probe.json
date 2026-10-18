@@ -1,0 +1,308 @@
+[
+	{
+		"after": {
+			"clocks": [
+				120.010000000007,
+				120.010000000007,
+				120.010000000007,
+				120.010000000007,
+				120.010000000007,
+				120.010000000007,
+				120.010000000007,
+				120.010000000007,
+				120.010000000007
+			],
+			"effects": [
+				3,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			"nodes": 8768.0,
+			"objects": 24516.0,
+			"orphans": 0.0,
+			"pipelines": [
+				0,
+				66,
+				0,
+				42
+			],
+			"profiles": [],
+			"time_scale": 2.0,
+			"units": [
+				18,
+				18,
+				18,
+				18,
+				18,
+				18,
+				18,
+				18,
+				18
+			]
+		},
+		"battle": {
+			"fps": 110.00397811663,
+			"frames": 6610,
+			"max_ms": 46.661,
+			"median_ms": 8.52,
+			"min_1s_fps": 62.6543360281328,
+			"p95_ms": 13.146,
+			"p99_ms": 18.136
+		},
+		"battle_start": {
+			"clocks": [
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"effects": [
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			"nodes": 8753.0,
+			"objects": 24117.0,
+			"orphans": 0.0,
+			"pipelines": [
+				0,
+				66,
+				0,
+				42
+			],
+			"profiles": [],
+			"time_scale": 2.0,
+			"units": [
+				18,
+				18,
+				18,
+				18,
+				18,
+				18,
+				18,
+				18,
+				18
+			]
+		},
+		"before": {
+			"clocks": [
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"effects": [
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			"nodes": 2603.0,
+			"objects": 13136.0,
+			"orphans": 0.0,
+			"pipelines": [
+				0,
+				66,
+				0,
+				39
+			],
+			"profiles": [],
+			"time_scale": 1.0,
+			"units": [
+				9,
+				6,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		"disabled_gfx": [],
+		"expanded_roster": true,
+		"frozen_overlay": false,
+		"idle": {
+			"fps": 102.236857239008,
+			"frames": 120,
+			"max_ms": 128.791,
+			"median_ms": 7.943,
+			"min_1s_fps": 91.9891452808569,
+			"p95_ms": 14.607,
+			"p99_ms": 16.001
+		},
+		"new_roster": false,
+		"next_round": {
+			"after": {
+				"clocks": [
+					0.0,
+					0.0,
+					0.0,
+					0.0,
+					0.0,
+					0.0,
+					0.0,
+					0.0,
+					0.0
+				],
+				"effects": [
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				"nodes": 2584.0,
+				"objects": 13420.0,
+				"orphans": 0.0,
+				"pipelines": [
+					0,
+					66,
+					0,
+					42
+				],
+				"profiles": [],
+				"time_scale": 1.0,
+				"units": [
+					9,
+					8,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				]
+			},
+			"callbacks": [],
+			"frames": {
+				"fps": 95.9579320425925,
+				"frames": 30,
+				"max_ms": 46.005,
+				"median_ms": 8.897,
+				"min_1s_fps": null,
+				"p95_ms": 21.231,
+				"p99_ms": 46.005
+			},
+			"physics": {
+				"fps": 11363.6363636364,
+				"frames": 30,
+				"max_ms": 0.088,
+				"median_ms": 0.088,
+				"min_1s_fps": null,
+				"p95_ms": 0.088,
+				"p99_ms": 0.088
+			},
+			"process": {
+				"fps": 79.0388871324692,
+				"frames": 30,
+				"max_ms": 12.652,
+				"median_ms": 12.652,
+				"min_1s_fps": null,
+				"p95_ms": 12.652,
+				"p99_ms": 12.652
+			},
+			"render_gpu": {
+				"fps": 243.922271030043,
+				"frames": 30,
+				"max_ms": 5.43300008773804,
+				"median_ms": 4.12200021743774,
+				"min_1s_fps": null,
+				"p95_ms": 5.19399976730347,
+				"p99_ms": 5.43300008773804
+			},
+			"retained_old_resources": 0,
+			"reused_terrain": true,
+			"synchronous_ms": 18.228,
+			"tracked_resources": 171
+		},
+		"overview": false,
+		"prepare_ms": 23.673,
+		"profile": false,
+		"rank": 2,
+		"scout": false,
+		"skip_picking": false,
+		"slow_frames": [
+			{
+				"at": 2.246989,
+				"clock": 4.345,
+				"ms": 26.066,
+				"pipelines": [
+					0,
+					66,
+					0,
+					42
+				]
+			},
+			{
+				"at": 60.042075,
+				"clock": 120.010000000007,
+				"ms": 25.097,
+				"pipelines": [
+					0,
+					66,
+					0,
+					42
+				]
+			},
+			{
+				"at": 60.088736,
+				"clock": 120.010000000007,
+				"ms": 46.661,
+				"pipelines": [
+					0,
+					66,
+					0,
+					42
+				]
+			}
+		],
+		"speed": 2,
+		"start_ms": 2816.89,
+		"transition": {
+			"fps": 134.545640437248,
+			"frames": 379,
+			"max_ms": 27.891,
+			"median_ms": 6.611,
+			"min_1s_fps": 116.573750530215,
+			"p95_ms": 12.257,
+			"p99_ms": 16.182
+		},
+		"wall_seconds": 60.091203,
+		"wave": 12,
+		"window_size": "(2560, 1366)"
+	}
+]

@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 17:36:51 +12060ms] session b41bad3d058e: 1.16.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+PICKING_BOUNDS checks=432 failures=0
+[trace 17:36:52 +13821ms] clean exit

@@ -71,6 +71,9 @@ static func create(rendered := true) -> EITerrain:
 
 static func scenery(ground: EITerrain, parent: Node3D) -> Array[Node3D]:
 	var placed: Array[Node3D] = []
+	# Contact variants contain this board's terrain textures. Their lifetime
+	# belongs to the board, not a static cache surviving every later round.
+	var snow_materials := {}
 	var scene := EIMapScene.new()
 	scene.terrain = ground
 	# Uneven groups frame a clear fighting ground: a broken gateway, exposed
@@ -107,7 +110,7 @@ static func scenery(ground: EITerrain, parent: Node3D) -> Array[Node3D]:
 			object.scale = Vector3.ONE * float(piece[6])
 			_keep_clearing(object, ground)
 			if String(piece[0]).begins_with("nast") or String(piece[0]).begins_with("stst"):
-				_snow_caps(object)
+				_snow_caps(object, snow_materials)
 			placed.append(object)
 	scene.free()
 	return placed
@@ -140,26 +143,32 @@ static func _keep_clearing(object: Node3D, ground: EITerrain) -> void:
 	object.position = EISpace.pos(at.x, at.y, ground.height_at(at.x, at.y) + at.z)
 
 
-static var _snow_materials := {}
+static var _snow_shaders := {}
 
 
 ## Snow settles on upward-facing rock and ruin surfaces; their native textures
 ## remain exposed on the sides. Local material copies never alter campaign art.
-static func _snow_caps(object: Node3D) -> void:
+static func _snow_caps(object: Node3D, materials: Dictionary) -> void:
 	for mesh: MeshInstance3D in object.find_children("*", "MeshInstance3D", true, false):
 		for surface in mesh.mesh.get_surface_count():
 			var source := mesh.get_active_material(surface) as ShaderMaterial
 			if source == null: continue
-			if not _snow_materials.has(source):
+			if not materials.has(source):
 				var material := source.duplicate() as ShaderMaterial
-				var shader := source.shader.duplicate() as Shader
-				shader.code = shader.code.replace("ALBEDO = t.rgb;", """ALBEDO = t.rgb;
+				var code := source.shader.code
+				if not _snow_shaders.has(code):
+					# Uniform values remain per material. Identical snow programs
+					# share a Shader instead of compiling again for every board.
+					if _snow_shaders.size() >= 16: _snow_shaders.clear()
+					var shader := Shader.new()
+					shader.code = code.replace("ALBEDO = t.rgb;", """ALBEDO = t.rgb;
 	vec3 snow_normal = normalize((INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz);
 	float snow_cap = smoothstep(0.42, 0.82, snow_normal.y);
 	ALBEDO = mix(ALBEDO, vec3(0.82, 0.89, 0.95), snow_cap * 0.94);""")
-				material.shader = shader
-				_snow_materials[source] = material
+					_snow_shaders[code] = shader
+				material.shader = _snow_shaders[code]
+				materials[source] = material
 			if mesh.material_override != null:
-				mesh.material_override = _snow_materials[source]
+				mesh.material_override = materials[source]
 				break
-			mesh.set_surface_override_material(surface, _snow_materials[source])
+			mesh.set_surface_override_material(surface, materials[source])

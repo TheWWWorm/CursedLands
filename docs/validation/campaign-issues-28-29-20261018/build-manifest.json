@@ -1,0 +1,75 @@
+{
+  "status": "Unpublished local follow-up to preview 2",
+  "base": "1.16.0",
+  "issue28": "fixed",
+  "issue29": "not reproduced; unresolved",
+  "tested_platform": "Linux / Vulkan Forward+ / RTX 3090",
+  "windows_runtime_tested": false,
+  "tested_linux_pack_equals_windows_pack": true,
+  "zip_crc_checked": true,
+  "files": [
+    {
+      "path": "CursedLands-autochess-preview3-windows-20261018.zip",
+      "bytes": 45961164,
+      "sha256": "231f31158c8bbef950c5a8b0b56d39929d48506aede423bdeffe6b99b8387f98"
+    },
+    {
+      "path": "issue28-29/runtime/CursedLands.x86_64",
+      "bytes": 82141352,
+      "sha256": "a67d02872a2866c110515f081f81a9e834f0d38b19cd5cd0e03c96d7429f65a0"
+    },
+    {
+      "path": "issue28-29/runtime/CursedLands.pck",
+      "bytes": 12361536,
+      "sha256": "b20001cfef2df59a7b580a16fccbe9ec255e1eb5fddbdc7bf591f23a7b0f10b9"
+    },
+    {
+      "path": "issue28-29/windows/CursedLands.exe",
+      "bytes": 94038528,
+      "sha256": "bc401685dd6238c54ba97585bb7c83418689fdddfe4f8a67d00be8fe31affa62"
+    },
+    {
+      "path": "issue28-29/windows/CursedLands.console.exe",
+      "bytes": 184832,
+      "sha256": "a0d4f92e9ecc8da12dc33950cfe46cfc864593820121115117670fc9558583f9"
+    },
+    {
+      "path": "issue28-29/windows/CursedLands.pck",
+      "bytes": 12361536,
+      "sha256": "b20001cfef2df59a7b580a16fccbe9ec255e1eb5fddbdc7bf591f23a7b0f10b9"
+    },
+    {
+      "path": "issue28-29/windows/src/native/bin/libterrain_search.dll",
+      "bytes": 2562048,
+      "sha256": "82575b1c6b895caf4db66169e01c8c19bb6202b202622463d6cadab82e3a0b46"
+    },
+    {
+      "path": "issue28-29/windows/src/native/bin/libmod_archive.dll",
+      "bytes": 656896,
+      "sha256": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+    }
+  ],
+  "published_linux_reference_sha256": "1f3f12631a9d5a4c2e6befbd7972f39f100ad8f47900c371029e18897971fd88",
+  "source_files": [
+    {
+      "path": "game/src/game/unit.gd",
+      "sha256": "e375c4b39c7c7f31c5c312509e12434639714301f435754ada9bc03afd7a47c9"
+    },
+    {
+      "path": "tools/tests/paused_spawn_pose.gd",
+      "sha256": "70bee551f385f9c870c2fca9c5626911318806aec01395305678cb5577b4733b"
+    },
+    {
+      "path": "tools/tests/paused_load_pose.gd",
+      "sha256": "ce8d05e148a46a650a9d8466aed6f398920916090000bb4abd710e24f17d0889"
+    },
+    {
+      "path": "tools/tests/footprint_surface_scene.gd",
+      "sha256": "1dee48d2eae308e5b0486791d06291370936a901af647bc6a0ef19484aea1653"
+    },
+    {
+      "path": "tools/tests/footprint_running_scene.gd",
+      "sha256": "cb3a7431aaa900b645565bf1cbd12583c89a53ecb773cbbbeba408cccd58aacc"
+    }
+  ]
+}

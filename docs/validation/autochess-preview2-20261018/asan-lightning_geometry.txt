@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 18:27:58 +4178ms] session 5455d3b7c167: 1.16.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+LIGHTNING_GEOMETRY {"checks":1271,"failures":[],"native_us":86153,"peak_error":0.0,"script_us":265591,"vertices":279936}
+[trace 18:27:58 +4806ms] clean exit

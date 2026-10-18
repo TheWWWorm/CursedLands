@@ -18,6 +18,7 @@ build instructions. Adding a patch here does not update installed templates.
 11. `worker-thread-language-shutdown.patch`
 12. `far-dof-reference.patch`
 13. `forward-shadow-blend-guard.patch`
+14. `cache-missing-animation-targets.patch`
 
 The first two patches repair separate-render-thread shutdown and snapshot
 mutable images for queued texture uploads. The third lets an unobserved looping
@@ -254,3 +255,17 @@ first-person 4K timings and platform limits are recorded in
 [the performance validation](../../docs/validation/campaign-autochess-20261018.md#directional-shadow-blend-work).
 Windows templates and execution still need validation; installed templates
 are not replaced by this recipe.
+
+The fourteenth remembers unresolved animation paths for one binding-cache
+rebuild when invalid-track warnings are disabled. Human libraries contain many
+clips targeting equipment variants absent from an individual figure. Repeated
+clips no longer traverse the same missing hierarchy. The temporary set expires
+at the end of the rebuild; library edits, explicit clearing and tree changes
+keep their existing invalidation. Enabling invalid-track warnings retains every
+per-clip diagnostic. No animation keys, poses or playback clocks change.
+
+`tests/animation_missing_targets.gd` checks existing, added, renamed and replaced
+targets, library edits, tree reentry and the diagnostics path. Run it together
+with the preparation, retention and unobserved-pose tests in the rebuilt native
+template. See [autochess validation](../../docs/validation/autochess-frame-time-20261018.md)
+for tested builds and frame-time measurements. Installed templates are unchanged.

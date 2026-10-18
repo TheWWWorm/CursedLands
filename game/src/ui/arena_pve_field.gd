@@ -1,9 +1,32 @@
 class_name ArenaPveField
 extends ArenaField
 signal board_chosen(player: int)
+const OVERVIEW_FRIEND := preload("res://assets/arena/overview_friend.svg")
+const OVERVIEW_ENEMY := preload("res://assets/arena/overview_enemy.svg")
 var evolution_pulses := {}
 var tournament: ArenaTournamentBattles
 var _arena_fog := Vector2(90, 100)
+var _board_headers := {}
+
+
+class BoardHeader extends Control:
+	var state: Array = []
+	func update_header(at: Vector2, values: Array) -> void:
+		position = at
+		if values == state: return
+		state = values; queue_redraw()
+	func _draw() -> void:
+		if state.is_empty(): return
+		var extent: Vector2 = state[0]
+		var k: float = state[5]
+		var font: Font = state[6]
+		var pixels := roundi(14 * k)
+		draw_rect(Rect2(Vector2.ZERO,extent),state[3],false,k,true)
+		for line in 2:
+			var text: String = state[1+line]
+			var at := Vector2(0,extent.y-(24 if line == 0 else 7)*k)
+			draw_string_outline(font,at,text,HORIZONTAL_ALIGNMENT_CENTER,extent.x,pixels,1,Color("eeeeee"))
+			draw_string(font,at,text,HORIZONTAL_ALIGNMENT_CENTER,extent.x,pixels,state[4])
 
 
 func showing_boards() -> bool:
@@ -17,6 +40,10 @@ var _old_fog := []
 var _shadow_poll := 0.0
 var _environment: Environment
 var _sun_light: DirectionalLight3D
+var _yaw_velocity := 0.0
+var _right_orbit := false
+var _right_dragged := false
+var _right_distance := Vector2.ZERO
 
 
 func _build_stage() -> void:
@@ -88,17 +115,50 @@ func _apply_presentation() -> void:
 
 
 func reset_camera() -> void:
+	stop_camera_motion()
 	yaw = -PI / 2
 	zoom = 14.5
 	_update_camera()
 
 
+func stop_camera_motion() -> void:
+	_yaw_velocity = 0.0
+	_orbit = false
+	_right_orbit = false
+	_right_dragged = false
+	_right_distance = Vector2.ZERO
+
+
+## Match the main game's continuous turn acceleration and short release tail.
+## The camera uses wall time, so 2x combat does not double the turn speed.
+func advance_camera(dt: float, turn: float) -> void:
+	var direction := -1.0 if GameData.option("camera_reverse_x") else 1.0
+	var target := -turn * 2.0 * CameraRig.speed_factor("cam_rotate_speed") * direction
+	_yaw_velocity = lerpf(_yaw_velocity, target, 1.0 - exp(-(18.0 if turn else 32.0) * dt))
+	if absf(_yaw_velocity) < 0.001:
+		_yaw_velocity = 0.0
+		return
+	yaw += _yaw_velocity * dt
+	_update_camera()
+
+
+func _drag_camera(dx: float) -> void:
+	var direction := -1.0 if GameData.option("camera_reverse_x") else 1.0
+	_yaw_velocity = 0.0
+	yaw -= dx * 0.006 * CameraRig.speed_factor("cam_rotate_speed") * direction
+	_update_camera()
+
+
 func _process(delta: float) -> void:
 	if showing_boards():
+		_update_board_headers()
+		_clear_unit_markers()
 		hovered = null
 		if ghost: ghost.hide()
 		overlay.queue_redraw()
 		return
+	for header: BoardHeader in _board_headers.values():
+		if header.visible: header.hide()
 	super._process(delta)
 	for uid in evolution_pulses.keys():
 		evolution_pulses[uid] -= delta
@@ -124,6 +184,10 @@ func _process(delta: float) -> void:
 			shadow.position.y = 0.2
 			unit.set_meta("contact_shadow", shadow)
 		if is_instance_valid(shadow): shadow.visible = enabled
+
+
+func _unit_markers_visible() -> bool:
+	return show_markers and not showing_boards()
 
 
 func _draw_overlay() -> void:
@@ -188,6 +252,33 @@ func _gui_input(event: InputEvent) -> void:
 			if player >= 0: board_chosen.emit(player)
 		accept_event()
 		return
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
+		if event.pressed:
+			_right_orbit = true
+			_right_dragged = false
+			_right_distance = Vector2.ZERO
+			_yaw_velocity = 0.0
+			grab_focus()
+		else:
+			# A stationary right click retains preparation's cancel action.
+			if _right_orbit and not _right_dragged: cancel_requested.emit()
+			_right_orbit = false
+			_right_dragged = false
+		accept_event()
+		return
+	if event is InputEventMouseMotion:
+		if _right_orbit and event.button_mask & MOUSE_BUTTON_MASK_RIGHT:
+			_right_distance += event.relative
+			if _right_dragged: _drag_camera(event.relative.x)
+			elif _right_distance.length() >= 3.0:
+				_right_dragged = true
+				_drag_camera(_right_distance.x)
+			accept_event()
+			return
+		if _orbit and event.button_mask & MOUSE_BUTTON_MASK_MIDDLE:
+			_drag_camera(event.relative.x)
+			accept_event()
+			return
 	if event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
 		zoom = clampf(zoom * (0.9 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1.1), 8, 35)
 		_update_camera()
@@ -202,36 +293,56 @@ func _map_player(at: Vector2) -> int:
 	return ArenaTournamentBattles.MAP_SEATS[int(-point.z / 64) * 3 + int(point.x / 64)]
 
 
-func _draw_boards() -> void:
-	var font := ThemeDB.fallback_font
-	var pixels := roundi(14 * ui_scale)
-	var hovered_player := _map_player(get_local_mouse_position())
+func _update_board_headers() -> void:
+	var hovered_player := _map_player(pointer_position())
 	for player in ArenaTournamentBattles.MAP_SEATS:
 		var origin := ArenaTournamentBattles.board_offset(player)
 		var start := camera.unproject_position(origin)
 		var end := camera.unproject_position(origin + Vector3(64, 0, -64))
 		var rect := Rect2(start, end - start).abs().grow(-4 * ui_scale)
 		var alive := tournament.run.health(player) > 0
+		var header: BoardHeader = _board_headers.get(player)
+		if header == null:
+			header = BoardHeader.new(); header.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			overlay.add_child(header); _board_headers[player] = header
+		header.show()
+		var colour := BLUE if player == hovered_player and alive else Color(0.8, 0.87, 0.91, 0.35)
+		var text_colour := ArenaCreatureCard.SNOW_INK if alive else Color("454545")
+		header.update_header(rect.position,[rect.size,tournament.run.player_title(player),
+			str(tournament.run.health(player)) if alive else RemakeText.t("Eliminated"),
+			colour,text_colour,ui_scale,ThemeDB.fallback_font])
+
+
+func _draw_boards() -> void:
+	# Only moving unit dots need new canvas commands every frame. Names,
+	# health totals and board borders retain their commands until changed.
+	for player in ArenaTournamentBattles.MAP_SEATS:
 		var board: ArenaPveMatch = tournament.home if player == 0 else tournament.boards.get(player)
 		if board and is_instance_valid(board.world):
 			for unit: GameUnit in board.world.unit_rows():
 				if unit.dead or unit.hidden: continue
 				var at := camera.unproject_position(unit.global_position)
-				overlay.draw_circle(at, 3.4 * ui_scale, Color("17262d"), true, -1, true)
-				overlay.draw_circle(at, 2.2 * ui_scale, BLUE if unit.faction == 1 else RED, true, -1, true)
-		var colour := BLUE if player == hovered_player and alive else Color(0.8, 0.87, 0.91, 0.35)
-		overlay.draw_rect(rect, colour, false, ui_scale, true)
-		var text_colour := ArenaCreatureCard.SNOW_INK if alive else Color("454545")
-		var title := tournament.run.player_title(player)
-		var hp := str(tournament.run.health(player)) if alive else RemakeText.t("Eliminated")
-		for line in 2:
-			var text := title if line == 0 else hp
-			var at := Vector2(rect.position.x, rect.end.y - (24 if line == 0 else 7) * ui_scale)
-			overlay.draw_string_outline(font, at, text, HORIZONTAL_ALIGNMENT_CENTER, rect.size.x, pixels, 1, Color("eeeeee"))
-			overlay.draw_string(font, at, text, HORIZONTAL_ALIGNMENT_CENTER, rect.size.x, pixels, text_colour)
+				# The same two circles in one cached quad. Retessellating 252
+				# antialiased circles each frame costs several milliseconds.
+				var marker := OVERVIEW_FRIEND if unit.faction == 1 else OVERVIEW_ENEMY
+				overlay.draw_texture_rect(marker, Rect2(at-Vector2.ONE*4.0*ui_scale,Vector2.ONE*8.0*ui_scale),false)
 
 
 func _exit_tree() -> void:
 	Gfx.set_light(_old_ambient, _old_sun)
 	Gfx.set_sun_direction(_old_direction)
 	if _old_fog.size() == 3: Gfx.set_fog_palette(_old_fog[0], _old_fog[1], _old_fog[2])
+
+
+var _warm_round := ""
+var _warming := false
+func prepare_battle_presentation() -> bool:
+	var key := str([(match_state as ArenaPveMatch).run.run_seed,(match_state as ArenaPveMatch).run.wave,GameData.options])
+	if _warm_round != key:
+		if _warming: return false
+		_warm_round=key;_warming=true;_warm_battle.call_deferred()
+	return not _warming and ArenaAnimationWarmup.picking_ready()
+
+func _warm_battle() -> void:
+	await ShaderWarmup.arena(self)
+	_warming=false

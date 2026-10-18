@@ -1,0 +1,280 @@
+[
+	{
+		"after": {
+			"clocks": [
+				120.010000000007,
+				120.010000000007,
+				120.010000000007,
+				120.010000000007,
+				120.010000000007,
+				120.010000000007,
+				120.010000000007,
+				120.010000000007,
+				120.010000000007
+			],
+			"effects": [
+				3,
+				2,
+				2,
+				3,
+				3,
+				2,
+				2,
+				2,
+				3
+			],
+			"nodes": 8709.0,
+			"objects": 24595.0,
+			"orphans": 0.0,
+			"pipelines": [
+				0,
+				66,
+				0,
+				42
+			],
+			"profiles": [],
+			"time_scale": 2.0,
+			"units": [
+				18,
+				18,
+				18,
+				18,
+				18,
+				18,
+				18,
+				18,
+				18
+			]
+		},
+		"battle": {
+			"fps": 138.237911006474,
+			"frames": 8306,
+			"max_ms": 39.614,
+			"median_ms": 6.226,
+			"min_1s_fps": 55.5704404949738,
+			"p95_ms": 13.022,
+			"p99_ms": 18.597
+		},
+		"battle_start": {
+			"clocks": [
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"effects": [
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			"nodes": 8703.0,
+			"objects": 24188.0,
+			"orphans": 0.0,
+			"pipelines": [
+				0,
+				66,
+				0,
+				42
+			],
+			"profiles": [],
+			"time_scale": 2.0,
+			"units": [
+				18,
+				18,
+				18,
+				18,
+				18,
+				18,
+				18,
+				18,
+				18
+			]
+		},
+		"before": {
+			"clocks": [
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0,
+				0.0
+			],
+			"effects": [
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			"nodes": 2553.0,
+			"objects": 13265.0,
+			"orphans": 0.0,
+			"pipelines": [
+				0,
+				66,
+				0,
+				39
+			],
+			"profiles": [],
+			"time_scale": 1.0,
+			"units": [
+				9,
+				6,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		"diagnose": false,
+		"disabled_gfx": [],
+		"expanded_roster": true,
+		"frozen_overlay": false,
+		"idle": {
+			"fps": 108.699295175654,
+			"frames": 120,
+			"max_ms": 134.738,
+			"median_ms": 7.366,
+			"min_1s_fps": 103.532859736867,
+			"p95_ms": 13.731,
+			"p99_ms": 15.512
+		},
+		"new_roster": false,
+		"next_round": {
+			"after": {
+				"clocks": [
+					0.0,
+					0.0,
+					0.0,
+					0.0,
+					0.0,
+					0.0,
+					0.0,
+					0.0,
+					0.0
+				],
+				"effects": [
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				"nodes": 2676.0,
+				"objects": 13657.0,
+				"orphans": 0.0,
+				"pipelines": [
+					0,
+					66,
+					0,
+					42
+				],
+				"profiles": [],
+				"time_scale": 1.0,
+				"units": [
+					9,
+					8,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				]
+			},
+			"callbacks": [],
+			"frames": {
+				"fps": 98.5976132804412,
+				"frames": 30,
+				"max_ms": 50.344,
+				"median_ms": 8.286,
+				"min_1s_fps": null,
+				"p95_ms": 19.903,
+				"p99_ms": 50.344
+			},
+			"physics": {
+				"fps": 6734.00673400673,
+				"frames": 30,
+				"max_ms": 0.149,
+				"median_ms": 0.149,
+				"min_1s_fps": null,
+				"p95_ms": 0.149,
+				"p99_ms": 0.149
+			},
+			"process": {
+				"fps": 96.5176434252181,
+				"frames": 30,
+				"max_ms": 50.085,
+				"median_ms": 8.991,
+				"min_1s_fps": null,
+				"p95_ms": 8.991,
+				"p99_ms": 50.085
+			},
+			"render_gpu": {},
+			"retained_old_resources": 0,
+			"reused_terrain": true,
+			"synchronous_ms": 16.503,
+			"tracked_resources": 171
+		},
+		"overview": true,
+		"pointer": "(1280.0, 683.0)",
+		"prepare_ms": 24.562,
+		"profile": false,
+		"rank": 2,
+		"scout": false,
+		"skip_picking": false,
+		"slow_frames": [
+			{
+				"at": 60.08482,
+				"clock": 120.010000000007,
+				"ms": 39.614,
+				"pipelines": [
+					0,
+					66,
+					0,
+					42
+				]
+			}
+		],
+		"speed": 2,
+		"start_ms": 2847.696,
+		"transition": {
+			"fps": 145.732052483204,
+			"frames": 415,
+			"max_ms": 24.749,
+			"median_ms": 6.443,
+			"min_1s_fps": 137.250884671463,
+			"p95_ms": 10.324,
+			"p99_ms": 12.376
+		},
+		"wall_seconds": 60.088065,
+		"wave": 24,
+		"window_size": "(2560, 1366)"
+	}
+]

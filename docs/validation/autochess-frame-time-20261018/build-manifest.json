@@ -1,0 +1,122 @@
+{
+  "status": "Local unpublished development preview",
+  "base_commit": "adf05385a58b66dff528f02e9bf0d87ee2b52f0a",
+  "engine_version": "4.7.stable.custom_build",
+  "executed_platform": "Linux x86-64",
+  "compile_only_platforms": [
+    "Windows x86-64",
+    "Android ARM64 native library"
+  ],
+  "windows_archive_crc_verified": true,
+  "artifacts": [
+    {
+      "path": "CursedLands-autochess-preview-windows-20261018.zip",
+      "bytes": 46409070,
+      "sha256": "b5692d4641b28982e07e7a1d477bcb7db5d2ec5598f3e9740722a9703d8402a8"
+    },
+    {
+      "path": "runtime/CursedLands.x86_64",
+      "bytes": 82141352,
+      "sha256": "a67d02872a2866c110515f081f81a9e834f0d38b19cd5cd0e03c96d7429f65a0"
+    },
+    {
+      "path": "runtime/CursedLands.pck",
+      "bytes": 12340768,
+      "sha256": "b7775f52c50a62dc1d0a97cc1e1519909fe1567a97222af89129e3e654075b8a"
+    },
+    {
+      "path": "preview-windows/CursedLands.exe",
+      "bytes": 94038528,
+      "sha256": "bc401685dd6238c54ba97585bb7c83418689fdddfe4f8a67d00be8fe31affa62"
+    },
+    {
+      "path": "preview-windows/CursedLands.console.exe",
+      "bytes": 184832,
+      "sha256": "a0d4f92e9ecc8da12dc33950cfe46cfc864593820121115117670fc9558583f9"
+    },
+    {
+      "path": "preview-windows/CursedLands.pck",
+      "bytes": 12340768,
+      "sha256": "b7775f52c50a62dc1d0a97cc1e1519909fe1567a97222af89129e3e654075b8a"
+    },
+    {
+      "path": "repo/game/src/native/bin/libterrain_search.dll",
+      "bytes": 2454528,
+      "sha256": "b3cb46c32b2a8718d79b95f99ec826b6cd735cfe00b1974f27f70a36ddfcb159"
+    },
+    {
+      "path": "repo/game/src/native/bin/libterrain_search.so",
+      "bytes": 3196080,
+      "sha256": "7d9a6fb13b0c38c128877a775ef341519b00a1a0250b02c953f8f13af4a3db16"
+    },
+    {
+      "path": "repo/game/src/native/bin/libterrain_search_android.so",
+      "bytes": 1423864,
+      "sha256": "d9d9e1c89e702a29d497a4077babc96dae402cfdda3e90e719a018013489987e"
+    }
+  ],
+  "patches": [
+    {
+      "path": "engine_patches/godot-4.7/render-thread-shutdown.patch",
+      "sha256": "0d7dc8b88c8708df9948002477f7bf14d9cf6e718251b0dc798606c5572b712e"
+    },
+    {
+      "path": "engine_patches/godot-4.7/queued-image-snapshot.patch",
+      "sha256": "e747f95b3d324582130e1e0ba24a3f17e2a3a2da350474fca61e4970243a4fe3"
+    },
+    {
+      "path": "engine_patches/godot-4.7/unobserved-pose.patch",
+      "sha256": "fdef4bafc6d2c9a94ef628fd692b7845fd9ed0e1ffd168b21a6a0c8e1ea45978"
+    },
+    {
+      "path": "engine_patches/godot-4.7/preserve-character-track-caches.patch",
+      "sha256": "5b938580ef002448d35f0c1535dcde2021032f6eb1385be56815f157aa99a3b8"
+    },
+    {
+      "path": "engine_patches/godot-4.7/prepare-character-track-caches.patch",
+      "sha256": "693f6eac8fee284b4493a8eb49c7bf9a2426d4e0c8a9f2ef3f96d4147c0ce1bb"
+    },
+    {
+      "path": "engine_patches/godot-4.7/cache-unobserved-track-eligibility.patch",
+      "sha256": "788b24561c8f377f1f4f8aea4a33b05d9b21f31b6bc1772699156131a80173b8"
+    },
+    {
+      "path": "engine_patches/godot-4.7/mobile-shader-recompile-lock.patch",
+      "sha256": "02bc97dd57f9b3388d71837b30b036e814ae5bf6e6fca3b3cf3948d260c746b6"
+    },
+    {
+      "path": "engine_patches/godot-4.7/forward-shader-recompile-lifetime.patch",
+      "sha256": "6620cefedded50733fa65e71164dc8918c8a0ac02387d54252aedf6f185b701e"
+    },
+    {
+      "path": "engine_patches/godot-4.7/far-dof-sharp-guard.patch",
+      "sha256": "c6070bfbfbf5e36014d37d2b58a74ae8ff156202aa063134cebd0b21610e7286"
+    },
+    {
+      "path": "engine_patches/godot-4.7/sky-subpass-alpha.patch",
+      "sha256": "a2ba63fac3d1ec8804f96bf3cdeb45b7f2c1597e1ac410f1739df812d82f3a67"
+    },
+    {
+      "path": "engine_patches/godot-4.7/worker-thread-language-shutdown.patch",
+      "sha256": "dc402e5bdc3b595d3dc50886a144da55d6a7d199dc2efaf348df394bd4b5321e"
+    },
+    {
+      "path": "engine_patches/godot-4.7/far-dof-reference.patch",
+      "sha256": "9c906ae637c9df620f1976d7b6c3bfe6aed4e236c91fcf27b40afeb8bacf3954"
+    },
+    {
+      "path": "engine_patches/godot-4.7/forward-shadow-blend-guard.patch",
+      "sha256": "7ce40d66ba714b49dfcc30dfe97b7e6f35ae49163a039605e0096fb5b72a8af4"
+    },
+    {
+      "path": "engine_patches/godot-4.7/cache-missing-animation-targets.patch",
+      "sha256": "0e81cdd2011a274ecd4e5f394469fa9914b82458477108a6713fe55a44357a99"
+    }
+  ],
+  "game_source_tree": {
+    "files": 935,
+    "sha256": "22629a222fe611bf25b3f1d6c276372294b5ed45d342d554b76f4437a65ec5ad",
+    "method": "Sorted path + NUL + SHA256 + newline; excludes .godot, .git, native binaries/objects and *.import metadata."
+  },
+  "patch_note": "The fourteen common desktop patches, in application order. Android-only patch files are not part of these desktop templates."
+}

@@ -1,0 +1,1 @@
+LIGHTNING_GEOMETRY {"checks":1120,"failures":[],"native_us":63035,"peak_error":0.0,"script_us":257530,"vertices":292032}

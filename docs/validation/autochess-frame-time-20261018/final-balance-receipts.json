@@ -1,0 +1,75 @@
+[
+  {
+    "name": "bots-final",
+    "exit_code": 0,
+    "seconds": 296.12094670097576,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/benchmarks/arena_bot_tournaments.gd",
+      "--games=4"
+    ]
+  },
+  {
+    "name": "new-duels-rank-0",
+    "exit_code": 0,
+    "seconds": 11.58258658403065,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/benchmarks/arena_roster_matchups.gd",
+      "--from=24",
+      "--opponent-from=24",
+      "--opponents=30",
+      "--rank=0"
+    ]
+  },
+  {
+    "name": "new-duels-rank-1",
+    "exit_code": 0,
+    "seconds": 14.088378063985147,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/benchmarks/arena_roster_matchups.gd",
+      "--from=24",
+      "--opponent-from=24",
+      "--opponents=30",
+      "--rank=1"
+    ]
+  },
+  {
+    "name": "new-duels-rank-2",
+    "exit_code": 0,
+    "seconds": 14.086351859034039,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--headless",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/benchmarks/arena_roster_matchups.gd",
+      "--from=24",
+      "--opponent-from=24",
+      "--opponents=30",
+      "--rank=2"
+    ]
+  }
+]

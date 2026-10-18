@@ -7,6 +7,8 @@ extends RefCounted
 
 const SKIN := Vector3(0.08, 0.92, 0.0)
 const DULL := Vector3(0.04, 0.96, 0.0)
+static var _color_kernel: RefCounted = ClassDB.instantiate("MmpTextureKernel") \
+	if ClassDB.class_exists("MmpTextureKernel") and not OS.get_cmdline_user_args().has("--ei-script-textures") else null
 
 ## Screen derivatives construct a tangent frame for EI meshes, which have no
 ## tangent stream. Local texture differences add shallow relief only; distance,
@@ -85,10 +87,13 @@ static func blend_layer(base: Image, layer: Image, profile: Vector3) -> void:
 	var r := int(round(profile.x * 255.0))
 	var g := int(round(profile.y * 255.0))
 	var b := int(round(profile.z * 255.0))
-	for i in range(0, data.size(), 4):
-		data[i] = r
-		data[i + 1] = g
-		data[i + 2] = b
+	if _color_kernel and _color_kernel.has_method("colorize_rgba"):
+		data = _color_kernel.colorize_rgba(data, r, g, b)
+	else:
+		for i in range(0, data.size(), 4):
+			data[i] = r
+			data[i + 1] = g
+			data[i + 2] = b
 	src = Image.create_from_data(src.get_width(), src.get_height(), false, Image.FORMAT_RGBA8, data)
 	base.blend_rect(src, Rect2i(Vector2i.ZERO, src.get_size()), Vector2i.ZERO)
 

@@ -41,8 +41,11 @@ var detect_graphics := true
 
 
 func _ready() -> void:
+	# Rasterize text at the final control scale, including high-DPI windows.
+	oversampling_with_scale = CanvasItem.OVERSAMPLING_WITH_SCALE_ENABLED
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_cursor = GameCursor.new()
+	_cursor.control_shapes=[Input.CURSOR_ARROW,Input.CURSOR_POINTING_HAND]
 	add_child(_cursor)
 	_cursor.set_kind("cursor_default")
 	# The intro and the credits need their movies converted (MoviePlayer);

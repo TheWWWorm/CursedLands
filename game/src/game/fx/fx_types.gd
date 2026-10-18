@@ -368,9 +368,9 @@ static func create(fx, type: int) -> FxEmitter:
 			e.texture = "zoneexit"
 		_:
 			return null
-	if e.spawn_fn == T.sp_fire and e.upd_fn == T.up_fire and not e.ctl_fn.is_valid():
+	if e.spawn_fn in [T.sp_fire, T.sp_firewall, T.sp_fireball]:
 		e.prepare_fire_batch()
-	if e.spawn_fn in [T.sp_modifier, T.sp_orbit, T.sp_tornado]:
+	if e.spawn_fn in [T.sp_modifier, T.sp_orbit, T.sp_tornado, T.sp_blast, T.sp_castel]:
 		e.prepare_spell_batch()
 	e.par = not (SERIAL.has(e.spawn_fn.get_method()) or SERIAL.has(e.upd_fn.get_method()) \
 		or SERIAL.has(e.ctl_fn.get_method()))

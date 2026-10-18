@@ -4130,7 +4130,7 @@ func _rpc_snap(snaps: Array, t: float, generation := -1, serial := -1) -> void:
 	_apply_snap(NetSnapshot.unpack(snaps), t, serial)
 
 
-func _apply_snap(snaps: Array, t: float, serial := -1) -> void:
+func _apply_snap(snaps: Array, t: float, serial := -1, precise_bodies := false) -> void:
 	if world == null or _zone_holding or _remote_loading:
 		return
 	world.time = maxf(world.time, t)
@@ -4143,7 +4143,8 @@ func _apply_snap(snaps: Array, t: float, serial := -1) -> void:
 			if serial >= 0:
 				if serial <= int(u.get_meta("snapshot_serial", -1)): continue
 				u.set_meta("snapshot_serial", serial)
-			u.apply_snapshot(s)
+			var body: PackedFloat64Array = s[17] if precise_bodies and s.size() > 17 and s[17] is PackedFloat64Array else PackedFloat64Array()
+			u.apply_snapshot(s,false,body)
 
 
 ## Seconds before a co-op player's hero rises again (approx.; the original

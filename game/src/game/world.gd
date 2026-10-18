@@ -22,6 +22,7 @@ var map: EIMapScene
 var terrain: EITerrain
 var ground_marks: GroundMarks
 var mob: EIMob
+var arena_rng := RandomNumberGenerator.new()
 var nav := NavGrid.new():
 	set(value):
 		nav = value
@@ -103,6 +104,7 @@ var dialog_actors := {}
 ## Simulation workers retain animation clocks and queried geometry, but have
 ## no local particles, HUD, wounds or scene presentation.
 var presentation := true
+var arena_overview := false # Distant presentation only; native combat is unchanged.
 var authority := true
 var session: Session
 ## SetWaterLevel state, the original's list at server (adds
@@ -381,6 +383,9 @@ func spawn_unit(record: Dictionary) -> GameUnit:
 	if not record.has("nid") or int(record.nid) == 0 or units.has(int(record.nid)):
 		record.nid = new_uid()
 	var u := GameUnit.new()
+	# Arena models bind their idle pose during setup. Enter the final tree
+	# first so adoption does not immediately invalidate those bindings.
+	if zone.get("type") == "arena": add_child(u)
 	if not u.setup(self, record):
 		u.free()
 		return null
@@ -393,7 +398,7 @@ func adopt_prepared_unit(u: GameUnit) -> GameUnit:
 	_seq_n += 1
 	u._seq = _seq_n
 	nav.rebucket(u)
-	add_child(u)
+	if u.get_parent() != self: add_child(u)
 	unit_spawned.emit(u)
 	return u
 
@@ -1141,3 +1146,15 @@ func on_death(u: GameUnit, killer: GameUnit) -> void:
 		# the original: the prototype "experience" for
 		# the killer's party (XpRules: who gets it and how it is shared).
 		XpRules.on_kill(session, u, killer if is_instance_valid(killer) else null)
+
+
+## Separate arena boards and presentation callbacks must not consume each
+## other's combat decisions. Campaign randomness keeps its existing stream.
+func random_int() -> int:
+	return arena_rng.randi() if zone.get("type")=="arena" else randi()
+func random_float() -> float:
+	return arena_rng.randf() if zone.get("type")=="arena" else randf()
+func random_int_range(low: int, high: int) -> int:
+	return arena_rng.randi_range(low,high) if zone.get("type")=="arena" else randi_range(low,high)
+func random_float_range(low: float, high: float) -> float:
+	return arena_rng.randf_range(low,high) if zone.get("type")=="arena" else randf_range(low,high)

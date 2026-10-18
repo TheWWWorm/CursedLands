@@ -1,0 +1,75 @@
+[
+  {
+    "name": "picking_bounds",
+    "exit_code": 0,
+    "seconds": 4.07132523303153,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/picking_bounds.gd"
+    ],
+    "summary": [
+      "PICKING_BOUNDS checks=432 failures=0"
+    ]
+  },
+  {
+    "name": "arena_picking",
+    "exit_code": 0,
+    "seconds": 11.483320952975191,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_picking.gd"
+    ],
+    "summary": [
+      "ARENA_PICKING checks=3331 failures=0 bounds=57294 -> 24864"
+    ]
+  },
+  {
+    "name": "arena_solo_worker",
+    "exit_code": 0,
+    "seconds": 75.64826934196753,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_solo_worker.gd"
+    ],
+    "summary": [
+      "ARENA_SOLO_WORKER 47 checks; failures=[]"
+    ]
+  },
+  {
+    "name": "picking_deformation",
+    "exit_code": 0,
+    "seconds": 4.520666781987529,
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/picking_deformation.gd"
+    ],
+    "summary": [
+      "PICKING_DEFORMATION checks=1558 failures=0 native_us=435 script_us=6484"
+    ]
+  }
+]

@@ -44,6 +44,7 @@ enum {MESH, PARTICLE, INSTANCED, GRASS, REGIONAL, COLORED}
 static var _warmed := {}   # key -> true
 static var _keep: Array[Material] = []   # _shader_holder copies
 static var _quad: QuadMesh
+static var _lightning: ImmediateMesh
 static var _mms := {}   # kind -> MultiMesh
 static var _formats := {} # vertex format -> zero-area mesh of that exact format
 
@@ -105,6 +106,7 @@ static func run(game: Game) -> void:
 	if ambient:
 		for variant: Array in ambient.warmup_variants():
 			_add(items, seen, variant[0], env, MESH, _zero_format(variant[1]))
+	_add(items, seen, Projectile.material(), env, MESH, _zero_format(Projectile.shaft_mesh()))
 	for m: Material in _effect_materials(game):
 		_add(items, seen, m, env, MESH)
 	if game.world.terrain and game.world.terrain.details and game.world.terrain.details._material:
@@ -261,11 +263,11 @@ static func _shadowed_points() -> bool:
 	return Gfx.on("gfx_firelight") or Gfx.on("gfx_lava_light")
 
 
-static func _zone_materials(w: GameWorld) -> Array:
+static func _zone_materials(w: Node3D) -> Array:
 	var out: Array = []
 	var objects := {}
 	var faded := {}   # Shader -> true
-	if w.map:
+	if w is GameWorld and w.map:
 		for o in w.map.object_nodes:
 			if is_instance_valid(o):
 				objects[o] = true
@@ -328,7 +330,8 @@ static func _zero_format(source: Mesh) -> Mesh:
 	var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
 	vertices.fill(Vector3.ZERO); arrays[Mesh.ARRAY_VERTEX] = vertices
 	var mesh := ArrayMesh.new()
-	var flags := format & (Mesh.ARRAY_FLAG_USE_8_BONE_WEIGHTS | Mesh.ARRAY_FLAG_COMPRESS_ATTRIBUTES)
+	# Preserve custom-channel encodings as well as compression/bone flags.
+	var flags := format & ~((1 << Mesh.ARRAY_MAX) - 1)
 	mesh.add_surface_from_arrays(primitive, arrays, [], {}, flags)
 	_formats[key] = mesh
 	return mesh
@@ -346,11 +349,9 @@ static func _object_of(n: Node, objects: Dictionary) -> bool:
 ## make them.
 static func _effect_materials(game: Game) -> Array[Material]:
 	var out: Array[Material] = [FxLightning._strip_mat(false), FxLightning._glow_mat(),
-		VisionFog.material(), Projectile.material()]
+		VisionFog.material()]
 	if Gfx.on("gfx_torch_glow"):
-		var h := Gfx.torch_halo(1.0, Color.WHITE)
-		out.append(h.material_override)
-		h.free()
+		out.append(Gfx.torch_halo_material(Color.WHITE))
 	var rain := game.get_node_or_null("RainSnow") as FxRainSnow
 	if rain:
 		out.append(rain.material_override)
@@ -413,7 +414,7 @@ static func _multimesh(kind: int, source: Mesh = null) -> MultiMesh:
 		mm.transform_format = MultiMesh.TRANSFORM_3D
 		mm.use_colors = kind in [PARTICLE, GRASS, COLORED]
 		mm.use_custom_data = kind in [PARTICLE, GRASS, REGIONAL]
-		mm.mesh = source if source else _zero_quad()
+		mm.mesh = source if source else ParticleFx.quad_mesh() if kind == PARTICLE else _zero_quad()
 		mm.instance_count = 1
 		mm.set_instance_transform(0, Transform3D(Basis(Vector3.ZERO, Vector3.ZERO, Vector3.ZERO), Vector3.ZERO))
 		if kind in [PARTICLE, GRASS, COLORED]:
@@ -433,7 +434,76 @@ static func _zero_quad() -> QuadMesh:
 	return _quad
 
 
+static func _zero_lightning() -> ImmediateMesh:
+	# Lightning writes only position, colour and UV. QuadMesh adds normals
+	# and tangents, which leaves the real bolt's pipeline cold.
+	if _lightning == null:
+		_lightning = ImmediateMesh.new()
+		_lightning.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
+		for i in 3:
+			_lightning.surface_set_color(Color.WHITE)
+			_lightning.surface_set_uv(Vector2.ZERO)
+			_lightning.surface_add_vertex(Vector3.ZERO)
+		_lightning.surface_end()
+	return _lightning
+
+
 func _free_after(frames: int) -> void:
 	for i in frames:
 		await get_tree().process_frame
 	queue_free()
+
+
+## Autochess has a SubViewport and no campaign loading path. Prepare the
+## same effect/mesh pipelines in small batches before its shared battle bell.
+static func arena(field: ArenaPveField) -> void:
+	if not active(): return
+	var tree := field.get_tree()
+	var items := []; var seen := {}
+	var env := "arena:"+str([field._environment.fog_enabled,field._environment.volumetric_fog_enabled,
+		field._sun_light.shadow_enabled,Gfx.on("gfx_firelight"),GameData.option("q_msaa")])
+	for additive in [false,true]:
+		var material:=ShaderMaterial.new();material.shader=ParticleFx._shader(additive,false,false)
+		_add(items,seen,material,env,PARTICLE)
+		await _arena_frame(tree)
+		if not is_instance_valid(field): return
+	for make: Callable in [func():return FxLightning._strip_mat(false),FxLightning._glow_mat]:
+		var material: Material = make.call()
+		_add(items,seen,material,env,MESH,_zero_lightning())
+		await _arena_frame(tree)
+		if not is_instance_valid(field): return
+	_add(items,seen,Projectile.material(),env,MESH,_zero_format(Projectile.shaft_mesh()))
+	await _arena_frame(tree)
+	if not is_instance_valid(field): return
+	if Gfx.on("gfx_torch_glow"):
+		# A temporary MeshInstance followed by immediate free synchronizes the
+		# rendering worker. Warm its material without allocating an instance.
+		_add(items,seen,Gfx.torch_halo_material(Color.WHITE),env,MESH)
+		await _arena_frame(tree)
+		if not is_instance_valid(field): return
+	# Courtyards are independent branches. Collect a board per frame instead
+	# of inspecting thousands of figure surfaces in a single transition frame.
+	for branch: Node in field.stage.get_children():
+		if is_instance_valid(branch) and branch is Node3D:
+			for variant: Array in _zone_materials(branch):
+				_add(items,seen,variant[0],env,variant[1],variant[2])
+			await _arena_frame(tree)
+			if not is_instance_valid(field): return
+	if items.is_empty(): return
+	var warmer:=ShaderWarmup.new();field.camera.add_child(warmer)
+	warmer.position=Vector3(0,0,-maxf(DIST,field.camera.near*4))
+	warmer._make_groups()
+	for item: Array in items:
+		if not is_instance_valid(field): return
+		var shown:=warmer._show(item[1],item[2],item[3])
+		_warmed[item[0]]=true
+		if item[1] is BaseMaterial3D: _keep.append(_shader_holder(item[1]))
+		await field.get_tree().process_frame
+		await RenderingServer.frame_post_draw
+		for node: Node3D in shown: node.hide();node.queue_free()
+	warmer.queue_free()
+
+
+static func _arena_frame(tree: SceneTree) -> void:
+	await tree.process_frame
+	await RenderingServer.frame_post_draw

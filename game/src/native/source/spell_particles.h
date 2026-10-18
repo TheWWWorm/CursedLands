@@ -20,7 +20,7 @@ class SpellParticleKernel : public RefCounted {
         int64_t type, ec, dc, e4, flags, chance, minimum, capacity;
         double size, moved, spacing;
         Vector3 origin, vmin, vmax;
-        bool carrier, orbit, tornado;
+        bool carrier, orbit, tornado, casting, blast;
         RandomNumberGenerator *rng;
         Array controls;
         double random() const { return double(rng->randi()) * 2.3283064e-10; }
@@ -29,11 +29,25 @@ class SpellParticleKernel : public RefCounted {
     static constexpr int mod_in[16] = {0,32,64,128,255,255,255,255,255,255,255,128,0,0,0,0};
     static constexpr int mod_out[16] = {0,128,255,255,255,255,255,255,192,128,64,32,0,0,0,0};
     static constexpr int orbit_alpha[8] = {0,0,32,64,112,160,208,255};
+    static constexpr int cast_alpha[16] = {0,255,255,255,255,255,255,255,224,192,128,64,32,16,0,0};
+    static constexpr int div_alpha[16] = {0,32,64,112,160,208,255,255,224,192,128,64,32,16,0,0};
+    static constexpr int cast_control[14] = {0,32,64,112,160,208,255,0,32,64,112,160,208,255};
+    static constexpr int blast_alpha[16] = {255,255,207,175,128,128,128,128,128,175,207,192,128,48,0,0};
     static int64_t alpha(int64_t value) { return (std::clamp<int64_t>(value, 0, 255) << 24) | 0xffffff; }
     static void set_vector(Array &p, int index, Vector3 value) {
         p[index] = double(value.x); p[index + 1] = double(value.y); p[index + 2] = double(value.z);
     }
     static Vector3 vector(const Array &p, int index) { return Vector3(p[index], p[index + 1], p[index + 2]); }
+    static Vector3 ball(const State &s) {
+        Vector3 v;
+        for (int i = 0; i < 10; ++i) {
+            const double x = double(s.rng->randi()) * 4.656613e-10 - 1.;
+            const double y = s.range(-1., 1.), z = s.range(-1., 1.);
+            v = Vector3(x, y, z);
+            if (v.length_squared() < 1.) break;
+        }
+        return v;
+    }
     static void previous(Array &p) {
         p[4] = p[0]; p[5] = p[1]; p[6] = p[2]; p[7] = p[3];
         p[0x12] = p[0x11]; p[0x17] = p[0x16];
@@ -42,7 +56,22 @@ class SpellParticleKernel : public RefCounted {
         if (s.tornado) return; // Already updated from the ground snapshot.
         for (int64_t i = 0; i < s.controls.size(); ++i) {
             Array c = s.controls[i];
-            if (s.orbit) {
+            if (s.casting) {
+                if (double(c[0]) == 0.) {
+                    for (int j = 0; j < 3; ++j) c[6 + j] = double(c[9 + j]) + double(c[6 + j]);
+                    for (int j = 0; j < 3; ++j)
+                        c[9 + j] = (double(c[9 + j]) * .95 + s.random() * .2 - .1) - double(c[6 + j]) * .0005;
+                } else if (!(s.flags & 1) || !s.carrier) {
+                    if (int64_t(c[13]) > 0) c[13] = int64_t(c[13]) - 1;
+                    c[12] = int64_t(cast_control[std::clamp<int64_t>(c[13], 0, 13)]);
+                }
+            } else if (s.blast) {
+                c[12] = int64_t(c[12]) + 1;
+                c[6] = double(c[6]) + double(c[7]); c[7] = double(c[8]) * double(c[7]);
+                if (int64_t(c[12]) > 6) s.flags &= ~int64_t(1);
+                for (int j = 0; j < 3; ++j) c[j] = double(c[j]) + s.size * double(c[3 + j]);
+                c[3] = double(c[3]) * .75; c[4] = double(c[4]) * .75; c[5] = double(c[5]) * .75 - .03;
+            } else if (s.orbit) {
                 const double x = c[6];
                 c[9] = c[0]; c[10] = c[1]; c[11] = c[2];
                 c[6] = double(c[7]) * double(c[4]) + double(c[6]) * double(c[3]);
@@ -63,6 +92,43 @@ class SpellParticleKernel : public RefCounted {
         }
     }
     static bool update(const State &s, Array &p) {
+        if (s.casting) {
+            const Array c = s.controls[0];
+            if (int64_t(c[12]) == 0) return false;
+            if (int64_t(p[0x15]) != 0) {
+                set_vector(p, 0, s.origin);
+                p[3] = (double(s.rng->randi()) * 6.984918e-11 + .85) * double(c[6]) * .3;
+                p[0x16] = alpha(c[12]); return true;
+            }
+            const int64_t life = int64_t(p[0x14]) - 1; p[0x14] = life;
+            if (life == 0) return false;
+            const int *table = s.type == 0x202a ? div_alpha : cast_alpha;
+            p[0x16] = alpha(std::min<int64_t>(table[std::clamp<int64_t>(life, 0, 15)], c[12]));
+            if (s.type == 0x2027 && (life & 3) == 0) p[0x11] = int64_t(p[0x11]) + 1;
+            p[11] = double(p[11]) - double(p[12]);
+            p[0x11] = std::max<int64_t>(int64_t(p[0x11]) - 1, 0);
+            set_vector(p, 0, s.origin + vector(p, 8) * real_t(double(p[11])));
+            p[3] = double(p[3]) * double(p[13]); return true;
+        }
+        if (s.blast) {
+            if (int64_t(p[0x15]) >= 0) return false;
+            const Array c = s.controls[0];
+            if (int64_t(p[0x11]) < 14 && int64_t(p[0x15]) == -2) {
+                p[0x14] = int64_t(p[0x14]) + 1;
+                set_vector(p, 0, vector(p, 0) + vector(p, 8));
+                p[3] = double(p[11]) * (int64_t(p[0x11]) < 8 ? 1.01 : 1.03);
+                p[12] = double(p[12]) + double(p[13]); p[13] = double(p[13]) * 1.02;
+                p[0x11] = int64_t(std::round(double(p[12]))); p[11] = p[3];
+                set_vector(p, 8, vector(p, 8) * real_t(double(c[8]) - .03));
+                p[0x16] = alpha(blast_alpha[std::clamp<int64_t>(p[0x11], 0, 15)]);
+                return true;
+            }
+            if (int64_t(p[0x15]) == -1) {
+                p[3] = double(p[3]) == 0. ? s.size * 2.3 : 0.;
+                return int64_t(c[12]) < 3;
+            }
+            return false;
+        }
         if (s.tornado) {
             p[0x14] = int64_t(p[0x14]) - 1;
             if (int64_t(p[0x14]) == 0) return false;
@@ -143,7 +209,55 @@ class SpellParticleKernel : public RefCounted {
         for (int i = 0; i < 4; ++i) p[i] = 0.;
         for (int i = 8; i < 17; ++i) p[i] = 0.;
         p[0x16] = int64_t(0xffffffff);
-        if (s.tornado) {
+        if (s.casting) {
+            const Array c0 = s.controls[0];
+            p[0x16] = int64_t(0xffffff); p[0x11] = int64_t(14); p[0x14] = int64_t(13); p[0x13] = int64_t(1);
+            Vector3 v;
+            for (int i = 0; i < 20; ++i) {
+                const double x = double(s.rng->randi()) * 4.656613e-10 - 1.;
+                const double y = double(s.rng->randi()) * 4.656613e-10 - 1.;
+                const double z = double(s.rng->randi()) * 4.656613e-10 - 1.;
+                v = Vector3(x, y, z);
+                const double length = v.length_squared();
+                if (length <= 1. && length > 0.) break;
+            }
+            const int64_t k = s.rng->randi() % (s.e4 * s.ec + 1);
+            if (k > 0) { const Array c = s.controls[(k - 1) % s.ec + 1]; v += vector(c, 6); }
+            v.normalize(); set_vector(p, 8, v);
+            const double radius = double(c0[6]) * .6;
+            p[11] = radius; p[12] = radius * (s.type == 0x202a ? .03846154 : .07692308); p[13] = c0[3];
+            set_vector(p, 0, s.origin + v * real_t(radius));
+            p[3] = (double(s.rng->randi()) * 1.862645e-10 + .6) * double(c0[7]) * radius;
+        } else if (s.blast) {
+            const int64_t k = int64_t(s.rng->randi() % 29) - 14;
+            const Array c0 = s.controls[0];
+            if (parts.is_empty() && int64_t(c0[12]) == 1) {
+                p[0x15] = int64_t(-1); set_vector(p, 0, s.origin); p[0x11] = int64_t(15); p[3] = 0.;
+            } else if (k >= 0) {
+                const Array c = s.controls[k];
+                p[0x11] = int64_t(s.rng->randi() % 3);
+                if (double(c[9]) == 0.) p[0x11] = int64_t(8);
+                const double f = s.random();
+                const Vector3 base = s.origin + vector(c, 0);
+                p[0] = double(base.x); p[1] = double(base.y); p[2] = double(base.z) - f * double(c[5]) * s.size;
+                p[3] = (double(c[6]) * .14285715 + .3) * (.3 - f * .15) * (double(s.rng->randi()) * 1.8626451e-10 + .7);
+                p[3] = double(p[3]) * (double(c[10]) + 1.) * s.size;
+                const double x = s.range(s.vmin.x, s.vmax.x), y = s.range(s.vmin.y, s.vmax.y), z = s.range(s.vmin.z, s.vmax.z);
+                set_vector(p, 8, Vector3(x, y, z)); p[0x15] = int64_t(-2);
+                p[11] = p[3]; p[12] = double(int64_t(p[0x11])); p[13] = double(s.rng->randi()) * 8.149072e-11 + .35;
+            } else {
+                const Vector3 v = ball(s);
+                const double q = 1. - double(v.length_squared());
+                set_vector(p, 0, s.origin + v * real_t(s.size) * real_t(double(c0[6]) != 0. ? double(c0[6]) : 1.));
+                const double limit = double(int64_t(c0[12]) / 7) + .2;
+                p[3] = 0.; p[0x15] = int64_t(-2);
+                p[0x11] = q < limit ? int64_t(8) : int64_t(s.rng->randi() % 3);
+                p[11] = s.size * (double(s.rng->randi()) * 9.313226e-11 + .8) * .6;
+                p[12] = double(int64_t(p[0x11]));
+                p[13] = q < limit ? double(s.rng->randi()) * 8.149072e-11 + .35
+                    : (q * .35) / limit + double(s.rng->randi()) * 8.149072e-11 * .5 + .175;
+            }
+        } else if (s.tornado) {
             constexpr double pi = 3.14159265358979323846;
             // The engine's decimal parser rounds this long literal one ULP
             // below the C++ compiler. Match the retained GDScript coefficient.
@@ -212,7 +326,7 @@ protected:
     }
 public:
     bool supports_type(int64_t kind) const {
-        return kind == 0x200a || (kind >= 0x201b && kind <= 0x2026) || (kind >= 0x202b && kind <= 0x202e);
+        return kind == 0x2002 || kind == 0x200a || (kind >= 0x201b && kind <= 0x202e);
     }
     bool step(Object *emitter) const {
         ERR_FAIL_NULL_V(emitter, false);
@@ -225,9 +339,10 @@ public:
         State s = {kind, emitter->get(ec), emitter->get(dc), emitter->get(e4), emitter->get(flags),
             emitter->get(cc), emitter->get(d0), emitter->get(d8), emitter->get(size), emitter->get(moved),
             emitter->get(d4), emitter->get(wp), emitter->get(vmin), emitter->get(vmax), emitter->get(has_carrier),
-            kind >= 0x202b, kind == 0x200a, random.ptr(), emitter->get(cp)};
+            kind >= 0x202b, kind == 0x200a, kind >= 0x2027 && kind <= 0x202a, kind == 0x2002, random.ptr(), emitter->get(cp)};
         ERR_FAIL_COND_V(!supports_type(kind), false);
         ERR_FAIL_COND_V(s.controls.is_empty() || (s.orbit && (s.ec <= 0 || s.controls.size() < s.ec)) || (s.tornado && s.controls.size() < 2), false);
+        ERR_FAIL_COND_V((s.casting && (s.ec <= 0 || s.e4 <= 0 || s.controls.size() < s.ec + 1)) || (s.blast && s.controls.size() < 15), false);
         controls(s); emitter->set(flags, s.flags);
         Array parts = emitter->get(parts_key);
         const int64_t count = parts.size(); int64_t live = 0;

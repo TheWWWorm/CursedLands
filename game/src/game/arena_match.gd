@@ -64,9 +64,9 @@ func _rebuild_world() -> void:
 	world.ai.distant.enabled = false
 	world.ai.activity.enabled = false
 	var ground := _make_ground()
-	world.add_child(ground)
+	if ground.get_parent() == null: world.add_child(ground)
 	world.terrain = ground
-	world.nav.build(ground, ground.water_base, [])
+	_build_navigation(ground)
 	world.set_relation(1, 2, 2)
 	world.set_relation(2, 1, 2)
 	world.combat_event.connect(_combat_event)
@@ -86,6 +86,14 @@ func _rebuild_world() -> void:
 
 func bounds() -> Rect2:
 	return FIELD
+
+
+func _build_navigation(ground: EITerrain) -> void:
+	world.nav.build(ground,ground.water_base,_navigation_objects())
+
+
+func _navigation_objects() -> Array[Node3D]:
+	return []
 
 
 func _make_ground() -> EITerrain:

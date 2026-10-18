@@ -106,9 +106,16 @@ var _scout_return: Button
 var _opponent: Label
 var _encounter_key := 0
 var _clock_pulse := 0.0
+var _clock_urgency := -1
+var _camera_keys := {}
+var _cursor: GameCursor
 
 
 func _ready() -> void:
+	add_child(ArenaAnimationWarmup.new())
+	oversampling_with_scale = CanvasItem.OVERSAMPLING_WITH_SCALE_ENABLED
+	_cursor=GameCursor.new();_cursor.control_shapes=[Input.CURSOR_ARROW,Input.CURSOR_POINTING_HAND]
+	add_child(_cursor);_cursor.set_kind("cursor_default")
 	name = "ArenaExpedition"
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_previous_border = Gfx._border_size
@@ -438,6 +445,7 @@ func _ready() -> void:
 	_tooltips = ArenaTooltips.new()
 	_tooltips.scope = _hud
 	_tooltips.world_hint = _world_hint
+	_tooltips.viewport_pointer = field.viewport_pointer
 	_hud.add_child(_tooltips)
 	resized.connect(_layout_hud)
 	_layout_hud()
@@ -466,6 +474,9 @@ func _ready() -> void:
 	if not network_play and not _saved: run.begin(1)
 	run.changed.connect(_refresh)
 	_refresh()
+	# Compile the known combat effects while entering the mode. The first
+	# battle then only needs variants introduced by its staged creatures.
+	field.prepare_battle_presentation()
 
 
 func _create_battle() -> ArenaPveMatch:
@@ -473,7 +484,7 @@ func _create_battle() -> ArenaPveMatch:
 
 
 func _create_boards() -> ArenaTournamentBattles:
-	return ArenaTournamentBattles.new()
+	return ArenaSoloBattles.new() if ArenaLocalHost.available() else ArenaTournamentBattles.new()
 
 
 func _exit_tree() -> void:
@@ -662,7 +673,7 @@ func _build_army() -> void:
 
 
 func _build_shop() -> void:
-	# Reuse each offer's render target while only prices, counts or locks change.
+	# Keep each live offer's render target across rerolls and round changes.
 	# The shop always belongs to the player, even while scouting another board.
 	var represented := ArenaAlliances.counts(run.army)
 	while _shop.get_child_count() > run.shop.size():
@@ -674,16 +685,16 @@ func _build_shop() -> void:
 		var rank := int(offer.get("rank", 0))
 		var key := "%d:%d" % [family, rank]
 		var box: Control = _shop.get_child(index) if index < _shop.get_child_count() else null
-		if box != null and box.get_meta("offer_key", "") != key:
+		if box != null and (family < 0) != (box.get_child(0) is Label):
 			_shop.remove_child(box); box.queue_free(); box = null
 		var fresh := box == null
 		if fresh:
 			box = Control.new()
-			box.set_meta("offer_key", key)
 			box.custom_minimum_size = Vector2(96, 148)
 			box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			_shop.add_child(box)
 			_shop.move_child(box, index)
+		box.set_meta("offer_key", key)
 		if family < 0:
 			if fresh:
 				var bought := _label(box, RemakeText.t("Recruited"), 13, MUTED)
@@ -703,8 +714,8 @@ func _build_shop() -> void:
 		card.family = family
 		card.represented_traits = represented
 		card.footer = RemakeText.t("%d gold") % card.cost
+		card.set_meta("arena_creature", {"id": card.prototype, "family": family, "rank": rank, "offer": index})
 		if fresh:
-			card.set_meta("arena_creature", {"id": card.prototype, "family": family, "rank": rank, "offer": index})
 			card.pressed.connect(_recruit_offer.bind(index))
 			box.add_child(card)
 			card.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -1094,7 +1105,7 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 	details.add_theme_constant_override("separation", 2)
 	header.add_child(details)
 	if family >= 0:
-		_wrap(details, ArenaAlliances.names(family), 13, GOLD)
+		ArenaCreatureCard.tribe_names(details, family, 13)
 		_wrap(details, RemakeText.t("Tier %d · %d gold") % [int(ArenaRules.FAMILIES[family].tier), int(ArenaRules.FAMILIES[family].cost)], 12, MUTED)
 		if ArenaRules.FAMILIES[family].has("region"):
 			_wrap(details, ArenaRules.region_name(int(ArenaRules.FAMILIES[family].region)), 12, MUTED)
@@ -1266,6 +1277,12 @@ func _update_encounter_status() -> void:
 
 
 func _process(dt: float) -> void:
+	_cursor.set_kind("cursor_camera" if field._right_dragged or field._orbit else "cursor_default")
+	if _camera_input_allowed():
+		var turn := float(_camera_keys.has(KEY_E)) - float(_camera_keys.has(KEY_Q))
+		field.advance_camera(dt / maxf(Engine.time_scale, 0.001), turn)
+	else:
+		_clear_camera_input()
 	_hover_inspector(dt)
 	if run is ArenaTournamentRun and run.stage == "fight": _update_fighting_icons()
 	_standings.visible = run is ArenaTournamentRun and not landing and not _rail.visible and not _modal_layer.visible and not _outcome.visible
@@ -1306,9 +1323,15 @@ func _process(dt: float) -> void:
 		var urgent := (run.stage == "prepare" and run.preparation_left <= 10) or (run.stage == "fight" and watched.phase == ArenaMatch.Phase.FIGHT and watched.time_limit() - watched.world.time <= 10)
 		if not _modal_layer.visible and not _league_paused and watched.phase != ArenaMatch.Phase.PAUSED:
 			_clock_pulse += dt / maxf(Engine.time_scale, 0.001)
-		_clock.add_theme_color_override("font_color", Color("ff9377") if urgent else GOLD)
-		_clock.add_theme_color_override("font_outline_color", Color("35140e"))
-		_clock.add_theme_constant_override("outline_size", 2 if urgent else 0)
+		# Reapplying a theme override emits a theme change even when equal,
+		# invalidating text/layout three times on every battle frame.
+		if _clock_urgency != int(urgent):
+			_clock_urgency = int(urgent)
+			_clock.begin_bulk_theme_override()
+			_clock.add_theme_color_override("font_color", Color("ff9377") if urgent else GOLD)
+			_clock.add_theme_color_override("font_outline_color", Color("35140e"))
+			_clock.add_theme_constant_override("outline_size", 2 if urgent else 0)
+			_clock.end_bulk_theme_override()
 		_clock.modulate.a = 0.72 + 0.28 * (0.5 + 0.5 * cos(_clock_pulse * TAU * 1.5)) if urgent else 1.0
 
 	if _sound and watched and is_instance_valid(watched.world):
@@ -1334,15 +1357,37 @@ func _listen_to(world: GameWorld) -> void:
 	_sound.music.hold = false
 
 
+func _camera_input_allowed() -> bool:
+	var focus := get_viewport().gui_get_focus_owner()
+	return not landing and not _modal_layer.visible and not field.showing_boards() \
+		and not (is_instance_valid(_wiki) and _wiki.visible) \
+		and not (focus is LineEdit or focus is TextEdit)
+
+
+func _clear_camera_input() -> void:
+	_camera_keys.clear()
+	if is_instance_valid(field): field.stop_camera_motion()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT: _clear_camera_input()
+
+
+func _input(event: InputEvent) -> void:
+	# Releases must reach us even when a focused widget consumes the event.
+	if event is InputEventKey and not event.pressed:
+		_camera_keys.erase(event.physical_keycode if event.physical_keycode else event.keycode)
+
+
 func _unhandled_key_input(event: InputEvent) -> void:
 	if is_instance_valid(_wiki) and _wiki.visible: return
-	if event is InputEventKey and event.pressed and not landing and not _modal_layer.visible and not field.showing_boards():
+	if event is InputEventKey and event.pressed and _camera_input_allowed():
 		var key: int = event.physical_keycode if event.physical_keycode else event.keycode
 		if key in [KEY_Q, KEY_E, KEY_HOME]:
-			if key == KEY_HOME: field.reset_camera()
-			else:
-				field.yaw += deg_to_rad(15) * (1 if key == KEY_Q else -1)
-				field._update_camera()
+			if key == KEY_HOME:
+				_clear_camera_input()
+				field.reset_camera()
+			else: _camera_keys[key] = true
 			get_viewport().set_input_as_handled()
 			return
 	if not _modal_layer.visible and WikiContext.matches(event, get_viewport()):
@@ -1392,7 +1437,7 @@ func _guide() -> void:
 		topics[1] = ["Preparation", "Everyone has 60 seconds to recruit and arrange their army. The round starts early when all surviving human players are ready. Changing your army cancels ready. Menus and scouting do not pause the timer."]
 		topics[6] = ["Battle", "Both teams fight under AI control. The host runs all battles on the same clock and can switch between normal and double speed. Hover a creature for details. Online battles cannot be paused."]
 		topics[8] = ["Players", "Up to nine players compete with their own armies. Computers fill empty seats and take over disconnected players. At zero health you are eliminated and can keep watching. If the host leaves, the game ends for everyone."]
-	topics.append(["Camera", "Hold the middle mouse button and drag, or press Q/E, to rotate the camera. Use the wheel to zoom. Home restores the starting view."])
+	topics.append(["Camera", "Hold Q/E or drag with the right or middle mouse button to rotate the camera. Use the wheel to zoom. Home restores the starting view."])
 	for topic in topics:
 		_label(content, RemakeText.t(topic[0]), 18, GOLD)
 		_wrap(content, RemakeText.t(topic[1]), 15, PAPER)
@@ -1549,8 +1594,6 @@ func _layout_hud() -> void:
 	_ui_scale = maxf(0.85, minf(size.x / 1440.0, size.y / 900.0))
 	_hud.scale = Vector2.ONE * _ui_scale
 	_hud.size = size / _ui_scale
-	if theme.default_font is FontFile: theme.default_font.oversampling = maxf(1.0, _ui_scale)
-	if _heading_font is FontFile: _heading_font.oversampling = maxf(1.0, _ui_scale)
 	field.ui_scale = _ui_scale
 	field._update_camera()
 	_shop_panel.offset_right = minf(960, _hud.size.x - 300)
@@ -1824,10 +1867,13 @@ func _setup_tournament_battles() -> void:
 	if field:
 		field.tournament = null
 		field.match_state = battle
-	if battle and is_instance_valid(battle.world): battle.world.show()
+	if battle and is_instance_valid(battle.world): battle.presentation_root().show()
 	if run is ArenaTournamentRun:
+		battle.staged_preparation = true
 		run.live_boards = true
 		_tournament_battles = _create_boards()
+		_tournament_battles.prepare_presentation = field.prepare_battle_presentation
+		if _tournament_battles is ArenaSoloBattles: _tournament_battles.failed.connect(_feedback)
 		_tournament_battles.run = run
 		_tournament_battles.parent_stage = field.stage
 		_tournament_battles.home = battle

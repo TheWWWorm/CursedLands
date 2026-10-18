@@ -1,0 +1,130 @@
+[
+  {
+    "name": "roster-en",
+    "exit_code": 0,
+    "seconds": 14.739067093003541,
+    "summary": [
+      "ARENA_ROSTER_UI en checks=379 failures=[]"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_roster_ui.gd",
+      "--arena-lang=en"
+    ]
+  },
+  {
+    "name": "roster-ru",
+    "exit_code": 0,
+    "seconds": 14.78844560001744,
+    "summary": [
+      "ARENA_ROSTER_UI ru checks=433 failures=[]"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_roster_ui.gd",
+      "--arena-lang=ru"
+    ]
+  },
+  {
+    "name": "roster-de",
+    "exit_code": 0,
+    "seconds": 13.835224520007614,
+    "summary": [
+      "ARENA_ROSTER_UI de checks=433 failures=[]"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_roster_ui.gd",
+      "--arena-lang=de"
+    ]
+  },
+  {
+    "name": "arena_camera",
+    "exit_code": 0,
+    "seconds": 8.977764306997415,
+    "summary": [],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_camera.gd"
+    ]
+  },
+  {
+    "name": "scaled_menu_arena_text",
+    "exit_code": 0,
+    "seconds": 18.642754936008714,
+    "summary": [],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/scaled_menu_arena_text.gd"
+    ]
+  },
+  {
+    "name": "arena_feedback_ui",
+    "exit_code": 0,
+    "seconds": 21.19876697496511,
+    "summary": [],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_feedback_ui.gd"
+    ]
+  },
+  {
+    "name": "arena_round_lifecycle",
+    "exit_code": 0,
+    "seconds": 19.44765104301041,
+    "summary": [],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/revision2-runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_round_lifecycle.gd"
+    ]
+  }
+]

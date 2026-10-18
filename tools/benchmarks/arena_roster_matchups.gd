@@ -11,13 +11,19 @@ func _ready() -> void:
 	var native := hash(GameData.db.tables)
 	var level := 0
 	var only := -1
+	var first := 12
+	var opponent_first := 0
+	var opponent_count := 12
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--family="): only=int(arg.get_slice("=",1))
+		if arg.begins_with("--from="): first=int(arg.get_slice("=",1))
 		if arg.begins_with("--rank="): level=int(arg.get_slice("=",1))
-	for candidate in range(12,ArenaRules.FAMILIES.size()):
+		if arg.begins_with("--opponent-from="): opponent_first=int(arg.get_slice("=",1))
+		if arg.begins_with("--opponents="): opponent_count=mini(ArenaRules.FAMILIES.size(),int(arg.get_slice("=",1)))
+	for candidate in range(first,ArenaRules.FAMILIES.size()):
 		if only>=0 and candidate!=only:continue
 		var row := {"family":candidate,"name":ArenaRules.FAMILIES[candidate].name,"rank":level,"opponents":[]}
-		for baseline in range(12):
+		for baseline in range(opponent_first,opponent_count):
 			var wins:=0; var draws:=0; var seconds:=0.0
 			for side in 2:
 				var run:=Duel.new();run.auto_save=false;run.begin(8519+baseline)

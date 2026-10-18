@@ -390,6 +390,7 @@ const ANIM_OFFSCREEN_STEP := 0.2
 ## 20 a second.
 const ANIM_NEAR := 70.0
 const ANIM_FAR_STEP := 1.0 / 30.0
+const ARENA_OVERVIEW_STEP := 1.0 / 10.0
 const ANIM_SHADOW_STEP := 1.0 / 20.0
 ## Walking out of view and beyond the unit sounds' reach (UnitSounds.MAX_D
 ## + 8 m from the listener): 10 poses a second. Its footprints are still
@@ -402,6 +403,8 @@ var _screen: VisibleOnScreenNotifier3D
 static var _headless := DisplayServer.get_name() == "headless"
 var _wounds_dirty := true   # part health / armour / figure changed (UnitWounds)
 var _pose_dirty := true     # part health / figure changed (_set_action's idle skip)
+var _overview_present_acc := 0.0
+var _overview_present_due := 0.0
 var _idle_key := []
 var _anim_acc := 0.0
 var _anim_due := 0.0
@@ -495,6 +498,9 @@ func setup(w: GameWorld, record: Dictionary) -> bool:
 	# the rest pose holds the arms out).
 	model.act("idle", 1, 0.0)
 	if model.player:
+		# Changing callback mode clears track bindings. Select the unit's
+		# permanent mode before resolving its first measured pose.
+		model.player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
 		model.player.advance(0.0)
 	_measure_figure()
 	_anim_lod_setup()
@@ -1045,7 +1051,7 @@ func body_damage(amount: float, layers := Callable()) -> void:
 func hit_part(aim := -1) -> int:
 	if parts.is_empty():
 		return 1
-	var want: int = aim if aim >= 0 and aim < 6 else HIT_TABLE[randi() % HIT_TABLE.size()]
+	var want: int = aim if aim >= 0 and aim < 6 else HIT_TABLE[world.random_int() % HIT_TABLE.size()]
 	if parts[want].state == 3:
 		return want
 	var near: Array = {0: [1, 2, 3], 1: [0, 2, 3, 4, 5], 2: [3, 1], 3: [2, 1], 4: [5, 1], 5: [4, 1]}[want]
@@ -1056,7 +1062,7 @@ func hit_part(aim := -1) -> int:
 	for j in 6:
 		if parts[j].state == 3:
 			alive.append(j)
-	return alive[randi() % alive.size()] if alive else 1
+	return alive[world.random_int() % alive.size()] if alive else 1
 
 
 ## Body-part group used for armour (Combat.PART_SLOTS) of part index i.
@@ -2853,7 +2859,7 @@ func _do_direct_attack(dt: float) -> void:
 		if _moving: _walk_action()
 		return
 	if _update_pose(): return
-	var len := maxf(model.act("attack",randi_range(1,3),0.05),0.6)
+	var len := maxf(model.act("attack",world.random_int_range(1,3),0.05),0.6)
 	action = "attack"
 	_anim_lock = len
 	var a_w := float(stats.get("weapon_actions",proto.get("tuning_actions",50.0)))
@@ -2951,7 +2957,7 @@ func _do_attack(dt: float) -> void:
 	# a unit that was idle in the relaxed state first plays its cross clip.
 	if _update_pose():
 		return
-	var variant := randi_range(1, 3)
+	var variant := world.random_int_range(1, 3)
 	var clip := ""
 	var hit_ticks := -1.0
 	if impact_query:
@@ -3462,7 +3468,7 @@ func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFlo
 		remove_meta("attacker")
 		world.ai.hit_hook(self, null)
 		return
-	if _anim_lock <= 0.0 and randf() < 0.5:
+	if _anim_lock <= 0.0 and world.random_float() < 0.5:
 		_anim_lock = minf(model.act("hit", 1, 0.05), 0.6)
 		action = "hit"
 		GameSound.unit(self, "hit")
@@ -3705,6 +3711,7 @@ func _anim_lod_setup() -> void:
 	_geoms.clear()
 	for g in model.find_children("*", "GeometryInstance3D", true, false):
 		_geoms.append(g)
+	if world and world.zone.get("type", "") == "arena": ArenaAnimationWarmup.queue_picking(_geoms)
 	_far = false
 	if _screen == null:
 		# The figure plus room for its shadow: 2.75 x its height at the lowest
@@ -3834,6 +3841,18 @@ func observe_presentation() -> void:
 
 
 func _process(dt: float) -> void:
+	if world and world.arena_overview and not world.authority and world._client_placement and not anim_watched:
+		# The world's native batch still places every replica on every frame.
+		# Only the distant figure/pose bookkeeping runs at 10 real updates/s.
+		_overview_present_acc += dt; _overview_present_due -= dt
+		if _overview_present_due > 0.0: return
+		dt = _overview_present_acc; _overview_present_acc = 0.0
+		var interval := ARENA_OVERVIEW_STEP * maxf(1.0,Engine.time_scale)
+		# Keep each actor's phase after a long frame instead of collapsing
+		# every overdue actor onto a zero deadline and repeating the burst.
+		_overview_present_due += interval * (floorf(-_overview_present_due / interval) + 1.0)
+	elif _overview_present_acc > 0.0:
+		dt += _overview_present_acc; _overview_present_acc = 0.0
 	if world and not world.authority and is_processing() and _can_sleep_presentation():
 		_presentation_sleeping = true
 		_presentation_generation += 1
@@ -3950,13 +3969,18 @@ func _present_native_frame(dt: float) -> void:
 			> ANIM_NEAR * ANIM_NEAR else 0.0
 	elif _screen.is_on_screen():
 		step = ANIM_SHADOW_STEP
+	if world and world.arena_overview and not anim_watched:
+		# The nine-board camera is 160 metres away. Keep motion interpolated
+		# at display rate, but evaluate these tiny figures at 10 real poses/s
+		# at either combat speed, retaining the complete animation elapsed time.
+		step = maxf(step, ARENA_OVERVIEW_STEP * maxf(1.0, Engine.time_scale))
 	if step == 0.0:
-		anim_flush(defer_hidden_pose and (not visible or (world and not world.presentation)) and not anim_watched)
+		anim_flush(defer_hidden_pose and (not is_visible_in_tree() or (world and not world.presentation)) and not anim_watched)
 		return
 	_anim_due -= dt
 	if _anim_due <= 0.0:
 		_anim_due = maxf(_anim_due + step, 0.0)
-		anim_flush(defer_hidden_pose and (not visible or (world and not world.presentation)) and not anim_watched)
+		anim_flush(defer_hidden_pose and (not is_visible_in_tree() or (world and not world.presentation)) and not anim_watched)
 
 
 ## The playback factor of the playing clip: a walk / run / crawl clip runs at
@@ -4504,23 +4528,37 @@ func _buff_snapshot() -> Array:
 
 ## `quiet`: the unit's state as found by a joining client (no death clip,
 ## sounds or hit numbers; a corpse lies already dead).
-func apply_snapshot(s: Array, quiet := false) -> void:
+func apply_snapshot(s: Array, quiet := false, precise_body := PackedFloat64Array()) -> void:
 	# Account for the old clip/rate before replacing it with newer authority
 	# state. This prevents a late hidden update advancing the new action by
 	# time that belonged to its predecessor.
 	_advance_sleeping_presentation()
+	var exact_body := not parts.is_empty() and precise_body.size() == parts.size() + 1
 	if s.size() > 10:
-		if not is_equal_approx(_max_hp, s[9]):
-			_set_max_hp(s[9])
+		var incoming_max: float = precise_body[0] if exact_body else s[9]
+		var maximum_changed := _max_hp != incoming_max if exact_body else not is_equal_approx(_max_hp,incoming_max)
+		if maximum_changed:
+			_set_max_hp(incoming_max)
 		max_mana = s[10]
 	pos = Vector2(s[1], s[2])
 	facing = s[3]
 	net_view.got(pos, quiet, facing)   # co-op client: drawn gliding / turning between snapshots (NetSmooth)
-	if s[5] < hp - 0.01 and not quiet:
+	var previous_hp := hp
+	if exact_body:
+		# Arena packets already carry exact part health. Applying their rounded
+		# aggregate first causes damage/healing work and dirty poses even for
+		# unchanged actors, only to overwrite every part again afterward.
+		for i in parts.size():
+			if parts[i].cur != precise_body[i+1]:
+				parts[i].cur = precise_body[i+1]
+				_wounds_dirty = true
+				_pose_dirty = true
+	var incoming_hp: float = hp if exact_body else s[5]
+	if incoming_hp < previous_hp - 0.01 and not quiet:
 		GameSound.impact(self)
 		if world:   # clients see hits only as health drops
-			world.combat_event.emit("hp_loss", null, self, hp - s[5])
-	hp = s[5]
+			world.combat_event.emit("hp_loss", null, self, previous_hp - incoming_hp)
+	if not exact_body: hp = incoming_hp
 	var flags: int = s[6]
 	if (flags & 1) and not dead:
 		dead = true
@@ -4538,11 +4576,12 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 	_show_severed((flags >> 2) & 63, not quiet)
 	if s.size() > 8:
 		mana = s[7]
-		var ph: PackedByteArray = s[8]
-		for i in mini(ph.size(), parts.size()):
-			parts[i].cur = ph[i] / 255.0 * float(parts[i].max)
-		_wounds_dirty = true
-		_pose_dirty = true
+		if not exact_body:
+			var ph: PackedByteArray = s[8]
+			for i in mini(ph.size(), parts.size()):
+				parts[i].cur = ph[i] / 255.0 * float(parts[i].max)
+			_wounds_dirty = true
+			_pose_dirty = true
 	alert = bool(flags & 256)
 	stance = (flags >> 9) & 3
 	if quiet:   # found already in its posture (a joiner, a spawn record)
@@ -4595,7 +4634,16 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 	if s.size() > 14:
 		fresh_action = int(s[14]) != _remote_action_serial
 		_remote_action_serial = int(s[14])
-	if (a != action or (fresh_action and not a in _STEADY)) and not dead:
+	if quiet and not dead and a in _STEADY:
+		# Load/join records must already be drawable while the tree is paused.
+		# An unchanged "idle" action can still carry a different posture; no
+		# presentation tick is guaranteed before the loading cover disappears.
+		action = a
+		_anim_acc = 0.0
+		_update_pose(false)
+		model.act(a, 1, 0.0)
+		if model.player: model.player.advance(0.0)
+	elif (a != action or (fresh_action and not a in _STEADY)) and not dead:
 		action = a
 		_anim_acc = 0.0
 		if a.begins_with("anim:"):
@@ -4607,7 +4655,7 @@ func apply_snapshot(s: Array, quiet := false) -> void:
 			_cast_anim(_cast_clip(), int(a.get_slice(":", 1)) if a.contains(":") else 0)
 		elif a == "attack":
 			_update_pose()   # the snapshot's combat flag / posture first
-			model.act("attack", randi_range(1, 3), 0.05)
+			model.act("attack", world.random_int_range(1, 3), 0.05)
 			GameSound.unit(self, "attack")
 		else:
 			if a == "hit":

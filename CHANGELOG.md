@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.17.0 — 2026-10-18
+
+- Apply saved idle and movement postures before displaying loaded or joining characters, including paused solo saves. ([#28](https://github.com/TheWWWorm/CursedLands/issues/28))
+- Run solo autochess combat in a private local worker, retain courtyards between rounds, and stage models, animations and shader preparation to reduce battle and round-transition stalls.
+- Extend native fire and spell particle kernels and snow footprint rasterization without changing their random streams or combat rules.
+- Reuse arrow meshes and human animation bindings, and color equipment material layers in the native texture kernel to reduce recurring setup stalls.
+- Cache overview markers, stagger distant presentation and private board snapshots, and build lightning geometry in native code.
+- Retain moving health-label drawing commands, reuse event-based pointer coordinates, deform and classify exact selection meshes in native code, stop redundant checks behind resolved targets, and spread snow mesh uploads across frames.
+- Preserve distant animation and lightning update spacing after slow frames, reuse spell attachment samples within an update, and apply exact arena health without temporary rounded-health damage or healing.
+- Read current figure bounds and calculate lightning branches and glow geometry in native code, reuse compatible lightning buffers, retain board labels, and avoid repeated clock-theme and shared-atmosphere updates.
+- Give CPU opponents savings, army evaluation, replacement purchases and four spending strategies: economy, expansion, evolution and tempo. Preserve progress toward final evolutions and value native creature spellcasting.
+- Expand recruitment from 24 to 40 families with human fighters and casters, zombies, guards, elementals, hounds, woodsfolk mystics, ghouls, evil eyes, dragons, cyclopes, shadows, imperial archers and storm banshees. Add a woodsfolk-to-unicorn evolution, adjust recruit prices and evolved spells, and bring two final forms' boss armor into the recruit range.
+- Render menu and autochess text at its displayed scale, show tribe emblems beside creature traits, and use the original game cursor in autochess menus.
+- Make held Q/E camera rotation continuous and add right-button dragging, independent of the 1×/2× battle speed.
+- Add a persistent player name in remake network settings and reuse it in multiplayer and autochess. Translate the new interface and recruit names into English, Russian and German.
+
 ## 1.16.0 — 2026-10-18
 
 - Restore gameplay pause and speed when loading campaign saves, including the separate solo simulation process. ([#27](https://github.com/TheWWWorm/CursedLands/issues/27))

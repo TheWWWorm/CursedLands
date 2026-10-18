@@ -279,7 +279,7 @@ func _fear_priority(u: GameUnit, flag: int, foes: Variant = null) -> int:
 			if u.order.get("fear", false):
 				return 15000
 			var away := (u.pos - t.pos).normalized() * 5.0
-			var spot := u.pos + away + Vector2(randf_range(-3.0, 3.0), randf_range(-3.0, 3.0))
+			var spot := u.pos + away + Vector2(world.random_float_range(-3.0, 3.0), world.random_float_range(-3.0, 3.0))
 			var d := Vector3(spot.x - u.pos.x, spot.y - u.pos.y, -world.ground_at(u.pos.x, u.pos.y)).length()
 			var path := world.nav.find_path(u.pos,spot,[u],[],0.0,u.move_class(),u.path_flat_cost,NAN,d*3.0+10.0,0.0,u.controller < 0)
 			if not path.is_empty() and u.path_fits(path, spot, d * 3.0 + 10.0) \
@@ -369,7 +369,7 @@ func _fear_tick(u: GameUnit, flag := 0) -> void:
 			var j := minf(float(s.j), float(s.r) * 2.5)
 			s.j = j
 			var away := (u.pos - pt).normalized() * 5.0
-			dest = u.pos + away + Vector2(randf_range(-j, j), randf_range(-j, j))
+			dest = u.pos + away + Vector2(world.random_float_range(-j, j), world.random_float_range(-j, j))
 		s.j = float(s.j) * 2.0
 		u.remove_meta("calm")
 		u.command({"type": "move", "to": dest, "run": u.get_meta("script_run", false), "calm": true, "fear": true})
@@ -1081,7 +1081,7 @@ func _notice_candidates(u: GameUnit, notice_radius := NAN) -> Array:
 		var radius := float(int(grid.reach) + 1) * 16.0 * 1.5
 		near = world.notice_units_near(u, radius, cells, false, true)
 		u.set_meta("ai_near", near)
-		u.set_meta("ai_near_t", world.time + float((randi() & 3) + 8) * GameUnit.TICK)
+		u.set_meta("ai_near_t", world.time + float((world.random_int() & 3) + 8) * GameUnit.TICK)
 	return near
 
 
@@ -1459,7 +1459,7 @@ func chatter(u: GameUnit, dt: float) -> void:
 	if code < 0:
 		return
 	for i in n:
-		if randi() % 1001 == 1:
+		if world.random_int() % 1001 == 1:
 			_react(u, code)
 			return
 
@@ -1578,8 +1578,8 @@ func _susp_go(u: GameUnit, s: Dictionary, at: Vector2, p: float) -> void:
 	s.busy = true
 	s.dest = at
 	var look := []
-	for i in (randi() & 3) + 1:
-		look.append([randf() * TAU, randi_range(10, 40)])
+	for i in (world.random_int() & 3) + 1:
+		look.append([world.random_float() * TAU, world.random_int_range(10, 40)])
 	s.look = look
 	# "calm": the AI keeps thinking during the order (GameUnit), as for the
 	# calm and Fear walks.
@@ -1754,7 +1754,7 @@ func _sentry(u: GameUnit, at: Vector2) -> void:
 	if _calm_busy(u):
 		return
 	set_post(u, at)
-	var rest := randi() % 11 == 0
+	var rest := world.random_int() % 11 == 0
 	var stay := GameData.ai_value("Logic", "GuardStayTime" if rest else "SentryStayTime", 10.0)
 	_calm_go(u, Vector3(at.x, at.y, 0.0), Vector3.ZERO, stay, rest)
 
@@ -1793,7 +1793,7 @@ func _guard(u: GameUnit, point: Vector3, radius: float, stay: float) -> void:
 	var d := Vector3(spot.x - point.x, spot.y - point.y, -point.z)
 	if radius != 0.0:
 		d *= d.length() / radius * 0.5
-	_calm_go(u, Vector3(spot.x, spot.y, 0.0), d, stay, randi() % 11 == 0)
+	_calm_go(u, Vector3(spot.x, spot.y, 0.0), d, stay, world.random_int() % 11 == 0)
 
 
 ##  + the move of a calm motivation: (rand & 3) + 1 glances
@@ -1807,7 +1807,7 @@ func _guard(u: GameUnit, point: Vector3, radius: float, stay: float) -> void:
 ## animation state 0x8000, case 0xb /; GameUnit.resting
 ## until the next order).
 func _calm_go(u: GameUnit, dest: Vector3, bias: Vector3, stay: float, rest: bool, given := []) -> void:
-	var n := (randi() & 3) + 1 if given.is_empty() else 0
+	var n := (world.random_int() & 3) + 1 if given.is_empty() else 0
 	var at := Vector2(dest.x, dest.y)
 	var eye := world.ground_at(at.x, at.y) + 1.4
 	var tmax := stay * 15.0 if stay >= 0.0 else 40.0
@@ -1822,11 +1822,11 @@ func _calm_go(u: GameUnit, dest: Vector3, bias: Vector3, stay: float, rest: bool
 	for i in n:
 		var v := Vector3.ZERO
 		for k in 7:
-			var a := randf() * TAU
+			var a := world.random_float() * TAU
 			v = Vector3(cos(a) + bias.x, sin(a) + bias.y, bias.z)
 			if k == 6 or world.terrain_ray(at, eye, at + Vector2(v.x, v.y) * 2.0, eye + v.z * 2.0) >= 1.0:
 				break
-		look.append([atan2(v.y, v.x), roundi((tmax - tmax * 0.25) * randf() + tmax * 0.25), rest])
+		look.append([atan2(v.y, v.x), roundi((tmax - tmax * 0.25) * world.random_float() + tmax * 0.25), rest])
 	if not given.is_empty():
 		look = given   # a patrol point's own glances
 	var c: Dictionary = u.get_meta("calm", {})
@@ -2063,11 +2063,11 @@ func find_spot(u: GameUnit, at: Vector2, r: float) -> Vector2:
 	if cool > 0:
 		u.set_meta("spot_cool", cool - 1)
 		return Vector2.INF
-	var q := Vector2(randf_range(-r, r), randf_range(-r, r))
+	var q := Vector2(world.random_float_range(-r, r), world.random_float_range(-r, r))
 	for i in 10:
 		if q.length_squared() <= r * r:
 			break
-		q = Vector2(randf_range(-r, r), randf_range(-r, r))
+		q = Vector2(world.random_float_range(-r, r), world.random_float_range(-r, r))
 	var spot := at + q
 	if world.nav.cell_slope(spot) > 0.3:
 		return Vector2.INF

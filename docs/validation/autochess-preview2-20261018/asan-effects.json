@@ -1,0 +1,51 @@
+[
+  {
+    "name": "figure_geometry",
+    "exit_code": 0,
+    "seconds": 9.98076389398193,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/asan-game",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/figure_geometry.gd"
+    ],
+    "environment": {
+      "ASAN_OPTIONS": "verify_asan_link_order=0:detect_leaks=0",
+      "UBSAN_OPTIONS": "halt_on_error=1"
+    },
+    "summary": [
+      "FIGURE_GEOMETRY checks=952 failures=0 models=112 native_us=31477 script_us=28061"
+    ]
+  },
+  {
+    "name": "lightning_geometry",
+    "asan": true,
+    "exit_code": 0,
+    "seconds": 5.073230242996942,
+    "command": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--headless",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/asan-game",
+      "--render-thread",
+      "safe",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/lightning_geometry.gd"
+    ],
+    "summary": [
+      "LIGHTNING_GEOMETRY {\"checks\":1271,\"failures\":[],\"native_us\":86153,\"peak_error\":0.0,\"script_us\":265591,\"vertices\":279936}"
+    ],
+    "environment": {
+      "ASAN_OPTIONS": "verify_asan_link_order=0:detect_leaks=0",
+      "UBSAN_OPTIONS": "halt_on_error=1"
+    }
+  }
+]

@@ -29,6 +29,8 @@
 #include "water_surface.h"
 #include "water_wave.h"
 #include "particle_draw.h"
+#include "lightning_geometry.h"
+#include "figure_geometry.h"
 #include "unit_presentation.h"
 #include "motion_spline.h"
 #include "mmp_texture.h"
@@ -38,6 +40,7 @@
 #include "grass_chunk.h"
 #include "nav_turn.h"
 #include "soft_ground_mesh.h"
+#include "soft_ground_paint.h"
 #include "ai_activity.h"
 #include "screen_rect.h"
 #include "nav_build.h"
@@ -567,6 +570,9 @@ static void initialize_kernel(ModuleInitializationLevel level) {
         GDREGISTER_CLASS(GrassFieldKernel); GDREGISTER_CLASS(GrassChunkJob);
         GDREGISTER_CLASS(NavTurnKernel);
         GDREGISTER_CLASS(SoftGroundMeshJob);
+        GDREGISTER_CLASS(SoftGroundPaintKernel);
+        GDREGISTER_CLASS(LightningGeometryKernel);
+        GDREGISTER_CLASS(FigureGeometryKernel);
         GDREGISTER_CLASS(UnitPresentationKernel);
         GDREGISTER_CLASS(NetSmoothKernel);
     }

@@ -1424,16 +1424,22 @@ static var _halo_shader: Shader
 static var _halo_mesh: QuadMesh
 
 
-static func torch_halo(radius: float, color: Color) -> MeshInstance3D:
+static func torch_halo_material(color: Color) -> ShaderMaterial:
 	ensure_globals()
 	if _halo_shader == null:
 		_halo_shader = Shader.new()
 		_halo_shader.code = WaterReflection.screen_effect_source(HALO_SHADER)
-		_halo_mesh = QuadMesh.new()
-		_halo_mesh.size = Vector2(1, 1)
 	var m := ShaderMaterial.new()
 	m.shader = _halo_shader
 	m.set_shader_parameter("col", Vector3(color.r, color.g, color.b))
+	return m
+
+
+static func torch_halo(radius: float, color: Color) -> MeshInstance3D:
+	var m := torch_halo_material(color)
+	if _halo_mesh == null:
+		_halo_mesh = QuadMesh.new()
+		_halo_mesh.size = Vector2(1, 1)
 	var mi := MeshInstance3D.new()
 	mi.mesh = _halo_mesh
 	mi.material_override = m

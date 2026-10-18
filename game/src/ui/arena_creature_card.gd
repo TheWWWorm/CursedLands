@@ -29,6 +29,12 @@ var _info: ArenaInfoPanel
 var _offer_icons: Array[TextureRect] = []
 var upgrade_ready := false
 var _glow: ShaderMaterial
+var _title: Label
+var _traits: HBoxContainer
+var _stars: ArenaStars
+var _shown_prototype := ""
+var _shown_family := -2
+var _preview_pending := false
 
 
 static func style(fill: Color, border := Color("5a624c"), padding := Vector2(10, 8)) -> StyleBoxFlat:
@@ -52,7 +58,7 @@ func _ready() -> void:
 	add_theme_stylebox_override("pressed", StyleBoxEmpty.new())
 	add_theme_stylebox_override("focus", style(Color(0, 0, 0, 0), PAPER))
 	add_theme_stylebox_override("disabled", StyleBoxEmpty.new())
-	ArenaStars.add_to(self, quality + 1, Vector2(6, 4))
+	_stars = ArenaStars.add_to(self, quality + 1, Vector2(6, 4))
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for side in ["left", "right", "top", "bottom"]: margin.add_theme_constant_override("margin_" + side, 4)
@@ -67,9 +73,6 @@ func _ready() -> void:
 	preview.custom_minimum_size.y = 84
 	preview.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	box.add_child(preview)
-	if not prototype.is_empty():
-		preview.show_model({"kind": "creature", "value": prototype})
-		preview.turn_by(-0.4)
 	if disabled: preview.modulate.a = 0.65
 	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	for child: Control in preview.find_children("*", "Control", true, false): child.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -101,23 +104,12 @@ func _ready() -> void:
 	_price.add_theme_font_override("font", preload("res://fonts/LiberationSans-Bold.ttf"))
 	_copies = _label(price_row, "", 13, PAPER)
 	snow_ink(_copies, PAPER)
-	var traits := HBoxContainer.new()
-	traits.alignment = BoxContainer.ALIGNMENT_CENTER
-	traits.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	metadata.add_child(traits)
-	for key: String in ArenaAlliances.traits(family):
-		var emblem := TextureRect.new()
-		emblem.set_meta("tribe", key)
-		emblem.texture = load("res://assets/arena/alliance_%s.svg" % key)
-		emblem.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		emblem.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		emblem.custom_minimum_size = Vector2(18, 18)
-		emblem.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		traits.add_child(emblem)
-		_offer_icons.append(emblem)
-		ink_icon(emblem, cost_accent(cost))
-	update_offer()
+	_traits = HBoxContainer.new()
+	_traits.alignment = BoxContainer.ALIGNMENT_CENTER
+	_traits.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	metadata.add_child(_traits)
 	var title := _label(self, heading if not heading.is_empty() else ArenaRules.title(prototype), 14, PAPER)
+	_title = title
 	title.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	title.offset_top = 4; title.offset_bottom = 42
 	title.offset_left = -14; title.offset_right = 14
@@ -133,13 +125,53 @@ func _ready() -> void:
 	title.add_theme_constant_override("shadow_offset_y", 2)
 	title.modulate.a = 0
 	mouse_entered.connect(func(): title.modulate.a = 1; _info.highlighted = not disabled)
-	mouse_exited.connect(func(): title.modulate.a = 1 if has_focus() else 0; _info.highlighted = has_focus())
+	mouse_exited.connect(func(): title.modulate.a = 1 if has_focus() or _preview_pending else 0; _info.highlighted = has_focus())
 	focus_entered.connect(func(): title.modulate.a = 1; _info.highlighted = true)
-	focus_exited.connect(func(): title.modulate.a = 0; _info.highlighted = is_hovered() and not disabled)
+	focus_exited.connect(func(): title.modulate.a = 1 if _preview_pending else 0; _info.highlighted = is_hovered() and not disabled)
+	update_offer()
+
+
+func _process(_delta: float) -> void:
+	# A reroll swaps six figures. Retain their render targets and admit one
+	# model per frame, so first-use meshes cannot stall the whole shop update.
+	if _shown_prototype != prototype:
+		if not ArenaAnimationWarmup.ready_for(prototype): return
+		if not ArenaAnimationWarmup.claim_model_frame(): return
+		_shown_prototype = prototype
+		preview.show_model({"kind": "creature", "value": prototype}, true)
+		preview.turn_by(-0.4)
+		for child: Control in preview.find_children("*", "Control", true, false): child.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		if is_instance_valid(preview.creature): preview.creature.material = _glow if upgrade_ready else null
+	if is_instance_valid(preview.creature) and (preview.creature._framed < 3 or is_instance_valid(preview.creature._old_pivot)): return
+	_preview_pending = false
+	preview.modulate.a = 0.65 if disabled else 1.0
+	_title.modulate.a = 1 if is_hovered() or has_focus() else 0
+	set_process(false)
 
 
 func update_offer() -> void:
 	if not is_instance_valid(_price): return
+	if _shown_family != family:
+		_shown_family = family
+		for icon: TextureRect in _traits.get_children():
+			_offer_icons.erase(icon); _traits.remove_child(icon); icon.queue_free()
+		for key: String in ArenaAlliances.traits(family):
+			var emblem := TextureRect.new()
+			emblem.set_meta("tribe", key)
+			emblem.texture = load("res://assets/arena/alliance_%s.svg" % key)
+			emblem.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			emblem.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			emblem.custom_minimum_size = Vector2(18, 18)
+			emblem.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			_traits.add_child(emblem); _offer_icons.append(emblem)
+	if _shown_prototype != prototype:
+		_preview_pending = true
+		_title.text = (heading if not heading.is_empty() else ArenaRules.title(prototype)).replace("-", "-\u200b")
+		_title.modulate.a = 1
+		set_process(true)
+	_stars.count = clampi(quality + 1, 1, 3)
+	_stars.custom_minimum_size = Vector2(_stars.count * 14 - 2, 12)
+	_stars.queue_redraw()
 	_price.text = str(cost)
 	_price.add_theme_color_override("font_color", MUTED if disabled else PAPER)
 	var accent := cost_accent(cost)
@@ -154,7 +186,7 @@ func update_offer() -> void:
 	_copies.visible = copies > 0 and copies_needed > 0
 	_copies.text = "%d/%d" % [mini(copies, copies_needed), copies_needed]
 	_copies.tooltip_text = RemakeText.t("Copies: %d/%d") % [copies, copies_needed]
-	preview.modulate.a = 0.65 if disabled else 1.0
+	preview.modulate.a = 0.0 if _preview_pending else 0.65 if disabled else 1.0
 	upgrade_ready = copies_needed > 0 and copies + 1 >= copies_needed
 	if upgrade_ready and _glow == null:
 		_glow = ShaderMaterial.new()
@@ -218,3 +250,18 @@ static func snow_ink(control: Control, color := SNOW_INK) -> void:
 	control.add_theme_constant_override("outline_size", 2)
 	control.add_theme_color_override("font_shadow_color", Color.TRANSPARENT)
 	control.add_theme_constant_override("shadow_offset_y", 0)
+
+
+static func tribe_names(parent: Node, family: int, pixels := 13) -> HFlowContainer:
+	var flow:=HFlowContainer.new();flow.add_theme_constant_override("h_separation",8)
+	flow.add_theme_constant_override("v_separation",3);parent.add_child(flow)
+	for key: String in ArenaAlliances.traits(family):
+		var pair:=HBoxContainer.new();pair.add_theme_constant_override("separation",4);flow.add_child(pair)
+		var icon:=TextureRect.new();icon.texture=load("res://assets/arena/alliance_"+key+".svg")
+		icon.custom_minimum_size=Vector2(pixels+3,pixels+3)
+		icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;icon.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		pair.add_child(icon);tribe_icon(icon,key,true)
+		var label:=Label.new();label.text=RemakeText.t(ArenaAlliances.RULES[key].name)
+		label.add_theme_font_size_override("font_size",pixels);label.add_theme_color_override("font_color",GOLD)
+		pair.add_child(label)
+	return flow

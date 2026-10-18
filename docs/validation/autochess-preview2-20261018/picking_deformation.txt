@@ -1,0 +1,6 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+Vulkan 1.4.312 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090
+
+[trace 17:34:18 +2905ms] session b351082f52ee: 1.16.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, forward_plus / vulkan
+PICKING_DEFORMATION checks=1558 failures=0 native_us=435 script_us=6484
+[trace 17:34:19 +4081ms] clean exit

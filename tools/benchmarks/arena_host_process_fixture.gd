@@ -28,11 +28,12 @@ func run() -> void:
 	while host.game == null: await frames(1)
 	print("HOST_PROCESS_FILL_BEGIN ",Time.get_ticks_msec())
 	host.game.set_process(false); host.game.run.wave = 21
+	var expanded := "--expanded-roster" in OS.get_cmdline_user_args()
 	for player in 9:
 		var company := host.game.run.company(player)
 		company.army.clear(); company.wave = 21; company.training = 126
 		company.gold = 50; company.auto_save = false
-		for family in [7,9,10,11,17,18,22,23,8]: company._recruit(family, 2, 10)
+		for family in ([31,32,33,34,35,36,37,38,39] if expanded else [7,9,10,11,17,18,22,23,8]): company._recruit(family, 2, 10)
 		company.arrange()
 	host.game.run._prepare_round()
 	for plan: Dictionary in host.game.run.bot_plans: plan.done = true

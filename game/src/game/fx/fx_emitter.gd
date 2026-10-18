@@ -85,6 +85,7 @@ var shakes: Array = []
 var _fire_kernel: RefCounted
 var _fire_spawn: Callable
 var _fire_update: Callable
+var _fire_control: Callable
 var _spell_kernel: RefCounted
 var _spell_spawn: Callable
 var _spell_update: Callable
@@ -96,7 +97,7 @@ func prepare_spell_batch() -> void:
 		_spell_kernel = ClassDB.instantiate("SpellParticleKernel")
 		# An older helper still supports modifiers/orbits. Tornadoes keep the
 		# script fallback until a helper advertises this additional batch.
-		if type == 0x200a and (not _spell_kernel.has_method("supports_type") or not _spell_kernel.supports_type(type)):
+		if (type == 0x200a or type == 0x2002 or type in range(0x2027, 0x202b)) and (not _spell_kernel.has_method("supports_type") or not _spell_kernel.supports_type(type)):
 			_spell_kernel = null
 			return
 		_spell_spawn = spawn_fn
@@ -107,8 +108,12 @@ func prepare_spell_batch() -> void:
 func prepare_fire_batch() -> void:
 	if ClassDB.class_exists("FireParticleKernel") and not OS.get_cmdline_user_args().has("--ei-script-fire"):
 		_fire_kernel = ClassDB.instantiate("FireParticleKernel")
+		if type in [0x2000, 0x2010] and (not _fire_kernel.has_method("supports_type") or not _fire_kernel.supports_type(type)):
+			_fire_kernel = null
+			return
 		_fire_spawn = spawn_fn
 		_fire_update = upd_fn
+		_fire_control = ctl_fn
 
 
 func rnd() -> int:
@@ -218,7 +223,11 @@ func update_pre() -> bool:
 ## this emitter (and its ground snapshot) when `par`, no node or other
 ## object; returns false when the emitter is finished.
 func update_sim() -> bool:
-	if _fire_kernel and spawn_fn == _fire_spawn and upd_fn == _fire_update and not ctl_fn.is_valid():
+	if _fire_kernel and spawn_fn == _fire_spawn and upd_fn == _fire_update and ctl_fn == _fire_control:
+		if ctl_fn.is_valid():
+			for c in cp: ctl_fn.call(self, c)
+		if type == 0x2010:
+			return _fire_kernel.step(self, ground_src != null and ground_src.get_script() == FxGround)
 		return _fire_kernel.step(self)
 	# The first spawn reads the carrier's bounds/height and sometimes the
 	# camera. Keep that setup on its original script path; subsequent ticks

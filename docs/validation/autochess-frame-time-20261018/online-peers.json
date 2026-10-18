@@ -1,0 +1,192 @@
+[
+  {
+    "transport": "enet",
+    "passed": true,
+    "results_match": true,
+    "peers": [
+      {
+        "board_frames": 250,
+        "checks": 12,
+        "failures": [],
+        "fight_frames": 151,
+        "health": [
+          82,
+          84,
+          93,
+          84,
+          100,
+          93,
+          100,
+          82,
+          100
+        ],
+        "placements": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pvp_rounds": [
+          4,
+          6
+        ],
+        "role": "host",
+        "rounds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "transport": "enet",
+        "exit_code": 0,
+        "errors": []
+      },
+      {
+        "board_frames": 245,
+        "checks": 8,
+        "failures": [],
+        "fight_frames": 104,
+        "health": [
+          82,
+          84,
+          93,
+          84,
+          100,
+          93,
+          100,
+          82,
+          100
+        ],
+        "placements": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pvp_rounds": [
+          4,
+          6
+        ],
+        "role": "client",
+        "rounds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "transport": "enet",
+        "exit_code": 0,
+        "errors": []
+      }
+    ]
+  },
+  {
+    "transport": "websocket",
+    "passed": true,
+    "results_match": true,
+    "peers": [
+      {
+        "board_frames": 260,
+        "checks": 12,
+        "failures": [],
+        "fight_frames": 147,
+        "health": [
+          82,
+          84,
+          93,
+          84,
+          100,
+          93,
+          100,
+          82,
+          100
+        ],
+        "placements": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pvp_rounds": [
+          4,
+          6
+        ],
+        "role": "host",
+        "rounds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "transport": "websocket",
+        "exit_code": 0,
+        "errors": []
+      },
+      {
+        "board_frames": 260,
+        "checks": 8,
+        "failures": [],
+        "fight_frames": 122,
+        "health": [
+          82,
+          84,
+          93,
+          84,
+          100,
+          93,
+          100,
+          82,
+          100
+        ],
+        "placements": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pvp_rounds": [
+          4,
+          6
+        ],
+        "role": "client",
+        "rounds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "transport": "websocket",
+        "exit_code": 0,
+        "errors": []
+      }
+    ]
+  }
+]

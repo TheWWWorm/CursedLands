@@ -9,6 +9,8 @@ var _connection_generation := 0
 var _stopping := false
 
 func _ready() -> void:
+	var cursor:=GameCursor.new();cursor.control_shapes=[Input.CURSOR_ARROW,Input.CURSOR_POINTING_HAND]
+	add_child(cursor);cursor.set_kind("cursor_default")
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_prior_speed=Engine.time_scale;Engine.time_scale=1.0
 	panel=ArenaOnlinePanel.new();add_child(panel)

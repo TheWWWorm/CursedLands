@@ -39,7 +39,14 @@ is selected by `-- --ei-script-turn`, by `-- --ei-script-nav`, or automatically
 when the helper is unavailable. Tests compare routes and costs, including large
 maps, directed slopes, stamp changes and original executable reference cases.
 
-`MmpTextureKernel` decodes the authored raw 16/32-bit texture formats, and
+`MmpTextureKernel` decodes the authored raw 16/32-bit texture formats and colors
+RGBA material layers while preserving every alpha byte and the source buffer.
+`SurfaceMaterials` retains its scalar fallback, also selected by
+`-- --ei-script-textures`; older extensions without the new method use it.
+`tools/tests/surface_material_color.gd` compares all alpha values, wrapped byte
+inputs and full composites with resized RGB/RGBA, mipmapped and compressed layers.
+The test passes 5,290 checks on Linux, including an ASan/UBSan build.
+
 `AudioDecodeKernel` converts IMA sound blocks to identical PCM bytes. Audio calls
 have independent predictors and output buffers, so the existing sound-prefetch
 workers can share the decoder. `-- --ei-script-audio` selects the script decoder.
@@ -62,6 +69,23 @@ invalidate older results. World cleanup joins outstanding jobs. Subdivision,
 triangle order, interpolated attributes and local shadow geometry match the
 retained script implementation (`-- --ei-script-soft-ground`). Unsupported
 platforms or mesh layouts use that script path automatically.
+
+`LightningGeometryKernel` batches the original noise sampling and projected
+ribbon and glow geometry before one mesh upload per surface. Branch creation and
+key updates use the same shared RNG in the same order. Textures and bolt
+lifetimes remain in script. The scalar path is
+available with `--ei-script-lightning` or an older extension. The paired test
+compares 279,936 vertices across perspective, orthogonal and frustum cameras,
+camera offsets, all bolt types, changing endpoints and repeated ticks: all
+positions, UVs, colors and RNG states match exactly (1,271 checks). Compatible
+surfaces reuse their GPU buffers with the engine's uncompressed position and
+RGBA8/UV layout; geometry-size changes and unsupported renderers rebuild them.
+
+`SoftGroundPaintKernel` draws the same ordered footprint and travel marks into
+CPU snow/sand images. GPU uploads, geometry, fading and collision remain in script;
+`--ei-script-soft-ground` and older extensions retain the scalar raster. Six full
+512×512 image comparisons cover overlaps, fading, sector edges, varied footprints
+and travel. All 6,291,456 channel samples match within 5.97e-8.
 
 `MotionSplineKernel` constructs and owns the typed nodes and coefficients of a movement
 route, without allocating a script dictionary for each control and node.
@@ -146,8 +170,27 @@ and platforms without the helper retain the existing two-pass path.
 `ScreenRectKernel` calculates bounds from the same posed vertices, frustum
 clipping and nearest-even pixel rounding used by `MeshScreenRect`. It does
 not substitute boxes for exact mesh geometry or retain scene references.
+Morph and skin deformation also run in the helper, with ordered float-vector
+intermediates matching the script reference. Source arrays remain immutable;
+a single native query reads current weights and named/indexed skeleton transforms
+without retaining them. Older helpers retain script state reads and deformation.
+The 1,558-check differential
+test covers normalized/relative morphs, 4/8 influences, malformed inputs and
+authored human, dragon and cyclops animation poses with both joint modes.
+Conservative bounds of the transformed vertices classify wholly inside/outside
+meshes before the per-vertex frustum loop. Uncertain boundaries retain polygon
+clipping, and returned rectangles always project original vertices. The separate
+432-case `picking_bounds.gd` differential test disables the script classifier and
+covers indexed/nonindexed meshes, triangles/strips, three camera projections,
+near/far clipping, translated cameras and large world coordinates.
 `-- --ei-script-picking` selects the script path. The script implementations
 also remain active automatically on platforms without the extension.
+
+`FigureGeometryKernel` reads the current authored part origins and combines their
+original bounds without intermediate per-part script dictionaries. It retains
+no nodes or poses. The script implementation remains the fallback. Its 952-check
+differential test covers 112 distinct recruited models in three poses, detached
+and nested transforms, same-frame edits, reparenting and freed weak references.
 
 ## Build
 
@@ -343,6 +386,14 @@ rendering-buffer readback. The spell fixture passed 76,995 checks on Linux and
 Android; grass passed 3,719 rendered checks and 196 authored-map checks on both.
 Native fire, spell and grass code also passed ASan/UBSan fixtures on Linux.
 These checks establish equivalence of those kernels, not whole-game frame rates.
+
+The autochess extension admits fireball (`0x2000`) and firewall (`0x2010`)
+particles through the immutable ground sampler, plus spell blasts, cast bursts,
+orbiting particles and tornadoes through the spell kernel. Unsupported custom
+ground callbacks keep the script path. The extended Linux fixtures pass 43,389
+fire and 101,055 spell checks, comparing particle fields and RNG state, and pass
+ASan/UBSan. The helpers are rebuilt for Linux, Windows and Android ARM64; those
+Linux results do not establish a Windows or Android frame rate.
 
 `PerceptionKernel` evaluates a whole list of new perception candidates in one
 native call at the original decision point. It reads authored packed float32

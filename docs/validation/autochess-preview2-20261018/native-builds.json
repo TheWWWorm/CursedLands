@@ -1,0 +1,43 @@
+[
+  {
+    "platform": "linux",
+    "exit_code": 0,
+    "command": [
+      "cmake",
+      "--build",
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/build-linux",
+      "-j3"
+    ],
+    "log": "revision2-lightning-batch-linux.log"
+  },
+  {
+    "platform": "windows",
+    "exit_code": 0,
+    "command": [
+      "cmake",
+      "--build",
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/build-windows",
+      "-j2"
+    ]
+  },
+  {
+    "platform": "android",
+    "exit_code": 0,
+    "command": [
+      "cmake",
+      "--build",
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/build-android",
+      "-j2"
+    ]
+  },
+  {
+    "platform": "asan",
+    "exit_code": 0,
+    "command": [
+      "cmake",
+      "--build",
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/build-asan",
+      "-j2"
+    ]
+  }
+]

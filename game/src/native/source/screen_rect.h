@@ -1,11 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
 #pragma once
 #include <godot_cpp/classes/ref_counted.hpp>
+#include <godot_cpp/classes/mesh_instance3d.hpp>
+#include <godot_cpp/classes/mesh.hpp>
+#include <godot_cpp/classes/skeleton3d.hpp>
+#include <godot_cpp/classes/skin.hpp>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/array.hpp>
 #include <godot_cpp/variant/packed_vector3_array.hpp>
 #include <godot_cpp/variant/packed_int32_array.hpp>
+#include <godot_cpp/variant/packed_float32_array.hpp>
+#include <godot_cpp/variant/packed_float64_array.hpp>
 #include <godot_cpp/variant/typed_array.hpp>
+#include <godot_cpp/variant/transform3d.hpp>
 #include <godot_cpp/variant/plane.hpp>
 #include <godot_cpp/variant/projection.hpp>
 #include <godot_cpp/variant/rect2i.hpp>
@@ -21,6 +28,26 @@ namespace godot {
 // double scalar arithmetic (clipping ratios and pixel mapping) in that order.
 class ScreenRectKernel : public RefCounted {
     GDCLASS(ScreenRectKernel, RefCounted)
+    static int classify(const Vector3 *vertices, int64_t count, const std::array<Plane, 6> &planes) {
+        if (count < 16) return 0;
+        Vector3 lo = vertices[0], hi = lo;
+        for (int64_t i = 1; i < count; ++i) { lo = lo.min(vertices[i]); hi = hi.max(vertices[i]); }
+        if (!lo.is_finite() || !hi.is_finite()) return 0;
+        const Vector3 magnitude = lo.abs().max(hi.abs());
+        bool inside = true;
+        for (const Plane &plane : planes) {
+            real_t minimum = INFINITY, maximum = -INFINITY;
+            for (int corner = 0; corner < 8; ++corner) {
+                const Vector3 point(corner & 1 ? hi.x : lo.x, corner & 2 ? hi.y : lo.y, corner & 4 ? hi.z : lo.z);
+                const real_t distance = plane.distance_to(point);
+                minimum = std::min(minimum, distance); maximum = std::max(maximum, distance);
+            }
+            const double guard = (double(plane.normal.abs().dot(magnitude)) + std::abs(double(plane.d)) + 1.) * .0001;
+            if (minimum > guard) return -1;
+            if (maximum >= -guard) inside = false;
+        }
+        return inside ? 1 : 0;
+    }
     static int32_t pixel(double value) {
         if (!std::isfinite(value) || value <= -0x1p63 || value >= 0x1p63) return 0;
         const double f = std::floor(value), d = value - f;
@@ -30,8 +57,84 @@ class ScreenRectKernel : public RefCounted {
 protected:
     static void _bind_methods() {
         ClassDB::bind_method(D_METHOD("bounds", "surfaces", "planes", "projection", "inverse_basis", "origin", "size"), &ScreenRectKernel::bounds);
+        ClassDB::bind_method(D_METHOD("deform_vertices", "base", "shapes", "shape_weights", "normalized", "bones", "weights", "poses"), &ScreenRectKernel::deform_vertices);
+        ClassDB::bind_method(D_METHOD("deformation_state", "instance"), &ScreenRectKernel::deformation_state);
     }
 public:
+    // Read the same current renderer inputs in one native call. Morph-heavy
+    // creatures otherwise cross the script boundary hundreds of times merely
+    // to validate an unchanged cached rectangle. No pose is cached here.
+    Array deformation_state(MeshInstance3D *instance) const {
+        PackedFloat64Array weights;
+        TypedArray<Transform3D> poses;
+        bool skinned = false;
+        if (instance) {
+            const Ref<Mesh> mesh = instance->get_mesh();
+            if (mesh.is_valid()) {
+                const int count = instance->get_blend_shape_count();
+                weights.resize(count);
+                double *out = weights.ptrw();
+                for (int i = 0; i < count; ++i) out[i] = instance->get_blend_shape_value(i);
+            }
+            const Ref<Skin> skin = instance->get_skin();
+            if (skin.is_valid()) {
+                auto *skeleton = Object::cast_to<Skeleton3D>(instance->get_node_or_null(instance->get_skeleton_path()));
+                if (skeleton) {
+                    skinned = true;
+                    const int count = skin->get_bind_count();
+                    poses.resize(count);
+                    for (int i = 0; i < count; ++i) {
+                        const StringName name = skin->get_bind_name(i);
+                        const int bone = name != StringName() ? skeleton->find_bone(name) : skin->get_bind_bone(i);
+                        poses[i] = bone >= 0 ? skeleton->get_bone_global_pose(bone) * skin->get_bind_pose(i) : Transform3D();
+                    }
+                }
+            }
+        }
+        Array out; out.push_back(weights); out.push_back(poses); out.push_back(skinned); return out;
+    }
+
+    // The script reference applies morphs in authored order, then skinning.
+    // Keep each Vector3 intermediate at real_t precision, including weights.
+    PackedVector3Array deform_vertices(const PackedVector3Array &base, const Array &shapes,
+            const PackedFloat64Array &shape_weights, bool normalized,
+            const PackedInt32Array &bones, const PackedFloat32Array &weights,
+            const TypedArray<Transform3D> &input_poses) const {
+        const int64_t count = base.size();
+        if (count == 0 || shape_weights.size() < shapes.size()) return PackedVector3Array();
+        if (!weights.is_empty() && (weights.size() % count != 0 || bones.size() != weights.size())) return PackedVector3Array();
+        PackedVector3Array result = base;
+        Vector3 *out = result.ptrw();
+        const Vector3 *original = base.ptr();
+        for (int64_t k = 0; k < shapes.size(); ++k) {
+            const double weight = shape_weights[k];
+            if (Math::is_zero_approx(weight)) continue;
+            if (shapes[k].get_type() != Variant::PACKED_VECTOR3_ARRAY) return PackedVector3Array();
+            const PackedVector3Array shape = shapes[k];
+            if (shape.size() != count) continue;
+            const Vector3 *target = shape.ptr();
+            for (int64_t i = 0; i < count; ++i)
+                out[i] += (normalized ? target[i] - original[i] : target[i]) * real_t(weight);
+        }
+        if (weights.is_empty()) return result;
+        std::vector<Transform3D> poses;
+        poses.reserve(input_poses.size());
+        for (int64_t i = 0; i < input_poses.size(); ++i) poses.push_back(input_poses[i]);
+        const int64_t stride = weights.size() / count;
+        const int32_t *bone = bones.ptr();
+        const float *influence = weights.ptr();
+        for (int64_t i = 0; i < count; ++i) {
+            Vector3 point;
+            for (int64_t j = 0; j < stride; ++j) {
+                const int64_t at = i * stride + j;
+                const int32_t b = bone[at];
+                if (b >= 0 && size_t(b) < poses.size()) point += poses[b].xform(out[i]) * real_t(influence[at]);
+            }
+            out[i] = point;
+        }
+        return result;
+    }
+
     Rect2i bounds(const Array &surfaces, const TypedArray<Plane> &input_planes,
                  const Projection &projection, const Basis &inverse_basis,
                  Vector3 origin, Vector2 size) const {
@@ -60,6 +163,14 @@ public:
             const PackedInt32Array indices = surface[1];
             const int64_t primitive = surface[2], count = vertices.size();
             const Vector3 *vs = vertices.ptr();
+            // Bounds only classify clipping. The returned rectangle still
+            // projects every original posed vertex, never these box corners.
+            const int classification = classify(vs, count, planes);
+            if (classification < 0) continue;
+            if (classification > 0) {
+                for (int64_t i = 0; i < count; ++i) project(vs[i]);
+                continue;
+            }
             int outside = 0, common = 63;
             for (int64_t i = 0; i < count; ++i) {
                 int code = 0;

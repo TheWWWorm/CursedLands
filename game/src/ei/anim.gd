@@ -68,9 +68,9 @@ static func _scaled(src: Animation, k: float) -> Animation:
 
 
 static func _build_library(template: String, paths: Dictionary, root_part: String, root_scale: float,
-		native_keys: bool) -> AnimationLibrary:
+		native_keys: bool, supplied_bytes := PackedByteArray(), options: Array = [], parallel := true) -> AnimationLibrary:
 	var lib := AnimationLibrary.new()
-	var arc_bytes := GameData.read_figure(template + ".anm")
+	var arc_bytes := supplied_bytes if not supplied_bytes.is_empty() else GameData.read_figure(template + ".anm")
 	if EIResArchive.is_archive(arc_bytes):
 		var arc := EIResArchive.from_bytes(arc_bytes)
 		var names: Array = arc.entries.keys()
@@ -80,9 +80,12 @@ static func _build_library(template: String, paths: Dictionary, root_part: Strin
 		# Decoded on the worker threads (_build only reads its arguments).
 		var built := []
 		built.resize(names.size())
-		Portability.group(func(i: int) -> void:
+		var build := func(i: int) -> void:
 			built[i] = _build(EIResArchive.from_bytes(data[i]), paths, root_part, root_scale, native_keys,
-				names[i]), names.size())
+				names[i], options)
+		if parallel: Portability.group(build,names.size())
+		else:
+			for i in names.size(): build.call(i)
 		for i in names.size():
 			var anim_name: String = names[i]
 			var anim: Animation = built[i]
@@ -93,7 +96,10 @@ static func _build_library(template: String, paths: Dictionary, root_part: Strin
 
 
 static func _build(tracks: EIResArchive, paths: Dictionary, root_part: String, root_scale: float,
-		native_keys := false, _clip := "") -> Animation:
+		native_keys := false, _clip := "", options: Array = []) -> Animation:
+	var use_parent_first: bool = options[0] if options.size() == 3 else parent_first
+	var use_absolute: bool = options[1] if options.size() == 3 else absolute
+	var use_invert: bool = options[2] if options.size() == 3 else invert_keys
 	if tracks == null:
 		return null
 	var anim := Animation.new()
@@ -150,11 +156,11 @@ static func _build(tracks: EIResArchive, paths: Dictionary, root_part: String, r
 		var ws: Array[Quaternion] = []
 		var locs: Array[Quaternion] = []
 		for i in qs.size():
-			var l: Quaternion = qs[i].inverse() if invert_keys else qs[i]
+			var l: Quaternion = qs[i].inverse() if use_invert else qs[i]
 			if par != "" and world.has(par):
 				var pw: Array = world[par]
 				var wp: Quaternion = pw[mini(i, pw.size() - 1)]
-				var w := l if absolute else ((wp * l) if parent_first else (l * wp))
+				var w := l if use_absolute else ((wp * l) if use_parent_first else (l * wp))
 				ws.append(w)
 				locs.append(wp.inverse() * w)
 			else:
@@ -165,7 +171,7 @@ static func _build(tracks: EIResArchive, paths: Dictionary, root_part: String, r
 		anim.track_set_path(t, NodePath(String(paths[part]) + ":animation_key") if native_keys else paths[part])
 		for i in locs.size():
 			if native_keys:
-				anim.track_insert_key(t, i / FPS, qs[i].inverse() if invert_keys else qs[i])
+				anim.track_insert_key(t, i / FPS, qs[i].inverse() if use_invert else qs[i])
 			else:
 				anim.rotation_track_insert_key(t, i / FPS, locs[i])
 		length = maxf(length, (qs.size() - 1) / FPS)

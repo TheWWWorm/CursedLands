@@ -1,0 +1,158 @@
+{
+  "roster": {
+    "families": 40,
+    "tier_counts": [
+      7,
+      9,
+      10,
+      8,
+      6
+    ],
+    "opening_families": 16
+  },
+  "legacy_comparison": {
+    "games": 4,
+    "new_wins": 4,
+    "rounds": [
+      29,
+      31,
+      27,
+      27
+    ],
+    "new": {
+      "seats": 18,
+      "mean_place": 3,
+      "late_samples": 345,
+      "mean_gold": 24.089855072463767,
+      "mean_interest": 2.1884057971014492,
+      "max_gold": 54,
+      "three_star_observations": 44
+    },
+    "legacy": {
+      "seats": 18,
+      "mean_place": 7,
+      "late_samples": 214,
+      "mean_gold": 4.47196261682243,
+      "mean_interest": 0.009345794392523364,
+      "max_gold": 10,
+      "three_star_observations": 20
+    }
+  },
+  "self_play": {
+    "games": 4,
+    "rounds": [
+      32,
+      32,
+      28,
+      29
+    ],
+    "strategies": [
+      {
+        "name": "economy",
+        "seats": 9,
+        "mean_place": 5.888888888888889,
+        "wins": 1,
+        "late_samples": 76,
+        "mean_gold": 11.144736842105264,
+        "mean_interest": 0.9342105263157895,
+        "max_gold": 52,
+        "three_star_observations": 0
+      },
+      {
+        "name": "expansion",
+        "seats": 9,
+        "mean_place": 4.555555555555555,
+        "wins": 2,
+        "late_samples": 105,
+        "mean_gold": 17.580952380952382,
+        "mean_interest": 1.5238095238095237,
+        "max_gold": 34,
+        "three_star_observations": 15
+      },
+      {
+        "name": "evolution",
+        "seats": 9,
+        "mean_place": 5.777777777777778,
+        "wins": 0,
+        "late_samples": 87,
+        "mean_gold": 15.344827586206897,
+        "mean_interest": 1.3448275862068966,
+        "max_gold": 44,
+        "three_star_observations": 26
+      },
+      {
+        "name": "tempo",
+        "seats": 9,
+        "mean_place": 3.7777777777777777,
+        "wins": 1,
+        "late_samples": 119,
+        "mean_gold": 15.252100840336135,
+        "mean_interest": 1.3025210084033614,
+        "max_gold": 24,
+        "three_star_observations": 4
+      }
+    ],
+    "late_family_observations": {
+      "30": 47,
+      "15": 1,
+      "17": 313,
+      "18": 35,
+      "34": 256,
+      "10": 192,
+      "27": 226,
+      "39": 226,
+      "37": 66,
+      "31": 40,
+      "19": 8,
+      "33": 127,
+      "20": 66,
+      "21": 25,
+      "28": 36,
+      "32": 95,
+      "22": 350,
+      "26": 97,
+      "6": 13,
+      "7": 154,
+      "23": 115,
+      "4": 31,
+      "11": 47,
+      "35": 66,
+      "8": 138,
+      "29": 68,
+      "9": 42,
+      "38": 36,
+      "36": 29,
+      "12": 1,
+      "16": 13
+    }
+  },
+  "duels": [
+    {
+      "rank": 0,
+      "fights": 800,
+      "rows": 10
+    },
+    {
+      "rank": 1,
+      "fights": 800,
+      "rows": 10
+    },
+    {
+      "rank": 2,
+      "fights": 3200,
+      "rows": 40
+    }
+  ],
+  "teams": [
+    {
+      "rank": 1,
+      "fights": 128,
+      "rows": 10
+    },
+    {
+      "rank": 2,
+      "fights": 128,
+      "rows": 10
+    }
+  ]
+}

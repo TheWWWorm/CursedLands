@@ -6,6 +6,7 @@ const FRAME_RATE := 60
 var session: ArenaOnlineSession
 var frontend := false
 var worker := false
+var solo_combat := false
 var starting := false
 var owned := false
 var owner_peer := 0
@@ -26,9 +27,10 @@ static func available() -> bool:
 func _ready() -> void:
 	process_priority = 100   # change animation speed after this frame's world callbacks
 
-func start(port: int, use_websocket: bool) -> Error:
+func start(port: int, use_websocket: bool, solo := false) -> Error:
 	if frontend or worker or starting or session.peer != null: return ERR_ALREADY_IN_USE
-	if port < 1 or port > 65535: return ERR_INVALID_PARAMETER
+	if port < (0 if solo else 1) or port > 65535: return ERR_INVALID_PARAMETER
+	solo_combat = solo
 	_generation += 1
 	var generation := _generation
 	_token = Crypto.new().generate_random_bytes(32).hex_encode()
@@ -36,10 +38,11 @@ func start(port: int, use_websocket: bool) -> Error:
 	DirAccess.make_dir_recursive_absolute(directory)
 	_config = directory.path_join("%d-%d.cfg" % [OS.get_process_id(), Time.get_ticks_usec()])
 	var config := {"token":_token, "parent":OS.get_process_id(), "port":port, "websocket":use_websocket,
-		"password":session.password, "name":session.player_name, "language":RemakeText.lang,
+		"solo_combat":solo, "password":session.password, "name":session.player_name, "language":RemakeText.lang,
 		"options":GameData.options.duplicate(true)}
 	# The visible process owns router mapping and its existing status UI.
 	config.options.net_upnp = 0
+	if solo: config.options.net_lan = 0
 	var file := FileAccess.open(_config, FileAccess.WRITE)
 	if file == null: return FileAccess.get_open_error()
 	if OS.get_name() != "Windows": FileAccess.set_unix_permissions(_config, 0x180)
@@ -58,7 +61,9 @@ func start(port: int, use_websocket: bool) -> Error:
 	var result := ERR_CANT_CREATE
 	if FileAccess.file_exists(_config + ".ready"):
 		var ready = JSON.parse_string(FileAccess.get_file_as_string(_config + ".ready"))
-		if ready is Dictionary: result = int(ready.get("error", ERR_CANT_CREATE))
+		if ready is Dictionary:
+			result = int(ready.get("error", ERR_CANT_CREATE))
+			port = int(ready.get("port", port))
 	if result == OK:
 		result = session.join(("ws://127.0.0.1:%d" if use_websocket else "127.0.0.1:%d") % port)
 		while generation == _generation and result == OK and not owned and alive() and session.peer != null \
@@ -88,8 +93,9 @@ func configure(path: String) -> Dictionary:
 	if file == null: return {}
 	var config = file.get_var(); file.close()
 	if not config is Dictionary or not config.get("token") is String or config.token.length() != 64 \
-			or not ArenaRun._integer(config.get("port"), 1, 65535) or not config.get("options") is Dictionary:
+			or not ArenaRun._integer(config.get("port"), 0 if config.get("solo_combat", false) else 1, 65535) or not config.get("options") is Dictionary:
 		return {}
+	solo_combat = bool(config.get("solo_combat", false))
 	worker = true; _config = path; _token = config.token
 	parent_id = int(config.get("parent", -1)); _owner_seen = Time.get_ticks_msec()
 	session.player_name = String(config.get("name", "")); session.password = String(config.get("password", ""))
@@ -101,7 +107,7 @@ func configure(path: String) -> Dictionary:
 func listening(error: Error) -> void:
 	var file := FileAccess.open(_config + ".ready.tmp", FileAccess.WRITE)
 	if file:
-		file.store_string(JSON.stringify({"error":int(error)})); file.close()
+		file.store_string(JSON.stringify({"error":int(error),"port":session.host_port})); file.close()
 		DirAccess.rename_absolute(_config + ".ready.tmp", _config + ".ready")
 
 func hello(data: Dictionary) -> void:
@@ -126,6 +132,7 @@ func welcomed(data: Dictionary) -> void:
 
 func packet(id: int, data: Dictionary) -> bool:
 	if not worker or id != owner_peer or owner_peer <= 1: return false
+	if solo_combat and session.solo_packet(id, data): return true
 	if data.t == "owner_alive":
 		_owner_seen = Time.get_ticks_msec()
 		return true

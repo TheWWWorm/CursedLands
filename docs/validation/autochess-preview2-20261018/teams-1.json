@@ -1,0 +1,456 @@
+[
+	{
+		"family": 30,
+		"name": "Apprentices",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 17.3524999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 20.9274999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 18.2874999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 19.8274999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 21.3674999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 22.6324999999999,
+				"wins": 2
+			}
+		],
+		"rank": 1
+	},
+	{
+		"family": 31,
+		"name": "Hounds",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 65.8625000000005,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 65.725,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 87.4775000000026,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 104.995000000005,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 103.125000000005,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 107.057500000005,
+				"wins": 1
+			},
+			{
+				"draws": 1,
+				"family": 17,
+				"seconds": 111.842500000006,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 58.3824999999997,
+				"wins": 2
+			}
+		],
+		"rank": 1
+	},
+	{
+		"family": 32,
+		"name": "Woodsfolk mystics",
+		"opponents": [
+			{
+				"draws": 2,
+				"family": 6,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 31.9274999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 43.0374999999998,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 19,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 1,
+				"family": 20,
+				"seconds": 119.185000000007,
+				"wins": 1
+			},
+			{
+				"draws": 1,
+				"family": 21,
+				"seconds": 117.782500000006,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 62.2875000000014,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 79.5025000000016,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 27,
+				"seconds": 120.010000000007,
+				"wins": 0
+			}
+		],
+		"rank": 1
+	},
+	{
+		"family": 33,
+		"name": "Ghouls",
+		"opponents": [
+			{
+				"draws": 2,
+				"family": 7,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 35.2549999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 81.1250000000019,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 110.962500000006,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 112.640000000006,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 30.6899999999999,
+				"wins": 0
+			},
+			{
+				"draws": 1,
+				"family": 39,
+				"seconds": 104.747500000005,
+				"wins": 0
+			}
+		],
+		"rank": 1
+	},
+	{
+		"family": 34,
+		"name": "Red eyes",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 34.3749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 38.5274999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 27.4724999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 25.2449999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 29.6449999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 32.5049999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 39,
+				"seconds": 41.4424999999998,
+				"wins": 2
+			}
+		],
+		"rank": 1
+	},
+	{
+		"family": 35,
+		"name": "Dragons",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 95.5900000000036,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 50.2424999999998,
+				"wins": 1
+			},
+			{
+				"draws": 2,
+				"family": 36,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 37,
+				"seconds": 56.3199999999997,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 38,
+				"seconds": 67.9250000000002,
+				"wins": 2
+			}
+		],
+		"rank": 1
+	},
+	{
+		"family": 36,
+		"name": "Cyclopes",
+		"opponents": [
+			{
+				"draws": 2,
+				"family": 9,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 1,
+				"family": 11,
+				"seconds": 109.285000000005,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 35,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 37,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 38,
+				"seconds": 120.010000000007,
+				"wins": 0
+			}
+		],
+		"rank": 1
+	},
+	{
+		"family": 37,
+		"name": "Shadows",
+		"opponents": [
+			{
+				"draws": 2,
+				"family": 9,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 50.4349999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 58.8499999999997,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 36,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 1,
+				"family": 38,
+				"seconds": 111.870000000006,
+				"wins": 0
+			}
+		],
+		"rank": 1
+	},
+	{
+		"family": 38,
+		"name": "Imperial archers",
+		"opponents": [
+			{
+				"draws": 2,
+				"family": 9,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 1,
+				"family": 11,
+				"seconds": 87.4775000000032,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 35,
+				"seconds": 69.0525000000004,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 36,
+				"seconds": 120.010000000007,
+				"wins": 0
+			},
+			{
+				"draws": 2,
+				"family": 37,
+				"seconds": 120.010000000007,
+				"wins": 0
+			}
+		],
+		"rank": 1
+	},
+	{
+		"family": 39,
+		"name": "Storm banshees",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 80.9600000000018,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 40.8924999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 67.1000000000001,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 93.9950000000034,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 29,
+				"seconds": 93.9950000000034,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 33,
+				"seconds": 93.9950000000034,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 34,
+				"seconds": 41.4424999999998,
+				"wins": 0
+			}
+		],
+		"rank": 1
+	}
+]

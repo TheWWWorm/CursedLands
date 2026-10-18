@@ -6,12 +6,12 @@ func _ready() -> void:
 	var fa := ParticleFx.new(); var fb := ParticleFx.new()
 	var carrier := Node3D.new()
 	var random := RandomNumberGenerator.new(); random.seed = 817496
-	var kinds := range(0x201b, 0x2027) + range(0x202b, 0x202f)
+	var kinds := [0x2002] + range(0x201b, 0x202f)
 	var native_us := 0; var script_us := 0; var native_ticks := 0
 	for kind in kinds:
 		for trial in 12:
 			var a := FxTypes.create(fa, kind); var b := FxTypes.create(fb, kind)
-			b.rng.seed = a.rng.seed
+			b.rng.state = a.rng.state
 			check(a._spell_kernel != null, "factory selects spell batch")
 			var values := {"carrier":carrier,"has_carrier":true,"s":[-3.4,-1.0,1.0,4.1][trial % 4],
 				"cc":[0,40,51,88,100,100][trial % 6],"d0":[1,8,80][trial % 3],

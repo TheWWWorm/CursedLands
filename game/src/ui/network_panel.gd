@@ -48,7 +48,7 @@ const PAGE_NAMES := ["modes", "host_coop", "join_coop", "host_lmp", "join_lmp"]
 
 const BOOK_PATH := "user://addrbook.cfg"
 const BOOK_MAX := 12
-const NAME_MAX := 10
+const NAME_MAX := 24
 const OK_RECT := Rect2(213, 526, 74, 48)
 const CANCEL_RECT := Rect2(513, 526, 74, 48)
 const PLATE_UV := [122, 108, 252, 127]

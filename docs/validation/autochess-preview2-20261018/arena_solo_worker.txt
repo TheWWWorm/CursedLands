@@ -1,0 +1,22 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.
+However, bear in mind that at the moment it can lead to project crashes or instability.
+So, unless you want to test the engine, set the "rendering/driver/threads/thread_model" project setting to 'Safe'.
+     at: setup2 (main/main.cpp:3514)
+
+[trace 17:31:45 +2079ms] session 4c27eee6b8af: 1.16.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 17:31:48 +2046ms] session 203f3a0f3936: 1.16.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+WORKER_CLOCK 0 worker=60.7749999999997 inline=60.7749999999997
+WORKER_CLOCK 1 worker=49.7749999999998 inline=49.7749999999998
+WORKER_CLOCK 2 worker=120.010000000007 inline=120.010000000007
+WORKER_CLOCK 3 worker=120.010000000007 inline=120.010000000007
+WORKER_CLOCK 4 worker=69.5200000000004 inline=69.5200000000004
+WORKER_CLOCK 5 worker=120.010000000007 inline=120.010000000007
+WORKER_CLOCK 6 worker=120.010000000007 inline=120.010000000007
+WORKER_CLOCK 7 worker=120.010000000007 inline=120.010000000007
+WORKER_CLOCK 8 worker=120.010000000007 inline=120.010000000007
+[trace 17:32:58 +72632ms] clean exit
+ARENA_SOLO_WORKER 47 checks; failures=[]
+[trace 17:32:59 +75245ms] clean exit

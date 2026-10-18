@@ -1,0 +1,525 @@
+[
+  {
+    "name": "lightning_geometry",
+    "exit_code": 0,
+    "seconds": 3.32,
+    "summary": [
+      "LIGHTNING_GEOMETRY {\"checks\":1117,\"failures\":[],\"native_us\":78865,\"peak_error\":0.0,\"script_us\":263498,\"vertices\":292032}"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/lightning_geometry.gd"
+    ],
+    "log": "accept-lightning_geometry.log"
+  },
+  {
+    "name": "animation_missing_targets",
+    "exit_code": 0,
+    "seconds": 2.78,
+    "summary": [
+      "MISSING_ANIMATION_TARGETS {\"checks\":36,\"failures\":0,\"median_prepare_us\":124}"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/engine_patches/godot-4.7/tests/animation_missing_targets.gd"
+    ],
+    "log": "accept-animation_missing_targets.log"
+  },
+  {
+    "name": "animation_cache_preparation",
+    "exit_code": 0,
+    "seconds": 2.72,
+    "summary": [
+      "CACHE_PREPARATION 1435 checks 0 failures"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/engine_patches/godot-4.7/tests/animation_cache_preparation.gd"
+    ],
+    "log": "accept-animation_cache_preparation.log"
+  },
+  {
+    "name": "animation_cache_retention",
+    "exit_code": 0,
+    "seconds": 2.87,
+    "summary": [
+      "CACHE_LIFECYCLE PASS=1256 FAIL=0"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/engine_patches/godot-4.7/tests/animation_cache_retention.gd"
+    ],
+    "log": "accept-animation_cache_retention.log"
+  },
+  {
+    "name": "unobserved_eligibility",
+    "exit_code": 0,
+    "seconds": 2.87,
+    "summary": [
+      "UNOBSERVED_ELIGIBILITY 655 checks 0 failures"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/engine_patches/godot-4.7/tests/unobserved_eligibility.gd"
+    ],
+    "log": "accept-unobserved_eligibility.log"
+  },
+  {
+    "name": "arena_round_lifecycle",
+    "exit_code": 0,
+    "seconds": 23.71,
+    "summary": [
+      "ARENA_ROUND_LIFECYCLE 496 checks; failures=[]"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_round_lifecycle.gd"
+    ],
+    "log": "accept-arena_round_lifecycle.log"
+  },
+  {
+    "name": "arena_roster_ui",
+    "exit_code": 0,
+    "seconds": 11.03,
+    "summary": [
+      "ARENA_ROSTER_UI en checks=139 failures=[]"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_roster_ui.gd"
+    ],
+    "log": "accept-arena_roster_ui.log"
+  },
+  {
+    "name": "arena_host_tick_schedule",
+    "exit_code": 0,
+    "seconds": 21.9,
+    "summary": [
+      "ARENA_HOST_TICK_SCHEDULE 21482 checks; failures=[]"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_host_tick_schedule.gd"
+    ],
+    "log": "accept-arena_host_tick_schedule.log"
+  },
+  {
+    "name": "arena_solo_worker",
+    "exit_code": 0,
+    "seconds": 75.59,
+    "summary": [
+      "ARENA_SOLO_WORKER 47 checks; failures=[]"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_solo_worker.gd"
+    ],
+    "log": "accept-arena_solo_worker.log"
+  },
+  {
+    "name": "arena_solo_recovery",
+    "exit_code": 0,
+    "seconds": 5.72,
+    "summary": [
+      "ARENA_SOLO_RECOVERY 8 checks; failures=[]"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_solo_recovery.gd"
+    ],
+    "log": "accept-arena_solo_recovery.log"
+  },
+  {
+    "name": "arena_formation",
+    "exit_code": 0,
+    "seconds": 3.97,
+    "summary": [
+      "ARENA_FORMATION 22 checks; failures=[]"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_formation.gd"
+    ],
+    "log": "accept-arena_formation.log"
+  },
+  {
+    "name": "arena_host_presentation",
+    "exit_code": 0,
+    "seconds": 6.02,
+    "summary": [
+      "ARENA_HOST_PRESENTATION 56 checks; failures=0"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_host_presentation.gd"
+    ],
+    "log": "accept-arena_host_presentation.log"
+  },
+  {
+    "name": "arena_surface_cache",
+    "exit_code": 0,
+    "seconds": 3.87,
+    "summary": [
+      "ARENA_SURFACE_CACHE 24 checks; failures=[]"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_surface_cache.gd"
+    ],
+    "log": "accept-arena_surface_cache.log"
+  },
+  {
+    "name": "soft_ground_paint",
+    "exit_code": 0,
+    "seconds": 3.22,
+    "summary": [
+      "SOFT_GROUND_PAINT {\"checks\":26,\"failures\":[],\"native_us\":50577,\"peak_error\":0.0000000596046447753906,\"samples\":6291456,\"script_us\":258043}"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/soft_ground_paint.gd"
+    ],
+    "log": "accept-soft_ground_paint.log"
+  },
+  {
+    "name": "soft_ground_mesh",
+    "exit_code": 0,
+    "seconds": 3.02,
+    "summary": [
+      "SOFT_GROUND_MESH checks=3014 failures=0 native_us=23950 script_us=369954"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/soft_ground_mesh.gd"
+    ],
+    "log": "accept-soft_ground_mesh.log"
+  },
+  {
+    "name": "soft_ground_field",
+    "exit_code": 0,
+    "seconds": 4.67196366598364,
+    "summary": [
+      "SOFT_GROUND_FIELD checks=152 failures=0"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/soft_ground_field.gd"
+    ],
+    "log": "accept-render-soft_ground_field.log",
+    "fixture_note": "Rerun with the required real renderer; headless exit 2 is unsupported."
+  },
+  {
+    "name": "soft_ground_capacity",
+    "exit_code": 0,
+    "seconds": 3.02,
+    "summary": [
+      "DENSE_CAPACITY checks=24 failures=0"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/soft_ground_capacity.gd"
+    ],
+    "log": "accept-soft_ground_capacity.log"
+  },
+  {
+    "name": "soft_ground_seams",
+    "exit_code": 0,
+    "seconds": 60.30895590397995,
+    "summary": [
+      "SOFT_GROUND_SEAMS 288 checks 0 failures"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/soft_ground_seams.gd"
+    ],
+    "log": "accept-render-soft_ground_seams.log",
+    "fixture_note": "Rerun with the required real renderer; headless exit 2 is unsupported."
+  },
+  {
+    "name": "soft_ground_material",
+    "exit_code": 0,
+    "seconds": 2.67,
+    "summary": [
+      "SOFT_GROUND_MATERIAL checks=8 failures=0"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/soft_ground_material.gd"
+    ],
+    "log": "accept-soft_ground_material.log"
+  },
+  {
+    "name": "arena_camera",
+    "exit_code": 0,
+    "seconds": 9.08,
+    "summary": [
+      "ARENA_CAMERA 19 checks; failures=[]"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_camera.gd"
+    ],
+    "log": "accept-arena_camera.log"
+  },
+  {
+    "name": "player_profile",
+    "exit_code": 0,
+    "seconds": 6.17,
+    "summary": [
+      "PLAYER_PROFILE 24 checks; failures=[]"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/player_profile.gd"
+    ],
+    "log": "accept-player_profile.log"
+  },
+  {
+    "name": "scaled_menu_arena_text",
+    "exit_code": 0,
+    "seconds": 18.39,
+    "summary": [
+      "SCALED_TEXT ru 19 checks; failures=[]"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/scaled_menu_arena_text.gd"
+    ],
+    "log": "accept-scaled_menu_arena_text.log"
+  },
+  {
+    "name": "arena_feedback_ui",
+    "exit_code": 0,
+    "seconds": 20.05,
+    "summary": [
+      "ARENA_FEEDBACK_UI 50 checks; failures=[] errors=[]"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--gpu-index",
+      "0",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_feedback_ui.gd"
+    ],
+    "log": "accept-arena_feedback_ui.log"
+  },
+  {
+    "name": "arena_live_shop",
+    "exit_code": 0,
+    "seconds": 3.42,
+    "summary": [
+      "ARENA_LIVE_SHOP 126 checks; failures=[]"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_live_shop.gd"
+    ],
+    "log": "accept-arena_live_shop.log"
+  },
+  {
+    "name": "arena_roster",
+    "exit_code": 0,
+    "seconds": 2.67,
+    "summary": [
+      "ARENA_ROSTER checks=765 opening_pair_duplicate_rate=0.07725 failures=[]"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_roster.gd"
+    ],
+    "log": "accept-arena_roster.log"
+  },
+  {
+    "name": "arena_online",
+    "exit_code": 0,
+    "seconds": 10.38,
+    "summary": [
+      "ARENA_ONLINE 64 checks; failures=[]"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_online.gd"
+    ],
+    "log": "accept-arena_online.log"
+  },
+  {
+    "name": "arena_local_host",
+    "exit_code": 0,
+    "seconds": 32.41,
+    "summary": [
+      "ARENA_LOCAL_HOST 74 checks; failures=[]"
+    ],
+    "command": [
+      "/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/runtime/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-frame-time-text-20261018/repo/tools/tests/arena_local_host.gd"
+    ],
+    "log": "accept-arena_local_host.log"
+  }
+]

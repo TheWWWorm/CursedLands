@@ -98,7 +98,7 @@ var _material_soft := -1.0
 var _material_tint := Color()
 var _material_boost := -1.0
 var _material_firelight := false
-var _quad: QuadMesh
+static var _quad: QuadMesh
 var _bones := {}             # unit instance id -> {model: instance id, parts: {name: Node3D}}
 var _boxes := {}             # unit instance id -> [tick, AABB] (unit local, Godot space)
 var _zone_set := false
@@ -145,8 +145,14 @@ static func of(w: GameWorld) -> ParticleFx:
 
 func _init() -> void:
 	_rng.seed = 0x55aa1234
-	_quad = QuadMesh.new()
-	_quad.size = Vector2(2, 2)   # vertices at +-1: the shader scales by the particle size
+	quad_mesh()
+
+
+static func quad_mesh() -> QuadMesh:
+	if _quad == null:
+		_quad = QuadMesh.new()
+		_quad.size = Vector2(2, 2)   # vertices at +-1: the shader scales by the particle size
+	return _quad
 
 
 func _ready() -> void:
@@ -294,6 +300,16 @@ func carrier_point(e: FxEmitter, obj: Object) -> Vector3:
 ## Other creatures retain the original figure-centre fallback.
 func unit_point(u: GameUnit, sel: int) -> Vector3:
 	u.observe_presentation()
+	if _point_cache_active:
+		var id := u.get_instance_id()
+		if not _point_cache.has(id): _point_cache[id] = {}
+		var points: Dictionary = _point_cache[id]
+		if not points.has(sel): points[sel] = _sample_unit_point(u,sel)
+		return points[sel]
+	return _sample_unit_point(u,sel)
+
+
+func _sample_unit_point(u: GameUnit, sel: int) -> Vector3:
 	if sel == 0:
 		if int(u.race.get("type_id", -1)) == 0x32:
 			var hand := _bone(u, "rh3")
@@ -596,7 +612,20 @@ func remove_bolt(l: FxLightning) -> void:
 
 # ------------------------------------------------------------------ tick
 
+var _point_cache := {}
+var _point_cache_active := false
+
 func _process(dt: float) -> void:
+	# Several distant bolts can sample the same animated endpoint in one
+	# effect update. Unit poses cannot advance between these synchronous
+	# samples; release every cached point before returning to the scene tree.
+	_point_cache_active = world != null and world.arena_overview
+	_advance_effects(dt)
+	_point_cache_active = false
+	_point_cache.clear()
+
+
+func _advance_effects(dt: float) -> void:
 	acc += dt
 	var n := 0
 	while acc >= TICK and n < 8:
@@ -660,6 +689,14 @@ func _tick(last := true) -> void:
 		ef.ok = true
 		ef.pre = -1
 		ef.want_fill = false
+		if world and world.arena_overview and ef.e.type != 0x2039:
+			# The overview camera is beyond DRAW_DIST, so these particles are
+			# already culled. Keep emitter descriptors, expiry, missiles and
+			# lights live, but do not simulate invisible particle populations.
+			# A surviving emitter refills at its current carrier when scouted.
+			ef.e.parts.clear(); ef.filled = -1
+			ef.ok = not ef.deleted
+			continue
 		if ef.e.update_pre():
 			if ef.e.par:
 				ef.want_fill = last and is_visible_in_tree() and ef.filled >= 0 and ef.mmi != null

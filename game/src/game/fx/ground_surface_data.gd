@@ -56,6 +56,11 @@ static func _vertex_image(terrain: EITerrain, contact: bool) -> Image:
 
 
 func _build(terrain: EITerrain, contact: bool) -> void:
+	if contact and terrain is ArenaWinterTerrain and not Portability.compatibility():
+		var shared := ArenaSurfaceCache.acquire(terrain)
+		vertices = shared.vertices; normals = shared.normals
+		light_inputs = shared.light_inputs; candidates = shared.candidates
+		return
 	var image := _vertex_image(terrain, contact)
 	# A contact consumer may join after cover. Preserve the bound vertex RID
 	# when adding its upper bounds; XYZ and the cover's geometry stay identical.

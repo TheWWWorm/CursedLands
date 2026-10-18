@@ -1,0 +1,35 @@
+--- a/scene/animation/animation_mixer.cpp
++++ b/scene/animation/animation_mixer.cpp
+@@ -690,16 +690,22 @@
+ 	if (has_reset_anim) {
+ 		reset_anim = get_animation(SceneStringName(RESET));
+ 	}
++	// Variant rigs share libraries with tracks for absent equipment. Resolve
++	// each missing path once per rebuild; keep per-animation diagnostics intact.
++	HashSet<Animation::TrackCacheID> unresolved_tracks;
+ 	for (const StringName &E : sname_list) {
+ 		const Ref<Animation> &anim = get_animation(E);
+ 		for (int i = 0; i < anim->get_track_count(); i++) {
+ 			if (!anim->track_is_enabled(i)) {
+ 				continue;
+ 			}
++			const Animation::TrackCacheID &track_unique_id = anim->track_get_unique_id(i);
++			if (!check_path && unresolved_tracks.has(track_unique_id)) {
++				continue;
++			}
+ 			NodePath path = anim->track_get_path(i);
+ 			(void)path.hash(); // Make sure the cache is valid for faster comparison.
+ 
+-			const Animation::TrackCacheID &track_unique_id = anim->track_get_unique_id(i);
+ 			Animation::TrackType track_src_type = anim->track_get_type(i);
+ 			Animation::TrackType track_cache_type = Animation::get_cache_type(track_src_type);
+ 
+@@ -724,6 +730,8 @@
+ 				if (!child) {
+ 					if (check_path) {
+ 						WARN_PRINT_ED(mixer_name + ": '" + String(E) + "', couldn't resolve track:  '" + String(path) + "'. This warning can be disabled in Project Settings.");
++					} else {
++						unresolved_tracks.insert(track_unique_id);
+ 					}
+ 					continue;
+ 				}

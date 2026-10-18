@@ -112,7 +112,7 @@ func run() -> void:
 				var battle := host.game.encounter(player)
 				alive.append(battle.world.unit_rows().filter(func(u):return not u.dead).size())
 				times.append(battle.world.time)
-			census.append({"wall":(now-start)/1000000.0,"stage":host.game.run.stage,"alive":alive,"sim":times,"particles":fx.drawn,"effects":fx.effects.size()})
+			census.append({"wall":(now-start)/1000000.0,"stage":host.game.run.stage,"alive":alive,"sim":times,"particles":fx.drawn if is_instance_valid(fx) else 0,"effects":fx.effects.size() if is_instance_valid(fx) else 0})
 			print("ARENA_HOST_CENSUS ",JSON.stringify(census.back()))
 			next_census = now+1000000
 	var scripts := {}

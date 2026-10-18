@@ -466,6 +466,14 @@ func _drain_units() -> void:
 		var u: GameUnit = _pending_units[key]
 		if not is_instance_valid(u): continue
 		var st: StepState = _units[key]
+		# Hidden arena boards have deferred poses. Sampling their feet both
+		# forces those poses and paints nine invisible snow fields during every
+		# preparation walk-in. Resume contacts from the current pose on scouting;
+		# never connect a trail across the unseen interval.
+		if world.zone.get("type", "") == "arena" and (not u.is_visible_in_tree() or world.arena_overview):
+			_clear_deform_contacts(st)
+			st.clip = ""; st.raw = -1.0; st.frame = 0.0
+			continue
 		if u.dead:
 			_clear_deform_contacts(st)
 		elif u.model != null and u.model.player != null:
