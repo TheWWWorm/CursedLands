@@ -3,7 +3,9 @@
 ## Unreleased
 
 - Attach creature spell effects to their animated mouths, eyes, horns, hands or staffs, and physical shots to their weapon or throwing hand. Preserve low launch heights and captured fireball origins when replaying effects.
-- Add soft, self-lit glows to the will-o'-the-wisp's five moving motes so they remain visible against grass and in darkness, including without bloom. Follow the original motion, invisibility and death animation.
+- Light each will-o'-the-wisp crystal's original faceted surface with a gentle, staggered pulse across the creature family. Preserve crystal silhouettes, colors, motion, invisibility and death animation while improving visibility against grass and in darkness, including without bloom.
+- Restore the original ambient wisp stars across the whole creature, including their flicker, running cadence and finite lifetime.
+- Restore hit particles and magic attachment positions on creatures with numbered body parts, including wisps, using the original game's part-prefix lookup.
 
 ## 1.17.0 — 2026-10-18
 

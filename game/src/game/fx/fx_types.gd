@@ -358,6 +358,10 @@ static func create(fx, type: int) -> FxEmitter:
 			e.ec = 0xff if type == 0x204a else 0xff0000
 			e.spawn_fn = T.sp_feet; e.upd_fn = T.up_feet; e.ctl_fn = T.ct_feet
 			e.texture = "visionfog"
+		0x204d:   # native 48836f: the wisp's ambient stars, not hit blood
+			e.add = 1; e.flags |= 0x12; e.bone = 0; e.d0 = 1; e.d8 = 300
+			e.spawn_fn = T.sp_wisp; e.upd_fn = T.up_wisp
+			e.texture = "stun"
 		0x2051:
 			e.flags |= 0x13; e.bone = 7; e.d0 = 1; e.d8 = 300
 			e.set_controls(1)
@@ -384,7 +388,7 @@ static func create(fx, type: int) -> FxEmitter:
 ## their emitter, its particles and control points, and FxEmitter.ground.
 const SERIAL := {&"_sphere_base": 1, &"carrier_size": 1, &"ct_feet": 1, &"sp_bag": 1, &"sp_castel": 1,
 	&"sp_casting": 1, &"sp_healing": 1, &"sp_modifier": 1, &"sp_orbit": 1, &"sp_sphere": 1, &"sp_stench": 1,
-	&"up_bag": 1, &"up_silence": 1, &"sp_path": 1, &"up_path": 1, &"up_target": 1, &"ct_target": 1}
+	&"sp_wisp": 1, &"up_wisp": 1, &"up_bag": 1, &"up_silence": 1, &"sp_path": 1, &"up_path": 1, &"up_target": 1, &"ct_target": 1}
 
 
 # ------------------------------------------------------ 2000 FireBall
@@ -2933,3 +2937,41 @@ func ct_target(e: FxEmitter, c: Array) -> void:
 	c[0xd] = int(c[0xd]) + 1
 	if int(c[0xd]) > 1:
 		e.flags &= ~FxEmitter.F_EMIT
+
+
+# ------------------------------------------------------ 204d wisp ambient (495fb0 / 4961b0)
+
+func sp_wisp(e: FxEmitter, p: Array, _idx: int) -> bool:
+	p[0x16] = RGB
+	p[0x11] = 3
+	# The native ball is centred on the whole figure, with radius 0.8 times
+	# its union radius. Stars stay at their birth position, not on a crystal.
+	var radius := carrier_size(e).y * 0.8
+	var v := Vector3.ZERO
+	for i in 10:
+		v = Vector3(float(e.rnd()) * 4.656612874161595e-10 - 1.0,
+			float(e.rnd()) * 4.656612874161595e-10 - 1.0, rr(e, -1.0, 1.0))
+		if v.length_squared() < 1.0: break
+	setp(p, e.wp + v * radius)
+	p[3] = 0.0
+	p[8] = float(e.rnd()) * 1.3969837789817515e-10 + 0.699999988079071
+	p[0x14] = 20
+	if not e.has_carrier:
+		e.stop(); e.attach(null)
+		return false
+	if e.carrier is GameUnit:
+		e.d0 = 4 if e.carrier.gait() == 3 else 1
+		if e.d0 == 4: p[0x14] = 5
+		if e.carrier.dead: e.stop(); e.attach(null)
+	return true
+
+
+func up_wisp(e: FxEmitter, p: Array) -> bool:
+	p[0x14] -= 1
+	if p[0x14] < 0:
+		p[0x16] = RGB; p[3] = 0.0
+		return false
+	p[0x16] = W
+	p[3] = (float(e.rnd()) * 9.313226580990458e-11 + 0.800000011920929) * e.s * p[8]
+	if not e.has_carrier: e.stop(); e.attach(null)
+	return true

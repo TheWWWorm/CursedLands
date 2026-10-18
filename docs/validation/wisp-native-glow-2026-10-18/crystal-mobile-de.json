@@ -1,0 +1,134 @@
+{
+	"checks": 49,
+	"failures": 0,
+	"family": [
+		"WillowispM1",
+		"WillowispM3",
+		"WillowispM5"
+	],
+	"pulse_signals": [
+		[
+			64437,
+			10514,
+			11855,
+			43666,
+			39913
+		],
+		[
+			65874,
+			12729,
+			12662,
+			41381,
+			34250
+		],
+		[
+			79711,
+			13530,
+			11933,
+			35134,
+			32189
+		],
+		[
+			83073,
+			12604,
+			9958,
+			32577,
+			37694
+		],
+		[
+			74458,
+			10365,
+			9481,
+			38671,
+			41764
+		],
+		[
+			61602,
+			10620,
+			11470,
+			43147,
+			42187
+		]
+	],
+	"renderer": "mobile",
+	"views": [
+		{
+			"enhanced": {
+				"bright": 1052,
+				"changed": 1052,
+				"energy": 170385
+			},
+			"original": {
+				"bright": 416,
+				"changed": 1052,
+				"energy": 39322
+			},
+			"view": "day-05"
+		},
+		{
+			"enhanced": {
+				"bright": 100,
+				"changed": 100,
+				"energy": 15962
+			},
+			"original": {
+				"bright": 26,
+				"changed": 100,
+				"energy": 3435
+			},
+			"view": "day-16"
+		},
+		{
+			"enhanced": {
+				"bright": 30,
+				"changed": 30,
+				"energy": 4499
+			},
+			"original": {
+				"bright": 1,
+				"changed": 30,
+				"energy": 889
+			},
+			"view": "day-28"
+		},
+		{
+			"enhanced": {
+				"bright": 1052,
+				"changed": 1052,
+				"energy": 198661
+			},
+			"original": {
+				"bright": 0,
+				"changed": 173,
+				"energy": 1076
+			},
+			"view": "night-05"
+		},
+		{
+			"enhanced": {
+				"bright": 100,
+				"changed": 100,
+				"energy": 18660
+			},
+			"original": {
+				"bright": 0,
+				"changed": 10,
+				"energy": 63
+			},
+			"view": "night-16"
+		},
+		{
+			"enhanced": {
+				"bright": 30,
+				"changed": 30,
+				"energy": 5360
+			},
+			"original": {
+				"bright": 0,
+				"changed": 2,
+				"energy": 12
+			},
+			"view": "night-28"
+		}
+	]
+}

@@ -108,6 +108,11 @@ var _exit_fx: Array = []
 var gs_var: Callable
 ## Particles drawn last frame (tools/fx_test.gd reports it).
 var drawn := 0
+## Native figure creation (667e80) adds 204d to every world wisp. Registry
+## revisions cover loaded worlds, new spawns and reused arena replicas; weak
+## references let removed figures drain their particles without retaining them.
+var _creature_revision := -1
+var _creature_fx := {}       # unit instance id -> {unit: WeakRef, effect: Effect}
 
 
 func display_origin() -> Vector3:
@@ -125,6 +130,7 @@ func finish_emitters() -> void:
 	# Drain existing particles after a settled battle; never spawn another cast.
 	missiles.clear(); _pending_bolts.clear(); _pending_fireballs.clear()
 	for ef in effects:
+		if ef.e.type == 0x204d: continue # living wisps still sparkle between battles
 		ef.e.stop()
 		ef.until = mini(ef.until, tick + 24) if ef.until >= 0 else tick + 24
 	for bolt: FxLightning in bolts: bolt.until = mini(bolt.until, tick + 12)
@@ -160,6 +166,39 @@ func _ready() -> void:
 		set_process(false)
 		return
 	GameData.options_changed.connect(_apply_material_options)
+	_sync_creature_fx()
+
+
+func _sync_creature_fx() -> void:
+	if world == null or not world.presentation: return
+	if _creature_revision != world.units_revision:
+		_creature_revision = world.units_revision
+		var present := {}
+		for u: GameUnit in world.unit_rows():
+			if not is_instance_valid(u) or not is_instance_valid(u.model) or u.model.template != "unmowi": continue
+			var id := u.get_instance_id()
+			present[id] = true
+			if not _creature_fx.has(id): _creature_fx[id] = {"unit":weakref(u), "effect":null}
+		for id in _creature_fx.keys():
+			if not present.has(id):
+				var ef: Effect = _creature_fx[id].effect
+				if ef:
+					delete(ef); ef.e.attach(null)
+				_creature_fx.erase(id)
+	for id in _creature_fx.keys():
+		var row: Dictionary = _creature_fx[id]
+		var u = row.unit.get_ref()
+		var ef: Effect = row.effect
+		if not carrier_valid(u) or u.dead:
+			if ef:
+				# Keep a dying carrier's visibility until the last star expires.
+				delete(ef)
+				if not carrier_valid(u): ef.e.attach(null)
+				row.effect = null
+			if not is_instance_valid(u): _creature_fx.erase(id)
+		elif ef == null:
+			# Original scale 0.05 / k128, selector 0 (whole figure centre).
+			row.effect = spawn(0x204d, Vector3.ZERO, 0.05, u)
 
 
 # ------------------------------------------------------------------ helpers used by the emitters
@@ -221,6 +260,16 @@ func _bone(u: GameUnit, name: String) -> Node3D:
 	var m: Dictionary = cached.parts
 	if not m.has(name) or not is_instance_valid(m[name]):
 		m[name] = u.model.find_child(name, true, false)
+		if m[name] == null:
+			# Native 516a80 accepts a part-name prefix (strstr result == name).
+			# Wisps have bd00..bd04, so exact-only lookup discarded their hit
+			# particles and placed attached magic above the whole creature.
+			# Search authored parts only: never match a renderer/helper node.
+			for ref: WeakRef in u.model.get_meta(EIFigureGeometry.PARTS, []):
+				var part = ref.get_ref()
+				if is_instance_valid(part) and String(part.name).begins_with(name):
+					m[name] = part
+					break
 	var n = m[name]
 	return n if is_instance_valid(n) else null
 
@@ -724,6 +773,7 @@ const PAR_MAX_TASKS := 4     # leave workers available for streaming and renderi
 
 
 func _tick(last := true) -> void:
+	_sync_creature_fx()
 	tick += 1
 	var existing_lights := lights.duplicate()
 	for pending: Dictionary in _pending_bolts.duplicate():

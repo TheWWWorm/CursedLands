@@ -1,0 +1,197 @@
+[
+  {
+    "key": "ogWisp3",
+    "evidence_id": "ev_215259e99d6ea7428960d12c5eff0fdc801609f03595ad57f475dfd5067ed364",
+    "subject": {
+      "name": "game.exe",
+      "digest": {
+        "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+      },
+      "format": "pe",
+      "architecture": "x86",
+      "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+    },
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "operation": "analyze_function",
+    "parameters": {
+      "procedure": "0x00667e80"
+    },
+    "authority": "shipped-artifact",
+    "confidence": "observed",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels."
+    ],
+    "result": {
+      "procedure": "0x667e80",
+      "pseudocode": "\nundefined4 FUN_00667e80(void)\n\n{\n  byte bVar1;\n  undefined *puVar2;\n  undefined4 uVar3;\n  int *piVar4;\n  int iVar5;\n  byte *pbVar6;\n  undefined4 *puVar7;\n  undefined4 *puVar8;\n  int in_ECX;\n  int iVar9;\n  uint uVar10;\n  ushort unaff_BX;\n  ushort uVar11;\n  undefined4 unaff_ESI;\n  int *piVar12;\n  byte *pbVar13;\n  char *pcVar14;\n  undefined4 unaff_EDI;\n  int *piVar15;\n  bool bVar16;\n  bool bVar17;\n  float10 fVar18;\n  undefined *local_460;\n  undefined1 auStack_45c [4];\n  int iStack_458;\n  int local_454;\n  uint uStack_448;\n  uint uStack_440;\n  byte bStack_43c;\n  undefined4 local_438;\n  int aiStack_434 [3];\n  int iStack_428;\n  int iStack_424;\n  int iStack_420;\n  byte abStack_41c [256];\n  undefined1 auStack_31c [256];\n  byte abStack_21c [248];\n  undefined1 auStack_124 [264];\n  void *pvStack_1c;\n  int iStack_14;\n  void *pvStack_c;\n  undefined1 *puStack_8;\n  undefined4 local_4;\n  \n  local_4 = 0xffffffff;\n  puStack_8 = &LAB_00730992;\n  pvStack_c = ExceptionList;\n  ExceptionList = &pvStack_c;\n  local_454 = in_ECX;\n  FUN_00455b50();\n  FUN_006fe8e5();\n  puVar2 = PTR_DAT_00796e38;\n  local_460 = PTR_DAT_00796e38;\n  piVar4 = (int *)(in_ECX + 0x34);\n  local_4 = 2;\n  (**(code **)(*(int *)(in_ECX + 0x34) + 4))(&local_438,0x10);\n  (**(code **)(*piVar4 + 4))(&iStack_420,0xc);\n  uVar3 = FUN_00461190(&stack0xfffffb94);\n  iStack_14._0_1_ = 3;\n  FUN_00700a69(uVar3);\n  iStack_14 = CONCAT31(iStack_14._1_3_,2);\n  FUN_00700930();\n  if (*(char *)(in_ECX + 0x39) == '\\0') goto LAB_00668652;\n  FUN_004a48f0(abStack_41c,0x100);\n  FUN_004a48f0(auStack_31c,0x100);\n  FUN_004a48f0(abStack_21c,0x100);\n  (**(code **)(*piVar4 + 4))(&local_460,2);\n  FUN_006fe978(unaff_BX,0xffffffff);\n  uVar11 = 0;\n  if (unaff_BX != 0) {\n    do {\n      FUN_004a48f0(auStack_124,0x100);\n      FUN_00700ab9(auStack_124);\n      uVar11 = uVar11 + 1;\n    } while (uVar11 < unaff_BX);\n  }\n  uVar3 = FUN_00461190(&stack0xfffffb8c);\n  pvStack_1c._0_1_ = 4;\n  FUN_00700a69(uVar3);\n  pvStack_1c = (void *)CONCAT31(pvStack_1c._1_3_,2);\n  FUN_00700930();\n  (**(code **)(*piVar4 + 4))(aiStack_434,4);\n  piVar4 = (int *)FUN_00455940();\n  piVar4 = (int *)(**(code **)(*piVar4 + 0x4c))();\n  piVar4 = (int *)(**(code **)(*piVar4 + 0x5c))(local_454,iStack_458);\n  if (piVar4 == (int *)0x0) goto LAB_00668652;\n  FUN_00700ab9(abStack_41c);\n  iVar5 = (**(code **)(*piVar4 + 0x30))();\n  bVar17 = iVar5 == 0x50;\n  piVar4[6] = uStack_440;\n  FUN_00517700(&iStack_428);\n  piVar4[0x6b] = iStack_428;\n  piVar4[0x6c] = iStack_424;\n  piVar4[0x6d] = iStack_420;\n  (**(code **)(*piVar4 + 0x78))();\n  FUN_0050f150(unaff_ESI);\n  if (bVar17) {\n    if (uStack_440 < (uint)((DAT_007af34c - DAT_007af348) / 0x120)) {\n      iVar5 = uStack_440 * 0x120 + DAT_007af348;\n    }\n    else {\n      iVar5 = 0;\n    }\n    if (*(uint *)(iVar5 + 8) < (uint)((DAT_007af38c - DAT_007af388) / 0x168)) {\n      iVar5 = DAT_007af388 + *(uint *)(iVar5 + 8) * 0x168;\n    }\n    else {\n      iVar5 = 0;\n    }\n    aiStack_434[0] = *(int *)(iVar5 + 0x104);\n    local_438 = 0;\n    aiStack_434[1] = 0;\n    piVar4[0x3d] = 0;\n    piVar4[0x3e] = aiStack_434[0];\n    piVar4[0x3f] = 0;\n    piVar12 = (int *)(iVar5 + 0x2c);\n    piVar15 = piVar4 + 300;\n    for (iVar9 = 6; iVar9 != 0; iVar9 = iVar9 + -1) {\n      *piVar15 = *piVar12;\n      piVar12 = piVar12 + 1;\n      piVar15 = piVar15 + 1;\n    }\n    FUN_00530920(aiStack_434[2]);\n  }\n  if ((bStack_43c & 8) != 0) {\n    piVar4[2] = piVar4[2] | 8;\n  }\n  pbVar13 = &DAT_00793f9c;\n  pbVar6 = abStack_41c;\n  do {\n    bVar1 = *pbVar6;\n    bVar16 = bVar1 < *pbVar13;\n    if (bVar1 != *pbVar13) {\nLAB_0066819b:\n      iVar5 = (1 - (uint)bVar16) - (uint)(bVar16 != 0);\n      goto LAB_006681a0;\n    }\n    if (bVar1 == 0) break;\n    bVar1 = pbVar6[1];\n    bVar16 = bVar1 < pbVar13[1];\n    if (bVar1 != pbVar13[1]) goto LAB_0066819b;\n    pbVar6 = pbVar6 + 2;\n    pbVar13 = pbVar13 + 2;\n  } while (bVar1 != 0);\n  iVar5 = 0;\nLAB_006681a0:\n  if (iVar5 == 0) {\nLAB_006681da:\n    piVar4[2] = piVar4[2] | 0x10000000;\n  }\n  else {\n    pbVar13 = &DAT_0078a5c0;\n    pbVar6 = abStack_41c;\n    do {\n      bVar1 = *pbVar6;\n      bVar16 = bVar1 < *pbVar13;\n      if (bVar1 != *pbVar13) {\nLAB_006681d1:\n        iVar5 = (1 - (uint)bVar16) - (uint)(bVar16 != 0);\n        goto LAB_006681d6;\n      }\n      if (bVar1 == 0) break;\n      bVar1 = pbVar6[1];\n      bVar16 = bVar1 < pbVar13[1];\n      if (bVar1 != pbVar13[1]) goto LAB_006681d1;\n      pbVar6 = pbVar6 + 2;\n      pbVar13 = pbVar13 + 2;\n    } while (bVar1 != 0);\n    iVar5 = 0;\nLAB_006681d6:\n    if (iVar5 == 0) goto LAB_006681da;\n  }\n  if (piVar4[4] == 0x32) {\n    pcVar14 = s_unhuma_007908c8;\n    pbVar6 = abStack_41c;\n    do {\n      bVar1 = *pbVar6;\n      bVar16 = bVar1 < (byte)*pcVar14;\n      if (bVar1 != *pcVar14) {\nLAB_0066821a:\n        iVar5 = (1 - (uint)bVar16) - (uint)(bVar16 != 0);\n        goto LAB_0066821f;\n      }\n      if (bVar1 == 0) break;\n      bVar1 = pbVar6[1];\n      bVar16 = bVar1 < (byte)pcVar14[1];\n      if (bVar1 != pcVar14[1]) goto LAB_0066821a;\n      pbVar6 = pbVar6 + 2;\n      pcVar14 = pcVar14 + 2;\n    } while (bVar1 != 0);\n    iVar5 = 0;\nLAB_0066821f:\n    if (iVar5 != 0) {\n      pbVar13 = &DAT_00792ea4;\n      pbVar6 = abStack_41c;\n      do {\n        bVar1 = *pbVar6;\n        bVar16 = bVar1 < *pbVar13;\n        if (bVar1 != *pbVar13) {\nLAB_00668250:\n          iVar5 = (1 - (uint)bVar16) - (uint)(bVar16 != 0);\n          goto LAB_00668255;\n        }\n        if (bVar1 == 0) break;\n        bVar1 = pbVar6[1];\n        bVar16 = bVar1 < pbVar13[1];\n        if (bVar1 != pbVar13[1]) goto LAB_00668250;\n        pbVar6 = pbVar6 + 2;\n        pbVar13 = pbVar13 + 2;\n      } while (bVar1 != 0);\n      iVar5 = 0;\nLAB_00668255:\n      if (iVar5 != 0) goto LAB_00668308;\n    }\n    iVar5 = 0;\n    if (0 < local_454) {\n      do {\n        iVar9 = FUN_006e844b(*(undefined4 *)(iStack_458 + iVar5 * 4),&DAT_0078fb38);\n        if (iVar9 == 0) {\n          if (uStack_440 < (uint)((DAT_007af34c - DAT_007af348) / 0x120)) {\n            iVar9 = uStack_440 * 0x120 + DAT_007af348;\n          }\n          else {\n            iVar9 = 0;\n          }\n          if (*(int *)(iVar9 + 0x10) == -1) {\n            FUN_006fecfc(iVar5,1);\n          }\n          else {\n            FUN_006fdf1f(iStack_458 + iVar5 * 4,s_hr___2d_0078fb0c,*(int *)(iVar9 + 0x10));\n          }\n          break;\n        }\n        iVar5 = iVar5 + 1;\n      } while (iVar5 < local_454);\n    }\n  }\nLAB_00668308:\n  iVar5 = FUN_00516da0(abStack_41c,auStack_45c,1);\n  if (iVar5 == 0) {\n    iStack_14._0_1_ = 1;\n    FUN_00700930();\n    iStack_14 = (uint)iStack_14._1_3_ << 8;\n    FUN_00700930();\n    iStack_14 = 0xffffffff;\n    FUN_006fe918();\n    ExceptionList = pvStack_1c;\n    return 0;\n  }\n  pcVar14 = s_unmogo_00794de4;\n  pbVar6 = abStack_41c;\n  do {\n    bVar1 = *pbVar6;\n    bVar16 = bVar1 < (byte)*pcVar14;\n    if (bVar1 != *pcVar14) {\nLAB_0066837d:\n      iVar5 = (1 - (uint)bVar16) - (uint)(bVar16 != 0);\n      goto LAB_00668382;\n    }\n    if (bVar1 == 0) break;\n    bVar1 = pbVar6[1];\n    bVar16 = bVar1 < (byte)pcVar14[1];\n    if (bVar1 != pcVar14[1]) goto LAB_0066837d;\n    pbVar6 = pbVar6 + 2;\n    pcVar14 = pcVar14 + 2;\n  } while (bVar1 != 0);\n  iVar5 = 0;\nLAB_00668382:\n  if (iVar5 == 0) {\n    iVar5 = FUN_005169a0(s_rh3_axeth00_00794dd8);\n    if (iVar5 != 0) {\n      FUN_005167e0(iVar5);\n    }\n    iVar5 = FUN_005169a0(s_rh3_sword00_00794dcc);\n    if (iVar5 != 0) {\n      FUN_005167e0(iVar5);\n    }\n    if ((uint)piVar4[6] < (uint)((DAT_007af34c - DAT_007af348) / 0x120)) {\n      iVar5 = piVar4[6] * 0x120 + DAT_007af348;\n    }\n    else {\n      iVar5 = 0;\n    }\n    if (*(int *)(iVar5 + 0x78) == 5) {\n      pcVar14 = s_rh3_pike00_00794dc0;\n    }\n    else {\n      pcVar14 = s_sling_00794db8;\n    }\n    iVar5 = FUN_005169a0(pcVar14);\n    if (iVar5 != 0) {\n      FUN_005167e0(iVar5);\n    }\n  }\n  pbVar13 = &DAT_00794db0;\n  pbVar6 = abStack_41c;\n  do {\n    bVar1 = *pbVar6;\n    bVar16 = bVar1 < *pbVar13;\n    if (bVar1 != *pbVar13) {\nLAB_0066843e:\n      iVar5 = (1 - (uint)bVar16) - (uint)(bVar16 != 0);\n      goto LAB_00668443;\n    }\n    if (bVar1 == 0) break;\n    bVar1 = pbVar6[1];\n    bVar16 = bVar1 < pbVar13[1];\n    if (bVar1 != pbVar13[1]) goto LAB_0066843e;\n    pbVar6 = pbVar6 + 2;\n    pbVar13 = pbVar13 + 2;\n  } while (bVar1 != 0);\n  iVar5 = 0;\nLAB_00668443:\n  if (iVar5 == 0) {\n    iVar5 = FUN_00498400(0x204d);\n    FUN_004849f0(piVar4);\n    FUN_00485480(0.05 / *(float *)(iVar5 + 0x128));\n    *(undefined4 *)(iVar5 + 0x13c) = 0;\n  }\n  if (!bVar17) {\n    FUN_00517910(8);\n    piVar4[2] = piVar4[2] | 0x200;\n  }\n  FUN_0051c970();\n  FUN_00566310();\n  FUN_00518840(abStack_41c,0);\n  FUN_00518860();\n  if (piVar4[4] == 0x32) {\n    FUN_006e86d5(auStack_31c,s_mo_dp_0078fb7c,piVar4[3]);\n    FUN_006e86d5(abStack_21c,s_mo_ds_0078fb44,piVar4[3]);\nLAB_00668538:\n    pbVar6 = abStack_21c;\n  }\n  else {\n    pbVar13 = &DAT_007846f0;\n    pbVar6 = abStack_21c;\n    do {\n      bVar1 = *pbVar6;\n      bVar16 = bVar1 < *pbVar13;\n      if (bVar1 != *pbVar13) {\nLAB_0066852f:\n        iVar5 = (1 - (uint)bVar16) - (uint)(bVar16 != 0);\n        goto LAB_00668534;\n      }\n      if (bVar1 == 0) break;\n      bVar1 = pbVar6[1];\n      bVar16 = bVar1 < pbVar13[1];\n      if (bVar1 != pbVar13[1]) goto LAB_0066852f;\n      pbVar6 = pbVar6 + 2;\n      pbVar13 = pbVar13 + 2;\n    } while (bVar1 != 0);\n    iVar5 = 0;\nLAB_00668534:\n    if (iVar5 != 0) goto LAB_00668538;\n    pbVar6 = (byte *)0x0;\n  }\n  FUN_0051c250(auStack_31c,pbVar6);\n  if (bVar17) {\n    (**(code **)(*piVar4 + 0xf4))(unaff_EDI);\n  }\n  FUN_00566320();\n  iVar5 = *(int *)(puVar2 + 0x1c);\n  if (*(int *)(iVar5 + 0x3c) < (int)uStack_448) {\n    *(uint *)(iVar5 + 0x3c) = uStack_448;\n  }\n  FUN_0059e3c0(*(int *)(iVar5 + 0x38) + 1);\n  uVar10 = uStack_448 % (uint)(*(int *)(iVar5 + 0x30) - *(int *)(iVar5 + 0x2c) >> 2);\n  puVar8 = *(undefined4 **)(*(int *)(iVar5 + 0x2c) + uVar10 * 4);\n  for (puVar7 = puVar8; puVar7 != (undefined4 *)0x0; puVar7 = (undefined4 *)*puVar7) {\n    if (puVar7[1] == uStack_448) goto LAB_006685f5;\n  }\n  puVar7 = (undefined4 *)FUN_0059de40(&stack0xfffffb94);\n  *puVar7 = puVar8;\n  *(undefined4 **)(*(int *)(iVar5 + 0x2c) + uVar10 * 4) = puVar7;\n  *(int *)(iVar5 + 0x38) = *(int *)(iVar5 + 0x38) + 1;\nLAB_006685f5:\n  puVar7[2] = piVar4;\n  piVar4[1] = piVar4[1] + 1;\n  iVar5 = (**(code **)(*piVar4 + 0x30))();\n  if (iVar5 == 0x50) {\n    puVar8 = (undefined4 *)FUN_00530930();\n    (**(code **)(*piVar4 + 0x88))(*puVar8);\n  }\n  else {\n    (**(code **)(*piVar4 + 0x88))(abStack_41c);\n  }\n  FUN_0050ea40();\n  iVar5 = FUN_0050eab0(0,puVar2 + 0x34);\n  if (iVar5 != 0) {\n    FUN_005647e0(piVar4);\n    if (*(char *)piVar4[0x6a] != '\\0') {\n      puVar8 = (undefined4 *)FUN_005654f0(&stack0xfffffb94,(char *)piVar4[0x6a]);\n      iStack_14._0_1_ = 5;\n      fVar18 = (float10)FUN_00460af0(*puVar8);\n      FUN_0050f170((float)fVar18);\n      iStack_14 = CONCAT31(iStack_14._1_3_,2);\n      FUN_00700930();\n    }\n    if ((*(int *)(*(int *)(puVar2 + 0x1c) + 0x100) == 3) &&\n       (iVar5 = (**(code **)(*piVar4 + 0x30))(), iVar5 == 0x50)) {\n      FUN_00538db0();\n    }\n    iStack_14._0_1_ = 1;\n    FUN_00700930();\n    iStack_14 = (uint)iStack_14._1_3_ << 8;\n    FUN_00700930();\n    iStack_14 = 0xffffffff;\n    FUN_006fe918();\n    ExceptionList = pvStack_1c;\n    return 1;\n  }\nLAB_00668652:\n  iStack_14._0_1_ = 1;\n  FUN_00700930();\n  iStack_14 = (uint)iStack_14._1_3_ << 8;\n  FUN_00700930();\n  iStack_14 = 0xffffffff;\n  FUN_006fe918();\n  ExceptionList = pvStack_1c;\n  return 0;\n}\n\n"
+    }
+  },
+  {
+    "key": "ogWispName",
+    "evidence_id": "ev_3b38a98946f9099028079721f02c6f80b77f51f0d7e553b9195e7ae1d8c51af8",
+    "subject": {
+      "name": "game.exe",
+      "digest": {
+        "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+      },
+      "format": "pe",
+      "architecture": "x86",
+      "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+    },
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "operation": "read_bytes",
+    "parameters": {
+      "address": "0x794db0",
+      "length": 8
+    },
+    "authority": "shipped-artifact",
+    "confidence": "observed",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "Bytes reflect Ghidra's initialized memory, including loader fixups. Reads stop at an unmapped or uninitialized byte and report completeness explicitly."
+    ],
+    "result": {
+      "address": "0x794db0",
+      "requested_bytes": 8,
+      "returned_bytes": 8,
+      "bytes_hex": "756e6d6f77690000",
+      "complete": true
+    }
+  },
+  {
+    "key": "ogWispTexture",
+    "evidence_id": "ev_31fe25338faacd1bd7544e44faddb88da7771db4d8b7f6bd8a9176e7b4267c5b",
+    "subject": {
+      "name": "game.exe",
+      "digest": {
+        "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+      },
+      "format": "pe",
+      "architecture": "x86",
+      "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+    },
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "operation": "read_bytes",
+    "parameters": {
+      "address": "0x78ae28",
+      "length": 16
+    },
+    "authority": "shipped-artifact",
+    "confidence": "observed",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "Bytes reflect Ghidra's initialized memory, including loader fixups. Reads stop at an unmapped or uninitialized byte and report completeness explicitly."
+    ],
+    "result": {
+      "address": "0x78ae28",
+      "requested_bytes": 16,
+      "returned_bytes": 16,
+      "bytes_hex": "5374756e0000000054656c65706f7274",
+      "complete": true
+    }
+  },
+  {
+    "key": "ogWispFactoryBytes",
+    "evidence_id": "ev_d7f661569fff4c679f032addfb069c70527831cfd34de572f4cee042af885ad6",
+    "subject": {
+      "name": "game.exe",
+      "digest": {
+        "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+      },
+      "format": "pe",
+      "architecture": "x86",
+      "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+    },
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "operation": "read_bytes",
+    "parameters": {
+      "address": "0x48836f",
+      "length": 84
+    },
+    "authority": "shipped-artifact",
+    "confidence": "observed",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "Bytes reflect Ghidra's initialized memory, including loader fixups. Reads stop at an unmapped or uninitialized byte and report completeness explicitly."
+    ],
+    "result": {
+      "address": "0x48836f",
+      "requested_bytes": 84,
+      "returned_bytes": 84,
+      "bytes_hex": "0c1289ab50010000894308c7833c0100000000000089abd0000000c783d80000002c010000c783e0010000b05f4900c783e4010000b0614900c783e8010000606249008d942480000000bf28ae7800e9bf010000",
+      "complete": true
+    }
+  },
+  {
+    "key": "ogWispCallbacksBytes",
+    "evidence_id": "ev_b73cf222bc57b86245c10edce1e1419e97d51421b30c05eea6198274bb293cda",
+    "subject": {
+      "name": "game.exe",
+      "digest": {
+        "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+      },
+      "format": "pe",
+      "architecture": "x86",
+      "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+    },
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "operation": "read_bytes",
+    "parameters": {
+      "address": "0x495fb0",
+      "length": 688
+    },
+    "authority": "shipped-artifact",
+    "confidence": "observed",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "Bytes reflect Ghidra's initialized memory, including loader fixups. Reads stop at an unmapped or uninitialized byte and report completeness explicitly."
+    ],
+    "result": {
+      "address": "0x495fb0",
+      "requested_bytes": 688,
+      "returned_bytes": 688,
+      "bytes_hex": "83ec388d4424085355568bf1578d4c243c50518bcee8b6f2feff8b7c244cbd0a00000033dbc74758ffffff00c7474403000000b9309d7a00e80308fdff8944241c895c2420df6c241cb9309d7a00dc0d08c57300d8254cb87300d95c2414e8dd07fdff89442424895c2428df6c2424680000803f68000080bfb9309d7a00dc0d08c57300d8254cb87300d95c2418e82d29ffffd954244cd84c244cd9442410d84c2410dec1d9442414d84c2414dec1d81d4cb87300dfe0f6c40175094d3beb0f8f6effffff8b54244c8b4424108b4c24145250518d4c243ce853bdf6ffd9442418d80da8cc7300d9442430d8c9d95c2424d9442434d8c9d95c2428d84c2438d9442424d88698000000d9442428d8869c000000d95c2434d9c9d886a00000008b542434895f0c895704d95c24388b442438d91f894708a1349d7a008bc84885c9a3349d7a007514b9309d7a00e86f8d0000b8ff000000a3349d7a008b1485389d7a00895c242889542424c7475014000000df6c2424dc0d10ce7300d80538c57300d95f208b8e940000003bcb745283b964020000037513c786d000000004000000c7475005000000eb0ac786d0000000010000008b01ff90dc00000085c074118b4e085383e1fa894e088bcee86fe8feff5f5e5db8010000005b83c438c208008b4e085383e1fa894e088bcee84fe8feff5f5e5d33c05b83c438c2080090909083ec08568b742410578bf98b4650488946507918c74658ffffff00c7460c000000005f33c05e83c408c20400c74658ffffffffa1349d7a008bc84885c9a3349d7a007514b9309d7a00e8728c0000b8ff000000a3349d7a008b1485389d7a00c744240c0000000089542408df6c2408dc0db0cc7300d805a8cc7300d88f0c010000d84e20d95e0c8b879400000085c075128b4f086a0083e1fa894f088bcfe89de7feff5fb8010000005e83c408c20400",
+      "complete": true
+    }
+  }
+]

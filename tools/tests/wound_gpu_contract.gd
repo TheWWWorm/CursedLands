@@ -272,6 +272,7 @@ func material_alpha_controls() -> void:
 	for preview in [false,true]:
 		for soft in [false,true]:
 			var mat = EIUnitModel._material(preview,soft)
+			if soft: mat.set_shader_parameter("wisp_time",0.0)
 			mat.albedo_texture = ImageTexture.create_from_image(b)
 			mat.wound_texture = ImageTexture.create_from_image(w)
 			quad.material_override = mat
@@ -334,6 +335,8 @@ func figure_case(mask: String, levels: PackedByteArray, human: bool) -> void:
 		models.append(model)
 		for m: Material in UnitWounds._materials(model):
 			if m is ShaderMaterial and m.albedo_texture:
+				# Compare wounds at the same point in the crystal's visual pulse.
+				if mask == "unmowi": m.set_shader_parameter("wisp_time", 0.0)
 				material_rows.append([m,m.albedo_texture,m.shader,m.shader if production else candidate_shader(m.shader)])
 	for sharp in [false,true]:
 		RenderingServer.global_shader_parameter_set(&"ei_unit_sharp",Vector3(1,EIUnitModel.SHARP_MIP_BIAS,0) if sharp else Vector3.ZERO)

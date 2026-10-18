@@ -1,0 +1,341 @@
+[
+  {
+    "evidence_id": "ev_3b204a33e7870df82aba09189dd4e5a3ba2ff346c4697f5ca070d1c622854af1",
+    "subject": {
+      "name": "game.exe",
+      "digest": {
+        "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+      },
+      "format": "pe",
+      "architecture": "x86",
+      "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+    },
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "confidence": "observed",
+    "authority": "shipped-artifact",
+    "procedure": {
+      "address": "0x516a80",
+      "name": "FUN_00516a80",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x516a80",
+            "end": "0x516b47"
+          }
+        ],
+        "total_bytes": 200,
+        "span_bytes": 200,
+        "non_contiguous": false,
+        "contains_entry": true
+      },
+      "signature": "undefined FUN_00516a80()",
+      "locals": []
+    },
+    "pseudocode": "\nundefined4 FUN_00516a80(undefined4 param_1)\n\n{\n  int *piVar1;\n  undefined4 uVar2;\n  int iVar3;\n  int iVar4;\n  int in_ECX;\n  int iVar5;\n  \n  iVar5 = 0;\n  if (0 < *(int *)(in_ECX + 0xd4)) {\n    do {\n      piVar1 = *(int **)(*(int *)(in_ECX + 0xd0) + iVar5 * 4);\n      uVar2 = (**(code **)(*piVar1 + 0x1c))(param_1);\n      iVar3 = FUN_006eadf0(uVar2);\n      iVar4 = (**(code **)(*piVar1 + 0x1c))();\n      if (iVar3 == iVar4) {\n        return *(undefined4 *)(*(int *)(in_ECX + 0xd0) + iVar5 * 4);\n      }\n      iVar5 = iVar5 + 1;\n    } while (iVar5 < *(int *)(in_ECX + 0xd4));\n  }\n  iVar5 = 0;\n  if (0 < *(int *)(in_ECX + 0xe4)) {\n    do {\n      piVar1 = *(int **)(*(int *)(in_ECX + 0xe0) + iVar5 * 4);\n      uVar2 = (**(code **)(*piVar1 + 0x1c))(param_1);\n      iVar3 = FUN_006eadf0(uVar2);\n      iVar4 = (**(code **)(*piVar1 + 0x1c))();\n      if (iVar3 == iVar4) {\n        return *(undefined4 *)(*(int *)(in_ECX + 0xe0) + iVar5 * 4);\n      }\n      iVar5 = iVar5 + 1;\n    } while (iVar5 < *(int *)(in_ECX + 0xe4));\n    return 0;\n  }\n  return 0;\n}\n\n",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels."
+    ]
+  },
+  {
+    "evidence_id": "ev_6a004755d38c14320899cd7209a5edc24a915d84afcdb4fc244da0f6e3b0889b",
+    "subject": {
+      "name": "game.exe",
+      "digest": {
+        "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+      },
+      "format": "pe",
+      "architecture": "x86",
+      "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+    },
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "confidence": "observed",
+    "authority": "shipped-artifact",
+    "procedure": {
+      "address": "0x537500",
+      "name": "FUN_00537500",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x537500",
+            "end": "0x537b7c"
+          }
+        ],
+        "total_bytes": 1661,
+        "span_bytes": 1661,
+        "non_contiguous": false,
+        "contains_entry": true
+      },
+      "signature": "undefined FUN_00537500()",
+      "locals": [
+        {
+          "description": "undefined4 local_10 @ Stack[-0x10]:4",
+          "provenance": "ghidra-function-database"
+        },
+        {
+          "description": "undefined4 local_14 @ Stack[-0x14]:4",
+          "provenance": "ghidra-function-database"
+        },
+        {
+          "description": "undefined4 local_18 @ Stack[-0x18]:4",
+          "provenance": "ghidra-function-database"
+        },
+        {
+          "description": "undefined4 local_1c @ Stack[-0x1c]:4",
+          "provenance": "ghidra-function-database"
+        },
+        {
+          "description": "undefined4 local_20 @ Stack[-0x20]:4",
+          "provenance": "ghidra-function-database"
+        },
+        {
+          "description": "undefined4 local_24 @ Stack[-0x24]:4",
+          "provenance": "ghidra-function-database"
+        },
+        {
+          "description": "undefined4 local_28 @ Stack[-0x28]:4",
+          "provenance": "ghidra-function-database"
+        },
+        {
+          "description": "undefined4 local_2c @ Stack[-0x2c]:4",
+          "provenance": "ghidra-function-database"
+        },
+        {
+          "description": "undefined4 local_3c @ Stack[-0x3c]:4",
+          "provenance": "ghidra-function-database"
+        },
+        {
+          "description": "undefined4 local_44 @ Stack[-0x44]:4",
+          "provenance": "ghidra-function-database"
+        },
+        {
+          "description": "undefined4 local_8 @ Stack[-0x8]:4",
+          "provenance": "ghidra-function-database"
+        }
+      ]
+    },
+    "pseudocode": "\nvoid FUN_00537500(int param_1,float param_2,uint param_3)\n\n{\n  float fVar1;\n  ushort uVar2;\n  int iVar3;\n  int iVar4;\n  undefined4 uVar5;\n  float fVar6;\n  float fVar7;\n  int in_ECX;\n  uint uVar8;\n  char *pcVar9;\n  float local_2c;\n  float local_28;\n  undefined4 local_24;\n  float local_20;\n  int local_1c;\n  float local_18;\n  undefined *local_14;\n  void *local_10;\n  undefined1 *puStack_c;\n  uint local_8;\n  \n  local_8 = 0xffffffff;\n  puStack_c = &LAB_0071ec90;\n  local_10 = ExceptionList;\n  if ((param_3 & 8) != 0) {\n    return;\n  }\n  if (param_2 <= 0.0001) {\n    return;\n  }\n  ExceptionList = &local_10;\n  iVar3 = FUN_00530970();\n  FUN_007006a5(iVar3 + 0x118);\n  iVar3 = 0;\n  local_8 = 0;\n  if (*(int *)(*(int *)(in_ECX + 0x1c) + 0x10) == 0x32) {\n    local_18 = (float)(param_1 * 0x10);\n    if (*(int *)(&DAT_0073ec80 + (int)local_18) != 7) {\n      uVar8 = *(uint *)(in_ECX + 0xa0 + *(int *)(&DAT_0073ec80 + (int)local_18) * 4) & 0xffff;\n      if ((uVar8 == 0xffff) || ((uint)((DAT_007c86cc - DAT_007c86c8) / 0x50) <= uVar8)) {\n        iVar3 = 0;\n      }\n      else {\n        iVar3 = uVar8 * 0x50 + DAT_007c86c8;\n      }\n      if (iVar3 != 0) {\n        FUN_00700a69(iVar3 + 4);\n      }\n    }\n    if ((*(int *)(&DAT_0073ec78 + (int)local_18) != 7) && (iVar3 == 0)) {\n      uVar8 = *(uint *)(in_ECX + 0xa0 + *(int *)(&DAT_0073ec78 + (int)local_18) * 4) & 0xffff;\n      if ((uVar8 == 0xffff) || ((uint)((DAT_007c86cc - DAT_007c86c8) / 0x50) <= uVar8)) {\n        iVar3 = 0;\n      }\n      else {\n        iVar3 = uVar8 * 0x50 + DAT_007c86c8;\n      }\n      if (iVar3 != 0) {\n        FUN_00700a69(iVar3 + 4);\n      }\n    }\n    if ((*(int *)(&DAT_0073ec7c + (int)local_18) != 7) && (iVar3 == 0)) {\n      uVar8 = *(uint *)(in_ECX + 0xa0 + *(int *)(&DAT_0073ec7c + (int)local_18) * 4) & 0xffff;\n      if ((uVar8 == 0xffff) || ((uint)((DAT_007c86cc - DAT_007c86c8) / 0x50) <= uVar8)) {\n        iVar3 = 0;\n      }\n      else {\n        iVar3 = uVar8 * 0x50 + DAT_007c86c8;\n      }\n      if (iVar3 != 0) {\n        FUN_00700a69(iVar3 + 4);\n      }\n    }\n    iVar3 = FUN_006e844b(param_3,s_Crystal_0078fc60);\n    if (((iVar3 == 0) || (iVar3 = FUN_006e844b(param_3,&DAT_0078fc58), iVar3 == 0)) ||\n       (iVar3 = FUN_006e844b(param_3,s_Stone_0078fc50), iVar3 == 0)) {\n      pcVar9 = s_stone_00787d64;\n    }\n    else {\n      iVar3 = FUN_006e844b(param_3,s_Metal_0078fc48);\n      if (iVar3 == 0) goto LAB_0053770f;\n      pcVar9 = s_leather_0078fc40;\n    }\n    FUN_00700ab9(pcVar9);\n  }\nLAB_0053770f:\n  local_14 = PTR_DAT_00796e38;\n  local_8 = CONCAT31(local_8._1_3_,1);\n  local_18 = (float)CONCAT31(local_18._1_3_,7);\n  uVar2 = *(ushort *)(*(int *)(in_ECX + 0x1c) + 0x350);\n  if (uVar2 < 0x10) {\n    local_18 = (float)CONCAT31(local_18._1_3_,(char)uVar2);\n  }\n  else if ((uVar2 - 0x10 < (uint)((DAT_007af34c - DAT_007af348) / 0x120)) &&\n          (iVar3 = (uVar2 - 0x10) * 0x120 + DAT_007af348, iVar3 != 0)) {\n    local_18 = (float)CONCAT31(local_18._1_3_,*(undefined1 *)(iVar3 + 0x7c));\n  }\n  switch((uint)local_18 & 0xff) {\n  case 0:\n  case 1:\n    pcVar9 = s_weapons_slash__s_1_wav_0078fc28;\n    break;\n  case 2:\n  case 3:\n  case 5:\n  case 6:\n  case 10:\n    pcVar9 = s_weapons_pierce__s_1_wav_0078fbf8;\n    break;\n  case 4:\n  case 0xb:\n    pcVar9 = s_weapons_crash__s_1_wav_0078fbe0;\n    break;\n  default:\n    goto switchD_00537781_caseD_7;\n  case 9:\n    pcVar9 = s_weapons_hands1__s_1_wav_0078fc10;\n    break;\n  case 0xc:\n    pcVar9 = s_weapons_hands4__s_1_wav_0078fbc8;\n    break;\n  case 0xd:\n    pcVar9 = s_weapons_slash__s_1_wav_0078fc28;\n    break;\n  case 0xe:\n    pcVar9 = s_weapons_hands6__s_1_wav_0078fbb0;\n    break;\n  case 0xf:\n    pcVar9 = s_weapons_hands7__s_1_wav_0078fb98;\n  }\n  FUN_006fdf1f(&local_14,pcVar9,param_3);\nswitchD_00537781_caseD_7:\n  if (*(int *)(local_14 + -8) != 0) {\n    FUN_00455940();\n    FUN_006b85c0(local_14,1000,*(int *)(in_ECX + 0x1c) + 0x1c,0x41000000,0x42200000,0,0);\n  }\n  switch(param_1) {\n  case 0:\n    iVar3 = FUN_00516a80(&DAT_0078ad74);\n    param_1 = 1;\n    break;\n  case 1:\n    iVar3 = FUN_00516a80(&DAT_0078ad38);\n    param_1 = 7;\n    break;\n  case 2:\n    iVar3 = FUN_00516a80(&DAT_0078ad70);\n    param_1 = 3;\n    break;\n  case 3:\n    iVar3 = FUN_00516a80(&DAT_0078ad6c);\n    param_1 = 4;\n    break;\n  case 4:\n    iVar3 = FUN_00516a80(&DAT_0078ad68);\n    param_1 = 5;\n    break;\n  case 5:\n    iVar3 = FUN_00516a80(&DAT_0078ad64);\n    param_1 = 6;\n    break;\n  default:\n    goto switchD_00537842_default;\n  }\n  if ((iVar3 == 0) || ((*(byte *)(*(int *)(in_ECX + 0x1c) + 8) & 0x80) == 0))\n  goto switchD_00537842_default;\n  iVar4 = FUN_00530970();\n  local_18 = *(float *)(iVar4 + 0x108);\n  switch(local_18) {\n  case 1.4013e-45:\n  case 7.00649e-45:\n    uVar5 = 0x200f;\n    break;\n  case 2.8026e-45:\n  case 8.40779e-45:\n    uVar5 = 0x2031;\n    break;\n  case 4.2039e-45:\n  case 9.80909e-45:\n    uVar5 = 0x2032;\n    break;\n  case 5.60519e-45:\n  case 1.12104e-44:\n    uVar5 = 0x2033;\n    break;\n  default:\n    goto switchD_00537906_default;\n  }\n  iVar4 = FUN_00498400(uVar5);\n  fVar1 = *(float *)(iVar3 + 0x198);\n  local_2c = 0.0;\n  local_28 = 0.0;\n  local_24 = 0x3dcccccd;\n  *(undefined4 *)(iVar4 + 0x1c) = 0;\n  *(undefined4 *)(iVar4 + 0x20) = 0;\n  *(undefined4 *)(iVar4 + 0x24) = 0x3dcccccd;\n  FUN_00485480(fVar1 * 2.5);\n  *(undefined4 *)(iVar4 + 0x11c) = 0x3d088889;\n  if (0.1 <= param_2) {\n    if (1.0 < param_2) {\n      param_2 = 1.0;\n    }\n  }\n  else {\n    param_2 = 0.1;\n  }\n  *(float *)(iVar4 + 0x118) = param_2;\n  FUN_004849f0(*(undefined4 *)(in_ECX + 0x1c));\n  *(int *)(iVar4 + 0x13c) = param_1;\nswitchD_00537906_default:\n  fVar1 = local_18;\n  if ((local_18 != 0.0) && ((uint)local_18 < 5)) {\n    fVar6 = *(float *)(*(int *)(in_ECX + 0x1c) + 0x148);\n    fVar7 = *(float *)(*(int *)(in_ECX + 0x1c) + 0x144);\n    uVar8 = (int)((uint)(fVar6 < fVar7) << 0x1f) >> 0x1f;\n    fVar6 = (float)(~uVar8 & (uint)fVar7 | (uint)fVar6 & uVar8);\n    local_18 = 1.0;\n    uVar8 = (int)((uint)(1.0 < fVar6) << 0x1f) >> 0x1f;\n    fVar7 = (float)(~uVar8 & 0x3f800000 | (uint)fVar6 & uVar8);\n    fVar6 = (*(float *)(iVar3 + 0x1ac) + *(float *)(iVar3 + 0x1a8)) * 0.5 * 0.3;\n    FUN_005188b0(&local_2c,iVar3);\n    local_20 = fVar7 * 100.0;\n    local_1c = (int)ROUND(local_20);\n    local_18 = local_20;\n    iVar3 = _rand();\n    local_2c = ((float)(((iVar3 * local_1c) / 0x7fff) % local_1c) * 0.02 - fVar7) + local_2c;\n    local_1c = (int)ROUND(local_20);\n    iVar3 = _rand();\n    local_20 = (float)(((iVar3 * local_1c) / 0x7fff) % local_1c);\n    local_28 = ((float)(int)local_20 * 0.02 - fVar7) + local_28;\n    iVar3 = _rand();\n    uVar8 = (iVar3 * 2) / 0x7fff & 0x80000001;\n    if ((int)uVar8 < 0) {\n      uVar8 = (uVar8 - 1 | 0xfffffffe) + 1;\n    }\n    FUN_0056ce90(local_2c,local_28,fVar6,fVar6 * 3.0,uVar8 | ((int)fVar1 + 0xffff) * 0x10000,1);\n  }\nswitchD_00537842_default:\n  local_8 = local_8 & 0xffffff00;\n  FUN_00700930();\n  local_8 = 0xffffffff;\n  FUN_00700930();\n  ExceptionList = local_10;\n  return;\n}\n\n",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels."
+    ]
+  },
+  {
+    "evidence_id": "ev_55f06e7ecc5e8c3e139a71d1435cb07d4ab244b871e6eea8e7e3bca47aa5144b",
+    "subject": {
+      "name": "game.exe",
+      "digest": {
+        "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+      },
+      "format": "pe",
+      "architecture": "x86",
+      "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+    },
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "confidence": "observed",
+    "authority": "shipped-artifact",
+    "procedure": {
+      "address": "0x484c00",
+      "name": "FUN_00484c00",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x484c00",
+            "end": "0x48523f"
+          }
+        ],
+        "total_bytes": 1600,
+        "span_bytes": 1600,
+        "non_contiguous": false,
+        "contains_entry": true
+      },
+      "signature": "undefined FUN_00484c00()",
+      "locals": []
+    },
+    "pseudocode": "\nint * FUN_00484c00(int *param_1,int *param_2)\n\n{\n  float fVar1;\n  float fVar2;\n  int iVar3;\n  int in_ECX;\n  int iStack_c;\n  int iStack_8;\n  float fStack_4;\n  \n  if (param_2 == (int *)0x0) {\n    *param_1 = 0;\n    param_1[1] = 0;\n    param_1[2] = 0;\n    return param_1;\n  }\n  if ((*(byte *)(in_ECX + 8) & 0x10) == 0) {\n    *param_1 = param_2[7];\n    param_1[1] = param_2[8];\n    param_1[2] = param_2[9];\n    return param_1;\n  }\n  iVar3 = (**(code **)(*param_2 + 0x30))();\n  if (iVar3 == 0x50) {\n    switch(*(undefined4 *)(in_ECX + 0x13c)) {\n    case 0:\n      FUN_00532860(param_1);\n      return param_1;\n    case 1:\n      iVar3 = FUN_00516a80(&DAT_0078ad74);\n      if (iVar3 != 0) {\n        FUN_005188b0(&iStack_c,iVar3);\n        *param_1 = iStack_c;\n        param_1[1] = iStack_8;\n        param_1[2] = (int)fStack_4;\n        return param_1;\n      }\n      iVar3 = FUN_00516a80(&DAT_0078ad38);\n      if (iVar3 == 0) {\n        iVar3 = param_2[8];\n        fVar2 = (float)param_2[9];\n        fVar1 = (float)param_2[0x53];\n        *param_1 = param_2[7];\n        param_1[1] = iVar3;\n        param_1[2] = (int)(fVar2 + fVar1);\n        return param_1;\n      }\n      FUN_005188b0(&iStack_c,iVar3);\n      *param_1 = iStack_c;\n      param_1[1] = iStack_8;\n      param_1[2] = (int)fStack_4;\n      return param_1;\n    case 2:\n      iVar3 = FUN_00516a80(&DAT_0078ad74);\n      if (iVar3 == 0) {\n        iVar3 = FUN_00516a80(&DAT_0078ad38);\n        if (iVar3 == 0) {\n          iStack_c = param_2[7];\n          iStack_8 = param_2[8];\n          fStack_4 = (float)param_2[9] + (float)param_2[0x53];\n        }\n        else {\n          FUN_005188b0(&iStack_c,iVar3);\n        }\n      }\n      else {\n        FUN_005188b0(&iStack_c,iVar3);\n      }\n      *param_1 = iStack_c;\n      param_1[1] = iStack_8;\n      param_1[2] = (int)(fStack_4 + 1.0);\n      return param_1;\n    case 3:\n      iVar3 = FUN_00516a80(&DAT_0078ad70);\n      if (iVar3 != 0) {\n        FUN_005188b0(&iStack_c,iVar3);\n        *param_1 = iStack_c;\n        param_1[1] = iStack_8;\n        param_1[2] = (int)fStack_4;\n        return param_1;\n      }\n      iVar3 = FUN_00516a80(&DAT_0078ad38);\n      if (iVar3 == 0) {\n        iVar3 = param_2[8];\n        fVar2 = (float)param_2[9];\n        fVar1 = (float)param_2[0x53];\n        *param_1 = param_2[7];\n        param_1[1] = iVar3;\n        param_1[2] = (int)(fVar2 + fVar1);\n        return param_1;\n      }\n      FUN_005188b0(&iStack_c,iVar3);\n      *param_1 = iStack_c;\n      param_1[1] = iStack_8;\n      param_1[2] = (int)fStack_4;\n      return param_1;\n    case 4:\n      iVar3 = FUN_00516a80(&DAT_0078ad6c);\n      if (iVar3 != 0) {\n        FUN_005188b0(&iStack_c,iVar3);\n        *param_1 = iStack_c;\n        param_1[1] = iStack_8;\n        param_1[2] = (int)fStack_4;\n        return param_1;\n      }\n      iVar3 = FUN_00516a80(&DAT_0078ad38);\n      if (iVar3 == 0) {\n        iVar3 = param_2[8];\n        fVar2 = (float)param_2[9];\n        fVar1 = (float)param_2[0x53];\n        *param_1 = param_2[7];\n        param_1[1] = iVar3;\n        param_1[2] = (int)(fVar2 + fVar1);\n        return param_1;\n      }\n      FUN_005188b0(&iStack_c,iVar3);\n      *param_1 = iStack_c;\n      param_1[1] = iStack_8;\n      param_1[2] = (int)fStack_4;\n      return param_1;\n    case 5:\n      iVar3 = FUN_00516a80(&DAT_0078ad68);\n      if (iVar3 != 0) {\n        FUN_005188b0(&iStack_c,iVar3);\n        *param_1 = iStack_c;\n        param_1[1] = iStack_8;\n        param_1[2] = (int)fStack_4;\n        return param_1;\n      }\n      iVar3 = FUN_00516a80(&DAT_0078ad38);\n      if (iVar3 == 0) {\n        iVar3 = param_2[8];\n        fVar2 = (float)param_2[9];\n        fVar1 = (float)param_2[0x53];\n        *param_1 = param_2[7];\n        param_1[1] = iVar3;\n        param_1[2] = (int)(fVar2 + fVar1);\n        return param_1;\n      }\n      FUN_005188b0(&iStack_c,iVar3);\n      *param_1 = iStack_c;\n      param_1[1] = iStack_8;\n      param_1[2] = (int)fStack_4;\n      return param_1;\n    case 6:\n      iVar3 = FUN_00516a80(&DAT_0078ad64);\n      if (iVar3 != 0) {\n        FUN_005188b0(&iStack_c,iVar3);\n        *param_1 = iStack_c;\n        param_1[1] = iStack_8;\n        param_1[2] = (int)fStack_4;\n        return param_1;\n      }\n      iVar3 = FUN_00516a80(&DAT_0078ad38);\n      if (iVar3 == 0) {\n        iVar3 = param_2[8];\n        fVar2 = (float)param_2[9];\n        fVar1 = (float)param_2[0x53];\n        *param_1 = param_2[7];\n        param_1[1] = iVar3;\n        param_1[2] = (int)(fVar2 + fVar1);\n        return param_1;\n      }\n      FUN_005188b0(&iStack_c,iVar3);\n      *param_1 = iStack_c;\n      param_1[1] = iStack_8;\n      param_1[2] = (int)fStack_4;\n      return param_1;\n    case 7:\n      iVar3 = FUN_00516a80(&DAT_0078ad38);\n      if (iVar3 != 0) {\n        FUN_005188b0(&iStack_c,iVar3);\n        *param_1 = iStack_c;\n        param_1[1] = iStack_8;\n        param_1[2] = (int)fStack_4;\n        return param_1;\n      }\n      iVar3 = FUN_00516a80(&DAT_0078ad38);\n      if (iVar3 == 0) {\n        iVar3 = param_2[8];\n        fVar2 = (float)param_2[9];\n        fVar1 = (float)param_2[0x53];\n        *param_1 = param_2[7];\n        param_1[1] = iVar3;\n        param_1[2] = (int)(fVar2 + fVar1);\n        return param_1;\n      }\n      FUN_005188b0(&iStack_c,iVar3);\n      *param_1 = iStack_c;\n      param_1[1] = iStack_8;\n      param_1[2] = (int)fStack_4;\n      return param_1;\n    case 8:\n      FUN_00484b40(param_1,param_2,s_body00_0078ad5c);\n      return param_1;\n    case 9:\n      FUN_00484b40(param_1,param_2,s_body01_0078ad54);\n      return param_1;\n    case 10:\n      FUN_00484b40(param_1,param_2,s_body02_0078ad4c);\n      return param_1;\n    case 0xb:\n      FUN_00484b40(param_1,param_2,s_body03_0078ad44);\n      return param_1;\n    case 0xc:\n      FUN_00484b40(param_1,param_2,s_body04_0078ad3c);\n      return param_1;\n    }\n  }\n  if ((*(byte *)(param_2 + 0x49) & 1) == 0) {\n    fVar1 = (float)param_2[0x53] - (float)param_2[0x50];\n  }\n  else {\n    fVar1 = (float)param_2[0x4d] * 1.6;\n  }\n  FUN_00401de0(param_2[7],param_2[8],fVar1 + (float)param_2[9]);\n  return param_1;\n}\n\n",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels."
+    ]
+  },
+  {
+    "evidence_id": "ev_11bcb5a449a13801ad3d844a2a29ef11e6d1b5ed022893cf67424f9ccf2421aa",
+    "subject": {
+      "name": "game.exe",
+      "digest": {
+        "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+      },
+      "format": "pe",
+      "architecture": "x86",
+      "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+    },
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "confidence": "observed",
+    "authority": "shipped-artifact",
+    "procedure": {
+      "address": "0x549160",
+      "name": "FUN_00549160",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x549160",
+            "end": "0x5494a9"
+          }
+        ],
+        "total_bytes": 842,
+        "span_bytes": 842,
+        "non_contiguous": false,
+        "contains_entry": true
+      },
+      "signature": "undefined FUN_00549160()",
+      "locals": [
+        {
+          "description": "undefined4 local_24 @ Stack[-0x24]:4",
+          "provenance": "ghidra-function-database"
+        }
+      ]
+    },
+    "pseudocode": "\nvoid FUN_00549160(void)\n\n{\n  int *piVar1;\n  undefined4 uVar2;\n  char cVar3;\n  int iVar4;\n  int iVar5;\n  uint uVar6;\n  int in_ECX;\n  undefined1 uStack_25;\n  int local_24;\n  undefined1 auStack_20 [4];\n  undefined1 auStack_1c [4];\n  float fStack_18;\n  float fStack_14;\n  float fStack_10;\n  undefined1 auStack_c [12];\n  \n  iVar4 = FUN_00455940();\n  iVar4 = *(int *)(iVar4 + 100);\n  local_24 = iVar4;\n  if (iVar4 == *(int *)(in_ECX + 0x180)) {\n    FUN_00530570();\n  }\n  if (iVar4 == *(int *)(in_ECX + 0xdc)) {\n    FUN_00556950(in_ECX + 0xc4);\n    *(undefined4 *)(in_ECX + 0x38) = *(undefined4 *)(in_ECX + 0xd8);\n    FUN_005483c0(in_ECX + 0xc4);\n    if (*(int *)(in_ECX + 0x38) == -1) {\n      iVar4 = FUN_00455950();\n      *(undefined4 *)(in_ECX + 0x38) = *(undefined4 *)(iVar4 + 100);\n    }\n    FUN_00546b40();\n    FUN_00546c10();\n    if ((*(char *)(in_ECX + 0xec) != '\\0') && (iVar4 = FUN_00530970(), *(int *)(iVar4 + 0x114) != 0)\n       ) {\n      iVar4 = (**(code **)(*DAT_007aff98 + 0x5c))(0x4a,0xffffffff);\n      switch(*(undefined4 *)(in_ECX + 0xf8)) {\n      case 0:\n        *(undefined4 *)(iVar4 + 0x158) = 0x2027;\n        break;\n      case 1:\n        *(undefined4 *)(iVar4 + 0x158) = 0x2028;\n        break;\n      case 2:\n        *(undefined4 *)(iVar4 + 0x158) = 0x2029;\n        break;\n      case 3:\n        *(undefined4 *)(iVar4 + 0x158) = 0x202b;\n        break;\n      case 4:\n        *(undefined4 *)(iVar4 + 0x158) = 0x202a;\n        break;\n      case 5:\n        *(undefined4 *)(iVar4 + 0x158) = 0x202d;\n        break;\n      case 6:\n        *(undefined4 *)(iVar4 + 0x158) = 0x202e;\n        break;\n      case 7:\n        *(undefined4 *)(iVar4 + 0x158) = 0x202c;\n        break;\n      default:\n        *(undefined4 *)(iVar4 + 0x158) = 0x200b;\n      }\n      *(undefined4 *)(iVar4 + 0x15c) = 0x3f800000;\n      FUN_00679240(*(undefined4 *)(*(int *)(in_ECX + 0x1c) + 0xc));\n      FUN_0058e520(iVar4);\n      piVar1 = *(int **)(in_ECX + 0x17c);\n      *(int *)(in_ECX + 0x17c) = iVar4;\n      if (iVar4 != 0) {\n        *(int *)(iVar4 + 4) = *(int *)(iVar4 + 4) + 1;\n      }\n      if (piVar1 != (int *)0x0) {\n        (**(code **)(*piVar1 + 0x10))();\n      }\n    }\n  }\n  if (local_24 < *(int *)(in_ECX + 0xe0)) {\n    iVar5 = FUN_00455940();\n    iVar4 = *(int *)(in_ECX + 0x1c);\n    fStack_18 = *(float *)(iVar4 + 0x1c);\n    fStack_14 = *(float *)(iVar4 + 0x20);\n    fStack_10 = *(float *)(iVar4 + 0x24);\n    FUN_005c7430(iVar5,in_ECX + 0x3c,(float)*(int *)(iVar5 + 100),&uStack_25,&fStack_18,auStack_c,\n                 auStack_1c,auStack_20,&local_24);\n    uVar6 = (uint)(*(int *)(in_ECX + 0x164) == 0);\n    FUN_00455940();\n    if (*(uint *)(*(int *)(in_ECX + 0x1c) + 0x278) != uVar6) {\n      FUN_005c1010(*(int *)(in_ECX + 0x1c));\n      *(uint *)(*(int *)(in_ECX + 0x1c) + 0x278) = uVar6;\n      FUN_005c0df0(*(undefined4 *)(in_ECX + 0x1c));\n      FUN_0050e9f0(7);\n    }\n    FUN_00401f00(auStack_c,0);\n    return;\n  }\n  FUN_00549ec0(*(undefined4 *)(in_ECX + 0xf0),\n               CONCAT31((int3)((uint)*(int *)(in_ECX + 0xe0) >> 8),*(undefined1 *)(in_ECX + 0xf4)));\n  FUN_00557b80(0,0xffffffff);\n  *(undefined4 *)(in_ECX + 0xd8) = 0xffffffff;\n  *(undefined4 *)(in_ECX + 0xe4) = 0xffffffff;\n  *(undefined4 *)(in_ECX + 0xe0) = 0;\n  *(undefined4 *)(in_ECX + 0xdc) = 0;\n  *(undefined4 *)(in_ECX + 0xf0) = 1;\n  *(undefined4 *)(in_ECX + 0xe8) = 0x7e967699;\n  *(undefined1 *)(in_ECX + 0xec) = 0;\n  *(undefined1 *)(in_ECX + 0xf4) = 0;\n  *(undefined4 *)(in_ECX + 0xf8) = 8;\n  if (*(int *)(in_ECX + 0x164) == 5) {\n    *(undefined4 *)(in_ECX + 0x164) = 3;\n    FUN_00530570();\n    if (*(int *)(in_ECX + 0x17c) != 0) {\n      FUN_0058e5d0(*(undefined4 *)(*(int *)(in_ECX + 0x17c) + 0xc));\n      piVar1 = *(int **)(in_ECX + 0x17c);\n      *(undefined4 *)(in_ECX + 0x17c) = 0;\n      if (piVar1 != (int *)0x0) {\n        (**(code **)(*piVar1 + 0x10))();\n      }\n    }\n  }\n  FUN_005b23a0();\n  iVar4 = FUN_00455950();\n  uVar2 = *(undefined4 *)(iVar4 + 100);\n  FUN_0040f560(&fStack_18);\n  FUN_00401de0(-fStack_18,-fStack_14,-fStack_10);\n  cVar3 = FUN_005c7b00(*(int *)(in_ECX + 0x1c) + 0x1c,auStack_c,uVar2);\n  if (cVar3 != '\\0') {\n    FUN_0052e9d0();\n  }\n  FUN_005467b0(0);\n  return;\n}\n\n",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels."
+    ]
+  },
+  {
+    "evidence_id": "ev_091842c0dbd42d3acea2069168b5e57b409265aa2a990e6eb448c7a75283ac53",
+    "subject": {
+      "name": "game.exe",
+      "digest": {
+        "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+      },
+      "format": "pe",
+      "architecture": "x86",
+      "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+    },
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "confidence": "observed",
+    "authority": "shipped-artifact",
+    "procedure": {
+      "address": "0x6eadf0",
+      "name": "FUN_006eadf0",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x6eadf0",
+            "end": "0x6eae6f"
+          },
+          {
+            "start": "0x6f6e20",
+            "end": "0x6f6e24"
+          }
+        ],
+        "total_bytes": 133,
+        "span_bytes": 49205,
+        "non_contiguous": true,
+        "contains_entry": true
+      },
+      "signature": "undefined FUN_006eadf0()",
+      "locals": []
+    },
+    "pseudocode": "\nuint * FUN_006eadf0(uint *param_1,char *param_2)\n\n{\n  char *pcVar1;\n  char *pcVar2;\n  char cVar3;\n  uint *puVar4;\n  uint uVar5;\n  char cVar6;\n  uint uVar7;\n  char *pcVar8;\n  uint uVar9;\n  uint *puVar10;\n  \n  cVar3 = *param_2;\n  if (cVar3 == '\\0') {\n    return param_1;\n  }\n  if (param_2[1] == '\\0') {\n    while (((uint)param_1 & 3) != 0) {\n      uVar5 = *param_1;\n      if ((char)uVar5 == cVar3) {\n        return param_1;\n      }\n      param_1 = (uint *)((int)param_1 + 1);\n      if ((char)uVar5 == '\\0') {\n        return (uint *)0x0;\n      }\n    }\n    while( true ) {\n      while( true ) {\n        uVar5 = *param_1;\n        uVar9 = uVar5 ^ CONCAT22(CONCAT11(cVar3,cVar3),CONCAT11(cVar3,cVar3));\n        uVar7 = uVar5 ^ 0xffffffff ^ uVar5 + 0x7efefeff;\n        puVar10 = param_1 + 1;\n        if (((uVar9 ^ 0xffffffff ^ uVar9 + 0x7efefeff) & 0x81010100) != 0) break;\n        param_1 = puVar10;\n        if ((uVar7 & 0x81010100) != 0) {\n          if ((uVar7 & 0x1010100) != 0) {\n            return (uint *)0x0;\n          }\n          if ((uVar5 + 0x7efefeff & 0x80000000) == 0) {\n            return (uint *)0x0;\n          }\n        }\n      }\n      uVar5 = *param_1;\n      if ((char)uVar5 == cVar3) {\n        return param_1;\n      }\n      if ((char)uVar5 == '\\0') {\n        return (uint *)0x0;\n      }\n      cVar6 = (char)(uVar5 >> 8);\n      if (cVar6 == cVar3) {\n        return (uint *)((int)param_1 + 1);\n      }\n      if (cVar6 == '\\0') {\n        return (uint *)0x0;\n      }\n      cVar6 = (char)(uVar5 >> 0x10);\n      if (cVar6 == cVar3) {\n        return (uint *)((int)param_1 + 2);\n      }\n      if (cVar6 == '\\0') break;\n      cVar6 = (char)(uVar5 >> 0x18);\n      if (cVar6 == cVar3) {\n        return (uint *)((int)param_1 + 3);\n      }\n      param_1 = puVar10;\n      if (cVar6 == '\\0') {\n        return (uint *)0x0;\n      }\n    }\n    return (uint *)0x0;\n  }\n  do {\n    cVar6 = (char)*param_1;\n    do {\n      while (puVar10 = param_1, param_1 = (uint *)((int)puVar10 + 1), cVar6 != cVar3) {\n        if (cVar6 == '\\0') {\n          return (uint *)0x0;\n        }\n        cVar6 = *(char *)param_1;\n      }\n      cVar6 = *(char *)param_1;\n      pcVar8 = param_2;\n      puVar4 = puVar10;\n    } while (cVar6 != param_2[1]);\n    do {\n      if (pcVar8[2] == '\\0') {\n        return puVar10;\n      }\n      if (*(char *)((int)puVar4 + 2) != pcVar8[2]) break;\n      pcVar1 = pcVar8 + 3;\n      if (*pcVar1 == '\\0') {\n        return puVar10;\n      }\n      pcVar2 = (char *)((int)puVar4 + 3);\n      pcVar8 = pcVar8 + 2;\n      puVar4 = (uint *)((int)puVar4 + 2);\n    } while (*pcVar1 == *pcVar2);\n  } while( true );\n}\n\n",
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels."
+    ]
+  }
+]

@@ -1,0 +1,501 @@
+{
+	"affected": [
+		{
+			"part": "bd00",
+			"rig": "unmowi",
+			"selector": "bd",
+			"variants": [
+				"WillowispM1",
+				"WillowispM3",
+				"WillowispM5"
+			]
+		}
+	],
+	"checks": 1739,
+	"failures": 0,
+	"rigs": {
+		"unanhoco": [
+			"CowF0"
+		],
+		"unanhodo": [
+			"DogGreyF6",
+			"DogGreyF7",
+			"DogGreyF8",
+			"DogRedF12",
+			"DogRedF14",
+			"DogRedF16"
+		],
+		"unanhoha": [
+			"HareF0"
+		],
+		"unanhoho": [
+			"HorseRedF0",
+			"HorseWhiteF0"
+		],
+		"unanhopi": [
+			"PigF0"
+		],
+		"unanwiba": [
+			"BatDarkM12",
+			"BatDarkM14",
+			"BatDarkM16",
+			"BatLightM7",
+			"BatLightM8",
+			"BatLightM9",
+			"BatLightM10",
+			"BatRedM1",
+			"BatRedM3",
+			"BatRedM5"
+		],
+		"unanwibo": [
+			"BoarDarkF3",
+			"BoarDarkF4",
+			"BoarDarkF5",
+			"BoarDarkF6",
+			"BoarRedF1",
+			"BoarRedF2",
+			"BoarRedF3",
+			"BoarTutor"
+		],
+		"unanwicr": [
+			"ScrabBlueF5",
+			"ScrabGreyF5",
+			"ScrabMotherHealthF20",
+			"ScrabMotherPoisonedF6"
+		],
+		"unanwide": [
+			"DeerF0"
+		],
+		"unanwihy": [
+			"HyenaF6"
+		],
+		"unanwira": [
+			"RatGiantF9",
+			"RatGiantF10",
+			"RatGiantF11",
+			"RatSmallF1"
+		],
+		"unanwiti": [
+			"TigerRedF2",
+			"TigerRedF4",
+			"TigerRedF6",
+			"TigerWhiteF6",
+			"TigerWhiteF8",
+			"TigerWhiteF10"
+		],
+		"unanwiwo": [
+			"WolfGreyF0",
+			"WolfGreyF1",
+			"WolfGreyF2",
+			"WolfGreyF3",
+			"WolfWhiteF4",
+			"WolfWhiteF5",
+			"WolfWhiteF6",
+			"WolfWhiteQF6",
+			"WolfTutorWOLoot",
+			"WolfTutor"
+		],
+		"unhufe": [
+			"Human Mercenary Thief",
+			"Human Mercenary Shaivar",
+			"Human Mercenary Kania Archer",
+			"Human Mercenary Hadagan Rogue",
+			"Human Gipath Brigand A1",
+			"Human Gipath Brigand Pants A1",
+			"Human Gipath Brigand Gloves A1",
+			"Human Gipath Brigand Leggins A1",
+			"Human Gipath Brigand HShirt A1",
+			"Human Gipath Brigand HGloves A1",
+			"Human Gipath Brigand HHelm A1",
+			"Human Gipath Brigand A3",
+			"Human Gipath NPC Wife M3",
+			"Human Kania Citizen A7",
+			"Human Kania Citizen A8",
+			"Human Kania Police A8",
+			"Human Kania Police Karansul A8",
+			"Human Kania Huntress F7",
+			"Human Kania Police A10",
+			"Human Kania Police Karansul A10",
+			"Human Kania Police Leggins A10",
+			"Human Kania Police KGloves A8",
+			"Human Kania Police KBoots A8",
+			"Human Kania Police KHelm A10",
+			"Human Kania Gang A8",
+			"Human Kania Gang A9",
+			"Human Kania Gang A10",
+			"Human Kania Gang A12",
+			"Human Kania NPC Sorceress M11",
+			"Human Hadagan Peasants A1",
+			"Human Hadagan Citizens A1",
+			"Human Hadagan Students A10",
+			"Human Hadagan Students M10",
+			"Human Hadagan TeacherLC A14",
+			"Human Hadagan Guards A14",
+			"Human Hadagan Guards M14",
+			"Human Hadagan Necromancer M14",
+			"Human Hadagan Necromancer Keykeeper M14",
+			"Human Hadagan Guards Helm A14",
+			"Human Hadagan Guards Pants A14",
+			"Human Hadagan Guards Boots M14",
+			"Human Hadagan Guards Gloves M14",
+			"Human Hadagan Guards A16",
+			"Human Hadagan Guards M16",
+			"Human Hadagan Guards A17",
+			"Human Hadagan Guards M17",
+			"Human Hadagan Necromancer M17",
+			"Human Hadagan Guards A20",
+			"Human Hadagan Guards M20",
+			"Human Kania Citizen F1 Female",
+			"Human Kania Citizen High F1 Female",
+			"Human Hadagan Pretty",
+			"Human Gipath Runner Female F1",
+			"Human Gipath NPC Witch M1",
+			"Human Gipath NPC Daughter M1",
+			"Jun Female Deva M1",
+			"Human Hadagan NPC Rebel Thief A15"
+		],
+		"unhuma": [
+			"Human Hero",
+			"Human Hero Hadagan",
+			"Human Mercenary Warrior",
+			"Human Mercenary Bodyguard",
+			"Human Mercenary Kania Thief",
+			"Human Mercenary Kania Paladin",
+			"Human Mercenary Hadagan Warrior",
+			"Human Mercenary Hadagan Thief",
+			"UndeadF13",
+			"UndeadF15",
+			"UndeadF17",
+			"Human Gipath Brigand F1",
+			"Human Gipath Brigand Shirt F1",
+			"Human Gipath Brigand Boots F1",
+			"Human Gipath Brigand Plate F1",
+			"Human Gipath Brigand Helm F1",
+			"Human Gipath Brigand HPants F1",
+			"Human Gipath Brigand HBoots F1",
+			"Human Gipath Brigand HPlate F1",
+			"Human Gipath Brigand HLeggins F1",
+			"Human Gipath Brigand Deputy F1",
+			"Human Gipath Brigand Effect F3",
+			"Human Gipath Warlord F2",
+			"Human Gipath Brigand F3",
+			"Human Gipath Brigand Leader F4",
+			"Human Gipath NPC Warlord F5",
+			"Human Gipath NPC Boss F5",
+			"Human Gipath Expeditor F12",
+			"Human Gipath NPC Expeditor F15",
+			"Human Kania NPC Manager F1",
+			"Human Kania Citizen F1",
+			"Human Kania Citizen F7",
+			"Human Kania Detective F7",
+			"Human Kania Citizen F8",
+			"Human Kania Police F8",
+			"Human Kania Police Karansul F8",
+			"Human Kania Woodcutter F8",
+			"Human Kania Goldminer F7",
+			"Human Kania Hunter F7",
+			"Human Kania Miner F8",
+			"Human Kania Police F10",
+			"Human Kania Police Karansul F10",
+			"Human Kania Police Plate F10",
+			"Human Kania Police Helm F10",
+			"Human Kania Police KShirt F8",
+			"Human Kania Police KPants F8",
+			"Human Kania Police KPlate F10",
+			"Human Kania Police KLeggins F10",
+			"Human Kania Police Leader F10",
+			"Human Kania Gang F1",
+			"Human Kania Gang F8",
+			"Human Kania Gang F9",
+			"Human Kania Gang F10",
+			"Human Kania Gang Spear F10",
+			"Human Kania Gang F11",
+			"Human Kania Ranger F9",
+			"Human Kania Gang F12",
+			"Human Kania Gang Leader F13",
+			"Human Kania Sorceress Bodyguard F9",
+			"Human Kania NPC Bodyguard F12",
+			"Human Hadagan Peasants F1",
+			"Human Hadagan Citizens F1",
+			"Human Hadagan Students F10",
+			"Human Hadagan Guards F14",
+			"Human Hadagan Guards Shirt F14",
+			"Human Hadagan Guards Plate F14",
+			"Human Hadagan Guards Leggins F14",
+			"Human Hadagan Overseer F14",
+			"Human Hadagan OverseerBA F14",
+			"Human Hadagan OverseerSC F14",
+			"Human Hadagan NPC Lieutenant F15",
+			"Human Hadagan Portal Keykeeper F14",
+			"Human Hadagan Mine Keykeeper F14",
+			"Human Hadagan Guards F16",
+			"Human Hadagan Guards F17",
+			"Human Hadagan Guards HPlate F17",
+			"Human Hadagan Guards HLeggins F17",
+			"Human Hadagan Guards HHelm F17",
+			"Human Hadagan Guard Commander F17",
+			"Human Hadagan NPC Flunkey F17",
+			"Human Hadagan Guards F20",
+			"Human Hadagan Guard Commander F20",
+			"Human Kania Citizen High F1",
+			"Human Gipath Runner Male F1",
+			"Human Gipath NPC Elder F1",
+			"Human Gipath NPC Master F1",
+			"Human Gipath NPC New Sheriff F1",
+			"Human Gipath NPC Buerocrat F1",
+			"Human Gipath NPC Demon F7",
+			"Human Kania NPC Governor F10",
+			"Human Kania NPC Captain F14",
+			"Human Kania NPC Trader F5",
+			"Human Kania NPC Trapper F9",
+			"Human Kania NPC Thief A10",
+			"Human Kania NPC Lovkach A10",
+			"Human Hadagan NPC Rebel Boss F15",
+			"Human Hadagan NPC Rebel Smith F15",
+			"Human Hadagan NPC Rebel Necro M15",
+			"Human Hadagan NPC Rebel Zaku F1",
+			"Human Hadagan NPC Junofil F10",
+			"Human Hadagan NPC Old Necro M20",
+			"Human Hadagan NPC Spirit M20",
+			"Human Hadagan NPC Rebel Guru F20",
+			"Jun Male Hero"
+		],
+		"unmoba1": [
+			"BansheeDarkM12Canyon",
+			"BansheeDarkM12",
+			"BansheeDarkM14",
+			"BansheeDarkM16",
+			"BansheeLightM5",
+			"BansheeLightM6",
+			"BansheeLightM7"
+		],
+		"unmoba2": [
+			"BansheeDarkF12Canyon",
+			"BansheeDarkF12",
+			"BansheeDarkF14",
+			"BansheeDarkF16",
+			"BansheeLightF2",
+			"BansheeLightF3",
+			"BansheeLightF4",
+			"BansheeTutor"
+		],
+		"unmobe0": [
+			"EvileyeRedM12",
+			"EvileyeRedM14",
+			"EvileyeRedM16"
+		],
+		"unmobe1": [
+			"EvileyeGreenM13",
+			"EvileyeGreenM15",
+			"EvileyeGreenM17",
+			"EvileyeSimpleM5",
+			"EvileyeSimpleM6",
+			"EvileyeSimpleM7"
+		],
+		"unmoco2": [
+			"MainMenu"
+		],
+		"unmocu": [
+			"AncientCurseM25"
+		],
+		"unmocy": [
+			"CyclopsA16",
+			"CyclopsA18",
+			"CyclopsA20"
+		],
+		"unmodg": [
+			"DragonBlueM14",
+			"DragonBrownM16",
+			"DragonGreenM12"
+		],
+		"unmodr": [
+			"DriadDarkA7",
+			"DriadDarkA9",
+			"DriadDarkA11",
+			"DriadDarkM7",
+			"DriadDarkM9",
+			"DriadDarkM11",
+			"DriadGreenA7",
+			"DriadGreenA9",
+			"DriadGreenA11",
+			"DriadGreenM7",
+			"DriadGreenM9",
+			"DriadGreenM11",
+			"DriadSnowA7",
+			"DriadSnowA9",
+			"DriadSnowA11",
+			"DriadSnowM7",
+			"DriadSnowM9",
+			"DriadSnowM11",
+			"DriadSnowQM9"
+		],
+		"unmoel0": [
+			"ElementalEarthF8"
+		],
+		"unmoel1": [
+			"ElementalLavaF12"
+		],
+		"unmoel2": [
+			"ElementalIceF9",
+			"ElementalIceF11",
+			"ElementalIceF15"
+		],
+		"unmogo": [
+			"GoblinA1",
+			"GoblinA2",
+			"GoblinA3",
+			"GoblinF1",
+			"GoblinF2",
+			"GoblinF3",
+			"GoblinGogoF3",
+			"GoblinSentryF1",
+			"GoblinTutor"
+		],
+		"unmogo1": [
+			"GolemVerticalF20"
+		],
+		"unmogo2": [
+			"GolemHorizontalF20"
+		],
+		"unmoli": [
+			"DragonkinGreenF3",
+			"DragonkinGreenF7",
+			"DragonkinBeastmenF3",
+			"DragonkinJunF11",
+			"DragonkinJunF7",
+			"DragonkinOrcishF5",
+			"DragonkinOrcishF9"
+		],
+		"unmomi": [
+			"OctopusHadaganM13",
+			"OctopusHadaganM14",
+			"OctopusHadaganM15",
+			"OctopusHadaganM17",
+			"OctopusKaniaM11",
+			"OctopusKaniaM12",
+			"OctopusKaniaM15"
+		],
+		"unmoog1": [
+			"OgreGipatF5",
+			"OgreGipatF5S",
+			"OgreGipatF6S",
+			"OgreGipatF7",
+			"OgreGipatF7S",
+			"OgreGipatF9",
+			"OgreTutor",
+			"OgreTutorStealer"
+		],
+		"unmoog2": [
+			"OgreHadaganF13",
+			"OgreHadaganF15",
+			"OgreHadaganF17"
+		],
+		"unmori": [
+			"Rick"
+		],
+		"unmosh": [
+			"ShadowM13",
+			"ShadowM15",
+			"ShadowM17",
+			"ShadowM20"
+		],
+		"unmosk": [
+			"SkeletonF2",
+			"SkeletonF3",
+			"SkeletonF4",
+			"SkeletonWarriorF7"
+		],
+		"unmosp": [
+			"SpiderF10",
+			"SpiderF13",
+			"SpiderF14",
+			"SpiderF15Canyon",
+			"SpiderF15"
+		],
+		"unmosu": [
+			"SuccubGreyM13Canyon",
+			"SuccubGreyM13",
+			"SuccubGreyM15",
+			"SuccubGreyM17",
+			"SuccubGreyM20",
+			"SuccubRedM9",
+			"SuccubRedM10",
+			"SuccubRedM11",
+			"SuccubRedRuneM9",
+			"SuccubGreyRuneM15",
+			"SuccubBlueM10",
+			"SuccubBlueM11",
+			"SuccubBlueM17"
+		],
+		"unmoto": [
+			"ToadM1",
+			"ToadM2",
+			"ToadM4",
+			"ToadM6",
+			"ToadTutor"
+		],
+		"unmotr": [
+			"TrollBlackSlowF16",
+			"TrollBlueF12",
+			"TrollBlueF9",
+			"TrollBlueF11",
+			"TrollGreenF10"
+		],
+		"unmoun": [
+			"UnicornBlackM15",
+			"UnicornWhiteM15"
+		],
+		"unmowi": [
+			"WillowispM1",
+			"WillowispM3",
+			"WillowispM5"
+		],
+		"unmozo0": [
+			"ZombieMaleF10",
+			"ZombieMaleF12",
+			"ZombieMaleF14",
+			"ZombieMaleF16"
+		],
+		"unmozo1": [
+			"ZombieFemaleF10",
+			"ZombieFemaleF12",
+			"ZombieFemaleF14",
+			"ZombieFemaleF16"
+		],
+		"unorfe": [
+			"OrcFemaleA3",
+			"OrcFemaleA5",
+			"OrcFemaleA7",
+			"OrcFemaleBowA3",
+			"OrcFemaleM3",
+			"OrcFemaleM5",
+			"OrcFemaleM7",
+			"OrcFemaleRuneAM3",
+			"OrcFemaleRuneEM3",
+			"OrcFemaleRuneTM3",
+			"OrcFemaleRuneMM5",
+			"OrcFemaleRuneTM5",
+			"OrcFemaleTribeLA5",
+			"OrcFemaleTribeLA7",
+			"OrcFemaleTribeLM5",
+			"OrcFemaleTribeLM7",
+			"OrcFemaleTribeRA5",
+			"OrcFemaleTribeRA7",
+			"OrcFemaleTribeRM5",
+			"OrcFemaleTribeRM7",
+			"OrcFemaleShaivarA7",
+			"OrcFemaleShaivarM7"
+		],
+		"unorma": [
+			"OrcMaleF3",
+			"OrcMaleF5",
+			"OrcMaleF7",
+			"OrcMaleTribeLF5",
+			"OrcMaleTribeLF7",
+			"OrcMaleTribeRF5",
+			"OrcMaleTribeRF7",
+			"OrcMaleShaivarF7",
+			"OrcMaleShaivarKeykeeperF7"
+		]
+	}
+}
