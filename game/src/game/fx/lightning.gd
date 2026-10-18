@@ -112,7 +112,7 @@ func _new_bolt(f: float, shift: Vector3, width: float) -> Dictionary:
 func update_tick() -> void:
 	_tick += 1
 	if from and is_instance_valid(from) and from is GameUnit and from.is_inside_tree():
-		a = fx.unit_point(from, 0)
+		a = fx.cast_point(from)
 	if to and is_instance_valid(to) and to is GameUnit and to.is_inside_tree():
 		b = fx.unit_point(to, 0)
 	if _tick % 4 == 0:

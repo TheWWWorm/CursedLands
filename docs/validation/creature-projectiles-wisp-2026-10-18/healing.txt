@@ -1,0 +1,48 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 20:25:59 +4274ms] session cc676a3139b3: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+PASS open healing host
+[trace 20:26:00 +4749ms] zone load gz1g (entrance 1)
+[trace 20:26:05 +9511ms] navigation prepared 5 classes in 210 ms
+[trace 20:26:05 +9513ms] zone ready gz1g
+WARNING: SubViewport is not a child of a SubViewportContainer. get_screen_transform doesn't return the actual screen position.
+     at: get_screen_transform_internal (scene/main/viewport.cpp:5723)
+     GDScript backtrace (most recent call first):
+         [0] _update_font_sampling (res://src/ui/scroll_option_button.gd:28)
+         [1] _ready (res://src/ui/scroll_option_button.gd:16)
+         [2] _ready (res://src/ui/wiki_panel.gd:135)
+         [3] _add_ui (res://src/ui/game_hud.gd:1260)
+         [4] _ready (res://src/ui/game_hud.gd:165)
+         [5] _ready (res://src/game/game.gd:91)
+         [6] branch (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/story_coop_traps_net.gd:35)
+         [7] _ready (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/healing_presentation.gd:22)
+         [8] _start (res://src/main.gd:90)
+         [9] _ready (res://src/main.gd:40)
+PASS connect healing guest
+[trace 20:26:05 +10178ms] zone load gz1g (from host)
+[trace 20:26:07 +11562ms] zone ready gz1g (from host)
+PASS guest receives target map
+PASS ordinary healing spell restores health
+PASS healing light and particles reach guest
+PASS peer 0 creates original healing illumination
+PASS peer 0 healing light has no flying billboard
+PASS peer 0 retains original radius, velocity and lifetime
+PASS peer 0 attaches original particles to healed actor
+PASS peer 1 creates original healing illumination
+PASS peer 1 healing light has no flying billboard
+PASS peer 1 retains original radius, velocity and lifetime
+PASS peer 1 attaches original particles to healed actor
+HEALING_RANGE peer=0 particles=[-0.3194861096212, 1.95199576333455] light=6.70000743865967
+PASS peer 0 particles rise around body within original carrier bounds
+PASS peer 0 native light still moves upward to fade ground illumination
+PASS peer 0 healing particles expire normally
+PASS peer 0 light expires at original cleanup tick
+HEALING_RANGE peer=1 particles=[-0.32222771034755, 1.9442118975773] light=6.70000743865967
+PASS peer 1 particles rise around body within original carrier bounds
+PASS peer 1 native light still moves upward to fade ground illumination
+PASS peer 1 healing particles expire normally
+PASS peer 1 light expires at original cleanup tick
+PASS aged healing replay retains native age without billboard
+HEALING_PRESENTATION 22 checks 0 failures
+STORY_COOP_TRAPS_NET 22 checks 0 failures
+[trace 20:26:07 +11871ms] clean exit

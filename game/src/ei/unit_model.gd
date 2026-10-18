@@ -28,6 +28,7 @@ static var _surface_textures := {}
 const AnimatedPart = preload("res://src/ei/anim_part.gd")
 const SurfaceResponse = preload("res://src/game/surface_materials.gd")
 const FigureMaterial = preload("res://src/ei/figure_material.gd")
+const WispGlow = preload("res://src/ei/wisp_glow.gd")
 
 ## Remake option gfx_sharp_units ("Sharp character textures"; default on,
 ## off under "Original look"): the unit texture fetch of every unit material
@@ -307,6 +308,8 @@ var _head_visible := true
 var _view_torso: MeshInstance3D
 var _view_neck := {}
 var _view_body_original: ArrayMesh
+var _wisp_glows: Array[MeshInstance3D] = []
+var _wisp_presence := -1.0
 var _view_body_closed: ArrayMesh
 var _view_chest: Node3D
 var _view_collar := Vector3.ZERO
@@ -1050,6 +1053,10 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 			mi.mesh = mesh
 			mi.material_override = part_mat
 			n.add_child(mi)
+			if mask == "unmowi":
+				var glow := WispGlow.attach(n, ui_preview)
+				_wisp_glows.append(glow)
+				mi.set_meta("ei_wisp_glow", glow)
 			if p == "bd" and not _view_neck.is_empty() and morph.is_empty():
 				_view_torso = mi
 				_view_neck.count = mesh.surface_get_array_len(0)
@@ -1145,6 +1152,17 @@ func _apply_morphs() -> void:
 	var f := 0.0
 	if anim != "":
 		f = maxf(player.current_animation_position * EIAnim.FPS, 0.0)
+	# The native death morph collapses its motes. Fade their coronas with the
+	# same clip, so a dead/invisible wisp cannot leave a hovering beacon.
+	if not _wisp_glows.is_empty():
+		var presence := 1.0
+		if clip.begins_with("death") or clip.begins_with("udeath"):
+			presence = 1.0 - smoothstep(0.0, maxf(player.current_animation_length, 0.001), player.current_animation_position)
+		if presence != _wisp_presence:
+			_wisp_presence = presence
+			for glow in _wisp_glows:
+				glow.visible = presence > 0.001
+				glow.scale = Vector3.ONE * maxf(presence, 0.001)
 	for mp: Array in _morph_parts:
 		var mi: MeshInstance3D = mp[0]
 		var set_last: PackedInt32Array = mp[2]
@@ -1168,7 +1186,7 @@ func _apply_morphs() -> void:
 		for j in now.size():
 			mi.set_blend_shape_value(now[j], w[j])
 		mp[2] = now
-		if _preview_model and mi.mesh.has_meta("ei_morph_bounds"):
+		if (_preview_model or mi.has_meta("ei_wisp_glow")) and mi.mesh.has_meta("ei_morph_bounds"):
 			# A mesh's default AABB covers every attack/death morph. Fitting a
 			# shop portrait to that union shrinks idle banshees and their scythes.
 			var bounds: AABB = mi.mesh.get_meta("ei_morph_rest_bounds")
@@ -1180,10 +1198,38 @@ func _apply_morphs() -> void:
 					hi += poses[now[j]].end * w[j]
 				bounds = AABB(lo, hi - lo)
 			mi.set_meta("ei_preview_bounds", bounds)
+			if mi.has_meta("ei_wisp_glow"):
+				# Wisp tracks deform vertices as well as moving their bones.
+				# Keep the corona on the visible mote through both kinds of motion.
+				var glow: MeshInstance3D = mi.get_meta("ei_wisp_glow")
+				glow.position = bounds.get_center()
 
 
 static func preview_bounds(mesh: MeshInstance3D) -> AABB:
 	return mesh.get_meta("ei_preview_bounds", mesh.get_aabb())
+
+
+## A launch anchor must follow vertex-morphed eyes, heads and wisp motes too.
+## Sample only the active (at most two) shapes on demand; ordinary figures
+## retain their FIG bounds and do not pay for dynamic per-frame measurements.
+func animated_part_geometry(part: Node3D) -> Dictionary:
+	for row: Array in _morph_parts:
+		var mesh: MeshInstance3D = row[0]
+		if mesh.get_parent() != part or not mesh.mesh.has_meta("ei_morph_bounds"): continue
+		var bounds: AABB = mesh.mesh.get_meta("ei_morph_rest_bounds")
+		if not row[2].is_empty():
+			var poses: Array = mesh.mesh.get_meta("ei_morph_bounds")
+			var lo := Vector3.ZERO; var hi := Vector3.ZERO
+			for index: int in row[2]:
+				var weight := mesh.get_blend_shape_value(index)
+				lo += poses[index].position * weight
+				hi += poses[index].end * weight
+			bounds = AABB(lo, hi-lo)
+		var a := Vector3(bounds.position.x, -bounds.position.z, bounds.position.y)
+		var b := Vector3(bounds.end.x, -bounds.end.z, bounds.end.y)
+		var centre := (a+b)*0.5
+		return {"centre":centre,"min":a.min(b)-centre,"max":a.max(b)-centre}
+	return part.get_meta(EIFigureGeometry.META, {})
 
 
 ## UI previews have their own light and camera, and must not inherit the
@@ -1491,6 +1537,9 @@ func _set_first_person_shadows(on: bool) -> void:
 ## Game applies shadow options to newly added geometry on a deferred call.
 ## A shadow-only copy must never become visible geometry during that pass.
 func apply_view_shadow_option(mesh: GeometryInstance3D, enabled: bool) -> bool:
+	if mesh in _wisp_glows:
+		mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		return true
 	for row: Dictionary in _view_shadows:
 		if row.source == mesh:
 			row.cast = GeometryInstance3D.SHADOW_CASTING_SETTING_ON if enabled else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF

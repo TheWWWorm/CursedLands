@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Attach creature spell effects to their animated mouths, eyes, horns, hands or staffs, and physical shots to their weapon or throwing hand. Preserve low launch heights and captured fireball origins when replaying effects.
+- Add soft, self-lit glows to the will-o'-the-wisp's five moving motes so they remain visible against grass and in darkness, including without bloom. Follow the original motion, invisibility and death animation.
+
 ## 1.17.0 — 2026-10-18
 
 - Apply saved idle and movement postures before displaying loaded or joining characters, including paused solo saves. ([#28](https://github.com/TheWWWorm/CursedLands/issues/28))

@@ -46,7 +46,8 @@ static func launch(w: GameWorld, a: GameUnit, b: GameUnit, hit: bool) -> Project
 	p.target = b
 	p.apply_hit = hit
 	w.add_child(p)
-	p.global_position = a.global_position + Vector3.UP * 1.3
+	var fx := ParticleFx.of(w)
+	p.global_position = ParticleFx.godot(fx.ranged_point(a)) + fx.display_origin()
 	return p
 
 

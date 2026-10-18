@@ -1,0 +1,55 @@
+{
+	"checks": 37,
+	"failures": 0,
+	"renderer": "gl_compatibility",
+	"rows": [
+		{
+			"difference": {
+				"bright": 6224,
+				"changed": 34602,
+				"energy": 1037259
+			},
+			"view": "day-05"
+		},
+		{
+			"difference": {
+				"bright": 571,
+				"changed": 3137,
+				"energy": 95369
+			},
+			"view": "day-16"
+		},
+		{
+			"difference": {
+				"bright": 186,
+				"changed": 1007,
+				"energy": 31187
+			},
+			"view": "day-28"
+		},
+		{
+			"difference": {
+				"bright": 8149,
+				"changed": 35787,
+				"energy": 1227840
+			},
+			"view": "night-05"
+		},
+		{
+			"difference": {
+				"bright": 748,
+				"changed": 3233,
+				"energy": 113195
+			},
+			"view": "night-16"
+		},
+		{
+			"difference": {
+				"bright": 242,
+				"changed": 1041,
+				"energy": 36984
+			},
+			"view": "night-28"
+		}
+	]
+}

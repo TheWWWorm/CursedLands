@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 20:22:35 +4553ms] session 21ae9dc07b2f: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+FIGURE_GEOMETRY checks=952 failures=0 models=112 native_us=10317 script_us=27503
+[trace 20:22:40 +9799ms] clean exit

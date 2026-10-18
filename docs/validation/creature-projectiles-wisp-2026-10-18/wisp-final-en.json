@@ -1,0 +1,55 @@
+{
+	"checks": 37,
+	"failures": 0,
+	"renderer": "forward_plus",
+	"rows": [
+		{
+			"difference": {
+				"bright": 25986,
+				"changed": 46566,
+				"energy": 2615384
+			},
+			"view": "day-05"
+		},
+		{
+			"difference": {
+				"bright": 2365,
+				"changed": 4238,
+				"energy": 238547
+			},
+			"view": "day-16"
+		},
+		{
+			"difference": {
+				"bright": 757,
+				"changed": 1360,
+				"energy": 77140
+			},
+			"view": "day-28"
+		},
+		{
+			"difference": {
+				"bright": 28863,
+				"changed": 48292,
+				"energy": 3095369
+			},
+			"view": "night-05"
+		},
+		{
+			"difference": {
+				"bright": 2625,
+				"changed": 4380,
+				"energy": 282310
+			},
+			"view": "night-16"
+		},
+		{
+			"difference": {
+				"bright": 839,
+				"changed": 1416,
+				"energy": 91275
+			},
+			"view": "night-28"
+		}
+	]
+}

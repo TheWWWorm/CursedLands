@@ -1,0 +1,164 @@
+{
+  "date": "2026-10-18",
+  "base_commit": "055be647370fe9c14f7d63fc308b3a2c8a0a9882",
+  "base_release": "1.17.0",
+  "status": "Local changes; release metadata and published artifacts unchanged.",
+  "environment": {
+    "os": "Ubuntu 24.04.5",
+    "engine": "Godot 4.7 stable 5b4e0cb0f",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "driver": "580.178.04"
+  },
+  "findings": [
+    "Creature spells previously used whole-figure centres except for the toad. Wings, tails and pose changes also shifted those centres.",
+    "Physical projectiles previously started at a fixed 1.3 metres above the unit.",
+    "Will-o-the-wisp retains five animated translucent native motes; soft-alpha rendering was present, but the motes had no self-lit cores or halos for contrast against grass."
+  ],
+  "coverage": {
+    "casting_cases": 18,
+    "physical_shooters": 5,
+    "anchors": [
+      "dragon snout",
+      "toad mouth",
+      "bat mouth",
+      "both evil-eye rigs",
+      "shadow head",
+      "unicorn horn",
+      "banshee crystal",
+      "Rick staff",
+      "woodsfolk blowpipe for spells and darts",
+      "harpy hand",
+      "wormhead raised hand",
+      "ancient curse hand",
+      "wisp moving mote",
+      "humanoid hand",
+      "goblin sling",
+      "cyclops throwing hand",
+      "equipped bow and crossbow"
+    ],
+    "origin_checks": [
+      "authored release pose",
+      "turning",
+      "movement",
+      "offset arena board",
+      "vertex morphs",
+      "unchanged incoming/attached-effect anchors",
+      "live fireball origin",
+      "saved/replayed fireball origin and flight duration",
+      "tracked lightning",
+      "direct-control explicit origin",
+      "low missile and fireball clearance",
+      "missing-model fallback",
+      "overview sample cache"
+    ],
+    "wisp_checks": [
+      "original terrain grass",
+      "day and night",
+      "5, 16 and 28 metre views",
+      "bloom disabled",
+      "five original morph animations",
+      "invisibility",
+      "opaque occlusion",
+      "hidden units",
+      "death and revival",
+      "preview model",
+      "unchanged selection geometry",
+      "shadow-option changes"
+    ]
+  },
+  "checks": [
+    {
+      "test": "tools/tests/creature_projectile_origins.gd",
+      "assets": "EN",
+      "checks": 182,
+      "failures": 0,
+      "log": "origins-final-en.txt"
+    },
+    {
+      "test": "tools/tests/creature_projectile_origins.gd",
+      "assets": "RU",
+      "checks": 182,
+      "failures": 0,
+      "log": "origins-final-ru.txt"
+    },
+    {
+      "test": "tools/tests/creature_projectile_origins.gd",
+      "assets": "DE",
+      "checks": 182,
+      "failures": 0,
+      "log": "origins-final-de.txt"
+    },
+    {
+      "test": "tools/tests/wisp_visibility.gd",
+      "assets": "EN",
+      "renderer": "forward_plus",
+      "checks": 37,
+      "failures": 0,
+      "result": "wisp-final-en.json"
+    },
+    {
+      "test": "tools/tests/wisp_visibility.gd",
+      "assets": "RU",
+      "renderer": "gl_compatibility",
+      "checks": 37,
+      "failures": 0,
+      "result": "wisp-final-ru.json"
+    },
+    {
+      "test": "tools/tests/wisp_visibility.gd",
+      "assets": "DE",
+      "renderer": "mobile",
+      "checks": 37,
+      "failures": 0,
+      "result": "wisp-final-de.json"
+    },
+    {
+      "test": "tools/tests/figure_geometry.gd",
+      "checks": 952,
+      "failures": 0,
+      "log": "geometry.txt"
+    },
+    {
+      "test": "tools/tests/healing_presentation.gd",
+      "checks": 22,
+      "failures": 0,
+      "log": "healing.txt"
+    },
+    {
+      "test": "tools/tests/campaign_presentation_feedback.gd",
+      "checks": 15,
+      "failures": 0,
+      "log": "check.txt"
+    },
+    {
+      "test": "tools/tests/lightning_geometry.gd",
+      "checks": 1271,
+      "failures": 0,
+      "log": "lightning.txt"
+    }
+  ],
+  "localization": "No player-visible text or options added. Original EN/RU/DE asset runs pass; translation checker reports 2687 entries, 141 dynamic wiki keys, 161 dynamic arena keys and zero errors.",
+  "captures": {
+    "wisp_before": "wisp-day-16-before.png",
+    "wisp_after": "wisp-day-16-after.png",
+    "wisp_night_before": "wisp-night-16-before.png",
+    "wisp_night_after": "wisp-night-16-after.png",
+    "dragon_release": "dragon-mouth-fire.png",
+    "method": "Wisp comparisons use the same frozen native pose and camera with only the new coronas disabled/enabled. Dragon capture shows the first rendered projectile tick from the authored casting release pose."
+  },
+  "reproduction": [
+    "Use isolated XDG_DATA_HOME/XDG_CONFIG_HOME/XDG_CACHE_HOME directories; start Godot with --path game --render-thread safe --audio-driver Dummy -- --ei-path=<original localized app directory> --tool=<absolute tools/tests/...gd path>.",
+    "Use --headless for origin and numerical regressions. For wisp_visibility.gd use --rendering-method forward_plus, gl_compatibility or mobile and pass --out=<capture directory>. Run python3 tools/check_translations.py."
+  ],
+  "limits": [
+    "Renderer tests ran on Linux; Windows, browser and physical Android device builds were not exported or tested.",
+    "Forward+ and Mobile refer to Godot rendering methods, not separate device platforms."
+  ],
+  "diagnostics": [
+    {
+      "note": "An additional Forward+ source-marker capture encountered a Vulkan device-loss/driver crash in libnvidia-glcore.so.580.178.04. The identical capture script and source passed on rerun. The original full roster audit, dragon-fire capture, and all three final wisp renderer checks also completed successfully.",
+      "failed_log": "extra-capture-driver-failure.txt",
+      "repeat_log": "extra-capture-repeat.txt"
+    }
+  ]
+}

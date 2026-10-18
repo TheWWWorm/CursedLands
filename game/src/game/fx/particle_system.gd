@@ -296,8 +296,8 @@ func carrier_point(e: FxEmitter, obj: Object) -> Vector3:
 	return e.ofs
 
 
-## Characters cast from the right hand; toads spit from the animated jaw.
-## Other creatures retain the original figure-centre fallback.
+## General carrier/target point. Projectile sources use cast_point so changing
+## a creature's muzzle does not move incoming spells or attached body effects.
 func unit_point(u: GameUnit, sel: int) -> Vector3:
 	u.observe_presentation()
 	if _point_cache_active:
@@ -307,6 +307,77 @@ func unit_point(u: GameUnit, sel: int) -> Vector3:
 		if not points.has(sel): points[sel] = _sample_unit_point(u,sel)
 		return points[sel]
 	return _sample_unit_point(u,sel)
+
+
+## Coordinates within the authored part's FIG bounds, in EI space. The axes
+## differ between rigs: the dragon's snout runs along local Z, the toad's
+## jaw along -Y. Keep these on the animated part, never on the whole-figure box
+## (whose centre also moves as wings/tails spread). Skins share the same rig.
+const CAST_PARTS := {
+	"unmodg": ["hd", Vector3(0, -0.25, 1)],
+	"unmoto": ["jaw-bone", Vector3(0, -1, 1)],
+	"unanwiba": ["chelust", Vector3(0, -1, 1)],
+	"unmobe0": ["bd", Vector3(0, -1, 0.25)],
+	"unmobe1": ["bd", Vector3(0, -1, 0.25)],
+	"unmosh": ["hd", Vector3(0, -1, 0)],
+	"unmoun": ["hd", Vector3(0, -1, 1)],
+	"unmoba1": ["diamond00", Vector3.ZERO],
+	"unmori": ["rh3_staff00", Vector3(0, -1, 0)],
+	"unmodr": ["rh3_tube00", Vector3(0, 1, 0)],
+	"unmosu": ["rh3", Vector3.ZERO],
+	"unmomi": ["lh3", Vector3.ZERO],
+	"unmocu": ["rh3", Vector3.ZERO],
+	"unmowi": ["bd01", Vector3.ZERO],
+}
+
+
+func cast_point(u: GameUnit) -> Vector3:
+	u.observe_presentation()
+	if _point_cache_active:
+		var id := u.get_instance_id()
+		if not _point_cache.has(id): _point_cache[id] = {}
+		var points: Dictionary = _point_cache[id]
+		if not points.has("cast"): points.cast = _sample_cast_point(u)
+		return points.cast
+	return _sample_cast_point(u)
+
+
+func _sample_cast_point(u: GameUnit) -> Vector3:
+	var rig := String(u.model.template).to_lower() if is_instance_valid(u.model) else ""
+	if CAST_PARTS.has(rig):
+		var part: Array = CAST_PARTS[rig]
+		var at := _part_point(u, part[0], part[1])
+		if at != Vector3.INF: return at
+	return unit_point(u, 0)
+
+
+## Physical arrows/darts/throwing weapons have a separate hand/weapon mount.
+## Direct-control shots keep their explicit aim origin in Projectile.
+func ranged_point(u: GameUnit) -> Vector3:
+	u.observe_presentation()
+	var rig := String(u.model.template).to_lower() if is_instance_valid(u.model) else ""
+	var name := "rh3"
+	var tip := Vector3.ZERO
+	if rig == "unmodr":
+		name = "rh3_tube00"; tip = Vector3(0, 1, 0)
+	elif rig == "unmogo":
+		name = "sling"; tip = Vector3(0, -1, 0)
+	elif is_instance_valid(u.model) and u.model.weapon_type == "bow":
+		name = "lh3"
+	var at := _part_point(u, name, tip)
+	return at if at != Vector3.INF else unit_point(u, 0)
+
+
+func _part_point(u: GameUnit, name: String, extent: Vector3) -> Vector3:
+	var part := _bone(u, name)
+	if part == null: return Vector3.INF
+	if not part.has_meta(EIFigureGeometry.META):
+		return ei(part.global_position - display_origin())
+	var geometry := u.model.animated_part_geometry(part)
+	var local: Vector3 = geometry.centre
+	for axis in 3:
+		local[axis] += absf(extent[axis]) * (geometry.min[axis] if extent[axis] < 0.0 else geometry.max[axis])
+	return ei(part.to_global(godot(local)) - display_origin())
 
 
 func _sample_unit_point(u: GameUnit, sel: int) -> Vector3:
@@ -665,7 +736,7 @@ func _tick(last := true) -> void:
 	for fireball: Dictionary in _pending_fireballs:
 		var ef: Effect = fireball.ef
 		if ef and not ef.deleted:
-			fireball.pos = _fireball_step(fireball.pos, fireball.to, float(fireball.speed))
+			fireball.pos = _fireball_step(fireball.pos, fireball.to, float(fireball.speed), float(fireball.clearance))
 			ef.e.ofs = fireball.pos
 	_in_tick = true
 	_ground = FxGround.of(world)
@@ -1224,7 +1295,7 @@ func spell_cast(ev: Dictionary) -> void:
 	var src := Vector3.ZERO
 	var has_src := caster != null or ev.has("fx")
 	if caster:
-		src = unit_point(caster, 0)
+		src = cast_point(caster)
 	elif has_src:
 		src = Vector3(float(ev.fx), float(ev.fy), float(ev.fz)) if ev.has("fz") else _ground_pt(float(ev.fx), float(ev.fy), 1.0)
 	match code:
@@ -1317,6 +1388,7 @@ func _victims(sp: Dictionary, target: GameUnit, at: Vector2) -> Array:
 ## particle/light at its attachment point.679580 moves the particle toward
 ## the fixed ground+1 target and clamps its height to that terrain offset;
 ##678170 moves the light by the original horizontal velocity instead.
+## Low mouths retain their launch clearance instead of snapping to ground+1.
 func _fireball(from: Vector3, to: Vector3, s: float, sp: Dictionary, age := 0, start := Vector3(INF, 0, 0)) -> void:
 	var rng := float(sp.range) if float(sp.range) > 0.0 else 5.0
 	var d := Vector2(to.x - from.x, to.y - from.y)
@@ -1328,6 +1400,7 @@ func _fireball(from: Vector3, to: Vector3, s: float, sp: Dictionary, age := 0, s
 		_hit_light(hit, sp, 38, age - n)
 		return
 	var initial := start if start.x != INF else from
+	var clearance := clampf(initial.z - ground(initial.x, initial.y), 0.05, 1.0)
 	# Native zero-distance creation divides by zero. Keep a finite stationary
 	# flight in that degenerate case; the one-tick blast is unchanged.
 	var scale := float(PackedFloat32Array([rng * 0.06666667014360428 / d.length()])[0]) if d != Vector2.ZERO else 0.0
@@ -1337,7 +1410,7 @@ func _fireball(from: Vector3, to: Vector3, s: float, sp: Dictionary, age := 0, s
 	var light_at := initial
 	for k in age:
 		if k < maxi(1, n - 1):
-			at = _fireball_step(at, hit, speed)
+			at = _fireball_step(at, hit, speed, clearance)
 		light_at += step
 	var left := n - age
 	var ef := spawn(0x2000, at, s * 0.3, null, {"age": age}) if age < maxi(1, n - 1) else null
@@ -1346,7 +1419,7 @@ func _fireball(from: Vector3, to: Vector3, s: float, sp: Dictionary, age := 0, s
 	if not light.is_empty():
 		light.step = step
 		light.ticks = left
-	_pending_fireballs.append({"ef": ef, "pos": at, "to": hit, "speed": speed,
+	_pending_fireballs.append({"ef": ef, "pos": at, "to": hit, "speed": speed, "clearance": clearance,
 		"impact": tick + left, "light": light, "size": sz, "sp": sp})
 
 
@@ -1358,7 +1431,7 @@ static func fireball_size(sp: Dictionary, effect_size: float) -> float:
 	return maxf(effect_size, area_size)
 
 
-func _fireball_step(pos: Vector3, to: Vector3, speed: float) -> Vector3:
+func _fireball_step(pos: Vector3, to: Vector3, speed: float, clearance := 1.0) -> Vector3:
 	var dx := float(to.x - pos.x)
 	var dy := float(to.y - pos.y)
 	var distance := Vector2(dx, dy).length()
@@ -1368,7 +1441,7 @@ func _fireball_step(pos: Vector3, to: Vector3, speed: float) -> Vector3:
 	var at := Vector3(float(pos.x) + dx * fraction, float(pos.y) + dy * fraction,
 		float(pos.z) + float(to.z - pos.z) * fraction)
 	var offset := float(PackedFloat32Array([float(to.z) - ground(to.x, to.y)])[0])
-	at.z = maxf(at.z, ground(at.x, at.y) + offset)
+	at.z = maxf(at.z, ground(at.x, at.y) + minf(offset, clearance))
 	return at
 
 
@@ -1413,7 +1486,7 @@ func _missile(code: String, start: Vector3, target: GameUnit, point: Vector3, s:
 		return
 	var lc := _spell_light(sp)
 	var m := {"ef": ef, "pos": start, "target": target, "point": point, "s": s, "code": code, "ticks": 0, "sp": sp,
-		"clearance": clampf(start.z - ground(start.x, start.y), 0.05, 1.0) if code == "acid_ray" else 1.0,
+		"clearance": clampf(start.z - ground(start.x, start.y), 0.05, 1.0),
 		"light": add_light(start, lc.color, lc.radius, -1.0, lc.energy, true) if lc.radius > 0.0 else {}}
 	missiles.append(m)
 

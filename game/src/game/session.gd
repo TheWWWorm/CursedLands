@@ -1405,7 +1405,7 @@ func _track(event: Dictionary) -> void:
 					if code == "teleport":
 						ev.fz = ParticleFx.of(world).carrier_height(caster)
 					elif code == "fireball":
-						var flight_from := ParticleFx.of(world).unit_point(caster, 0)
+						var flight_from := ParticleFx.of(world).cast_point(caster)
 						ev.flight_from = [flight_from.x, flight_from.y, flight_from.z]
 				ev.erase("a")
 				ev.erase("hold")
@@ -1424,7 +1424,7 @@ func _track(event: Dictionary) -> void:
 				# Living carriers still follow their authoritative current position.
 				var particles := ParticleFx.of(world)
 				if caster:
-					var at := particles.unit_point(caster, 0)
+					var at := particles.cast_point(caster)
 					ev.fx = at.x
 					ev.fy = at.y
 					ev.fz = at.z

@@ -4081,7 +4081,7 @@ func screen_rects(cam: Camera3D) -> Array:
 		if not is_instance_valid(g) or not (g is MeshInstance3D) or not g.is_visible_in_tree():
 			continue
 		var mi: MeshInstance3D = g
-		if mi.mesh == null:
+		if mi.mesh == null or mi.has_meta("ei_visual_only"):
 			continue
 		var r := MeshScreenRect.of_context(mi, cam, view)
 		if r.size.x <= 0 or r.size.y <= 0:
