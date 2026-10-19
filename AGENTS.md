@@ -19,6 +19,18 @@ compatibility contract. Base the next version on the latest published stable
 release, keep version metadata consistent, and never replace a published tag or
 its artifacts. Historical versions remain unchanged.
 
+# Branding
+
+Use the approved dragon CL artwork in `game/icon.png` for application and public
+branding. Regenerate platform files with `tools/generate_branding.cjs`; keep the
+approved master unchanged. Include `assets/branding` when staging exports.
+
+Windows releases must embed `assets/branding/icon.ico` in the executable with
+`application/modify_resources=true`. For a qualified custom engine, set it as
+the export template and export the executable; copying an old executable and
+exporting only the PCK leaves its previous file icon in place. Verify the
+embedded icon in the final EXE. The macOS preset uses the corresponding ICNS.
+
 # Browser publishing
 
 An authorized "push and publish" must finish with a public GitHub release,
