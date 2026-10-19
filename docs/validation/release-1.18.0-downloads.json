@@ -1,0 +1,61 @@
+{
+  "tag": "v1.18.0",
+  "release_id": 417631782,
+  "url": "https://github.com/TheWWWorm/CursedLands/releases/tag/v1.18.0",
+  "draft": false,
+  "prerelease": false,
+  "latest_stable": true,
+  "tag_commit": "ae271bf70914f91a8aacc903f5fad7e925788f00",
+  "verified_at": "2026-10-19T18:53:59Z",
+  "all_eight_server_digests_match_local": true,
+  "assets": [
+    {
+      "digest": "sha256:c6921820b47237195fc8ba0fd3430cbef66093912e7853e9c6e2832ed7e489e2",
+      "name": "CursedLands-1.18.0-android.apk",
+      "size": 46197201,
+      "state": "uploaded"
+    },
+    {
+      "digest": "sha256:457b561cba769a57a4c84223bc44de42fa02b59db4a353979f113025ee713caa",
+      "name": "CursedLands-1.18.0-linux-x86_64.tar.gz",
+      "size": 58557598,
+      "state": "uploaded"
+    },
+    {
+      "digest": "sha256:326246908f8d1bc3a2f3fc1360ec2b65547225608bf4b2b55abeefdf82220cc0",
+      "name": "CursedLands-1.18.0-macos-universal.zip",
+      "size": 87122641,
+      "state": "uploaded"
+    },
+    {
+      "digest": "sha256:bd214d01d71fa2818fb176980acb6a92d46f87d847942084f061b9502834882c",
+      "name": "CursedLands-1.18.0-tools.zip",
+      "size": 59529,
+      "state": "uploaded"
+    },
+    {
+      "digest": "sha256:4f648c54f074d7546f3b4bdd25c82d07141b1b51ee00849c139861c18ecc6344",
+      "name": "CursedLands-1.18.0-web.zip",
+      "size": 183485740,
+      "state": "uploaded"
+    },
+    {
+      "digest": "sha256:b5866596ba0fdfc0ca9eb17d9f3ec7aa3b2f0fe308983bafb571fecca8d77e22",
+      "name": "CursedLands-1.18.0-windows-x86_64.zip",
+      "size": 59800486,
+      "state": "uploaded"
+    },
+    {
+      "digest": "sha256:f1f32945f4a06d5e1f9b12dccc73b04dbc4ddbb30439683ad1e96892bfcb170b",
+      "name": "quick-recovery.eimod",
+      "size": 546,
+      "state": "uploaded"
+    },
+    {
+      "digest": "sha256:74274cfeaac860eb4ffcb70b75f371e3b610c6b8ac9dd25cce5cd39430ee3872",
+      "name": "SHA256SUMS.txt",
+      "size": 686,
+      "state": "uploaded"
+    }
+  ]
+}
