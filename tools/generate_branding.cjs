@@ -68,6 +68,14 @@ async function main() {
     ['public/index.png', 512],
   ]) await save(name, await png(size));
 
+  // Wiki updates are independent of the installed game's service-worker cache.
+  for (const name of ['web/wiki/index.html', 'public/wiki/index.html']) {
+    const file = path.join(root, name);
+    fs.writeFileSync(file, fs.readFileSync(file, 'utf8').replace(
+      /((?:src|href)="\/(?:icon-192|index\.icon)\.png)(?:\?v=[a-f0-9]+)?"/g,
+      '$1?v=' + sourceHash.slice(0, 12) + '"'));
+  }
+
   const publicDir = path.join(root, 'public');
   const workerPath = path.join(publicDir, 'service-worker.js');
   let worker = fs.readFileSync(workerPath, 'utf8');
