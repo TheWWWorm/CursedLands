@@ -2434,6 +2434,7 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 					# Ctrl / aimed key on the ground: packet 0x3a, the Player
 					# motivation's state 2 (UnitAI.swarm_tick), round the point.
 					mo.swarm = c
+					mo.aim = clampi(int(cmd.get("aim", -1)), -1, 5)
 				mine[i].command(mo)
 				if bool(cmd.get("walk_exit", false)): mine[i].set_meta("walk_exit", true)
 		"leave_exit":   # the leave-zone box's ✓
@@ -2584,6 +2585,16 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 			if u and camp_available() and Perks.learn(u.get_meta("hero"), String(cmd.get("perk", ""))):
 				Combat.hero_stats(u, u.get_meta("hero"))
 				_sync_menu_state()
+		"untrain", "unperk":
+			var u := _hero_unit(int(cmd.get("unit", -1)), player)
+			if u and not u.dead and camp_available():
+				var h: Dictionary = u.get_meta("hero")
+				var kind := "skill" if cmd.t == "untrain" else "perk"
+				var code := String(cmd.get("stat" if kind == "skill" else "perk", ""))
+				if TrainingRefund.unlearn_rank(h, kind, code):
+					Combat.hero_stats(u, h)
+					_sync_menu_state()
+
 		"refund_training", "reset_training":
 			var u := _hero_unit(int(cmd.get("unit", -1)), player)
 			if u and not u.dead and camp_available():
@@ -2627,9 +2638,17 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 				thief.set_meta("interact", [target, player, "steal"])
 		"loot":   # any dead unit (checks only = dead)
 			if target and target.dead and lootable(target, player, _pid_of(player)) and not mine.is_empty():
-				if mine[0].looting(target): return
 				# Approach to just inside the loot reach (ScriptVM._interact_reach).
 				var lr := maxf(0.3, world.vm._interact_reach(mine[0], target) - 0.1)
+				if mine[0].looting(target):
+					# A second click upgrades the existing approach without
+					# restarting the pickup clip or claiming the loot twice.
+					if bool(cmd.get("run", false)) and mine[0].pos.distance_to(target.pos) > lr:
+						_double_stand(mine[0], cmd, target.pos, lr)
+						for pending: Dictionary in [mine[0].order] + mine[0].orders:
+							if pending.get("type") == "follow" and pending.get("target") == target:
+								pending.run = true
+					return
 				_double_stand(mine[0], cmd, target.pos, lr)
 				mine[0].command({"type": "follow", "target": target, "dist": lr, "once": true, "corpse": true, "run": bool(cmd.get("run", false)), "path_notice": true})
 				mine[0].set_meta("interact", [target, player])

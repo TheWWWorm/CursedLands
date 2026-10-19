@@ -71,20 +71,20 @@ func spell_cases() -> void:
 	reset();sky();await key(KEY_1)
 	check(g.pending_spell=="healing{}","spell hotkey selects native heal")
 	check(g.pick_unit(get_viewport().get_visible_rect().size*0.5,hero)==null,"sky-facing crosshair has no target")
-	check(g.direct.has_method("interaction_hint") and str(g.direct.call("interaction_hint").get("text","")).contains(RemakeText.t("Cast on self")),"self action is named in the reticle prompt")
-	await key(KEY_E)
-	check(order_target(hero) and hero.orders[0].get("type")=="cast","E queues a self-cast through authority without aiming at a portrait")
+	check(not str(g.direct.interaction_hint().get("text", "")).contains(RemakeText.t("Cast on self")), "interaction prompt is reserved for interacting")
+	g.direct.cast_self();await frames(2)
+	check(order_target(hero) and hero.orders[0].get("type")=="cast","explicit self-cast queues through authority without aiming at a portrait")
 	check(g.pending_spell.is_empty() and g.selected==[hero],"successful self-cast ends targeting and keeps selection")
 	var mana:=hero.mana
 	for i in 4: hero._tick(GameUnit.TICK)
 	check(hero.mana<mana,"queued self-cast reaches native execution and pays stamina")
-	reset();hero.mana=hero.max_mana;g.pending_spell="arrow{}";await key(KEY_E)
-	check(hero.orders.is_empty() and g.pending_spell=="arrow{}","E never self-casts an offensive spell")
-	reset();hero.mana=0;g.pending_spell="healing{}";await key(KEY_E)
+	reset();hero.mana=hero.max_mana;g.pending_spell="arrow{}";g.direct.cast_self();await frames(2)
+	check(hero.orders.is_empty() and g.pending_spell=="arrow{}","explicit self-cast refuses offensive spells")
+	reset();hero.mana=0;g.pending_spell="healing{}";g.direct.cast_self();await frames(2)
 	check(hero.orders.is_empty() and g.pending_spell=="healing{}","insufficient stamina keeps pending spell without a cast")
-	reset();hero.mana=hero.max_mana;hero.buffs["fixture_no_cast"]={"no_cast":true};g.pending_spell="healing{}";await key(KEY_E)
+	reset();hero.mana=hero.max_mana;hero.buffs["fixture_no_cast"]={"no_cast":true};g.pending_spell="healing{}";g.direct.cast_self();await frames(2)
 	check(hero.orders.is_empty(),"cannot-cast effect prevents self-cast");hero.buffs.erase("fixture_no_cast")
-	reset();hero.get_meta("hero").skills.astral=0;g.pending_spell="healing{e1;e1}";await key(KEY_E)
+	reset();hero.get_meta("hero").skills.astral=0;g.pending_spell="healing{e1;e1}";g.direct.cast_self();await frames(2)
 	check(hero.orders.is_empty(),"lost training prevents self-cast");hero.get_meta("hero").skills.astral=100
 	for guard in ["pointer","loading","focus","pause","blocked","echo","neutral","panel"]:
 		reset();g.pending_spell="healing{}"
@@ -118,14 +118,14 @@ func belt_cases() -> void:
 	if potion.is_empty() or wand.is_empty():return
 	var h:Dictionary=hero.get_meta("hero")
 	for item:String in [potion,wand]:
-		reset();h.quick=[item];g.begin_belt(hero,item);await key(KEY_E)
+		reset();h.quick=[item];g.begin_belt(hero,item);g.direct.cast_self();await frames(2)
 		check(order_target(hero) and hero.orders[0].get("item","")==item,"E targets selected belt item at its holder: "+item)
 		var old_charge:=Items.charge(item)
 		for i in 4:hero._tick(GameUnit.TICK)
 		check(h.quick.is_empty() if item==potion else not h.quick.is_empty() and Items.charge(String(h.quick[0]))<old_charge,"item execution consumes potion/charge through normal native rule: "+item)
-	reset();h.quick=[Items.with_charge(wand,0)];g.pending_spell=Game.BELT+str(hero.uid)+":"+wand;await key(KEY_E)
+	reset();h.quick=[Items.with_charge(wand,0)];g.pending_spell=Game.BELT+str(hero.uid)+":"+wand;g.direct.cast_self();await frames(2)
 	check(hero.orders.is_empty() and not g.pending_spell.is_empty(),"spent wand cannot self-cast")
-	reset();h.quick=[];g.pending_spell=Game.BELT+str(hero.uid)+":"+potion;await key(KEY_E)
+	reset();h.quick=[];g.pending_spell=Game.BELT+str(hero.uid)+":"+potion;g.direct.cast_self();await frames(2)
 	check(hero.orders.is_empty() and not g.pending_spell.is_empty(),"missing belt item cannot self-cast")
 	reset()
 func loot_cases() -> void:
@@ -175,7 +175,7 @@ func loot_cases() -> void:
 	reset();s.world.remove_unit(explicit);s.world.remove_unit(loot);sky()
 func safe_zone() -> void:
 	reset();g.pending_spell="healing{}";await key(KEY_E)
-	check(hero.orders.is_empty() and g.pending_spell=="healing{}","safe zone refuses already-selected self spell")
+	check(hero.orders.is_empty() and g.pending_spell.is_empty(),"interaction cancels targeting in safe zones too")
 	g.pending_spell="";await key(KEY_1);check(g.pending_spell.is_empty(),"safe zone refuses spell selection")
 func _ready() -> void:
 	get_window().size=Vector2i(800,600)

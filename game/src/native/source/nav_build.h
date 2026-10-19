@@ -9,6 +9,7 @@
 #include <godot_cpp/variant/packed_float32_array.hpp>
 #include <godot_cpp/variant/packed_int32_array.hpp>
 #include <godot_cpp/variant/packed_byte_array.hpp>
+#include <godot_cpp/variant/vector3.hpp>
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
@@ -60,8 +61,59 @@ protected:
         ClassDB::bind_method(D_METHOD("prepare", "input"), &NavigationBuildKernel::prepare);
         ClassDB::bind_method(D_METHOD("build_layer", "input"), &NavigationBuildKernel::build_layer);
         ClassDB::bind_method(D_METHOD("labels", "size", "land"), &NavigationBuildKernel::labels);
+        ClassDB::bind_method(D_METHOD("ray", "size", "heights", "spans", "alt", "a", "za", "b", "zb"), &NavigationBuildKernel::ray);
     }
 public:
+    // NavGrid.ray's existing scalar walk, including Vector2/3 float rounding,
+    // ties-to-even cell boundaries, ordered crowns and the opaque-hit floor.
+    // Read the current arrays directly: gates/floors need no cache invalidation.
+    Variant ray(Vector2i size, const PackedFloat32Array &heights, const Dictionary &spans,
+                double alt, Vector2 a, double za, Vector2 b, double zb) const {
+        if (size.x == 0) return 1.0;
+        if (size.x < 0 || size.y <= 0 || heights.size() != int64_t(size.x) * size.y) return Variant();
+        const double d = double(Vector3(b.x - a.x, b.y - a.y, real_t(zb - za)).length()) / 0.5;
+        if (!std::isfinite(d) || !std::isfinite(alt) || !std::isfinite(za) || !std::isfinite(zb)) return Variant();
+        if (d == 0.) return 1.0;
+        if (d > double(INT32_MAX)) return Variant();
+        const int64_t n = int64_t(std::round(d));
+        const Vector2 step = (b - a) / real_t(d);
+        const auto cell = [](Vector2 p) {
+            const auto even = [](double v) -> int64_t {
+                const int64_t lo = int64_t(std::floor(v));
+                const double part = v - double(lo);
+                return lo + (part > .5 || (part == .5 && (lo & 1)) ? 1 : 0);
+            };
+            return Vector2i(even(double(p.x) / .5 - .5), even(double(p.y) / .5 - .5));
+        };
+        const auto inside = [size](Vector2i c) { return c.x >= 0 && c.y >= 0 && c.x < size.x && c.y < size.y; };
+        if (!inside(cell(a)) || !inside(cell(a + step * real_t(n)))) return 0.0;
+        const int64_t h0 = int64_t(std::round(za * alt));
+        const double dh = double(int64_t(std::round(zb * alt)) - h0) / d;
+        const float *h = heights.ptr();
+        double factor = 1.;
+        for (int64_t k = 1; k <= n; ++k) {
+            const Vector2i c = cell(a + step * real_t(k));
+            if (!inside(c)) return 0.0;
+            const int64_t index = int64_t(c.y) * size.x + c.x;
+            const int64_t hs = int64_t(std::floor(double(h0) + dh * double(k)));
+            if (hs <= int64_t(std::round(double(h[index]) * alt))) return 0.0;
+            const Variant entry = spans.get(index, Variant());
+            if (entry.get_type() == Variant::NIL) continue;
+            if (entry.get_type() != Variant::ARRAY) return Variant();
+            const Array rows = entry;
+            for (int64_t j = 0; j < rows.size(); ++j) {
+                if (rows[j].get_type() != Variant::ARRAY) return Variant();
+                const Array span = rows[j];
+                if (span.size() < 3) return Variant();
+                if (hs <= int64_t(span[1]) && int64_t(span[0]) <= hs) {
+                    factor *= int64_t(span[2]) == 2 ? .99 : 0.;
+                    if (factor < .0001) return .0001;
+                }
+            }
+        }
+        return factor;
+    }
+
     Dictionary base_cells(const Dictionary &d) const {
         const Vector2i size = d.get("size", Vector2i());
         const int n = count(size), gw = d.get("grid_width", 0);

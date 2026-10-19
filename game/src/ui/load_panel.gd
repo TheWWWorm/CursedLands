@@ -86,6 +86,8 @@ const SPEED := 1.0             # the scroll bar's speed (argument)
 var save_mode := false
 var saves: Array = []     # SaveInfo, newest first (Save mode: the new entry first)
 var sel := -1
+var selected: Dictionary = {}
+var _anchor := -1
 var top := 0
 var _shot: Texture2D
 var _boards := {}         # false (Load) / true (Save) -> InterfaceBoard
@@ -119,7 +121,9 @@ func _ready() -> void:
 		_boards[save] = b
 	resized.connect(queue_redraw)
 	var transfer := SaveTransfer.new()
-	transfer.imported.connect(func(): _refresh_list())
+	transfer.imported.connect(func():
+		_refresh_list()
+		_select(0))
 	add_child(transfer)
 
 
@@ -130,6 +134,7 @@ func _ready() -> void:
 func open(save := false, frame: Image = null, slide := false, fresh: SaveInfo = null) -> void:
 	save_mode = save and fresh != null
 	loading = false
+	sel = -1; selected.clear(); _anchor = -1; _edited = false
 	_frame = frame
 	_refresh_list(fresh)
 	top = 0
@@ -170,16 +175,31 @@ func _max_top() -> int:
 
 ## clamp, keep the row in view, take its name into the edit
 ## field, reload the preview.
-func _select(i: int) -> void:
+func _select(i: int, extend := false, toggle := false) -> void:
+	var previous := sel
 	sel = clampi(i, 0, saves.size() - 1) if not saves.is_empty() else -1
+	if sel >= 0:
+		if extend and _anchor >= 0:
+			if not toggle: selected.clear()
+			for index in range(mini(_anchor, sel), maxi(_anchor, sel) + 1): selected[index] = true
+		elif toggle:
+			if selected.has(sel): selected.erase(sel)
+			else: selected[sel] = true
+			_anchor = sel
+		else:
+			selected = {sel: true}
+			_anchor = sel
+	else:
+		selected.clear(); _anchor = -1
 	if sel >= 0:
 		if sel >= top + ROWS:
 			top = sel - ROWS + 1
 		if sel < top:
 			top = sel
-		_edited = false
-		_edit = (saves[sel] as SaveInfo).display_name()
-		_caret = _edit.length()
+		if previous != sel or not _single():
+			_edited = false
+			_edit = (saves[sel] as SaveInfo).display_name()
+			_caret = _edit.length()
 	_shot = (saves[sel] as SaveInfo).shot() if sel >= 0 and not saves[sel].error else null
 	if _shot == null and sel >= 0 and not saves[sel].error:
 		_shot = _zone_picture((saves[sel] as SaveInfo).zone)
@@ -220,8 +240,12 @@ func _place_board() -> void:
 	b.place(Vector3(400, 700.0 - (80.0 if save_mode else 150.0) * e, 4.8))
 
 
+func _single() -> bool:
+	return sel >= 0 and sel < saves.size() and selected.size() == 1 and selected.has(sel)
+
+
 func _editable() -> bool:
-	return save_mode and sel >= 0 and not (saves[sel] as SaveInfo).is_protected()
+	return save_mode and _single() and not (saves[sel] as SaveInfo).is_protected()
 
 
 func _draw() -> void:
@@ -232,8 +256,9 @@ func _draw() -> void:
 	panel(Rect2(100, 100, 290, 400))
 	panel(Rect2(410, 100, 290, 220))
 	panel(Rect2(410, 340, 290, 160))
-	if sel >= top and sel < top + ROWS:
-		draw_rect(r8(Rect2(108, 108 + 24 * (sel - top), 262, 24)), BAR)
+	for index: int in selected:
+		if index >= top and index < top + ROWS:
+			draw_rect(r8(Rect2(108, 108 + 24 * (index - top), 262, 24)), BAR)
 	for k in ROWS:
 		var i := top + k
 		if i >= saves.size():
@@ -247,16 +272,18 @@ func _draw() -> void:
 		if not s.fresh:
 			text(Rect2(290, row_y, 75, 21), s.date_text(), 1, TEXT, HORIZONTAL_ALIGNMENT_RIGHT)
 	vbar(BAR_RECT, top, _max_top())
-	if _shot:
+	if _shot and _single():
 		draw_texture_rect(_shot, r8(PREVIEW), false)
-	if sel >= 0 and not saves[sel].error:
+	if _single() and not saves[sel].error:
 		var s: SaveInfo = saves[sel]
 		if s.zone:
 			text(Rect2(440, 360, 250, 24), s.allod_text(), 1)
 			text(Rect2(440, 384, 250, 24), s.zone_text(), 1)
 			text(Rect2(440, 408, 250, 24), s.day_text(), 1)
 		text(Rect2(440, 460, 240, 25), s.slot, 1, TEXT, HORIZONTAL_ALIGNMENT_RIGHT)
-	sprite(ui, OK_RECT, [81, 2, 155, 50])
+	if selected.size() > 1:
+		text_block(Rect2(430, 360, 250, 120), RemakeText.t("%d saves selected") % selected.size(), 1)
+	sprite(ui, OK_RECT, [81, 2, 155, 50], Color.WHITE if _single() else Color(0.4, 0.4, 0.4))
 	sprite(ui, DELETE_RECT, [2, 2, 76, 50])
 	sprite(ui, CANCEL_RECT, [160, 2, 234, 50])
 
@@ -299,13 +326,14 @@ func _get_tooltip(at: Vector2) -> String:
 		"ok": return GameData.text("tip %d" % (60100 if save_mode else 60101)).strip_edges()
 		"delete": return GameData.text("tip 60102").strip_edges()
 		"cancel": return GameData.text("tip 60103").strip_edges()
+		"row": return RemakeText.t("Ctrl-click to select individual saves; Shift-click to select a range.")
 	return ""
 
 
 ## Load loads; Save saves the new entry at once and asks before
 ## overwriting another one (message box base).
 func _accept() -> void:
-	if sel < 0:
+	if not _single():
 		return
 	if not save_mode:
 		_load()
@@ -325,7 +353,7 @@ func _accept() -> void:
 
 ## a valid entry is loaded.
 func _load() -> void:
-	if sel < 0 or saves[sel].error:
+	if not _single() or saves[sel].error:
 		return
 	sound("messbox\\ok")
 	var slot: String = saves[sel].slot
@@ -338,14 +366,14 @@ func _load() -> void:
 ## entry: empty, i.e. its default name); the shot is the frame captured when
 ## the game switched to its menus. Closes.
 func _save() -> void:
-	if sel < 0:
+	if not _single():
 		return
 	var hud := get_canvas_layer_node()
 	var game: Variant = hud.get("game") if hud else null
 	var session: Variant = game.get("session") if game is Object else null
 	if session is Session and session.local_host.frontend:
 		await session.local_host.measure_save()
-		if not is_inside_tree() or not visible or sel < 0:
+		if not is_inside_tree() or not visible or not _single():
 			return
 	if not _disk_ok():
 		_no_space()
@@ -391,20 +419,24 @@ func _cancel() -> void:
 
 ##  (not the Save mode's new entry).
 func _delete() -> void:
-	if sel < 0 or (save_mode and sel == 0):
-		return
+	var slots: Array[String] = []
+	for index: int in selected:
+		if index >= 0 and index < saves.size() and not saves[index].fresh:
+			slots.append(saves[index].slot)
+	if slots.is_empty(): return
 	sound("save\\delete")
 	_box = MessageBox.ask(self, "delete", "delete_msg")
+	if slots.size() > 1:
+		_box.message = RemakeText.t("Delete %d selected saves?") % slots.size()
 	queue_redraw()
 	_box.answered.connect(func(yes: bool):
 		_box = null
 		queue_redraw()
-		if yes and sel >= 0:
-			SaveInfo.delete(saves[sel].slot)
+		if yes:
+			for slot: String in slots: SaveInfo.delete(slot)
 			_refresh_list()
 			top = mini(top, _max_top())
 			_select(sel))
-
 
 func _gui_input(e: InputEvent) -> void:
 	if not visible or is_instance_valid(_box):
@@ -437,8 +469,7 @@ func _gui_input(e: InputEvent) -> void:
 				# into the edit field); the same row keeps the edit.
 				if not e.double_click:
 					sound("save\\select")
-				if h[1] != sel:
-					_select(h[1])
+				_select(h[1], e.shift_pressed, e.ctrl_pressed or e.meta_pressed)
 				if TouchInput.enabled and save_mode and _editable():
 					_first_edit(false)
 					TouchTextEdit.open(self, _edit, NAME_MAX, func(value):
@@ -446,7 +477,7 @@ func _gui_input(e: InputEvent) -> void:
 						_caret = value.length()
 						_edited = true
 						queue_redraw(), "Save name")
-				elif e.double_click:
+				elif e.double_click and not e.shift_pressed and not e.ctrl_pressed and not e.meta_pressed:
 					_accept()
 			"bar":
 				match h[1]:
@@ -494,10 +525,13 @@ func _unhandled_key_input(e: InputEvent) -> void:
 	match e.keycode:
 		KEY_ENTER, KEY_KP_ENTER: _accept()
 		KEY_ESCAPE: _cancel()
+		KEY_DELETE:
+			if save_mode and _single(): _edit_key(e)
+			else: _delete()
 		KEY_UP, KEY_DOWN, KEY_PAGEUP, KEY_PAGEDOWN:
 			sound("save\\select")
 			var d := {KEY_UP: -1, KEY_DOWN: 1, KEY_PAGEUP: -ROWS, KEY_PAGEDOWN: ROWS}[e.keycode] as int
-			_select(sel + d)
+			_select(sel + d, e.shift_pressed)
 		_:
 			if not _edit_key(e):
 				return

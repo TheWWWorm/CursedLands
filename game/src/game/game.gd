@@ -483,7 +483,9 @@ func forced_on(m: String, u: GameUnit, g: Variant) -> void:
 		marks.unit_ordered(u, true, -1.0, selected)
 		return
 	if g != null:
-		issue({"t": "move", "units": ids, "x": g.x, "y": g.y, "run": _double, "swarm": true})
+		var cmd := {"t": "move", "units": ids, "x": g.x, "y": g.y, "run": _double, "swarm": true}
+		if m == "aim": cmd.aim = held_aim()
+		issue(cmd)
 		marks.move_ordered(g)
 
 
@@ -1026,7 +1028,7 @@ func order_on(u: GameUnit, add: bool, p: Variant = null, lever := -1, ground: Va
 			return
 		if u and not u.dead:
 			if can_talk_to(u):
-				issue({"t": "interact", "units": [party[0].uid], "target": u.uid})
+				issue({"t": "interact", "units": [party[0].uid], "target": u.uid, "run": _double})
 			return
 		var at = pick_ground(p) if p != null else ground
 		if at != null:

@@ -212,6 +212,7 @@ const OPTIONS := [
 	["coop_share_loot", 1, 2, 19, 2, 1], ["coop_player_names", 1, 2, 19, 3, 1],
 	["net_upnp", 1, 2, 19, 5, 1], ["net_websocket", 1, 2, 19, 6, 0],
 	["coop_clock", 1, 2, 19, 7, 1],
+	["discord_presence", 1, 2, 19, 8, 1],
 	# Gamepad (group 20; PadInput, PadField; docs/gamepad_design.md §8.8);
 	# the button layout is group 21 (row 12 "Buttons…"). On by default:
 	# without a controller nothing changes.
@@ -275,6 +276,7 @@ const OPTION_GROUPS := ["video", "sound", "sens", "game", "select", "actions", "
 	"r_camera", "r_interface", "r_game", "r_coop", "gamepad", "gamepad_buttons", "r_terrain", "r_water", "direct_view", "direct_keys", "direct_pad"]
 ## Labels and tips of the remake's own option rows (texts.res has none).
 const REMAKE_OPTIONS := {
+	"discord_presence": ["Discord activity", "Show the current mode and location in Discord. Requires the Discord desktop app and a configured application ID. Off clears the activity."],
 	"cave_echo": ["Cave echo", "Add echo to sounds in caves. Turn off for dry sound. Changes apply immediately."],
 	"wiki_context": ["Wiki under pointer", "Open the wiki for the item, spell, creature or quest under the pointer. With no subject under the pointer, open the wiki home page."],
 	"direct_first_person_actions": ["First-person actions", "Stay in first person when picking up items, using levers and performing other actions. Off: show action animations in third person. Scripted cameras keep control."],
@@ -432,7 +434,7 @@ const REMAKE_OPTIONS := {
 ## Options the remake applies (a row missing here is greyed out on the Options
 ## screen). "marks" = EnableBloodprints and "footprints" = EnableFootprints
 ## switch the ground marks (GroundMarks).
-const OPTIONS_APPLIED := ["direct_hints", "direct_fov_first", "direct_fov_third", "direct_mouse_first", "direct_mouse_third", "direct_invert_x", "direct_invert_y", "direct_pad_x", "direct_pad_y", "direct_pad_deadzone", "direct_pad_curve", "direct_pad_invert_x", "direct_pad_invert_y",
+const OPTIONS_APPLIED := ["discord_presence", "direct_hints", "direct_fov_first", "direct_fov_third", "direct_mouse_first", "direct_mouse_third", "direct_invert_x", "direct_invert_y", "direct_pad_x", "direct_pad_y", "direct_pad_deadzone", "direct_pad_curve", "direct_pad_invert_x", "direct_pad_invert_y",
 	"direct_first_person_actions",
 	"spell_double_tap_self",
 	"volume_sfx", "volume_stream", "volume_voice", "power_kbd",

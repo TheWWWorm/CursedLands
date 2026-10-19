@@ -290,7 +290,7 @@ var _hover_help := -1
 var _hover_desc: Array = []
 ## Skills screen rows hit areas: [rect, cmd or {}, description [title, text]].
 var _reset_dialog: Control
-var _skill_rows: Array = []   # [rect, command, description, kind]
+var _skill_rows: Array = []   # [rect, command, description, kind, optional right-click command]
 var _perk_scroll := 0    # known abilities
 var _avail_scroll := 0   # available abilities
 var _hold_cmd := {}      # the held skill row's command
@@ -1653,6 +1653,17 @@ func _gui_input(e: InputEvent) -> void:
 				construct.emit({"t": "select_weapon", "unit": _unit.uid, "item": weapons[i]})
 				accept_event()
 				return
+	if e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_RIGHT and mode == "spells":
+		var rp: Vector2 = (e.position - _o()) / _s()
+		for row: Array in _skill_rows:
+			if row.size() < 5 or not Rect2(350, row[0].position.y, 40, 15).has_point(rp): continue
+			_hold_cmd = {} # one rank per click, never repeat a held refund
+			if row.size() > 4 and not row[4].is_empty():
+				if GameSound.instance: GameSound.instance.ui("buttons\\camp\\perk.wav")
+				construct.emit(row[4])
+			accept_event()
+			return
+
 	if not (e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT):
 		return
 	_stop_transfer_hold()
@@ -3140,8 +3151,16 @@ func _draw_skills() -> void:
 		if lv < 100:
 			_region("campinfo", Rect2(350, r.position.y, 40, 15), plate)
 			_t(r, _cost_text(c), 0, cost_col.call(c), HORIZONTAL_ALIGNMENT_RIGHT)
-		_skill_rows.append([r, {"t": "train", "unit": _unit.uid, "stat": sk} if mine and lv < 100 and xp >= c else {},
-			_skill_desc(sk, _unit), "skill"])
+		var desc := _skill_desc(sk, _unit)
+		var can_remove := at_camp and not _unit.dead and lv > 0
+		var refund := TrainingRefund.rank_value(h, "skill", sk)
+		if lv == 100 and can_remove:
+			_region("campinfo", Rect2(350, r.position.y, 40, 15), plate)
+			_t(r, "−", 0, Interface800.TEXT, HORIZONTAL_ALIGNMENT_RIGHT)
+		if can_remove: desc += [RemakeText.t("Right-click: unlearn one level (+%s points).") % _cost_text(int(refund))]
+		_skill_rows.append([Rect2(r.position, Vector2(175, 15)),
+			{"t": "train", "unit": _unit.uid, "stat": sk} if at_camp and not _unit.dead and lv < 100 and xp >= c else {},
+			desc, "skill", {"t": "untrain", "unit": _unit.uid, "stat": sk} if can_remove else {}])
 	# Known abilities: the highest rank of each family.
 	var known := []
 	var fams := {}
@@ -3167,9 +3186,18 @@ func _draw_skills() -> void:
 			var c := Perks.cost(nxt, h)
 			_region("campinfo", Rect2(350, y, 40, 15), plate)
 			_t(r, _cost_text(c), 0, cost_col.call(c), HORIZONTAL_ALIGNMENT_RIGHT)
-			if mine and xp >= c:
+			if at_camp and not _unit.dead and xp >= c:
 				cmd = {"t": "perk", "unit": _unit.uid, "perk": nxt}
-		_skill_rows.append([r, cmd, _perk_desc("%s%d" % [fam, n], n, h), "perk"])
+		var code := "%s%d" % [fam, n]
+		var desc := _perk_desc(code, n, h)
+		var refund := TrainingRefund.rank_value(h, "perk", code)
+		var can_remove := at_camp and not _unit.dead and refund > 0.0
+		if (n >= 3 or Perks.get_perk(nxt).is_empty()) and can_remove:
+			_region("campinfo", Rect2(350, y, 40, 15), plate)
+			_t(r, "−", 0, Interface800.TEXT, HORIZONTAL_ALIGNMENT_RIGHT)
+		if can_remove: desc += [RemakeText.t("Right-click: unlearn one level (+%s points).") % _cost_text(int(refund))]
+		_skill_rows.append([Rect2(r.position, Vector2(175, 15)), cmd, desc, "perk",
+			{"t": "unperk", "unit": _unit.uid, "perk": code} if can_remove else {}])
 		y += 15.0
 	# Available abilities: families not begun.
 	var avail := Perks.available(h).filter(func(code): return String(code).ends_with("1"))
@@ -3256,6 +3284,7 @@ func _draw_skill_desc(desc: Array) -> void:
 		_t(Rect2(615, y, 170, 15), line)
 		y += 15.0
 	_tb(Rect2(615, y + 15, 170, 15), String(desc[1]), 0, Interface800.TEXT, 13)
+	_draw_unlearn_help(desc)
 
 
 static func _perk_desc(code: String, known := 0, h: Dictionary = {}) -> Array:
@@ -3318,6 +3347,12 @@ func _draw_perk_desc(desc: Array) -> void:
 		_t(Rect2(615, y + 30, 185, 15), "     %s %d" % [_str("infoskill_18"), int(row.cost)])
 		y += 45.0
 	_tb(Rect2(615, 290, 170, 15), String(desc[1]), 0, Interface800.TEXT, 6)
+	_draw_unlearn_help(desc)
+
+
+func _draw_unlearn_help(desc: Array) -> void:
+	if desc.size() > 3:
+		_tb(Rect2(12, 300, 176, 15), String(desc[3]), 0, Interface800.TEXT, 3)
 
 
 func side_lit(button: String, deal_state: Array = []) -> bool:

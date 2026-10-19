@@ -1,0 +1,383 @@
+{
+  "settings": {
+    "os": "Linux Ubuntu 24.04.5",
+    "gpu": "RTX 3090, shared by two rendered clients",
+    "resolution_per_client": [
+      1920,
+      1080
+    ],
+    "preset": "Ultra",
+    "speed": 2,
+    "renderer": "Forward+ Vulkan",
+    "engine": "Godot 4.7 patched project template"
+  },
+  "runs": {
+    "after-trials": {
+      "owner": {
+        "last_wall_seconds": 871.041,
+        "last_simulated_seconds": 1742.07000000042,
+        "observed_cast_actions": 77,
+        "additional_enemy_deaths": 37,
+        "metres_travelled": 677.118256181479,
+        "maximum_distance_from_original_entrance_m": 252.1041577357586,
+        "initial_position": [
+          374.5,
+          67.5
+        ],
+        "final_position": [
+          330.0,
+          199.484375
+        ],
+        "fps_range": [
+          44.3389976541638,
+          109.107831196255
+        ],
+        "final_interval_fps": 60.8218197628522,
+        "video_MiB_range": [
+          1063.546142578125,
+          1178.5662231445312
+        ],
+        "node_range": [
+          30714.0,
+          31051.0
+        ],
+        "effect_range": [
+          3,
+          10
+        ],
+        "particles_range": [
+          1404,
+          2440
+        ]
+      },
+      "guest": {
+        "last_wall_seconds": 871.045,
+        "last_simulated_seconds": 1742.01500000043,
+        "observed_cast_actions": 76,
+        "additional_enemy_deaths": 37,
+        "metres_travelled": 663.072577614337,
+        "maximum_distance_from_original_entrance_m": 253.14671830053047,
+        "initial_position": [
+          376.0,
+          67.5
+        ],
+        "final_position": [
+          300.25,
+          182.75
+        ],
+        "fps_range": [
+          46.9942857812777,
+          113.857167183685
+        ],
+        "final_interval_fps": 69.3092391315033,
+        "video_MiB_range": [
+          971.2023010253906,
+          1088.2879486083984
+        ],
+        "node_range": [
+          30688.0,
+          31014.0
+        ],
+        "effect_range": [
+          3,
+          10
+        ],
+        "particles_range": [
+          1404,
+          2412
+        ]
+      }
+    },
+    "reloaded": {
+      "owner": {
+        "last_wall_seconds": 120.829,
+        "last_simulated_seconds": 241.560000000022,
+        "observed_cast_actions": 0,
+        "additional_enemy_deaths": 0,
+        "metres_travelled": 0.0,
+        "maximum_distance_from_original_entrance_m": 195.8907739340983,
+        "initial_position": [
+          243.6875,
+          213.3125
+        ],
+        "final_position": [
+          243.6875,
+          213.3125
+        ],
+        "fps_range": [
+          61.6906555536039,
+          64.6913442981328
+        ],
+        "final_interval_fps": 61.6906555536039,
+        "video_MiB_range": [
+          1042.8728485107422,
+          1042.9036254882812
+        ],
+        "node_range": [
+          30892.0,
+          30918.0
+        ],
+        "effect_range": [
+          4,
+          9
+        ],
+        "particles_range": [
+          1404,
+          2441
+        ]
+      },
+      "guest": {
+        "last_wall_seconds": 120.849,
+        "last_simulated_seconds": 241.780000000022,
+        "observed_cast_actions": 0,
+        "additional_enemy_deaths": 0,
+        "metres_travelled": 0.0,
+        "maximum_distance_from_original_entrance_m": 137.91528196686545,
+        "initial_position": [
+          300.25,
+          182.75
+        ],
+        "final_position": [
+          300.25,
+          182.75
+        ],
+        "fps_range": [
+          63.6730943412135,
+          67.6178015243231
+        ],
+        "final_interval_fps": 65.1764859467908,
+        "video_MiB_range": [
+          1036.8105926513672,
+          1036.8252410888672
+        ],
+        "node_range": [
+          30868.0,
+          30893.0
+        ],
+        "effect_range": [
+          4,
+          8
+        ],
+        "particles_range": [
+          1404,
+          2372
+        ]
+      }
+    },
+    "native-reloaded": {
+      "owner": {
+        "last_wall_seconds": 150.003,
+        "last_simulated_seconds": 299.915000000029,
+        "observed_cast_actions": 0,
+        "additional_enemy_deaths": 0,
+        "metres_travelled": 0.0,
+        "maximum_distance_from_original_entrance_m": 195.8907739340983,
+        "initial_position": [
+          243.6875,
+          213.3125
+        ],
+        "final_position": [
+          243.6875,
+          213.3125
+        ],
+        "fps_range": [
+          81.311775378268,
+          88.4482051970946
+        ],
+        "final_interval_fps": 88.4482051970946,
+        "video_MiB_range": [
+          1042.6289520263672,
+          1042.891098022461
+        ],
+        "node_range": [
+          30896.0,
+          30914.0
+        ],
+        "effect_range": [
+          4,
+          8
+        ],
+        "particles_range": [
+          1404,
+          2142
+        ]
+      },
+      "guest": {
+        "last_wall_seconds": 150.014,
+        "last_simulated_seconds": 300.135000000029,
+        "observed_cast_actions": 0,
+        "additional_enemy_deaths": 0,
+        "metres_travelled": 0.0,
+        "maximum_distance_from_original_entrance_m": 137.91528196686545,
+        "initial_position": [
+          300.25,
+          182.75
+        ],
+        "final_position": [
+          300.25,
+          182.75
+        ],
+        "fps_range": [
+          82.8340852597979,
+          87.5892411215489
+        ],
+        "final_interval_fps": 86.7182725473416,
+        "video_MiB_range": [
+          1036.8220672607422,
+          1036.882583618164
+        ],
+        "node_range": [
+          30871.0,
+          30889.0
+        ],
+        "effect_range": [
+          4,
+          8
+        ],
+        "particles_range": [
+          1404,
+          2128
+        ]
+      }
+    },
+    "native-deep": {
+      "owner": {
+        "last_wall_seconds": 600.005,
+        "last_simulated_seconds": 1200.0999999998,
+        "observed_cast_actions": 59,
+        "additional_enemy_deaths": 28,
+        "metres_travelled": 543.799670098349,
+        "maximum_distance_from_original_entrance_m": 308.6318746228314,
+        "initial_position": [
+          243.6875,
+          213.3125
+        ],
+        "final_position": [
+          243.6875,
+          213.3125
+        ],
+        "fps_range": [
+          63.8608341504155,
+          91.3849770942694
+        ],
+        "final_interval_fps": 73.3417846413619,
+        "video_MiB_range": [
+          1043.2180786132812,
+          1086.3709411621094
+        ],
+        "node_range": [
+          30869.0,
+          31115.0
+        ],
+        "effect_range": [
+          4,
+          9
+        ],
+        "particles_range": [
+          1404,
+          2825
+        ]
+      },
+      "guest": {
+        "last_wall_seconds": 600.014,
+        "last_simulated_seconds": 1200.0999999998,
+        "observed_cast_actions": 56,
+        "additional_enemy_deaths": 28,
+        "metres_travelled": 572.48033939302,
+        "maximum_distance_from_original_entrance_m": 309.90464920933744,
+        "initial_position": [
+          300.25,
+          182.75
+        ],
+        "final_position": [
+          264.875,
+          214.125
+        ],
+        "fps_range": [
+          62.9046718680079,
+          88.787045969993
+        ],
+        "final_interval_fps": 70.2258564160349,
+        "video_MiB_range": [
+          1036.8043365478516,
+          1085.888931274414
+        ],
+        "node_range": [
+          30842.0,
+          31116.0
+        ],
+        "effect_range": [
+          3,
+          9
+        ],
+        "particles_range": [
+          1404,
+          3004
+        ]
+      }
+    }
+  },
+  "limitations": [
+    "Automated normal-command gameplay, not manual play.",
+    "Three Trials fixtures each played one populated nine-board round, not full tournaments.",
+    "The interrupted post-fix entrance run is excluded from sustained traversal claims.",
+    "Native follow-up reloads the original late-combat save in fresh processes; it does not repeat an entire after-Trials traversal.",
+    "real_casts counts unique cast animation serials, not verified successful impacts.",
+    "The owner returned to its saved position; the guest did not. Final FPS includes the return walk and is not an exact matched stationary interval.",
+    "No proven unbounded memory leak; the specific 90-to-30 FPS report is not fully reproduced.",
+    "Windows native helper builds passed, but Windows gameplay and real Discord presence remain untested."
+  ],
+  "native_build_sha256": {
+    "libterrain_search.so": "ac42b3731536ae3a404755f48fb04ff54c4bfe79c85ebcc8d78be4153632392c",
+    "libterrain_search.dll": "3378cd85fc8a6f02645c066eefb67743c784f1d849e09dc98bd39146076ebf40"
+  },
+  "base_commit": "cca05d0a91a5e649b49337e111e8fca079bdd276",
+  "translation_coverage": {
+    "entries": 2734,
+    "dynamic_wiki_keys": 141,
+    "dynamic_arena_keys": 151,
+    "errors": 0
+  },
+  "native_followup_process_rss_MiB": {
+    "1021763": {
+      "first_loaded": 2493.0078125,
+      "last": 2566.46484375,
+      "min_loaded": 2493.0078125,
+      "max_loaded": 2566.46484375
+    },
+    "1021883": {
+      "first_loaded": 1472.99609375,
+      "last": 1526.828125,
+      "min_loaded": 1472.99609375,
+      "max_loaded": 1526.828125
+    },
+    "1021926": {
+      "first_loaded": 2505.2265625,
+      "last": 2571.34375,
+      "min_loaded": 2496.64453125,
+      "max_loaded": 2571.34375
+    }
+  },
+  "controlled_saved_scene": {
+    "owner": {
+      "reloaded": {
+        "fps": 63.65397979795567,
+        "p95_ms": 31.347
+      },
+      "native-reloaded": {
+        "fps": 82.25318074726317,
+        "p95_ms": 16.764499999999998
+      }
+    },
+    "guest": {
+      "reloaded": {
+        "fps": 65.808159933013,
+        "p95_ms": 30.43075
+      },
+      "native-reloaded": {
+        "fps": 85.09698588488786,
+        "p95_ms": 16.175
+      }
+    }
+  }
+}

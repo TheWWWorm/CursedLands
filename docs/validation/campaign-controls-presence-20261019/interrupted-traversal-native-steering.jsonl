@@ -1,0 +1,4 @@
+{"unix": 1792370429.7269516, "command": {"move_only": true, "point": [350, 235]}, "reason": "Walk beyond entry fights and around the fort to the southern encounters"}
+{"unix": 1792370523.6398375, "command": {"move_only": true, "point": [365, 130]}, "reason": "Short waypoint around rough terrain where the long approach stopped"}
+{"unix": 1792370614.42631, "command": {"move_only": true, "point": [356, 121]}, "reason": "Try the nearby exit from the terrain depression"}
+{"unix": 1792370695.2725344, "command": {"finish": true}, "reason": "End invalid traversal segment after movement stalls; keep it as diagnostic only"}

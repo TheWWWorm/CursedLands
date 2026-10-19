@@ -83,6 +83,17 @@ func _ready() -> void:
 	check(Refund.reason(ambiguous).is_empty() and Refund.refund(ambiguous) and zeroed(ambiguous),"version-one ambiguous history no longer disables reset")
 	var empty:=blank();empty.skills={}
 	check(CoopProgress.sanitize_hero(empty).skills.is_empty(),"explicit empty skill allocation survives co-op import")
+	var edge_hero:=blank();edge_hero.skills={"melee":100};edge_hero.perks=["sword1","sword2","sword3"]
+	var purse:=float(edge_hero.exp);var value:=Refund.amount(edge_hero)
+	check(not Refund.unlearn_rank(edge_hero,"perk","sword1") and not Refund.unlearn_rank(edge_hero,"perk","sword2"),"dependent ability ranks cannot be removed")
+	check(Refund.unlearn_rank(edge_hero,"perk","sword3") and edge_hero.perks==["sword1","sword2"],"maximum ability loses exactly one rank")
+	check(Perks.learn(edge_hero,"sword3") and edge_hero.exp==purse,"buying back the removed rank costs exactly its refund")
+	check(Refund.unlearn_rank(edge_hero,"skill","melee") and Skills.level(edge_hero,"melee")==99,"maximum skill loses one level")
+	check(Skills.raise(edge_hero,"melee") and edge_hero.exp==purse,"buying back level 100 cannot create points")
+	for level in 100:Refund.unlearn_rank(edge_hero,"skill","melee")
+	check(Skills.level(edge_hero,"melee")==0 and not Refund.unlearn_rank(edge_hero,"skill","melee"),"skill cannot be unlearned below zero")
+	for code in ["sword3","sword2","sword1"]:Refund.unlearn_rank(edge_hero,"perk",code)
+	check(edge_hero.exp==purse+value and Refund.amount(edge_hero)==0,"selective removal refunds the whole allocation exactly once")
 	GameData.options.merge({"autosave":0,"show_tutorial":0,"net_upnp":0,"net_lan":0,"net_directory":0},true)
 	var s:=Session.new();add_child(s);var g:=Game.new();g.session=s;s.game=g;add_child(g);s.set_physics_process(false)
 	s.state=CampaignState.new();s.state.ensure_hero(0,"Human Hero")

@@ -12,6 +12,7 @@ func assert_pose(gait: int, label: String) -> void:
 	var expected := EIUnitModel.ST_LIE if gait==0 else EIUnitModel.ST_WARRY if gait==1 else EIUnitModel.ST_NEUTRAL
 	check(get_tree().paused,label+" gameplay remains paused")
 	check(u.gait()==gait and u.model.pose_state==expected,label+" saved posture is already displayed")
+	check(u.transform.basis.is_equal_approx(Basis(Vector3.UP,u.facing+GameUnit.MODEL_YAW_OFFSET)),label+" facing is already displayed")
 	if DisplayServer.get_name()!="headless":
 		check(await until(func():return LoadingScreen._current==null,10),"loading cover closes while gameplay stays paused")
 		await RenderingServer.frame_post_draw
@@ -31,8 +32,9 @@ func _ready() -> void:
 	run.call_deferred()
 
 func run() -> void:
+	GameData.options.merge(GfxDetect.original_look_values(true,{},-1),true)
 	GameData.options.merge({"net_upnp":0,"net_websocket":0,"net_lan":0,"net_directory":0,
-		"autosave":0,"show_tutorial":0,"auto_graphics":0,"confine_mouse":0,"display_mode":0},true)
+		"control_mode":1,"autosave":0,"show_tutorial":0,"auto_graphics":0,"confine_mouse":0,"display_mode":0},true)
 	if DisplayServer.get_name()!="headless":
 		for i in 16: await get_tree().process_frame
 		GameData._window_gen+=1
@@ -51,10 +53,27 @@ func run() -> void:
 		check(await session.local_host.start(0,1,true)==OK,"solo simulation worker starts")
 	if failures: await finish(); return
 	for gait: int in [0,1,2]:
+		game.hud.log_msg("Discarded future loot: 40")
+		session.state.money=9340
+		game.hud.text_window.build_listing(9340,[])
 		check(await session.load_game_shown("paused-pose-"+str(gait)),"paused solo save loads")
 		check(await until(func():return session.world!=null and not session._remote_loading and not session.loading_game,30),"solo world arrives")
 		await assert_pose(gait,"worker gait "+str(gait))
 		check(game.speed==gait%2,"saved speed remains selected")
+		check(not game.hud.text_window.messages.get_parsed_text().contains("Discarded future loot"),"load clears messages from the discarded timeline")
+		check(not game.hud.text_window.listing.get_parsed_text().contains("9340"),"collected-items listing uses restored purse")
+	# Close the real load menu into its asynchronous load operation. The
+	# previously running field must remain paused during its cover/startup.
+	get_tree().paused=false
+	game.hud._open_menu()
+	var panel:=game.hud._save_load
+	panel.open(false)
+	var index:=panel.saves.find_custom(func(info:SaveInfo):return info.slot=="paused-pose-1")
+	check(index>=0,"fixture appears in real load menu")
+	panel._select(index);panel._load()
+	check(get_tree().paused,"accepting Load does not release the menu pause")
+	check(await until(func():return game.hud._load_pause_before==null and not session.loading_game and not session._remote_loading,30),"menu load finishes")
+	await assert_pose(1,"menu load")
 	await finish()
 
 func finish() -> void:

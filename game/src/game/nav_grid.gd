@@ -2745,7 +2745,22 @@ func cell_slope(p: Vector2) -> float:
 ## 0x95) give class 2 = kind 2 and every other part class 0 = kind 0), and
 ## below 0.0001 it returns 0.0001. So walls, fences, cages and tree trunks
 ## hide what is behind them; crowns barely do.
+var _ray_kernel: RefCounted
+var _ray_kernel_checked := false
+
 func ray(a: Vector2, za: float, b: Vector2, zb: float) -> float:
+	if not _ray_kernel_checked:
+		_ray_kernel_checked = true
+		var native := _native_builder()
+		if native and native.has_method("ray"): _ray_kernel = native
+	if _ray_kernel:
+		var result: Variant = _ray_kernel.ray(size, _h, _spans, _alt, a, za, b, zb)
+		if result != null: return float(result)
+	return ray_script(a, za, b, zb)
+
+
+## Exact fallback/oracle for platforms without the native helper.
+func ray_script(a: Vector2, za: float, b: Vector2, zb: float) -> float:
 	if size.x == 0:
 		return 1.0
 	var d := Vector3(b.x - a.x, b.y - a.y, zb - za).length() / CELL

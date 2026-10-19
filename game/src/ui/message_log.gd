@@ -205,6 +205,17 @@ func _show_mode() -> void:
 	_place_text()
 
 
+## A newly loaded field has its own message history. Keep the window/tab
+## preference, but never carry notices from the discarded world into a save.
+func clear_messages() -> void:
+	messages.clear()
+	_bars[0].held = 0
+	_bars[0].max_pos = 0.0
+	_bars[0].set_pos(0.0)
+	_content_h[0] = -1.0
+	_place_text()
+
+
 ## the "Collected items" text from the party's money and items.
 func build_listing(money: int, items: Array) -> void:
 	var text := ""

@@ -1,0 +1,6 @@
+{"unix": 1792368145.548102, "command": {"move_only": true, "point": [350, 235]}}
+{"utc": 1792368292.1027703, "control": {"point": [280, 280]}, "reason": "Resume combat beyond fort after open-side traversal"}
+{"utc": 1792368469.9751818, "control": {}, "reason": "Resume planned route west through deeper encounters"}
+{"utc": 1792368731.3055897, "control": {"return": true}, "reason": "Walk back to entry for comparable post-combat frame timing"}
+{"utc": 1792368814.667253, "control": {"move_only": true, "point": [280, 200]}, "reason": "Guide return around a blocked approach with a nearby waypoint"}
+{"utc": 1792368860.2338104, "control": {"move_only": true, "point": [330, 200]}, "reason": "Continue return via eastern open-side waypoint"}

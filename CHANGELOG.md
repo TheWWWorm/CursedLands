@@ -20,6 +20,18 @@
 - Advertise online autochess lobbies automatically on the LAN; keep private solo combat workers unlisted.
 - Switch replicated survivors from movement to idle clips when combat ends. Isolate Trials animation randomness and native pose clocks from frame timing and unrelated activity.
 
+- Give confirmed first/third-person spells priority over repeated weapon attacks. Let the interaction key cancel spell targeting and act on the pointed object. Preserve running approaches when double-clicking loot or village interactions.
+- Place the isometric keyboard aim menu at the cursor, clamped to leave room for its labels and help.
+- Right-click a skill or learned ability's price button to refund one level in camp; left-click continues to buy the next level. Preserve dependencies, refund accounting and co-op ownership checks, including maximum ranks.
+- Keep a paused save paused while its load menu closes, and apply saved position and facing before the first displayed frame. ([#30](https://github.com/TheWWWorm/CursedLands/issues/30))
+- Add Ctrl-click and Shift-click save selection, with counted bulk-delete confirmation and single-selection load/save actions. ([#31](https://github.com/TheWWWorm/CursedLands/issues/31))
+- Transition prone humanoids to kneeling before tactical spellcasting. ([#32](https://github.com/TheWWWorm/CursedLands/issues/32))
+- Start replicated posture transitions from the authoritative update so older packets cannot briefly show the destination pose first. ([#33](https://github.com/TheWWWorm/CursedLands/issues/33))
+- Retain the chosen body part when an aimed ground command finds a target during its approach. ([#34](https://github.com/TheWWWorm/CursedLands/issues/34))
+- Clear discarded field messages on loading and rebuild the collected-items listing from the loaded party inventory on both co-op peers. ([#35](https://github.com/TheWWWorm/CursedLands/issues/35))
+- Add optional Discord activity on Windows and Linux, showing game mode, campaign location or Trials round and phase. Include a translated setting and application-ID setup instructions.
+- Calculate terrain visibility rays in the Windows and Linux native helper, retaining the original wall, tree, floor and rounding rules and the script fallback on other platforms.
+
 ## 1.17.0 — 2026-10-18
 
 - Apply saved idle and movement postures before displaying loaded or joining characters, including paused solo saves. ([#28](https://github.com/TheWWWorm/CursedLands/issues/28))

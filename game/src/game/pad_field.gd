@@ -896,7 +896,8 @@ func open_keyboard_aim() -> void:
 	wheel.pages = PackedStringArray()
 	wheel.hints = []
 	wheel.open(aim_entries(), -1, 0.5, {
-		"id": ["aim", -1], "label": RemakeText.t("Default"), "tip": RemakeText.t("No preferred body part")})
+		"id": ["aim", -1], "label": RemakeText.t("Default"), "tip": RemakeText.t("No preferred body part")},
+		Vector2.INF if direct else wheel.get_global_transform_with_canvas().affine_inverse() * point)
 	get_viewport().warp_mouse(wheel.get_global_transform_with_canvas() * wheel._geom()[0])
 	_hold_pause(not direct)
 

@@ -26,6 +26,8 @@ config/project_settings_override.windows="user://renderer.cfg"
 
 [autoload]
 
+DiscordPresence="*res://src/platform/discord_presence.gd"
+
 GameData="*res://src/ei/game_data.gd"
 TouchInput="*res://src/platform/touch_input.gd"
 PadInput="*res://src/platform/pad_input.gd"

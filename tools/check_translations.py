@@ -50,6 +50,10 @@ for key in json.loads(re.search(r'^const ERRORS := (\[.*\])$', online_source, re
     if key not in entries: errors.append(f'Online error missing RU/DE key: {key}')
 for key in ('Ready', 'Not ready', 'First place', 'Eliminated'):
     if key not in entries: errors.append(f'Online state missing RU/DE key: {key}')
+# Rich Presence chooses mode and phase labels dynamically.
+for key in ('Main menu', 'Multiplayer', 'Co-op campaign', 'Campaign', 'Paused',
+            'Trials of the Allods', 'Battle', 'Preparation', 'Victory', 'Defeat', 'Round %d'):
+    if key not in entries: errors.append(f'Discord activity missing RU/DE key: {key}')
 # Recruit family names/roles are chosen dynamically by the shop and guide.
 arena_rules = (ROOT / 'game/arena_rules.gd').read_text().split('const FAMILIES := [', 1)[1].split('\n]', 1)[0]
 for match in re.finditer(r'"(?:name|role)":\s*(' + STRING + r')', arena_rules):

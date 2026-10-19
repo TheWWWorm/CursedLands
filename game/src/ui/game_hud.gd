@@ -33,6 +33,7 @@ var _death_notice: GameOverNotice   # remake option "sp_death_notice"
 var _players_btn: PlayersPanel.EscButton   # remake: the co-op host's player list
 var _esc_hints: Control   # remake: the gamepad prompts under the Esc signpost
 var _players_panel: PlayersPanel
+var _load_pause_before: Variant = null
 var _pause_before: Variant = null   # interface manager: the pause state to restore
 var _dialog: DialogPanel
 var _travel: Control
@@ -50,6 +51,7 @@ var _notify: NotifyLine
 var _spell_owner: GameUnit
 var _faces: PartyFaces
 var _world: GameWorld
+var _listing_pending := false
 var _move_dial: HudDial
 var _clock_dial: HudDial
 var _weapons: WeaponBar
@@ -194,12 +196,15 @@ func _ready() -> void:
 			if not _save_load.loading:
 				_on_esc_board("exit")
 				return
-		_close_menu())
+		if _save_load.loading: _load_pause_before = _pause_before
+		_close_menu(not _save_load.loading))
 	_save_load.save_requested.connect(func(slot: String, save_name: String, frame: Image):
 		game.session.save_game(slot, save_name, frame))
 	_save_load.load_requested.connect(func(slot: String):
 		if not await game.session.load_game_shown(slot):
-			log_msg(RemakeText.t("Load failed.")))
+			if _load_pause_before != null: get_tree().paused = bool(_load_pause_before)
+			log_msg(RemakeText.t("Load failed."))
+		_load_pause_before = null)
 
 	_target_label = Label.new()
 	_target_label.anchor_left = 0.5
@@ -279,7 +284,11 @@ func on_world(w: GameWorld) -> void:
 		# load (texts.res has no such string; only builds the
 		# "Collected items" listing below).
 		#  runs once as the interface is built (zone load).
+		text_window.clear_messages()
 		text_window.build_listing(game.session.state.money, game.session.state.items)
+		# A replica receives the zone before its reliable purse snapshot. Its
+		# previous bag must not become the new field's collected-items listing.
+		_listing_pending = not game.session.is_host
 		# Remake (co-op): the zone changed under an open conversation or
 		# trader screen (another player travelled); the old zone's briefing is
 		# gone with its world, so both close (a replayed one opens again).
@@ -664,6 +673,9 @@ func on_event(e: Dictionary) -> void:
 		"inventory":
 			_inventory.refresh()
 			_rebuild_party()
+			if _listing_pending:
+				text_window.build_listing(game.session.state.money, game.session.state.items)
+				_listing_pending = false
 		"saved":
 			notify("string notify_saving")
 		"load_begin":
@@ -671,6 +683,8 @@ func on_event(e: Dictionary) -> void:
 			_inventory._camp.reset_transactions()
 			_close_for_host_load(bool(e.get("travel", false)))
 		"load_end":
+			text_window.build_listing(game.session.state.money, game.session.state.items)
+			_listing_pending = false
 			if game.session.online and not game.session.is_host:
 				notify("string notify_loading")
 		"travel": _show_travel(e.options, String(e.get("from", "")), e.get("start", []))
@@ -1047,14 +1061,9 @@ func set_move_mode(mode: String) -> void:
 		GameSound.instance.ui("buttons\\battle\\click.wav")
 	var ids := game.selected.map(func(s: GameUnit): return s.uid)
 	game.issue({"t": "gait", "units": ids, "gait": g})
-	if not game.session.is_host:
-		for u: GameUnit in game.selected:
-			if is_instance_valid(u):
-				# Predict the live posture without the quiet save/load snap.
-				# Acknowledgements and passability remain host-authoritative.
-				u.stance = GameUnit.STANCE_CRAWL if g == 0 else GameUnit.STANCE_KNEEL if g == 1 else GameUnit.STANCE_NONE
-				u.gait_run = g == 3
-				u._update_pose()
+	# The authority supplies the accepted posture, including for solo's local
+	# worker. Predicting it here lets an older in-flight snapshot reverse the
+	# cross clip, briefly showing the destination pose before crossing again.
 	_rebuild_party()
 
 
@@ -1120,7 +1129,7 @@ func _open_menu() -> void:
 
 ## back to the game alone, the frozen frame dropped and the
 ## pause state restored (single player).
-func _close_menu() -> void:
+func _close_menu(restore_pause := true) -> void:
 	if not _esc_open:
 		return
 	_esc_open = false
@@ -1133,7 +1142,7 @@ func _close_menu() -> void:
 		_quit_box.queue_free()
 	_players_panel.close()
 	if _pause_before != null:
-		get_tree().paused = bool(_pause_before)
+		if restore_pause: get_tree().paused = bool(_pause_before)
 		_pause_before = null
 
 

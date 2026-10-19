@@ -379,8 +379,7 @@ func handle_input(e: InputEvent) -> bool:
 			return true
 		if key == "direct_interact":
 			if e.pressed and not e.echo:
-				if game.has_spell_target(): cast_self()
-				else: interact()
+				interact()
 			return true
 	return false
 
@@ -547,8 +546,8 @@ func arm_targeting() -> void:
 	_repeat = 0.0
 
 
-## Keyboard E has an explicit self action while a friendly spell/item is
-## selected. Left click still uses the aimed target, including another hero.
+## Explicit self casting (Ctrl shortcut, double tap, or controller action)
+## remains separate from interacting with the world.
 func _self_target() -> Dictionary:
 	if not field().friendly_spell(): return {}
 	var info := game.pending_target(leader())
@@ -601,9 +600,6 @@ func key_label(action: String) -> String:
 
 
 func interaction_hint() -> Dictionary:
-	if game.has_spell_target():
-		if not field().friendly_spell(): return {}
-		return {"text":key_label("interact")+": " + RemakeText.t("Cast on self"),"enabled":not _self_target().is_empty()}
 	var action := _interaction_target(true)
 	if action.is_empty(): return {}
 	var verb := "Use"
@@ -705,6 +701,9 @@ func _nearby_lever() -> int:
 
 func interact() -> void:
 	if not usable() or pointer or _neutral or get_tree().paused: return
+	game.pending_spell = ""
+	game.hud.set_targeting("")
+	_fire = false
 	var action := _interaction_target(true)
 	if action.is_empty(): return
 	stop_move()

@@ -51,6 +51,11 @@ static func tl(list: Array) -> Array:
 
 ## English → [Russian, German].
 const TEXTS := {
+	"Discord activity": ["Активность в Discord", "Discord-Aktivität"],
+	"Show the current mode and location in Discord. Requires the Discord desktop app and a configured application ID. Off clears the activity.": ["Показывать текущий режим и локацию в Discord. Нужны приложение Discord на компьютере и настроенный ID приложения. Выключение скрывает активность.", "Zeigt den aktuellen Modus und Ort in Discord. Benötigt die Discord-Desktop-App und eine konfigurierte Anwendungs-ID. Ausschalten entfernt die Aktivität."],
+	"%d saves selected": ["Выбрано сохранений: %d", "%d Spielstände ausgewählt"],
+	"Ctrl-click to select individual saves; Shift-click to select a range.": ["Ctrl + щелчок: выбрать отдельное сохранение; Shift + щелчок: выбрать диапазон.", "Strg-Klick wählt einzelne Spielstände; Umschalt-Klick wählt einen Bereich."],
+	"Delete %d selected saves?": ["Удалить выбранные сохранения (%d)?", "%d ausgewählte Spielstände löschen?"],
 	"Taskmasters": ["Надсмотрщики", "Aufseher"],
 	"Outlaws": ["Изгои", "Gesetzlose"],
 	"Iron company": ["Железный отряд", "Eiserne Kompanie"],
@@ -1500,6 +1505,7 @@ const TEXTS := {
 	"Fast drop": ["Быстрое опускание", "Schnelles Absenken"],
 	"Original timing": ["Время оригинала", "Originales Tempo"],
 	"Fast drop lowers moving drawbridges in at most 330 ms of game time; physical access opens only when lowering finishes. Original timing keeps the original motion and immediate physical access. The host's setting applies in co-op.": ["Быстрое опускание занимает не более 330 мс игрового времени; пройти по мосту можно только после завершения движения. Время оригинала сохраняет исходную анимацию и немедленный доступ. В совместной игре действует настройка сервера.", "Schnelles Absenken dauert höchstens 330 ms Spielzeit; die Brücke ist erst danach begehbar. Originales Tempo behält die ursprüngliche Bewegung und sofortige Begehbarkeit. Im Koop gilt die Einstellung des Hosts."],
+	"Right-click: unlearn one level (+%s points).": ["Правая кнопка: снять один уровень (+%s очков).", "Rechtsklick: einen Rang verlernen (+%s Punkte)."],
 	"Reset skills…": ["Сбросить навыки…", "Zurücksetzen…"],
 	"Reset skills": ["Сброс навыков", "Fertigkeiten zurücksetzen"],
 	"Restore starting skills": ["Вернуть начальные навыки", "Anfangsfertigkeiten wiederherstellen"],

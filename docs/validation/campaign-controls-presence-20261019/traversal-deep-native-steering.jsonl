@@ -1,0 +1,6 @@
+{"unix": 1792370909.0794692, "command": {"point": [230, 280]}, "reason": "Resume original late-combat save and proceed through western encounters"}
+{"unix": 1792371070.818523, "command": {"move_only": true, "point": [230, 280]}, "reason": "Leave fort fights and walk into the western route"}
+{"unix": 1792371136.4031675, "command": {"point": [170, 300]}, "reason": "Resume combat and advance farther west and south into fresh encounters"}
+{"unix": 1792371340.6981843, "command": {"point": [140, 250]}, "reason": "Continue north-west from the southern route into another part of the map"}
+{"unix": 1792371464.8130085, "command": {"move_only": true, "point": [230, 240]}, "reason": "Walk back around the terrain to compare the starting view after additional exploration and combat"}
+{"unix": 1792371521.43882, "command": {"return": true}, "reason": "Return each peer to its own saved start point for final frame samples"}

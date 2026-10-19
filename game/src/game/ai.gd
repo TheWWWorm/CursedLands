@@ -535,7 +535,7 @@ func swarm_tick(u: GameUnit) -> bool:
 			u._set_action("idle")
 		return waiting
 	u.ack(EIAcks.DECIDE_TO_ATTACK)
-	u.attack(t, false, -1, false, true)
+	u.attack(t, false, int(u.order.get("aim", -1)), false, true)
 	return true
 
 

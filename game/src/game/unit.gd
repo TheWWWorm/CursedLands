@@ -1171,6 +1171,14 @@ static func is_direct_combat_order(o: Dictionary) -> bool:
 func command(o: Dictionary, queue := false) -> void:
 	if dead:
 		return
+	# Weapon repeats may update the next swing, but cannot replace a spell
+	# already confirmed during recovery. Keep at most one trailing swing.
+	if not queue and o.get("type", "") == "direct_attack" \
+			and ((order.get("type", "") == "cast" and order.get("in_place", false)) \
+			or orders.any(func(p): return p.get("type", "") == "cast" and p.get("in_place", false))):
+		orders = orders.filter(func(p): return p.get("type", "") != "direct_attack")
+		orders.append(o)
+		return
 	if not queue:
 		if o.get("type", "") != "direct_move" and not is_direct_combat_order(o): stop_steering()
 		# A replacement order cancels the pending arrival interaction.
@@ -3239,6 +3247,14 @@ func _do_cast(dt: float) -> void:
 			change_posture(STANCE_NONE)
 			return
 		if _update_pose(): return
+	elif stance == STANCE_CRAWL and model and model.neutral:
+		# Humanoid cast clips are authored kneeling, not prone. Finish the
+		# posture transition before paying stamina or starting the cast.
+		if not change_posture(STANCE_KNEEL):
+			_fail_order(EIAcks.CANT_CAST)
+		return
+	elif _update_pose():
+		return
 	# Self-casting has no target direction; retain the player's facing.
 	if not (direct_controlled and t == self) and not _turn_to((at - pos).angle(), dt):
 		return
@@ -4670,6 +4686,11 @@ func apply_snapshot(s: Array, quiet := false, precise_body := PackedFloat64Array
 			if a == "hit":
 				GameSound.unit(self, "hit")
 			_set_action(a)
+	if quiet:
+		# Load/spawn snapshots can be the last update before a paused save is
+		# displayed. Place their position AND facing without waiting a frame.
+		_sync_transform(0.0)
+		resync_drawn()
 	if _presentation_sleeping:
 		if not _can_sleep_presentation():
 			wake_presentation()

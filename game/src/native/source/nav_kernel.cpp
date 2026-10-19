@@ -45,6 +45,7 @@
 #include "screen_rect.h"
 #include "nav_build.h"
 #include <godot_cpp/variant/dictionary.hpp>
+#include "discord_ipc.h"
 using namespace godot;
 
 class TerrainSearchKernel : public RefCounted {
@@ -551,6 +552,7 @@ public:
 
 static void initialize_kernel(ModuleInitializationLevel level) {
     if (level == MODULE_INITIALIZATION_LEVEL_SCENE) {
+        GDREGISTER_CLASS(DiscordIpc);
         GDREGISTER_CLASS(TerrainWindowFrontier); GDREGISTER_CLASS(TerrainSearchKernel);
         GDREGISTER_CLASS(UnitSimulationState); GDREGISTER_CLASS(UnitSimulationLease);
         GDREGISTER_CLASS(UnitNoticeLifetime); GDREGISTER_CLASS(UnitQueryKernel);

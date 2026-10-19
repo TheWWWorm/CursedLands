@@ -78,6 +78,38 @@ static func refund(h: Dictionary, full := true) -> bool:
 	return true
 
 
+## Refund a single allocation edge using the same price as buying it back.
+## Legacy overpayment stays in the ledger until a full reset consumes it.
+static func rank_value(h: Dictionary, kind: String, code: String) -> float:
+	if kind == "skill":
+		if code not in Skills.LIST: return 0.0
+		var level := Skills.level(h, code)
+		return maxi(1, Skills.span_cost(level - 1, level)) if level > 0 and level <= 100 else 0.0
+	if kind != "perk" or Perks.get_perk(code).is_empty() or not Perks.has(h, code): return 0.0
+	var known: Array = h.get("perks", [])
+	for child: String in known:
+		if Perks.get_perk(child).get("required_perk", "none") == code: return 0.0
+	var remaining := known.duplicate()
+	remaining.erase(code)
+	return maxf(0.0, Perks.total_price(known) - Perks.total_price(remaining))
+
+
+static func unlearn_rank(h: Dictionary, kind: String, code: String) -> bool:
+	var value := rank_value(h, kind, code)
+	if value <= 0.0: return false
+	prepare(h)
+	if kind == "skill":
+		var skills: Dictionary = Dictionary(h.get("skills", {})).duplicate()
+		skills[code] = Skills.level(h, code) - 1
+		h.skills = skills
+	else:
+		var remaining: Array = h.get("perks", []).duplicate()
+		remaining.erase(code)
+		h.perks = remaining
+	h.exp = float(h.get("exp", 0.0)) + value
+	return true
+
+
 ## Version 1 protected starting allocations and rejected ambiguous histories.
 ## An older hero's ordered perk list is enough to value the old price. Retain
 ## any overpayment as a one-time credit; subsequent purchases charge the new

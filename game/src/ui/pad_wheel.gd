@@ -30,6 +30,7 @@ var _views: Array[ItemView] = []
 var _t := 0.0
 var _content_scale := 1.0
 var _center_entry := {}
+var _anchor := Vector2.INF
 
 
 func _ready() -> void:
@@ -46,10 +47,11 @@ func _ready() -> void:
 
 ## An optional centre action is selected when the mouse returns inside the
 ## inner ring. Other wheels keep -1 as no selection.
-func open(new_entries: Array, preselect := -1, content_scale := 1.0, center_entry: Dictionary = {}) -> void:
+func open(new_entries: Array, preselect := -1, content_scale := 1.0, center_entry: Dictionary = {}, anchor := Vector2.INF) -> void:
 	entries = new_entries
 	_content_scale = content_scale
 	_center_entry = center_entry
+	_anchor = anchor
 	selected = preselect if preselect >= 0 and preselect < entries.size() else -1
 	_t = 0.0
 	visible = true
@@ -134,6 +136,15 @@ func _geom() -> Array:
 	var r := minf(vs.x, vs.y) * 0.25 * _content_scale
 	var c := vs * 0.5 + Vector2(0, -vs.y * 0.06)
 	var cell := r * (0.34 if entries.size() <= 8 else 0.29)
+	if _anchor.is_finite():
+		var k := minf(vs.x, vs.y) / 600.0 * _content_scale
+		var outer := r + cell * 1.35
+		# Reserve room for the title and the four-line help below the disc.
+		var half_width := maxf(outer + 4.0 * k, 300.0 * k)
+		var above := outer + (48.0 if pages.size() > 1 else 26.0) * k
+		var below := outer + 120.0 * k
+		c = Vector2(clampf(_anchor.x, half_width, maxf(half_width, vs.x - half_width)),
+			clampf(_anchor.y, above, maxf(above, vs.y - below)))
 	return [c, r, cell]
 
 
