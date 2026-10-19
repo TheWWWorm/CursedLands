@@ -1,0 +1,31 @@
+{
+  "approved_date": "2026-10-19",
+  "source": "game/icon.png",
+  "source_sha256": "5c19c62e46918724753142c6950f4c22e7683d8313f7be82a6f5315e224a9d04",
+  "source_dimensions": [
+    1254,
+    1254
+  ],
+  "artwork": "Approved Cursed Lands copper-and-gold dragon CL monogram",
+  "generation": "Built-in image_gen; exact user-selected image, without further creative edits",
+  "derivatives": "Lanczos resizing and platform file conversion; padding only for the maskable icon",
+  "regenerate": "node tools/generate_branding.cjs",
+  "packaging": {
+    "windows": "Use the Windows export preset with application/modify_resources enabled. When using a qualified custom engine, set custom_template/release to that engine and export the executable; exporting only the PCK does not replace the Explorer icon.",
+    "macos": "The macOS preset embeds assets/branding/icon.icns in the application bundle.",
+    "android": "Godot uses application/config/icon for the launcher and adaptive foreground when the Android preset has no override.",
+    "staging": "Copy game/icon.png and game/assets/branding along with the project. Resolve the project icon from config/icon instead of hardcoding icon.svg.",
+    "web": "Regenerate web icon sizes and the service-worker hashes after changing the approved master."
+  },
+  "files": {
+    "game/assets/branding/icon.ico": "ba141a0d85b4c127c06f0a64fa31cf6db3114fde030032a9e37867cd08fa2ea4",
+    "game/assets/branding/icon.icns": "440faf472cf81732d6f9eb83481db3403b7bdb78f37e9288daf7c43981fda511",
+    "game/assets/branding/splash.png": "4ad4251f0ef9a513d8434b2a6dda7f44b7b75f720c6b6c7dd66bdbda9d4c5d20",
+    "public/index.icon.png": "79b0968e0c548b666b1b5c8a057b367f8dab11ea2212457f77a624c399e8e551",
+    "public/index.apple-touch-icon.png": "cfac5ab5b07d1c2194e110ef88f47a8e0c25d8413ec8e32841d3c5ef43e9b759",
+    "public/icon-192.png": "ca81b6cd25bee336c8c22ff4f2ee13e1fcf57b908c79b741ad2b3dbd38955372",
+    "public/icon-512.png": "4ad4251f0ef9a513d8434b2a6dda7f44b7b75f720c6b6c7dd66bdbda9d4c5d20",
+    "public/index.png": "4ad4251f0ef9a513d8434b2a6dda7f44b7b75f720c6b6c7dd66bdbda9d4c5d20",
+    "public/icon-maskable-512.png": "8911ef839f53c35f386277baf0aacab17081fce6a5a5d97d256ba784bac0a068"
+  }
+}

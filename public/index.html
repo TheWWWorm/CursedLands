@@ -8,7 +8,6 @@
 <meta name="apple-mobile-web-app-title" content="Cursed Lands">
 <meta name="theme-color" content="#17130e">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon-192.png">
 <title>Cursed Lands</title>
 <link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
 <link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
@@ -17,6 +16,7 @@
 html,body{margin:0;position:fixed;inset:0;overflow:hidden;background:#17130e;color:#e4d7a7;font:16px system-ui;overscroll-behavior:none}
 #canvas{display:block;width:100%;height:100%;touch-action:none;outline:none}
 #start{position:fixed;inset:0;display:grid;place-content:center;text-align:center;padding:24px;gap:16px;background:#17130e;z-index:4;overflow:auto}
+#start h1{display:flex;align-items:center;justify-content:center;gap:16px;margin:0;font-size:clamp(24px,5vw,32px)}#start h1 img{flex:none;border-radius:6px}
 button{font:inherit;color:inherit;background:#372e20;border:1px solid #8a734c;padding:12px 20px;border-radius:5px;min-height:48px}
 button:disabled{opacity:.6}#bar{height:6px;background:#372e20;border-radius:3px;overflow:hidden}#bar>div{height:100%;width:0;background:#c9a95c;transition:width .2s}#bar[hidden]{display:none}
 #notice{max-width:38em;white-space:pre-wrap}#safe-probe{position:fixed;visibility:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
@@ -29,7 +29,7 @@ button:disabled{opacity:.6}#bar{height:6px;background:#372e20;border-radius:3px;
 <canvas id="canvas" tabindex="0">This game requires WebGL 2.</canvas>
 <div id="safe-probe"></div><div id="runtime-error" role="alert"></div>
 <div id="rotate">Turn your device sideways to play.<p><button onclick="this.parentElement.parentElement.style.display='none'">Continue upright</button></p></div>
-<div id="start"><h1>Cursed Lands</h1><div id="notice">Preparing…</div><div id="bar" hidden><div></div></div><button id="play">Play</button><button onclick="CursedFiles.fullscreen()">Fullscreen / Home Screen</button><a id="public-wiki" href="/wiki/">Public wiki · no game files required</a></div>
+<div id="start"><h1><img src="icon-192.png" width="72" height="72" alt="">Cursed Lands</h1><div id="notice">Preparing…</div><div id="bar" hidden><div></div></div><button id="play">Play</button><button onclick="CursedFiles.fullscreen()">Fullscreen / Home Screen</button><a id="public-wiki" href="/wiki/">Public wiki · no game files required</a></div>
 <script src="storage.js"></script><script src="files.js"></script><script src="index.js"></script>
 <script>
 const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":true,"fileSizes":{"index.pck":13375548,"index.wasm":39509339},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};

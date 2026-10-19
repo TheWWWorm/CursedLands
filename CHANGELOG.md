@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Use the copper-and-gold dragon CL icon for the application, Windows executable, macOS bundle, startup splash, website, wiki and repository branding.
+
 ## 1.17.0 — 2026-10-18
 
 - Apply saved idle and movement postures before displaying loaded or joining characters, including paused solo saves. ([#28](https://github.com/TheWWWorm/CursedLands/issues/28))

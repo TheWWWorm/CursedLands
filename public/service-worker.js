@@ -2,28 +2,29 @@
 // Replaced with content hashes and engine-only files by tools/export_mobile.py.
 // The "2" marks the cache layout that stores the shell under the scope URL;
 // older caches stored a redirected copy of index.html and are deleted below.
-const ENGINE_CACHE = 'cursed-engine-2-dca8c9ec4cd89a5f1e77';
+const ENGINE_CACHE = 'cursed-engine-2-ecd6d0d7ef8fdf5186d1';
 // Hosts may redirect /index.html to / (Cloudflare Workers assets do). A
 // redirected response must never answer a navigation (the browser fails it
 // with ERR_FAILED), so the shell is fetched and stored as "./".
 const SHELL = new URL('./', self.registration.scope).href;
 const HASHES = {
-"data-worker.js": "23acf2e304952606e7e2a0bf850dc8e02b56dcae2913cc79e461c78afbd49d77",
-"files.js": "5b23e470c5dedc93d0c80ea0696eff36bad3afbb88eb4bc85ced567f472c5b2a",
-"icon-192.png": "ce18b6621f58d2b24ef49ec182bf4f021f5992b2e46e666918764c47d92a1a0a",
-"icon-512.png": "33d17b00001bf55448c56919e7f9a9d56be7089231be189704d72a13d00363d4",
-"index.apple-touch-icon.png": "a8079e5f32d35cabbc12bb9f66f4b7c49a73b84d7fc1e8e4dde15914f9bc50eb",
-"index.audio.position.worklet.js": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
-"index.audio.worklet.js": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
-"index.html": "4fb73270c0dbc2a3e9d495fc95263e740cc56a334a29a8f3999fb8c29d63a902",
-"index.icon.png": "490c9afe17f218360ceb84d41dd95d0409dfe0349c00a97c40cf3d8e04cf0b45",
-"index.js": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c",
-"index.pck": "d17e68938a52488cc98021c3865f655e46cb61f721f6bcb6ad076a5e35468133",
-"index.png": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e",
-"index.wasm": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656",
-"installer-worker.js": "d6afa8f57a10faef5edb0f1ce10ef2ec52a9e7ed690771ba0b97b431e9e24708",
-"manifest.webmanifest": "959d316f9bd45b8d4c6cfd621aced7f55336f459e9472c3f5ce53fb9c7990ab5",
-"storage.js": "9265725b43b6b4e897693fd3be62b175c3e0b07493b51ba7d18a6d1578bee581"
+  "data-worker.js": "23acf2e304952606e7e2a0bf850dc8e02b56dcae2913cc79e461c78afbd49d77",
+  "files.js": "5b23e470c5dedc93d0c80ea0696eff36bad3afbb88eb4bc85ced567f472c5b2a",
+  "icon-192.png": "ca81b6cd25bee336c8c22ff4f2ee13e1fcf57b908c79b741ad2b3dbd38955372",
+  "icon-512.png": "4ad4251f0ef9a513d8434b2a6dda7f44b7b75f720c6b6c7dd66bdbda9d4c5d20",
+  "icon-maskable-512.png": "8911ef839f53c35f386277baf0aacab17081fce6a5a5d97d256ba784bac0a068",
+  "index.apple-touch-icon.png": "cfac5ab5b07d1c2194e110ef88f47a8e0c25d8413ec8e32841d3c5ef43e9b759",
+  "index.audio.position.worklet.js": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
+  "index.audio.worklet.js": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+  "index.html": "140c99586dc756182ade7a426ffe2aecaf76fd686c745bc3e8dbb0dba1f15bd2",
+  "index.icon.png": "79b0968e0c548b666b1b5c8a057b367f8dab11ea2212457f77a624c399e8e551",
+  "index.js": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c",
+  "index.pck": "d17e68938a52488cc98021c3865f655e46cb61f721f6bcb6ad076a5e35468133",
+  "index.png": "4ad4251f0ef9a513d8434b2a6dda7f44b7b75f720c6b6c7dd66bdbda9d4c5d20",
+  "index.wasm": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656",
+  "installer-worker.js": "d6afa8f57a10faef5edb0f1ce10ef2ec52a9e7ed690771ba0b97b431e9e24708",
+  "manifest.webmanifest": "eff63e07a29dd376c3964d0b6b98031d9566c70968fd747902da1ceb7f33497c",
+  "storage.js": "9265725b43b6b4e897693fd3be62b175c3e0b07493b51ba7d18a6d1578bee581"
 };   // file name → SHA-256
 const ENGINE_FILES = Object.keys(HASHES).map(name => name === 'index.html' ? SHELL : new URL(name, SHELL).href);
 let progress = {type: 'progress', loaded: 0, total: 0};
