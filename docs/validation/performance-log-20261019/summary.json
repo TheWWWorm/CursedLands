@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-19",
+  "baseline": "233ba3b95f9d0e4b0fd075733bfb6c9d45ab1be3",
+  "scope": "Local diagnostic logging and real menu teardown/export; not a reproduction of the reported large FPS decline.",
+  "environment": {
+    "os": "Ubuntu 24.04.5",
+    "cpu": "Ryzen 9 5950X",
+    "gpu": "RTX 3090",
+    "driver": "580.178.04",
+    "renderer": "Forward+ / Vulkan",
+    "resolution": [
+      1920,
+      1080
+    ],
+    "quality": "Ultra",
+    "trials_clock": 2.0,
+    "campaign_accelerated_clock": 2.037037037037037,
+    "vsync": false,
+    "frame_limit": 0
+  },
+  "focused_checks": {
+    "editor": 20,
+    "exported": 20,
+    "failures": []
+  },
+  "menu_checks": 20,
+  "menu_failures": [],
+  "campaign": {
+    "cast_attempts": 8,
+    "end": [
+      230.0,
+      210.0
+    ],
+    "hp": 764.875,
+    "new_dead": 3,
+    "start": [
+      171.71875,
+      175.890625
+    ],
+    "travel_m": 70.7504461389035,
+    "wall_seconds": 95.004
+  },
+  "world_counts": {
+    "initial-menu": 0,
+    "Trials-combat": 9,
+    "after-Trials-menu": 0,
+    "deep-save-loaded": 1,
+    "deep-save-played": 1,
+    "final-menu": 0
+  },
+  "menu_node_counts": {
+    "initial-menu": 886.0,
+    "after-Trials-menu": 886.0,
+    "final-menu": 886.0
+  },
+  "snapshot_construction_usec": [
+    208,
+    304,
+    240,
+    234,
+    162,
+    221
+  ],
+  "timing_limit": "Six one-shot observations; excludes JSON serialization/file logging and is not a frame-time overhead benchmark.",
+  "initial_fixture_correction": "First run expected an exact 2.0 in standalone campaign. The normal accelerated dial uses 55/27 there; co-op uses 2.0. Corrected only the test and reran in a fresh isolated user directory.",
+  "sha256": {
+    "repo/game/src/platform/performance_log.gd": "fd94ed498e9100d0becd0003c7c9bf07864fc4a0194d8aa84c5501b6b3c01fde",
+    "repo/game/src/platform/crash_report.gd": "93afdd059803364a2324230219602564b1785d64d768d593c289a09afa67dc34",
+    "repo/game/src/game/world.gd": "88f225f1241d73a3fba5c01a92008e957d52b7775d51d433836113427b89bc27",
+    "repo/tools/tests/performance_log.gd": "65ee51ec18b993ca113d8135b976ec344550afc5e872440e4b0d5bcb7b67e2ca",
+    "repo/tools/benchmarks/menu_performance_log.gd": "57e4ee68336c7e02c4f3c80835b9115ab7c9a265847d8ebde88be9d2391f91bf",
+    "checks/performance-log.x86_64": "addf81f6e6f4202d9c92a54ea799041fd3d39976bda01c02a46cac0a83a28382",
+    "checks/performance-log.pck": "d9477f1f0cd72b1afac6c4c264f05f48b9c00ed7bee87a638c67c51598cffa2e",
+    "checks/libterrain_search.so": "ac42b3731536ae3a404755f48fb04ff54c4bfe79c85ebcc8d78be4153632392c",
+    "data-restart-probe/godot/app_userdata/Cursed Lands/saves/retention-end.sav": "b465a8f5deed1b933d964796e6499964d88e1b3f24b67f2647c90212a0d6d411"
+  }
+}

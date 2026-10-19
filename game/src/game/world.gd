@@ -11,6 +11,7 @@ signal combat_event(kind: String, a: GameUnit, b: GameUnit, amount: float)
 signal item_worn(u: GameUnit, item: String, kind: String)
 
 const TICK := GameUnit.TICK
+const DIAGNOSTIC_GROUP := &"ei_diagnostic_worlds"
 const CorpsePools = preload("res://src/game/corpse_pools.gd")
 ## Godot4.7 Node's suspend notifications are not bound as script constants.
 ## The engine enum sends these two values through _notification nonetheless.
@@ -155,6 +156,7 @@ func _init() -> void:
 
 
 func _ready() -> void:
+	add_to_group(DIAGNOSTIC_GROUP)
 	# Physics used to finish the world before any frame/camera/UI callback.
 	# Keep that order with native frame delivery and preserve caller overrides.
 	if not _fixed_step and process_priority == 0:

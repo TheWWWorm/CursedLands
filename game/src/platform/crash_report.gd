@@ -47,6 +47,7 @@ var info := {}
 var startup_failures: Array = []
 var _marker := ""
 var _done := false
+var _performance: PerformanceLog
 
 
 func _ready() -> void:
@@ -80,6 +81,8 @@ func _ready() -> void:
 	if _write() == OK and not early.is_empty():
 		# Keep the early journal until the same session has a durable regular marker.
 		android.complete_startup_tracking(sid)
+	_performance = PerformanceLog.new()
+	add_child(_performance)
 
 
 ## Older custom templates have the simulation plugin without diagnostics.
@@ -240,6 +243,9 @@ static func note(what: String) -> void:
 	elif what.begins_with("graphics detection: tier") or what.begins_with("graphics watchdog"):
 		instance._collect()
 	instance._write()
+	if is_instance_valid(instance._performance) and (what.begins_with("zone ready ") \
+			or what.begins_with("zone load ") or what == "back to main menu"):
+		instance._performance.sample("scene")
 
 
 func _write() -> Error:
@@ -292,6 +298,7 @@ func _exit_tree() -> void:
 func clean_exit() -> void:
 	if _done or _marker.is_empty():
 		return
+	if is_instance_valid(_performance): _performance.stop()
 	GameData.trace("clean exit")
 	_done = true
 	DirAccess.remove_absolute(_marker)
@@ -300,6 +307,7 @@ func clean_exit() -> void:
 ## Test hook: as if the system killed the paused app (the marker stays);
 ## `focus_out`: the app had lost the focus (the recent-apps screen).
 func simulate_kill(paused: bool, focus_out := false) -> void:
+	if is_instance_valid(_performance): _performance.stop()
 	info.state = "background" if paused else "foreground"
 	info.focus = "out" if focus_out else "in"
 	_write()
@@ -341,6 +349,7 @@ func _acknowledge_startup_reports() -> void:
 ## {}) with its log, this session's info and log; `lines` per log.
 func report_text(prev: Dictionary, lines: int) -> String:
 	_collect()
+	if is_instance_valid(_performance): _performance.sample("report")
 	var s := "Cursed Lands report, %s\n\n" % Time.get_datetime_string_from_system(false, true)
 	if not prev.is_empty():
 		s += _info_text("Previous session (ended unexpectedly)", prev)
