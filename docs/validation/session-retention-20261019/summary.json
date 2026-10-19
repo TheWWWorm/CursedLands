@@ -1,0 +1,475 @@
+{
+  "date": "2026-10-19",
+  "tested_production_commit": "42208a90",
+  "timer_fix_tested_separately": "65e4ca6c",
+  "environment": {
+    "os": "Ubuntu 24.04.5 LTS",
+    "cpu": "Ryzen 9 5950X",
+    "gpu": "RTX 3090",
+    "driver": "580.178.04",
+    "renderer": "Forward+ Vulkan",
+    "resolution_per_client": [
+      1920,
+      1080
+    ],
+    "graphics": "Ultra (maximum preset), automatic graphics disabled",
+    "simulation_speed": 2,
+    "processes": "Two rendered clients sharing one GPU; separate ENet authority."
+  },
+  "trials": [
+    {
+      "cycle": 1,
+      "finish": "trials-0-finished-lost-round-25",
+      "elapsed_seconds": 612.428,
+      "retained_gpu_mib": 348.86009216308594,
+      "old_worlds_alive": 0,
+      "nodes_after_exit": 15.0,
+      "objects_after_exit": 11718.0
+    },
+    {
+      "cycle": 2,
+      "finish": "trials-1-finished-lost-round-26",
+      "elapsed_seconds": 618.459,
+      "retained_gpu_mib": 350.3878631591797,
+      "old_worlds_alive": 0,
+      "nodes_after_exit": 15.0,
+      "objects_after_exit": 12309.0
+    },
+    {
+      "cycle": 3,
+      "finish": "trials-2-finished-lost-round-18",
+      "elapsed_seconds": 397.704,
+      "retained_gpu_mib": 350.66258239746094,
+      "old_worlds_alive": 0,
+      "nodes_after_exit": 15.0,
+      "objects_after_exit": 12376.0
+    }
+  ],
+  "campaign": {
+    "owner": {
+      "wall_seconds": 900.003,
+      "simulation_seconds": 1799.98500000049,
+      "travelled_m": 779.245113482699,
+      "max_distance_from_entrance_m": 301.105377197266,
+      "creature_deaths": 40,
+      "observed_cast_actions": 83,
+      "spell_commands": {
+        "acid_fog": 30,
+        "attack": 96,
+        "heal": 0,
+        "lightning": 31,
+        "move": 109,
+        "weak": 30
+      },
+      "survived": true,
+      "fps_range": [
+        59.9376847981439,
+        107.892843108074
+      ],
+      "first_interval_fps": 107.892843108074,
+      "last_interval_fps": 70.7572181504719,
+      "last_position": [
+        250.0,
+        230.0
+      ],
+      "gpu_mib_range": [
+        1108.9039154052734,
+        1213.5954284667969
+      ],
+      "effects_range": [
+        3,
+        12
+      ],
+      "maximum_particles": 2825
+    },
+    "guest": {
+      "wall_seconds": 871.005,
+      "simulation_seconds": 1742.01500000043,
+      "travelled_m": 1106.34214542247,
+      "max_distance_from_entrance_m": 307.973846435547,
+      "creature_deaths": 40,
+      "observed_cast_actions": 83,
+      "spell_commands": {
+        "acid_fog": 29,
+        "attack": 90,
+        "heal": 4,
+        "lightning": 29,
+        "move": 78,
+        "weak": 29
+      },
+      "survived": true,
+      "fps_range": [
+        62.6199034513732,
+        111.516590975808
+      ],
+      "first_interval_fps": 111.516590975808,
+      "last_interval_fps": 66.0230513434709,
+      "last_position": [
+        351.078125,
+        133.921875
+      ],
+      "gpu_mib_range": [
+        970.91015625,
+        1081.0046844482422
+      ],
+      "effects_range": [
+        3,
+        12
+      ],
+      "maximum_particles": 2857
+    }
+  },
+  "limitations": [
+    "Automated normal gameplay commands, with manual route steering; not manual combat input.",
+    "Strong equipped level-15 party; no invulnerability, teleports, spawned enemies or forced damage/deaths.",
+    "Trials preparation uses the normal shopping planner and Ready action; preparation waits are accelerated. Each game starts at round one and ends at normal player elimination.",
+    "The fresh guest did not play Trials, so only the owner carries those caches.",
+    "Changing-view FPS is not a matched scene comparison. The end-state save was not captured before shutdown.",
+    "Cast counts identify distinct observed cast-animation serials, not verified spell impacts.",
+    "The guest was stopped by the owner just before its final sample; its last retained interval ends at 871 seconds.",
+    "Zero static-memory/orphan monitor values in the release build are not evidence of zero retained allocations. Old-world checks use WeakRef explicitly.",
+    "Neither the full reported 90-to-30 FPS drop nor a restart recovery was reproduced by this run."
+  ],
+  "restart_probe": {
+    "production_commit": "65e4ca6c",
+    "scenario": "Separate continuation from an earlier deep-combat save with 37 dead creatures; nine minutes of normal movement/combat, then one minute stationary. Reload the confirmed endpoint in fresh owner/guest/authority processes for 150 seconds.",
+    "wall_seconds": 600,
+    "initial_dead_creatures": 37,
+    "endpoint_dead_creatures": 81,
+    "automatic_save_confirmed": true,
+    "settings": "Same Ultra, 1920x1080 per client and 2x simulation as the full-game run.",
+    "manual_steering": false,
+    "matched_intervals": "Last settled 30-second interval before closing; every complete interval after fresh load. Time-zero one-frame samples excluded.",
+    "peers": {
+      "owner": {
+        "travelled_m": 431.766050349921,
+        "additional_creature_deaths": 44,
+        "observed_cast_actions": 70,
+        "command_counts": {
+          "acid_fog": 23,
+          "attack": 84,
+          "heal": 3,
+          "lightning": 24,
+          "move": 16,
+          "weak": 23
+        },
+        "simulated_seconds": 1200.09999999982,
+        "survived": true,
+        "traversal_fps_range": [
+          55.576670766168,
+          84.4326492364909
+        ],
+        "warm_settled_samples": [
+          {
+            "seconds": 570.977,
+            "fps": 72.1323523333415,
+            "p95_ms": 21.222,
+            "phase": "settled",
+            "position": [
+              171.71875,
+              175.890625
+            ],
+            "camera": "(171.7187, 7.016427, -175.8906)",
+            "effects": 5,
+            "npc_actions": {
+              "attack": 1,
+              "death": 81,
+              "idle": 173,
+              "walk": 85
+            }
+          },
+          {
+            "seconds": 600.005,
+            "fps": 71.2410469416146,
+            "p95_ms": 21.445,
+            "phase": "settled",
+            "position": [
+              171.71875,
+              175.890625
+            ],
+            "camera": "(171.7187, 7.016427, -175.8906)",
+            "effects": 5,
+            "npc_actions": {
+              "attack": 1,
+              "death": 81,
+              "idle": 172,
+              "walk": 86
+            }
+          }
+        ],
+        "fresh_samples": [
+          {
+            "seconds": 30.007,
+            "fps": 71.9259920870742,
+            "p95_ms": 21.223,
+            "position": [
+              171.71875,
+              175.890625
+            ],
+            "camera": "(171.7188, 7.016426, -175.8906)",
+            "effects": 5,
+            "npc_actions": {
+              "attack": 2,
+              "death": 81,
+              "idle": 164,
+              "walk": 93
+            }
+          },
+          {
+            "seconds": 60.773,
+            "fps": 73.5232838683935,
+            "p95_ms": 20.791,
+            "position": [
+              171.71875,
+              175.890625
+            ],
+            "camera": "(171.7188, 7.016426, -175.8906)",
+            "effects": 5,
+            "npc_actions": {
+              "death": 81,
+              "idle": 171,
+              "walk": 88
+            }
+          },
+          {
+            "seconds": 90.776,
+            "fps": 76.7248066498209,
+            "p95_ms": 20.258,
+            "position": [
+              171.71875,
+              175.890625
+            ],
+            "camera": "(171.7188, 7.016426, -175.8906)",
+            "effects": 7,
+            "npc_actions": {
+              "attack": 1,
+              "death": 81,
+              "idle": 184,
+              "walk": 74
+            }
+          },
+          {
+            "seconds": 120.857,
+            "fps": 74.665773425547,
+            "p95_ms": 20.631,
+            "position": [
+              171.71875,
+              175.890625
+            ],
+            "camera": "(171.7188, 7.016426, -175.8906)",
+            "effects": 7,
+            "npc_actions": {
+              "attack": 2,
+              "death": 81,
+              "idle": 170,
+              "walk": 87
+            }
+          },
+          {
+            "seconds": 150.006,
+            "fps": 74.3070022960041,
+            "p95_ms": 20.92,
+            "position": [
+              171.71875,
+              175.890625
+            ],
+            "camera": "(171.7188, 7.016426, -175.8906)",
+            "effects": 6,
+            "npc_actions": {
+              "attack": 1,
+              "death": 81,
+              "idle": 169,
+              "walk": 89
+            }
+          }
+        ],
+        "fresh_weighted_mean_fps": 74.22556503472062,
+        "warm_last_interval_fps": 71.2410469416146,
+        "fresh_fps_range": [
+          71.9259920870742,
+          76.7248066498209
+        ],
+        "same_player_position": true,
+        "fresh_total_travelled_m": 0.0,
+        "warm_final_rss_mib": 2641.67578125,
+        "fresh_final_rss_mib": 2488.75390625,
+        "warm_gpu_allocation_mib_range": [
+          1046.3806915283203,
+          1083.085464477539
+        ],
+        "fresh_gpu_allocation_mib_range": [
+          1050.3450775146484,
+          1050.690444946289
+        ]
+      },
+      "guest": {
+        "travelled_m": 497.405682273209,
+        "additional_creature_deaths": 44,
+        "observed_cast_actions": 67,
+        "command_counts": {
+          "acid_fog": 24,
+          "attack": 81,
+          "heal": 0,
+          "lightning": 24,
+          "move": 15,
+          "weak": 23
+        },
+        "simulated_seconds": 1200.09999999982,
+        "survived": true,
+        "traversal_fps_range": [
+          53.8198945056753,
+          85.4906131306781
+        ],
+        "warm_settled_samples": [
+          {
+            "seconds": 570.976,
+            "fps": 69.0325118464423,
+            "p95_ms": 21.886,
+            "phase": "settled",
+            "position": [
+              172.46875,
+              176.8125
+            ],
+            "camera": "(172.4687, 7.01131, -176.8125)",
+            "effects": 5,
+            "npc_actions": {
+              "attack": 1,
+              "death": 81,
+              "idle": 173,
+              "walk": 85
+            }
+          },
+          {
+            "seconds": 600.009,
+            "fps": 68.8193885779655,
+            "p95_ms": 21.756,
+            "phase": "settled",
+            "position": [
+              172.46875,
+              176.8125
+            ],
+            "camera": "(172.4687, 7.01131, -176.8125)",
+            "effects": 5,
+            "npc_actions": {
+              "attack": 1,
+              "death": 81,
+              "idle": 172,
+              "walk": 86
+            }
+          }
+        ],
+        "fresh_samples": [
+          {
+            "seconds": 30.004,
+            "fps": 68.3019579894623,
+            "p95_ms": 21.837,
+            "position": [
+              172.46875,
+              176.8125
+            ],
+            "camera": "(172.4688, 7.011311, -176.8125)",
+            "effects": 5,
+            "npc_actions": {
+              "attack": 2,
+              "death": 81,
+              "idle": 166,
+              "walk": 91
+            }
+          },
+          {
+            "seconds": 60.013,
+            "fps": 72.5775711112743,
+            "p95_ms": 21.074,
+            "position": [
+              172.46875,
+              176.8125
+            ],
+            "camera": "(172.4688, 7.011311, -176.8125)",
+            "effects": 4,
+            "npc_actions": {
+              "attack": 1,
+              "death": 81,
+              "idle": 174,
+              "walk": 84
+            }
+          },
+          {
+            "seconds": 90.02,
+            "fps": 72.715406561769,
+            "p95_ms": 20.586,
+            "position": [
+              172.46875,
+              176.8125
+            ],
+            "camera": "(172.4688, 7.011311, -176.8125)",
+            "effects": 7,
+            "npc_actions": {
+              "death": 81,
+              "idle": 181,
+              "walk": 78
+            }
+          },
+          {
+            "seconds": 120.023,
+            "fps": 74.0921882136227,
+            "p95_ms": 21.141,
+            "position": [
+              172.46875,
+              176.8125
+            ],
+            "camera": "(172.4688, 7.011311, -176.8125)",
+            "effects": 6,
+            "npc_actions": {
+              "death": 81,
+              "idle": 174,
+              "walk": 85
+            }
+          },
+          {
+            "seconds": 150.009,
+            "fps": 69.332727358404,
+            "p95_ms": 21.314,
+            "position": [
+              172.46875,
+              176.8125
+            ],
+            "camera": "(172.4688, 7.011311, -176.8125)",
+            "effects": 8,
+            "npc_actions": {
+              "attack": 1,
+              "death": 81,
+              "idle": 165,
+              "walk": 93
+            }
+          }
+        ],
+        "fresh_weighted_mean_fps": 71.40434893105913,
+        "warm_last_interval_fps": 68.8193885779655,
+        "fresh_fps_range": [
+          68.3019579894623,
+          74.0921882136227
+        ],
+        "same_player_position": true,
+        "fresh_total_travelled_m": 0.0,
+        "warm_final_rss_mib": 2672.73828125,
+        "fresh_final_rss_mib": 2495.05078125,
+        "warm_gpu_allocation_mib_range": [
+          1036.3184356689453,
+          1078.841079711914
+        ],
+        "fresh_gpu_allocation_mib_range": [
+          1050.1941375732422,
+          1050.3496856689453
+        ]
+      }
+    },
+    "limitations": [
+      "This continuation did not follow the three full Trials games. It starts from the earlier save with 37 creature deaths.",
+      "Positions and settled camera centres match, and all 81 corpses are preserved; NPC simulation continues, so the frames are not identical.",
+      "Loading clears temporary ground marks and some cosmetic caches; the restart also resumes NPC activity. Blood marks are not identical between samples.",
+      "Both rendered clients share one GPU. These absolute frame rates do not predict two separate player computers.",
+      "The large reported restart-recoverable slowdown was not reproduced. Small variations are not evidence that the timer fix solved that report."
+    ]
+  },
+  "result": "Full Trials-to-co-op and deeper traversal now measured with strong characters at maximum preset and 2x. A separate timer-lifetime defect is fixed; neither these runs nor the same-location restart comparison establishes the reported threefold FPS recovery."
+}

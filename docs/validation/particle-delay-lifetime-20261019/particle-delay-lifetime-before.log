@@ -1,0 +1,17 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 03:31:17 +2317ms] session 8a06f6e55bec: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ERROR: long delays leave no global timers after exit 0
+   at: push_error (core/variant/variant_utility.cpp:1023)
+ERROR: long delays leave no global timers after exit 1
+   at: push_error (core/variant/variant_utility.cpp:1023)
+ERROR: long delays leave no global timers after exit 2
+   at: push_error (core/variant/variant_utility.cpp:1023)
+ERROR: paused world suspends ending bursts
+   at: push_error (core/variant/variant_utility.cpp:1023)
+ERROR: round settlement cancels pending ending bursts
+   at: push_error (core/variant/variant_utility.cpp:1023)
+ERROR: detaching a world cancels its old ending bursts
+   at: push_error (core/variant/variant_utility.cpp:1023)
+PARTICLE_DELAY_LIFETIME {"checks":34,"failures":["long delays leave no global timers after exit 0","long delays leave no global timers after exit 1","long delays leave no global timers after exit 2","paused world suspends ending bursts","round settlement cancels pending ending bursts","detaching a world cancels its old ending bursts"],"retained_objects":[102.0,202.0,302.0]}
+[trace 03:31:21 +5745ms] clean exit

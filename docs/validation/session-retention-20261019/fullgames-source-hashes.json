@@ -1,0 +1,26 @@
+{
+  "tested_production_commit": "42208a90",
+  "new_timer_fix_not_in_this_run": "65e4ca6c",
+  "files": {
+    "repo/tools/benchmarks/session_retention.gd": {
+      "sha256": "7509ea383512b8f52b5e52fc711c2374d06cd2644c01fff60569d9ac864b0d2a",
+      "bytes": 4304
+    },
+    "repo/tools/benchmarks/coop_traversal_session.gd": {
+      "sha256": "cdfe93a18dc0225f5ba5526e880f52a6dcfcc2d7833da1945c4c6eaacd8722f9",
+      "bytes": 16889
+    },
+    "checks/probe.pck": {
+      "sha256": "44ef69820b07193ded6fb6d594092b50da9ee81dfde689960c49d0899e48d864",
+      "bytes": 12820048
+    },
+    "checks/probe.x86_64": {
+      "sha256": "addf81f6e6f4202d9c92a54ea799041fd3d39976bda01c02a46cac0a83a28382",
+      "bytes": 1249719016
+    },
+    "checks/libterrain_search.so": {
+      "sha256": "ac42b3731536ae3a404755f48fb04ff54c4bfe79c85ebcc8d78be4153632392c",
+      "bytes": 3347664
+    }
+  }
+}

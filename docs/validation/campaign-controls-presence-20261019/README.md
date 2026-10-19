@@ -3,6 +3,43 @@
 Local validation on 19 October 2026. The release version remains 1.17.0; these
 changes have not been published. Trials roster/balance work is recorded separately.
 
+## Full-game and restart follow-up
+
+A later run played three Trials games from round one to normal player elimination
+(rounds 25, 26 and 18), then continued into 15 wall-clock minutes of Suslanger
+co-op. Both characters survived, with 40 creature deaths and 779/1,106 m of
+movement. They reached about 300 m from the entrance. All prior Trials worlds
+were released; reusable graphics allocations after their exits were 349, 350 and
+351 MiB. The owner's changing-view intervals ranged from 60–108 FPS and the
+guest's from 63–112 FPS. This run did not capture an endpoint save, so it is not a
+matched restart comparison. Preparation uses the normal shopping planner and
+Ready action; the games end at player elimination, not the last surviving bot.
+
+A separate ten-minute continuation started from the earlier deep-combat save
+with 37 dead creatures. It recorded 44 additional deaths, 432/497 m of movement
+and 70/67 observed cast actions. It saved the endpoint after a stationary minute,
+waited for the server's acknowledgement, then closed both clients and the server.
+Fresh processes reloaded all 81 corpses at the same player positions and settled
+camera centres. The final pre-close intervals were 71.2/68.8 FPS; the five fresh
+intervals ranged from 71.9–76.7/68.3–74.1 FPS. NPC activity continues and temporary
+ground marks reset on loading, so this is not a frame-identical comparison.
+Neither run reproduces the reported threefold restart recovery. Both use Ultra,
+2× simulation, strong equipped characters and normal game/network commands on
+the same single-GPU Linux setup described below.
+
+The continuation includes a separate effect-timer fix: ending bursts now use
+world-owned timers that stop when their world leaves or a battle settles. The
+focused ownership/timing regression passes 34 checks in both editor and exported
+runtime. This fixes retained timers and late bursts; it does not establish the
+cause of the large FPS report. The full three-game run predates this timer fix.
+
+[Full-game and restart measurements](../session-retention-20261019/summary.json)
+and [timer regression evidence](../particle-delay-lifetime-20261019/summary.json)
+record the sources, settings and limits. Raw intervals, logs, RSS/graphics samples
+and combat screenshots accompany them.
+
+![Traversal and restart measurements](../session-retention-20261019/traversal-and-restart.png)
+
 ## Sustained co-op gameplay
 
 The rendered benchmark uses two 1920×1080 Forward+ clients and a separate ENet

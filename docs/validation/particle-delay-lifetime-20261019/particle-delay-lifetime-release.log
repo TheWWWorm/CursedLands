@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 03:32:34 +2315ms] session db59f6a054d4: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+PARTICLE_DELAY_LIFETIME {"checks":34,"failures":[],"retained_objects":[2.0,2.0,2.0]}
+[trace 03:32:38 +5729ms] clean exit

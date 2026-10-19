@@ -1,0 +1,3 @@
+{"unix": 1792374226.0796378, "command": {"point": [235, 300]}, "reason": "Continue southwest around the fortress through authored encounters."}
+{"unix": 1792374461.8105288, "command": {"point": [160, 290]}, "reason": "Continue west beyond the southern fortress into unexplored encounters."}
+{"unix": 1792374734.0875049, "command": {"move_only": true, "point": [250, 230]}, "reason": "Settle at a nearby cleared waypoint for the saved-endpoint restart comparison."}

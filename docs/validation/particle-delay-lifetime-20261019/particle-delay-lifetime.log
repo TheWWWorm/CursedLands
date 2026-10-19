@@ -1,0 +1,6 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 03:30:41 +4778ms] session 1637a295e7e6: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+[trace 03:30:41 +4778ms] previous session f5f3c0a693c4 ended unexpectedly in (menu); its log: user://logs/godot2026-10-19T03.30.37.log
+PARTICLE_DELAY_LIFETIME {"checks":34,"failures":[],"retained_objects":[2.0,2.0,2.0]}
+[trace 03:30:45 +8233ms] clean exit

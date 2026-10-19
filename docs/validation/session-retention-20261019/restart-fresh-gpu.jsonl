@@ -1,0 +1,6 @@
+{"unix": 1792375623.3087208, "processes": [{"pid": 1109724, "gpu": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441", "mib": 1304.0}, {"pid": 1109868, "gpu": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441", "mib": 1304.0}]}
+{"unix": 1792375653.479735, "processes": [{"pid": 1109724, "gpu": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441", "mib": 1438.0}, {"pid": 1109868, "gpu": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441", "mib": 1404.0}]}
+{"unix": 1792375683.6446946, "processes": [{"pid": 1109724, "gpu": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441", "mib": 1438.0}, {"pid": 1109868, "gpu": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441", "mib": 1404.0}]}
+{"unix": 1792375713.8076227, "processes": [{"pid": 1109724, "gpu": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441", "mib": 1438.0}, {"pid": 1109868, "gpu": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441", "mib": 1404.0}]}
+{"unix": 1792375743.9712658, "processes": [{"pid": 1109724, "gpu": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441", "mib": 1438.0}, {"pid": 1109868, "gpu": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441", "mib": 1404.0}]}
+{"unix": 1792375774.1347153, "processes": [{"pid": 1109724, "gpu": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441", "mib": 1438.0}, {"pid": 1109868, "gpu": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441", "mib": 1404.0}]}
