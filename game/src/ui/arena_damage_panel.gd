@@ -60,6 +60,7 @@ func update_damage(battle: ArenaPveMatch, army: Array, maximum_height: float) ->
 		widgets.row.tooltip_text = "%s %s · %s: %d" % [ArenaRules.title(entry.prototype),"★".repeat(int(entry.rank)+1),RemakeText.t("Damage"),roundi(amount)]
 		widgets.portrait.texture = ArenaPortraits.texture(entry.prototype)
 		widgets.stars.count = int(entry.rank)+1
+		widgets.stars.color = ArenaStars.for_family(int(entry.family))
 		widgets.stars.custom_minimum_size=Vector2(widgets.stars.count*14-2,12); widgets.stars.queue_redraw()
 		widgets.bar.value = amount/top*100.0
 		list.move_child(widgets.row,index)

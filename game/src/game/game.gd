@@ -4,6 +4,10 @@ extends Node3D
 ## All player intents go through `issue()` so they can be sent to the host
 ## in multiplayer (see Session).
 
+## Passive presentation telemetry, including the normal menu-created game.
+## Observers must not replay events or change the simulation.
+signal event_presented(event: Dictionary)
+
 var simulation_only := false
 var session: Session
 var world: GameWorld
@@ -1253,10 +1257,9 @@ func pending_target(u: GameUnit, ground: Variant = null) -> Dictionary:
 	if spell.is_empty():
 		return {}
 	var sp := Spells.parse(spell)
-	if item.is_empty():
-		if float(int(caster.mana) & 65535) < spell_ui_cost(caster, sp):
-			return {}
-	elif wand and Items.charge(item) < float(sp.mana):
+	# A known spell may wait for stamina. Target validity is independent of
+	# readiness; the authoritative order owns the acknowledgement and wait.
+	if wand and Items.charge(item) < float(sp.mana):
 		return {}
 	var living := is_instance_valid(u) and not u.dead
 	if not bool(sp.point):
@@ -1334,6 +1337,12 @@ func cast_on(u: GameUnit, p: Variant = null, ground: Variant = null, lever := -1
 		cmd.x = target_info.at.x
 		cmd.y = target_info.at.y
 	if direct and direct.active() and cmd.t == "cast": cmd.t = "direct_cast"
+	if cmd.t == "direct_cast" and target_info.target == caster \
+			and caster.mana < spell_ui_cost(caster, Spells.parse(String(target_info.spell))):
+		# A waiting self-cast stops held input too. Require release before a
+		# new movement press can cancel it, as for direct interactions.
+		direct.stop_move()
+		direct._neutral = true
 	issue(cmd)
 	if cmd.t in ["cast","direct_cast"]:
 		marks.cast_ordered(caster, String(target_info.spell), target_info.target,
@@ -1355,6 +1364,7 @@ func electrical_hit(e: Dictionary) -> void:
 
 ## UI-level events from the host (see Session.broadcast).
 func on_event(e: Dictionary) -> void:
+	event_presented.emit(e)
 	sound.on_event(e)   # sounds of broadcast events (GameSound)
 	match String(e.get("t", "")):
 		"revived":

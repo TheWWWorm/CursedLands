@@ -46,7 +46,7 @@ func _ready() -> void:
 	for entry in run.army: entry.deployed = true
 	run._recruit(-1,0,9,"orcfemalem3").deployed = true
 	var counts := run.alliances()
-	check(counts == {"beast":7,"horde":4,"warrior":3,"hunter":3,"mage":6},"current roster counts overlapping traits without duplicate families")
+	check(counts == {"beast":8,"horde":2,"warrior":3,"hunter":6,"mage":2,"spirit":2},"current roster counts overlapping traits without duplicate families")
 	check(ArenaAlliances.rank("beast",6)==3 and ArenaAlliances.rank("mage",4)==2,"thresholds scale bonuses")
 	run.army[0].rank = 1; run.army[0].prototype = ArenaRules.prototype(0,1)
 	check(run.alliances()==counts,"evolution stars do not inflate alliance progress")
@@ -54,7 +54,7 @@ func _ready() -> void:
 	check(run.alliances().values().all(func(n):return n == 0),"reserves never activate an alliance")
 	# Live actors receive reversible, non-stacking battle modifiers.
 	run = fresh(); run.training = 126; run.wave = 25
-	for family in [0,1,2,3,4,5,7,8,11]: run._recruit(family,0,1)
+	for family in [0,3,4,11,13,14,19,21,22]: run._recruit(family,0,1)
 	run.arrange()
 	var battle := ArenaPveMatch.new(); battle.run = run; battle.rendered = false
 	add_child(battle); battle.set_process(false); battle._world_parent = self; battle.prepare()
@@ -68,15 +68,16 @@ func _ready() -> void:
 		if int(placement.team) == 1:
 			var encounter: Dictionary=base.stats.duplicate(true)
 			ArenaRules.creep_stats(run.wave,encounter)
-			check(is_equal_approx(unit.stats.armor[3],encounter.armor[3]*0.6),"four mages reduce encounter elemental armor")
+			check(is_equal_approx(unit.stats.armor[3],encounter.armor[3]*0.7),"four mages reduce encounter elemental armor")
 		else:
 			var family := int(run.unit(placement.run_uid).family)
 			# Alliances modify the recruit budget, not campaign boss statistics.
 			var recruit:=ArenaUnitInfo.values(unit.info.prototype,null,family,0)
-			check(is_equal_approx(unit.stats.dmg_min,recruit.min*1.2),"four beasts improve allied attack damage")
-			if family in [1,3,11]: check(is_equal_approx(unit.max_hp,recruit.max_hp*1.15),"two horde families improve member health")
-			if family in [0,1]: check(is_equal_approx(unit.stats.armor[0],recruit.armor[0]*1.2+2),"warriors gain physical armor")
-			if family in [2,3,7]: check(is_equal_approx(unit.stats.to_hit,recruit.attack*1.15),"hunters gain accuracy")
+			check(is_equal_approx(unit.stats.dmg_min,recruit.min*(1.08 if family in [0,3] else 1.0)),"two beasts improve only members' attack damage")
+			check(is_equal_approx(unit.max_hp,recruit.max_hp*(1.12 if family in [4,13,14] else 1.0)),"two horde families improve only member health")
+			check(is_equal_approx(unit.stats.armor[0],recruit.armor[0]+(2 if family in [0,14,22] else 0)),"warriors gain flat physical armor")
+			check(is_equal_approx(unit.stats.to_hit,recruit.attack*(1.1 if family in [4,11] else 1.0)),"hunters gain accuracy")
+			check(is_equal_approx(unit.stats.armor[3],recruit.armor[3]+(6 if family in [11,19,21,22] else 0)),"four spirits add flat elemental armor to members")
 	for repeat in 4: battle.prepare()
 	for unit in battle.world.unit_rows():
 		check(identity.has(unit.get_instance_id()),"alliance recalculation retains actors")
@@ -126,6 +127,7 @@ func _ready() -> void:
 	# Schema seven paid army slots and shop investment survive the replacement.
 	run=fresh();Fixture.buy_company(run);var old:=run.snapshot()
 	old.version=7;old.preparation_left=45;old.wave=10;old.training=6;old.pact="hunt";old.pact_rank=1;old.shop_level=2
+	for entry in old.army: entry.prototype=ArenaRules.LEGACY_FORMS[entry.family][entry.rank]
 	check(other.restore(old) and other.capacity()>=8 and not other.snapshot().has("pact"),"legacy capacity and investments migrate without pact state")
 	check(other.restore(other.snapshot()),"migrated save reloads under schema eight")
 	old.stage="reward";old.wave=3;old.training=0;old.pact="";old.pact_rank=0

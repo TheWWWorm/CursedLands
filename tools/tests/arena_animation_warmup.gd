@@ -10,7 +10,7 @@ func _ready()->void:
 	while warmer.task>=0 and Time.get_ticks_msec()<deadline:await get_tree().process_frame
 	check(warmer.task<0,"background catalog completes")
 	var ready:=EIAnim._libraries.duplicate()
-	for family in range(24,30):
+	for family in range(24,ArenaRules.FAMILIES.size()):
 		for rank in 3:
 			EIAnim._libraries=ready.duplicate()
 			var id:=ArenaRules.prototype(family,rank)

@@ -5,6 +5,7 @@ extends PanelContainer
 var surface := Color(0.045, 0.06, 0.065, 0.94)
 var edge := Color("716348")
 var decorated := true
+var accented := false
 
 func _ready() -> void:
 	var padding := StyleBoxEmpty.new()
@@ -16,7 +17,10 @@ func _ready() -> void:
 func _draw() -> void:
 	if not decorated: return
 	draw_rect(Rect2(Vector2.ZERO, size), surface)
-	draw_frame(self, Rect2(Vector2.ZERO, size))
+	if accented:
+		draw_rect(Rect2(Vector2.ONE, size - Vector2.ONE * 2), edge, false, 2)
+		draw_rect(Rect2(5, 9, 2, maxf(0, size.y - 18)), Color(edge, 0.5))
+	else: draw_frame(self, Rect2(Vector2.ZERO, size))
 
 
 static func draw_frame(canvas: CanvasItem, rect: Rect2, width := 3.0) -> void:

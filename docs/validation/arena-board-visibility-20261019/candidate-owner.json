@@ -1,0 +1,857 @@
+[
+	{
+		"adapter": "NVIDIA GeForce RTX 3090",
+		"fade_materials": 0,
+		"figure_meshes": 0,
+		"figure_models": 0,
+		"fps": 0.0,
+		"frame_listeners": 0,
+		"label": "before-tournament-0",
+		"nodes": 16.0,
+		"objects": 2105.0,
+		"old_worlds_alive": 0,
+		"peer": "owner",
+		"pid": 1856227,
+		"resources": 495.0,
+		"ticks": 4458,
+		"unit_textures": 0,
+		"video": 67760640,
+		"warmed_materials": 0,
+		"wound_composites": 0,
+		"wound_jobs": 0,
+		"wound_layers": 0
+	},
+	{
+		"adapter": "NVIDIA GeForce RTX 3090",
+		"fade_materials": 0,
+		"figure_meshes": 137,
+		"figure_models": 56,
+		"fps": 0.0,
+		"frame_listeners": 0,
+		"geometry": [],
+		"label": "tournament-0-round-1-prepare",
+		"nodes": 824.0,
+		"objects": 10225.0,
+		"old_worlds_alive": 0,
+		"peer": "owner",
+		"pid": 1856227,
+		"resources": 500.0,
+		"ticks": 16992,
+		"unit_textures": 8,
+		"video": 667653216,
+		"warmed_materials": 0,
+		"wound_composites": 0,
+		"wound_jobs": 0,
+		"wound_layers": 0
+	},
+	{
+		"adapter": "NVIDIA GeForce RTX 3090",
+		"fade_materials": 0,
+		"figure_meshes": 340,
+		"figure_models": 59,
+		"fps": 79.1640278657378,
+		"frame_listeners": 0,
+		"geometry": [
+			{
+				"can_process": true,
+				"dead": false,
+				"faction": 1,
+				"far": false,
+				"id": "human gipath brigand a1",
+				"meshes": [
+					{
+						"interpolated": "(22.01122, 0.901146, -28.01455)",
+						"layers": 1,
+						"pos": "(22.01122, 0.901146, -28.01455)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(22.02026, 1.040123, -27.99778)",
+						"layers": 1,
+						"pos": "(22.02026, 1.040123, -27.99778)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(22.02877, 1.475007, -28.02809)",
+						"layers": 1,
+						"pos": "(22.02877, 1.475007, -28.02809)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					}
+				],
+				"model_pos": "(22.02133, 0.0, -28.01066)",
+				"model_visible": true,
+				"on_screen": true,
+				"unit_pos": "(22.02133, 0.0, -28.01066)",
+				"visible": true
+			},
+			{
+				"can_process": true,
+				"dead": false,
+				"faction": 1,
+				"far": false,
+				"id": "human hadagan peasants a1",
+				"meshes": [
+					{
+						"interpolated": "(22.00856, 0.734897, -35.99213)",
+						"layers": 1,
+						"pos": "(22.00856, 0.734897, -35.99213)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(22.01666, 0.867898, -35.97393)",
+						"layers": 1,
+						"pos": "(22.01666, 0.867898, -35.97393)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(21.99908, 1.256764, -35.98791)",
+						"layers": 1,
+						"pos": "(21.99908, 1.256764, -35.98791)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					}
+				],
+				"model_pos": "(22.0, 0.0, -36.0)",
+				"model_visible": true,
+				"on_screen": true,
+				"unit_pos": "(22.0, 0.0, -36.0)",
+				"visible": true
+			},
+			{
+				"can_process": true,
+				"dead": false,
+				"faction": 1,
+				"far": false,
+				"id": "orcfemalea5",
+				"meshes": [
+					{
+						"interpolated": "(22.04738, 1.009571, -32.01942)",
+						"layers": 1,
+						"pos": "(22.04738, 1.009571, -32.01942)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(22.05588, 1.254137, -31.98954)",
+						"layers": 1,
+						"pos": "(22.05588, 1.254137, -31.98954)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(22.10915, 1.710831, -32.03934)",
+						"layers": 1,
+						"pos": "(22.10915, 1.710831, -32.03934)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					}
+				],
+				"model_pos": "(22.02711, 0.0, -32.0)",
+				"model_visible": true,
+				"on_screen": true,
+				"unit_pos": "(22.02711, 0.0, -32.0)",
+				"visible": true
+			},
+			{
+				"can_process": true,
+				"dead": false,
+				"faction": 2,
+				"far": false,
+				"id": "goblinf1",
+				"meshes": [
+					{
+						"interpolated": "(36.54082, 0.518872, -32.00178)",
+						"layers": 1,
+						"pos": "(36.54082, 0.518872, -32.00178)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(36.5192, 0.583439, -32.00188)",
+						"layers": 1,
+						"pos": "(36.5192, 0.583439, -32.00188)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(36.1899, 0.856834, -31.99831)",
+						"layers": 1,
+						"pos": "(36.1899, 0.856834, -31.99831)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					}
+				],
+				"model_pos": "(36.42201, 0.0, -32.0)",
+				"model_visible": true,
+				"on_screen": true,
+				"unit_pos": "(36.42201, 0.0, -32.0)",
+				"visible": true
+			},
+			{
+				"can_process": true,
+				"dead": false,
+				"faction": 2,
+				"far": false,
+				"id": "goblina1",
+				"meshes": [
+					{
+						"interpolated": "(40.49667, 0.472701, -32.05368)",
+						"layers": 1,
+						"pos": "(40.49667, 0.472701, -32.05368)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(40.47538, 0.537212, -32.04901)",
+						"layers": 1,
+						"pos": "(40.47538, 0.537212, -32.04901)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(40.12757, 0.784854, -32.01907)",
+						"layers": 1,
+						"pos": "(40.12757, 0.784854, -32.01907)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					}
+				],
+				"model_pos": "(40.42181, 0.0, -32.0)",
+				"model_visible": true,
+				"on_screen": true,
+				"unit_pos": "(40.42181, 0.0, -32.0)",
+				"visible": true
+			}
+		],
+		"label": "tournament-0-round-3-fight",
+		"nodes": 4381.0,
+		"objects": 18590.0,
+		"old_worlds_alive": 0,
+		"peer": "owner",
+		"pid": 1856227,
+		"resources": 500.0,
+		"ticks": 46991,
+		"unit_textures": 24,
+		"video": 1863877040,
+		"warmed_materials": 2,
+		"wound_composites": 0,
+		"wound_jobs": 0,
+		"wound_layers": 10
+	},
+	{
+		"adapter": "NVIDIA GeForce RTX 3090",
+		"fade_materials": 0,
+		"figure_meshes": 394,
+		"figure_models": 60,
+		"fps": 87.6274915005666,
+		"frame_listeners": 0,
+		"geometry": [
+			{
+				"can_process": true,
+				"dead": false,
+				"faction": 1,
+				"far": false,
+				"id": "human kania ranger f9",
+				"meshes": [
+					{
+						"interpolated": "(26.21733, 0.826126, -31.40333)",
+						"layers": 1,
+						"pos": "(26.21733, 0.826126, -31.40333)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(26.24158, 0.983418, -31.40416)",
+						"layers": 1,
+						"pos": "(26.24158, 0.983418, -31.40416)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(26.29196, 1.408118, -31.41222)",
+						"layers": 1,
+						"pos": "(26.29196, 1.408118, -31.41222)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": false
+					}
+				],
+				"model_pos": "(26.23438, 0.0, -31.40625)",
+				"model_visible": true,
+				"on_screen": true,
+				"unit_pos": "(26.23438, 0.0, -31.40625)",
+				"visible": true
+			},
+			{
+				"can_process": true,
+				"dead": false,
+				"faction": 1,
+				"far": false,
+				"id": "tigerwhitef10",
+				"meshes": [
+					{
+						"interpolated": "(40.1226, 0.783391, -32.1823)",
+						"layers": 1,
+						"pos": "(40.1226, 0.783391, -32.1823)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(40.1226, 0.783391, -32.1823)",
+						"layers": 1,
+						"pos": "(40.1226, 0.783391, -32.1823)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(40.96288, 0.760394, -32.09666)",
+						"layers": 1,
+						"pos": "(40.96288, 0.760394, -32.09666)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					}
+				],
+				"model_pos": "(39.59375, 0.0, -32.23438)",
+				"model_visible": true,
+				"on_screen": true,
+				"unit_pos": "(39.59375, 0.0, -32.23438)",
+				"visible": true
+			},
+			{
+				"can_process": true,
+				"dead": false,
+				"faction": 1,
+				"far": false,
+				"id": "tigerwhitef10",
+				"meshes": [
+					{
+						"interpolated": "(40.09092, 0.783391, -28.20942)",
+						"layers": 1,
+						"pos": "(40.09092, 0.783391, -28.20942)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(40.09092, 0.783391, -28.20942)",
+						"layers": 1,
+						"pos": "(40.09092, 0.783391, -28.20942)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(40.93052, 0.760394, -28.11722)",
+						"layers": 1,
+						"pos": "(40.93052, 0.760394, -28.11722)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					}
+				],
+				"model_pos": "(39.5625, 0.0, -28.26562)",
+				"model_visible": true,
+				"on_screen": true,
+				"unit_pos": "(39.5625, 0.0, -28.26562)",
+				"visible": true
+			},
+			{
+				"can_process": true,
+				"dead": true,
+				"faction": 2,
+				"far": false,
+				"id": "trollbluef9",
+				"meshes": [
+					{
+						"interpolated": "(36.64361, 0.466784, -31.97703)",
+						"layers": 1,
+						"pos": "(36.64361, 0.466784, -31.97703)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(36.82754, 0.576726, -31.9772)",
+						"layers": 1,
+						"pos": "(36.82754, 0.576726, -31.9772)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(38.52878, 1.073998, -31.98619)",
+						"layers": 1,
+						"pos": "(38.52878, 1.073998, -31.98619)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					}
+				],
+				"model_pos": "(35.0625, 0.0, -32.0)",
+				"model_visible": true,
+				"on_screen": true,
+				"unit_pos": "(35.0625, 0.0, -32.0)",
+				"visible": true
+			},
+			{
+				"can_process": true,
+				"dead": true,
+				"faction": 2,
+				"far": false,
+				"id": "human hadagan students a10",
+				"meshes": [
+					{
+						"interpolated": "(41.98563, 0.071722, -31.92525)",
+						"layers": 1,
+						"pos": "(41.98563, 0.071722, -31.92525)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(42.12698, 0.071704, -31.91378)",
+						"layers": 1,
+						"pos": "(42.12698, 0.071704, -31.91378)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(42.5441, 0.12714, -31.98731)",
+						"layers": 1,
+						"pos": "(42.5441, 0.12714, -31.98731)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					}
+				],
+				"model_pos": "(42.0, 0.0, -32.0)",
+				"model_visible": true,
+				"on_screen": true,
+				"unit_pos": "(42.0, 0.0, -32.0)",
+				"visible": true
+			},
+			{
+				"can_process": true,
+				"dead": true,
+				"faction": 2,
+				"far": false,
+				"id": "human hadagan students a10",
+				"meshes": [
+					{
+						"interpolated": "(42.64427, 0.084115, -27.90212)",
+						"layers": 1,
+						"pos": "(42.64427, 0.084115, -27.90212)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(42.78527, 0.085029, -27.887)",
+						"layers": 1,
+						"pos": "(42.78527, 0.085029, -27.887)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(43.20775, 0.147394, -27.89632)",
+						"layers": 1,
+						"pos": "(43.20775, 0.147394, -27.89632)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					}
+				],
+				"model_pos": "(42.0, 0.0, -28.0)",
+				"model_visible": true,
+				"on_screen": true,
+				"unit_pos": "(42.0, 0.0, -28.0)",
+				"visible": true
+			}
+		],
+		"label": "tournament-0-round-4-result",
+		"nodes": 5857.0,
+		"objects": 22026.0,
+		"old_worlds_alive": 0,
+		"peer": "owner",
+		"pid": 1856227,
+		"resources": 500.0,
+		"ticks": 76993,
+		"unit_textures": 30,
+		"video": 1953419568,
+		"warmed_materials": 2,
+		"wound_composites": 0,
+		"wound_jobs": 0,
+		"wound_layers": 31
+	},
+	{
+		"adapter": "NVIDIA GeForce RTX 3090",
+		"fade_materials": 0,
+		"figure_meshes": 475,
+		"figure_models": 60,
+		"fps": 0.0,
+		"frame_listeners": 0,
+		"geometry": [
+			{
+				"can_process": true,
+				"dead": false,
+				"faction": 1,
+				"far": false,
+				"id": "human hadagan students a10",
+				"meshes": [
+					{
+						"interpolated": "(21.96745, 0.787261, -27.99645)",
+						"layers": 1,
+						"pos": "(21.96745, 0.787261, -27.99645)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(21.99077, 0.92712, -27.99883)",
+						"layers": 1,
+						"pos": "(21.99077, 0.92712, -27.99883)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(22.09003, 1.342398, -28.01159)",
+						"layers": 1,
+						"pos": "(22.09003, 1.342398, -28.01159)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					}
+				],
+				"model_pos": "(22.0, 0.0, -28.0)",
+				"model_visible": true,
+				"on_screen": true,
+				"unit_pos": "(22.0, 0.0, -28.0)",
+				"visible": true
+			},
+			{
+				"can_process": true,
+				"dead": false,
+				"faction": 1,
+				"far": false,
+				"id": "trollbluef9",
+				"meshes": [
+					{
+						"interpolated": "(34.96771, 0.892198, -31.54908)",
+						"layers": 1,
+						"pos": "(34.96771, 0.892198, -31.54908)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(35.08126, 1.027099, -31.42731)",
+						"layers": 1,
+						"pos": "(35.08126, 1.027099, -31.42731)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(35.45761, 2.71145, -31.02372)",
+						"layers": 1,
+						"pos": "(35.45761, 2.71145, -31.02372)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					}
+				],
+				"model_pos": "(35.07812, 0.0, -31.42188)",
+				"model_visible": true,
+				"on_screen": true,
+				"unit_pos": "(35.07812, 0.0, -31.42188)",
+				"visible": true
+			},
+			{
+				"can_process": true,
+				"dead": false,
+				"faction": 1,
+				"far": false,
+				"id": "human hadagan students a10",
+				"meshes": [
+					{
+						"interpolated": "(21.98088, 0.791834, -32.00147)",
+						"layers": 1,
+						"pos": "(21.98088, 0.791834, -32.00147)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(22.00402, 0.931692, -31.99765)",
+						"layers": 1,
+						"pos": "(22.00402, 0.931692, -31.99765)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(22.09408, 1.3491, -31.98622)",
+						"layers": 1,
+						"pos": "(22.09408, 1.3491, -31.98622)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					}
+				],
+				"model_pos": "(22.0, 0.0, -32.0)",
+				"model_visible": true,
+				"on_screen": true,
+				"unit_pos": "(22.0, 0.0, -32.0)",
+				"visible": true
+			},
+			{
+				"can_process": true,
+				"dead": true,
+				"faction": 2,
+				"far": false,
+				"id": "goblinf2",
+				"meshes": [
+					{
+						"interpolated": "(31.20931, 0.115256, -32.00227)",
+						"layers": 1,
+						"pos": "(31.20931, 0.115256, -32.00227)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(31.13051, 0.112781, -31.99041)",
+						"layers": 1,
+						"pos": "(31.13051, 0.112781, -31.99041)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(30.63778, 0.152308, -31.90782)",
+						"layers": 1,
+						"pos": "(30.63778, 0.152308, -31.90782)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					}
+				],
+				"model_pos": "(32.29688, 0.0, -32.0)",
+				"model_visible": true,
+				"on_screen": true,
+				"unit_pos": "(32.29688, 0.0, -32.0)",
+				"visible": true
+			},
+			{
+				"can_process": true,
+				"dead": true,
+				"faction": 2,
+				"far": false,
+				"id": "goblinf2",
+				"meshes": [
+					{
+						"interpolated": "(32.57368, 0.084011, -30.17104)",
+						"layers": 1,
+						"pos": "(32.57368, 0.084011, -30.17104)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(32.64127, 0.078692, -30.12908)",
+						"layers": 1,
+						"pos": "(32.64127, 0.078692, -30.12908)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(33.04602, 0.164056, -29.84615)",
+						"layers": 1,
+						"pos": "(33.04602, 0.164056, -29.84615)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					}
+				],
+				"model_pos": "(31.95312, 0.0, -30.54688)",
+				"model_visible": true,
+				"on_screen": true,
+				"unit_pos": "(31.95312, 0.0, -30.54688)",
+				"visible": true
+			},
+			{
+				"can_process": true,
+				"dead": true,
+				"faction": 2,
+				"far": false,
+				"id": "toadm2",
+				"meshes": [
+					{
+						"interpolated": "(36.93077, 0.072898, -31.75389)",
+						"layers": 1,
+						"pos": "(36.93077, 0.072898, -31.75389)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(36.93272, 0.098503, -31.74909)",
+						"layers": 1,
+						"pos": "(36.93272, 0.098503, -31.74909)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(36.90794, 0.08815, -31.61165)",
+						"layers": 1,
+						"pos": "(36.90794, 0.08815, -31.61165)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					}
+				],
+				"model_pos": "(36.5625, 0.0, -32.0)",
+				"model_visible": true,
+				"on_screen": true,
+				"unit_pos": "(36.5625, 0.0, -32.0)",
+				"visible": true
+			},
+			{
+				"can_process": true,
+				"dead": true,
+				"faction": 2,
+				"far": false,
+				"id": "goblina1",
+				"meshes": [
+					{
+						"interpolated": "(37.33628, 0.071941, -29.02038)",
+						"layers": 1,
+						"pos": "(37.33628, 0.071941, -29.02038)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(37.38276, 0.067398, -28.97083)",
+						"layers": 1,
+						"pos": "(37.38276, 0.067398, -28.97083)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					},
+					{
+						"interpolated": "(37.65415, 0.140302, -28.64798)",
+						"layers": 1,
+						"pos": "(37.65415, 0.140302, -28.64798)",
+						"scale": "(1.0, 1.0, 1.0)",
+						"transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (0.0, 0.0, 0.0)]",
+						"transparency": 0.0,
+						"visible": true
+					}
+				],
+				"model_pos": "(36.90625, 0.0, -29.46875)",
+				"model_visible": true,
+				"on_screen": true,
+				"unit_pos": "(36.90625, 0.0, -29.46875)",
+				"visible": true
+			}
+		],
+		"label": "before-tournament-1",
+		"nodes": 6832.0,
+		"objects": 24089.0,
+		"old_worlds_alive": 0,
+		"peer": "owner",
+		"pid": 1856227,
+		"resources": 500.0,
+		"ticks": 96998,
+		"unit_textures": 34,
+		"video": 1982738512,
+		"warmed_materials": 2,
+		"wound_composites": 0,
+		"wound_jobs": 0,
+		"wound_layers": 58
+	}
+]

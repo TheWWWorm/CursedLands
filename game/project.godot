@@ -104,3 +104,7 @@ environment/volumetric_fog/volume_size=128
 environment/volumetric_fog/volume_depth=96
 anti_aliasing/quality/screen_space_aa=2
 lights_and_shadows/positional_shadow/atlas_size=8192
+
+[discord]
+
+application_id="1561645781533069393"

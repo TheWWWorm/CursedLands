@@ -983,7 +983,9 @@ func _score(u: GameUnit, c: GameUnit, opt: Dictionary, list: Array, cur, thr: fl
 					dd += _damage(opt, o)
 			dd &= 0xffff
 			if ty == 3:
-				dd = ((int(opt.dur) / 4) >> 1) * dd & 0xffff
+				# Trials spells budget total lifetime damage. Repeating that
+				# total for every tick made casters favor weak walls over bolts.
+				dd = roundi(dd * 0.65) if u.stats.get("trials_budget", false) else ((int(opt.dur) / 4) >> 1) * dd & 0xffff
 			score = 1.3 * dd + bonus + 3.0 + dd * mini(n, k)
 		4, 5, 6:
 			if c.buffs.has(opt.key):
@@ -1617,8 +1619,8 @@ func _susp_go(u: GameUnit, s: Dictionary, at: Vector2, p: float) -> void:
 	u.command({"type": "move", "to": world.nav.nearest_walkable(at), "run": false, "calm": true, "susp": true})
 
 
-## The AI hit hook (from the hit, a spell cast
-## the unit and the death): unless the attacker is a
+## The AI hit hook (from a surviving hit or a spell cast on
+## the unit): unless the attacker is a
 ## unit that is a diplomacy friend, a call for help at the attacker's spot
 ## (no attacker: the unit's own).
 func hit_hook(u: GameUnit, by: GameUnit) -> void:

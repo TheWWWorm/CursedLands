@@ -54,7 +54,7 @@ class UnitMarker extends Control:
 		var text: String = state[4]
 		draw_style_box(bar, Rect2(Vector2(-27, -3) * k, Vector2(54, 6) * k))
 		draw_rect(Rect2(Vector2(-25, -1) * k, Vector2(50 * fraction, 2) * k), color)
-		if rank >= 0: ArenaStars.draw_rank(self, Vector2(-((rank + 1) * 14 - 2) / 2.0, -38) * k, rank + 1, k)
+		if rank >= 0: ArenaStars.draw_rank(self, Vector2(-((rank + 1) * 14 - 2) / 2.0, -38) * k, rank + 1, k, state[5])
 		if not text.is_empty():
 			var font := ThemeDB.fallback_font
 			var pixels := roundi(14 * k)
@@ -83,6 +83,10 @@ func _ready() -> void:
 	view.msaa_3d = Viewport.MSAA_2X
 	container.add_child(view)
 	stage = Node3D.new()
+	# Board offsets change on the presentation frame when scouting. An
+	# interpolated ancestor can retain the overview offset for stationary
+	# replica meshes even after their local transforms have been reset.
+	stage.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	view.add_child(stage)
 	camera = Camera3D.new()
 	camera.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
@@ -167,7 +171,7 @@ func select_creature(id: String) -> void:
 		ghost.queue_free()
 	ghost = null
 	if id.is_empty(): return
-	ghost = EIUnitModel.create({"prototype": id}, true)
+	ghost = EIUnitModel.create(ArenaAppearance.info(id) if match_state is ArenaPveMatch else {"prototype": id}, true)
 	if ghost:
 		stage.add_child(ghost)
 		for mesh: MeshInstance3D in ghost.find_children("*", "MeshInstance3D", true, false):
@@ -374,7 +378,7 @@ func _sync_unit_markers() -> void:
 		# Move retained commands each frame; re-shape text and tessellate the
 		# health frame only when its contents change, not as the unit walks.
 		marker.update_marker(health_anchor(u), [ui_scale, BLUE if u.faction == 1 else RED,
-			clampf(u.hp / maxf(1, u.max_hp), 0, 1), rank, text])
+			clampf(u.hp / maxf(1, u.max_hp), 0, 1), rank, text, ArenaStars.for_prototype(String(u.info.get("prototype", "")))])
 	for id: int in _unit_markers.keys():
 		if not live.has(id):
 			var marker: UnitMarker = _unit_markers[id]

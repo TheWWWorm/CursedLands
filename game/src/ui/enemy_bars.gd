@@ -1,6 +1,6 @@
 class_name EnemyBars
 extends Control
-## Remake (option "enemy_hp_bars": Off / Auto / Always, default Auto): a small
+## Remake (option "enemy_hp_bars": Off / Auto / Always, default Always): a small
 ## health bar over hostile units. the original shows a unit's health only in the
 ## unit panel (UnitPanel, general view) and the party faces; a
 ## controller or a finger has no hover to bring that panel up quickly, so

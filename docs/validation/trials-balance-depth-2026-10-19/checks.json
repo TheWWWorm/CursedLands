@@ -1,0 +1,42 @@
+[
+  {
+    "test": "arena_balance_catalog",
+    "exit": 0
+  },
+  {
+    "test": "arena_star_balance",
+    "exit": 0
+  },
+  {
+    "test": "arena_species",
+    "exit": 0
+  },
+  {
+    "test": "arena_roster",
+    "exit": 0
+  },
+  {
+    "test": "arena_economy",
+    "exit": 0
+  },
+  {
+    "test": "arena_alliances",
+    "exit": 0
+  },
+  {
+    "test": "arena_bot_planner",
+    "exit": 0
+  },
+  {
+    "test": "arena_online",
+    "exit": 0
+  },
+  {
+    "test": "arena_tournament",
+    "exit": 0
+  },
+  {
+    "test": "arena_readability",
+    "exit": 0
+  }
+]

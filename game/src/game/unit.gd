@@ -290,10 +290,16 @@ var _last_pos := Vector2.ZERO
 ## state packet, so clients restart its clip exactly once.
 var _action_serial := 0
 var _remote_action_serial := -1
+var _action_started_at := 0.0
+var _remote_action_rate := 1.0
+var _remote_action_timing := false
+var _settle_action := ""
+var _cast_visual_clip := ""
 var action := "idle":
 	set(value):
 		if value != action or value in ["attack", "hit"] or value.begins_with("cast") or value.begins_with("anim:"):
 			_action_serial += 1
+			_action_started_at = world.time if world else 0.0
 		if _sim_state and action != value: _sim_state.update(&"action", value)
 		action = value
 ## Combat stance (the original unit): set by an attack command
@@ -1171,11 +1177,17 @@ static func is_direct_combat_order(o: Dictionary) -> bool:
 func command(o: Dictionary, queue := false) -> void:
 	if dead:
 		return
+	if o.get("type", "") == "cast" and o.get("known_spell", false) \
+			and mana < _spell_cost(Spells.parse(String(o.spell))) and not _sandbox_mana():
+		ack(EIAcks.OUT_OF_STAMINA)
+		o.stamina_notified = true
+		if o.get("target") == self:
+			stop_steering()
 	# Weapon repeats may update the next swing, but cannot replace a spell
 	# already confirmed during recovery. Keep at most one trailing swing.
 	if not queue and o.get("type", "") == "direct_attack" \
-			and ((order.get("type", "") == "cast" and order.get("in_place", false)) \
-			or orders.any(func(p): return p.get("type", "") == "cast" and p.get("in_place", false))):
+			and ((order.get("type", "") == "cast" and order.get("in_place", false) and not order.get("stamina_notified", false)) \
+			or orders.any(func(p): return p.get("type", "") == "cast" and p.get("in_place", false) and not p.get("stamina_notified", false))):
 		orders = orders.filter(func(p): return p.get("type", "") != "direct_attack")
 		orders.append(o)
 		return
@@ -1604,7 +1616,9 @@ func always_regenerate_stamina() -> bool:
 ## Follow is a persistent AI state, but has a movement command only while
 ## catching up. Do not make is_idle() true: the AI must keep the follow order.
 func _stamina_idle() -> bool:
-	return is_idle() or (order.get("type", "") == "follow" and not order.get("once", false)
+	return is_idle() or (order.get("type", "") == "cast" and order.get("stamina_notified", false)
+		and path.is_empty() and direct_steering.is_empty() and _anim_lock <= 0.0) \
+		or (order.get("type", "") == "follow" and not order.get("once", false)
 		and not order.has("walk") and orders.is_empty() and direct_steering.is_empty() and _anim_lock <= 0.0)
 
 
@@ -3256,7 +3270,7 @@ func _do_cast(dt: float) -> void:
 	elif _update_pose():
 		return
 	# Self-casting has no target direction; retain the player's facing.
-	if not (direct_controlled and t == self) and not _turn_to((at - pos).angle(), dt):
+	if t != self and not _turn_to((at - pos).angle(), dt):
 		return
 	if order.has("item"):
 		# A belt item's spell costs no stamina; the item is used up instead.
@@ -3264,7 +3278,15 @@ func _do_cast(dt: float) -> void:
 			order = {}
 			return
 	elif mana < _spell_cost(sp) and not _sandbox_mana():
-		order = order.get("then", {})
+		if order.get("known_spell", false):
+			# Stay stopped until enough stamina regenerates. A replacement
+			# order cancels this wait through command(), like any other order.
+			if not order.get("stamina_notified", false):
+				ack(EIAcks.OUT_OF_STAMINA)
+				order.stamina_notified = true
+			_set_action("idle")
+		else:
+			order = order.get("then", {})
 		return
 	elif not _sandbox_mana():
 		mana -= _spell_cost(sp)
@@ -3342,6 +3364,7 @@ func _cast_anim_speed() -> float:
 ## [no clip, C - L ticks][clip, L ticks]: the clip that was playing goes on
 ## and the cast clip starts C - L ticks late. Returns the clip's length.
 func _cast_anim(clip: String, hold: int) -> float:
+	_cast_visual_clip = clip
 	_hold_left = 0.0
 	_pre_left = 0.0
 	_hold_clip = ""
@@ -3721,6 +3744,8 @@ func set_equipment(armors: PackedStringArray, weapons: PackedStringArray) -> voi
 func _anim_lod_setup() -> void:
 	if model == null or model.player == null:
 		return
+	if not model.clip_started.is_connected(_on_clip_started):
+		model.clip_started.connect(_on_clip_started)
 	model.player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
 	_anim_roots.clear()
 	for n in model.find_children("*", "BoneAttachment3D", true, false):
@@ -3748,6 +3773,13 @@ func _anim_lod_setup() -> void:
 		var b := figure_radius + 1.0
 		_body.aabb = AABB(Vector3(-b, -0.5, -b), Vector3(2.0 * b, h + 1.0, 2.0 * b))
 		add_child(_body)
+
+
+func _on_clip_started() -> void:
+	# Deferred offscreen time belongs to the old clip. Applying it to the
+	# replacement skips its windup (including a frog's spit or a death).
+	_anim_acc = 0.0
+	_anim_clock = world.draw_time() if world and world.authority and _frame_drawing else _game_clock
 
 
 static var defer_hidden_pose := not OS.get_cmdline_user_args().has("--ei-eager-poses")
@@ -4010,10 +4042,11 @@ func _present_native_frame(dt: float) -> void:
 ## the unit's ground speed (the original, EIUnitModel.move_rate), so
 ## its feet keep to the ground; any other clip at the normal rate.
 func _anim_rate() -> float:
-	if action == "attack": return float(stats.get("attack_rate", 1.0))
-	if model == null or not action in ["walk", "run", "crawl"]:
+	if action == "attack": return _remote_action_rate if _remote_action_timing and world and not world.authority else float(stats.get("attack_rate", 1.0))
+	var shown := _settle_action if not _settle_action.is_empty() else action
+	if model == null or not shown in ["walk", "run", "crawl"]:
 		return 1.0
-	return model.move_rate(_draw_move_speed if world and world.authority else _move_speed)
+	return model.move_rate(_move_speed if _presentation_advancing else _draw_move_speed)
 
 
 ## The cast clip's hold (_cast_anim): of `adv` seconds of clip time, the part
@@ -4392,6 +4425,11 @@ func _draw_step(_dt: float, placement_ready := false) -> void:
 	var moved := cur.distance_to(_speed_from) if _speed_from != Vector2.INF else 0.0
 	if world != null and not world.authority and not _remote_move_speed:
 		_move_speed = moved / _dt if _dt > 0.0 and moved <= 2.0 else 0.0
+	if world != null and not world.authority:
+		_draw_move_speed = moved / _dt if _dt > 0.0 and moved <= 2.0 else 0.0
+		if not _settle_action.is_empty() and _drawn.distance_squared_to(pos) < 0.000001:
+			_settle_action = ""
+			model.act("idle")
 	_speed_from = cur
 	#  sets / clears the combat flag by the command
 	# force (== 3). A new command replaces the old one at once there
@@ -4460,6 +4498,21 @@ func snapshot() -> Array:
 	if direct_controlled:
 		row.append(PackedInt32Array([roundi(direct_motion.x * 4096.0), roundi(direct_motion.y * 4096.0),
 			ceili(maxf(0.0, maxf(_attack_cd, _anim_lock)) * 1000.0), direct_hit_serial, int(running)]))
+	# Slot 17 is reserved for Trials' precise body health. Ordinary peers
+	# also need individual hostility: a neutral animal can become hostile
+	# without changing its diplomacy faction.
+	row.resize(20)
+	var hate: Dictionary = get_meta("hate", {})
+	var mask := 0
+	if world and int(hate.get("w", 0)) == world.get_instance_id():
+		for f: int in hate.get("f", []):
+			if f >= 0 and f < 32: mask |= 1 << f
+	row[18] = mask
+	# Stable per-action metadata, rather than a new random choice on each
+	# peer. The start time also lets late packets join the current windup.
+	if not action in _STEADY and model:
+		row[19] = [_cast_visual_clip if action.begins_with("cast") else model._current,
+			_action_started_at, float(stats.get("attack_rate", 1.0)) if action == "attack" else 1.0]
 	return row
 
 
@@ -4553,11 +4606,20 @@ func _buff_snapshot() -> Array:
 
 ## `quiet`: the unit's state as found by a joining client (no death clip,
 ## sounds or hit numbers; a corpse lies already dead).
-func apply_snapshot(s: Array, quiet := false, precise_body := PackedFloat64Array()) -> void:
+func apply_snapshot(s: Array, quiet := false, precise_body := PackedFloat64Array(), snapshot_time := NAN) -> void:
 	# Account for the old clip/rate before replacing it with newer authority
 	# state. This prevents a late hidden update advancing the new action by
 	# time that belonged to its predecessor.
 	_advance_sleeping_presentation()
+	var visual: Array = []
+	if s.size() > 19 and s[19] is Array and s[19].size() == 3:
+		var v: Array = s[19]
+		if v[0] is String and model and model.has_anim(v[0]) \
+				and (v[1] is float or v[1] is int) and is_finite(float(v[1])) \
+				and (v[2] is float or v[2] is int) and is_finite(float(v[2])) and float(v[2]) > 0.0:
+			visual = v
+	_remote_action_timing = not visual.is_empty()
+	_remote_action_rate = float(visual[2]) if _remote_action_timing else 1.0
 	var exact_body := not parts.is_empty() and precise_body.size() == parts.size() + 1
 	if s.size() > 10:
 		var incoming_max: float = precise_body[0] if exact_body else s[9]
@@ -4585,14 +4647,17 @@ func apply_snapshot(s: Array, quiet := false, precise_body := PackedFloat64Array
 			world.combat_event.emit("hp_loss", null, self, previous_hp - incoming_hp)
 	if not exact_body: hp = incoming_hp
 	var flags: int = s[6]
+	var new_death := bool(flags & 1) and not dead
 	if (flags & 1) and not dead:
 		dead = true
+		_settle_action = ""
 		action = "death"
 		if quiet:   # as CampaignState.restore_zone poses the zone's dead
 			model.act("death", 1, 0.0)
 			freeze_pose(true)
 		else:
-			model.act("death", 1, 0.05)
+			if visual.is_empty(): model.act("death", 1, 0.05)
+			else: model.play(visual[0], 0.05, true)
 			GameSound.unit(self, "death")
 	elif not (flags & 1) and dead:
 		revive()
@@ -4615,6 +4680,12 @@ func apply_snapshot(s: Array, quiet := false, precise_body := PackedFloat64Array
 	aggressive = not (flags & 8192)
 	faction = (flags >> 14) & 31
 	controller = ((flags >> 19) & 15) - 1
+	if s.size() > 18 and s[18] is int and world:
+		var hated := []
+		for f in 32:
+			if int(s[18]) & (1 << f): hated.append(f)
+		if hated.is_empty(): remove_meta("hate")
+		else: set_meta("hate", {"w": world.get_instance_id(), "f": hated})
 	gait_run = bool(flags & (1 << 23))
 	strike_miss = bool(flags & (1 << 24))
 	blocked = bool(flags & (1 << 26))
@@ -4659,33 +4730,50 @@ func apply_snapshot(s: Array, quiet := false, precise_body := PackedFloat64Array
 	if s.size() > 14:
 		fresh_action = int(s[14]) != _remote_action_serial
 		_remote_action_serial = int(s[14])
+	var changed_action := a != action or (fresh_action and not a in _STEADY)
 	if quiet and not dead and a in _STEADY:
 		# Load/join records must already be drawable while the tree is paused.
 		# An unchanged "idle" action can still carry a different posture; no
 		# presentation tick is guaranteed before the loading cover disappears.
 		action = a
+		_settle_action = ""
 		_anim_acc = 0.0
 		_update_pose(false)
 		model.act(a, 1, 0.0)
 		if model.player: model.player.advance(0.0)
-	elif (a != action or (fresh_action and not a in _STEADY)) and not dead:
+	elif changed_action and not dead:
+		# A stop packet can arrive while the displayed body is still gliding
+		# to its final position. Finish that stride before showing idle feet.
+		_settle_action = action if not quiet and a == "idle" and action in ["walk", "run", "crawl"] \
+			and _drawn.distance_squared_to(pos) > 0.000001 and _drawn.distance_to(pos) < NetSmooth.TELEPORT else ""
 		action = a
 		_anim_acc = 0.0
-		if a.begins_with("anim:"):
+		if not _settle_action.is_empty():
+			pass
+		elif a.begins_with("anim:"):
 			model.play(a.substr(5), 0.1, fresh_action)
 		elif a.begins_with("revive:"):   # remake option "revive" (Revive): the held clip
 			_keep_clip(a.get_slice(":", 1))
 		elif a.begins_with("cast"):
 			_update_pose()   # the snapshot's combat flag / posture first
-			_cast_anim(_cast_clip(), int(a.get_slice(":", 1)) if a.contains(":") else 0)
+			_cast_anim(String(visual[0]) if not visual.is_empty() else _cast_clip(), int(a.get_slice(":", 1)) if a.contains(":") else 0)
 		elif a == "attack":
 			_update_pose()   # the snapshot's combat flag / posture first
-			model.act("attack", world.random_int_range(1, 3), 0.05)
+			if visual.is_empty(): model.act("attack", world.random_int_range(1, 3), 0.05)
+			else: model.play(visual[0], 0.05, true)
 			GameSound.unit(self, "attack")
 		else:
 			if a == "hit":
 				GameSound.unit(self, "hit")
-			_set_action(a)
+			if a == "hit" and not visual.is_empty(): model.play(visual[0], 0.05, true)
+			else: _set_action(a)
+	if not visual.is_empty() and (new_death or (changed_action and not dead)) and not (quiet and dead):
+		# Simulation timestamps are independent of packet/display cadence and
+		# game speed. Duplicate refreshes must not restart or double-advance.
+		var received_at := snapshot_time if is_finite(snapshot_time) else world.time if world else 0.0
+		var elapsed := maxf(0.0, received_at - float(visual[1]))
+		var advance := _held(_pre_cast(elapsed) * _remote_action_rate)
+		model.player.advance(advance)
 	if quiet:
 		# Load/spawn snapshots can be the last update before a paused save is
 		# displayed. Place their position AND facing without waiting a frame.

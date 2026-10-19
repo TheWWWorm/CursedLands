@@ -52,9 +52,11 @@ static func original_stage(session: Session, hero: GameUnit, target: GameUnit, p
 		captive_route=true
 	else:
 		return false
+	# Native conversation staging can settle OLiz a few centimetres from
+	# his display point (the second Ha29 topic follows that movement).
 	if (not topic.is_empty() and topic!=expected_topic) \
 		or target.uid!=ScriptVM.name_id(name) or String(target.info.get("name","")).to_lower()!=name.to_lower() \
-		or target.pos.distance_to(display_position)>0.02 or not target.village_talk_ready() \
+		or target.pos.distance_to(display_position)>(0.05 if captive_route else 0.02) or not target.village_talk_ready() \
 		or session.state.get_pvar(player,expected_topic)!=1.0 or hero.pos.distance_to(target.pos)<=Session.TALK_REACH:
 		return false
 	# Ignore every live actor so a temporary crowd cannot turn a cancelled or

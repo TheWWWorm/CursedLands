@@ -1,0 +1,40 @@
+[
+  {
+    "unix": 1792418492.8646553,
+    "action": "ordinary movement along previously traversed ground after blocked route",
+    "control": {
+      "move_only": true,
+      "point": [
+        95.3,
+        43.3
+      ]
+    }
+  },
+  {
+    "unix": 1792418588.4061356,
+    "action": "ordinary movement back toward the authored entrance",
+    "control": {
+      "move_only": true,
+      "point": [
+        15.0,
+        80.0
+      ]
+    }
+  },
+  {
+    "unix": 1792418679.258444,
+    "action": "release movement steering; normal route and exit controls resume",
+    "control": {}
+  },
+  {
+    "unix": 1792419050.1485224,
+    "action": "ordinary retreat along the cleared route before quiet restart comparison",
+    "control": {
+      "move_only": true,
+      "point": [
+        374.5,
+        67.5
+      ]
+    }
+  }
+]

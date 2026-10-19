@@ -1,0 +1,62 @@
+[
+  {
+    "test": "arena_species",
+    "exit": 0,
+    "summary": "ARENA_SPECIES 2154 checks; failures=[]"
+  },
+  {
+    "test": "arena_roster",
+    "exit": 0,
+    "summary": "ARENA_ROSTER checks=1515 opening_pair_duplicate_rate=0.0775 failures=[]"
+  },
+  {
+    "test": "arena_economy",
+    "exit": 0,
+    "summary": "ARENA_ECONOMY 590 checks; failures=[]"
+  },
+  {
+    "test": "arena_alliances",
+    "exit": 0,
+    "summary": "ARENA_ALLIANCES 602 checks; failures=[]"
+  },
+  {
+    "test": "arena_readability",
+    "exit": 0,
+    "summary": "ARENA_READABILITY checks=51 failures=[]"
+  },
+  {
+    "test": "arena_result_health",
+    "exit": 0,
+    "summary": "ARENA_RESULT_HEALTH 11 checks; failures=[]"
+  },
+  {
+    "test": "arena_bot_planner",
+    "exit": 0,
+    "summary": "ARENA_BOT_PLANNER checks=21 family=11 filler=0 failures=[]"
+  },
+  {
+    "test": "arena_tournament",
+    "exit": 0,
+    "summary": "ARENA_TOURNAMENT 175 checks; native_fights=214; failures=[]"
+  },
+  {
+    "test": "arena_online",
+    "exit": 0,
+    "summary": "ARENA_ONLINE 80 checks; failures=[]"
+  },
+  {
+    "test": "arena_species_ui_en",
+    "exit": 0,
+    "summary": "ARENA_SPECIES_UI en checks=571 failures=[]"
+  },
+  {
+    "test": "arena_species_ui_ru",
+    "exit": 0,
+    "summary": "ARENA_SPECIES_UI ru checks=569 failures=[]"
+  },
+  {
+    "test": "arena_species_ui_de",
+    "exit": 0,
+    "summary": "ARENA_SPECIES_UI de checks=569 failures=[]"
+  }
+]

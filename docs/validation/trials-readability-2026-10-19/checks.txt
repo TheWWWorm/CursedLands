@@ -1,0 +1,41 @@
+Base commit: e0abbb1e9bdb8d641085daf7dfb51816ae48357a
+
+ui-roster:
+ARENA_ROSTER checks=1608 opening_pair_duplicate_rate=0.07215 failures=[]
+
+ui-arena_readability:
+ARENA_READABILITY checks=51 failures=[]
+
+ui-arena_economy:
+ARENA_ECONOMY 626 checks; failures=[]
+
+ui-arena_combat_budgets:
+ARENA_COMBAT_BUDGETS checks=919 failures=[]
+
+ui-arena_online:
+ARENA_ONLINE 80 checks; failures=[]
+
+ui-readability-en:
+ARENA_READABILITY_UI en checks=66 failures=[]
+
+ui-readability-ru:
+ARENA_READABILITY_UI ru checks=63 failures=[]
+
+ui-readability-de:
+ARENA_READABILITY_UI de checks=63 failures=[]
+
+ui-translations:
+Wiki world text: 180 entries in EN/RU/DE
+Wiki reference text: 3886 source-checked EN/DE entries; RU uses original archives
+Translations: 2743 entries; 141 dynamic wiki keys; 151 dynamic arena keys; 0 errors
+
+ui-discord:
+PASS activity preserves whole localized characters within the UTF-8 limit
+PASS disabling clears and disconnects: true
+PASS real IPC: handshake, fragmented READY, activity, ping/pong, option clearing and clean exit
+
+Complete native bot tournaments (final roster):
+BOT_TOURNAMENT 0 winner=4 new=true rounds=26 placements=[5, 4, 3, 8, 1, 7, 6, 9, 2]
+BOT_TOURNAMENT 1 winner=8 new=true rounds=30 placements=[3, 5, 6, 7, 2, 4, 8, 9, 1]
+BOT_TOURNAMENT 2 winner=5 new=true rounds=32 placements=[8, 2, 9, 7, 5, 1, 3, 4, 6]
+BOT_TOURNAMENT 3 winner=1 new=true rounds=30 placements=[5, 1, 6, 8, 4, 7, 3, 9, 2]

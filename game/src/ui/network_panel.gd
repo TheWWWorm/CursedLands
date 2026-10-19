@@ -372,9 +372,9 @@ func _rows() -> Array:
 		out.append({"id": "password", "kind": "edit", "label": pw_label(), "value": password, "on": not hosting,
 			"hint": _pw_hint(true)})
 	if page == HOST_COOP:
-		out.append({"id": "fullxp", "kind": "switch", "label": RemakeText.t(GameData.REMAKE_OPTIONS.coop_full_xp[0]),
-			"value": _on_off(XpRules.full_experience()), "on": true,
-			"hint": RemakeText.t("On: every hero gets the whole experience of a kill or quest. Off: shared among the heroes, as in the original.")})
+		out.append({"id": "fullxp", "kind": "choice", "label": RemakeText.t(GameData.REMAKE_OPTIONS.coop_full_xp[0]),
+			"value": RemakeText.t(XpRules.CHOICES[clampi(GameData.option("coop_full_xp"), 0, 2)]), "on": true,
+			"hint": RemakeText.t(GameData.REMAKE_OPTIONS.coop_full_xp[1])})
 		out.append({"id": "scale", "kind": "choice", "label": RemakeText.t(GameData.REMAKE_OPTIONS.coop_scale[0]),
 			"value": RemakeText.t(MobScaling.CHOICES[clampi(GameData.option("coop_scale"), 0, MobScaling.CHOICES.size() - 1)]), "on": true,
 			"hint": RemakeText.t("Monsters get more health and hit harder for each player beyond the first.")})
@@ -1160,7 +1160,7 @@ func _activate(id: String, dir := 0) -> void:
 				return
 			max_players = clampi(max_players + step, 1, Session.MAX_PLAYERS)
 		"fullxp":
-			GameData.set_option("coop_full_xp", 0 if XpRules.full_experience() else 1)
+			GameData.set_option("coop_full_xp", posmod(GameData.option("coop_full_xp") + step, XpRules.CHOICES.size()))
 		"scale":
 			GameData.set_option("coop_scale", posmod(GameData.option("coop_scale") + step, MobScaling.CHOICES.size()))
 		"upnp":

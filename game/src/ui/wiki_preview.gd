@@ -104,7 +104,9 @@ func show_model(descriptor: Dictionary, reuse_creature_view := false) -> bool:
 		_sync_resolution()
 		creature.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		creature.custom_minimum_size = Vector2.ZERO
-		creature.show_info({"prototype": descriptor.value})
+		var info: Dictionary = descriptor.get("appearance", {}).duplicate(true)
+		info.prototype = descriptor.value
+		creature.show_info(info)
 		creature._cam.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 		return creature._model != null
 	item = ItemView.new()

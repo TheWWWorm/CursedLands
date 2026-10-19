@@ -1,5 +1,18 @@
 extends "arena_expansion_ui.gd"
 ## Exercise the real online replica, including rapid overview/scout changes.
+func check_render_positions(battle: ArenaPveMatch, label: String) -> void:
+	var sampled := 0
+	var worst := 0.0
+	for unit: GameUnit in battle.world.unit_rows():
+		for mesh: GeometryInstance3D in unit._geoms:
+			if not is_instance_valid(mesh) or not mesh.is_visible_in_tree(): continue
+			sampled += 1
+			worst = maxf(worst, mesh.global_position.distance_to(mesh.get_global_transform_interpolated().origin))
+	# A moving limb can span part of a stride between the CPU and render
+	# samples; a stale overview cell displaces the entire mesh by 64m or more.
+	check(sampled > 0 and worst < 2.0, "%s: rendered meshes match the current board (%d meshes, %.3fm error)" % [label, sampled, worst])
+
+
 func red_pixels() -> int:
 	var image := screen.field.view.get_texture().get_image()
 	var colored := 0
@@ -53,6 +66,7 @@ func _ready() -> void:
 		screen._show_player(1+index%8); await frames(1+index%2)
 		screen._show_boards(); await frames(1)
 		screen._show_player(0); await frames(4)
+		check_render_positions(screen.battle, "stopped return %d" % index)
 		for unit: GameUnit in screen.battle.world.unit_rows():
 			check(unit.is_visible_in_tree() and unit.model.is_visible_in_tree(),"returned actor remains visible %d"%index)
 			check(unit._geoms.any(func(g):return is_instance_valid(g) and g.is_visible_in_tree()),"returned actor has drawable geometry %d"%index)
@@ -61,17 +75,17 @@ func _ready() -> void:
 			var colored := red_pixels()
 			check(colored>200,"paused models still render after board switches: %d pixels"%colored)
 			await shot("board-presentation-return-"+str(index))
-	# Tall windows and a steep orbit push models beyond the old fixed far plane
-	# while their 2D health labels remain visible. Compare the real GPU output.
+	# A tall window and steep orbit must restore the fitted far plane after
+	# scouting. Deliberately clip the models, then compare real GPU output.
 	get_window().size=Vector2i(1280,1100); await frames(12)
 	screen.field.pitch_offset=deg_to_rad(35); screen.field.zoom=23; screen.field._update_camera()
 	var fitted_far := screen.field.camera.far
-	screen.field.camera.far=90; await frames(6); await RenderingServer.frame_post_draw
+	screen.field.camera.far=30; await frames(6); await RenderingServer.frame_post_draw
 	var clipped := red_pixels(); await shot("board-presentation-old-clip")
 	screen._show_boards(); await frames(3); screen._show_player(0); await frames(6); await RenderingServer.frame_post_draw
 	var fitted := red_pixels()
 	print("CAMERA_CLIP old_pixels=",clipped," fitted_pixels=",fitted," far=",fitted_far)
-	check(screen.field.camera.far>90 and fitted>clipped+100,"orbit return retains visible models beyond the old fixed clip plane")
+	check(is_equal_approx(screen.field.camera.far,fitted_far) and fitted>clipped+100,"orbit return restores the fitted plane and visible models")
 	await shot("board-presentation-orbit")
 	get_window().size=Vector2i(1280,720); screen.field.reset_camera(); await frames(12)
 	# A full next-round generation can arrive while the home board is hidden.
@@ -83,10 +97,23 @@ func _ready() -> void:
 		run.advance(); connection.game._prepare()
 		await frames(16); screen._show_player(0); await frames(24)
 		screen.battle.formation_motion.settle(screen.battle.world)
+		check_render_positions(screen.battle, "hidden round %d" % index)
 		check(screen.battle.world.unit_rows().size()==run.deployed_count(),"new generation retains every home creature")
 		for unit: GameUnit in screen.battle.world.unit_rows():
 			check(unit.model.is_visible_in_tree() and unit._geoms.any(func(g):return g.is_visible_in_tree()),"hidden round replacement restores drawable figure")
 	await shot("board-presentation-next-round")
+	# Keep receiving native movement while the board's presentation parent
+	# moves between overview cells. Visible flags alone miss stale FTI poses.
+	connection.game.set_process(true)
+	connection.request("ready")
+	for index in 16:
+		screen._show_boards(); await get_tree().create_timer(.15).timeout
+		screen._show_player(1 + index % 8); await get_tree().create_timer(.15).timeout
+		check_render_positions(screen.field.match_state, "live scout %d" % index)
+		screen._show_player(0); await get_tree().create_timer(.15).timeout
+		check_render_positions(screen.battle, "live return %d" % index)
+	connection.game.set_process(false)
+	await shot("board-presentation-live-return")
 	# Eliminated spectators keep read-only hover access.
 	screen.run.lives=0
 	connection.set_process(true)

@@ -1,0 +1,13 @@
+{
+  "scope": "User requested ending this experiment after the current match and a few minutes of moving around. Replaced planned stationary comparison with ordinary X11 ground-click traversal; no restart comparison will be run. The launch flag still says stationary, but operator input now moves both characters.",
+  "actions": [
+    {
+      "unix": 1792422447.4208925,
+      "action": "Double ground clicks: owner window 0x3a00006 at 3000,1400; guest window 0x200002 at 1950,900."
+    },
+    {
+      "unix": 1792422548.7415915,
+      "action": "Five successive ordinary ground clicks per player, following the camera while walking away from the starting point."
+    }
+  ]
+}

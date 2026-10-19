@@ -5,6 +5,7 @@ godot = os.environ.get('GODOT', '/home/llm2x/opt/godot/Godot_v4.7-stable_linux.x
 with tempfile.TemporaryDirectory(prefix='ei-discord-') as tmp:
     sock = socket.socket(socket.AF_UNIX); sock.bind(tmp + '/discord-ipc-0'); sock.listen(); sock.settimeout(30)
     env = dict(os.environ, XDG_RUNTIME_DIR=tmp, XDG_DATA_HOME=tmp)
+    env.pop("EI_DISCORD_APP_ID", None)
     proc = subprocess.Popen([godot, '--headless', '--render-thread', 'safe', '--path', str(repo/'game'), '--', '--ei-path='+os.environ['EI_PATH'], '--tool=../tools/tests/discord_presence.gd'], env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
     try:
         conn, _ = sock.accept(); conn.settimeout(10)
@@ -19,7 +20,7 @@ with tempfile.TemporaryDirectory(prefix='ei-discord-') as tmp:
             op,n=struct.unpack('<II',exact(8)); return op,json.loads(exact(n))
         def frame(op,data):
             data=json.dumps(data).encode(); return struct.pack('<II',op,len(data))+data
-        op,hello=read(); assert op==0 and hello=={'v':1,'client_id':'123456789012345678'},(op,hello)
+        op,hello=read(); assert op==0 and hello=={'v':1,'client_id':'1561645781533069393'},(op,hello)
         ready=frame(1,{'cmd':'DISPATCH','evt':'READY','data':{}})
         conn.sendall(ready[:5]); time.sleep(.03); conn.sendall(ready[5:])
         op,activity=read(); assert op==1 and activity['cmd']=='SET_ACTIVITY'

@@ -1,0 +1,12 @@
+{
+  "baseline_pck": "bba04e9410c3442183ef0d98d3a1832a89a2b12b6dce6db7e1c3b0eb2a98b2e7",
+  "intermediate_a_pck": "b3f1af13b0f9b24b713f989ba16b6389f39be7a762fbde6d60607a8aebd6a950",
+  "final_diagnostic_pck": "4b1bf0d0e5ac4f57f84a7cef038b2340cd43e3cf861830f44c7319cf3fa92ec3",
+  "executable": "5c8b95c46a64e7a0af03da4270ef553514ad2450c1c87a499fd339a0e282f704",
+  "native_libraries": {
+    "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+    "libterrain_search.so": "ac42b3731536ae3a404755f48fb04ff54c4bfe79c85ebcc8d78be4153632392c",
+    "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+    "src/native/bin/libterrain_search.so": "ac42b3731536ae3a404755f48fb04ff54c4bfe79c85ebcc8d78be4153632392c"
+  }
+}

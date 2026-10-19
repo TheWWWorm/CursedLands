@@ -2498,8 +2498,8 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 					# Starting or refreshing movement preserves direct combat,
 					# including a spell waiting for its turn or previous clip.
 					if u.direct_steering.is_empty():
-						if not GameUnit.is_direct_combat_order(u.order): u.order = {}
-						u.orders = u.orders.filter(func(o): return GameUnit.is_direct_combat_order(o))
+						if not GameUnit.is_direct_combat_order(u.order) or u.order.get("stamina_notified", false): u.order = {}
+						u.orders = u.orders.filter(func(o): return GameUnit.is_direct_combat_order(o) and not o.get("stamina_notified", false))
 						u.path = PackedVector2Array()
 						u.remove_meta("interact")
 						u.remove_meta("walk_exit")
@@ -4163,7 +4163,7 @@ func _apply_snap(snaps: Array, t: float, serial := -1, precise_bodies := false) 
 				if serial <= int(u.get_meta("snapshot_serial", -1)): continue
 				u.set_meta("snapshot_serial", serial)
 			var body: PackedFloat64Array = s[17] if precise_bodies and s.size() > 17 and s[17] is PackedFloat64Array else PackedFloat64Array()
-			u.apply_snapshot(s,false,body)
+			u.apply_snapshot(s,false,body,t)
 
 
 ## Seconds before a co-op player's hero rises again (approx.; the original

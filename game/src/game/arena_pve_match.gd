@@ -101,8 +101,9 @@ func prepare_opponent_models(limit := 0) -> bool:
 		unit.hide(); unit.process_mode = Node.PROCESS_MODE_DISABLED
 		world.add_child(unit)
 		var point: Vector2 = placement.point
-		if not unit.setup(world, {"nid":world.new_uid(), "prototype":placement.id,
-				"player":TEAMS[placement.team], "position":Vector3(point.x,point.y,0)}):
+		var info := ArenaAppearance.info(placement.id)
+		info.merge({"nid":world.new_uid(), "player":TEAMS[placement.team], "position":Vector3(point.x,point.y,0)})
+		if not unit.setup(world, info):
 			unit.free(); continue
 		# Keep the final parent while hidden and outside the unit registry.
 		# Reparenting at the bell invalidates every prepared animation binding.
@@ -140,7 +141,11 @@ func _create_unit(placement: Dictionary) -> GameUnit:
 	var lookup := placement.duplicate(); lookup.erase("enemy_slot")
 	var key := str(lookup)
 	var unit: GameUnit = _prepared_enemies.get(key)
-	if not is_instance_valid(unit): return super._create_unit(placement)
+	if not is_instance_valid(unit):
+		var info := ArenaAppearance.info(placement.id)
+		var point: Vector2 = placement.point
+		info.merge({"player":TEAMS[placement.team], "position":Vector3(point.x,point.y,0)})
+		return world.spawn_unit(info)
 	_prepared_enemies.erase(key)
 	unit.show(); unit.process_mode = Node.PROCESS_MODE_INHERIT
 	return world.adopt_prepared_unit(unit)
@@ -553,7 +558,7 @@ func apply_board(data: Dictionary) -> void:
 				world.remove_unit(unit); unit = null
 			var created := unit == null
 			if created: unit = _spawn_record(record)
-			elif record.has("snap") and (not deploying or not same_board): unit.apply_snapshot(record.snap, true)
+			elif record.has("snap") and (not deploying or not same_board): unit.apply_snapshot(record.snap, true, PackedFloat64Array(), float(data.time))
 			if unit:
 				_fit_figure(unit)
 				restore_body(unit, record.online_body)

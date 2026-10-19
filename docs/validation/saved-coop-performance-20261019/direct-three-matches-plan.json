@@ -1,0 +1,31 @@
+{
+  "pid": 1839187,
+  "inputs": {
+    "quick.sav": "2c670e0bfeffcc3f0945550befb093819169d45ce8f52862b525170ec20ffb07",
+    "coop_worm_20261019_005130.sav": "04d9726ee4de0d856d91cc4af17d6551cd01a03f30e784112bcee2cb7a84123f"
+  },
+  "duration": 1500,
+  "speed": 2,
+  "graphics": "Ultra",
+  "renderer": "forward_plus",
+  "owner-size": [
+    3840,
+    2160
+  ],
+  "guest-size": [
+    2560,
+    1440
+  ],
+  "runtime_sha256": "8c06723018eae54ccc587c470c4239f542096457a65bd3c3d63e293e6a843249",
+  "benchmark_sha256": {
+    "saved_coop_traversal.gd": "4b493546245df643d9d4a6d2ec4cf8e1f291e4bbe1e2c3ec2ba1b413dec42cfb",
+    "coop_traversal_session.gd": "ebf586fa145df4e3e4e20513001fac047f6754c6c4acd9da3926dd236b9fc81d"
+  },
+  "owner-gpu": "0",
+  "guest-gpu": "1",
+  "guest-display": ":41",
+  "exit_code": 0,
+  "wall_seconds": 4217.383095308964,
+  "inputs_unchanged": true,
+  "scope": "Direct lifecycle retention only. Not a menu traversal test; Trials rendering affected by overview interpolation bug."
+}

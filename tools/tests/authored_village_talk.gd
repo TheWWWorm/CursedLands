@@ -252,6 +252,9 @@ func _ready() -> void:
 	check(not fallback(),"completed proposal cannot invent an escape offer")
 	s.state.set_var(0,AuthoredTalk.CAPTIVE_ESCAPE_TOPIC,1)
 	check(fallback(),"native offered escape follows the completed proposal")
+	npc.pos+=Vector2(.025,0);check(fallback(),"native post-dialogue displacement retains captive escape staging")
+	npc.pos=AuthoredTalk.CAPTIVE_LIZARD_POSITION+Vector2(.06,0);check(not fallback(),"larger captive displacement remains excluded")
+	npc.pos=AuthoredTalk.CAPTIVE_LIZARD_POSITION
 	check(not AuthoredTalk.original_stage(s,heroes[0],npc,0,AuthoredTalk.CAPTIVE_LIZARD_TOPIC),"escape phase excludes the completed proposal")
 	click(); select(0,AuthoredTalk.CAPTIVE_ESCAPE_TOPIC)
 	check(b.started[-1].var==AuthoredTalk.CAPTIVE_ESCAPE_TOPIC and b.started[-1].instant,"offered escape selection starts original staging")

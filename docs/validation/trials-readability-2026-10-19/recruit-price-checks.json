@@ -1,0 +1,2680 @@
+[
+	{
+		"a": 4,
+		"b": 24,
+		"context": "duel",
+		"cost": 5,
+		"rank": 0,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					100.0,
+					100.0
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 43.6437499409072,
+						"id": "human mercenary shaivar",
+						"max_hp": 141.0,
+						"team": 2
+					}
+				],
+				"time": 15.7299999999999,
+				"winner": 24
+			},
+			{
+				"damage": [
+					100.0,
+					100.0
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 43.6437499409072,
+						"id": "human mercenary shaivar",
+						"max_hp": 141.0,
+						"team": 1
+					}
+				],
+				"time": 15.7299999999999,
+				"winner": 24
+			},
+			{
+				"damage": [
+					100.0,
+					100.0
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 43.4674999448467,
+						"id": "human mercenary shaivar",
+						"max_hp": 141.0,
+						"team": 2
+					}
+				],
+				"time": 15.1249999999999,
+				"winner": 24
+			},
+			{
+				"damage": [
+					100.0,
+					100.0
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 43.4674999448467,
+						"id": "human mercenary shaivar",
+						"max_hp": 141.0,
+						"team": 1
+					}
+				],
+				"time": 15.1249999999999,
+				"winner": 24
+			}
+		]
+	},
+	{
+		"a": 4,
+		"b": 24,
+		"context": "line",
+		"cost": 5,
+		"rank": 0,
+		"supports": [
+			9,
+			16
+		],
+		"trials": [
+			{
+				"damage": [
+					334.503357315063,
+					340.807217407227
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 94.0,
+						"id": "human mercenary shaivar",
+						"max_hp": 94.0,
+						"team": 2
+					}
+				],
+				"time": 35.8599999999998,
+				"winner": 24
+			},
+			{
+				"damage": [
+					314.710759735107,
+					307.79348487854
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 141.0,
+						"id": "human mercenary shaivar",
+						"max_hp": 141.0,
+						"team": 1
+					}
+				],
+				"time": 31.6249999999999,
+				"winner": 24
+			},
+			{
+				"damage": [
+					354.952795410156,
+					343.777081108093
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 74.2349999947473,
+						"id": "human mercenary shaivar",
+						"max_hp": 94.0,
+						"team": 2
+					}
+				],
+				"time": 35.9149999999998,
+				"winner": 24
+			},
+			{
+				"damage": [
+					232.456601905823,
+					273.901317596436
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 141.0,
+						"id": "human mercenary shaivar",
+						"max_hp": 141.0,
+						"team": 1
+					}
+				],
+				"time": 28.9299999999999,
+				"winner": 24
+			}
+		]
+	},
+	{
+		"a": 5,
+		"b": 6,
+		"context": "duel",
+		"cost": 4,
+		"rank": 0,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					56.0,
+					75.0
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 16.242499972228,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 2
+					}
+				],
+				"time": 13.805,
+				"winner": 6
+			},
+			{
+				"damage": [
+					75.0,
+					70.0
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 2.24249997222798,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 1
+					}
+				],
+				"time": 13.86,
+				"winner": 6
+			},
+			{
+				"damage": [
+					70.0,
+					75.0
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 2.24249997222798,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 2
+					}
+				],
+				"time": 13.805,
+				"winner": 6
+			},
+			{
+				"damage": [
+					75.0,
+					70.0
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 2.24249997222798,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 1
+					}
+				],
+				"time": 13.86,
+				"winner": 6
+			}
+		]
+	},
+	{
+		"a": 5,
+		"b": 6,
+		"context": "line",
+		"cost": 4,
+		"rank": 0,
+		"supports": [
+			9,
+			16
+		],
+		"trials": [
+			{
+				"damage": [
+					274.298330688477,
+					264.759006500244
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 16.0649999761954,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 2
+					}
+				],
+				"time": 39.7649999999998,
+				"winner": 6
+			},
+			{
+				"damage": [
+					270.812027740478,
+					286.537816429138
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 26.621249986114,
+						"id": "toadm2",
+						"max_hp": 71.0,
+						"team": 2
+					}
+				],
+				"time": 41.6349999999998,
+				"winner": 5
+			},
+			{
+				"damage": [
+					215.75075378418,
+					236.893504333496
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 57.1774999960326,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 2
+					}
+				],
+				"time": 31.9549999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					234.653678512573,
+					248.873848342896
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 71.0,
+						"id": "toadm2",
+						"max_hp": 71.0,
+						"team": 2
+					}
+				],
+				"time": 33.2749999999999,
+				"winner": 5
+			}
+		]
+	},
+	{
+		"a": 6,
+		"b": 7,
+		"context": "duel",
+		"cost": 4,
+		"rank": 0,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					75.0,
+					87.9610996246338
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 7.51874996605359,
+						"id": "driadsnowa7",
+						"max_hp": 81.0,
+						"team": 2
+					}
+				],
+				"time": 16.1699999999999,
+				"winner": 7
+			},
+			{
+				"damage": [
+					87.9610996246338,
+					75.0
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 7.51874996605359,
+						"id": "driadsnowa7",
+						"max_hp": 81.0,
+						"team": 1
+					}
+				],
+				"time": 16.1149999999999,
+				"winner": 7
+			},
+			{
+				"damage": [
+					45.0,
+					73.070650100708
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 36.8099999818953,
+						"id": "driadsnowa7",
+						"max_hp": 81.0,
+						"team": 2
+					}
+				],
+				"time": 9.89999999999998,
+				"winner": 7
+			},
+			{
+				"damage": [
+					73.070650100708,
+					45.0
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 36.8099999818953,
+						"id": "driadsnowa7",
+						"max_hp": 81.0,
+						"team": 1
+					}
+				],
+				"time": 9.89999999999998,
+				"winner": 7
+			}
+		]
+	},
+	{
+		"a": 6,
+		"b": 7,
+		"context": "line",
+		"cost": 4,
+		"rank": 0,
+		"supports": [
+			9,
+			16
+		],
+		"trials": [
+			{
+				"damage": [
+					256.607425308228,
+					128.857597732544
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 71.0,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 1
+					},
+					{
+						"hp": 63.3982146867325,
+						"id": "hyenaf6",
+						"max_hp": 103.5,
+						"team": 1
+					}
+				],
+				"time": 32.6699999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					339.636904716492,
+					213.701218795776
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 81.0,
+						"id": "driadsnowa7",
+						"max_hp": 81.0,
+						"team": 1
+					}
+				],
+				"time": 34.9249999999998,
+				"winner": 7
+			},
+			{
+				"damage": [
+					193.935056686401,
+					265.17996673584
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 81.0,
+						"id": "driadsnowa7",
+						"max_hp": 81.0,
+						"team": 2
+					},
+					{
+						"hp": 16.4867322615949,
+						"id": "hyenaf6",
+						"max_hp": 103.5,
+						"team": 2
+					}
+				],
+				"time": 29.0949999999999,
+				"winner": 7
+			},
+			{
+				"damage": [
+					373.260561943054,
+					307.804544448853
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 24.6838053254685,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 2
+					}
+				],
+				"time": 45.4299999999998,
+				"winner": 6
+			}
+		]
+	},
+	{
+		"a": 6,
+		"b": 9,
+		"context": "duel",
+		"cost": 4,
+		"rank": 0,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					105.0,
+					30.3992204666138
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 41.1842875987925,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 1
+					}
+				],
+				"time": 18.7549999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					30.3992204666138,
+					105.0
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 41.0955376007762,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 2
+					}
+				],
+				"time": 18.6999999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					105.0,
+					39.2538423538208
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 32.9511195612879,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 1
+					}
+				],
+				"time": 18.7549999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					39.2538423538208,
+					105.0
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 33.1286195573204,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 2
+					}
+				],
+				"time": 19.3049999999999,
+				"winner": 6
+			}
+		]
+	},
+	{
+		"a": 6,
+		"b": 9,
+		"context": "line",
+		"cost": 4,
+		"rank": 0,
+		"supports": [
+			16,
+			21
+		],
+		"trials": [
+			{
+				"damage": [
+					343.981887435913,
+					148.267622756958
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 71.0,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 1
+					},
+					{
+						"hp": 61.8043523491513,
+						"id": "zombiemalef10",
+						"max_hp": 103.5,
+						"team": 1
+					}
+				],
+				"time": 53.4049999999998,
+				"winner": 6
+			},
+			{
+				"damage": [
+					125.346287918091,
+					324.64929485321
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 71.0,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 2
+					},
+					{
+						"hp": 10.4667608346178,
+						"id": "dragonkinbeastmenf3",
+						"max_hp": 103.5,
+						"team": 2
+					},
+					{
+						"hp": 83.8750068576825,
+						"id": "zombiemalef10",
+						"max_hp": 103.5,
+						"team": 2
+					}
+				],
+				"time": 47.9599999999998,
+				"winner": 6
+			},
+			{
+				"damage": [
+					311.025228691101,
+					160.241255569458
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 71.0,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 1
+					},
+					{
+						"hp": 26.0602609927191,
+						"id": "zombiemalef10",
+						"max_hp": 103.5,
+						"team": 1
+					}
+				],
+				"time": 48.2899999999998,
+				"winner": 6
+			},
+			{
+				"damage": [
+					175.210321235657,
+					356.839022827148
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 54.5380814866656,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 2
+					}
+				],
+				"time": 55.8249999999997,
+				"winner": 6
+			}
+		]
+	},
+	{
+		"a": 6,
+		"b": 16,
+		"context": "duel",
+		"cost": 4,
+		"rank": 0,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					105.0,
+					24.2087091445923
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 47.6142039710294,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 1
+					}
+				],
+				"time": 18.6999999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					24.2087091445923,
+					105.0
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 47.6142039710294,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 2
+					}
+				],
+				"time": 18.6999999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					105.0,
+					29.848473739624
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 42.6280417679626,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 1
+					}
+				],
+				"time": 18.6999999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					29.848473739624,
+					105.0
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 42.6280417679626,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 2
+					}
+				],
+				"time": 18.6999999999999,
+				"winner": 6
+			}
+		]
+	},
+	{
+		"a": 6,
+		"b": 16,
+		"context": "line",
+		"cost": 4,
+		"rank": 0,
+		"supports": [
+			9,
+			21
+		],
+		"trials": [
+			{
+				"damage": [
+					338.447135734558,
+					129.929022598267
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 71.0,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 1
+					},
+					{
+						"hp": 12.5905740485318,
+						"id": "hyenaf6",
+						"max_hp": 103.5,
+						"team": 1
+					},
+					{
+						"hp": 67.2251568254567,
+						"id": "zombiemalef10",
+						"max_hp": 103.5,
+						"team": 1
+					}
+				],
+				"time": 48.3999999999998,
+				"winner": 6
+			},
+			{
+				"damage": [
+					162.741219711304,
+					345.331834983826
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 54.3656356100796,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 2
+					}
+				],
+				"time": 55.8249999999997,
+				"winner": 6
+			},
+			{
+				"damage": [
+					358.467720222473,
+					213.823041915894
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 24.1270632305664,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 1
+					}
+				],
+				"time": 55.6599999999997,
+				"winner": 6
+			},
+			{
+				"damage": [
+					118.713050079346,
+					321.427670478821
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 71.0,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 2
+					},
+					{
+						"hp": 13.3642519943653,
+						"id": "hyenaf6",
+						"max_hp": 103.5,
+						"team": 2
+					},
+					{
+						"hp": 62.8321728970882,
+						"id": "zombiemalef10",
+						"max_hp": 103.5,
+						"team": 2
+					}
+				],
+				"time": 45.7599999999998,
+				"winner": 6
+			}
+		]
+	},
+	{
+		"a": 6,
+		"b": 21,
+		"context": "duel",
+		"cost": 4,
+		"rank": 0,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					105.0,
+					27.2437763214111
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 44.4600361533708,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 1
+					}
+				],
+				"time": 18.7549999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					27.2437763214111,
+					105.0
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 44.4600361533708,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 2
+					}
+				],
+				"time": 18.7549999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					105.0,
+					34.1450408935547
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 38.1110089874353,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 1
+					}
+				],
+				"time": 18.7549999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					34.1450408935547,
+					105.0
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 38.1110089874353,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 2
+					}
+				],
+				"time": 18.7549999999999,
+				"winner": 6
+			}
+		]
+	},
+	{
+		"a": 6,
+		"b": 21,
+		"context": "line",
+		"cost": 4,
+		"rank": 0,
+		"supports": [
+			9,
+			16
+		],
+		"trials": [
+			{
+				"damage": [
+					312.704186630249,
+					170.553353691101
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 58.7101545376524,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 1
+					}
+				],
+				"time": 45.4849999999998,
+				"winner": 6
+			},
+			{
+				"damage": [
+					108.436580276489,
+					266.70520362854
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 71.0,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 2
+					},
+					{
+						"hp": 23.0760593282465,
+						"id": "hyenaf6",
+						"max_hp": 103.5,
+						"team": 2
+					},
+					{
+						"hp": 56.0193855869615,
+						"id": "dragonkinbeastmenf3",
+						"max_hp": 103.5,
+						"team": 2
+					}
+				],
+				"time": 33.6049999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					294.523250579834,
+					154.86029510498
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 71.0,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 1
+					},
+					{
+						"hp": 47.4256146242622,
+						"id": "dragonkinbeastmenf3",
+						"max_hp": 103.5,
+						"team": 1
+					}
+				],
+				"time": 38.2249999999998,
+				"winner": 6
+			},
+			{
+				"damage": [
+					159.94874458313,
+					319.475270843506
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 71.0,
+						"id": "willowispm1",
+						"max_hp": 71.0,
+						"team": 2
+					},
+					{
+						"hp": 19.208743269793,
+						"id": "dragonkinbeastmenf3",
+						"max_hp": 103.5,
+						"team": 2
+					}
+				],
+				"time": 43.3399999999998,
+				"winner": 6
+			}
+		]
+	},
+	{
+		"a": 11,
+		"b": 24,
+		"context": "duel",
+		"cost": 5,
+		"rank": 0,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					113.872604179382,
+					152.863626480103
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 30.166798149115,
+						"id": "human mercenary shaivar",
+						"max_hp": 141.0,
+						"team": 2
+					}
+				],
+				"time": 26.7849999999999,
+				"winner": 24
+			},
+			{
+				"damage": [
+					152.863626480103,
+					113.872604179382
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 30.166798149115,
+						"id": "human mercenary shaivar",
+						"max_hp": 141.0,
+						"team": 1
+					}
+				],
+				"time": 26.7849999999999,
+				"winner": 24
+			},
+			{
+				"damage": [
+					128.221610641479,
+					157.372602653503
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 16.0807654529285,
+						"id": "human mercenary shaivar",
+						"max_hp": 141.0,
+						"team": 2
+					}
+				],
+				"time": 24.5299999999999,
+				"winner": 24
+			},
+			{
+				"damage": [
+					157.372602653503,
+					128.221610641479
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 16.0795029567533,
+						"id": "human mercenary shaivar",
+						"max_hp": 141.0,
+						"team": 1
+					}
+				],
+				"time": 23.7599999999999,
+				"winner": 24
+			}
+		]
+	},
+	{
+		"a": 11,
+		"b": 24,
+		"context": "line",
+		"cost": 5,
+		"rank": 0,
+		"supports": [
+			9,
+			16
+		],
+		"trials": [
+			{
+				"damage": [
+					417.644979286194,
+					451.395889854431
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 16.4966082565379,
+						"id": "human mercenary shaivar",
+						"max_hp": 94.0,
+						"team": 2
+					}
+				],
+				"time": 72.6000000000008,
+				"winner": 24
+			},
+			{
+				"damage": [
+					476.147474479675,
+					373.654729715983
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 14.0333023819756,
+						"id": "human mercenary shaivar",
+						"max_hp": 94.0,
+						"team": 1
+					}
+				],
+				"time": 71.4450000000006,
+				"winner": 24
+			},
+			{
+				"damage": [
+					277.393136850993,
+					445.642276382446
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 141.0,
+						"id": "human mercenary shaivar",
+						"max_hp": 141.0,
+						"team": 2
+					},
+					{
+						"hp": 8.33501531939908,
+						"id": "hyenaf6",
+						"max_hp": 103.5,
+						"team": 2
+					}
+				],
+				"time": 42.7899999999998,
+				"winner": 24
+			},
+			{
+				"damage": [
+					379.719823646545,
+					378.105948702494
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 88.1782013366976,
+						"id": "orcfemalem3",
+						"max_hp": 162.15,
+						"team": 2
+					}
+				],
+				"time": 44.7149999999998,
+				"winner": 11
+			}
+		]
+	},
+	{
+		"a": 12,
+		"b": 20,
+		"context": "duel",
+		"cost": 2,
+		"rank": 0,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					36.3933002471924,
+					43.0788530349731
+				],
+				"reason": "stalemate",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 4.79872425019116,
+						"id": "skeletonf2",
+						"max_hp": 48.0,
+						"team": 1
+					},
+					{
+						"hp": 11.329601730154,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 65.6149999999999,
+				"winner": -1
+			},
+			{
+				"damage": [
+					42.8095113754272,
+					22.6266405105591
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 22.3935855134303,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 28.9299999999999,
+				"winner": 20
+			},
+			{
+				"damage": [
+					36.140330696106,
+					53.9944725036621
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 2.37322999797021,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 51.7549999999998,
+				"winner": 20
+			},
+			{
+				"damage": [
+					43.3151596069336,
+					24.0451517105103
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 26.0902084387109,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 34.4299999999999,
+				"winner": 20
+			}
+		]
+	},
+	{
+		"a": 12,
+		"b": 20,
+		"context": "line",
+		"cost": 2,
+		"rank": 0,
+		"supports": [
+			14,
+			19
+		],
+		"trials": [
+			{
+				"damage": [
+					94.9024045944214,
+					161.597037315369
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 40.1643526446874,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 2
+					},
+					{
+						"hp": 7.66830641880014,
+						"id": "human gipath brigand f1",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 56.6499999999997,
+				"winner": 20
+			},
+			{
+				"damage": [
+					163.797184753418,
+					138.804414749146
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 12.0234434045397,
+						"id": "human gipath brigand f1",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 76.4500000000012,
+				"winner": 20
+			},
+			{
+				"damage": [
+					93.0544469833374,
+					168.141547775269
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 43.8899212447936,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 2
+					},
+					{
+						"hp": 5.07467939652548,
+						"id": "human gipath brigand f1",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 54.0649999999997,
+				"winner": 20
+			},
+			{
+				"damage": [
+					158.507602500916,
+					60.335139465332
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 41.3833283684071,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 1
+					},
+					{
+						"hp": 34.8182549260349,
+						"id": "human gipath brigand f1",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 45.6499999999998,
+				"winner": 20
+			}
+		]
+	},
+	{
+		"a": 14,
+		"b": 20,
+		"context": "duel",
+		"cost": 2,
+		"rank": 0,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					31.309886932373,
+					44.5755851745605
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 18.0441823467064,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 29.0399999999999,
+				"winner": 20
+			},
+			{
+				"damage": [
+					44.9685419082642,
+					45.7159061431885
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 4.48355909332967,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 42.8999999999998,
+				"winner": 20
+			},
+			{
+				"damage": [
+					40.1588668823242,
+					32.473201751709
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 3.2474379311659,
+						"id": "doggreyf6",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 20.8449999999999,
+				"winner": 14
+			},
+			{
+				"damage": [
+					17.5741151809692,
+					52.989143371582
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 26.4643030369276,
+						"id": "doggreyf6",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 28.2699999999999,
+				"winner": 14
+			}
+		]
+	},
+	{
+		"a": 14,
+		"b": 20,
+		"context": "line",
+		"cost": 2,
+		"rank": 0,
+		"supports": [
+			12,
+			19
+		],
+		"trials": [
+			{
+				"damage": [
+					128.959173774719,
+					155.492088317871
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 7.33077873860015,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 2
+					},
+					{
+						"hp": 22.9955874314898,
+						"id": "human gipath brigand f1",
+						"max_hp": 55.2,
+						"team": 2
+					}
+				],
+				"time": 59.7849999999997,
+				"winner": 20
+			},
+			{
+				"damage": [
+					131.741915512085,
+					76.8878227233887
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 27.1152691872241,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 1
+					},
+					{
+						"hp": 20.5640854513529,
+						"id": "skeletonf2",
+						"max_hp": 55.2,
+						"team": 1
+					},
+					{
+						"hp": 30.1609153894581,
+						"id": "human gipath brigand f1",
+						"max_hp": 55.2,
+						"team": 1
+					}
+				],
+				"time": 48.5099999999998,
+				"winner": 20
+			},
+			{
+				"damage": [
+					124.104873847961,
+					102.877841186523
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 23.586316720288,
+						"id": "doggreyf6",
+						"max_hp": 48.0,
+						"team": 1
+					},
+					{
+						"hp": 35.2096080235344,
+						"id": "skeletonf2",
+						"max_hp": 55.2,
+						"team": 1
+					}
+				],
+				"time": 50.7649999999998,
+				"winner": 14
+			},
+			{
+				"damage": [
+					116.974848937988,
+					121.272186088562
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 1.2858893398828,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 1
+					},
+					{
+						"hp": 30.5114031809184,
+						"id": "human gipath brigand f1",
+						"max_hp": 55.2,
+						"team": 1
+					}
+				],
+				"time": 51.4249999999998,
+				"winner": 20
+			}
+		]
+	},
+	{
+		"a": 17,
+		"b": 20,
+		"context": "duel",
+		"cost": 2,
+		"rank": 0,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					23.6814765930176,
+					28.6803995132446
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 24.9939614764427,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 19.4699999999999,
+				"winner": 20
+			},
+			{
+				"damage": [
+					46.7908735275269,
+					28.5807037353516
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 20.9232296438519,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 30.1399999999999,
+				"winner": 20
+			},
+			{
+				"damage": [
+					33.1869611740112,
+					27.5673122406006
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 17.3525417306224,
+						"id": "human gipath brigand a1",
+						"max_hp": 44.0,
+						"team": 1
+					}
+				],
+				"time": 22.7699999999999,
+				"winner": 17
+			},
+			{
+				"damage": [
+					23.5458116531372,
+					34.0908155441284
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 15.9533851854594,
+						"id": "human gipath brigand a1",
+						"max_hp": 44.0,
+						"team": 2
+					}
+				],
+				"time": 15.0699999999999,
+				"winner": 17
+			}
+		]
+	},
+	{
+		"a": 17,
+		"b": 20,
+		"context": "line",
+		"cost": 2,
+		"rank": 0,
+		"supports": [
+			12,
+			14
+		],
+		"trials": [
+			{
+				"damage": [
+					131.208750724792,
+					114.780848884583
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 1.76364343329131,
+						"id": "skeletonf2",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 40.4249999999998,
+				"winner": 20
+			},
+			{
+				"damage": [
+					141.335050392151,
+					103.460493659973
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 21.9207975775895,
+						"id": "skeletonf2",
+						"max_hp": 48.0,
+						"team": 1
+					},
+					{
+						"hp": 25.9140945424704,
+						"id": "doggreyf6",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 31.8449999999999,
+				"winner": 20
+			},
+			{
+				"damage": [
+					113.093518257141,
+					131.600791549683
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 19.4924099174995,
+						"id": "skeletonf2",
+						"max_hp": 48.0,
+						"team": 2
+					},
+					{
+						"hp": 20.4402156347897,
+						"id": "doggreyf6",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 39.8199999999998,
+				"winner": 20
+			},
+			{
+				"damage": [
+					119.027601051331,
+					117.256698608398
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 18.9925371897899,
+						"id": "skeletonf2",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 30.9649999999999,
+				"winner": 20
+			}
+		]
+	},
+	{
+		"a": 18,
+		"b": 24,
+		"context": "duel",
+		"cost": 5,
+		"rank": 0,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					150.0,
+					80.0
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 15.4099999684839,
+						"id": "human hadagan guards m14",
+						"max_hp": 94.0,
+						"team": 1
+					}
+				],
+				"time": 14.63,
+				"winner": 18
+			},
+			{
+				"damage": [
+					80.0,
+					150.0
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 15.4099999684839,
+						"id": "human hadagan guards m14",
+						"max_hp": 94.0,
+						"team": 2
+					}
+				],
+				"time": 14.63,
+				"winner": 18
+			},
+			{
+				"damage": [
+					150.0,
+					80.0
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 15.4099999684839,
+						"id": "human hadagan guards m14",
+						"max_hp": 94.0,
+						"team": 1
+					}
+				],
+				"time": 14.63,
+				"winner": 18
+			},
+			{
+				"damage": [
+					80.0,
+					150.0
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 15.4099999684839,
+						"id": "human hadagan guards m14",
+						"max_hp": 94.0,
+						"team": 2
+					}
+				],
+				"time": 14.63,
+				"winner": 18
+			}
+		]
+	},
+	{
+		"a": 18,
+		"b": 24,
+		"context": "line",
+		"cost": 5,
+		"rank": 0,
+		"supports": [
+			9,
+			16
+		],
+		"trials": [
+			{
+				"damage": [
+					388.980812835693,
+					247.26163444519
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 42.6686821176408,
+						"id": "human hadagan guards m14",
+						"max_hp": 94.0,
+						"team": 1
+					}
+				],
+				"time": 33.5499999999999,
+				"winner": 18
+			},
+			{
+				"damage": [
+					295.16924495697,
+					353.051037597656
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 78.0383333175753,
+						"id": "human mercenary shaivar",
+						"max_hp": 94.0,
+						"team": 1
+					}
+				],
+				"time": 37.5099999999998,
+				"winner": 24
+			},
+			{
+				"damage": [
+					452.609157180786,
+					223.86727180481
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 59.6247981203495,
+						"id": "human hadagan guards m14",
+						"max_hp": 94.0,
+						"team": 1
+					}
+				],
+				"time": 39.2149999999998,
+				"winner": 18
+			},
+			{
+				"damage": [
+					312.15101890564,
+					432.560180664062
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 4.09583329393809,
+						"id": "human mercenary shaivar",
+						"max_hp": 94.0,
+						"team": 1
+					}
+				],
+				"time": 37.8949999999998,
+				"winner": 24
+			}
+		]
+	},
+	{
+		"a": 19,
+		"b": 20,
+		"context": "duel",
+		"cost": 2,
+		"rank": 0,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					40.5676074981689,
+					34.7222177505493
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 9.67917970685667,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 43.1749999999998,
+				"winner": 20
+			},
+			{
+				"damage": [
+					36.4661167144775,
+					47.1313840866089
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 13.6786846125661,
+						"id": "human gipath brigand f1",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 40.1499999999998,
+				"winner": 19
+			},
+			{
+				"damage": [
+					56.0731801986694,
+					48.3031564712524
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 2.84897849574707,
+						"id": "human gipath brigand f1",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 51.1499999999998,
+				"winner": 19
+			},
+			{
+				"damage": [
+					24.7983108520508,
+					35.7422727584839
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 24.7312100562062,
+						"id": "human gipath brigand f1",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 26.3999999999999,
+				"winner": 19
+			}
+		]
+	},
+	{
+		"a": 19,
+		"b": 20,
+		"context": "line",
+		"cost": 2,
+		"rank": 0,
+		"supports": [
+			12,
+			14
+		],
+		"trials": [
+			{
+				"damage": [
+					95.1902086257935,
+					117.396051597595
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 14.4662251357956,
+						"id": "skeletonf2",
+						"max_hp": 48.0,
+						"team": 2
+					},
+					{
+						"hp": 17.3830861834328,
+						"id": "doggreyf6",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 44.6599999999998,
+				"winner": 20
+			},
+			{
+				"damage": [
+					148.145259857178,
+					67.623433303833
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 48.0,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 1
+					},
+					{
+						"hp": 23.5749162628974,
+						"id": "doggreyf6",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 39.4899999999998,
+				"winner": 20
+			},
+			{
+				"damage": [
+					142.829076194763,
+					59.3593715667725
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 55.2,
+						"id": "human gipath brigand f1",
+						"max_hp": 55.2,
+						"team": 1
+					},
+					{
+						"hp": 13.1618958839255,
+						"id": "doggreyf6",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 39.3799999999998,
+				"winner": 19
+			},
+			{
+				"damage": [
+					108.836224937439,
+					94.9894327163696
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 24.5323946054368,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 1
+					},
+					{
+						"hp": 10.8501447041104,
+						"id": "doggreyf6",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 36.0249999999998,
+				"winner": 20
+			}
+		]
+	},
+	{
+		"a": 20,
+		"b": 26,
+		"context": "duel",
+		"cost": 2,
+		"rank": 0,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					31.816012763977,
+					42.4941682815552
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 9.05571908888813,
+						"id": "human kania woodcutter f8",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 40.3699999999998,
+				"winner": 26
+			},
+			{
+				"damage": [
+					24.8373975753784,
+					26.6476064682007
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 24.1668059710379,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 23.6499999999999,
+				"winner": 20
+			},
+			{
+				"damage": [
+					44.5918855667114,
+					23.2838237762451
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 26.9990548233913,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 37.3999999999998,
+				"winner": 20
+			},
+			{
+				"damage": [
+					45.4747985839844,
+					54.2951019287109
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 2.08277139479194,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 62.4249999999997,
+				"winner": 20
+			}
+		]
+	},
+	{
+		"a": 20,
+		"b": 26,
+		"context": "line",
+		"cost": 2,
+		"rank": 0,
+		"supports": [
+			12,
+			14
+		],
+		"trials": [
+			{
+				"damage": [
+					93.8187582015991,
+					133.625663566589
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 6.43278756964768,
+						"id": "skeletonf2",
+						"max_hp": 48.0,
+						"team": 2
+					},
+					{
+						"hp": 27.9307793634371,
+						"id": "doggreyf6",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 44.3849999999998,
+				"winner": 26
+			},
+			{
+				"damage": [
+					131.930080223084,
+					118.388871765137
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 13.6844400922438,
+						"id": "human kania woodcutter f8",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 62.4799999999997,
+				"winner": 26
+			},
+			{
+				"damage": [
+					129.533434295654,
+					105.398959922791
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 20.1775895634502,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 1
+					},
+					{
+						"hp": 13.6698448039075,
+						"id": "doggreyf6",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 51.4799999999998,
+				"winner": 20
+			},
+			{
+				"damage": [
+					116.42893447876,
+					91.4646757125854
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 38.5856796728059,
+						"id": "human kania woodcutter f8",
+						"max_hp": 48.0,
+						"team": 1
+					},
+					{
+						"hp": 3.82070663401505,
+						"id": "doggreyf6",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 36.8499999999998,
+				"winner": 26
+			}
+		]
+	},
+	{
+		"a": 20,
+		"b": 28,
+		"context": "duel",
+		"cost": 2,
+		"rank": 0,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					36.4661167144775,
+					47.1313840866089
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 13.6786846125661,
+						"id": "human kania gang spear f10",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 40.1499999999998,
+				"winner": 28
+			},
+			{
+				"damage": [
+					40.5676074981689,
+					34.7222177505493
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 9.67917970685667,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 43.1749999999998,
+				"winner": 20
+			},
+			{
+				"damage": [
+					24.7983108520508,
+					35.7422727584839
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 24.7312100562062,
+						"id": "human kania gang spear f10",
+						"max_hp": 48.0,
+						"team": 2
+					}
+				],
+				"time": 26.3999999999999,
+				"winner": 28
+			},
+			{
+				"damage": [
+					56.0731801986694,
+					48.3031564712524
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 2.84897849574707,
+						"id": "human kania gang spear f10",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 51.1499999999998,
+				"winner": 28
+			}
+		]
+	},
+	{
+		"a": 20,
+		"b": 28,
+		"context": "line",
+		"cost": 2,
+		"rank": 0,
+		"supports": [
+			12,
+			14
+		],
+		"trials": [
+			{
+				"damage": [
+					148.145259857178,
+					67.623433303833
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 48.0,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 1
+					},
+					{
+						"hp": 23.5749162628974,
+						"id": "doggreyf6",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 39.4899999999998,
+				"winner": 20
+			},
+			{
+				"damage": [
+					138.113504600525,
+					106.831972312927
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 8.92074047370721,
+						"id": "human kania gang spear f10",
+						"max_hp": 55.2,
+						"team": 1
+					},
+					{
+						"hp": 17.8650631852164,
+						"id": "doggreyf6",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 54.2299999999997,
+				"winner": 28
+			},
+			{
+				"damage": [
+					108.836224937439,
+					94.9894327163696
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 24.5323946054368,
+						"id": "human kania police f8",
+						"max_hp": 48.0,
+						"team": 1
+					},
+					{
+						"hp": 10.8501447041104,
+						"id": "doggreyf6",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 36.0249999999998,
+				"winner": 20
+			},
+			{
+				"damage": [
+					157.72343006134,
+					58.0391090393066
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 55.2,
+						"id": "human kania gang spear f10",
+						"max_hp": 55.2,
+						"team": 1
+					},
+					{
+						"hp": 13.2550110484432,
+						"id": "skeletonf2",
+						"max_hp": 55.2,
+						"team": 1
+					},
+					{
+						"hp": 13.46189587722,
+						"id": "doggreyf6",
+						"max_hp": 48.0,
+						"team": 1
+					}
+				],
+				"time": 43.2299999999998,
+				"winner": 28
+			}
+		]
+	}
+]

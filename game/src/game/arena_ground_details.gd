@@ -16,6 +16,13 @@ float arena_court_edge(vec2 point) {
 static var _court_shaders := {}
 
 
+func _wants_biome_cover() -> bool:
+	# The authored arena already has perimeter scenery. Campaign snow mounds
+	# and pebble scatter obscure its small battlefield at Ultra quality.
+	# Keep footprints and the player's campaign graphics preference intact.
+	return false
+
+
 static func install(ground: EITerrain) -> void:
 	# _build has not entered the scene tree or submitted vegetation jobs yet.
 	# Keep this owner even when grass is disabled, so later option changes

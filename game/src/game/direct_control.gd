@@ -51,16 +51,17 @@ const PRONE_HOLD := 0.45
 class Reticle extends Control:
 	var controls: DirectControl
 	func _draw() -> void:
-		var guide := GameData.option("direct_hints")
+		var show_hints := controls.keyboard_guides_visible()
+		var guide := 0 if GameData.option("hide_remake_hints") != 0 else GameData.option("direct_hints")
 		var hint_scale := size.y / 720.0
 		var hint_y := controls.hint_baseline()
-		if controls._tactical_return and not controls.active():
-			if guide > 0 and controls.can_switch() and PadInput.active != "pad":
-				_draw_hint(Interface800.font(),controls.keyboard_compact_hint(),hint_y,hint_scale,Interface800.TEXT,false)
+		if not controls.active():
+			if show_hints and controls.can_switch():
+				_draw_hint(Interface800.font(),controls.keyboard_isometric_hint(),hint_y,hint_scale,Interface800.TEXT,false)
 			return
 		if not controls.usable(): return
 		if controls.pointer:
-			if guide > 0 and PadInput.active != "pad":
+			if guide > 0 and show_hints:
 				_draw_hint(Interface800.font(),controls.key_label("pointer")+": "+RemakeText.t("Return to mouse look"),hint_y,hint_scale,Interface800.TEXT,false)
 			return
 		var at := size * 0.5
@@ -90,7 +91,7 @@ class Reticle extends Control:
 		if guide == 2 and state.get("recovering",false) and state.get("text","") != "Recovering":
 			status += " · " + RemakeText.t("Recovering")
 		if not status.is_empty(): _draw_hint(Interface800.font(),status,at.y+23.0*k,k,colour)
-		if PadInput.active != "pad":
+		if show_hints:
 			var font := Interface800.font()
 			k = size.y / 720.0
 			if guide == 2:
@@ -263,10 +264,10 @@ func _process(delta: float) -> void:
 		var move := Vector2(float(EIKeymap.held("direct_right",2))-float(EIKeymap.held("direct_left",2)),
 			float(EIKeymap.held("direct_back",2))-float(EIKeymap.held("direct_forward",2))).limit_length()
 		step(move, minf(delta/maxf(Engine.time_scale,0.001),0.1))
-	_overlay.visible = on or _tactical_return
+	_overlay.visible = on or (keyboard_guides_visible() and can_switch())
 	if on:
 		_update_feedback(delta)
-	if on or _tactical_return:
+	if _overlay.visible:
 		_overlay.queue_redraw()
 
 
@@ -572,12 +573,24 @@ func keyboard_hint() -> String:
 		RemakeText.t("Left click"),key_label("interact"),key_label("pointer")]
 
 
+func keyboard_guides_visible() -> bool:
+	return GameData.option("hide_remake_hints") == 0 and PadInput.active != "pad" and not TouchInput.enabled
+
+
+func keyboard_isometric_hint() -> String:
+	return RemakeText.t("%s: camera mode   %s: wiki") % [key_label("tactical"), EIKeymap.key_of("wiki_context")]
+
+
+func keyboard_wiki_hint() -> String:
+	return EIKeymap.key_of("wiki_context") + ": " + RemakeText.t("Open wiki")
+
+
 func keyboard_extra_hint() -> String:
-	return RemakeText.t("%s: crouch (hold: lie down)   %s: aimed strike   %s: camera") % [key_label("posture"),key_label("aim"),key_label("tactical")] + "   " + key_label("quests") + ": " + RemakeText.t("Quests")
+	return RemakeText.t("%s: crouch (hold: lie down)   %s: aimed strike   %s: camera") % [key_label("posture"),key_label("aim"),key_label("tactical")] + "   " + key_label("quests") + ": " + RemakeText.t("Quests") + "   " + keyboard_wiki_hint()
 
 
 func keyboard_compact_hint() -> String:
-	return RemakeText.t("%s: camera mode   %s: show cursor") % [key_label("tactical"),key_label("pointer")] + "   " + key_label("quests") + ": " + RemakeText.t("Quests")
+	return RemakeText.t("%s: camera mode   %s: show cursor") % [key_label("tactical"),key_label("pointer")] + "   " + key_label("quests") + ": " + RemakeText.t("Quests") + "   " + keyboard_wiki_hint()
 
 
 func hint_baseline() -> float:

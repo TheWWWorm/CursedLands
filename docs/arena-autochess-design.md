@@ -38,48 +38,129 @@ a tie. The human receives a final place on elimination or victory.
 
 ## Building armies
 
-The experimental roster has **30 recruit chains and 90 original forms**. Each
-chain has three different archetypes. No step merely ages the previous creature,
-and no archetype appears in two chains. Distinct original combat roles, clans and
-named characters provide the larger roster without inventing new models.
+Balance comparisons must include damage after armor for the actual damage type,
+resistances, armor reduction, attack/cast cadence and alliances. Raw health and
+damage totals alone are not a balance verdict. Use mirrored native fights in
+both duels and supported teams, including equal-investment alternatives.
 
-| Shop cost / tier | Recruit chains |
-| --- | ---: |
-| 1 gold | 7 |
-| 2 gold | 7 |
-| 3 gold | 6 |
-| 4 gold | 6 |
-| 5 gold | 4 |
+The roster has **28 species with three star ranks each**. A species has one shop
+price and stays that species through both upgrades. Different age variants are
+rank appearances, never separate offers. Five original species have one model
+reused at higher ranks; their stars and combat values identify the upgrade.
+There are no human recruits. Goblins, lizardmen, woodsfolk, orc shamans and undead
+retain distinct native silhouettes alongside animals, spirits and larger monsters.
+All figures and pixel portraits use the original models and clan palettes.
 
-Only first forms appear in the shop. Both upgrades require three copies, making a
-three-star creature an investment of nine first forms. Two- and three-star forms
-are obtained through evolution. Tier-four and tier-five shop figures have a subtle
-rarity glow. Fourteen low-cost chains can appear at the opening; the six starting
-offers are distinct and include melee and ranged/magic choices. Later offers roll
-a tier with the existing level table and choose uniformly within it. Owning a chain
-does not secretly increase the chance of finding more copies.
+| Cost | Species |
+| --- | --- |
+| 1 | Boars, wolves, rats, bats, goblins, toads, skeletons |
+| 2 | Tigers, spiders, armadillos, lizardmen, woodsfolk, zombies |
+| 3 | Orc shamans, trolls, ogres, harpies, hyenas |
+| 4 | Evileyes, banshees, unicorns, wisps, elementals |
+| 5 | Dragons, golems, horrors, wormheads, cyclopes |
+
+Only one-star recruits appear in the shop. Three matching copies form two stars,
+and three two-star copies form three stars: nine base copies in total. Thirteen
+species can appear at the opening; its six offers are distinct and include melee
+and ranged/magic choices. Later offers roll a tier with the existing level table
+and choose uniformly within it. Ownership does not increase duplicate odds.
+
+Each offer shows one native figure, price, traits and a short line of nonzero
+owned counts by star rank. The inspector shows the three appearances in a compact
+strip and a short description of the creature's role. Its compact preview and
+paired health/armor row leave all three ranks visible without a repeated recruit
+heading. The panel uses the available height above the reserves, with scrolling
+reserved for longer company/alliance help. Upgrade-ready offers pulse
+cyan and carry an arrow separated from the lock; four- and five-gold rarity glows
+remain steady. One owned copy plus two matching shop offers marks both offers.
+Inspector accents and stars use the species' price-tier color.
+
+Reserves retain individual slot positions through purchases, swaps and saves.
+Selecting a field creature and then an empty reserve slot withdraws it there.
+Selecting an occupied reserve swaps the two creatures; either selection order
+works. Matching triples combine even when reserves are full. Rank appearances use the same species and native palette.
+
+The default camera fits the playable clearing and tall figures between the side
+HUD and reserves, using a 34-degree tilt. The lower view fits the full arena
+at a closer scale instead of cropping its outer combat positions. Manual orbit, zoom and panning survive
+round transitions. The shop folds away at the battle bell and can be reopened.
+Lighter ambient illumination and snow-colored fog avoid a dark frame at the map
+edge. Preparation shows one low fire line along the forward deployment limit,
+without side edges, a rear edge or a filled rectangle. The original animated fire
+atlas supplies tapered orange flames anchored to the snow, with reduced brightness,
+soft contact shading and warm reflected light. One visual emitter is capped at
+256 particles, keeps flame geometry below a metre,
+and creates no light nodes, scorch marks, sound or combat effects. It follows the
+actual boundary while orbiting or scouting. Combat and overview remove the emitter
+and clear the ground reflection, including deformed snow receivers.
+The arena excludes procedural snow mounds and pebble scatter even at Ultra;
+authored perimeter scenery and the campaign cover preference remain unchanged.
+
+Round notices use bold, outlined, unframed text above the action, below an open
+shop or near the top edge when it is closed. The opening title lasts at least
+one second, and results last two seconds; a very short fight queues its result
+without delaying health loss. Income omits zero bonuses. Damage and alliances
+follow the watched company.
+
+When a watched board resolves, every surviving winning creature launches the
+native fire-bolt particle effect toward the losing player's standings entry.
+The name flashes red. Health-loss numbers use the same original number atlas,
+red/green colors, scaling, three-second drift and fade as combat: red for the
+local player, green for opponents. Offscreen results still flash the name and
+show the number. Health remains authoritative and immediate; the effect cannot
+apply damage or replay on an unchanged snapshot. Its temporary particle world
+and viewport stop after the animation.
 
 Campaign prototype levels are not shop prices. Trials apply explicit price/star
-budgets to copies of the native data. Base health by cost is 35/48/66/90/120, with
+budgets to copies of the native data. Base health by cost is 44/60/78/99/122, with
 role factors of 1.0 melee, 0.9 ranged and 0.78 magic. Bow-using casters retain the
-0.9 factor because they cannot parry; utility-only spells do not classify a melee
-fighter as a caster. Star health is ×1/×2.2/×5;
-attack damage is ×1/×1.6/×2.8. Accuracy, defense, action speed and general armor
-also grow with cost and stars. Native resistance ratios, movement, attack types,
-weapons and spell behavior remain. Physical attack damage accounts for native
-attack cadence, with additional damage and accuracy for ordinary ranged attacks.
+0.9 factor because they cannot parry. Star health is ×1/×2.1/×5.0, and attack
+and offensive spell damage is ×1/×1.75/×4.0. Individual species modifiers distinguish
+frontline endurance, damage and protection. Completing nine copies pays a larger
+final-rank dividend than the initial species rebalance; it still compresses an
+investment into one deployment slot and does not guarantee beating several units
+at once. Price, shop odds, copy requirements and experience costs stay unchanged. Native movement, reach, damage types,
+attack timing and spell effects remain.
+
+Physical damage follows native attack cadence. Ordinary ranged attacks receive
+an accuracy and damage allowance; melee gets a smaller allowance for travel and
+exposure. Stars improve accuracy and defense, but do not also multiply action
+speed. General armor starts at `3 + 2 × cost`, modified by species and
+`1 + 0.15 × rank_index`; final-rank melee uses ×1.65 so flat armor
+retains value against larger late-round damage packets. Typed resistance ratios are clamped to 0.6–1.8 before
+applying that budget. Combat retains native flat subtraction with the existing Trials 80% mitigation
+cap. There are no campaign-scale boss immunities hidden in five-gold recruits.
 Recruits recover one quarter of their native regeneration, capped at 0.5% maximum
 health per 15 native ticks (0.825 seconds). Faster-recovering creature types retain
 their advantage without outhealing the entire bounded attack budget.
 
-Offensive spells use real effect runes to fit the same budget, including area
-and extra-target costs. Healing receives 60% of the comparable offensive budget.
-When a native spell cannot reach a small enough effect, the Cut Effect rune and
-a slower action rate preserve its heavy hit. Trials self-healing waits until
-half health, and elemental protection requires a matching enemy damage source.
-Recruits skip night vision and quieter-footstep buffs in the revealed arena.
-Native AI also re-evaluates multiple attack options against its last opponent
-and scores spell damage using the damage school used by combat.
+Offensive spells use real effect runes, including half steps from Cut Effect,
+so the inspector, AI and combat share one definition. Multi-target budgets account
+for each target paying flat armor. Persistent walls use their native total-lifetime
+effect, not that value multiplied by the number of pulses; both power and Trials
+AI valuation allow for partial contact with moving targets. Campaign AI retains
+its original wall evaluation. Healing receives 50% of the comparable offensive
+budget. A curse's minimum native packet remains large, so the horror pays for it
+with a longer action interval.
+
+Every star retains its species' spell kit. Unicorns add healing, orc shaman
+Strength gives 15% damage and 25% health, and wormhead Haste gives three action
+points to three allies. Self-healing waits until half health; elemental protection
+requires an enemy with matching damage. Night-vision and quieter-footstep buffs
+are skipped in the revealed arena. Native AI evaluates damage against the actual
+school's armor and reconsiders attack options against its last opponent.
+
+Six overlapping alliances reward distinct deployed species. Repeated copies and
+reserves do not increase the count; most benefits apply only to members.
+
+| Alliance | Thresholds | Benefit |
+| --- | --- | --- |
+| Beasts | 2/4/6 | +8/16/24% physical attack damage |
+| Horde | 2/4 | +12/24% maximum health |
+| Warriors | 2/4 | +2/4 flat physical armor |
+| Hunters | 2/4 | +10/20% accuracy and +8/16% action speed |
+| Mages | 2/4 | Opponents lose 15/30% elemental armor |
+| Spirits | 2/4 | +3/6 flat fire, acid and lightning armor |
 
 Creep accuracy, avoidance and exceptional boss armor are capped
 by wave, while their native bodies, damage and spells remain. These changes apply
@@ -109,16 +190,23 @@ a companion instead of more XP. Previously purchased training up to 126 remains
 loadable and round-trips without changing its stored value; displayed XP caps
 at 110. Shop odds, interest and the four policy reserves are unchanged.
 
-Version-11 saves migrate the previous forty-family roster to these chains,
-preserving rank, deployment and recorded investment. Loaded snapshots are copied
-before migration. A first-form sale returns its recorded investment; evolved
-sales return the lesser of the full copy cost and two thirds of investment.
-Online previews use the host's quote. If the unit changes before a quoted sale
-arrives, the host rejects it instead of accepting a different price.
+Schema 13 migrates the former forty-family and thirty-chain saves by each
+stored creature's actual species, retaining rank, UID, position, reserve slot and
+paid investment. Retired human forms map to a creature with a corresponding
+combat role. Exact old prototype IDs are validated before conversion. Migration
+copies its input and combines newly matching triples. Current companies keep
+stable reserve slots through round trips, including CPU reserves.
 
-See [the roster experiment](validation/allods-challenge-2026-10-18.md) and
-[the combat-budget follow-up](validation/trials-combat-balance-2026-10-18.md)
-for native fight comparisons, policy results and remaining playtest questions.
+A first-form sale returns its recorded investment; evolved sales return the
+lesser of the full copy cost and two thirds of investment. Online previews use
+the host's quote and reject changed prices.
+
+See [the balance depth validation](validation/trials-balance-depth-2026-10-19.md)
+for paired full matches, armor-aware mixed-support comparisons, acquisition costs,
+rendered UI evidence and remaining playtest questions. The initial
+[species rebalance validation](validation/trials-species-rebalance-2026-10-19.md)
+records the baseline before this tuning pass. The earlier experiment reports describe superseded
+rosters and are retained as historical evidence.
 
 Desktop solo combat uses a private authenticated loopback worker. The visible
 process owns shopping, economy and saves, and displays the worker's frozen
@@ -217,10 +305,10 @@ The last ten seconds of preparation or combat change the clock to coral and puls
 its opacity; pausing also stops the pulse. CPUs use original
 localized NPC names: Erfar, Estera, Babur, Tilvar, Valrasian, Diera, Shei-Var and
 Kardaur. Hover details temporarily replace the standings and remain available after elimination.
-The transparent left sidebar shows only the local company’s damage, sorted by
+The transparent left sidebar shows only the watched company’s friendly damage, sorted by
 contribution, with native pixel portraits, stars and bars. Dead combatants remain
-in that round’s list. Compact alliance icons show thresholds below it. Brief central
-banners announce rounds, preparation countdowns, income and victory/defeat. Online
+in that round’s list. Compact alliance icons show thresholds below it. Brief upper-screen
+notices announce rounds, income and victory/defeat without covering combat. Online
 evolution notices follow the acknowledged roster update, without another purchase. Names, help, status,
 errors and both modes' rules are localized in English, Russian and German.
 

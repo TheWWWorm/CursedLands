@@ -47,11 +47,11 @@ func _ready() -> void:
 					check(translated!=english or authored,"native recruit title is localized: "+english)
 			await shot("roster-%s-%d-%d" % [lang, rank, page])
 			screen._hide_inspector()
-	for slot in 6: screen.run.shop[slot] = {"family": 29-slot, "rank":0, "locked": slot == 0}
+	for slot in 6: screen.run.shop[slot] = {"family": ArenaRules.FAMILIES.size()-1-slot, "rank":0, "locked": slot == 0}
 	screen._refresh(); await wait_offers(); await frames(16)
 	for slot in 6:
 		var card := screen._shop.get_child(slot).get_child(0) as ArenaCreatureCard
-		check(card.family == 29-slot and card.get_meta("arena_creature").family == card.family, "rerolled inspector follows family")
+		check(card.family == ArenaRules.FAMILIES.size()-1-slot and card.get_meta("arena_creature").family == card.family, "rerolled inspector follows family")
 		check(card._traits.get_child_count() == ArenaAlliances.traits(card.family).size(), "rerolled tribe icons follow family")
 		check(card.preview.creature._info.prototype == card.prototype and viewports[slot] == card.preview.creature._vp.get_instance_id(), "rerolled model retains viewport")
 	screen.queue_free(); await frames(8)

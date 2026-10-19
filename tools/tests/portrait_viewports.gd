@@ -1,5 +1,5 @@
 extends Node
-## Render the actual PartyFaces own/co-op layout with identical native heroes.
+## Render PartyFaces with the supplied save's trained build and a default hero.
 ## Selection/idle animation is driven manually, then settled to an exact pose
 ## for comparison. This checks UI viewports, not campaign/co-op networking.
 ## World/Session are data-only fixtures; only portrait/UI processing is live.
@@ -26,8 +26,10 @@ func run()->void:
 	s=Session.new();s.online=true;s.state=CampaignState.new();s.world=w
 	g=Game.new();g.world=w;g.session=s
 	for i in 2:
-		var u:=w.spawn_unit({"nid":i+1,"prototype":"Human Hero","position":Vector3(1+i,1,0),"complexion":GameUnit.proto_complexion(GameData.db.find("monster_prototypes","Human Hero"))})
+		var u:=w.spawn_unit({"nid":i+1,"prototype":"Human Hero","position":Vector3(1+i,1,0),"complexion":Vector3(0.0,0.55,0.9) if i==0 else GameUnit.proto_complexion(GameData.db.find("monster_prototypes","Human Hero"))})
 		u.controller=i;u.set_meta("hero",{"prototype":"Human Hero"});u.set_process(false);u.set_physics_process(false);units.append(u)
+	if Portrait.face_names(units[0])!=Portrait.face_names(units[1]):
+		failures+=1;push_error("Training changed the main hero portrait identity")
 	var canvas:=Control.new();add_child(canvas);canvas.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	faces=PartyFaces.new();faces.game=g;canvas.add_child(faces)
 	for size:Vector2i in [Vector2i(1920,1080),Vector2i(1280,1024),Vector2i(720,1280),Vector2i(2560,1440),Vector2i(1920,1080)]:

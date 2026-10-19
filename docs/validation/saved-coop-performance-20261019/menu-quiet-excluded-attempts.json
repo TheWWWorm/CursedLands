@@ -1,0 +1,125 @@
+[
+  {
+    "run": "saved-coop-menu-quiet-after-trials",
+    "assessment": {
+      "excluded": true,
+      "reason": "Optional scouting clicked a hidden stale standings button during a round transition. Guest driver quit; the remaining test processes were stopped. This is not a game performance result."
+    },
+    "plan": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/checks/menu-native-runtime/CursedLands.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/checks/saved-coop-menu-quiet-after-trials/source/menu_coop_retention.gd",
+        "--host-save=/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/checks/portrait-user-save/quick.sav",
+        "--guest-save=/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/checks/friend-user-save/p9cbe6eaa06c4f91173b1bbb7/coop_worm_20261019_005130.sav",
+        "--duration=180",
+        "--label=saved-coop-menu-quiet-after-trials",
+        "--menu-cycles=3",
+        "--default-render-thread",
+        "--real-audio",
+        "--camera-cycle",
+        "--change-locations",
+        "--owner-size=3840x2160",
+        "--guest-size=2560x1440",
+        "--guest-gpu=1",
+        "--guest-display=:41",
+        "--guest-xauthority=/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/checks/gpu1-display/Xauthority",
+        "--stationary"
+      ],
+      "inputs": {
+        "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/checks/portrait-user-save/quick.sav": "2c670e0bfeffcc3f0945550befb093819169d45ce8f52862b525170ec20ffb07",
+        "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/checks/friend-user-save/p9cbe6eaa06c4f91173b1bbb7/coop_worm_20261019_005130.sav": "04d9726ee4de0d856d91cc4af17d6551cd01a03f30e784112bcee2cb7a84123f"
+      },
+      "engine_sha256": "5c8b95c46a64e7a0af03da4270ef553514ad2450c1c87a499fd339a0e282f704",
+      "runtime_sha256": "f69af96ab85e35d7e9ada6c4787ed98f5f3b0ba3631cf3bf646dd085e64ad824",
+      "source_sha256": {
+        "menu_coop_retention.gd.source": "0f64ac4b83e5be7096d3544d05d57c5b767e7402fc1d2f57b733c2fbe3087f21",
+        "menu_coop_retention.gd": "d308e6429b6b5b5620bee489be8e09640cc8de3cb441dc989900864af071438e",
+        "saved_coop_traversal.gd.source": "44d93895fe717dd7288095daad7f1dfc53ab710691b00c4b38adea27831f05b2",
+        "coop_traversal_session.gd.source": "ebf586fa145df4e3e4e20513001fac047f6754c6c4acd9da3926dd236b9fc81d"
+      },
+      "menu_driven": true,
+      "graphics": "Ultra",
+      "speed": 2,
+      "duration": 180,
+      "cycles": 3,
+      "owner_size": "3840x2160",
+      "guest_size": "2560x1440",
+      "stationary": true,
+      "smoke_rounds": 0,
+      "checkpoint": false,
+      "match_poses_sha256": null,
+      "pid": 2012943,
+      "interrupted": true,
+      "exit_code": -15,
+      "wall_seconds": 542.5094379350194,
+      "inputs_unchanged": true
+    }
+  },
+  {
+    "run": "saved-coop-menu-quiet-after-trials-v2",
+    "assessment": {
+      "excluded": true,
+      "reason": "Optional overview click referenced a hidden toolbar during a round transition. Quit-in-transition caused secondary teardown warnings. No performance conclusions from this interrupted harness run."
+    },
+    "plan": {
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/checks/menu-native-runtime/CursedLands.x86_64",
+        "--rendering-method",
+        "forward_plus",
+        "--gpu-index",
+        "0",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/checks/saved-coop-menu-quiet-after-trials-v2/source/menu_coop_retention.gd",
+        "--host-save=/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/checks/portrait-user-save/quick.sav",
+        "--guest-save=/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/checks/friend-user-save/p9cbe6eaa06c4f91173b1bbb7/coop_worm_20261019_005130.sav",
+        "--duration=180",
+        "--label=saved-coop-menu-quiet-after-trials-v2",
+        "--menu-cycles=3",
+        "--default-render-thread",
+        "--real-audio",
+        "--camera-cycle",
+        "--change-locations",
+        "--owner-size=3840x2160",
+        "--guest-size=2560x1440",
+        "--guest-gpu=1",
+        "--guest-display=:41",
+        "--guest-xauthority=/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/checks/gpu1-display/Xauthority",
+        "--stationary"
+      ],
+      "inputs": {
+        "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/checks/portrait-user-save/quick.sav": "2c670e0bfeffcc3f0945550befb093819169d45ce8f52862b525170ec20ffb07",
+        "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/checks/friend-user-save/p9cbe6eaa06c4f91173b1bbb7/coop_worm_20261019_005130.sav": "04d9726ee4de0d856d91cc4af17d6551cd01a03f30e784112bcee2cb7a84123f"
+      },
+      "engine_sha256": "5c8b95c46a64e7a0af03da4270ef553514ad2450c1c87a499fd339a0e282f704",
+      "runtime_sha256": "f69af96ab85e35d7e9ada6c4787ed98f5f3b0ba3631cf3bf646dd085e64ad824",
+      "source_sha256": {
+        "menu_coop_retention.gd.source": "f86a23cf4c9d1da661acc186e1638a50809c696316f79e5d030673e986535c6f",
+        "menu_coop_retention.gd": "bc2c81b57d2956b875e5b9d595284b74bc215fe6559690c990802d1362c8b3c8",
+        "saved_coop_traversal.gd.source": "44d93895fe717dd7288095daad7f1dfc53ab710691b00c4b38adea27831f05b2",
+        "coop_traversal_session.gd.source": "ebf586fa145df4e3e4e20513001fac047f6754c6c4acd9da3926dd236b9fc81d"
+      },
+      "menu_driven": true,
+      "graphics": "Ultra",
+      "speed": 2,
+      "duration": 180,
+      "cycles": 3,
+      "owner_size": "3840x2160",
+      "guest_size": "2560x1440",
+      "stationary": true,
+      "smoke_rounds": 0,
+      "checkpoint": false,
+      "match_poses_sha256": null,
+      "pid": 2024111,
+      "exit_code": 2,
+      "wall_seconds": 469.17665547301294,
+      "inputs_unchanged": true
+    }
+  }
+]

@@ -5,7 +5,7 @@ extends ArenaRun
 const PLAYER_COUNT := 9
 const MAX_ROUNDS := 100
 const TOURNAMENT_SAVE := "user://arena-autochess.json"
-const STYLES := ["beast", "horde", "warrior", "hunter", "mage"]
+const STYLES := ["beast", "horde", "warrior", "hunter", "mage", "spirit"]
 var rivals: Array[ArenaRun] = []
 var rival_health: Array[int] = []
 var placements: Array[int] = []
@@ -431,7 +431,7 @@ func _restore_companies(data: Dictionary, seats: int) -> bool:
 		var plan := {"actions":0, "rerolls":0, "wait":0.5 + index * 0.1, "done":false}
 		if data.get("bot_plans") is Array and data.bot_plans.size() == rivals.size():
 			var saved = data.bot_plans[index]
-			if saved is Dictionary and _integer(saved.get("actions"),0,40) and _integer(saved.get("rerolls"),0,5) and saved.get("done") is bool and _number(saved.get("wait"),-10,10):
+			if saved is Dictionary and _integer(saved.get("actions"),0,40) and _integer(saved.get("rerolls"),0,12) and saved.get("done") is bool and _number(saved.get("wait"),-10,10):
 				plan = saved.duplicate(true)
 		bot_plans.append(plan)
 	return true

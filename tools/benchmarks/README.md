@@ -1,3 +1,74 @@
+# Menu-driven saved co-op retention
+
+`run_menu_coop.py` plays complete online Trials matches, leaves through the
+confirmation dialog, hosts/joins the next match from the main menu, and then
+loads two supplied campaign saves through the co-op save selectors. The same
+two rendered client processes remain open throughout. A player match ends
+when both human players have been eliminated or the tournament has ended;
+the driver does not keep eliminated players waiting for the remaining bots.
+
+Use an isolated, unpublished export made with the repository's patched engine
+templates (see `engine_patches/godot-4.7/README.md`). An editor export with an
+official template can silently replace the executable with the stock engine.
+Record and check both executable and PCK hashes before interpreting results.
+The launcher copies both saves into a new private profile, freezes its driver
+sources, records input hashes, and checks that the originals are unchanged.
+
+```sh
+python3 tools/benchmarks/run_menu_coop.py \
+  --runtime /absolute/export/CursedLands.x86_64 \
+  --ei-path /absolute/EvilIslands \
+  --host-save /absolute/host/quick.sav \
+  --guest-save /absolute/friend/latest-coop.sav \
+  --output /absolute/results/menu-coop-01 \
+  --cycles 3 --duration 1800 \
+  --owner-size 3840x2160 --guest-size 2560x1440 \
+  --owner-gpu 0 --guest-gpu 1 \
+  --guest-display :41 --guest-xauthority /absolute/test/Xauthority
+```
+
+The second display is optional and must already exist; this script does not
+reconfigure displays or install drivers. Set both GPU indices to zero for a
+single-GPU functional check, but do not compare its FPS with separate-GPU runs.
+Use `--cycles 1 --smoke-rounds 3 --duration 40 --stationary` for a short menu
+smoke check including scouting, a confirmed Trials exit, campaign load/save,
+and both clients' final menu exits. Omit `--smoke-rounds` for complete matches.
+A short or stationary run is not evidence of sustained combat performance.
+
+Trials recruitment, arrangement, training, readiness, scouting and menu exits
+use input events against visible controls. Campaign movement and combat use
+normal game commands with the saved equipment, armor, skills and spell runes.
+The guest deliberately stacks Acid Fog and interleaves Lightning and Weakness;
+both characters use their available healing. The driver rotates cameras,
+cycles isometric/third-person/first-person modes, walks to authored exits,
+and clicks the leave, travel-map and objectives screens. It never teleports
+actors, changes their stats, creates enemies/effects, or makes them invulnerable.
+Graphics are Ultra, game speed is 2×, and real audio stays enabled.
+
+`run.log`, `plan.json` and `processes.jsonl` record lifecycle actions, frame
+intervals, resource counts, child processes and build provenance. The isolated
+profile additionally contains menu screenshots, per-peer action/retention
+receipts and campaign traversal samples. Verify completed casts, kills, living
+party members, distance travelled and actual location changes before counting
+a run as valid. Active traversal continues defending and healing through the
+end of the run; it must not force the party to idle under attack. Use a separate
+`--stationary` pass at a verified safe checkpoint for a quiet comparison. A death
+view is not a valid performance sample for living-party gameplay. Do not run
+another game, build or send concurrent desktop input during the measurement.
+This is automated play on Linux/Vulkan, not a Windows/default-renderer result
+or a physical-input latency measurement.
+
+For a fresh-process comparison, first verify both characters are alive and safe
+in the host checkpoint saved through the pause menu, keep the same executable/PCK and graphics
+arguments, and add `--cycles 0 --duration 180 --stationary --checkpoint
+--match-poses /absolute/final-poses.json`. The pose file contains `owner` and
+`guest` objects, each with the final sample's `position` array and `camera_pose`
+dictionary. The guest reclaims the existing saved character by name. Both
+characters walk to their recorded positions before measurement. Check that
+the positions, zone, camera and health match; report the quiet intervals
+separately from travel or loading. A restart difference alone does not prove
+a leak, especially if temperature, clocks or background load changed.
+
 # Portal complete-simulation benchmark
 
 `portal_throughput.gd` is the version-2 fixed-work fixture. It loads a copy of
@@ -302,3 +373,39 @@ play. The initial sample is not a full interval; discard intervals that include
 loading, disconnection or a clock change. Both clients share one GPU in this
 fixture, and moving views have different workloads. A lower or higher FPS in a
 different location is not by itself evidence of a leak or a fix.
+
+# Trials balance depth
+
+`arena_balance_contexts.gd` compares every unordered pair of species at the same
+shop price in physical, fire and lightning support teams. It tests two- and
+three-star candidates, with two fixed seeds and mirrored sides: 1,584 native
+fights. The three shared two-star supports never duplicate either candidate.
+Native movement, targeting, regeneration, typed armor and alliance thresholds
+remain active. `--tiers=1,2` restricts a run. These are controlled substitutions,
+not 1,584 independent tournament observations. A 90-second timeout is retained
+as a draw rather than counted as a win.
+
+`arena_balance_catalog.gd` exports all 84 species/rank combinations, their spells,
+cadence, per-type armor and 1,764 actual `Combat.absorb` samples, plus the shop odds
+and level costs. `arena_star_balance.gd` checks promotions and equal-purchase-cost
+alternatives. Acquisition analysis must also account for rerolls and XP.
+
+Run these via the game's `--tool=/absolute/path/to/script.gd` entry point against
+a frozen patched export and an isolated profile. Before launching, set
+`confine_mouse=0`, `show_fps=1`, and `volume_sfx=volume_stream=volume_voice=0`.
+Run `arena_bot_tournaments.gd --games=12 --first-game=0 --all-new` for six paired
+seeds with rotating economy, expansion, evolution and tempo policies. Compare
+the same seeds before and after changes; retain raw JSON and executable/PCK
+hashes. Policies are purchasing heuristics, not expert players. Automated
+results screen for outliers and strategy imbalance; they cannot establish fun.
+
+The 19 October follow-up includes 16 tournaments per build (eight seeds, two
+policy rotations), with frozen before/intermediate/final records. Reproduce the
+summary and exact whole-shop acquisition costs with:
+
+```sh
+python3 docs/validation/trials-balance-depth-2026-10-19/analyze.py
+```
+
+See [the balance depth report](../../docs/validation/trials-balance-depth-2026-10-19.md)
+for the interpretation, remaining outliers and rendered planning-view checks.

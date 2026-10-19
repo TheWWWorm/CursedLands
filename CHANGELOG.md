@@ -2,20 +2,44 @@
 
 ## Unreleased
 
+- Show camera-mode and wiki shortcut hints in isometric view, following remapped keys. Add a localized option to hide remake control hints in every camera mode; hints remain enabled by default.
+- Default enemy health bars to Always while preserving saved choices and existing visibility rules.
+- Keep village quest offers scrollable and centered within the available screen area, including after accepting a quest and resizing a touch browser window. ([#46](https://github.com/TheWWWorm/CursedLands/issues/46))
+- Place the scouted company heading below the shop and show compact owned counts by star rank.
+
+- Apply scouting and overview board offsets on the presentation frame so creature meshes return with their health markers.
+- Preserve the independent campaign protagonist's authored identity when merging partial co-op updates.
+- Recognize unchanged, acknowledged co-op checkpoints when a returning guest's final save is newer than the host's selected save. Retain the guest's personal advancement and inventory while following the shared story checkpoint; keep independent solo progress protected.
 - Keep portrait head poses on the UI frame clock, preventing physics interpolation from blending selection and idle animations inside portrait viewports.
+- Keep the chosen main hero's portrait face stable when training changes body proportions, including in existing saves.
+- Allow the captive lizard's follow-up conversation after the small position change produced by the preceding original dialogue, retaining quest and staging checks.
+- Select creature attack animations using their natural weapon type as well as equipped weapons. ([#36](https://github.com/TheWWWorm/CursedLands/issues/36))
+- Accept known spells while stamina recovers, stop movement for a waiting self-cast, and give one stamina voice acknowledgement per order. Allow a new movement or attack order to cancel the wait in direct control. ([#37](https://github.com/TheWWWorm/CursedLands/issues/37), [#40](https://github.com/TheWWWorm/CursedLands/issues/40))
+- Alert witnesses of a fatal hit without sending an additional help call from the dead creature. Preserve help calls from survivors. ([#38](https://github.com/TheWWWorm/CursedLands/issues/38))
+- Replicate individual hostility so attacked neutral animals and witnesses of a kill show their current allegiance on the client. ([#39](https://github.com/TheWWWorm/CursedLands/issues/39))
+- Offer original experience distribution, full experience for everyone, or full experience for each main hero with normal companion shares, in solo and co-op settings. ([#41](https://github.com/TheWWWorm/CursedLands/issues/41))
+- Replicate the selected action clip, start time and attack rate; discard deferred time from the preceding clip when starting an attack, cast, hit or death animation. ([#42](https://github.com/TheWWWorm/CursedLands/issues/42), [#45](https://github.com/TheWWWorm/CursedLands/issues/45))
+- Match replicated walking and running animation rates to displayed movement and finish the final stride before switching to idle. Update the character preview after direct-control leg composition. ([#44](https://github.com/TheWWWorm/CursedLands/issues/44))
 
 - Attach creature spell effects to their animated mouths, eyes, horns, hands or staffs, and physical shots to their weapon or throwing hand. Preserve low launch heights and captured fireball origins when replaying effects.
 - Light each will-o'-the-wisp crystal's original faceted surface with a gentle, staggered pulse across the creature family. Preserve crystal silhouettes, colors, motion, invisibility and death animation while improving visibility against grass and in darkness, including without bloom.
 - Restore the original ambient wisp stars across the whole creature, including their flicker, running cadence and finite lifetime.
 - Restore hit particles and magic attachment positions on creatures with numbered body parts, including wisps, using the original game's part-prefix lookup.
 
-- Add an experimental 30-chain Trials roster with 90 distinct original forms, 1–5-gold recruits and three-copy evolution at each star step. Apply price/star budgets to Trials health, attacks, armor and offensive spells, and migrate older roster saves.
-- Account for native attack cadence, area effects, extra spell targets and regeneration in Trials combat budgets. Preserve ranged health for bow casters and melee roles for utility-only fighters. Show localized recovery rates in unit details.
+- Use 28 creature species in Trials, each with one 1–5-gold shop price and three ranks of the same creature. Remove human recruits, rebalance health, damage and typed armor, and migrate previous saves while retaining investment and placement. Add the Spirits alliance and revise the other five alliance bonuses.
+- Account for native attack cadence, flat armor, extra spell targets and regeneration in Trials budgets. Budget persistent spells by total lifetime damage and let Trials AI estimate partial contact. Preserve bow-caster health, add unicorn healing, and tune shaman Strength and wormhead Haste. Show localized role and recovery descriptions.
+- Increase the final Trials star rank to five times base health and four times base damage. Adjust fifteen species' health or damage budgets and reduce unicorn healing to half the offensive spell budget. Give final-rank melee creatures a larger armor increase.
 - Refine Trials army valuation to consider sustained damage and survival. Keep healers attacking through light wounds, cast elemental protection when a matching threat is present, and skip night-vision and footstep-concealment buffs in the revealed arena.
 - Reduce cumulative XP for Trials levels 7–9 to 55, 80 and 110. Stop training purchases and XP rewards at level nine while retaining compatibility with saves holding up to 126 purchased XP.
 - Reconsider available spells when an AI unit has one enemy left, and evaluate spell damage using its actual elemental type.
 - Use localized spell names in Trials details when the original text archive has no title.
-- Show friendly damage with native pixel portraits, names, stars and bars above a compact alliance grid without an outer panel. Add central round, countdown, income and victory/defeat notices.
+- Show the watched company's friendly damage with native pixel portraits, names, tier-colored stars and bars above an unframed alliance grid. Keep alliance emblems centered in both active and inactive states.
+- Use bold, outlined, unframed round and income notices above the battlefield. Omit zero bonuses, dismiss results after two seconds, and keep the opening title readable during very short battles. Play a sound on company level-up.
+- Brighten the Trials clearing, use snow-colored edge fog and a closer 34-degree default camera view, and fold the shop away during combat. Mark the forward deployment limit during planning with a low line of native orange fire with reduced brightness and warm ground reflection. Keep procedural mounds and pebble scatter out of the arena at every graphics quality.
+- Animate surviving winners casting native fire bolts toward the losing player’s name. Flash the name and use original combat-number sprites and colors for health loss; apply health immediately and release the visual effects afterward.
+- Simplify shop offers to one creature with owned-rank counts; retain the compact rank preview in the inspector. Pair health with armor, remove the repeated recruit heading, and size the inspector to the space above the reserves. Highlight all visible copies that together complete an upgrade with pulsing cyan and a separate arrow, distinct from steady rarity glows. Match inspector accents to the price tier.
+- Use native clan palettes in Trials figures and pixel portraits. Keep each species recognizable across its star ranks.
+- Preserve individual reserve slots, withdraw into the clicked slot, and swap occupied field/reserve positions in either selection order. Keep reserve controls within the viewport after resizing.
 - Preserve the Trials camera between rounds and board views. Add WASD panning and right-drag tilt, using modern-camera speed and inversion preferences. Fit camera clipping to the orbit distance so tall windows and steep angles retain the battlefield and creatures. Limit battles to 90 simulated seconds.
 - Apply tournament health loss as each board finishes, settle income and places once all participants finish, and preserve original round health when replaying interrupted combat.
 - Use host-supplied online sale quotes and reject changed prices. Display evolution notices on the acknowledged roster update and retain spectator hover details after elimination.
@@ -31,7 +55,7 @@
 - Start replicated posture transitions from the authoritative update so older packets cannot briefly show the destination pose first. ([#33](https://github.com/TheWWWorm/CursedLands/issues/33))
 - Retain the chosen body part when an aimed ground command finds a target during its approach. ([#34](https://github.com/TheWWWorm/CursedLands/issues/34))
 - Clear discarded field messages on loading and rebuild the collected-items listing from the loaded party inventory on both co-op peers. ([#35](https://github.com/TheWWWorm/CursedLands/issues/35))
-- Add optional Discord activity on Windows and Linux, showing game mode, campaign location or Trials round and phase. Include a translated setting and application-ID setup instructions.
+- Add optional Discord activity on Windows and Linux, showing game mode, campaign location or Trials round and phase. Bundle the public application ID so players only need the Discord desktop client and the translated in-game setting.
 - Calculate terrain visibility rays in the Windows and Linux native helper, retaining the original wall, tree, floor and rounding rules and the script fallback on other platforms.
 - Release delayed spell-ending effects with their world, pause them with combat and cancel them when a Trials battle settles.
 - Reuse Weakness, Strength and Lichdom ending timers when their effects refresh, and discard those timers when their carriers die or leave the world. Preserve one start burst for an unchanged effect and use the latest power for its ending.

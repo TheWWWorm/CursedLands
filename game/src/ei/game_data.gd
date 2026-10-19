@@ -154,7 +154,7 @@ const OPTIONS := [
 	# Small health bars over visible hostile units (EnemyBars): 0 off (the
 	# original, which shows a unit's health only in the unit panel), 1 auto
 	# (while a controller or touch is the input in use), 2 always.
-	["enemy_hp_bars", 1, 3, 17, 0, 1],
+	["enemy_hp_bars", 1, 3, 17, 0, 2],
 	# The party portraits' smile (SmileFaces) also after a won fight, loot
 	# taken and a quest done or rewarded; off = the original, a smile only at
 	# a kill (ack 0x30). Default on (user request).
@@ -173,6 +173,7 @@ const OPTIONS := [
 	["item_icon_fit", 1, 2, 17, 5, 1], ["ui_active_buttons", 1, 2, 17, 6, 1],
 	["original_rune_layout", 1, 2, 17, 7, 0],
 	["spell_double_tap_self", 1, 2, 17, 8, 1],
+	["hide_remake_hints", 1, 2, 17, 9, 0],
 	# Gameplay (group 18).
 	# The network game's unit visibility in single player too (UnitFog);
 	# default on (user request).
@@ -182,7 +183,7 @@ const OPTIONS := [
 	# Gipat map links the done piece to its village. Default
 	# (user request).
 	["start_zones", 1, 2, 18, 1, 1],
-	["sp_full_xp", 1, 2, 18, 2, 0],
+	["sp_full_xp", 1, 3, 18, 2, 0],
 	# A living party member can help a fallen hero or mercenary up (Revive: a
 	# click on the body, 5 s of work, 1 HP); not in the multiplayer (LMP)
 	# game. Off = the original, which has no revival. Default on (user request).
@@ -208,7 +209,7 @@ const OPTIONS := [
 	# player's purse and bag as an identical copy; off = the original network
 	# rule), players' names above their heroes (PlayerNames) — then the host
 	# opening its port on the router (UpnpPort) and the WebSocket host.
-	["coop_full_xp", 1, 2, 19, 0, 1], ["coop_scale", 1, 4, 19, 1, 2],
+	["coop_full_xp", 1, 3, 19, 0, 1], ["coop_scale", 1, 4, 19, 1, 2],
 	["coop_share_loot", 1, 2, 19, 2, 1], ["coop_player_names", 1, 2, 19, 3, 1],
 	["net_upnp", 1, 2, 19, 5, 1], ["net_websocket", 1, 2, 19, 6, 0],
 	["coop_clock", 1, 2, 19, 7, 1],
@@ -229,6 +230,9 @@ const FIXED_OPTIONS := {"shadow_units": 1, "shadow_buildings": 1, "shadow_flora"
 ## Labels of the remake's multiple-choice rows (value = index); "resolution"
 ## is built from the monitor (resolutions()).
 const DISPLAY_CHOICES := {
+	"hide_remake_hints": ["Off", "On"],
+	"sp_full_xp": XpRules.CHOICES,
+	"coop_full_xp": XpRules.CHOICES,
 	"cave_echo": ["Off", "On"],
 	"direct_first_person_actions": ["Off", "On"],
 	"direct_hints": ["Off", "Compact", "Full guide"],
@@ -276,7 +280,8 @@ const OPTION_GROUPS := ["video", "sound", "sens", "game", "select", "actions", "
 	"r_camera", "r_interface", "r_game", "r_coop", "gamepad", "gamepad_buttons", "r_terrain", "r_water", "direct_view", "direct_keys", "direct_pad"]
 ## Labels and tips of the remake's own option rows (texts.res has none).
 const REMAKE_OPTIONS := {
-	"discord_presence": ["Discord activity", "Show the current mode and location in Discord. Requires the Discord desktop app and a configured application ID. Off clears the activity."],
+	"hide_remake_hints": ["Hide remake hints", "Hide the extra control hints in isometric, first-person and third-person views. Controls and regular item and button tooltips stay unchanged."],
+	"discord_presence": ["Discord activity", "Show the current mode and location in Discord. Requires the Discord desktop app. No additional setup is needed. Off clears the activity."],
 	"cave_echo": ["Cave echo", "Add echo to sounds in caves. Turn off for dry sound. Changes apply immediately."],
 	"wiki_context": ["Wiki under pointer", "Open the wiki for the item, spell, creature or quest under the pointer. With no subject under the pointer, open the wiki home page."],
 	"direct_first_person_actions": ["First-person actions", "Stay in first person when picking up items, using levers and performing other actions. Off: show action animations in third person. Scripted cameras keep control."],
@@ -404,7 +409,7 @@ const REMAKE_OPTIONS := {
 	"armor_formula": ["Armour formula", "Original armour can absorb all damage. The optional formula limits total natural and worn armour absorption to 80%, leaving at least 20% of each incoming damage type. Applies to attacks and spells. The host controls this rule."],
 	"gfx_rain_puddles": ["Rain puddles", "Shallow reflective patches gather on exposed, nearly level ground during rain and dry afterwards. Requires Rain on surfaces. Off by default."],
 	"stamina_regen": ["Always regenerate stamina", "While moving, fighting or casting, party stamina regenerates at the health regeneration rate, even at full health. Standing idle retains the original faster stamina recovery. Running and spells still consume stamina. The host controls this rule."],
-	"sp_full_xp": ["Full experience for companions", "Single player: your hero and every companion each get the whole experience of a kill or quest. Off: experience is split equally among eligible party members. Downed companions remain eligible while they can be revived."],
+	"sp_full_xp": ["Experience distribution", "Original: divide experience equally among eligible party members. Full for everyone: each member gets the whole reward. Full for main hero: Zak gets the whole reward; companions keep their normal share. Revivable companions remain eligible."],
 	"start_zones": ["Starting areas on the travel map", "The area where the campaign begins (the ruins where Zak wakes up) becomes a place on the travel map once you have left it, so the party can go back. You arrive at its path from the village; what was killed or taken there stays so, and the opening scenes do not play again. Co-op: the host's setting counts. Off: as the original, where its piece only leads to the village."],
 	"aim_press_once": ["Aim keys: press once", "Press an aimed-strike key (Num 8 head, Num 5 body …) once: its cursor stays until the next click. A click on a creature attacks it at that part; a click elsewhere, a right click, Esc or the same key again cancels it; another aim key switches. Off: as the original, the key must be held while clicking."],
 	"path_through": ["Show the move path through objects", "The dots of a move path and the ring at its target stay visible under water, under arches and behind rocks and walls, faded where something covers them. Off: as the original, which hides them there."],
@@ -422,7 +427,7 @@ const REMAKE_OPTIONS := {
 	"cam_see_through": ["See-through objects", "Modern camera: trees, houses and rocks that hide your heroes fade to see-through."],
 	"unit_fog": ["Fog of war (single player)", "Enemies and other people are only seen within reach of your party's eyes: 2 × the larger of sight and life sense + 5 m around each party member, as the original's network game does. Off: the original single player, everyone on the map is drawn."],
 	"distant_ai": ["Distant AI (experimental)", "Reduce CPU use by making distant, idle NPCs decide less often. Nearby units, combat and active orders keep their normal update rate. Offscreen reactions and patrol timing can change. Requires fog of war in single player; the host controls this in co-op."],
-	"coop_full_xp": ["Full experience for every party member", "Co-op host: every player's hero and every mercenary gets the whole experience of a kill or quest. Off: the original network rule (shared among the players' heroes by experience, mercenaries get none). Single player is not affected."],
+	"coop_full_xp": ["Co-op experience distribution", "Original: share kill and quest experience among player heroes, weighted by their experience; companions get none. Full for everyone: every hero and mercenary gets the whole reward. Full for main hero: each player hero gets the whole reward; their companions receive an equal party share."],
 	"coop_share_loot": ["Shared loot", "Co-op host: whatever a player finds — loot from bodies and chests, a theft, the money and items of a conversation or quest reward — every other player gets an identical copy of in their own bag, and the same money. Trades and items passed between players are not copied; quest items count for the whole party anyway. Off: as the original, a find belongs to whoever takes it."],
 	"coop_scale": ["Scale monsters to player count", "Co-op host: monsters get more health and hit harder for each player beyond the first (Light +25 % health / +12.5 % damage, Normal +50 % / +25 %, Strong +100 % / +50 % per extra player). Off: as the original."],
 	"net_upnp": ["Open the port on the router", "Co-op host: asks your router to forward UDP port 27015 to this computer so friends can join over the internet (UPnP, else NAT-PMP / PCP), and shows your external IP address to give them. The forwarding is removed when you stop hosting. Off: forward the port by hand."],
@@ -434,7 +439,7 @@ const REMAKE_OPTIONS := {
 ## Options the remake applies (a row missing here is greyed out on the Options
 ## screen). "marks" = EnableBloodprints and "footprints" = EnableFootprints
 ## switch the ground marks (GroundMarks).
-const OPTIONS_APPLIED := ["discord_presence", "direct_hints", "direct_fov_first", "direct_fov_third", "direct_mouse_first", "direct_mouse_third", "direct_invert_x", "direct_invert_y", "direct_pad_x", "direct_pad_y", "direct_pad_deadzone", "direct_pad_curve", "direct_pad_invert_x", "direct_pad_invert_y",
+const OPTIONS_APPLIED := ["hide_remake_hints", "discord_presence", "direct_hints", "direct_fov_first", "direct_fov_third", "direct_mouse_first", "direct_mouse_third", "direct_invert_x", "direct_invert_y", "direct_pad_x", "direct_pad_y", "direct_pad_deadzone", "direct_pad_curve", "direct_pad_invert_x", "direct_pad_invert_y",
 	"direct_first_person_actions",
 	"spell_double_tap_self",
 	"volume_sfx", "volume_stream", "volume_voice", "power_kbd",

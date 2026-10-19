@@ -1,0 +1,28 @@
+{
+  "inputs": {
+    "quick.sav": "2c670e0bfeffcc3f0945550befb093819169d45ce8f52862b525170ec20ffb07",
+    "coop_worm_20261019_005130.sav": "04d9726ee4de0d856d91cc4af17d6551cd01a03f30e784112bcee2cb7a84123f"
+  },
+  "engine_sha256": "5c8b95c46a64e7a0af03da4270ef553514ad2450c1c87a499fd339a0e282f704",
+  "runtime_sha256": "f69af96ab85e35d7e9ada6c4787ed98f5f3b0ba3631cf3bf646dd085e64ad824",
+  "source_sha256": {
+    "menu_coop_retention.gd.source": "f092316666cf9e49063d635732bc7aeb8e808cb391843cbfad34e16185dcc883",
+    "menu_coop_retention.gd": "f86be8255152b03ed0adb460d2cfa4166e3d0018153fc4e2a2bc5a207cc30d2f",
+    "saved_coop_traversal.gd.source": "bdd3baae31fd2e9d77b3e3ed39f84a055da58d6f7ec34baf494c0c1ab0d54b0f",
+    "coop_traversal_session.gd.source": "ebf586fa145df4e3e4e20513001fac047f6754c6c4acd9da3926dd236b9fc81d"
+  },
+  "menu_driven": true,
+  "graphics": "Ultra",
+  "speed": 2,
+  "duration": 40,
+  "cycles": 1,
+  "owner_size": "3840x2160",
+  "guest_size": "2560x1440",
+  "stationary": true,
+  "smoke_rounds": 3,
+  "pid": 1937256,
+  "exit_code": 0,
+  "wall_seconds": 190.55027979699662,
+  "inputs_unchanged": true,
+  "purpose": "Functional menu sequence only: three rounds then 40-second stationary campaign. Not a sustained-combat measurement."
+}

@@ -76,6 +76,9 @@ var _preview_update := SubViewport.UPDATE_WHEN_VISIBLE
 
 
 func _ready() -> void:
+	# Read the final direct-control lower-body composition (priority 10),
+	# after the world model advances its upper-body clip.
+	process_priority = 20
 	stretch = true
 	# These previews are explicitly laid out inside an existing frame. Their
 	# render resolution must not force the control to stay 160×220 on a phone.

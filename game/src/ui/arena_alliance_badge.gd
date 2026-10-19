@@ -28,4 +28,4 @@ func _draw() -> void:
 			var r := Rect2(42+group*6,23-pip*17,4,14)
 			draw_rect(r,ink if count>previous+pip else Color("3b403c"))
 	var font := get_theme_font("font")
-	draw_string(font,Vector2(12,49),str(count),HORIZONTAL_ALIGNMENT_LEFT,-1,12,ArenaCreatureCard.PAPER)
+	draw_string(font,Vector2((box.size.x - font.get_string_size(str(count),HORIZONTAL_ALIGNMENT_LEFT,-1,12).x) * 0.5,49),str(count),HORIZONTAL_ALIGNMENT_LEFT,-1,12,ArenaCreatureCard.PAPER)

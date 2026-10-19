@@ -155,9 +155,13 @@ func _exit_tree() -> void:
 		soft_ground.clear()
 
 
+func _wants_biome_cover() -> bool:
+	return Gfx.on("gfx_biome_cover")
+
+
 func apply_options() -> void:
 	var grass := Gfx.on("gfx_grass")
-	var cover := Gfx.on("gfx_biome_cover")
+	var cover := _wants_biome_cover()
 	if grass != _grass or cover != _cover:
 		_clear_grass()
 	_grass = grass; _cover = cover

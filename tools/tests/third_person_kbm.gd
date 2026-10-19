@@ -81,7 +81,7 @@ func spell_cases() -> void:
 	reset();hero.mana=hero.max_mana;g.pending_spell="arrow{}";g.direct.cast_self();await frames(2)
 	check(hero.orders.is_empty() and g.pending_spell=="arrow{}","explicit self-cast refuses offensive spells")
 	reset();hero.mana=0;g.pending_spell="healing{}";g.direct.cast_self();await frames(2)
-	check(hero.orders.is_empty() and g.pending_spell=="healing{}","insufficient stamina keeps pending spell without a cast")
+	check(order_target(hero) and hero.orders[0].get("stamina_notified",false) and g.pending_spell.is_empty(),"insufficient stamina queues a waiting self-cast")
 	reset();hero.mana=hero.max_mana;hero.buffs["fixture_no_cast"]={"no_cast":true};g.pending_spell="healing{}";g.direct.cast_self();await frames(2)
 	check(hero.orders.is_empty(),"cannot-cast effect prevents self-cast");hero.buffs.erase("fixture_no_cast")
 	reset();hero.get_meta("hero").skills.astral=0;g.pending_spell="healing{e1;e1}";g.direct.cast_self();await frames(2)

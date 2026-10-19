@@ -32,6 +32,9 @@ func _ready() -> void:
 		check(NetSnapshot.unpack(wire)==records,"lossless poses, health, buffs, perception and action serials "+str(step))
 		check(var_to_bytes(wire).size()<var_to_bytes(records).size(),"compressed records retain the packet's size bound "+str(step))
 	var snapshot := actors[0].snapshot(); snapshot[1]=24.0
+	# These are data-only actors; rendering one-shots is covered with real
+	# figures in unit_presentation_timing.gd.
+	snapshot[4]="idle"
 	snapshot[12]=[PackedInt32Array(range(1000,1064)),PackedInt32Array()]
 	var packed := NetSnapshot.pack([snapshot])
 	check(packed[0] is int,"single party actor with retained perception uses compression")

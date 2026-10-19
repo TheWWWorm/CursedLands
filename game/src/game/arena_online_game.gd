@@ -138,10 +138,13 @@ func command(player: int, action: String, args: Array) -> String:
 				if not ArenaRun._integer(args[1],0,10000): return "Invalid online action."
 				if entry.is_empty() or company.sale_value(entry)!=int(args[1]): return "The sale value changed. Select the creature again."
 			error = company.sell(int(args[0]))
-		"bench", "evolve":
+		"bench":
+			if args.size() not in [1, 2] or not ArenaRun._integer(args[0],1,1000000): return "Invalid online action."
+			if args.size() == 2 and not ArenaRun._integer(args[1], -1, company.bench_limit()-1): return "Invalid online action."
+			error = company.bench(int(args[0]), int(args[1]) if args.size() == 2 else -1)
+		"evolve":
 			if args.size() != 1 or not ArenaRun._integer(args[0],1,1000000): return "Invalid online action."
-			if action == "bench": error = company.bench(int(args[0]))
-			else: error = company.evolve(int(args[0]))
+			error = company.evolve(int(args[0]))
 		"swap":
 			if args.size() != 2 or not ArenaRun._integer(args[0],1,1000000) or not ArenaRun._integer(args[1],1,1000000): return "Invalid online action."
 			error = company.swap_from_bench(int(args[0]), int(args[1]))
@@ -220,7 +223,8 @@ func board_frame(player: int, full: bool) -> Dictionary:
 	else:
 		data["snaps"] = NetSnapshot.pack(battle.world.unit_rows().map(func(unit):
 			var row: Array = unit.snapshot()
-			row.resize(18); row[17] = exact_body(unit)
+			if row.size() < 18: row.resize(18)
+			row[17] = exact_body(unit)
 			return row))
 	return data
 

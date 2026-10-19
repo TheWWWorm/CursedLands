@@ -43,9 +43,14 @@ var _sidebar_content: VBoxContainer
 var _damage_panel: ArenaDamagePanel
 var _damage_wait := 0.0
 var _round_banner: ArenaRoundBanner
+var _result_volley: ArenaResultVolley
+var _health_seen := {}
+var _health_session := ""
+var _name_flashes := {}
 var _alliance_panel: PanelContainer
 var _train_button: ArenaRoundButton
 var _last_level := 0
+var _level_sound: AudioStreamPlayer
 var _result_remaining := 4.0
 var _result_key := -1
 var _live_health: Label
@@ -214,6 +219,8 @@ func _ready() -> void:
 	_shop_panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 	_shop_panel.offset_left = 24; _shop_panel.offset_top = 12
 	_shop_panel.offset_bottom = 138
+	_shop_panel.resized.connect(_layout_battle_sidebar.call_deferred)
+	_shop_panel.visibility_changed.connect(_layout_battle_sidebar.call_deferred)
 
 	var recruitment := HBoxContainer.new()
 	recruitment.add_theme_constant_override("separation", 12)
@@ -239,10 +246,11 @@ func _ready() -> void:
 	_train_button.pressed.connect(_show_training)
 	shop_tools.add_child(_train_button)
 	_rail = ArenaHudPanel.new()
-	_rail.custom_minimum_size.x = 300
+	_rail.z_index = 2
+	_rail.custom_minimum_size.x = 320
 	_hud.add_child(_rail)
 	_rail.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	_rail.offset_left = -316; _rail.offset_right = -16
+	_rail.offset_left = -336; _rail.offset_right = -16
 	_rail.offset_top = 174; _rail.offset_bottom = 294
 	_rail_box = VBoxContainer.new()
 	_rail_box.add_theme_constant_override("separation", 6)
@@ -254,7 +262,7 @@ func _ready() -> void:
 	_inspector.add_child(_inspect_scroll)
 	_inspect_box = VBoxContainer.new()
 	_inspect_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_inspect_box.add_theme_constant_override("separation", 5)
+	_inspect_box.add_theme_constant_override("separation", 4)
 	_inspect_box.minimum_size_changed.connect(_layout_inspector.call_deferred)
 	_inspect_scroll.add_child(_inspect_box)
 	_inspect_actions = VBoxContainer.new()
@@ -279,7 +287,7 @@ func _ready() -> void:
 	_bench_panel = _unframed(_hud)
 	_bench_panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	_bench_panel.offset_left = 24; _bench_panel.offset_right = -24
-	_bench_panel.offset_top = -228; _bench_panel.offset_bottom = -14
+	_bench_panel.offset_top = -188; _bench_panel.offset_bottom = -14
 	_bench_bar = HBoxContainer.new()
 	_bench_bar.add_theme_constant_override("separation", 20)
 	var bench_column := VBoxContainer.new()
@@ -299,6 +307,7 @@ func _ready() -> void:
 	_army_title.add_theme_constant_override("icon_max_width", 18)
 	_army_title.custom_minimum_size.x = 90
 	_army_title.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	ArenaCreatureCard.snow_ink(_army_title, PAPER)
 	_reserve_count = _label(company_status, "", 13, MUTED)
 	_reserve_count.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_battle_sidebar = PanelContainer.new()
@@ -313,6 +322,9 @@ func _ready() -> void:
 	_battle_sidebar.add_child(_sidebar_content)
 	_damage_panel = ArenaDamagePanel.new(); _sidebar_content.add_child(_damage_panel)
 	_round_banner = ArenaRoundBanner.new(); _hud.add_child(_round_banner)
+	_result_volley = ArenaResultVolley.new()
+	add_child(_result_volley)
+	_result_volley.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_alliance_panel = PanelContainer.new()
 	_alliance_panel.add_theme_stylebox_override("panel",StyleBoxEmpty.new())
 	_sidebar_content.add_child(_alliance_panel)
@@ -330,7 +342,9 @@ func _ready() -> void:
 	_bench_scroll = ScrollContainer.new()
 	_bench_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_bench_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	_bench_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	# Let the row shrink after a window resize; disabled scrolling feeds the
+	# previous slot widths back into the parent's minimum size.
+	_bench_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 	_bench_scroll.resized.connect(_fit_reserve_slots)
 	bench_column.add_child(_bench_scroll)
 	_army_row = HBoxContainer.new()
@@ -400,9 +414,8 @@ func _ready() -> void:
 	_message.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_message.add_theme_color_override("font_shadow_color", Color.BLACK)
 	_message.add_theme_constant_override("shadow_offset_y", 2)
-	_scout_bar = _unframed(_hud)
-	_scout_bar.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
-	_scout_bar.position = Vector2(24, 166)
+	_scout_bar = _unframed(_sidebar_content)
+	_sidebar_content.move_child(_scout_bar, 0)
 	var scout_row := HBoxContainer.new()
 	_scout_bar.add_child(scout_row)
 	var scout_text := VBoxContainer.new()
@@ -454,6 +467,7 @@ func _ready() -> void:
 	_hud.move_child(_evolution_notice, _modal_layer.get_index())
 	_evolution_notice.shown.connect(_highlight_evolution)
 	_tooltips = ArenaTooltips.new()
+	_tooltips.z_index = 3
 	_tooltips.scope = _hud
 	_tooltips.world_hint = _world_hint
 	_tooltips.viewport_pointer = field.viewport_pointer
@@ -505,6 +519,7 @@ func _exit_tree() -> void:
 
 
 func _refresh() -> void:
+	_capture_health_changes()
 	_encounter_key = 0
 	_header.visible = false # The opening composition carries the expedition title.
 	_gold.text = str(run.gold)
@@ -522,7 +537,7 @@ func _refresh() -> void:
 	else: _evolution_notice.retain(run)
 	if _shown_stage != run.stage:
 		if preparing: _shop_open = true
-		elif fighting: _shop_open = true
+		elif fighting: _shop_open = false
 		_shown_stage = run.stage
 	if run.stage == "result" and _result_key != run.history.size():
 		_result_key = run.history.size()
@@ -577,8 +592,13 @@ func _refresh() -> void:
 	_train_button.progress = 1.0 if run.level_needed() == 0 else float(run.level_progress()) / run.level_needed()
 	_train_button.caption = RemakeText.t("Max level") if run.level_needed() == 0 else RemakeText.t("XP %d/%d") % [run.level_progress(), run.level_needed()]
 	_train_button.queue_redraw()
-	if _last_level > 0 and run.capacity() > _last_level and not landing and _sound:
-		_sound.ui("buttons\\camp\\perk.wav")
+	if _last_level > 0 and run.capacity() > _last_level and not landing:
+		if not is_instance_valid(_level_sound):
+			_level_sound = AudioStreamPlayer.new()
+			_level_sound.bus = &"SFX"
+			_level_sound.stream = EIAudio.sfx("buttons/subcomplete.wav")
+			add_child(_level_sound)
+		_level_sound.play()
 	_last_level = run.capacity()
 	_train_button.tooltip_text = RemakeText.t("Level %d") % run.capacity() + "\n" + RemakeText.t("Train · %d gold") % ArenaRules.TRAINING_COST + "\n" + RemakeText.t("Gain %d XP. Company level increases army capacity and improves shop odds.") % ArenaRules.TRAINING_XP
 	if run.experience() >= ArenaRules.MAX_TRAINING: _train_button.tooltip_text = RemakeText.t("Your army is at full strength.")
@@ -623,12 +643,12 @@ func _refresh() -> void:
 
 
 func _build_army() -> void:
-	var benched := run.army.filter(func(u): return not u.deployed)
+	var benched := run.reserve_slots()
 	var existing := {}
 	for button: Button in _army_row.get_children(): existing[button.get_meta("slot_key", "")] = button
 	var selected := run.unit(selected_uid)
 	var returning: bool = run.stage == "prepare" and not selected.is_empty() and selected.deployed
-	for i in maxi(run.bench_limit(), benched.size()):
+	for i in benched.size():
 		var entry: Dictionary = benched[i] if i < benched.size() else {}
 		var key := "empty:%d" % i if entry.is_empty() else "%d:%s:%d" % [entry.uid, entry.prototype, entry.rank]
 		var button: Button = existing.get(key)
@@ -636,7 +656,7 @@ func _build_army() -> void:
 		if button == null:
 			button = Button.new()
 			button.set_meta("slot_key", key)
-			button.custom_minimum_size = Vector2(96, 148)
+			button.custom_minimum_size = Vector2(96, 120)
 			button.add_theme_stylebox_override("normal", ArenaCreatureCard.style(Color(0,0,0,0), Color(0,0,0,0), Vector2(3,3)))
 			button.add_theme_stylebox_override("hover", ArenaCreatureCard.style(Color(0.12, 0.16, 0.17, 0.45), Color(0, 0, 0, 0), Vector2(3,3)))
 			button.add_theme_stylebox_override("focus", ArenaCreatureCard.style(Color(0, 0, 0, 0), PAPER, Vector2(3,3)))
@@ -652,7 +672,7 @@ func _build_army() -> void:
 			line.offset_left = 10; line.offset_right = -10
 			line.offset_bottom = -2
 			if entry.is_empty():
-				button.pressed.connect(_return_to_reserves)
+				button.pressed.connect(_return_to_reserves.bind(i))
 			else:
 				button.set_meta("arena_creature", {"id": entry.prototype, "uid": int(entry.uid)})
 				button.pressed.connect(_select.bind(int(entry.uid)))
@@ -660,17 +680,18 @@ func _build_army() -> void:
 				preview.fit_slot = true
 				button.add_child(preview)
 				preview.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-				preview.offset_top = 14; preview.offset_bottom = -36
-				preview.show_model({"kind": "creature", "value": entry.prototype})
+				preview.offset_top = 14; preview.offset_bottom = -20
+				preview.show_model(ArenaAppearance.preview(entry.prototype))
 				preview.turn_by(-0.35)
 				preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 				for child: Control in preview.find_children("*", "Control", true, false): child.mouse_filter = Control.MOUSE_FILTER_IGNORE
-				ArenaStars.add_to(button, int(entry.rank) + 1, Vector2(5, 1))
+				ArenaStars.add_to(button, int(entry.rank) + 1, Vector2(5, 1), ArenaStars.for_family(int(entry.family)))
 		_army_row.move_child(button, i)
 		button.mouse_filter = Control.MOUSE_FILTER_IGNORE if landing or not run.can_shop() else Control.MOUSE_FILTER_STOP
 		button.disabled = not returning if entry.is_empty() else landing or not run.can_shop()
 		button.mouse_default_cursor_shape = Control.CURSOR_ARROW if button.disabled else Control.CURSOR_POINTING_HAND
-		button.set_meta("return_slot", returning and i == benched.size())
+		button.set_meta("return_slot", returning and entry.is_empty())
+		button.set_meta("bench_slot", i)
 		button.tooltip_text = (RemakeText.t("Return the selected creature to reserves.") if returning else RemakeText.t("Recruits wait here until you deploy them.")) if entry.is_empty() else ""
 		var marker := button.get_node("SlotLine") as ColorRect
 		var active := returning if entry.is_empty() else int(entry.uid) == selected_uid
@@ -701,7 +722,7 @@ func _build_shop() -> void:
 		var fresh := box == null
 		if fresh:
 			box = Control.new()
-			box.custom_minimum_size = Vector2(96, 148)
+			box.custom_minimum_size = Vector2(112, 144)
 			box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			_shop.add_child(box)
 			_shop.move_child(box, index)
@@ -718,8 +739,11 @@ func _build_shop() -> void:
 		card.prototype = rule.forms[rank]
 		card.quality = rank
 		card.cost = run.offer_cost(offer)
+		card.tier = int(rule.tier)
 		card.copies = run.army.filter(func(entry): return entry.family == family and entry.rank == rank).size()
 		card.copies_needed = ArenaRules.evolution_copies(family, rank)
+		card.upgrade_ready = run.shop_completes_upgrade(index)
+		card.owned_army = run.army
 		card.disabled = not run.purchase_error(index).is_empty()
 		card.caption = ArenaAlliances.names(family)
 		card.family = family
@@ -856,7 +880,7 @@ func _build_landing() -> void:
 		preview.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		preview.anchor_left = spec[1]; preview.anchor_right = spec[2]
 		preview.anchor_top = spec[3]; preview.anchor_bottom = spec[4]
-		preview.show_model({"kind":"creature", "value":spec[0]})
+		preview.show_model(ArenaAppearance.preview(spec[0]))
 		preview.turn_by(-0.25)
 		preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		for child: Control in preview.find_children("*", "Control", true, false): child.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -967,11 +991,14 @@ func _build_rewards() -> void:
 
 
 func _field_army() -> Array[Dictionary]:
-	if field.match_state != battle: return field.match_state.round_army
-	return run.army if run.stage == "prepare" else battle.round_army
+	if run.stage == "prepare":
+		if run is ArenaTournamentRun and is_instance_valid(_tournament_battles): return run.company(_tournament_battles.viewed_player).army
+		return run.army
+	return _viewed_battle().round_army
 
 
 func _show_alliance(key: String) -> void:
+	_rail.accented = false; _rail.queue_redraw()
 	_showing_company = true
 	_rail.show(); _inspector.show()
 	_clear(_inspect_box); _clear(_inspect_actions)
@@ -993,9 +1020,10 @@ func _show_alliance(key: String) -> void:
 	grid.add_theme_constant_override("h_separation", 8)
 	grid.add_theme_constant_override("v_separation", 5)
 	_inspect_box.add_child(grid)
+	var company: ArenaRun = run.company(_tournament_battles.viewed_player) if is_instance_valid(_tournament_battles) else run
 	for family: int in rule.families:
 		if family not in ArenaRules.ACTIVE_FAMILIES: continue
-		var owned := run.army.filter(func(entry): return int(entry.family) == family)
+		var owned := company.army.filter(func(entry): return int(entry.family) == family)
 		var deployed := _field_army().any(func(entry): return int(entry.family) == family and entry.deployed)
 		var status := "On field" if deployed else "In reserves" if not owned.is_empty() else "Not recruited"
 		var title := _wrap(grid, RemakeText.t(ArenaRules.FAMILIES[family].name), 13, GOLD if deployed else MUTED)
@@ -1005,13 +1033,14 @@ func _show_alliance(key: String) -> void:
 
 func _show_company() -> void:
 	if landing: return
+	_rail.accented = false; _rail.queue_redraw()
 	_showing_company = true
 	_rail.show(); _inspector.show()
 	_clear(_inspect_box); _clear(_inspect_actions)
 	_inspect_scroll.scroll_vertical = 0
 	_wrap(_inspect_box, RemakeText.t("Level %d") % run.capacity(), 22, GOLD)
-	_wrap(_inspect_box, RemakeText.t("30 recruit chains cost 1–5 gold. Every recruit in the same tier has the same shop chance."), 13, PAPER)
-	_wrap(_inspect_box, RemakeText.t("Three copies evolve into a different creature. Three evolved copies unlock the final form. Each creature type belongs to one chain."), 13, PAPER)
+	_wrap(_inspect_box, RemakeText.t("28 creature species cost 1–5 gold. Each species has one shop entry and equal odds within its tier."), 13, PAPER)
+	_wrap(_inspect_box, RemakeText.t("Three identical one-star creatures make a two-star creature. Three two-star creatures make a three-star creature of the same species."), 13, PAPER)
 	_wrap(_inspect_box, RemakeText.t("Stars strengthen health, attacks and spells. The strongest forms are evolution-only."), 13, GOLD)
 	_wrap(_inspect_box, RemakeText.t("Army %d/%d") % [run.deployed_count(), run.capacity()], 14, PAPER)
 	if run.level_needed() > 0:
@@ -1065,13 +1094,20 @@ func _creature_preview(parent: Node, id: String, height: float) -> WikiPreview:
 	preview.fit_slot = true
 	preview.custom_minimum_size = Vector2(80, height)
 	parent.add_child(preview)
-	preview.show_model({"kind": "creature", "value": id})
+	preview.show_model(ArenaAppearance.preview(id))
 	preview.turn_by(-0.35)
 	return preview
 
 
 func _select(uid: int) -> void:
 	if landing or not run.can_shop(): return
+	var selected := run.unit(selected_uid)
+	var clicked := run.unit(uid)
+	if run.stage == "prepare" and not selected.is_empty() and not clicked.is_empty() and selected.deployed and not clicked.deployed:
+		var error := run.swap_from_bench(uid, selected_uid)
+		if error.is_empty(): _clear_selection()
+		_feedback(error)
+		return
 	selected_uid = uid
 	battle.selected_run_uid = uid
 	field.highlighted_run_uid = uid
@@ -1101,20 +1137,23 @@ func _select_world(unit: GameUnit) -> void:
 
 func _inspect(id: String, entry: Dictionary = {}) -> void:
 	if id.is_empty(): return
+	_standings.hide()
 	_showing_company = false
 	_inspected = id
 	_rail.show(); _inspector.show()
 	_clear(_inspect_box); _clear(_inspect_actions)
 	_inspect_scroll.scroll_vertical = 0
-	var title := _wrap(_inspect_box, ArenaRules.title(id), 21, GOLD)
-	title.add_theme_font_override("font", _heading_font)
 	var family := int(entry.get("family", -1))
+	var accent := ArenaStars.for_family(family)
+	_rail.accented = true; _rail.edge = accent; _rail.queue_redraw()
+	var title := _wrap(_inspect_box, ArenaRules.title(id), 21, accent)
+	title.add_theme_font_override("font", _heading_font)
 	var rank := int(_inspected_unit.get_meta("arena_placement", {}).get("rank", ArenaUnitInfo.rank_of(id))) if is_instance_valid(_inspected_unit) else int(entry.get("rank", ArenaUnitInfo.rank_of(id)))
 	var header := HBoxContainer.new()
 	header.add_theme_constant_override("separation", 10)
 	_inspect_box.add_child(header)
-	var preview := _creature_preview(header, id, 74)
-	preview.custom_minimum_size.x = 78
+	var preview := _creature_preview(header, id, 56)
+	preview.custom_minimum_size.x = 64
 	var details := VBoxContainer.new()
 	details.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	details.add_theme_constant_override("separation", 2)
@@ -1127,8 +1166,9 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 	var stars := Control.new()
 	stars.custom_minimum_size.y = 14
 	details.add_child(stars)
-	ArenaStars.add_to(stars, rank + 1, Vector2.ZERO)
+	ArenaStars.add_to(stars, rank + 1, Vector2.ZERO, accent)
 	_rule(_inspect_box)
+	if family >= 0: _wrap(_inspect_box, RemakeText.t(ArenaRules.FAMILIES[family].hook), 13, accent)
 	_live_health = _wrap(_inspect_box, ArenaUnitInfo.summary(id, _inspected_unit, family, rank), 13)
 	if is_instance_valid(_inspected_unit) and family >= 0 and ArenaAlliances.counts(_field_army()).values().any(func(n): return int(n) >= 2):
 		_wrap(_inspect_box, RemakeText.t("Active bonuses are included in these stats."), 12, MUTED)
@@ -1136,16 +1176,17 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 	var spells := _spell_titles(ArenaRules.recruit_prototype(family,rank,GameData.db.find("monster_prototypes", id)))
 	if not spells.is_empty(): _wrap(_inspect_box, spells, 13, GOLD)
 	if family >= 0:
-		var needed := ArenaRules.evolution_copies(family, rank)
-		if needed > 0:
-			_rule(_inspect_box)
-			var count := run.army.filter(func(u): return u.family == family and u.rank == rank).size()
-			_wrap(_inspect_box, RemakeText.t("Evolution") + " · " + RemakeText.t("Copies: %d/%d") % [count, needed], 12, MUTED)
-			_wrap(_inspect_box, ArenaRules.title(ArenaRules.prototype(family, rank + 1)) + " " + "★".repeat(rank + 2), 14, GOLD)
-			if entry.has("offer") and count + 1 >= needed:
-				_wrap(_inspect_box, RemakeText.t("This recruit completes an upgrade."), 12, GOLD)
-		elif not entry.has("offer"):
-			_wrap(_inspect_box, RemakeText.t("This creature has reached its final form."), 12, MUTED)
+		_rule(_inspect_box)
+		var counts := run.army
+		if is_instance_valid(_inspected_unit) and run is ArenaTournamentRun and is_instance_valid(_tournament_battles):
+			counts = run.company(_tournament_battles.viewed_player).army
+		var path := ArenaEvolutionPath.new()
+		path.name = "EvolutionPath"
+		path.portrait_size = 36; path.interactive = true
+		_inspect_box.add_child(path)
+		path.update_path(family, counts)
+		if entry.has("offer") and run.shop_completes_upgrade(int(entry.offer)):
+			_wrap(_inspect_box, RemakeText.t("The highlighted shop copies complete an evolution."), 12, Color("9bfff0"))
 	if is_instance_valid(_inspected_unit) and (entry.get("prototype", id) != id or int(entry.get("rank", rank)) != rank):
 		_wrap(_inspect_box, RemakeText.t("Next round: %s") % (ArenaRules.title(entry.prototype) + " " + "★".repeat(int(entry.rank) + 1)), 13, GOLD)
 	if entry.has("offer"):
@@ -1284,7 +1325,6 @@ func _update_encounter_status() -> void:
 		elif watched.phase == ArenaMatch.Phase.FIGHT: status = RemakeText.t("Battle")
 		else:
 			status = RemakeText.t("Draw" if watched.winner == -1 else "Victory" if watched.winner == 0 else "Defeat")
-			if run.stage == "fight": status += "\n" + RemakeText.t("Other battles")
 	if _phase.text != status:
 		_phase.text = status
 		_layout_round_badge.call_deferred()
@@ -1304,10 +1344,14 @@ func _process(dt: float) -> void:
 	_battle_sidebar.visible = not landing and not field.showing_boards() and not _modal_layer.visible
 	if _damage_wait <= 0 and _battle_sidebar.visible:
 		_damage_wait = 0.2
-		_damage_panel.update_damage(battle, battle.round_army if run.stage != "prepare" else run.army, maxf(45,_bench_panel.position.y-_battle_sidebar.position.y-215))
-	_round_banner.size=Vector2(minf(470,_hud.size.x-500),190)
-	_round_banner.position=Vector2((_hud.size.x-_round_banner.size.x)*0.5,maxf(200,_hud.size.y*0.34))
-	_round_banner.update_round(run,dt/maxf(Engine.time_scale,0.001),_result_remaining,landing or _modal_layer.visible or field.showing_boards() or _evolution_notice.visible or (run.stage in ["result","won","lost"] and battle.settle_remaining>0))
+		var alliance_height := _alliance_panel.get_combined_minimum_size().y if _alliance_panel.visible else 0.0
+		var scout_height := _scout_bar.size.y + 12 if _scout_bar.visible else 0.0
+		_damage_panel.update_damage(_viewed_battle(), _field_army(), maxf(45,_bench_panel.position.y-_battle_sidebar.position.y-alliance_height-scout_height-58))
+	_round_banner.size = Vector2(maxf(240, minf(460, _hud.size.x - 580)), 0)
+	var notice_top := 204.0 if _shop_panel.visible else 28.0
+	_round_banner.position = Vector2(roundf((_hud.size.x - _round_banner.size.x) * 0.5), notice_top)
+	_round_banner.update_round(run, dt / maxf(Engine.time_scale, 0.001), _result_remaining, landing or _modal_layer.visible or field.showing_boards())
+	_update_name_flashes(dt / maxf(Engine.time_scale, 0.001))
 	_hover_inspector(dt)
 	if run is ArenaTournamentRun and run.stage == "fight": _update_fighting_icons()
 	_standings.visible = run is ArenaTournamentRun and not landing and not _rail.visible and not _modal_layer.visible and not _outcome.visible
@@ -1579,8 +1623,8 @@ func _highlight_evolution(event: Dictionary) -> void:
 		tween.tween_property(glow, "bg_color:a", 0.0, 1.6)
 
 
-func _return_to_reserves() -> void:
-	var error := run.bench(selected_uid)
+func _return_to_reserves(slot := -1) -> void:
+	var error := run.bench(selected_uid, slot)
 	if error.is_empty(): _clear_selection()
 	_feedback(error)
 
@@ -1591,6 +1635,7 @@ func _layout_round_badge() -> void:
 	_round_panel.offset_left = -116 - maxf(160, minimum.x)
 	_round_panel.offset_right = -116
 	_round_panel.offset_bottom = 16 + maxf(44, minimum.y)
+	_layout_standings.call_deferred()
 
 
 func _layout_outcome() -> void:
@@ -1616,12 +1661,13 @@ func _layout_hud() -> void:
 	if not _shop_panel: return
 	# One logical canvas; type, targets, portraits and spacing scale together.
 	# The battlefield still renders at the full physical window resolution.
-	_ui_scale = maxf(0.85, minf(size.x / 1440.0, size.y / 900.0))
+	_ui_scale = maxf(1.0, minf(size.x / 1440.0, size.y / 900.0))
 	_hud.scale = Vector2.ONE * _ui_scale
 	_hud.size = size / _ui_scale
 	field.ui_scale = _ui_scale
 	field._update_camera()
 	_shop_panel.offset_right = minf(960, _hud.size.x - 300)
+	_layout_battle_sidebar.call_deferred()
 	if _army_row and not run.army.is_empty(): _build_army()
 	_layout_outcome()
 	_layout_modal()
@@ -1632,9 +1678,12 @@ func _layout_hud() -> void:
 
 func _layout_inspector() -> void:
 	if not _inspect_box or not _hud: return
-	var maximum := maxf(120, _hud.size.y - 174 - 240)
+	# Use the real free space above the reserve/actions row. A fixed 240-pixel
+	# bottom margin clipped the upgrade strip even with empty space below it.
+	var bottom := _bench_panel.position.y - 8 if is_instance_valid(_bench_panel) else _hud.size.y - 188
+	var maximum := maxf(120, bottom - _rail.offset_top)
 	var content := _inspect_box.get_combined_minimum_size().y + 20
-	_rail.offset_bottom = 174 + clampf(content, 80, maximum)
+	_rail.offset_bottom = _rail.offset_top + clampf(content, 80, maximum)
 
 
 func _unframed(parent: Node) -> PanelContainer:
@@ -2046,6 +2095,7 @@ func _show_player(player: int) -> void:
 	var from_overview := field.showing_boards()
 	_tournament_battles.synchronize()
 	_tournament_battles.watch(player)
+	_damage_wait = 0.0
 	field.match_state = _tournament_battles.watched_match()
 	field.stop_camera_motion()
 	field._update_camera()
@@ -2072,13 +2122,23 @@ func _update_scout() -> void:
 	if not _scout_bar: return
 	var scouting := is_instance_valid(_tournament_battles) and _tournament_battles.viewed_player != 0 and not landing and not field.showing_boards()
 	_scout_bar.visible = scouting
-	_battle_sidebar.position.y = 206 if scouting else 182
+	_layout_battle_sidebar()
 	if not scouting: return
 	var player := _tournament_battles.viewed_player
 	var company: ArenaRun = run.company(player)
 	_scout_name.text = run.player_title(player)
 	_scout_name.tooltip_text = run.board_encounter(player) + "\n" + RemakeText.t("Level %d") % company.capacity() + " · " + RemakeText.t("%d gold") % company.gold
 	_scout_details.text = RemakeText.t("Level %d") % company.capacity() + " · " + RemakeText.t("%d gold") % company.gold
+
+
+func _layout_battle_sidebar() -> void:
+	if not is_instance_valid(_battle_sidebar): return
+	# The scout identity and combat statistics share one container below the
+	# complete shop, including the space used by names on hover/focus.
+	var top := 24.0
+	if is_instance_valid(_shop_panel) and _shop_panel.visible:
+		top = _shop_panel.position.y + _shop_panel.size.y + ArenaCreatureCard.HOVER_TITLE_HEIGHT + 8.0
+	_battle_sidebar.position.y = top
 
 
 func _refresh_alliances() -> void:
@@ -2126,3 +2186,57 @@ func _open_wiki() -> void:
 		_wiki.closed.connect(func(): _modal_panel.show(); _close_modal())
 	_wiki.open()
 	WikiContext.navigate(_wiki, context)
+
+
+func _capture_health_changes() -> void:
+	if not run is ArenaTournamentRun or not is_instance_valid(_result_volley): return
+	var session := "%d:%d" % [run.get_instance_id(), run.run_seed]
+	if session != _health_session or landing:
+		_health_session = session; _health_seen.clear(); _name_flashes.clear()
+		_result_volley.clear()
+	for player in ArenaTournamentRun.PLAYER_COUNT:
+		if player > run.rivals.size(): continue
+		var health: int = run.health(player)
+		var previous := int(_health_seen.get(player, health))
+		_health_seen[player] = health
+		if health >= previous or landing: continue
+		_name_flashes[player] = 2.0
+		var starts := PackedVector2Array()
+		var watched := _viewed_battle()
+		var viewed := _tournament_battles.viewed_player if is_instance_valid(_tournament_battles) else 0
+		var team := 1 if player == viewed else 0 if player == run.opponent_for(viewed) else -1
+		if team >= 0 and not field.showing_boards() and is_instance_valid(watched) and is_instance_valid(watched.world):
+			for unit: GameUnit in watched.world.unit_rows():
+				if unit.dead or int(unit.get_meta("arena_placement", {}).get("team", -1)) != team: continue
+				var at := field.camera.unproject_position(unit.global_position + Vector3(0, maxf(0.6, unit.figure_radius), 0))
+				if Rect2(Vector2.ZERO, field.size).has_point(at): starts.append(at + field.global_position - global_position)
+		# Standings are rebuilt by this refresh. Resolve the target after the
+		# containers have laid out, rather than retaining a freed button.
+		_show_health_loss.call_deferred(player, previous - health, starts)
+
+func _show_health_loss(player: int, loss: int, starts: PackedVector2Array) -> void:
+	var session := _health_session
+	await get_tree().process_frame
+	await get_tree().process_frame
+	if not is_inside_tree() or session != _health_session or landing or not is_instance_valid(_result_volley): return
+	for button: Button in _standing_rows.find_children("*", "Button", true, false):
+		if int(button.get_meta("board_player", -1)) != player: continue
+		var at := button.get_global_rect().get_center() - global_position
+		if not _standings.visible: return
+		_result_volley.present(starts, at, loss, player == 0, _hud.scale.x)
+		return
+
+func _update_name_flashes(dt: float) -> void:
+	for player in _name_flashes.keys():
+		_name_flashes[player] -= dt
+		if _name_flashes[player] <= 0: _name_flashes.erase(player)
+	for button: Button in _standing_rows.find_children("*", "Button", true, false):
+		if not button.has_meta("board_player"): continue
+		var player := int(button.get_meta("board_player"))
+		var flashing := _name_flashes.has(player)
+		if flashing:
+			var pulse := 0.65 + 0.35 * absf(sin(float(_name_flashes[player]) * 9.0))
+			_standing_ink(button, ArenaCreatureCard.SNOW_INK.lerp(Color("ff6e69"), pulse))
+		elif bool(button.get_meta("loss_flash", false)):
+			_standing_ink(button)
+		button.set_meta("loss_flash", flashing)

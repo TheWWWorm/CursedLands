@@ -10,7 +10,7 @@ func _ready() -> void:
 		for rank in 3:
 			var id := ArenaRules.prototype(family,rank)
 			var preview := WikiPreview.new(); preview.fit_slot=true; preview.size=Vector2(384,384)
-			add_child(preview); preview.show_model({"kind":"creature","value":id}); preview.turn_by(-0.4)
+			add_child(preview); preview.show_model(ArenaAppearance.preview(id)); preview.turn_by(-0.4)
 			for frame in 12: await get_tree().process_frame
 			await RenderingServer.frame_post_draw
 			var doll := preview.creature
@@ -26,9 +26,12 @@ func _ready() -> void:
 					if not mesh.is_visible_in_tree(): continue
 					var box := mesh.global_transform * EIUnitModel.preview_bounds(mesh)
 					bounds=box if first else bounds.merge(box); first=false
+			# Upper-body portraits retain native faces, clothing and weapon hilts.
+			# Full figures made small human faces unreadable in the damage list.
 			if not first:
-				var center := bounds.get_center()-Vector3(0,bounds.size.y*0.25,0)
-				var diameter := maxf(bounds.size.x,bounds.size.y)*1.85
+				var clothed := id.begins_with("human") or id.begins_with("goblin") or id.begins_with("driad") or id.begins_with("orc")
+				var center := bounds.get_center()-Vector3(0,bounds.size.y*(0.7 if clothed else 0.25),0)
+				var diameter := maxf(bounds.size.x,bounds.size.y)*(3.2 if clothed else 1.85)
 				var distance := diameter*0.5/tan(deg_to_rad(15.0))+bounds.size.z*0.5
 				doll._cam.position=center+Vector3(0,0,distance); doll._cam.look_at(center)
 				doll._cam.force_update_transform()

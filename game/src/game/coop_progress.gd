@@ -3,6 +3,7 @@ extends Node
 const TrainingRefund := preload("res://src/game/training_refund.gd")
 const PartyProgress := preload("res://src/game/coop_party_progress.gd")
 const GuestRoles := preload("res://src/game/coop_guest_roles.gd")
+const Checkpoint := preload("res://src/game/coop_checkpoint.gd")
 ## Remake-only co-op feature: bring your own hero, shared progression.
 ## (Not in the original: the original network game played separate LMP maps with
 ## network characters;.)
@@ -169,7 +170,8 @@ func client_hello() -> void:
 	var bag := main_bag(st)
 	_rpc_bring.rpc_id(1, {"campaign_id": st.campaign_id, "mod_config": st.mod_config if not st.mod_config.is_empty() else ModStore.snapshot(), "hero": main_hero(st), "vars": view, "visited": st.visited.keys(),
 		"side_quests": st.side_quests, "quest_items": st.quest_items, "zone": st.current_zone, "seq": seq,
-		"money": int(bag.money), "items": bag.items, "party_context": PartyProgress.capture(st), "new_origin": _origin_new})
+		"money": int(bag.money), "items": bag.items, "party_context": PartyProgress.capture(st), "new_origin": _origin_new,
+		"checkpoints": Checkpoint.receipts(st)})
 
 
 ## The campaign state the client brought (a fresh one for a new hero).
@@ -298,6 +300,9 @@ static func merge(st: CampaignState, pkg: Dictionary) -> void:
 		return
 	var move: Dictionary = pkg.get("move", {}) if pkg.get("move") is Dictionary else {}
 	var context := PartyProgress.read(pkg.get("party_context"))
+	if pkg.get("replace_checkpoint", false) and pkg.get("complete_checkpoint", false) \
+			and context != null and campaign_zone_ok(String(move.get("zone", ""))):
+		Checkpoint.clear_story(st)
 	if context != null and move and campaign_zone_ok(String(move.get("zone", ""))):
 		PartyProgress.apply(st, context)
 	else:
@@ -351,6 +356,11 @@ static func merge(st: CampaignState, pkg: Dictionary) -> void:
 		h.name = String(old.get("name", pkg.get("orig_name", h.name)))
 		if old.has("unit_name"):
 			h.unit_name = old.unit_name
+		else:
+			# A live network actor may have its lobby alias as unit_name.
+			# The independent protagonist's missing field means authored Hero,
+			# even when this partial package cannot carry a party checkpoint.
+			h.erase("unit_name")
 		# Where the hero stands: the host's world when the save moves there,
 		# else where it was in the joiner's own game.
 		var src: Dictionary = pkg.hero if move and context == null and pkg.get("hero") is Dictionary else old
@@ -387,6 +397,9 @@ static func merge(st: CampaignState, pkg: Dictionary) -> void:
 		st.current_zone = String(move.zone)
 		st.world_time = clampf(_num(move.get("world_time", st.world_time), st.world_time), 0.0, 23.999)
 		st.day = maxi(1, int(_num(move.get("day", st.day), st.day)))
+		if context != null and pkg.get("complete_checkpoint", false) and not sid.is_empty():
+			st.coop.applied[sid].checkpoint = Checkpoint.signature(Checkpoint.story(st))
+			st.coop.applied[sid].checkpoint_world = Checkpoint.world_signature(st)
 
 
 static func campaign_zone_ok(id: String) -> bool:
@@ -441,6 +454,12 @@ func _rpc_bring(data: Dictionary) -> void:
 	if context != null:
 		_pending[pid].party_context = PartyProgress.capture(context)
 	_pending[pid].new_origin = _pristine_new_origin(data)
+	var checkpoints := {}
+	if data.get("checkpoints") is Dictionary and data.checkpoints.size() < 64:
+		for sid: String in data.checkpoints:
+			var value: Variant = data.checkpoints[sid]
+			if value is String and value.length() == 64 and value.is_valid_hex_number(): checkpoints[sid] = value
+	_pending[pid].checkpoints = checkpoints
 	CampaignState.cap_belt(h, _pending[pid].purse.items)   # the belt's four; extras to its own bag
 
 
@@ -500,6 +519,9 @@ static func _pristine_new_origin(data: Dictionary) -> bool:
 	# The receiver separately checks content compatibility. A valid profile
 	# describes the new game's rules, not earned character/story progress.
 	source.erase("mod_config")
+	# New heroes have no checkpoint receipts. The optional field is emitted
+	# by current clients and absent in compatible older clients.
+	if source.get("checkpoints", {}) == {}: source.erase("checkpoints")
 	source.hero.name = expected.hero.name
 	source.party_context.roster[0].name = expected.party_context.roster[0].name
 	return source == expected
@@ -657,22 +679,26 @@ func on_hello(pid: int, idx: int, player_name: String, replacing_live := false) 
 		var e: Dictionary = joiners[key]
 		_sent_hash.erase(key)   # its client may have restarted: send the package again
 		var rebased := not replacing_live and _acknowledged_source(e, data)
+		var same_checkpoint := rebased and _matches_checkpoint(data)
+		var shared_resume := rebased and not same_checkpoint and Checkpoint.eligible(e, data, session.state, session.zone_id)
 		if rebased:
 			# It brings a save made from every package of this tally (its
 			# co-op save): that save is its game now, the tally goes on from it.
 			for k in ["vars", "visited", "side_quests", "quest_items"]:
 				e[k] = data[k]
+			e.erase("replace_checkpoint")
 			e.credits = {"vars": {}, "visited": {}, "side_quests": {}, "quest_items": {}, "zones": {}}
 			e.seq = int(data.seq[String(e.sid)])
 			if data.has("party_context"):
 				e.party_context = data.party_context
 			_replace_personal_source(e, data, player_name)
+			if shared_resume: Checkpoint.adopt(e, session.state)
 		if not e.has("party_context") and data.has("party_context"):
 			e.party_context = data.party_context
 		e.pid = pid
 		e.idx = idx
 		e.active = true
-		var matching := rebased and _matches_checkpoint(data)
+		var matching := shared_resume or same_checkpoint
 		e.present = matching
 		e.clean = matching
 		e.in_sync = matching or (session.world != null and _reached(e, session.zone_id))
@@ -1274,6 +1300,7 @@ func package(e: Dictionary) -> Dictionary:
 	var purse: Dictionary = personal.purse
 	var context := PartyProgress.read(e.get("party_context"))
 	var party_context := {}
+	var complete_checkpoint := false
 	if context == null:
 		move.clear()   # old tallies still return their hero/purse, never an incomplete chapter
 	else:
@@ -1289,6 +1316,9 @@ func package(e: Dictionary) -> Dictionary:
 			party_context = PartyProgress.capture(context)
 			e.party_context = party_context.duplicate(true)
 			e.context_checkpoint = {"party_context": party_context.duplicate(true), "move": move.duplicate()}
+			complete_checkpoint = true
+			e.checkpoint_host = Checkpoint.signature(Checkpoint.story(st, session.zone_id))
+			e.checkpoint_world = Checkpoint.world_signature(st)
 	if move.is_empty():
 		# Packages are cumulative from the original imported save. Leaving a
 		# credited chapter must not discard the last resumable checkpoint.
@@ -1308,7 +1338,8 @@ func package(e: Dictionary) -> Dictionary:
 		"visited": (e.credits.visited as Dictionary).keys(), "side_quests": (e.credits.side_quests as Dictionary).duplicate(),
 		"quest_items": (e.credits.quest_items as Dictionary).duplicate(), "zones": zones,
 		"purse": {"money": int(purse.get("money", 0)), "items": (purse.get("items", []) as Array).duplicate()},
-		"move": move, "party_context": party_context}
+		"move": move, "party_context": party_context, "complete_checkpoint":complete_checkpoint,
+		"replace_checkpoint":complete_checkpoint and bool(e.get("replace_checkpoint", false))}
 
 
 ## Host: every connected joiner gets its package when it changed.

@@ -130,6 +130,42 @@ func bench_count() -> int:
 	return army.size() - deployed_count()
 
 
+## Slots belong to reserves, not to their current order in the army array.
+## Fill missing legacy slots without moving reserves that already have a place.
+func reserve_slots() -> Array[Dictionary]:
+	var slots: Array[Dictionary] = []
+	slots.resize(maxi(bench_limit(), bench_count()))
+	var unplaced: Array[Dictionary] = []
+	for entry in army:
+		if entry.deployed: continue
+		var slot := int(entry.get("bench_slot", -1))
+		if slot >= 0 and slot < slots.size() and slots[slot].is_empty(): slots[slot] = entry
+		else: unplaced.append(entry)
+	for entry in unplaced:
+		for slot in slots.size():
+			if not slots[slot].is_empty(): continue
+			entry.bench_slot = slot
+			slots[slot] = entry
+			break
+	return slots
+
+
+## An offer participates when buying it and the other visible copies can
+## produce an evolution. Simulate only this family, never mutate the company.
+func shop_completes_upgrade(index: int) -> bool:
+	if index < 0 or index >= shop.size() or int(shop[index].family) < 0: return false
+	var family := int(shop[index].family)
+	var rank := int(shop[index].get("rank", 0))
+	if ArenaRules.evolution_copies(family, rank) == 0: return false
+	var owned := [0, 0, 0]
+	var offered := [0, 0, 0]
+	for entry in army:
+		if int(entry.family) == family: owned[int(entry.rank)] += 1
+	for offer in shop:
+		if int(offer.family) == family: offered[int(offer.get("rank", 0))] += 1
+	return owned[rank] + offered[rank] >= ArenaRules.evolution_copies(family, rank)
+
+
 func refresh_cost() -> int:
 	return 0 if free_refresh else 1 if "merchant" in boons else 2
 
@@ -319,13 +355,22 @@ func deploy(uid: int, point: Vector2) -> String:
 	return ""
 
 
-func bench(uid: int) -> String:
+func bench(uid: int, slot := -1) -> String:
 	if stage != "prepare": return RemakeText.t("Arrange your army between battles.")
 	var entry := unit(uid)
 	if entry.is_empty() or not entry.deployed: return ""
 	if bench_count() >= bench_limit(): return RemakeText.t("Bench full. Deploy, evolve or sell a creature first.")
+	var slots := reserve_slots()
+	if slot < 0:
+		for index in slots.size():
+			if slots[index].is_empty():
+				slot = index
+				break
+	if slot < 0 or slot >= bench_limit() or not slots[slot].is_empty():
+		return RemakeText.t("Choose an empty reserve slot.")
 	_checkpoint()
 	entry.deployed = false
+	entry.bench_slot = slot
 	_touch()
 	return ""
 
@@ -336,7 +381,9 @@ func swap_from_bench(uid: int, deployed_uid: int) -> String:
 	var outgoing := unit(deployed_uid)
 	if incoming.is_empty() or outgoing.is_empty() or incoming.deployed or not outgoing.deployed:
 		return RemakeText.t("Select a reserve, then click one of your deployed creatures to swap them.")
+	reserve_slots()
 	_checkpoint()
+	outgoing.bench_slot = incoming.bench_slot
 	incoming.deployed = true
 	incoming.point = outgoing.point.duplicate()
 	outgoing.deployed = false
@@ -508,7 +555,7 @@ func choose_reward(index: int) -> String:
 		"companion":
 			# A reward must never vanish into a full bench. It arrives in one
 			# temporary overflow slot; purchases stay blocked until resolved.
-			_recruit(11, 1, int(ArenaRules.FAMILIES[11].cost)*3)
+			_recruit(13, 1, int(ArenaRules.FAMILIES[13].cost)*3)
 			combine_ready()
 		"purse": gold += 8
 		"supplies": gold += 6
@@ -593,19 +640,21 @@ func restore(data: Dictionary) -> bool:
 		if not entry is Dictionary or not entry.get("point") is Array or entry.point.size() != 2: return false
 		if not _integer(entry.get("uid"), 1, 100000) or seen.has(int(entry.uid)): return false
 		if not entry.get("deployed") is bool or not entry.get("prototype") is String: return false
-		if not _integer(entry.get("family"), -1, (ArenaRules.LEGACY_FORMS.size() if int(data.version)<11 else ArenaRules.FAMILIES.size()) - 1) or not _integer(entry.get("rank"), 0, 2): return false
+		if not _integer(entry.get("family"), -1, ArenaRules.saved_family_count(int(data.version)) - 1) or not _integer(entry.get("rank"), 0, 2): return false
 		if not _integer(entry.get("investment"), 1, 10000): return false
+		if entry.has("bench_slot") and not _integer(entry.bench_slot, 0, 11): return false
 		var family := int(entry.family)
 		var rank := int(entry.rank)
 		if family >= 0:
-			if int(data.version)<11:
-				if entry.prototype != ArenaRules.LEGACY_FORMS[family][rank]: return false
-				family = int(ArenaRules.LEGACY_FAMILIES[family])
-				entry.family=family; entry.prototype=ArenaRules.prototype(family,rank)
-			elif family not in ArenaRules.ACTIVE_FAMILIES or entry.prototype != ArenaRules.prototype(family,rank): return false
+			if entry.prototype != ArenaRules.saved_prototype(int(data.version), family, rank): return false
+			if int(data.version) < 13:
+				family = ArenaRules.migrated_family(entry.prototype)
+				entry.family = family
+				entry.prototype = ArenaRules.prototype(family, rank)
+			elif family not in ArenaRules.ACTIVE_FAMILIES: return false
 		if family < 0:
 			if entry.prototype not in ArenaRules.COMPANIONS or rank != 0: return false
-			entry.family=11; entry.prototype=ArenaRules.prototype(11,0)
+			entry.family = ArenaRules.migrated_family(entry.prototype); entry.prototype = ArenaRules.prototype(int(entry.family), 0)
 		if GameData.db.find("monster_prototypes", entry.prototype).is_empty(): return false
 		for value in entry.point:
 			if not _number(value, 0, 64): return false
@@ -630,10 +679,11 @@ func restore(data: Dictionary) -> bool:
 		if int(data.version) < 10 or data.shop.size() != 6: return false
 	var locks := 0
 	for offer in data.shop:
-		if not offer is Dictionary or not _integer(offer.get("family"), -1, (ArenaRules.LEGACY_FORMS.size() if int(data.version)<11 else ArenaRules.FAMILIES.size()) - 1) or not offer.get("locked") is bool: return false
+		if not offer is Dictionary or not _integer(offer.get("family"), -1, ArenaRules.saved_family_count(int(data.version)) - 1) or not offer.get("locked") is bool: return false
 		if not _integer(offer.get("rank", 0), 0, 2): return false
 		if int(offer.family)>=0:
-			if int(data.version)<11: offer.family=int(ArenaRules.LEGACY_FAMILIES[int(offer.family)])
+			if int(data.version) < 13:
+				offer.family = ArenaRules.migrated_family(ArenaRules.saved_prototype(int(data.version), int(offer.family), 0))
 			elif int(offer.family) not in ArenaRules.ACTIVE_FAMILIES: return false
 		if offer.locked:
 			if int(offer.family) < 0: return false
@@ -647,7 +697,7 @@ func restore(data: Dictionary) -> bool:
 	for reward in data.rewards:
 		if not reward is Dictionary or not reward.get("kind") is String or (not ArenaRules.BOONS.has(reward.kind) and not (int(data.version) < 8 and reward.kind in ["pact", "pact_upgrade"])): return false
 		if reward.kind == "companion":
-			var expected: String=ArenaRules.COMPANIONS[clampi(int(data.wave)/6-1,0,3)] if int(data.version)<11 else ArenaRules.companion(int(data.wave))
+			var expected: String=ArenaRules.COMPANIONS[clampi(int(data.wave)/6-1,0,3)] if int(data.version)<11 else "succubbluem10" if int(data.version) < 13 else ArenaRules.companion(int(data.wave))
 			if reward.get("prototype")!=expected: return false
 			reward.prototype=ArenaRules.companion(int(data.wave))
 		if reward.kind == "pact":
@@ -693,6 +743,7 @@ func restore(data: Dictionary) -> bool:
 			rewards.clear()
 			_next_wave()
 	combine_ready()
+	reserve_slots()
 	return true
 
 
@@ -761,6 +812,7 @@ func _update_profile() -> void:
 
 
 func _touch() -> void:
+	reserve_slots()
 	if auto_save: save_error = not save()
 	changed.emit()
 

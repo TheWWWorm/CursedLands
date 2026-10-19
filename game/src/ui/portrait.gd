@@ -213,6 +213,11 @@ func _process(dt: float) -> void:
 ## Interface face name and texture for a unit ("" when it has none).
 static func face_names(u: GameUnit) -> PackedStringArray:
 	var c: Vector3 = u.info.get("complexion", Vector3.ZERO)
+	# Training changes the body build. Keep the chosen hero's face identity
+	# stable instead of swapping to the much narrower "thin" HUD mesh when
+	# Dexterity moves the fat axis across 0.2. Existing saves need no rewrite.
+	if u.has_meta("hero") and not u.get_meta("hero").has("merc"):
+		c = GameUnit.proto_complexion(u.proto)
 	return proto_face_names(u.proto, u.race, c)
 
 

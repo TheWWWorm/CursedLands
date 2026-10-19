@@ -1,0 +1,44 @@
+[
+  {
+    "label": "guide-mobile",
+    "exit": 0,
+    "summary": [
+      "DEPLOYMENT_GUIDE mobile checks=123 failures=[]"
+    ]
+  },
+  {
+    "label": "guide-forward",
+    "exit": 0,
+    "summary": [
+      "DEPLOYMENT_GUIDE forward_plus checks=123 failures=[]"
+    ]
+  },
+  {
+    "label": "guide-compatibility",
+    "exit": 0,
+    "summary": [
+      "DEPLOYMENT_GUIDE gl_compatibility checks=123 failures=[]"
+    ]
+  },
+  {
+    "label": "ui-en",
+    "exit": 0,
+    "summary": [
+      "ARENA_SPECIES_UI en checks=572 failures=[]"
+    ]
+  },
+  {
+    "label": "ui-ru",
+    "exit": 0,
+    "summary": [
+      "ARENA_SPECIES_UI ru checks=569 failures=[]"
+    ]
+  },
+  {
+    "label": "ui-de",
+    "exit": 0,
+    "summary": [
+      "ARENA_SPECIES_UI de checks=569 failures=[]"
+    ]
+  }
+]

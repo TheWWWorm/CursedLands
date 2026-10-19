@@ -1,5 +1,7 @@
 class_name EIUnitModel
 extends Node3D
+
+signal clip_started
 ## Animated creature/character model.
 ## Appearance comes from the unit databases: race model (mesh template, skin set),
 ## monster prototype (skin, hair, complexion, worn armor, weapon) and the map's
@@ -376,6 +378,7 @@ func _play(anim: String, blend: float, restart := false) -> void:
 			if not already_batching:
 				for root: EIAnimPart in _animation_roots:
 					root._apply_key()
+		clip_started.emit()
 
 
 ## Plays a logical action: idle, walk, run, crawl, attack, hit, death, cast...
@@ -776,6 +779,11 @@ func anim_names() -> PackedStringArray:
 func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictionary, ui_preview := false, initial_action := true) -> void:
 	_preview_model = ui_preview
 	var db := GameData.db
+	# Natural weapons have no inventory item to set this later. Their type
+	# still selects the ADB weapon mask (e.g. goblin pike vs sling).
+	var natural_type := int(proto.get("weapon_type_id", -1))
+	if natural_type >= 0 and natural_type < 7:
+		weapon_type = ["sword", "axe", "dagger", "spear", "hammer", "bow", "crossbow"][natural_type]
 	var complexion: Vector3 = unit.get("complexion", Vector3.ZERO)
 	if complexion == Vector3.ZERO and not unit.get("effective_complexion", false):   # absent map override
 		complexion = GameUnit.proto_complexion(proto)

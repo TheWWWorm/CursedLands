@@ -1,0 +1,17 @@
+{
+  "duration": 180,
+  "speed": 2,
+  "graphics": "Ultra",
+  "renderer": "forward_plus",
+  "owner-size": [
+    3840,
+    2160
+  ],
+  "guest-size": [
+    2560,
+    1440
+  ],
+  "exit_code": 0,
+  "wall_seconds": 234.0388701740303,
+  "inputs_unchanged": true
+}

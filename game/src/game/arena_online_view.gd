@@ -90,7 +90,7 @@ func refresh() -> String: return _intent("refresh")
 func train() -> String: return _intent("train")
 func lock_offer(index: int) -> void: _intent("lock", [index])
 func deploy(uid: int, point: Vector2) -> String: return _intent("deploy", [uid, point])
-func bench(uid: int) -> String: return _intent("bench", [uid])
+func bench(uid: int, slot := -1) -> String: return _intent("bench", [uid, slot])
 func sale_value(entry: Dictionary) -> int:
 	return int(sale_quotes.get(int(entry.uid),super.sale_value(entry)))
 func sell(uid: int) -> String:

@@ -1,0 +1,128 @@
+{
+  "owner": {
+    "wall_seconds": 900.019,
+    "simulation_seconds": 1800.09500000054,
+    "distance_m": 1782.52353164181,
+    "maximum_depth_m": 221.634567260742,
+    "dead_foes": 14,
+    "remaining_foes": 3,
+    "minimum_hp": 212.531447607922,
+    "final_hp": 303.0,
+    "observed_cast_actions": 25,
+    "observed_weapon_swings": 17,
+    "delivered_spell_events": {
+      "healing": 50,
+      "lightning": 10,
+      "strength": 57,
+      "weak": 12
+    },
+    "spell_orders_timed_out": {
+      "lightning": 1
+    },
+    "interval_fps_range": [
+      18.8101817616211,
+      61.7102445063735
+    ],
+    "final_interval_fps": 35.2955746798319,
+    "final_p95_ms": 33.007,
+    "effects": {
+      "start": 4,
+      "peak": 17,
+      "end": 6
+    },
+    "particles": {
+      "start": 1604,
+      "peak": 2653,
+      "end": 1673
+    },
+    "delayed_effects": {
+      "start": 1,
+      "peak": 2,
+      "end": 1
+    },
+    "magic_endings": {
+      "start": 1,
+      "peak": 2,
+      "end": 1
+    },
+    "nodes": {
+      "start": 16954.0,
+      "peak": 17113.0,
+      "end": 16972.0
+    },
+    "objects": {
+      "start": 35934.0,
+      "peak": 37930.0,
+      "end": 37733.0
+    },
+    "video": {
+      "start": 994022368,
+      "peak": 1326390128,
+      "end": 1318635568
+    }
+  },
+  "guest": {
+    "wall_seconds": 900.018,
+    "simulation_seconds": 1800.09500000054,
+    "distance_m": 1764.86203325167,
+    "maximum_depth_m": 229.929077148438,
+    "dead_foes": 14,
+    "remaining_foes": 3,
+    "minimum_hp": 134.66600087285,
+    "final_hp": 178.5625,
+    "observed_cast_actions": 34,
+    "observed_weapon_swings": 0,
+    "delivered_spell_events": {
+      "acid_fog": 19,
+      "eagle_sight": 7,
+      "healing": 6,
+      "lightning": 9,
+      "weak": 9
+    },
+    "spell_orders_timed_out": {
+      "lightning": 1,
+      "weak": 1
+    },
+    "interval_fps_range": [
+      22.046626283375,
+      62.2127243315197
+    ],
+    "final_interval_fps": 42.5601778925397,
+    "final_p95_ms": 26.75,
+    "effects": {
+      "start": 5,
+      "peak": 19,
+      "end": 6
+    },
+    "particles": {
+      "start": 1737,
+      "peak": 2916,
+      "end": 1668
+    },
+    "delayed_effects": {
+      "start": 1,
+      "peak": 2,
+      "end": 1
+    },
+    "magic_endings": {
+      "start": 1,
+      "peak": 2,
+      "end": 1
+    },
+    "nodes": {
+      "start": 16857.0,
+      "peak": 17123.0,
+      "end": 16952.0
+    },
+    "objects": {
+      "start": 35714.0,
+      "peak": 37266.0,
+      "end": 36988.0
+    },
+    "video": {
+      "start": 981938880,
+      "peak": 1320839392,
+      "end": 1316020784
+    }
+  }
+}

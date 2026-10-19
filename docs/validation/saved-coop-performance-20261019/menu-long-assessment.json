@@ -1,0 +1,21 @@
+{
+  "living_party_until_seconds": 1708,
+  "excluded_campaign_interval_seconds": [
+    1710,
+    1800
+  ],
+  "excluded_reason": "The test forced the party to idle while pursued; both heroes died. Do not use the death view or its checkpoint for a living-party restart comparison.",
+  "enemy_deaths_at_least": 31,
+  "map_ids": [
+    "gz18h",
+    "gz15h",
+    "gz16h",
+    "gz17h"
+  ],
+  "notes": [
+    "Some intervals were cleared-area exploration. Blocked traversal was steered through ordinary movement; operator-actions.json records it.",
+    "A nonfatal JSON parse warning occurred. The shared harness coordination file was subsequently changed to atomic replacement.",
+    "GPU1 reported software thermal slowdown in part of the run; clocks are recorded.",
+    "Normal menu teardown and pre-idle traversal/combat evidence remain usable."
+  ]
+}

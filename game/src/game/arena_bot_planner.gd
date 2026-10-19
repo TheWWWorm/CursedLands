@@ -24,8 +24,8 @@ static func power(family: int, rank: int) -> float:
 	var values:=ArenaUnitInfo.values(id,null,family,rank)
 	var mean:=float(values.min+values.max)*0.5
 	var tier:=int(ArenaRules.FAMILIES[family].tier)
-	var armor:=(5.0+tier*2.0)*(1.0+rank*0.2)
-	var defense:=18.0+tier*3.0+rank*8.0
+	var armor:=(3.0+tier*2.0)*(1.0+rank*0.15)
+	var defense:=18.0+tier*3.0+rank*4.0
 	var needed:=ceili((defense-float(values.attack)+41.0)/2.0)
 	var hit:=clampf(float(41-clampi(needed,0,41))/41.0,0.0,1.0)
 	var interval:=maxf(0.6,float(row.get("tuning_actions",50.0))*GameUnit.TICK*15.0/float(values.actions))
@@ -42,7 +42,7 @@ static func power(family: int, rank: int) -> float:
 	# Half incoming attacks are estimated as physical; bows cannot parry.
 	var incoming:=1.0
 	if float(values.defense)>0.0:
-		var enemy_attack:=28.0+tier*4.0+rank*12.0
+		var enemy_attack:=28.0+tier*4.0+rank*8.0
 		var defend_roll:=ceili((float(values.defense)-enemy_attack+41.0)/2.0)
 		incoming=0.5+0.5*float(41-clampi(defend_roll,0,41))/41.0
 	var value:=sqrt(float(values.hp)/incoming*damage_rate)*10.0*(1+float(values.armor[6])/70)
@@ -168,3 +168,4 @@ static func arrange(bot: ArenaRun, style: String) -> void:
 			32.0+[0.0,-4.0,4.0,-8.0,8.0][number%5]+(2.0 if number>=5 else 0.0)]
 		if ranged:back+=1
 		else:front+=1
+	bot.reserve_slots()

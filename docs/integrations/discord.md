@@ -6,35 +6,57 @@ Discord desktop client. No Discord login, bot, token, or password is required.
 No player names, server addresses, save names, or invitation links are published.
 Browser and mobile builds do not publish activity.
 
-An application has not yet been registered for this project. Until an application
-ID is configured, the integration stays inactive, including when the option is on.
+## Players
 
-1. Open the [Discord Developer Portal](https://discord.com/developers/applications)
-   and create an application named **Cursed Lands**. The application name is the
-   game name Discord displays.
-2. Copy its public **Application ID** from General Information. Do not copy a
-   token or client secret. No OAuth scopes or bot permissions are needed.
-3. Supply it to the game with the `EI_DISCORD_APP_ID` environment variable:
+The application ID **1561645781533069393** is included in the game. Players do
+not need a developer account, an environment variable, or any application setup.
 
-   Linux:
-   ```sh
-   EI_DISCORD_APP_ID=YOUR_APPLICATION_ID ./CursedLands.x86_64
-   ```
+1. Run the Discord desktop app with activity sharing enabled.
+2. Leave **Discord activity** enabled in the game's network options (the default).
+3. Play a campaign or Trials match. The mode and location update within about
+   15 seconds. Turning the option off or exiting the game clears the activity.
 
-   Windows PowerShell:
-   ```powershell
-   $env:EI_DISCORD_APP_ID = 'YOUR_APPLICATION_ID'
-   & '.\CursedLands.exe'
-   ```
+### Для игроков
 
-   Distributors can instead add a `[discord]` section to `game/project.godot`
-   with `application_id="YOUR_APPLICATION_ID"` before exporting. The environment
-   variable overrides that public default. Never replace published artifacts.
-4. Start Discord, enable Discord's activity-sharing preference, and enable
-   **Discord activity** in the game's network options. Mode/location changes
-   appear within about 15 seconds. No artwork upload is required.
-5. Enter a campaign or Trials match and check your Discord profile from another
-   account. Leaving the game or switching the option off clears its activity.
+ID приложения **1561645781533069393** уже включён в игру. Учётная запись
+разработчика, переменные окружения и создание приложения не нужны.
+
+1. Запустите настольный Discord и разрешите в нём показ игровой активности.
+2. Оставьте **Активность в Discord** включённой в сетевых настройках игры
+   (это значение по умолчанию).
+3. Начните кампанию или матч в испытаниях. Режим и локация обновляются примерно
+   в течение 15 секунд. Выключение опции или выход из игры скрывает активность.
+
+В Discord не передаются имена игроков, адреса серверов, названия сохранений
+или ссылки-приглашения. Для игры не нужны токены, пароли или бот Discord.
+Браузерная и мобильная версии не публикуют активность.
+
+### Für Spieler
+
+Die Anwendungs-ID **1561645781533069393** ist bereits im Spiel enthalten.
+Ein Entwicklerkonto, Umgebungsvariablen oder eine eigene Anwendung sind nicht nötig.
+
+1. Die Discord-Desktop-App starten und dort die Anzeige der Spielaktivität erlauben.
+2. **Discord-Aktivität** in den Netzwerkeinstellungen des Spiels eingeschaltet
+   lassen (Standardeinstellung).
+3. Eine Kampagne oder Prüfungen-Partie spielen. Modus und Ort werden innerhalb
+   von etwa 15 Sekunden aktualisiert. Ausschalten der Option oder Beenden des
+   Spiels entfernt die Aktivität.
+
+Spielernamen, Serveradressen, Spielstandnamen und Einladungslinks werden nicht
+veröffentlicht. Das Spiel benötigt weder Discord-Token noch Passwort oder Bot.
+Browser- und Mobilversionen veröffentlichen keine Aktivität.
+
+## Maintaining the integration
+
+The public application ID is stored under `[discord]` in `game/project.godot`
+and is included when exporting the game. The application owner manages its
+name and optional artwork in the [Discord Developer Portal](https://discord.com/developers/applications/1561645781533069393/information).
+No bot, OAuth permissions, token, or client secret is needed by the game.
+
+`EI_DISCORD_APP_ID` remains an optional developer override for testing another
+application. It is not a player installation step. Publish new builds to deliver
+changes; keep existing releases immutable.
 
 The connection uses Discord's local IPC protocol, reconnects when Discord starts
 later or restarts, and does not block the game when Discord is unavailable.

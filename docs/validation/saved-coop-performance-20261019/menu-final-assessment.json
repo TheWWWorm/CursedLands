@@ -1,0 +1,24 @@
+{
+  "status": "Ended at user-requested stopping point; no restart comparison run.",
+  "scope": "Three menu-driven player matches, then 180 seconds in supplied campaign with ordinary X11 ground clicks. Stationary launch/phase labels no longer describe the final movement interval; consult steering receipt and measured distance.",
+  "not_reproduced": "No confirmed reproduction of the reported persistent Windows/default-renderer slowdown. These Linux/Vulkan data do not show that it is fixed.",
+  "match_end_rounds": [
+    19,
+    17,
+    17
+  ],
+  "campaign_seconds": 180,
+  "distance_m": {
+    "owner": 28.4255565144122,
+    "guest": 140.369455829263
+  },
+  "all_campaign_samples_alive": true,
+  "menu_return": {
+    "nodes": 998,
+    "resources": 497,
+    "old_worlds_alive": 0,
+    "frame_listeners": 0
+  },
+  "original_inputs_unchanged": true,
+  "fresh_restart_comparison": "Cancelled on user instruction; do not infer restart improvement from these data."
+}

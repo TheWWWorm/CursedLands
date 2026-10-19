@@ -1,0 +1,5030 @@
+[
+	{
+		"a": 0,
+		"b": 1,
+		"context": "duel",
+		"cost": 1,
+		"rank": 2,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					106.13542175293,
+					245.32241153717
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 70.1409171704431,
+						"id": "cyclopsa20",
+						"max_hp": 158.0,
+						"team": 2
+					}
+				],
+				"time": 22.3849999999999,
+				"winner": 1
+			},
+			{
+				"damage": [
+					232.581276893616,
+					157.951930999756
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 16.1655921508614,
+						"id": "cyclopsa20",
+						"max_hp": 158.0,
+						"team": 1
+					}
+				],
+				"time": 19.7999999999999,
+				"winner": 1
+			},
+			{
+				"damage": [
+					87.4839067459106,
+					141.340749740601
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 48.6160187293747,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 1
+					}
+				],
+				"time": 15.0149999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					255.891694068909,
+					107.043132781982
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 62.8277953453733,
+						"id": "cyclopsa20",
+						"max_hp": 158.0,
+						"team": 1
+					}
+				],
+				"time": 16.4449999999999,
+				"winner": 1
+			},
+			{
+				"damage": [
+					74.3314485549927,
+					255.569542884827
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 102.181827797719,
+						"id": "cyclopsa20",
+						"max_hp": 158.0,
+						"team": 2
+					}
+				],
+				"time": 22.3849999999999,
+				"winner": 1
+			},
+			{
+				"damage": [
+					252.658089637756,
+					75.485692024231
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 49.0057056657067,
+						"id": "cyclopsa20",
+						"max_hp": 158.0,
+						"team": 1
+					}
+				],
+				"time": 19.7449999999999,
+				"winner": 1
+			},
+			{
+				"damage": [
+					0.0,
+					79.5170392990112
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 158.0,
+						"id": "cyclopsa20",
+						"max_hp": 158.0,
+						"team": 2
+					}
+				],
+				"time": 1.21,
+				"winner": 1
+			},
+			{
+				"damage": [
+					267.074944496155,
+					70.4450044631958
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 100.051979082819,
+						"id": "cyclopsa20",
+						"max_hp": 158.0,
+						"team": 1
+					}
+				],
+				"time": 16.4449999999999,
+				"winner": 1
+			}
+		]
+	},
+	{
+		"a": 0,
+		"b": 1,
+		"context": "line",
+		"cost": 1,
+		"rank": 2,
+		"supports": [
+			29,
+			17
+		],
+		"trials": [
+			{
+				"damage": [
+					598.770820617676,
+					661.698528289795
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 56.8192678419148,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 49.1149999999998,
+				"winner": 0
+			},
+			{
+				"damage": [
+					694.266460418701,
+					485.218189239502
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 41.5179265304161,
+						"id": "cyclopsa20",
+						"max_hp": 158.0,
+						"team": 1
+					}
+				],
+				"time": 41.5249999999998,
+				"winner": 1
+			},
+			{
+				"damage": [
+					307.937543869019,
+					656.363140106201
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 158.0,
+						"id": "cyclopsa20",
+						"max_hp": 158.0,
+						"team": 2
+					},
+					{
+						"hp": 74.3680179358089,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 2
+					}
+				],
+				"time": 26.5649999999999,
+				"winner": 1
+			},
+			{
+				"damage": [
+					686.047626495361,
+					495.362581253052
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 13.5015005484453,
+						"id": "human hadagan npc lieutenant f15",
+						"max_hp": 175.0,
+						"team": 2
+					}
+				],
+				"time": 47.4099999999998,
+				"winner": 0
+			},
+			{
+				"damage": [
+					309.301473617554,
+					681.991937637329
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 158.0,
+						"id": "cyclopsa20",
+						"max_hp": 158.0,
+						"team": 2
+					},
+					{
+						"hp": 64.2013289306282,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 2
+					}
+				],
+				"time": 26.7299999999999,
+				"winner": 1
+			},
+			{
+				"damage": [
+					481.88222694397,
+					486.573656082153
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 20.0304204632711,
+						"id": "human hadagan npc lieutenant f15",
+						"max_hp": 175.0,
+						"team": 2
+					},
+					{
+						"hp": 76.5164767694511,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 2
+					}
+				],
+				"time": 40.6449999999998,
+				"winner": 0
+			},
+			{
+				"damage": [
+					330.300079345703,
+					640.341745376587
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 158.0,
+						"id": "cyclopsa20",
+						"max_hp": 158.0,
+						"team": 2
+					},
+					{
+						"hp": 110.919873472412,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 2
+					}
+				],
+				"time": 26.7299999999999,
+				"winner": 1
+			},
+			{
+				"damage": [
+					492.288520812988,
+					450.085050582886
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 45.8832319333299,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 2
+					},
+					{
+						"hp": 151.938867585207,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 2
+					}
+				],
+				"time": 32.2849999999999,
+				"winner": 0
+			}
+		]
+	},
+	{
+		"a": 0,
+		"b": 2,
+		"context": "duel",
+		"cost": 1,
+		"rank": 2,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					59.3855953216553,
+					181.199998855591
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 69.5193636279358,
+						"id": "unicornwhitem15",
+						"max_hp": 137.0,
+						"team": 2
+					}
+				],
+				"time": 12.54,
+				"winner": 2
+			},
+			{
+				"damage": [
+					181.199998855591,
+					59.3855953216553
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 69.5606976267967,
+						"id": "unicornwhitem15",
+						"max_hp": 137.0,
+						"team": 1
+					}
+				],
+				"time": 12.595,
+				"winner": 2
+			},
+			{
+				"damage": [
+					107.996030807495,
+					181.199998855591
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 56.6092879274013,
+						"id": "unicornwhitem15",
+						"max_hp": 137.0,
+						"team": 2
+					}
+				],
+				"time": 12.595,
+				"winner": 2
+			},
+			{
+				"damage": [
+					181.199998855591,
+					107.996030807495
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 19.0670117869267,
+						"id": "unicornwhitem15",
+						"max_hp": 137.0,
+						"team": 1
+					}
+				],
+				"time": 12.595,
+				"winner": 2
+			},
+			{
+				"damage": [
+					79.1844263076782,
+					150.999999046326
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 26.8437508901113,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 1
+					}
+				],
+				"time": 11.935,
+				"winner": 0
+			},
+			{
+				"damage": [
+					181.199998855591,
+					79.1844263076782
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 72.5146349242913,
+						"id": "unicornwhitem15",
+						"max_hp": 137.0,
+						"team": 1
+					}
+				],
+				"time": 12.65,
+				"winner": 2
+			},
+			{
+				"damage": [
+					60.2372226715088,
+					181.199998855591
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 73.4728289916619,
+						"id": "unicornwhitem15",
+						"max_hp": 137.0,
+						"team": 2
+					}
+				],
+				"time": 12.54,
+				"winner": 2
+			},
+			{
+				"damage": [
+					181.199998855591,
+					60.2372226715088
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 64.9600304832747,
+						"id": "unicornwhitem15",
+						"max_hp": 137.0,
+						"team": 1
+					}
+				],
+				"time": 12.595,
+				"winner": 2
+			}
+		]
+	},
+	{
+		"a": 0,
+		"b": 2,
+		"context": "line",
+		"cost": 1,
+		"rank": 2,
+		"supports": [
+			29,
+			17
+		],
+		"trials": [
+			{
+				"damage": [
+					296.437546730042,
+					619.652400016785
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 137.0,
+						"id": "unicornwhitem15",
+						"max_hp": 137.0,
+						"team": 2
+					},
+					{
+						"hp": 59.2484263681092,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 2
+					}
+				],
+				"time": 27.7749999999999,
+				"winner": 2
+			},
+			{
+				"damage": [
+					605.663716316223,
+					221.283632278442
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 137.0,
+						"id": "unicornwhitem15",
+						"max_hp": 137.0,
+						"team": 1
+					},
+					{
+						"hp": 11.9700738718802,
+						"id": "human hadagan npc lieutenant f15",
+						"max_hp": 175.0,
+						"team": 1
+					},
+					{
+						"hp": 160.314768677701,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 23.7599999999999,
+				"winner": 2
+			},
+			{
+				"damage": [
+					341.397880554199,
+					587.214874267578
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 137.0,
+						"id": "unicornwhitem15",
+						"max_hp": 137.0,
+						"team": 2
+					},
+					{
+						"hp": 41.0885403403853,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 2
+					}
+				],
+				"time": 25.7399999999999,
+				"winner": 2
+			},
+			{
+				"damage": [
+					632.03385925293,
+					340.489713668823
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 137.0,
+						"id": "unicornwhitem15",
+						"max_hp": 137.0,
+						"team": 1
+					},
+					{
+						"hp": 101.747191773644,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 25.7949999999999,
+				"winner": 2
+			},
+			{
+				"damage": [
+					360.181176185608,
+					613.816263198853
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 137.0,
+						"id": "unicornwhitem15",
+						"max_hp": 137.0,
+						"team": 2
+					},
+					{
+						"hp": 34.8061651094183,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 2
+					}
+				],
+				"time": 27.2799999999999,
+				"winner": 2
+			},
+			{
+				"damage": [
+					569.383675575256,
+					404.655003547668
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 137.0,
+						"id": "unicornwhitem15",
+						"max_hp": 137.0,
+						"team": 1
+					}
+				],
+				"time": 25.7949999999999,
+				"winner": 2
+			},
+			{
+				"damage": [
+					222.804965019226,
+					563.838788032532
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 137.0,
+						"id": "unicornwhitem15",
+						"max_hp": 137.0,
+						"team": 2
+					},
+					{
+						"hp": 17.2024212383505,
+						"id": "human hadagan npc lieutenant f15",
+						"max_hp": 175.0,
+						"team": 2
+					},
+					{
+						"hp": 181.91587683673,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 2
+					}
+				],
+				"time": 21.6699999999999,
+				"winner": 2
+			},
+			{
+				"damage": [
+					631.885115623474,
+					438.67319393158
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 11.7387360150099,
+						"id": "unicornwhitem15",
+						"max_hp": 137.0,
+						"team": 1
+					}
+				],
+				"time": 32.0099999999999,
+				"winner": 2
+			}
+		]
+	},
+	{
+		"a": 0,
+		"b": 3,
+		"context": "duel",
+		"cost": 1,
+		"rank": 2,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					168.385315895081,
+					128.117602348328
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 5.24654167035459,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 1
+					}
+				],
+				"time": 22.3849999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					174.842823982239,
+					168.096333503723
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 32.4932720278211,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 2
+					}
+				],
+				"time": 34.6499999999998,
+				"winner": 0
+			},
+			{
+				"damage": [
+					113.296680450439,
+					67.5989503860474
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 68.7263736673377,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 1
+					}
+				],
+				"time": 12.265,
+				"winner": 0
+			},
+			{
+				"damage": [
+					96.8740577697754,
+					169.105436325073
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 40.6157637827318,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 2
+					}
+				],
+				"time": 18.6449999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					166.282815933228,
+					144.330206871033
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 33.5685678164279,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 1
+					}
+				],
+				"time": 18.8099999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					85.303318977356,
+					113.962398529053
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 91.1405863889497,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 2
+					}
+				],
+				"time": 12.265,
+				"winner": 0
+			},
+			{
+				"damage": [
+					173.756288528442,
+					119.569942474365
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 14.9150901863697,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 1
+					}
+				],
+				"time": 18.8099999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					119.569942474365,
+					173.756288528442
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 58.3468641528502,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 2
+					}
+				],
+				"time": 18.6449999999999,
+				"winner": 0
+			}
+		]
+	},
+	{
+		"a": 0,
+		"b": 3,
+		"context": "line",
+		"cost": 1,
+		"rank": 2,
+		"supports": [
+			29,
+			17
+		],
+		"trials": [
+			{
+				"damage": [
+					487.165609359741,
+					368.302955627441
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 26.0043428486226,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 1
+					},
+					{
+						"hp": 185.392725409716,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 32.9449999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					455.071308135986,
+					493.184827804565
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 21.7410488841625,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 2
+					},
+					{
+						"hp": 45.5542378924689,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 2
+					}
+				],
+				"time": 43.5049999999998,
+				"winner": 0
+			},
+			{
+				"damage": [
+					524.991538047791,
+					267.637252807617
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 108.431495854961,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 1
+					},
+					{
+						"hp": 240.0,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 26.3999999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					343.584609985352,
+					526.451152801514
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 67.4378075527637,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 2
+					},
+					{
+						"hp": 79.0230565021286,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 2
+					}
+				],
+				"time": 32.9449999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					521.894850730896,
+					537.224336624146
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 21.2259883995234,
+						"id": "human mercenary kania archer",
+						"max_hp": 158.0,
+						"team": 2
+					}
+				],
+				"time": 44.3299999999998,
+				"winner": 3
+			},
+			{
+				"damage": [
+					476.24317741394,
+					316.085070610046
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 158.0,
+						"id": "human mercenary kania archer",
+						"max_hp": 158.0,
+						"team": 1
+					},
+					{
+						"hp": 24.3750740513663,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 31.7899999999999,
+				"winner": 3
+			},
+			{
+				"damage": [
+					515.466428756714,
+					333.640529632568
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 89.7988789920702,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 1
+					},
+					{
+						"hp": 190.070725905026,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 32.2299999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					268.506643295288,
+					457.701321601868
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 8.42601279141684,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 2
+					},
+					{
+						"hp": 240.0,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 2
+					}
+				],
+				"time": 26.7849999999999,
+				"winner": 0
+			}
+		]
+	},
+	{
+		"a": 0,
+		"b": 10,
+		"context": "duel",
+		"cost": 1,
+		"rank": 2,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					113.486698150635,
+					193.199998855591
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 24.7759358965641,
+						"id": "evileyeredm16",
+						"max_hp": 137.0,
+						"team": 2
+					}
+				],
+				"time": 20.5149999999999,
+				"winner": 10
+			},
+			{
+				"damage": [
+					193.199998855591,
+					113.486698150635
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 24.7759358965641,
+						"id": "evileyeredm16",
+						"max_hp": 137.0,
+						"team": 1
+					}
+				],
+				"time": 20.5149999999999,
+				"winner": 10
+			},
+			{
+				"damage": [
+					156.860088348389,
+					160.999999046326
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 18.375000855885,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 1
+					}
+				],
+				"time": 18.4799999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					160.999999046326,
+					156.860088348389
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 18.375000855885,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 2
+					}
+				],
+				"time": 18.4799999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					131.634249687195,
+					193.199998855591
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 7.64565899091281,
+						"id": "evileyeredm16",
+						"max_hp": 137.0,
+						"team": 2
+					}
+				],
+				"time": 20.5149999999999,
+				"winner": 10
+			},
+			{
+				"damage": [
+					193.199998855591,
+					131.634249687195
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 7.64565899091281,
+						"id": "evileyeredm16",
+						"max_hp": 137.0,
+						"team": 1
+					}
+				],
+				"time": 20.5149999999999,
+				"winner": 10
+			},
+			{
+				"damage": [
+					97.5984239578247,
+					193.199998855591
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 42.0218426529857,
+						"id": "evileyeredm16",
+						"max_hp": 137.0,
+						"team": 2
+					}
+				],
+				"time": 20.5149999999999,
+				"winner": 10
+			},
+			{
+				"damage": [
+					193.199998855591,
+					97.5984239578247
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 42.0218426529857,
+						"id": "evileyeredm16",
+						"max_hp": 137.0,
+						"team": 1
+					}
+				],
+				"time": 20.5149999999999,
+				"winner": 10
+			}
+		]
+	},
+	{
+		"a": 0,
+		"b": 10,
+		"context": "line",
+		"cost": 1,
+		"rank": 2,
+		"supports": [
+			29,
+			17
+		],
+		"trials": [
+			{
+				"damage": [
+					548.110953330994,
+					500.923406600952
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 131.400001324712,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 38.9949999999998,
+				"winner": 0
+			},
+			{
+				"damage": [
+					536.691500663757,
+					342.672410011292
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 137.0,
+						"id": "evileyeredm16",
+						"max_hp": 137.0,
+						"team": 1
+					},
+					{
+						"hp": 11.7695073536479,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 33.9899999999999,
+				"winner": 10
+			},
+			{
+				"damage": [
+					587.047077178955,
+					513.252086639404
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 107.326529052756,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 38.9949999999998,
+				"winner": 0
+			},
+			{
+				"damage": [
+					441.424647331238,
+					506.796517372131
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 183.900000702589,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 2
+					}
+				],
+				"time": 32.3399999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					568.851999282837,
+					434.518081665039
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 158.400000996887,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 32.7249999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					579.289995193481,
+					408.935468673706
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 137.0,
+						"id": "evileyeredm16",
+						"max_hp": 137.0,
+						"team": 1
+					}
+				],
+				"time": 35.6949999999998,
+				"winner": 10
+			},
+			{
+				"damage": [
+					529.143217086792,
+					590.252122879028
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 55.6387161200746,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 41.1949999999998,
+				"winner": 0
+			},
+			{
+				"damage": [
+					598.030494689941,
+					422.776561737061
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 76.6453757305824,
+						"id": "evileyeredm16",
+						"max_hp": 137.0,
+						"team": 1
+					}
+				],
+				"time": 39.4349999999998,
+				"winner": 10
+			}
+		]
+	},
+	{
+		"a": 0,
+		"b": 22,
+		"context": "duel",
+		"cost": 1,
+		"rank": 2,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					135.717837333679,
+					183.399998664856
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 3.15083964950716,
+						"id": "human mercenary hadagan thief",
+						"max_hp": 137.0,
+						"team": 2
+					}
+				],
+				"time": 24.5299999999999,
+				"winner": 22
+			},
+			{
+				"damage": [
+					157.199998855591,
+					163.517370223999
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 23.9250010075044,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 2
+					}
+				],
+				"time": 24.5299999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					156.860088348389,
+					130.999999046326
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 48.5937508509957,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 1
+					}
+				],
+				"time": 18.1499999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					78.5999994277954,
+					87.0114183425903
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 98.3687505281995,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 2
+					}
+				],
+				"time": 8.57999999999998,
+				"winner": 0
+			},
+			{
+				"damage": [
+					79.1844263076782,
+					104.799999237061
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 73.0437506993765,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 1
+					}
+				],
+				"time": 12.21,
+				"winner": 0
+			},
+			{
+				"damage": [
+					104.799999237061,
+					79.1844263076782
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 73.0437506993765,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 2
+					}
+				],
+				"time": 12.21,
+				"winner": 0
+			},
+			{
+				"damage": [
+					97.5984239578247,
+					78.5999994277954
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 99.2437505086417,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 1
+					}
+				],
+				"time": 12.21,
+				"winner": 0
+			},
+			{
+				"damage": [
+					52.3999996185303,
+					60.2372226715088
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 123.912500352133,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 2
+					}
+				],
+				"time": 5.83,
+				"winner": 0
+			}
+		]
+	},
+	{
+		"a": 0,
+		"b": 22,
+		"context": "line",
+		"cost": 1,
+		"rank": 2,
+		"supports": [
+			29,
+			17
+		],
+		"trials": [
+			{
+				"damage": [
+					530.202580451965,
+					429.511853218079
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 31.0076931086593,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 1
+					},
+					{
+						"hp": 156.000001311301,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 37.0149999999998,
+				"winner": 0
+			},
+			{
+				"damage": [
+					543.647787094116,
+					297.762259483337
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 137.0,
+						"id": "human mercenary hadagan thief",
+						"max_hp": 137.0,
+						"team": 1
+					},
+					{
+						"hp": 53.7182672953858,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 29.3699999999999,
+				"winner": 22
+			},
+			{
+				"damage": [
+					468.623000144958,
+					608.14500617981
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 118.013341074551,
+						"id": "human mercenary hadagan thief",
+						"max_hp": 137.0,
+						"team": 2
+					}
+				],
+				"time": 34.5949999999998,
+				"winner": 22
+			},
+			{
+				"damage": [
+					620.830080986023,
+					549.609743118286
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 55.7648946693642,
+						"id": "human mercenary hadagan thief",
+						"max_hp": 137.0,
+						"team": 1
+					}
+				],
+				"time": 48.3449999999998,
+				"winner": 22
+			},
+			{
+				"damage": [
+					468.470134735107,
+					639.545797348022
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 91.2922421358843,
+						"id": "human mercenary hadagan thief",
+						"max_hp": 137.0,
+						"team": 2
+					}
+				],
+				"time": 37.4549999999998,
+				"winner": 22
+			},
+			{
+				"damage": [
+					630.778240203857,
+					536.191464424133
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 36.6705635486809,
+						"id": "human mercenary hadagan thief",
+						"max_hp": 137.0,
+						"team": 1
+					}
+				],
+				"time": 41.7449999999998,
+				"winner": 22
+			},
+			{
+				"damage": [
+					577.678429603577,
+					585.6667137146
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 41.7000031583003,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 43.9999999999998,
+				"winner": 0
+			},
+			{
+				"damage": [
+					511.682604789734,
+					326.422274589539
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 137.0,
+						"id": "human mercenary hadagan thief",
+						"max_hp": 137.0,
+						"team": 1
+					},
+					{
+						"hp": 3.3220444748907,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 27.7199999999999,
+				"winner": 22
+			}
+		]
+	},
+	{
+		"a": 0,
+		"b": 29,
+		"context": "duel",
+		"cost": 1,
+		"rank": 2,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					118.62739944458,
+					122.50394153595
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 55.7912437742724,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 1
+					}
+				],
+				"time": 21.6149999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					161.950304031372,
+					54.138463973999
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 124.598766561653,
+						"id": "human hadagan npc lieutenant f15",
+						"max_hp": 175.0,
+						"team": 1
+					}
+				],
+				"time": 20.7349999999999,
+				"winner": 29
+			},
+			{
+				"damage": [
+					208.328463554382,
+					103.203712463379
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 76.1105443210745,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 1
+					}
+				],
+				"time": 21.0649999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					138.001381874084,
+					197.665638923645
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 40.8487503174422,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 2
+					}
+				],
+				"time": 21.0649999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					195.067700386047,
+					135.64261341095
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 11.8983220735831,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 1
+					}
+				],
+				"time": 28.0499999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					182.706053733826,
+					109.160549163818
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 71.0316865619402,
+						"id": "human hadagan npc lieutenant f15",
+						"max_hp": 175.0,
+						"team": 1
+					}
+				],
+				"time": 30.0299999999999,
+				"winner": 29
+			},
+			{
+				"damage": [
+					112.309364318848,
+					68.4007339477539
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 72.1488513542158,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 1
+					}
+				],
+				"time": 17.8749999999999,
+				"winner": 0
+			},
+			{
+				"damage": [
+					87.7728872299194,
+					148.572192192078
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 91.5147635776493,
+						"id": "golemverticalf20",
+						"max_hp": 175.0,
+						"team": 2
+					}
+				],
+				"time": 21.0649999999999,
+				"winner": 0
+			}
+		]
+	},
+	{
+		"a": 0,
+		"b": 29,
+		"context": "line",
+		"cost": 1,
+		"rank": 2,
+		"supports": [
+			17,
+			19
+		],
+		"trials": [
+			{
+				"damage": [
+					424.957284927368,
+					617.421510696411
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 88.8109231124231,
+						"id": "human hadagan npc lieutenant f15",
+						"max_hp": 175.0,
+						"team": 2
+					},
+					{
+						"hp": 45.4507751940102,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 2
+					},
+					{
+						"hp": 59.8212388297231,
+						"id": "human mercenary hadagan warrior",
+						"max_hp": 240.0,
+						"team": 2
+					}
+				],
+				"time": 42.1299999999998,
+				"winner": 29
+			},
+			{
+				"damage": [
+					582.520391464233,
+					581.643905639648
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 50.8553731543933,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 2
+					}
+				],
+				"time": 50.5999999999998,
+				"winner": 0
+			},
+			{
+				"damage": [
+					566.090766906738,
+					559.814765930176
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 5.233706987722,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 2
+					}
+				],
+				"time": 57.4749999999997,
+				"winner": 29
+			},
+			{
+				"damage": [
+					510.843706130981,
+					301.290174484253
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 82.9137273423009,
+						"id": "human hadagan npc lieutenant f15",
+						"max_hp": 175.0,
+						"team": 1
+					},
+					{
+						"hp": 99.6249976284329,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 1
+					},
+					{
+						"hp": 194.509683600194,
+						"id": "human mercenary hadagan warrior",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 32.3949999999999,
+				"winner": 29
+			},
+			{
+				"damage": [
+					585.798513412476,
+					561.157320022583
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 32.2993515895181,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 2
+					},
+					{
+						"hp": 22.3830052026558,
+						"id": "human mercenary hadagan warrior",
+						"max_hp": 240.0,
+						"team": 2
+					}
+				],
+				"time": 41.8549999999998,
+				"winner": 29
+			},
+			{
+				"damage": [
+					600.149528503418,
+					396.757478713989
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 85.5379806555119,
+						"id": "human hadagan npc lieutenant f15",
+						"max_hp": 175.0,
+						"team": 1
+					},
+					{
+						"hp": 66.0579457115279,
+						"id": "human mercenary hadagan warrior",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 39.4899999999998,
+				"winner": 29
+			},
+			{
+				"damage": [
+					515.586681365967,
+					684.628704071045
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 20.4500129739864,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 2
+					},
+					{
+						"hp": 23.09239094187,
+						"id": "human mercenary hadagan warrior",
+						"max_hp": 240.0,
+						"team": 2
+					}
+				],
+				"time": 41.8549999999998,
+				"winner": 29
+			},
+			{
+				"damage": [
+					500.392576217651,
+					338.054098129272
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 71.0110632135739,
+						"id": "human hadagan npc lieutenant f15",
+						"max_hp": 175.0,
+						"team": 1
+					},
+					{
+						"hp": 14.0400756898208,
+						"id": "human mercenary hadagan rogue",
+						"max_hp": 240.0,
+						"team": 1
+					},
+					{
+						"hp": 86.9418443327822,
+						"id": "human mercenary hadagan warrior",
+						"max_hp": 240.0,
+						"team": 1
+					}
+				],
+				"time": 25.5199999999999,
+				"winner": 29
+			}
+		]
+	},
+	{
+		"a": 4,
+		"b": 18,
+		"context": "duel",
+		"cost": 5,
+		"rank": 2,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					462.0,
+					616.0
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 7.00000000000028,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 14.3,
+				"winner": 18
+			},
+			{
+				"damage": [
+					616.0,
+					462.0
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 7.00000000000028,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 14.3,
+				"winner": 18
+			},
+			{
+				"damage": [
+					462.0,
+					616.0
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 7.00000000000028,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 14.3,
+				"winner": 18
+			},
+			{
+				"damage": [
+					616.0,
+					462.0
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 7.00000000000028,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 14.3,
+				"winner": 18
+			},
+			{
+				"damage": [
+					462.0,
+					616.0
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 7.00000000000028,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 14.3,
+				"winner": 18
+			},
+			{
+				"damage": [
+					616.0,
+					462.0
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 7.00000000000028,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 14.3,
+				"winner": 18
+			},
+			{
+				"damage": [
+					462.0,
+					616.0
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 7.00000000000028,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 14.3,
+				"winner": 18
+			},
+			{
+				"damage": [
+					616.0,
+					462.0
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 7.00000000000028,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 14.3,
+				"winner": 18
+			}
+		]
+	},
+	{
+		"a": 4,
+		"b": 18,
+		"context": "line",
+		"cost": 5,
+		"rank": 2,
+		"supports": [
+			5,
+			7
+		],
+		"trials": [
+			{
+				"damage": [
+					1395.52881622314,
+					1506.14226531982
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 62.9999961853028,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 29.9199999999999,
+				"winner": 18
+			},
+			{
+				"damage": [
+					1339.03970432281,
+					1250.17837238312
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 166.669998159632,
+						"id": "dragonbrownm16",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 27.2249999999999,
+				"winner": 4
+			},
+			{
+				"damage": [
+					1287.93135261536,
+					1421.72306060791
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 20.1949971346184,
+						"id": "dragonbrownm16",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 27.3349999999999,
+				"winner": 4
+			},
+			{
+				"damage": [
+					1585.52289295197,
+					1413.60933971405
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 20.1949971346184,
+						"id": "dragonbrownm16",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 31.8449999999999,
+				"winner": 4
+			},
+			{
+				"damage": [
+					1136.06232070923,
+					1372.59753417969
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 20.1949971346184,
+						"id": "dragonbrownm16",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 27.3349999999999,
+				"winner": 4
+			},
+			{
+				"damage": [
+					1587.07978439331,
+					1428.86660766602
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 62.9999961853028,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 29.9749999999999,
+				"winner": 18
+			},
+			{
+				"damage": [
+					1397.7847032547,
+					1643.89056015015
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 144.199996948242,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 29.9199999999999,
+				"winner": 18
+			},
+			{
+				"damage": [
+					1434.29135131836,
+					1281.04523181915
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 24.8849970297887,
+						"id": "dragonbrownm16",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 29.5899999999999,
+				"winner": 4
+			}
+		]
+	},
+	{
+		"a": 5,
+		"b": 9,
+		"context": "duel",
+		"cost": 4,
+		"rank": 2,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					234.168647766113,
+					449.174381256104
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 176.107398911054,
+						"id": "golemhorizontalf20",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 29.9199999999999,
+				"winner": 9
+			},
+			{
+				"damage": [
+					449.174381256104,
+					234.168647766113
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 176.107398911054,
+						"id": "golemhorizontalf20",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 29.9199999999999,
+				"winner": 9
+			},
+			{
+				"damage": [
+					461.321716308594,
+					360.487934112549
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 114.080722900154,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 43.1199999999998,
+				"winner": 5
+			},
+			{
+				"damage": [
+					360.487934112549,
+					461.321716308594
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 115.118222538283,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 43.0649999999998,
+				"winner": 5
+			},
+			{
+				"damage": [
+					372.586975097656,
+					479.279800415039
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 21.9035086181105,
+						"id": "golemhorizontalf20",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 37.3999999999998,
+				"winner": 9
+			},
+			{
+				"damage": [
+					317.839256286621,
+					317.343067169189
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 145.18929177917,
+						"id": "golemhorizontalf20",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 26.8399999999999,
+				"winner": 9
+			},
+			{
+				"damage": [
+					357.487071990967,
+					380.169727325439
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 86.2759847726649,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 33.4399999999999,
+				"winner": 5
+			},
+			{
+				"damage": [
+					324.549472808838,
+					114.677993774414
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 262.086442585593,
+						"id": "golemhorizontalf20",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 19.3599999999999,
+				"winner": 9
+			}
+		]
+	},
+	{
+		"a": 5,
+		"b": 9,
+		"context": "line",
+		"cost": 4,
+		"rank": 2,
+		"supports": [
+			7,
+			16
+		],
+		"trials": [
+			{
+				"damage": [
+					931.054790496826,
+					1361.75774383545
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 75.7791486502488,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 2
+					},
+					{
+						"hp": 412.830055593479,
+						"id": "trollblackslowf16",
+						"max_hp": 517.5,
+						"team": 2
+					}
+				],
+				"time": 45.3749999999998,
+				"winner": 9
+			},
+			{
+				"damage": [
+					1212.05827331543,
+					1361.26624298096
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 303.970300736866,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 2
+					},
+					{
+						"hp": 28.2237656729756,
+						"id": "trollblackslowf16",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 54.6699999999997,
+				"winner": 5
+			},
+			{
+				"damage": [
+					940.424953460693,
+					1298.20728683472
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 51.3575689578387,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 2
+					},
+					{
+						"hp": 502.330639961597,
+						"id": "trollblackslowf16",
+						"max_hp": 517.5,
+						"team": 2
+					}
+				],
+				"time": 42.9549999999998,
+				"winner": 9
+			},
+			{
+				"damage": [
+					1479.22299194336,
+					1313.0850944519
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 338.428577664406,
+						"id": "trollblackslowf16",
+						"max_hp": 517.5,
+						"team": 1
+					}
+				],
+				"time": 63.2499999999997,
+				"winner": 9
+			},
+			{
+				"damage": [
+					1418.36946105957,
+					1515.46336746216
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 136.699490576337,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 77.6600000000014,
+				"winner": 5
+			},
+			{
+				"damage": [
+					1354.86461257935,
+					881.913475036621
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 72.1438770295762,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 1
+					},
+					{
+						"hp": 427.050537096397,
+						"id": "trollblackslowf16",
+						"max_hp": 517.5,
+						"team": 1
+					}
+				],
+				"time": 44.6599999999998,
+				"winner": 9
+			},
+			{
+				"damage": [
+					1157.56027984619,
+					1460.47693252563
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 203.645431808536,
+						"id": "trollblackslowf16",
+						"max_hp": 517.5,
+						"team": 2
+					}
+				],
+				"time": 59.6749999999997,
+				"winner": 9
+			},
+			{
+				"damage": [
+					1094.62057113647,
+					1384.91872406006
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 37.1653103390903,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 2
+					},
+					{
+						"hp": 375.599510282615,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 54.6149999999997,
+				"winner": 5
+			}
+		]
+	},
+	{
+		"a": 6,
+		"b": 9,
+		"context": "duel",
+		"cost": 4,
+		"rank": 2,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					488.599994659424,
+					127.247047424316
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 238.275482961917,
+						"id": "dragonbluem14",
+						"max_hp": 351.0,
+						"team": 1
+					}
+				],
+				"time": 15.0699999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					127.247047424316,
+					488.599994659424
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 238.275482961917,
+						"id": "dragonbluem14",
+						"max_hp": 351.0,
+						"team": 2
+					}
+				],
+				"time": 15.0699999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					488.599994659424,
+					216.484786987305
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 160.430366579745,
+						"id": "dragonbluem14",
+						"max_hp": 351.0,
+						"team": 1
+					}
+				],
+				"time": 15.1249999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					216.484786987305,
+					488.599994659424
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 160.430366579745,
+						"id": "dragonbluem14",
+						"max_hp": 351.0,
+						"team": 2
+					}
+				],
+				"time": 15.1249999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					488.599994659424,
+					148.49573135376
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 227.344312160459,
+						"id": "dragonbluem14",
+						"max_hp": 351.0,
+						"team": 1
+					}
+				],
+				"time": 15.0699999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					148.49573135376,
+					488.599994659424
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 227.344312160459,
+						"id": "dragonbluem14",
+						"max_hp": 351.0,
+						"team": 2
+					}
+				],
+				"time": 15.0699999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					488.599994659424,
+					169.869567871094
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 207.511737442561,
+						"id": "dragonbluem14",
+						"max_hp": 351.0,
+						"team": 1
+					}
+				],
+				"time": 15.1249999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					169.869567871094,
+					488.599994659424
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 207.511737442561,
+						"id": "dragonbluem14",
+						"max_hp": 351.0,
+						"team": 2
+					}
+				],
+				"time": 15.1249999999999,
+				"winner": 6
+			}
+		]
+	},
+	{
+		"a": 6,
+		"b": 9,
+		"context": "line",
+		"cost": 4,
+		"rank": 2,
+		"supports": [
+			5,
+			7
+		],
+		"trials": [
+			{
+				"damage": [
+					1481.7538728714,
+					641.393753051758
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 351.0,
+						"id": "dragonbluem14",
+						"max_hp": 351.0,
+						"team": 1
+					},
+					{
+						"hp": 196.954873673424,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 1
+					},
+					{
+						"hp": 61.6353351822993,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 28.5999999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					843.264518737793,
+					1468.82606983185
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 351.0,
+						"id": "dragonbluem14",
+						"max_hp": 351.0,
+						"team": 2
+					},
+					{
+						"hp": 51.0615805115262,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 2
+					},
+					{
+						"hp": 90.1768697544444,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 30.7999999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					1297.83909511566,
+					644.819030761719
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 351.0,
+						"id": "dragonbluem14",
+						"max_hp": 351.0,
+						"team": 1
+					},
+					{
+						"hp": 240.96159801596,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 26.3449999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					824.378604888916,
+					1366.69402313232
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 351.0,
+						"id": "dragonbluem14",
+						"max_hp": 351.0,
+						"team": 2
+					},
+					{
+						"hp": 58.1044225763881,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 28.5449999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					1459.68735122681,
+					647.316822052002
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 351.0,
+						"id": "dragonbluem14",
+						"max_hp": 351.0,
+						"team": 1
+					},
+					{
+						"hp": 143.147470119276,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 26.3449999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					806.112274169922,
+					1518.15878582001
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 322.837344946939,
+						"id": "dragonbluem14",
+						"max_hp": 351.0,
+						"team": 2
+					}
+				],
+				"time": 33.0549999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					1402.96908187866,
+					703.418258666992
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 351.0,
+						"id": "dragonbluem14",
+						"max_hp": 351.0,
+						"team": 1
+					},
+					{
+						"hp": 91.352655762579,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 26.8399999999999,
+				"winner": 6
+			},
+			{
+				"damage": [
+					600.766273498535,
+					1414.19400215149
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 351.0,
+						"id": "dragonbluem14",
+						"max_hp": 351.0,
+						"team": 2
+					},
+					{
+						"hp": 223.953615459097,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 2
+					},
+					{
+						"hp": 82.4662223578408,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 24.5849999999999,
+				"winner": 6
+			}
+		]
+	},
+	{
+		"a": 7,
+		"b": 9,
+		"context": "duel",
+		"cost": 4,
+		"rank": 2,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					239.908134460449,
+					501.115051269531
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 85.2882074409859,
+						"id": "golemhorizontalf20",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 42.0749999999998,
+				"winner": 9
+			},
+			{
+				"damage": [
+					221.260009765625,
+					483.795257568359
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 226.050223881193,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 40.8099999999998,
+				"winner": 7
+			},
+			{
+				"damage": [
+					434.584003448486,
+					425.608051300049
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 121.067224077296,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 38.7199999999998,
+				"winner": 7
+			},
+			{
+				"damage": [
+					318.749549865723,
+					325.091991424561
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 196.111694641048,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 26.1249999999999,
+				"winner": 7
+			},
+			{
+				"damage": [
+					267.56050491333,
+					351.426155090332
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 194.972819804045,
+						"id": "golemhorizontalf20",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 24.3649999999999,
+				"winner": 9
+			},
+			{
+				"damage": [
+					374.618167877197,
+					456.438888549805
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 197.845102620068,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 48.3449999999998,
+				"winner": 7
+			},
+			{
+				"damage": [
+					256.3713722229,
+					559.50745010376
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 54.448839331196,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 46.6949999999998,
+				"winner": 7
+			},
+			{
+				"damage": [
+					463.53076171875,
+					321.047821044922
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 153.968226546442,
+						"id": "golemhorizontalf20",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 44.8249999999998,
+				"winner": 9
+			}
+		]
+	},
+	{
+		"a": 7,
+		"b": 9,
+		"context": "line",
+		"cost": 4,
+		"rank": 2,
+		"supports": [
+			5,
+			16
+		],
+		"trials": [
+			{
+				"damage": [
+					928.636451721191,
+					1463.57244110107
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 196.309908576281,
+						"id": "golemhorizontalf20",
+						"max_hp": 517.5,
+						"team": 2
+					},
+					{
+						"hp": 177.380168423991,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 2
+					},
+					{
+						"hp": 207.266794468628,
+						"id": "trollblackslowf16",
+						"max_hp": 517.5,
+						"team": 2
+					}
+				],
+				"time": 42.0749999999998,
+				"winner": 9
+			},
+			{
+				"damage": [
+					1430.90865707397,
+					1120.88505554199
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 346.24237035273,
+						"id": "trollblackslowf16",
+						"max_hp": 517.5,
+						"team": 1
+					}
+				],
+				"time": 59.1249999999997,
+				"winner": 9
+			},
+			{
+				"damage": [
+					1014.04758071899,
+					1311.03602218628
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 244.322196431319,
+						"id": "golemhorizontalf20",
+						"max_hp": 517.5,
+						"team": 2
+					},
+					{
+						"hp": 78.9617107470909,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 2
+					},
+					{
+						"hp": 160.389733121665,
+						"id": "trollblackslowf16",
+						"max_hp": 517.5,
+						"team": 2
+					}
+				],
+				"time": 37.0149999999998,
+				"winner": 9
+			},
+			{
+				"damage": [
+					1538.92094039917,
+					640.95703125
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 144.360917477502,
+						"id": "golemhorizontalf20",
+						"max_hp": 517.5,
+						"team": 1
+					},
+					{
+						"hp": 183.023687911184,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 1
+					},
+					{
+						"hp": 385.096711543615,
+						"id": "trollblackslowf16",
+						"max_hp": 517.5,
+						"team": 1
+					}
+				],
+				"time": 33.6049999999999,
+				"winner": 9
+			},
+			{
+				"damage": [
+					886.369632720947,
+					1550.01107025146
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 101.487676429887,
+						"id": "golemhorizontalf20",
+						"max_hp": 517.5,
+						"team": 2
+					},
+					{
+						"hp": 77.2302222315555,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 2
+					},
+					{
+						"hp": 466.07412799687,
+						"id": "trollblackslowf16",
+						"max_hp": 517.5,
+						"team": 2
+					}
+				],
+				"time": 39.1049999999998,
+				"winner": 9
+			},
+			{
+				"damage": [
+					1433.69986343384,
+					956.973335266113
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 230.653833503646,
+						"id": "golemhorizontalf20",
+						"max_hp": 517.5,
+						"team": 1
+					},
+					{
+						"hp": 103.786484389114,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 1
+					},
+					{
+						"hp": 222.842490977603,
+						"id": "trollblackslowf16",
+						"max_hp": 517.5,
+						"team": 1
+					}
+				],
+				"time": 47.6299999999998,
+				"winner": 9
+			},
+			{
+				"damage": [
+					968.228523254395,
+					1336.2562789917
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 23.9721938198575,
+						"id": "golemhorizontalf20",
+						"max_hp": 517.5,
+						"team": 2
+					},
+					{
+						"hp": 281.278524998757,
+						"id": "trollblackslowf16",
+						"max_hp": 517.5,
+						"team": 2
+					}
+				],
+				"time": 37.5649999999998,
+				"winner": 9
+			},
+			{
+				"damage": [
+					1465.77899551392,
+					1073.61536407471
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 21.7810577748006,
+						"id": "golemhorizontalf20",
+						"max_hp": 517.5,
+						"team": 1
+					},
+					{
+						"hp": 160.929987164987,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 1
+					},
+					{
+						"hp": 191.309415808399,
+						"id": "trollblackslowf16",
+						"max_hp": 517.5,
+						"team": 1
+					}
+				],
+				"time": 45.7049999999998,
+				"winner": 9
+			}
+		]
+	},
+	{
+		"a": 9,
+		"b": 16,
+		"context": "duel",
+		"cost": 4,
+		"rank": 2,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					245.860378265381,
+					280.099185943604
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 246.71745040877,
+						"id": "trollblackslowf16",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 21.3949999999999,
+				"winner": 16
+			},
+			{
+				"damage": [
+					493.138168334961,
+					468.925239562988
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 61.4780103812096,
+						"id": "trollblackslowf16",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 56.3749999999997,
+				"winner": 16
+			},
+			{
+				"damage": [
+					386.796600341797,
+					357.980056762695
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 80.3235693787499,
+						"id": "trollblackslowf16",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 33.4949999999999,
+				"winner": 16
+			},
+			{
+				"damage": [
+					321.023864746094,
+					505.281009674072
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 79.4367776830988,
+						"id": "golemhorizontalf20",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 39.6549999999998,
+				"winner": 9
+			},
+			{
+				"damage": [
+					321.073303222656,
+					372.52320098877
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 205.990986570007,
+						"id": "trollblackslowf16",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 31.6799999999999,
+				"winner": 16
+			},
+			{
+				"damage": [
+					552.638320922852,
+					301.056854248047
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 272.143237701513,
+						"id": "trollblackslowf16",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 48.0699999999998,
+				"winner": 16
+			},
+			{
+				"damage": [
+					311.505081176758,
+					287.436050415039
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 208.747580857798,
+						"id": "trollblackslowf16",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 29.0399999999999,
+				"winner": 16
+			},
+			{
+				"damage": [
+					312.793197631836,
+					361.117839813232
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 55.9491157819388,
+						"id": "golemhorizontalf20",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 27.6099999999999,
+				"winner": 9
+			}
+		]
+	},
+	{
+		"a": 9,
+		"b": 16,
+		"context": "line",
+		"cost": 4,
+		"rank": 2,
+		"supports": [
+			5,
+			7
+		],
+		"trials": [
+			{
+				"damage": [
+					1491.24182128906,
+					1365.068359375
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 66.5650053090967,
+						"id": "trollblackslowf16",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 67.7050000000002,
+				"winner": 16
+			},
+			{
+				"damage": [
+					1258.08596038818,
+					1019.21813201904
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 335.322152667287,
+						"id": "trollblackslowf16",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 55.3849999999997,
+				"winner": 16
+			},
+			{
+				"damage": [
+					1434.97792053223,
+					1550.00555801392
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 62.1238258551698,
+						"id": "trollblackslowf16",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 70.8950000000006,
+				"winner": 16
+			},
+			{
+				"damage": [
+					750.714767456055,
+					1278.2331237793
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 95.6435030783896,
+						"id": "golemhorizontalf20",
+						"max_hp": 450.0,
+						"team": 2
+					},
+					{
+						"hp": 106.554578252702,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 2
+					},
+					{
+						"hp": 450.0,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 36.3549999999998,
+				"winner": 9
+			},
+			{
+				"damage": [
+					1294.1350402832,
+					1430.23439788818
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 197.194074806925,
+						"id": "trollblackslowf16",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 58.1349999999997,
+				"winner": 16
+			},
+			{
+				"damage": [
+					1171.74089050293,
+					635.111068725586
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 450.0,
+						"id": "trollblackslowf16",
+						"max_hp": 450.0,
+						"team": 1
+					},
+					{
+						"hp": 209.276329697848,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 1
+					},
+					{
+						"hp": 64.2018696358753,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 31.6249999999999,
+				"winner": 16
+			},
+			{
+				"damage": [
+					1368.63327026367,
+					1216.74537277222
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 166.885975844078,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 56.3199999999997,
+				"winner": 9
+			},
+			{
+				"damage": [
+					1312.69701766968,
+					1242.1828918457
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 172.658625542719,
+						"id": "trollblackslowf16",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 59.8399999999997,
+				"winner": 16
+			}
+		]
+	},
+	{
+		"a": 9,
+		"b": 21,
+		"context": "duel",
+		"cost": 4,
+		"rank": 2,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					449.174381256104,
+					234.168647766113
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 176.107398911054,
+						"id": "golemhorizontalf20",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 29.9199999999999,
+				"winner": 9
+			},
+			{
+				"damage": [
+					246.363399505615,
+					395.731201171875
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 9.24985229966501,
+						"id": "golemhorizontalf20",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 29.4249999999999,
+				"winner": 9
+			},
+			{
+				"damage": [
+					360.487934112549,
+					461.321716308594
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 115.118222538283,
+						"id": "elementallavaf12",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 43.0649999999998,
+				"winner": 21
+			},
+			{
+				"damage": [
+					399.721649169922,
+					387.119697570801
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 28.7227411781134,
+						"id": "elementallavaf12",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 36.4649999999998,
+				"winner": 21
+			},
+			{
+				"damage": [
+					317.839256286621,
+					317.343067169189
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 145.18929177917,
+						"id": "golemhorizontalf20",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 26.8399999999999,
+				"winner": 9
+			},
+			{
+				"damage": [
+					319.067630767822,
+					385.336032867432
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 80.601075048483,
+						"id": "golemhorizontalf20",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 27.3899999999999,
+				"winner": 9
+			},
+			{
+				"damage": [
+					324.549472808838,
+					114.677993774414
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 262.086442585593,
+						"id": "golemhorizontalf20",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 19.3599999999999,
+				"winner": 9
+			},
+			{
+				"damage": [
+					256.920825958252,
+					314.812889099121
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 204.51436805871,
+						"id": "golemhorizontalf20",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 21.8349999999999,
+				"winner": 9
+			}
+		]
+	},
+	{
+		"a": 9,
+		"b": 21,
+		"context": "line",
+		"cost": 4,
+		"rank": 2,
+		"supports": [
+			5,
+			7
+		],
+		"trials": [
+			{
+				"damage": [
+					1231.52911376953,
+					892.380632400513
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 303.089913370734,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 1
+					},
+					{
+						"hp": 314.503204636027,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 46.1999999999998,
+				"winner": 9
+			},
+			{
+				"damage": [
+					840.33775806427,
+					1143.01019668579
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 162.000874481524,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 2
+					},
+					{
+						"hp": 304.528121407986,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 36.4649999999998,
+				"winner": 9
+			},
+			{
+				"damage": [
+					872.777355194092,
+					1165.96479034424
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 274.691344656624,
+						"id": "elementallavaf12",
+						"max_hp": 450.0,
+						"team": 2
+					},
+					{
+						"hp": 34.9068594203991,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 2
+					},
+					{
+						"hp": 156.695240703096,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 33.3849999999999,
+				"winner": 21
+			},
+			{
+				"damage": [
+					984.508453369141,
+					1556.77380371094
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 80.3751412646296,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 2
+					},
+					{
+						"hp": 256.871059461726,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 61.1049999999997,
+				"winner": 9
+			},
+			{
+				"damage": [
+					1040.38505935669,
+					1350.25653362274
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 13.3789496330816,
+						"id": "elementallavaf12",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 45.5949999999998,
+				"winner": 21
+			},
+			{
+				"damage": [
+					868.717154502869,
+					1039.96929550171
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 30.5982133053522,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 2
+					},
+					{
+						"hp": 350.215603265934,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 34.4849999999999,
+				"winner": 9
+			},
+			{
+				"damage": [
+					833.39094543457,
+					1051.7569437027
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 317.478853689558,
+						"id": "elementallavaf12",
+						"max_hp": 450.0,
+						"team": 2
+					},
+					{
+						"hp": 173.826050106094,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 2
+					},
+					{
+						"hp": 142.835414273534,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 2
+					}
+				],
+				"time": 33.4949999999999,
+				"winner": 21
+			},
+			{
+				"damage": [
+					1325.3989276886,
+					829.901844024658
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 190.473015373397,
+						"id": "elementallavaf12",
+						"max_hp": 450.0,
+						"team": 1
+					},
+					{
+						"hp": 225.146916426765,
+						"id": "elementalearthf8",
+						"max_hp": 450.0,
+						"team": 1
+					},
+					{
+						"hp": 62.0972801537398,
+						"id": "elementalicef15",
+						"max_hp": 450.0,
+						"team": 1
+					}
+				],
+				"time": 38.8849999999998,
+				"winner": 21
+			}
+		]
+	},
+	{
+		"a": 11,
+		"b": 18,
+		"context": "duel",
+		"cost": 5,
+		"rank": 2,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					498.0,
+					448.0
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 30.3799997903409,
+						"id": "octopushadaganm17",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 15.7849999999999,
+				"winner": 11
+			},
+			{
+				"damage": [
+					448.0,
+					498.0
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 30.3799997903409,
+						"id": "octopushadaganm17",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 15.7849999999999,
+				"winner": 11
+			},
+			{
+				"damage": [
+					498.0,
+					448.0
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 29.7937498034445,
+						"id": "octopushadaganm17",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 15.1799999999999,
+				"winner": 11
+			},
+			{
+				"damage": [
+					448.0,
+					498.0
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 29.7937498034445,
+						"id": "octopushadaganm17",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 15.1799999999999,
+				"winner": 11
+			},
+			{
+				"damage": [
+					498.0,
+					448.0
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 30.3799997903409,
+						"id": "octopushadaganm17",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 15.7849999999999,
+				"winner": 11
+			},
+			{
+				"damage": [
+					448.0,
+					498.0
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 30.3799997903409,
+						"id": "octopushadaganm17",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 15.7849999999999,
+				"winner": 11
+			},
+			{
+				"damage": [
+					498.0,
+					448.0
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 29.7937498034445,
+						"id": "octopushadaganm17",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 15.1799999999999,
+				"winner": 11
+			},
+			{
+				"damage": [
+					448.0,
+					498.0
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 29.7937498034445,
+						"id": "octopushadaganm17",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 15.1799999999999,
+				"winner": 11
+			}
+		]
+	},
+	{
+		"a": 11,
+		"b": 18,
+		"context": "line",
+		"cost": 5,
+		"rank": 2,
+		"supports": [
+			5,
+			7
+		],
+		"trials": [
+			{
+				"damage": [
+					1195.55048084259,
+					1500.93135452271
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 294.599998474121,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 30.3599999999999,
+				"winner": 18
+			},
+			{
+				"damage": [
+					1601.71292304993,
+					1471.97233867645
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 101.0625044466,
+						"id": "octopushadaganm17",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 34.5949999999998,
+				"winner": 11
+			},
+			{
+				"damage": [
+					1121.53824710846,
+					1333.596575737
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 381.799999237061,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 26.5649999999999,
+				"winner": 18
+			},
+			{
+				"damage": [
+					1478.4297990799,
+					1487.24362850189
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 101.0625044466,
+						"id": "octopushadaganm17",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 34.5949999999998,
+				"winner": 11
+			},
+			{
+				"damage": [
+					1401.18381881714,
+					1509.17830657959
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 32.9999961853026,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 34.2099999999999,
+				"winner": 18
+			},
+			{
+				"damage": [
+					1456.58938217163,
+					1299.99791622162
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 120.199996948242,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 30.4149999999999,
+				"winner": 18
+			},
+			{
+				"damage": [
+					1229.68257808685,
+					1355.63461971283
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 120.199996948242,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 30.4149999999999,
+				"winner": 18
+			},
+			{
+				"damage": [
+					1480.94616794586,
+					1388.50256538391
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 102.235004420392,
+						"id": "octopushadaganm17",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 32.4499999999999,
+				"winner": 11
+			}
+		]
+	},
+	{
+		"a": 18,
+		"b": 24,
+		"context": "duel",
+		"cost": 5,
+		"rank": 2,
+		"supports": [],
+		"trials": [
+			{
+				"damage": [
+					616.0,
+					415.0
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 53.9999999999997,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 14.3,
+				"winner": 18
+			},
+			{
+				"damage": [
+					415.0,
+					616.0
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 53.9999999999997,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 14.3,
+				"winner": 18
+			},
+			{
+				"damage": [
+					616.0,
+					415.0
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 53.9999999999997,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 14.3,
+				"winner": 18
+			},
+			{
+				"damage": [
+					415.0,
+					616.0
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 53.9999999999997,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 14.3,
+				"winner": 18
+			},
+			{
+				"damage": [
+					616.0,
+					415.0
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 53.9999999999997,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 14.3,
+				"winner": 18
+			},
+			{
+				"damage": [
+					415.0,
+					616.0
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 53.9999999999997,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 14.3,
+				"winner": 18
+			},
+			{
+				"damage": [
+					616.0,
+					415.0
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 53.9999999999997,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 14.3,
+				"winner": 18
+			},
+			{
+				"damage": [
+					415.0,
+					616.0
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 53.9999999999997,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 14.3,
+				"winner": 18
+			}
+		]
+	},
+	{
+		"a": 18,
+		"b": 24,
+		"context": "line",
+		"cost": 5,
+		"rank": 2,
+		"supports": [
+			5,
+			7
+		],
+		"trials": [
+			{
+				"damage": [
+					1535.81845569611,
+					1378.16036128998
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 32.9999961853026,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 31.8999999999999,
+				"winner": 18
+			},
+			{
+				"damage": [
+					1281.1024389267,
+					1395.0837097168
+				],
+				"reason": "defeated",
+				"seed": 8519,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 32.9999961853026,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 31.8999999999999,
+				"winner": 18
+			},
+			{
+				"damage": [
+					1509.93372344971,
+					1288.98351383209
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 207.399997711182,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 31.2399999999999,
+				"winner": 18
+			},
+			{
+				"damage": [
+					1357.97991752625,
+					1416.20993518829
+				],
+				"reason": "defeated",
+				"seed": 10777,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 157.876248356188,
+						"id": "human hadagan necromancer m17",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 30.8549999999999,
+				"winner": 24
+			},
+			{
+				"damage": [
+					1613.1500825882,
+					1400.27622509003
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 32.9999961853026,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 31.8999999999999,
+				"winner": 18
+			},
+			{
+				"damage": [
+					1417.46160793304,
+					1563.62459659576
+				],
+				"reason": "defeated",
+				"seed": 12007,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 32.9999961853026,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 31.2949999999999,
+				"winner": 18
+			},
+			{
+				"damage": [
+					1466.32915496826,
+					1147.73192691803
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 0,
+				"survivors": [
+					{
+						"hp": 381.799999237061,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 1
+					}
+				],
+				"time": 27.4449999999999,
+				"winner": 18
+			},
+			{
+				"damage": [
+					1230.28395748138,
+					1458.46605682373
+				],
+				"reason": "defeated",
+				"seed": 22031,
+				"side": 1,
+				"survivors": [
+					{
+						"hp": 207.399997711182,
+						"id": "ancientcursem25",
+						"max_hp": 469.0,
+						"team": 2
+					}
+				],
+				"time": 27.5549999999999,
+				"winner": 18
+			}
+		]
+	}
+]

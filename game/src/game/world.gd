@@ -1118,9 +1118,9 @@ func on_death(u: GameUnit, killer: GameUnit) -> void:
 	unit_died.emit(u, killer)
 	if not authority or session == null:
 		return
-	# the dead unit's hit hook (call for help)
-	# its friends that noticed it see the corpse.
-	ai.hit_hook(u, killer)
+	# Native 553ac0 calls the hit hook only while the victim survives.
+	# A fatal hit alerts witnesses through seen_murder/on_corpse; a corpse
+	# cannot also send an unconditional warning to allies behind it.
 	ai.on_corpse(u)
 	# an AI killer says its kill line (acks.db NPC reaction 0x30)
 	# a killer of a player's party (with a player) gets

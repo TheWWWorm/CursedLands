@@ -1,0 +1,121 @@
+{
+  "date": "2026-10-19",
+  "base_commit": "e0abbb1e9bdb8d641085daf7dfb51816ae48357a",
+  "version": "1.17.0",
+  "unpublished_working_tree": true,
+  "platform": "linux",
+  "pck_sha256": "4b1bf0d0e5ac4f57f84a7cef038b2340cd43e3cf861830f44c7319cf3fa92ec3",
+  "linux_engine_sha256": "5c8b95c46a64e7a0af03da4270ef553514ad2450c1c87a499fd339a0e282f704",
+  "game_source_manifest_sha256": "e0a6748f7ab5ba273856a21553939c731c807d0c2e5c31fb148e49e9fa55d4b2",
+  "game_source_files": 1063,
+  "scope": "Trials balance depth and grounded planning fire; native armor, spell and movement tests. This is not a Windows performance fix.",
+  "native_libraries": {
+    "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+    "libterrain_search.so": "ac42b3731536ae3a404755f48fb04ff54c4bfe79c85ebcc8d78be4153632392c",
+    "src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+    "src/native/bin/libterrain_search.so": "ac42b3731536ae3a404755f48fb04ff54c4bfe79c85ebcc8d78be4153632392c"
+  },
+  "balance": {
+    "species": 28,
+    "forms": 84,
+    "paired_tournaments_per_build": 16,
+    "unique_seeds_per_build": 8,
+    "mixed_support_fights_per_build": 1584,
+    "promotion_price_fights_per_build": 504,
+    "armor_samples_per_build": 1764
+  },
+  "development_preferences": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "checks": [
+    {
+      "test": "arena_balance_catalog",
+      "exit": 0
+    },
+    {
+      "test": "arena_star_balance",
+      "exit": 0
+    },
+    {
+      "test": "arena_species",
+      "exit": 0
+    },
+    {
+      "test": "arena_roster",
+      "exit": 0
+    },
+    {
+      "test": "arena_economy",
+      "exit": 0
+    },
+    {
+      "test": "arena_alliances",
+      "exit": 0
+    },
+    {
+      "test": "arena_bot_planner",
+      "exit": 0
+    },
+    {
+      "test": "arena_online",
+      "exit": 0
+    },
+    {
+      "test": "arena_tournament",
+      "exit": 0
+    },
+    {
+      "test": "arena_readability",
+      "exit": 0
+    }
+  ],
+  "rendered_checks": [
+    {
+      "label": "guide-mobile",
+      "exit": 0,
+      "summary": [
+        "DEPLOYMENT_GUIDE mobile checks=123 failures=[]"
+      ]
+    },
+    {
+      "label": "guide-forward",
+      "exit": 0,
+      "summary": [
+        "DEPLOYMENT_GUIDE forward_plus checks=123 failures=[]"
+      ]
+    },
+    {
+      "label": "guide-compatibility",
+      "exit": 0,
+      "summary": [
+        "DEPLOYMENT_GUIDE gl_compatibility checks=123 failures=[]"
+      ]
+    },
+    {
+      "label": "ui-en",
+      "exit": 0,
+      "summary": [
+        "ARENA_SPECIES_UI en checks=572 failures=[]"
+      ]
+    },
+    {
+      "label": "ui-ru",
+      "exit": 0,
+      "summary": [
+        "ARENA_SPECIES_UI ru checks=569 failures=[]"
+      ]
+    },
+    {
+      "label": "ui-de",
+      "exit": 0,
+      "summary": [
+        "ARENA_SPECIES_UI de checks=569 failures=[]"
+      ]
+    }
+  ],
+  "linux_package_smoke": "Passed 2,154 species/migration/native-combat checks using this staging executable and PCK with original game data."
+}

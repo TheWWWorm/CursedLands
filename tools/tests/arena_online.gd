@@ -50,6 +50,18 @@ func pair(use_websocket: bool) -> void:
 	client.request("deploy",[own_uid,Vector2(100,100)])
 	await frames(12)
 	check(ArenaRun.DEPLOY.has_point(Vector2(guest.army[0].point[0],guest.army[0].point[1])),"out-of-bounds deployment rejected")
+	var original_point := Vector2(guest.army[0].point[0],guest.army[0].point[1])
+	client.request("bench",[own_uid,5])
+	check(await wait_for(func():return not guest.unit(own_uid).deployed and client.view.reserve_slots()[5].get("uid")==own_uid),"chosen reserve slot reaches the host and guest snapshot")
+	client.request("bench",[own_uid,99]); await frames(12)
+	check(guest.reserve_slots()[5].get("uid")==own_uid,"invalid reserve slot preserves the unit")
+	client.request("deploy",[own_uid,original_point])
+	check(await wait_for(func():return guest.unit(own_uid).deployed),"unit can return from a non-first reserve slot")
+	guest.gold=100; guest.shop[1]={"family":11,"rank":0,"locked":false}
+	host.game.updated.emit()
+	check(await wait_for(func():return client.view.shop[1].get("family")==11 and client.view.gold==100),"native palette fixture reaches client shop")
+	client.request("buy",[1])
+	check(await wait_for(func():return guest.army.size()==2),"guest recruits a woodsfolk archer")
 	var untouched := guest.snapshot()
 	host.game.run.finish_preparation()
 	check(guest.snapshot()==untouched,"bots do not shop for a human")
@@ -68,6 +80,7 @@ func pair(use_websocket: bool) -> void:
 	add_child(replica); var parent:=Node3D.new(); add_child(parent); replica._world_parent=parent
 	replica.apply_board(frame)
 	check(not replica.world.authority and replica.world.units.size()==host.game.encounter(1).world.units.size(),"replica builds the host's actors without simulation authority")
+	check(replica.world.unit_rows().any(func(unit):return unit.info.prototype=="driadgreena7" and unit.info.get("texture")=="driad00"),"native clan palette survives the online actor snapshot")
 	var ticks:=0
 	while host.game.run.stage=="fight" and ticks<3000:
 		host.game.advance_clock(GameUnit.TICK); ticks+=1

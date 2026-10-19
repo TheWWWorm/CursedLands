@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-19",
+  "base_commit": "e0abbb1e9bdb8d641085daf7dfb51816ae48357a",
+  "version": "1.17.0",
+  "unpublished_working_tree": true,
+  "pck_sha256": "53f7651f70c7f215bd2c132ffc94f5e385e3c5f4ed95d3ed6c0d5a8cec168393",
+  "linux_engine_sha256": "5c8b95c46a64e7a0af03da4270ef553514ad2450c1c87a499fd339a0e282f704",
+  "game_source_sha256": "673b1bf971699a7ec0a447f4e9ff55d3113e0935d60c7c990ee9daba8673e1ba",
+  "scope": "Linux/Vulkan UI and touch-input regression; mobile browser and Windows gameplay not tested in this pass. No performance soak restarted.",
+  "checks": {
+    "remake_hints_ui": 42,
+    "side_quest_panel_ui": 86,
+    "health_bar_visibility": 25,
+    "arena_readability_en": 87,
+    "arena_readability_ru": 83,
+    "arena_readability_de": 83
+  },
+  "development_preferences": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "windows_engine_sha256": "bc401685dd6238c54ba97585bb7c83418689fdddfe4f8a67d00be8fe31affa62",
+  "windows_archive": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/diagnostic-builds/CursedLands-diagnostic-ui-hints-windows-20261019.zip",
+    "size": 46481558,
+    "sha256": "38c58f3c8f84b39bbc99df6625c6bdd01cc0d4e51f3bee1a0baf6a9c70a34629"
+  },
+  "linux_archive": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/diagnostic-builds/CursedLands-diagnostic-ui-hints-linux-20261019.tar.gz",
+    "size": 50857252,
+    "sha256": "19fc61ff927cae60c7d71f4f293af3224788e9788b52e455016e2cb8fafd6a65",
+    "all_files_verified": true,
+    "executable_permission_preserved": true,
+    "native_library_startup_check": true
+  }
+}

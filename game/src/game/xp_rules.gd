@@ -36,16 +36,22 @@ extends RefCounted
 
 ## Host: `amount` experience from `source` ("kill", "quest", "talk", "side")
 ## for `player`'s party (the killer's / the talking player's / player 0).
+const CHOICES := ["Original rules", "Full for everyone", "Full for main hero"]
+
 static func give(s: Session, amount: float, source := "quest", player := 0) -> void:
 	if amount == 0.0 or s.world == null:
 		return
 	var gains := []   # [unit, record, share]
 	if s.multiplayer_game and full_experience() and s.lmp.is_empty():   # remake option: not in the original multiplayer game
 		gains = _full(s, amount)
+	elif s.multiplayer_game and GameData.option("coop_full_xp") == 2 and s.lmp.is_empty():
+		for p: Dictionary in s.players.values():
+			gains.append_array(_party_split(s, amount, int(p.index), false, true))
 	elif s.multiplayer_game and source in ["kill", "quest"]:
 		gains = _network_split(s, amount)
 	else:
-		gains = _party_split(s, amount, player, not s.multiplayer_game and GameData.option("sp_full_xp") != 0)
+		gains = _party_split(s, amount, player, not s.multiplayer_game and GameData.option("sp_full_xp") == 1,
+			not s.multiplayer_game and GameData.option("sp_full_xp") == 2)
 	for g: Array in gains:
 		gain(s, g[0], g[1], g[2])
 	# No text window line: the original shows a gain only as each hero's flying
@@ -56,7 +62,7 @@ static func give(s: Session, amount: float, source := "quest", player := 0) -> v
 
 ## Remake option (co-op host): every party member gets the whole amount.
 static func full_experience() -> bool:
-	return GameData.option("coop_full_xp") != 0
+	return GameData.option("coop_full_xp") == 1
 
 
 ## × 1.04 ^ (Int − 25) (constants), the
@@ -169,7 +175,7 @@ static func on_kill(s: Session, victim: GameUnit, killer: GameUnit) -> void:
 
 ## Branch "player given": equal shares over living or revivable party units.
 ## Remake option "sp_full_xp" (`full`): each hero / mercenary gets all of it.
-static func _party_split(s: Session, amount: float, player: int, full := false) -> Array:
+static func _party_split(s: Session, amount: float, player: int, full := false, main_full := false) -> Array:
 	var members := []
 	var w: GameWorld = s.lmp_travel.owner_world(player) if s.lmp_travel else s.world
 	if w == null:
@@ -182,7 +188,10 @@ static func _party_split(s: Session, amount: float, player: int, full := false) 
 		return out
 	var share := _f32(amount) if full else _f32(_f32(amount) / members.size())
 	for u: GameUnit in members:
-		out.append([u, unit_record(u), share])
+		var h := unit_record(u)
+		var roster: Array = s.state.heroes.get(player, [])
+		var main := main_full and not roster.is_empty() and is_same(h, roster[0])
+		out.append([u, h, _f32(amount) if main else share])
 	return out
 
 

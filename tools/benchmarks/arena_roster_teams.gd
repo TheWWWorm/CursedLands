@@ -7,16 +7,16 @@ class Duel extends ArenaRun:
 	func enemy_formation() -> Array[Dictionary]: return ArenaTournamentRun.formation_for(opposing, 1)
 	func resolve(_winner: int, _seconds: float, _damage: Array, _survivors: Array = [0,0]) -> void: stage = "result"
 
-const FRONTS := [[0,2], [12,14], [15,25], [26,27], [28,29]]
+const FRONTS := [[0,6], [0,6], [9,12], [14,15], [14,22]]
 var rows := []
 
 func army(run: ArenaRun, family: int, rank: int, front: Array) -> void:
 	run.army.clear()
 	for index in 2:
 		var unit := run._recruit(front[index], rank, 1)
-		unit.deployed = true; unit.point = [27.0, 29.5 + index * 5.0]
+		unit.deployed = true; unit.point = [27.0, 24.5 + index * 15.0]
 	var recruit := run._recruit(family, rank, 1)
-	recruit.deployed = true; recruit.point = [23.0, 32.0]
+	recruit.deployed = true; recruit.point = [27.0 if ArenaRules.recruit_role(family,rank)=="Melee" else 23.0, 32.0]
 
 func _ready() -> void:
 	var native := hash(GameData.db.tables)
@@ -32,8 +32,10 @@ func _ready() -> void:
 			if baseline == candidate or int(ArenaRules.FAMILIES[baseline].tier) != tier: continue
 			var wins := 0; var draws := 0; var seconds := 0.0
 			for side in 2:
-				var run := Duel.new(); run.auto_save = false; run.begin(8519 + baseline)
-				var rival := ArenaRun.new(); rival.auto_save = false; rival.begin(8519 + baseline)
+				# A pair gets the same seed in both directions and both positions.
+				var pair_seed := 8519 + mini(candidate, baseline) * 31 + maxi(candidate, baseline)
+				var run := Duel.new(); run.auto_save = false; run.begin(pair_seed)
+				var rival := ArenaRun.new(); rival.auto_save = false; rival.begin(pair_seed)
 				army(run, candidate if side == 0 else baseline, rank, FRONTS[tier-1])
 				army(rival, baseline if side == 0 else candidate, rank, FRONTS[tier-1])
 				run.opposing = rival.army

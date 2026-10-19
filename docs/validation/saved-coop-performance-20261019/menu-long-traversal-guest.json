@@ -1,0 +1,7112 @@
+[
+	{
+		"action": "idle",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 0,
+			"attack": 0,
+			"heal": 0,
+			"lightning": 0,
+			"move": 0,
+			"weak": 0
+		},
+		"bolts": 0,
+		"camera": "(280.8438, 12.462, -333.6562)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				280.84375,
+				12.4620027542114,
+				-333.65625
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": -0.523598775598299
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 0,
+		"delayed_effects": 1,
+		"depth": 0.0,
+		"display": ":41",
+		"effects": 5,
+		"fps": 101.040719409922,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 0
+		},
+		"hp": 5.98780809263971,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 2,
+			"serial": 2
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.25,
+		"manual_casts_completed": {},
+		"manual_casts_started": {},
+		"model_visible": true,
+		"nodes": 16899.0,
+		"npc_actions": {
+			"death": 21,
+			"idle": 26,
+			"walk": 60
+		},
+		"objects": 44350.0,
+		"observed_weapon_swings": 0,
+		"p95_ms": 9.897,
+		"particles": 1689,
+		"peak_acid_clouds": 0,
+		"peer": "guest",
+		"phase": "baseline",
+		"position": [
+			280.84375,
+			333.65625
+		],
+		"real_casts": 0,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 0.01,
+		"spell_events": {
+			"eagle_sight": 1
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 17,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 0.0,
+		"video": 1549660080,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 0.0,
+		"zone": "gz18h",
+		"zone_visits": {
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 0,
+			"attack": 0,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 0,
+			"move": 11,
+			"weak": 0
+		},
+		"bolts": 0,
+		"camera": "(266.4893, 13.60273, -319.9834)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				266.296875,
+				13.6027307510376,
+				-319.796875
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 0.677965212973131
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 0,
+		"delayed_effects": 1,
+		"depth": 20.246768951416,
+		"display": ":41",
+		"effects": 7,
+		"fps": 97.0195533227763,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 57
+		},
+		"hp": 178.375,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 14
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.25,
+		"manual_casts_completed": {
+			"healing": 1
+		},
+		"manual_casts_started": {
+			"healing": 1
+		},
+		"model_visible": true,
+		"nodes": 17007.0,
+		"npc_actions": {
+			"death": 21,
+			"idle": 63,
+			"walk": 23
+		},
+		"objects": 44694.0,
+		"observed_weapon_swings": 0,
+		"p95_ms": 15.336,
+		"particles": 1982,
+		"peak_acid_clouds": 0,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			266.1875,
+			319.6875
+		],
+		"real_casts": 1,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 30.014,
+		"spell_events": {
+			"eagle_sight": 1,
+			"healing": 1
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 17,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 22.4746016412973,
+		"video": 1706841440,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 60.0599999999997,
+		"zone": "gz18h",
+		"zone_visits": {
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 0,
+			"attack": 0,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 0,
+			"move": 45,
+			"weak": 0
+		},
+		"bolts": 0,
+		"camera": "(229.7496, 12.78862, -309.7731)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				229.96403503418,
+				12.7886190414429,
+				-310.025115966797
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 4.27929046440157
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 0,
+		"delayed_effects": 1,
+		"depth": 56.0928344726562,
+		"display": ":41",
+		"effects": 6,
+		"fps": 86.8955132949968,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 81
+		},
+		"hp": 178.375,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 48
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.25,
+		"manual_casts_completed": {
+			"healing": 1
+		},
+		"manual_casts_started": {
+			"healing": 1
+		},
+		"model_visible": true,
+		"nodes": 16985.0,
+		"npc_actions": {
+			"death": 21,
+			"idle": 62,
+			"walk": 24
+		},
+		"objects": 44754.0,
+		"observed_weapon_swings": 0,
+		"p95_ms": 15.722,
+		"particles": 1709,
+		"peak_acid_clouds": 0,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			229.96875,
+			310.03125
+		],
+		"real_casts": 1,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 60.016,
+		"spell_events": {
+			"eagle_sight": 1,
+			"healing": 1
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 17,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 109.017897255719,
+		"video": 1720923088,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 120.010000000007,
+		"zone": "gz18h",
+		"zone_visits": {
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 0,
+			"attack": 0,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 0,
+			"move": 83,
+			"weak": 0
+		},
+		"bolts": 0,
+		"camera": "(199.9565, 11.55457, -355.1411)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				199.696014404297,
+				11.5545673370361,
+				-355.140625
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 7.74194578440173
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 0,
+		"delayed_effects": 1,
+		"depth": 84.0878067016602,
+		"display": ":41",
+		"effects": 6,
+		"fps": 82.8735357175941,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 89
+		},
+		"hp": 178.375,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 86
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.25,
+		"manual_casts_completed": {
+			"healing": 1
+		},
+		"manual_casts_started": {
+			"healing": 1
+		},
+		"model_visible": true,
+		"nodes": 16972.0,
+		"npc_actions": {
+			"death": 21,
+			"idle": 59,
+			"walk": 27
+		},
+		"objects": 44716.0,
+		"observed_weapon_swings": 0,
+		"p95_ms": 15.526,
+		"particles": 1625,
+		"peak_acid_clouds": 0,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			199.546875,
+			355.140625
+		],
+		"real_casts": 1,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 90.025,
+		"spell_events": {
+			"eagle_sight": 1,
+			"healing": 1
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 17,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 195.892695363611,
+		"video": 1735721568,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 180.070000000014,
+		"zone": "gz18h",
+		"zone_visits": {
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 0,
+			"attack": 0,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 0,
+			"move": 119,
+			"weak": 0
+		},
+		"bolts": 0,
+		"camera": "(194.5156, 10.24747, -297.3594)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				194.807327270508,
+				10.2474727630615,
+				-297.358306884766
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 11.3338179993926
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 0,
+		"delayed_effects": 1,
+		"depth": 93.7635650634766,
+		"display": ":41",
+		"effects": 5,
+		"fps": 92.1803397784643,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 66
+		},
+		"hp": 178.375,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 2,
+			"serial": 124
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.25,
+		"manual_casts_completed": {
+			"healing": 1
+		},
+		"manual_casts_started": {
+			"healing": 1
+		},
+		"model_visible": true,
+		"nodes": 16973.0,
+		"npc_actions": {
+			"death": 21,
+			"idle": 65,
+			"walk": 21
+		},
+		"objects": 44849.0,
+		"observed_weapon_swings": 0,
+		"p95_ms": 14.363,
+		"particles": 1610,
+		"peak_acid_clouds": 0,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			194.390625,
+			297.359375
+		],
+		"real_casts": 1,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 120.054,
+		"spell_events": {
+			"eagle_sight": 1,
+			"healing": 1
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 17,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 282.215021502227,
+		"video": 1741359840,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 240.075000000022,
+		"zone": "gz18h",
+		"zone_visits": {
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 3,
+			"attack": 0,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 0,
+			"move": 156,
+			"weak": 0
+		},
+		"bolts": 0,
+		"camera": "(169.0, 10.01942, -353.4844)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				194.807327270508,
+				10.0194206237793,
+				-297.358306884766
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 11.3338179993926
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 1,
+		"delayed_effects": 1,
+		"depth": 113.587760925293,
+		"display": ":41",
+		"effects": 12,
+		"fps": 90.2962496957628,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 9,
+			"fire": 0,
+			"foot": 82
+		},
+		"hp": 178.375,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 881
+		},
+		"lights": 0,
+		"live_acid_clouds": 4,
+		"magic_endings": 1,
+		"mana": 276.4375,
+		"manual_casts_completed": {
+			"acid_fog": 3,
+			"healing": 1
+		},
+		"manual_casts_started": {
+			"acid_fog": 3,
+			"healing": 1
+		},
+		"model_visible": true,
+		"nodes": 17006.0,
+		"npc_actions": {
+			"death": 22,
+			"idle": 61,
+			"walk": 24
+		},
+		"objects": 45123.0,
+		"observed_weapon_swings": 0,
+		"p95_ms": 15.782,
+		"particles": 1721,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			169.0,
+			353.484375
+		],
+		"real_casts": 4,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 150.055,
+		"spell_events": {
+			"acid_fog": 6,
+			"eagle_sight": 2,
+			"healing": 1
+		},
+		"spell_lights": 6,
+		"static_memory": 0.0,
+		"surviving_foes": 16,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 350.76489206031,
+		"video": 1797491552,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 300.080000000029,
+		"zone": "gz18h",
+		"zone_visits": {
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 4,
+			"attack": 1,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 1,
+			"move": 188,
+			"weak": 1
+		},
+		"bolts": 0,
+		"camera": "(138.4219, 10.9292, -321.0781)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				194.807327270508,
+				10.92919921875,
+				-297.358306884766
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 11.3338179993926
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 2,
+		"delayed_effects": 1,
+		"depth": 142.976211547852,
+		"display": ":41",
+		"effects": 7,
+		"fps": 93.9370170128635,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 87
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 1679
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 309.4375,
+		"manual_casts_completed": {
+			"acid_fog": 4,
+			"healing": 1,
+			"lightning": 1,
+			"weak": 1
+		},
+		"manual_casts_started": {
+			"acid_fog": 4,
+			"healing": 1,
+			"lightning": 1,
+			"weak": 1
+		},
+		"model_visible": true,
+		"nodes": 17066.0,
+		"npc_actions": {
+			"death": 23,
+			"idle": 59,
+			"walk": 25
+		},
+		"objects": 45208.0,
+		"observed_weapon_swings": 1,
+		"p95_ms": 15.961,
+		"particles": 1758,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "approaching for lightning",
+		"position": [
+			138.421875,
+			321.078125
+		],
+		"real_casts": 7,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 180.064,
+		"spell_events": {
+			"acid_fog": 8,
+			"eagle_sight": 2,
+			"healing": 1,
+			"lightning": 1,
+			"weak": 1
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 15,
+		"target_distance": 18.2303314208984,
+		"target_hp": 70.0,
+		"time_scale": 2.0,
+		"travelled": 415.142612576485,
+		"video": 1795644480,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 360.030000000037,
+		"zone": "gz18h",
+		"zone_visits": {
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 4,
+			"attack": 1,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 2,
+			"move": 221,
+			"weak": 1
+		},
+		"bolts": 0,
+		"camera": "(116.2812, 10.04864, -331.5625)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				194.807327270508,
+				10.0486364364624,
+				-297.358306884766
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 11.3338179993926
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 3,
+		"delayed_effects": 1,
+		"depth": 164.575820922852,
+		"display": ":41",
+		"effects": 9,
+		"fps": 85.4562467016524,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 1,
+			"fire": 0,
+			"foot": 89
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 2439
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.4375,
+		"manual_casts_completed": {
+			"acid_fog": 4,
+			"healing": 1,
+			"lightning": 2,
+			"weak": 1
+		},
+		"manual_casts_started": {
+			"acid_fog": 4,
+			"healing": 1,
+			"lightning": 2,
+			"weak": 1
+		},
+		"model_visible": true,
+		"nodes": 17060.0,
+		"npc_actions": {
+			"death": 24,
+			"idle": 66,
+			"walk": 17
+		},
+		"objects": 45344.0,
+		"observed_weapon_swings": 1,
+		"p95_ms": 15.942,
+		"particles": 2283,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			116.28125,
+			331.5625
+		],
+		"real_casts": 8,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 210.068,
+		"spell_events": {
+			"acid_fog": 8,
+			"eagle_sight": 2,
+			"healing": 1,
+			"lightning": 2,
+			"weak": 1
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 14,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 489.454395819455,
+		"video": 1795170992,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 420.035000000044,
+		"zone": "gz18h",
+		"zone_visits": {
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "idle",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 4,
+			"attack": 1,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 2,
+			"move": 251,
+			"weak": 1
+		},
+		"bolts": 0,
+		"camera": "(151.0, 9.952425, -269.0)",
+		"camera_mode": 3,
+		"camera_pose": {
+			"at": [
+				194.807327270508,
+				9.95242500305176,
+				-297.358306884766
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 11.3338179993926
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 3,
+		"delayed_effects": 1,
+		"depth": 145.051116943359,
+		"display": ":41",
+		"effects": 4,
+		"fps": 81.3635070504764,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 29
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 3205
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.4375,
+		"manual_casts_completed": {
+			"acid_fog": 4,
+			"healing": 1,
+			"lightning": 2,
+			"weak": 1
+		},
+		"manual_casts_started": {
+			"acid_fog": 4,
+			"healing": 1,
+			"lightning": 2,
+			"weak": 1
+		},
+		"model_visible": true,
+		"nodes": 16931.0,
+		"npc_actions": {
+			"death": 24,
+			"idle": 63,
+			"walk": 20
+		},
+		"objects": 45094.0,
+		"observed_weapon_swings": 1,
+		"p95_ms": 18.207,
+		"particles": 1604,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "regroup",
+		"position": [
+			151.0,
+			269.0
+		],
+		"real_casts": 8,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 240.069,
+		"spell_events": {
+			"acid_fog": 8,
+			"eagle_sight": 2,
+			"healing": 1,
+			"lightning": 2,
+			"weak": 1
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 14,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 568.214079555124,
+		"video": 1762963584,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 480.205000000052,
+		"zone": "gz18h",
+		"zone_visits": {
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "idle",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 4,
+			"attack": 1,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 2,
+			"move": 251,
+			"weak": 1
+		},
+		"bolts": 0,
+		"camera": "(151.0, 9.952425, -269.0)",
+		"camera_mode": 3,
+		"camera_pose": {
+			"at": [
+				194.807327270508,
+				9.95242500305176,
+				-297.358306884766
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 11.3338179993926
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 3,
+		"delayed_effects": 1,
+		"depth": 145.051116943359,
+		"display": ":41",
+		"effects": 5,
+		"fps": 90.5517799540422,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 0
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 3965
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.4375,
+		"manual_casts_completed": {
+			"acid_fog": 4,
+			"healing": 1,
+			"lightning": 2,
+			"weak": 1
+		},
+		"manual_casts_started": {
+			"acid_fog": 4,
+			"healing": 1,
+			"lightning": 2,
+			"weak": 1
+		},
+		"model_visible": true,
+		"nodes": 16904.0,
+		"npc_actions": {
+			"death": 24,
+			"idle": 58,
+			"walk": 25
+		},
+		"objects": 45046.0,
+		"observed_weapon_swings": 1,
+		"p95_ms": 16.184,
+		"particles": 1859,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "regroup",
+		"position": [
+			151.0,
+			269.0
+		],
+		"real_casts": 8,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 270.074,
+		"spell_events": {
+			"acid_fog": 8,
+			"eagle_sight": 2,
+			"healing": 1,
+			"lightning": 2,
+			"weak": 1
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 14,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 568.214079555124,
+		"video": 1762963584,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 540.100000000027,
+		"zone": "gz18h",
+		"zone_visits": {
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 4,
+			"attack": 1,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 2,
+			"move": 286,
+			"weak": 1
+		},
+		"bolts": 0,
+		"camera": "(136.769, 10.28302, -205.1345)",
+		"camera_mode": 3,
+		"camera_pose": {
+			"at": [
+				194.807327270508,
+				10.283016204834,
+				-297.358306884766
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 11.3338179993926
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 3,
+		"delayed_effects": 1,
+		"depth": 193.15625,
+		"display": ":41",
+		"effects": 9,
+		"fps": 84.2823457303995,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 84
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 4789
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.4375,
+		"manual_casts_completed": {
+			"acid_fog": 4,
+			"healing": 1,
+			"lightning": 2,
+			"weak": 1
+		},
+		"manual_casts_started": {
+			"acid_fog": 4,
+			"healing": 1,
+			"lightning": 2,
+			"weak": 1
+		},
+		"model_visible": true,
+		"nodes": 17002.0,
+		"npc_actions": {
+			"death": 24,
+			"idle": 61,
+			"walk": 22
+		},
+		"objects": 45318.0,
+		"observed_weapon_swings": 1,
+		"p95_ms": 16.838,
+		"particles": 2041,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			136.6875,
+			205.09375
+		],
+		"real_casts": 8,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 301.374,
+		"spell_events": {
+			"acid_fog": 8,
+			"eagle_sight": 3,
+			"healing": 1,
+			"lightning": 2,
+			"weak": 1
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 14,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 648.774630170316,
+		"video": 1759036064,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 600.159999999972,
+		"zone": "gz18h",
+		"zone_visits": {
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 5,
+			"attack": 1,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 2,
+			"move": 327,
+			"weak": 1
+		},
+		"bolts": 0,
+		"camera": "(176.9375, 10.67745, -146.9688)",
+		"camera_mode": 3,
+		"camera_pose": {
+			"at": [
+				194.807327270508,
+				10.6774520874023,
+				-297.358306884766
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 11.3338179993926
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 4,
+		"delayed_effects": 1,
+		"depth": 213.655639648438,
+		"display": ":41",
+		"effects": 11,
+		"fps": 84.2503951070248,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 1,
+			"fire": 0,
+			"foot": 88
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 5557
+		},
+		"lights": 0,
+		"live_acid_clouds": 2,
+		"magic_endings": 1,
+		"mana": 427.0625,
+		"manual_casts_completed": {
+			"acid_fog": 5,
+			"healing": 1,
+			"lightning": 2,
+			"weak": 1
+		},
+		"manual_casts_started": {
+			"acid_fog": 5,
+			"healing": 1,
+			"lightning": 2,
+			"weak": 1
+		},
+		"model_visible": true,
+		"nodes": 17002.0,
+		"npc_actions": {
+			"death": 25,
+			"idle": 59,
+			"walk": 23
+		},
+		"objects": 45555.0,
+		"observed_weapon_swings": 1,
+		"p95_ms": 16.506,
+		"particles": 2183,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "approaching for acid_fog",
+		"position": [
+			176.9375,
+			146.96875
+		],
+		"real_casts": 9,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 331.379,
+		"spell_events": {
+			"acid_fog": 10,
+			"eagle_sight": 3,
+			"healing": 1,
+			"lightning": 2,
+			"weak": 1
+		},
+		"spell_lights": 3,
+		"static_memory": 0.0,
+		"surviving_foes": 13,
+		"target_distance": 15.5881128311157,
+		"target_hp": 210.0,
+		"time_scale": 2.0,
+		"travelled": 732.258115213364,
+		"video": 1763101808,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 662.694999999915,
+		"zone": "gz18h",
+		"zone_visits": {
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "idle",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 8,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 3,
+			"move": 360,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(190.8057, 11.85353, -165.1389)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				190.046875,
+				11.8535251617432,
+				-137.875
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 11.3650104910688
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 6,
+		"delayed_effects": 1,
+		"depth": 214.541564941406,
+		"display": ":41",
+		"effects": 8,
+		"fps": 68.3496891103088,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 3,
+			"fire": 0,
+			"foot": 88
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 6329
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 250.1875,
+		"manual_casts_completed": {
+			"acid_fog": 8,
+			"healing": 1,
+			"lightning": 3,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 8,
+			"healing": 1,
+			"lightning": 3,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 16699.0,
+		"npc_actions": {
+			"death": 27,
+			"idle": 56,
+			"walk": 24
+		},
+		"objects": 45095.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 20.383,
+		"particles": 2368,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			193.28125,
+			137.796875
+		],
+		"real_casts": 14,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 361.46,
+		"spell_events": {
+			"acid_fog": 16,
+			"eagle_sight": 3,
+			"healing": 1,
+			"lightning": 3,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 11,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 783.594188351184,
+		"video": 1747951536,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 722.534999999861,
+		"zone": "gz18h",
+		"zone_visits": {
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 8,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 3,
+			"move": 399,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(246.1057, 10.71121, -71.89033)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				246.29621887207,
+				10.7112121582031,
+				-71.7037811279297
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 14.9698234110689
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 6,
+		"delayed_effects": 1,
+		"depth": 264.342437744141,
+		"display": ":41",
+		"effects": 6,
+		"fps": 77.9072188335803,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 84
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 6368
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 389.8125,
+		"manual_casts_completed": {
+			"acid_fog": 8,
+			"healing": 1,
+			"lightning": 3,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 8,
+			"healing": 1,
+			"lightning": 3,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 16962.0,
+		"npc_actions": {
+			"death": 27,
+			"idle": 49,
+			"walk": 31
+		},
+		"objects": 45597.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 18.473,
+		"particles": 1951,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			246.4375,
+			71.5625
+		],
+		"real_casts": 14,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 391.47,
+		"spell_events": {
+			"acid_fog": 16,
+			"eagle_sight": 3,
+			"healing": 1,
+			"lightning": 3,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 11,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 870.717488434166,
+		"video": 1751373696,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 782.979999999806,
+		"zone": "gz18h",
+		"zone_visits": {
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "idle",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 8,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 3,
+			"move": 425,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(110.0, 17.18083, -317.5)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				110.0,
+				17.1808261871338,
+				-317.5
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 17.3187172961599
+		},
+		"cast_timeouts": {},
+		"clock": 0,
+		"deaths": 6,
+		"delayed_effects": 0,
+		"depth": 0.0,
+		"display": ":41",
+		"effects": 1,
+		"fps": 0.195327874440117,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 0
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 2,
+			"loading": false,
+			"movie": false,
+			"pending": 2,
+			"serial": 6396
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 0,
+		"mana": 232.75,
+		"manual_casts_completed": {
+			"acid_fog": 8,
+			"healing": 1,
+			"lightning": 3,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 8,
+			"healing": 1,
+			"lightning": 3,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 26076.0,
+		"npc_actions": {
+			"death": 2,
+			"idle": 17
+		},
+		"objects": 62944.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 5119.597,
+		"particles": 238,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "regroup",
+		"position": [
+			110.0,
+			317.5
+		],
+		"real_casts": 14,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 424.782,
+		"spell_events": {
+			"acid_fog": 16,
+			"eagle_sight": 4,
+			"healing": 1,
+			"lightning": 3,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 17,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 1.0,
+		"travelled": 927.788287814707,
+		"video": 1920624688,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 0.0,
+		"zone": "gz15h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 8,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 3,
+			"move": 459,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(147.4725, 17.37909, -249.0284)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				147.652206420898,
+				17.3790874481201,
+				-248.854934692383
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 20.8259927193919
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 6,
+		"delayed_effects": 1,
+		"depth": 78.4685592651367,
+		"display": ":41",
+		"effects": 5,
+		"fps": 65.2212304470035,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 90
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 2,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 6430
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 8,
+			"healing": 1,
+			"lightning": 3,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 8,
+			"healing": 1,
+			"lightning": 3,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 10125.0,
+		"npc_actions": {
+			"death": 2,
+			"idle": 10,
+			"walk": 7
+		},
+		"objects": 34189.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 19.092,
+		"particles": 631,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			147.796875,
+			248.734375
+		],
+		"real_casts": 14,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 454.788,
+		"spell_events": {
+			"acid_fog": 16,
+			"eagle_sight": 5,
+			"healing": 1,
+			"lightning": 3,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 17,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 1009.53503722325,
+		"video": 1746085840,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 60.0599999999997,
+		"zone": "gz15h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 8,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 3,
+			"move": 496,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(224.3281, 15.84301, -216.5938)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				210.132659912109,
+				15.8430118560791,
+				-216.765670776367
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 23.8474552029371
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 6,
+		"delayed_effects": 1,
+		"depth": 152.489318847656,
+		"display": ":41",
+		"effects": 5,
+		"fps": 68.8984084467649,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 67
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 2,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 6597
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 8,
+			"healing": 1,
+			"lightning": 3,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 8,
+			"healing": 1,
+			"lightning": 3,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 10110.0,
+		"npc_actions": {
+			"death": 2,
+			"idle": 14,
+			"walk": 3
+		},
+		"objects": 34220.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 18.089,
+		"particles": 389,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			224.328125,
+			216.59375
+		],
+		"real_casts": 14,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 484.788,
+		"spell_events": {
+			"acid_fog": 16,
+			"eagle_sight": 5,
+			"healing": 1,
+			"lightning": 3,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 17,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 1096.39592698589,
+		"video": 1782170752,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 119.955000000007,
+		"zone": "gz15h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 529,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(225.5, 16.55349, -162.1406)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				210.132659912109,
+				16.5534934997559,
+				-216.765670776367
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 23.8474552029371
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 193.589218139648,
+		"display": ":41",
+		"effects": 6,
+		"fps": 61.7540359078556,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 86
+		},
+		"hp": 149.460650075373,
+		"input": {
+			"blocked": false,
+			"epoch": 2,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 7285
+		},
+		"lights": 0,
+		"live_acid_clouds": 2,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 10135.0,
+		"npc_actions": {
+			"death": 3,
+			"idle": 14,
+			"walk": 2
+		},
+		"objects": 34442.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 19.396,
+		"particles": 601,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			225.5,
+			162.140625
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 514.794,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 5,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 3,
+		"static_memory": 0.0,
+		"surviving_foes": 16,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 1168.74106140807,
+		"video": 1786423600,
+		"virtual_sounds": 1,
+		"visited": 0,
+		"world_seconds": 179.960000000014,
+		"zone": "gz15h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 567,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(144.4833, 16.41836, -193.0428)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				210.132659912109,
+				16.4183559417725,
+				-216.765670776367
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 23.8474552029371
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 127.305541992188,
+		"display": ":41",
+		"effects": 4,
+		"fps": 65.7779672852753,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 70
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 2,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 8026
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 10060.0,
+		"npc_actions": {
+			"death": 3,
+			"idle": 13,
+			"walk": 3
+		},
+		"objects": 34271.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 18.684,
+		"particles": 403,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			142.296875,
+			194.359375
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 546.127,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 5,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 16,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 1259.49193521962,
+		"video": 1781648816,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 242.605000000022,
+		"zone": "gz15h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 604,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(65.30539, 16.41448, -228.7235)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				210.132659912109,
+				16.4144840240479,
+				-216.765670776367
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 23.8474552029371
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 99.4146575927734,
+		"display": ":41",
+		"effects": 3,
+		"fps": 74.9780689148425,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 85
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 2,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 8823
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 10088.0,
+		"npc_actions": {
+			"death": 3,
+			"idle": 12,
+			"walk": 4
+		},
+		"objects": 34317.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 16.595,
+		"particles": 248,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			65.265625,
+			228.71875
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 576.136,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 6,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 16,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 1346.57866248861,
+		"video": 1784238928,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 302.720000000029,
+		"zone": "gz15h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 639,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(78.64325, 16.51595, -152.2201)",
+		"camera_mode": 3,
+		"camera_pose": {
+			"at": [
+				210.132659912109,
+				16.5159511566162,
+				-216.765670776367
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 23.8474552029371
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 168.285491943359,
+		"display": ":41",
+		"effects": 5,
+		"fps": 65.5885351240604,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 119
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 2,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 9516
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 10135.0,
+		"npc_actions": {
+			"death": 3,
+			"idle": 12,
+			"walk": 4
+		},
+		"objects": 34395.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 17.79,
+		"particles": 424,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			78.671875,
+			152.15625
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 606.141,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 6,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 16,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 1433.65660011396,
+		"video": 1780872016,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 362.780000000037,
+		"zone": "gz15h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 675,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(71.291, 16.466, -169.9105)",
+		"camera_mode": 3,
+		"camera_pose": {
+			"at": [
+				210.132659912109,
+				16.4660015106201,
+				-216.765670776367
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 23.8474552029371
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 152.493988037109,
+		"display": ":41",
+		"effects": 4,
+		"fps": 72.4925550146,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 90
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 2,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 10294
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 10110.0,
+		"npc_actions": {
+			"death": 3,
+			"idle": 12,
+			"walk": 4
+		},
+		"objects": 34393.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 18.207,
+		"particles": 522,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			71.234375,
+			170.015625
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 636.144,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 6,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 16,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 1520.80142991617,
+		"video": 1782733392,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 422.785000000044,
+		"zone": "gz15h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "idle",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 711,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(80.68692, 16.45097, -228.4081)",
+		"camera_mode": 3,
+		"camera_pose": {
+			"at": [
+				210.132659912109,
+				16.4509677886963,
+				-216.765670776367
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 23.8474552029371
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 94.0331726074219,
+		"display": ":41",
+		"effects": 3,
+		"fps": 84.0185772336775,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 116
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 2,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 11054
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 10173.0,
+		"npc_actions": {
+			"death": 3,
+			"idle": 13,
+			"walk": 3
+		},
+		"objects": 34522.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 14.918,
+		"particles": 239,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			82.09375,
+			227.703125
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 666.161,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 6,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 16,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 1605.75724260136,
+		"video": 1783064064,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 482.680000000052,
+		"zone": "gz15h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 747,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(153.1622, 16.34251, -181.6591)",
+		"camera_mode": 3,
+		"camera_pose": {
+			"at": [
+				210.132659912109,
+				16.3425140380859,
+				-216.765670776367
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 23.8474552029371
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 142.655975341797,
+		"display": ":41",
+		"effects": 3,
+		"fps": 68.9725994853111,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 90
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 2,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 11785
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 10132.0,
+		"npc_actions": {
+			"death": 3,
+			"idle": 12,
+			"walk": 4
+		},
+		"objects": 34420.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 17.98,
+		"particles": 260,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			153.3125,
+			181.578125
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 696.173,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 6,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 16,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 1692.58786659315,
+		"video": 1781889312,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 542.850000000027,
+		"zone": "gz15h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 783,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(230.7518, 17.67354, -168.8873)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				231.009078979492,
+				17.6735382080078,
+				-169.046051025391
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534450077069,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 24.4269640482801
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 191.18132019043,
+		"display": ":41",
+		"effects": 2,
+		"fps": 65.2006472537147,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 89
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 2,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 12390
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 10162.0,
+		"npc_actions": {
+			"death": 3,
+			"idle": 12,
+			"walk": 4
+		},
+		"objects": 34472.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 18.633,
+		"particles": 239,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			233.90625,
+			171.90625
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 726.219,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 7,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 16,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 1779.42023994401,
+		"video": 1768581728,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 602.854999999973,
+		"zone": "gz15h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 820,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(194.683, 19.01711, -218.45)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				194.427124023438,
+				19.0171127319336,
+				-218.546051025391
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -1.06426837301555,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 28.0432290082799
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 129.923248291016,
+		"display": ":41",
+		"effects": 4,
+		"fps": 70.0781216104332,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 66
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 2,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 12427
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 10100.0,
+		"npc_actions": {
+			"death": 3,
+			"idle": 13,
+			"walk": 3
+		},
+		"objects": 34366.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 17.589,
+		"particles": 547,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			194.265625,
+			218.609375
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 756.228,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 7,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 16,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 1865.60197166353,
+		"video": 1766653136,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 662.969999999918,
+		"zone": "gz15h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 858,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(129.2139, 17.27543, -267.2862)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				129.036666870117,
+				17.2754287719727,
+				-267.463317871094
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168548,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 31.4730839193908
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 50.448429107666,
+		"display": ":41",
+		"effects": 4,
+		"fps": 63.1620612634038,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 88
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 2,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 12465
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 10147.0,
+		"npc_actions": {
+			"death": 3,
+			"idle": 13,
+			"walk": 3
+		},
+		"objects": 34480.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 18.503,
+		"particles": 398,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			125.8125,
+			269.59375
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 786.262,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 7,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 16,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 1952.4940104112,
+		"video": 1768739456,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 722.974999999863,
+		"zone": "gz15h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "idle",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 879,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(15.0, 10.75385, -80.0)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				15.0,
+				10.7538499832153,
+				-80.0
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 33.5509993869679
+		},
+		"cast_timeouts": {},
+		"clock": 0,
+		"deaths": 7,
+		"delayed_effects": 0,
+		"depth": 0.0,
+		"display": ":41",
+		"effects": 16,
+		"fps": 0.0394263404384067,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 0
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 3,
+			"loading": false,
+			"movie": false,
+			"pending": 2,
+			"serial": 12488
+		},
+		"lights": 15,
+		"live_acid_clouds": 0,
+		"magic_endings": 0,
+		"mana": 232.75,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 10867.0,
+		"npc_actions": {
+			"idle": 2
+		},
+		"objects": 36332.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 25363.754,
+		"particles": 600,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "regroup",
+		"position": [
+			15.0,
+			80.0
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 834.175,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 7,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 1,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 1.0,
+		"travelled": 2002.75297130644,
+		"video": 1848169648,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 0.0,
+		"zone": "gz16h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 887,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(30.0106, 10.03903, -77.71875)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				15.0,
+				10.0390253067017,
+				-80.0
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 33.5663780822744
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 15.2651691436768,
+		"display": ":41",
+		"effects": 18,
+		"fps": 104.361264231888,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 41
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 3,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 12957
+		},
+		"lights": 15,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 1820.0,
+		"npc_actions": {
+			"idle": 1,
+			"walk": 1
+		},
+		"objects": 19187.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 7.53,
+		"particles": 2087,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			30.09375,
+			77.71875
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 864.177,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 8,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 1,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 2018.63925629854,
+		"video": 1478517200,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 14.3,
+		"zone": "gz16h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 923,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(97.5166, 10.02693, -44.25623)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				15.0,
+				10.0269327163696,
+				-80.0
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 33.5663780822744
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 89.980224609375,
+		"display": ":41",
+		"effects": 18,
+		"fps": 150.793480695184,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 84
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 3,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 13804
+		},
+		"lights": 15,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 1975.0,
+		"npc_actions": {
+			"idle": 1,
+			"walk": 1
+		},
+		"objects": 19496.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 8.944,
+		"particles": 2080,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			97.59375,
+			44.296875
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 894.178,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 8,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 1,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 2105.82612000406,
+		"video": 1479303808,
+		"virtual_sounds": 1,
+		"visited": 0,
+		"world_seconds": 74.305000000001,
+		"zone": "gz16h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "idle",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 952,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(97.76562, 10.42306, -104.8594)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				15.0,
+				10.4230575561523,
+				-80.0
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 33.5663780822744
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 86.4183807373047,
+		"display": ":41",
+		"effects": 17,
+		"fps": 152.037119057598,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 46
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 3,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 14635
+		},
+		"lights": 15,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 1862.0,
+		"npc_actions": {
+			"idle": 2
+		},
+		"objects": 19284.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 8.546,
+		"particles": 2106,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "regroup",
+		"position": [
+			97.765625,
+			104.859375
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 924.178,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 8,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 1,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 2180.92069768161,
+		"video": 1477555648,
+		"virtual_sounds": 1,
+		"visited": 0,
+		"world_seconds": 134.310000000008,
+		"zone": "gz16h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "idle",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 952,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(97.76562, 10.42306, -104.8594)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				15.0,
+				10.4230575561523,
+				-80.0
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 33.5663780822744
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 86.4183807373047,
+		"display": ":41",
+		"effects": 17,
+		"fps": 156.625402867102,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 0
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 3,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 15463
+		},
+		"lights": 15,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 1833.0,
+		"npc_actions": {
+			"idle": 1,
+			"walk": 1
+		},
+		"objects": 19228.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 8.986,
+		"particles": 2102,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "regroup",
+		"position": [
+			97.765625,
+			104.859375
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 954.179,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 8,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 1,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 2180.92069768161,
+		"video": 1477331584,
+		"virtual_sounds": 1,
+		"visited": 0,
+		"world_seconds": 194.315000000016,
+		"zone": "gz16h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "idle",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 952,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(97.76562, 10.42306, -104.8594)",
+		"camera_mode": 3,
+		"camera_pose": {
+			"at": [
+				15.0,
+				10.4230575561523,
+				-80.0
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 33.5663780822744
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 86.4183807373047,
+		"display": ":41",
+		"effects": 17,
+		"fps": 137.024408476861,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 0
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 3,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 16247
+		},
+		"lights": 15,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 1779.0,
+		"npc_actions": {
+			"idle": 1,
+			"walk": 1
+		},
+		"objects": 19105.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 9.581,
+		"particles": 2098,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "regroup",
+		"position": [
+			97.765625,
+			104.859375
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 984.181,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 8,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 1,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 2180.92069768161,
+		"video": 1475447536,
+		"virtual_sounds": 1,
+		"visited": 0,
+		"world_seconds": 254.265000000023,
+		"zone": "gz16h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "idle",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 952,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(97.76562, 10.42306, -104.8594)",
+		"camera_mode": 3,
+		"camera_pose": {
+			"at": [
+				15.0,
+				10.4230575561523,
+				-80.0
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 33.5663780822744
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 86.4183807373047,
+		"display": ":41",
+		"effects": 17,
+		"fps": 145.650523733619,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 0
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 3,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 17070
+		},
+		"lights": 15,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 1810.0,
+		"npc_actions": {
+			"idle": 2
+		},
+		"objects": 19169.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 9.483,
+		"particles": 2106,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "regroup",
+		"position": [
+			97.765625,
+			104.859375
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1014.184,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 1,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 2180.92069768161,
+		"video": 1476122608,
+		"virtual_sounds": 1,
+		"visited": 0,
+		"world_seconds": 314.325000000031,
+		"zone": "gz16h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 975,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(63.09701, 10.03903, -81.26562)",
+		"camera_mode": 3,
+		"camera_pose": {
+			"at": [
+				15.0,
+				10.0390253067017,
+				-80.0
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 33.5663780822744
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 48.0479202270508,
+		"display": ":41",
+		"effects": 19,
+		"fps": 162.257039415661,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 65
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 3,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 17899
+		},
+		"lights": 15,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 1953.0,
+		"npc_actions": {
+			"idle": 1,
+			"walk": 1
+		},
+		"objects": 19446.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 8.632,
+		"particles": 2258,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			63.03125,
+			81.265625
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1044.186,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 1,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 2233.13260318339,
+		"video": 1480153408,
+		"virtual_sounds": 1,
+		"visited": 0,
+		"world_seconds": 374.275000000038,
+		"zone": "gz16h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 1011,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(51.21875, 10.03903, -61.78125)",
+		"camera_mode": 3,
+		"camera_pose": {
+			"at": [
+				15.0,
+				10.0390253067017,
+				-80.0
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 33.5663780822744
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 40.5428237915039,
+		"display": ":41",
+		"effects": 17,
+		"fps": 181.286409562164,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 76
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 3,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 18767
+		},
+		"lights": 15,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 1890.0,
+		"npc_actions": {
+			"idle": 1,
+			"walk": 1
+		},
+		"objects": 19374.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 7.937,
+		"particles": 2067,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "steered travel",
+		"position": [
+			51.21875,
+			61.78125
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1074.188,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 1,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 2317.30010388792,
+		"video": 1480051632,
+		"virtual_sounds": 1,
+		"visited": 0,
+		"world_seconds": 434.225000000046,
+		"zone": "gz16h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "idle",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 1043,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(94.32809, 10.74282, -42.32811)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				94.328125,
+				10.7428150177002,
+				-42.328125
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 36.3253023869651
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 87.8186798095703,
+		"display": ":41",
+		"effects": 18,
+		"fps": 136.336160036385,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 20
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 3,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 18957
+		},
+		"lights": 15,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 1918.0,
+		"npc_actions": {
+			"idle": 2
+		},
+		"objects": 19380.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 9.188,
+		"particles": 2370,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "steered travel",
+		"position": [
+			94.328125,
+			42.328125
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1104.188,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 1,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 2370.97753026336,
+		"video": 1463276800,
+		"virtual_sounds": 2,
+		"visited": 0,
+		"world_seconds": 494.285000000053,
+		"zone": "gz16h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "idle",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 1128,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(94.32812, 10.74281, -42.32812)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				94.328125,
+				10.7428121566772,
+				-42.328125
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 39.9255021869634
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 87.8186798095703,
+		"display": ":41",
+		"effects": 18,
+		"fps": 135.592881373728,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 0
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 3,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 19042
+		},
+		"lights": 15,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 1889.0,
+		"npc_actions": {
+			"idle": 1,
+			"walk": 1
+		},
+		"objects": 19318.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 9.563,
+		"particles": 2363,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "steered travel",
+		"position": [
+			94.328125,
+			42.328125
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1134.189,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 10,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 1,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 2370.97753026336,
+		"video": 1463276800,
+		"virtual_sounds": 1,
+		"visited": 0,
+		"world_seconds": 554.290000000017,
+		"zone": "gz16h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "idle",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 1209,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(94.32812, 10.74281, -42.32812)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				94.328125,
+				10.7428092956543,
+				-42.328125
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 43.3772297069606
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 87.8186798095703,
+		"display": ":41",
+		"effects": 18,
+		"fps": 129.365799915807,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 0
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 3,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 19123
+		},
+		"lights": 15,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 1905.0,
+		"npc_actions": {
+			"idle": 1,
+			"walk": 1
+		},
+		"objects": 19354.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 9.425,
+		"particles": 2294,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "steered travel",
+		"position": [
+			94.328125,
+			42.328125
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1164.19,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 10,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 1,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 2370.97753026336,
+		"video": 1463276800,
+		"virtual_sounds": 2,
+		"visited": 0,
+		"world_seconds": 614.239999999962,
+		"zone": "gz16h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 1222,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(38.81041, 11.75602, -76.68456)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				38.5825271606445,
+				11.7560195922852,
+				-76.8967971801758
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534734041594,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 46.9772349469576
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 23.7121925354004,
+		"display": ":41",
+		"effects": 17,
+		"fps": 148.131298996827,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 75
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 3,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 19136
+		},
+		"lights": 15,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 1840.0,
+		"npc_actions": {
+			"idle": 2
+		},
+		"objects": 19267.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 8.995,
+		"particles": 2134,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "steered travel",
+		"position": [
+			38.515625,
+			76.953125
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1194.19,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 10,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 1,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 2444.88613189757,
+		"video": 1464133376,
+		"virtual_sounds": 1,
+		"visited": 0,
+		"world_seconds": 674.299999999908,
+		"zone": "gz16h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "idle",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 1281,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(15.0, 10.03903, -80.0)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				22.3299140930176,
+				10.0390253067017,
+				-78.7326049804688
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876552790555105,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 47.6697088156662
+		},
+		"cast_timeouts": {},
+		"clock": 0,
+		"deaths": 7,
+		"delayed_effects": 1,
+		"depth": 0.0,
+		"display": ":41",
+		"effects": 17,
+		"fps": 170.147717882485,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 0
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 3,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 19745
+		},
+		"lights": 15,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 465.5625,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 1764.0,
+		"npc_actions": {
+			"idle": 1,
+			"walk": 1
+		},
+		"objects": 19089.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 8.24,
+		"particles": 2113,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "steered travel",
+		"position": [
+			15.0,
+			80.0
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1224.193,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 10,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 1,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 1.0,
+		"travelled": 2469.0461306721,
+		"video": 1892288352,
+		"virtual_sounds": 0,
+		"visited": 0,
+		"world_seconds": 727.20999999986,
+		"zone": "gz16h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "idle",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 9,
+			"attack": 3,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 5,
+			"move": 1282,
+			"weak": 2
+		},
+		"bolts": 0,
+		"camera": "(376.0, 6.989028, -67.5)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				376.0,
+				6.98902797698975,
+				-67.5
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 47.6697088156662
+		},
+		"cast_timeouts": {},
+		"clock": 0,
+		"deaths": 7,
+		"delayed_effects": 0,
+		"depth": 0.0,
+		"display": ":41",
+		"effects": 3,
+		"fps": 0.0359591430777984,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 0
+		},
+		"hp": 178.4375,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 4,
+			"serial": 19749
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 0,
+		"mana": 232.75,
+		"manual_casts_completed": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"manual_casts_started": {
+			"acid_fog": 9,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"model_visible": true,
+		"nodes": 26674.0,
+		"npc_actions": {
+			"death": 3,
+			"idle": 251
+		},
+		"objects": 64752.0,
+		"observed_weapon_swings": 2,
+		"p95_ms": 27809.339,
+		"particles": 1404,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "steered travel",
+		"position": [
+			376.0,
+			67.5
+		],
+		"real_casts": 16,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1257.901,
+		"spell_events": {
+			"acid_fog": 18,
+			"eagle_sight": 10,
+			"healing": 1,
+			"lightning": 4,
+			"weak": 2
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 247,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 1.0,
+		"travelled": 2469.0461306721,
+		"video": 1655284368,
+		"virtual_sounds": 9,
+		"visited": 0,
+		"world_seconds": 0.0,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "attack",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 11,
+			"attack": 6,
+			"heal": 0,
+			"healing": 1,
+			"lightning": 6,
+			"move": 1304,
+			"weak": 3
+		},
+		"bolts": 0,
+		"camera": "(357.125, 7.21442, -103.875)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				376.0,
+				7.21441984176636,
+				-67.5
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 47.6697088156662
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 8,
+		"delayed_effects": 2,
+		"depth": 40.9805603027344,
+		"display": ":41",
+		"effects": 8,
+		"fps": 60.8099032776005,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 16,
+			"fire": 0,
+			"foot": 67
+		},
+		"hp": 172.787999939919,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 20449
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 2,
+		"mana": 147.75,
+		"manual_casts_completed": {
+			"acid_fog": 11,
+			"healing": 1,
+			"lightning": 5,
+			"weak": 3
+		},
+		"manual_casts_started": {
+			"acid_fog": 11,
+			"healing": 1,
+			"lightning": 5,
+			"weak": 3
+		},
+		"model_visible": true,
+		"nodes": 26611.0,
+		"npc_actions": {
+			"attack": 1,
+			"death": 4,
+			"idle": 165,
+			"walk": 84
+		},
+		"objects": 64228.0,
+		"observed_weapon_swings": 8,
+		"p95_ms": 20.89,
+		"particles": 1629,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "combat",
+		"position": [
+			357.125,
+			103.875
+		],
+		"real_casts": 19,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1287.913,
+		"spell_events": {
+			"acid_fog": 22,
+			"eagle_sight": 11,
+			"healing": 1,
+			"lightning": 5,
+			"weak": 3
+		},
+		"spell_lights": 2,
+		"static_memory": 0.0,
+		"surviving_foes": 246,
+		"target_distance": 2.36882424354553,
+		"target_hp": 89.4425521999598,
+		"time_scale": 2.0,
+		"travelled": 2517.9367441386,
+		"video": 1665294064,
+		"virtual_sounds": 16,
+		"visited": 0,
+		"world_seconds": 58.6849999999997,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 11,
+			"attack": 19,
+			"heal": 0,
+			"healing": 6,
+			"lightning": 6,
+			"move": 1304,
+			"weak": 3
+		},
+		"bolts": 0,
+		"camera": "(343.265, 7.294215, -102.8135)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				376.0,
+				7.29421520233154,
+				-67.5
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 47.6697088156662
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 11,
+		"delayed_effects": 1,
+		"depth": 48.1828079223633,
+		"display": ":41",
+		"effects": 8,
+		"fps": 66.2584616604975,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 50,
+			"fire": 0,
+			"foot": 35
+		},
+		"hp": 178.5625,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 21214
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 109.3125,
+		"manual_casts_completed": {
+			"acid_fog": 11,
+			"healing": 6,
+			"lightning": 5,
+			"weak": 3
+		},
+		"manual_casts_started": {
+			"acid_fog": 11,
+			"healing": 6,
+			"lightning": 5,
+			"weak": 3
+		},
+		"model_visible": true,
+		"nodes": 26673.0,
+		"npc_actions": {
+			"death": 7,
+			"idle": 166,
+			"run": 1,
+			"walk": 80
+		},
+		"objects": 64473.0,
+		"observed_weapon_swings": 24,
+		"p95_ms": 20.442,
+		"particles": 2164,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "combat",
+		"position": [
+			343.21875,
+			102.8125
+		],
+		"real_casts": 24,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1317.917,
+		"spell_events": {
+			"acid_fog": 22,
+			"eagle_sight": 11,
+			"healing": 6,
+			"lightning": 5,
+			"weak": 3
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 243,
+		"target_distance": 3.25634145736694,
+		"target_hp": 250.0,
+		"time_scale": 2.0,
+		"travelled": 2531.91621277481,
+		"video": 1668259968,
+		"virtual_sounds": 17,
+		"visited": 0,
+		"world_seconds": 118.745000000006,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "cast",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 11,
+			"attack": 26,
+			"heal": 0,
+			"healing": 7,
+			"lightning": 6,
+			"move": 1304,
+			"weak": 3
+		},
+		"bolts": 0,
+		"camera": "(316.9062, 6.535689, -97.65625)",
+		"camera_mode": 3,
+		"camera_pose": {
+			"at": [
+				376.0,
+				6.53568887710571,
+				-67.5
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 47.6697088156662
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 13,
+		"delayed_effects": 2,
+		"depth": 66.3435821533203,
+		"display": ":41",
+		"effects": 11,
+		"fps": 67.6523333922987,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 31,
+			"fire": 0,
+			"foot": 123
+		},
+		"hp": 136.952838291242,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 21948
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 2,
+		"mana": 124.5625,
+		"manual_casts_completed": {
+			"acid_fog": 11,
+			"healing": 6,
+			"lightning": 5,
+			"weak": 3
+		},
+		"manual_casts_started": {
+			"acid_fog": 11,
+			"healing": 7,
+			"lightning": 5,
+			"weak": 3
+		},
+		"model_visible": true,
+		"nodes": 26740.0,
+		"npc_actions": {
+			"death": 9,
+			"hit": 1,
+			"idle": 176,
+			"walk": 68
+		},
+		"objects": 64716.0,
+		"observed_weapon_swings": 50,
+		"p95_ms": 20.395,
+		"particles": 2140,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "casting healing",
+		"position": [
+			316.90625,
+			97.65625
+		],
+		"real_casts": 25,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1347.923,
+		"spell_events": {
+			"acid_fog": 22,
+			"eagle_sight": 11,
+			"healing": 6,
+			"lightning": 5,
+			"weak": 3
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 241,
+		"target_distance": 1.54931938648224,
+		"target_hp": 173.519264803768,
+		"time_scale": 2.0,
+		"travelled": 2561.44653825462,
+		"video": 1667479600,
+		"virtual_sounds": 16,
+		"visited": 0,
+		"world_seconds": 178.805000000014,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "idle",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 12,
+			"attack": 36,
+			"heal": 0,
+			"healing": 9,
+			"lightning": 6,
+			"move": 1304,
+			"weak": 3
+		},
+		"bolts": 0,
+		"camera": "(323.1875, 8.284831, -117.7656)",
+		"camera_mode": 3,
+		"camera_pose": {
+			"at": [
+				376.0,
+				8.28483104705811,
+				-67.5
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 47.6697088156662
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 14,
+		"delayed_effects": 2,
+		"depth": 72.9094848632812,
+		"display": ":41",
+		"effects": 11,
+		"fps": 73.2066202376087,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 33,
+			"fire": 0,
+			"foot": 60
+		},
+		"hp": 147.051666333249,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 2,
+			"serial": 22711
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 2,
+		"mana": 120.875,
+		"manual_casts_completed": {
+			"acid_fog": 12,
+			"healing": 9,
+			"lightning": 5,
+			"weak": 3
+		},
+		"manual_casts_started": {
+			"acid_fog": 12,
+			"healing": 9,
+			"lightning": 5,
+			"weak": 3
+		},
+		"model_visible": true,
+		"nodes": 26671.0,
+		"npc_actions": {
+			"attack": 1,
+			"death": 10,
+			"idle": 164,
+			"run": 1,
+			"walk": 78
+		},
+		"objects": 64661.0,
+		"observed_weapon_swings": 68,
+		"p95_ms": 19.043,
+		"particles": 1880,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "combat",
+		"position": [
+			323.1875,
+			117.765625
+		],
+		"real_casts": 28,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1377.934,
+		"spell_events": {
+			"acid_fog": 24,
+			"eagle_sight": 11,
+			"healing": 9,
+			"lightning": 5,
+			"weak": 3
+		},
+		"spell_lights": 1,
+		"static_memory": 0.0,
+		"surviving_foes": 240,
+		"target_distance": 1.49559903144836,
+		"target_hp": 96.1244698295187,
+		"time_scale": 2.0,
+		"travelled": 2583.82912233099,
+		"video": 1668595728,
+		"virtual_sounds": 15,
+		"visited": 0,
+		"world_seconds": 238.755000000021,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "cast",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 12,
+			"attack": 51,
+			"heal": 0,
+			"healing": 18,
+			"lightning": 6,
+			"move": 1304,
+			"weak": 3
+		},
+		"bolts": 0,
+		"camera": "(324.2344, 7.971327, -121.2344)",
+		"camera_mode": 3,
+		"camera_pose": {
+			"at": [
+				376.0,
+				7.97132682800293,
+				-67.5
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 47.6697088156662
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 16,
+		"delayed_effects": 2,
+		"depth": 74.6127548217773,
+		"display": ":41",
+		"effects": 6,
+		"fps": 65.4907723501757,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 68,
+			"fire": 0,
+			"foot": 28
+		},
+		"hp": 159.767216712792,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 23460
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 2,
+		"mana": 104.75,
+		"manual_casts_completed": {
+			"acid_fog": 12,
+			"healing": 18,
+			"lightning": 5,
+			"weak": 3
+		},
+		"manual_casts_started": {
+			"acid_fog": 12,
+			"healing": 18,
+			"lightning": 5,
+			"weak": 3
+		},
+		"model_visible": true,
+		"nodes": 26672.0,
+		"npc_actions": {
+			"death": 12,
+			"idle": 174,
+			"walk": 68
+		},
+		"objects": 64676.0,
+		"observed_weapon_swings": 82,
+		"p95_ms": 19.979,
+		"particles": 1573,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "casting healing",
+		"position": [
+			324.234375,
+			121.234375
+		],
+		"real_casts": 37,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1407.938,
+		"spell_events": {
+			"acid_fog": 24,
+			"eagle_sight": 12,
+			"healing": 18,
+			"lightning": 5,
+			"weak": 3
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 238,
+		"target_distance": 1.64069938659668,
+		"target_hp": 178.806067971447,
+		"time_scale": 2.0,
+		"travelled": 2587.48862959072,
+		"video": 1668268128,
+		"virtual_sounds": 15,
+		"visited": 0,
+		"world_seconds": 298.815000000029,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "attack",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 12,
+			"attack": 61,
+			"heal": 0,
+			"healing": 19,
+			"lightning": 7,
+			"move": 1310,
+			"weak": 3
+		},
+		"bolts": 0,
+		"camera": "(323.0625, 6.577131, -146.2188)",
+		"camera_mode": 3,
+		"camera_pose": {
+			"at": [
+				376.0,
+				6.57713079452515,
+				-67.5
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 47.6697088156662
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 18,
+		"delayed_effects": 2,
+		"depth": 94.863166809082,
+		"display": ":41",
+		"effects": 6,
+		"fps": 75.2000952534541,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 35,
+			"fire": 0,
+			"foot": 88
+		},
+		"hp": 156.9667820702,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 24224
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 2,
+		"mana": 91.75,
+		"manual_casts_completed": {
+			"acid_fog": 12,
+			"healing": 19,
+			"lightning": 6,
+			"weak": 3
+		},
+		"manual_casts_started": {
+			"acid_fog": 12,
+			"healing": 19,
+			"lightning": 6,
+			"weak": 3
+		},
+		"model_visible": true,
+		"nodes": 26712.0,
+		"npc_actions": {
+			"death": 14,
+			"idle": 143,
+			"walk": 97
+		},
+		"objects": 64790.0,
+		"observed_weapon_swings": 103,
+		"p95_ms": 18.025,
+		"particles": 1405,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "combat",
+		"position": [
+			323.0625,
+			146.21875
+		],
+		"real_casts": 39,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1437.938,
+		"spell_events": {
+			"acid_fog": 24,
+			"eagle_sight": 12,
+			"healing": 19,
+			"lightning": 6,
+			"weak": 3
+		},
+		"spell_lights": 1,
+		"static_memory": 0.0,
+		"surviving_foes": 236,
+		"target_distance": 1.5702930688858,
+		"target_hp": 203.20734364982,
+		"time_scale": 2.0,
+		"travelled": 2614.66043409333,
+		"video": 1666475632,
+		"virtual_sounds": 11,
+		"visited": 0,
+		"world_seconds": 358.765000000036,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 14,
+			"attack": 67,
+			"heal": 0,
+			"healing": 21,
+			"lightning": 8,
+			"move": 1328,
+			"weak": 3
+		},
+		"bolts": 0,
+		"camera": "(343.7839, 6.913656, -159.1476)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				344.026489257812,
+				6.91365575790405,
+				-159.270004272461
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 50.7070623510179
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 20,
+		"delayed_effects": 2,
+		"depth": 97.1972732543945,
+		"display": ":41",
+		"effects": 14,
+		"fps": 135.39336572508,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 26,
+			"fire": 0,
+			"foot": 91
+		},
+		"hp": 179.0,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 24308
+		},
+		"lights": 0,
+		"live_acid_clouds": 2,
+		"magic_endings": 2,
+		"mana": 18.75,
+		"manual_casts_completed": {
+			"acid_fog": 14,
+			"healing": 21,
+			"lightning": 7,
+			"weak": 3
+		},
+		"manual_casts_started": {
+			"acid_fog": 14,
+			"healing": 21,
+			"lightning": 7,
+			"weak": 3
+		},
+		"model_visible": true,
+		"nodes": 26699.0,
+		"npc_actions": {
+			"attack": 1,
+			"death": 16,
+			"idle": 149,
+			"walk": 88
+		},
+		"objects": 64881.0,
+		"observed_weapon_swings": 116,
+		"p95_ms": 11.489,
+		"particles": 2590,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "combat",
+		"position": [
+			344.1875,
+			159.34375
+		],
+		"real_casts": 44,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1467.94,
+		"spell_events": {
+			"acid_fog": 28,
+			"eagle_sight": 12,
+			"healing": 21,
+			"lightning": 7,
+			"weak": 3
+		},
+		"spell_lights": 5,
+		"static_memory": 0.0,
+		"surviving_foes": 234,
+		"target_distance": 4.81830501556396,
+		"target_hp": 171.898921708266,
+		"time_scale": 2.0,
+		"travelled": 2640.27486037835,
+		"video": 1654791936,
+		"virtual_sounds": 20,
+		"visited": 0,
+		"world_seconds": 418.825000000044,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 14,
+			"attack": 75,
+			"heal": 0,
+			"healing": 21,
+			"lightning": 8,
+			"move": 1335,
+			"weak": 4
+		},
+		"bolts": 0,
+		"camera": "(339.2501, 7.164861, -165.7417)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				339.262390136719,
+				7.16486072540283,
+				-166.014892578125
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 54.3064310128369
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 22,
+		"delayed_effects": 1,
+		"depth": 105.297149658203,
+		"display": ":41",
+		"effects": 7,
+		"fps": 171.019828467545,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 21,
+			"fire": 0,
+			"foot": 51
+		},
+		"hp": 179.0625,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 24324
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 270.6875,
+		"manual_casts_completed": {
+			"acid_fog": 14,
+			"healing": 21,
+			"lightning": 7,
+			"weak": 4
+		},
+		"manual_casts_started": {
+			"acid_fog": 14,
+			"healing": 21,
+			"lightning": 7,
+			"weak": 4
+		},
+		"model_visible": true,
+		"nodes": 26625.0,
+		"npc_actions": {
+			"death": 18,
+			"idle": 141,
+			"walk": 95
+		},
+		"objects": 64733.0,
+		"observed_weapon_swings": 141,
+		"p95_ms": 8.695,
+		"particles": 2145,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "approaching for lightning",
+		"position": [
+			339.28125,
+			166.1875
+		],
+		"real_casts": 45,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1497.942,
+		"spell_events": {
+			"acid_fog": 28,
+			"eagle_sight": 12,
+			"healing": 21,
+			"lightning": 7,
+			"weak": 4
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 232,
+		"target_distance": 18.5677738189697,
+		"target_hp": 280.0,
+		"time_scale": 2.0,
+		"travelled": 2664.20450959727,
+		"video": 1654692320,
+		"virtual_sounds": 15,
+		"visited": 0,
+		"world_seconds": 478.830000000051,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 14,
+			"attack": 77,
+			"heal": 0,
+			"healing": 21,
+			"lightning": 10,
+			"move": 1349,
+			"weak": 4
+		},
+		"bolts": 0,
+		"camera": "(331.6919, 7.29764, -195.4292)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				331.609375,
+				7.29764032363892,
+				-195.671875
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 57.7478893801116
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 23,
+		"delayed_effects": 1,
+		"depth": 135.813919067383,
+		"display": ":41",
+		"effects": 7,
+		"fps": 161.302344260737,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 25,
+			"fire": 0,
+			"foot": 94
+		},
+		"hp": 179.125,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 24343
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 207.6875,
+		"manual_casts_completed": {
+			"acid_fog": 14,
+			"healing": 21,
+			"lightning": 9,
+			"weak": 4
+		},
+		"manual_casts_started": {
+			"acid_fog": 14,
+			"healing": 21,
+			"lightning": 9,
+			"weak": 4
+		},
+		"model_visible": true,
+		"nodes": 26679.0,
+		"npc_actions": {
+			"death": 19,
+			"idle": 146,
+			"walk": 89
+		},
+		"objects": 64909.0,
+		"observed_weapon_swings": 158,
+		"p95_ms": 8.825,
+		"particles": 1565,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "travel",
+		"position": [
+			331.578125,
+			195.84375
+		],
+		"real_casts": 47,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1527.942,
+		"spell_events": {
+			"acid_fog": 28,
+			"eagle_sight": 12,
+			"healing": 21,
+			"lightning": 9,
+			"weak": 4
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 231,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 2699.8025614284,
+		"video": 1652622432,
+		"virtual_sounds": 14,
+		"visited": 0,
+		"world_seconds": 538.835000000031,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 14,
+			"attack": 80,
+			"heal": 0,
+			"healing": 21,
+			"lightning": 11,
+			"move": 1369,
+			"weak": 4
+		},
+		"bolts": 0,
+		"camera": "(303.7703, 8.343462, -242.9588)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				303.640502929688,
+				8.34346199035645,
+				-243.207321166992
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 61.350069553439
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 24,
+		"delayed_effects": 1,
+		"depth": 190.138626098633,
+		"display": ":41",
+		"effects": 7,
+		"fps": 158.459122828281,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 14,
+			"fire": 0,
+			"foot": 66
+		},
+		"hp": 179.1875,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 24368
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 392.75,
+		"manual_casts_completed": {
+			"acid_fog": 14,
+			"healing": 21,
+			"lightning": 10,
+			"weak": 4
+		},
+		"manual_casts_started": {
+			"acid_fog": 14,
+			"healing": 21,
+			"lightning": 10,
+			"weak": 4
+		},
+		"model_visible": true,
+		"nodes": 26630.0,
+		"npc_actions": {
+			"death": 20,
+			"idle": 160,
+			"walk": 74
+		},
+		"objects": 64886.0,
+		"observed_weapon_swings": 167,
+		"p95_ms": 9.537,
+		"particles": 1861,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "approaching for acid_fog",
+		"position": [
+			303.59375,
+			243.3125
+		],
+		"real_casts": 48,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1557.949,
+		"spell_events": {
+			"acid_fog": 28,
+			"eagle_sight": 13,
+			"healing": 21,
+			"lightning": 10,
+			"weak": 4
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 230,
+		"target_distance": 19.999927520752,
+		"target_hp": 210.0,
+		"time_scale": 2.0,
+		"travelled": 2757.99381886795,
+		"video": 1651692960,
+		"virtual_sounds": 13,
+		"visited": 0,
+		"world_seconds": 598.839999999976,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 18,
+			"attack": 81,
+			"heal": 0,
+			"healing": 22,
+			"lightning": 13,
+			"move": 1401,
+			"weak": 5
+		},
+		"bolts": 0,
+		"camera": "(269.1114, 6.802865, -261.4578)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				299.677459716797,
+				6.80286455154419,
+				-247.322555541992
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 61.590727242023
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 27,
+		"delayed_effects": 1,
+		"depth": 221.536254882812,
+		"display": ":41",
+		"effects": 10,
+		"fps": 74.7122395776925,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 8,
+			"fire": 0,
+			"foot": 99
+		},
+		"hp": 173.317176493213,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 25051
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 121.9375,
+		"manual_casts_completed": {
+			"acid_fog": 18,
+			"healing": 22,
+			"lightning": 12,
+			"weak": 5
+		},
+		"manual_casts_started": {
+			"acid_fog": 18,
+			"healing": 22,
+			"lightning": 12,
+			"weak": 5
+		},
+		"model_visible": true,
+		"nodes": 26647.0,
+		"npc_actions": {
+			"death": 23,
+			"idle": 158,
+			"walk": 73
+		},
+		"objects": 65209.0,
+		"observed_weapon_swings": 167,
+		"p95_ms": 19.208,
+		"particles": 2774,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "combat",
+		"position": [
+			269.03125,
+			261.5
+		],
+		"real_casts": 56,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1587.958,
+		"spell_events": {
+			"acid_fog": 36,
+			"eagle_sight": 13,
+			"healing": 22,
+			"lightning": 12,
+			"weak": 5
+		},
+		"spell_lights": 3,
+		"static_memory": 0.0,
+		"surviving_foes": 227,
+		"target_distance": 12.6869230270386,
+		"target_hp": 280.0,
+		"time_scale": 2.0,
+		"travelled": 2799.61014104262,
+		"video": 1669345680,
+		"virtual_sounds": 19,
+		"visited": 0,
+		"world_seconds": 658.844999999922,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "attack",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 18,
+			"attack": 96,
+			"heal": 0,
+			"healing": 25,
+			"lightning": 13,
+			"move": 1401,
+			"weak": 5
+		},
+		"bolts": 0,
+		"camera": "(263.5, 6.449274, -263.9688)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				299.677459716797,
+				6.44927406311035,
+				-247.322555541992
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 61.590727242023
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 29,
+		"delayed_effects": 2,
+		"depth": 226.398361206055,
+		"display": ":41",
+		"effects": 7,
+		"fps": 80.1477838487919,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 16,
+			"fire": 0,
+			"foot": 18
+		},
+		"hp": 179.3125,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 25814
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 2,
+		"mana": 111.3125,
+		"manual_casts_completed": {
+			"acid_fog": 18,
+			"healing": 25,
+			"lightning": 12,
+			"weak": 5
+		},
+		"manual_casts_started": {
+			"acid_fog": 18,
+			"healing": 25,
+			"lightning": 12,
+			"weak": 5
+		},
+		"model_visible": true,
+		"nodes": 26595.0,
+		"npc_actions": {
+			"attack": 1,
+			"death": 25,
+			"idle": 149,
+			"walk": 79
+		},
+		"objects": 65159.0,
+		"observed_weapon_swings": 195,
+		"p95_ms": 17.702,
+		"particles": 1931,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "combat",
+		"position": [
+			263.5,
+			263.96875
+		],
+		"real_casts": 59,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1617.965,
+		"spell_events": {
+			"acid_fog": 36,
+			"eagle_sight": 13,
+			"healing": 25,
+			"lightning": 12,
+			"weak": 5
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 225,
+		"target_distance": 2.32282328605652,
+		"target_hp": 66.9000158369541,
+		"time_scale": 2.0,
+		"travelled": 2810.31015278026,
+		"video": 1669617200,
+		"virtual_sounds": 16,
+		"visited": 0,
+		"world_seconds": 718.794999999867,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 18,
+			"attack": 102,
+			"heal": 0,
+			"healing": 25,
+			"lightning": 13,
+			"move": 1406,
+			"weak": 5
+		},
+		"bolts": 0,
+		"camera": "(287.5164, 7.214549, -226.4836)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				299.677459716797,
+				7.21454906463623,
+				-247.322555541992
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 61.590727242023
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 31,
+		"delayed_effects": 1,
+		"depth": 181.864212036133,
+		"display": ":41",
+		"effects": 5,
+		"fps": 82.1141323120611,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 13,
+			"fire": 0,
+			"foot": 153
+		},
+		"hp": 175.133309095221,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 26556
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 250.8125,
+		"manual_casts_completed": {
+			"acid_fog": 18,
+			"healing": 25,
+			"lightning": 12,
+			"weak": 5
+		},
+		"manual_casts_started": {
+			"acid_fog": 18,
+			"healing": 25,
+			"lightning": 12,
+			"weak": 5
+		},
+		"model_visible": true,
+		"nodes": 26738.0,
+		"npc_actions": {
+			"attack": 1,
+			"death": 27,
+			"idle": 155,
+			"walk": 71
+		},
+		"objects": 65576.0,
+		"observed_weapon_swings": 207,
+		"p95_ms": 17.611,
+		"particles": 1405,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "steered travel",
+		"position": [
+			287.578125,
+			226.421875
+		],
+		"real_casts": 59,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1647.972,
+		"spell_events": {
+			"acid_fog": 36,
+			"eagle_sight": 13,
+			"healing": 25,
+			"lightning": 12,
+			"weak": 5
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 223,
+		"target_distance": 62.0663757324219,
+		"target_hp": 280.0,
+		"time_scale": 2.0,
+		"travelled": 2865.1418937929,
+		"video": 1667913632,
+		"virtual_sounds": 12,
+		"visited": 0,
+		"world_seconds": 778.854999999813,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "hit",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 18,
+			"attack": 102,
+			"heal": 0,
+			"healing": 29,
+			"lightning": 13,
+			"move": 1409,
+			"weak": 5
+		},
+		"bolts": 0,
+		"camera": "(318.8438, 6.329832, -166.3438)",
+		"camera_mode": 2,
+		"camera_pose": {
+			"at": [
+				299.677459716797,
+				6.32983207702637,
+				-247.322555541992
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 61.590727242023
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 31,
+		"delayed_effects": 1,
+		"depth": 114.179351806641,
+		"display": ":41",
+		"effects": 10,
+		"fps": 76.4368206361023,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 35,
+			"fire": 0,
+			"foot": 153
+		},
+		"hp": 131.077402718,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 1,
+			"serial": 27323
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 313.3125,
+		"manual_casts_completed": {
+			"acid_fog": 18,
+			"healing": 28,
+			"lightning": 12,
+			"weak": 5
+		},
+		"manual_casts_started": {
+			"acid_fog": 18,
+			"healing": 29,
+			"lightning": 12,
+			"weak": 5
+		},
+		"model_visible": true,
+		"nodes": 26774.0,
+		"npc_actions": {
+			"attack": 2,
+			"death": 27,
+			"idle": 151,
+			"run": 1,
+			"walk": 73
+		},
+		"objects": 65675.0,
+		"observed_weapon_swings": 207,
+		"p95_ms": 18.315,
+		"particles": 1789,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "healing",
+		"position": [
+			318.84375,
+			166.34375
+		],
+		"real_casts": 62,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1677.984,
+		"spell_events": {
+			"acid_fog": 36,
+			"eagle_sight": 14,
+			"healing": 28,
+			"lightning": 12,
+			"weak": 5
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 223,
+		"target_distance": 133.284606933594,
+		"target_hp": 280.0,
+		"time_scale": 2.0,
+		"travelled": 2935.32071624324,
+		"video": 1668386960,
+		"virtual_sounds": 19,
+		"visited": 0,
+		"world_seconds": 838.859999999758,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "walk",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 18,
+			"attack": 102,
+			"heal": 0,
+			"healing": 31,
+			"lightning": 13,
+			"move": 1412,
+			"weak": 5
+		},
+		"bolts": 0,
+		"camera": "(363.2188, 7.096791, -115.8438)",
+		"camera_mode": 3,
+		"camera_pose": {
+			"at": [
+				299.677459716797,
+				7.09679126739502,
+				-247.322555541992
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 61.590727242023
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 31,
+		"delayed_effects": 1,
+		"depth": 50.0047836303711,
+		"display": ":41",
+		"effects": 13,
+		"fps": 70.1927888608243,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 66,
+			"fire": 0,
+			"foot": 72
+		},
+		"hp": 179.375,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 2,
+			"serial": 28050
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 1,
+		"mana": 302.8125,
+		"manual_casts_completed": {
+			"acid_fog": 18,
+			"healing": 31,
+			"lightning": 12,
+			"weak": 5
+		},
+		"manual_casts_started": {
+			"acid_fog": 18,
+			"healing": 31,
+			"lightning": 12,
+			"weak": 5
+		},
+		"model_visible": true,
+		"nodes": 26682.0,
+		"npc_actions": {
+			"attack": 3,
+			"death": 27,
+			"idle": 157,
+			"walk": 67
+		},
+		"objects": 65584.0,
+		"observed_weapon_swings": 207,
+		"p95_ms": 20.751,
+		"particles": 2159,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "steered travel",
+		"position": [
+			363.21875,
+			115.84375
+		],
+		"real_casts": 65,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1707.987,
+		"spell_events": {
+			"acid_fog": 36,
+			"eagle_sight": 14,
+			"healing": 31,
+			"lightning": 12,
+			"weak": 5
+		},
+		"spell_lights": 2,
+		"static_memory": 0.0,
+		"surviving_foes": 223,
+		"target_distance": 209.303268432617,
+		"target_hp": 280.0,
+		"time_scale": 2.0,
+		"travelled": 3003.27202267572,
+		"video": 1668714896,
+		"virtual_sounds": 12,
+		"visited": 0,
+		"world_seconds": 898.809999999703,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "death",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 18,
+			"attack": 102,
+			"heal": 0,
+			"healing": 31,
+			"lightning": 13,
+			"move": 1412,
+			"weak": 5
+		},
+		"bolts": 0,
+		"camera": "(365.0312, 7.701836, -109.6719)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				365.03125,
+				7.70183563232422,
+				-109.671875
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 61.5953715324864
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 33,
+		"delayed_effects": 0,
+		"depth": 43.5749969482422,
+		"display": ":41",
+		"effects": 3,
+		"fps": 173.463827642022,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 44,
+			"fire": 0,
+			"foot": 78
+		},
+		"hp": -10.7273242176309,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 28102
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 0,
+		"mana": 467.9375,
+		"manual_casts_completed": {
+			"acid_fog": 18,
+			"healing": 31,
+			"lightning": 12,
+			"weak": 5
+		},
+		"manual_casts_started": {
+			"acid_fog": 18,
+			"healing": 31,
+			"lightning": 12,
+			"weak": 5
+		},
+		"model_visible": true,
+		"nodes": 26564.0,
+		"npc_actions": {
+			"death": 27,
+			"idle": 154,
+			"walk": 73
+		},
+		"objects": 65309.0,
+		"observed_weapon_swings": 207,
+		"p95_ms": 10.505,
+		"particles": 1404,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "awaiting revival",
+		"position": [
+			365.03125,
+			109.671875
+		],
+		"real_casts": 65,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1737.987,
+		"spell_events": {
+			"acid_fog": 36,
+			"eagle_sight": 14,
+			"healing": 31,
+			"lightning": 12,
+			"weak": 5
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 223,
+		"target_distance": 213.949905395508,
+		"target_hp": 280.0,
+		"time_scale": 2.0,
+		"travelled": 3009.78617240861,
+		"video": 1650968960,
+		"virtual_sounds": 11,
+		"visited": 0,
+		"world_seconds": 958.924999999649,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "death",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 18,
+			"attack": 102,
+			"heal": 0,
+			"healing": 31,
+			"lightning": 13,
+			"move": 1412,
+			"weak": 5
+		},
+		"bolts": 0,
+		"camera": "(365.0312, 7.701831, -109.6719)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				365.03125,
+				7.70183134078979,
+				-109.671875
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 61.5953715324864
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 33,
+		"delayed_effects": 0,
+		"depth": 43.5749969482422,
+		"display": ":41",
+		"effects": 4,
+		"fps": 228.907489677749,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 0
+		},
+		"hp": -10.7273242176309,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 28102
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 0,
+		"mana": 467.9375,
+		"manual_casts_completed": {
+			"acid_fog": 18,
+			"healing": 31,
+			"lightning": 12,
+			"weak": 5
+		},
+		"manual_casts_started": {
+			"acid_fog": 18,
+			"healing": 31,
+			"lightning": 12,
+			"weak": 5
+		},
+		"model_visible": true,
+		"nodes": 26443.0,
+		"npc_actions": {
+			"death": 27,
+			"idle": 159,
+			"walk": 68
+		},
+		"objects": 65072.0,
+		"observed_weapon_swings": 207,
+		"p95_ms": 6.457,
+		"particles": 1718,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "awaiting revival",
+		"position": [
+			365.03125,
+			109.671875
+		],
+		"real_casts": 65,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1767.991,
+		"spell_events": {
+			"acid_fog": 36,
+			"eagle_sight": 14,
+			"healing": 31,
+			"lightning": 12,
+			"weak": 5
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 223,
+		"target_distance": 211.19075012207,
+		"target_hp": 280.0,
+		"time_scale": 2.0,
+		"travelled": 3009.78617240861,
+		"video": 1650982608,
+		"virtual_sounds": 12,
+		"visited": 0,
+		"world_seconds": 1018.92999999959,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "death",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 18,
+			"attack": 102,
+			"heal": 0,
+			"healing": 31,
+			"lightning": 13,
+			"move": 1412,
+			"weak": 5
+		},
+		"bolts": 0,
+		"camera": "(365.0312, 7.701831, -109.6719)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				365.03125,
+				7.70183086395264,
+				-109.671875
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 61.5953715324864
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 33,
+		"delayed_effects": 0,
+		"depth": 43.5749969482422,
+		"display": ":41",
+		"effects": 4,
+		"fps": 238.65037480108,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 0
+		},
+		"hp": -10.7273242176309,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 28102
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 0,
+		"mana": 467.9375,
+		"manual_casts_completed": {
+			"acid_fog": 18,
+			"healing": 31,
+			"lightning": 12,
+			"weak": 5
+		},
+		"manual_casts_started": {
+			"acid_fog": 18,
+			"healing": 31,
+			"lightning": 12,
+			"weak": 5
+		},
+		"model_visible": true,
+		"nodes": 26442.0,
+		"npc_actions": {
+			"death": 27,
+			"idle": 143,
+			"walk": 84
+		},
+		"objects": 65070.0,
+		"observed_weapon_swings": 207,
+		"p95_ms": 6.408,
+		"particles": 1428,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "awaiting revival",
+		"position": [
+			365.03125,
+			109.671875
+		],
+		"real_casts": 65,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1797.993,
+		"spell_events": {
+			"acid_fog": 36,
+			"eagle_sight": 14,
+			"healing": 31,
+			"lightning": 12,
+			"weak": 5
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 223,
+		"target_distance": 208.432098388672,
+		"target_hp": 280.0,
+		"time_scale": 2.0,
+		"travelled": 3009.78617240861,
+		"video": 1650968960,
+		"virtual_sounds": 11,
+		"visited": 0,
+		"world_seconds": 1078.87999999965,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	},
+	{
+		"action": "death",
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"attempts": {
+			"acid_fog": 18,
+			"attack": 102,
+			"heal": 0,
+			"healing": 31,
+			"lightning": 13,
+			"move": 1412,
+			"weak": 5
+		},
+		"bolts": 0,
+		"camera": "(365.0312, 7.701831, -109.6719)",
+		"camera_mode": 1,
+		"camera_pose": {
+			"at": [
+				365.03125,
+				7.70183086395264,
+				-109.671875
+			],
+			"distance": 24.0,
+			"free": false,
+			"pitch": -0.876534216168546,
+			"style": 1,
+			"tilt": 0.0,
+			"yaw": 61.5953715324864
+		},
+		"cast_timeouts": {},
+		"clock": 1,
+		"deaths": 33,
+		"delayed_effects": 0,
+		"depth": 43.5749969482422,
+		"display": ":41",
+		"effects": 3,
+		"fps": 235.892836969683,
+		"gpu_ms": null,
+		"ground_marks": {
+			"blood": 0,
+			"fire": 0,
+			"foot": 0
+		},
+		"hp": -10.7273242176309,
+		"input": {
+			"blocked": false,
+			"epoch": 4,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 28102
+		},
+		"lights": 0,
+		"live_acid_clouds": 0,
+		"magic_endings": 0,
+		"mana": 467.9375,
+		"manual_casts_completed": {
+			"acid_fog": 18,
+			"healing": 31,
+			"lightning": 12,
+			"weak": 5
+		},
+		"manual_casts_started": {
+			"acid_fog": 18,
+			"healing": 31,
+			"lightning": 12,
+			"weak": 5
+		},
+		"model_visible": true,
+		"nodes": 26442.0,
+		"npc_actions": {
+			"death": 27,
+			"idle": 154,
+			"walk": 73
+		},
+		"objects": 65065.0,
+		"observed_weapon_swings": 207,
+		"p95_ms": 6.332,
+		"particles": 1404,
+		"peak_acid_clouds": 6,
+		"peer": "guest",
+		"phase": "awaiting revival",
+		"position": [
+			365.03125,
+			109.671875
+		],
+		"real_casts": 65,
+		"render_cpu_ms": null,
+		"render_size": "(2560.0, 1440.0)",
+		"render_thread": "separate",
+		"render_timing_queries": false,
+		"resources": 497.0,
+		"route_index": 0,
+		"seconds": 1800.002,
+		"spell_events": {
+			"acid_fog": 36,
+			"eagle_sight": 14,
+			"healing": 31,
+			"lightning": 12,
+			"weak": 5
+		},
+		"spell_lights": 0,
+		"static_memory": 0.0,
+		"surviving_foes": 223,
+		"target_distance": 208.432098388672,
+		"target_hp": 280.0,
+		"time_scale": 2.0,
+		"travelled": 3009.78617240861,
+		"video": 1650969488,
+		"virtual_sounds": 12,
+		"visited": 0,
+		"world_seconds": 1082.89499999966,
+		"zone": "gz17h",
+		"zone_visits": {
+			"gz15h": 1,
+			"gz16h": 1,
+			"gz17h": 1,
+			"gz18h": 1
+		}
+	}
+]

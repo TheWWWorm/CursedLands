@@ -1,0 +1,3012 @@
+[
+	{
+		"action": "Trials of the Allods",
+		"peer": "owner",
+		"seconds": 17.327
+	},
+	{
+		"action": "Play online",
+		"peer": "owner",
+		"seconds": 22.458
+	},
+	{
+		"action": "host room",
+		"peer": "owner",
+		"seconds": 23.173
+	},
+	{
+		"action": "start tournament",
+		"peer": "owner",
+		"seconds": 34.456
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 37.775
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 38.264
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 38.463
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 39.71
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 40.022
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 40.125
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 40.912
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 41.2
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 41.344
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 42.116
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 43.321
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 43.56
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 43.652
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 44.52
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 44.736
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 45.005
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 46.93
+	},
+	{
+		"action": "2x battle speed",
+		"peer": "owner",
+		"seconds": 47.069
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 47.153
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 54.494
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 54.754
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 54.853
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 55.7
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 56.907
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 57.175
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 57.274
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 58.11
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 58.357
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 58.456
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 60.516
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 62.076
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 70.342
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 70.81
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 70.914
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 71.55
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 71.813
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 71.916
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 72.758
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 75.173
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 77.077
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 84.65
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 85.855
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 92.08
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 111.301
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 111.504
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 126.803
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 127.391
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 142.394
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 142.534
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 160.245
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 160.901
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 175.907
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 184.651
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 184.987
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 185.282
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 185.393
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 185.855
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 186.147
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 186.259
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 187.059
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 187.384
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 187.498
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 190.153
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 190.921
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 205.934
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 213.512
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 213.805
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 213.918
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 214.72
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 217.126
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 220.935
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 235.94
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 236.07
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 245.495
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 245.807
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 245.916
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 246.7
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 246.982
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 247.088
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 248.956
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 250.159
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 251.365
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 251.657
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 251.768
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 252.568
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 252.849
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 252.963
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 253.775
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 254.043
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 254.153
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 254.976
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 256.177
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 256.468
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 256.58
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 257.378
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 258.586
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 258.909
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 259.021
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 259.795
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 260.095
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 260.208
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 260.999
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 262.204
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 262.521
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 262.633
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 263.406
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 264.615
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 264.911
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 265.029
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 265.816
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 266.105
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 266.218
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 268.224
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 268.468
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 283.475
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 291.397
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 292.601
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 298.477
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 318.007
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 323.513
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 339.034
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 343.814
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 344.267
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 344.612
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 344.728
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 345.021
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 345.335
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 345.458
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 347.429
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 354.043
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 372.119
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 373.329
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 374.535
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 375.743
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 376.049
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 376.167
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 376.948
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 378.152
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 378.492
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 378.607
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 379.354
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 379.659
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 379.775
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 380.56
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 381.765
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 382.201
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 382.316
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 382.97
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 383.259
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 383.375
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 384.179
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 384.466
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 384.584
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 385.381
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 385.681
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 385.799
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 386.586
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 387.789
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 388.088
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 388.206
+	},
+	{
+		"action": "sell unit",
+		"peer": "owner",
+		"seconds": 389.054
+	},
+	{
+		"action": "select reserve for sale",
+		"peer": "owner",
+		"seconds": 390.195
+	},
+	{
+		"action": "sell unit",
+		"peer": "owner",
+		"seconds": 390.314
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 391.4
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 392.607
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 392.914
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 393.037
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 395.014
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 395.716
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 410.725
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 418.342
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 418.854
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 419.543
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 419.849
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 419.972
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 420.744
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 421.04
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 421.16
+	},
+	{
+		"action": "sell unit",
+		"peer": "owner",
+		"seconds": 422.023
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 423.153
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 424.357
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 424.706
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 424.825
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 425.557
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 426.762
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 428.998
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 429.312
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 429.431
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 431.416
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 431.698
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 446.708
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 457.472
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 457.83
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 457.951
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 459.21
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 461.622
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 462.324
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 477.326
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 477.506
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 485.03
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 485.346
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 485.465
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 486.232
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 486.537
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 486.658
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 489.171
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 492.335
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 511.834
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 512.155
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 512.273
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 514.238
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 519.337
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 534.34
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 534.5
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 549.353
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 555.769
+	},
+	{
+		"action": "Main menu",
+		"peer": "owner",
+		"seconds": 555.911
+	},
+	{
+		"action": "Leave game",
+		"peer": "owner",
+		"seconds": 556.63
+	},
+	{
+		"action": "Trials of the Allods",
+		"peer": "owner",
+		"seconds": 562.389
+	},
+	{
+		"action": "Play online",
+		"peer": "owner",
+		"seconds": 564.754
+	},
+	{
+		"action": "host room",
+		"peer": "owner",
+		"seconds": 565.331
+	},
+	{
+		"action": "start tournament",
+		"peer": "owner",
+		"seconds": 568.383
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 571.639
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 572.004
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 572.128
+	},
+	{
+		"action": "recruit 5",
+		"peer": "owner",
+		"seconds": 573.283
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 573.521
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 573.613
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 574.489
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 574.723
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 574.815
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 575.695
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 576.903
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 577.143
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 577.237
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 578.109
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 578.356
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 578.448
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 580.519
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 580.64
+	},
+	{
+		"action": "2x battle speed",
+		"peer": "owner",
+		"seconds": 580.733
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 588.288
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 588.597
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 588.697
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 589.488
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 589.747
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 589.848
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 590.689
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 590.956
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 591.058
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 593.098
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 595.529
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 604.354
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 604.669
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 604.774
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 605.557
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 605.832
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 605.938
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 606.763
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 607.97
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 608.278
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 608.384
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 609.18
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 609.452
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 609.557
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 611.586
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 611.786
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 621.285
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 622.485
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 626.785
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 641.794
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 653.943
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 656.803
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 667.713
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 668.915
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 671.803
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 690.479
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 692.793
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 707.794
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 712.573
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 713.775
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 722.808
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 737.815
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 744.623
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 744.94
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 745.048
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 747.029
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 752.822
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 771.347
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 771.718
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 772.55
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 774.96
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 777.583
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 792.588
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 800.102
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 800.479
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 800.59
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 801.301
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 801.581
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 801.688
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 802.503
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 802.785
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 802.894
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 803.707
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 803.983
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 804.096
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 804.907
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 806.116
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 807.325
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 807.608
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 807.719
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 809.738
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 810.413
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 825.416
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 825.556
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 835.393
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 835.787
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 835.9
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 836.592
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 839.004
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 840.42
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 855.422
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 868.908
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 869.357
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 870.108
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 871.316
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 871.614
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 871.729
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 874.205
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 874.887
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 893.889
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 894.243
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 894.365
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 895.089
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 895.381
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 895.498
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 896.3
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 896.634
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 896.749
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 897.506
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 898.709
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 899.007
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 899.127
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 899.914
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 901.12
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 902.956
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 903.271
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 903.39
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 904.157
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 904.464
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 904.581
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 905.364
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 906.573
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 907.783
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 908.126
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 908.242
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 943.729
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 944.43
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 959.43
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 975.446
+	},
+	{
+		"action": "sell unit",
+		"peer": "owner",
+		"seconds": 976.794
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 977.864
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 979.065
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 980.272
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 980.584
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 980.699
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 981.471
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 981.768
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 981.886
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 982.673
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 983.879
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 984.196
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 984.315
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 985.086
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 985.378
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 985.494
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 986.29
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 987.495
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 988.696
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 989.898
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 992.96
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 993.22
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1008.229
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 1023.055
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 1024.264
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 1025.472
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 1026.673
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1026.971
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1027.09
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1029.075
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 1029.917
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 1044.922
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1045.075
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 1057.621
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1057.967
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1058.085
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 1058.82
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 1060.027
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1060.338
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1060.46
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1062.434
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1064.338
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 1079.344
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1084.079
+	},
+	{
+		"action": "Main menu",
+		"peer": "owner",
+		"seconds": 1084.152
+	},
+	{
+		"action": "Leave game",
+		"peer": "owner",
+		"seconds": 1084.548
+	},
+	{
+		"action": "Trials of the Allods",
+		"peer": "owner",
+		"seconds": 1090.249
+	},
+	{
+		"action": "Play online",
+		"peer": "owner",
+		"seconds": 1092.547
+	},
+	{
+		"action": "host room",
+		"peer": "owner",
+		"seconds": 1093.2
+	},
+	{
+		"action": "start tournament",
+		"peer": "owner",
+		"seconds": 1096.218
+	},
+	{
+		"action": "recruit 5",
+		"peer": "owner",
+		"seconds": 1099.44
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1099.797
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1099.93
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 1101.078
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1101.288
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1101.381
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 1102.284
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1102.532
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1102.622
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 1103.489
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 1104.691
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1104.939
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1105.029
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1107.097
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1107.215
+	},
+	{
+		"action": "2x battle speed",
+		"peer": "owner",
+		"seconds": 1107.321
+	},
+	{
+		"action": "2x battle speed",
+		"peer": "owner",
+		"seconds": 1107.439
+	},
+	{
+		"action": "2x battle speed",
+		"peer": "owner",
+		"seconds": 1107.603
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 1114.939
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 1116.147
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1116.456
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1116.554
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 1117.347
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1117.613
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1117.716
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 1118.547
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1118.798
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1118.896
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1120.957
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1122.102
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 1130.628
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 1131.834
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1132.106
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1132.211
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1134.241
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 1137.105
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 1144.41
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 1144.834
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1145.167
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1145.278
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 1145.613
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1145.906
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1146.015
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1148.015
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1152.105
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1167.113
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1174.35
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1187.296
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 1187.808
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 1202.804
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1202.953
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1208.664
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1217.806
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1228.738
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 1232.995
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 1250.214
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 1250.556
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 1251.416
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1253.82
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1256.769
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 1275.366
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 1276.573
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1276.882
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1276.997
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 1277.78
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1278.105
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1278.214
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 1278.98
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1279.263
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1279.373
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 1280.582
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1280.848
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1280.961
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1282.983
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1283.219
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 1298.223
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 1304.614
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 1305.068
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1305.393
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1305.505
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 1305.82
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 1307.029
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 1308.239
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1308.538
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1308.652
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 1309.44
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1309.724
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1309.838
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1312.213
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1313.23
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1328.237
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 1335.738
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1336.088
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1336.204
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 1336.938
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 1338.145
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1340.995
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 1343.243
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 1358.248
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1358.395
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 1365.919
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1368.331
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1373.248
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 1388.25
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 1395.057
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 1395.519
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1395.822
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1395.936
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 1396.263
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1396.557
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1396.674
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 1397.464
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 1398.665
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1398.967
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1399.083
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 1399.867
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1400.157
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1400.274
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 1401.551
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1401.858
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1401.977
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 1402.752
+	},
+	{
+		"action": "recruit 1",
+		"peer": "owner",
+		"seconds": 1403.96
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1404.283
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1404.401
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 1405.162
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1405.46
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1405.575
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 1406.366
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 1407.566
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1407.999
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1408.123
+	},
+	{
+		"action": "recruit 4",
+		"peer": "owner",
+		"seconds": 1408.773
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1409.076
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1409.192
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 1409.975
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 1411.182
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1411.476
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1411.592
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1413.588
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1414.411
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1429.418
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 1434.899
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1435.192
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1435.312
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 1436.101
+	},
+	{
+		"action": "recruit 2",
+		"peer": "owner",
+		"seconds": 1437.302
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1437.598
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1437.721
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 1438.516
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1438.829
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1438.945
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 1439.715
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 1440.923
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 1442.131
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1442.483
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1442.603
+	},
+	{
+		"action": "reroll shop",
+		"peer": "owner",
+		"seconds": 1443.341
+	},
+	{
+		"action": "recruit 3",
+		"peer": "owner",
+		"seconds": 1444.544
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1444.858
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1444.975
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1446.958
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 1447.219
+	},
+	{
+		"action": "Your board",
+		"peer": "owner",
+		"seconds": 1462.219
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1462.379
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 1467.575
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 1468.778
+	},
+	{
+		"action": "buy experience",
+		"peer": "owner",
+		"seconds": 1469.983
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1472.389
+	},
+	{
+		"action": "watch board",
+		"peer": "owner",
+		"seconds": 1477.225
+	},
+	{
+		"action": "recruit 0",
+		"peer": "owner",
+		"seconds": 1493.208
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1493.505
+	},
+	{
+		"action": "Auto arrange",
+		"peer": "owner",
+		"seconds": 1493.622
+	},
+	{
+		"action": "ready for battle",
+		"peer": "owner",
+		"seconds": 1495.612
+	},
+	{
+		"action": "nine-board overview",
+		"peer": "owner",
+		"seconds": 1496.382
+	},
+	{
+		"action": "Menu",
+		"peer": "owner",
+		"seconds": 1514.198
+	},
+	{
+		"action": "Main menu",
+		"peer": "owner",
+		"seconds": 1514.277
+	},
+	{
+		"action": "Leave game",
+		"peer": "owner",
+		"seconds": 1514.665
+	},
+	{
+		"action": "multiplayer",
+		"peer": "owner",
+		"seconds": 1520.31
+	},
+	{
+		"action": "open saved-game choices",
+		"peer": "owner",
+		"seconds": 1520.877
+	},
+	{
+		"action": "selected save supplied-host",
+		"peer": "owner",
+		"seconds": 1522.213
+	},
+	{
+		"action": "host campaign",
+		"peer": "owner",
+		"seconds": 1523.408
+	},
+	{
+		"action": "load selected campaign save",
+		"peer": "owner",
+		"seconds": 1527.679
+	},
+	{
+		"action": "campaign entered from lobby",
+		"peer": "owner",
+		"seconds": 1527.682
+	},
+	{
+		"action": "save",
+		"peer": "owner",
+		"seconds": 1730.948
+	},
+	{
+		"action": "exit",
+		"peer": "owner",
+		"seconds": 1742.124
+	},
+	{
+		"action": "normal main-menu exit",
+		"peer": "owner",
+		"seconds": 1749.866
+	},
+	{
+		"action": "exit",
+		"peer": "owner",
+		"seconds": 1749.962
+	}
+]

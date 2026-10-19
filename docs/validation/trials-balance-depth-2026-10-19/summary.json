@@ -1,0 +1,2735 @@
+{
+  "before": {
+    "games": 16,
+    "unique_seeds": 8,
+    "policies": {
+      "economy": {
+        "seats": 36,
+        "mean_place": 5.333333333333333,
+        "wins": 5,
+        "top4": 17
+      },
+      "expansion": {
+        "seats": 36,
+        "mean_place": 4.583333333333333,
+        "wins": 3,
+        "top4": 17
+      },
+      "evolution": {
+        "seats": 36,
+        "mean_place": 5.888888888888889,
+        "wins": 2,
+        "top4": 10
+      },
+      "tempo": {
+        "seats": 36,
+        "mean_place": 4.194444444444445,
+        "wins": 6,
+        "top4": 20
+      }
+    },
+    "per_game_means": [
+      {
+        "economy": 4,
+        "expansion": 2.5,
+        "evolution": 8.5,
+        "tempo": 5.5
+      },
+      {
+        "economy": 4.5,
+        "expansion": 4.333333333333333,
+        "evolution": 6,
+        "tempo": 5.5
+      },
+      {
+        "economy": 8.5,
+        "expansion": 6,
+        "evolution": 4.333333333333333,
+        "tempo": 1.5
+      },
+      {
+        "economy": 5,
+        "expansion": 4,
+        "evolution": 6,
+        "tempo": 5
+      },
+      {
+        "economy": 7,
+        "expansion": 2.5,
+        "evolution": 4,
+        "tempo": 5.5
+      },
+      {
+        "economy": 5,
+        "expansion": 4.666666666666667,
+        "evolution": 5.5,
+        "tempo": 5
+      },
+      {
+        "economy": 8.5,
+        "expansion": 4,
+        "evolution": 5.666666666666667,
+        "tempo": 1.5
+      },
+      {
+        "economy": 6,
+        "expansion": 5,
+        "evolution": 4,
+        "tempo": 5
+      },
+      {
+        "economy": 3.3333333333333335,
+        "expansion": 6,
+        "evolution": 8.5,
+        "tempo": 3
+      },
+      {
+        "economy": 8.5,
+        "expansion": 4,
+        "evolution": 3.5,
+        "tempo": 4.5
+      },
+      {
+        "economy": 8.5,
+        "expansion": 5,
+        "evolution": 4.333333333333333,
+        "tempo": 2.5
+      },
+      {
+        "economy": 2.5,
+        "expansion": 4.5,
+        "evolution": 8.5,
+        "tempo": 4.666666666666667
+      },
+      {
+        "economy": 3.3333333333333335,
+        "expansion": 5.5,
+        "evolution": 7.5,
+        "tempo": 4.5
+      },
+      {
+        "economy": 2,
+        "expansion": 5.333333333333333,
+        "evolution": 6,
+        "tempo": 6.5
+      },
+      {
+        "economy": 6.5,
+        "expansion": 5.5,
+        "evolution": 6,
+        "tempo": 1.5
+      },
+      {
+        "economy": 4,
+        "expansion": 4.5,
+        "evolution": 7.5,
+        "tempo": 4.333333333333333
+      }
+    ],
+    "families": [
+      {
+        "family": 0,
+        "name": "Boars",
+        "context_scores": {
+          "2": {
+            "wins": 32,
+            "draws": 16,
+            "trials": 72,
+            "score": 0.5555555555555556
+          },
+          "3": {
+            "wins": 39,
+            "draws": 6,
+            "trials": 72,
+            "score": 0.5833333333333334
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 154
+      },
+      {
+        "family": 1,
+        "name": "Wolves",
+        "context_scores": {
+          "2": {
+            "wins": 20,
+            "draws": 14,
+            "trials": 72,
+            "score": 0.375
+          },
+          "3": {
+            "wins": 29,
+            "draws": 6,
+            "trials": 72,
+            "score": 0.4444444444444444
+          }
+        },
+        "games_deployed": 14,
+        "late_snapshots": 66
+      },
+      {
+        "family": 2,
+        "name": "Rats",
+        "context_scores": {
+          "2": {
+            "wins": 20,
+            "draws": 16,
+            "trials": 72,
+            "score": 0.3888888888888889
+          },
+          "3": {
+            "wins": 26,
+            "draws": 11,
+            "trials": 72,
+            "score": 0.4375
+          }
+        },
+        "games_deployed": 11,
+        "late_snapshots": 29
+      },
+      {
+        "family": 3,
+        "name": "Bats",
+        "context_scores": {
+          "2": {
+            "wins": 30,
+            "draws": 13,
+            "trials": 72,
+            "score": 0.5069444444444444
+          },
+          "3": {
+            "wins": 38,
+            "draws": 5,
+            "trials": 72,
+            "score": 0.5625
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 459
+      },
+      {
+        "family": 4,
+        "name": "Goblins",
+        "context_scores": {
+          "2": {
+            "wins": 42,
+            "draws": 16,
+            "trials": 72,
+            "score": 0.6944444444444444
+          },
+          "3": {
+            "wins": 45,
+            "draws": 2,
+            "trials": 72,
+            "score": 0.6388888888888888
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 353
+      },
+      {
+        "family": 5,
+        "name": "Toads",
+        "context_scores": {
+          "2": {
+            "wins": 29,
+            "draws": 17,
+            "trials": 72,
+            "score": 0.5208333333333334
+          },
+          "3": {
+            "wins": 24,
+            "draws": 10,
+            "trials": 72,
+            "score": 0.4027777777777778
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 229
+      },
+      {
+        "family": 6,
+        "name": "Skeletons",
+        "context_scores": {
+          "2": {
+            "wins": 27,
+            "draws": 12,
+            "trials": 72,
+            "score": 0.4583333333333333
+          },
+          "3": {
+            "wins": 29,
+            "draws": 4,
+            "trials": 72,
+            "score": 0.4305555555555556
+          }
+        },
+        "games_deployed": 5,
+        "late_snapshots": 18
+      },
+      {
+        "family": 7,
+        "name": "Tigers",
+        "context_scores": {
+          "2": {
+            "wins": 17,
+            "draws": 13,
+            "trials": 60,
+            "score": 0.39166666666666666
+          },
+          "3": {
+            "wins": 30,
+            "draws": 3,
+            "trials": 60,
+            "score": 0.525
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 869
+      },
+      {
+        "family": 8,
+        "name": "Spiders",
+        "context_scores": {
+          "2": {
+            "wins": 23,
+            "draws": 10,
+            "trials": 60,
+            "score": 0.4666666666666667
+          },
+          "3": {
+            "wins": 19,
+            "draws": 2,
+            "trials": 60,
+            "score": 0.3333333333333333
+          }
+        },
+        "games_deployed": 11,
+        "late_snapshots": 56
+      },
+      {
+        "family": 9,
+        "name": "Armadillos",
+        "context_scores": {
+          "2": {
+            "wins": 16,
+            "draws": 13,
+            "trials": 60,
+            "score": 0.375
+          },
+          "3": {
+            "wins": 27,
+            "draws": 5,
+            "trials": 60,
+            "score": 0.49166666666666664
+          }
+        },
+        "games_deployed": 12,
+        "late_snapshots": 59
+      },
+      {
+        "family": 10,
+        "name": "Lizardmen",
+        "context_scores": {
+          "2": {
+            "wins": 31,
+            "draws": 9,
+            "trials": 60,
+            "score": 0.5916666666666667
+          },
+          "3": {
+            "wins": 28,
+            "draws": 5,
+            "trials": 60,
+            "score": 0.5083333333333333
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 260
+      },
+      {
+        "family": 11,
+        "name": "Woodsfolk",
+        "context_scores": {
+          "2": {
+            "wins": 27,
+            "draws": 4,
+            "trials": 60,
+            "score": 0.48333333333333334
+          },
+          "3": {
+            "wins": 30,
+            "draws": 0,
+            "trials": 60,
+            "score": 0.5
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 1198
+      },
+      {
+        "family": 12,
+        "name": "Zombies",
+        "context_scores": {
+          "2": {
+            "wins": 37,
+            "draws": 9,
+            "trials": 60,
+            "score": 0.6916666666666667
+          },
+          "3": {
+            "wins": 37,
+            "draws": 3,
+            "trials": 60,
+            "score": 0.6416666666666667
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 377
+      },
+      {
+        "family": 13,
+        "name": "Orc shamans",
+        "context_scores": {
+          "2": {
+            "wins": 27,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.5729166666666666
+          },
+          "3": {
+            "wins": 14,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.2916666666666667
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 746
+      },
+      {
+        "family": 14,
+        "name": "Trolls",
+        "context_scores": {
+          "2": {
+            "wins": 23,
+            "draws": 6,
+            "trials": 48,
+            "score": 0.5416666666666666
+          },
+          "3": {
+            "wins": 23,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.4895833333333333
+          }
+        },
+        "games_deployed": 12,
+        "late_snapshots": 65
+      },
+      {
+        "family": 15,
+        "name": "Ogres",
+        "context_scores": {
+          "2": {
+            "wins": 19,
+            "draws": 6,
+            "trials": 48,
+            "score": 0.4583333333333333
+          },
+          "3": {
+            "wins": 26,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.5416666666666666
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 178
+      },
+      {
+        "family": 16,
+        "name": "Harpies",
+        "context_scores": {
+          "2": {
+            "wins": 27,
+            "draws": 3,
+            "trials": 48,
+            "score": 0.59375
+          },
+          "3": {
+            "wins": 40,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.8333333333333334
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 851
+      },
+      {
+        "family": 17,
+        "name": "Hyenas",
+        "context_scores": {
+          "2": {
+            "wins": 13,
+            "draws": 6,
+            "trials": 48,
+            "score": 0.3333333333333333
+          },
+          "3": {
+            "wins": 16,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.34375
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 291
+      },
+      {
+        "family": 18,
+        "name": "Evileyes",
+        "context_scores": {
+          "2": {
+            "wins": 19,
+            "draws": 4,
+            "trials": 48,
+            "score": 0.4375
+          },
+          "3": {
+            "wins": 10,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.20833333333333334
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 410
+      },
+      {
+        "family": 19,
+        "name": "Banshees",
+        "context_scores": {
+          "2": {
+            "wins": 26,
+            "draws": 2,
+            "trials": 48,
+            "score": 0.5625
+          },
+          "3": {
+            "wins": 19,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.3958333333333333
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 978
+      },
+      {
+        "family": 20,
+        "name": "Unicorns",
+        "context_scores": {
+          "2": {
+            "wins": 26,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.5520833333333334
+          },
+          "3": {
+            "wins": 38,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.7916666666666666
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 694
+      },
+      {
+        "family": 21,
+        "name": "Wisps",
+        "context_scores": {
+          "2": {
+            "wins": 22,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.46875
+          },
+          "3": {
+            "wins": 21,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.4375
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 531
+      },
+      {
+        "family": 22,
+        "name": "Elementals",
+        "context_scores": {
+          "2": {
+            "wins": 23,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.4791666666666667
+          },
+          "3": {
+            "wins": 32,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.6666666666666666
+          }
+        },
+        "games_deployed": 8,
+        "late_snapshots": 44
+      },
+      {
+        "family": 23,
+        "name": "Dragons",
+        "context_scores": {
+          "2": {
+            "wins": 34,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.71875
+          },
+          "3": {
+            "wins": 37,
+            "draws": 2,
+            "trials": 48,
+            "score": 0.7916666666666666
+          }
+        },
+        "games_deployed": 13,
+        "late_snapshots": 193
+      },
+      {
+        "family": 24,
+        "name": "Golems",
+        "context_scores": {
+          "2": {
+            "wins": 21,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.4479166666666667
+          },
+          "3": {
+            "wins": 16,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.3333333333333333
+          }
+        },
+        "games_deployed": 13,
+        "late_snapshots": 146
+      },
+      {
+        "family": 25,
+        "name": "Horrors",
+        "context_scores": {
+          "2": {
+            "wins": 18,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.375
+          },
+          "3": {
+            "wins": 25,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.5208333333333334
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 295
+      },
+      {
+        "family": 26,
+        "name": "Wormheads",
+        "context_scores": {
+          "2": {
+            "wins": 27,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.5625
+          },
+          "3": {
+            "wins": 28,
+            "draws": 2,
+            "trials": 48,
+            "score": 0.6041666666666666
+          }
+        },
+        "games_deployed": 15,
+        "late_snapshots": 358
+      },
+      {
+        "family": 27,
+        "name": "Cyclopes",
+        "context_scores": {
+          "2": {
+            "wins": 19,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.3958333333333333
+          },
+          "3": {
+            "wins": 12,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.25
+          }
+        },
+        "games_deployed": 15,
+        "late_snapshots": 246
+      }
+    ],
+    "contexts": {
+      "fights": 1584,
+      "timeouts": 115,
+      "mean_seconds": 31.844201388889008
+    },
+    "stars": {
+      "promotion": {
+        "wins": 217,
+        "draws": 6,
+        "trials": 224,
+        "timeouts": 0
+      },
+      "three_gold": {
+        "wins": 65,
+        "draws": 2,
+        "trials": 140,
+        "timeouts": 0
+      },
+      "nine_vs_ten_gold": {
+        "wins": 19,
+        "draws": 3,
+        "trials": 140,
+        "timeouts": 0
+      }
+    },
+    "holdout_boards": {
+      "count": 889,
+      "reasons": {
+        "defeated": 887,
+        "stalemate": 2
+      },
+      "median_seconds": 23.4299999999999,
+      "p90_seconds": 37.0149999999998
+    },
+    "rounds": {
+      "mean": 29.4375,
+      "min": 27,
+      "max": 32
+    }
+  },
+  "intermediate-a": {
+    "games": 16,
+    "unique_seeds": 8,
+    "policies": {
+      "economy": {
+        "seats": 36,
+        "mean_place": 4.888888888888889,
+        "wins": 5,
+        "top4": 18
+      },
+      "expansion": {
+        "seats": 36,
+        "mean_place": 5.194444444444445,
+        "wins": 3,
+        "top4": 15
+      },
+      "evolution": {
+        "seats": 36,
+        "mean_place": 4.972222222222222,
+        "wins": 6,
+        "top4": 15
+      },
+      "tempo": {
+        "seats": 36,
+        "mean_place": 4.944444444444445,
+        "wins": 2,
+        "top4": 16
+      }
+    },
+    "per_game_means": [
+      {
+        "economy": 7.333333333333333,
+        "expansion": 2.5,
+        "evolution": 5,
+        "tempo": 4
+      },
+      {
+        "economy": 4.5,
+        "expansion": 6,
+        "evolution": 2,
+        "tempo": 7
+      },
+      {
+        "economy": 5.5,
+        "expansion": 6.5,
+        "evolution": 5,
+        "tempo": 3
+      },
+      {
+        "economy": 6,
+        "expansion": 4.5,
+        "evolution": 3,
+        "tempo": 6
+      },
+      {
+        "economy": 5.333333333333333,
+        "expansion": 1.5,
+        "evolution": 6.5,
+        "tempo": 6.5
+      },
+      {
+        "economy": 1.5,
+        "expansion": 6.333333333333333,
+        "evolution": 5.5,
+        "tempo": 6
+      },
+      {
+        "economy": 5.5,
+        "expansion": 5.5,
+        "evolution": 4,
+        "tempo": 5.5
+      },
+      {
+        "economy": 5.5,
+        "expansion": 5.5,
+        "evolution": 5,
+        "tempo": 4.333333333333333
+      },
+      {
+        "economy": 3.6666666666666665,
+        "expansion": 2,
+        "evolution": 8,
+        "tempo": 7
+      },
+      {
+        "economy": 6,
+        "expansion": 7,
+        "evolution": 3.5,
+        "tempo": 2.5
+      },
+      {
+        "economy": 8,
+        "expansion": 7,
+        "evolution": 2.6666666666666665,
+        "tempo": 3.5
+      },
+      {
+        "economy": 5,
+        "expansion": 6,
+        "evolution": 7.5,
+        "tempo": 2.6666666666666665
+      },
+      {
+        "economy": 3.3333333333333335,
+        "expansion": 6,
+        "evolution": 7,
+        "tempo": 4.5
+      },
+      {
+        "economy": 4.5,
+        "expansion": 3.6666666666666665,
+        "evolution": 5,
+        "tempo": 7.5
+      },
+      {
+        "economy": 2,
+        "expansion": 5.5,
+        "evolution": 6.666666666666667,
+        "tempo": 5
+      },
+      {
+        "economy": 4.5,
+        "expansion": 6.5,
+        "evolution": 4,
+        "tempo": 5
+      }
+    ],
+    "families": [
+      {
+        "family": 0,
+        "name": "Boars",
+        "context_scores": {
+          "2": {
+            "wins": 27,
+            "draws": 17,
+            "trials": 72,
+            "score": 0.4930555555555556
+          },
+          "3": {
+            "wins": 33,
+            "draws": 4,
+            "trials": 72,
+            "score": 0.4861111111111111
+          }
+        },
+        "games_deployed": 15,
+        "late_snapshots": 95
+      },
+      {
+        "family": 1,
+        "name": "Wolves",
+        "context_scores": {
+          "2": {
+            "wins": 22,
+            "draws": 14,
+            "trials": 72,
+            "score": 0.4027777777777778
+          },
+          "3": {
+            "wins": 35,
+            "draws": 1,
+            "trials": 72,
+            "score": 0.4930555555555556
+          }
+        },
+        "games_deployed": 15,
+        "late_snapshots": 140
+      },
+      {
+        "family": 2,
+        "name": "Rats",
+        "context_scores": {
+          "2": {
+            "wins": 26,
+            "draws": 20,
+            "trials": 72,
+            "score": 0.5
+          },
+          "3": {
+            "wins": 36,
+            "draws": 6,
+            "trials": 72,
+            "score": 0.5416666666666666
+          }
+        },
+        "games_deployed": 13,
+        "late_snapshots": 89
+      },
+      {
+        "family": 3,
+        "name": "Bats",
+        "context_scores": {
+          "2": {
+            "wins": 29,
+            "draws": 16,
+            "trials": 72,
+            "score": 0.5138888888888888
+          },
+          "3": {
+            "wins": 35,
+            "draws": 2,
+            "trials": 72,
+            "score": 0.5
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 414
+      },
+      {
+        "family": 4,
+        "name": "Goblins",
+        "context_scores": {
+          "2": {
+            "wins": 35,
+            "draws": 14,
+            "trials": 72,
+            "score": 0.5833333333333334
+          },
+          "3": {
+            "wins": 40,
+            "draws": 1,
+            "trials": 72,
+            "score": 0.5625
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 341
+      },
+      {
+        "family": 5,
+        "name": "Toads",
+        "context_scores": {
+          "2": {
+            "wins": 32,
+            "draws": 16,
+            "trials": 72,
+            "score": 0.5555555555555556
+          },
+          "3": {
+            "wins": 37,
+            "draws": 3,
+            "trials": 72,
+            "score": 0.5347222222222222
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 499
+      },
+      {
+        "family": 6,
+        "name": "Skeletons",
+        "context_scores": {
+          "2": {
+            "wins": 25,
+            "draws": 15,
+            "trials": 72,
+            "score": 0.4513888888888889
+          },
+          "3": {
+            "wins": 25,
+            "draws": 5,
+            "trials": 72,
+            "score": 0.3819444444444444
+          }
+        },
+        "games_deployed": 11,
+        "late_snapshots": 26
+      },
+      {
+        "family": 7,
+        "name": "Tigers",
+        "context_scores": {
+          "2": {
+            "wins": 23,
+            "draws": 8,
+            "trials": 60,
+            "score": 0.45
+          },
+          "3": {
+            "wins": 29,
+            "draws": 4,
+            "trials": 60,
+            "score": 0.5166666666666667
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 721
+      },
+      {
+        "family": 8,
+        "name": "Spiders",
+        "context_scores": {
+          "2": {
+            "wins": 31,
+            "draws": 10,
+            "trials": 60,
+            "score": 0.6
+          },
+          "3": {
+            "wins": 30,
+            "draws": 5,
+            "trials": 60,
+            "score": 0.5416666666666666
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 273
+      },
+      {
+        "family": 9,
+        "name": "Armadillos",
+        "context_scores": {
+          "2": {
+            "wins": 17,
+            "draws": 9,
+            "trials": 60,
+            "score": 0.35833333333333334
+          },
+          "3": {
+            "wins": 27,
+            "draws": 5,
+            "trials": 60,
+            "score": 0.49166666666666664
+          }
+        },
+        "games_deployed": 15,
+        "late_snapshots": 129
+      },
+      {
+        "family": 10,
+        "name": "Lizardmen",
+        "context_scores": {
+          "2": {
+            "wins": 28,
+            "draws": 9,
+            "trials": 60,
+            "score": 0.5416666666666666
+          },
+          "3": {
+            "wins": 27,
+            "draws": 3,
+            "trials": 60,
+            "score": 0.475
+          }
+        },
+        "games_deployed": 15,
+        "late_snapshots": 260
+      },
+      {
+        "family": 11,
+        "name": "Woodsfolk",
+        "context_scores": {
+          "2": {
+            "wins": 26,
+            "draws": 3,
+            "trials": 60,
+            "score": 0.4583333333333333
+          },
+          "3": {
+            "wins": 26,
+            "draws": 0,
+            "trials": 60,
+            "score": 0.43333333333333335
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 1124
+      },
+      {
+        "family": 12,
+        "name": "Zombies",
+        "context_scores": {
+          "2": {
+            "wins": 32,
+            "draws": 7,
+            "trials": 60,
+            "score": 0.5916666666666667
+          },
+          "3": {
+            "wins": 31,
+            "draws": 3,
+            "trials": 60,
+            "score": 0.5416666666666666
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 294
+      },
+      {
+        "family": 13,
+        "name": "Orc shamans",
+        "context_scores": {
+          "2": {
+            "wins": 27,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.5625
+          },
+          "3": {
+            "wins": 21,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.4375
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 730
+      },
+      {
+        "family": 14,
+        "name": "Trolls",
+        "context_scores": {
+          "2": {
+            "wins": 24,
+            "draws": 4,
+            "trials": 48,
+            "score": 0.5416666666666666
+          },
+          "3": {
+            "wins": 18,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.3854166666666667
+          }
+        },
+        "games_deployed": 13,
+        "late_snapshots": 84
+      },
+      {
+        "family": 15,
+        "name": "Ogres",
+        "context_scores": {
+          "2": {
+            "wins": 18,
+            "draws": 4,
+            "trials": 48,
+            "score": 0.4166666666666667
+          },
+          "3": {
+            "wins": 22,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.46875
+          }
+        },
+        "games_deployed": 14,
+        "late_snapshots": 148
+      },
+      {
+        "family": 16,
+        "name": "Harpies",
+        "context_scores": {
+          "2": {
+            "wins": 24,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.5104166666666666
+          },
+          "3": {
+            "wins": 31,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.6458333333333334
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 504
+      },
+      {
+        "family": 17,
+        "name": "Hyenas",
+        "context_scores": {
+          "2": {
+            "wins": 21,
+            "draws": 3,
+            "trials": 48,
+            "score": 0.46875
+          },
+          "3": {
+            "wins": 26,
+            "draws": 2,
+            "trials": 48,
+            "score": 0.5625
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 245
+      },
+      {
+        "family": 18,
+        "name": "Evileyes",
+        "context_scores": {
+          "2": {
+            "wins": 28,
+            "draws": 3,
+            "trials": 48,
+            "score": 0.6145833333333334
+          },
+          "3": {
+            "wins": 27,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.5625
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 505
+      },
+      {
+        "family": 19,
+        "name": "Banshees",
+        "context_scores": {
+          "2": {
+            "wins": 25,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.53125
+          },
+          "3": {
+            "wins": 17,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.3541666666666667
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 1042
+      },
+      {
+        "family": 20,
+        "name": "Unicorns",
+        "context_scores": {
+          "2": {
+            "wins": 22,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.4583333333333333
+          },
+          "3": {
+            "wins": 19,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.3958333333333333
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 509
+      },
+      {
+        "family": 21,
+        "name": "Wisps",
+        "context_scores": {
+          "2": {
+            "wins": 19,
+            "draws": 2,
+            "trials": 48,
+            "score": 0.4166666666666667
+          },
+          "3": {
+            "wins": 30,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.625
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 643
+      },
+      {
+        "family": 22,
+        "name": "Elementals",
+        "context_scores": {
+          "2": {
+            "wins": 23,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.4791666666666667
+          },
+          "3": {
+            "wins": 27,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.5625
+          }
+        },
+        "games_deployed": 6,
+        "late_snapshots": 14
+      },
+      {
+        "family": 23,
+        "name": "Dragons",
+        "context_scores": {
+          "2": {
+            "wins": 25,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.53125
+          },
+          "3": {
+            "wins": 26,
+            "draws": 2,
+            "trials": 48,
+            "score": 0.5625
+          }
+        },
+        "games_deployed": 14,
+        "late_snapshots": 161
+      },
+      {
+        "family": 24,
+        "name": "Golems",
+        "context_scores": {
+          "2": {
+            "wins": 24,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.5104166666666666
+          },
+          "3": {
+            "wins": 7,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.15625
+          }
+        },
+        "games_deployed": 12,
+        "late_snapshots": 122
+      },
+      {
+        "family": 25,
+        "name": "Horrors",
+        "context_scores": {
+          "2": {
+            "wins": 16,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.3333333333333333
+          },
+          "3": {
+            "wins": 26,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.5416666666666666
+          }
+        },
+        "games_deployed": 14,
+        "late_snapshots": 308
+      },
+      {
+        "family": 26,
+        "name": "Wormheads",
+        "context_scores": {
+          "2": {
+            "wins": 28,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.5833333333333334
+          },
+          "3": {
+            "wins": 39,
+            "draws": 2,
+            "trials": 48,
+            "score": 0.8333333333333334
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 337
+      },
+      {
+        "family": 27,
+        "name": "Cyclopes",
+        "context_scores": {
+          "2": {
+            "wins": 26,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.5416666666666666
+          },
+          "3": {
+            "wins": 19,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.40625
+          }
+        },
+        "games_deployed": 14,
+        "late_snapshots": 284
+      }
+    ],
+    "contexts": {
+      "fights": 1584,
+      "timeouts": 103,
+      "mean_seconds": 31.72440972222232
+    },
+    "stars": {
+      "promotion": {
+        "wins": 219,
+        "draws": 4,
+        "trials": 224,
+        "timeouts": 0
+      },
+      "three_gold": {
+        "wins": 78,
+        "draws": 0,
+        "trials": 140,
+        "timeouts": 0
+      },
+      "nine_vs_ten_gold": {
+        "wins": 23,
+        "draws": 3,
+        "trials": 140,
+        "timeouts": 0
+      }
+    },
+    "holdout_boards": {
+      "count": 906,
+      "reasons": {
+        "defeated": 906
+      },
+      "median_seconds": 23.5124999999999,
+      "p90_seconds": 35.1999999999998
+    },
+    "rounds": {
+      "mean": 29,
+      "min": 27,
+      "max": 32
+    }
+  },
+  "final": {
+    "games": 16,
+    "unique_seeds": 8,
+    "policies": {
+      "economy": {
+        "seats": 36,
+        "mean_place": 5.194444444444445,
+        "wins": 5,
+        "top4": 14
+      },
+      "expansion": {
+        "seats": 36,
+        "mean_place": 5.305555555555555,
+        "wins": 4,
+        "top4": 15
+      },
+      "evolution": {
+        "seats": 36,
+        "mean_place": 4.722222222222222,
+        "wins": 6,
+        "top4": 19
+      },
+      "tempo": {
+        "seats": 36,
+        "mean_place": 4.777777777777778,
+        "wins": 1,
+        "top4": 16
+      }
+    },
+    "per_game_means": [
+      {
+        "economy": 7,
+        "expansion": 3,
+        "evolution": 4.5,
+        "tempo": 4.5
+      },
+      {
+        "economy": 4.5,
+        "expansion": 6,
+        "evolution": 1.5,
+        "tempo": 7.5
+      },
+      {
+        "economy": 6,
+        "expansion": 6.5,
+        "evolution": 4.666666666666667,
+        "tempo": 3
+      },
+      {
+        "economy": 4.5,
+        "expansion": 5.5,
+        "evolution": 3.5,
+        "tempo": 6
+      },
+      {
+        "economy": 6,
+        "expansion": 1.5,
+        "evolution": 6.5,
+        "tempo": 5.5
+      },
+      {
+        "economy": 1.5,
+        "expansion": 6.666666666666667,
+        "evolution": 5,
+        "tempo": 6
+      },
+      {
+        "economy": 6,
+        "expansion": 5,
+        "evolution": 4,
+        "tempo": 5.5
+      },
+      {
+        "economy": 6.5,
+        "expansion": 5.5,
+        "evolution": 5,
+        "tempo": 3.6666666666666665
+      },
+      {
+        "economy": 4.666666666666667,
+        "expansion": 1.5,
+        "evolution": 7.5,
+        "tempo": 6.5
+      },
+      {
+        "economy": 6.5,
+        "expansion": 6.666666666666667,
+        "evolution": 3.5,
+        "tempo": 2.5
+      },
+      {
+        "economy": 7.5,
+        "expansion": 7.5,
+        "evolution": 2.6666666666666665,
+        "tempo": 3.5
+      },
+      {
+        "economy": 4.5,
+        "expansion": 6,
+        "evolution": 6,
+        "tempo": 4
+      },
+      {
+        "economy": 5,
+        "expansion": 4.5,
+        "evolution": 6,
+        "tempo": 4.5
+      },
+      {
+        "economy": 5,
+        "expansion": 3.6666666666666665,
+        "evolution": 5,
+        "tempo": 7
+      },
+      {
+        "economy": 3,
+        "expansion": 7.5,
+        "evolution": 6.333333333333333,
+        "tempo": 2.5
+      },
+      {
+        "economy": 4,
+        "expansion": 7,
+        "evolution": 4.5,
+        "tempo": 4.666666666666667
+      }
+    ],
+    "families": [
+      {
+        "family": 0,
+        "name": "Boars",
+        "context_scores": {
+          "2": {
+            "wins": 27,
+            "draws": 17,
+            "trials": 72,
+            "score": 0.4930555555555556
+          },
+          "3": {
+            "wins": 35,
+            "draws": 4,
+            "trials": 72,
+            "score": 0.5138888888888888
+          }
+        },
+        "games_deployed": 15,
+        "late_snapshots": 108
+      },
+      {
+        "family": 1,
+        "name": "Wolves",
+        "context_scores": {
+          "2": {
+            "wins": 22,
+            "draws": 14,
+            "trials": 72,
+            "score": 0.4027777777777778
+          },
+          "3": {
+            "wins": 37,
+            "draws": 1,
+            "trials": 72,
+            "score": 0.5208333333333334
+          }
+        },
+        "games_deployed": 15,
+        "late_snapshots": 154
+      },
+      {
+        "family": 2,
+        "name": "Rats",
+        "context_scores": {
+          "2": {
+            "wins": 26,
+            "draws": 20,
+            "trials": 72,
+            "score": 0.5
+          },
+          "3": {
+            "wins": 35,
+            "draws": 5,
+            "trials": 72,
+            "score": 0.5208333333333334
+          }
+        },
+        "games_deployed": 13,
+        "late_snapshots": 83
+      },
+      {
+        "family": 3,
+        "name": "Bats",
+        "context_scores": {
+          "2": {
+            "wins": 29,
+            "draws": 16,
+            "trials": 72,
+            "score": 0.5138888888888888
+          },
+          "3": {
+            "wins": 34,
+            "draws": 2,
+            "trials": 72,
+            "score": 0.4861111111111111
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 446
+      },
+      {
+        "family": 4,
+        "name": "Goblins",
+        "context_scores": {
+          "2": {
+            "wins": 35,
+            "draws": 14,
+            "trials": 72,
+            "score": 0.5833333333333334
+          },
+          "3": {
+            "wins": 41,
+            "draws": 1,
+            "trials": 72,
+            "score": 0.5763888888888888
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 342
+      },
+      {
+        "family": 5,
+        "name": "Toads",
+        "context_scores": {
+          "2": {
+            "wins": 32,
+            "draws": 16,
+            "trials": 72,
+            "score": 0.5555555555555556
+          },
+          "3": {
+            "wins": 35,
+            "draws": 3,
+            "trials": 72,
+            "score": 0.5069444444444444
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 478
+      },
+      {
+        "family": 6,
+        "name": "Skeletons",
+        "context_scores": {
+          "2": {
+            "wins": 25,
+            "draws": 15,
+            "trials": 72,
+            "score": 0.4513888888888889
+          },
+          "3": {
+            "wins": 25,
+            "draws": 4,
+            "trials": 72,
+            "score": 0.375
+          }
+        },
+        "games_deployed": 11,
+        "late_snapshots": 25
+      },
+      {
+        "family": 7,
+        "name": "Tigers",
+        "context_scores": {
+          "2": {
+            "wins": 23,
+            "draws": 8,
+            "trials": 60,
+            "score": 0.45
+          },
+          "3": {
+            "wins": 28,
+            "draws": 4,
+            "trials": 60,
+            "score": 0.5
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 697
+      },
+      {
+        "family": 8,
+        "name": "Spiders",
+        "context_scores": {
+          "2": {
+            "wins": 31,
+            "draws": 10,
+            "trials": 60,
+            "score": 0.6
+          },
+          "3": {
+            "wins": 31,
+            "draws": 2,
+            "trials": 60,
+            "score": 0.5333333333333333
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 267
+      },
+      {
+        "family": 9,
+        "name": "Armadillos",
+        "context_scores": {
+          "2": {
+            "wins": 17,
+            "draws": 9,
+            "trials": 60,
+            "score": 0.35833333333333334
+          },
+          "3": {
+            "wins": 32,
+            "draws": 1,
+            "trials": 60,
+            "score": 0.5416666666666666
+          }
+        },
+        "games_deployed": 15,
+        "late_snapshots": 138
+      },
+      {
+        "family": 10,
+        "name": "Lizardmen",
+        "context_scores": {
+          "2": {
+            "wins": 28,
+            "draws": 9,
+            "trials": 60,
+            "score": 0.5416666666666666
+          },
+          "3": {
+            "wins": 29,
+            "draws": 1,
+            "trials": 60,
+            "score": 0.49166666666666664
+          }
+        },
+        "games_deployed": 15,
+        "late_snapshots": 264
+      },
+      {
+        "family": 11,
+        "name": "Woodsfolk",
+        "context_scores": {
+          "2": {
+            "wins": 26,
+            "draws": 3,
+            "trials": 60,
+            "score": 0.4583333333333333
+          },
+          "3": {
+            "wins": 26,
+            "draws": 0,
+            "trials": 60,
+            "score": 0.43333333333333335
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 1107
+      },
+      {
+        "family": 12,
+        "name": "Zombies",
+        "context_scores": {
+          "2": {
+            "wins": 32,
+            "draws": 7,
+            "trials": 60,
+            "score": 0.5916666666666667
+          },
+          "3": {
+            "wins": 29,
+            "draws": 2,
+            "trials": 60,
+            "score": 0.5
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 316
+      },
+      {
+        "family": 13,
+        "name": "Orc shamans",
+        "context_scores": {
+          "2": {
+            "wins": 27,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.5625
+          },
+          "3": {
+            "wins": 19,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.3958333333333333
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 708
+      },
+      {
+        "family": 14,
+        "name": "Trolls",
+        "context_scores": {
+          "2": {
+            "wins": 24,
+            "draws": 4,
+            "trials": 48,
+            "score": 0.5416666666666666
+          },
+          "3": {
+            "wins": 20,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.4270833333333333
+          }
+        },
+        "games_deployed": 13,
+        "late_snapshots": 78
+      },
+      {
+        "family": 15,
+        "name": "Ogres",
+        "context_scores": {
+          "2": {
+            "wins": 18,
+            "draws": 4,
+            "trials": 48,
+            "score": 0.4166666666666667
+          },
+          "3": {
+            "wins": 26,
+            "draws": 2,
+            "trials": 48,
+            "score": 0.5625
+          }
+        },
+        "games_deployed": 15,
+        "late_snapshots": 155
+      },
+      {
+        "family": 16,
+        "name": "Harpies",
+        "context_scores": {
+          "2": {
+            "wins": 24,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.5104166666666666
+          },
+          "3": {
+            "wins": 25,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.5208333333333334
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 508
+      },
+      {
+        "family": 17,
+        "name": "Hyenas",
+        "context_scores": {
+          "2": {
+            "wins": 21,
+            "draws": 3,
+            "trials": 48,
+            "score": 0.46875
+          },
+          "3": {
+            "wins": 27,
+            "draws": 3,
+            "trials": 48,
+            "score": 0.59375
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 236
+      },
+      {
+        "family": 18,
+        "name": "Evileyes",
+        "context_scores": {
+          "2": {
+            "wins": 28,
+            "draws": 3,
+            "trials": 48,
+            "score": 0.6145833333333334
+          },
+          "3": {
+            "wins": 25,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.5208333333333334
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 510
+      },
+      {
+        "family": 19,
+        "name": "Banshees",
+        "context_scores": {
+          "2": {
+            "wins": 24,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.5104166666666666
+          },
+          "3": {
+            "wins": 15,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.3125
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 976
+      },
+      {
+        "family": 20,
+        "name": "Unicorns",
+        "context_scores": {
+          "2": {
+            "wins": 23,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.4791666666666667
+          },
+          "3": {
+            "wins": 20,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.4166666666666667
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 531
+      },
+      {
+        "family": 21,
+        "name": "Wisps",
+        "context_scores": {
+          "2": {
+            "wins": 19,
+            "draws": 2,
+            "trials": 48,
+            "score": 0.4166666666666667
+          },
+          "3": {
+            "wins": 27,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.5625
+          }
+        },
+        "games_deployed": 16,
+        "late_snapshots": 598
+      },
+      {
+        "family": 22,
+        "name": "Elementals",
+        "context_scores": {
+          "2": {
+            "wins": 23,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.4791666666666667
+          },
+          "3": {
+            "wins": 33,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.6875
+          }
+        },
+        "games_deployed": 6,
+        "late_snapshots": 5
+      },
+      {
+        "family": 23,
+        "name": "Dragons",
+        "context_scores": {
+          "2": {
+            "wins": 26,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.5520833333333334
+          },
+          "3": {
+            "wins": 32,
+            "draws": 2,
+            "trials": 48,
+            "score": 0.6875
+          }
+        },
+        "games_deployed": 13,
+        "late_snapshots": 192
+      },
+      {
+        "family": 24,
+        "name": "Golems",
+        "context_scores": {
+          "2": {
+            "wins": 25,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.53125
+          },
+          "3": {
+            "wins": 21,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.4479166666666667
+          }
+        },
+        "games_deployed": 10,
+        "late_snapshots": 97
+      },
+      {
+        "family": 25,
+        "name": "Horrors",
+        "context_scores": {
+          "2": {
+            "wins": 17,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.3541666666666667
+          },
+          "3": {
+            "wins": 22,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.4583333333333333
+          }
+        },
+        "games_deployed": 15,
+        "late_snapshots": 296
+      },
+      {
+        "family": 26,
+        "name": "Wormheads",
+        "context_scores": {
+          "2": {
+            "wins": 23,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.4791666666666667
+          },
+          "3": {
+            "wins": 27,
+            "draws": 2,
+            "trials": 48,
+            "score": 0.5833333333333334
+          }
+        },
+        "games_deployed": 15,
+        "late_snapshots": 211
+      },
+      {
+        "family": 27,
+        "name": "Cyclopes",
+        "context_scores": {
+          "2": {
+            "wins": 28,
+            "draws": 0,
+            "trials": 48,
+            "score": 0.5833333333333334
+          },
+          "3": {
+            "wins": 15,
+            "draws": 1,
+            "trials": 48,
+            "score": 0.3229166666666667
+          }
+        },
+        "games_deployed": 15,
+        "late_snapshots": 271
+      }
+    ],
+    "contexts": {
+      "fights": 1584,
+      "timeouts": 99,
+      "mean_seconds": 31.693402777777866
+    },
+    "stars": {
+      "promotion": {
+        "wins": 219,
+        "draws": 4,
+        "trials": 224,
+        "timeouts": 0
+      },
+      "three_gold": {
+        "wins": 78,
+        "draws": 0,
+        "trials": 140,
+        "timeouts": 0
+      },
+      "nine_vs_ten_gold": {
+        "wins": 38,
+        "draws": 3,
+        "trials": 140,
+        "timeouts": 0
+      }
+    },
+    "holdout_boards": {
+      "count": 904,
+      "reasons": {
+        "defeated": 904
+      },
+      "median_seconds": 23.5949999999999,
+      "p90_seconds": 36.8499999999998
+    },
+    "rounds": {
+      "mean": 28.6875,
+      "min": 26,
+      "max": 33
+    }
+  },
+  "acquisition": [
+    {
+      "level": 3,
+      "tier": 1,
+      "species": 7,
+      "slot_chance": 0.07857142857142858,
+      "expected_reroll_gold_for_eight_more": 41.52727272700961,
+      "probabilities": {
+        "5": {
+          "2": 0.5951132912913388,
+          "8": 0.00046351265951016796
+        },
+        "10": {
+          "2": 0.9120240844754898,
+          "8": 0.04003206337585419
+        },
+        "20": {
+          "2": 0.9973384806087924,
+          "8": 0.5319238592112596
+        }
+      }
+    },
+    {
+      "level": 3,
+      "tier": 2,
+      "species": 6,
+      "slot_chance": 0.075,
+      "expected_reroll_gold_for_eight_more": 43.46666666648432,
+      "probabilities": {
+        "5": {
+          "2": 0.5689182700028343,
+          "8": 0.0003381880592433495
+        },
+        "10": {
+          "2": 0.8974993736074204,
+          "8": 0.031605070108529976
+        },
+        "20": {
+          "2": 0.996253709502555,
+          "8": 0.4782006139248316
+        }
+      }
+    },
+    {
+      "level": 4,
+      "tier": 1,
+      "species": 7,
+      "slot_chance": 0.07857142857142858,
+      "expected_reroll_gold_for_eight_more": 41.52727272700961,
+      "probabilities": {
+        "5": {
+          "2": 0.5951132912913388,
+          "8": 0.00046351265951016796
+        },
+        "10": {
+          "2": 0.9120240844754898,
+          "8": 0.04003206337585419
+        },
+        "20": {
+          "2": 0.9973384806087924,
+          "8": 0.5319238592112596
+        }
+      }
+    },
+    {
+      "level": 4,
+      "tier": 2,
+      "species": 6,
+      "slot_chance": 0.075,
+      "expected_reroll_gold_for_eight_more": 43.46666666648432,
+      "probabilities": {
+        "5": {
+          "2": 0.5689182700028343,
+          "8": 0.0003381880592433495
+        },
+        "10": {
+          "2": 0.8974993736074204,
+          "8": 0.031605070108529976
+        },
+        "20": {
+          "2": 0.996253709502555,
+          "8": 0.4782006139248316
+        }
+      }
+    },
+    {
+      "level": 5,
+      "tier": 1,
+      "species": 7,
+      "slot_chance": 0.05714285714285715,
+      "expected_reroll_gold_for_eight_more": 56.79999999997885,
+      "probabilities": {
+        "5": {
+          "2": 0.4222877977196364,
+          "8": 5.094351524614904e-05
+        },
+        "10": {
+          "2": 0.7873661133916878,
+          "8": 0.007075293381193504
+        },
+        "20": {
+          "2": 0.980346878733341,
+          "8": 0.2126803535806856
+        }
+      }
+    },
+    {
+      "level": 5,
+      "tier": 2,
+      "species": 6,
+      "slot_chance": 0.06666666666666667,
+      "expected_reroll_gold_for_eight_more": 48.79999999992806,
+      "probabilities": {
+        "5": {
+          "2": 0.5035723224502552,
+          "8": 0.00015045113542488942
+        },
+        "10": {
+          "2": 0.8548253560962917,
+          "8": 0.016909990652089424
+        },
+        "20": {
+          "2": 0.9917878952970753,
+          "8": 0.3499621967969041
+        }
+      }
+    },
+    {
+      "level": 5,
+      "tier": 3,
+      "species": 5,
+      "slot_chance": 0.04,
+      "expected_reroll_gold_for_eight_more": 80.79999999999852,
+      "probabilities": {
+        "5": {
+          "2": 0.2641900364148799,
+          "8": 3.839569323371705e-06
+        },
+        "10": {
+          "2": 0.5995188033070483,
+          "8": 0.0007814052783489123
+        },
+        "20": {
+          "2": 0.9128366833126105,
+          "8": 0.04751205072594633
+        }
+      }
+    },
+    {
+      "level": 6,
+      "tier": 1,
+      "species": 7,
+      "slot_chance": 0.04285714285714286,
+      "expected_reroll_gold_for_eight_more": 75.46666666666486,
+      "probabilities": {
+        "5": {
+          "2": 0.29102224509287766,
+          "8": 6.377972592397363e-06
+        },
+        "10": {
+          "2": 0.6375708959213571,
+          "8": 0.001217847696174168
+        },
+        "20": {
+          "2": 0.9314089375124216,
+          "8": 0.06568650887476535
+        }
+      }
+    },
+    {
+      "level": 6,
+      "tier": 2,
+      "species": 6,
+      "slot_chance": 0.05833333333333333,
+      "expected_reroll_gold_for_eight_more": 55.657142857117925,
+      "probabilities": {
+        "5": {
+          "2": 0.4327898677633909,
+          "8": 5.896474567290699e-05
+        },
+        "10": {
+          "2": 0.7970624470317442,
+          "8": 0.007975263818149059
+        },
+        "20": {
+          "2": 0.9823505227946513,
+          "8": 0.22862129688817578
+        }
+      }
+    },
+    {
+      "level": 6,
+      "tier": 3,
+      "species": 5,
+      "slot_chance": 0.054000000000000006,
+      "expected_reroll_gold_for_eight_more": 60.05925925924564,
+      "probabilities": {
+        "5": {
+          "2": 0.39415830709427113,
+          "8": 3.403991050465738e-05
+        },
+        "10": {
+          "2": 0.7598501343530584,
+          "8": 0.005070234357770542
+        },
+        "20": {
+          "2": 0.9739551073611661,
+          "8": 0.17292691354649847
+        }
+      }
+    },
+    {
+      "level": 6,
+      "tier": 4,
+      "species": 5,
+      "slot_chance": 0.016,
+      "expected_reroll_gold_for_eight_more": 200.79999999999973,
+      "probabilities": {
+        "5": {
+          "2": 0.06023676125745148,
+          "8": 3.6426328620109416e-09
+        },
+        "10": {
+          "2": 0.1906158914952223,
+          "8": 1.2663633408571684e-06
+        },
+        "20": {
+          "2": 0.4766318930625827,
+          "8": 0.00021648210862723616
+        }
+      }
+    },
+    {
+      "level": 7,
+      "tier": 1,
+      "species": 7,
+      "slot_chance": 0.03142857142857143,
+      "expected_reroll_gold_for_eight_more": 102.61818181818089,
+      "probabilities": {
+        "5": {
+          "2": 0.18480779305865247,
+          "8": 6.36922238506088e-07
+        },
+        "10": {
+          "2": 0.46876735473681674,
+          "8": 0.0001569473573896918
+        },
+        "20": {
+          "2": 0.8258086917064682,
+          "8": 0.01373577579621299
+        }
+      }
+    },
+    {
+      "level": 7,
+      "tier": 2,
+      "species": 6,
+      "slot_chance": 0.04666666666666667,
+      "expected_reroll_gold_for_eight_more": 69.37142857142469,
+      "probabilities": {
+        "5": {
+          "2": 0.32669701051277467,
+          "8": 1.1878199676629286e-05
+        },
+        "10": {
+          "2": 0.6839543608185891,
+          "8": 0.0020833482551925186
+        },
+        "20": {
+          "2": 0.950458474192655,
+          "8": 0.09590778484035911
+        }
+      }
+    },
+    {
+      "level": 7,
+      "tier": 3,
+      "species": 5,
+      "slot_chance": 0.05600000000000001,
+      "expected_reroll_gold_for_eight_more": 57.94285714283891,
+      "probabilities": {
+        "5": {
+          "2": 0.4121243519542155,
+          "8": 4.412666153752465e-05
+        },
+        "10": {
+          "2": 0.7776876647571501,
+          "8": 0.006286410339091941
+        },
+        "20": {
+          "2": 0.9782193555213373,
+          "8": 0.19781509559563093
+        }
+      }
+    },
+    {
+      "level": 7,
+      "tier": 4,
+      "species": 5,
+      "slot_chance": 0.04,
+      "expected_reroll_gold_for_eight_more": 80.79999999999852,
+      "probabilities": {
+        "5": {
+          "2": 0.2641900364148799,
+          "8": 3.839569323371705e-06
+        },
+        "10": {
+          "2": 0.5995188033070483,
+          "8": 0.0007814052783489123
+        },
+        "20": {
+          "2": 0.9128366833126105,
+          "8": 0.04751205072594633
+        }
+      }
+    },
+    {
+      "level": 7,
+      "tier": 5,
+      "species": 5,
+      "slot_chance": 0.004,
+      "expected_reroll_gold_for_eight_more": 800.7999999999927,
+      "probabilities": {
+        "5": {
+          "2": 0.004515101159765278,
+          "8": 6.683542608243442e-14
+        },
+        "10": {
+          "2": 0.017259707822675385,
+          "8": 3.03004288326747e-11
+        },
+        "20": {
+          "2": 0.06122844428050844,
+          "8": 8.79380224194648e-09
+        }
+      }
+    },
+    {
+      "level": 8,
+      "tier": 1,
+      "species": 7,
+      "slot_chance": 0.02142857142857143,
+      "expected_reroll_gold_for_eight_more": 150.13333333333253,
+      "probabilities": {
+        "5": {
+          "2": 0.09961431690890366,
+          "8": 3.469763210084409e-08
+        },
+        "10": {
+          "2": 0.2907686841183694,
+          "8": 1.0687393474984042e-05
+        },
+        "20": {
+          "2": 0.6343934079708824,
+          "8": 0.001441101566421854
+        }
+      }
+    },
+    {
+      "level": 8,
+      "tier": 2,
+      "species": 6,
+      "slot_chance": 0.03333333333333333,
+      "expected_reroll_gold_for_eight_more": 96.79999999999987,
+      "probabilities": {
+        "5": {
+          "2": 0.20216269065159032,
+          "8": 9.902157417363e-07
+        },
+        "10": {
+          "2": 0.4998891780921063,
+          "8": 0.00023384895381717286
+        },
+        "20": {
+          "2": 0.8500777710779516,
+          "8": 0.018864380441172446
+        }
+      }
+    },
+    {
+      "level": 8,
+      "tier": 3,
+      "species": 5,
+      "slot_chance": 0.05,
+      "expected_reroll_gold_for_eight_more": 64.79999999999241,
+      "probabilities": {
+        "5": {
+          "2": 0.35762414645470075,
+          "8": 1.9580554080356194e-05
+        },
+        "10": {
+          "2": 0.7205682476793048,
+          "8": 0.003188343222299661
+        },
+        "20": {
+          "2": 0.962918790672645,
+          "8": 0.1279604786203825
+        }
+      }
+    },
+    {
+      "level": 8,
+      "tier": 4,
+      "species": 5,
+      "slot_chance": 0.06,
+      "expected_reroll_gold_for_eight_more": 54.13333333330193,
+      "probabilities": {
+        "5": {
+          "2": 0.4473396436309296,
+          "8": 7.195609817711723e-05
+        },
+        "10": {
+          "2": 0.809996741862476,
+          "8": 0.009378263803409892
+        },
+        "20": {
+          "2": 0.9848289032899642,
+          "8": 0.25165056021562127
+        }
+      }
+    },
+    {
+      "level": 8,
+      "tier": 5,
+      "species": 5,
+      "slot_chance": 0.02,
+      "expected_reroll_gold_for_eight_more": 160.79999999999944,
+      "probabilities": {
+        "5": {
+          "2": 0.08864510196656417,
+          "8": 2.0422449287238464e-08
+        },
+        "10": {
+          "2": 0.2642286055382743,
+          "8": 6.494077043339708e-06
+        },
+        "20": {
+          "2": 0.5967282892179961,
+          "8": 0.0009319399786512639
+        }
+      }
+    },
+    {
+      "level": 9,
+      "tier": 1,
+      "species": 7,
+      "slot_chance": 0.014285714285714287,
+      "expected_reroll_gold_for_eight_more": 224.80000000000337,
+      "probabilities": {
+        "5": {
+          "2": 0.04927474433101442,
+          "8": 1.5102280537249158e-09
+        },
+        "10": {
+          "2": 0.16005585557744806,
+          "8": 5.454809726135323e-07
+        },
+        "20": {
+          "2": 0.4190447426871241,
+          "8": 0.0001005356175289851
+        }
+      }
+    },
+    {
+      "level": 9,
+      "tier": 2,
+      "species": 6,
+      "slot_chance": 0.024999999999999998,
+      "expected_reroll_gold_for_eight_more": 128.79999999999927,
+      "probabilities": {
+        "5": {
+          "2": 0.12857350649140298,
+          "8": 1.1273214861606817e-07
+        },
+        "10": {
+          "2": 0.35648868952970236,
+          "8": 3.2064003220533266e-05
+        },
+        "20": {
+          "2": 0.7165922233129598,
+          "8": 0.003702169607312067
+        }
+      }
+    },
+    {
+      "level": 9,
+      "tier": 3,
+      "species": 5,
+      "slot_chance": 0.05,
+      "expected_reroll_gold_for_eight_more": 64.79999999999241,
+      "probabilities": {
+        "5": {
+          "2": 0.35762414645470075,
+          "8": 1.9580554080356194e-05
+        },
+        "10": {
+          "2": 0.7205682476793048,
+          "8": 0.003188343222299661
+        },
+        "20": {
+          "2": 0.962918790672645,
+          "8": 0.1279604786203825
+        }
+      }
+    },
+    {
+      "level": 9,
+      "tier": 4,
+      "species": 5,
+      "slot_chance": 0.06999999999999999,
+      "expected_reroll_gold_for_eight_more": 46.51428571418003,
+      "probabilities": {
+        "5": {
+          "2": 0.5304027344939862,
+          "8": 0.0002108462271749323
+        },
+        "10": {
+          "2": 0.8735065011784066,
+          "8": 0.022009948810035485
+        },
+        "20": {
+          "2": 0.9939870845907535,
+          "8": 0.4012207639328137
+        }
+      }
+    },
+    {
+      "level": 9,
+      "tier": 5,
+      "species": 5,
+      "slot_chance": 0.03,
+      "expected_reroll_gold_for_eight_more": 107.4666666666662,
+      "probabilities": {
+        "5": {
+          "2": 0.1719623783118358,
+          "8": 4.487869296188052e-07
+        },
+        "10": {
+          "2": 0.44472012669268446,
+          "8": 0.00011417052944773243
+        },
+        "20": {
+          "2": 0.8053778799341645,
+          "8": 0.010623808856181194
+        }
+      }
+    }
+  ]
+}

@@ -45,3 +45,18 @@ Verify translation coverage and readable layout in all three languages.
 
 Every new option must include its label, all choices and its help text in EN/RU/DE
 in the same change. Verify dynamically selected option strings as well.
+
+# Development and test sessions
+
+For development and test runs, keep the cursor free, show FPS, and mute all
+game audio. Set these values in the development/test profile before launching:
+
+- `confine_mouse=0`
+- `show_fps=1`
+- `volume_sfx=0`
+- `volume_stream=0`
+- `volume_voice=0`
+
+Keep these preferences when creating fresh profiles or resetting test settings.
+Use an isolated development/test profile; do not change normal player defaults
+or overwrite a player's saved preferences for this purpose.

@@ -80,6 +80,7 @@ func _ready() -> void:
 	run.undo()
 	check(run.training==109 and run.gold==30 and run.capacity()==8,"undo restores final-level purchase and capacity")
 	var legacy := run.snapshot();legacy.version=3;legacy.preparation_left=45;legacy.pact="";legacy.pact_rank=0;legacy.erase("training");legacy.erase("battle_savings")
+	for entry in legacy.army: entry.prototype = ArenaRules.LEGACY_FORMS[int(entry.family)][int(entry.rank)]
 	check(restored.restore(legacy) and restored.training == 0,"old saves preserve free army growth")
 	Fixture.begin(run, 33,1)
 	check(run.sale_value(run.army[0]) == 1,"one-star recruits can be exchanged without losing gold")
@@ -88,7 +89,10 @@ func _ready() -> void:
 	for family in ArenaRules.FAMILIES.size():
 		for rank in ArenaRules.FAMILIES[family].forms.size():
 			var id := ArenaRules.prototype(family,rank)
-			check(ArenaUnitInfo.rank_of(id) == rank,"rank follows evolution: " + id)
+			# Some native species have one model shared by all three ranks.
+			# Explicit roster rank determines Trials stats, never model inference.
+			var trial_stats := ArenaUnitInfo.values(id, null, family, rank)
+			check(trial_stats.hp > 0 and (rank == 0 or trial_stats.hp > ArenaUnitInfo.values(ArenaRules.prototype(family, rank-1), null, family, rank-1).hp), "explicit star rank improves shared model: " + id)
 			var stats := ArenaUnitInfo.values(id)
 			var proto := GameData.db.find("monster_prototypes",id)
 			check(stats.attack == int(proto.to_hit),"native attack: " + id)

@@ -54,7 +54,7 @@ static func summary(id: String, unit: GameUnit = null, family := -1, rank := 0) 
 	for i in mini(armor.size(), 6):
 		if armor[i] < general: weak.append(RemakeText.t(WikiCatalog.DAMAGE_TYPES[i]))
 		elif armor[i] > general: strong.append(RemakeText.t(WikiCatalog.DAMAGE_TYPES[i]))
-	var text := RemakeText.t("Health %d/%d\nAttack %d    Defense %d\nDamage %d–%d · %s\nArmor %d") % [stats.hp, stats.max_hp, stats.attack, stats.defense, stats.min, stats.max, RemakeText.t(WikiCatalog.DAMAGE_TYPES[best]), roundi(general)]
+	var text := RemakeText.t("Health %d/%d    Armor %d\nAttack %d    Defense %d\nDamage %d–%d · %s") % [stats.hp, stats.max_hp, roundi(general), stats.attack, stats.defense, stats.min, stats.max, RemakeText.t(WikiCatalog.DAMAGE_TYPES[best])]
 	if float(stats.regeneration)>0: text += "\n" + RemakeText.t("Recovery: %.2f health/s") % float(stats.regeneration)
 	text += "\n" + (RemakeText.t("Weaknesses: %s") % ", ".join(weak) if not weak.is_empty() else RemakeText.t("Weaknesses: none"))
 	if not strong.is_empty(): text += "\n" + RemakeText.t("Resistant to: %s") % ", ".join(strong)

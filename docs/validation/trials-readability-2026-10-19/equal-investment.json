@@ -1,0 +1,172 @@
+[
+	{
+		"copies": 3,
+		"draws": 1,
+		"family": 0,
+		"opponent": 0,
+		"opponent_rank": 1,
+		"timeouts": 0,
+		"trials": 8,
+		"wins": 7
+	},
+	{
+		"copies": 3,
+		"draws": 0,
+		"family": 0,
+		"opponent": 1,
+		"opponent_rank": 1,
+		"timeouts": 0,
+		"trials": 8,
+		"wins": 8
+	},
+	{
+		"copies": 3,
+		"draws": 0,
+		"family": 0,
+		"opponent": 2,
+		"opponent_rank": 1,
+		"timeouts": 0,
+		"trials": 8,
+		"wins": 2
+	},
+	{
+		"copies": 3,
+		"draws": 0,
+		"family": 0,
+		"opponent": 3,
+		"opponent_rank": 1,
+		"timeouts": 0,
+		"trials": 8,
+		"wins": 0
+	},
+	{
+		"copies": 3,
+		"draws": 0,
+		"family": 0,
+		"opponent": 10,
+		"opponent_rank": 1,
+		"timeouts": 0,
+		"trials": 8,
+		"wins": 8
+	},
+	{
+		"copies": 3,
+		"draws": 0,
+		"family": 0,
+		"opponent": 22,
+		"opponent_rank": 1,
+		"timeouts": 0,
+		"trials": 8,
+		"wins": 0
+	},
+	{
+		"copies": 3,
+		"draws": 0,
+		"family": 0,
+		"opponent": 29,
+		"opponent_rank": 1,
+		"timeouts": 0,
+		"trials": 8,
+		"wins": 8
+	},
+	{
+		"copies": 3,
+		"draws": 0,
+		"family": 9,
+		"opponent": 5,
+		"opponent_rank": 1,
+		"timeouts": 0,
+		"trials": 8,
+		"wins": 8
+	},
+	{
+		"copies": 3,
+		"draws": 0,
+		"family": 9,
+		"opponent": 6,
+		"opponent_rank": 1,
+		"timeouts": 0,
+		"trials": 8,
+		"wins": 5
+	},
+	{
+		"copies": 3,
+		"draws": 0,
+		"family": 9,
+		"opponent": 7,
+		"opponent_rank": 1,
+		"timeouts": 0,
+		"trials": 8,
+		"wins": 0
+	},
+	{
+		"copies": 3,
+		"draws": 0,
+		"family": 9,
+		"opponent": 9,
+		"opponent_rank": 1,
+		"timeouts": 0,
+		"trials": 8,
+		"wins": 7
+	},
+	{
+		"copies": 3,
+		"draws": 0,
+		"family": 9,
+		"opponent": 16,
+		"opponent_rank": 1,
+		"timeouts": 0,
+		"trials": 8,
+		"wins": 8
+	},
+	{
+		"copies": 3,
+		"draws": 0,
+		"family": 9,
+		"opponent": 21,
+		"opponent_rank": 1,
+		"timeouts": 0,
+		"trials": 8,
+		"wins": 8
+	},
+	{
+		"copies": 3,
+		"draws": 0,
+		"family": 18,
+		"opponent": 4,
+		"opponent_rank": 1,
+		"timeouts": 0,
+		"trials": 8,
+		"wins": 0
+	},
+	{
+		"copies": 3,
+		"draws": 0,
+		"family": 18,
+		"opponent": 11,
+		"opponent_rank": 1,
+		"timeouts": 0,
+		"trials": 8,
+		"wins": 0
+	},
+	{
+		"copies": 3,
+		"draws": 0,
+		"family": 18,
+		"opponent": 18,
+		"opponent_rank": 1,
+		"timeouts": 0,
+		"trials": 8,
+		"wins": 8
+	},
+	{
+		"copies": 3,
+		"draws": 0,
+		"family": 18,
+		"opponent": 24,
+		"opponent_rank": 1,
+		"timeouts": 0,
+		"trials": 8,
+		"wins": 8
+	}
+]

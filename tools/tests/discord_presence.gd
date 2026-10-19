@@ -8,7 +8,9 @@ func _ready()->void:
 			printerr("FAIL localized activity truncation");get_tree().quit(1);return
 	print("PASS activity preserves whole localized characters within the UTF-8 limit")
 	GameData.options.discord_presence=1
-	p.application_id="123456789012345678";p.active=true;p.test_mode=true
+	if p.application_id != "1561645781533069393":
+		printerr("FAIL bundled public application ID");get_tree().quit(1);return
+	p.active=true;p.test_mode=true
 	p.desired={"details":"Campaign","state":"Suslanger","timestamps":{"start":12345678}}
 	var deadline:=Time.get_ticks_msec()+15000
 	while p.sent.is_empty() and Time.get_ticks_msec()<deadline:await get_tree().process_frame

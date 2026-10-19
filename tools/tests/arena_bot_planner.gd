@@ -64,9 +64,9 @@ func _ready() -> void:
 	check(hash(GameData.db.tables) == native, "planning never changes native combat stats")
 	var formation := ArenaRun.new(); formation.auto_save=false; formation.begin(9917)
 	formation.army.clear(); formation.training=ArenaRules.MAX_TRAINING
-	for choice in [Vector2i(17,1),Vector2i(3,2),Vector2i(17,2)]: formation._recruit(choice.x,choice.y,1)
+	for choice in [Vector2i(11,1),Vector2i(3,2),Vector2i(17,2)]: formation._recruit(choice.x,choice.y,1)
 	ArenaBotPlanner.arrange(formation,"")
 	for entry in formation.army:
-		check(entry.deployed and entry.point[0]==(27.0 if entry.family==17 and entry.rank==2 else 22.0),"held bows form behind melee; utility-only dagger user stays in front")
+		check(entry.deployed and entry.point[0]==(27.0 if entry.family==17 and entry.rank==2 else 22.0),"ranged and spellcasting creatures stay behind the melee hunter")
 	print("ARENA_BOT_PLANNER checks=", checks, " family=", pair.x, " filler=", pair.y, " failures=", JSON.stringify(failures))
 	get_tree().quit(0 if failures.is_empty() else 1)

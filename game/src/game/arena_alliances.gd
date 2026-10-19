@@ -3,11 +3,12 @@ extends RefCounted
 ## Automatic, overlapping traits. Unique deployed families count, not copies,
 ## stars, reserves or old camp guests. Bonuses are isolated to expedition actors.
 const RULES := {
-	"beast": {"name": "Beasts", "families": [0, 2, 4, 5, 8, 9, 10, 14, 16], "thresholds": [2, 4, 6], "help": "All allies deal 10/20/30% more attack damage."},
-	"horde": {"name": "Horde", "families": [1, 3, 9, 11, 12, 16, 19, 21, 25, 28], "thresholds": [2, 4], "help": "Horde creatures gain 15/30% maximum health."},
-	"warrior": {"name": "Warriors", "families": [0, 1, 9, 15, 16, 19, 20, 21, 25, 26, 27, 28, 29], "thresholds": [2, 4], "help": "Warriors gain 20/40% physical armor, plus 2/4 armor."},
-	"hunter": {"name": "Hunters", "families": [2, 3, 7, 13, 14, 17, 20, 23, 26, 29], "thresholds": [2, 4], "help": "Hunters gain 15/30% attack accuracy and act 10/20% faster."},
-	"mage": {"name": "Mages", "families": [4, 5, 6, 7, 8, 11, 12, 13, 18, 22, 24], "thresholds": [2, 4], "help": "Enemies lose 20/40% fire, acid and lightning armor."},
+	"beast": {"name": "Beasts", "families": [0, 1, 2, 3, 5, 7, 8, 9, 16, 17, 20, 23], "thresholds": [2, 4, 6], "help": "Beasts deal 8/16/24% more attack damage."},
+	"horde": {"name": "Horde", "families": [4, 10, 13, 14, 15, 27], "thresholds": [2, 4], "help": "Horde creatures gain 12/24% maximum health."},
+	"warrior": {"name": "Warriors", "families": [0, 6, 9, 12, 14, 15, 22, 24], "thresholds": [2, 4], "help": "Warriors gain 2/4 physical armor."},
+	"hunter": {"name": "Hunters", "families": [1, 2, 4, 7, 10, 11, 17, 27], "thresholds": [2, 4], "help": "Hunters gain 10/20% attack accuracy and act 8/16% faster."},
+	"mage": {"name": "Mages", "families": [3, 5, 13, 16, 18, 19, 21, 23, 26], "thresholds": [2, 4], "help": "Enemies lose 15/30% fire, acid and lightning armor."},
+	"spirit": {"name": "Spirits", "families": [6, 11, 12, 19, 20, 21, 22, 24, 25, 26], "thresholds": [2, 4], "help": "Spirits gain 3/6 fire, acid and lightning armor."},
 }
 
 static func traits(family: int) -> Array[String]:
@@ -47,11 +48,12 @@ static func names(family: int) -> String:
 static func effect(key: String, level: int) -> String:
 	if level == 0: return RemakeText.t("No bonus yet.")
 	match key:
-		"beast": return RemakeText.t("All allies: +%d%% attack damage.") % (level * 10)
-		"horde": return RemakeText.t("Horde: +%d%% health.") % (level * 15)
-		"warrior": return RemakeText.t("Warriors: +%d%% physical armor and +%d armor.") % [level * 20, level * 2]
-		"hunter": return RemakeText.t("Hunters: +%d%% accuracy, +%d%% action speed.") % [level * 15, level * 10]
-		"mage": return RemakeText.t("Enemies: −%d%% elemental armor.") % (level * 20)
+		"beast": return RemakeText.t("Beasts: +%d%% attack damage.") % (level * 8)
+		"horde": return RemakeText.t("Horde: +%d%% health.") % (level * 12)
+		"warrior": return RemakeText.t("Warriors: +%d physical armor.") % (level * 2)
+		"hunter": return RemakeText.t("Hunters: +%d%% accuracy, +%d%% action speed.") % [level * 10, level * 8]
+		"mage": return RemakeText.t("Enemies: −%d%% elemental armor.") % (level * 15)
+		"spirit": return RemakeText.t("Spirits: +%d elemental armor.") % (level * 3)
 	return ""
 
 static func apply(world: GameWorld, army: Array, opponents: Array = []) -> void:
@@ -77,20 +79,23 @@ static func apply(world: GameWorld, army: Array, opponents: Array = []) -> void:
 			unit.proto = ArenaRules.recruit_prototype(family, int(placement.get("rank", 0)), unit.proto)
 			var member := traits(family)
 			var beasts := rank("beast", count.beast)
-			stats.dmg_min *= 1.0 + beasts * 0.1
-			stats.dmg_max *= 1.0 + beasts * 0.1
-			if "horde" in member: health *= 1.0 + rank("horde", count.horde) * 0.15
+			if "beast" in member:
+				stats.dmg_min *= 1.0 + beasts * 0.08
+				stats.dmg_max *= 1.0 + beasts * 0.08
+			if "horde" in member: health *= 1.0 + rank("horde", count.horde) * 0.12
+			if "spirit" in member:
+				for type in range(3, 6): stats.armor[type] += rank("spirit", count.spirit) * 3.0
 			if "warrior" in member:
 				var warriors := rank("warrior", count.warrior)
-				for type in 3: stats.armor[type] = stats.armor[type] * (1.0 + warriors * 0.2) + warriors * 2.0
+				for type in 3: stats.armor[type] += warriors * 2.0
 			if "hunter" in member:
 				var hunters := rank("hunter", count.hunter)
-				stats.to_hit *= 1.0 + hunters * 0.15
-				stats.actions = float(stats.get("actions", 15.0)) * (1.0 + hunters * 0.1)
+				stats.to_hit *= 1.0 + hunters * 0.1
+				stats.actions = float(stats.get("actions", 15.0)) * (1.0 + hunters * 0.08)
 		elif team==1 and int(world.get_meta("arena_wave",0))>0:
 			ArenaRules.creep_stats(int(world.get_meta("arena_wave")),stats)
 		var mages := rank("mage", totals[1 - team].mage)
-		for type in range(3, 6): stats.armor[type] *= 1.0 - mages * 0.2
+		for type in range(3, 6): stats.armor[type] *= 1.0 - mages * 0.15
 		unit.stats = stats
 		unit.max_hp = health
 		unit.hp = health

@@ -10,13 +10,14 @@ const SNOW_ACCENT := Color("f2d58f")
 const TRIBE_COLORS := {
 	"beast": Color("e2bc75"), "horde": Color("ed998b"),
 	"warrior": Color("9dc8e7"), "hunter": Color("a5d99a"),
-	"mage": Color("c9a7ec"),
+	"mage": Color("c9a7ec"), "spirit": Color("89e5d4"),
 }
 var prototype := ""
 var heading := ""
 var caption := ""
 var footer := ""
 var cost := 3
+var tier := 1
 var copies := 0
 var copies_needed := 3
 var quality := 0
@@ -28,6 +29,9 @@ var _copies: Label
 var _info: ArenaInfoPanel
 var _offer_icons: Array[TextureRect] = []
 var upgrade_ready := false
+var owned_army: Array[Dictionary] = []
+var _ownership: Label
+var _upgrade_marker: Label
 var _glow: ShaderMaterial
 var _title: Label
 var _traits: HBoxContainer
@@ -35,6 +39,7 @@ var _stars: ArenaStars
 var _shown_prototype := ""
 var _shown_family := -2
 var _preview_pending := false
+const HOVER_TITLE_HEIGHT := 42.0
 
 
 static func style(fill: Color, border := Color("5a624c"), padding := Vector2(10, 8)) -> StyleBoxFlat:
@@ -49,7 +54,7 @@ static func style(fill: Color, border := Color("5a624c"), padding := Vector2(10,
 
 
 func _ready() -> void:
-	custom_minimum_size = Vector2(96, 148)
+	custom_minimum_size = Vector2(112, 144)
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	tooltip_text = ArenaRules.title(prototype) + "\n" + caption + "\n" + footer
@@ -70,7 +75,7 @@ func _ready() -> void:
 	margin.add_child(box)
 	preview = WikiPreview.new()
 	preview.fit_slot = true
-	preview.custom_minimum_size.y = 84
+	preview.custom_minimum_size.y = 72
 	preview.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	box.add_child(preview)
 	if disabled: preview.modulate.a = 0.65
@@ -98,7 +103,7 @@ func _ready() -> void:
 	coin.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	price_row.add_child(coin)
 	_offer_icons.append(coin)
-	ink_icon(coin, cost_accent(cost))
+	ink_icon(coin, cost_accent(tier))
 	_price = _label(price_row, "", 17, PAPER)
 	snow_ink(_price, PAPER)
 	_price.add_theme_font_override("font", preload("res://fonts/LiberationSans-Bold.ttf"))
@@ -108,10 +113,16 @@ func _ready() -> void:
 	_traits.alignment = BoxContainer.ALIGNMENT_CENTER
 	_traits.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	metadata.add_child(_traits)
+	_ownership = _label(box, "", 12, PAPER)
+	_ownership.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_upgrade_marker = _label(self, "⇧", 23, Color("9bfff0"))
+	_upgrade_marker.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	_upgrade_marker.offset_left = -30; _upgrade_marker.offset_right = -5
+	_upgrade_marker.offset_top = 48; _upgrade_marker.offset_bottom = 75
 	var title := _label(self, heading if not heading.is_empty() else ArenaRules.title(prototype), 14, PAPER)
 	_title = title
 	title.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	title.offset_top = 4; title.offset_bottom = 42
+	title.offset_top = 4; title.offset_bottom = HOVER_TITLE_HEIGHT
 	title.offset_left = -14; title.offset_right = 14
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -138,10 +149,10 @@ func _process(_delta: float) -> void:
 		if not ArenaAnimationWarmup.ready_for(prototype): return
 		if not ArenaAnimationWarmup.claim_model_frame(): return
 		_shown_prototype = prototype
-		preview.show_model({"kind": "creature", "value": prototype}, true)
+		preview.show_model(ArenaAppearance.preview(prototype), true)
 		preview.turn_by(-0.4)
 		for child: Control in preview.find_children("*", "Control", true, false): child.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		if is_instance_valid(preview.creature): preview.creature.material = _glow if upgrade_ready or cost >= 4 else null
+		if is_instance_valid(preview.creature): preview.creature.material = _glow if upgrade_ready or tier >= 4 else null
 	if is_instance_valid(preview.creature) and (preview.creature._framed < 3 or is_instance_valid(preview.creature._old_pivot)): return
 	_preview_pending = false
 	preview.modulate.a = 0.65 if disabled else 1.0
@@ -171,10 +182,11 @@ func update_offer() -> void:
 		set_process(true)
 	_stars.count = clampi(quality + 1, 1, 3)
 	_stars.custom_minimum_size = Vector2(_stars.count * 14 - 2, 12)
+	_stars.color = ArenaStars.for_family(family)
 	_stars.queue_redraw()
 	_price.text = str(cost)
 	_price.add_theme_color_override("font_color", MUTED if disabled else PAPER)
-	var accent := cost_accent(cost)
+	var accent := cost_accent(tier)
 	_info.accent = accent.lerp(MUTED, 0.55) if disabled else accent
 	_info.highlighted = not disabled and (is_hovered() or has_focus())
 	for icon in _offer_icons:
@@ -183,20 +195,29 @@ func update_offer() -> void:
 			tribe_icon(icon, key, int(represented_traits.get(key, 0)) > 0)
 		else:
 			(icon.material as ShaderMaterial).set_shader_parameter("ink", _info.accent)
-	_copies.visible = copies > 0 and copies_needed > 0
+	_copies.visible = (copies > 0 or upgrade_ready) and copies_needed > 0
 	_copies.text = "%d/%d" % [mini(copies, copies_needed), copies_needed]
 	_copies.tooltip_text = RemakeText.t("Copies: %d/%d") % [copies, copies_needed]
 	preview.modulate.a = 0.0 if _preview_pending else 0.65 if disabled else 1.0
-	upgrade_ready = copies_needed > 0 and copies + 1 >= copies_needed
-	if (upgrade_ready or cost >= 4) and _glow == null:
+	var ranks := [0, 0, 0]
+	for entry: Dictionary in owned_army:
+		if int(entry.get("family", -1)) == family: ranks[clampi(int(entry.rank), 0, 2)] += 1
+	var owned: Array[String] = []
+	for rank in 3:
+		if ranks[rank] > 0: owned.append("%s ×%d" % ["★".repeat(rank + 1), ranks[rank]])
+	_ownership.text = "  ".join(owned)
+	_ownership.tooltip_text = RemakeText.t("Owned units by star rank.")
+	_ownership.visible = not owned.is_empty()
+	_upgrade_marker.visible = upgrade_ready
+	if (upgrade_ready or tier >= 4) and _glow == null:
 		_glow = ShaderMaterial.new()
 		_glow.shader = preload("res://src/ui/arena_upgrade_glow.gdshader")
 	if _glow:
-		_glow.set_shader_parameter("glow_color",GOLD if upgrade_ready else cost_accent(cost))
-		_glow.set_shader_parameter("glow_strength",0.65 if upgrade_ready else 0.4)
-	if is_instance_valid(preview.creature): preview.creature.material = _glow if upgrade_ready or cost >= 4 else null
-	_copies.text += " ↑" if upgrade_ready else ""
-	_copies.add_theme_color_override("font_color", SNOW_ACCENT if upgrade_ready else PAPER)
+		_glow.set_shader_parameter("glow_color",Color("9bfff0") if upgrade_ready else cost_accent(tier))
+		_glow.set_shader_parameter("upgrade_pulse",upgrade_ready)
+		_glow.set_shader_parameter("glow_strength",0.95 if upgrade_ready else 0.18)
+	if is_instance_valid(preview.creature): preview.creature.material = _glow if upgrade_ready or tier >= 4 else null
+	_copies.add_theme_color_override("font_color", Color("9bfff0") if upgrade_ready else PAPER)
 
 
 static func cost_accent(price: int) -> Color:
