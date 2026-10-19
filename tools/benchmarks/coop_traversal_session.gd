@@ -225,6 +225,11 @@ func sample(t:float)->void:
 	row.gpu_ms=render_gpu.reduce(func(a,b):return a+b,0.0)/maxi(1,render_gpu.size())
 	row.input={"serial":s._input_out.serial,"pending":s._input_out.pending.size(),"epoch":s._pool_epoch,"blocked":h.blocked if h else false,"loading":s.loading_game,"movie":s.movie_active()}
 	row.render_cpu_ms=render_cpu.reduce(func(a,b):return a+b,0.0)/maxi(1,render_cpu.size())
+	row.delayed_effects=fx._delayed.size()
+	row.magic_endings=fx._magic_ends.size()
+	row.spell_lights=s.world.get_children().filter(func(node):return node is SpellFx).size()
+	row.resources=Performance.get_monitor(Performance.OBJECT_RESOURCE_COUNT)
+	row.static_memory=Performance.get_monitor(Performance.MEMORY_STATIC)
 	row.particles=0
 	for effect:ParticleFx.Effect in fx.effects:row.particles+=effect.e.parts.size()
 	row.npc_actions={}

@@ -87,6 +87,7 @@ var bolts: Array = []        # FxLightning
 var _pending_bolts: Array[Dictionary] = []   # native invoke's second flash, by simulation tick
 var _pending_fireballs: Array[Dictionary] = []
 var _delayed: Array[Timer] = []  # ending bursts belong to this world, not the SceneTree
+var _magic_ends := {}       # carrier instance + code -> one refreshable ending
 var lights: Array = []       # {light: OmniLight3D, until, id, step, ticks, pos}
 var missiles: Array = []     # CEffectArrow
 var script_fx := {}          # script id -> Effect
@@ -786,6 +787,7 @@ const PAR_MAX_TASKS := 4     # leave workers available for streaming and renderi
 
 func _tick(last := true) -> void:
 	_sync_creature_fx()
+	_prune_magic_ends()
 	tick += 1
 	var existing_lights := lights.duplicate()
 	for pending: Dictionary in _pending_bolts.duplicate():
@@ -1633,30 +1635,57 @@ func magic_fx(ev: Dictionary) -> void:
 			# whichever meshes happened to exist when this event arrived.
 			pass
 		"lichdom":
-			if not replay:
-				spawn(0x2018, Vector3.ZERO, k, u)
-			var ur: WeakRef = weakref(u)
-			_later(secs, func(): _spawn_on(ur, 0x2018, -k))
+			_magic_burst(u, code, 0x2018, k, secs, replay)
 		"strength", "weak":
 			var sg := 1.0 if code == "strength" else -1.0
-			if not replay:
-				spawn(0x201b, Vector3.ZERO, k * sg, u)
-			var ur: WeakRef = weakref(u)
-			_later(secs, func(): _spawn_on(ur, 0x201b, -k * sg))
+			_magic_burst(u, code, 0x201b, k * sg, secs, replay)
 		_:
 			if MAGIC_TYPES.has(code):
 				old[code] = spawn(MAGIC_TYPES[code], Vector3.ZERO, k, u, {"secs": secs, "prewarm": 30 if replay else 0})
 				u.set_meta("fx_magic", old)
 
 
+func _magic_burst(u: GameUnit, code: String, type: int, k: float, secs: float, replay: bool) -> void:
+	# Native510b80 matches the active type/power before creating a start burst.
+	# A recast refreshes that entry; it does not accumulate old ending timers.
+	var key := "%d:%s" % [u.get_instance_id(), code]
+	var old: Dictionary = _magic_ends.get(key, {})
+	if not replay and (old.is_empty() or float(old.k) != k):
+		spawn(type, Vector3.ZERO, k, u)
+		if not old.is_empty():
+			_spawn_on(old.unit, type, -float(old.k))
+	if not old.is_empty():
+		old.k = k
+		(old.timer as Timer).start(maxf(secs, 0.000001))
+		return
+	var ending := {"unit": weakref(u), "k": k}
+	ending.timer = _later(secs, func():
+		_magic_ends.erase(key)
+		_spawn_on(ending.unit, type, -float(ending.k)))
+	_magic_ends[key] = ending
+
+
+func _prune_magic_ends() -> void:
+	for key: String in _magic_ends.keys():
+		var ending: Dictionary = _magic_ends[key]
+		var u = ending.unit.get_ref()
+		if u and u.is_inside_tree() and u.world == world and not u.dead:
+			continue
+		var timer: Timer = ending.timer
+		timer.stop()
+		timer.queue_free()
+		_delayed.erase(timer)
+		_magic_ends.erase(key)
+
+
 ## A unit's effect end (held weakly: the unit may leave the world first).
 func _spawn_on(ur: WeakRef, type: int, k: float) -> void:
 	var u = ur.get_ref()
-	if u and u.is_inside_tree():
+	if u and u.is_inside_tree() and u.world == world and not u.dead:
 		spawn(type, Vector3.ZERO, k, u)
 
 
-func _later(secs: float, f: Callable) -> void:
+func _later(secs: float, f: Callable) -> Timer:
 	# SceneTree timers survive scene removal until their full duration elapses.
 	# A child timer leaves with its world and follows its pause/speed state.
 	var timer := Timer.new()
@@ -1668,6 +1697,7 @@ func _later(secs: float, f: Callable) -> void:
 		timer.queue_free()
 		f.call(), CONNECT_ONE_SHOT)
 	timer.start(maxf(secs, 0.000001))
+	return timer
 
 
 func _cancel_delayed() -> void:
@@ -1675,6 +1705,7 @@ func _cancel_delayed() -> void:
 		timer.stop()
 		timer.queue_free()
 	_delayed.clear()
+	_magic_ends.clear()
 
 
 ## Body-part hit, event "blood": uid, part, frac.

@@ -1,0 +1,193 @@
+{
+  "base_commit": "17f38a25",
+  "native_evidence": "ev_258571c877109a8f3973520892fbc18e9770823ef269352eec213c660b76a064",
+  "lifecycle": {
+    "before": {
+      "checks": 46,
+      "failures": [
+        "weak refreshes retain one timer regardless of cast count",
+        "weak same-power refresh does not restart its burst",
+        "strength refreshes retain one timer regardless of cast count",
+        "strength same-power refresh does not restart its burst",
+        "lichdom refreshes retain one timer regardless of cast count",
+        "lichdom same-power refresh does not restart its burst",
+        "refresh cancels the old ending deadline",
+        "refreshed weakness ends once at its new deadline",
+        "death releases long-lived effect timers on the next visual tick",
+        "timer expiry cannot create an ending burst on a corpse"
+      ],
+      "refresh_timers": [
+        256,
+        256,
+        256
+      ],
+      "retained_objects": [
+        2.0,
+        2.0,
+        2.0
+      ]
+    },
+    "after_initial": {
+      "checks": 46,
+      "failures": [],
+      "refresh_timers": [
+        1,
+        1,
+        1
+      ],
+      "retained_objects": [
+        2.0,
+        2.0,
+        2.0
+      ]
+    },
+    "after_extended": {
+      "checks": 57,
+      "failures": [],
+      "refresh_timers": [
+        1,
+        1,
+        1
+      ],
+      "retained_objects": [
+        2.0,
+        2.0,
+        2.0
+      ]
+    },
+    "exported_runtime": {
+      "checks": 57,
+      "failures": [],
+      "refresh_timers": [
+        1,
+        1,
+        1
+      ],
+      "retained_objects": [
+        2.0,
+        2.0,
+        2.0
+      ]
+    }
+  },
+  "traversal": {
+    "owner": {
+      "seconds": 420.003,
+      "world_seconds": 839.959999999737,
+      "travelled": 427.085514016449,
+      "depth": 247.609344482422,
+      "deaths": 28,
+      "real_casts": 45,
+      "hp": 744.998277559292,
+      "position": [
+        258.8125,
+        286.421875
+      ],
+      "attempts": {
+        "acid_fog": 16,
+        "attack": 55,
+        "heal": 0,
+        "lightning": 16,
+        "move": 18,
+        "weak": 16
+      },
+      "peak_depth": 247.609344482422,
+      "fps_range_2x_full_intervals": [
+        71.5787553155124,
+        114.716886755669
+      ],
+      "fps_intervals_used": [
+        30.007,
+        60.013,
+        90.024,
+        120.729,
+        150.73,
+        180.75,
+        210.755,
+        240.801,
+        270.801,
+        300.802,
+        330.802,
+        360.884,
+        390.888,
+        420.003
+      ],
+      "magic_endings_range": [
+        0,
+        1
+      ],
+      "resource_monitor_range": [
+        492.0,
+        492.0
+      ],
+      "end_clock": 1,
+      "end_time_scale": 2.0
+    },
+    "guest": {
+      "seconds": 420.012,
+      "world_seconds": 839.354999999737,
+      "travelled": 442.351181834936,
+      "depth": 247.579086303711,
+      "deaths": 28,
+      "real_casts": 44,
+      "hp": 762.0625,
+      "position": [
+        257.609375,
+        284.9375
+      ],
+      "attempts": {
+        "acid_fog": 15,
+        "attack": 54,
+        "heal": 0,
+        "lightning": 16,
+        "move": 19,
+        "weak": 15
+      },
+      "peak_depth": 247.579086303711,
+      "fps_range_2x_full_intervals": [
+        76.0849651151932,
+        115.072559030423
+      ],
+      "fps_intervals_used": [
+        30.01,
+        60.715,
+        90.72,
+        120.721,
+        150.724,
+        180.74,
+        210.745,
+        240.803,
+        270.815,
+        300.818,
+        330.822,
+        360.86,
+        390.862
+      ],
+      "magic_endings_range": [
+        0,
+        1
+      ],
+      "resource_monitor_range": [
+        492.0,
+        492.0
+      ],
+      "end_clock": 0,
+      "end_time_scale": 1.0
+    }
+  },
+  "hashes": {
+    "repo/game/src/game/fx/particle_system.gd": "65190890227bd234c6cbfcb41ac9493e21ef9e7714cab1298e681069e03c793b",
+    "repo/tools/tests/particle_delay_lifetime.gd": "57fee32ffa2cb076a10e35404e0acc332d06484eda0bcb1be3d73461b8f4aeb0",
+    "repo/tools/benchmarks/coop_traversal_session.gd": "07d14860a1df9af213ce4c0d5af272f3cf5998a4ba7441545f5fa5d76ab63bd6",
+    "checks/magic-fixed.pck": "7b4186f97d5c457090bc147b9bccc17b1a5c7b0ea7755031008d2e03075d293c",
+    "checks/magic-fixed.x86_64": "addf81f6e6f4202d9c92a54ea799041fd3d39976bda01c02a46cac0a83a28382"
+  },
+  "limits": [
+    "Both clients shared one Linux RTX3090; not two separate PCs.",
+    "Movement changes the rendered scene; interval FPS is not a matched before/after comparison.",
+    "The final guest sample was collected as owner teardown reset the speed to 1x; it is excluded from the 2x FPS interval range.",
+    "MEMORY_STATIC returns zero in this release runtime; static_memory=0 is unavailable accounting, not zero allocation.",
+    "The 90-to-30 FPS decline remains unreproduced."
+  ],
+  "warnings_or_errors": []
+}

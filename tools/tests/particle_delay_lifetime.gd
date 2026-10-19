@@ -115,6 +115,71 @@ func _ready() -> void:
 		check(recorder.bursts.is_empty(), code + " replay skips the starting burst")
 		await wall(0.12)
 		check(recorder.bursts == [[type, Vector3.ZERO, -amount, unit]], code + " replay retains the remaining ending")
+	# Recasting refreshes one active gameplay effect. Its visual ending must
+	# not retain one long-lived timer per cast or fire at the old deadline.
+	var refresh_counts := []
+	for code: String in ["weak", "strength", "lichdom"]:
+		recorder.bursts.clear()
+		for i in 256:
+			recorder.magic_fx({"uid":17, "code":code, "secs":3600.0, "s":2.0})
+		await frames(2)
+		refresh_counts.append(recorder._delayed.size())
+		check(recorder._delayed.size() == 1 and recorder.get_child_count() == 1,
+			code + " refreshes retain one timer regardless of cast count")
+		check(recorder.bursts.size() == 1, code + " same-power refresh does not restart its burst")
+		recorder.finish_emitters()
+		await frames(2)
+	recorder.bursts.clear()
+	recorder.magic_fx({"uid":17, "code":"weak", "secs":0.1, "s":2.0})
+	await wall(0.05)
+	recorder.magic_fx({"uid":17, "code":"weak", "secs":0.25, "s":2.0})
+	await wall(0.12)
+	check(recorder.bursts == [[0x201b, Vector3.ZERO, -2.0, unit]], "refresh cancels the old ending deadline")
+	await wall(0.2)
+	check(recorder.bursts == [[0x201b, Vector3.ZERO, -2.0, unit], [0x201b, Vector3.ZERO, 2.0, unit]],
+		"refreshed weakness ends once at its new deadline")
+	recorder.bursts.clear()
+	recorder.magic_fx({"uid":17, "code":"weak", "secs":3600.0, "s":2.0})
+	recorder.magic_fx({"uid":17, "code":"weak", "secs":0.05, "s":3.0})
+	check(recorder.bursts == [[0x201b, Vector3.ZERO, -2.0, unit], [0x201b, Vector3.ZERO, -3.0, unit],
+		[0x201b, Vector3.ZERO, 2.0, unit]], "power change replaces the old burst as in the native effect list")
+	check(recorder._delayed.size() == 1, "power change reuses the same ending timer")
+	await wall(0.12)
+	check(recorder.bursts[-1] == [0x201b, Vector3.ZERO, 3.0, unit] and recorder.bursts.size() == 4,
+		"power change ends with the latest strength")
+	recorder.bursts.clear()
+	recorder.magic_fx({"uid":17, "code":"weak", "secs":3600.0, "s":2.0})
+	recorder.magic_fx({"uid":17, "code":"strength", "secs":3600.0, "s":2.0})
+	recorder.magic_fx({"uid":17, "code":"lichdom", "secs":3600.0, "s":2.0})
+	check(recorder._delayed.size() == 3, "different effects retain independent endings")
+	unit.dead = true
+	recorder._tick()
+	await frames(2)
+	check(recorder._delayed.is_empty() and recorder.get_child_count() == 0,
+		"death releases long-lived effect timers on the next visual tick")
+	check(recorder.bursts.size() == 3, "death does not create ending bursts on a corpse")
+	recorder.finish_emitters()
+	unit.dead = false
+	var other := GameUnit.new()
+	other.world = world
+	world.add_child(other)
+	world.set_unit(18, other)
+	recorder.magic_fx({"uid":17, "code":"weak", "secs":3600.0, "s":2.0, "replay":true})
+	recorder.magic_fx({"uid":18, "code":"weak", "secs":3600.0, "s":2.0, "replay":true})
+	check(recorder._delayed.size() == 2, "different units keep independent same-type effects")
+	world.erase_unit(18)
+	world.remove_child(other)
+	recorder._tick()
+	await frames(2)
+	check(recorder._delayed.size() == 1, "detaching a carrier promptly releases its timer")
+	other.free()
+	recorder.finish_emitters()
+	recorder.bursts.clear()
+	recorder.magic_fx({"uid":17, "code":"weak", "secs":0.05, "s":2.0, "replay":true})
+	unit.dead = true
+	await wall(0.12)
+	check(recorder.bursts.is_empty(), "timer expiry cannot create an ending burst on a corpse")
+	unit.dead = false
 	recorder.bursts.clear()
 	recorder.magic_fx({"uid":17, "code":"weak", "secs":0.05, "s":2.0, "replay":true})
 	world.erase_unit(17)
@@ -126,5 +191,27 @@ func _ready() -> void:
 	await wall(0.2)
 	check(recorder.bursts.size() == 2 and recorder.bursts[0][1] == recorder.bursts[1][1] and recorder.bursts[0][2] == -recorder.bursts[1][2], "clairvoyance ends at the original point with reversed size")
 	world.free()
-	print("PARTICLE_DELAY_LIFETIME ", JSON.stringify({"checks":checks,"failures":failures,"retained_objects":retained}))
+	await frames(2)
+	var before_magic_worlds := Performance.get_monitor(Performance.OBJECT_COUNT)
+	for cycle in 3:
+		var w := GameWorld.new()
+		w.process_mode = Node.PROCESS_MODE_DISABLED
+		add_child(w)
+		var u := GameUnit.new()
+		u.world = w
+		w.add_child(u)
+		w.set_unit(17, u)
+		var owned := RecordingFx.new()
+		owned.world = w
+		w.add_child(owned)
+		for code: String in ["weak", "strength", "lichdom"]:
+			owned.magic_fx({"uid":17, "code":code, "secs":3600.0, "replay":true})
+		var wr: WeakRef = weakref(w)
+		var fr: WeakRef = weakref(owned)
+		w.free()
+		await frames(3)
+		check(wr.get_ref() == null and fr.get_ref() == null, "active magic endings release with their world %d" % cycle)
+		check(Performance.get_monitor(Performance.OBJECT_COUNT) - before_magic_worlds < 20,
+			"active magic endings leave no retained callbacks %d" % cycle)
+	print("PARTICLE_DELAY_LIFETIME ", JSON.stringify({"checks":checks,"failures":failures,"retained_objects":retained,"refresh_timers":refresh_counts}))
 	get_tree().quit(0 if failures.is_empty() else 1)

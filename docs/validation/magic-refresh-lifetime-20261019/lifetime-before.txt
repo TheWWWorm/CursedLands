@@ -1,0 +1,65 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 05:30:56 +4544ms] session c577cd5d566f: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ERROR: weak refreshes retain one timer regardless of cast count
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:18)
+       [1] _ready (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:127)
+       [2] frames (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:21)
+ERROR: weak same-power refresh does not restart its burst
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:18)
+       [1] _ready (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:129)
+       [2] frames (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:21)
+ERROR: strength refreshes retain one timer regardless of cast count
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:18)
+       [1] _ready (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:127)
+       [2] frames (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:21)
+ERROR: strength same-power refresh does not restart its burst
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:18)
+       [1] _ready (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:129)
+       [2] frames (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:21)
+ERROR: lichdom refreshes retain one timer regardless of cast count
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:18)
+       [1] _ready (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:127)
+       [2] frames (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:21)
+ERROR: lichdom same-power refresh does not restart its burst
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:18)
+       [1] _ready (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:129)
+       [2] frames (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:21)
+ERROR: refresh cancels the old ending deadline
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:18)
+       [1] _ready (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:137)
+       [2] wall (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:24)
+ERROR: refreshed weakness ends once at its new deadline
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:18)
+       [1] _ready (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:139)
+       [2] wall (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:24)
+ERROR: death releases long-lived effect timers on the next visual tick
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:18)
+       [1] _ready (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:149)
+       [2] frames (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:21)
+ERROR: timer expiry cannot create an ending burst on a corpse
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:18)
+       [1] _ready (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:158)
+       [2] wall (/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/tests/particle_delay_lifetime.gd:24)
+PARTICLE_DELAY_LIFETIME {"checks":46,"failures":["weak refreshes retain one timer regardless of cast count","weak same-power refresh does not restart its burst","strength refreshes retain one timer regardless of cast count","strength same-power refresh does not restart its burst","lichdom refreshes retain one timer regardless of cast count","lichdom same-power refresh does not restart its burst","refresh cancels the old ending deadline","refreshed weakness ends once at its new deadline","death releases long-lived effect timers on the next visual tick","timer expiry cannot create an ending burst on a corpse"],"refresh_timers":[256,256,256],"retained_objects":[2.0,2.0,2.0]}
+[trace 05:31:00 +8547ms] clean exit

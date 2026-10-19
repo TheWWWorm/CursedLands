@@ -1,0 +1,1038 @@
+{
+  "evidence_id": "ev_258571c877109a8f3973520892fbc18e9770823ef269352eec213c660b76a064",
+  "subject": {
+    "name": "game.exe",
+    "digest": {
+      "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+    },
+    "format": "pe",
+    "architecture": "x86",
+    "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "parameters": {
+      "target_kind": "executable",
+      "target_format": "pe",
+      "executable_role": "application",
+      "managed": false,
+      "native_aot_metadata": {
+        "contract_revision": "rtr-9.1-x64-pe-read-only-v3",
+        "source_bytes": 134217728,
+        "work_units": 67108864,
+        "working_memory_bytes": 67108864,
+        "report_bytes": 4194304
+      },
+      "architecture": "x86",
+      "available_architectures": [
+        "x86"
+      ],
+      "import_mode": "ephemeral-source-immutable",
+      "annotation_policy": "atomic-function-entry-metadata-v1",
+      "load_image_observations": "source-mappings-entry-context-v2",
+      "function_body_evidence": "complete-inclusive-ranges-v1",
+      "function_references": "complete-body-and-entry-reference-manager-v2",
+      "string_inventory_evidence": "defined-data-coverage-v1",
+      "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+      "instruction_flow_evidence": "decoded-return-pcode-v1",
+      "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+      "no_return_repair": "returning-imports-decoded-return-v2",
+      "process_launch": "inspected-jvm-launch-support-v1",
+      "jump_table_evidence": "typed-case-default-blocks-v1",
+      "decompiler_jump_loads": true,
+      "loader": "auto-from-header",
+      "language_id": "auto-from-header",
+      "compiler_spec_id": "auto-default",
+      "analyzer_preset": "ghidra-default"
+    },
+    "digest": "4f6212bfe31448a7b96743a449e91c35890105cedd34e1d9951e9467d284e0a5"
+  },
+  "authority": "shipped-artifact",
+  "confidence": "observed",
+  "limitations": [
+    "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+    "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+    "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+    "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+    "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels."
+  ],
+  "procedure": {
+    "address": "0x510b80",
+    "name": "FUN_00510b80",
+    "classification": {
+      "external": false,
+      "thunk": false,
+      "thunk_target": null,
+      "provenance": "ghidra-function-manager"
+    },
+    "body": {
+      "available": true,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "start": "0x510b80",
+          "end": "0x5111c4"
+        }
+      ],
+      "total_bytes": 1605,
+      "span_bytes": 1605,
+      "non_contiguous": false,
+      "contains_entry": true
+    },
+    "signature": "undefined FUN_00510b80()",
+    "locals": [
+      {
+        "description": "undefined4 local_10 @ Stack[-0x10]:4",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined4 local_14 @ Stack[-0x14]:4",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined4 local_18 @ Stack[-0x18]:4",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined4 local_1c @ Stack[-0x1c]:4",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined4 local_20 @ Stack[-0x20]:4",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined1 local_24 @ Stack[-0x24]:1",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined4 local_28 @ Stack[-0x28]:4",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined4 local_2c @ Stack[-0x2c]:4",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined4 local_30 @ Stack[-0x30]:4",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined4 local_34 @ Stack[-0x34]:4",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined4 local_38 @ Stack[-0x38]:4",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined4 local_3c @ Stack[-0x3c]:4",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined4 local_4 @ Stack[-0x4]:4",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined4 local_40 @ Stack[-0x40]:4",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined4 local_54 @ Stack[-0x54]:4",
+        "provenance": "ghidra-function-database"
+      }
+    ]
+  },
+  "pseudocode": "\nvoid FUN_00510b80(char param_1)\n\n{\n  byte *pbVar1;\n  byte bVar2;\n  char cVar3;\n  byte bVar4;\n  char *pcVar5;\n  int iVar6;\n  uint *puVar7;\n  undefined4 uVar8;\n  int *piVar9;\n  int in_ECX;\n  int iVar10;\n  int iVar11;\n  char *pcVar12;\n  int *piVar13;\n  int iVar14;\n  bool bVar15;\n  int local_3c;\n  float local_38;\n  float local_34;\n  uint local_30;\n  uint local_2c;\n  int *local_28;\n  undefined1 local_24;\n  undefined **local_20;\n  char *local_1c;\n  int local_18;\n  undefined4 local_14;\n  undefined4 local_10;\n  void *pvStack_c;\n  undefined1 *puStack_8;\n  int local_4;\n  \n  puStack_8 = &LAB_0071d070;\n  pvStack_c = ExceptionList;\n  local_20 = &PTR_LAB_0073dba0;\n  local_1c = (char *)0x0;\n  local_10 = 0;\n  local_14 = 0;\n  local_18 = 0;\n  iVar6 = *(int *)(in_ECX + 0x1c);\n  local_4 = 0;\n  local_3c = 0;\n  ExceptionList = &pvStack_c;\n  if (0 < *(int *)(iVar6 + 0x19c)) {\n    iVar11 = 0;\n    ExceptionList = &pvStack_c;\n    do {\n      pcVar5 = (char *)(*(int *)(iVar6 + 0x198) + iVar11);\n      switch(*pcVar5) {\n      case '\\t':\n      case '\\n':\n      case '\\v':\n      case '\\f':\n      case '\\r':\n      case '\\x0e':\n      case '\\x10':\n      case '\\x13':\n      case '\\x19':\n      case '\\x1a':\n      case '\\x1d':\n      case '\\x1e':\n      case '\\x1f':\n      case ' ':\n      case '!':\n      case '\\\"':\n        iVar6 = 0;\n        pcVar12 = local_1c;\n        if (0 < local_18) {\n          do {\n            if (*pcVar12 == *pcVar5) {\n              bVar2 = local_1c[iVar6 * 0x14 + 1];\n              bVar4 = pcVar5[1];\n              if ((byte)pcVar5[1] < bVar2) {\n                bVar4 = bVar2;\n              }\n              local_1c[iVar6 * 0x14 + 1] = bVar4;\n              goto LAB_00510c21;\n            }\n            iVar6 = iVar6 + 1;\n            pcVar12 = pcVar12 + 0x14;\n          } while (iVar6 < local_18);\n        }\n      }\n      FUN_00512060(local_18,pcVar5);\nLAB_00510c21:\n      local_3c = local_3c + 1;\n      iVar6 = *(int *)(in_ECX + 0x1c);\n      iVar11 = iVar11 + 0x14;\n    } while (local_3c < *(int *)(iVar6 + 0x19c));\n  }\n  iVar6 = 0;\n  if (0 < *(int *)(in_ECX + 0x30)) {\n    iVar11 = 0;\n    do {\n      iVar6 = iVar6 + 1;\n      *(undefined1 *)(*(int *)(in_ECX + 0x2c) + 0xc + iVar11) = 0;\n      iVar11 = iVar11 + 0x10;\n    } while (iVar6 < *(int *)(in_ECX + 0x30));\n  }\n  local_3c = 0;\n  if (0 < local_18) {\n    iVar6 = 0;\n    do {\n      iVar11 = *(int *)(in_ECX + 0x30);\n      iVar10 = 0;\n      if (0 < iVar11) {\n        puVar7 = *(uint **)(in_ECX + 0x2c);\n        do {\n          if ((((char)puVar7[3] == '\\0') && (*puVar7 == (uint)(byte)local_1c[iVar6])) &&\n             (puVar7[1] == (uint)(byte)local_1c[iVar6 + 1])) {\n            *(undefined1 *)(iVar10 * 0x10 + 0xc + *(int *)(in_ECX + 0x2c)) = 1;\n            goto LAB_00510f89;\n          }\n          iVar10 = iVar10 + 1;\n          puVar7 = puVar7 + 4;\n        } while (iVar10 < iVar11);\n      }\n      iVar10 = 0;\n      if (0 < iVar11) {\n        puVar7 = *(uint **)(in_ECX + 0x2c);\n        do {\n          if ((((char)puVar7[3] == '\\0') && (*puVar7 == (uint)(byte)local_1c[iVar6])) &&\n             (puVar7[2] != 0)) {\n            (*(uint **)(in_ECX + 0x2c))[iVar10 * 4 + 1] = (uint)(byte)local_1c[iVar6 + 1];\n            FUN_00485480(((float)(byte)local_1c[iVar6 + 1] * 0.0625) /\n                         *(float *)(*(int *)(*(int *)(in_ECX + 0x2c) + 8 + iVar10 * 0x10) + 0x128));\n            *(undefined1 *)(*(int *)(in_ECX + 0x2c) + 0xc + iVar10 * 0x10) = 1;\n            goto LAB_00510f89;\n          }\n          iVar10 = iVar10 + 1;\n          puVar7 = puVar7 + 4;\n        } while (iVar10 < iVar11);\n      }\n      local_28 = (int *)0x0;\n      local_24 = 1;\n      local_2c = (uint)(byte)local_1c[iVar6 + 1];\n      pbVar1 = (byte *)(local_1c + iVar6 + 1);\n      local_30 = (uint)(byte)local_1c[iVar6];\n      cVar3 = local_1c[iVar6];\n      local_4._0_1_ = 1;\n      switch(cVar3) {\n      case '\\x0f':\n        puVar7 = (uint *)(*(int *)(in_ECX + 0x1c) + 8);\n        *puVar7 = *puVar7 | 0x10000;\n        break;\n      default:\n        switch(cVar3) {\n        case '\\t':\n          uVar8 = 0x2017;\n          break;\n        case '\\n':\n          uVar8 = 0x2016;\n          break;\n        case '\\v':\n          uVar8 = 0x2015;\n          break;\n        case '\\f':\n          uVar8 = 0x2044;\n          break;\n        case '\\r':\n          uVar8 = 0x2045;\n          break;\n        case '\\x0e':\n          uVar8 = 0x2046;\n          break;\n        default:\n          FUN_0044c470(s_ERROR__Spell_effect_on_map_objec_0078efdc);\n        case '\\x13':\n          uVar8 = 0x2013;\n          break;\n        case '\\x10':\n          uVar8 = 0x204c;\n          break;\n        case '\\x1a':\n          uVar8 = 0x201a;\n          break;\n        case '\\x1f':\n          uVar8 = 0x2048;\n          break;\n        case ' ':\n          uVar8 = 0x2049;\n          break;\n        case '!':\n          uVar8 = 0x204b;\n          break;\n        case '\\\"':\n          uVar8 = 0x204a;\n        }\n        piVar9 = (int *)FUN_00498400(uVar8);\n        if (piVar9 != (int *)0x0) {\n          piVar9[1] = piVar9[1] + 1;\n        }\n        if (local_28 != (int *)0x0) {\n          iVar11 = *local_28;\n          local_28 = piVar9;\n          (**(code **)(iVar11 + 0x10))();\n          piVar9 = local_28;\n        }\n        local_28 = piVar9;\n        FUN_004849f0(*(undefined4 *)(in_ECX + 0x1c));\n        FUN_00485480(((float)*pbVar1 * 0.0625) / (float)local_28[0x4a]);\n        if (param_1 != '\\0') {\n          iVar11 = 0x1e;\n          do {\n            (**(code **)(*local_28 + 0x18))();\n            iVar11 = iVar11 + -1;\n          } while (iVar11 != 0);\n        }\n        break;\n      case '\\x11':\n      case '\\x1d':\n      case '\\x1e':\n        if (param_1 == '\\0') {\n          local_38 = (float)*pbVar1 * 0.0625;\n          if (cVar3 == '\\x1e') {\n            local_38 = -local_38;\n          }\n          if ((cVar3 == '\\x1d') || (uVar8 = 0x2018, cVar3 == '\\x1e')) {\n            uVar8 = 0x201b;\n          }\n          iVar11 = FUN_00498400(uVar8);\n          FUN_004849f0(*(undefined4 *)(in_ECX + 0x1c));\n          FUN_00485480(local_38 / *(float *)(iVar11 + 0x128));\n        }\n        break;\n      case '\\x19':\n        puVar7 = (uint *)(*(int *)(in_ECX + 0x1c) + 8);\n        *puVar7 = *puVar7 | 0x40000;\n        break;\n      case '\\x1c':\n      case '%':\n      case '&':\n        break;\n      }\n      FUN_005121b0(*(int *)(in_ECX + 0x30) + 1,0xffffffff);\n      FUN_00512490(&local_30);\n      local_4 = (uint)local_4._1_3_ << 8;\n      if (local_28 != (int *)0x0) {\n        (**(code **)(*local_28 + 0x10))();\n      }\nLAB_00510f89:\n      local_3c = local_3c + 1;\n      iVar6 = iVar6 + 0x14;\n    } while (local_3c < local_18);\n  }\n  local_3c = 0;\n  iVar6 = *(int *)(in_ECX + 0x30);\n  if (0 < iVar6) {\n    _param_1 = 0;\n    do {\n      piVar9 = *(int **)(in_ECX + 0x2c);\n      iVar11 = _param_1;\n      iVar10 = local_3c;\n      if (*(char *)((int)piVar9 + _param_1 + 0xc) == '\\0') {\n        switch(*(undefined4 *)((int)piVar9 + _param_1)) {\n        case 0xf:\n          iVar11 = 0;\n          bVar15 = true;\n          piVar13 = piVar9;\n          if (0 < iVar6) {\n            do {\n              if ((iVar11 != local_3c) && (*piVar13 == 0xf)) {\n                bVar15 = false;\n              }\n              iVar11 = iVar11 + 1;\n              piVar13 = piVar13 + 4;\n            } while (iVar11 < iVar6);\n            if (!bVar15) break;\n          }\n          *(uint *)(*(int *)(in_ECX + 0x1c) + 8) =\n               *(uint *)(*(int *)(in_ECX + 0x1c) + 8) & 0xfffeffff;\n          FUN_0051cca0();\n          break;\n        case 0x11:\n        case 0x1d:\n        case 0x1e:\n          iVar6 = (**(code **)(**(int **)(in_ECX + 0x1c) + 0xdc))();\n          if (iVar6 == 0) {\n            iVar6 = *(int *)((int)piVar9 + _param_1);\n            local_34 = (float)*(int *)((int)piVar9 + _param_1 + 4) * 0.0625;\n            if (iVar6 == 0x1e) {\n              local_34 = -local_34;\n            }\n            if ((iVar6 == 0x1d) || (uVar8 = 0x2018, iVar6 == 0x1e)) {\n              uVar8 = 0x201b;\n            }\n            iVar6 = FUN_00498400(uVar8);\n            FUN_004849f0(*(undefined4 *)(in_ECX + 0x1c));\n            FUN_00485480(-(local_34 / *(float *)(iVar6 + 0x128)));\n          }\n          break;\n        case 0x19:\n          iVar11 = 0;\n          bVar15 = true;\n          piVar13 = piVar9;\n          if (0 < iVar6) {\n            do {\n              if ((iVar11 != local_3c) && (*piVar13 == 0x19)) {\n                bVar15 = false;\n              }\n              iVar11 = iVar11 + 1;\n              piVar13 = piVar13 + 4;\n            } while (iVar11 < iVar6);\n            if (!bVar15) break;\n          }\n          *(uint *)(*(int *)(in_ECX + 0x1c) + 8) =\n               *(uint *)(*(int *)(in_ECX + 0x1c) + 8) & 0xfffbffff;\n          FUN_0051cd60();\n        }\n        if (*(int *)((int)piVar9 + _param_1 + 8) != 0) {\n          FUN_00485360();\n        }\n        iVar10 = local_3c + -1;\n        iVar11 = _param_1 + -0x10;\n        iVar14 = (*(int *)(in_ECX + 0x30) - local_3c) + -1;\n        piVar9 = (int *)(*(int *)(in_ECX + 0x2c) + _param_1 + 8);\n        iVar6 = 0;\n        do {\n          if ((int *)*piVar9 != (int *)0x0) {\n            (**(code **)(*(int *)*piVar9 + 0x10))();\n          }\n          piVar9 = piVar9 + 4;\n          bVar15 = iVar6 != 0;\n          iVar6 = iVar6 + -1;\n        } while (bVar15);\n        if (iVar14 != 0) {\n          FUN_006e7960(*(int *)(in_ECX + 0x2c) + _param_1,*(int *)(in_ECX + 0x2c) + 0x10 + _param_1,\n                       iVar14 * 0x10);\n        }\n        *(int *)(in_ECX + 0x30) = *(int *)(in_ECX + 0x30) + -1;\n      }\n      iVar6 = *(int *)(in_ECX + 0x30);\n      local_3c = iVar10 + 1;\n      _param_1 = iVar11 + 0x10;\n    } while (local_3c < iVar6);\n  }\n  local_20 = &PTR_LAB_0073dba0;\n  if (local_1c != (char *)0x0) {\n    FUN_00700598(local_1c);\n  }\n  ExceptionList = pvStack_c;\n  return;\n}\n\n",
+  "assembly": [
+    "0x510b80: PUSH -0x1",
+    "0x510b82: PUSH 0x71d070",
+    "0x510b87: MOV EAX, FS:[0x0]",
+    "0x510b8d: PUSH EAX",
+    "0x510b8e: MOV dword ptr FS:[0x0], ESP",
+    "0x510b95: SUB ESP, 0x34",
+    "0x510b98: PUSH EBX",
+    "0x510b99: PUSH EBP",
+    "0x510b9a: PUSH ESI",
+    "0x510b9b: PUSH EDI",
+    "0x510b9c: XOR EDI, EDI",
+    "0x510b9e: MOV dword ptr [ESP + 0x10], ECX",
+    "0x510ba2: MOV dword ptr [ESP + 0x30], 0x73dba0",
+    "0x510baa: MOV dword ptr [ESP + 0x34], EDI",
+    "0x510bae: MOV dword ptr [ESP + 0x40], EDI",
+    "0x510bb2: MOV dword ptr [ESP + 0x3c], EDI",
+    "0x510bb6: MOV dword ptr [ESP + 0x38], EDI",
+    "0x510bba: MOV EAX, dword ptr [ECX + 0x1c]",
+    "0x510bbd: MOV dword ptr [ESP + 0x4c], EDI",
+    "0x510bc1: MOV dword ptr [ESP + 0x14], EDI",
+    "0x510bc5: MOV ECX, dword ptr [EAX + 0x19c]",
+    "0x510bcb: CMP ECX, EDI",
+    "0x510bcd: JLE 0x00510c40",
+    "0x510bcf: XOR EBP, EBP",
+    "0x510bd1: MOV EAX, dword ptr [EAX + 0x198]",
+    "0x510bd7: ADD EAX, EBP",
+    "0x510bd9: MOV BL, byte ptr [EAX]",
+    "0x510bdb: MOV ECX, EBX",
+    "0x510bdd: AND ECX, 0xff",
+    "0x510be3: ADD ECX, -0x9",
+    "0x510be6: CMP ECX, 0x19",
+    "0x510be9: JA 0x00510c16",
+    "0x510beb: XOR EDX, EDX",
+    "0x510bed: MOV DL, byte ptr [ECX + 0x5111d0]",
+    "0x510bf3: JMP dword ptr [EDX*0x4 + 0x5111c8]",
+    "0x510bfa: XOR ECX, ECX",
+    "0x510bfc: TEST EDI, EDI",
+    "0x510bfe: JLE 0x00510c16",
+    "0x510c00: MOV EDX, dword ptr [ESP + 0x34]",
+    "0x510c04: MOV ESI, EDX",
+    "0x510c06: CMP byte ptr [ESI], BL",
+    "0x510c08: JZ 0x00510cb9",
+    "0x510c0e: INC ECX",
+    "0x510c0f: ADD ESI, 0x14",
+    "0x510c12: CMP ECX, EDI",
+    "0x510c14: JL 0x00510c06",
+    "0x510c16: PUSH EAX",
+    "0x510c17: PUSH EDI",
+    "0x510c18: LEA ECX, [ESP + 0x38]",
+    "0x510c1c: CALL 0x00512060",
+    "0x510c21: MOV EDX, dword ptr [ESP + 0x10]",
+    "0x510c25: MOV ECX, dword ptr [ESP + 0x14]",
+    "0x510c29: MOV EDI, dword ptr [ESP + 0x38]",
+    "0x510c2d: INC ECX",
+    "0x510c2e: MOV EAX, dword ptr [EDX + 0x1c]",
+    "0x510c31: ADD EBP, 0x14",
+    "0x510c34: MOV dword ptr [ESP + 0x14], ECX",
+    "0x510c38: CMP ECX, dword ptr [EAX + 0x19c]",
+    "0x510c3e: JL 0x00510bd1",
+    "0x510c40: MOV ESI, dword ptr [ESP + 0x10]",
+    "0x510c44: XOR EAX, EAX",
+    "0x510c46: MOV ECX, dword ptr [ESI + 0x30]",
+    "0x510c49: TEST ECX, ECX",
+    "0x510c4b: JLE 0x00510c66",
+    "0x510c4d: XOR ECX, ECX",
+    "0x510c4f: MOV EDX, dword ptr [ESI + 0x2c]",
+    "0x510c52: INC EAX",
+    "0x510c53: MOV byte ptr [EDX + ECX*0x1 + 0xc], 0x0",
+    "0x510c58: MOV EDX, dword ptr [ESI + 0x30]",
+    "0x510c5b: ADD ECX, 0x10",
+    "0x510c5e: CMP EAX, EDX",
+    "0x510c60: JL 0x00510c4f",
+    "0x510c62: MOV EDI, dword ptr [ESP + 0x38]",
+    "0x510c66: TEST EDI, EDI",
+    "0x510c68: MOV dword ptr [ESP + 0x14], 0x0",
+    "0x510c70: JLE 0x00510fa1",
+    "0x510c76: MOV EBP, dword ptr [ESP + 0x10]",
+    "0x510c7a: XOR EBX, EBX",
+    "0x510c7c: MOV ESI, dword ptr [EBP + 0x30]",
+    "0x510c7f: XOR ECX, ECX",
+    "0x510c81: TEST ESI, ESI",
+    "0x510c83: JLE 0x00510ce2",
+    "0x510c85: MOV EAX, dword ptr [EBP + 0x2c]",
+    "0x510c88: MOV DL, byte ptr [EAX + 0xc]",
+    "0x510c8b: TEST DL, DL",
+    "0x510c8d: JNZ 0x00510caf",
+    "0x510c8f: MOV EDI, dword ptr [ESP + 0x34]",
+    "0x510c93: XOR EDX, EDX",
+    "0x510c95: MOV DL, byte ptr [EBX + EDI*0x1]",
+    "0x510c98: MOV EDI, dword ptr [EAX]",
+    "0x510c9a: CMP EDI, EDX",
+    "0x510c9c: JNZ 0x00510caf",
+    "0x510c9e: MOV EDI, dword ptr [ESP + 0x34]",
+    "0x510ca2: XOR EDX, EDX",
+    "0x510ca4: MOV DL, byte ptr [EBX + EDI*0x1 + 0x1]",
+    "0x510ca8: MOV EDI, dword ptr [EAX + 0x4]",
+    "0x510cab: CMP EDI, EDX",
+    "0x510cad: JZ 0x00510cd2",
+    "0x510caf: INC ECX",
+    "0x510cb0: ADD EAX, 0x10",
+    "0x510cb3: CMP ECX, ESI",
+    "0x510cb5: JL 0x00510c88",
+    "0x510cb7: JMP 0x00510ce2",
+    "0x510cb9: MOV AL, byte ptr [EAX + 0x1]",
+    "0x510cbc: LEA ECX, [ECX + ECX*0x4]",
+    "0x510cbf: LEA EDX, [EDX + ECX*0x4 + 0x1]",
+    "0x510cc3: MOV CL, byte ptr [EDX]",
+    "0x510cc5: CMP CL, AL",
+    "0x510cc7: JBE 0x00510ccb",
+    "0x510cc9: MOV AL, CL",
+    "0x510ccb: MOV byte ptr [EDX], AL",
+    "0x510ccd: JMP 0x00510c21",
+    "0x510cd2: MOV EAX, dword ptr [EBP + 0x2c]",
+    "0x510cd5: SHL ECX, 0x4",
+    "0x510cd8: MOV byte ptr [ECX + EAX*0x1 + 0xc], 0x1",
+    "0x510cdd: JMP 0x00510f89",
+    "0x510ce2: XOR EAX, EAX",
+    "0x510ce4: TEST ESI, ESI",
+    "0x510ce6: JLE 0x00510d16",
+    "0x510ce8: MOV EDI, dword ptr [EBP + 0x2c]",
+    "0x510ceb: MOV ECX, EDI",
+    "0x510ced: MOV DL, byte ptr [ECX + 0xc]",
+    "0x510cf0: TEST DL, DL",
+    "0x510cf2: JNZ 0x00510d0e",
+    "0x510cf4: MOV EBP, dword ptr [ESP + 0x34]",
+    "0x510cf8: XOR EDX, EDX",
+    "0x510cfa: MOV DL, byte ptr [EBX + EBP*0x1]",
+    "0x510cfd: MOV EBP, dword ptr [ECX]",
+    "0x510cff: CMP EBP, EDX",
+    "0x510d01: JNZ 0x00510d0a",
+    "0x510d03: MOV EDX, dword ptr [ECX + 0x8]",
+    "0x510d06: TEST EDX, EDX",
+    "0x510d08: JNZ 0x00510d81",
+    "0x510d0a: MOV EBP, dword ptr [ESP + 0x10]",
+    "0x510d0e: INC EAX",
+    "0x510d0f: ADD ECX, 0x10",
+    "0x510d12: CMP EAX, ESI",
+    "0x510d14: JL 0x00510ced",
+    "0x510d16: XOR EAX, EAX",
+    "0x510d18: MOV dword ptr [ESP + 0x24], 0x10",
+    "0x510d20: MOV dword ptr [ESP + 0x28], EAX",
+    "0x510d24: MOV dword ptr [ESP + 0x20], EAX",
+    "0x510d28: MOV EAX, dword ptr [ESP + 0x34]",
+    "0x510d2c: XOR EDX, EDX",
+    "0x510d2e: MOV byte ptr [ESP + 0x2c], 0x1",
+    "0x510d33: XOR ECX, ECX",
+    "0x510d35: MOV DL, byte ptr [EBX + EAX*0x1 + 0x1]",
+    "0x510d39: LEA EDI, [EBX + EAX*0x1 + 0x1]",
+    "0x510d3d: MOV dword ptr [ESP + 0x24], EDX",
+    "0x510d41: MOV CL, byte ptr [EBX + EAX*0x1]",
+    "0x510d44: MOV dword ptr [ESP + 0x20], ECX",
+    "0x510d48: MOV CL, byte ptr [EBX + EAX*0x1]",
+    "0x510d4b: MOV EAX, ECX",
+    "0x510d4d: MOV byte ptr [ESP + 0x4c], 0x1",
+    "0x510d52: AND EAX, 0xff",
+    "0x510d57: LEA ESI, [EAX + -0xf]",
+    "0x510d5a: CMP ESI, 0x17",
+    "0x510d5d: JA 0x00510e5e",
+    "0x510d63: XOR EDX, EDX",
+    "0x510d65: MOV DL, byte ptr [ESI + 0x511200]",
+    "0x510d6b: JMP dword ptr [EDX*0x4 + 0x5111ec]",
+    "0x510d72: MOV EAX, dword ptr [EBP + 0x1c]",
+    "0x510d75: OR dword ptr [EAX + 0x8], 0x10000",
+    "0x510d7c: JMP 0x00510f50",
+    "0x510d81: MOV ECX, dword ptr [ESP + 0x34]",
+    "0x510d85: MOV EBP, dword ptr [ESP + 0x10]",
+    "0x510d89: SHL EAX, 0x4",
+    "0x510d8c: LEA EDX, [EBX + ECX*0x1 + 0x1]",
+    "0x510d90: MOV ESI, EAX",
+    "0x510d92: XOR EAX, EAX",
+    "0x510d94: MOV AL, byte ptr [EDX]",
+    "0x510d96: MOV dword ptr [ESI + EDI*0x1 + 0x4], EAX",
+    "0x510d9a: MOV ECX, dword ptr [EBP + 0x2c]",
+    "0x510d9d: XOR EAX, EAX",
+    "0x510d9f: MOV AL, byte ptr [EDX]",
+    "0x510da1: MOV ECX, dword ptr [ECX + ESI*0x1 + 0x8]",
+    "0x510da5: MOV dword ptr [ESP + 0x1c], EAX",
+    "0x510da9: PUSH ECX",
+    "0x510daa: FILD dword ptr [ESP + 0x20]",
+    "0x510dae: FMUL float ptr [0x0073d040]",
+    "0x510db4: FLD float ptr [ECX + 0x128]",
+    "0x510dba: FXCH",
+    "0x510dbc: FDIV ST0, ST1",
+    "0x510dbe: FSTP float ptr [ESP]",
+    "0x510dc1: FSTP ST0",
+    "0x510dc3: CALL 0x00485480",
+    "0x510dc8: MOV ECX, dword ptr [EBP + 0x2c]",
+    "0x510dcb: MOV byte ptr [ECX + ESI*0x1 + 0xc], 0x1",
+    "0x510dd0: JMP 0x00510f89",
+    "0x510dd5: MOV EAX, dword ptr [EBP + 0x1c]",
+    "0x510dd8: OR dword ptr [EAX + 0x8], 0x40000",
+    "0x510ddf: JMP 0x00510f50",
+    "0x510de4: MOV DL, byte ptr [ESP + 0x54]",
+    "0x510de8: TEST DL, DL",
+    "0x510dea: JNZ 0x00510f50",
+    "0x510df0: XOR EDX, EDX",
+    "0x510df2: CMP CL, 0x1e",
+    "0x510df5: MOV DL, byte ptr [EDI]",
+    "0x510df7: MOV dword ptr [ESP + 0x1c], EDX",
+    "0x510dfb: FILD dword ptr [ESP + 0x1c]",
+    "0x510dff: FMUL float ptr [0x0073d040]",
+    "0x510e05: FSTP float ptr [ESP + 0x18]",
+    "0x510e09: JNZ 0x00510e15",
+    "0x510e0b: FLD float ptr [ESP + 0x18]",
+    "0x510e0f: FCHS",
+    "0x510e11: FSTP float ptr [ESP + 0x18]",
+    "0x510e15: SUB EAX, 0x1d",
+    "0x510e18: JZ 0x00510e22",
+    "0x510e1a: DEC EAX",
+    "0x510e1b: MOV EAX, 0x2018",
+    "0x510e20: JNZ 0x00510e27",
+    "0x510e22: MOV EAX, 0x201b",
+    "0x510e27: MOV ECX, dword ptr [0x007af744]",
+    "0x510e2d: PUSH EAX",
+    "0x510e2e: CALL 0x00498400",
+    "0x510e33: MOV ESI, EAX",
+    "0x510e35: MOV EAX, dword ptr [EBP + 0x1c]",
+    "0x510e38: PUSH EAX",
+    "0x510e39: MOV ECX, ESI",
+    "0x510e3b: CALL 0x004849f0",
+    "0x510e40: FLD float ptr [ESI + 0x128]",
+    "0x510e46: FLD float ptr [ESP + 0x18]",
+    "0x510e4a: FDIV ST0, ST1",
+    "0x510e4c: PUSH ECX",
+    "0x510e4d: MOV ECX, ESI",
+    "0x510e4f: FSTP float ptr [ESP]",
+    "0x510e52: FSTP ST0",
+    "0x510e54: CALL 0x00485480",
+    "0x510e59: JMP 0x00510f50",
+    "0x510e5e: ADD EAX, -0x9",
+    "0x510e61: CMP EAX, 0x19",
+    "0x510e64: JA 0x00510ec9",
+    "0x510e66: XOR ECX, ECX",
+    "0x510e68: MOV CL, byte ptr [EAX + 0x511250]",
+    "0x510e6e: JMP dword ptr [ECX*0x4 + 0x511218]",
+    "0x510e75: MOV EAX, 0x2017",
+    "0x510e7a: JMP 0x00510edb",
+    "0x510e7c: MOV EAX, 0x2016",
+    "0x510e81: JMP 0x00510edb",
+    "0x510e83: MOV EAX, 0x2015",
+    "0x510e88: JMP 0x00510edb",
+    "0x510e8a: MOV EAX, 0x201a",
+    "0x510e8f: JMP 0x00510edb",
+    "0x510e91: MOV EAX, 0x2044",
+    "0x510e96: JMP 0x00510edb",
+    "0x510e98: MOV EAX, 0x2045",
+    "0x510e9d: JMP 0x00510edb",
+    "0x510e9f: MOV EAX, 0x2046",
+    "0x510ea4: JMP 0x00510edb",
+    "0x510ea6: MOV EAX, 0x2048",
+    "0x510eab: JMP 0x00510edb",
+    "0x510ead: MOV EAX, 0x204c",
+    "0x510eb2: JMP 0x00510edb",
+    "0x510eb4: MOV EAX, 0x2049",
+    "0x510eb9: JMP 0x00510edb",
+    "0x510ebb: MOV EAX, 0x204b",
+    "0x510ec0: JMP 0x00510edb",
+    "0x510ec2: MOV EAX, 0x204a",
+    "0x510ec7: JMP 0x00510edb",
+    "0x510ec9: PUSH 0x78efdc",
+    "0x510ece: CALL 0x0044c470",
+    "0x510ed3: ADD ESP, 0x4",
+    "0x510ed6: MOV EAX, 0x2013",
+    "0x510edb: MOV ECX, dword ptr [0x007af744]",
+    "0x510ee1: PUSH EAX",
+    "0x510ee2: CALL 0x00498400",
+    "0x510ee7: MOV ECX, dword ptr [ESP + 0x28]",
+    "0x510eeb: MOV dword ptr [ESP + 0x28], EAX",
+    "0x510eef: TEST EAX, EAX",
+    "0x510ef1: JZ 0x00510ef6",
+    "0x510ef3: INC dword ptr [EAX + 0x4]",
+    "0x510ef6: TEST ECX, ECX",
+    "0x510ef8: JZ 0x00510eff",
+    "0x510efa: MOV EDX, dword ptr [ECX]",
+    "0x510efc: CALL dword ptr [EDX + 0x10]",
+    "0x510eff: MOV EAX, dword ptr [EBP + 0x1c]",
+    "0x510f02: MOV ECX, dword ptr [ESP + 0x28]",
+    "0x510f06: PUSH EAX",
+    "0x510f07: CALL 0x004849f0",
+    "0x510f0c: XOR ECX, ECX",
+    "0x510f0e: MOV CL, byte ptr [EDI]",
+    "0x510f10: MOV dword ptr [ESP + 0x1c], ECX",
+    "0x510f14: MOV ECX, dword ptr [ESP + 0x28]",
+    "0x510f18: FILD dword ptr [ESP + 0x1c]",
+    "0x510f1c: PUSH ECX",
+    "0x510f1d: FMUL float ptr [0x0073d040]",
+    "0x510f23: FLD float ptr [ECX + 0x128]",
+    "0x510f29: FXCH",
+    "0x510f2b: FDIV ST0, ST1",
+    "0x510f2d: FSTP float ptr [ESP]",
+    "0x510f30: FSTP ST0",
+    "0x510f32: CALL 0x00485480",
+    "0x510f37: MOV AL, byte ptr [ESP + 0x54]",
+    "0x510f3b: TEST AL, AL",
+    "0x510f3d: JZ 0x00510f50",
+    "0x510f3f: MOV ESI, 0x1e",
+    "0x510f44: MOV ECX, dword ptr [ESP + 0x28]",
+    "0x510f48: MOV EDX, dword ptr [ECX]",
+    "0x510f4a: CALL dword ptr [EDX + 0x18]",
+    "0x510f4d: DEC ESI",
+    "0x510f4e: JNZ 0x00510f44",
+    "0x510f50: MOV EDI, dword ptr [EBP + 0x30]",
+    "0x510f53: LEA ESI, [EBP + 0x28]",
+    "0x510f56: PUSH -0x1",
+    "0x510f58: MOV ECX, ESI",
+    "0x510f5a: LEA EAX, [EDI + 0x1]",
+    "0x510f5d: PUSH EAX",
+    "0x510f5e: CALL 0x005121b0",
+    "0x510f63: MOV EDX, dword ptr [ESI + 0x4]",
+    "0x510f66: LEA ECX, [ESP + 0x20]",
+    "0x510f6a: PUSH ECX",
+    "0x510f6b: MOV ECX, EDI",
+    "0x510f6d: SHL ECX, 0x4",
+    "0x510f70: ADD ECX, EDX",
+    "0x510f72: CALL 0x00512490",
+    "0x510f77: MOV ECX, dword ptr [ESP + 0x28]",
+    "0x510f7b: MOV byte ptr [ESP + 0x4c], 0x0",
+    "0x510f80: TEST ECX, ECX",
+    "0x510f82: JZ 0x00510f89",
+    "0x510f84: MOV EDX, dword ptr [ECX]",
+    "0x510f86: CALL dword ptr [EDX + 0x10]",
+    "0x510f89: MOV EAX, dword ptr [ESP + 0x14]",
+    "0x510f8d: MOV ECX, dword ptr [ESP + 0x38]",
+    "0x510f91: INC EAX",
+    "0x510f92: ADD EBX, 0x14",
+    "0x510f95: CMP EAX, ECX",
+    "0x510f97: MOV dword ptr [ESP + 0x14], EAX",
+    "0x510f9b: JL 0x00510c7c",
+    "0x510fa1: MOV EDI, dword ptr [ESP + 0x10]",
+    "0x510fa5: XOR EBP, EBP",
+    "0x510fa7: MOV dword ptr [ESP + 0x14], EBP",
+    "0x510fab: MOV ECX, dword ptr [EDI + 0x30]",
+    "0x510fae: TEST ECX, ECX",
+    "0x510fb0: JLE 0x00511197",
+    "0x510fb6: XOR EAX, EAX",
+    "0x510fb8: MOV dword ptr [ESP + 0x54], EAX",
+    "0x510fbc: MOV ESI, dword ptr [EDI + 0x2c]",
+    "0x510fbf: MOV dword ptr [ESP + 0x18], ESI",
+    "0x510fc3: MOV DL, byte ptr [ESI + EAX*0x1 + 0xc]",
+    "0x510fc7: TEST DL, DL",
+    "0x510fc9: JNZ 0x00511180",
+    "0x510fcf: MOV EAX, dword ptr [ESI + EAX*0x1]",
+    "0x510fd2: ADD EAX, -0xf",
+    "0x510fd5: CMP EAX, 0xf",
+    "0x510fd8: JA 0x005110f5",
+    "0x510fde: XOR EDX, EDX",
+    "0x510fe0: MOV DL, byte ptr [EAX + 0x51127c]",
+    "0x510fe6: JMP dword ptr [EDX*0x4 + 0x51126c]",
+    "0x510fed: XOR EAX, EAX",
+    "0x510fef: MOV BL, 0x1",
+    "0x510ff1: TEST ECX, ECX",
+    "0x510ff3: JLE 0x00511014",
+    "0x510ff5: MOV ESI, dword ptr [ESP + 0x18]",
+    "0x510ff9: CMP EAX, EBP",
+    "0x510ffb: JZ 0x00511004",
+    "0x510ffd: CMP dword ptr [ESI], 0x19",
+    "0x511000: JNZ 0x00511004",
+    "0x511002: XOR BL, BL",
+    "0x511004: INC EAX",
+    "0x511005: ADD ESI, 0x10",
+    "0x511008: CMP EAX, ECX",
+    "0x51100a: JL 0x00510ff9",
+    "0x51100c: TEST BL, BL",
+    "0x51100e: JZ 0x005110f5",
+    "0x511014: MOV EAX, dword ptr [EDI + 0x1c]",
+    "0x511017: MOV ECX, dword ptr [EAX + 0x8]",
+    "0x51101a: AND ECX, 0xfffbffff",
+    "0x511020: MOV dword ptr [EAX + 0x8], ECX",
+    "0x511023: MOV EAX, dword ptr [EDI + 0x1c]",
+    "0x511026: MOV ECX, dword ptr [EAX + 0x94]",
+    "0x51102c: CALL 0x0051cd60",
+    "0x511031: JMP 0x005110f5",
+    "0x511036: XOR EAX, EAX",
+    "0x511038: MOV BL, 0x1",
+    "0x51103a: TEST ECX, ECX",
+    "0x51103c: JLE 0x0051105d",
+    "0x51103e: MOV ESI, dword ptr [ESP + 0x18]",
+    "0x511042: CMP EAX, EBP",
+    "0x511044: JZ 0x0051104d",
+    "0x511046: CMP dword ptr [ESI], 0xf",
+    "0x511049: JNZ 0x0051104d",
+    "0x51104b: XOR BL, BL",
+    "0x51104d: INC EAX",
+    "0x51104e: ADD ESI, 0x10",
+    "0x511051: CMP EAX, ECX",
+    "0x511053: JL 0x00511042",
+    "0x511055: TEST BL, BL",
+    "0x511057: JZ 0x005110f5",
+    "0x51105d: MOV EAX, dword ptr [EDI + 0x1c]",
+    "0x511060: MOV ECX, dword ptr [EAX + 0x8]",
+    "0x511063: AND ECX, 0xfffeffff",
+    "0x511069: MOV dword ptr [EAX + 0x8], ECX",
+    "0x51106c: MOV ECX, dword ptr [EDI + 0x1c]",
+    "0x51106f: MOV ECX, dword ptr [ECX + 0x94]",
+    "0x511075: CALL 0x0051cca0",
+    "0x51107a: JMP 0x005110f5",
+    "0x51107c: MOV ECX, dword ptr [EDI + 0x1c]",
+    "0x51107f: MOV EDX, dword ptr [ECX]",
+    "0x511081: CALL dword ptr [EDX + 0xdc]",
+    "0x511087: TEST EAX, EAX",
+    "0x511089: JNZ 0x005110f5",
+    "0x51108b: MOV ECX, dword ptr [ESP + 0x18]",
+    "0x51108f: MOV EAX, dword ptr [ESP + 0x54]",
+    "0x511093: FILD dword ptr [ECX + EAX*0x1 + 0x4]",
+    "0x511097: MOV EAX, dword ptr [ECX + EAX*0x1]",
+    "0x51109a: CMP EAX, 0x1e",
+    "0x51109d: FMUL float ptr [0x0073d040]",
+    "0x5110a3: FSTP float ptr [ESP + 0x1c]",
+    "0x5110a7: JNZ 0x005110b3",
+    "0x5110a9: FLD float ptr [ESP + 0x1c]",
+    "0x5110ad: FCHS",
+    "0x5110af: FSTP float ptr [ESP + 0x1c]",
+    "0x5110b3: SUB EAX, 0x1d",
+    "0x5110b6: JZ 0x005110c0",
+    "0x5110b8: DEC EAX",
+    "0x5110b9: MOV EAX, 0x2018",
+    "0x5110be: JNZ 0x005110c5",
+    "0x5110c0: MOV EAX, 0x201b",
+    "0x5110c5: MOV ECX, dword ptr [0x007af744]",
+    "0x5110cb: PUSH EAX",
+    "0x5110cc: CALL 0x00498400",
+    "0x5110d1: MOV ESI, EAX",
+    "0x5110d3: MOV EAX, dword ptr [EDI + 0x1c]",
+    "0x5110d6: PUSH EAX",
+    "0x5110d7: MOV ECX, ESI",
+    "0x5110d9: CALL 0x004849f0",
+    "0x5110de: FLD float ptr [ESI + 0x128]",
+    "0x5110e4: FDIVR float ptr [ESP + 0x1c]",
+    "0x5110e8: PUSH ECX",
+    "0x5110e9: MOV ECX, ESI",
+    "0x5110eb: FCHS",
+    "0x5110ed: FSTP float ptr [ESP]",
+    "0x5110f0: CALL 0x00485480",
+    "0x5110f5: MOV ECX, dword ptr [ESP + 0x18]",
+    "0x5110f9: MOV EDX, dword ptr [ESP + 0x54]",
+    "0x5110fd: MOV ECX, dword ptr [ECX + EDX*0x1 + 0x8]",
+    "0x511101: TEST ECX, ECX",
+    "0x511103: JZ 0x0051110a",
+    "0x511105: CALL 0x00485360",
+    "0x51110a: MOV ECX, dword ptr [ESP + 0x14]",
+    "0x51110e: MOV ESI, dword ptr [ESP + 0x54]",
+    "0x511112: MOV EAX, ECX",
+    "0x511114: DEC ECX",
+    "0x511115: MOV EDI, ESI",
+    "0x511117: MOV dword ptr [ESP + 0x14], ECX",
+    "0x51111b: MOV ECX, dword ptr [ESP + 0x10]",
+    "0x51111f: SUB ESI, 0x10",
+    "0x511122: MOV dword ptr [ESP + 0x54], ESI",
+    "0x511126: MOV ESI, dword ptr [ECX + 0x30]",
+    "0x511129: SUB ESI, EAX",
+    "0x51112b: MOV EAX, dword ptr [ECX + 0x2c]",
+    "0x51112e: ADD EAX, EDI",
+    "0x511130: DEC ESI",
+    "0x511131: XOR EBX, EBX",
+    "0x511133: LEA EBP, [EAX + 0x8]",
+    "0x511136: MOV ECX, dword ptr [EBP]",
+    "0x511139: TEST ECX, ECX",
+    "0x51113b: JZ 0x00511142",
+    "0x51113d: MOV EAX, dword ptr [ECX]",
+    "0x51113f: CALL dword ptr [EAX + 0x10]",
+    "0x511142: ADD EBP, 0x10",
+    "0x511145: MOV ECX, EBX",
+    "0x511147: DEC EBX",
+    "0x511148: TEST ECX, ECX",
+    "0x51114a: JNZ 0x00511136",
+    "0x51114c: TEST ESI, ESI",
+    "0x51114e: JZ 0x0051116b",
+    "0x511150: MOV EDX, dword ptr [ESP + 0x10]",
+    "0x511154: SHL ESI, 0x4",
+    "0x511157: MOV EAX, dword ptr [EDX + 0x2c]",
+    "0x51115a: PUSH ESI",
+    "0x51115b: LEA ECX, [EAX + EDI*0x1 + 0x10]",
+    "0x51115f: ADD EAX, EDI",
+    "0x511161: PUSH ECX",
+    "0x511162: PUSH EAX",
+    "0x511163: CALL 0x006e7960",
+    "0x511168: ADD ESP, 0xc",
+    "0x51116b: MOV EAX, dword ptr [ESP + 0x10]",
+    "0x51116f: MOV EBP, dword ptr [ESP + 0x14]",
+    "0x511173: MOV EDI, EAX",
+    "0x511175: MOV ECX, dword ptr [EAX + 0x30]",
+    "0x511178: DEC ECX",
+    "0x511179: MOV dword ptr [EAX + 0x30], ECX",
+    "0x51117c: MOV EAX, dword ptr [ESP + 0x54]",
+    "0x511180: MOV ECX, dword ptr [EDI + 0x30]",
+    "0x511183: INC EBP",
+    "0x511184: ADD EAX, 0x10",
+    "0x511187: CMP EBP, ECX",
+    "0x511189: MOV dword ptr [ESP + 0x14], EBP",
+    "0x51118d: MOV dword ptr [ESP + 0x54], EAX",
+    "0x511191: JL 0x00510fbc",
+    "0x511197: MOV EAX, dword ptr [ESP + 0x34]",
+    "0x51119b: POP EDI",
+    "0x51119c: POP ESI",
+    "0x51119d: POP EBP",
+    "0x51119e: TEST EAX, EAX",
+    "0x5111a0: MOV dword ptr [ESP + 0x24], 0x73dba0",
+    "0x5111a8: POP EBX",
+    "0x5111a9: JZ 0x005111b4",
+    "0x5111ab: PUSH EAX",
+    "0x5111ac: CALL 0x00700598",
+    "0x5111b1: ADD ESP, 0x4",
+    "0x5111b4: MOV ECX, dword ptr [ESP + 0x34]",
+    "0x5111b8: MOV dword ptr FS:[0x0], ECX",
+    "0x5111bf: ADD ESP, 0x40",
+    "0x5111c2: RET 0x4"
+  ],
+  "callees": [
+    {
+      "address": "0x44c470",
+      "name": "FUN_0044c470",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x44c470",
+            "end": "0x44c470"
+          }
+        ],
+        "total_bytes": 1,
+        "span_bytes": 1,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    },
+    {
+      "address": "0x4849f0",
+      "name": "FUN_004849f0",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x4849f0",
+            "end": "0x484adf"
+          }
+        ],
+        "total_bytes": 240,
+        "span_bytes": 240,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    },
+    {
+      "address": "0x485360",
+      "name": "FUN_00485360",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x485360",
+            "end": "0x485370"
+          }
+        ],
+        "total_bytes": 17,
+        "span_bytes": 17,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    },
+    {
+      "address": "0x485480",
+      "name": "FUN_00485480",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x485480",
+            "end": "0x485522"
+          }
+        ],
+        "total_bytes": 163,
+        "span_bytes": 163,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    },
+    {
+      "address": "0x498400",
+      "name": "FUN_00498400",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x498400",
+            "end": "0x49847a"
+          }
+        ],
+        "total_bytes": 123,
+        "span_bytes": 123,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    },
+    {
+      "address": "0x512060",
+      "name": "FUN_00512060",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x512060",
+            "end": "0x5121a7"
+          }
+        ],
+        "total_bytes": 328,
+        "span_bytes": 328,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    },
+    {
+      "address": "0x5121b0",
+      "name": "FUN_005121b0",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x5121b0",
+            "end": "0x512325"
+          }
+        ],
+        "total_bytes": 374,
+        "span_bytes": 374,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    },
+    {
+      "address": "0x512490",
+      "name": "FUN_00512490",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x512490",
+            "end": "0x5124c7"
+          }
+        ],
+        "total_bytes": 56,
+        "span_bytes": 56,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    },
+    {
+      "address": "0x51cca0",
+      "name": "FUN_0051cca0",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x51cca0",
+            "end": "0x51ccc2"
+          }
+        ],
+        "total_bytes": 35,
+        "span_bytes": 35,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    },
+    {
+      "address": "0x51cd60",
+      "name": "FUN_0051cd60",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x51cd60",
+            "end": "0x51cd95"
+          }
+        ],
+        "total_bytes": 54,
+        "span_bytes": 54,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    },
+    {
+      "address": "0x6e7960",
+      "name": "FUN_006e7960",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x6e7960",
+            "end": "0x6e79ba"
+          },
+          {
+            "start": "0x6e79bc",
+            "end": "0x6e79c2"
+          },
+          {
+            "start": "0x6e79d0",
+            "end": "0x6e79f8"
+          },
+          {
+            "start": "0x6e79fc",
+            "end": "0x6e7a1e"
+          },
+          {
+            "start": "0x6e7a20",
+            "end": "0x6e7a38"
+          },
+          {
+            "start": "0x6e7a5c",
+            "end": "0x6e7aa5"
+          },
+          {
+            "start": "0x6e7ab8",
+            "end": "0x6e7abe"
+          },
+          {
+            "start": "0x6e7ac0",
+            "end": "0x6e7aca"
+          },
+          {
+            "start": "0x6e7acc",
+            "end": "0x6e7adc"
+          },
+          {
+            "start": "0x6e7ae0",
+            "end": "0x6e7af6"
+          },
+          {
+            "start": "0x6e7af8",
+            "end": "0x6e7b1d"
+          },
+          {
+            "start": "0x6e7b20",
+            "end": "0x6e7b28"
+          },
+          {
+            "start": "0x6e7b2c",
+            "end": "0x6e7b4a"
+          },
+          {
+            "start": "0x6e7b58",
+            "end": "0x6e7b74"
+          },
+          {
+            "start": "0x6e7b78",
+            "end": "0x6e7b9e"
+          },
+          {
+            "start": "0x6e7ba0",
+            "end": "0x6e7bd0"
+          },
+          {
+            "start": "0x6e7bf4",
+            "end": "0x6e7c3d"
+          },
+          {
+            "start": "0x6e7c50",
+            "end": "0x6e7c56"
+          },
+          {
+            "start": "0x6e7c58",
+            "end": "0x6e7c64"
+          },
+          {
+            "start": "0x6e7c68",
+            "end": "0x6e7c7a"
+          },
+          {
+            "start": "0x6e7c7c",
+            "end": "0x6e7c94"
+          }
+        ],
+        "total_bytes": 664,
+        "span_bytes": 821,
+        "non_contiguous": true,
+        "contains_entry": true
+      }
+    },
+    {
+      "address": "0x700598",
+      "name": "FUN_00700598",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x700598",
+            "end": "0x7005a2"
+          }
+        ],
+        "total_bytes": 11,
+        "span_bytes": 11,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    }
+  ]
+}
