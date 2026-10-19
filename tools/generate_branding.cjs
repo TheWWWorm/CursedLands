@@ -27,8 +27,8 @@ async function main() {
   // Refresh GitHub's cached README image whenever the approved master changes.
   const readmePath = path.join(root, 'README.md');
   const readme = fs.readFileSync(readmePath, 'utf8');
-  fs.writeFileSync(readmePath, readme.replace(/src="game\/icon\.png(?:\?v=[a-f0-9]+)?"/,
-    'src="game/icon.png?v=' + sourceHash.slice(0, 12) + '"'));
+  fs.writeFileSync(readmePath, readme.replace(/src="(?:https:\/\/raw\.githubusercontent\.com\/TheWWWorm\/CursedLands\/main\/)?game\/icon\.png(?:\?v=[a-f0-9]+)?"/,
+    'src="https://raw.githubusercontent.com/TheWWWorm/CursedLands/main/game/icon.png?v=' + sourceHash.slice(0, 12) + '"'));
   const sizes = [16, 24, 32, 48, 64, 128, 256];
   const frames = await Promise.all(sizes.map(png));
   const directory = Buffer.alloc(6 + sizes.length * 16);
