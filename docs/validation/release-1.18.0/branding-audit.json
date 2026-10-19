@@ -1,0 +1,131 @@
+{
+  "windows_icon_sizes": [
+    16,
+    32,
+    48,
+    64,
+    128,
+    256
+  ],
+  "windows_icon_pixels_exact": true,
+  "windows_version": "1.18.0.0",
+  "macos_icon_exact": true,
+  "web_icons_exact": true,
+  "approved_master_sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18",
+  "linux_startup": [
+    {
+      "label": "en",
+      "language": "en",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/release-1.18.0/CursedLands-1.18.0-linux-x86_64/CursedLands.x86_64",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--windowed",
+        "--resolution",
+        "960x540",
+        "--position",
+        "60,60",
+        "--language",
+        "en",
+        "--quit-after",
+        "12"
+      ],
+      "visible_titles": [
+        {
+          "seconds": 0.7922,
+          "title": "Cursed Lands"
+        }
+      ],
+      "capture": {
+        "seconds": 1.6546,
+        "title": "Cursed Lands",
+        "size": [
+          960,
+          540
+        ],
+        "gold_samples": 54
+      },
+      "exit_code": 0
+    },
+    {
+      "label": "ru",
+      "language": "ru",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/release-1.18.0/CursedLands-1.18.0-linux-x86_64/CursedLands.x86_64",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--windowed",
+        "--resolution",
+        "960x540",
+        "--position",
+        "60,60",
+        "--language",
+        "ru",
+        "--quit-after",
+        "12"
+      ],
+      "visible_titles": [
+        {
+          "seconds": 0.7641,
+          "title": "Cursed Lands"
+        }
+      ],
+      "capture": {
+        "seconds": 1.6083,
+        "title": "Cursed Lands",
+        "size": [
+          960,
+          540
+        ],
+        "gold_samples": 54
+      },
+      "exit_code": 0
+    },
+    {
+      "label": "de",
+      "language": "de",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/release-1.18.0/CursedLands-1.18.0-linux-x86_64/CursedLands.x86_64",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--windowed",
+        "--resolution",
+        "960x540",
+        "--position",
+        "60,60",
+        "--language",
+        "de",
+        "--quit-after",
+        "12"
+      ],
+      "visible_titles": [
+        {
+          "seconds": 0.75,
+          "title": "Cursed Lands"
+        }
+      ],
+      "capture": {
+        "seconds": 1.6568,
+        "title": "Cursed Lands",
+        "size": [
+          960,
+          540
+        ],
+        "gold_samples": 54
+      },
+      "exit_code": 0
+    }
+  ]
+}

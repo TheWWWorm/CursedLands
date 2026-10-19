@@ -1,0 +1,463 @@
+{
+  "version": "1.18.0",
+  "tag": "v1.18.0",
+  "date": "2026-10-19",
+  "base_stable": "1.17.0",
+  "release_type": "stable minor",
+  "source_commit": "d22afedc71825a3ef850dd8273f4e9715af37470",
+  "game_tree": "70f2ba72f4ce2122f98350c7a1e5f48bec89fec7",
+  "coop_protocol": 23,
+  "autochess_protocol": 1,
+  "matching_game_versions_required": true,
+  "compiled_scripts": 375,
+  "all_compiled_scripts_identical_across_five_platforms": true,
+  "linux_packaged_runtime_exact_match_to_tested_candidate": true,
+  "runtime_checks": [
+    {
+      "suite": "arena_species",
+      "exit": 0,
+      "seconds": 3.92,
+      "summary": [
+        "ARENA_SPECIES 2154 checks; failures=[]"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "arena_roster",
+      "exit": 0,
+      "seconds": 2.77,
+      "summary": [
+        "ARENA_ROSTER checks=1515 opening_pair_duplicate_rate=0.0775 failures=[]"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "arena_economy",
+      "exit": 0,
+      "seconds": 2.67,
+      "summary": [
+        "ARENA_ECONOMY 590 checks; failures=[]"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "arena_alliances",
+      "exit": 0,
+      "seconds": 3.77,
+      "summary": [
+        "ARENA_ALLIANCES 602 checks; failures=[]"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "arena_online",
+      "exit": 0,
+      "seconds": 23.3,
+      "summary": [
+        "ARENA_ONLINE 80 checks; failures=[]"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "arena_readability",
+      "exit": 0,
+      "seconds": 2.57,
+      "summary": [
+        "ARENA_READABILITY checks=51 failures=[]"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "coop_shared_checkpoint",
+      "exit": 0,
+      "seconds": 2.62,
+      "summary": [
+        "COOP_SHARED_CHECKPOINT 25 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "snapshot_codec",
+      "exit": 0,
+      "seconds": 2.87,
+      "summary": [
+        "SNAPSHOT_CODEC 209 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "creature_weapon_animations",
+      "exit": 0,
+      "seconds": 2.87,
+      "summary": [
+        "CREATURE_WEAPON_ANIMATIONS 196 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "xp_distribution",
+      "exit": 0,
+      "seconds": 2.52,
+      "summary": [
+        "XP_DISTRIBUTION 96 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "spell_stamina_wait",
+      "exit": 0,
+      "seconds": 7.63,
+      "summary": [
+        "SPELL_STAMINA_WAIT 47 checks []"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "authored_village_talk",
+      "exit": 0,
+      "seconds": 2.57,
+      "summary": [
+        "PASS commander selection rechecks a newly reachable route",
+        "LIA_HABURU_GUARDS 90 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "discord_ipc",
+      "exit": 0,
+      "fixture_correction": "Run with the local IPC responder; initial standalone test had no Discord server.",
+      "log": "Godot Engine v4.7.stable.custom_build - https://godotengine.org\n\n[trace 20:46:29 +2691ms] session f55477e811af: 1.18.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan\nPASS activity preserves whole localized characters within the UTF-8 limit\nPASS disabling clears and disconnects: true\n[trace 20:46:30 +3167ms] clean exit\n\nPASS real IPC: handshake, fragmented READY, activity, ping/pong, option clearing and clean exit\n"
+    }
+  ],
+  "rendered_checks": [
+    {
+      "suite": "arena_deployment_guide_ui",
+      "locale": "en",
+      "renderer": "forward_plus",
+      "exit": 0,
+      "seconds": 32.67,
+      "summary": [
+        "DEPLOYMENT_GUIDE forward_plus checks=123 failures=[]"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "arena_species_ui",
+      "locale": "en",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 52.85,
+      "summary": [
+        "ARENA_SPECIES_UI en checks=572 failures=[]"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "arena_species_ui",
+      "locale": "ru",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 30.41,
+      "summary": [
+        "ARENA_SPECIES_UI ru checks=569 failures=[]"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "arena_species_ui",
+      "locale": "de",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 46.94,
+      "summary": [
+        "ARENA_SPECIES_UI de checks=569 failures=[]"
+      ],
+      "errors": []
+    }
+  ],
+  "translations": "Wiki world text: 180 entries in EN/RU/DE\nWiki reference text: 3886 source-checked EN/DE entries; RU uses original archives\nTranslations: 2809 entries; 141 dynamic wiki keys; 179 dynamic arena keys; 0 errors\n",
+  "desktop": {
+    "linux-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/release-1.18.0/CursedLands-1.18.0-linux-x86_64",
+      "info": {
+        "version": "1.18.0",
+        "source_commit": "d22afedc71825a3ef850dd8273f4e9715af37470",
+        "game_tree": "70f2ba72f4ce2122f98350c7a1e5f48bec89fec7",
+        "protocol": 23,
+        "platform": "linux-x86_64",
+        "engine_patch_count": 15,
+        "unchanged_qualified_engine": false,
+        "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88 plus common patches 1\u201315",
+        "compiled_scripts": 375,
+        "resource_count": 1176,
+        "files": {
+          "CursedLands.x86_64": "4703975995aab2ce47fdbef10f43016efe33eec29655db5c005811d5def04024",
+          "libterrain_search.so": "ac42b3731536ae3a404755f48fb04ff54c4bfe79c85ebcc8d78be4153632392c",
+          "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+          "CursedLands.pck": "7f901a7d3eaa75d275d9e7a6b2cd0dfb5df4d3f45117e8ff37b47843776053b8"
+        }
+      }
+    },
+    "windows-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/release-1.18.0/CursedLands-1.18.0-windows-x86_64",
+      "info": {
+        "version": "1.18.0",
+        "source_commit": "d22afedc71825a3ef850dd8273f4e9715af37470",
+        "game_tree": "70f2ba72f4ce2122f98350c7a1e5f48bec89fec7",
+        "protocol": 23,
+        "platform": "windows-x86_64",
+        "engine_patch_count": 15,
+        "unchanged_qualified_engine": false,
+        "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88 plus common patches 1\u201315",
+        "compiled_scripts": 375,
+        "resource_count": 1176,
+        "files": {
+          "CursedLands.exe": "f8ff370551af2b976513303e0a0275eab80a8d9d93a6ecb3b88edbe8dd584442",
+          "libterrain_search.dll": "3378cd85fc8a6f02645c066eefb67743c784f1d849e09dc98bd39146076ebf40",
+          "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+          "CursedLands.pck": "7f901a7d3eaa75d275d9e7a6b2cd0dfb5df4d3f45117e8ff37b47843776053b8"
+        }
+      }
+    },
+    "macos-universal": {
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/release-1.18.0/CursedLands-1.18.0-macos-universal",
+      "info": {
+        "version": "1.18.0",
+        "source_commit": "d22afedc71825a3ef850dd8273f4e9715af37470",
+        "game_tree": "70f2ba72f4ce2122f98350c7a1e5f48bec89fec7",
+        "protocol": 23,
+        "platform": "macos-universal",
+        "unsigned": true,
+        "target_os_runtime_tested": false,
+        "compiled_scripts": 375,
+        "files": {
+          "CursedLands.zip": "049920628e086c186a8ce92abda1c0ae61bac37ede48c437f7a96b71d9172ceb"
+        }
+      }
+    }
+  },
+  "android": {
+    "version": "1.18.0",
+    "compiled_scripts": 375,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 52,
+    "debuggable": false,
+    "apk_sha256": "c6921820b47237195fc8ba0fd3430cbef66093912e7853e9c6e2832ed7e489e2",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "cc64f9d4f3cace4010e33810ae684a2b738dd5bbd2289746fca20b7ffc2c65d6"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16
+  },
+  "branding": {
+    "windows_icon_sizes": [
+      16,
+      32,
+      48,
+      64,
+      128,
+      256
+    ],
+    "windows_icon_pixels_exact": true,
+    "windows_version": "1.18.0.0",
+    "macos_icon_exact": true,
+    "web_icons_exact": true,
+    "approved_master_sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18",
+    "linux_startup": [
+      {
+        "label": "en",
+        "language": "en",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/release-1.18.0/CursedLands-1.18.0-linux-x86_64/CursedLands.x86_64",
+          "--display-driver",
+          "x11",
+          "--rendering-method",
+          "gl_compatibility",
+          "--audio-driver",
+          "Dummy",
+          "--windowed",
+          "--resolution",
+          "960x540",
+          "--position",
+          "60,60",
+          "--language",
+          "en",
+          "--quit-after",
+          "12"
+        ],
+        "visible_titles": [
+          {
+            "seconds": 0.7922,
+            "title": "Cursed Lands"
+          }
+        ],
+        "capture": {
+          "seconds": 1.6546,
+          "title": "Cursed Lands",
+          "size": [
+            960,
+            540
+          ],
+          "gold_samples": 54
+        },
+        "exit_code": 0
+      },
+      {
+        "label": "ru",
+        "language": "ru",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/release-1.18.0/CursedLands-1.18.0-linux-x86_64/CursedLands.x86_64",
+          "--display-driver",
+          "x11",
+          "--rendering-method",
+          "gl_compatibility",
+          "--audio-driver",
+          "Dummy",
+          "--windowed",
+          "--resolution",
+          "960x540",
+          "--position",
+          "60,60",
+          "--language",
+          "ru",
+          "--quit-after",
+          "12"
+        ],
+        "visible_titles": [
+          {
+            "seconds": 0.7641,
+            "title": "Cursed Lands"
+          }
+        ],
+        "capture": {
+          "seconds": 1.6083,
+          "title": "Cursed Lands",
+          "size": [
+            960,
+            540
+          ],
+          "gold_samples": 54
+        },
+        "exit_code": 0
+      },
+      {
+        "label": "de",
+        "language": "de",
+        "command": [
+          "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/release-1.18.0/CursedLands-1.18.0-linux-x86_64/CursedLands.x86_64",
+          "--display-driver",
+          "x11",
+          "--rendering-method",
+          "gl_compatibility",
+          "--audio-driver",
+          "Dummy",
+          "--windowed",
+          "--resolution",
+          "960x540",
+          "--position",
+          "60,60",
+          "--language",
+          "de",
+          "--quit-after",
+          "12"
+        ],
+        "visible_titles": [
+          {
+            "seconds": 0.75,
+            "title": "Cursed Lands"
+          }
+        ],
+        "capture": {
+          "seconds": 1.6568,
+          "title": "Cursed Lands",
+          "size": [
+            960,
+            540
+          ],
+          "gold_samples": 54
+        },
+        "exit_code": 0
+      }
+    ]
+  },
+  "browser_build": {
+    "version": "1.18.0",
+    "source_tag": "v1.18.0",
+    "source_commit": "d22afedc71825a3ef850dd8273f4e9715af37470",
+    "game_tree": "70f2ba72f4ce2122f98350c7a1e5f48bec89fec7",
+    "protocol": 23,
+    "platform": "web",
+    "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+    "threads": false,
+    "extensions": false,
+    "compiled_scripts": 375,
+    "resource_count": 1173,
+    "all_pck_resource_md5_valid": true,
+    "original_game_data_bundled": false,
+    "pck_sha256": "8799e9c5486eb6b93411093fff9dabe16320d7fdadc727e5a31614c47b5131bb",
+    "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+  },
+  "browser_runtime_checks": {
+    "version": "1.18.0",
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-dca8c9ec4cd89a5f1e77",
+      "new_cache": "cursed-engine-2-99a3c7cf19387b8b786e",
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "pck_sha256": "8799e9c5486eb6b93411093fff9dabe16320d7fdadc727e5a31614c47b5131bb",
+      "old_tab_wait_verified": true
+    },
+    "cache": {
+      "keys": [
+        "cursed-engine-2-99a3c7cf19387b8b786e"
+      ],
+      "packs": {
+        "cursed-engine-2-99a3c7cf19387b8b786e": "8799e9c5486eb6b93411093fff9dabe16320d7fdadc727e5a31614c47b5131bb"
+      },
+      "worker": "activated",
+      "waiting": null,
+      "isolated": true
+    },
+    "browser": "151.0.7922.34",
+    "runtime_errors": [],
+    "http_failures": [],
+    "fresh_start": {
+      "captured": true,
+      "engine_started": true
+    },
+    "upgraded_start": {
+      "captured": true,
+      "engine_started": true
+    },
+    "previous_start": {
+      "captured": true,
+      "engine_started": true,
+      "version": "1.17.0"
+    }
+  },
+  "hosted_files_count": 13551,
+  "hosted_manifest_sha256": "adb2c72ac05a10d9531c457136c35d40ed03853047be265a4b5f355ef76e817c",
+  "validation_references": [
+    "trials-balance-depth-2026-10-19.md",
+    "trials-species-rebalance-2026-10-19.md",
+    "issue-batch-36-45-2026-10-19.md",
+    "coop-progression-2026-10-19.md",
+    "ui-hints-quests-20261019/README.md"
+  ],
+  "limits": [
+    "Windows, macOS and Android packages were built and structurally audited but not executed on their target OS in this release pass.",
+    "macOS uses the official universal engine without the early native window-title patch and is unsigned. Android keeps the qualified production engine; startup logo artwork is packaged on every platform.",
+    "The longer Windows co-op frame-rate degradation remains unresolved. The stopped traversal experiment was not repeated.",
+    "Calculated Trials results cover native armor, cadence, spells and seeded bot scenarios; they do not establish optimal balance for all player strategies."
+  ]
+}

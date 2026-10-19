@@ -1,0 +1,166 @@
+{
+  "headless": [
+    {
+      "suite": "arena_species",
+      "exit": 0,
+      "seconds": 3.92,
+      "summary": [
+        "ARENA_SPECIES 2154 checks; failures=[]"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "arena_roster",
+      "exit": 0,
+      "seconds": 2.77,
+      "summary": [
+        "ARENA_ROSTER checks=1515 opening_pair_duplicate_rate=0.0775 failures=[]"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "arena_economy",
+      "exit": 0,
+      "seconds": 2.67,
+      "summary": [
+        "ARENA_ECONOMY 590 checks; failures=[]"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "arena_alliances",
+      "exit": 0,
+      "seconds": 3.77,
+      "summary": [
+        "ARENA_ALLIANCES 602 checks; failures=[]"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "arena_online",
+      "exit": 0,
+      "seconds": 23.3,
+      "summary": [
+        "ARENA_ONLINE 80 checks; failures=[]"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "arena_readability",
+      "exit": 0,
+      "seconds": 2.57,
+      "summary": [
+        "ARENA_READABILITY checks=51 failures=[]"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "coop_shared_checkpoint",
+      "exit": 0,
+      "seconds": 2.62,
+      "summary": [
+        "COOP_SHARED_CHECKPOINT 25 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "snapshot_codec",
+      "exit": 0,
+      "seconds": 2.87,
+      "summary": [
+        "SNAPSHOT_CODEC 209 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "creature_weapon_animations",
+      "exit": 0,
+      "seconds": 2.87,
+      "summary": [
+        "CREATURE_WEAPON_ANIMATIONS 196 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "xp_distribution",
+      "exit": 0,
+      "seconds": 2.52,
+      "summary": [
+        "XP_DISTRIBUTION 96 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "spell_stamina_wait",
+      "exit": 0,
+      "seconds": 7.63,
+      "summary": [
+        "SPELL_STAMINA_WAIT 47 checks []"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "authored_village_talk",
+      "exit": 0,
+      "seconds": 2.57,
+      "summary": [
+        "PASS commander selection rechecks a newly reachable route",
+        "LIA_HABURU_GUARDS 90 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "discord_ipc",
+      "exit": 0,
+      "fixture_correction": "Run with the local IPC responder; initial standalone test had no Discord server.",
+      "log": "Godot Engine v4.7.stable.custom_build - https://godotengine.org\n\n[trace 20:46:29 +2691ms] session f55477e811af: 1.18.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan\nPASS activity preserves whole localized characters within the UTF-8 limit\nPASS disabling clears and disconnects: true\n[trace 20:46:30 +3167ms] clean exit\n\nPASS real IPC: handshake, fragmented READY, activity, ping/pong, option clearing and clean exit\n"
+    }
+  ],
+  "rendered": [
+    {
+      "suite": "arena_deployment_guide_ui",
+      "locale": "en",
+      "renderer": "forward_plus",
+      "exit": 0,
+      "seconds": 32.67,
+      "summary": [
+        "DEPLOYMENT_GUIDE forward_plus checks=123 failures=[]"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "arena_species_ui",
+      "locale": "en",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 52.85,
+      "summary": [
+        "ARENA_SPECIES_UI en checks=572 failures=[]"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "arena_species_ui",
+      "locale": "ru",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 30.41,
+      "summary": [
+        "ARENA_SPECIES_UI ru checks=569 failures=[]"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "arena_species_ui",
+      "locale": "de",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 46.94,
+      "summary": [
+        "ARENA_SPECIES_UI de checks=569 failures=[]"
+      ],
+      "errors": []
+    }
+  ],
+  "translations": "Wiki world text: 180 entries in EN/RU/DE\nWiki reference text: 3886 source-checked EN/DE entries; RU uses original archives\nTranslations: 2809 entries; 141 dynamic wiki keys; 179 dynamic arena keys; 0 errors\n"
+}
