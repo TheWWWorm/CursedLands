@@ -1,0 +1,73 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+Vulkan 1.4.312 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090
+
+[trace 01:55:40 +5375ms] session 7ebccf1402d0: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, forward_plus / vulkan
+WARNING: SubViewport is not a child of a SubViewportContainer. get_screen_transform doesn't return the actual screen position.
+     at: get_screen_transform_internal (scene/main/viewport.cpp:5723)
+     GDScript backtrace (most recent call first):
+         [0] _update_font_sampling (res://src/ui/scroll_option_button.gd:28)
+         [1] _ready (res://src/ui/scroll_option_button.gd:16)
+         [2] _ready (res://src/ui/wiki_panel.gd:135)
+         [3] _add_ui (res://src/ui/game_hud.gd:1269)
+         [4] _ready (res://src/ui/game_hud.gd:167)
+         [5] _ready (res://src/game/game.gd:91)
+         [6] branch (res://../tools/tests/coop_story.gd:37)
+         [7] _ready (res://../tools/tests/training_coop.gd:19)
+         [8] _start (res://src/main.gd:90)
+         [9] _ready (res://src/main.gd:40)
+[trace 01:55:41 +6417ms] zone load bz2g (entrance 1)
+[trace 01:55:45 +10565ms] navigation prepared 3 classes in 5 ms
+[trace 01:55:48 +12796ms] shader warm-up: 24 of 24 materials, 1478 ms (zone's first picture 497 ms)
+[trace 01:55:48 +12813ms] zone ready bz2g
+[trace 01:55:48 +12887ms] zone load bz2g (from host)
+[trace 01:55:49 +14018ms] shader warm-up: 24 of 24 materials, 157 ms (zone's first picture 21 ms)
+[trace 01:55:49 +14036ms] zone ready bz2g (from host)
+PASS guest cannot refund the host's character
+PASS guest removes one skill rank through ENet
+PASS one-rank refund and other skills agree
+PASS skill rank can be bought back
+PASS skill unlearn/relearn cannot create points
+PASS guest removes one ability rank through ENet
+PASS ability can be bought back
+PASS ability unlearn/relearn preserves legacy credit and point budget
+PASS skill row has right-click unlearn action
+PASS right-clicking the name does not remove a rank
+PASS right-clicking the existing price button removes one rank
+PASS holding right button does not repeat refunds
+PASS left-clicking same button still buys next rank
+PASS right-click refund help captured
+PASS guest's older character has an enabled reset button
+PASS guest reset tooltip captured
+PASS guest UI/ENet reset reaches authority and presentation
+PASS refund amount agrees on both peers
+PASS guest learns first ability through authority
+PASS guest learns discounted second ability
+PASS displayed marginal price equals the host's charge
+PASS two queued reset clicks return to zero
+PASS duplicate request cannot pay twice
+PASS guest vanilla reset restores the original allocation on both peers
+PASS network vanilla restoration conserves the same point budget
+PASS explicit full choice resets both network copies
+PASS new infusion stock reaches the co-op guest
+PASS guest receives preserved older shop stock
+PASS zero-allocation screen captured
+[trace 01:55:51 +16112ms] save coop_training in bz2g
+[trace 01:55:51 +16113ms] save coop_training done (0)
+PASS co-op training saves
+[trace 01:55:51 +16423ms] load coop_training (from bz2g)
+[trace 01:55:51 +16443ms] zone load bz2g (entrance 1)
+[trace 01:55:52 +17003ms] zone teardown bz2g
+[trace 01:55:52 +17178ms] zone ready bz2g
+[trace 01:55:52 +17183ms] navigation prepared 3 classes in 3 ms
+[trace 01:55:52 +17186ms] load coop_training done in bz2g
+PASS co-op training reloads
+[trace 01:55:52 +17236ms] zone load bz2g (from host)
+[trace 01:55:53 +18000ms] zone teardown bz2g
+[trace 01:55:53 +18225ms] zone ready bz2g (from host)
+PASS guest reset remains correct across network reload
+PASS network reload clears future loot messages
+PASS network reload rebuilds trophies from the loaded purse
+PASS network reload clears future loot messages
+PASS network reload rebuilds trophies from the loaded purse
+TRAINING_COOP 36 checks 0 failures
+[trace 01:55:53 +18593ms] clean exit

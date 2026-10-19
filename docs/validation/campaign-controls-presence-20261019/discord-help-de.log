@@ -1,0 +1,9 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+Vulkan 1.4.312 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090
+
+[trace 02:20:34 +5424ms] session 797c88f6c1c8: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, forward_plus / vulkan
+TOOLTIP true Discord-Aktivität
+Zeigt den aktuellen Modus und Ort in Discord. Benötigt die Discord-Desktop-App und eine konfigurierte Anwendungs-ID. Ausschalten entfernt die Aktivität.
+(Remake-Option.)
+PASS Discord option layout captured de
+[trace 02:20:35 +7324ms] clean exit

@@ -1,0 +1,45 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 01:19:50 +4655ms] session ff39cd6c068e: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+[trace 01:19:51 +5144ms] zone load gz1g (entrance 1)
+[trace 01:19:55 +9229ms] navigation prepared 5 classes in 217 ms
+[trace 01:19:55 +9230ms] zone ready gz1g
+PASS direct command priority: loaded scene accepts third-person keyboard input
+PASS direct command priority: weapon attack is committed in mode 2
+PASS direct command priority: confirmed cast leads one bounded weapon repeat
+PASS direct command priority: buffering leaves the committed attack intact
+PASS direct command priority: spell executes despite continuous attack requests
+PASS direct command priority: attack spam does not build an unbounded queue
+PASS direct command priority: weapon attack is committed in mode 3
+PASS direct command priority: confirmed cast leads one bounded weapon repeat
+PASS direct command priority: buffering leaves the committed attack intact
+PASS direct command priority: spell executes despite continuous attack requests
+PASS direct command priority: attack spam does not build an unbounded queue
+PASS direct command priority: E cancels spell targeting and loots the aimed corpse
+PASS direct command priority: interact never self-casts the selected spell
+PASS direct command priority: single click approaches normally
+PASS direct command priority: double click upgrades approach without duplicate pickup
+PASS direct command priority: double click also upgrades an already active approach
+PASS direct command priority: ground attack-move carries selected aim -1
+PASS direct command priority: automatic engagement retains aim -1
+PASS direct command priority: ground attack-move carries selected aim 0
+PASS direct command priority: automatic engagement retains aim 0
+PASS direct command priority: ground attack-move carries selected aim 1
+PASS direct command priority: automatic engagement retains aim 1
+PASS direct command priority: ground attack-move carries selected aim 2
+PASS direct command priority: automatic engagement retains aim 2
+PASS direct command priority: ground attack-move carries selected aim 3
+PASS direct command priority: automatic engagement retains aim 3
+PASS direct command priority: ground attack-move carries selected aim 4
+PASS direct command priority: automatic engagement retains aim 4
+PASS direct command priority: ground attack-move carries selected aim 5
+PASS direct command priority: automatic engagement retains aim 5
+PASS direct command priority: cursor wheel stays on screen
+PASS direct command priority: wheel opens exactly at cursor when there is room
+PASS direct command priority: shifted wheel retains pointer hit testing
+PASS direct command priority: cursor wheel stays on screen
+PASS direct command priority: shifted wheel retains pointer hit testing
+PASS direct command priority: cursor wheel stays on screen
+PASS direct command priority: shifted wheel retains pointer hit testing
+DIRECT_COMMAND_PRIORITY {"checks":37,"failures":[]}
+[trace 01:19:55 +9862ms] clean exit

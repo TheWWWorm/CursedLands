@@ -1,0 +1,44 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 01:09:32 +4316ms] session ecfb41fedadd: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 01:09:37 +4248ms] session 1a6e888ed271: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+[trace 01:09:38 +4658ms] load paused-pose-0 (from )
+[trace 01:09:38 +4676ms] zone load gz1g (entrance 1)
+[trace 01:09:41 +7829ms] zone ready gz1g
+[trace 01:09:41 +8048ms] navigation prepared 5 classes in 217 ms
+[trace 01:09:41 +8054ms] load paused-pose-0 done in gz1g
+[trace 01:09:41 +12917ms] zone load gz1g (from host)
+[trace 01:09:44 +16062ms] zone ready gz1g (from host)
+[trace 01:09:44 +11322ms] load paused-pose-1 (from gz1g)
+[trace 01:09:44 +11355ms] zone load gz1g (entrance 1)
+[trace 01:09:45 +12231ms] zone teardown gz1g
+[trace 01:09:45 +12272ms] zone ready gz1g
+[trace 01:09:45 +12494ms] navigation prepared 5 classes in 220 ms
+[trace 01:09:45 +12501ms] load paused-pose-1 done in gz1g
+[trace 01:09:46 +17384ms] zone load gz1g (from host)
+[trace 01:09:46 +18086ms] zone teardown gz1g
+[trace 01:09:46 +18273ms] zone ready gz1g (from host)
+[trace 01:09:47 +13547ms] load paused-pose-2 (from gz1g)
+[trace 01:09:47 +13580ms] zone load gz1g (entrance 1)
+[trace 01:09:47 +14446ms] zone teardown gz1g
+[trace 01:09:47 +14476ms] zone ready gz1g
+[trace 01:09:48 +14697ms] navigation prepared 5 classes in 219 ms
+[trace 01:09:48 +14706ms] load paused-pose-2 done in gz1g
+[trace 01:09:48 +19605ms] zone load gz1g (from host)
+[trace 01:09:48 +20307ms] zone teardown gz1g
+[trace 01:09:49 +20502ms] zone ready gz1g (from host)
+[trace 01:09:49 +20589ms] esc menu open
+[trace 01:09:49 +15772ms] load paused-pose-1 (from gz1g)
+[trace 01:09:49 +15805ms] zone load gz1g (entrance 1)
+[trace 01:09:50 +16658ms] zone teardown gz1g
+[trace 01:09:50 +16701ms] zone ready gz1g
+[trace 01:09:50 +16919ms] navigation prepared 5 classes in 216 ms
+[trace 01:09:50 +16925ms] load paused-pose-1 done in gz1g
+[trace 01:09:50 +21812ms] zone load gz1g (from host)
+[trace 01:09:51 +22485ms] zone teardown gz1g
+[trace 01:09:51 +22676ms] zone ready gz1g (from host)
+[trace 01:09:51 +18009ms] clean exit
+PAUSED_LOAD_POSE checks=50 failures=0
+[trace 01:09:52 +23365ms] clean exit

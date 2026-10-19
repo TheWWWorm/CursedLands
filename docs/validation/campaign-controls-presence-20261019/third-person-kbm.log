@@ -1,0 +1,113 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 01:11:11 +4455ms] session cf45227afa4e: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+[trace 01:11:12 +4935ms] zone load gz1g (entrance 1)
+[trace 01:11:16 +9025ms] navigation prepared 5 classes in 216 ms
+[trace 01:11:16 +9025ms] zone ready gz1g
+PASS campaign: loaded scene accepts third-person keyboard input
+PASS campaign: spell hotkey selects native heal
+PASS campaign: sky-facing crosshair has no target
+PASS campaign: interaction prompt is reserved for interacting
+PASS campaign: explicit self-cast queues through authority without aiming at a portrait
+PASS campaign: successful self-cast ends targeting and keeps selection
+PASS campaign: queued self-cast reaches native execution and pays stamina
+PASS campaign: explicit self-cast refuses offensive spells
+PASS campaign: insufficient stamina keeps pending spell without a cast
+PASS campaign: cannot-cast effect prevents self-cast
+PASS campaign: lost training prevents self-cast
+PASS campaign: pointer input cannot consume selected self spell
+PASS campaign: loading input cannot consume selected self spell
+PASS campaign: focus input cannot consume selected self spell
+PASS campaign: pause input cannot consume selected self spell
+PASS campaign: blocked input cannot consume selected self spell
+PASS campaign: echo input cannot consume selected self spell
+PASS campaign: neutral input cannot consume selected self spell
+PASS campaign: panel input cannot consume selected self spell
+PASS campaign: actual crosshair picks prepared ally native silhouette
+PASS campaign: left click still casts selected heal on aimed ally
+PASS campaign: ally targeting retains owned caster
+PASS campaign: original item database supplies a friendly potion and charged wand
+PASS campaign: E targets selected belt item at its holder: tiny potion 1
+PASS campaign: item execution consumes potion/charge through normal native rule: tiny potion 1
+PASS campaign: E targets selected belt item at its holder: wand 1.rock|healing{}
+PASS campaign: item execution consumes potion/charge through normal native rule: wand 1.rock|healing{}
+PASS campaign: spent wand cannot self-cast
+PASS campaign: missing belt item cannot self-cast
+PASS campaign: nearby body has a clear original navigation location
+PASS campaign: body near feet is outside exact sky-facing crosshair
+PASS campaign: E posts ordinary loot approach despite missing exact silhouette
+PASS campaign: nearby loot action has a visible named prompt
+PASS campaign: ordinary approach/use animation collects loot once
+PASS campaign: repeating E cannot duplicate collected loot
+PASS campaign: hidden body is not selected by proximity
+PASS campaign: fogged body is not selected by proximity
+PASS campaign: invisible body is not selected by proximity
+PASS campaign: looted body is not selected by proximity
+PASS campaign: distant body is not selected by proximity
+PASS campaign: foreign_body body is not selected by proximity
+PASS campaign: nearby loot behind solid native-navigation span is refused
+PASS campaign: own original-multiplayer body remains eligible
+PASS campaign: crosshair deliberately selects farther body
+PASS campaign: explicit crosshair target precedes nearer loot
+[trace 01:11:17 +10182ms] zone load bz1g (entrance 1)
+[trace 01:11:20 +13176ms] zone teardown gz1g
+[trace 01:11:20 +13255ms] navigation prepared 2 classes in 7 ms
+[trace 01:11:20 +13255ms] zone ready bz1g
+PASS campaign: loaded scene accepts third-person keyboard input
+PASS campaign: interaction cancels targeting in safe zones too
+PASS campaign: safe zone refuses spell selection
+[trace 01:11:20 +13688ms] zone load bz2mpg (entrance 1)
+[trace 01:11:24 +17437ms] zone teardown bz1g
+[trace 01:11:24 +17575ms] navigation prepared 2 classes in 24 ms
+[trace 01:11:24 +17577ms] zone ready bz2mpg
+PASS original multiplayer Ingos: new native multiplayer game loads selected character
+PASS original multiplayer Ingos: loaded scene accepts third-person keyboard input
+PASS original multiplayer Ingos: interaction cancels targeting in safe zones too
+PASS original multiplayer Ingos: safe zone refuses spell selection
+PASS original multiplayer Ingos: loaded scene accepts third-person keyboard input
+PASS original multiplayer Ingos: spell hotkey selects native heal
+PASS original multiplayer Ingos: sky-facing crosshair has no target
+PASS original multiplayer Ingos: interaction prompt is reserved for interacting
+PASS original multiplayer Ingos: explicit self-cast queues through authority without aiming at a portrait
+PASS original multiplayer Ingos: successful self-cast ends targeting and keeps selection
+PASS original multiplayer Ingos: queued self-cast reaches native execution and pays stamina
+PASS original multiplayer Ingos: explicit self-cast refuses offensive spells
+PASS original multiplayer Ingos: insufficient stamina keeps pending spell without a cast
+PASS original multiplayer Ingos: cannot-cast effect prevents self-cast
+PASS original multiplayer Ingos: lost training prevents self-cast
+PASS original multiplayer Ingos: pointer input cannot consume selected self spell
+PASS original multiplayer Ingos: loading input cannot consume selected self spell
+PASS original multiplayer Ingos: focus input cannot consume selected self spell
+PASS original multiplayer Ingos: pause input cannot consume selected self spell
+PASS original multiplayer Ingos: blocked input cannot consume selected self spell
+PASS original multiplayer Ingos: echo input cannot consume selected self spell
+PASS original multiplayer Ingos: neutral input cannot consume selected self spell
+PASS original multiplayer Ingos: panel input cannot consume selected self spell
+PASS original multiplayer Ingos: actual crosshair picks prepared ally native silhouette
+PASS original multiplayer Ingos: left click still casts selected heal on aimed ally
+PASS original multiplayer Ingos: ally targeting retains owned caster
+PASS original multiplayer Ingos: original item database supplies a friendly potion and charged wand
+PASS original multiplayer Ingos: E targets selected belt item at its holder: tiny potion 1
+PASS original multiplayer Ingos: item execution consumes potion/charge through normal native rule: tiny potion 1
+PASS original multiplayer Ingos: E targets selected belt item at its holder: wand 1.rock|healing{}
+PASS original multiplayer Ingos: item execution consumes potion/charge through normal native rule: wand 1.rock|healing{}
+PASS original multiplayer Ingos: spent wand cannot self-cast
+PASS original multiplayer Ingos: missing belt item cannot self-cast
+PASS original multiplayer Ingos: nearby body has a clear original navigation location
+PASS original multiplayer Ingos: body near feet is outside exact sky-facing crosshair
+PASS original multiplayer Ingos: E posts ordinary loot approach despite missing exact silhouette
+PASS original multiplayer Ingos: nearby loot action has a visible named prompt
+PASS original multiplayer Ingos: ordinary approach/use animation collects loot once
+PASS original multiplayer Ingos: repeating E cannot duplicate collected loot
+PASS original multiplayer Ingos: hidden body is not selected by proximity
+PASS original multiplayer Ingos: fogged body is not selected by proximity
+PASS original multiplayer Ingos: invisible body is not selected by proximity
+PASS original multiplayer Ingos: looted body is not selected by proximity
+PASS original multiplayer Ingos: distant body is not selected by proximity
+PASS original multiplayer Ingos: foreign_body body is not selected by proximity
+PASS original multiplayer Ingos: nearby loot behind solid native-navigation span is refused
+PASS original multiplayer Ingos: own original-multiplayer body remains eligible
+PASS original multiplayer Ingos: crosshair deliberately selects farther body
+PASS original multiplayer Ingos: explicit crosshair target precedes nearer loot
+THIRD_PERSON_KBM 97 checks 0 failures
+[trace 01:11:30 +23609ms] clean exit

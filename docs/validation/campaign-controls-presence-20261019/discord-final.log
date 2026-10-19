@@ -1,0 +1,12 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.
+However, bear in mind that at the moment it can lead to project crashes or instability.
+So, unless you want to test the engine, set the "rendering/driver/threads/thread_model" project setting to 'Safe'.
+     at: setup2 (main/main.cpp:3514)
+
+[trace 01:52:28 +4380ms] session 0c28dd7cd4c7: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+PASS activity preserves whole localized characters within the UTF-8 limit
+PASS disabling clears and disconnects: true
+[trace 01:52:29 +4848ms] clean exit
+
+PASS real IPC: handshake, fragmented READY, activity, ping/pong, option clearing and clean exit

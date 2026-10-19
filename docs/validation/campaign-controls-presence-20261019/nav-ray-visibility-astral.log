@@ -1,0 +1,167 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 02:32:08 +4393ms] session e0e34da106b2: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+WARNING: SubViewport is not a child of a SubViewportContainer. get_screen_transform doesn't return the actual screen position.
+     at: get_screen_transform_internal (scene/main/viewport.cpp:5723)
+     GDScript backtrace (most recent call first):
+         [0] _update_font_sampling (res://src/ui/scroll_option_button.gd:28)
+         [1] _ready (res://src/ui/scroll_option_button.gd:16)
+         [2] _ready (res://src/ui/wiki_panel.gd:135)
+         [3] _add_ui (res://src/ui/game_hud.gd:1269)
+         [4] _ready (res://src/ui/game_hud.gd:167)
+         [5] _ready (res://src/game/game.gd:91)
+         [6] branch (res://../tools/tests/unit_visibility.gd:50)
+         [7] _ready (res://../tools/tests/unit_visibility.gd:68)
+         [8] _start (res://src/main.gd:90)
+         [9] _ready (res://src/main.gd:40)
+PASS start local co-op host
+PASS join local co-op
+[trace 02:32:09 +5553ms] zone load gz1h (entrance 1)
+[trace 02:32:23 +19460ms] navigation prepared 7 classes in 1310 ms
+[trace 02:32:23 +19478ms] zone ready gz1h
+[trace 02:32:26 +22738ms] zone load gz1h (from host)
+[trace 02:32:35 +32057ms] zone ready gz1h (from host)
+PASS 997056 dead=true offset=(0.0, 0.0) all facings/model/minimap player=0
+PASS 997056 dead=true offset=(0.0, 0.0) command relevance player=0
+PASS 997056 dead=true offset=(0.0, 0.0) all facings/model/minimap player=1
+PASS 997056 dead=true offset=(0.0, 0.0) command relevance player=1
+PASS 997056 dead=true offset=(0.2, 0.0) all facings/model/minimap player=0
+PASS 997056 dead=true offset=(0.2, 0.0) command relevance player=0
+PASS 997056 dead=true offset=(0.2, 0.0) all facings/model/minimap player=1
+PASS 997056 dead=true offset=(0.2, 0.0) command relevance player=1
+PASS 997056 dead=true offset=(-0.2, 0.0) all facings/model/minimap player=0
+PASS 997056 dead=true offset=(-0.2, 0.0) command relevance player=0
+PASS 997056 dead=true offset=(-0.2, 0.0) all facings/model/minimap player=1
+PASS 997056 dead=true offset=(-0.2, 0.0) command relevance player=1
+PASS 997056 dead=true offset=(0.0, 0.2) all facings/model/minimap player=0
+PASS 997056 dead=true offset=(0.0, 0.2) command relevance player=0
+PASS 997056 dead=true offset=(0.0, 0.2) all facings/model/minimap player=1
+PASS 997056 dead=true offset=(0.0, 0.2) command relevance player=1
+PASS 997056 dead=true offset=(0.0, -0.2) all facings/model/minimap player=0
+PASS 997056 dead=true offset=(0.0, -0.2) command relevance player=0
+PASS 997056 dead=true offset=(0.0, -0.2) all facings/model/minimap player=1
+PASS 997056 dead=true offset=(0.0, -0.2) command relevance player=1
+PASS 997322 dead=false offset=(0.0, 0.0) all facings/model/minimap player=0
+PASS 997322 dead=false offset=(0.0, 0.0) command relevance player=0
+PASS 997322 dead=false offset=(0.0, 0.0) all facings/model/minimap player=1
+PASS 997322 dead=false offset=(0.0, 0.0) command relevance player=1
+PASS 997322 dead=false offset=(0.2, 0.0) all facings/model/minimap player=0
+PASS 997322 dead=false offset=(0.2, 0.0) command relevance player=0
+PASS 997322 dead=false offset=(0.2, 0.0) all facings/model/minimap player=1
+PASS 997322 dead=false offset=(0.2, 0.0) command relevance player=1
+PASS 997322 dead=false offset=(-0.2, 0.0) all facings/model/minimap player=0
+PASS 997322 dead=false offset=(-0.2, 0.0) command relevance player=0
+PASS 997322 dead=false offset=(-0.2, 0.0) all facings/model/minimap player=1
+PASS 997322 dead=false offset=(-0.2, 0.0) command relevance player=1
+PASS 997322 dead=false offset=(0.0, 0.2) all facings/model/minimap player=0
+PASS 997322 dead=false offset=(0.0, 0.2) command relevance player=0
+PASS 997322 dead=false offset=(0.0, 0.2) all facings/model/minimap player=1
+PASS 997322 dead=false offset=(0.0, 0.2) command relevance player=1
+PASS 997322 dead=false offset=(0.0, -0.2) all facings/model/minimap player=0
+PASS 997322 dead=false offset=(0.0, -0.2) command relevance player=0
+PASS 997322 dead=false offset=(0.0, -0.2) all facings/model/minimap player=1
+PASS 997322 dead=false offset=(0.0, -0.2) command relevance player=1
+PASS 1001005 dead=true offset=(0.0, 0.0) all facings/model/minimap player=0
+PASS 1001005 dead=true offset=(0.0, 0.0) command relevance player=0
+PASS 1001005 dead=true offset=(0.0, 0.0) all facings/model/minimap player=1
+PASS 1001005 dead=true offset=(0.0, 0.0) command relevance player=1
+PASS 1001005 dead=true offset=(0.2, 0.0) all facings/model/minimap player=0
+PASS 1001005 dead=true offset=(0.2, 0.0) command relevance player=0
+PASS 1001005 dead=true offset=(0.2, 0.0) all facings/model/minimap player=1
+PASS 1001005 dead=true offset=(0.2, 0.0) command relevance player=1
+PASS 1001005 dead=true offset=(-0.2, 0.0) all facings/model/minimap player=0
+PASS 1001005 dead=true offset=(-0.2, 0.0) command relevance player=0
+PASS 1001005 dead=true offset=(-0.2, 0.0) all facings/model/minimap player=1
+PASS 1001005 dead=true offset=(-0.2, 0.0) command relevance player=1
+PASS 1001005 dead=true offset=(0.0, 0.2) all facings/model/minimap player=0
+PASS 1001005 dead=true offset=(0.0, 0.2) command relevance player=0
+PASS 1001005 dead=true offset=(0.0, 0.2) all facings/model/minimap player=1
+PASS 1001005 dead=true offset=(0.0, 0.2) command relevance player=1
+PASS 1001005 dead=true offset=(0.0, -0.2) all facings/model/minimap player=0
+PASS 1001005 dead=true offset=(0.0, -0.2) command relevance player=0
+PASS 1001005 dead=true offset=(0.0, -0.2) all facings/model/minimap player=1
+PASS 1001005 dead=true offset=(0.0, -0.2) command relevance player=1
+PASS 1002008 dead=true offset=(0.0, 0.0) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(0.0, 0.0) command relevance player=0
+PASS 1002008 dead=true offset=(0.0, 0.0) all facings/model/minimap player=1
+PASS 1002008 dead=true offset=(0.0, 0.0) command relevance player=1
+PASS 1002008 dead=true offset=(0.2, 0.0) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(0.2, 0.0) command relevance player=0
+PASS 1002008 dead=true offset=(0.2, 0.0) all facings/model/minimap player=1
+PASS 1002008 dead=true offset=(0.2, 0.0) command relevance player=1
+PASS 1002008 dead=true offset=(-0.2, 0.0) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(-0.2, 0.0) command relevance player=0
+PASS 1002008 dead=true offset=(-0.2, 0.0) all facings/model/minimap player=1
+PASS 1002008 dead=true offset=(-0.2, 0.0) command relevance player=1
+PASS 1002008 dead=true offset=(0.0, 0.2) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(0.0, 0.2) command relevance player=0
+PASS 1002008 dead=true offset=(0.0, 0.2) all facings/model/minimap player=1
+PASS 1002008 dead=true offset=(0.0, 0.2) command relevance player=1
+PASS 1002008 dead=true offset=(0.0, -0.2) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(0.0, -0.2) command relevance player=0
+PASS 1002008 dead=true offset=(0.0, -0.2) all facings/model/minimap player=1
+PASS 1002008 dead=true offset=(0.0, -0.2) command relevance player=1
+PASS 1002008 dead=false offset=(0.0, 0.0) all facings/model/minimap player=0
+PASS 1002008 dead=false offset=(0.0, 0.0) command relevance player=0
+PASS 1002008 dead=false offset=(0.0, 0.0) all facings/model/minimap player=1
+PASS 1002008 dead=false offset=(0.0, 0.0) command relevance player=1
+PASS 1002008 dead=false offset=(0.2, 0.0) all facings/model/minimap player=0
+PASS 1002008 dead=false offset=(0.2, 0.0) command relevance player=0
+PASS 1002008 dead=false offset=(0.2, 0.0) all facings/model/minimap player=1
+PASS 1002008 dead=false offset=(0.2, 0.0) command relevance player=1
+PASS 1002008 dead=false offset=(-0.2, 0.0) all facings/model/minimap player=0
+PASS 1002008 dead=false offset=(-0.2, 0.0) command relevance player=0
+PASS 1002008 dead=false offset=(-0.2, 0.0) all facings/model/minimap player=1
+PASS 1002008 dead=false offset=(-0.2, 0.0) command relevance player=1
+PASS 1002008 dead=false offset=(0.0, 0.2) all facings/model/minimap player=0
+PASS 1002008 dead=false offset=(0.0, 0.2) command relevance player=0
+PASS 1002008 dead=false offset=(0.0, 0.2) all facings/model/minimap player=1
+PASS 1002008 dead=false offset=(0.0, 0.2) command relevance player=1
+PASS 1002008 dead=false offset=(0.0, -0.2) all facings/model/minimap player=0
+PASS 1002008 dead=false offset=(0.0, -0.2) command relevance player=0
+PASS 1002008 dead=false offset=(0.0, -0.2) all facings/model/minimap player=1
+PASS 1002008 dead=false offset=(0.0, -0.2) command relevance player=1
+PASS 1002008 dead=true offset=(0.0, 0.0) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(0.0, 0.0) command relevance player=0
+PASS 1002008 dead=true offset=(0.0, 0.0) all facings/model/minimap player=1
+PASS 1002008 dead=true offset=(0.0, 0.0) command relevance player=1
+PASS 1002008 dead=true offset=(0.2, 0.0) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(0.2, 0.0) command relevance player=0
+PASS 1002008 dead=true offset=(0.2, 0.0) all facings/model/minimap player=1
+PASS 1002008 dead=true offset=(0.2, 0.0) command relevance player=1
+PASS 1002008 dead=true offset=(-0.2, 0.0) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(-0.2, 0.0) command relevance player=0
+PASS 1002008 dead=true offset=(-0.2, 0.0) all facings/model/minimap player=1
+PASS 1002008 dead=true offset=(-0.2, 0.0) command relevance player=1
+PASS 1002008 dead=true offset=(0.0, 0.2) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(0.0, 0.2) command relevance player=0
+PASS 1002008 dead=true offset=(0.0, 0.2) all facings/model/minimap player=1
+PASS 1002008 dead=true offset=(0.0, 0.2) command relevance player=1
+PASS 1002008 dead=true offset=(0.0, -0.2) all facings/model/minimap player=0
+PASS 1002008 dead=true offset=(0.0, -0.2) command relevance player=0
+PASS 1002008 dead=true offset=(0.0, -0.2) all facings/model/minimap player=1
+PASS 1002008 dead=true offset=(0.0, -0.2) command relevance player=1
+PASS 33318975 dead=true offset=(0.0, 0.0) all facings/model/minimap player=0
+PASS 33318975 dead=true offset=(0.0, 0.0) command relevance player=0
+PASS 33318975 dead=true offset=(0.0, 0.0) all facings/model/minimap player=1
+PASS 33318975 dead=true offset=(0.0, 0.0) command relevance player=1
+PASS 33318975 dead=true offset=(0.2, 0.0) all facings/model/minimap player=0
+PASS 33318975 dead=true offset=(0.2, 0.0) command relevance player=0
+PASS 33318975 dead=true offset=(0.2, 0.0) all facings/model/minimap player=1
+PASS 33318975 dead=true offset=(0.2, 0.0) command relevance player=1
+PASS 33318975 dead=true offset=(-0.2, 0.0) all facings/model/minimap player=0
+PASS 33318975 dead=true offset=(-0.2, 0.0) command relevance player=0
+PASS 33318975 dead=true offset=(-0.2, 0.0) all facings/model/minimap player=1
+PASS 33318975 dead=true offset=(-0.2, 0.0) command relevance player=1
+PASS 33318975 dead=true offset=(0.0, 0.2) all facings/model/minimap player=0
+PASS 33318975 dead=true offset=(0.0, 0.2) command relevance player=0
+PASS 33318975 dead=true offset=(0.0, 0.2) all facings/model/minimap player=1
+PASS 33318975 dead=true offset=(0.0, 0.2) command relevance player=1
+PASS 33318975 dead=true offset=(0.0, -0.2) all facings/model/minimap player=0
+PASS 33318975 dead=true offset=(0.0, -0.2) command relevance player=0
+PASS 33318975 dead=true offset=(0.0, -0.2) all facings/model/minimap player=1
+PASS 33318975 dead=true offset=(0.0, -0.2) command relevance player=1
+PASS fixture exercises blocked eye rays, not only clear ground
+PASS unnoticed distant target stays outside relevance radius
+UNIT_VISIBILITY 144 checks 0 failures; 24 blocked eye samples
+[trace 02:32:37 +34166ms] clean exit

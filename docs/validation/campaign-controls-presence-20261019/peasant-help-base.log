@@ -1,0 +1,12 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 01:19:50 +4659ms] session 90b528c218ed: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+PASS authored fearful peasant exists
+PASS authored Fear(1) and help radius retained
+PASS seeing danger calls nearby allies only
+PASS warning waits the original 26 ticks
+PASS oldest repeated warning reaches an ally at the danger point
+PASS distant ally remains unaware
+PASS warning remains visible to activity scheduling
+PASS being hit calls for help too
+[trace 01:19:52 +6161ms] clean exit

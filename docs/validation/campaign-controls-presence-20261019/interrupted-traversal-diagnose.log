@@ -1,0 +1,20 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 02:46:17 +4287ms] session 267832756b27: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+[trace 02:46:17 +4288ms] previous session 20717b193a50 ended unexpectedly in gz17h; its log: user://logs/godot2026-10-19T02.46.13.log
+[trace 02:46:18 +4741ms] load quick (from )
+[trace 02:46:18 +4744ms] zone load gz17h (entrance 1)
+[trace 02:46:24 +11484ms] zone ready gz17h
+[trace 02:46:25 +12075ms] navigation prepared 6 classes in 586 ms
+[trace 02:46:25 +12076ms] load quick done in gz17h
+LOAD true
+HERO 1500000001 position=(352.8293, 117.0823) blocked=false metadata=[&"hero", &"hate"] gait=2 mana=760.739440917969 class=3
+PATH 1500000001 (356.0, 121.0) count=10 end=(356.0, 121.0)
+COMMAND {  } [{ "type": "move", "to": (356.0, 121.0), "gait": true, "run": false, "path_notice": true }]
+PATH 1500000001 (365.0, 130.0) count=28 end=(365.0, 130.0)
+COMMAND {  } [{ "type": "move", "to": (365.0, 130.0), "gait": true, "run": false, "path_notice": true }]
+PATH 1500000001 (350.0, 235.0) count=291 end=(315.75, 245.75)
+COMMAND {  } [{ "type": "move", "to": (350.0, 235.0), "gait": true, "run": false, "path_notice": true }]
+PATH 1500000001 (350.0, 110.0) count=40 end=(350.0, 110.0)
+COMMAND {  } [{ "type": "move", "to": (350.0, 110.0), "gait": true, "run": false, "path_notice": true }]
+[trace 02:46:26 +13341ms] clean exit

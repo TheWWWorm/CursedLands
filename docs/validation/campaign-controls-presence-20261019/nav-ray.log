@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 02:28:04 +4382ms] session c61162e0de05: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+NAV_RAY {"checks":17835,"failures":0,"long_native_us":22222,"long_script_us":423003}
+[trace 02:28:06 +5632ms] clean exit

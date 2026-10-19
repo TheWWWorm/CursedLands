@@ -1,0 +1,8 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 01:13:31 +4316ms] session 7ec4af2cdbda: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+FACE model ["infaunhumame2face", "facem00"] proto complexion (0.2, 0.35, 0.9) fields ["parts", "links", "bones"]
+MORPH (0.0, 0.0, 0.0) @MeshInstance3D@9 [P: (-0.602681, -0.789166, -0.778341), S: (1.173088, 1.437313, 1.542589)]
+MORPH (0.2, 0.35, 0.9) @MeshInstance3D@10 [P: (-0.602681, -0.789166, -0.778341), S: (1.173088, 1.437313, 1.542589)]
+MORPH (1.0, 1.0, 1.0) @MeshInstance3D@11 [P: (-0.602681, -0.789166, -0.778341), S: (1.173088, 1.437313, 1.542589)]
+[trace 01:13:31 +4514ms] clean exit

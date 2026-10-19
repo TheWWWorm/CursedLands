@@ -1,0 +1,29 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 01:53:14 +4771ms] session 84fb3616caff: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+[trace 01:53:14 +4772ms] previous session f39db2ca6253 ended unexpectedly in (menu); its log: user://logs/godot2026-10-19T01.53.09.log
+PASS prone tactical caster rises to kneeling before casting
+PASS quiet snapshot immediately places saved facing and position
+TRANSITION 2 ucross10 at 0.0
+PASS posture transition starts at its first frame
+TRANSITION 0 ucross04 at 0.0
+PASS posture transition starts at its first frame
+TRANSITION 1 ucross12 at 0.0
+PASS posture transition starts at its first frame
+TRANSITION 2 ucross10 at 0.0
+PASS posture transition starts at its first frame
+TRANSITION 0 ucross04 at 0.0
+PASS posture transition starts at its first frame
+PASS HUD sends requested posture to authority
+FAIL in-flight old snapshot cannot flash the requested end pose
+FAIL accepted posture starts its cross from the displayed pose
+PASS accepted posture completes
+PASS HUD sends requested posture to authority
+FAIL in-flight old snapshot cannot flash the requested end pose
+FAIL accepted posture starts its cross from the displayed pose
+PASS accepted posture completes
+PASS HUD sends requested posture to authority
+FAIL in-flight old snapshot cannot flash the requested end pose
+FAIL accepted posture starts its cross from the displayed pose
+PASS accepted posture completes
+[trace 01:53:16 +6227ms] clean exit
