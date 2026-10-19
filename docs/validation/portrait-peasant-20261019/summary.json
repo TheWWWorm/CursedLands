@@ -1,0 +1,90 @@
+{
+  "source": "b7a04778 plus game/src/ui/portrait.gd working-tree fix",
+  "runtime_sha256": "addf81f6e6f4202d9c92a54ea799041fd3d39976bda01c02a46cac0a83a28382",
+  "pack_sha256": "fd33d0c67cd424d560dc0e6312fe2fa1931be91da615e12b0278edd34f58e59f",
+  "before_pack_sha256": "e91e970396ad549cd76f9c65380b931cedf011a374179bd6814d8f80a77bc9f6",
+  "platform": "Ubuntu 24.04.5, NVIDIA RTX 3090, Forward+, render-thread safe",
+  "graphics": "Peasant encounters: Ultra, 2x. Portrait fixture: native offscreen face rendering.",
+  "comparison": [
+    {
+      "side": "own",
+      "first": 0,
+      "last": 8,
+      "identical_png": true
+    },
+    {
+      "side": "own",
+      "first": 1,
+      "last": 9,
+      "identical_png": true
+    },
+    {
+      "side": "friend",
+      "first": 0,
+      "last": 8,
+      "identical_png": true
+    },
+    {
+      "side": "friend",
+      "first": 1,
+      "last": 9,
+      "identical_png": true
+    }
+  ],
+  "encounters": {
+    "base": {
+      "fear": true,
+      "first_delivery": {
+        "notice": "{ 1389589744476: U1500000001:<Node3D#1389589744476> }",
+        "point": "(145.0152, 93.01524)",
+        "suspect": "{ \"pos\": (145.0152, 93.01524), \"l0\": 900.0, \"d\": -3.0, \"t0\": 16.1699999999999, \"last\": 16.1699999999999, \"m\": 900.0, \"active\": false, \"look\": [], \"busy\": false }",
+        "time": 16.1699999999999,
+        "unit": 47536
+      },
+      "first_peasant_call": {
+        "caller": 150115,
+        "point": "(145.0152, 93.01524)",
+        "recipients": [
+          47536,
+          150116
+        ],
+        "time": 14.74
+      },
+      "guard_action": "attack",
+      "guard_distance": 10.2836771011353,
+      "hero_alive": false,
+      "investigation": false,
+      "matched_deliveries": 136,
+      "pass": true,
+      "peasant_calls_to_guard": 142,
+      "warning": true
+    },
+    "expansion": {
+      "fear": true,
+      "first_delivery": {
+        "notice": "{  }",
+        "point": "(185.6467, 172.0796)",
+        "suspect": "{ \"pos\": (185.6467, 172.0796), \"l0\": 900.0, \"d\": -3.0, \"t0\": 3.575, \"last\": 3.575, \"m\": 900.0, \"active\": false, \"look\": [], \"busy\": false }",
+        "time": 3.575,
+        "unit": 21322
+      },
+      "first_peasant_call": {
+        "caller": 153729,
+        "point": "(185.6467, 172.0796)",
+        "recipients": [
+          21322,
+          645637
+        ],
+        "time": 2.145
+      },
+      "guard_action": "idle",
+      "guard_distance": 4.5199031829834,
+      "hero_alive": true,
+      "investigation": true,
+      "matched_deliveries": 106,
+      "pass": true,
+      "peasant_calls_to_guard": 107,
+      "warning": true
+    }
+  }
+}

@@ -166,11 +166,17 @@ screenshots include maximum-rank refund controls, bulk deletion and Discord help
   `docs/integrations/discord.md`.
 - **Peasant help:** authored base-game and expansion records plus fear/hit/ally
   delivery checks passed (eight each). The existing implementation already uses
-  the original help radius and delay. No peasant production change was made;
-  these checks do not reproduce a complete rendered quest encounter.
+  the original help radius and delay. Subsequent
+  [rendered authored encounters](../portrait-peasant-20261019/README.md)
+  traced actual peasant calls and guard receipts in both campaigns. No peasant
+  production change was made; the report distinguishes range and perception
+  preconditions from delivery failures.
 - **Zak's portrait:** repeated animation updates and complexion comparisons did
-  not reproduce nonuniform stretching. Selected and unselected portraits use
-  different intended sizes. No speculative portrait change was made.
+  not initially reproduce nonuniform stretching. Later rendered comparisons
+  found [physics interpolation inside portrait viewports](../portrait-peasant-20261019/README.md),
+  which is now disabled for their UI-driven models and cameras. Own and remote
+  portraits use different intended sizes; selection changes the head pose.
+  The exact degree of elongation in the supplied screenshot remains unconfirmed.
 - **Platforms:** rendered gameplay and UI were tested on Linux. Windows native
   compilation is not a substitute for Windows gameplay validation.
 

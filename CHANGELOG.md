@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Keep portrait head poses on the UI frame clock, preventing physics interpolation from blending selection and idle animations inside portrait viewports.
+
 - Attach creature spell effects to their animated mouths, eyes, horns, hands or staffs, and physical shots to their weapon or throwing hand. Preserve low launch heights and captured fireball origins when replaying effects.
 - Light each will-o'-the-wisp crystal's original faceted surface with a gentle, staggered pulse across the creature family. Preserve crystal silhouettes, colors, motion, invisibility and death animation while improving visibility against grass and in darkness, including without bloom.
 - Restore the original ambient wisp stars across the whole creature, including their flicker, running cadence and finite lifetime.

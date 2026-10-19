@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 05:13:11 +4263ms] session b119da880e54: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+PASS portrait viewport test parses
+[trace 05:13:11 +4470ms] clean exit

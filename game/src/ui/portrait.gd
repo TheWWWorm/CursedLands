@@ -146,10 +146,14 @@ func show_unit(u: GameUnit) -> void:
 	var m := EIUnitModel.create(info, true)
 	if m == null:
 		return
+	# An own-world SubViewport starts a new 3D interpolation hierarchy.
+	# UI poses update per rendered frame, not on the world's physics clock.
+	m.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	vp.add_child(m)
 	m.act("idle")
 	_model = m
 	_cam = Camera3D.new()
+	_cam.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	_cam.fov = 30.0
 	vp.add_child(_cam)
 	_framed = 0
@@ -345,9 +349,13 @@ func _build_face(vp: SubViewport, names: PackedStringArray, c: Vector3) -> bool:
 	# rotation is the head motion (_update_head).
 	vp.remove_child(n)
 	_pivot = Node3D.new()
+	# Do not interpolate selection/idle poses between unrelated physics ticks.
+	# In particular, the root window's OFF mode does not cross this 3D world.
+	_pivot.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	vp.add_child(_pivot)
 	_pivot.add_child(n)
 	var cam := Camera3D.new()
+	cam.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	_face_cam = cam
 	_box_cam_size = maxf(box.size.x, box.size.z) * 1.05
 	vp.add_child(cam)
