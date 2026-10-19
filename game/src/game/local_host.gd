@@ -227,18 +227,19 @@ class SinglePauseObserver extends Node:
 func _sync_single_clock() -> void:
 	if not frontend or not single_player or not _ready_owner or not CoopProgress.peer_alive(multiplayer, 1):
 		return
-	var value := [get_tree().paused, Engine.time_scale, session.saved_play_clock().paused]
+	var value := [get_tree().paused, Engine.time_scale, session.saved_play_clock().paused, session.field_speed]
 	if value != _single_clock:
 		_single_clock = value
-		_rpc_single_clock.rpc_id(1, bool(value[0]), float(value[1]), bool(value[2]))
+		_rpc_single_clock.rpc_id(1, bool(value[0]), float(value[1]), bool(value[2]), int(value[3]))
 
 
 @rpc("any_peer", "call_remote", "reliable")
-func _rpc_single_clock(paused: bool, rate: float, gameplay_paused := false) -> void:
+func _rpc_single_clock(paused: bool, rate: float, gameplay_paused := false, field_rate := -1) -> void:
 	if not single_player or not authorized(multiplayer.get_remote_sender_id()) \
 			or not is_finite(rate) or rate <= 0.0 or rate > 8.0:
 		return
-	saved_clock = {"paused":gameplay_paused, "speed":int(rate > 1.0)}
+	session.field_speed = clampi(field_rate if field_rate >= 0 else int(rate > 1.0), 0, 1)
+	saved_clock = session._play_clock(gameplay_paused, int(rate > 1.0))
 	Engine.time_scale = rate
 	get_tree().paused = paused
 	if session.game:
@@ -278,7 +279,9 @@ func _rpc_request(serial: int, command: String, data: Dictionary) -> void:
 		return
 	var result := {"ok": true}
 	if single_player and command in ["save", "measure_save"] and data.get("play_clock") is Dictionary:
-		saved_clock = {"paused":bool(data.play_clock.get("paused",false)),"speed":clampi(int(data.play_clock.get("speed",0)),0,1)}
+		var rate := clampi(int(data.play_clock.get("speed", 0)), 0, 1)
+		session.field_speed = clampi(int(data.play_clock.get("field_speed", rate)), 0, 1)
+		saved_clock = session._play_clock(bool(data.play_clock.get("paused", false)), rate)
 	match command:
 		"campaign":
 			await session.new_campaign(bool(data.get("intro", true)))

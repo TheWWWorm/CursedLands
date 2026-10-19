@@ -1,0 +1,26 @@
+--- a/scene/main/viewport.cpp
++++ b/scene/main/viewport.cpp
+@@ -1556,6 +1556,7 @@
+ 
+ 	if (gui.tooltip_timer.is_valid()) {
+ 		gui.tooltip_timer->release_connections();
++		gui.tooltip_timer->set_time_left(0);
+ 		gui.tooltip_timer = Ref<SceneTreeTimer>();
+ 	}
+ 	if (gui.tooltip_popup) {
+@@ -1608,6 +1609,7 @@
+ 
+ 	if (gui.tooltip_timer.is_valid()) {
+ 		gui.tooltip_timer->release_connections();
++		gui.tooltip_timer->set_time_left(0);
+ 		gui.tooltip_timer = Ref<SceneTreeTimer>();
+ 	}
+ 	gui.tooltip_control = p_control;
+@@ -2138,6 +2140,7 @@
+ 					if (over != gui.tooltip_control || gui.tooltip_pos.distance_squared_to(new_tooltip_pos) > 25) {
+ 						if (gui.tooltip_timer.is_valid()) {
+ 							gui.tooltip_timer->release_connections();
++							gui.tooltip_timer->set_time_left(0);
+ 						}
+ 						gui.tooltip_control = over;
+ 						gui.tooltip_pos = new_tooltip_pos;

@@ -20,6 +20,19 @@ build instructions. Adding a patch here does not update installed templates.
 13. `forward-shadow-blend-guard.patch`
 14. `cache-missing-animation-targets.patch`
 15. `boot-window-title.patch`
+16. `cancelled-tooltip-timers.patch`
+
+The sixteenth patch expires a native tooltip timer when its tooltip is cancelled,
+replaced by a new hover, or shown explicitly. Disconnecting its callback alone
+leaves it in SceneTree's idle and physics scans until its original deadline.
+Cursed Lands delays native tips while its own localized TipLayer displays them;
+without this patch, mouse movement accumulates long-lived timers even after
+leaving gameplay. Active tooltip delays and ordinary popup behavior are unchanged.
+Run `tests/tooltip_timer_retention.gd` in a rebuilt template, followed by the
+game's `tools/tests/tooltip_lifetime_ui.gd`. The former includes 100,000 hover
+events, paused play, zero/double time scale and ordinary native tooltip controls.
+This fix requires a rebuilt executable; exporting a new game pack alone does
+not apply it. Other platform templates must include this patch when rebuilt.
 
 The fifteenth patch applies `application/config/name` before the main window
 is shown, so the project's boot splash already has the game's name in its

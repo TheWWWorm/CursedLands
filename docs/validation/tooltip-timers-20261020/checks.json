@@ -1,0 +1,208 @@
+{
+  "tooltip-baseline": {
+    "renderer": "gl_compatibility",
+    "exit": 0,
+    "seconds": 42.58,
+    "summary": [
+      "RETENTION {\"animations\":0,\"label\":\"hover baseline\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":2078.0,\"physics_ms\":0.336,\"process_ms\":0.938,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 10000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":12082.0,\"physics_ms\":0.271,\"process_ms\":2.862,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 20000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":22082.0,\"physics_ms\":0.391,\"process_ms\":2.791,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 30000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":32082.0,\"physics_ms\":1.41,\"process_ms\":2.59,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 40000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":42082.0,\"physics_ms\":0.72,\"process_ms\":2.704,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 50000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":52082.0,\"physics_ms\":1.057,\"process_ms\":3.433,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 60000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":62082.0,\"physics_ms\":1.528,\"process_ms\":4.064,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 70000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":72082.0,\"physics_ms\":1.894,\"process_ms\":4.495,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 80000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":82082.0,\"physics_ms\":1.956,\"process_ms\":4.083,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 90000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":92082.0,\"physics_ms\":2.38,\"process_ms\":4.527,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 100000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":102082.0,\"physics_ms\":2.562,\"process_ms\":4.474,\"tweens\":0}",
+      "RETENTION {\"animations\":8,\"label\":\"menu after hover\",\"meshes\":191,\"morphs\":3,\"nodes\":933.0,\"objects\":105064.0,\"physics_ms\":6.38,\"process_ms\":6.861,\"tweens\":0}"
+    ],
+    "errors": []
+  },
+  "tooltip-fixed-engine-final": {
+    "renderer": "gl_compatibility",
+    "exit": 0,
+    "seconds": 42.98,
+    "summary": [
+      "RETENTION {\"animations\":0,\"label\":\"hover baseline\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":2078.0,\"physics_ms\":0.388,\"process_ms\":1.329,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 10000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":2083.0,\"physics_ms\":0.026,\"process_ms\":2.327,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 20000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":2083.0,\"physics_ms\":0.036,\"process_ms\":2.292,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 30000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":2083.0,\"physics_ms\":0.025,\"process_ms\":2.657,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 40000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":2083.0,\"physics_ms\":0.024,\"process_ms\":2.23,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 50000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":2083.0,\"physics_ms\":0.021,\"process_ms\":1.981,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 60000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":2083.0,\"physics_ms\":0.022,\"process_ms\":3.365,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 70000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":2083.0,\"physics_ms\":0.021,\"process_ms\":2.892,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 80000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":2083.0,\"physics_ms\":0.019,\"process_ms\":2.996,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 90000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":2083.0,\"physics_ms\":0.027,\"process_ms\":3.087,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 100000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":19.0,\"objects\":2083.0,\"physics_ms\":0.041,\"process_ms\":27.665,\"tweens\":0}",
+      "RETENTION {\"animations\":8,\"label\":\"menu after hover\",\"meshes\":191,\"morphs\":3,\"nodes\":933.0,\"objects\":5068.0,\"physics_ms\":0.029,\"process_ms\":9.929,\"tweens\":0}"
+    ],
+    "errors": []
+  },
+  "tooltip-windows-baseline": {
+    "exit": 0,
+    "seconds": 29.46,
+    "summary": [
+      "RETENTION {\"animations\":0,\"label\":\"hover baseline\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":2134.0,\"physics_ms\":0.308,\"process_ms\":191.66,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 10000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":12133.0,\"physics_ms\":0.244,\"process_ms\":4.13,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 20000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":22133.0,\"physics_ms\":0.586,\"process_ms\":4.384,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 30000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":32133.0,\"physics_ms\":0.916,\"process_ms\":4.364,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 40000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":42133.0,\"physics_ms\":1.256,\"process_ms\":4.271,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 50000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":52133.0,\"physics_ms\":1.081,\"process_ms\":5.155,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 60000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":62133.0,\"physics_ms\":1.565,\"process_ms\":5.139,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 70000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":72133.0,\"physics_ms\":1.929,\"process_ms\":3.177,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 80000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":82133.0,\"physics_ms\":2.225,\"process_ms\":6.23,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 90000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":92133.0,\"physics_ms\":2.525,\"process_ms\":5.355,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 100000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":102133.0,\"physics_ms\":2.775,\"process_ms\":3.877,\"tweens\":0}",
+      "RETENTION {\"animations\":8,\"label\":\"menu after hover\",\"meshes\":191,\"morphs\":3,\"nodes\":1001.0,\"objects\":105286.0,\"physics_ms\":10.208,\"process_ms\":15.729,\"tweens\":0}"
+    ],
+    "errors": []
+  },
+  "tooltip-windows-fixed": {
+    "exit": 0,
+    "seconds": 28.76,
+    "summary": [
+      "RETENTION {\"animations\":0,\"label\":\"hover baseline\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":2134.0,\"physics_ms\":0.454,\"process_ms\":1.19,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 10000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":2134.0,\"physics_ms\":0.267,\"process_ms\":162.913,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 20000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":2134.0,\"physics_ms\":0.025,\"process_ms\":3.418,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 30000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":2134.0,\"physics_ms\":0.044,\"process_ms\":4.877,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 40000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":2134.0,\"physics_ms\":0.029,\"process_ms\":3.803,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 50000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":2134.0,\"physics_ms\":0.066,\"process_ms\":3.891,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 60000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":2134.0,\"physics_ms\":0.025,\"process_ms\":3.126,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 70000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":2134.0,\"physics_ms\":0.041,\"process_ms\":3.894,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 80000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":2134.0,\"physics_ms\":0.025,\"process_ms\":4.603,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 90000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":2134.0,\"physics_ms\":0.026,\"process_ms\":3.975,\"tweens\":0}",
+      "RETENTION {\"animations\":0,\"label\":\"hover 100000 events\",\"meshes\":0,\"morphs\":0,\"nodes\":20.0,\"objects\":2134.0,\"physics_ms\":0.075,\"process_ms\":3.172,\"tweens\":0}",
+      "RETENTION {\"animations\":8,\"label\":\"menu after hover\",\"meshes\":191,\"morphs\":3,\"nodes\":1001.0,\"objects\":5286.0,\"physics_ms\":2.914,\"process_ms\":15.35,\"tweens\":0}"
+    ],
+    "errors": []
+  },
+  "tooltip-menu-baseline": {
+    "renderer": "gl_compatibility",
+    "exit": 0,
+    "seconds": 39.22,
+    "summary": [
+      "RETENTION {\"fps\":584.305864376561,\"frames\":2338,\"label\":\"menu before hover\",\"nodes\":933.0,\"objects\":5062.0,\"physics_p50_ms\":0.012,\"physics_p95_ms\":0.031,\"wall_p50_ms\":1.684,\"wall_p95_ms\":2.251}",
+      "RETENTION {\"fps\":221.182981556588,\"frames\":885,\"label\":\"same menu after 100000 hovers\",\"nodes\":933.0,\"objects\":105064.0,\"physics_p50_ms\":2.467,\"physics_p95_ms\":2.541,\"wall_p50_ms\":4.104,\"wall_p95_ms\":6.281}"
+    ],
+    "errors": []
+  },
+  "tooltip-menu-fixed": {
+    "renderer": "gl_compatibility",
+    "exit": 0,
+    "seconds": 40.17,
+    "summary": [
+      "RETENTION {\"fps\":194.815769421765,\"frames\":969,\"label\":\"menu before hover\",\"nodes\":935.0,\"objects\":5079.0,\"physics_p50_ms\":0.013,\"physics_p95_ms\":0.014,\"wall_p50_ms\":1.699,\"wall_p95_ms\":2.158}",
+      "RETENTION {\"fps\":590.130056066105,\"frames\":2361,\"label\":\"same menu after 100000 hovers\",\"nodes\":933.0,\"objects\":5072.0,\"physics_p50_ms\":0.13,\"physics_p95_ms\":0.145,\"wall_p50_ms\":1.672,\"wall_p95_ms\":2.168}"
+    ],
+    "errors": []
+  },
+  "tooltip-timers-fixed-final": {
+    "renderer": "gl_compatibility",
+    "exit": 0,
+    "seconds": 5.42,
+    "summary": [
+      "TOOLTIP_TIMER_RETENTION 17 checks 0 failures"
+    ],
+    "errors": []
+  },
+  "tooltip-timers-windows-fixed": {
+    "exit": 0,
+    "seconds": 9.48,
+    "summary": [
+      "TOOLTIP_TIMER_RETENTION 17 checks 0 failures"
+    ],
+    "errors": []
+  },
+  "tooltip-ui-fixed": {
+    "renderer": "gl_compatibility",
+    "exit": 0,
+    "seconds": 10.73,
+    "summary": [
+      "TOOLTIP_LIFETIME_UI 24 checks 0 failures"
+    ],
+    "errors": []
+  },
+  "zone-speed-preview": {
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 31.42,
+    "summary": [
+      "ZONE_SPEED_RETENTION 65 checks 0 failures"
+    ],
+    "errors": []
+  },
+  "worker-speed-preview": {
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 15.99,
+    "summary": [
+      "LOCAL_HOST_ZONE_SPEED 11 checks 0 failures"
+    ],
+    "errors": []
+  },
+  "zone-speed-fixed-test": {
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 46.94,
+    "summary": [
+      "ZONE_SPEED_RETENTION 65 checks 0 failures"
+    ],
+    "errors": []
+  },
+  "local-host-clock-fixed-test": {
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 33.92,
+    "summary": [
+      "LOCAL_HOST_PLAY_CLOCK 22 checks 0 failures"
+    ],
+    "errors": []
+  },
+  "campaign-feedback-clock-fixed": {
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 55.5,
+    "summary": [
+      "CAMPAIGN_FEEDBACK 35 checks 0 failures"
+    ],
+    "errors": []
+  },
+  "local-host-zone-speed-repaired": {
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 24.96,
+    "summary": [
+      "LOCAL_HOST_ZONE_SPEED 11 checks 0 failures"
+    ],
+    "errors": []
+  },
+  "tooltip-ui-windows-fixed": {
+    "exit": 0,
+    "seconds": 15.29,
+    "summary": [
+      "TOOLTIP_LIFETIME_UI 24 checks 0 failures"
+    ],
+    "errors": []
+  },
+  "tooltip-timers-baseline-negative": {
+    "renderer": "gl_compatibility",
+    "exit": 1,
+    "seconds": 5.52,
+    "summary": [
+      "FAIL hover objects remain bounded after batch 0",
+      "FAIL hover objects remain bounded after batch 1",
+      "FAIL hover objects remain bounded after batch 2",
+      "FAIL hover objects remain bounded after batch 3",
+      "FAIL hover objects remain bounded after batch 4",
+      "FAIL hover objects remain bounded after batch 5",
+      "FAIL hover objects remain bounded after batch 6",
+      "FAIL hover objects remain bounded after batch 7",
+      "FAIL hover objects remain bounded after batch 8",
+      "FAIL hover objects remain bounded after batch 9",
+      "FAIL leaving a viewport releases pending timers",
+      "TOOLTIP_TIMER_RETENTION 17 checks 11 failures"
+    ],
+    "errors": []
+  }
+}

@@ -113,6 +113,9 @@ var swap: PlayerSwap
 ## pauses so a client's menu never changes another player's simulation.
 var clock_paused := false
 var clock_speed := 0
+## The player's field choice survives temporary normal speed in villages/maps.
+## Co-op keeps this choice on the authority; peers receive the effective clock.
+var field_speed := 0
 var host_clock := false
 ## A host save-load or campaign transfer is a reliable transaction: clients stop issuing orders
 ## and present their loading screen before the host rebuilds the world.
@@ -409,6 +412,8 @@ func set_coop_clock(sector: int) -> void:
 	if sector == 0:
 		_apply_clock(not clock_paused, clock_speed)
 	elif sector in [1, 2]:
+		if shop_available(): return
+		field_speed = sector - 1
 		_apply_clock(false, sector - 1)
 	else:
 		return
@@ -418,6 +423,18 @@ func set_coop_clock(sector: int) -> void:
 func reset_coop_clock() -> void:
 	if is_host:
 		_apply_clock(false, 0)
+		_send_clock()
+	else:
+		_apply_clock(clock_paused, clock_speed)
+
+
+func zone_speed() -> int:
+	return 0 if shop_available() or map_open else field_speed
+
+
+func restore_coop_clock() -> void:
+	if is_host:
+		_apply_clock(false, zone_speed() if coop_clock_enabled() else 0)
 		_send_clock()
 	else:
 		_apply_clock(clock_paused, clock_speed)
@@ -460,6 +477,7 @@ func new_campaign(intro := true) -> void:
 	if mod_error != "":
 		message.emit(mod_error)
 		return
+	field_speed = 0
 	GameData.difficulty = GameData.option("difficulty")
 	# The menu has finished the intro and is handing over to the game. Cover
 	# the first zone before worker startup can yield an empty game view.
@@ -1205,6 +1223,7 @@ func _rpc_zone(id: String, records: Array, diplo: PackedInt32Array, extra_mobs: 
 		_zone_holding = false
 	zone_id = id
 	var z := campaign.zone(id)
+	map_open = false
 	if mpr != "":
 		z = z.duplicate()
 		z.mpr = mpr
@@ -5114,18 +5133,27 @@ func save_game(slot: String, save_name := "", frame: Image = null) -> Error:
 ## Modal pause belongs to the interface, not to the saved gameplay clock.
 func saved_play_clock() -> Dictionary:
 	if multiplayer_game:
-		return {"paused":clock_paused if coop_clock_enabled() else false, "speed":clock_speed if coop_clock_enabled() else 0}
+		return _play_clock(clock_paused, clock_speed) if coop_clock_enabled() else {"paused":false,"speed":0}
 	if local_host.worker and local_host.single_player and not local_host.saved_clock.is_empty():
-		return local_host.saved_clock.duplicate()
+		return _play_clock(bool(local_host.saved_clock.get("paused", false)), game.speed if game else 0)
 	var paused := get_tree().paused
 	if game and game.hud:
 		if game.hud._pause_before != null: paused = bool(game.hud._pause_before)
 		elif game.hud._tutorial and game.hud._tutorial._paused: paused = false
-	return {"paused":paused, "speed":game.speed if game else int(Engine.time_scale > 1.0)}
+	return _play_clock(paused, game.speed if game else int(Engine.time_scale > 1.0))
+
+
+## Optional in old saves: only needed while a village/map masks the field rate.
+func _play_clock(paused: bool, rate: int) -> Dictionary:
+	var value := {"paused":paused, "speed":rate}
+	if field_speed != rate: value.field_speed = field_speed
+	return value
 
 
 func restore_play_clock(value: Dictionary) -> void:
 	var rate := clampi(int(value.get("speed", 0)), 0, 1)
+	field_speed = clampi(int(value.get("field_speed", rate)), 0, 1)
+	rate = zone_speed()
 	var paused := bool(value.get("paused", false))
 	if multiplayer_game:
 		_apply_clock(paused if coop_clock_enabled() else false, rate if coop_clock_enabled() else 0)
@@ -5133,7 +5161,7 @@ func restore_play_clock(value: Dictionary) -> void:
 	if game: game.speed = rate
 	Engine.time_scale = 55.0 / 27.0 if rate == 1 else 1.0
 	get_tree().paused = paused
-	if local_host.single_player: local_host.saved_clock = {"paused":paused,"speed":rate}
+	if local_host.single_player: local_host.saved_clock = _play_clock(paused, rate)
 
 
 ## Snapshot the running world before measuring or writing it. Otherwise the
@@ -5255,7 +5283,7 @@ func _begin_host_load(id: String, cancel_movie := true, saved_mods: Dictionary =
 		_loading_world_mode = world.process_mode
 		world.process_mode = Node.PROCESS_MODE_DISABLED
 	if online:
-		reset_coop_clock()
+		if multiplayer_game: reset_coop_clock()
 		for pid in players:
 			if int(pid) != 1 and CoopProgress.peer_alive(multiplayer, int(pid)):
 				_load_waiting[int(pid)] = true

@@ -235,6 +235,8 @@ func _keep_selection() -> void:
 ## accelerated. Remake option coop_clock lets the co-op host
 ## control a shared pause and exact 2x rate; clients receive that choice.
 func set_speed(sector: int) -> void:
+	if sector not in [0, 1, 2] or (sector != 0 and (session.shop_available() or session.map_open)):
+		return
 	if session.multiplayer_game:
 		if session.coop_clock_enabled() and not session.can_manage_game():
 			session.message.emit(RemakeText.t("Only the host can change game speed."))
@@ -251,21 +253,26 @@ func set_speed(sector: int) -> void:
 		return
 	get_tree().paused = false
 	speed = sector - 1
+	session.field_speed = speed
 	Engine.time_scale = 55.0 / 27.0 if speed == 1 else 1.0
 
 
-## Back to normal speed when the field screen goes: CInterface3D's close slot
-## (called by the screen stack
-## before the screen is deleted) sets the logic tick = 0x37 (55 ms
-## normal). That screen is closed whenever the party leaves a zone (the global
-## map, another zone, a village or a loaded save get a new screen whose clock
-## dial starts = 0, normal); the village screen has
-## no clock dial, so a village always runs at normal speed.
+## The route map temporarily uses normal speed without changing the field choice.
 func reset_speed() -> void:
 	speed = 0
 	Engine.time_scale = 1.0
 	if session and session.multiplayer_game:
 		session.reset_coop_clock()
+
+
+## Villages have no clock dial. Resume the selected speed on field arrival or
+## after cancelling the route map, including when the same world is reattached.
+func restore_speed() -> void:
+	if session.multiplayer_game:
+		session.restore_coop_clock()
+		return
+	speed = session.zone_speed()
+	Engine.time_scale = 55.0 / 27.0 if speed == 1 else 1.0
 
 
 ## Cursor by what is under the mouse (the original cursor set, GameCursor).
@@ -695,7 +702,7 @@ func attach_world(w: GameWorld) -> void:
 	world = w
 	w.visible = true
 	w.process_mode = Node.PROCESS_MODE_PAUSABLE   # the Game node itself runs while paused
-	reset_speed()   # a new zone = a new field / village screen
+	restore_speed()
 	# ...so no spell / belt item / Follow target is still being chosen: it
 	# named the old zone's units (a load gives new ones with the same uids).
 	cancel_touch_target()
@@ -1380,7 +1387,7 @@ func on_event(e: Dictionary) -> void:
 			if marks and int(e.get("to", -1)) == session.my_index:
 				marks.on_path(e)
 		"travel":
-			# Leaving the zone closes the field screen (: normal speed)
+			# Leaving the zone temporarily uses normal speed
 			# and, in the original, the zone itself: the global map is a world mode
 			# its own (clears the world before loading
 			# the map record), so nothing of the zone runs behind the map — no
@@ -1393,6 +1400,7 @@ func on_event(e: Dictionary) -> void:
 		"travel_close":
 			if world and not e.has("go"):   # "Stay here": the zone runs again
 				world.process_mode = Node.PROCESS_MODE_PAUSABLE
+				restore_speed()
 		"vision_fog":
 			if simulation_only:
 				return

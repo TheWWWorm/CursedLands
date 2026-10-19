@@ -1,0 +1,15 @@
+{
+  "linux": {
+    "pack_sha256": "44a15d5e8281e0a679391280e79c7bb1cd505019c5251b50764a88a8c22c4f90",
+    "resources": 1176,
+    "compiled_scripts": 375,
+    "version": "1.18.1-rc.1"
+  },
+  "windows": {
+    "pack_sha256": "44a15d5e8281e0a679391280e79c7bb1cd505019c5251b50764a88a8c22c4f90",
+    "resources": 1176,
+    "compiled_scripts": 375,
+    "version": "1.18.1-rc.1"
+  },
+  "compiled_scripts_identical": true
+}

@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Expire cancelled native tooltip timers so mouse movement does not accumulate background work during long sessions or after returning to the menu. Requires the updated engine executable.
+- Remember the selected campaign speed between zones, use normal speed in villages and on the route map, and restore the selection when returning to the field. Preserve the choice in saves and shared co-op clocks.
+
 ## 1.18.0 — 2026-10-19
 
 - Show the smaller dragon logo with the Cursed Lands name beneath it during startup; apply the game title before the desktop window first appears.

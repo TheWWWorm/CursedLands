@@ -25,7 +25,7 @@ func _ready() -> void:
 	session._enter_zone("gz15h",1,false);hold()
 	for speed in [0,1]:
 		for paused in [false,true]:
-			game.speed=speed;Engine.time_scale=55.0/27.0 if speed else 1.0;get_tree().paused=paused
+			game.set_speed(speed+1);get_tree().paused=paused
 			var slot:="feedback-clock-%d-%s"%[speed,paused]
 			check(session.save_game(slot)==OK,"save clock state "+slot)
 			var state:=CampaignState.load_from(SaveInfo.path(slot))

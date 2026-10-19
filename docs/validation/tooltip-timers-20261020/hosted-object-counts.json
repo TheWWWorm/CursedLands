@@ -1,0 +1,366 @@
+{
+  "retention-hosted": [
+    {
+      "animations": 8,
+      "label": "menu before hosting",
+      "meshes": 191,
+      "morphs": 3,
+      "nodes": 888.0,
+      "objects": 5063.0,
+      "tweens": 0,
+      "scene_tree_timers": 0
+    },
+    {
+      "animations": 8,
+      "label": "hosting 0s wave 1 prepare",
+      "meshes": 213,
+      "morphs": 3,
+      "nodes": 581.0,
+      "objects": 5895.0,
+      "tweens": 0,
+      "scene_tree_timers": 0
+    },
+    {
+      "animations": 104,
+      "label": "hosting 15s wave 2 fight",
+      "meshes": 441,
+      "morphs": 12,
+      "nodes": 1957.0,
+      "objects": 9342.0,
+      "tweens": 0,
+      "scene_tree_timers": 22
+    },
+    {
+      "animations": 104,
+      "label": "hosting 30s wave 3 result",
+      "meshes": 530,
+      "morphs": 13,
+      "nodes": 2894.0,
+      "objects": 11649.0,
+      "tweens": 0,
+      "scene_tree_timers": 47
+    },
+    {
+      "animations": 104,
+      "label": "hosting 45s wave 4 fight",
+      "meshes": 591,
+      "morphs": 13,
+      "nodes": 4636.0,
+      "objects": 15461.0,
+      "tweens": 0,
+      "scene_tree_timers": 71
+    },
+    {
+      "animations": 104,
+      "label": "hosting 60s wave 5 result",
+      "meshes": 592,
+      "morphs": 13,
+      "nodes": 5803.0,
+      "objects": 17356.0,
+      "tweens": 0,
+      "scene_tree_timers": 96
+    },
+    {
+      "animations": 104,
+      "label": "hosting 75s wave 6 result",
+      "meshes": 592,
+      "morphs": 13,
+      "nodes": 5665.0,
+      "objects": 17587.0,
+      "tweens": 0,
+      "scene_tree_timers": 120
+    },
+    {
+      "animations": 104,
+      "label": "hosting 90s wave 7 fight",
+      "meshes": 592,
+      "morphs": 13,
+      "nodes": 5603.0,
+      "objects": 17740.0,
+      "tweens": 0,
+      "scene_tree_timers": 145
+    },
+    {
+      "animations": 104,
+      "label": "hosting 105s wave 8 fight",
+      "meshes": 651,
+      "morphs": 13,
+      "nodes": 5720.0,
+      "objects": 18397.0,
+      "tweens": 0,
+      "scene_tree_timers": 169
+    },
+    {
+      "animations": 105,
+      "label": "hosting 120s wave 9 fight",
+      "meshes": 739,
+      "morphs": 15,
+      "nodes": 4739.0,
+      "objects": 16622.0,
+      "tweens": 0,
+      "scene_tree_timers": 194
+    },
+    {
+      "animations": 108,
+      "label": "hosting 135s wave 9 result",
+      "meshes": 837,
+      "morphs": 16,
+      "nodes": 5402.0,
+      "objects": 18211.0,
+      "tweens": 0,
+      "scene_tree_timers": 218
+    },
+    {
+      "animations": 110,
+      "label": "hosting 150s wave 10 fight",
+      "meshes": 925,
+      "morphs": 17,
+      "nodes": 5700.0,
+      "objects": 19470.0,
+      "tweens": 0,
+      "scene_tree_timers": 243
+    },
+    {
+      "animations": 114,
+      "label": "hosting 165s wave 11 fight",
+      "meshes": 1099,
+      "morphs": 18,
+      "nodes": 6620.0,
+      "objects": 21930.0,
+      "tweens": 0,
+      "scene_tree_timers": 267
+    },
+    {
+      "animations": 115,
+      "label": "hosting 180s wave 12 prepare",
+      "meshes": 1123,
+      "morphs": 18,
+      "nodes": 6555.0,
+      "objects": 21176.0,
+      "tweens": 0,
+      "scene_tree_timers": 292
+    },
+    {
+      "animations": 117,
+      "label": "hosting 195s wave 12 fight",
+      "meshes": 1177,
+      "morphs": 19,
+      "nodes": 6971.0,
+      "objects": 22387.0,
+      "tweens": 0,
+      "scene_tree_timers": 316
+    },
+    {
+      "animations": 117,
+      "label": "hosting 210s wave 13 fight",
+      "meshes": 1201,
+      "morphs": 20,
+      "nodes": 7185.0,
+      "objects": 23182.0,
+      "tweens": 0,
+      "scene_tree_timers": 341
+    },
+    {
+      "animations": 117,
+      "label": "hosting 225s wave 14 prepare",
+      "meshes": 1211,
+      "morphs": 21,
+      "nodes": 7062.0,
+      "objects": 22901.0,
+      "tweens": 0,
+      "scene_tree_timers": 363
+    },
+    {
+      "animations": 120,
+      "label": "menu after hosting",
+      "meshes": 1330,
+      "morphs": 22,
+      "nodes": 904.0,
+      "objects": 10219.0,
+      "tweens": 0,
+      "scene_tree_timers": 388
+    }
+  ],
+  "retention-hosted-fixed": [
+    {
+      "animations": 8,
+      "label": "menu before hosting",
+      "meshes": 191,
+      "morphs": 3,
+      "nodes": 888.0,
+      "objects": 5062.0,
+      "tweens": 0,
+      "scene_tree_timers": 0
+    },
+    {
+      "animations": 8,
+      "label": "hosting 0s wave 1 prepare",
+      "meshes": 213,
+      "morphs": 3,
+      "nodes": 581.0,
+      "objects": 5893.0,
+      "tweens": 0,
+      "scene_tree_timers": 0
+    },
+    {
+      "animations": 104,
+      "label": "hosting 15s wave 2 fight",
+      "meshes": 441,
+      "morphs": 12,
+      "nodes": 2082.0,
+      "objects": 9437.0,
+      "tweens": 0,
+      "scene_tree_timers": 1
+    },
+    {
+      "animations": 104,
+      "label": "hosting 30s wave 3 result",
+      "meshes": 530,
+      "morphs": 13,
+      "nodes": 2932.0,
+      "objects": 11617.0,
+      "tweens": 0,
+      "scene_tree_timers": 1
+    },
+    {
+      "animations": 104,
+      "label": "hosting 45s wave 4 fight",
+      "meshes": 591,
+      "morphs": 13,
+      "nodes": 4718.0,
+      "objects": 15607.0,
+      "tweens": 0,
+      "scene_tree_timers": 1
+    },
+    {
+      "animations": 104,
+      "label": "hosting 60s wave 5 fight",
+      "meshes": 592,
+      "morphs": 13,
+      "nodes": 5788.0,
+      "objects": 17257.0,
+      "tweens": 0,
+      "scene_tree_timers": 1
+    },
+    {
+      "animations": 104,
+      "label": "hosting 75s wave 6 fight",
+      "meshes": 592,
+      "morphs": 13,
+      "nodes": 5639.0,
+      "objects": 17476.0,
+      "tweens": 0,
+      "scene_tree_timers": 1
+    },
+    {
+      "animations": 104,
+      "label": "hosting 90s wave 7 fight",
+      "meshes": 592,
+      "morphs": 13,
+      "nodes": 5546.0,
+      "objects": 17601.0,
+      "tweens": 0,
+      "scene_tree_timers": 1
+    },
+    {
+      "animations": 104,
+      "label": "hosting 105s wave 8 fight",
+      "meshes": 651,
+      "morphs": 13,
+      "nodes": 5658.0,
+      "objects": 18206.0,
+      "tweens": 0,
+      "scene_tree_timers": 1
+    },
+    {
+      "animations": 104,
+      "label": "hosting 120s wave 9 fight",
+      "meshes": 651,
+      "morphs": 13,
+      "nodes": 6074.0,
+      "objects": 18723.0,
+      "tweens": 0,
+      "scene_tree_timers": 1
+    },
+    {
+      "animations": 107,
+      "label": "hosting 135s wave 9 result",
+      "meshes": 781,
+      "morphs": 15,
+      "nodes": 6330.0,
+      "objects": 19710.0,
+      "tweens": 0,
+      "scene_tree_timers": 1
+    },
+    {
+      "animations": 109,
+      "label": "hosting 150s wave 10 fight",
+      "meshes": 869,
+      "morphs": 16,
+      "nodes": 6336.0,
+      "objects": 20323.0,
+      "tweens": 0,
+      "scene_tree_timers": 1
+    },
+    {
+      "animations": 114,
+      "label": "hosting 165s wave 11 fight",
+      "meshes": 1063,
+      "morphs": 17,
+      "nodes": 6342.0,
+      "objects": 20908.0,
+      "tweens": 0,
+      "scene_tree_timers": 1
+    },
+    {
+      "animations": 115,
+      "label": "hosting 180s wave 12 fight",
+      "meshes": 1087,
+      "morphs": 17,
+      "nodes": 6899.0,
+      "objects": 21429.0,
+      "tweens": 0,
+      "scene_tree_timers": 1
+    },
+    {
+      "animations": 117,
+      "label": "hosting 195s wave 12 result",
+      "meshes": 1141,
+      "morphs": 18,
+      "nodes": 6997.0,
+      "objects": 22019.0,
+      "tweens": 0,
+      "scene_tree_timers": 1
+    },
+    {
+      "animations": 117,
+      "label": "hosting 210s wave 13 fight",
+      "meshes": 1184,
+      "morphs": 20,
+      "nodes": 6897.0,
+      "objects": 22288.0,
+      "tweens": 0,
+      "scene_tree_timers": 1
+    },
+    {
+      "animations": 117,
+      "label": "hosting 225s wave 13 result",
+      "meshes": 1226,
+      "morphs": 20,
+      "nodes": 7114.0,
+      "objects": 22697.0,
+      "tweens": 0,
+      "scene_tree_timers": 1
+    },
+    {
+      "animations": 120,
+      "label": "menu after hosting",
+      "meshes": 1345,
+      "morphs": 22,
+      "nodes": 904.0,
+      "objects": 9875.0,
+      "tweens": 0,
+      "scene_tree_timers": 0
+    }
+  ]
+}

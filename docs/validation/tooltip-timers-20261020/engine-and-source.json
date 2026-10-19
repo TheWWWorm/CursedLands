@@ -1,0 +1,14 @@
+{
+  "engine_base": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "game_base": "ba04fa9ba3854ae231806616b85c239507e4dcd6",
+  "inherited_engine_patches": 15,
+  "source_file": "scene/main/viewport.cpp",
+  "before_source_sha256": "db949779da96c93cbbdd3d97976efe00211fe900ca2e1283d67ce44671c4a652",
+  "after_source_sha256": "07ee80096cff2e7aa7a2a7a91e7cb3e9f7fe08d167b9a6c7a9cac90cf59801c9",
+  "patch_sha256": "7081440b096eeb53085a07565509ba813c8c57033e767160e7a93279d647738d",
+  "baseline_linux_sha256": "e75b9a9af63d91eb816385ebc268c1b71c76c2b4e62168f3c8f1ec940a4ebf52",
+  "fixed_linux_symbols_sha256": "49d661ad0ff66c8a8ddc99fa569fc678af6491a197c1cb583a35e687c01f295d",
+  "fixed_windows_template_sha256": "cc483f30cc57ccf13ce303e88b52e75707fff998bce2abfcb56de0ffcd4c63d9",
+  "preview_version": "1.18.1-rc.1",
+  "preview_version_override": "Staged project version only; tracked source remains Unreleased on 1.18.0. Windows file/product versions are 1.18.1.0."
+}
