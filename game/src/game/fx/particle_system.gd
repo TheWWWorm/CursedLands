@@ -86,6 +86,7 @@ var effects: Array[Effect] = []
 var bolts: Array = []        # FxLightning
 var _pending_bolts: Array[Dictionary] = []   # native invoke's second flash, by simulation tick
 var _pending_fireballs: Array[Dictionary] = []
+var _delayed: Array[Timer] = []  # ending bursts belong to this world, not the SceneTree
 var lights: Array = []       # {light: OmniLight3D, until, id, step, ticks, pos}
 var missiles: Array = []     # CEffectArrow
 var script_fx := {}          # script id -> Effect
@@ -129,6 +130,7 @@ func sync_visibility() -> void:
 func finish_emitters() -> void:
 	# Drain existing particles after a settled battle; never spawn another cast.
 	missiles.clear(); _pending_bolts.clear(); _pending_fireballs.clear()
+	_cancel_delayed()
 	for ef in effects:
 		if ef.e.type == 0x204d: continue # living wisps still sparkle between battles
 		ef.e.stop()
@@ -669,6 +671,7 @@ func _flash_light(d: Dictionary, ticks: int) -> void:
 
 
 func _exit_tree() -> void:
+	_cancel_delayed()
 	if not _flashes.is_empty():
 		_flashes.clear()
 		Gfx.set_lightning_flash(0.0)
@@ -1418,8 +1421,7 @@ func spell_cast(ev: Dictionary) -> void:
 		"clairvoyence":
 			var r := maxf(float(sp.radius), 1.0)
 			spawn(0x2018, gp, r, null, {"age": age})
-			var tm := get_tree().create_timer(maxf(ticks - 10.0, 0.0) * TICK, false)
-			tm.timeout.connect(func(): if is_instance_valid(self): spawn(0x2018, gp, -r))
+			_later(maxf(ticks - 10.0, 0.0) * TICK, func(): spawn(0x2018, gp, -r))
 		"healing":
 			for u in _victims(sp, target, at):
 				spawn(0x2006, Vector3.ZERO, s, u, {"age": age})
@@ -1655,7 +1657,24 @@ func _spawn_on(ur: WeakRef, type: int, k: float) -> void:
 
 
 func _later(secs: float, f: Callable) -> void:
-	get_tree().create_timer(secs, false).timeout.connect(func(): if is_instance_valid(self): f.call())
+	# SceneTree timers survive scene removal until their full duration elapses.
+	# A child timer leaves with its world and follows its pause/speed state.
+	var timer := Timer.new()
+	timer.one_shot = true
+	add_child(timer)
+	_delayed.append(timer)
+	timer.timeout.connect(func():
+		_delayed.erase(timer)
+		timer.queue_free()
+		f.call(), CONNECT_ONE_SHOT)
+	timer.start(maxf(secs, 0.000001))
+
+
+func _cancel_delayed() -> void:
+	for timer: Timer in _delayed:
+		timer.stop()
+		timer.queue_free()
+	_delayed.clear()
 
 
 ## Body-part hit, event "blood": uid, part, frac.

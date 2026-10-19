@@ -31,6 +31,7 @@
 - Clear discarded field messages on loading and rebuild the collected-items listing from the loaded party inventory on both co-op peers. ([#35](https://github.com/TheWWWorm/CursedLands/issues/35))
 - Add optional Discord activity on Windows and Linux, showing game mode, campaign location or Trials round and phase. Include a translated setting and application-ID setup instructions.
 - Calculate terrain visibility rays in the Windows and Linux native helper, retaining the original wall, tree, floor and rounding rules and the script fallback on other platforms.
+- Release delayed spell-ending effects with their world, pause them with combat and cancel them when a Trials battle settles.
 
 ## 1.17.0 — 2026-10-18
 

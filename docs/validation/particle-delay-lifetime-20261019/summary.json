@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-19",
+  "baseline_source": "42208a90",
+  "release_version": "1.17.0",
+  "change": "Own spell-ending timers beneath ParticleFx and cancel pending timers when a battle settles or the effect node leaves its world.",
+  "scope": [
+    "weakening",
+    "strength",
+    "lichdom",
+    "clairvoyance"
+  ],
+  "finding": "SceneTreeTimer objects remained alive until their original deadline after the particle world was freed. Their bound callbacks were disconnected; the old worlds and units were not kept alive by these timers.",
+  "fixture": "Three sets of 100 callbacks with one-hour delays; each effect owner is freed immediately. Other checks cover normal expiry, zero delay, 2x speed, scene/world pause, round settlement, detach/reinsert, original burst parameters, replay and removed carriers.",
+  "results": {
+    "before": {
+      "checks": 34,
+      "failures": [
+        "long delays leave no global timers after exit 0",
+        "long delays leave no global timers after exit 1",
+        "long delays leave no global timers after exit 2",
+        "paused world suspends ending bursts",
+        "round settlement cancels pending ending bursts",
+        "detaching a world cancels its old ending bursts"
+      ],
+      "retained_objects": [
+        102.0,
+        202.0,
+        302.0
+      ]
+    },
+    "editor": {
+      "checks": 34,
+      "failures": [],
+      "retained_objects": [
+        2.0,
+        2.0,
+        2.0
+      ]
+    },
+    "release": {
+      "checks": 34,
+      "failures": [],
+      "retained_objects": [
+        2.0,
+        2.0,
+        2.0
+      ]
+    }
+  },
+  "limitations": [
+    "This isolates timer ownership and timing, not sustained game FPS.",
+    "The old timers eventually expire; this is retention until timeout, not proof of an unlimited leak.",
+    "The full-game Trials/co-op run uses the baseline pack while this patch is tested separately.",
+    "No Windows gameplay validation was performed for this change."
+  ]
+}
