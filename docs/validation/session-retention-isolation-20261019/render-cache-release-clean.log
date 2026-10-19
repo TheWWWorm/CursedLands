@@ -1,0 +1,26 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+Vulkan 1.4.312 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090
+
+[trace 04:42:54 +3397ms] session 5a75983ad351: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, forward_plus / vulkan
+CACHE_RELEASE {"animations":0,"buffer":5080236,"hd":0,"label":"empty","meshes":0,"models":0,"nodes":14.0,"objects":2079.0,"pid":1152938,"texture":12102656,"textures":0,"ticks":4343,"unit_textures":0,"video":20328960}
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 04:43:03 +2250ms] session 3c799f26565c: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+TRAVERSE_TRIAL {"cycle":0,"nodes":7639.0,"objects":23888.0,"stage":"result","video":1962106304}
+[trace 04:43:31 +31192ms] clean exit
+TRAVERSE_TRIAL_FREED {"cycle":0,"nodes":15.0,"objects":8659.0,"video":309298000}
+CACHE_RELEASE {"animations":117,"buffer":24356056,"hd":3,"label":"trials-freed","meshes":326,"models":55,"nodes":14.0,"objects":8657.0,"pid":1152938,"texture":174900736,"textures":10,"ticks":40975,"unit_textures":17,"video":309298000}
+CACHE_RELEASE {"animations":117,"buffer":24356056,"hd":3,"label":"arena-surface-cache","meshes":326,"models":55,"nodes":14.0,"objects":8650.0,"pid":1152938,"texture":174450176,"textures":10,"ticks":41286,"unit_textures":17,"video":308847440}
+CACHE_RELEASE {"animations":117,"buffer":21913588,"hd":3,"label":"figure-cache","meshes":0,"models":0,"nodes":14.0,"objects":8316.0,"pid":1152938,"texture":173050368,"textures":10,"ticks":41602,"unit_textures":17,"video":305000176}
+CACHE_RELEASE {"animations":117,"buffer":21913588,"hd":3,"label":"unit-textures","meshes":0,"models":0,"nodes":14.0,"objects":8290.0,"pid":1152938,"texture":165229056,"textures":10,"ticks":41912,"unit_textures":0,"video":297178864}
+CACHE_RELEASE {"animations":0,"buffer":21913588,"hd":3,"label":"animations","meshes":0,"models":0,"nodes":14.0,"objects":2692.0,"pid":1152938,"texture":165229056,"textures":10,"ticks":42496,"unit_textures":0,"video":297178864}
+CACHE_RELEASE {"animations":0,"buffer":21913588,"hd":0,"label":"hd-textures","meshes":0,"models":0,"nodes":14.0,"objects":2686.0,"pid":1152938,"texture":156835328,"textures":10,"ticks":42809,"unit_textures":0,"video":288785136}
+CACHE_RELEASE {"animations":0,"buffer":21913588,"hd":0,"label":"archive-textures","meshes":0,"models":0,"nodes":14.0,"objects":2680.0,"pid":1152938,"texture":153941504,"textures":0,"ticks":43122,"unit_textures":0,"video":285891312}
+CACHE_RELEASE {"animations":0,"buffer":21907234,"hd":0,"label":"heads","meshes":0,"models":0,"nodes":14.0,"objects":2677.0,"pid":1152938,"texture":153852416,"textures":0,"ticks":43432,"unit_textures":0,"video":285795840}
+CACHE_RELEASE {"animations":0,"buffer":21907234,"hd":0,"label":"wounds","meshes":0,"models":0,"nodes":14.0,"objects":2635.0,"pid":1152938,"texture":153420288,"textures":0,"ticks":43742,"unit_textures":0,"video":285363712}
+CACHE_RELEASE {"animations":0,"buffer":21907234,"hd":0,"label":"audio","meshes":0,"models":0,"nodes":14.0,"objects":2519.0,"pid":1152938,"texture":153420288,"textures":0,"ticks":44050,"unit_textures":0,"video":285363712}
+CACHE_RELEASE {"animations":0,"buffer":21907234,"hd":0,"label":"clouds","meshes":0,"models":0,"nodes":14.0,"objects":2519.0,"pid":1152938,"texture":153420288,"textures":0,"ticks":44360,"unit_textures":0,"video":285363712}
+CACHE_RELEASE {"animations":0,"buffer":21907234,"hd":0,"label":"noise","meshes":0,"models":0,"nodes":14.0,"objects":2504.0,"pid":1152938,"texture":151135744,"textures":0,"ticks":44670,"unit_textures":0,"video":283079168}
+CACHE_RELEASE {"animations":0,"buffer":21643264,"hd":0,"label":"shader-warmers","meshes":0,"models":0,"nodes":14.0,"objects":2491.0,"pid":1152938,"texture":151135744,"textures":0,"ticks":44980,"unit_textures":0,"video":282815104}
+CACHE_RELEASE {"animations":0,"buffer":21643264,"hd":0,"label":"shadow-atlases","meshes":0,"models":0,"nodes":14.0,"objects":2491.0,"pid":1152938,"texture":16918016,"textures":0,"ticks":45292,"unit_textures":0,"video":148597376}
+[trace 04:43:36 +45292ms] clean exit

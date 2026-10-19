@@ -1,0 +1,320 @@
+[
+	{
+		"action": "idle",
+		"attempts": {
+			"acid_fog": 0,
+			"attack": 0,
+			"heal": 0,
+			"lightning": 0,
+			"move": 0,
+			"weak": 0
+		},
+		"bolts": 0,
+		"camera": "(172.4688, 6.98804, -176.8125)",
+		"clock": 1,
+		"deaths": 0,
+		"depth": 0.0,
+		"effects": 7,
+		"fps": 180.6684733514,
+		"gpu_ms": 5.24900007247925,
+		"ground_marks": {
+			"blood": 3,
+			"fire": 0,
+			"foot": 5
+		},
+		"hp": 752.510941290855,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 3,
+			"serial": 3
+		},
+		"lights": 0,
+		"mana": 764.625,
+		"model_visible": true,
+		"nodes": 30815.0,
+		"npc_actions": {
+			"death": 81,
+			"idle": 173,
+			"walk": 86
+		},
+		"objects": 60857.0,
+		"p95_ms": 5.535,
+		"particles": 1551,
+		"peer": "guest",
+		"phase": "baseline",
+		"position": [
+			172.46875,
+			176.8125
+		],
+		"real_casts": 0,
+		"render_cpu_ms": 2.34400010108948,
+		"route_index": 0,
+		"seconds": 0.005,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 0.0,
+		"video": 1104770384,
+		"virtual_sounds": 12,
+		"visited": 0,
+		"world_seconds": 0.0
+	},
+	{
+		"action": "idle",
+		"attempts": {
+			"acid_fog": 0,
+			"attack": 0,
+			"heal": 0,
+			"lightning": 0,
+			"move": 0,
+			"weak": 0
+		},
+		"bolts": 0,
+		"camera": "(172.4688, 7.011311, -176.8125)",
+		"clock": 1,
+		"deaths": 0,
+		"depth": 0.0,
+		"effects": 5,
+		"fps": 70.3671780014935,
+		"gpu_ms": 7.46809901766504,
+		"ground_marks": {
+			"blood": 12,
+			"fire": 0,
+			"foot": 30
+		},
+		"hp": 764.625,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 3
+		},
+		"lights": 0,
+		"mana": 764.625,
+		"model_visible": true,
+		"nodes": 30854.0,
+		"npc_actions": {
+			"attack": 2,
+			"death": 81,
+			"idle": 169,
+			"walk": 88
+		},
+		"objects": 61038.0,
+		"p95_ms": 20.977,
+		"particles": 1746,
+		"peer": "guest",
+		"phase": "baseline",
+		"position": [
+			172.46875,
+			176.8125
+		],
+		"real_casts": 0,
+		"render_cpu_ms": 2.01055755659281,
+		"route_index": 0,
+		"seconds": 30.005,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 0.0,
+		"video": 1105554064,
+		"virtual_sounds": 12,
+		"visited": 0,
+		"world_seconds": 60.0050000000003
+	},
+	{
+		"action": "idle",
+		"attempts": {
+			"acid_fog": 0,
+			"attack": 0,
+			"heal": 0,
+			"lightning": 0,
+			"move": 0,
+			"weak": 0
+		},
+		"bolts": 0,
+		"camera": "(172.4688, 7.011311, -176.8125)",
+		"clock": 1,
+		"deaths": 0,
+		"depth": 0.0,
+		"effects": 4,
+		"fps": 74.2035900609839,
+		"gpu_ms": 7.46128198840343,
+		"ground_marks": {
+			"blood": 13,
+			"fire": 0,
+			"foot": 43
+		},
+		"hp": 764.625,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 3
+		},
+		"lights": 0,
+		"mana": 764.625,
+		"model_visible": true,
+		"nodes": 30867.0,
+		"npc_actions": {
+			"attack": 1,
+			"death": 81,
+			"idle": 178,
+			"walk": 80
+		},
+		"objects": 61086.0,
+		"p95_ms": 20.778,
+		"particles": 1758,
+		"peer": "guest",
+		"phase": "baseline",
+		"position": [
+			172.46875,
+			176.8125
+		],
+		"real_casts": 0,
+		"render_cpu_ms": 1.80026537776796,
+		"route_index": 0,
+		"seconds": 60.017,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 0.0,
+		"video": 1105561936,
+		"virtual_sounds": 12,
+		"visited": 0,
+		"world_seconds": 119.955000000008
+	},
+	{
+		"action": "idle",
+		"attempts": {
+			"acid_fog": 0,
+			"attack": 0,
+			"heal": 0,
+			"lightning": 0,
+			"move": 0,
+			"weak": 0
+		},
+		"bolts": 0,
+		"camera": "(172.4688, 7.011311, -176.8125)",
+		"clock": 1,
+		"deaths": 0,
+		"depth": 0.0,
+		"effects": 7,
+		"fps": 71.8178853062041,
+		"gpu_ms": 7.826425978977,
+		"ground_marks": {
+			"blood": 13,
+			"fire": 0,
+			"foot": 38
+		},
+		"hp": 764.625,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 3
+		},
+		"lights": 0,
+		"mana": 764.625,
+		"model_visible": true,
+		"nodes": 30864.0,
+		"npc_actions": {
+			"death": 81,
+			"idle": 184,
+			"walk": 75
+		},
+		"objects": 61119.0,
+		"p95_ms": 20.83,
+		"particles": 2261,
+		"peer": "guest",
+		"phase": "baseline",
+		"position": [
+			172.46875,
+			176.8125
+		],
+		"real_casts": 0,
+		"render_cpu_ms": 1.82718608014268,
+		"route_index": 0,
+		"seconds": 90.023,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 0.0,
+		"video": 1105566064,
+		"virtual_sounds": 15,
+		"visited": 0,
+		"world_seconds": 180.015000000015
+	},
+	{
+		"action": "idle",
+		"attempts": {
+			"acid_fog": 0,
+			"attack": 0,
+			"heal": 0,
+			"lightning": 0,
+			"move": 0,
+			"weak": 0
+		},
+		"bolts": 0,
+		"camera": "(172.4688, 7.011311, -176.8125)",
+		"clock": 1,
+		"deaths": 0,
+		"depth": 0.0,
+		"effects": 7,
+		"fps": 73.6794690148969,
+		"gpu_ms": 7.99972888050785,
+		"ground_marks": {
+			"blood": 13,
+			"fire": 0,
+			"foot": 36
+		},
+		"hp": 762.615985422801,
+		"input": {
+			"blocked": false,
+			"epoch": 1,
+			"loading": false,
+			"movie": false,
+			"pending": 0,
+			"serial": 3
+		},
+		"lights": 0,
+		"mana": 764.625,
+		"model_visible": true,
+		"nodes": 30863.0,
+		"npc_actions": {
+			"attack": 2,
+			"death": 81,
+			"idle": 185,
+			"walk": 72
+		},
+		"objects": 61124.0,
+		"p95_ms": 20.331,
+		"particles": 2063,
+		"peer": "guest",
+		"phase": "baseline",
+		"position": [
+			172.46875,
+			176.8125
+		],
+		"real_casts": 0,
+		"render_cpu_ms": 1.73357790419963,
+		"route_index": 0,
+		"seconds": 120.86,
+		"target_distance": -1,
+		"target_hp": -1,
+		"time_scale": 2.0,
+		"travelled": 0.0,
+		"video": 1105571184,
+		"virtual_sounds": 14,
+		"visited": 0,
+		"world_seconds": 241.615000000023
+	}
+]

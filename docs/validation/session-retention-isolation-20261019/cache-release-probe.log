@@ -1,0 +1,22 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+Vulkan 1.4.312 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090
+
+[trace 04:19:48 +3385ms] session 2f492cf8a5eb: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, forward_plus / vulkan
+CACHE_RELEASE {"animations":0,"buffer":5080236,"hd":0,"label":"empty","meshes":0,"models":0,"nodes":14.0,"objects":2079.0,"pid":1126538,"texture":12102656,"textures":0,"ticks":4047,"unit_textures":0,"video":20328960}
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 04:20:03 +2381ms] session 69b8988d567e: 1.17.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+TRAVERSE_TRIAL {"cycle":0,"nodes":7640.0,"objects":23893.0,"stage":"result","video":1962390560}
+[trace 04:20:38 +37588ms] clean exit
+TRAVERSE_TRIAL_FREED {"cycle":0,"nodes":15.0,"objects":8660.0,"video":309337360}
+CACHE_RELEASE {"animations":117,"buffer":24395442,"hd":3,"label":"trials-freed","meshes":326,"models":55,"nodes":15.0,"objects":8659.0,"pid":1126538,"texture":174900736,"textures":10,"ticks":53301,"unit_textures":17,"video":309337360}
+CACHE_RELEASE {"animations":117,"buffer":24395442,"hd":3,"label":"arena-surface-cache","meshes":326,"models":55,"nodes":15.0,"objects":8652.0,"pid":1126538,"texture":174450176,"textures":10,"ticks":53313,"unit_textures":17,"video":308886800}
+CACHE_RELEASE {"animations":117,"buffer":21952974,"hd":3,"label":"figure-cache","meshes":0,"models":0,"nodes":15.0,"objects":8318.0,"pid":1126538,"texture":173050368,"textures":10,"ticks":53331,"unit_textures":17,"video":305039536}
+CACHE_RELEASE {"animations":117,"buffer":21952974,"hd":3,"label":"unit-textures","meshes":0,"models":0,"nodes":15.0,"objects":8292.0,"pid":1126538,"texture":165229056,"textures":10,"ticks":53345,"unit_textures":0,"video":297218224}
+CACHE_RELEASE {"animations":0,"buffer":21952974,"hd":3,"label":"animations","meshes":0,"models":0,"nodes":14.0,"objects":2693.0,"pid":1126538,"texture":165229056,"textures":10,"ticks":53621,"unit_textures":0,"video":297218224}
+CACHE_RELEASE {"animations":0,"buffer":21952974,"hd":0,"label":"hd-textures","meshes":0,"models":0,"nodes":14.0,"objects":2687.0,"pid":1126538,"texture":156835328,"textures":10,"ticks":53631,"unit_textures":0,"video":288824496}
+CACHE_RELEASE {"animations":0,"buffer":21952974,"hd":0,"label":"archive-textures","meshes":0,"models":0,"nodes":14.0,"objects":2681.0,"pid":1126538,"texture":153941504,"textures":0,"ticks":53640,"unit_textures":0,"video":285930672}
+CACHE_RELEASE {"animations":0,"buffer":21946620,"hd":0,"label":"heads","meshes":0,"models":0,"nodes":14.0,"objects":2678.0,"pid":1126538,"texture":153852416,"textures":0,"ticks":53651,"unit_textures":0,"video":285835200}
+CACHE_RELEASE {"animations":0,"buffer":21946620,"hd":0,"label":"wounds","meshes":0,"models":0,"nodes":14.0,"objects":2636.0,"pid":1126538,"texture":153420288,"textures":0,"ticks":53660,"unit_textures":0,"video":285403072}
+CACHE_RELEASE {"animations":0,"buffer":21946620,"hd":0,"label":"audio","meshes":0,"models":0,"nodes":14.0,"objects":2519.0,"pid":1126538,"texture":153420288,"textures":0,"ticks":53669,"unit_textures":0,"video":285403072}
+[trace 04:20:38 +53669ms] clean exit

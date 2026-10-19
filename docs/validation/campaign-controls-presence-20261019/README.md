@@ -9,8 +9,10 @@ A later run played three Trials games from round one to normal player eliminatio
 (rounds 25, 26 and 18), then continued into 15 wall-clock minutes of Suslanger
 co-op. Both characters survived, with 40 creature deaths and 779/1,106 m of
 movement. They reached about 300 m from the entrance. All prior Trials worlds
-were released; reusable graphics allocations after their exits were 349, 350 and
-351 MiB. The owner's changing-view intervals ranged from 60–108 FPS and the
+were released; engine-reported graphics allocations after their exits totaled
+349, 350 and 351 MiB. These totals include renderer-owned allocations, not only
+asset caches (see the [isolation follow-up](../session-retention-isolation-20261019/README.md)).
+The owner's changing-view intervals ranged from 60–108 FPS and the
 guest's from 63–112 FPS. This run did not capture an endpoint save, so it is not a
 matched restart comparison. Preparation uses the normal shopping planner and
 Ready action; the games end at player elimination, not the last surviving bot.
@@ -106,7 +108,9 @@ raw data but excluded from that matched range. p95 frame time fell from roughly
 This establishes a CPU visibility bottleneck and an improvement in that scene.
 It does **not** establish an unbounded memory leak or reproduce every condition
 behind the reported 90-to-30 FPS slowdown. Graphics and process memory were
-bounded during the measured campaign; Trials retained reusable resource caches.
+bounded during the measured campaign; some reusable resource caches remained
+after Trials. The allocation total alone does not establish which resources
+remain or whether they are still used.
 
 A post-fix attempt starting with three more Trials battles was interrupted after
 movement stalled near the entrance route. It reached six enemy deaths but only

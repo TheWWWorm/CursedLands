@@ -471,5 +471,6 @@
       "The large reported restart-recoverable slowdown was not reproduced. Small variations are not evidence that the timer fix solved that report."
     ]
   },
-  "result": "Full Trials-to-co-op and deeper traversal now measured with strong characters at maximum preset and 2x. A separate timer-lifetime defect is fixed; neither these runs nor the same-location restart comparison establishes the reported threefold FPS recovery."
+  "result": "Full Trials-to-co-op and deeper traversal now measured with strong characters at maximum preset and 2x. A separate timer-lifetime defect is fixed; neither these runs nor the same-location restart comparison establishes the reported threefold FPS recovery.",
+  "allocation_counter_note": "retained_gpu_mib is the RenderingServer video allocation counter after teardown, including renderer-owned allocations. It is not exclusively retained assets or a direct resident-VRAM measurement. See ../session-retention-isolation-20261019/README.md."
 }

@@ -1,0 +1,1037 @@
+[
+  {
+    "path": "src/platform/renderer_choice.gd",
+    "line": 281,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/platform/renderer_choice.gd:_process:280\")"
+  },
+  {
+    "path": "src/platform/pad_ui.gd",
+    "line": 133,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/platform/pad_ui.gd:_process:132\")"
+  },
+  {
+    "path": "src/platform/touch_input.gd",
+    "line": 214,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/platform/touch_input.gd:_process:213\")"
+  },
+  {
+    "path": "src/platform/discord_presence.gd",
+    "line": 41,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/platform/discord_presence.gd:_process:40\")"
+  },
+  {
+    "path": "src/platform/pad_input.gd",
+    "line": 290,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/platform/pad_input.gd:_process:289\")"
+  },
+  {
+    "path": "src/platform/web_music.gd",
+    "line": 141,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/platform/web_music.gd:_process:140\")"
+  },
+  {
+    "path": "src/ui/camera_rig.gd",
+    "line": 709,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/camera_rig.gd:_process:708\")"
+  },
+  {
+    "path": "src/ui/crash_report_box.gd",
+    "line": 112,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/crash_report_box.gd:_draw:111\")"
+  },
+  {
+    "path": "src/ui/credits_panel.gd",
+    "line": 100,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/credits_panel.gd:_process:99\")"
+  },
+  {
+    "path": "src/ui/inventory_panel.gd",
+    "line": 115,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/inventory_panel.gd:_process:114\")"
+  },
+  {
+    "path": "src/ui/base_strip.gd",
+    "line": 182,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/base_strip.gd:_process:181\")"
+  },
+  {
+    "path": "src/ui/base_strip.gd",
+    "line": 234,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/base_strip.gd:_draw:232\")"
+  },
+  {
+    "path": "src/ui/settings_dialog.gd",
+    "line": 148,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/settings_dialog.gd:_draw:147\")"
+  },
+  {
+    "path": "src/ui/mesh_screen_rect.gd",
+    "line": 325,
+    "code": "var _profile_scope = preload(\"res://frame_profile.gd\").begin(\"detail:mesh_rect\")"
+  },
+  {
+    "path": "src/ui/party_faces.gd",
+    "line": 118,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/party_faces.gd:_process:117\")"
+  },
+  {
+    "path": "src/ui/party_faces.gd",
+    "line": 254,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/party_faces.gd:_draw:252\")"
+  },
+  {
+    "path": "src/ui/menu_scene.gd",
+    "line": 68,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/menu_scene.gd:_process:67\")"
+  },
+  {
+    "path": "src/ui/enemy_bars.gd",
+    "line": 93,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/enemy_bars.gd:_process:92\")"
+  },
+  {
+    "path": "src/ui/enemy_bars.gd",
+    "line": 198,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/enemy_bars.gd:_draw:196\")"
+  },
+  {
+    "path": "src/ui/game_hud.gd",
+    "line": 515,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/game_hud.gd:_process:514\")"
+  },
+  {
+    "path": "src/ui/unit_panel.gd",
+    "line": 140,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/unit_panel.gd:_process:139\")"
+  },
+  {
+    "path": "src/ui/unit_panel.gd",
+    "line": 278,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/unit_panel.gd:_draw:276\")"
+  },
+  {
+    "path": "src/ui/arena_pve_field.gd",
+    "line": 19,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/arena_pve_field.gd:_draw:18\")"
+  },
+  {
+    "path": "src/ui/arena_pve_field.gd",
+    "line": 166,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/arena_pve_field.gd:_process:164\")"
+  },
+  {
+    "path": "src/ui/chat_overlay.gd",
+    "line": 45,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/chat_overlay.gd:_process:44\")"
+  },
+  {
+    "path": "src/ui/chat_overlay.gd",
+    "line": 54,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/chat_overlay.gd:_draw:52\")"
+  },
+  {
+    "path": "src/ui/arena_evolution_notice.gd",
+    "line": 125,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/arena_evolution_notice.gd:_process:124\")"
+  },
+  {
+    "path": "src/ui/main_menu.gd",
+    "line": 280,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/main_menu.gd:_process:279\")"
+  },
+  {
+    "path": "src/ui/pad_prompts.gd",
+    "line": 23,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/pad_prompts.gd:_process:22\")"
+  },
+  {
+    "path": "src/ui/pad_prompts.gd",
+    "line": 37,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/pad_prompts.gd:_draw:35\")"
+  },
+  {
+    "path": "src/ui/loading_screen.gd",
+    "line": 282,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/loading_screen.gd:_process:281\")"
+  },
+  {
+    "path": "src/ui/hud_dial.gd",
+    "line": 78,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/hud_dial.gd:_draw:77\")"
+  },
+  {
+    "path": "src/ui/hud_dial.gd",
+    "line": 112,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/hud_dial.gd:_process:110\")"
+  },
+  {
+    "path": "src/ui/hud_dial.gd",
+    "line": 227,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/hud_dial.gd:_draw:224\")"
+  },
+  {
+    "path": "src/ui/world_labels.gd",
+    "line": 36,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/world_labels.gd:_process:35\")"
+  },
+  {
+    "path": "src/ui/world_labels.gd",
+    "line": 183,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/world_labels.gd:_draw:181\")"
+  },
+  {
+    "path": "src/ui/arena_pve_screen.gd",
+    "line": 1296,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/arena_pve_screen.gd:_process:1295\")"
+  },
+  {
+    "path": "src/ui/arena_online_panel.gd",
+    "line": 76,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/arena_online_panel.gd:_draw:75\")"
+  },
+  {
+    "path": "src/ui/minimap.gd",
+    "line": 72,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/minimap.gd:_draw:71\")"
+  },
+  {
+    "path": "src/ui/minimap.gd",
+    "line": 135,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/minimap.gd:_process:133\")"
+  },
+  {
+    "path": "src/ui/minimap.gd",
+    "line": 304,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/minimap.gd:_draw:301\")"
+  },
+  {
+    "path": "src/ui/action_strip.gd",
+    "line": 67,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/action_strip.gd:_process:66\")"
+  },
+  {
+    "path": "src/ui/action_strip.gd",
+    "line": 172,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/action_strip.gd:_draw:170\")"
+  },
+  {
+    "path": "src/ui/notify_line.gd",
+    "line": 42,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/notify_line.gd:_process:41\")"
+  },
+  {
+    "path": "src/ui/notify_line.gd",
+    "line": 53,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/notify_line.gd:_draw:51\")"
+  },
+  {
+    "path": "src/ui/flying_hp.gd",
+    "line": 92,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/flying_hp.gd:_process:91\")"
+  },
+  {
+    "path": "src/ui/flying_hp.gd",
+    "line": 99,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/flying_hp.gd:_draw:97\")"
+  },
+  {
+    "path": "src/ui/flying_hp.gd",
+    "line": 192,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/flying_hp.gd:_anchor:189\")"
+  },
+  {
+    "path": "src/ui/belt_strip.gd",
+    "line": 79,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/belt_strip.gd:_process:78\")"
+  },
+  {
+    "path": "src/ui/belt_strip.gd",
+    "line": 264,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/belt_strip.gd:_draw:262\")"
+  },
+  {
+    "path": "src/ui/item_view.gd",
+    "line": 334,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/item_view.gd:_process:333\")"
+  },
+  {
+    "path": "src/ui/pad_wheel.gd",
+    "line": 127,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/pad_wheel.gd:_process:126\")"
+  },
+  {
+    "path": "src/ui/pad_wheel.gd",
+    "line": 212,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/pad_wheel.gd:_draw:210\")"
+  },
+  {
+    "path": "src/ui/zone_objectives.gd",
+    "line": 418,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/zone_objectives.gd:_process:417\")"
+  },
+  {
+    "path": "src/ui/zone_objectives.gd",
+    "line": 442,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/zone_objectives.gd:_draw:440\")"
+  },
+  {
+    "path": "src/ui/portrait.gd",
+    "line": 171,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/portrait.gd:_process:170\")"
+  },
+  {
+    "path": "src/ui/interface800.gd",
+    "line": 397,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/interface800.gd:_process:396\")"
+  },
+  {
+    "path": "src/ui/options_panel.gd",
+    "line": 820,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/options_panel.gd:_draw:819\")"
+  },
+  {
+    "path": "src/ui/options_panel.gd",
+    "line": 964,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/options_panel.gd:_process:962\")"
+  },
+  {
+    "path": "src/ui/arena_stars.gd",
+    "line": 29,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/arena_stars.gd:_draw:28\")"
+  },
+  {
+    "path": "src/ui/dialog_panel.gd",
+    "line": 528,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/dialog_panel.gd:_draw:527\")"
+  },
+  {
+    "path": "src/ui/dialog_panel.gd",
+    "line": 730,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/dialog_panel.gd:_process:728\")"
+  },
+  {
+    "path": "src/ui/dialog_panel.gd",
+    "line": 866,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/dialog_panel.gd:_draw:863\")"
+  },
+  {
+    "path": "src/ui/arena_round_banner.gd",
+    "line": 74,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/arena_round_banner.gd:_draw:73\")"
+  },
+  {
+    "path": "src/ui/campaign_choices.gd",
+    "line": 41,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/campaign_choices.gd:_draw:40\")"
+  },
+  {
+    "path": "src/ui/save_transfer.gd",
+    "line": 35,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/save_transfer.gd:_process:34\")"
+  },
+  {
+    "path": "src/ui/mp_char_panel.gd",
+    "line": 304,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/mp_char_panel.gd:_draw:303\")"
+  },
+  {
+    "path": "src/ui/mp_char_panel.gd",
+    "line": 1017,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/mp_char_panel.gd:_process:1015\")"
+  },
+  {
+    "path": "src/ui/paperdoll.gd",
+    "line": 288,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/paperdoll.gd:_process:287\")"
+  },
+  {
+    "path": "src/ui/touch_actions.gd",
+    "line": 79,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/touch_actions.gd:_process:78\")"
+  },
+  {
+    "path": "src/ui/interface_board.gd",
+    "line": 90,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/interface_board.gd:_process:89\")"
+  },
+  {
+    "path": "src/ui/arena_hud_panel.gd",
+    "line": 17,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/arena_hud_panel.gd:_draw:16\")"
+  },
+  {
+    "path": "src/ui/wiki_preview.gd",
+    "line": 34,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/wiki_preview.gd:_draw:33\")"
+  },
+  {
+    "path": "src/ui/wiki_preview.gd",
+    "line": 207,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/wiki_preview.gd:_process:205\")"
+  },
+  {
+    "path": "src/ui/weapon_bar.gd",
+    "line": 68,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/weapon_bar.gd:_process:67\")"
+  },
+  {
+    "path": "src/ui/weapon_bar.gd",
+    "line": 150,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/weapon_bar.gd:_draw:148\")"
+  },
+  {
+    "path": "src/ui/game_cursor.gd",
+    "line": 183,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/game_cursor.gd:_process:182\")"
+  },
+  {
+    "path": "src/ui/revive_overlay.gd",
+    "line": 28,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/revive_overlay.gd:_process:27\")"
+  },
+  {
+    "path": "src/ui/revive_overlay.gd",
+    "line": 57,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/revive_overlay.gd:_draw:55\")"
+  },
+  {
+    "path": "src/ui/arena_screen.gd",
+    "line": 374,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/arena_screen.gd:_process:373\")"
+  },
+  {
+    "path": "src/ui/player_names.gd",
+    "line": 60,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/player_names.gd:_process:59\")"
+  },
+  {
+    "path": "src/ui/player_names.gd",
+    "line": 79,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/player_names.gd:_draw:77\")"
+  },
+  {
+    "path": "src/ui/players_panel.gd",
+    "line": 111,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/players_panel.gd:_draw:110\")"
+  },
+  {
+    "path": "src/ui/players_panel.gd",
+    "line": 227,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/players_panel.gd:_process:225\")"
+  },
+  {
+    "path": "src/ui/players_panel.gd",
+    "line": 275,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/players_panel.gd:_draw:272\")"
+  },
+  {
+    "path": "src/ui/tutorial_panel.gd",
+    "line": 430,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/tutorial_panel.gd:_process:429\")"
+  },
+  {
+    "path": "src/ui/tutorial_panel.gd",
+    "line": 485,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/tutorial_panel.gd:_draw:483\")"
+  },
+  {
+    "path": "src/ui/network_panel.gd",
+    "line": 554,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/network_panel.gd:_draw:553\")"
+  },
+  {
+    "path": "src/ui/network_panel.gd",
+    "line": 1487,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/network_panel.gd:_process:1485\")"
+  },
+  {
+    "path": "src/ui/spell_slots.gd",
+    "line": 197,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/spell_slots.gd:_process:196\")"
+  },
+  {
+    "path": "src/ui/spell_slots.gd",
+    "line": 294,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/spell_slots.gd:_draw:292\")"
+  },
+  {
+    "path": "src/ui/setup_screen.gd",
+    "line": 223,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/setup_screen.gd:_process:222\")"
+  },
+  {
+    "path": "src/ui/arena_info_panel.gd",
+    "line": 25,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/arena_info_panel.gd:_draw:24\")"
+  },
+  {
+    "path": "src/ui/arena_creature_card.gd",
+    "line": 135,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/arena_creature_card.gd:_process:134\")"
+  },
+  {
+    "path": "src/ui/mod_panel.gd",
+    "line": 144,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/mod_panel.gd:_process:143\")"
+  },
+  {
+    "path": "src/ui/message_log.gd",
+    "line": 248,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/message_log.gd:_process:247\")"
+  },
+  {
+    "path": "src/ui/message_log.gd",
+    "line": 315,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/message_log.gd:_draw:313\")"
+  },
+  {
+    "path": "src/ui/selection_frame.gd",
+    "line": 29,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/selection_frame.gd:_process:28\")"
+  },
+  {
+    "path": "src/ui/selection_frame.gd",
+    "line": 37,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/selection_frame.gd:_draw:35\")"
+  },
+  {
+    "path": "src/ui/esc_signpost.gd",
+    "line": 92,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/esc_signpost.gd:_process:91\")"
+  },
+  {
+    "path": "src/ui/village_name.gd",
+    "line": 47,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/village_name.gd:_process:46\")"
+  },
+  {
+    "path": "src/ui/village_name.gd",
+    "line": 64,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/village_name.gd:_draw:62\")"
+  },
+  {
+    "path": "src/ui/arena_round_button.gd",
+    "line": 22,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/arena_round_button.gd:_draw:21\")"
+  },
+  {
+    "path": "src/ui/player_list.gd",
+    "line": 44,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/player_list.gd:_process:43\")"
+  },
+  {
+    "path": "src/ui/player_list.gd",
+    "line": 73,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/player_list.gd:_draw:71\")"
+  },
+  {
+    "path": "src/ui/travel_map.gd",
+    "line": 478,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/travel_map.gd:_process:477\")"
+  },
+  {
+    "path": "src/ui/camp_view.gd",
+    "line": 1373,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/camp_view.gd:_process:1372\")"
+  },
+  {
+    "path": "src/ui/camp_view.gd",
+    "line": 2213,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/camp_view.gd:_draw:2211\")"
+  },
+  {
+    "path": "src/ui/message_box.gd",
+    "line": 69,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/message_box.gd:_draw:68\")"
+  },
+  {
+    "path": "src/ui/arena_field.gd",
+    "line": 49,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/arena_field.gd:_draw:48\")"
+  },
+  {
+    "path": "src/ui/arena_field.gd",
+    "line": 312,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/arena_field.gd:_process:310\")"
+  },
+  {
+    "path": "src/ui/arena_alliance_badge.gd",
+    "line": 18,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/arena_alliance_badge.gd:_draw:17\")"
+  },
+  {
+    "path": "src/ui/arena_hit_numbers.gd",
+    "line": 7,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/arena_hit_numbers.gd:_draw:6\")"
+  },
+  {
+    "path": "src/ui/movie_player.gd",
+    "line": 258,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/movie_player.gd:_process:257\")"
+  },
+  {
+    "path": "src/ui/internet_panel.gd",
+    "line": 71,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/internet_panel.gd:_draw:70\")"
+  },
+  {
+    "path": "src/ui/arena_online_screen.gd",
+    "line": 59,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/arena_online_screen.gd:_process:58\")"
+  },
+  {
+    "path": "src/ui/load_panel.gd",
+    "line": 252,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/load_panel.gd:_draw:251\")"
+  },
+  {
+    "path": "src/ui/load_panel.gd",
+    "line": 500,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/load_panel.gd:_process:498\")"
+  },
+  {
+    "path": "src/ui/arena_tooltips.gd",
+    "line": 46,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/arena_tooltips.gd:_process:45\")"
+  },
+  {
+    "path": "src/ui/camera_depth_of_field.gd",
+    "line": 53,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/camera_depth_of_field.gd:_process:52\")"
+  },
+  {
+    "path": "src/ui/game_over_notice.gd",
+    "line": 91,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/game_over_notice.gd:_draw:90\")"
+  },
+  {
+    "path": "src/ui/game_over_notice.gd",
+    "line": 161,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ui/game_over_notice.gd:_process:159\")"
+  },
+  {
+    "path": "src/ei/game_data.gd",
+    "line": 1020,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ei/game_data.gd:_process:1019\")"
+  },
+  {
+    "path": "src/ei/game_data.gd",
+    "line": 1374,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ei/game_data.gd:_process:1372\")"
+  },
+  {
+    "path": "src/ei/unit_model.gd",
+    "line": 711,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ei/unit_model.gd:_process:710\")"
+  },
+  {
+    "path": "src/ei/terrain.gd",
+    "line": 1745,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/ei/terrain.gd:_process:1744\")"
+  },
+  {
+    "path": "src/game/order_marks.gd",
+    "line": 365,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/order_marks.gd:_process:364\")"
+  },
+  {
+    "path": "src/game/arena_ground_details.gd",
+    "line": 39,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/arena_ground_details.gd:_process:38\")"
+  },
+  {
+    "path": "src/game/arena_online_session.gd",
+    "line": 145,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/arena_online_session.gd:_process:144\")"
+  },
+  {
+    "path": "src/game/arena_animation_warmup.gd",
+    "line": 136,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/arena_animation_warmup.gd:_process:135\")"
+  },
+  {
+    "path": "src/game/pad_field.gd",
+    "line": 139,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/pad_field.gd:_process:138\")"
+  },
+  {
+    "path": "src/game/coop_progress.gd",
+    "line": 131,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/coop_progress.gd:_physics_process:130\")"
+  },
+  {
+    "path": "src/game/arena_online_game.gd",
+    "line": 50,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/arena_online_game.gd:_process:49\")"
+  },
+  {
+    "path": "src/game/local_host.gd",
+    "line": 472,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/local_host.gd:_process:471\")"
+  },
+  {
+    "path": "src/game/net_status.gd",
+    "line": 595,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/net_status.gd:_physics_process:594\")"
+  },
+  {
+    "path": "src/game/shadow_diag.gd",
+    "line": 147,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/shadow_diag.gd:_process:146\")"
+  },
+  {
+    "path": "src/game/arena_pve_match.gd",
+    "line": 409,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/arena_pve_match.gd:_physics_process:408\")"
+  },
+  {
+    "path": "src/game/arena_pve_match.gd",
+    "line": 482,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/arena_pve_match.gd:_process:480\")"
+  },
+  {
+    "path": "src/game/arena_online_match.gd",
+    "line": 19,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/arena_online_match.gd:_process:18\")"
+  },
+  {
+    "path": "src/game/arena_online_match.gd",
+    "line": 26,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/arena_online_match.gd:_physics_process:24\")"
+  },
+  {
+    "path": "src/game/direct_pose.gd",
+    "line": 28,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/direct_pose.gd:_process:27\")"
+  },
+  {
+    "path": "src/game/arena_match.gd",
+    "line": 259,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/arena_match.gd:_process:258\")"
+  },
+  {
+    "path": "src/game/arena_match.gd",
+    "line": 278,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/arena_match.gd:_physics_process:276\")"
+  },
+  {
+    "path": "src/game/mod_download.gd",
+    "line": 133,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/mod_download.gd:_process:132\")"
+  },
+  {
+    "path": "src/game/lan_discovery.gd",
+    "line": 250,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/lan_discovery.gd:_process:249\")"
+  },
+  {
+    "path": "src/game/player_swap.gd",
+    "line": 381,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/player_swap.gd:_process:380\")"
+  },
+  {
+    "path": "src/game/unit_fog.gd",
+    "line": 64,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/unit_fog.gd:_process:63\")"
+  },
+  {
+    "path": "src/game/gfx_detect.gd",
+    "line": 991,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/gfx_detect.gd:_draw:990\")"
+  },
+  {
+    "path": "src/game/gfx_detect.gd",
+    "line": 1074,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/gfx_detect.gd:_process:1072\")"
+  },
+  {
+    "path": "src/game/gfx_detect.gd",
+    "line": 1107,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/gfx_detect.gd:_draw:1104\")"
+  },
+  {
+    "path": "src/game/arena_local_host.gd",
+    "line": 141,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/arena_local_host.gd:_process:140\")"
+  },
+  {
+    "path": "src/game/arena_local_host.gd",
+    "line": 198,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/arena_local_host.gd:_process:196\")"
+  },
+  {
+    "path": "src/game/arena_tournament_battles.gd",
+    "line": 210,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/arena_tournament_battles.gd:_process:209\")"
+  },
+  {
+    "path": "src/game/game.gd",
+    "line": 197,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/game.gd:_process:196\")"
+  },
+  {
+    "path": "src/game/game.gd",
+    "line": 270,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/game.gd:_update_cursor:268\")"
+  },
+  {
+    "path": "src/game/game.gd",
+    "line": 1544,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/game.gd:world_tooltip:1541\")"
+  },
+  {
+    "path": "src/game/game.gd",
+    "line": 1570,
+    "code": "var _profile_scope = preload(\"res://frame_profile.gd\").begin(\"src/game/game.gd:pick_lever\")"
+  },
+  {
+    "path": "src/game/game.gd",
+    "line": 1627,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/game.gd:pick_unit:1622\")"
+  },
+  {
+    "path": "src/game/game_sound.gd",
+    "line": 245,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/game_sound.gd:_process:244\")"
+  },
+  {
+    "path": "src/game/vision_fog.gd",
+    "line": 68,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/vision_fog.gd:_physics_process:67\")"
+  },
+  {
+    "path": "src/game/music_system.gd",
+    "line": 343,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/music_system.gd:_process:342\")"
+  },
+  {
+    "path": "src/game/session.gd",
+    "line": 214,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/session.gd:_process:213\")"
+  },
+  {
+    "path": "src/game/session.gd",
+    "line": 4048,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/session.gd:_physics_process:4046\")"
+  },
+  {
+    "path": "src/game/world.gd",
+    "line": 685,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/world.gd:_process:684\")"
+  },
+  {
+    "path": "src/game/world.gd",
+    "line": 732,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/world.gd:_step_hidden_presentations:730\")"
+  },
+  {
+    "path": "src/game/world.gd",
+    "line": 779,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/world.gd:_physics_process:776\")"
+  },
+  {
+    "path": "src/game/spell_fx.gd",
+    "line": 191,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/spell_fx.gd:_process:190\")"
+  },
+  {
+    "path": "src/game/unit.gd",
+    "line": 1556,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/unit.gd:client_tick_effects:1555\")"
+  },
+  {
+    "path": "src/game/unit.gd",
+    "line": 3865,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/unit.gd:_process:3863\")"
+  },
+  {
+    "path": "src/game/unit.gd",
+    "line": 3912,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/unit.gd:_present_native_frame:3909\")"
+  },
+  {
+    "path": "src/game/unit.gd",
+    "line": 4204,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/unit.gd:_update_pose:4200\")"
+  },
+  {
+    "path": "src/game/unit.gd",
+    "line": 4375,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/unit.gd:_physics_process:4370\")"
+  },
+  {
+    "path": "src/game/unit.gd",
+    "line": 4391,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/unit.gd:_draw_step:4385\")"
+  },
+  {
+    "path": "src/game/unit.gd",
+    "line": 4563,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/unit.gd:apply_snapshot:4556\")"
+  },
+  {
+    "path": "src/game/arena_winter_terrain.gd",
+    "line": 23,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/arena_winter_terrain.gd:_process:22\")"
+  },
+  {
+    "path": "src/game/arena_winter_terrain.gd",
+    "line": 41,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/arena_winter_terrain.gd:_draw:39\")"
+  },
+  {
+    "path": "src/game/arena_solo_battles.gd",
+    "line": 90,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/arena_solo_battles.gd:_process:89\")"
+  },
+  {
+    "path": "src/game/direct_control.gd",
+    "line": 54,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/direct_control.gd:_draw:53\")"
+  },
+  {
+    "path": "src/game/direct_control.gd",
+    "line": 185,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/direct_control.gd:_process:183\")"
+  },
+  {
+    "path": "src/game/flash_log.gd",
+    "line": 130,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/flash_log.gd:_process:129\")"
+  },
+  {
+    "path": "src/game/levers.gd",
+    "line": 73,
+    "code": "var _profile_scope = preload(\"res://frame_profile.gd\").begin(\"detail:lever_usable\")"
+  },
+  {
+    "path": "src/game/projectile.gd",
+    "line": 82,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/projectile.gd:_physics_process:81\")"
+  },
+  {
+    "path": "src/game/internet_directory.gd",
+    "line": 181,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/internet_directory.gd:_process:180\")"
+  },
+  {
+    "path": "src/game/sound_mixer.gd",
+    "line": 479,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/sound_mixer.gd:_process:478\")"
+  },
+  {
+    "path": "src/game/fx/weather_mist.gd",
+    "line": 105,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/weather_mist.gd:_process:104\")"
+  },
+  {
+    "path": "src/game/fx/ground_marks.gd",
+    "line": 170,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/ground_marks.gd:_process:169\")"
+  },
+  {
+    "path": "src/game/fx/ground_marks.gd",
+    "line": 465,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/ground_marks.gd:_drain_units:463\")"
+  },
+  {
+    "path": "src/game/fx/ground_marks.gd",
+    "line": 491,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/ground_marks.gd:_step_frames:488\")"
+  },
+  {
+    "path": "src/game/fx/ground_marks.gd",
+    "line": 630,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/ground_marks.gd:_deform_feet:626\")"
+  },
+  {
+    "path": "src/game/fx/ambient_life.gd",
+    "line": 75,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/ambient_life.gd:_process:74\")"
+  },
+  {
+    "path": "src/game/fx/water_interaction.gd",
+    "line": 72,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/water_interaction.gd:_process:71\")"
+  },
+  {
+    "path": "src/game/fx/waterfalls.gd",
+    "line": 117,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/waterfalls.gd:_draw:116\")"
+  },
+  {
+    "path": "src/game/fx/waterfalls.gd",
+    "line": 186,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/waterfalls.gd:_anchor:184\")"
+  },
+  {
+    "path": "src/game/fx/severed_limb.gd",
+    "line": 191,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/severed_limb.gd:_process:190\")"
+  },
+  {
+    "path": "src/game/fx/local_lighting.gd",
+    "line": 213,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/local_lighting.gd:_process:212\")"
+  },
+  {
+    "path": "src/game/fx/terrain_details.gd",
+    "line": 202,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/terrain_details.gd:_process:201\")"
+  },
+  {
+    "path": "src/game/fx/soft_ground_deform.gd",
+    "line": 509,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/soft_ground_deform.gd:_process:508\")"
+  },
+  {
+    "path": "src/game/fx/particle_system.gd",
+    "line": 751,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/particle_system.gd:_process:750\")"
+  },
+  {
+    "path": "src/game/fx/particle_system.gd",
+    "line": 1147,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/particle_system.gd:_draw:1145\")"
+  },
+  {
+    "path": "src/game/fx/cloud_reflection_view.gd",
+    "line": 29,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/cloud_reflection_view.gd:_process:28\")"
+  },
+  {
+    "path": "src/game/fx/water_reflection.gd",
+    "line": 77,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/water_reflection.gd:_process:76\")"
+  },
+  {
+    "path": "src/game/fx/surface_weather.gd",
+    "line": 50,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/surface_weather.gd:_process:49\")"
+  },
+  {
+    "path": "src/game/fx/rain_snow.gd",
+    "line": 206,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/rain_snow.gd:_process:205\")"
+  },
+  {
+    "path": "src/game/fx/quest_bird.gd",
+    "line": 117,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/quest_bird.gd:_process:116\")"
+  },
+  {
+    "path": "src/game/fx/quest_lights.gd",
+    "line": 172,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/quest_lights.gd:_process:171\")"
+  },
+  {
+    "path": "src/game/fx/terrain_color_cache.gd",
+    "line": 199,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/terrain_color_cache.gd:_process:198\")"
+  },
+  {
+    "path": "src/game/fx/contact_shadows.gd",
+    "line": 26,
+    "code": "var _profile_scope_ := preload(\"res://frame_profile.gd\").begin(\"src/game/fx/contact_shadows.gd:_process:25\")"
+  }
+]
