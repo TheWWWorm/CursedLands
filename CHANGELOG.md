@@ -60,6 +60,7 @@
 - Release delayed spell-ending effects with their world, pause them with combat and cancel them when a Trials battle settles.
 - Reuse Weakness, Strength and Lichdom ending timers when their effects refresh, and discard those timers when their carriers die or leave the world. Preserve one start burst for an unchanged effect and use the latest power for its ending.
 - Include periodic frame, graphics, world, effect and cache counters in local diagnostic logs and the existing log export.
+- Use the transparent copper-and-gold dragon CL icon for the application, Windows executable, macOS bundle, startup splash, website, wiki and repository branding.
 
 ## 1.17.0 — 2026-10-18
 

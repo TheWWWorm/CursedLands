@@ -1,5 +1,7 @@
 # Cursed Lands
 
+<img src="https://raw.githubusercontent.com/TheWWWorm/CursedLands/main/game/icon.png?v=86b2cc11598f" alt="Cursed Lands" width="160">
+
 **[Trailer on YouTube](https://www.youtube.com/watch?v=3zZLq5H10ic) · [Play](https://cursedlands.wwworm.com/) · [Download](https://github.com/TheWWWorm/CursedLands/releases/latest) · [Wiki](https://cursedlands.wwworm.com/wiki/)**
 
 Play **Evil Islands: Curse of the Lost Soul** («Проклятые земли», Nival, 2000) and **Lost in Astral** («Затерянные в Астрале») on a modern engine on Windows, Linux, macOS and Android or in your browser, with **online co-op** support for the campaigns.

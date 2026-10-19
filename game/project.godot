@@ -16,7 +16,11 @@ warnings/check_angle_interpolation_type_conflicting=false
 [application]
 
 config/name="Cursed Lands"
-config/icon="res://icon.svg"
+config/icon="res://icon.png"
+config/windows_native_icon="res://assets/branding/icon.ico"
+config/macos_native_icon="res://assets/branding/icon.icns"
+boot_splash/image="res://assets/branding/splash.png"
+boot_splash/bg_color=Color(0.0667, 0.0588, 0.0471, 1)
 run/main_scene="res://scenes/main.tscn"
 run/flush_stdout_on_print=true
 config/features=PackedStringArray("4.7")

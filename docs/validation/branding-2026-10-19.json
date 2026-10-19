@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-19",
+  "master_sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18",
+  "background": "transparent; alpha preserved in all PNG, ICO and ICNS assets",
+  "windows_embedded_icon_sizes": [
+    16,
+    32,
+    48,
+    64,
+    128,
+    256
+  ],
+  "windows_embedded_icons_exact_match": true,
+  "windows_embedded_icons_transparency": true,
+  "macos_bundle_icon_exact_match": true,
+  "godot_import": "passed",
+  "windows_and_macos_exports": "passed without warnings or errors",
+  "web": {
+    "cache": "Every asset hash matches; opaque maskable tile removed",
+    "cutout": "Inspected on white, green and dark backgrounds",
+    "wiki": "Decorative icon adds no strings; existing EN/RU/DE header retained"
+  },
+  "distribution": "Source and hosted branding update; existing versioned game downloads remain immutable. Native packages acquire the icon when exported from this source."
+}

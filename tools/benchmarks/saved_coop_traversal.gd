@@ -563,4 +563,3 @@ func full_tournament(cycle:int)->void:
 	tournament_screen.queue_free();await frames_wait(4)
 	await tournament.close_shown();tournament.queue_free();await frames_wait(120)
 	census("tournament-%d-freed"%cycle)
-
