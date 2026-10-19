@@ -43,6 +43,8 @@ var render_cpu:Array[float]=[]
 var resume_slot:=""
 var duration:=900.0
 var stationary:=false
+var default_render_thread:=false
+var measure_render_times:=false
 func frames_wait(n:int)->void:
 	for i in n:await get_tree().process_frame
 func until(fn:Callable,seconds:=60.0)->bool:
@@ -58,6 +60,8 @@ func run()->void:
 		print("PASS traversal tool parses with game autoloads");get_tree().quit();return
 	guest=OS.get_cmdline_user_args().has("--guest")
 	stationary=OS.get_cmdline_user_args().has("--stationary")
+	default_render_thread=OS.get_cmdline_user_args().has("--default-render-thread")
+	measure_render_times=OS.get_cmdline_user_args().has("--render-timings")
 	for arg:String in OS.get_cmdline_user_args():
 		if arg.begins_with("--resume-slot="):resume_slot=arg.trim_prefix("--resume-slot=")
 		if arg.begins_with("--duration="):duration=float(arg.trim_prefix("--duration="))
@@ -72,7 +76,10 @@ func run()->void:
 		if arg.begins_with("--label="):run_label=arg.trim_prefix("--label=").validate_filename()+"-"
 	if not guest and OS.get_cmdline_user_args().has("--trials-first"):
 		for cycle in 3:await trial(cycle)
-	RenderingServer.viewport_set_measure_render_time(get_viewport().get_viewport_rid(),true)
+	# Ordinary traversal measures delivered frame intervals. Querying renderer
+	# timings every frame can synchronize a separate rendering thread; opt in
+	# only for an explicitly instrumented profile, not a release-default run.
+	if measure_render_times:RenderingServer.viewport_set_measure_render_time(get_viewport().get_viewport_rid(),true)
 	s=Session.new();get_parent().add_child(s);g=Game.new();g.session=s;s.game=g;get_parent().add_child(g)
 	if guest:
 		GameData.player_name="Traversal guest"
@@ -93,12 +100,15 @@ func run()->void:
 				for rank in range(1,4):h.perks.append(family+str(rank))
 		if resume_slot.is_empty():state.save(SaveInfo.path("traversal-session"))
 		if await s.local_host.start(29916,2,false)!=OK:get_tree().quit(2);return
-		var args:=PackedStringArray(["--rendering-method","forward_plus","--render-thread","safe"])
+		var args:=PackedStringArray(["--rendering-method","forward_plus"])
+		if not default_render_thread:args.append_array(["--render-thread","safe"])
 		if OS.has_feature("editor"):args.append_array(["--path",ProjectSettings.globalize_path("res://")])
 		args.append_array(["--","--ei-path="+GameData.root,"--tool="+get_script().resource_path,"--guest"])
 		if not run_label.is_empty():args.append("--label="+run_label.trim_suffix("-"))
 		if not resume_slot.is_empty():args.append("--resume-slot="+resume_slot)
 		args.append("--duration="+str(duration))
+		if default_render_thread:args.append("--default-render-thread")
+		if measure_render_times:args.append("--render-timings")
 		if stationary:args.append("--stationary")
 		child=OS.create_process(OS.get_executable_path(),args)
 		if not await until(func():return s.players.size()==2):push_error("Guest did not join");get_tree().quit(2);return
@@ -111,6 +121,7 @@ func run()->void:
 	if not guest:g.set_speed(2)
 	await until(func():return s.clock_speed==1,10)
 	print("TRAVERSE_CLOCK ",s.clock_speed," ",Engine.time_scale)
+	print("TRAVERSE_RENDER ",JSON.stringify({"thread":"safe" if RenderingServer.is_on_render_thread() else "separate","timing_queries":measure_render_times,"msaa":get_viewport().msaa_3d,"screen_aa":get_viewport().screen_space_aa,"scale":get_viewport().scaling_3d_scale}))
 	print("TRAVERSE_KIT ",JSON.stringify(h.stats))
 	progress_pos=h.pos;progress_at=0;frame_usec=Time.get_ticks_usec()
 	g.issue({"t":"gait","units":[h.uid],"gait":2})
@@ -222,9 +233,11 @@ func sample(t:float)->void:
 	var n:=frames.size();var total:float=frames.reduce(func(a,b):return a+b,0.0);frames.sort()
 	var fx:=ParticleFx.of(s.world)
 	var row:={"peer":"guest" if guest else "owner","seconds":t,"clock":s.clock_speed,"time_scale":Engine.time_scale,"fps":1000.0*n/total if total>0 else 0,"p95_ms":frames[int(n*0.95)] if n else 0,"position":[h.pos.x,h.pos.y] if h else [],"travelled":travelled,"hp":h.hp if h else 0,"mana":h.mana if h else 0,"phase":stage,"visited":visited.size(),"deaths":s.world.unit_rows().filter(func(u):return u.dead).size()-initial_dead,"attempts":attempts.duplicate(),"nodes":Performance.get_monitor(Performance.OBJECT_NODE_COUNT),"objects":Performance.get_monitor(Performance.OBJECT_COUNT),"video":RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_VIDEO_MEM_USED),"effects":fx.effects.size(),"bolts":fx.bolts.size(),"lights":fx.lights.size(),"virtual_sounds":g.sound.mixer._virtual.size(),"real_casts":cast_serials.size(),"action":h.action if h else "", "target_hp":s.world.units[target_id].hp if s.world.units.has(target_id) else -1, "target_distance":h.pos.distance_to(s.world.units[target_id].pos) if s.world.units.has(target_id) else -1, "camera":str(g.rig.position), "model_visible":h.model.visible,"route_index":route_index,"world_seconds":s.world.time-initial_world_time,"depth":h.pos.distance_to(start_pos)}
-	row.gpu_ms=render_gpu.reduce(func(a,b):return a+b,0.0)/maxi(1,render_gpu.size())
+	row.gpu_ms=render_gpu.reduce(func(a,b):return a+b,0.0)/maxi(1,render_gpu.size()) if measure_render_times else null
 	row.input={"serial":s._input_out.serial,"pending":s._input_out.pending.size(),"epoch":s._pool_epoch,"blocked":h.blocked if h else false,"loading":s.loading_game,"movie":s.movie_active()}
-	row.render_cpu_ms=render_cpu.reduce(func(a,b):return a+b,0.0)/maxi(1,render_cpu.size())
+	row.render_cpu_ms=render_cpu.reduce(func(a,b):return a+b,0.0)/maxi(1,render_cpu.size()) if measure_render_times else null
+	row.render_thread="safe" if RenderingServer.is_on_render_thread() else "separate"
+	row.render_timing_queries=measure_render_times
 	row.delayed_effects=fx._delayed.size()
 	row.magic_endings=fx._magic_ends.size()
 	row.spell_lights=s.world.get_children().filter(func(node):return node is SpellFx).size()
@@ -244,8 +257,9 @@ func _process(dt:float)->void:
 	g.rig._window_focused=true # Both rendered peers keep following as on two PCs.
 	var now_usec:=Time.get_ticks_usec()
 	frames.append((now_usec-frame_usec)/1000.0);frame_usec=now_usec
-	render_gpu.append(RenderingServer.viewport_get_measured_render_time_gpu(get_viewport().get_viewport_rid()))
-	render_cpu.append(RenderingServer.viewport_get_measured_render_time_cpu(get_viewport().get_viewport_rid()))
+	if measure_render_times:
+		render_gpu.append(RenderingServer.viewport_get_measured_render_time_gpu(get_viewport().get_viewport_rid()))
+		render_cpu.append(RenderingServer.viewport_get_measured_render_time_cpu(get_viewport().get_viewport_rid()))
 	var t:=(Time.get_ticks_msec()-began)/1000.0
 	var h:=hero()
 	if h:

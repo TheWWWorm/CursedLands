@@ -1,0 +1,29 @@
+{
+  "production_commit": "66dda7dbd95f62d61da56be4d8e95986083ccf07",
+  "fixture_sha256": {
+    "tools/benchmarks/coop_traversal_session.gd": "ebf586fa145df4e3e4e20513001fac047f6754c6c4acd9da3926dd236b9fc81d",
+    "tools/benchmarks/session_retention.gd": "c4f771a91a4e4501f5a02808f228b527ab312b41ccc31756843410d48c30b839",
+    "diagnostic-builds/66dda7db/linux/CursedLands.x86_64": "5c8b95c46a64e7a0af03da4270ef553514ad2450c1c87a499fd339a0e282f704",
+    "diagnostic-builds/66dda7db/linux/CursedLands.pck": "d9477f1f0cd72b1afac6c4c264f05f48b9c00ed7bee87a638c67c51598cffa2e",
+    "diagnostic-builds/66dda7db/linux/src/native/bin/libterrain_search.so": "ac42b3731536ae3a404755f48fb04ff54c4bfe79c85ebcc8d78be4153632392c",
+    "diagnostic-builds/66dda7db/linux/src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+  },
+  "owner_pid": 1280085,
+  "command": [
+    "CursedLands.x86_64",
+    "--rendering-method",
+    "forward_plus",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/repo/tools/benchmarks/session_retention.gd",
+    "--trials-first",
+    "--default-render-thread",
+    "--label=default-thread",
+    "--duration=720"
+  ],
+  "environment": {
+    "XDG_DATA_HOME": "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/data-default-thread-retention"
+  },
+  "platform": "Linux x86-64 / Vulkan Forward+ / NVIDIA RTX 3090",
+  "method": "Three full Trials games, followed by two rendered co-op clients and a private authority; release-default rendering thread, no per-frame renderer timing getters. Both clients share one GPU."
+}

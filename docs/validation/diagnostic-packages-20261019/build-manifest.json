@@ -1,0 +1,224 @@
+{
+  "status": "Unpublished local diagnostic build; not a release or replacement of published artifacts.",
+  "production_commit": "66dda7dbd95f62d61da56be4d8e95986083ccf07",
+  "unchanged_version_metadata": "1.17.0",
+  "engine": "4.7.stable.custom_build",
+  "desktop_engine_patch_files": [
+    {
+      "path": "engine_patches/godot-4.7/render-thread-shutdown.patch",
+      "sha256": "0d7dc8b88c8708df9948002477f7bf14d9cf6e718251b0dc798606c5572b712e"
+    },
+    {
+      "path": "engine_patches/godot-4.7/queued-image-snapshot.patch",
+      "sha256": "e747f95b3d324582130e1e0ba24a3f17e2a3a2da350474fca61e4970243a4fe3"
+    },
+    {
+      "path": "engine_patches/godot-4.7/unobserved-pose.patch",
+      "sha256": "fdef4bafc6d2c9a94ef628fd692b7845fd9ed0e1ffd168b21a6a0c8e1ea45978"
+    },
+    {
+      "path": "engine_patches/godot-4.7/preserve-character-track-caches.patch",
+      "sha256": "5b938580ef002448d35f0c1535dcde2021032f6eb1385be56815f157aa99a3b8"
+    },
+    {
+      "path": "engine_patches/godot-4.7/prepare-character-track-caches.patch",
+      "sha256": "693f6eac8fee284b4493a8eb49c7bf9a2426d4e0c8a9f2ef3f96d4147c0ce1bb"
+    },
+    {
+      "path": "engine_patches/godot-4.7/cache-unobserved-track-eligibility.patch",
+      "sha256": "788b24561c8f377f1f4f8aea4a33b05d9b21f31b6bc1772699156131a80173b8"
+    },
+    {
+      "path": "engine_patches/godot-4.7/mobile-shader-recompile-lock.patch",
+      "sha256": "02bc97dd57f9b3388d71837b30b036e814ae5bf6e6fca3b3cf3948d260c746b6"
+    },
+    {
+      "path": "engine_patches/godot-4.7/forward-shader-recompile-lifetime.patch",
+      "sha256": "6620cefedded50733fa65e71164dc8918c8a0ac02387d54252aedf6f185b701e"
+    },
+    {
+      "path": "engine_patches/godot-4.7/far-dof-sharp-guard.patch",
+      "sha256": "c6070bfbfbf5e36014d37d2b58a74ae8ff156202aa063134cebd0b21610e7286"
+    },
+    {
+      "path": "engine_patches/godot-4.7/sky-subpass-alpha.patch",
+      "sha256": "a2ba63fac3d1ec8804f96bf3cdeb45b7f2c1597e1ac410f1739df812d82f3a67"
+    },
+    {
+      "path": "engine_patches/godot-4.7/worker-thread-language-shutdown.patch",
+      "sha256": "dc402e5bdc3b595d3dc50886a144da55d6a7d199dc2efaf348df394bd4b5321e"
+    },
+    {
+      "path": "engine_patches/godot-4.7/far-dof-reference.patch",
+      "sha256": "9c906ae637c9df620f1976d7b6c3bfe6aed4e236c91fcf27b40afeb8bacf3954"
+    },
+    {
+      "path": "engine_patches/godot-4.7/forward-shadow-blend-guard.patch",
+      "sha256": "7ce40d66ba714b49dfcc30dfe97b7e6f35ae49163a039605e0096fb5b72a8af4"
+    },
+    {
+      "path": "engine_patches/godot-4.7/cache-missing-animation-targets.patch",
+      "sha256": "0e81cdd2011a274ecd4e5f394469fa9914b82458477108a6713fe55a44357a99"
+    }
+  ],
+  "windows_engine_provenance": "Byte-identical to the recorded preview2-windows template; all fourteen patch files still match that manifest.",
+  "linux_engine_provenance": "Debug information stripped from the tested performance-log.x86_64 runtime; executable .text SHA256 is unchanged.",
+  "linux_engine_text_sha256": "f7b6027b2c4641600bccf47104edb36c536a1345a9569fff5a0acdcf2e0f3056",
+  "linux_unstripped_engine_sha256": "addf81f6e6f4202d9c92a54ea799041fd3d39976bda01c02a46cac0a83a28382",
+  "windows_runtime_validation": false,
+  "windows_native_compile_verified": true,
+  "windows_native_imports": [
+    "KERNEL32.dll",
+    "msvcrt.dll"
+  ],
+  "windows_pack_matches_linux": true,
+  "default_render_thread": {
+    "linux": "separate",
+    "windows": "safe"
+  },
+  "validation": [
+    "Packaged Linux performance_log.gd: 20 checks, zero failures.",
+    "Linux release-default: three complete Trials games, then twelve minutes of Ultra/2x co-op; zero script/engine errors.",
+    "Windows native DLLs compile; PE x86-64 exports/imports checked. Windows gameplay and Discord named-pipe operation are not runtime-validated."
+  ],
+  "platforms": {
+    "windows": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/diagnostic-builds/66dda7db/windows",
+      "files": {
+        "BUILD-METADATA.json": {
+          "bytes": 2353,
+          "sha256": "2de071005892804f9ae413496e987dea8218455cb6ebd9c4c68846e350606596"
+        },
+        "CursedLands.console.exe": {
+          "bytes": 184832,
+          "sha256": "a0d4f92e9ecc8da12dc33950cfe46cfc864593820121115117670fc9558583f9"
+        },
+        "CursedLands.exe": {
+          "bytes": 94038528,
+          "sha256": "bc401685dd6238c54ba97585bb7c83418689fdddfe4f8a67d00be8fe31affa62"
+        },
+        "CursedLands.pck": {
+          "bytes": 12826568,
+          "sha256": "d9477f1f0cd72b1afac6c4c264f05f48b9c00ed7bee87a638c67c51598cffa2e"
+        },
+        "DIAGNOSTIC.txt": {
+          "bytes": 5746,
+          "sha256": "b0cf6f2bf1a80d6e8ae3e261c3674b73cc534474b7b67026f010008de28d5cbc"
+        },
+        "DISCORD-SETUP.md": {
+          "bytes": 2318,
+          "sha256": "dbba292ee16e068727d48a377c5fe9699c250e6e88a0795ba1e371904120256e"
+        },
+        "LICENSE.md": {
+          "bytes": 11337,
+          "sha256": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c"
+        },
+        "Play-Compatibility.cmd": {
+          "bytes": 171,
+          "sha256": "8b124214d3fd584bf4fd4807edcec6aa627520a44058ef3ecf1e0622b11ed66b"
+        },
+        "Play-Vulkan.cmd": {
+          "bytes": 159,
+          "sha256": "a046faff0b30d175a29ad80bca0449bc86786041e54b895a0257f614078103b9"
+        },
+        "THIRD_PARTY_NOTICES.md": {
+          "bytes": 4147,
+          "sha256": "42fea15f445074b0f20ad4e660934c9ddc96975a4ed64bfd42a506996f899e10"
+        },
+        "licenses/FONT-LICENSE.txt": {
+          "bytes": 5756,
+          "sha256": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9"
+        },
+        "licenses/GODOT_LICENSES.txt": {
+          "bytes": 104247,
+          "sha256": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7"
+        },
+        "licenses/LGPL-2.1.txt": {
+          "bytes": 26530,
+          "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+        },
+        "licenses/NATIVE_ARCHIVE_NOTICES.txt": {
+          "bytes": 933,
+          "sha256": "f667bf5b36eb65f615c817d7d54b3096d6cbaac3c39507c4e6c91ecad62f0dbe"
+        },
+        "src/native/bin/libmod_archive.dll": {
+          "bytes": 656896,
+          "sha256": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+        },
+        "src/native/bin/libterrain_search.dll": {
+          "bytes": 2580480,
+          "sha256": "3378cd85fc8a6f02645c066eefb67743c784f1d849e09dc98bd39146076ebf40"
+        }
+      },
+      "archive": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/diagnostic-builds/CursedLands-diagnostic-66dda7db-windows-20261019.zip",
+        "bytes": 46484902,
+        "sha256": "113cf33a56574135cb73ab682ae5c5cee45cbc4349a0fb7ca22f5d836a87bc79"
+      },
+      "all_archived_file_hashes_verified": true
+    },
+    "linux": {
+      "directory": "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/diagnostic-builds/66dda7db/linux",
+      "files": {
+        "BUILD-METADATA.json": {
+          "bytes": 1929,
+          "sha256": "4f89975e9dce15e99fdc3174eaa8c44140a3a7df0e8a51c0b57e65afd2f060f5"
+        },
+        "CursedLands.pck": {
+          "bytes": 12826568,
+          "sha256": "d9477f1f0cd72b1afac6c4c264f05f48b9c00ed7bee87a638c67c51598cffa2e"
+        },
+        "CursedLands.x86_64": {
+          "bytes": 97657920,
+          "sha256": "5c8b95c46a64e7a0af03da4270ef553514ad2450c1c87a499fd339a0e282f704"
+        },
+        "DIAGNOSTIC.txt": {
+          "bytes": 5746,
+          "sha256": "b0cf6f2bf1a80d6e8ae3e261c3674b73cc534474b7b67026f010008de28d5cbc"
+        },
+        "DISCORD-SETUP.md": {
+          "bytes": 2318,
+          "sha256": "dbba292ee16e068727d48a377c5fe9699c250e6e88a0795ba1e371904120256e"
+        },
+        "LICENSE.md": {
+          "bytes": 11337,
+          "sha256": "4d3172fe316bf440607488dc89cb6ef53ce476a46491367afc3d008211ac3f1c"
+        },
+        "THIRD_PARTY_NOTICES.md": {
+          "bytes": 4147,
+          "sha256": "42fea15f445074b0f20ad4e660934c9ddc96975a4ed64bfd42a506996f899e10"
+        },
+        "licenses/FONT-LICENSE.txt": {
+          "bytes": 5756,
+          "sha256": "f32df582a2aab128c07b2f7e36e7b928dc5f6bd82657b905c04f91459f9e5cf9"
+        },
+        "licenses/GODOT_LICENSES.txt": {
+          "bytes": 104247,
+          "sha256": "d7f4419c30e0d321f36745007fc0390e5f4095035e1eed15db5d6cd504d8c5f7"
+        },
+        "licenses/LGPL-2.1.txt": {
+          "bytes": 26530,
+          "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+        },
+        "licenses/NATIVE_ARCHIVE_NOTICES.txt": {
+          "bytes": 933,
+          "sha256": "f667bf5b36eb65f615c817d7d54b3096d6cbaac3c39507c4e6c91ecad62f0dbe"
+        },
+        "src/native/bin/libmod_archive.so": {
+          "bytes": 823592,
+          "sha256": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+        },
+        "src/native/bin/libterrain_search.so": {
+          "bytes": 3347664,
+          "sha256": "ac42b3731536ae3a404755f48fb04ff54c4bfe79c85ebcc8d78be4153632392c"
+        }
+      },
+      "archive": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/creature-projectiles-wisp-20261018/diagnostic-builds/CursedLands-diagnostic-66dda7db-linux-20261019.tar.gz",
+        "bytes": 49431993,
+        "sha256": "da2d0d3fd4f31f2c3e3ec38798dbcb7b288a9030d29421d3ed4347b079f726d3"
+      },
+      "all_archived_file_hashes_verified": true
+    }
+  }
+}

@@ -260,3 +260,45 @@ single-player scene does not represent busy co-op combat. Check that camera
 travel is nonzero and simulation advances at approximately one second per
 wall-clock second before using its frame statistics. Compare live runs with
 live runs; their camera route differs from `map_pan.gd`.
+
+## Full Trials games followed by sustained co-op combat
+
+`session_retention.gd` plays three complete nine-player Trials games through
+normal purchases, combat and elimination, then starts two rendered campaign
+clients and a private authority. `coop_traversal_session.gd` runs the campaign
+portion alone. They use Ultra at 1920×1080, 100% render scale and 2× simulation
+speed, with ordinary movement, targeting, weapon attacks and the Lightning,
+Acid Fog and Weakness spells. The equipped level-15 heroes use real health,
+mana, damage and healing. Authored enemies stay active; no teleports, direct
+effect spawns, enemy deletion or invulnerability are used.
+
+Use an isolated user-data directory and a patched release export. For the
+release's platform-specific rendering-thread default:
+
+```sh
+XDG_DATA_HOME=/absolute/run/data \
+  /absolute/export/CursedLands.x86_64 --rendering-method forward_plus \
+  -- --ei-path=/absolute/original/game \
+  --tool=/absolute/checkout/tools/benchmarks/session_retention.gd \
+  --trials-first --default-render-thread --label=default-thread --duration=720
+```
+
+Do not add `--render-thread safe` to that command. The user argument
+`--default-render-thread` also leaves the guest on its platform default.
+`TRAVERSE_RENDER` and each census record report the actual mode, rather than
+inferring it from a setting. For an explicit Safe-mode comparison, pass
+`--render-thread safe` before `--` and omit `--default-render-thread`.
+The unpatched stock editor still requires Safe mode.
+
+Frame intervals are measured without per-frame renderer timing queries.
+`--render-timings` opts into those queries for a separate instrumented profile;
+they can synchronize the renderer, so do not combine such samples with the
+ordinary run. GPU/render-CPU fields are `null` when not measured. Screenshots
+are captured once a minute and can affect their surrounding frame interval.
+
+Inspect travel, depth, actual cast animations, enemy deaths, health and route
+progress alongside FPS. A completed timer alone does not establish sustained
+play. The initial sample is not a full interval; discard intervals that include
+loading, disconnection or a clock change. Both clients share one GPU in this
+fixture, and moving views have different workloads. A lower or higher FPS in a
+different location is not by itself evidence of a leak or a fix.

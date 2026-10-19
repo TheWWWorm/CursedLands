@@ -1,0 +1,70 @@
+CURSED LANDS — LOCAL DIAGNOSTIC BUILD
+Source revision: 66dda7db
+Published version metadata: 1.17.0 (unchanged)
+
+ENGLISH
+This is an unpublished development build containing the current fixes and
+performance logging. The large restart-sensitive FPS drop is not confirmed fixed.
+Extract to a separate folder. Keep the executable, CursedLands.pck and src folder
+together. Use your existing original-game installation. Both co-op players should
+use this same build.
+Keep the graphics settings and 2x speed used when the slowdown occurs. When it
+slows down, open settings, choose “Export log…” and save the report BEFORE closing
+or restarting the game. Logs include system/API information and periodic frame,
+world, effect and cache counters. Nothing is uploaded automatically.
+Windows: run CursedLands.exe. The engine is the recorded patched Windows template;
+the current native DLLs compile successfully. Windows execution has not been
+validated on this Linux machine. Play-Vulkan.cmd selects Vulkan without lowering
+the graphics settings, if a comparison with Direct3D 12 is needed.
+Linux: run ./CursedLands.x86_64. This uses the release's separate rendering thread.
+The release-default follow-up completed three full Trials games and twelve minutes
+of Ultra/2x co-op traversal/combat without reproducing the large FPS drop.
+./CursedLands.x86_64 --render-thread safe selects the separately tested Safe mode.
+Discord activity still needs an application ID; see DISCORD-SETUP.md.
+
+РУССКИЙ
+Это неопубликованная сборка для проверки текущих исправлений и записи показателей
+производительности. Исправление сильного падения FPS, исчезающего после перезапуска,
+пока не подтверждено.
+Распакуйте её в отдельную папку. Исполняемый файл, CursedLands.pck и папка src должны
+оставаться вместе. Укажите уже установленную оригинальную игру. Оба участника
+кооперативной игры должны использовать эту же сборку.
+Сохраните настройки графики и скорость 2x, при которых появляется замедление.
+Когда FPS упадёт, откройте настройки, выберите «Экспорт журнала…» и сохраните отчёт
+ДО выхода из игры или её перезапуска. В журнал входят сведения о системе и API,
+а также периодические показатели кадров, миров, эффектов и кэшей. Автоматической
+отправки данных нет.
+Windows: запустите CursedLands.exe. Используется проверенный по контрольной сумме
+шаблон движка с исправлениями; текущие DLL успешно скомпилированы. Запуск Windows
+на этой Linux-машине не проверен. Play-Vulkan.cmd выбирает Vulkan без снижения
+качества графики, если понадобится сравнение с Direct3D 12.
+Linux: запустите ./CursedLands.x86_64. По умолчанию отрисовка идёт в отдельном потоке,
+как в выпуске игры. Проверка стандартного режима завершила три полные игры в
+испытаниях и двенадцать минут перемещения и боя в кооперативе на Ultra/2x; сильное
+падение FPS не воспроизвелось. Команда ./CursedLands.x86_64 --render-thread safe
+выбирает отдельно проверенный режим Safe.
+Для активности Discord по-прежнему нужен ID приложения; см. DISCORD-SETUP.md.
+
+DEUTSCH
+Dies ist ein unveröffentlichter Entwicklungsbuild mit den aktuellen Korrekturen
+und Leistungsprotokollen. Der starke FPS-Abfall, der nach einem Neustart verschwindet,
+ist noch nicht nachweislich behoben.
+In einen separaten Ordner entpacken. Programmdatei, CursedLands.pck und der Ordner
+src müssen zusammenbleiben. Die vorhandene Installation des Originalspiels nutzen.
+Beide Koop-Spieler sollten denselben Build verwenden.
+Die Grafikeinstellungen und das 2x-Tempo beibehalten, bei denen die Verlangsamung
+auftritt. Sobald die FPS sinken, die Einstellungen öffnen, „Protokoll exportieren…“
+wählen und den Bericht VOR dem Beenden oder Neustarten speichern. Das Protokoll
+enthält System-/API-Angaben und regelmäßige Werte zu Bildern, Welten, Effekten und
+Caches. Es werden keine Daten automatisch hochgeladen.
+Windows: CursedLands.exe starten. Der Build verwendet die anhand ihrer Prüfsumme
+bestätigte Engine-Vorlage mit Korrekturen; die aktuellen nativen DLLs kompilieren
+erfolgreich. Die Ausführung unter Windows wurde auf diesem Linux-Rechner nicht
+geprüft. Play-Vulkan.cmd wählt Vulkan ohne niedrigere Grafikeinstellungen, falls
+ein Vergleich mit Direct3D 12 nötig ist.
+Linux: ./CursedLands.x86_64 starten. Wie im veröffentlichten Spiel wird ein separater
+Renderthread verwendet. Der Test mit dieser Standardeinstellung absolvierte drei
+volle Prüfungen-Partien und zwölf Minuten Koop-Bewegung und Kampf mit Ultra/2x,
+ohne den starken FPS-Abfall zu reproduzieren.
+./CursedLands.x86_64 --render-thread safe wählt den separat geprüften Safe-Modus.
+Für Discord-Aktivitäten ist weiterhin eine Anwendungs-ID nötig; siehe DISCORD-SETUP.md.

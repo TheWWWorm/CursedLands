@@ -14,12 +14,14 @@ func census(label: String) -> void:
 		made_bytes += String(entry[1]).length()
 	var row := {
 		"label":label, "ticks":Time.get_ticks_msec(), "pid":OS.get_process_id(),
+		"render_thread":"safe" if RenderingServer.is_on_render_thread() else "separate",
+		"render_timing_queries":measure_render_times,
 		"nodes":Performance.get_monitor(Performance.OBJECT_NODE_COUNT),
-		"orphans":Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT),
+		"orphans":Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT) if OS.is_debug_build() else null,
 		"objects":Performance.get_monitor(Performance.OBJECT_COUNT),
 		"resources":Performance.get_monitor(Performance.OBJECT_RESOURCE_COUNT),
 		"video":RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_VIDEO_MEM_USED),
-		"static_bytes":Performance.get_monitor(Performance.MEMORY_STATIC),
+		"static_bytes":PerformanceLog._available(Performance.get_monitor(Performance.MEMORY_STATIC)),
 		"old_worlds_alive":old_worlds.filter(func(w):return w.get_ref()!=null).size(),
 		"frame_listeners":get_tree().get_signal_connection_list("process_frame").size(),
 		"figure_models":EIFigure._models.size(), "figure_meshes":EIFigure._meshes.size(),
