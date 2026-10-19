@@ -1,0 +1,92 @@
+{
+  "date": "2026-10-19",
+  "change": "Show the approved dragon at half its previous width and height, center Cursed Lands underneath it, and keep the title bar branded from the first visible window.",
+  "source_patch": "engine_patches/godot-4.7/boot-window-title.patch",
+  "patch_sha256": "d08b703f48c7d9bbd8c68d35cbbf99d763ffc5570b9fbf251ffc8358ad87012f",
+  "original_main_cpp_sha256": "2fa6ef2736aa28e2feced47ca872bce1a95e3e6c56bb6002a96660a008df8992",
+  "patched_main_cpp_sha256": "168dfc2a5091d321908097eac0dddf846458db21c020f18f5696f3b58b5fd55b",
+  "build": "Recompiled main/main.cpp and its archive in a separate copy of the qualified common-patch-14 Linux engine; relinked with its existing libraries. Four disabled optional module libraries were omitted from the default dry-run link plan.",
+  "logo": {
+    "source": "game/icon.png",
+    "sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18",
+    "splash": "game/assets/branding/splash.png",
+    "splash_sha256": "b9fe65d8c1b0bef09d7df97700ead5372582dc00851a24e53f4be3a839a48027",
+    "unchanged_approved_artwork": true
+  },
+  "pack_sha256": "7fe9b71c998d022f1c43336d3f85841003250d3181e158d4ea3d489486c33182",
+  "preview_engine_sha256": "4703975995aab2ce47fdbef10f43016efe33eec29655db5c005811d5def04024",
+  "baseline_visible_titles": [
+    "Godot",
+    "Cursed Lands"
+  ],
+  "checks": [
+    {
+      "locale": "en",
+      "first_visible_title": "Cursed Lands",
+      "splash_title": "Cursed Lands",
+      "exit_code": 0,
+      "splash_sha256": "dd368980a6b5bf44c1fa2065f276f30d3f3495ec66e2565d5557273c4dbce055",
+      "screenshot": "/home/llm2x/Documents/EI/local/scratchpad/boot-branding-20261019/checks/compact/after-en-window.png"
+    },
+    {
+      "locale": "ru",
+      "first_visible_title": "Cursed Lands",
+      "splash_title": "Cursed Lands",
+      "exit_code": 0,
+      "splash_sha256": "dd368980a6b5bf44c1fa2065f276f30d3f3495ec66e2565d5557273c4dbce055",
+      "screenshot": "/home/llm2x/Documents/EI/local/scratchpad/boot-branding-20261019/checks/compact/after-ru-window.png"
+    },
+    {
+      "locale": "de",
+      "first_visible_title": "Cursed Lands",
+      "splash_title": "Cursed Lands",
+      "exit_code": 0,
+      "splash_sha256": "dd368980a6b5bf44c1fa2065f276f30d3f3495ec66e2565d5557273c4dbce055",
+      "screenshot": "/home/llm2x/Documents/EI/local/scratchpad/boot-branding-20261019/checks/compact/after-de-window.png"
+    }
+  ],
+  "test_preferences": {
+    "isolated_profiles": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "localization": "The user-requested Cursed Lands proper name is identical below the logo and in the title bar in EN/RU/DE. All three locale captures are pixel-identical. No options or other text changed.",
+  "limits": [
+    "Linux X11/Compatibility runtime verified. Windows and macOS were not executed.",
+    "Published downloads are unchanged; the new title timing requires rebuilding the relevant export template."
+  ],
+  "preview_screenshot": "docs/branding/startup-preview-compact.png",
+  "splash_layout": {
+    "canvas_size": 1024,
+    "logo_size": 512,
+    "title": "Cursed Lands",
+    "font": "game/fonts/LiberationSerif-Regular.ttf",
+    "font_size": 72,
+    "color": "#e4d7a7",
+    "gap": 32,
+    "scaling": "Keep aspect ratio; the logo occupies half the shorter window dimension, with the title below. The group is centered.",
+    "font_sha256": "705903ae1382f0150f115d6f10a30f5b2f3d6ade649c474afe6366c39174fb65",
+    "measured_logo_bounds_before": [
+      250,
+      26,
+      730,
+      507
+    ],
+    "measured_logo_bounds_after": [
+      365,
+      126,
+      605,
+      366
+    ],
+    "measured_width_ratio": 0.5,
+    "measured_height_ratio": 0.498960498960499,
+    "capture_viewport": [
+      960,
+      540
+    ],
+    "transparent_background": true
+  }
+}

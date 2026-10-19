@@ -11,6 +11,16 @@
   "generation": "Built-in image_gen background removal from the approved artwork, requested on 2026-10-19",
   "transparency": "Keep the background and open spaces transparent on the website, GitHub and native icons.",
   "derivatives": "Lanczos resizing and platform file conversion with the alpha channel preserved",
+  "splash": {
+    "canvas_size": 1024,
+    "logo_size": 512,
+    "title": "Cursed Lands",
+    "font": "game/fonts/LiberationSerif-Regular.ttf",
+    "font_size": 72,
+    "color": "#e4d7a7",
+    "gap": 32,
+    "scaling": "Keep aspect ratio; the logo occupies half the shorter window dimension, with the title below. The group is centered."
+  },
   "regenerate": "node tools/generate_branding.cjs",
   "packaging": {
     "windows": "Use the Windows export preset with application/modify_resources enabled. When using a qualified custom engine, set custom_template/release to that engine and export the executable; exporting only the PCK does not replace the Explorer icon.",
@@ -22,11 +32,11 @@
   "files": {
     "game/assets/branding/icon.ico": "263ed821115751d14cf733ce36ae0c960cd28401efd108b63f8813ccdd882971",
     "game/assets/branding/icon.icns": "f1c5c6a10b3af07bebe2e311e5c38fe08e3a413a934aaf3fa2e3fb9b77a70f6b",
-    "game/assets/branding/splash.png": "280a543feabeb6da1ae8f17e1452fa7a27537f2e1d2d261d6da9ce826f58a90d",
+    "game/assets/branding/splash.png": "b9fe65d8c1b0bef09d7df97700ead5372582dc00851a24e53f4be3a839a48027",
+    "public/index.png": "b9fe65d8c1b0bef09d7df97700ead5372582dc00851a24e53f4be3a839a48027",
     "public/index.icon.png": "074eecd5dd87067e3f1b15c59c08fad1a700f431fe5c0b1cbc23f9a8b57aa8a4",
     "public/index.apple-touch-icon.png": "1fa3fdee844f8a38b4a4d4c5908a53d857eaaf6950da1fa061fb5c1c2d46de41",
     "public/icon-192.png": "0f2555619f403d73855f2d20beaf5cedd4a6ad3b92b0325f7f8da5f979dcceec",
-    "public/icon-512.png": "280a543feabeb6da1ae8f17e1452fa7a27537f2e1d2d261d6da9ce826f58a90d",
-    "public/index.png": "280a543feabeb6da1ae8f17e1452fa7a27537f2e1d2d261d6da9ce826f58a90d"
+    "public/icon-512.png": "280a543feabeb6da1ae8f17e1452fa7a27537f2e1d2d261d6da9ce826f58a90d"
   }
 }

@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## 1.18.0 — 2026-10-19
+
+- Show the smaller dragon logo with the Cursed Lands name beneath it during startup; apply the game title before the desktop window first appears.
 
 - Show camera-mode and wiki shortcut hints in isometric view, following remapped keys. Add a localized option to hide remake control hints in every camera mode; hints remain enabled by default.
 - Default enemy health bars to Always while preserving saved choices and existing visibility rules.

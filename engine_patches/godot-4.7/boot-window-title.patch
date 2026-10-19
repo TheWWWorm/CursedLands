@@ -1,0 +1,19 @@
+diff --git a/main/main.cpp b/main/main.cpp
+--- a/main/main.cpp
++++ b/main/main.cpp
+@@ -3451,6 +3451,15 @@
+ 			}
+ 		}
+ #endif
++		// Brand the first visible window, including the boot splash. The final
++		// translated/debug title is still assigned when the main loop starts.
++		if (!editor && !project_manager && !cmdline_tool && display_server->get_name() != NULL_DISPLAY_DRIVER) {
++			const String initial_title = GLOBAL_GET("application/config/name");
++			if (!initial_title.is_empty()) {
++				display_server->window_set_title(initial_title);
++			}
++		}
++
+ 		if (display_server->has_feature(DisplayServerEnums::FEATURE_SUBWINDOWS)) {
+ 			display_server->show_window(DisplayServerEnums::MAIN_WINDOW_ID);
+ 		}

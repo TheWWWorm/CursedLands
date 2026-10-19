@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Rebuild platform icon containers and web sizes from the approved, unmodified
 // game/icon.png. Requires Node.js and sharp (npm install --no-save sharp).
-// This only resizes pixels and preserves alpha; it never redraws the artwork.
+// Resize the approved pixels and typeset the splash title, preserving alpha.
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
@@ -18,6 +18,34 @@ async function save(name, data) {
 }
 async function png(size) {
   return sharp(source).resize(size, size, {kernel: 'lanczos3'}).png().toBuffer();
+}
+const splashLayout = {
+  canvas_size: 1024,
+  logo_size: 512,
+  title: 'Cursed Lands',
+  font: 'game/fonts/LiberationSerif-Regular.ttf',
+  font_size: 72,
+  color: '#e4d7a7',
+  gap: 32,
+};
+async function splash() {
+  const layout = splashLayout;
+  const logo = await png(layout.logo_size);
+  const title = await sharp({text: {
+    text: '<span foreground="' + layout.color + '">' + layout.title + '</span>',
+    font: 'Liberation Serif ' + layout.font_size,
+    fontfile: path.join(root, layout.font),
+    rgba: true,
+  }}).png().toBuffer({resolveWithObject: true});
+  const top = Math.floor((layout.canvas_size - layout.logo_size - layout.gap - title.info.height) / 2);
+  return sharp({create: {
+    width: layout.canvas_size, height: layout.canvas_size, channels: 4,
+    background: {r: 0, g: 0, b: 0, alpha: 0},
+  }}).composite([
+    {input: logo, left: (layout.canvas_size - layout.logo_size) / 2, top},
+    {input: title.data, left: Math.floor((layout.canvas_size - title.info.width) / 2),
+      top: top + layout.logo_size + layout.gap},
+  ]).png().toBuffer();
 }
 async function main() {
   const metadata = await sharp(source).metadata();
@@ -59,13 +87,15 @@ async function main() {
   icns.writeUInt32BE(8 + chunks.reduce((sum, chunk) => sum + chunk.length, 0), 4);
   await save('game/assets/branding/icon.icns', Buffer.concat([icns, ...chunks]));
 
+  const splashImage = await splash();
+  await save('game/assets/branding/splash.png', splashImage);
+  await save('public/index.png', splashImage);
+
   for (const [name, size] of [
-    ['game/assets/branding/splash.png', 512],
     ['public/index.icon.png', 64],
     ['public/index.apple-touch-icon.png', 180],
     ['public/icon-192.png', 192],
     ['public/icon-512.png', 512],
-    ['public/index.png', 512],
   ]) await save(name, await png(size));
 
   // Wiki updates are independent of the installed game's service-worker cache.
@@ -112,6 +142,8 @@ async function main() {
     generation: 'Built-in image_gen background removal from the approved artwork, requested on 2026-10-19',
     transparency: 'Keep the background and open spaces transparent on the website, GitHub and native icons.',
     derivatives: 'Lanczos resizing and platform file conversion with the alpha channel preserved',
+    splash: {...splashLayout,
+      scaling: 'Keep aspect ratio; the logo occupies half the shorter window dimension, with the title below. The group is centered.'},
     regenerate: 'node tools/generate_branding.cjs',
     packaging: {
       windows: 'Use the Windows export preset with application/modify_resources enabled. When using a qualified custom engine, set custom_template/release to that engine and export the executable; exporting only the PCK does not replace the Explorer icon.',

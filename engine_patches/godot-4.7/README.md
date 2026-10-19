@@ -19,6 +19,16 @@ build instructions. Adding a patch here does not update installed templates.
 12. `far-dof-reference.patch`
 13. `forward-shadow-blend-guard.patch`
 14. `cache-missing-animation-targets.patch`
+15. `boot-window-title.patch`
+
+The fifteenth patch applies `application/config/name` before the main window
+is shown, so the project's boot splash already has the game's name in its
+title bar. The usual translated title and debug suffix are still applied
+when the main loop starts. Editor, project manager, command-line tools and
+headless startup retain their normal behavior. The splash artwork comes
+from `application/boot_splash/image`; Cursed Lands uses the approved dragon
+CL logo. This patch requires rebuilt export templates and does not change
+existing published executables.
 
 The first two patches repair separate-render-thread shutdown and snapshot
 mutable images for queued texture uploads. The third lets an unobserved looping
