@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Rebuild platform icon containers and web sizes from the approved, unmodified
 // game/icon.png. Requires Node.js and sharp (npm install --no-save sharp).
-// This only resizes/pads pixels; it never redraws the approved artwork.
+// This only resizes pixels and preserves alpha; it never redraws the artwork.
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
@@ -22,6 +22,7 @@ async function png(size) {
 async function main() {
   const metadata = await sharp(source).metadata();
   if (metadata.width !== metadata.height) throw new Error('The approved master must be square.');
+  if (!metadata.hasAlpha) throw new Error('The approved icon must retain its transparent background.');
   const sizes = [16, 24, 32, 48, 64, 128, 256];
   const frames = await Promise.all(sizes.map(png));
   const directory = Buffer.alloc(6 + sizes.length * 16);
@@ -61,19 +62,13 @@ async function main() {
     ['public/index.png', 512],
   ]) await save(name, await png(size));
 
-  // Keep the entire mark inside the circular safe area of maskable launchers.
-  const foreground = await png(316);
-  const maskable = await sharp({create:{width:512,height:512,channels:3,background:'#110f0c'}})
-    .composite([{input:foreground,gravity:'centre'}]).png().toBuffer();
-  await save('public/icon-maskable-512.png', maskable);
-
   const publicDir = path.join(root, 'public');
   const workerPath = path.join(publicDir, 'service-worker.js');
   let worker = fs.readFileSync(workerPath, 'utf8');
   const hashesMatch = worker.match(/const HASHES = (\{[\s\S]*?\});/);
   if (!hashesMatch) throw new Error('Web cache manifest not found.');
   const hashes = JSON.parse(hashesMatch[1]);
-  hashes['icon-maskable-512.png'] = '';
+  delete hashes['icon-maskable-512.png'];
   const cacheDigest = crypto.createHash('sha256');
   for (const name of Object.keys(hashes).sort()) {
     let data;
@@ -97,10 +92,12 @@ async function main() {
     approved_date: '2026-10-19',
     source: 'game/icon.png',
     source_sha256: sha(fs.readFileSync(source)),
+    approved_opaque_source_sha256: '5c19c62e46918724753142c6950f4c22e7683d8313f7be82a6f5315e224a9d04',
     source_dimensions: [metadata.width,metadata.height],
     artwork: 'Approved Cursed Lands copper-and-gold dragon CL monogram',
-    generation: 'Built-in image_gen; exact user-selected image, without further creative edits',
-    derivatives: 'Lanczos resizing and platform file conversion; padding only for the maskable icon',
+    generation: 'Built-in image_gen background removal from the approved artwork, requested on 2026-10-19',
+    transparency: 'Keep the background and open spaces transparent on the website, GitHub and native icons.',
+    derivatives: 'Lanczos resizing and platform file conversion with the alpha channel preserved',
     regenerate: 'node tools/generate_branding.cjs',
     packaging: {
       windows: 'Use the Windows export preset with application/modify_resources enabled. When using a qualified custom engine, set custom_template/release to that engine and export the executable; exporting only the PCK does not replace the Explorer icon.',

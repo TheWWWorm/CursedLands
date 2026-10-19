@@ -1,14 +1,16 @@
 {
   "approved_date": "2026-10-19",
   "source": "game/icon.png",
-  "source_sha256": "5c19c62e46918724753142c6950f4c22e7683d8313f7be82a6f5315e224a9d04",
+  "source_sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18",
+  "approved_opaque_source_sha256": "5c19c62e46918724753142c6950f4c22e7683d8313f7be82a6f5315e224a9d04",
   "source_dimensions": [
     1254,
     1254
   ],
   "artwork": "Approved Cursed Lands copper-and-gold dragon CL monogram",
-  "generation": "Built-in image_gen; exact user-selected image, without further creative edits",
-  "derivatives": "Lanczos resizing and platform file conversion; padding only for the maskable icon",
+  "generation": "Built-in image_gen background removal from the approved artwork, requested on 2026-10-19",
+  "transparency": "Keep the background and open spaces transparent on the website, GitHub and native icons.",
+  "derivatives": "Lanczos resizing and platform file conversion with the alpha channel preserved",
   "regenerate": "node tools/generate_branding.cjs",
   "packaging": {
     "windows": "Use the Windows export preset with application/modify_resources enabled. When using a qualified custom engine, set custom_template/release to that engine and export the executable; exporting only the PCK does not replace the Explorer icon.",
@@ -18,14 +20,13 @@
     "web": "Regenerate web icon sizes and the service-worker hashes after changing the approved master."
   },
   "files": {
-    "game/assets/branding/icon.ico": "ba141a0d85b4c127c06f0a64fa31cf6db3114fde030032a9e37867cd08fa2ea4",
-    "game/assets/branding/icon.icns": "440faf472cf81732d6f9eb83481db3403b7bdb78f37e9288daf7c43981fda511",
-    "game/assets/branding/splash.png": "4ad4251f0ef9a513d8434b2a6dda7f44b7b75f720c6b6c7dd66bdbda9d4c5d20",
-    "public/index.icon.png": "79b0968e0c548b666b1b5c8a057b367f8dab11ea2212457f77a624c399e8e551",
-    "public/index.apple-touch-icon.png": "cfac5ab5b07d1c2194e110ef88f47a8e0c25d8413ec8e32841d3c5ef43e9b759",
-    "public/icon-192.png": "ca81b6cd25bee336c8c22ff4f2ee13e1fcf57b908c79b741ad2b3dbd38955372",
-    "public/icon-512.png": "4ad4251f0ef9a513d8434b2a6dda7f44b7b75f720c6b6c7dd66bdbda9d4c5d20",
-    "public/index.png": "4ad4251f0ef9a513d8434b2a6dda7f44b7b75f720c6b6c7dd66bdbda9d4c5d20",
-    "public/icon-maskable-512.png": "8911ef839f53c35f386277baf0aacab17081fce6a5a5d97d256ba784bac0a068"
+    "game/assets/branding/icon.ico": "263ed821115751d14cf733ce36ae0c960cd28401efd108b63f8813ccdd882971",
+    "game/assets/branding/icon.icns": "f1c5c6a10b3af07bebe2e311e5c38fe08e3a413a934aaf3fa2e3fb9b77a70f6b",
+    "game/assets/branding/splash.png": "280a543feabeb6da1ae8f17e1452fa7a27537f2e1d2d261d6da9ce826f58a90d",
+    "public/index.icon.png": "074eecd5dd87067e3f1b15c59c08fad1a700f431fe5c0b1cbc23f9a8b57aa8a4",
+    "public/index.apple-touch-icon.png": "1fa3fdee844f8a38b4a4d4c5908a53d857eaaf6950da1fa061fb5c1c2d46de41",
+    "public/icon-192.png": "0f2555619f403d73855f2d20beaf5cedd4a6ad3b92b0325f7f8da5f979dcceec",
+    "public/icon-512.png": "280a543feabeb6da1ae8f17e1452fa7a27537f2e1d2d261d6da9ce826f58a90d",
+    "public/index.png": "280a543feabeb6da1ae8f17e1452fa7a27537f2e1d2d261d6da9ce826f58a90d"
   }
 }

@@ -1,33 +1,24 @@
 {
   "date": "2026-10-19",
-  "master_sha256": "5c19c62e46918724753142c6950f4c22e7683d8313f7be82a6f5315e224a9d04",
-  "windows_embedded_icon_groups": [
-    {
-      "resource": [
-        14,
-        2147484000,
-        1033
-      ],
-      "sizes": [
-        16,
-        32,
-        48,
-        64,
-        128,
-        256
-      ],
-      "all_match_approved_icon": true
-    }
+  "master_sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18",
+  "background": "transparent; alpha preserved in all PNG, ICO and ICNS assets",
+  "windows_embedded_icon_sizes": [
+    16,
+    32,
+    48,
+    64,
+    128,
+    256
   ],
+  "windows_embedded_icons_exact_match": true,
+  "windows_embedded_icons_transparency": true,
   "macos_bundle_icon_exact_match": true,
-  "godot_import": "passed after normal first-import bootstrap",
+  "godot_import": "passed",
   "windows_and_macos_exports": "passed without warnings or errors",
-  "scope": "Icon packaging validation only; these test exports are not published game releases.",
   "web": {
-    "launch_screen": "Inspected in browser; approved mark loaded",
-    "wiki": "48px image loaded; EN/RU/DE header inspected",
-    "cache": "All manifest SHA-256 values checked against local assets, including reassembled WASM",
-    "artwork_redrawn": false
+    "cache": "Every asset hash matches; opaque maskable tile removed",
+    "cutout": "Inspected on white, green and dark backgrounds",
+    "wiki": "Decorative icon adds no strings; existing EN/RU/DE header retained"
   },
   "distribution": "Source and hosted branding update; existing versioned game downloads remain immutable. Native packages acquire the icon when exported from this source."
 }

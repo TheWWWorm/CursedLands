@@ -21,9 +21,10 @@ its artifacts. Historical versions remain unchanged.
 
 # Branding
 
-Use the approved dragon CL artwork in `game/icon.png` for application and public
+Use the approved transparent dragon CL artwork in `game/icon.png` for application and public
 branding. Regenerate platform files with `tools/generate_branding.cjs`; keep the
-approved master unchanged. Include `assets/branding` when staging exports.
+approved master unchanged and preserve its alpha channel without adding a
+background tile. Include `assets/branding` when staging exports.
 
 Windows releases must embed `assets/branding/icon.ico` in the executable with
 `application/modify_resources=true`. For a qualified custom engine, set it as

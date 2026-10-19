@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Use the copper-and-gold dragon CL icon for the application, Windows executable, macOS bundle, startup splash, website, wiki and repository branding.
+- Use the transparent copper-and-gold dragon CL icon for the application, Windows executable, macOS bundle, startup splash, website, wiki and repository branding.
 
 ## 1.17.0 — 2026-10-18
 

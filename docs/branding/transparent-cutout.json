@@ -1,0 +1,8 @@
+{
+  "date": "2026-10-19",
+  "operation": "Background removal requested by user; transparent rendition of approved artwork",
+  "generation_mode": "built-in image_gen",
+  "source_sha256": "5c19c62e46918724753142c6950f4c22e7683d8313f7be82a6f5315e224a9d04",
+  "prompt": "Remove only the dark brown/black background from this exact approved Cursed Lands CL dragon icon. Produce a precise transparent PNG cutout with a real alpha channel. Preserve the existing artwork exactly: same dragon face, horns, rectangular teeth, claw, red copper scales, gold edges, C-body silhouette, one tail wrap, L shape and lettering geometry, placement, texture, colors and lighting. Do not repaint, redesign, simplify, sharpen, relight or change the artwork. Make the entire background transparent, including the open interior of the C, space between the claw fingers, spaces around the horns and tail, and every other gap where the dark background shows through. Preserve legitimate dark red scales, facial shadows and internal mouth detail within the dragon and the L. Clean precise antialiased edges, no dark fringe, no drop shadow, no glow, no rectangle, no checkerboard baked into the pixels. Keep the complete original composition and square framing with every horn and serif tip intact. This is background removal only.",
+  "output": "game/icon.png"
+}
