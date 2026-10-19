@@ -1,6 +1,6 @@
 # Cursed Lands
 
-<img src="game/icon.png" alt="Cursed Lands" width="160" height="160">
+<img src="game/icon.png?v=86b2cc11598f" alt="Cursed Lands" width="160" height="160">
 
 **[Trailer on YouTube](https://www.youtube.com/watch?v=3zZLq5H10ic) · [Play](https://cursedlands.wwworm.com/) · [Download](https://github.com/TheWWWorm/CursedLands/releases/latest) · [Wiki](https://cursedlands.wwworm.com/wiki/)**
 

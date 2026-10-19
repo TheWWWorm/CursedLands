@@ -23,6 +23,12 @@ async function main() {
   const metadata = await sharp(source).metadata();
   if (metadata.width !== metadata.height) throw new Error('The approved master must be square.');
   if (!metadata.hasAlpha) throw new Error('The approved icon must retain its transparent background.');
+  const sourceHash = sha(fs.readFileSync(source));
+  // Refresh GitHub's cached README image whenever the approved master changes.
+  const readmePath = path.join(root, 'README.md');
+  const readme = fs.readFileSync(readmePath, 'utf8');
+  fs.writeFileSync(readmePath, readme.replace(/src="game\/icon\.png(?:\?v=[a-f0-9]+)?"/,
+    'src="game/icon.png?v=' + sourceHash.slice(0, 12) + '"'));
   const sizes = [16, 24, 32, 48, 64, 128, 256];
   const frames = await Promise.all(sizes.map(png));
   const directory = Buffer.alloc(6 + sizes.length * 16);
@@ -91,7 +97,7 @@ async function main() {
   const manifest = {
     approved_date: '2026-10-19',
     source: 'game/icon.png',
-    source_sha256: sha(fs.readFileSync(source)),
+    source_sha256: sourceHash,
     approved_opaque_source_sha256: '5c19c62e46918724753142c6950f4c22e7683d8313f7be82a6f5315e224a9d04',
     source_dimensions: [metadata.width,metadata.height],
     artwork: 'Approved Cursed Lands copper-and-gold dragon CL monogram',
