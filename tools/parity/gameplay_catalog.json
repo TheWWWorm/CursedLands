@@ -5632,6 +5632,27 @@
         "maps/basecam.mob"
       ],
       "display": "rendered"
+    },
+    {
+      "id": "arena/arena_shadow_surface",
+      "category": "arena",
+      "script": "tools/tests/arena_shadow_surface.gd",
+      "marker": "ARENA_SHADOW_SURFACE",
+      "min_checks": 12,
+      "quick": false,
+      "description": "Rendered Arena snow remains free of self-shadow bands at every quality while tree shadows remain visible",
+      "kind": "remake_regression",
+      "timeout": 360,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/textures.res",
+        "maps/zone11.mpr"
+      ],
+      "display": "rendered"
     }
   ]
 }
