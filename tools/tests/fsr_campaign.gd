@@ -62,7 +62,8 @@ func sample(label: String, expect_fg: bool, moving := false) -> void:
 func _run() -> void:
 	await settle(5)
 	var facts := FsrGraphics.facts()
-	if not facts.api or not facts.launch or not facts.sr3 or not facts.fg3:
+	check(not OS.get_cmdline_user_args().has("--experimental-fsr"), "normal launch supports campaign FSR")
+	if not facts.api or not facts.sr3 or not facts.fg3:
 		save_result(true)
 		get_tree().quit(2)
 		return
@@ -82,6 +83,14 @@ func _run() -> void:
 	get_tree().root.grab_focus()
 	PadInput.active = "kbm"
 	TouchInput.enabled = false
+	var formula_package := ""
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--formula-package="):
+			formula_package = arg.trim_prefix("--formula-package=")
+	if not formula_package.is_empty():
+		check(ModStore.import_package(formula_package) == "", "import formula in the same installation")
+		check(ModStore.create_profile("FSR and formulas") == "", "create combined-feature mod profile")
+		check(ModStore.set_packages(["example.expedition-xp@1.0.0"]) == "" and ModStore.mount() == "", "activate formula with FSR")
 	session = Session.new()
 	add_child(session)
 	game = Game.new()
@@ -101,6 +110,13 @@ func _run() -> void:
 	game.direct.set_process(false)
 	check(get_tree().root.get_node("FsrExperiment").is_processing(), "production FSR autoload remains active")
 	check(game.world != null and game.hud != null, "original campaign and HUD loaded")
+	if not formula_package.is_empty():
+		session.mod_config = ModStore.snapshot()
+		var formula := ModFormula.transform("experience_reward", 100.0, {"source":"quest"}, session)
+		check(formula.ok and is_equal_approx(formula.value, 150.0), "live campaign uses configured XP multiplier")
+		var calls := ModFormula.invocations
+		XpRules.give(session, 100.0, "quest", 0)
+		check(ModFormula.invocations == calls + 1 and not session.mod_script_failed, "real campaign reward executes formula while FSR is active")
 	await sample("gameplay", true, true)
 	get_tree().paused = true
 	await sample("paused", false)

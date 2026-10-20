@@ -87,7 +87,7 @@ func sample(label: String, selection: int, moving := false, generate := false) -
 func _run() -> void:
 	await settle(5)
 	var capabilities := FsrGraphics.facts()
-	if not capabilities.api or not capabilities.launch or not capabilities.sr3 or not capabilities.fg3:
+	if not capabilities.api or not capabilities.sr3 or not capabilities.fg3:
 		save_result(true)
 		get_tree().quit(2)
 		return
