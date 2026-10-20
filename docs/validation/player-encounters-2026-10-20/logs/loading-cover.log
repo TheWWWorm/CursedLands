@@ -1,0 +1,29 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+[trace 17:04:49 +5415ms] session ea060a309f0c: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS), Mesa llvmpipe (LLVM 20.1.2, 256 bits), gl_compatibility / opengl3
+GAMEPLAY_SUITE_START {"campaign":"cursed_lands","display":"rendered","display_driver":"X11","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"gl_compatibility","script":"res://tools/tests/loading_cover.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/encounter-final-fixtures/tests/interface/loading_cover/profile/data/godot/app_userdata/Cursed Lands"}
+ERROR: Parameter "canvas_item" is null.
+   at: canvas_item_clear (servers/rendering/renderer_canvas_cull.cpp:1947)
+   GDScript backtrace (most recent call first):
+       [0] _draw_frame (res://src/ui/loading_screen.gd:345)
+       [1] _ready (res://tools/tests/loading_cover.gd:27)
+       [2] frames (res://tools/tests/loading_cover.gd:10)
+ERROR: Parameter "canvas_item" is null.
+   at: canvas_item_clear (servers/rendering/renderer_canvas_cull.cpp:1947)
+   GDScript backtrace (most recent call first):
+       [0] _draw_frame (res://src/ui/loading_screen.gd:346)
+       [1] _ready (res://tools/tests/loading_cover.gd:27)
+       [2] frames (res://tools/tests/loading_cover.gd:10)
+ERROR: Parameter "canvas_item" is null.
+   at: canvas_item_add_rect (servers/rendering/renderer_canvas_cull.cpp:1302)
+   GDScript backtrace (most recent call first):
+       [0] _draw_frame (res://src/ui/loading_screen.gd:347)
+       [1] _ready (res://tools/tests/loading_cover.gd:27)
+       [2] frames (res://tools/tests/loading_cover.gd:10)

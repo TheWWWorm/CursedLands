@@ -1,0 +1,94 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 16:34:35 +5088ms] session f164f656a2a1: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"lost_in_astral","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"res://tools/tests/coop_fresh_start_guards.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/encounter-first/tests/coop/coop_fresh_start_guards_astral/profile/data/godot/app_userdata/Cursed Lands"}
+PASS actual campaign fresh origin validates
+PASS only display names may differ by locale
+PASS server receipt validates the explicit menu NEW source
+PASS validated pristine origin admits an untouched authored opening
+PASS admission retains the new source hero and purse
+PASS LiA opening needs no invented startup flags
+PASS NEW cannot replace an existing reserved personal hero or purse
+PASS NEW without acknowledgement cannot admit an existing tally
+PASS saved origin cannot validate as a pristine NEW origin
+PASS saved origin cannot acquire trusted NEW admission at the receiver
+PASS missing opt-in cannot validate as a pristine NEW origin
+PASS missing opt-in cannot acquire trusted NEW admission at the receiver
+SCRIPT ERROR: Invalid operands 'int' and 'bool' in operator '!='.
+          at: _pristine_new_origin (res://src/game/coop_progress.gd:506)
+          GDScript backtrace (most recent call first):
+              [0] _pristine_new_origin (res://src/game/coop_progress.gd:506)
+              [1] rejected_source (res://tools/tests/coop_fresh_start_guards.gd:59)
+              [2] _ready (res://tools/tests/coop_fresh_start_guards.gd:121)
+PASS numeric opt-in cannot validate as a pristine NEW origin
+SCRIPT ERROR: Invalid operands 'int' and 'bool' in operator '!='.
+          at: _pristine_new_origin (res://src/game/coop_progress.gd:506)
+          GDScript backtrace (most recent call first):
+              [0] _pristine_new_origin (res://src/game/coop_progress.gd:506)
+              [1] _rpc_bring (res://src/game/coop_progress.gd:456)
+              [2] rejected_source (res://tools/tests/coop_fresh_start_guards.gd:62)
+              [3] _ready (res://tools/tests/coop_fresh_start_guards.gd:121)
+PASS numeric opt-in cannot acquire trusted NEW admission at the receiver
+PASS missing mod config cannot validate as a pristine NEW origin
+PASS missing mod config cannot acquire trusted NEW admission at the receiver
+PASS invalid mod config cannot validate as a pristine NEW origin
+PASS invalid mod config cannot acquire trusted NEW admission at the receiver
+PASS wrong campaign cannot validate as a pristine NEW origin
+PASS wrong campaign cannot acquire trusted NEW admission at the receiver
+PASS earned hero cannot validate as a pristine NEW origin
+PASS earned hero cannot acquire trusted NEW admission at the receiver
+PASS private earned hero cannot validate as a pristine NEW origin
+PASS private earned hero cannot acquire trusted NEW admission at the receiver
+PASS spent health cannot validate as a pristine NEW origin
+PASS spent health cannot acquire trusted NEW admission at the receiver
+PASS purse cannot validate as a pristine NEW origin
+PASS purse cannot acquire trusted NEW admission at the receiver
+PASS inventory cannot validate as a pristine NEW origin
+PASS inventory cannot acquire trusted NEW admission at the receiver
+PASS private inventory cannot validate as a pristine NEW origin
+PASS private inventory cannot acquire trusted NEW admission at the receiver
+PASS known quest cannot validate as a pristine NEW origin
+PASS known quest cannot acquire trusted NEW admission at the receiver
+PASS unknown flag cannot validate as a pristine NEW origin
+PASS unknown flag cannot acquire trusted NEW admission at the receiver
+PASS visited map cannot validate as a pristine NEW origin
+PASS visited map cannot acquire trusted NEW admission at the receiver
+PASS current zone cannot validate as a pristine NEW origin
+PASS current zone cannot acquire trusted NEW admission at the receiver
+PASS acknowledged save cannot validate as a pristine NEW origin
+PASS acknowledged save cannot acquire trusted NEW admission at the receiver
+PASS side quest cannot validate as a pristine NEW origin
+PASS side quest cannot acquire trusted NEW admission at the receiver
+PASS quest item cannot validate as a pristine NEW origin
+PASS quest item cannot acquire trusted NEW admission at the receiver
+PASS private party cannot validate as a pristine NEW origin
+PASS private party cannot acquire trusted NEW admission at the receiver
+PASS private bag cannot validate as a pristine NEW origin
+PASS private bag cannot acquire trusted NEW admission at the receiver
+PASS private hire cannot validate as a pristine NEW origin
+PASS private hire cannot acquire trusted NEW admission at the receiver
+PASS private pet cannot validate as a pristine NEW origin
+PASS private pet cannot acquire trusted NEW admission at the receiver
+PASS extra state cannot validate as a pristine NEW origin
+PASS extra state cannot acquire trusted NEW admission at the receiver
+PASS different live zone cannot use opening admission or receive its vars
+PASS different saved zone cannot use opening admission or receive its vars
+PASS named chapter cannot use opening admission or receive its vars
+PASS alternate body cannot use opening admission or receive its vars
+PASS alternate identity cannot use opening admission or receive its vars
+PASS other visited zone cannot use opening admission or receive its vars
+PASS other saved zone cannot use opening admission or receive its vars
+PASS waiting party cannot use opening admission or receive its vars
+PASS waiting bag cannot use opening admission or receive its vars
+PASS hired companion cannot use opening admission or receive its vars
+PASS pet cannot use opening admission or receive its vars
+PASS quest journal cannot use opening admission or receive its vars
+PASS advanced quest cannot use opening admission or receive its vars
+PASS completed quest cannot use opening admission or receive its vars
+PASS quest item cannot use opening admission or receive its vars
+PASS side quest cannot use opening admission or receive its vars
+PASS unknown flag cannot use opening admission or receive its vars
+PASS later startup value cannot use opening admission or receive its vars
+PASS loading cannot use opening admission or receive its vars
+COOP_FRESH_START_GUARDS {"checks":75,"failures":0}
+[trace 16:34:36 +5415ms] clean exit
