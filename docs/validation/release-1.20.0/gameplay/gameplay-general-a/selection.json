@@ -1,0 +1,1446 @@
+[
+  {
+    "id": "commands/direct_interactions",
+    "category": "commands",
+    "script": "tools/tests/direct_interactions.gd",
+    "marker": "DIRECT_INTERACTIONS",
+    "min_checks": 8,
+    "quick": false,
+    "description": "Interaction dispatch and target validity",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/zone1.mob"
+    ]
+  },
+  {
+    "id": "commands/exhausted_interactions",
+    "category": "commands",
+    "script": "tools/tests/exhausted_interactions.gd",
+    "marker": "EXHAUSTED_INTERACTIONS",
+    "min_checks": 6,
+    "quick": false,
+    "description": "Consumed mechanisms reject stale commands; repeatable switches remain usable",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/zone1.mob"
+    ]
+  },
+  {
+    "id": "pathing/nav_topology",
+    "category": "pathing",
+    "script": "tools/tests/nav_topology.gd",
+    "marker": "NAV_TOPOLOGY",
+    "min_checks": 100,
+    "quick": true,
+    "description": "Static route topology and disconnected regions",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/zone1.mob"
+    ]
+  },
+  {
+    "id": "pathing/nav_ray",
+    "category": "pathing",
+    "script": "tools/tests/nav_ray.gd",
+    "marker": "NAV_RAY",
+    "min_checks": 15000,
+    "quick": true,
+    "description": "Ray boundaries, walls, floors and visibility spans",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/zone1.mob"
+    ]
+  },
+  {
+    "id": "pathing/path_preview",
+    "category": "pathing",
+    "script": "tools/tests/path_preview.gd",
+    "marker": "PATH_PREVIEW",
+    "min_checks": 8,
+    "quick": false,
+    "description": "Long route previews, visible trail coverage and action contact cutoffs",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/zone1.mob"
+    ]
+  },
+  {
+    "id": "quests/quest_rewards_astral",
+    "category": "quests",
+    "script": "tools/tests/quest_rewards.gd",
+    "marker": "QUEST_REWARDS",
+    "min_checks": 12,
+    "quick": false,
+    "description": "Reward and completion state transitions",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/zone1.mob"
+    ]
+  },
+  {
+    "id": "effects/creature_effect_attachments_astral",
+    "category": "effects",
+    "script": "tools/tests/creature_effect_attachments.gd",
+    "marker": "CREATURE_EFFECT_ATTACHMENTS",
+    "min_checks": 100,
+    "quick": true,
+    "description": "Effect attachment points and missing bones across rigs",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/zone1.mob"
+    ]
+  },
+  {
+    "id": "stealth/patrol_escape_alerts",
+    "category": "stealth",
+    "script": "tools/tests/patrol_escape_alerts.gd",
+    "marker": "PATROL_ESCAPE_ALERTS",
+    "min_checks": 14,
+    "quick": true,
+    "description": "Patrol escape, last known positions, scripted pursuit and assault witnesses",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ]
+  },
+  {
+    "id": "spells/spell_stamina_wait",
+    "category": "spells",
+    "script": "tools/tests/spell_stamina_wait.gd",
+    "marker": "SPELL_STAMINA_WAIT",
+    "min_checks": 30,
+    "quick": false,
+    "description": "Queued self-casts, one acknowledgement, recovery and replacement movement",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/zone1.mob"
+    ]
+  },
+  {
+    "id": "spells/spell_requirements_coop",
+    "category": "spells",
+    "script": "tools/tests/spell_requirements_coop.gd",
+    "marker": "SPELL_REQUIREMENTS_COOP",
+    "min_checks": 15,
+    "quick": false,
+    "description": "Training reset invalidates selection and authority; queued casts revalidate",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/bz2g.mob",
+      "maps/zone1.mob"
+    ]
+  },
+  {
+    "id": "spells/spell_constructor_transactions",
+    "category": "spells",
+    "script": "tools/tests/spell_constructor_transactions.gd",
+    "marker": "SPELL_CONSTRUCTOR_TRANSACTIONS",
+    "min_checks": 45,
+    "quick": false,
+    "description": "Multi-rune assembly/disassembly, paused replies, duplicate delivery and atomic refusal",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/basecam.mob"
+    ]
+  },
+  {
+    "id": "inventory/market_prices",
+    "category": "inventory",
+    "script": "tools/tests/market_prices.gd",
+    "marker": "MARKET_PRICES",
+    "min_checks": 20,
+    "quick": false,
+    "description": "Construction fees, missing components, sale and spell disassembly",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/basecam.mob"
+    ]
+  },
+  {
+    "id": "progression/training_reset",
+    "category": "progression",
+    "script": "tools/tests/training_reset.gd",
+    "marker": "TRAINING_RESET",
+    "min_checks": 99,
+    "quick": false,
+    "description": "Exhaustive purchase orders, exact refunds, rank limits and save/reload",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/bz2g.mob"
+    ]
+  },
+  {
+    "id": "inventory/market_prices_astral",
+    "category": "inventory",
+    "script": "tools/tests/market_prices.gd",
+    "marker": "MARKET_PRICES",
+    "min_checks": 20,
+    "quick": false,
+    "description": "Construction fees, missing components, sale and spell disassembly",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/bz1h.mob"
+    ]
+  },
+  {
+    "id": "progression/training_reset_astral",
+    "category": "progression",
+    "script": "tools/tests/training_reset.gd",
+    "marker": "TRAINING_RESET",
+    "min_checks": 99,
+    "quick": false,
+    "description": "Exhaustive purchase orders, exact refunds, rank limits and save/reload",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/bz1h.mob"
+    ]
+  },
+  {
+    "id": "inventory/rune_loot",
+    "category": "inventory",
+    "script": "tools/tests/rune_loot.gd",
+    "marker": "RUNE_LOOT",
+    "min_checks": 15,
+    "quick": false,
+    "description": "Authored rune theft, no corpse duplication and legacy bag/shop migration",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/zone3obr.mob"
+    ]
+  },
+  {
+    "id": "progression/training_coop",
+    "category": "progression",
+    "script": "tools/tests/training_coop.gd",
+    "marker": "TRAINING_COOP",
+    "min_checks": 25,
+    "quick": false,
+    "description": "Guest training/refunds, dependent ranks and persisted point balances",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/bz2g.mob"
+    ]
+  },
+  {
+    "id": "progression/fallen_party_xp",
+    "category": "progression",
+    "script": "tools/tests/fallen_party_xp.gd",
+    "marker": "FALLEN_PARTY_XP",
+    "min_checks": 20,
+    "quick": false,
+    "description": "Prepared recruited Kel death, XP while downed, save/reload and revival",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/bz1h.mob",
+      "maps/zone1.mob"
+    ]
+  },
+  {
+    "id": "party/party_dependents",
+    "category": "party",
+    "script": "tools/tests/party_dependents.gd",
+    "marker": "PARTY_DEPENDENTS",
+    "min_checks": 20,
+    "quick": false,
+    "description": "Expansion guest-owned companion and pet across chapter substitution and reload",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/bz1h.mob",
+      "maps/bz5h.mob",
+      "maps/bz5hmerc8.mob",
+      "maps/zone2.mob"
+    ]
+  },
+  {
+    "id": "persistence/save_actor_refs",
+    "category": "persistence",
+    "script": "tools/tests/save_actor_refs.gd",
+    "marker": "SAVE_ACTOR_REFS",
+    "min_checks": 14,
+    "quick": true,
+    "description": "Hero/pet identity, UID reuse, absent actors and nested VM projections",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ]
+  },
+  {
+    "id": "persistence/save_cast",
+    "category": "persistence",
+    "script": "tools/tests/save_depth.gd",
+    "marker": "SAVE_DEPTH",
+    "min_checks": 8,
+    "quick": false,
+    "description": "Full session save/load at cast boundaries",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [
+      "--case=cast"
+    ],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/zone1.mob"
+    ]
+  },
+  {
+    "id": "persistence/save_pet",
+    "category": "persistence",
+    "script": "tools/tests/save_depth.gd",
+    "marker": "SAVE_DEPTH",
+    "min_checks": 8,
+    "quick": false,
+    "description": "Full session save/load at pet boundaries",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [
+      "--case=pet"
+    ],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/zone1.mob"
+    ]
+  },
+  {
+    "id": "persistence/save_consumed_cast",
+    "category": "persistence",
+    "script": "tools/tests/save_consumed_cast.gd",
+    "marker": "SAVE_CONSUMED_CAST",
+    "min_checks": 8,
+    "quick": false,
+    "description": "Consumed potion remains spent while its delayed heal survives reload",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/zone1.mob"
+    ]
+  },
+  {
+    "id": "combat/direct_accuracy",
+    "category": "combat",
+    "script": "tools/tests/direct_accuracy.gd",
+    "marker": "DIRECT_ACCURACY",
+    "min_checks": 11,
+    "quick": true,
+    "description": "Melee/projectile hit rolls, seeded contacts and alerted backstab rules",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ]
+  },
+  {
+    "id": "combat/body_records",
+    "category": "combat",
+    "script": "tools/tests/body_records.gd",
+    "marker": "BODY_RECORDS",
+    "min_checks": 4000,
+    "quick": true,
+    "description": "Wounds, severance, healing, resurrection and body-cache invalidation",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ]
+  },
+  {
+    "id": "quests/catacomb_mechanisms",
+    "category": "quests",
+    "script": "tools/tests/catacomb_mechanisms.gd",
+    "marker": "CATACOMB_MECHANISMS",
+    "min_checks": 15,
+    "quick": false,
+    "description": "Original lift cycles, call lever reuse, camera floor and cross-storey melee",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/zone1dun2.mob"
+    ]
+  },
+  {
+    "id": "commands/direct_spell_selection",
+    "category": "commands",
+    "script": "tools/tests/direct_spell_selection.gd",
+    "marker": "DIRECT_SPELL_SELECTION",
+    "min_checks": 15,
+    "quick": false,
+    "description": "Selecting and clearing spells in direct controls",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/zone1.mob"
+    ]
+  },
+  {
+    "id": "spells/stamina_regen",
+    "category": "spells",
+    "script": "tools/tests/stamina_regen.gd",
+    "marker": "STAMINA_REGEN",
+    "min_checks": 30,
+    "quick": true,
+    "description": "Idle/follow/moving recovery, host rules, caps, death and saved choices",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ]
+  },
+  {
+    "id": "effects/effect_tick_boundaries",
+    "category": "effects",
+    "script": "tools/tests/effect_tick_boundaries.gd",
+    "marker": "EFFECT_TICK_BOUNDARIES",
+    "min_checks": 203,
+    "quick": true,
+    "description": "Signed duration endpoints, host/client expiry, save/snapshot widths and overlapping status effects",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ]
+  },
+  {
+    "id": "inventory/belt_weight_astral",
+    "category": "inventory",
+    "script": "tools/tests/belt_weight.gd",
+    "marker": "BELT_WEIGHT",
+    "min_checks": 72,
+    "quick": false,
+    "description": "Real camp actions on the host and an ENet guest, including paused menus. Load must arrive in the same state update as the changed belt inventory.",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "maps/bz1h.mob",
+      "maps/zone1.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "inventory/enchanted_equipment",
+    "category": "inventory",
+    "script": "tools/tests/enchanted_equipment.gd",
+    "marker": "ENCHANTED_EQUIPMENT",
+    "min_checks": 37,
+    "quick": true,
+    "description": "Authored ancient-item enchantments, recharge, and inventory lifetime.",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "inventory/enchanted_equipment_net",
+    "category": "inventory",
+    "script": "tools/tests/enchanted_equipment_net.gd",
+    "marker": "ENCHANTED_EQUIPMENT_NET",
+    "min_checks": 13,
+    "quick": false,
+    "description": "Real ENet peers receive equipment charge and effects from one authority.",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "maps/zone1.mob",
+      "maps/zone1.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "inventory/coop_loot_grants",
+    "category": "inventory",
+    "script": "tools/tests/coop_loot_grants.gd",
+    "marker": "COOP_LOOT_GRANTS",
+    "min_checks": 28,
+    "quick": true,
+    "description": "Shared rewards must change each distinct purse once and report only what that recipient received. Transport is suppressed; grant/routing code is real.",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "inventory/recruited_equipment_net",
+    "category": "inventory",
+    "script": "tools/tests/recruited_equipment_net.gd",
+    "marker": "RECRUITED_EQUIPMENT_NET",
+    "min_checks": 22,
+    "quick": false,
+    "description": "Recruitment followed by real guest unequip commands, without a zone reload.",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "maps/zone1.mob",
+      "maps/zone1.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "inventory/pickup_messages",
+    "category": "inventory",
+    "script": "tools/tests/pickup_messages.gd",
+    "marker": "PICKUP_MESSAGES",
+    "min_checks": 5,
+    "quick": false,
+    "description": "Localized pickup stacks, money, broken-item notices and actual corpse loot",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "maps/zone1.mob",
+      "maps/zone1.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "dialogue/dialogue_approach",
+    "category": "dialogue",
+    "script": "tools/tests/dialogue_approach.gd",
+    "marker": "DIALOG_STAGING_CHECKS",
+    "min_checks": 18,
+    "quick": true,
+    "description": "Run with an isolated user profile and --tool=<absolute path to this file>.",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "dialogue/dialogue_highlights",
+    "category": "dialogue",
+    "script": "tools/tests/dialogue_highlights.gd",
+    "marker": "DIALOGUE_HIGHLIGHTS",
+    "min_checks": 42,
+    "quick": false,
+    "description": "Real authored village actors on ENet. Prepare topic availability without advancing unrelated quests, then exercise actual dialogue UI and completion.",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "maps/basecam.mob",
+      "maps/basegipat.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "dialogue/ingos_lovkach",
+    "category": "dialogue",
+    "script": "tools/tests/ingos_lovkach.gd",
+    "marker": "INGOS_LOVKACH",
+    "min_checks": 15,
+    "quick": true,
+    "description": "Original Ingos visibility scripts and the actual VM save/restore path. The quest flag is prepared; this is not a complete playthrough of q44k.",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "maps/bz8k.mob",
+      "maps/bz8k.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "dialogue/elder_departure",
+    "category": "dialogue",
+    "script": "tools/tests/elder_departure.gd",
+    "marker": "ELDER_DEPARTURE",
+    "min_checks": 6,
+    "quick": true,
+    "description": "Elder departure behavior and boundaries",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "maps/basecam.mob",
+      "maps/basegipat.mpr",
+      "maps/bz3g.mob",
+      "maps/bz3g.mpr",
+      "maps/bz8k.mob",
+      "maps/bz8k.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "dialogue/nalo_rescue_entry",
+    "category": "dialogue",
+    "script": "tools/tests/nalo_rescue_entry.gd",
+    "marker": "NALO_RESCUE_ENTRY",
+    "min_checks": 14,
+    "quick": false,
+    "description": "Explicit prepared q60h return checkpoint, then only normal UI/world commands.",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "maps/bz13h.mob",
+      "maps/bz13h.mpr",
+      "maps/zone15.mob",
+      "maps/zone15.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "quests/tunnel_guard",
+    "category": "quests",
+    "script": "tools/tests/tunnel_guard.gd",
+    "marker": "TUNNEL_GUARD",
+    "min_checks": 9,
+    "quick": false,
+    "description": "Tunnel guard behavior and boundaries",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "maps/zone10.mob",
+      "maps/zone10.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "quests/shelter_kel",
+    "category": "quests",
+    "script": "tools/tests/shelter_kel.gd",
+    "marker": "SHELTER_KEL",
+    "min_checks": 33,
+    "quick": false,
+    "description": "Original Shelter dismissal, disguise hand-in, transformation, Kel dialogue and elder's exit unlock. --single covers solo; default uses a real guest.",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "maps/bz2h.mob",
+      "maps/bz2h.mpr",
+      "maps/zonefinal.mob",
+      "maps/zonefinal.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "quests/zone7_arrival",
+    "category": "quests",
+    "script": "tools/tests/zone7_arrival.gd",
+    "marker": "LIA_ZONE7_ARRIVAL",
+    "min_checks": 29,
+    "quick": false,
+    "description": "Actual mounted LiA entry/navigation; isolated original q1g script chain. Controlled owners are not ENet peers. All unrelated simulation is paused.",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "maps/bz7h.mob",
+      "maps/zone7.mob",
+      "maps/zone7.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "quests/lia_revenge_return",
+    "category": "quests",
+    "script": "tools/tests/lia_revenge_return.gd",
+    "marker": "LIA_REVENGE_RETURN",
+    "min_checks": 13,
+    "quick": false,
+    "description": "Take the west bridge on a prior visit, then return for Revenge. The unused east-route watcher must not consume the mansion's reused area 2.",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "maps/bz2h.mob",
+      "maps/bz2h.mpr",
+      "maps/zone2.mob",
+      "maps/zone2.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "quests/lia_tomb_exit",
+    "category": "quests",
+    "script": "tools/tests/lia_tomb_exit.gd",
+    "marker": "LIA_TOMB_EXIT",
+    "min_checks": 36,
+    "quick": false,
+    "description": "Real LiA tomb scripts and Session checkpoints. Mechanisms are activated directly; this checks quest/travel state, not a combat or walking route.",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "maps/zone11.mob",
+      "maps/zone11.mpr",
+      "maps/zone11dun1.mob",
+      "maps/zone11dun1.mpr",
+      "maps/zone11dun2.mob",
+      "maps/zone11dun2.mpr",
+      "maps/zonefinal.mob",
+      "maps/zonefinal.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "pathing/catacomb_capacity",
+    "category": "pathing",
+    "script": "tools/tests/catacomb_capacity.gd",
+    "marker": "CATACOMB_CAPACITY",
+    "min_checks": 45,
+    "quick": false,
+    "description": "Actual production geometry and original mover. Five staged human riders walk aboard, use switches and walk off through ordinary orders. Unrelated AI is held still. This is a capacity/old-save check, not a full quest playthrough.",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "maps/zone1dun2.mob",
+      "maps/zone1dun2.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "pathing/dynamic_navigation",
+    "category": "pathing",
+    "script": "tools/tests/dynamic_navigation.gd",
+    "marker": "DYNAMIC_NAVIGATION",
+    "min_checks": 140,
+    "quick": false,
+    "description": "Run with original Lost in Astral content. Compare complete planner outputs across a real lever footprint change and live actor occupancy changes.",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "maps/zone1dun2.mob",
+      "maps/zone1dun2.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "persistence/profile_save_seed",
+    "category": "persistence",
+    "script": "tools/tests/profile_save_seed.gd",
+    "marker": "PROFILE_SAVE_SEED",
+    "min_checks": 15,
+    "quick": true,
+    "description": "New profile save selection rejects incompatible campaigns",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "maps/zone1.mob",
+      "maps/zone1.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "interface/wiki_quest_locales",
+    "category": "interface",
+    "script": "tools/tests/wiki_quest_locales.gd",
+    "marker": "WIKI_QUEST_LOCALES",
+    "min_checks": 672,
+    "quick": true,
+    "description": "Quest headings and objective text in English, Russian and German",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "commands/first_person_actions",
+    "category": "commands",
+    "script": "tools/tests/first_person_actions.gd",
+    "marker": "FIRST_PERSON_ACTIONS",
+    "min_checks": 64,
+    "quick": false,
+    "description": "Run ordinary use orders through their authored clips and hit callbacks.",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "maps/basecam.mob",
+      "maps/basegipat.mpr",
+      "maps/zone1.mob",
+      "maps/zone1.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "commands/direct_quest_bindings",
+    "category": "commands",
+    "script": "tools/tests/direct_quest_bindings.gd",
+    "marker": "DIRECT_QUEST_BINDINGS",
+    "min_checks": 5,
+    "quick": true,
+    "description": "Direct quest bindings behavior and boundaries",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "animation/direct_attack_stance",
+    "category": "animation",
+    "script": "tools/tests/direct_attack_stance.gd",
+    "marker": "DIRECT_ATTACK_STANCE",
+    "min_checks": 39,
+    "quick": true,
+    "description": "Real original hero clips, authoritative commands, and ordinary unit ticks. Empty floor/no enemies isolates repeated swing cadence from pathfinding.",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "pathing/direct_movement",
+    "category": "pathing",
+    "script": "tools/tests/direct_movement.gd",
+    "marker": "DIRECT_MOVEMENT",
+    "min_checks": 33,
+    "quick": false,
+    "description": "Loaded original terrain and hero, deterministic authority ticks. A local wall on the navigation grid isolates steering from route following.",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "maps/basecam.mob",
+      "maps/basegipat.mpr",
+      "maps/zone1.mob",
+      "maps/zone1.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "pathing/travel_reveal_astral",
+    "category": "pathing",
+    "script": "tools/tests/travel_reveal.gd",
+    "marker": "TRAVEL_REVEAL",
+    "min_checks": 9,
+    "quick": true,
+    "description": "The native edge-entry rule on real base/LiA map graphs, without a world.",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "maps/bz3h.mob",
+      "maps/bz3h.mpr",
+      "maps/zone1.mob",
+      "maps/zone1.mpr",
+      "maps/zone2.mob",
+      "maps/zone2.mpr",
+      "maps/zone3.mob",
+      "maps/zone3.mpr",
+      "maps/zonezero.mob",
+      "maps/zonezero.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "creatures/peasant_help_astral",
+    "category": "creatures",
+    "script": "tools/tests/peasant_help.gd",
+    "marker": "PEASANT_HELP",
+    "min_checks": 8,
+    "quick": true,
+    "description": "Native Fear(1) records from both campaigns: a nearby allied NPC hears a 26-tick delayed warning, then investigates even without seeing the enemy.",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "maps/zone1.mob",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "creatures/added_actor_tombstones",
+    "category": "creatures",
+    "script": "tools/tests/added_actor_tombstones.gd",
+    "marker": "ADDED_ACTOR_TOMBSTONES",
+    "min_checks": 34,
+    "quick": false,
+    "description": "Generic extra-mob identity regression using the authored replacement queen. Death/loot/save is deliberately held before the next VM poll. This proves the save boundary without claiming a player combat/input reproduction.",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/zone5_1.mpr",
+      "maps/zone5_1.mob"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "combat/wisp_native_callbacks",
+    "category": "combat",
+    "script": "tools/tests/wisp_native_callbacks.gd",
+    "marker": "WISP_NATIVE_CALLBACKS",
+    "min_checks": 4428,
+    "quick": true,
+    "description": "Compare ported callbacks with actual x86 callback replay, not a second formula.",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "arena/arena_economy",
+    "category": "arena",
+    "script": "tools/tests/arena_economy.gd",
+    "marker": "ARENA_ECONOMY",
+    "min_checks": 590,
+    "quick": true,
+    "description": "Economy thresholds, early training, native stats and migration boundaries.",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "arena/arena_flow",
+    "category": "arena",
+    "script": "tools/tests/arena_flow.gd",
+    "marker": "ARENA_FLOW",
+    "min_checks": 235,
+    "quick": true,
+    "description": "Arena flow behavior and boundaries",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "arena/arena_live_shop",
+    "category": "arena",
+    "script": "tools/tests/arena_live_shop.gd",
+    "marker": "ARENA_LIVE_SHOP",
+    "min_checks": 120,
+    "quick": true,
+    "description": "Real roster/settlement regressions, including saves and deferred elite ranks.",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "arena/arena_result_health",
+    "category": "arena",
+    "script": "tools/tests/arena_result_health.gd",
+    "marker": "ARENA_RESULT_HEALTH",
+    "min_checks": 11,
+    "quick": true,
+    "description": "Arena result health behavior and boundaries",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "arena/arena_sale_quotes",
+    "category": "arena",
+    "script": "tools/tests/arena_sale_quotes.gd",
+    "marker": "ARENA_SALE_QUOTES",
+    "min_checks": 254,
+    "quick": true,
+    "description": "Arena sale quotes behavior and boundaries",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "arena/arena_species",
+    "category": "arena",
+    "script": "tools/tests/arena_species.gd",
+    "marker": "ARENA_SPECIES",
+    "min_checks": 2154,
+    "quick": true,
+    "description": "Save migration, recognizable ranks, real mitigation and copy transactions.",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "arena/arena_pve_lifecycle",
+    "category": "arena",
+    "script": "tools/tests/arena_pve_lifecycle.gd",
+    "marker": "ARENA_PVE_LIFECYCLE",
+    "min_checks": 12,
+    "quick": true,
+    "description": "Exercise the actual menu / expedition / sandbox teardown paths.",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "arena/arena_filtered_spells",
+    "category": "arena",
+    "script": "tools/tests/arena_filtered_spells.gd",
+    "marker": "ARENA_FILTERED_SPELLS",
+    "min_checks": 3,
+    "quick": true,
+    "description": "Area spell damages multiple enemies while preserving allied health",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "arena/arena_bot_planner",
+    "category": "arena",
+    "script": "tools/tests/arena_bot_planner.gd",
+    "marker": "ARENA_BOT_PLANNER",
+    "min_checks": 21,
+    "quick": true,
+    "description": "Seeded opponent recruitment and formation decisions",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "quests/shelter_kel_solo",
+    "category": "quests",
+    "script": "tools/tests/shelter_kel.gd",
+    "marker": "SHELTER_KEL",
+    "min_checks": 24,
+    "quick": false,
+    "description": "Original Shelter dismissal, disguise hand-in, transformation, Kel dialogue and elder's exit unlock. --single covers solo; default uses a real guest.",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [
+      "--single"
+    ],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "maps/bz2h.mob",
+      "maps/bz2h.mpr",
+      "maps/zonefinal.mob",
+      "maps/zonefinal.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "stealth/steal_lifecycle",
+    "category": "stealth",
+    "script": "tools/tests/steal_lifecycle.gd",
+    "marker": "STEAL_LIFECYCLE",
+    "min_checks": 35,
+    "quick": false,
+    "description": "Real theft dispatch, quest-first pockets, interrupted actions, failed skill checks, corpse deduplication and save/load",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/zone1.mob",
+      "maps/zone1.mpr"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "stealth/steal_lifecycle_astral",
+    "category": "stealth",
+    "script": "tools/tests/steal_lifecycle.gd",
+    "marker": "STEAL_LIFECYCLE",
+    "min_checks": 35,
+    "quick": false,
+    "description": "Real theft dispatch, quest-first pockets, interrupted actions, failed skill checks, corpse deduplication and save/load",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/zone1.mob",
+      "maps/zone1.mpr"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "settings/option_localization_matrix",
+    "category": "settings",
+    "script": "tools/tests/option_localization_matrix.gd",
+    "marker": "OPTION_LOCALIZATION_MATRIX",
+    "min_checks": 14538,
+    "quick": true,
+    "description": "Every remake option label/help/choice in RU/DE and formatting arguments across the translation catalogue",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "inventory/camp_action_lifecycle_astral",
+    "category": "inventory",
+    "script": "tools/tests/camp_action_lifecycle.gd",
+    "marker": "CAMP_ACTION_LIFECYCLE",
+    "min_checks": 76,
+    "quick": false,
+    "description": "Construct and dismantle nine authored recipes, reject stale/invalid requests, weapon-slot selection, eight-spell capacity, and save/load",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/bz1h.mob"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "interface/issue_ui_controls",
+    "category": "interface",
+    "script": "tools/tests/issue_ui_controls.gd",
+    "marker": "ISSUE_UI_CONTROLS",
+    "min_checks": 198,
+    "quick": true,
+    "description": "Wheel, Shift, held-arrow repeat, selection fade, cursor size and all 28 original optional-quest journal lifecycles",
+    "kind": "remake_regression",
+    "timeout": 180,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "res/figures.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "animation/safe_zone_appearance",
+    "category": "animation",
+    "script": "tools/tests/safe_zone_appearance.gd",
+    "marker": "SAFE_ZONE_APPEARANCE",
+    "min_checks": 11,
+    "quick": false,
+    "description": "Equipment continuity through safe hubs, NPCs, party guests and travel",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "res/figures.res",
+      "maps/bz13h.mob",
+      "maps/bz13h.mpr",
+      "maps/zone15.mob",
+      "maps/zone15.mpr"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "animation/unit_presentation_timing",
+    "category": "animation",
+    "script": "tools/tests/unit_presentation_timing.gd",
+    "marker": "UNIT_PRESENTATION_TIMING",
+    "min_checks": 30,
+    "quick": true,
+    "description": "Original frog windup, exact strike clips, delayed cast snapshots and final movement settling",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "res/figures.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "commands/mine_worker_cadence",
+    "category": "commands",
+    "script": "tools/tests/worker_cadence_response.gd",
+    "marker": "WORKER_RESPONSE_RESULT",
+    "min_checks": 39,
+    "quick": false,
+    "description": "Original Ingos mine with separate simulation worker: paused commands and sustained 1x/2x game time",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "res/figures.res",
+      "maps/zone14.mob",
+      "maps/zone14.mpr"
+    ],
+    "display": "headless"
+  }
+]

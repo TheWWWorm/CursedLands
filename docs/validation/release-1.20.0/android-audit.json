@@ -1,0 +1,19 @@
+{
+  "version": "1.20.0",
+  "compiled_scripts": 383,
+  "all_compiled_scripts_byte_identical_to_desktop": true,
+  "all_five_platforms_identical": true,
+  "no_original_game_data_saves_or_private_probes": true,
+  "same_public_certificate": true,
+  "version_code": 54,
+  "debuggable": false,
+  "apk_sha256": "ed5543c01247a0befc3f67b43854caddb30d420e0b5978ade3eeb9b8c751fa21",
+  "native_libraries": {
+    "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+    "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+    "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+    "lib/arm64-v8a/libterrain_search_android.so": "b856cf628f85a7a08807037b1da8cbd73ea2e0ba7db072572ece3ac36da8bc44"
+  },
+  "production_template_java_unchanged": true,
+  "engine_patch_count": 16
+}

@@ -1,0 +1,6 @@
+{
+  "source_excludes_private_graphics_integration": true,
+  "package_excludes_private_runtime_and_branding": true,
+  "normal_launch_template_verified": true,
+  "old_launcher_template_rejected": true
+}

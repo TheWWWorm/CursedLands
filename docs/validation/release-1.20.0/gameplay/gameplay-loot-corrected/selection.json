@@ -1,0 +1,22 @@
+[
+  {
+    "id": "inventory/coop_loot_network",
+    "category": "inventory",
+    "script": "tools/tests/coop_loot_network.gd",
+    "marker": "COOP_LOOT_NETWORK",
+    "min_checks": 41,
+    "quick": false,
+    "description": "Real ENet commands, animation completion, inventory replication and pickup notices. Deliberately resend reliable/fast packets and race both players.",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "maps/basecam.mob",
+      "maps/basegipat.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  }
+]

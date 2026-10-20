@@ -1,0 +1,46 @@
+[
+  {
+    "id": "network/menu_lmp_flow_ingos",
+    "category": "network",
+    "script": "tools/tests/menu_lmp_flow.gd",
+    "marker": "MENU_LMP_FLOW",
+    "min_checks": 28,
+    "quick": false,
+    "description": "Real menu, original multiplayer quest, separate worker, live dialogue, journal and exit colours",
+    "kind": "remake_regression",
+    "timeout": 420,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "res/databaselmp.res",
+      "res/textslmp.res",
+      "res/figures.res",
+      "maps/bz8k.mpr",
+      "maps/bz8k-lmp.mob"
+    ],
+    "display": "rendered"
+  },
+  {
+    "id": "animation/worker_response",
+    "category": "animation",
+    "script": "tools/tests/worker_animation_response.gd",
+    "marker": "WORKER_ANIMATION_RESPONSE",
+    "min_checks": 13,
+    "quick": false,
+    "description": "Paused movement response and moving spell poses through the separate simulation worker",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "res/figures.res",
+      "maps/zone1.mob",
+      "maps/zone1.mpr"
+    ],
+    "display": "rendered"
+  }
+]

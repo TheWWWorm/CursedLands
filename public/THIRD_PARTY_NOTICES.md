@@ -1,5 +1,26 @@
 # Third-party notices
 
+## Optional AMD FSR experiment
+
+The Windows experimental package includes the signed AMD FidelityFX SDK 2.3.0
+loader, upscaler and frame-generation DLLs. Their license and third-party
+notices are supplied under `licenses/AMD-FidelityFX/`. These binaries retain
+their own terms and are not relicensed under this project's Apache-2.0 license.
+The SDK API headers retain their original MIT notices; the build helper makes
+one MinGW ABI adjustment to the Direct3D resource-description helper.
+The complete AMD copyright, permission and disclaimer text is preserved in
+`licenses/AMD-FidelityFX/license.md`, alongside `3rdpartynotice.md`.
+AMD, the AMD Arrow logo, AMD FSR and combinations thereof are trademarks of
+Advanced Micro Devices, Inc.
+
+The experimental AMD path also includes Microsoft Direct3D 12 Agility SDK
+1.618.5's x64 `D3D12Core.dll`. Its license notices are included under
+`licenses/Microsoft-DirectX/`. No debug runtime or SDK tools are distributed.
+
+The official AMD FSR logos retain AMD's trademark rights. They are not covered
+by the project's Apache-2.0 license. See [asset provenance](docs/branding/graphics-sdk-assets.json)
+and [attribution](docs/branding/graphics-sdk-attribution.md).
+
 ## Bink movie decoder
 
 `game/src/ei/bink.gd` and `game/src/ei/bink_audio.gd` are GDScript ports of the Bink container, video and audio decoders of FFmpeg (`libavformat/bink.c`, `libavcodec/bink.c`, `libavcodec/binkdsp.c`, `libavcodec/binkdata.h`, `libavcodec/binkaudio.c`; Konstantin Shishkov, Peter Ross and the FFmpeg developers). These two files are licensed under the [GNU Lesser General Public License 2.1](licenses/LGPL-2.1.txt) (or later), not under the project's Apache-2.0 license.
@@ -63,3 +84,11 @@ Evil Islands: Curse of the Lost Soul («Проклятые земли»), its pr
 ## Optional compiled navigation
 
 Windows and Linux x86-64 packages include the project’s Apache-2.0 native helpers, built with MIT-licensed godot-cpp bindings at commit `507ed9d840c01a3c5b2a39af8bb4000bfac30bf5`. Current source also supplies Android ARM64 helpers. Binding and Windows compiler-runtime notices are in `game/src/native/NATIVE_NAVIGATION_NOTICES.txt`; Android NDK toolchain and sysroot notices, including the static C++ runtime, are preserved in `game/src/native/NATIVE_ANDROID_NOTICES.txt`. Source and build instructions are in `game/src/native/source`. Other platforms retain script implementations.
+
+## Optional formula runtime
+
+The Windows/Linux formula runtime uses Lua 5.1.5 (MIT), with execution-budget
+and recursion bounds in its string library. See
+`game/src/native/NATIVE_LUA_NOTICES.txt` and `game/src/native/mod_lua/README.md`.
+The wrapper is Apache-2.0 and uses the same godot-cpp revision and compiler
+runtime notices as the optional navigation helper above.

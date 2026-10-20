@@ -1,0 +1,10 @@
+{
+  "broad_suite_build": "fb519a5e9988ac4be0c2928dd6a527c6083c07ab",
+  "final_build": "2694d8b823f7b4243eba2286157b99abecce7c56",
+  "compiled_scripts_changed": [
+    "src/ui/arena_pve_field.gdc"
+  ],
+  "compiled_scripts_unchanged": 382,
+  "same_native_engine": true,
+  "diff": "diff --git a/game/src/ui/arena_pve_field.gd b/game/src/ui/arena_pve_field.gd\nindex 5a82716c..7dd0082f 100644\n--- a/game/src/ui/arena_pve_field.gd\n+++ b/game/src/ui/arena_pve_field.gd\n@@ -84,7 +84,6 @@ func _build_stage() -> void:\n \tsun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL\n \tsun.directional_shadow_fade_start = 1.0\n \tsun.shadow_bias = 0.03\n-\tsun.shadow_normal_bias = 0.6\n \tsun.shadow_opacity = 0.85\n \tsun.shadow_enabled = true\n \tstage.add_child(sun)\n@@ -117,6 +116,9 @@ func _apply_presentation() -> void:\n \t# A wider PCF footprint is clean at High/Ultra; keep the sparse Low and\n \t# Medium filters tighter instead of spreading their samples into grain.\n \t_sun_light.shadow_blur = 1.8 if GameData.option(\"q_shadows\") >= 2 else 1.0\n+\t# GLES3 and the sparse Low-quality RD filter need a larger texel offset\n+\t# to keep flat snow out of its own shadow. Reapply when quality changes.\n+\t_sun_light.shadow_normal_bias = 2.0 if Portability.compatibility() or GameData.option(\"q_shadows\") == 0 else 0.6\n \n \n func reset_camera() -> void:\n"
+}

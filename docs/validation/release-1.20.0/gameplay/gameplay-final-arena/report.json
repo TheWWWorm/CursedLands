@@ -1,0 +1,672 @@
+{
+  "schema": 1,
+  "tests": [
+    {
+      "id": "arena/arena_shadow_surface",
+      "category": "arena",
+      "script": "tools/tests/arena_shadow_surface.gd",
+      "marker": "ARENA_SHADOW_SURFACE",
+      "min_checks": 12,
+      "quick": false,
+      "description": "Rendered Arena snow remains free of self-shadow bands at every quality while tree shadows remain visible",
+      "kind": "remake_regression",
+      "timeout": 360,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/textures.res",
+        "maps/zone11.mpr"
+      ],
+      "display": "rendered",
+      "status": "passed",
+      "checks": 12,
+      "failures": 0,
+      "diagnostics": [],
+      "failure_messages": [],
+      "runtime": {
+        "campaign": "cursed_lands",
+        "display": "rendered",
+        "display_driver": "X11",
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "rendering_method": "gl_compatibility",
+        "script": "res://tools/tests/arena_shadow_surface.gd",
+        "seed": 20261020,
+        "user_dir": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/release-1.20.0/gameplay-final-arena/tests/arena/arena_shadow_surface/profile/data/godot/app_userdata/Cursed Lands"
+      },
+      "seconds": 47.077,
+      "log": "tests/arena/arena_shadow_surface/run.log",
+      "log_sha256": "d257704e0df0e6ae7fa1be42b9bce1f8d0ea3bfb5e599e333b9273768ee064f0",
+      "exit_code": 0,
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/release-1.20.0/gameplay-final-arena/runtime",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--display-driver",
+        "x11",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x800",
+        "--position",
+        "0,0",
+        "--",
+        "--no-movies",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--tool=res://tools/gameplay_bootstrap.gd",
+        "--suite-script=res://tools/tests/arena_shadow_surface.gd",
+        "--suite-seed=20261020",
+        "--suite-campaign=cursed_lands",
+        "--suite-display=rendered"
+      ]
+    }
+  ],
+  "selected": [
+    "arena/arena_shadow_surface"
+  ],
+  "complete": true,
+  "seed": 20261020,
+  "started_utc": "2026-10-20T17:22:56Z",
+  "game_source": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/game",
+  "evidence": "remake_regression",
+  "feature_inventory": {
+    "schema": 1,
+    "meaning": "Player interaction inventory, not a percentage of code, routes or original-game parity. A linked test is not necessarily passing; consult the run report.",
+    "command_sources": [
+      "game/src/game/session.gd:apply_command",
+      "game/src/game/session.gd:_shared_control"
+    ],
+    "direct_command_gaps": [],
+    "features": [
+      {
+        "id": "start",
+        "title": "Start a campaign, select a profile and bring a saved hero",
+        "commands": [],
+        "tests": [
+          "coop/coop_fresh_start",
+          "coop/coop_fresh_start_astral",
+          "coop/coop_fresh_start_guards",
+          "coop/coop_fresh_start_guards_astral",
+          "persistence/profile_save_seed",
+          "settings/player_profile"
+        ],
+        "scope": "Fresh and pre-start joins, campaign identity, Unicode names and incompatible save rejection.",
+        "remaining": "First-run asset discovery, every intro movie and every legacy player save are not covered."
+      },
+      {
+        "id": "move",
+        "title": "Move, run, crouch, steer and change camera direction",
+        "commands": [
+          "move",
+          "gait",
+          "direct_control",
+          "direct_look",
+          "direct_move"
+        ],
+        "tests": [
+          "pathing/direct_movement",
+          "pathing/direct_passages",
+          "pathing/nav_topology",
+          "pathing/nav_dynamic_topology",
+          "commands/issue_campaign_orders"
+        ],
+        "scope": "Terrain/actor collisions, malformed inputs, script blocks, ownership, stamina, released input and posture.",
+        "remaining": "No physical controller or touch device qualification; finite routes and authored maps."
+      },
+      {
+        "id": "fight",
+        "title": "Attack, aim, cancel a swing and change aggression",
+        "commands": [
+          "attack",
+          "direct_attack",
+          "direct_cancel",
+          "aggression"
+        ],
+        "tests": [
+          "combat/direct_accuracy",
+          "combat/archer_range",
+          "commands/direct_command_priority",
+          "commands/direct_release_aim",
+          "animation/direct_attack_stance"
+        ],
+        "scope": "Melee/ranged behavior, damage/body state, aim, recovery and queued spell priority.",
+        "remaining": "Native unaimed hit-probability mismatches remain separately reported; no exhaustive combat sequence exploration."
+      },
+      {
+        "id": "follow",
+        "title": "Follow another actor or stop the current action",
+        "commands": [
+          "follow",
+          "stop"
+        ],
+        "tests": [
+          "commands/direct_command_priority",
+          "stealth/steal_lifecycle",
+          "pathing/direct_movement"
+        ],
+        "scope": "Order replacement, follow-to-interact and interrupted actions.",
+        "remaining": "Ordinary long-distance multi-companion follow formations are only partially covered."
+      },
+      {
+        "id": "spells",
+        "title": "Select and cast spells, wait for stamina",
+        "commands": [
+          "cast",
+          "direct_cast"
+        ],
+        "tests": [
+          "commands/direct_spell_selection",
+          "spells/spell_stamina_wait",
+          "spells/spell_stamina_network",
+          "spells/spell_requirements_coop",
+          "effects/repeated_spells"
+        ],
+        "scope": "Known-spell requirements, target disappearance, self targeting, resource waits, repeat effects and authority acknowledgements.",
+        "remaining": "Every possible rune combination and spell/creature pairing is not covered."
+      },
+      {
+        "id": "equipment",
+        "title": "Equip, remove and select weapons; fill and use the belt",
+        "commands": [
+          "equip",
+          "unequip",
+          "select_weapon",
+          "give_quick",
+          "take_quick",
+          "use"
+        ],
+        "tests": [
+          "inventory/camp_action_lifecycle",
+          "inventory/camp_action_lifecycle_astral",
+          "inventory/belt_weight",
+          "inventory/enchanted_equipment_net",
+          "inventory/recruited_equipment_net"
+        ],
+        "scope": "Slot capacity, worn-instance identity, equipment stats, belt weight, charges and replication.",
+        "remaining": "Physical drag/drop across every screen size is not exhaustive."
+      },
+      {
+        "id": "learn",
+        "title": "Learn and remove spell objects",
+        "commands": [
+          "learn",
+          "unlearn"
+        ],
+        "tests": [
+          "inventory/camp_action_lifecycle",
+          "inventory/camp_action_lifecycle_astral",
+          "spells/spell_requirements_coop"
+        ],
+        "scope": "Eight-slot capacity, duplicate objects, field refusal and persisted spell inventory.",
+        "remaining": "Every school/complexity boundary combination is not covered."
+      },
+      {
+        "id": "trade",
+        "title": "Buy, sell and confirm exchanges",
+        "commands": [
+          "buy",
+          "sell",
+          "trade"
+        ],
+        "tests": [
+          "inventory/coop_trade",
+          "inventory/camp_inventory_ui",
+          "inventory/camp_transactions",
+          "inventory/market_prices"
+        ],
+        "scope": "Private purses, stock, exact copies, stale quotes, held transfers and quest-item restrictions.",
+        "remaining": "Every merchant/quest-driven assortment change is not covered."
+      },
+      {
+        "id": "repair",
+        "title": "Repair damaged carried or bag equipment",
+        "commands": [
+          "repair"
+        ],
+        "tests": [
+          "inventory/camp_transactions",
+          "inventory/item_instance_matrix"
+        ],
+        "scope": "Batched cost, ownership, wear/charge conservation and repeated delivery.",
+        "remaining": "No full path from every town entry to each repair menu."
+      },
+      {
+        "id": "craft",
+        "title": "Construct and dismantle equipment",
+        "commands": [
+          "construct",
+          "deconstruct"
+        ],
+        "tests": [
+          "inventory/camp_action_lifecycle",
+          "inventory/camp_action_lifecycle_astral",
+          "inventory/special_equipment"
+        ],
+        "scope": "Nine recipe/material combinations per campaign, missing ingredients, invalid material, funds and special-item rejection.",
+        "remaining": "Every legal material/enchantment recipe is not covered."
+      },
+      {
+        "id": "spell_constructor",
+        "title": "Build and dismantle spells",
+        "commands": [
+          "spell_constr"
+        ],
+        "tests": [
+          "spells/spell_constructor_transactions",
+          "spells/shop_spells",
+          "spells/shop_spells_astral"
+        ],
+        "scope": "Bag/shop/known-spell sources, fees, rune order, duplicate replies and paused guests.",
+        "remaining": "No exhaustive rune Cartesian product."
+      },
+      {
+        "id": "training",
+        "title": "Train skills and perks, remove ranks and reset training",
+        "commands": [
+          "train",
+          "perk",
+          "untrain",
+          "unperk",
+          "refund_training",
+          "reset_training"
+        ],
+        "tests": [
+          "progression/training_coop",
+          "progression/training_reset",
+          "progression/training_reset_astral"
+        ],
+        "scope": "Cost order, dependencies, refunds, legacy credit, ownership, limits and partial/full reset.",
+        "remaining": "Every progression route across a whole campaign is not covered."
+      },
+      {
+        "id": "theft",
+        "title": "Steal items, money or quest objects",
+        "commands": [
+          "steal"
+        ],
+        "tests": [
+          "stealth/steal_lifecycle",
+          "stealth/steal_lifecycle_astral"
+        ],
+        "scope": "Actual approach/use completion, quest-first pockets, ownership, cancellation, dead/removed targets, equal skill and repeated loot.",
+        "remaining": "Prepared actors and pockets; all scripted NPC theft reactions are not covered."
+      },
+      {
+        "id": "loot",
+        "title": "Collect corpses and stacked rewards",
+        "commands": [
+          "loot"
+        ],
+        "tests": [
+          "inventory/coop_loot_network",
+          "inventory/coop_loot_grants",
+          "inventory/pickup_messages",
+          "inventory/enchanted_equipment"
+        ],
+        "scope": "Once-only collection, quest inventory, stack counts, private/shared bags and enchanted instances.",
+        "remaining": "Every authored loot table and probability distribution is not exhaustively validated."
+      },
+      {
+        "id": "revival",
+        "title": "Revive fallen companions and retain their progression",
+        "commands": [
+          "revive"
+        ],
+        "tests": [
+          "progression/fallen_party_xp",
+          "party/revive_camera",
+          "combat/body_records"
+        ],
+        "scope": "Revival policy, body state, retained experience and player camera.",
+        "remaining": "Every death during a cinematic or chapter transition is not covered."
+      },
+      {
+        "id": "mechanisms",
+        "title": "Use chests, doors, lifts and linked levers",
+        "commands": [
+          "use_lever"
+        ],
+        "tests": [
+          "commands/direct_interactions",
+          "quests/catacomb_mechanisms",
+          "quests/catacomb_group_lever",
+          "pathing/catacomb_capacity_net"
+        ],
+        "scope": "Usability, targeting, synchronized mechanisms, lift capacity, traversal and persistence.",
+        "remaining": "Every mechanism in every campaign map is not covered."
+      },
+      {
+        "id": "dialogue",
+        "title": "Talk, select topics and close conversations",
+        "commands": [
+          "interact",
+          "topic",
+          "dialog_done"
+        ],
+        "tests": [
+          "dialogue/authored_village_talk",
+          "dialogue/gipat_captive_dialogue",
+          "dialogue/nalo_rescue_entry",
+          "dialogue/shaina_disguise_entry",
+          "dialogue/dialogue_highlights"
+        ],
+        "scope": "Approach/staging, original topics, route completion and peer cues.",
+        "remaining": "All dialogue branches, voice synchronization and every cinematic are not covered."
+      },
+      {
+        "id": "sidequests",
+        "title": "Accept and collect optional quest rewards",
+        "commands": [
+          "side_quest"
+        ],
+        "tests": [
+          "quests/side_quest_lifecycle",
+          "interface/side_quest_panel_ui"
+        ],
+        "scope": "Installed base side-quest archives, eligibility, duplicate acceptance/completion, once-only reward, touch UI and saves.",
+        "remaining": "The expansion ships no .mq archives in this installation; no invented expansion side-quest fixture."
+      },
+      {
+        "id": "travel",
+        "title": "Travel between zones and preview destinations",
+        "commands": [
+          "travel",
+          "leave_exit",
+          "travel_cancel"
+        ],
+        "tests": [
+          "coop/coop_zone_transfer",
+          "coop/coop_progress_travel",
+          "pathing/travel_reveal",
+          "quests/lia_tomb_exit",
+          "quests/island_return",
+          "commands/travel_command_lifecycle",
+          "commands/travel_command_lifecycle_astral"
+        ],
+        "scope": "Campaign/peer destination state, reveal policy, tomb exit and island return. Direct exit confirmation/cancel, stale routes, death, owner permissions and once-only travel-time checks.",
+        "remaining": "Not every entrance/exit pair is walked. Command-boundary fixtures record the final load; other transfer fixtures perform real world loads."
+      },
+      {
+        "id": "clock",
+        "title": "Pause and change simulation speed",
+        "commands": [
+          "clock"
+        ],
+        "tests": [
+          "coop/coop_permissions",
+          "settings/single_player_rules",
+          "persistence/save_frozen_clock"
+        ],
+        "scope": "Host/guest permissions, shared time, saved clock and single-player rule selection.",
+        "remaining": "Campaign pause presentation is not covered by the Arena-specific rendered lifecycle test."
+      },
+      {
+        "id": "checkpoint",
+        "title": "Quicksave, quickload and select save files",
+        "commands": [
+          "quick_save",
+          "quick_load"
+        ],
+        "tests": [
+          "coop/coop_permissions",
+          "persistence/network_save_choices",
+          "persistence/save_state_fields",
+          "persistence/save_actor_refs",
+          "persistence/save_cast",
+          "persistence/save_taming",
+          "persistence/load_spell_boundary"
+        ],
+        "scope": "Authority, load generations, actor/effect references, spell consumption and menu choices.",
+        "remaining": "Corrupt-file UI, disk-full handling and migration from all historical releases remain gaps."
+      },
+      {
+        "id": "quests",
+        "title": "Trigger, revisit and complete story objectives",
+        "commands": [],
+        "tests": [
+          "quests/story_coop_predicates",
+          "quests/story_coop_traps",
+          "quests/story_coop_effects",
+          "quests/lia_revenge_return",
+          "quests/lia_slave_lists_return",
+          "quests/zone7_arrival"
+        ],
+        "scope": "Native scripts, prerequisites, quest items, traps, repeated visits, captivity and chapter transition fixtures.",
+        "remaining": "No exhaustive quest graph or uninterrupted full campaign playthrough."
+      },
+      {
+        "id": "ai",
+        "title": "Creature sensing, decisions, alerts and lifecycle",
+        "commands": [],
+        "tests": [
+          "creatures/ai_activity_senses",
+          "creatures/ai_live_eligibility",
+          "creatures/creature_alerts",
+          "creatures/peasant_help",
+          "creatures/registry_queries",
+          "creatures/added_actor_tombstones"
+        ],
+        "scope": "Visibility changes, death/removal, help calls, aggression, spatial queries and late replicas.",
+        "remaining": "Every creature motivation plus every authored NPC schedule is not covered."
+      },
+      {
+        "id": "stealth",
+        "title": "Hide, become invisible or silent, escape pursuit",
+        "commands": [],
+        "tests": [
+          "stealth/stealth_effects",
+          "stealth/stealth_effects_net",
+          "stealth/patrol_escape_alerts",
+          "stealth/unit_visibility"
+        ],
+        "scope": "Effects, perception, remembered targets, scripted pursuit and rendered-state eligibility.",
+        "remaining": "All light/weather/terrain/sensing combinations remain open."
+      },
+      {
+        "id": "animation",
+        "title": "Locomotion, attack, cast, dialogue and loaded poses",
+        "commands": [],
+        "tests": [
+          "animation/creature_weapon_animations",
+          "animation/creature_weapon_animations_astral",
+          "animation/direct_gait_continuity",
+          "animation/direct_moving_casts",
+          "animation/paused_load_pose",
+          "animation/dialogue_poses"
+        ],
+        "scope": "Authored clip/state/rig checks across both catalogues, moving attacks and pause/load transitions.",
+        "remaining": "Most checks are headless state checks; they do not prove frame-perfect original pixels."
+      },
+      {
+        "id": "effects",
+        "title": "Spell visuals, attachments, particles and status expiry",
+        "commands": [],
+        "tests": [
+          "effects/creature_effect_attachments",
+          "effects/creature_projectile_origins",
+          "effects/effect_tick_boundaries",
+          "effects/fire_particles",
+          "effects/healing_presentation"
+        ],
+        "scope": "Origins/rigs, duration boundaries, overlap, timing, teardown and native/remake kernels.",
+        "remaining": "Overall rendered effects quality, all GPUs and all visual combinations are not qualified."
+      },
+      {
+        "id": "coop",
+        "title": "Join, reconnect, change roles and return to solo play",
+        "commands": [],
+        "tests": [
+          "coop/coop_rename_reconnect",
+          "coop/coop_shared_checkpoint_net",
+          "coop/coop_solo_return",
+          "coop/coop_guest_roles_net",
+          "coop/coop_progress_context_network",
+          "network/snapshot_recovery"
+        ],
+        "scope": "Real loopback ENet sessions, stable identity, private progress, copied parties, loss/reordering and checkpoint transport.",
+        "remaining": "WAN latency, NAT, WebSocket/browser networking and cross-version peers remain gaps."
+      },
+      {
+        "id": "party",
+        "title": "Recruit, switch chapters, manage pets and companions",
+        "commands": [],
+        "tests": [
+          "party/party_dependents",
+          "party/pet_waiting",
+          "coop/coop_party_switch",
+          "inventory/recruited_equipment_net_astral",
+          "coop/coop_solo_return_dependents"
+        ],
+        "scope": "Equipment transfer, chapter roster changes, owner disconnect, pet identity and saved dependents.",
+        "remaining": "No ordinary shop-available charm feature is implied by internal taming tests."
+      },
+      {
+        "id": "interface",
+        "title": "Read item/quest text, operate menus and load screens",
+        "commands": [],
+        "tests": [
+          "interface/character_buff_icons",
+          "interface/loading_cover",
+          "interface/loading_progress",
+          "interface/tooltip_lifetime_ui",
+          "interface/side_quest_panel_ui",
+          "inventory/camp_inventory_ui"
+        ],
+        "scope": "Rendered UI interactions and captures, tooltips, touch scrolling, effect timers and load cover.",
+        "remaining": "Automated captures are not a manual accessibility/readability review of every screen."
+      },
+      {
+        "id": "settings",
+        "title": "Change controls, camera, graphics and profile preferences",
+        "commands": [],
+        "tests": [
+          "settings/control_mode_options",
+          "settings/direct_settings",
+          "settings/camera_guest_options",
+          "settings/graphics_options",
+          "settings/graphics_presets",
+          "settings/player_profile"
+        ],
+        "scope": "Navigation, apply/cancel, persistent preference keys and actual controls.",
+        "remaining": "OS display switching, all monitor combinations and physical devices are not covered."
+      },
+      {
+        "id": "localization",
+        "title": "Use English, Russian and German",
+        "commands": [],
+        "tests": [
+          "settings/option_localization_matrix",
+          "interface/wiki_quest_locales",
+          "settings/audio_echo_options_ru",
+          "settings/audio_echo_options_de"
+        ],
+        "scope": "Every remake option label/help/choice and catalogue formatting plus selected rendered localized controls.",
+        "remaining": "Original text-archive languages and all dynamic line wrapping are not exhaustively tested."
+      },
+      {
+        "id": "audio",
+        "title": "Route sounds and change cave echo",
+        "commands": [],
+        "tests": [
+          "settings/audio_bus_routes",
+          "settings/audio_echo_options"
+        ],
+        "scope": "Routing/bus topology, immediate echo changes, cancel/apply and saved state.",
+        "remaining": "Audio driver is Dummy and all volume preferences stay zero; audible fidelity and hardware output are not tested."
+      },
+      {
+        "id": "arena",
+        "title": "Recruit, buy, combine, deploy, fight and resolve Arena rounds",
+        "commands": [],
+        "tests": [
+          "arena/arena_economy",
+          "arena/arena_recruitment",
+          "arena/arena_formation",
+          "arena/arena_round_lifecycle",
+          "arena/arena_alliances",
+          "arena/arena_sale_quotes",
+          "arena/arena_tournament",
+          "arena/arena_battle_limits",
+          "arena/arena_solo_recovery"
+        ],
+        "scope": "Economy, capacity, alliances, quotes, draws, health, once-only settlement, saved opening and recovery.",
+        "remaining": "All battle seeds, online multi-machine play, every board layout and long-run balance are not covered."
+      },
+      {
+        "id": "mods",
+        "title": "Install, enable, remove and exchange mods",
+        "commands": [],
+        "tests": [],
+        "scope": "No configurations in this registered expansion.",
+        "remaining": "Mod download, cancellation, migration, dependency resolution and multiplayer mismatches need their own isolated server fixtures."
+      },
+      {
+        "id": "platforms",
+        "title": "Run on Windows, Android, browser and macOS",
+        "commands": [],
+        "tests": [],
+        "scope": "Linux Godot 4.7 is the execution platform for this qualification.",
+        "remaining": "Mobile lifecycle, browser storage/service workers, packaging and every rendering backend require platform-specific runs."
+      }
+    ]
+  },
+  "source_sha256": "ab3707c445842a9492b22b5c827d4cfe9ba8e08921cd16a8cc56b3a70ac4edd3",
+  "original_data": {
+    "game.exe": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+    "res/database.res": "50e5899fd7d467e11ea152122148f6911319cf339bf7717f1e205d38c63b13b0",
+    "res/texts.res": "7480721148bf443901bad59ea184606d7a09c97d565040560778ea4663cd5c41"
+  },
+  "campaign_data": {
+    "cursed_lands": {
+      "root": "/home/llm2x/Documents/EI/inspection/extracted/app",
+      "files": {
+        "maps/zone11.mpr": "4876ba0fb52a9b80be59bf19569492f1551de29844c21e8f2e219e5086ee2eab",
+        "res/database.res": "50e5899fd7d467e11ea152122148f6911319cf339bf7717f1e205d38c63b13b0",
+        "res/figures.res": "200d8b7968813bf154b4e5b6d84fd3ce362f7aae5c743ae2b5e0cc4023045c15",
+        "res/texts.res": "7480721148bf443901bad59ea184606d7a09c97d565040560778ea4663cd5c41",
+        "res/textures.res": "79548fbd94e797fe9edc3e990eb0231a350571b2cef575b009fa972f0002268c"
+      }
+    },
+    "lost_in_astral": {
+      "root": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+      "files": {}
+    }
+  },
+  "engine": {
+    "path": "/home/llm2x/.local/bin/godot-4",
+    "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+  },
+  "counts": {
+    "passed": 1,
+    "failed": 0,
+    "error": 0,
+    "programs": 1,
+    "checks": 12,
+    "failed_checks": 0
+  },
+  "status": "passed"
+}

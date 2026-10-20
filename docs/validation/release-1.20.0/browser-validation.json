@@ -1,0 +1,42 @@
+{
+  "version": "1.20.0",
+  "cache_upgrade": {
+    "passed": true,
+    "old_cache": "cursed-engine-2-b17670b33c4247e75afb",
+    "new_cache": "cursed-engine-2-526312dd559a18c04b69",
+    "indexeddb_preserved": true,
+    "database_names": [
+      "/userfs",
+      "cursed-lands-data-v1"
+    ],
+    "pck_sha256": "fcea6e74ecd62e5a48c013f7ab0b98df5b81a8dc58bd69b22c450a7de1bca849",
+    "old_tab_wait_verified": true
+  },
+  "cache": {
+    "keys": [
+      "cursed-engine-2-526312dd559a18c04b69"
+    ],
+    "packs": {
+      "cursed-engine-2-526312dd559a18c04b69": "fcea6e74ecd62e5a48c013f7ab0b98df5b81a8dc58bd69b22c450a7de1bca849"
+    },
+    "worker": "activated",
+    "waiting": null,
+    "isolated": true
+  },
+  "browser": "151.0.7922.34",
+  "runtime_errors": [],
+  "http_failures": [],
+  "fresh_start": {
+    "captured": true,
+    "engine_started": true
+  },
+  "upgraded_start": {
+    "captured": true,
+    "engine_started": true
+  },
+  "previous_start": {
+    "captured": true,
+    "engine_started": true,
+    "version": "1.19.0"
+  }
+}

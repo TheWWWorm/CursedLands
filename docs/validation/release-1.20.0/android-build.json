@@ -1,0 +1,77 @@
+{
+  "source_commit": "2694d8b823f7b4243eba2286157b99abecce7c56",
+  "version": "1.20.0",
+  "version_code": 54,
+  "protocol": 23,
+  "steps": [
+    {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/release-1.20.0/android-stage",
+        "--editor",
+        "--import",
+        "--quit"
+      ],
+      "exit": 0,
+      "seconds": 25.429385488969274,
+      "errors": []
+    },
+    {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/release-1.20.0/android-stage",
+        "--export-release",
+        "Android",
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/release-1.20.0/CursedLands-1.20.0-android/CursedLands.apk"
+      ],
+      "exit": 0,
+      "seconds": 17.147413826081902,
+      "errors": []
+    }
+  ],
+  "template": {
+    "base_template": "/home/llm2x/Documents/EI/local/scratchpad/wiki-rework-20261016/release-1.8.0/android_release_startup.apk",
+    "base_sha256": "39618fbc955046168013eaf2ab96577f776a240d5f5c075e3ff55fa7f06f6012",
+    "release_template": "/home/llm2x/Documents/EI/local/scratchpad/issues-5-9-15-20261017/release-1.10.0/android_release_startup.apk",
+    "release_template_sha256": "d6b076f7887e995c994984423fdbd5f6e17d075f55de44b080c2840a0cd8761a",
+    "engine_sha256": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+    "libcxx_sha256": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+    "classes_dex_sha256": "386484cf1c35c955d0a1996d5628ae51e56626cb03cd4ec46d692313330a6601",
+    "patch_count": 16,
+    "new_java_diagnostics_sources": {
+      "AndroidExitReport.java": "466f2236cc950a79b8b409d383bad99d93d0aea282c540627979c459b8587143",
+      "EISimulation.java": "56cdcaedd3d7027e7672231035005cd0b6b5c95e38ca2636fd07b7cebc721c0f",
+      "EarlyStartup.java": "9759125edf22ee9260cad2f87b5220e08400a899499a4471e08a69844b7a0602",
+      "NativeTombstone.java": "4cdb78b00c6434e2905ed946d1d7fd235a90732105793516628ec4b0641a3779",
+      "StartupApplication.java": "450bddb5ad3514c240e697a17e44009dc1a1a15121c9668d62ce2ec8ac6292a4"
+    },
+    "java_template_build": "generateGodotTemplates --offline; all native SCons tasks excluded",
+    "java_template_tested_in": "docs/validation/android-early-startup-recovery-2026-10-15.json",
+    "production_native_libraries_unchanged": true,
+    "private_instrumentation": false,
+    "java_source_commit": "70fd01919514aa68781c0585c7a3b9005e4a4487",
+    "early_startup_journal": true,
+    "additional_native_patches": [
+      "mobile-render-work.patch",
+      "mobile-screen-mip-demand.patch"
+    ],
+    "native_validation": "docs/android-vulkan-water-performance-2026-10-17.json",
+    "previous_stable": "1.9.0"
+  },
+  "folder": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/release-1.20.0/CursedLands-1.20.0-android",
+  "libraries": {
+    "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+    "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+    "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+    "lib/arm64-v8a/libterrain_search_android.so": "b856cf628f85a7a08807037b1da8cbd73ea2e0ba7db072572ece3ac36da8bc44"
+  },
+  "apk_sha256": "ed5543c01247a0befc3f67b43854caddb30d420e0b5978ade3eeb9b8c751fa21",
+  "bytes": 46600668,
+  "debuggable": false,
+  "matching_public_certificate": true,
+  "source_exact_except_project_version_and_export_preset": true
+}

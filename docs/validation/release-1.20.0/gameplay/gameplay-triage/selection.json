@@ -1,0 +1,61 @@
+[
+  {
+    "id": "spells/spell_requirements_coop",
+    "category": "spells",
+    "script": "tools/tests/spell_requirements_coop.gd",
+    "marker": "SPELL_REQUIREMENTS_COOP",
+    "min_checks": 15,
+    "quick": false,
+    "description": "Training reset invalidates selection and authority; queued casts revalidate",
+    "kind": "remake_regression",
+    "timeout": 300,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res",
+      "maps/bz2g.mob",
+      "maps/zone1.mob"
+    ]
+  },
+  {
+    "id": "dialogue/dialogue_highlights",
+    "category": "dialogue",
+    "script": "tools/tests/dialogue_highlights.gd",
+    "marker": "DIALOGUE_HIGHLIGHTS",
+    "min_checks": 42,
+    "quick": false,
+    "description": "Real authored village actors on ENet. Prepare topic availability without advancing unrelated quests, then exercise actual dialogue UI and completion.",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "maps/basecam.mob",
+      "maps/basegipat.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  },
+  {
+    "id": "inventory/coop_loot_network",
+    "category": "inventory",
+    "script": "tools/tests/coop_loot_network.gd",
+    "marker": "COOP_LOOT_NETWORK",
+    "min_checks": 41,
+    "quick": false,
+    "description": "Real ENet commands, animation completion, inventory replication and pickup notices. Deliberately resend reliable/fast packets and race both players.",
+    "kind": "remake_regression",
+    "timeout": 360,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "maps/basecam.mob",
+      "maps/basegipat.mpr",
+      "res/database.res",
+      "res/texts.res"
+    ],
+    "display": "headless"
+  }
+]
