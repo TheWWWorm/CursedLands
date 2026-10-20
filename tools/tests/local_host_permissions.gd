@@ -9,6 +9,7 @@ func frames(n := 8) -> void:
 	for i in n: await get_tree().process_frame
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	DirAccess.remove_absolute(SaveInfo.path("quick"))
 	GameData.options.merge({"net_upnp":0,"net_websocket":0,"net_lan":0,"net_directory":0,"autosave":0,
 		"show_tutorial":0,"auto_graphics":0,"coop_clock":1,"coop_guest_clock":3,"coop_guest_saves":3},true)
 	var seed := CampaignState.new()
@@ -47,13 +48,21 @@ func _ready() -> void:
 	check(host.clock_speed == 1, "worker rejects forged host identity")
 	cg.set_speed(0)
 	check(await until(func(): return host.clock_paused), "guest pauses real authority")
-	var time := host.world.time
-	await get_tree().create_timer(.5,true,false,true).timeout
-	check(is_equal_approx(time,host.world.time), "authority simulation remains stopped")
 	cg._key_action("quicksave")
 	check(await until(func(): return FileAccess.file_exists(SaveInfo.path("quick"))), "F5 triggers authority quicksave")
 	var saved := CampaignState.load_from(SaveInfo.path("quick"))
 	check(saved != null and bool(saved.play_clock.paused) and int(saved.coop[CoopPermissions.KEY].players["worker permission guest"]) == 13, "worker checkpoint includes pause and individual permissions")
+	# Clock acknowledgements and movement snapshots use different delivery
+	# modes. A final pre-pause snapshot may still advance the frontend's clock.
+	# Compare two authority-written checkpoints to measure the paused worker.
+	await get_tree().create_timer(.5,true,false,true).timeout
+	DirAccess.remove_absolute(SaveInfo.path("quick"))
+	cg._key_action("quicksave")
+	check(await until(func(): return FileAccess.file_exists(SaveInfo.path("quick"))), "paused authority writes a second checkpoint")
+	var paused_saved := CampaignState.load_from(SaveInfo.path("quick"))
+	check(saved != null and paused_saved != null and bool(paused_saved.play_clock.paused)
+		and saved.day == paused_saved.day and is_equal_approx(saved.world_time, paused_saved.world_time),
+		"authority simulation remains stopped")
 	host.set_player_permission(pid,CoopPermissions.SPEED,true)
 	check(await until(func(): return client.can_change_clock(2)), "permission can be re-enabled through owner")
 	cg.set_speed(1)

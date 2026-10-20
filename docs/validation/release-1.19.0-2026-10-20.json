@@ -1,0 +1,400 @@
+{
+  "version": "1.19.0",
+  "tag": "v1.19.0",
+  "date": "2026-10-20",
+  "base_stable": "1.18.0",
+  "release_type": "stable minor",
+  "source_commit": "7d97be3135399e1c2ba57adef7f2daa23828d3cb",
+  "game_tree": "21846c8a81bc0b1a46a422a0aba882f93edd5bac",
+  "coop_protocol": 23,
+  "autochess_protocol": 1,
+  "matching_game_versions_required": true,
+  "compiled_scripts": 379,
+  "all_compiled_scripts_identical_across_five_platforms": true,
+  "preview_equivalence": {
+    "compiled_scripts": 379,
+    "all_scripts_identical_to_validated_rc1": true,
+    "linux_engine_identical_to_validated_rc1": true,
+    "linux_engine_sha256": "04b8b702215a8ed2ba0423e366f91473051fe6ad24d738dc69389f9efa8b23e3",
+    "windows_template_sha256": "cc483f30cc57ccf13ce303e88b52e75707fff998bce2abfcb56de0ffcd4c63d9",
+    "windows_executable_identical_to_validated_rc1": true,
+    "windows_executable_sha256": "bb6093640e3516592d7a33e9e70d3b3a5061366040486b0ab02ae8bc69c8bc44"
+  },
+  "runtime_checks": [
+    {
+      "suite": "zone_speed_retention",
+      "exit": 0,
+      "seconds": 30.77,
+      "summary": [
+        "ZONE_SPEED_RETENTION 65 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "local_host_zone_speed",
+      "exit": 0,
+      "seconds": 15.49,
+      "summary": [
+        "LOCAL_HOST_ZONE_SPEED 11 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "coop_permissions",
+      "exit": 0,
+      "seconds": 21.05,
+      "summary": [
+        "COOP_PERMISSIONS 31 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "local_host_permissions",
+      "exit": 0,
+      "seconds": 26.86,
+      "summary": [
+        "LOCAL_HOST_PERMISSIONS 20 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "save_selection",
+      "exit": 0,
+      "seconds": 2.62,
+      "summary": [],
+      "errors": [],
+      "passing_assertions": 23
+    },
+    {
+      "suite": "posture_presentation",
+      "exit": 0,
+      "seconds": 3.57,
+      "summary": [],
+      "errors": [],
+      "passing_assertions": 19
+    },
+    {
+      "suite": "player_feedback",
+      "exit": 0,
+      "seconds": 2.67,
+      "summary": [
+        "PLAYER_FEEDBACK 43 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "xp_distribution",
+      "exit": 0,
+      "seconds": 2.67,
+      "summary": [
+        "XP_DISTRIBUTION 96 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "spell_stamina_wait",
+      "exit": 0,
+      "seconds": 7.63,
+      "summary": [
+        "SPELL_STAMINA_WAIT 47 checks []"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "spell_stamina_network",
+      "exit": 0,
+      "seconds": 8.98,
+      "summary": [
+        "SPELL_STAMINA_NETWORK 14 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "patrol_escape_alerts",
+      "exit": 0,
+      "seconds": 2.52,
+      "summary": [
+        "PATROL_ESCAPE_ALERTS 14 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "unit_presentation_timing",
+      "exit": 0,
+      "seconds": 3.52,
+      "summary": [
+        "UNIT_PRESENTATION_TIMING 33 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "nav_dynamic_topology",
+      "exit": 0,
+      "seconds": 2.92,
+      "summary": [
+        "NAV_DYNAMIC_TOPOLOGY 11102 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "story_guard_escape",
+      "exit": 0,
+      "seconds": 2.92,
+      "summary": [
+        "STORY_GUARD_ESCAPE 11 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "training_coop",
+      "exit": 0,
+      "seconds": 9.23,
+      "summary": [
+        "TRAINING_COOP 27 checks 0 failures"
+      ],
+      "errors": []
+    }
+  ],
+  "rendered_checks": [
+    {
+      "suite": "tooltip_lifetime_ui",
+      "exit": 0,
+      "seconds": 11.25,
+      "summary": [
+        "TOOLTIP_LIFETIME_UI 24 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "character_buff_icons",
+      "exit": 0,
+      "seconds": 7.58,
+      "summary": [
+        "CHARACTER_BUFF_ICONS 18 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "camera_guest_options",
+      "exit": 0,
+      "seconds": 37.96,
+      "summary": [
+        "CAMERA_GUEST_OPTIONS 42 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "wiki_creature_map",
+      "exit": 0,
+      "seconds": 6.03,
+      "summary": [
+        "WIKI_CREATURE_MAP 12 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "suite": "side_quest_panel_ui",
+      "exit": 0,
+      "seconds": 5.57,
+      "summary": [
+        "SIDE_QUEST_PANEL_UI 86 checks; failures=[]"
+      ],
+      "errors": []
+    }
+  ],
+  "test_correction": {
+    "suite": "local_host_permissions",
+    "initial_result": "19 checks; one failure comparing the frontend clock immediately after the pause acknowledgement",
+    "cause": "Reliable clock acknowledgements and unreliable snapshots can reach the frontend in different orders. The frontend can still receive the final pre-pause simulation time.",
+    "change": "Compare campaign time and paused state in two checkpoints written by the actual authority, separated by 0.5 real seconds; remove an older test quicksave before each request.",
+    "final_result": "20 checks; zero failures",
+    "production_changes": false
+  },
+  "translations": {
+    "remake_entries": 2849,
+    "dynamic_wiki_keys": 141,
+    "dynamic_arena_keys": 179,
+    "errors": 0,
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "layout_evidence": "coop-suslanger-20261020/README.md; release checks repeat character/camera/map UI and EN/RU/DE touch quest layouts"
+  },
+  "desktop": {
+    "linux-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/release-1.19.0/CursedLands-1.19.0-linux-x86_64",
+      "info": {
+        "version": "1.19.0",
+        "source_commit": "7d97be3135399e1c2ba57adef7f2daa23828d3cb",
+        "game_tree": "21846c8a81bc0b1a46a422a0aba882f93edd5bac",
+        "protocol": 23,
+        "platform": "linux-x86_64",
+        "engine_patch_count": 16,
+        "unchanged_qualified_engine": false,
+        "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88 plus common patches 1\u201316",
+        "compiled_scripts": 379,
+        "resource_count": 1184,
+        "files": {
+          "CursedLands.x86_64": "04b8b702215a8ed2ba0423e366f91473051fe6ad24d738dc69389f9efa8b23e3",
+          "libterrain_search.so": "82af005d9eeaf9da64c16cac681d65d9cd00757347e6fbef5e0595be83099f48",
+          "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+          "CursedLands.pck": "6680ca80d71b4c958bd55a672408aacd8b8a4146134651ceebc728bf962da643"
+        },
+        "debug_symbols_stripped": true
+      }
+    },
+    "windows-x86_64": {
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/release-1.19.0/CursedLands-1.19.0-windows-x86_64",
+      "info": {
+        "version": "1.19.0",
+        "source_commit": "7d97be3135399e1c2ba57adef7f2daa23828d3cb",
+        "game_tree": "21846c8a81bc0b1a46a422a0aba882f93edd5bac",
+        "protocol": 23,
+        "platform": "windows-x86_64",
+        "engine_patch_count": 16,
+        "unchanged_qualified_engine": false,
+        "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88 plus common patches 1\u201316",
+        "compiled_scripts": 379,
+        "resource_count": 1184,
+        "files": {
+          "CursedLands.exe": "bb6093640e3516592d7a33e9e70d3b3a5061366040486b0ab02ae8bc69c8bc44",
+          "libterrain_search.dll": "5d9e2dfbbf3f3b10836168dc4d7cb5084c0233d90b2d820bda04325b5bb5d989",
+          "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+          "CursedLands.pck": "6680ca80d71b4c958bd55a672408aacd8b8a4146134651ceebc728bf962da643"
+        }
+      }
+    },
+    "macos-universal": {
+      "folder": "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/release-1.19.0/CursedLands-1.19.0-macos-universal",
+      "info": {
+        "version": "1.19.0",
+        "source_commit": "7d97be3135399e1c2ba57adef7f2daa23828d3cb",
+        "game_tree": "21846c8a81bc0b1a46a422a0aba882f93edd5bac",
+        "protocol": 23,
+        "platform": "macos-universal",
+        "unsigned": true,
+        "target_os_runtime_tested": false,
+        "compiled_scripts": 379,
+        "files": {
+          "CursedLands.zip": "605cb47ed60f5dfb0a4cd600d053b9d030e6fdaa8a4751da632a16febde0c484"
+        }
+      }
+    }
+  },
+  "android": {
+    "version": "1.19.0",
+    "compiled_scripts": 379,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 53,
+    "debuggable": false,
+    "apk_sha256": "025b5a0a84f39dca6c14940c55dfa1ef56f48c84073cbff91eeec68f09752396",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "b856cf628f85a7a08807037b1da8cbd73ea2e0ba7db072572ece3ac36da8bc44"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16
+  },
+  "branding": {
+    "windows_icon_sizes": [
+      16,
+      32,
+      48,
+      64,
+      128,
+      256
+    ],
+    "windows_icon_pixels_exact": true,
+    "windows_version": "1.19.0.0",
+    "macos_icon_exact": true,
+    "web_icons_exact": true,
+    "approved_master_sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18"
+  },
+  "browser_build": {
+    "version": "1.19.0",
+    "source_tag": "v1.19.0",
+    "source_commit": "7d97be3135399e1c2ba57adef7f2daa23828d3cb",
+    "game_tree": "21846c8a81bc0b1a46a422a0aba882f93edd5bac",
+    "protocol": 23,
+    "platform": "web",
+    "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+    "threads": false,
+    "extensions": false,
+    "compiled_scripts": 379,
+    "resource_count": 1181,
+    "all_pck_resource_md5_valid": true,
+    "original_game_data_bundled": false,
+    "pck_sha256": "571a23807903989d4145128d6beb53ec966f903ce111f5aaef6c61b0cba0db06",
+    "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+  },
+  "browser_runtime_checks": {
+    "version": "1.19.0",
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-99a3c7cf19387b8b786e",
+      "new_cache": "cursed-engine-2-b17670b33c4247e75afb",
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "pck_sha256": "571a23807903989d4145128d6beb53ec966f903ce111f5aaef6c61b0cba0db06",
+      "old_tab_wait_verified": true
+    },
+    "cache": {
+      "keys": [
+        "cursed-engine-2-b17670b33c4247e75afb"
+      ],
+      "packs": {
+        "cursed-engine-2-b17670b33c4247e75afb": "571a23807903989d4145128d6beb53ec966f903ce111f5aaef6c61b0cba0db06"
+      },
+      "worker": "activated",
+      "waiting": null,
+      "isolated": true
+    },
+    "browser": "151.0.7922.34",
+    "runtime_errors": [],
+    "http_failures": [],
+    "fresh_start": {
+      "captured": true,
+      "engine_started": true
+    },
+    "upgraded_start": {
+      "captured": true,
+      "engine_started": true
+    },
+    "previous_start": {
+      "captured": true,
+      "engine_started": true,
+      "version": "1.18.0"
+    }
+  },
+  "hosted_files_count": 13551,
+  "hosted_manifest_sha256": "4ff52b9b446c385cbc7f7623769cec30ae5389d5480727e284f412cc952cf381",
+  "hosted_parts_manifest": {
+    "sha256": "445a97b0cc1fa244a27da90f0d97e936885ec2d8a474792970cf6ae4b96398e0",
+    "regenerated": true,
+    "unchanged_wasm_parts": true
+  },
+  "validation_references": [
+    "coop-suslanger-20261020/README.md",
+    "tooltip-timers-20261020/README.md",
+    "autochess-presentation-2026-10-19/README.md",
+    "android-hd-lands-2026-10-19.json"
+  ],
+  "limits": [
+    "The Linux executable and Windows executable are byte-identical to the validated 1.19.0-rc.1 desktop executables. Release scripts are identical to that preview; Windows execution evidence is Wine/Vulkan, not native Windows hardware.",
+    "macOS and browser use official Godot 4.7 templates; Android retains its qualified production engine. They do not contain the desktop native tooltip-timer patch.",
+    "macOS and Android release packages were structurally audited but not executed on their target operating systems in this release pass. macOS is unsigned.",
+    "The desktop tooltip-timer defect is reproduced and fixed. A complete multi-hour hosted co-op campaign soak has not been completed.",
+    "The toad-spit discontinuity, extreme Mines movement slowdown, campaign footprint clipping, recurrent menu flash and garbled PvE text reports remain unresolved. No fix for those reports is claimed.",
+    "Issue 50 is only partially covered: the general executable mod-loader proposal remains unimplemented."
+  ]
+}
