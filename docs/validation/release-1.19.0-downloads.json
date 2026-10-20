@@ -1,0 +1,272 @@
+{
+  "version": "1.19.0",
+  "release": "https://github.com/TheWWWorm/CursedLands/releases/tag/v1.19.0",
+  "published_at": "2026-10-20T10:43:58Z",
+  "draft": false,
+  "prerelease": false,
+  "all_uploaded_asset_digests_match": true,
+  "assets": [
+    {
+      "name": "CursedLands-1.19.0-android.apk",
+      "bytes": 46263421,
+      "sha256": "025b5a0a84f39dca6c14940c55dfa1ef56f48c84073cbff91eeec68f09752396",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.19.0/CursedLands-1.19.0-android.apk"
+    },
+    {
+      "name": "CursedLands-1.19.0-linux-x86_64.tar.gz",
+      "bytes": 55017288,
+      "sha256": "fa2f21fbce93f44a8f6135cb4ec6cf7cc13a9dfb4d3ac3222e3606b36485df1c",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.19.0/CursedLands-1.19.0-linux-x86_64.tar.gz"
+    },
+    {
+      "name": "CursedLands-1.19.0-macos-universal.zip",
+      "bytes": 79389460,
+      "sha256": "3f43de1085a50a63998396d27da24ead06c13a4730ff3d401e0e13cc9264749b",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.19.0/CursedLands-1.19.0-macos-universal.zip"
+    },
+    {
+      "name": "CursedLands-1.19.0-tools.zip",
+      "bytes": 59696,
+      "sha256": "de3f49c8f0998c0e5e5b8612dbce201d018518395003e23521e0915073ef7a83",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.19.0/CursedLands-1.19.0-tools.zip"
+    },
+    {
+      "name": "CursedLands-1.19.0-web.zip",
+      "bytes": 183526949,
+      "sha256": "4b7d1348c3ed91dc9e6ddb60068daf0029440e6c19cad0d6cce0c92a437705eb",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.19.0/CursedLands-1.19.0-web.zip"
+    },
+    {
+      "name": "CursedLands-1.19.0-windows-x86_64.zip",
+      "bytes": 52067647,
+      "sha256": "52aea68ecd1b82bb233387b68f0257f099401886a6f2e3110dc1c4cddaeccf35",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.19.0/CursedLands-1.19.0-windows-x86_64.zip"
+    },
+    {
+      "name": "quick-recovery.eimod",
+      "bytes": 546,
+      "sha256": "f1f32945f4a06d5e1f9b12dccc73b04dbc4ddbb30439683ad1e96892bfcb170b",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.19.0/quick-recovery.eimod"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "bytes": 686,
+      "sha256": "527e614ef8061c26f057ebfd7752c194f100420b782cb410192d352732893d40",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.19.0/SHA256SUMS.txt"
+    }
+  ],
+  "browser": {
+    "site": "https://cursedlands.wwworm.com/",
+    "commit": "e646030e2fe7e851db2277f3f9f80ce96e25c0c6",
+    "version": "1.19.0",
+    "verified_at": "2026-10-20T10:45:28Z",
+    "live_files": {
+      "data-worker.js": {
+        "bytes": 1568,
+        "sha256": "23acf2e304952606e7e2a0bf850dc8e02b56dcae2913cc79e461c78afbd49d77",
+        "isolation_headers": true
+      },
+      "files.js": {
+        "bytes": 14821,
+        "sha256": "5b23e470c5dedc93d0c80ea0696eff36bad3afbb88eb4bc85ced567f472c5b2a",
+        "isolation_headers": true
+      },
+      "icon-192.png": {
+        "bytes": 50904,
+        "sha256": "0f2555619f403d73855f2d20beaf5cedd4a6ad3b92b0325f7f8da5f979dcceec",
+        "isolation_headers": true
+      },
+      "icon-512.png": {
+        "bytes": 324019,
+        "sha256": "280a543feabeb6da1ae8f17e1452fa7a27537f2e1d2d261d6da9ce826f58a90d",
+        "isolation_headers": true
+      },
+      "index.apple-touch-icon.png": {
+        "bytes": 45361,
+        "sha256": "1fa3fdee844f8a38b4a4d4c5908a53d857eaaf6950da1fa061fb5c1c2d46de41",
+        "isolation_headers": true
+      },
+      "index.audio.position.worklet.js": {
+        "bytes": 2973,
+        "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
+        "isolation_headers": true
+      },
+      "index.audio.worklet.js": {
+        "bytes": 7298,
+        "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+        "isolation_headers": true
+      },
+      "index.html": {
+        "bytes": 6220,
+        "sha256": "7ff4703f59cb4f8b13be5d71bdd2c299d1c945d7e244d36f9899fa67f3005678",
+        "isolation_headers": true
+      },
+      "index.icon.png": {
+        "bytes": 7516,
+        "sha256": "074eecd5dd87067e3f1b15c59c08fad1a700f431fe5c0b1cbc23f9a8b57aa8a4",
+        "isolation_headers": true
+      },
+      "index.js": {
+        "bytes": 279815,
+        "sha256": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c",
+        "isolation_headers": true
+      },
+      "index.pck": {
+        "bytes": 18824328,
+        "sha256": "571a23807903989d4145128d6beb53ec966f903ce111f5aaef6c61b0cba0db06",
+        "isolation_headers": true
+      },
+      "index.png": {
+        "bytes": 340337,
+        "sha256": "b9fe65d8c1b0bef09d7df97700ead5372582dc00851a24e53f4be3a839a48027",
+        "isolation_headers": true
+      },
+      "index.wasm": {
+        "bytes": 39509339,
+        "sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656",
+        "isolation_headers": true
+      },
+      "installer-worker.js": {
+        "bytes": 16243,
+        "sha256": "d6afa8f57a10faef5edb0f1ce10ef2ec52a9e7ed690771ba0b97b431e9e24708",
+        "isolation_headers": true
+      },
+      "manifest.webmanifest": {
+        "bytes": 483,
+        "sha256": "959d316f9bd45b8d4c6cfd621aced7f55336f459e9472c3f5ce53fb9c7990ab5",
+        "isolation_headers": true
+      },
+      "storage.js": {
+        "bytes": 5685,
+        "sha256": "9265725b43b6b4e897693fd3be62b175c3e0b07493b51ba7d18a6d1578bee581",
+        "isolation_headers": true
+      },
+      "service-worker.js": {
+        "bytes": 7282,
+        "sha256": "fdc58eebf74983ef420c723aedf0bc9b496f6e5a48b2a6c1d9e9e8e55854ccb9",
+        "isolation_headers": true
+      },
+      "BUILD-INFO.json": {
+        "bytes": 607,
+        "sha256": "c660607ec0a5f82154c733975f78c15119e83558c6b2c5b4ce41e5cd67a1d215",
+        "isolation_headers": true
+      },
+      "wiki/data/de/index.json": {
+        "bytes": 567078,
+        "sha256": "23cb3502c56cd83041cac947d583df712aae10bc4a4b050470bdcf97c780ac22",
+        "isolation_headers": true
+      },
+      "wiki/data/en/index.json": {
+        "bytes": 540690,
+        "sha256": "07d001734b787066c89b1ece234ffa390d206767d222bc42fe28aec71506097a",
+        "isolation_headers": true
+      },
+      "wiki/data/lost_in_astral/de/index.json": {
+        "bytes": 766122,
+        "sha256": "0018211580ebc136d47818c6ce29ce087634b7e346ab7dd819e8dbd71e7b0f33",
+        "isolation_headers": true
+      },
+      "wiki/data/lost_in_astral/en/index.json": {
+        "bytes": 734430,
+        "sha256": "7e0f20f8717499e42bee10e0c5f2b4b8711ac985961d27465dc3d322b2bd7f0e",
+        "isolation_headers": true
+      },
+      "wiki/data/lost_in_astral/ru/index.json": {
+        "bytes": 1035326,
+        "sha256": "947fd88897745b2d3cb1ae771c329de466db4f032d10c498da277b9bb5a906fa",
+        "isolation_headers": true
+      },
+      "wiki/data/ru/index.json": {
+        "bytes": 769148,
+        "sha256": "51505fd021ba99c148b0f9ae4cfa63e8da3d18c8d09d1ca0008786d260ff6001",
+        "isolation_headers": true
+      },
+      "index.wasm.part0": {
+        "bytes": 20971520,
+        "sha256": "e225998ec9fbd2fb1aa80798d571dc381fdd9bfdb3478250832404d941db0426",
+        "isolation_headers": true
+      },
+      "index.wasm.part1": {
+        "bytes": 18537819,
+        "sha256": "79cae914fb3feb5b3ef307b0906fd111d1ee2ca48ff730ba21cca432c271467b",
+        "isolation_headers": true
+      }
+    },
+    "all_live_hashes_match": true,
+    "scope": "Every changed hosted asset, complete service-worker engine cache, build metadata and split WebAssembly parts"
+  },
+  "closed_issues": [
+    {
+      "number": 31,
+      "state": "CLOSED",
+      "comment": "fixed [Cursed Lands 1.19.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.19.0)",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/31#issuecomment-6289116671"
+    },
+    {
+      "number": 33,
+      "state": "CLOSED",
+      "comment": "fixed [Cursed Lands 1.19.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.19.0)",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/33#issuecomment-6289117404"
+    },
+    {
+      "number": 34,
+      "state": "CLOSED",
+      "comment": "fixed [Cursed Lands 1.19.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.19.0)",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/34#issuecomment-6289118161"
+    },
+    {
+      "number": 35,
+      "state": "CLOSED",
+      "comment": "fixed [Cursed Lands 1.19.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.19.0)",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/35#issuecomment-6289118904"
+    },
+    {
+      "number": 39,
+      "state": "CLOSED",
+      "comment": "fixed [Cursed Lands 1.19.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.19.0)",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/39#issuecomment-6289119444"
+    },
+    {
+      "number": 40,
+      "state": "CLOSED",
+      "comment": "fixed [Cursed Lands 1.19.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.19.0)",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/40#issuecomment-6289120164"
+    },
+    {
+      "number": 41,
+      "state": "CLOSED",
+      "comment": "fixed [Cursed Lands 1.19.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.19.0)",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/41#issuecomment-6289120908"
+    },
+    {
+      "number": 44,
+      "state": "CLOSED",
+      "comment": "fixed [Cursed Lands 1.19.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.19.0)",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/44#issuecomment-6289121595"
+    },
+    {
+      "number": 46,
+      "state": "CLOSED",
+      "comment": "fixed [Cursed Lands 1.19.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.19.0)",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/46#issuecomment-6289122448"
+    },
+    {
+      "number": 49,
+      "state": "CLOSED",
+      "comment": "fixed [Cursed Lands 1.19.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.19.0)",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/49#issuecomment-6289123221"
+    }
+  ],
+  "remaining_open_issues": [
+    3,
+    15,
+    20,
+    29,
+    42,
+    43,
+    45,
+    47,
+    48,
+    50
+  ]
+}
