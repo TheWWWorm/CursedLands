@@ -1,0 +1,63 @@
+{
+  "api": 3,
+  "id": "example.quest-focus",
+  "version": "1.0.0",
+  "title": "Quest focus",
+  "description": "Reward quests and conversations more generously while keeping combat rewards unchanged. Composes after Expedition experience.",
+  "campaigns": [
+    "cursed_lands",
+    "lost_in_astral"
+  ],
+  "modes": [
+    "single_player",
+    "campaign_coop"
+  ],
+  "options": [
+    {
+      "id": "bonus",
+      "type": "number",
+      "label": "Quest bonus (%)",
+      "help": "Adds this percentage to non-combat rewards. Combines with other experience mods.",
+      "default": 25,
+      "min": 0,
+      "max": 100,
+      "step": 5
+    }
+  ],
+  "script": {
+    "api": 1,
+    "entry": "main",
+    "modules": {
+      "main": "main.lua",
+      "rewards": "rewards.lua"
+    },
+    "hooks": [
+      "experience_reward"
+    ]
+  },
+  "translations": {
+    "ru": {
+      "title": "Упор на задания",
+      "description": "Повышает опыт за задания и разговоры, не меняя награды за бои. Применяется после «Опыта за приключения».",
+      "options": {
+        "bonus": {
+          "label": "Бонус за задания (%)",
+          "help": "Увеличивает на этот процент награды вне боя. Сочетается с другими модами опыта."
+        }
+      }
+    },
+    "de": {
+      "title": "Aufgaben im Fokus",
+      "description": "Erhöht Erfahrung aus Aufgaben und Gesprächen bei unveränderten Kampflöhnen. Wird nach Expeditionserfahrung angewendet.",
+      "options": {
+        "bonus": {
+          "label": "Aufgabenbonus (%)",
+          "help": "Erhöht Belohnungen außerhalb von Kämpfen um diesen Prozentsatz. Mit anderen Erfahrungsmods kombinierbar."
+        }
+      }
+    }
+  },
+  "after": [
+    "example.expedition-xp"
+  ]
+}

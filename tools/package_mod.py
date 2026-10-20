@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Package an API 1 data mod. The game performs the authoritative validation."""
+"""Package a data, texture or API 3 formula mod. The game validates the manifest."""
 import argparse
 import json
 from pathlib import Path, PurePosixPath
@@ -10,6 +10,9 @@ def package(source: Path, output: Path) -> None:
     source = source.resolve()
     manifest = json.loads((source / "mod.json").read_text(encoding="utf-8"))
     names = {"mod.json", *(entry["file"] for entry in manifest.get("overrides", []))}
+    names.update(manifest.get("attachments", []))
+    modules = manifest.get("script", {}).get("modules", {})
+    names.update(modules.values())
     payload = {}
     for name in sorted(names):
         parts = PurePosixPath(name).parts
@@ -23,6 +26,8 @@ def package(source: Path, output: Path) -> None:
         raise ValueError("Package exceeds the game's limits")
     if len(payload["mod.json"]) > 1024 * 1024:
         raise ValueError("Manifest exceeds 1 MiB")
+    if any(len(payload[name]) > 1024 * 1024 for name in modules.values()) or sum(len(payload[name]) for name in modules.values()) > 4 * 1024 * 1024:
+        raise ValueError("Formula sources exceed 1 MiB per module or 4 MiB total")
     output.parent.mkdir(parents=True, exist_ok=True)
     # Stable timestamps and ordering make repeated package builds identical.
     with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED) as archive:

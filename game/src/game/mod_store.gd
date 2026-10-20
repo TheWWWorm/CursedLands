@@ -107,7 +107,7 @@ static func capability(binding: String) -> float:
 	for key in _mounted:
 		var m: Dictionary = catalog[key]
 		for o in m.get("options", []):
-			if o.binding == binding: return float(values.get(m.id + ":" + o.id, o.default))
+			if o.get("binding", "") == binding: return float(values.get(m.id + ":" + o.id, o.default))
 	return float(ModSchema.CAPABILITIES.get(binding, {}).get("default", 0.0))
 
 static func rule_error(values: Dictionary) -> String:
@@ -170,7 +170,10 @@ static func option_definitions() -> Array:
 		for definition in m.get("options", []):
 			var o: Dictionary = definition.duplicate(true)
 			o.key = m.id + ":" + o.id
-			o.mod_title = m.title
+			o.mod_title = ModSchema.text(m, "title")
+			var tr: Dictionary = m.get("translations", {}).get(RemakeText.lang, {}).get("options", {}).get(o.id, {})
+			o.label = tr.get("label", RemakeText.t(o.label))
+			o.help = tr.get("help", RemakeText.t(o.get("help", "")))
 			out.append(o)
 	return out
 
@@ -373,11 +376,15 @@ static func inspect_package(base: String, manifest: Dictionary, cancelled := Cal
 	if ModSchema.canonical(JSON.parse_string(file.get_as_text())) != ModSchema.canonical(manifest): return {"error": "The staged manifest does not match the package."}
 	var total := file.get_length()
 	var hashes := {}
+	var script_bytes := 0
 	for name in ModSchema.asset_files(manifest):
 		if cancelled.is_valid() and cancelled.call(): return {"error": "Download cancelled."}
 		var path := base.path_join(name)
 		var asset := FileAccess.open(path, FileAccess.READ)
 		if asset == null or asset.get_length() > MAX_PACKAGE: return {"error": "Missing or oversized asset: " + name}
+		if name in manifest.get("script", {}).get("modules", {}).values():
+			script_bytes += asset.get_length()
+			if asset.get_length() > 1048576 or script_bytes > 4194304: return {"error": RemakeText.t("Formula sources exceed their size limit.")}
 		total += asset.get_length()
 		if total > package_limit(int(manifest.api)): return {"error": "Installed mod exceeds its package limit."}
 		hashes[name] = FileAccess.get_sha256(path)
@@ -390,9 +397,14 @@ static func resolve(p: Dictionary) -> Dictionary:
 	var nodes := {}
 	var order := []
 	var ready: Array = p.get("packages", []).duplicate()
+	var script_count := 0
 	for key in ready:
 		if not key is String or not catalog.has(key): return {"error": "Missing package: " + str(key), "order": []}
 		var m: Dictionary = catalog[key]
+		if m.has("script"):
+			if not ModFormula.supported(): return {"error": RemakeText.t("Formula mods currently require Windows or Linux on a 64-bit PC."), "order": []}
+			script_count += 1
+			if script_count > 8: return {"error": RemakeText.t("A profile can enable at most eight formula mods."), "order": []}
 		if nodes.has(m.id): return {"error": "Choose one version of " + m.id, "order": []}
 		if GameData.campaign_id not in m.campaigns: return {"error": m.title + " does not support this campaign.", "order": []}
 		nodes[m.id] = key
@@ -418,7 +430,8 @@ static func resolve(p: Dictionary) -> Dictionary:
 		var writes := []
 		for a in m.get("overrides", []): writes.append("asset:" + a.archive + "/" + a.entry.to_lower())
 		for patch in m.get("patches", []): writes.append("db:" + patch.get("database", "campaign") + "/" + patch.table + "/" + patch.record.to_lower() + "/" + patch.field)
-		for o in m.get("options", []): writes.append("binding:" + o.binding)
+		for o in m.get("options", []):
+			if not str(o.get("binding", "")).is_empty(): writes.append("binding:" + o.binding)
 		for target in writes:
 			if targets.has(target): return {"error": "Conflict on " + target + " between " + targets[target] + " and " + m.title, "order": []}
 			targets[target] = m.title
@@ -429,12 +442,17 @@ static func mount() -> String:
 	_archives.clear()
 	data_revision += 1
 	_mounted.clear()
+	ModFormula.clear()
 	var checked := resolve(profile())
 	startup_error = checked.error
 	if startup_error != "": return startup_error
 	_mounted = checked.order
 	startup_error = rule_error(profile().rules)
 	if startup_error == "": startup_error = values_error(profile().values)
+	if startup_error != "":
+		_mounted.clear()
+		return startup_error
+	startup_error = ModFormula.mount(_mounted)
 	if startup_error != "":
 		_mounted.clear()
 		return startup_error
@@ -455,7 +473,7 @@ static func override_entries(archive: String) -> Array:
 	return out
 
 static func package_limit(api: int) -> int:
-	return MAX_PACKAGE if api == 1 else MAX_EXTENDED_PACKAGE
+	return MAX_EXTENDED_PACKAGE if api == 2 else MAX_PACKAGE
 
 static func patch_database(db: RefCounted, multiplayer_db: bool) -> String:
 	var pending := []
@@ -510,6 +528,11 @@ static func stage_package(path: String, staging: String, cancelled := Callable()
 		if not allowed.has(name): zip.close(); return {"error": "Undeclared file: " + name}
 	for name in allowed:
 		if not inspected.sizes.has(name): zip.close(); return {"error": "Missing asset: " + name}
+	var script_bytes := 0
+	for name in m.get("script", {}).get("modules", {}).values():
+		script_bytes += int(inspected.sizes[name])
+		if int(inspected.sizes[name]) > 1048576 or script_bytes > 4194304:
+			zip.close(); return {"error": RemakeText.t("Formula sources exceed their size limit.")}
 	var destination := ROOT.path_join(m.id + "@" + m.version)
 	if DirAccess.dir_exists_absolute(destination): zip.close(); return {"error": "This version is already installed. Use a new version to preserve existing saves."}
 	# Inflate and stage one member at a time. HD resource packs may contain

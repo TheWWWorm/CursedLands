@@ -41,6 +41,11 @@ const CHOICES := ["Original rules", "Full for everyone", "Full for main hero"]
 static func give(s: Session, amount: float, source := "quest", player := 0) -> void:
 	if amount == 0.0 or s.world == null:
 		return
+	if ModFormula.has_hook("experience_reward"):
+		var result := ModFormula.transform("experience_reward", amount, {"source": source}, s)
+		if not result.ok: return
+		amount = result.value
+		if amount == 0.0: return
 	var gains := []   # [unit, record, share]
 	if s.multiplayer_game and full_experience() and s.lmp.is_empty():   # remake option: not in the original multiplayer game
 		gains = _full(s, amount)

@@ -19,6 +19,43 @@ In a sandbox profile, **Sandbox** offers invulnerable party, unlimited party man
 
 Mouse, keyboard focus and controller navigation use the same controls. D-pad up/down moves focus, left/right changes a choice or number, A activates, Y applies, and B goes back. Controls are at least 44 pixels high and pages scroll on narrow screens. Desktop/Android use the native package picker; the browser uses a local file chooser.
 
+## Formula mods in 1.20.0-alpha.1
+
+The desktop preview adds **package API 3 / formula API 1** for optional Lua
+formulas. It supports experience rewards, revival time and revival health in
+single player and campaign co-op on Windows/Linux x86-64. API 1 data mods and
+API 2 texture packs keep their existing contracts. Formula mods cannot be
+activated on other platforms in this preview.
+
+The preview includes three source examples and installable `.eimod` packages:
+
+- **Expedition experience** adjusts all experience rewards (default ×1.5).
+- **Quest focus** adds a configurable bonus to non-combat rewards (default +25%).
+  It runs after Expedition experience when both are enabled.
+- **Field medicine** scales revival time by the helper's intelligence and
+  restores a configurable percentage of maximum health (default 25%).
+
+Import the files from the preview's `mods/` directory through **Mods and rules**,
+turn the desired mods on and **Apply & restart**. Tune them under **Mod options**.
+Changing options during play requires camp and affects the current run. The
+examples include English, Russian and German text. Disable them or choose the
+original profile and restart to return to ordinary rules.
+
+Gameplay packages and option values must match between co-op peers; the host
+runs formulas and sends their results. Save fingerprints include all declared
+Lua sources. Publish an updated mod under a new version; a different source
+bundle cannot silently replace one required by a save. Lua globals and captured
+locals are discarded after each call, so scripts cannot persist hidden state.
+
+A failed formula stops simulation, saving and returned co-op progress for that
+run. The previous save is retained. Return to the main menu, inspect the game
+log, and load a valid save with its matching packages. No formula library or VM
+is loaded on a fresh unmodded launch.
+
+See the [formula authoring guide](mod-formulas.md) for the contract, packaging,
+limits and reuse of the earlier Jamais Vu groundwork. Original-game DLL loading
+and DLL conversion are outside this preview.
+
 ## HD Lands texture download
 
 From the main menu, open **Mods and rules → Mods → HD Lands textures →
@@ -95,7 +132,7 @@ Experimental 5 adds **Always regenerate stamina** under **Game rules → Party**
 
 Experimental 2 checks saved mod compatibility before pausing a running group for loading. Refusing a save preserves the current game, pause state and speed. When a host without guests restores different saved mod values, new players can join after loading finishes with the matching values.
 
-Texture/audio-only packages are local presentation choices and do not have to match. Any package with options or database patches is classified as shared gameplay by the engine. Authors cannot bypass matching with a cosmetic flag. Dependencies and load order are part of the resolved configuration. Imported heroes and returned co-op progress must remain within a compatible gameplay profile. Existing built-in co-op XP/loot options retain their prior progression behavior.
+Texture/audio-only packages are local presentation choices and do not have to match. Any package with scripts, options or database patches is classified as shared gameplay by the engine. Authors cannot bypass matching with a cosmetic flag. Dependencies and load order are part of the resolved configuration. Imported heroes and returned co-op progress must remain within a compatible gameplay profile. Existing built-in co-op XP/loot options retain their prior progression behavior.
 
 ## Building a data mod (API 1)
 
@@ -105,7 +142,7 @@ See the complete, asset-free [Quick recovery example](../examples/mods/quick-rec
 python3 tools/package_mod.py examples/mods/quick-recovery quick-recovery.eimod
 ```
 
-The result is an ordinary ZIP with `mod.json` at its root. The packaging tool includes only the manifest and declared replacement files, with stable timestamps/order. The game performs authoritative schema validation on import and activation.
+The result is an ordinary ZIP with `mod.json` at its root. The packaging tool includes only the manifest and declared replacement, documentation and script files, with stable timestamps/order. The game performs authoritative schema validation on import and activation.
 
 For an existing legacy mod, the source-tree [legacy converter](legacy-mod-converter.md) can translate supported resource and numeric database changes into this format. DLL dependencies and unsupported content produce a compatibility report and block package creation.
 

@@ -822,6 +822,7 @@ func _advance_client_effects(dt: float) -> void:
 
 
 func _deliver(dt: float) -> void:
+	if session != null and session.mod_script_failed: return
 	if not authority or (session and session.movie_active()):
 		return
 	if session and session.lmp_travel:

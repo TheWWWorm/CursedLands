@@ -2,9 +2,14 @@ class_name ModSchema
 extends RefCounted
 ## Versioned data contract. A menu definition grants no executable capability.
 const API := 1
-## Package versions are separate from the saved/session API. This release
-## accepts API 2 texture packs only; broader legacy resource mods stay gated.
-const PACKAGE_API := 2
+## Package versions are separate from the saved/session API.
+## API 2 remains texture-only. API 3 adds the native formula contract.
+const PACKAGE_API := 3
+const FORMULA_HOOKS := {
+	"experience_reward": [0.0, 1000000000.0],
+	"revival_seconds": [1.0, 30.0],
+	"revival_health": [1.0, 1000000.0],
+}
 const RESOURCE_ARCHIVES := ["textures.res"]
 ## Rules added after API 1 saves shipped. Missing entries retain these defaults.
 const ADDED_DEFAULTS := {"free_run": 0, "stamina_regen": 0, "armor_formula": 0}
@@ -82,6 +87,19 @@ static func manifest_error(m: Variant) -> String:
 	if not finite_number(m.get("api")) or m.api != floorf(m.api) or m.api < 1 or m.api > PACKAGE_API: return "This mod needs a different mod API version."
 	for unsupported in ["lua", "files", "force_script_tutorials", "skip_start_animation"]:
 		if m.has(unsupported): return "This build supports texture packages, not legacy gameplay mods."
+	if m.has("script"):
+		if m.api != 3: return RemakeText.t("Formula scripts require package API 3.")
+		var script: Variant = m.script
+		if not script is Dictionary or script.get("api") != 1: return RemakeText.t("Unsupported formula API.")
+		if not script.get("modules") is Dictionary or script.modules.is_empty() or script.modules.size() > 16: return RemakeText.t("Invalid formula modules.")
+		if not identifier(script.get("entry")) or not script.modules.has(script.entry): return RemakeText.t("Invalid formula entry module.")
+		for name in script.modules:
+			if not identifier(name) or not safe_path(script.modules[name]) or not String(script.modules[name]).ends_with(".lua"): return RemakeText.t("Invalid formula module path.")
+		if not script.get("hooks") is Array or script.hooks.is_empty() or script.hooks.size() > FORMULA_HOOKS.size(): return RemakeText.t("Invalid formula hooks.")
+		var hooks := {}
+		for hook in script.hooks:
+			if not hook is String or not FORMULA_HOOKS.has(hook) or hooks.has(hook): return RemakeText.t("Invalid formula hooks.")
+			hooks[hook] = true
 	for key in ["id", "version"]:
 		if not identifier(m.get(key)): return "Invalid mod " + key + "."
 	if not m.get("title") is String or m.title.is_empty() or m.title.length() > 100: return "Invalid mod title."
@@ -92,6 +110,7 @@ static func manifest_error(m: Variant) -> String:
 	if not m.get("modes", MODES) is Array or m.get("modes", MODES).is_empty(): return "Invalid game modes."
 	for mode in m.get("modes", MODES):
 		if mode not in MODES: return "Unknown game mode."
+		if m.has("script") and mode == "original_multiplayer": return RemakeText.t("Formula mods support single player and campaign co-op.")
 	for key in ["requires", "after", "conflicts"]:
 		if not m.get(key, []) is Array or m.get(key, []).size() > 64: return "Invalid " + key + "."
 		for id in m.get(key, []):
@@ -104,9 +123,10 @@ static func manifest_error(m: Variant) -> String:
 		ids[o.id] = true
 		if not o.get("label") is String or o.label.is_empty() or o.label.length() > 120: return "Invalid option label."
 		if not o.get("help", "") is String or o.get("help", "").length() > 2000: return "Invalid option help."
-		if not CAPABILITIES.has(o.get("binding", "")): return "Unsupported capability: " + str(o.get("binding", ""))
-		var cap: Dictionary = CAPABILITIES[o.binding]
-		if o.get("type", "") not in ["integer", "number"]: return "Revival capabilities require a numeric option."
+		var binding: String = str(o.get("binding", ""))
+		if not CAPABILITIES.has(binding) and not (binding.is_empty() and m.has("script")): return "Unsupported capability: " + binding
+		var cap: Dictionary = CAPABILITIES.get(binding, {"min": -1000000.0, "max": 1000000.0})
+		if o.get("type", "") not in ["integer", "number"]: return RemakeText.t("Mod options require a numeric value.")
 		if not finite_number(o.get("min")) or not finite_number(o.get("max")) or not finite_number(o.get("step", 1.0)): return "Invalid numeric bounds."
 		if o.min < cap.min or o.max > cap.max or o.max < o.min or o.get("step", 1.0) < 0.001: return "Unsupported capability range."
 		var error := value_error(o, o.get("default"))
@@ -129,7 +149,29 @@ static func manifest_error(m: Variant) -> String:
 		if not finite_number(p.get("value")) or p.value < 0 or p.value > 1000000: return "Invalid database value."
 		if p.get("database", "campaign") not in ["campaign", "multiplayer"]: return "Invalid database target."
 	if m.api == 2 and gameplay(m): return "Package API 2 currently supports texture packs only."
+	if m.api == 3 or m.has("translations"):
+		if not m.get("translations") is Dictionary: return RemakeText.t("Package API 3 requires English, Russian and German text.")
+		for lang in ["ru", "de"]:
+			var tr: Variant = m.translations.get(lang)
+			if not tr is Dictionary: return RemakeText.t("Package API 3 requires English, Russian and German text.")
+			for field in ["title", "description"]:
+				var limit := 100 if field == "title" else 3000
+				if not valid_text(m.get(field), limit) or not valid_text(tr.get(field), limit): return RemakeText.t("Package API 3 requires English, Russian and German text.")
+			if not tr.get("options", {}) is Dictionary: return RemakeText.t("Invalid translated mod options.")
+			for o in m.get("options", []):
+				var translated: Variant = tr.get("options", {}).get(o.id)
+				if not translated is Dictionary: return RemakeText.t("Invalid translated mod options.")
+				for field in ["label", "help"]:
+					var limit := 120 if field == "label" else 2000
+					if not valid_text(o.get(field), limit) or not valid_text(translated.get(field), limit): return RemakeText.t("Invalid translated mod options.")
 	return ""
+
+static func valid_text(value: Variant, limit: int) -> bool:
+	return value is String and not value.strip_edges().is_empty() and value.length() <= limit
+
+static func text(m: Dictionary, key: String, language := "") -> String:
+	var lang := RemakeText.lang if language.is_empty() else language
+	return str(m.get("translations", {}).get(lang, {}).get(key, RemakeText.t(str(m.get(key, "")))))
 
 static func resource_entry(archive: String, entry: String) -> bool:
 	return archive == "textures.res" and entry.ends_with(".mmp")
@@ -138,10 +180,12 @@ static func asset_files(m: Dictionary) -> Array:
 	var out: Array = m.get("attachments", []).duplicate()
 	for a in m.get("overrides", []):
 		if a.file not in out: out.append(a.file)
+	for path in m.get("script", {}).get("modules", {}).values():
+		if path not in out: out.append(path)
 	return out
 
 static func gameplay(m: Dictionary) -> bool:
-	return not m.get("options", []).is_empty() or not m.get("patches", []).is_empty()
+	return m.has("script") or not m.get("options", []).is_empty() or not m.get("patches", []).is_empty()
 
 static func canonical(value: Variant) -> String:
 	if value is Dictionary:

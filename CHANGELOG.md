@@ -10,6 +10,13 @@
 
 - Bring creature-name filtering and creature-to-map highlights to the standalone web wiki. Preserve map filters and layers through browser Back, reload and shared links, with English, Russian and German controls.
 - Validate hosted wiki frontend files and package hashes separately from the exported reference-data version.
+## 1.20.0-alpha.1 — desktop mod preview
+
+- Add optional, bounded Lua formulas for campaign experience rewards, revival duration and revival health, with ordered composition and host-controlled execution. ([#50](https://github.com/TheWWWorm/CursedLands/issues/50))
+- Add package API 3 with translated mod descriptions and numeric settings; preserve API 1 data mods and API 2 texture packs. Include all declared script files in save and co-op fingerprints.
+- Include Expedition experience, Quest focus and Field medicine example mods with English, Russian and German text.
+- Stop simulation, saving and returned co-op progress after a formula error. Load the formula runtime only when a formula package is activated.
+
 
 ## 1.19.0 — 2026-10-20
 

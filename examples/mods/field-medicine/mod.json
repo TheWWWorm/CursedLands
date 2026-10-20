@@ -1,0 +1,60 @@
+{
+  "api": 3,
+  "id": "example.field-medicine",
+  "version": "1.0.0",
+  "title": "Field medicine",
+  "description": "Intelligence speeds up revival, and fallen companions return with a configurable share of their maximum health. Revival must be enabled.",
+  "campaigns": [
+    "cursed_lands",
+    "lost_in_astral"
+  ],
+  "modes": [
+    "single_player",
+    "campaign_coop"
+  ],
+  "options": [
+    {
+      "id": "health_percent",
+      "type": "number",
+      "label": "Health restored (%)",
+      "help": "Minimum health after revival, as a percentage of maximum health. Change at camp.",
+      "default": 25,
+      "min": 10,
+      "max": 100,
+      "step": 5
+    }
+  ],
+  "script": {
+    "api": 1,
+    "entry": "main",
+    "modules": {
+      "main": "main.lua"
+    },
+    "hooks": [
+      "revival_seconds",
+      "revival_health"
+    ]
+  },
+  "translations": {
+    "ru": {
+      "title": "Полевая медицина",
+      "description": "Интеллект ускоряет воскрешение. Павшие спутники возвращаются с заданной долей максимального здоровья. Воскрешение должно быть включено.",
+      "options": {
+        "health_percent": {
+          "label": "Восстановление здоровья (%)",
+          "help": "Минимальная доля здоровья после воскрешения в процентах от максимума. Меняется в лагере."
+        }
+      }
+    },
+    "de": {
+      "title": "Feldmedizin",
+      "description": "Intelligenz beschleunigt die Wiederbelebung. Gefährten kehren mit einem einstellbaren Anteil ihrer maximalen Gesundheit zurück. Wiederbelebung muss aktiviert sein.",
+      "options": {
+        "health_percent": {
+          "label": "Wiederhergestellte Gesundheit (%)",
+          "help": "Mindestgesundheit nach Wiederbelebung als Anteil der maximalen Gesundheit. Im Lager änderbar."
+        }
+      }
+    }
+  }
+}

@@ -139,6 +139,14 @@ var _loading_mod_change := false
 var _water_seq := 0
 var _water_received := -1
 var mod_config: Dictionary = {}
+var mod_script_failed := false
+
+func stop_mod_script(diagnostic: String) -> void:
+	if mod_script_failed: return
+	mod_script_failed = true
+	if state: state.mod_script_failed = true
+	print("MOD_FORMULA_STOP: ", diagnostic)
+	broadcast({"t": "mod_script_failed", "global": true})
 
 
 func _ready() -> void:
@@ -2459,6 +2467,7 @@ static func group_offset(i: int) -> Vector2:
 
 
 func apply_command(cmd: Dictionary, player: int) -> void:
+	if mod_script_failed: return
 	if world == null or movie_active() or not command_allowed(cmd):
 		return
 	if _shared_control(cmd, player): return
@@ -4125,6 +4134,7 @@ static func _recharge_list(items: Array) -> bool:
 
 
 func _physics_process(dt: float) -> void:
+	if mod_script_failed: return
 	if get_tree().paused or loading_game or movie_active() or local_host.awaiting_view:
 		return
 	if is_host:
@@ -4489,6 +4499,11 @@ func _on_event(event: Dictionary) -> void:
 		event = NetState.unpack(event)
 		if event.is_empty(): return
 	var t := String(event.get("t", ""))
+	if t == "mod_script_failed":
+		mod_script_failed = true
+		if state: state.mod_script_failed = true
+		message.emit(RemakeText.t("A formula mod failed. Simulation and saving have stopped. Return to the main menu and load a valid save. See the game log for details."))
+		return
 	if t == "coop_permissions":
 		if not is_host and event.get("rules") is Dictionary:
 			state.coop[CoopPermissions.KEY] = event.rules.duplicate(true)
@@ -5153,6 +5168,7 @@ func _leader() -> GameUnit:
 ## without it (quick / auto saves) the frame
 ## screen shortly after.
 func save_game(slot: String, save_name := "", frame: Image = null) -> Error:
+	if mod_script_failed: return ERR_UNAVAILABLE
 	if local_host.frontend:
 		local_host.save(slot, save_name, frame)
 		return OK   # accepted; the worker reports completion or failure
