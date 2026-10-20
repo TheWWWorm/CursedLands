@@ -214,7 +214,7 @@ diff --git a/drivers/fsr_sdk/fsr_sdk.cpp b/drivers/fsr_sdk/fsr_sdk.cpp
 new file mode 100644
 --- /dev/null
 +++ b/drivers/fsr_sdk/fsr_sdk.cpp
-@@ -0,0 +1,245 @@
+@@ -0,0 +1,244 @@
 +// Cursed Lands experimental FidelityFX integration. SPDX-License-Identifier: MIT
 +#include "fsr_sdk.h"
 +#include "core/config/engine.h"
@@ -279,8 +279,7 @@ new file mode 100644
 +
 +#ifdef FSR_SDK_ENABLED
 +void FidelityFX::initialize_device(ID3D12Device *p_device) {
-+	if (!OS::get_singleton()->get_cmdline_user_args().find("--experimental-fsr") ||
-+			OS::get_singleton()->get_current_rendering_method() != "forward_plus" ||
++	if (OS::get_singleton()->get_current_rendering_method() != "forward_plus" ||
 +			Engine::get_singleton()->is_editor_hint()) { return; }
 +	// Only signed SDK binaries beside the executable, never the working directory.
 +	HMODULE modules[3]{};

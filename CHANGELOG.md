@@ -1,22 +1,18 @@
 # Changelog
 
-## 1.20.0-experimental.4
+## 1.20.0 — 2026-10-20
 
-- Add optional FSR 3.1 and FSR 4 upscaling and frame generation for Windows Direct3D 12.
-- Add localized FSR settings, official AMD FSR splash artwork and SDK credits.
-- Keep the preview profile separate from normal saves and settings.
-
-## Unreleased
-
-- Bring creature-name filtering and creature-to-map highlights to the standalone web wiki. Preserve map filters and layers through browser Back, reload and shared links, with English, Russian and German controls.
-- Validate hosted wiki frontend files and package hashes separately from the exported reference-data version.
-## 1.20.0-alpha.1 — desktop mod preview
-
-- Add optional, bounded Lua formulas for campaign experience rewards, revival duration and revival health, with ordered composition and host-controlled execution. ([#50](https://github.com/TheWWWorm/CursedLands/issues/50))
-- Add package API 3 with translated mod descriptions and numeric settings; preserve API 1 data mods and API 2 texture packs. Include all declared script files in save and co-op fingerprints.
-- Include Expedition experience, Quest focus and Field medicine example mods with English, Russian and German text.
-- Stop simulation, saving and returned co-op progress after a formula error. Load the formula runtime only when a formula package is activated.
-
+- Add optional AMD FSR 3.1 and FSR 4 upscaling and frame generation to the Windows executable. Configure them under **Options → Screen → AMD FSR** with the **Forward+ (Direct3D 12)** renderer. Both features start off; no separate installation, profile or launcher is required. Include the AMD splash artwork, credits and runtime notices.
+- Add bounded Lua formulas for campaign experience rewards, revival duration and revival health on Windows/Linux x86-64. Package API 3 includes localized numeric settings, ordered composition, save/co-op fingerprints and containment of formula errors. Include **Expedition experience**, **Quest focus** and **Field medicine** as source examples and installable mods. ([#50](https://github.com/TheWWWorm/CursedLands/issues/50))
+- Preserve animation playback, dialogue gestures and village idle state when equipment or character dimensions refresh a figure. ([#51](https://github.com/TheWWWorm/CursedLands/issues/51), [#56](https://github.com/TheWWWorm/CursedLands/issues/56))
+- Include active and completed multiplayer side quests in the journal and resolve base-exit status using the correct campaign variable. ([#52](https://github.com/TheWWWorm/CursedLands/issues/52), [#54](https://github.com/TheWWWorm/CursedLands/issues/54))
+- Add automatic or fixed 32/48/64-pixel cursor sizes and an option to hide the player-status overlay. ([#55](https://github.com/TheWWWorm/CursedLands/issues/55), [#59](https://github.com/TheWWWorm/CursedLands/issues/59))
+- Remove duplicate item-price text, shrink oversized item previews without enlarging small items, and keep character-creation portraits inside their cells while turning. ([#58](https://github.com/TheWWWorm/CursedLands/issues/58), [#53](https://github.com/TheWWWorm/CursedLands/issues/53), [#60](https://github.com/TheWWWorm/CursedLands/issues/60))
+- Add wheel scrolling, Shift-to-edge actions and accelerating held-button scrolling to camp and character lists. Fade the camp selection outline using interface time. ([#57](https://github.com/TheWWWorm/CursedLands/issues/57), [#60](https://github.com/TheWWWorm/CursedLands/issues/60))
+- Render Arena text with dedicated distance-field font resources. ([#43](https://github.com/TheWWWorm/CursedLands/issues/43))
+- Correct attack-roll distance, action modifiers, rounding and random-number consumption against bounded original-executable comparisons.
+- Disconnect loading-screen callbacks before releasing drawing resources, reject malformed campaign-origin metadata, and retain Arena presentation events received while paused.
+- Add creature filtering and creature-to-map highlights to the public web wiki, retaining filters and layers through Back, reload and shared links.
 
 ## 1.19.0 — 2026-10-20
 

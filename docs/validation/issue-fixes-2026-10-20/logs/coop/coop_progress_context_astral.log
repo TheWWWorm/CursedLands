@@ -1,0 +1,82 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 18:05:52 +5655ms] session 481d6b0b4ab0: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"lost_in_astral","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"res://tools/tests/coop_progress_context.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/issue-fixes-20261020/broad-regressions/tests/coop/coop_progress_context_astral/profile/data/godot/app_userdata/Cursed Lands"}
+PASS original bz1h contains transition to FPrison
+PASS authority selects authored FPrison
+PASS package contains chapter FPrison
+PASS guest resumes chapter FPrison
+PASS guest deploys authored Hero body
+PASS guest retains personal stats/name
+PASS guest purse excludes host gold and goods
+PASS packaging leaves host and origin intact
+PASS guest chapter saves
+PASS guest chapter reloads all party records
+PASS repeated package does not duplicate bags/dependents
+PASS opening personal party and bag wait through prison chapter
+PASS original bz2h contains transition to FSusel
+PASS authority selects authored FSusel
+PASS package contains chapter FSusel
+PASS guest resumes chapter FSusel
+PASS guest deploys authored Hero2 body
+PASS guest retains personal stats/name
+PASS guest purse excludes host gold and goods
+PASS packaging leaves host and origin intact
+PASS guest chapter saves
+PASS guest chapter reloads all party records
+PASS repeated package does not duplicate bags/dependents
+PASS prison chapter and personal bag remain waiting
+PASS original bz5h contains transition to Shaina
+PASS authority selects authored Shaina
+PASS package contains chapter Shaina
+PASS guest resumes chapter Shaina
+PASS guest deploys authored merc8 body
+PASS guest retains personal stats/name
+PASS guest purse excludes host gold and goods
+PASS packaging leaves host and origin intact
+PASS guest chapter saves
+PASS guest chapter reloads all party records
+PASS repeated package does not duplicate bags/dependents
+PASS waiting story companion keeps health and becomes locally owned
+PASS temporary substitute retains last protagonist location
+PASS waiting protagonist without a saved position does not inherit substitute-map coordinates
+PASS original bz5h contains transition to FSusel
+PASS authority selects authored FSusel
+PASS package contains chapter FSusel
+PASS guest resumes chapter FSusel
+PASS guest deploys authored Hero2 body
+PASS guest retains personal stats/name
+PASS guest purse excludes host gold and goods
+PASS packaging leaves host and origin intact
+PASS guest chapter saves
+PASS guest chapter reloads all party records
+PASS repeated package does not duplicate bags/dependents
+PASS original bz7h contains transition to Gipat
+PASS authority selects authored Gipat
+PASS package contains chapter Gipat
+PASS guest resumes chapter Gipat
+PASS guest deploys authored Hero body
+PASS guest retains personal stats/name
+PASS guest purse excludes host gold and goods
+PASS packaging leaves host and origin intact
+PASS guest chapter saves
+PASS guest chapter reloads all party records
+PASS repeated package does not duplicate bags/dependents
+PASS Gipat includes authored Kel with copied progression
+PASS all prior story parties survive Gipat
+PASS personal animal keeps body/ownership; host animal stays private
+PASS acknowledged matching checkpoint restores reconnect continuity
+PASS reconnecting from merged save does not duplicate the personal animal
+PASS reconnecting from merged save does not add the purse again
+PASS reimport retires only the inactive guest's old host animal
+PASS new co-op animal is credited alongside the private imported animal
+PASS departed new animal is removed while imported animal stays private
+PASS later uncredited location keeps the last complete checkpoint
+PASS cumulative package retains chapter when merged from original save
+PASS original bz5h contains transition to Shaina
+PASS authority selects authored Shaina
+PASS uncredited party transition leaves guest context untouched
+PASS incompatible chapter does not receive a destination
+PASS legacy tally still returns personal hero progress
+COOP_PROGRESS_CONTEXT {"checks":76,"failures":0}
+[trace 18:05:53 +6482ms] clean exit

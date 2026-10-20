@@ -1,0 +1,96 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 18:04:33 +5648ms] session 8aac38242c97: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"lost_in_astral","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"res://tools/tests/authored_village_talk.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/issue-fixes-20261020/broad-regressions/tests/dialogue/authored_village_talk/profile/data/godot/app_userdata/Cursed Lands"}
+PASS exact disconnected authored Haburu case is eligible
+PASS static probe ignores every actor and keeps the initiating mover first
+PASS reachable approach does not opt into original staging
+PASS base campaign is excluded
+PASS other village is excluded
+PASS field interaction is excluded
+PASS actor with a different identity is excluded
+PASS renamed actor is excluded
+PASS modified display placement is excluded
+PASS scripted moving NPC is excluded
+PASS dead NPC is excluded
+PASS dead hero is excluded
+PASS another player's hero is excluded
+PASS nearby talk retains normal arrival behavior
+PASS unavailable first topic is excluded
+PASS completed first topic is excluded
+PASS fallback click opens the ordinary topic event
+PASS fallback stops old movement and pending interaction
+PASS host receives transient topic context
+PASS guest's own click receives a guest-scoped topic list
+PASS guest opening does not overwrite host context
+PASS guest's valid selection chooses authored instant staging
+PASS guest selection consumes only guest context
+PASS host selection retains its independently opened context
+PASS topic selection consumes context
+PASS guest cannot open a host hero's topic flow
+PASS reachable reopen replaces fallback context with cancellable approach
+PASS reachable reopen publishes no topics before arrival
+PASS reachable approach publishes topics only on arrival
+PASS reachable conversation retains D15 in-place staging
+PASS replacement movement cancels normal approach without dialogue
+PASS failed normal approach is cleared without instant fallback
+PASS changed target clears fallback context before its ordinary approach finishes
+PASS movement after topic cancellation clears original context
+PASS invalid topic attempt also consumes the transient flow
+PASS another offered topic cannot inherit fq15's staging exception
+PASS selection revalidates the exact authored display position
+PASS selection revalidates static disconnection
+PASS another player's completed shared topic cannot replay
+PASS active dialogue rejects a stale topic and consumes its context
+PASS a rebuilt Briefings instance has no saved topic context
+PASS unreachable field click always uses the ordinary approach
+PASS unreachable field failure never opens fallback topics
+PASS completed rescue admits original Nalo staging
+PASS another Nalo topic cannot use rescue staging
+PASS Nalo's active player party cannot use return staging
+PASS unfinished rescue cannot use return staging
+PASS offered return topic works while native cell-opening script is pending
+PASS changed prison staging layout is excluded
+PASS modified Nalo display placement is excluded
+PASS reachable Nalo keeps normal approach
+PASS completed Nalo topic is excluded
+PASS normal prison click opens scoped Nalo topics
+PASS valid rescue topic chooses original instant staging
+PASS Nalo topic consumes its host context
+PASS Nalo selection revalidates active rescue party
+PASS another offered Nalo topic cannot inherit rescue context
+PASS replacement movement clears Nalo context
+PASS offered first Nalo conversation is reachable through original staging
+PASS completed q60h admits only Nalo entry staging
+PASS entry phase cannot use rescue-return staging
+PASS unfinished q60h cannot use entry staging
+PASS normal first-topic selection starts authored Nalo staging
+PASS entry topic consumes its own transient context
+PASS completed entry conversation cannot repeat
+PASS entry selection revalidates a changed rescue phase
+PASS offered captive commander topic admits disconnected original staging
+PASS partial route inside the pen cannot masquerade as a reachable conversation
+PASS a complete captive route still uses normal approach
+PASS unfinished camp arrival cannot bypass its story
+PASS unrelated temporary party is excluded from captive dialogue
+PASS changed captive layout is excluded
+PASS moved commander does not inherit display staging
+PASS completed commander conversation is excluded
+PASS normal captive click opens scoped commander topics
+PASS commander selection starts original staging
+PASS commander selection rechecks a newly reachable route
+PASS offered Hermit proposal admits original staging
+PASS escape cannot use proposal staging before the offer
+PASS proposal selection starts original staging
+PASS completed proposal cannot invent an escape offer
+PASS native offered escape follows the completed proposal
+PASS native post-dialogue displacement retains captive escape staging
+PASS larger captive displacement remains excluded
+PASS escape phase excludes the completed proposal
+PASS offered escape selection starts original staging
+PASS escape selection revalidates its prerequisite
+PASS completed escape cannot replay
+PASS captive dialogue leaves no stale topic context
+PASS command and topic controls have no runtime errors
+LIA_HABURU_GUARDS {"checks":90,"failures":[]}
+[trace 18:04:33 +5980ms] clean exit

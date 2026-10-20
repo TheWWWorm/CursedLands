@@ -1,0 +1,46 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 18:03:27 +5546ms] session 4255cecaa002: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"cursed_lands","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"res://tools/tests/story_coop_dragon.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/issue-fixes-20261020/broad-regressions/tests/quests/story_coop_dragon/profile/data/godot/app_userdata/Cursed Lands"}
+PASS dragon waits the original three ticks before following
+PASS dragon follows the nearby original third companion
+PASS follow flag starts with authored order
+PASS departure keeps the original home and guard radius
+PASS departure does not clear following before original delay
+PASS departure clears follow flag after original delay
+PASS original cycle rearms the same participant
+PASS dragon waits the original three ticks before following
+PASS dragon follows the nearby guest
+PASS follow flag starts with authored order
+PASS departure keeps the original home and guard radius
+PASS departure does not clear following before original delay
+PASS departure clears follow flag after original delay
+PASS original cycle rearms the same participant
+PASS guest's complete follow/departure/rearm trace matches original companion
+PASS dragon waits the original three ticks before following
+PASS dragon follows the nearby original third companion
+PASS follow flag starts with authored order
+PASS departure keeps the original home and guard radius
+PASS departure does not clear following before original delay
+PASS departure clears follow flag after original delay
+PASS original cycle rearms the same participant
+PASS guest-owned third story member is not given a duplicate cycle
+PASS guest keeps original strict five metre range
+PASS guest still needs the original amulet
+PASS guest keeps original DFol gate
+PASS dragon ignores hidden guest
+PASS dragon ignores dead guest
+PASS dragon ignores disconnected guest
+PASS returning eligible guest can trigger its waiting cycle
+PASS late guest joins an already armed dragon cycle
+PASS saved follow delay retains guest identity and dispatches once
+PASS saved guest cycle recovery is idempotent
+PASS saved departure wait resumes without replaying orders
+PASS old save arms a missing guest cycle
+PASS original startup instructions stay byte-for-byte equivalent
+PASS all original body indexes, target roles and timings stay intact
+PASS adaptation is idempotent
+PASS base dragon adaptation does not run in LiA
+PASS changed modded follow chain is not cloned
+STORY_COOP_DRAGON 40 checks 0 failures
+[trace 18:03:27 +6290ms] clean exit

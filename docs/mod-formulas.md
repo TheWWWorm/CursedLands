@@ -1,12 +1,12 @@
-# Formula mods: first desktop preview
+# Formula mods
 
-**1.20.0-alpha.1 · package API 3 · formula API 1 · Windows/Linux x86-64**
+**1.20.0 · package API 3 · formula API 1 · Windows/Linux x86-64**
 
 This is an initial extension of the existing mod system, based on stable 1.19.0.
 It supports small Lua 5.1 formulas over plain values. It does not expose Godot
 objects, engine memory, original-game functions, DLL loading or DLL conversion.
 Single player and campaign co-op are supported; original multiplayer, Android,
-macOS and the browser cannot activate formula packages in this preview.
+macOS and the browser cannot activate formula packages in this version.
 Other documented mod types remain available on their existing platforms.
 
 ## Create a mod
@@ -148,7 +148,7 @@ profile clears formula bundles; no callback VM runs on the ordinary path.
 
 The earlier Jamais Vu work supplied Lua 5.1 integration, memory/instruction
 limits, bounded string operations, declared-source loading and plain-data
-conversion. This preview extracts those pieces into `ModLuaKernel`, adds
+conversion. This version extracts those pieces into `ModLuaKernel`, adds
 StringName-to-string conversion at the Godot boundary, and removes the old
 native-address bridge, LuaJIT return coercions and checkpoint machinery.
 It does not claim Jamais Vu compatibility.
@@ -159,5 +159,5 @@ versioned explicit state API. These are proposals, not implemented features.
 Persistent state needs a separate save/migration design; DLL conversion remains
 outside the current work.
 
-See [validation](validation/mod-formulas-1.20.0-alpha.1.md) for actual test coverage
+See [validation](validation/release-1.20.0-2026-10-20.json) for actual test coverage
 and remaining platform limits.

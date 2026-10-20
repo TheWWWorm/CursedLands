@@ -1,0 +1,42 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 18:07:02 +5508ms] session 37511ac70aaa: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"cursed_lands","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"res://tools/tests/coop_vm_projection.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/issue-fixes-20261020/broad-regressions/tests/coop/coop_vm_projection/profile/data/godot/app_userdata/Cursed Lands"}
+PASS original delayed trap source parses
+PASS source analysis distinguishes individual trap and shared quest event
+PASS marker clones containers without duplicating immutable VM arrays
+PASS marking historical credited VM adds no metadata to the authority snapshot
+PASS projection cannot mutate host snapshot
+PASS recipient's individual pending action survives; other players' actions do not transfer
+PASS recipient continuation uses solo stable identity
+PASS participant group has one solo occurrence
+PASS native named NPC identity remains unchanged
+PASS one-time projection marker is consumed
+PASS normal solo snapshot is unchanged on further loads
+PASS restored output owns nested dictionaries independently of source
+PASS actual Pretty::Nalo party operation preserves a named-role pending action
+PASS authored named-role For iteration is not mistaken for absent host work
+PASS temporary-role alias keeps recipient chain once, deliberate own duplicates and unique named-role work
+PASS authored non-primary named roster role retains independent continuation
+PASS cross-owner shared event aliases collapse; same-owner deliberate threads remain
+PASS same-owner deliberate array duplicates and NPC entry remain
+PASS For on excluded host advances to recipient at start of its body
+PASS excluded host wait is cleared and loop variable selects recipient
+PASS recipient For body keeps instruction and remaining wait
+PASS later native NPC iteration is retained
+PASS completed recipient iteration is not replayed when later host iteration is removed
+PASS older b/i-only shape preserves exact delayed instruction
+PASS native UID refs survive in locals and AI unchanged
+PASS AI retains recipient target and leaves other absent peer unresolved
+PASS recipient order wins over host fallback and other peers; native NPC order remains
+PASS shared event ownership becomes local without clearing completion
+PASS unmarked historical VM is never guessed or rewritten
+PASS gz6g: original source installs one inspected family
+PASS gz6g: complete native recipient-role family matches structurally
+PASS gz6g: recipient branch replaces native alias once and other peer work stays absent
+PASS gz6g: saved authored body instruction and delay survive role conversion
+PASS gz6g: translating participant family cannot mutate saved source
+PASS gz6g: spent guest activation cannot inherit or rearm the host's idle copy
+PASS gz6g: changed native counterpart is never guessed
+COOP_VM_PROJECTION {"checks":36,"failures":0}
+[trace 18:07:03 +5997ms] clean exit

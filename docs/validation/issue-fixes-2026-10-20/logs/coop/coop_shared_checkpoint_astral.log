@@ -1,0 +1,31 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 18:06:17 +5307ms] session 4bb2a60bf9e1: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"lost_in_astral","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"res://tools/tests/coop_shared_checkpoint.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/issue-fixes-20261020/broad-regressions/tests/coop/coop_shared_checkpoint_astral/profile/data/godot/app_userdata/Cursed Lands"}
+PASS partial package cannot replace the authored protagonist with a network alias
+PASS explicit authored identity survives a partial package
+PASS a complete shared package records story provenance
+PASS newer final package keeps its own valid receipt
+PASS personal training and wealth do not masquerade as story changes
+PASS independent solo world changes invalidate a receipt even without quest changes
+PASS newer shared source differs from selected host checkpoint
+PASS unchanged shared source can resume its recorded host checkpoint
+PASS solo_story cannot be adopted as a shared rollback
+PASS solo_location cannot be adopted as a shared rollback
+PASS solo_item cannot be adopted as a shared rollback
+PASS solo_visit cannot be adopted as a shared rollback
+PASS solo_party cannot be adopted as a shared rollback
+PASS no_receipt cannot be adopted as a shared rollback
+PASS different_host cannot be adopted as a shared rollback
+PASS ordinary hello retains full shared progression
+PASS resuming keeps the guest's own advancement and purse
+PASS rollback package explicitly replaces the shared story
+PASS cumulative merge 0 restores removals as well as values
+PASS cumulative merge 0 preserves personal data
+PASS merged rollback remains a resumable shared checkpoint
+PASS cumulative merge 1 restores removals as well as values
+PASS cumulative merge 1 preserves personal data
+PASS merged rollback remains a resumable shared checkpoint
+PASS equal checkpoint clears replacement state before a new cumulative tally
+COOP_SHARED_CHECKPOINT {"checks":25,"failures":0}
+[trace 18:06:17 +5753ms] clean exit

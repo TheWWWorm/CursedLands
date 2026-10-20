@@ -1,0 +1,38 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+[trace 17:53:42 +7768ms] session 4f22fd80830d: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS), Mesa llvmpipe (LLVM 20.1.2, 256 bits), gl_compatibility / opengl3
+GAMEPLAY_SUITE_START {"campaign":"cursed_lands","display":"rendered","display_driver":"X11","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"gl_compatibility","script":"res://tools/tests/pause_menu_clock.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/issue-fixes-20261020/live-regressions-second/tests/interface/pause_menu_clock/profile/data/godot/app_userdata/Cursed Lands"}
+PASS original signpost and animation library load
+[trace 17:53:43 +8962ms] esc menu open
+PASS stale rest texture is hidden on opening
+PAUSE_MENU_OPENING_PIXELS rest=5057 opening=286
+PASS first refreshed frame is the hidden opening pose, not the fully open signpost
+PASS mouse movement cannot replace the opening slide with idle
+PASS uspecial02 takes 0.605 real seconds at scale 0.500, paused=false (0.613 measured)
+PASS uspecial03 takes 0.110 real seconds at scale 0.500, paused=false (0.117 measured)
+PASS uspecial02 takes 0.605 real seconds at scale 0.500, paused=true (0.616 measured)
+PASS uspecial03 takes 0.110 real seconds at scale 0.500, paused=true (0.122 measured)
+PASS uspecial02 takes 0.605 real seconds at scale 1.000, paused=false (0.616 measured)
+PASS uspecial03 takes 0.110 real seconds at scale 1.000, paused=false (0.120 measured)
+PASS uspecial02 takes 0.605 real seconds at scale 1.000, paused=true (0.613 measured)
+PASS uspecial03 takes 0.110 real seconds at scale 1.000, paused=true (0.124 measured)
+PASS uspecial02 takes 0.605 real seconds at scale 2.037, paused=false (0.614 measured)
+PASS uspecial03 takes 0.110 real seconds at scale 2.037, paused=false (0.121 measured)
+PASS uspecial02 takes 0.605 real seconds at scale 2.037, paused=true (0.615 measured)
+PASS uspecial03 takes 0.110 real seconds at scale 2.037, paused=true (0.116 measured)
+PASS changing speed during opening preserves the animation clock
+[trace 17:53:48 +13775ms] esc menu open
+PASS reopening a partially hidden slide restarts from frame zero at scale 1.000
+PASS reopened menu plays its full duration at scale 1.000
+[trace 17:53:48 +14544ms] esc menu open
+PASS reopening a partially hidden slide restarts from frame zero at scale 2.037
+PASS reopened menu plays its full duration at scale 2.037
+PAUSE_MENU_CLOCK 21 checks 0 failures
+[trace 17:53:49 +15176ms] clean exit

@@ -1,0 +1,52 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 18:05:21 +5524ms] session 0b464d144920: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"lost_in_astral","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"res://tools/tests/coop_guest_roles.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/issue-fixes-20261020/broad-regressions/tests/coop/coop_guest_roles_astral/profile/data/godot/app_userdata/Cursed Lands"}
+PASS original bz1h contains transition to FPrison
+PASS authority selects authored FPrison
+PASS original host transition to FPrison
+PASS live role keeps guest display name
+PASS dialogue purse scope fully unwinds
+PASS original bz2h contains transition to FSusel
+PASS authority selects authored FSusel
+PASS original host transition to FSusel
+PASS live role keeps guest display name
+PASS dialogue purse scope fully unwinds
+PASS permanent LiA chapter changes leave live guest hero intact
+PASS original bz5h contains transition to Shaina
+PASS authority selects authored Shaina
+PASS original host transition to Shaina
+PASS live role keeps guest display name
+PASS dialogue purse scope fully unwinds
+PASS Shaina guests use stock role abilities and equipment
+PASS host current and waiting bags stay independent
+PASS private temporary role starts with empty bag
+PASS class guest cannot access waiting shared bag
+PASS extra role does not duplicate narrative object name
+PASS temporary private loot stays with that player
+PASS temporary stats/loot do not overwrite main hero in progress package
+PASS credited save resumes guest's played temporary role and own loot
+PASS credited temporary role retains its own pose and health
+PASS independent load keeps normal hero and bag waiting
+PASS late class guest receives current temporary role
+PASS repeated deployment does not recreate role or duplicate inventory
+PASS host role journal saves
+PASS host role journal reloads
+PASS save/load retains live temporary progression
+PASS loaded journal binds to the deployed character record
+PASS write old-format unrestricted guest save
+PASS old save projects unrestricted guest into current temporary role
+PASS legacy projection parks original gear and purse without loss
+PASS offline guest from old save follows authored return before reconnect
+PASS original bz5h contains transition to FSusel
+PASS authority selects authored FSusel
+PASS original host transition to FSusel
+PASS live role keeps guest display name
+PASS dialogue purse scope fully unwinds
+PASS Shaina return restores original guest and bag exactly
+PASS Shaina progression stays with Shaina
+PASS class guest's Shaina bag is parked rather than leaking into normal shared bag
+PASS uncredited temporary return leaves progress context untouched
+PASS all original party operations executed
+COOP_GUEST_ROLES {"checks":38,"failures":0}
+[trace 18:05:21 +6220ms] clean exit

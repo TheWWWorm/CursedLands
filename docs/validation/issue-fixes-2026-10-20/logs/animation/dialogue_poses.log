@@ -1,0 +1,83 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 17:42:12 +5510ms] session ad0198a514f0: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"cursed_lands","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"res://tools/tests/dialogue_poses.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/issue-fixes-20261020/live-worker-first/tests/animation/dialogue_poses/profile/data/godot/app_userdata/Cursed Lands"}
+PASS open dialogue host
+[trace 17:42:12 +6033ms] zone load bz3g (entrance 1)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":60,"interval_fps":null,"interval_s":0.522913,"msaa_3d":2,"nodes":683.0,"objects":4534.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=1 wind=1 grass=1 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=1 resolution=0 fps_limit=0 vsync=1 auto_graphics=0","orphan_nodes":1.0,"paused":false,"physics_ms":null,"pid":88767,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":488.0,"screen_space_aa":2,"static_bytes":412018718.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":6.034224,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":0,"worlds":[],"zone":"bz3g (loading)"}
+[trace 17:42:15 +9124ms] navigation prepared 3 classes in 47 ms
+[trace 17:42:15 +9127ms] zone ready bz3g
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":313,"figure_models":29,"object_textures":8,"unit_textures":5,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":60,"interval_fps":null,"interval_s":3.09354,"msaa_3d":2,"nodes":3881.0,"objects":10766.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=1 wind=1 grass=1 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=1 resolution=0 fps_limit=0 vsync=1 auto_graphics=0","orphan_nodes":38.0,"paused":false,"physics_ms":null,"pid":88767,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":488.0,"screen_space_aa":2,"static_bytes":603986645.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":9.127897,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":1,"lights":0,"magic_endings":0,"missiles":0},"instance":507494009174,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":49,"visible":true,"zone":"bz3g"}],"zone":"bz3g"}
+PASS original Dead City SKD uses dragon model
+PASS village dragon rests before a conversation
+DRAGON_IDLE clip=cidle bottom=7.97929191589355 altitude=7.0
+PASS ordinary flying idle and movement class remain authored
+WARNING: SubViewport is not a child of a SubViewportContainer. get_screen_transform doesn't return the actual screen position.
+     at: get_screen_transform_internal (scene/main/viewport.cpp:5723)
+     GDScript backtrace (most recent call first):
+         [0] _update_font_sampling (res://src/ui/scroll_option_button.gd:28)
+         [1] _ready (res://src/ui/scroll_option_button.gd:16)
+         [2] _ready (res://src/ui/wiki_panel.gd:137)
+         [3] _add_ui (res://src/ui/game_hud.gd:1268)
+         [4] _ready (res://src/ui/game_hud.gd:167)
+         [5] _ready (res://src/game/game.gd:95)
+         [6] branch (res://tools/tests/story_coop_traps_net.gd:35)
+         [7] _ready (res://tools/tests/dialogue_poses.gd:46)
+PASS connect dialogue guest
+[trace 17:42:16 +9850ms] zone load bz3g (from host)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":335,"figure_models":31,"object_textures":9,"unit_textures":7,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":0,"interval_fps":null,"interval_s":0.722465,"msaa_3d":0,"nodes":4720.0,"objects":13445.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=1 wind=1 grass=1 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=1 resolution=0 fps_limit=0 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":0.235,"pid":88767,"primitives":0.0,"process_ms":25.597,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":488.0,"screen_space_aa":2,"static_bytes":661456577.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":9.850504,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":1,"lights":0,"magic_endings":0,"missiles":0},"instance":507494009174,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":50,"visible":true,"zone":"bz3g"}],"zone":"bz3g (loading)"}
+[trace 17:42:17 +10722ms] zone ready bz3g (from host)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":5,"figure_meshes":335,"figure_models":31,"object_textures":9,"unit_textures":7,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":0,"interval_fps":null,"interval_s":0.872089,"msaa_3d":0,"nodes":7963.0,"objects":18726.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=1 wind=1 grass=1 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=1 resolution=0 fps_limit=0 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":0.235,"pid":88767,"primitives":0.0,"process_ms":25.597,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":488.0,"screen_space_aa":2,"static_bytes":707159500.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":10.722803,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":2,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":1,"lights":0,"magic_endings":0,"missiles":0},"instance":507494009174,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":50,"visible":true,"zone":"bz3g"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":1,"lights":0,"magic_endings":0,"missiles":0},"instance":700146791284,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":50,"visible":true,"zone":"bz3g"}],"zone":"bz3g"}
+PASS guest receives original Dead City actor
+PASS original briefing event reaches both peers
+PASS both peers share original phrases and actor identities
+PASS peer 0 phrase 1 keeps original ubriefing02 through idle/snapshot
+PASS peer 0 human uses original dialogue special table
+DRAGON_DIALOGUE clip=ubriefing02 bottom=-0.10246086120605
+PASS finished speaking special resumes original listening pose
+PASS peer 1 phrase 1 keeps original ubriefing02 through idle/snapshot
+PASS peer 1 human uses original dialogue special table
+PASS peer 0 phrase 2 keeps original ubriefing02 through idle/snapshot
+PASS peer 1 phrase 2 keeps original ubriefing02 through idle/snapshot
+PASS peer 0 phrase 3 keeps original ubriefing05 through idle/snapshot
+PASS peer 1 phrase 3 keeps original ubriefing05 through idle/snapshot
+PASS peer 0 phrase 4 keeps original ubriefing01 through idle/snapshot
+PASS peer 1 phrase 4 keeps original ubriefing01 through idle/snapshot
+PASS peer 0 phrase 5 keeps original ubriefing02 through idle/snapshot
+PASS peer 1 phrase 5 keeps original ubriefing02 through idle/snapshot
+PASS peer 0 phrase 6 keeps original ubriefing05 through idle/snapshot
+PASS peer 1 phrase 6 keeps original ubriefing05 through idle/snapshot
+PASS peer 0 phrase 7 keeps original ubriefing02 through idle/snapshot
+PASS peer 1 phrase 7 keeps original ubriefing02 through idle/snapshot
+PASS peer 0 phrase 8 keeps original ubriefing05 through idle/snapshot
+PASS peer 1 phrase 8 keeps original ubriefing05 through idle/snapshot
+PASS peer 0 phrase 9 keeps original ubriefing02 through idle/snapshot
+PASS peer 1 phrase 9 keeps original ubriefing02 through idle/snapshot
+PASS peer 0 phrase 10 keeps original ubriefing05 through idle/snapshot
+PASS peer 1 phrase 10 keeps original ubriefing05 through idle/snapshot
+PASS peer 0 phrase 11 keeps original ubriefing05 through idle/snapshot
+PASS peer 1 phrase 11 keeps original ubriefing05 through idle/snapshot
+PASS peer 0 phrase 12 keeps original ubriefing02 through idle/snapshot
+PASS peer 1 phrase 12 keeps original ubriefing02 through idle/snapshot
+PASS peer 0 phrase 13 keeps original ubriefing02 through idle/snapshot
+PASS peer 1 phrase 13 keeps original ubriefing02 through idle/snapshot
+PASS peer 0 phrase 14 keeps original ubriefing05 through idle/snapshot
+PASS peer 1 phrase 14 keeps original ubriefing05 through idle/snapshot
+PASS peer 0 phrase 15 keeps original ubriefing05 through idle/snapshot
+PASS peer 1 phrase 15 keeps original ubriefing05 through idle/snapshot
+PASS peer 0 phrase 16 keeps original ubriefing05 through idle/snapshot
+PASS peer 1 phrase 16 keeps original ubriefing05 through idle/snapshot
+PASS peer 0 phrase 17 keeps original ubriefing04 through idle/snapshot
+PASS peer 1 phrase 17 keeps original ubriefing04 through idle/snapshot
+PASS authored dialogue pose brings dragon down to the ground
+PASS explicit phrase animation selects special modifier five
+PASS skip leaves the dragon listening
+PASS ordinary flying movement can replace dialogue presentation
+PASS idle returns to listening while dialogue remains open
+PASS remote close reaches guest
+PASS peer 0 returns to the resting village pose on close
+PASS peer 1 returns to the resting village pose on close
+PASS dialogue never rewrites flying physics or prototype altitude
+DIALOGUE_POSES 54 checks 0 failures
+STORY_COOP_TRAPS_NET 54 checks 0 failures
+[trace 17:42:17 +11176ms] clean exit

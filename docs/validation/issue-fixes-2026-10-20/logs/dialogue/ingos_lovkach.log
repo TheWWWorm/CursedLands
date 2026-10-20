@@ -1,0 +1,21 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 18:04:46 +6013ms] session 5ad84616c176: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"cursed_lands","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"res://tools/tests/ingos_lovkach.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/issue-fixes-20261020/broad-regressions/tests/dialogue/ingos_lovkach/profile/data/godot/app_userdata/Cursed Lands"}
+PASS original mthief record identifies Lovkach
+PASS unfinished q44k keeps Lovkach hidden on the first visit
+PASS one-shot visibility check is absent from the saved VM
+PASS revisited village reveals Lovkach once q44k is complete
+PASS reveal does not repeat rewards or modify quest/body state
+PASS reveal does not spawn a duplicate actor
+PASS loading an older save repairs the stale hidden actor
+PASS only the authored completed value reveals Lovkach: 0
+PASS only the authored completed value reveals Lovkach: 1
+PASS only the authored completed value reveals Lovkach: 3
+PASS recovery preserves dead
+PASS recovery preserves modified script
+PASS recovery preserves pending gate
+PASS recovery preserves pending world
+PASS removed Lovkach is not recreated
+INGOS_LOVKACH {"checks":15,"failures":[]}
+[trace 18:04:47 +7515ms] clean exit

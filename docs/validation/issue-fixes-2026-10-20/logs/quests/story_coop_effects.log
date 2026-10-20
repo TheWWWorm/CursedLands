@@ -1,0 +1,173 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 17:59:12 +6955ms] session baeb84fb1ea3: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"lost_in_astral","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"res://tools/tests/story_coop_effects.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/issue-fixes-20261020/broad-regressions/tests/quests/story_coop_effects/profile/data/godot/app_userdata/Cursed Lands"}
+PASS PortalFire: casts for party slot 0
+PASS PortalFire: casts for party slot 1
+PASS PortalFire: casts for party slot 2
+PASS PortalFire: casts for party slot 3
+PASS PortalFire: casts for party slot 4
+PASS PortalFire: casts for party slot 5
+PASS PortalFire: casts for party slot 6
+PASS PortalFire: no pet, dead, hidden, disconnected or duplicate Kel casts
+PASS Portal fire source follows each recipient
+PASS PortalFire: original two-member casts unchanged
+PASS Tiger#1#1: lever gate is required
+PASS Tiger#1#1: casts for party slot 0
+PASS Tiger#1#1: casts for party slot 1
+PASS Tiger#1#1: casts for party slot 2
+PASS Tiger#1#1: casts for party slot 3
+PASS Tiger#1#1: casts for party slot 4
+PASS Tiger#1#1: casts for party slot 5
+PASS Tiger#1#1: casts for party slot 6
+PASS Tiger#1#1: no pet, dead, hidden, disconnected or duplicate Kel casts
+PASS Tiger#1#1: original two-member casts unchanged
+PASS Tiger#2#1: lever gate is required
+PASS Tiger#2#1: casts for party slot 0
+PASS Tiger#2#1: casts for party slot 1
+PASS Tiger#2#1: casts for party slot 2
+PASS Tiger#2#1: casts for party slot 3
+PASS Tiger#2#1: casts for party slot 4
+PASS Tiger#2#1: casts for party slot 5
+PASS Tiger#2#1: casts for party slot 6
+PASS Tiger#2#1: no pet, dead, hidden, disconnected or duplicate Kel casts
+PASS Tiger#2#1: original two-member casts unchanged
+PASS Tiger#3#1: lever gate is required
+PASS Tiger#3#1: casts for party slot 0
+PASS Tiger#3#1: casts for party slot 1
+PASS Tiger#3#1: casts for party slot 2
+PASS Tiger#3#1: casts for party slot 3
+PASS Tiger#3#1: casts for party slot 4
+PASS Tiger#3#1: casts for party slot 5
+PASS Tiger#3#1: casts for party slot 6
+PASS Tiger#3#1: no pet, dead, hidden, disconnected or duplicate Kel casts
+PASS Tiger#3#1: original two-member casts unchanged
+PASS VCheck#3#5: casts for party slot 0
+PASS VCheck#3#5: casts for party slot 1
+PASS VCheck#3#5: casts for party slot 2
+PASS VCheck#3#5: casts for party slot 3
+PASS VCheck#3#5: casts for party slot 4
+PASS VCheck#3#5: casts for party slot 5
+PASS VCheck#3#5: casts for party slot 6
+PASS VCheck#3#5: no pet, dead, hidden, disconnected or duplicate Kel casts
+PASS Invisibility source and point follow each recipient
+PASS VCheck#3#5: original two-member casts unchanged
+PASS VCheck#3#6: casts for party slot 0
+PASS VCheck#3#6: casts for party slot 1
+PASS VCheck#3#6: casts for party slot 2
+PASS VCheck#3#6: casts for party slot 3
+PASS VCheck#3#6: casts for party slot 4
+PASS VCheck#3#6: casts for party slot 5
+PASS VCheck#3#6: casts for party slot 6
+PASS VCheck#3#6: no pet, dead, hidden, disconnected or duplicate Kel casts
+PASS Invisibility source and point follow each recipient
+PASS VCheck#3#6: original two-member casts unchanged
+PASS Healing#0#1: lever gate is required
+PASS Healing#0#1: casts for party slot 0
+PASS Healing#0#1: casts for party slot 1
+PASS Healing#0#1: casts for party slot 2
+PASS Healing#0#1: casts for party slot 3
+PASS Healing#0#1: casts for party slot 4
+PASS Healing#0#1: casts for party slot 5
+PASS Healing#0#1: casts for party slot 6
+PASS Healing#0#1: no pet, dead, hidden, disconnected or duplicate Kel casts
+PASS Healing#0#1: original two-member casts unchanged
+PASS Healing#1#1: lever gate is required
+PASS Healing#1#1: casts for party slot 0
+PASS Healing#1#1: casts for party slot 1
+PASS Healing#1#1: casts for party slot 2
+PASS Healing#1#1: casts for party slot 3
+PASS Healing#1#1: casts for party slot 4
+PASS Healing#1#1: casts for party slot 5
+PASS Healing#1#1: casts for party slot 6
+PASS Healing#1#1: no pet, dead, hidden, disconnected or duplicate Kel casts
+PASS Healing#1#1: original two-member casts unchanged
+PASS VCheck#0#4: outside range stays safe
+PASS VCheck#0#4: first eligible guest triggers shared shot
+PASS VCheck#0#4: second guest does not duplicate the spent shot
+PASS VCheck#0#4: ignores dead guest
+PASS VCheck#0#4: ignores hidden guest
+PASS VCheck#0#4: ignores disconnected guest
+PASS VCheck#0#4: protagonist branch keeps original priority
+PASS VCheck#0#4: guest-owned Kel keeps original priority
+PASS Acid trap keeps original 25-tick cooldown
+PASS Acid trap re-arms for guest after save and cooldown
+PASS Trap#0#1: outside range stays safe
+PASS Trap#0#1: disarmed lever protects guests
+PASS Trap#0#1: first eligible guest triggers shared shot
+PASS Trap#0#1: second guest does not duplicate the spent shot
+PASS Trap#0#1: ignores dead guest
+PASS Trap#0#1: ignores hidden guest
+PASS Trap#0#1: ignores disconnected guest
+PASS Trap#0#1: protagonist branch keeps original priority
+PASS Trap#0#1: guest-owned Kel keeps original priority
+PASS Trap#1#1: outside range stays safe
+PASS Trap#1#1: disarmed lever protects guests
+PASS Trap#1#1: first eligible guest triggers shared shot
+PASS Trap#1#1: second guest does not duplicate the spent shot
+PASS Trap#1#1: ignores dead guest
+PASS Trap#1#1: ignores hidden guest
+PASS Trap#1#1: ignores disconnected guest
+PASS Trap#1#1: protagonist branch keeps original priority
+PASS Trap#1#1: guest-owned Kel keeps original priority
+PASS Trap#1#2: outside range stays safe
+PASS Trap#1#2: disarmed lever protects guests
+PASS Trap#1#2: first eligible guest triggers shared shot
+PASS Trap#1#2: second guest does not duplicate the spent shot
+PASS Trap#1#2: ignores dead guest
+PASS Trap#1#2: ignores hidden guest
+PASS Trap#1#2: ignores disconnected guest
+PASS Trap#1#2: protagonist branch keeps original priority
+PASS Trap#1#2: guest-owned Kel keeps original priority
+PASS Trap#1#3: outside range stays safe
+PASS Trap#1#3: disarmed lever protects guests
+PASS Trap#1#3: first eligible guest triggers shared shot
+PASS Trap#1#3: second guest does not duplicate the spent shot
+PASS Trap#1#3: ignores dead guest
+PASS Trap#1#3: ignores hidden guest
+PASS Trap#1#3: ignores disconnected guest
+PASS Trap#1#3: protagonist branch keeps original priority
+PASS Trap#1#3: guest-owned Kel keeps original priority
+PASS Trap#1#4: outside range stays safe
+PASS Trap#1#4: disarmed lever protects guests
+PASS Trap#1#4: first eligible guest triggers shared shot
+PASS Trap#1#4: second guest does not duplicate the spent shot
+PASS Trap#1#4: ignores dead guest
+PASS Trap#1#4: ignores hidden guest
+PASS Trap#1#4: ignores disconnected guest
+PASS Trap#1#4: protagonist branch keeps original priority
+PASS Trap#1#4: guest-owned Kel keeps original priority
+PASS Ingos trap preserves its y<289 boundary for guests
+PASS Original item-60 exemption still protects only the protagonist branch
+PASS Guest follows original companion rule when protagonist is exempt
+PASS Original shrine save is inside authored Sleep(40)
+PASS Old sleeping save resumes cooldown without recasting rewards
+PASS zone7: world startup unchanged
+PASS zone7: original condition/block/statement indexes preserved
+PASS zone7: only the audited second particle call is adapted
+PASS zone7: every original definition remains exact after particle normalization
+PASS zone7: applying compatibility twice is idempotent
+PASS zone7: base campaign scope stays unchanged
+PASS cz0k: world startup unchanged
+PASS cz0k: original condition/block/statement indexes preserved
+PASS cz0k: named relocation scripts untouched
+PASS cz0k: applying compatibility twice is idempotent
+PASS cz0k: base campaign scope stays unchanged
+PASS zonefinal: world startup unchanged
+PASS zonefinal: original condition/block/statement indexes preserved
+PASS zonefinal: applying compatibility twice is idempotent
+PASS zonefinal: base campaign scope stays unchanged
+PASS zone5: world startup unchanged
+PASS zone5: original condition/block/statement indexes preserved
+PASS zone5: applying compatibility twice is idempotent
+PASS zone5: base campaign scope stays unchanged
+PASS zone16: world startup unchanged
+PASS zone16: original condition/block/statement indexes preserved
+PASS zone16: applying compatibility twice is idempotent
+PASS zone16: base campaign scope stays unchanged
+PASS zone21: world startup unchanged
+PASS zone21: original condition/block/statement indexes preserved
+PASS zone21: applying compatibility twice is idempotent
+PASS zone21: base campaign scope stays unchanged
+STORY_COOP_EFFECTS 167 checks 0 failures
+[trace 17:59:15 +9553ms] clean exit

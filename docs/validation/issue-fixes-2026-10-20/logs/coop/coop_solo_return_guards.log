@@ -1,0 +1,24 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 18:06:36 +5774ms] session be51e2a118f5: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"cursed_lands","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"res://tools/tests/coop_solo_return_guards.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/issue-fixes-20261020/broad-regressions/tests/coop/coop_solo_return_guards/profile/data/godot/app_userdata/Cursed Lands"}
+PASS ahead is rejected as a whole checkpoint on arrival
+PASS ahead re-entry cannot adopt a full story checkpoint
+PASS ahead host reload cannot adopt a full story checkpoint
+PASS behind is rejected as a whole checkpoint on arrival
+PASS behind re-entry cannot adopt a full story checkpoint
+PASS behind host reload cannot adopt a full story checkpoint
+PASS conflict is rejected as a whole checkpoint on arrival
+PASS conflict re-entry cannot adopt a full story checkpoint
+PASS conflict host reload cannot adopt a full story checkpoint
+PASS party is rejected as a whole checkpoint on arrival
+PASS party re-entry cannot adopt a full story checkpoint
+PASS party host reload cannot adopt a full story checkpoint
+PASS quest_item is rejected as a whole checkpoint on arrival
+PASS quest_item re-entry cannot adopt a full story checkpoint
+PASS quest_item host reload cannot adopt a full story checkpoint
+PASS side_quest is rejected as a whole checkpoint on arrival
+PASS side_quest re-entry cannot adopt a full story checkpoint
+PASS side_quest host reload cannot adopt a full story checkpoint
+COOP_SOLO_RETURN_GUARDS {"checks":18,"failures":0}
+[trace 18:06:36 +6098ms] clean exit

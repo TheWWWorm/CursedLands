@@ -1,0 +1,61 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 17:59:03 +6027ms] session 890666c3f77d: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"lost_in_astral","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"res://tools/tests/story_coop_traps.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/issue-fixes-20261020/broad-regressions/tests/quests/story_coop_traps/profile/data/godot/app_userdata/Cursed Lands"}
+PASS gz36j: no hit before entering the authored area
+PASS gz36j: original quest/lever gate protects guest
+PASS gz36j: first guest receives own lethal trap
+PASS gz36j: disconnected guest is not hit
+PASS gz36j: hidden guest is not hit
+PASS gz36j: second guest retains an independent shot
+PASS gz36j: revival does not repeat a spent activation
+PASS gz36j: named roles are not moved or killed by guest trigger
+PASS gz36j: third story member is covered exactly once
+PASS gz36j: late participant joins an already-armed trap
+PASS gz36j: save/redeployment retains spent hero and mercenary shots
+PASS gz36j: recovery is idempotent
+PASS gz36j: new participant after reload gets an independent shot
+PASS gz36j: a new native activation re-arms existing guests once
+PASS gz1h: no hit before entering the authored area
+PASS gz1h: original quest/lever gate protects guest
+PASS gz1h: first guest receives own lethal trap
+PASS gz1h: disconnected guest is not hit
+PASS gz1h: hidden guest is not hit
+PASS gz1h: second guest retains an independent shot
+PASS gz1h: revival does not repeat a spent activation
+PASS gz1h: named roles are not moved or killed by guest trigger
+PASS gz1h: third story member is covered exactly once
+PASS gz1h: late participant joins an already-armed trap
+PASS gz1h: save/redeployment retains spent hero and mercenary shots
+PASS gz1h: recovery is idempotent
+PASS gz1h: new participant after reload gets an independent shot
+PASS gz1h: a new native activation re-arms existing guests once
+PASS Acid: guest and native role start on the same tick
+PASS Acid: second guest starts an independent cooldown
+PASS Acid: guest retains native cadence over repeated cycles
+PASS Acid: other player's cycles do not re-arm this guest
+PASS Acid: no shots while disconnected
+PASS Acid: reconnect resumes its already-ready thread once
+PASS Acid: original pending cooldown survives adaptation and save
+PASS Acid: resumed 45-tick hit schedule matches uninterrupted participant 0
+PASS Acid: resumed 45-tick hit schedule matches uninterrupted participant 1
+PASS Acid: resumed 45-tick hit schedule matches uninterrupted participant 2
+PASS gz36j: old save's active native family recovers guest trap
+PASS gz36j: recovery leaves an unarmed trap unarmed
+PASS gz1h: old save's active native family recovers guest trap
+PASS gz1h: recovery leaves an unarmed trap unarmed
+PASS gz9g: old save's active native family recovers guest trap
+PASS gz9g: recovery leaves an unarmed trap unarmed
+PASS Acid: legacy fixture is sleeping inside original cooldown
+PASS Acid: legacy cooldown recovers missing guest without shortening native wait
+PASS gz36j: original arming/indexed trap definitions unchanged
+PASS gz36j: generated definitions are idempotent
+PASS gz36j: divergent modded trap is not cloned
+PASS gz1h: original arming/indexed trap definitions unchanged
+PASS gz1h: generated definitions are idempotent
+PASS gz1h: divergent modded trap is not cloned
+PASS gz9g: original arming/indexed trap definitions unchanged
+PASS gz9g: generated definitions are idempotent
+PASS gz9g: divergent modded trap is not cloned
+STORY_COOP_TRAPS 55 checks 0 failures
+[trace 17:59:05 +7207ms] clean exit

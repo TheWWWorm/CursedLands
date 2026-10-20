@@ -27,7 +27,7 @@ formulas. Legacy adapters and script-state persistence are not included.
 Preserve ordinary game behavior, existing saves, profiles and documented package
 APIs when integrating this work. Verify sessions without script mods, including
 a return from a modded profile, alongside save/load, co-op and separate simulation
-process checks. The 1.20.0-alpha.1 preview implements the first subset described in
+process checks. The 1.20.0 release implements the first subset described in
 [mod-formulas.md](mod-formulas.md); [mods.md](mods.md) describes player setup.
 
 ## Where players find the menus

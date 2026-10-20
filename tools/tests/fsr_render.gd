@@ -10,6 +10,7 @@ var scene: MenuScene
 var fg_tested := false
 
 func _ready() -> void:
+	check(not OS.get_cmdline_user_args().has("--experimental-fsr"), "normal executable enables FSR without a special launch flag")
 	_run.call_deferred()
 
 func check(ok: bool, message: String) -> void:

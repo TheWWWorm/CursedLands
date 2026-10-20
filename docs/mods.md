@@ -19,15 +19,15 @@ In a sandbox profile, **Sandbox** offers invulnerable party, unlimited party man
 
 Mouse, keyboard focus and controller navigation use the same controls. D-pad up/down moves focus, left/right changes a choice or number, A activates, Y applies, and B goes back. Controls are at least 44 pixels high and pages scroll on narrow screens. Desktop/Android use the native package picker; the browser uses a local file chooser.
 
-## Formula mods in 1.20.0-alpha.1
+## Formula mods in 1.20.0
 
-The desktop preview adds **package API 3 / formula API 1** for optional Lua
+The desktop release adds **package API 3 / formula API 1** for optional Lua
 formulas. It supports experience rewards, revival time and revival health in
 single player and campaign co-op on Windows/Linux x86-64. API 1 data mods and
 API 2 texture packs keep their existing contracts. Formula mods cannot be
-activated on other platforms in this preview.
+activated on other platforms in this version.
 
-The preview includes three source examples and installable `.eimod` packages:
+The release includes three source examples and installable `.eimod` packages:
 
 - **Expedition experience** adjusts all experience rewards (default ×1.5).
 - **Quest focus** adds a configurable bonus to non-combat rewards (default +25%).
@@ -35,7 +35,7 @@ The preview includes three source examples and installable `.eimod` packages:
 - **Field medicine** scales revival time by the helper's intelligence and
   restores a configurable percentage of maximum health (default 25%).
 
-Import the files from the preview's `mods/` directory through **Mods and rules**,
+Import the files from the release's `mods/` directory through **Mods and rules**,
 turn the desired mods on and **Apply & restart**. Tune them under **Mod options**.
 Changing options during play requires camp and affects the current run. The
 examples include English, Russian and German text. Disable them or choose the
@@ -54,7 +54,7 @@ is loaded on a fresh unmodded launch.
 
 See the [formula authoring guide](mod-formulas.md) for the contract, packaging,
 limits and reuse of the earlier Jamais Vu groundwork. Original-game DLL loading
-and DLL conversion are outside this preview.
+and DLL conversion are outside this version.
 
 ## HD Lands texture download
 

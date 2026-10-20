@@ -1,0 +1,21 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 18:06:05 +5599ms] session d528330f6e8b: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"lost_in_astral","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"res://tools/tests/coop_progress_travel.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/issue-fixes-20261020/broad-regressions/tests/coop/coop_progress_travel_astral/profile/data/godot/app_userdata/Cursed Lands"}
+PASS destination is an original field map
+PASS guest starts without a fabricated destination flag
+PASS fully aligned party carries campaign eligibility through field transfer
+PASS shared transfer credits actual destination visit
+PASS returned save follows the shared destination
+PASS returned save carries the guest's current position
+PASS travel keeps the guest's personal purse
+PASS active is required for implicit shared travel
+PASS in_sync is required for implicit shared travel
+PASS clean is required for implicit shared travel
+PASS present is required for implicit shared travel
+PASS loading a different host checkpoint cannot fabricate shared travel
+PASS a guest ahead at the destination keeps its own campaign location
+PASS independently unlocked solo progress can join a compatible destination
+PASS a missed protagonist change cannot move an incompatible chapter
+COOP_PROGRESS_TRAVEL {"checks":15,"failures":0}
+[trace 18:06:05 +6011ms] clean exit

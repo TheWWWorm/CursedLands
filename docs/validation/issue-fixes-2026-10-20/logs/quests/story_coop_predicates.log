@@ -1,0 +1,107 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 17:58:55 +5693ms] session 7b81c188de72: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"lost_in_astral","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"res://tools/tests/story_coop_predicates.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/issue-fixes-20261020/broad-regressions/tests/quests/story_coop_predicates/profile/data/godot/app_userdata/Cursed Lands"}
+PASS zone10: extra guest can trigger original alarm
+PASS City alarm starts original guard attack chain
+PASS zone10: ignored dead extra guest
+PASS zone10: ignored hidden extra guest
+PASS zone10: ignored disconnected extra guest
+PASS zone10: guest-owned Kel retains native alarm
+PASS zone15: extra guest can trigger original alarm
+PASS City alarm starts original guard attack chain
+PASS zone15: ignored dead extra guest
+PASS zone15: ignored hidden extra guest
+PASS zone15: ignored disconnected extra guest
+PASS zone15: guest-owned Kel retains native alarm
+PASS zone3dun1: extra guest can trigger original alarm
+PASS Prison alarm keeps its quest outcome and delayed failure
+PASS Prison alarm completes original failure once
+PASS zone3dun1: ignored dead extra guest
+PASS zone3dun1: ignored hidden extra guest
+PASS zone3dun1: ignored disconnected extra guest
+PASS zone3dun1: guest-owned Kel retains native alarm
+PASS VCheck#5#2: visible guest prevents unseen-party quest progress
+PASS VCheck#5#2: progress resumes when whole party is unseen
+PASS VCheck#5#3: visible guest prevents unseen-party quest progress
+PASS VCheck#5#3: progress resumes when whole party is unseen
+PASS VCityGuard#1#0: coordinated attack chooses closer guest
+PASS VCityGuard#1#0: closest of multiple guests wins
+PASS VCityGuard#1#0: inactive extras leave native target
+PASS VCityGuard#1#0: native tie priority retained
+PASS VCityGuard#1#0: coordinated attack chooses closer guest
+PASS VCityGuard#1#0: closest of multiple guests wins
+PASS VCityGuard#1#0: inactive extras leave native target
+PASS VCityGuard#1#0: native tie priority retained
+PASS VCheck#0#6: coordinated attack chooses closer guest
+PASS VCheck#0#6: closest of multiple guests wins
+PASS VCheck#0#6: inactive extras leave native target
+PASS VCheck#0#6: native tie priority retained
+PASS VCheck#1#3: coordinated attack chooses closer guest
+PASS VCheck#1#3: closest of multiple guests wins
+PASS VCheck#1#3: inactive extras leave native target
+PASS VCheck#1#3: native tie priority retained
+PASS VCheck#1#3: original lever/area gate remains required
+PASS VCheck#6#2: coordinated attack chooses closer guest
+PASS VCheck#6#2: closest of multiple guests wins
+PASS VCheck#6#2: inactive extras leave native target
+PASS VCheck#6#2: native tie priority retained
+PASS VCheck#6#2: original lever/area gate remains required
+PASS Ingos proximity keeps original 13 metre limit
+PASS Ingos proximity admits extra guest
+PASS Ingos sight event keeps original quest gate
+PASS Ingos sight event fires fireworks at triggering guest
+PASS Saved guest event resumes reward without replaying fireworks
+PASS Companion acknowledgement stays at original protagonist
+PASS Guest event completes original delayed NPC departure
+PASS Old companion branch save resumes at original instruction
+PASS zone32: pet without hero/script control does not trigger indexed party mines
+PASS zone32: hidden extra does not trigger mine
+PASS zone32: only Green creature near guest is killed
+PASS zone32: original death chain explodes and removes the creature once
+PASS zone32: original rearm chain covers later guest proximity
+PASS zone32: guest multi-wave timing and effects match original companion
+PASS zone34: pet without hero/script control does not trigger indexed party mines
+PASS zone34: hidden extra does not trigger mine
+PASS zone34: only Green creature near guest is killed
+PASS zone34: original death chain explodes and removes the creature once
+PASS zone34: original rearm chain covers later guest proximity
+PASS zone34: guest multi-wave timing and effects match original companion
+PASS zone35: pet without hero/script control does not trigger indexed party mines
+PASS zone35: hidden extra does not trigger mine
+PASS zone35: only Green creature near guest is killed
+PASS zone35: original death chain explodes and removes the creature once
+PASS zone35: original rearm chain covers later guest proximity
+PASS zone35: guest multi-wave timing and effects match original companion
+PASS zone1: original startup and saved body indexes remain
+PASS zone1: adaptation is idempotent
+PASS zone1: original campaign stays outside adaptation
+PASS zone3dun1: original startup and saved body indexes remain
+PASS zone3dun1: adaptation is idempotent
+PASS zone3dun1: original campaign stays outside adaptation
+PASS zone10: original startup and saved body indexes remain
+PASS zone10: adaptation is idempotent
+PASS zone10: original campaign stays outside adaptation
+PASS zone15: original startup and saved body indexes remain
+PASS zone15: adaptation is idempotent
+PASS zone15: original campaign stays outside adaptation
+PASS zone16: original startup and saved body indexes remain
+PASS zone16: adaptation is idempotent
+PASS zone16: original campaign stays outside adaptation
+PASS zone21: original startup and saved body indexes remain
+PASS zone21: adaptation is idempotent
+PASS zone21: original campaign stays outside adaptation
+PASS zone22: original startup and saved body indexes remain
+PASS zone22: adaptation is idempotent
+PASS zone22: original campaign stays outside adaptation
+PASS zone32: original startup and saved body indexes remain
+PASS zone32: adaptation is idempotent
+PASS zone32: original campaign stays outside adaptation
+PASS zone34: original startup and saved body indexes remain
+PASS zone34: adaptation is idempotent
+PASS zone34: original campaign stays outside adaptation
+PASS zone35: original startup and saved body indexes remain
+PASS zone35: adaptation is idempotent
+PASS zone35: original campaign stays outside adaptation
+STORY_COOP_PREDICATES 101 checks 0 failures
+[trace 17:58:57 +7960ms] clean exit

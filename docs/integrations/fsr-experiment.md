@@ -1,20 +1,24 @@
-# Windows AMD FSR experiment
+# AMD FSR on Windows
 
-The `1.20.0-experimental.4` preview adds AMD FSR, based on stable 1.19.0. It changes the native Godot renderer;
-a GDScript setting or an ordinary Godot export alone cannot enable it.
-Upscaling and frame generation both start **Off**.
+Cursed Lands 1.20.0 includes AMD FSR in the normal Windows executable, alongside
+formula mods and the campaign fixes. It uses a custom native Godot renderer;
+an ordinary Godot export alone cannot enable it. Upscaling and frame generation
+both start **Off**.
 
-## Try the preview
+## Enable FSR
 
-1. Extract the entire package into its own directory and run `Play-FSR.cmd`.
-   It selects Forward+ / Direct3D 12 with the Safe rendering thread.
-2. Select your original game files when asked. The preview uses
-   `%APPDATA%\Cursed Lands FSR Experiment` for its settings and saves.
-3. Open **Options → Screen → AMD FSR experiment**.
+1. Extract the complete Windows package and run `CursedLands.exe` as usual.
+2. Open **Options → Screen → Renderer**. If necessary, select
+   **Forward+ (Direct3D 12)** and accept the normal restart prompt.
+3. Open **Options → Screen → AMD FSR**.
 4. Select **FSR 3.1** or **FSR 4** for upscaling, then choose **Native AA**,
    **Quality**, **Balanced** or **Performance**.
 5. Select an available frame-generation version to generate one intermediate
    frame per rendered frame during campaign gameplay.
+
+The same installation, settings, saves and mod profiles are used. No special
+launcher or command-line flag is needed. The earlier local experimental profile
+is not imported automatically; existing ordinary release profiles stay in place.
 
 Version availability is queried from the SDK on the active device. Unsupported
 choices are skipped. An FSR 4 request never silently uses FSR 3.1; the runtime
@@ -32,7 +36,7 @@ These hardware requirements come from the pinned
 and [FSR 4 frame-generation guide](https://github.com/GPUOpen-LibrariesAndSDKs/FidelityFX-SDK/blob/v2.3.0/Kits/FidelityFX/docs/techniques/frame-interpolation-ml.md#limitations).
 Compatible drivers and runtime support are also required. Native Windows
 execution remains unqualified; Linux testing used the Windows executable
-through Wine. See the [validation record](../validation/fsr-only.md).
+through Wine. See the [release validation](../validation/release-1.20.0-2026-10-20.json).
 
 Start with SDR, native window/display size and VSync off. The package includes
 Microsoft's x64 Agility 1.618.5 runtime in `x86_64/`; keep that directory beside
@@ -65,7 +69,7 @@ further image-quality review on native Windows and AMD hardware. This is 2×
 generation only; it does not include path tracing, ray reconstruction or
 generation of more than one intermediate frame.
 
-The FPS overlay counts **rendered** frames. `fsr-status.json` in the experiment
+The FPS overlay counts **rendered** frames. `fsr-status.json` in the game
 profile reports actual SDK versions, successful upscale dispatches, generated
 frames, game presents, real DXGI presents and errors. `presented_frames`
 counts calls reaching the underlying swapchain; it does not measure how many

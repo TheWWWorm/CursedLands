@@ -1,0 +1,6 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 18:00:24 +5799ms] session 7914179a7ad2: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"cursed_lands","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"res://tools/tests/creature_effect_attachments.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/issue-fixes-20261020/broad-regressions/tests/effects/creature_effect_attachments/profile/data/godot/app_userdata/Cursed Lands"}
+CREATURE_EFFECT_ATTACHMENTS checks=1739 failures=0 rigs=47 affected=[{ "rig": "unmowi", "selector": "bd", "part": "bd00", "variants": ["WillowispM1", "WillowispM3", "WillowispM5"] }]
+[trace 18:00:28 +10288ms] clean exit

@@ -1,0 +1,67 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 18:05:14 +5620ms] session 3bb70f23c043: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"cursed_lands","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"res://tools/tests/coop_guest_roles.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/issue-fixes-20261020/broad-regressions/tests/coop/coop_guest_roles/profile/data/godot/app_userdata/Cursed Lands"}
+PASS original bz7g contains transition to HeroAlone
+PASS authority selects authored HeroAlone
+PASS original host transition to HeroAlone
+PASS live role keeps guest display name
+PASS dialogue purse scope fully unwinds
+PASS captive guest has authored body and own stats
+PASS network deployment names cannot break native stat copying
+PASS captive equipment and bag are restricted
+PASS normal spells wait with original guest
+PASS original bz13h contains transition to Pretty
+PASS authority selects authored Pretty
+PASS original host transition to Pretty
+PASS live role keeps guest display name
+PASS dialogue purse scope fully unwinds
+PASS Nalo guests use authored stats instead of normal hero
+PASS nested rescue parks captive progress and bag
+PASS host current and waiting bags stay independent
+PASS private temporary role starts with empty bag
+PASS class guest cannot access waiting shared bag
+PASS extra role does not duplicate narrative object name
+PASS temporary private loot stays with that player
+PASS temporary stats/loot do not overwrite main hero in progress package
+PASS credited save resumes guest's played temporary role and own loot
+PASS credited temporary role retains its own pose and health
+PASS independent load keeps normal hero and bag waiting
+PASS late class guest receives current temporary role
+PASS repeated deployment does not recreate role or duplicate inventory
+PASS host role journal saves
+PASS host role journal reloads
+PASS save/load retains live temporary progression
+PASS loaded journal binds to the deployed character record
+PASS write old-format unrestricted guest save
+PASS old save projects unrestricted guest into current temporary role
+PASS legacy projection parks original gear and purse without loss
+PASS offline guest from old save follows authored return before reconnect
+PASS original zone15 contains transition to HeroAlone
+PASS authority selects authored HeroAlone
+PASS original host transition to HeroAlone
+PASS live role keeps guest display name
+PASS dialogue purse scope fully unwinds
+PASS Nalo return restores each captive's own earned progress
+PASS Nalo progression stays with Nalo
+PASS original bz13h contains transition to 
+PASS authority selects authored 
+PASS original host transition to 
+PASS live role keeps guest display name
+PASS dialogue purse scope fully unwinds
+PASS rescue return copies earned captive stats but restores original gear
+PASS rescue return applies authored personal loot transfer once
+PASS class captive loot returns once to shared bag without Nalo-only loot
+PASS class guest resumes the shared bag on return
+PASS original bz7g contains transition to JunParty
+PASS authority selects authored JunParty
+PASS original host transition to JunParty
+PASS live role keeps guest display name
+PASS dialogue purse scope fully unwinds
+PASS Jun disguise copies guest stats and own equipment
+PASS Jun copies guest bag according to original script
+PASS Jun does not clone shared host inventory for every class guest
+PASS uncredited temporary return leaves progress context untouched
+PASS all original party operations executed
+COOP_GUEST_ROLES {"checks":51,"failures":0}
+[trace 18:05:15 +6038ms] clean exit

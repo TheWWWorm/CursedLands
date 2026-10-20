@@ -1,7 +1,7 @@
 class_name GraphicsAttribution
 extends RefCounted
 ## Package contents determine attribution, independently of GPU support or
-## current settings. build_fsr_preview.py sets this flag in its export copy.
+## current settings. The Windows release export sets this flag in its export copy.
 
 const AMD_FLAG := "application/graphics_sdk/amd"
 const AMD_CREDIT := "AMD FSR Upscaling and AMD FSR Frame Generation via AMD FidelityFX SDK."

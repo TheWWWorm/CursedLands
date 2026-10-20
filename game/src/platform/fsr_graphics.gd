@@ -7,16 +7,15 @@ const QUALITY := "fsr_quality"
 const FRAME_GENERATION := "fsr_frame_generation"
 const OPTIONS := [UPSCALING, QUALITY, FRAME_GENERATION]
 const GROUP := 27
-const SECTION := ["AMD FSR experiment", "Experimental FSR 3.1 and FSR 4 for the campaign view on Windows with Direct3D 12. Start Play-FSR.cmd. Upscaling and frame generation are off by default."]
+const SECTION := ["AMD FSR", "FSR 3.1 and FSR 4 for the campaign view on Windows. Select Forward+ (Direct3D 12) in Screen settings and restart if needed. Upscaling and frame generation are off by default."]
 const SR_HELP := "Select FSR 3.1 or FSR 4 explicitly. FSR 4 requires a supported Radeon RX 7000 discrete GPU or RX 9000 or newer. FSR 3.1 also supports other compatible GPUs. Unavailable versions are skipped. Overrides anti-aliasing and Render scale while active."
 const QUALITY_HELP := "Native AA renders at full resolution. Quality, Balanced and Performance render fewer pixels and reconstruct the image. Requires FSR upscaling to be selected."
 const FG_HELP := "Generate one extra display frame per rendered frame during campaign gameplay. FSR 3.1 supports compatible AMD and NVIDIA GPUs; FSR 4 requires Windows 11 and Radeon RX 9000 or newer. Requires FSR upscaling. Pauses during menus, loading and loss of focus. The FPS counter shows rendered frames."
 const VERSIONS := ["Off", "FSR 3.1", "FSR 4"]
 const QUALITIES := ["Native AA", "Quality", "Balanced", "Performance"]
 const SCALES := [1.0, 2.0 / 3.0, 1.0 / 1.7, 0.5]
-const UNAVAILABLE := "This engine does not include the AMD FSR experiment."
-const START_LAUNCHER := "Start Play-FSR.cmd to load the AMD FSR experiment."
-const NEED_API := "Requires Windows and the Direct3D 12 Forward+ renderer."
+const UNAVAILABLE := "This build does not include AMD FSR."
+const NEED_API := "Requires Windows and Forward+ (Direct3D 12). Select that renderer in Screen settings and restart."
 const NEED_SR := "The selected FSR upscaler is unavailable on this GPU or driver, or its runtime could not be loaded."
 const NEED_FG := "The selected FSR frame-generation version is unavailable on this GPU, operating system or driver."
 const ENABLE_SR := "Select FSR 3.1 or FSR 4 upscaling first."
@@ -32,7 +31,6 @@ static func facts() -> Dictionary:
 	var native := bridge()
 	var result := {
 		"engine": native != null and native.has_method("get_status") and ClassDB.class_has_integer_constant("Viewport", "SCALING_3D_MODE_FSR_SDK"),
-		"launch": OS.get_cmdline_user_args().has("--experimental-fsr"),
 		"api": DisplayServer.get_name() != "headless" and OS.get_name() == "Windows" and RenderingServer.get_current_rendering_method() == "forward_plus" and RenderingServer.get_current_rendering_driver_name() == "d3d12",
 		"sr3": false, "sr4": false, "fg3": false, "fg4": false,
 	}
@@ -46,7 +44,6 @@ static func facts() -> Dictionary:
 static func reason_for(name: String, info: Dictionary, sr: int, fg: int = 0) -> String:
 	if not info.get("engine", false): return UNAVAILABLE
 	if not info.get("api", false): return NEED_API
-	if not info.get("launch", false): return START_LAUNCHER
 	if name != UPSCALING and sr <= 0: return ENABLE_SR
 	if sr > 0 and not info.get("sr" + str(sr + 2), false): return NEED_SR
 	if sr == 0 and not info.get("sr3", false) and not info.get("sr4", false): return NEED_SR
@@ -85,7 +82,7 @@ static func apply_upscaling(vp: Viewport) -> void:
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	set_process(facts().engine and facts().api and facts().launch)
+	set_process(facts().engine and facts().api)
 
 func _process(dt: float) -> void:
 	var root := get_tree().root

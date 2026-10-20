@@ -1,0 +1,18 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 17:58:42 +5797ms] session 14c842be7449: 1.19.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+GAMEPLAY_SUITE_START {"campaign":"cursed_lands","display":"headless","display_driver":"headless","engine":{"build":"official","hash":"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (official)","timestamp":0},"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"rendering_method":"forward_plus","script":"res://tools/tests/script_dead_predicates.gd","seed":20261020,"user_dir":"/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/issue-fixes-20261020/broad-regressions/tests/quests/script_dead_predicates/profile/data/godot/app_userdata/Cursed Lands"}
+PASS missing actor is not a death
+PASS missing actor is not alive
+PASS living actor is not dead
+PASS living actor is alive
+PASS dead actor satisfies death predicate
+PASS dead actor is not alive
+PASS retained looted corpse remains dead
+PASS retained looted corpse is not alive
+PASS freed actor does not become a kill
+PASS freed actor is not alive
+PASS map object without a unit body is not dead
+PASS non-object argument is not a death
+SCRIPT_DEAD_PREDICATES 12 checks 0 failures
+[trace 17:58:42 +6033ms] clean exit
