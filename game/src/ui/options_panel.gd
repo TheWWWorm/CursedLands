@@ -110,7 +110,7 @@ const SECTIONS := [WORLD_GROUP, TERRAIN_GROUP, LIGHT_GROUP, WATER_GROUP, EFFECTS
 ## The remake pages and the page their « row (and Esc / B) leads back to; the
 ## parent's button is lit while one is up. The graphics sections also hang
 ## under Graphics (GRAPHICS_LINKS) when opened from there (`_came_from`).
-const PARENT := {DIRECT_GROUP: CAMERA_GROUP, DIRECT_KEYS_GROUP: DIRECT_GROUP, DIRECT_PAD_GROUP: DIRECT_GROUP, WORLD_GROUP: REMAKE_GROUP, LIGHT_GROUP: REMAKE_GROUP,
+const PARENT := {FsrGraphics.GROUP: SCREEN_GROUP, DIRECT_GROUP: CAMERA_GROUP, DIRECT_KEYS_GROUP: DIRECT_GROUP, DIRECT_PAD_GROUP: DIRECT_GROUP, WORLD_GROUP: REMAKE_GROUP, LIGHT_GROUP: REMAKE_GROUP,
 	EFFECTS_GROUP: REMAKE_GROUP, CAMERA_GROUP: REMAKE_GROUP, INTERFACE_GROUP: REMAKE_GROUP,
 	GAMEPLAY_GROUP: REMAKE_GROUP, COOP_GROUP: REMAKE_GROUP, PAD_GROUP: REMAKE_GROUP,
 	PAD_BUTTONS_GROUP: PAD_GROUP, TERRAIN_GROUP: REMAKE_GROUP, WATER_GROUP: REMAKE_GROUP}
@@ -358,6 +358,10 @@ func _show_group(g: int) -> void:
 			var reason := ModStore.editable(name)
 			_rows[int(o[4])].disabled = reason != ""
 			if reason != "": _rows[int(o[4])].tip += "\n" + RemakeText.t(reason)
+		if name in FsrGraphics.OPTIONS:
+			var reason := FsrGraphics.reason(name, _values)
+			_rows[int(o[4])].disabled = reason != "" and (name == FsrGraphics.QUALITY or int(_values.get(name, 0)) == 0)
+			if reason != "": _rows[int(o[4])].tip += "\n\n" + RemakeText.t(reason)
 	for a: Array in EIKeymap.ACTIONS:
 		if int(a[2]) != _group:
 			continue
@@ -386,6 +390,8 @@ func _show_group(g: int) -> void:
 			"tip":RemakeText.t("Choose a graphics level, then confirm with ✓. Ultra enables every remake effect at its highest quality. Volumetric fog, ambient occlusion, water reflections and depth of field need Forward+ for the full effect. Manual changes become Custom.")}
 		for i in GRAPHICS_LINKS.size():
 			_rows[GRAPHICS_LINK_ROW + i] = _section_link(GRAPHICS_LINKS[i])
+	elif _group == SCREEN_GROUP:
+		_rows[13] = _section_link(FsrGraphics.GROUP)
 	elif _parent(_group) >= 0:
 		_rows[BACK_ROW] = {"kind": "link", "name": "", "to": _parent(_group),
 			"label": "« " + _section_label(_parent(_group)), "tip": ""}
@@ -568,6 +574,10 @@ func _switch_text(row: Dictionary) -> String:
 
 func _set_value(name: String, v: int) -> void:
 	if ModSchema.RULES.has(name) and ModStore.editable(name) != "": return
+	if name in FsrGraphics.OPTIONS:
+		var proposed := _values.duplicate()
+		proposed[name] = v
+		if (name == FsrGraphics.QUALITY or v > 0) and not FsrGraphics.reason(name, proposed).is_empty(): return
 	var was := int(_values.get(name, 0))
 	if name == "graphics_preset":
 		var preset_values := GfxPresets.values(v)
@@ -585,6 +595,10 @@ func _set_value(name: String, v: int) -> void:
 		_refresh_keys()
 	if name in LIVE:   # volumes, gamma ramp, stereo at once
 		GameData.set_option(name, v)
+	if name in FsrGraphics.OPTIONS:
+		var selected := _sel
+		_show_group(_group)
+		_sel = selected
 	queue_redraw()
 
 
@@ -598,7 +612,7 @@ func _toggle(r: int) -> void:
 			_preset_picker.show_popup()
 		"switch":
 			sound("messbox\\ok")
-			_set_value(row.name, (int(_values.get(row.name, 0)) + 1) % int(row.max))
+			_set_value(row.name, FsrGraphics.next_value(row.name, int(_values.get(row.name, 0)), _values) if row.name in FsrGraphics.OPTIONS else (int(_values.get(row.name, 0)) + 1) % int(row.max))
 		"link":
 			sound("messbox\\ok" if row.get("preset", false) else "save\\select")   # Original look: a switch's sound
 			if row.get("profile",false):

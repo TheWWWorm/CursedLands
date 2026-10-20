@@ -1,0 +1,146 @@
+#!/usr/bin/env python3
+"""Export a committed FSR-only Windows preview. Does not publish or tag."""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import tarfile
+
+import prepare_fsr_sdk
+from check_fsr_distribution import check_source, check_template, check_package
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def digest(path):
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def build(args):
+    check_source(ROOT)
+    check_template(args.windows_template)
+    prepare_fsr_sdk.prepare(args.fsr_sdk)
+    if digest(args.fsr_sdk / "agility/x86_64/D3D12Core.dll") != prepare_fsr_sdk.AGILITY_CORE_SHA256:
+        raise ValueError("DirectX Agility runtime checksum mismatch")
+    commit = subprocess.check_output(["git", "rev-parse", args.ref], cwd=ROOT, text=True).strip()
+    args.output.mkdir(parents=True, exist_ok=False)
+    source = args.output / "source"
+    source.mkdir()
+    archive = args.output / "source.tar"
+    with archive.open("wb") as stream:
+        subprocess.run(["git", "archive", commit], cwd=ROOT, stdout=stream, check=True)
+    with tarfile.open(archive) as stream:
+        stream.extractall(source, filter="data")
+    archive.unlink()
+    check_source(source, archived=True)
+    game = source / "game"
+    project = game / "project.godot"
+    version = re.search(r'^config/version="([^"]+)"', project.read_text(), re.M)[1]
+    if "-experimental." not in version:
+        raise ValueError("Only experimental versions may be packaged by this tool")
+    project.write_text(project.read_text().replace(
+        'boot_splash/image="res://assets/branding/splash.png"',
+        'boot_splash/image="res://assets/branding/splash-fsr.png"\ngraphics_sdk/amd=true'))
+    profile = args.output / "export-profile"
+    user = profile / "data/Cursed Lands FSR Experiment"
+    user.mkdir(parents=True)
+    (user / "settings.cfg").write_text("[options]\nconfine_mouse=0\nshow_fps=1\nvolume_sfx=0\nvolume_stream=0\nvolume_voice=0\n")
+    env = dict(os.environ, **{f"XDG_{key}_HOME": str(profile / key.lower()) for key in ("DATA", "CONFIG", "CACHE")})
+    presets = game / "export_presets.cfg"
+    parts = re.split(r"(?=\[preset\.\d+\]\n)", presets.read_text())
+    for i, part in enumerate(parts):
+        if 'name="Windows"' in part:
+            parts[i] = part.replace('custom_template/release=""', 'custom_template/release=' + json.dumps(str(args.windows_template)))
+    presets.write_text("".join(parts))
+
+    def run(label, command, bootstrap=False):
+        log = args.output / (label + ".log")
+        for attempt in range(2 if bootstrap else 1):
+            with log.open("w") as stream:
+                result = subprocess.run(command, env=env, stdout=stream, stderr=subprocess.STDOUT, timeout=600)
+            errors = re.findall(r"(?m)^(?:SCRIPT ERROR:|ERROR:).*$", log.read_text())
+            if result.returncode == 0 and not errors:
+                print(label, "passed", flush=True)
+                return
+            if not bootstrap or attempt or "no resource loaders" not in log.read_text():
+                raise RuntimeError(f"{label} failed: inspect {log}")
+            log.rename(args.output / (label + "-bootstrap.log"))
+
+    run("import", [args.godot, "--headless", "--path", str(game), "--editor", "--import", "--quit"], True)
+    out = args.output / f"CursedLands-{version}-windows-x86_64"
+    out.mkdir()
+    run("export", [args.godot, "--headless", "--path", str(game), "--export-release", "Windows", str(out / "CursedLands.exe")])
+    for name in prepare_fsr_sdk.DLLS:
+        shutil.copy2(args.fsr_sdk / "Kits/FidelityFX/signedbin" / name, out / name)
+    notices = out / "licenses/AMD-FidelityFX"
+    notices.mkdir(parents=True)
+    shutil.copy2(args.fsr_sdk / "Kits/FidelityFX/docs/license.md", notices)
+    shutil.copy2(args.fsr_sdk / "3rdpartynotice.md", notices)
+    shutil.copytree(args.fsr_sdk / "agility", out, dirs_exist_ok=True)
+    for name in ("LICENSE.md", "THIRD_PARTY_NOTICES.md", "CHANGELOG.md"):
+        shutil.copy2(source / name, out)
+    shutil.copytree(source / "licenses", out / "licenses", dirs_exist_ok=True)
+    shutil.copytree(source / "engine_patches/godot-4.7", out / "engine_patches/godot-4.7")
+    shutil.copy2(source / "public/GODOT_LICENSES.txt", out)
+    shutil.copy2(game / "fonts/LICENSE.txt", out / "FONT_LICENSE.txt")
+    for notice in (game / "src/native").glob("*NOTICES.txt"):
+        shutil.copy2(notice, out)
+    for launcher in (source / "tools/windows").glob("Play-*.cmd"):
+        shutil.copy2(launcher, out)
+    for relative in ("docs/integrations/fsr-experiment.md", "docs/branding/graphics-sdk-attribution.md",
+                     "docs/branding/graphics-sdk-assets.json", f"docs/releases/{version}.md",
+                     "docs/validation/fsr-only.md", "docs/validation/fsr-only.json"):
+        if (source / relative).exists():
+            target = out / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source / relative, target)
+    if (source / "docs/validation/fsr-only").exists():
+        shutil.copytree(source / "docs/validation/fsr-only", out / "docs/validation/fsr-only")
+    shutil.copy2(source / "docs/releases" / (version + ".md"), out / "RELEASE-NOTES.md")
+    (out / "README.txt").write_text(
+        "Cursed Lands — AMD FSR experiment\n\n"
+        "EN: Run Play-FSR.cmd. Options > Screen > AMD FSR experiment.\n"
+        "Upscaling and frame generation start Off. Unsupported versions are skipped.\n"
+        "FSR 4 and native Windows execution still need hardware validation.\n"
+        "RU: Запустите Play-FSR.cmd. Настройки > Экран > Эксперимент AMD FSR.\n"
+        "Масштабирование и генерация кадров по умолчанию выключены. Недоступные версии пропускаются.\n"
+        "FSR 4 и работа непосредственно в Windows ещё требуют проверки на оборудовании.\n"
+        "DE: Starten Sie Play-FSR.cmd. Optionen > Bildschirm > AMD-FSR-Experiment.\n"
+        "Skalierung und Frame-Generierung sind zunächst aus. Nicht verfügbare Versionen werden übersprungen.\n"
+        "FSR 4 und die native Windows-Ausführung müssen noch auf Hardware geprüft werden.\n\n"
+        "docs/integrations/fsr-experiment.md\n"
+        "Profile / Профиль / Profil: %APPDATA%\\Cursed Lands FSR Experiment\n"
+        "Runtime / Библиотеки / Laufzeit: Microsoft Visual C++ v14 x64\n"
+        "https://aka.ms/vc14/vc_redist.x64.exe\n", encoding="utf-8")
+    check_package(out)
+    info = {
+        "version": version, "source_commit": commit, "platform": "windows-x86_64",
+        "base_release": "v1.19.0", "godot_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+        "engine_template_sha256": digest(args.windows_template), "protocol": 23,
+        "fsr_sdk": prepare_fsr_sdk.VERSION,
+        "fsr_manifest_sha256": digest(source / "engine_patches/godot-4.7/fsr-sdk.json"),
+        "fsr_engine_patch_sha256": digest(source / "engine_patches/godot-4.7/experimental-fsr.patch"),
+        "agility_sdk": prepare_fsr_sdk.AGILITY_VERSION,
+        "native_windows_qualified": False, "fsr4_hardware_qualified": False,
+        "files": {str(p.relative_to(out)): digest(p) for p in sorted(out.rglob("*")) if p.is_file()},
+    }
+    (out / "BUILD-INFO.json").write_text(json.dumps(info, indent=2) + "\n")
+    print(out, flush=True)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--windows-template", type=Path, required=True)
+    parser.add_argument("--fsr-sdk", type=Path, required=True)
+    parser.add_argument("--godot", default="godot-4")
+    parser.add_argument("--ref", default="HEAD")
+    args = parser.parse_args()
+    for key in ("output", "windows_template", "fsr_sdk"):
+        setattr(args, key, getattr(args, key).resolve())
+    build(args)

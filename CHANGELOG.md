@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.20.0-experimental.4
+
+- Add optional FSR 3.1 and FSR 4 upscaling and frame generation for Windows Direct3D 12.
+- Add localized FSR settings, official AMD FSR splash artwork and SDK credits.
+- Keep the preview profile separate from normal saves and settings.
+
 ## Unreleased
 
 - Bring creature-name filtering and creature-to-map highlights to the standalone web wiki. Preserve map filters and layers through browser Back, reload and shared links, with English, Russian and German controls.
