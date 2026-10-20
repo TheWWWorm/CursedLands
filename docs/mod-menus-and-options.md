@@ -6,6 +6,30 @@ Cursed Lands should offer optional game rules and a common settings menu that in
 
 Use three connected surfaces: **Mods** for installed packages and profiles, **Mod options** for their settings, and **Sandbox** for explicit cheats and authoring tools. Ordinary graphics, camera, controls and accessibility settings keep their existing homes. Built-in optional rules remain usable without installing a mod.
 
+## Mod support direction (20 October 2026)
+
+Cursed Lands' own documented mod API is the development target. Loading original
+Evil Islands DLLs as plugins or providing general compatibility with the original
+executable/DLL interfaces is outside the planned scope.
+
+DLL conversion and ports of original-game DLL mods are out of scope for this
+iteration. Keep retained research available for separately scoped future work.
+
+The unpublished Jamais Vu compatibility work is a source of reusable components:
+the Lua interpreter, declared gameplay callbacks, script-state persistence,
+host-controlled execution and replication, resource import, and focused tests.
+Extract and validate suitable components against the current stable source.
+Completing the entire historical compatibility task or reproducing every native
+memory layout and binary quirk is not a prerequisite for new mod support.
+The first implementation uses a bounded Lua runtime for explicit, stateless
+formulas. Legacy adapters and script-state persistence are not included.
+
+Preserve ordinary game behavior, existing saves, profiles and documented package
+APIs when integrating this work. Verify sessions without script mods, including
+a return from a modded profile, alongside save/load, co-op and separate simulation
+process checks. The 1.20.0-alpha.1 preview implements the first subset described in
+[mod-formulas.md](mod-formulas.md); [mods.md](mods.md) describes player setup.
+
 ## Where players find the menus
 
 | Surface | Purpose and behavior |

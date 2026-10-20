@@ -76,7 +76,12 @@ static func begin(s: Session, u: GameUnit, t: GameUnit) -> void:
 	if not revivable(s, t):
 		return
 	var at := t.pos
-	u.command({"type": "use", "sub": "revive", "at": at, "hold": ModStore.capability("revival.seconds"),
+	var seconds := ModStore.capability("revival.seconds")
+	if ModFormula.has_hook("revival_seconds"):
+		var result := ModFormula.transform("revival_seconds", seconds, {"helper_intelligence": float(u.get_meta("hero", {}).get("int", 25.0)), "target_max_health": t.max_hp}, s)
+		if not result.ok: return
+		seconds = result.value
+	u.command({"type": "use", "sub": "revive", "at": at, "hold": seconds,
 		"check": func() -> bool:
 			return revivable(s, t) and t.pos.distance_to(at) <= MOVED,
 		"done": func():
@@ -91,7 +96,12 @@ static func finish(s: Session, t: GameUnit) -> void:
 	# XP earned while downed changes the pools only when the body rises.
 	# Refresh first so the configured revival HP remains an absolute amount.
 	XpRules._refresh_pools(t, h)
-	t.rise(ModStore.capability("revival.health"))
+	var health := ModStore.capability("revival.health")
+	if ModFormula.has_hook("revival_health"):
+		var result := ModFormula.transform("revival_health", health, {"target_max_health": t.max_hp}, s)
+		if not result.ok: return
+		health = minf(result.value, t.max_hp)
+	t.rise(health)
 	if h.has("merc"):
 		var n := int(h.merc)
 		h.erase("fallen")

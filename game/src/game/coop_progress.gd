@@ -239,6 +239,7 @@ static func decode_progress(payload: PackedByteArray, size: int) -> Dictionary:
 
 
 func _rpc_package(pkg: Dictionary) -> void:
+	if session.mod_script_failed: return
 	var mods: Variant = pkg.get("mod_config", {})
 	if ModStore.configuration_error(mods) != "" or ModStore.progress_signature(mods) != ModStore.progress_signature(session.mod_config): return
 	var st: CampaignState = null
@@ -1344,6 +1345,7 @@ func package(e: Dictionary) -> Dictionary:
 
 ## Host: every connected joiner gets its package when it changed.
 func send_all() -> void:
+	if session.mod_script_failed: return
 	if not _host_online() or joiners.is_empty():
 		return
 	if purse_active():   # a joiner's purse stands in for the party's: next frame

@@ -4,6 +4,10 @@ var checks := 0
 var failures := 0
 var acked := false
 var problem := ""
+var package_key := "example.quick-recovery@1.0.0"
+var option_key := "example.quick-recovery:seconds"
+var changed_value := 7.5
+var initial_value := 3.0
 
 func check(ok: bool, label: String) -> void:
 	checks += 1
@@ -22,8 +26,13 @@ func _ready() -> void:
 	MoviePlayer.enabled = false
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--package="): check(ModStore.import_package(arg.trim_prefix("--package=")) == "", "import example")
+		if arg == "--formula":
+			package_key = "example.expedition-xp@1.0.0"
+			option_key = "example.expedition-xp:multiplier"
+			changed_value = 2.0
+			initial_value = 1.5
 	check(ModStore.create_profile("Worker sandbox", true) == "", "create worker profile")
-	check(ModStore.set_packages(["example.quick-recovery@1.0.0"]) == "" and ModStore.mount() == "", "mount owner package")
+	check(ModStore.set_packages([package_key]) == "" and ModStore.mount() == "", "mount owner package")
 	var s := Session.new()
 	s.name = "Session"
 	get_parent().add_child(s)
@@ -34,12 +43,12 @@ func _ready() -> void:
 	var result := await s.local_host.start(0,1,true)
 	check(result == OK and s.local_host.frontend and not s.is_host, "separate authority starts and authenticates owner")
 	if result != OK: get_tree().quit(1); return
-	s.request_mod_rules({"sandbox_invulnerable":1, "free_run":1, "stamina_regen":1}, {"example.quick-recovery:seconds":7.5})
+	s.request_mod_rules({"sandbox_invulnerable":1, "free_run":1, "stamina_regen":1}, {option_key:changed_value})
 	check(await until(func(): return acked), "owner receives explicit settings acknowledgement")
-	check(problem == "" and ModStore.capability("revival.seconds") == 7.5 and s.mod_config.rules.sandbox_invulnerable == 1, "worker publishes accepted effective values")
+	check(problem == "" and ModStore.effective().values[option_key] == changed_value and s.mod_config.rules.sandbox_invulnerable == 1, "worker publishes accepted effective values")
 	check(s.mod_config.rules.get("free_run", 0) == 1, "worker publishes free-running rule to the client")
 	check(s.mod_config.rules.get("stamina_regen", 0) == 1, "worker publishes the stamina regeneration rule to the client")
-	check(ModStore.profile().values["example.quick-recovery:seconds"] == 3, "running edits leave next-run defaults intact")
+	check(ModStore.profile().values[option_key] == initial_value, "running edits leave next-run defaults intact")
 	acked = false
 	s._rpc_mod_rules.rpc_id(1, {"sandbox_invulnerable":0}, {}, int(s.mod_config.revision)-1)
 	check(await until(func(): return acked) and problem != "" and s.mod_config.rules.sandbox_invulnerable == 1, "stale owner edit is refused without partial application")
@@ -54,7 +63,7 @@ func _ready() -> void:
 		answer = await s.local_host.request("save", {"slot":"mod_worker", "camera":s.local_host.view()})
 		check(answer.get("ok",false) and await until(func(): return FileAccess.file_exists(SaveInfo.path("mod_worker"))), "worker writes profile save")
 		var saved := CampaignState.load_from(SaveInfo.path("mod_worker"))
-		check(saved != null and saved.mod_config.sandbox and saved.mod_config.values["example.quick-recovery:seconds"] == 7.5, "save captures effective sandbox and mod options")
+		check(saved != null and saved.mod_config.sandbox and saved.mod_config.values[option_key] == changed_value, "save captures effective sandbox and mod options")
 		check(saved != null and saved.mod_config.rules.get("free_run", 0) == 1, "save captures free-running rule")
 		check(saved != null and saved.mod_config.rules.get("stamina_regen", 0) == 1, "save captures stamina regeneration rule")
 		check(not FileAccess.file_exists(CampaignProfile.save_directory(GameData.campaign_id).path_join("mod_worker.sav")), "ordinary save namespace untouched")

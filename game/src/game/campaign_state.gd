@@ -5,6 +5,8 @@ extends RefCounted
 var campaign_id := GameData.campaign_id
 ## Empty on legacy saves; new runs freeze their rules and required packages.
 var mod_config: Dictionary = {}
+## Runtime-only failure guard. Failed simulations must never overwrite saves.
+var mod_script_failed := false
 
 ## Global script variables (GSGetVar/GSSetVar). Index 0 is the shared campaign
 ## state used by all original scripts; in co-op it is the party's shared progress.
@@ -1359,6 +1361,7 @@ func to_dict() -> Dictionary:
 
 
 func save(path: String) -> Error:
+	if mod_script_failed: return ERR_UNAVAILABLE
 	DirAccess.make_dir_recursive_absolute(path.get_base_dir())
 	var f := FileAccess.open(path, FileAccess.WRITE)
 	if f == null:

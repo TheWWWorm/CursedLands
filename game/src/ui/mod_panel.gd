@@ -237,21 +237,21 @@ func _mods_page() -> void:
 		var m: Dictionary = ModStore.catalog[key]
 		var section := card(_body)
 		var row := _row(section)
-		var title := _label("%s  %s" % [RemakeText.t(m.title), m.version], row)
+		var title := _label("%s  %s" % [ModSchema.text(m, "title"), m.version], row)
 		title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		title.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		var toggle := CheckButton.new()
 		toggle.custom_minimum_size = Vector2(130, 44)
 		toggle.set_pressed_no_signal(key in _packages)
 		toggle.text = RemakeText.t("On" if toggle.button_pressed else "Off")
-		toggle.tooltip_text = RemakeText.t(m.title)
+		toggle.tooltip_text = ModSchema.text(m, "title")
 		toggle.disabled = running or _download.busy or GameData.campaign_id not in m.campaigns
 		row.add_child(toggle)
 		toggle.toggled.connect(func(on):
 			if on and key not in _packages: _packages.append(key)
 			elif not on: _packages.erase(key)
 			toggle.text = RemakeText.t("On" if on else "Off"))
-		make_label(str(m.get("description", "")), section, true)
+		make_label(ModSchema.text(m, "description"), section, true)
 		if GameData.campaign_id not in m.campaigns:
 			make_label("This mod is for a different campaign.", section, true)
 		# Show relevant relationships with readable titles. A conflict with a
@@ -262,7 +262,7 @@ func _mods_page() -> void:
 				var found := false
 				for other in ModStore.catalog.values():
 					if other.id == id:
-						titles.append(RemakeText.t(other.title)); found = true; break
+						titles.append(ModSchema.text(other, "title")); found = true; break
 				if not found and relation == "requires": titles.append(id)
 			if not titles.is_empty():
 				make_label(RemakeText.t("Requires: %s" if relation == "requires" else "Cannot use together with: %s") % ", ".join(titles), section, true)

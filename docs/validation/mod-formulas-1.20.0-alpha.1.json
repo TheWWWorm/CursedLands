@@ -1,0 +1,140 @@
+{
+  "date": "2026-10-20",
+  "base_stable": "1.19.0",
+  "version": "1.20.0-alpha.1",
+  "checks": [
+    {
+      "tag": "mod-formulas-final2",
+      "suite": "mod_formulas",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 5.13,
+      "summary": [
+        "MOD_FORMULAS 106 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "tag": "xp_distribution-headless",
+      "suite": "xp_distribution",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 4.87,
+      "summary": [
+        "XP_DISTRIBUTION 96 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "tag": "mod_profiles-headless",
+      "suite": "mod_profiles",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 5.37,
+      "summary": [
+        "MOD_PROFILES {\"checks\":87,\"details\":[],\"failures\":0}"
+      ],
+      "errors": []
+    },
+    {
+      "tag": "mod_texture_packages-headless",
+      "suite": "mod_texture_packages",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 5.27,
+      "summary": [
+        "MOD_TEXTURE_PACKAGES {\"checks\":43,\"failures\":0}"
+      ],
+      "errors": []
+    },
+    {
+      "tag": "mod_effects-headless",
+      "suite": "mod_effects",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 11.63,
+      "summary": [
+        "MOD_EFFECTS {\"checks\":12,\"failures\":0}"
+      ],
+      "errors": []
+    },
+    {
+      "tag": "mod_worker-headless",
+      "suite": "mod_worker",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 23.45,
+      "summary": [
+        "MOD_WORKER {\"checks\":25,\"failures\":0}"
+      ],
+      "errors": []
+    },
+    {
+      "tag": "formula-worker",
+      "suite": "mod_worker",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 22.71,
+      "summary": [
+        "MOD_WORKER {\"checks\":25,\"failures\":0}"
+      ],
+      "errors": []
+    },
+    {
+      "tag": "formula-network-final-host",
+      "suite": "mod_formula_network",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 18.2,
+      "summary": [
+        "MOD_FORMULA_NETWORK host 19 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "tag": "formula-network-final-client",
+      "suite": "mod_formula_network",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 18.44,
+      "summary": [
+        "MOD_FORMULA_NETWORK client 16 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "tag": "formula-network-final-reject",
+      "suite": "mod_formula_network",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 5.47,
+      "summary": [
+        "MOD_FORMULA_NETWORK reject 8 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "tag": "mod_formula_ui-gl_compatibility",
+      "suite": "mod_formula_ui",
+      "renderer": "gl_compatibility",
+      "exit": 0,
+      "seconds": 7.93,
+      "summary": [
+        "MOD_FORMULA_UI 41 checks 0 failures"
+      ],
+      "errors": []
+    }
+  ],
+  "languages": [
+    "en",
+    "ru",
+    "de"
+  ],
+  "translated_keys": 2867,
+  "translations_errors": 0,
+  "notes": [
+    "Initial formula test exposed StringName keys at the Godot boundary; the kernel now accepts them as plain strings.",
+    "A revival-order assertion was corrected to inspect queued orders before a simulation tick.",
+    "Five deliberately invalid callback cases produce MOD_FORMULA_STOP diagnostics; these are expected containment tests."
+  ]
+}

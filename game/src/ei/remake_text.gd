@@ -51,6 +51,25 @@ static func tl(list: Array) -> Array:
 
 ## English → [Russian, German].
 const TEXTS := {
+	"Formula scripts require package API 3.": ["Скриптам формул нужен API пакетов 3.", "Formelskripte benötigen Paket-API 3."],
+	"Unsupported formula API.": ["Неподдерживаемый API формул.", "Nicht unterstützte Formel-API."],
+	"Invalid formula modules.": ["Некорректные модули формул.", "Ungültige Formelmodule."],
+	"Invalid formula entry module.": ["Некорректный начальный модуль формул.", "Ungültiges Startmodul der Formeln."],
+	"Invalid formula module path.": ["Некорректный путь к модулю формул.", "Ungültiger Pfad eines Formelmoduls."],
+	"Invalid formula hooks.": ["Некорректные обработчики формул.", "Ungültige Formel-Hooks."],
+	"Package API 3 requires English, Russian and German text.": ["Для API пакетов 3 нужны тексты на английском, русском и немецком.", "Paket-API 3 benötigt englische, russische und deutsche Texte."],
+	"Invalid translated mod options.": ["Некорректные переводы настроек мода.", "Ungültige Übersetzungen der Mod-Einstellungen."],
+	"Formula sources exceed their size limit.": ["Исходный код формул превышает допустимый размер.", "Der Formelquelltext überschreitet die Größenbegrenzung."],
+	"A profile can enable at most eight formula mods.": ["В профиле можно включить не более восьми модов с формулами.", "Ein Profil kann höchstens acht Formel-Mods aktivieren."],
+	"Formula mods currently require Windows or Linux on a 64-bit PC.": ["Моды с формулами пока поддерживаются только на 64-битных ПК с Windows или Linux.", "Formel-Mods benötigen derzeit Windows oder Linux auf einem 64-Bit-PC."],
+	"The formula runtime is unavailable. Reinstall this game build.": ["Среда выполнения формул недоступна. Переустановите эту сборку игры.", "Die Formellaufzeit ist nicht verfügbar. Installiere diese Spielversion erneut."],
+	"The formula package changed. Reinstall the matching version.": ["Пакет формул изменён. Переустановите нужную версию.", "Das Formelpaket wurde verändert. Installiere die passende Version erneut."],
+	"Formula modules must contain UTF-8 Lua source.": ["Модули формул должны содержать код Lua в UTF-8.", "Formelmodule müssen Lua-Quelltext in UTF-8 enthalten."],
+	"A formula mod could not start. See the game log for details.": ["Не удалось запустить мод с формулами. Подробности в журнале игры.", "Ein Formel-Mod konnte nicht starten. Einzelheiten stehen im Spielprotokoll."],
+	"A formula mod failed. Simulation and saving have stopped. Return to the main menu and load a valid save. See the game log for details.": ["Ошибка мода с формулами. Симуляция и сохранение остановлены. Вернитесь в главное меню и загрузите исправное сохранение. Подробности в журнале игры.", "Ein Formel-Mod ist fehlgeschlagen. Simulation und Speichern wurden angehalten. Kehre ins Hauptmenü zurück und lade einen gültigen Spielstand. Einzelheiten stehen im Spielprotokoll."],
+	"Mod options require a numeric value.": ["Настройки мода должны быть числовыми.", "Mod-Einstellungen benötigen einen Zahlenwert."],
+	"Formula mods support single player and campaign co-op.": ["Моды с формулами поддерживают одиночную игру и совместную кампанию.", "Formel-Mods unterstützen Einzelspieler und Koop-Kampagnen."],
+
 	"One pause and speed for the whole co-op game. The host can grant guests permission to control them. Off: co-op always runs at normal speed.": ["Общие пауза и скорость для всей совместной игры. Сервер может разрешить гостям управлять ими. Выкл.: совместная игра всегда идёт с обычной скоростью.", "Gemeinsame Pause und Geschwindigkeit im Koop. Der Host kann Gästen die Steuerung erlauben. Aus: Koop läuft immer mit normaler Geschwindigkeit."],
 	"Guest clock controls": ["Управление временем гостями", "Zeitsteuerung für Gäste"],
 	"Default guest permissions for new co-op games. Adjust each player in the Players menu. Permissions are saved with the campaign; loading restores them. Speed-only permission cannot resume a paused game.": ["Права гостей по умолчанию для новой совместной игры. Права каждого игрока можно изменить в меню «Игроки». Они сохраняются с кампанией и восстанавливаются при загрузке. Право менять только скорость не позволяет снять паузу.", "Standardrechte für Gäste in neuen Koop-Spielen. Einzelne Rechte im Menü Spieler ändern. Rechte werden mit der Kampagne gespeichert und beim Laden wiederhergestellt. Das Temporecht allein kann keine Pause aufheben."],

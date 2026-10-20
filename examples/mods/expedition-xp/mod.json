@@ -1,0 +1,59 @@
+{
+  "api": 3,
+  "id": "example.expedition-xp",
+  "version": "1.0.0",
+  "title": "Expedition experience",
+  "description": "Adjust all campaign experience rewards before party distribution and intelligence bonuses.",
+  "campaigns": [
+    "cursed_lands",
+    "lost_in_astral"
+  ],
+  "modes": [
+    "single_player",
+    "campaign_coop"
+  ],
+  "options": [
+    {
+      "id": "multiplier",
+      "type": "number",
+      "label": "Reward multiplier",
+      "help": "Scales experience from kills, quests and conversations. Change at camp.",
+      "default": 1.5,
+      "min": 0.25,
+      "max": 3.0,
+      "step": 0.25
+    }
+  ],
+  "script": {
+    "api": 1,
+    "entry": "main",
+    "modules": {
+      "main": "main.lua"
+    },
+    "hooks": [
+      "experience_reward"
+    ]
+  },
+  "translations": {
+    "ru": {
+      "title": "Опыт за приключения",
+      "description": "Изменяет весь опыт в кампании до распределения в группе и бонусов интеллекта.",
+      "options": {
+        "multiplier": {
+          "label": "Множитель опыта",
+          "help": "Множитель опыта за убийства, задания и разговоры. Меняется в лагере."
+        }
+      }
+    },
+    "de": {
+      "title": "Expeditionserfahrung",
+      "description": "Passt Kampagnenerfahrung vor Gruppenverteilung und Intelligenzboni an.",
+      "options": {
+        "multiplier": {
+          "label": "Erfahrungsmultiplikator",
+          "help": "Skaliert Erfahrung aus Kämpfen, Aufgaben und Gesprächen. Im Lager änderbar."
+        }
+      }
+    }
+  }
+}
