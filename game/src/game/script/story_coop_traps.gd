@@ -222,7 +222,7 @@ static func hold_registration(vm: ScriptVM, inst: ScriptVM.Instance) -> bool:
 	var actor = vm._deser(reference)
 	if actor == null and root == PRISON_DAMAGE_REGISTER:
 		# Normal disconnect leaves the actor in this map as an AI follower.
-		# Its native damage/Sleep loop keeps running, including while dead.
+		# Its native damage/Sleep loop keeps running unless revival holds it.
 		# Resolve that exact roster identity, never a recycled numeric UID.
 		for u: GameUnit in vm.world.units.values():
 			if u.controller < 0 and u.has_meta("orphan_of") and vm._hero_key(u) == reference.h:
@@ -230,10 +230,16 @@ static func hold_registration(vm: ScriptVM, inst: ScriptVM.Instance) -> bool:
 				break
 	if actor is GameUnit:
 		inst.locals.this = actor
-		return false
+		# The original keeps firing at a dead actor. Revival deliberately leaves
+		# party bodies in play; hold only this admitted damage loop while that
+		# extension can revive the actor. Living actors and native death rules
+		# retain the original predicate and remaining Sleep(60) on return.
+		if root != PRISON_DAMAGE_REGISTER or not Revive.revivable(vm.session, actor):
+			return false
+	else:
+		inst.locals.this = null
 	if inst.wait_until > last: inst.wait_until += maxf(0.0,vm.time-last)
 	if inst.poll > last: inst.poll += maxf(0.0,vm.time-last)
-	inst.locals.this = null
 	return true
 
 

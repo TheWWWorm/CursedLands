@@ -71,8 +71,8 @@ func spell_cases() -> void:
 	reset();sky();await key(KEY_1)
 	check(g.pending_spell=="healing{}","spell hotkey selects native heal")
 	check(g.pick_unit(get_viewport().get_visible_rect().size*0.5,hero)==null,"sky-facing crosshair has no target")
-	check(not str(g.direct.interaction_hint().get("text", "")).contains(RemakeText.t("Cast on self")), "interaction prompt is reserved for interacting")
-	g.direct.cast_self();await frames(2)
+	check(str(g.direct.interaction_hint().get("text", "")).contains(RemakeText.t("Cast on self")), "selected friendly spell shows the self-cast key")
+	await key(KEY_E)
 	check(order_target(hero) and hero.orders[0].get("type")=="cast","explicit self-cast queues through authority without aiming at a portrait")
 	check(g.pending_spell.is_empty() and g.selected==[hero],"successful self-cast ends targeting and keeps selection")
 	var mana:=hero.mana
@@ -118,7 +118,7 @@ func belt_cases() -> void:
 	if potion.is_empty() or wand.is_empty():return
 	var h:Dictionary=hero.get_meta("hero")
 	for item:String in [potion,wand]:
-		reset();h.quick=[item];g.begin_belt(hero,item);g.direct.cast_self();await frames(2)
+		reset();h.quick=[item];g.begin_belt(hero,item);await key(KEY_E)
 		check(order_target(hero) and hero.orders[0].get("item","")==item,"E targets selected belt item at its holder: "+item)
 		var old_charge:=Items.charge(item)
 		for i in 4:hero._tick(GameUnit.TICK)
@@ -175,7 +175,8 @@ func loot_cases() -> void:
 	reset();s.world.remove_unit(explicit);s.world.remove_unit(loot);sky()
 func safe_zone() -> void:
 	reset();g.pending_spell="healing{}";await key(KEY_E)
-	check(hero.orders.is_empty() and g.pending_spell.is_empty(),"interaction cancels targeting in safe zones too")
+	check(hero.orders.is_empty() and g.pending_spell=="healing{}","safe zone blocks self-casting without issuing interaction")
+	check(not g.direct.interaction_hint().enabled,"self-cast hint reflects the safe-zone command restriction")
 	g.pending_spell="";await key(KEY_1);check(g.pending_spell.is_empty(),"safe zone refuses spell selection")
 func _ready() -> void:
 	get_window().size=Vector2i(800,600)

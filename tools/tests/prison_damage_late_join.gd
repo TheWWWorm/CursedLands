@@ -62,11 +62,13 @@ func independent_cooldowns(guest: GameUnit) -> void:
 	var vm := host.world.vm
 	var corpse_wait := pending("VTriger#0#160",guest)
 	var corpse_deadline: float = corpse_wait[0].wait_until if not corpse_wait.is_empty() else vm.time
+	var remaining := corpse_deadline-vm.time
 	ticks(63)
 	var next_corpse_wait := pending("VTriger#0#160",guest)
-	check(guest.dead and next_corpse_wait.size() == 1 and next_corpse_wait[0].wait_until > corpse_deadline,
-		"original dead-actor trap continues its native Sleep/rearm cadence without a second life")
-	capture("native_dead_cadence")
+	check(guest.dead and next_corpse_wait.size() == 1 and next_corpse_wait[0] == corpse_wait[0] \
+		and is_equal_approx(next_corpse_wait[0].wait_until-vm.time,remaining),
+		"revivable body retains the same sleeping continuation and remaining cooldown")
+	capture("revivable_body_holds_cooldown")
 	guest.pos = SAFE+Vector2(0,3)
 	if guest.dead: Revive.finish(host,guest)
 	# Let every preceding independent trap return to its own idle predicate.
@@ -217,7 +219,7 @@ func _ready() -> void:
 	check(arrival in ["early","late"],"arrival case is explicit")
 	GameData.options.merge({"autosave":0,"show_tutorial":0,"net_upnp":0,"net_lan":0,
 		"net_directory":0,"net_websocket":0,"auto_graphics":0,"control_mode":1,
-		"confine_mouse":0,"scroll_border":0},true)
+		"confine_mouse":0,"scroll_border":0,"revive":1},true)
 	for option: Array in GameData.OPTIONS:
 		if String(option[0]).begins_with("gfx_"): GameData.options[option[0]] = 0
 	CoopProgress.bring_slot = ""
@@ -283,7 +285,7 @@ func _ready() -> void:
 
 func done() -> void:
 	evidence.merge({"checks":checks,"failures":failures,"arrival":arrival,"with_reload":with_reload,
-		"scope":"Original unmodified WorldScript and real ENet early/late guest registration. All eleven traps use native InflictDamage and Sleep, actual walkable map points, and real Revival between independent prepared cases. Native dead-actor rearm, staggered host/guest cooldowns, and present disconnected follower behavior are checked. Optional --damage-reload executes two real host-only Session save/reloads and rejoin during Sleep. Actor positions and VM ticks are controlled with unrelated AI/combat paused. No full navigation route, rendered or timing/performance acceptance."})
+		"scope":"Original unmodified WorldScript and real ENet early/late guest registration. All eleven traps use native InflictDamage and Sleep, actual walkable map points, and real Revival between independent prepared cases. Revivable-body cooldown hold, staggered host/guest cooldowns, and present disconnected follower behavior are checked. Optional --damage-reload executes two real host-only Session save/reloads and rejoin during Sleep. Actor positions and VM ticks are controlled with unrelated AI/combat paused. No full navigation route, rendered or timing/performance acceptance."})
 	FileAccess.open("user://prison-damage-late-join.json",FileAccess.WRITE).store_string(JSON.stringify(evidence,"\t")+"\n")
 	print("PRISON_DAMAGE_LATE_JOIN ",checks," checks ",failures," failures")
 	await finish()

@@ -23,6 +23,16 @@ class RadiusUnit extends GameUnit:
 	func body_radius() -> float:
 		return supplied_body
 
+class RetentionAI extends UnitAI:
+	func _notice_candidates(_u: GameUnit, _radius := NAN) -> Array: return []
+
+class RetentionUnit extends GameUnit:
+	var terms := {}
+	func sight_factor() -> float: return float(terms.sight_factor)
+	func vis_factor() -> float: return float(terms.visibility)
+	func detect(which: int) -> float: return float(terms.life_detect if which==2 else terms.detect)
+	func sense(which: int) -> float: return float(terms.life if which==2 else terms.sight)
+
 class ObservedQuestVM extends ScriptVM:
 	var roots: Array = []
 	var evaluated: Array = []
@@ -126,6 +136,7 @@ func capture(kind: String, data: Dictionary) -> Array:
 		"eye_height": return capture_eye_height(data)
 		"faction_relation": return capture_relations(data)
 		"path_refine": return capture_path_refine(data)
+		"noticed_retention": return capture_retention(data)
 		"quest_predicate": return capture_quest_predicate(data)
 		"quest_trigger": return capture_quest_trigger(data)
 		"quest_program": return capture_quest_program(data)
@@ -133,6 +144,21 @@ func capture(kind: String, data: Dictionary) -> Array:
 		"effect_lifetime": return capture_effect_lifetime(data)
 	push_error("Unsupported parity adapter: " + kind)
 	return []
+
+func capture_retention(data: Dictionary) -> Array:
+	var world:=FixtureWorld.new(); world.zone={"type":"game"};world.time=1
+	world.ai=RetentionAI.new(world)
+	var observer:=RetentionUnit.new();var target:=RetentionUnit.new()
+	for u: RetentionUnit in [observer,target]:
+		u.world=world;u.terms=data;u.stats={"sight":data.sight};u.proto={"senses":[data.sight,0,data.life]}
+	observer.faction=1;target.faction=0;observer.controller=0 if data.party else -1
+	observer.pos=Vector2.ZERO;target.pos=Vector2(float(data.distance),0)
+	world.set_relation(1,0,2 if data.hostile else 1)
+	observer.set_meta("noticed",{target.get_instance_id():target})
+	if data.fighting: target.order={"type":"attack","target":observer}
+	var kept:=world.ai.player_perceive(observer,true).has(target.get_instance_id())
+	observer.free();target.free();world.free()
+	return [{"retained":kept}]
 
 func quest_units(rows: Array, world: GameWorld) -> Array:
 	var units := []

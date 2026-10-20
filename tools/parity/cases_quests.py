@@ -97,6 +97,14 @@ def scenarios(seed=20261020, fuzz=12):
         add("distance_point_" + str(point), call("DistanceUnitPoint", hero, *point))
         add("distance_units_" + str(point), call("DistanceUnitUnit", hero, other),
             [unit.copy(), dict(unit, pos=point, uid=2)])
+    # Native traps use distance without an IsAlive guard. Keep that spatial
+    # contract for dead actors; revival-specific suppression belongs at the
+    # admitted trap continuation, not in shared quest primitives.
+    for dead in [False, True]:
+        for point in [[3, 4], [0, 0], [5.000001, 0]]:
+            corpse = dict(unit, dead=dead, hp=0 if dead else 10)
+            add(f"trap_distance_dead{int(dead)}_{point}", call("DistanceUnitPoint", hero, *point), [corpse])
+            add(f"trap_radius_dead{int(dead)}_{point}", call("IsLess", call("DistanceUnitPoint", hero, *point), 5), [corpse])
     add("distance_missing_unit", call("DistanceUnitUnit", hero, absent))
     add("distance_missing_point", call("DistanceUnitPoint", absent, 0, 0), [])
     add("missing_distance_large_threshold", call("IsLess", call("DistanceUnitPoint", absent, 0, 0), 100000), [])

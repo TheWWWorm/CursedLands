@@ -48,8 +48,8 @@ executing any native address**. Astral currently qualifies quest predicates,
 quest condition gates, persistent command bodies and Random; it does not inherit the base game's combat,
 body, effects, clock or path addresses. Neither reference includes extra patches.
 
-The default base suite has **1,489 scenarios in 17 families**; the Astral suite
-has **803 scenarios in four families**. `--authored-quests` adds up to 120
+The default base suite has **1,757 scenarios in 18 families**; the Astral suite
+has **815 scenarios in four families**. `--authored-quests` adds up to 120
 supported condition lists from that installation's original MOB files.
 The default seed is `20261020`. Each side runs twice in
 fresh captures; differing repeat captures are an error, even if one pair
@@ -107,6 +107,7 @@ does not verify repeatability.
 | Spell target ordering | Selected unit and remaining candidate order after each selection; elevation, equal distances, explicit/dead targets, empty lists and large distances | Supplied candidates and ground heights; no acquisition, visibility, spell effects or damage |
 | Script `Random` | Exact float32 result bits for supplied unsigned RNG words and maxima | Mapping only; no RNG generation or draw-order equivalence |
 | Sight multiplier | Exact float32 bits across darkness, weather, night-sight and posture inputs | No complete detection, occlusion or AI replay |
+| Noticed target retention | 256 combinations of party/NPC, hostility, combat target, sight/life detectability and distance | Already noticed living targets; supplied senses and hostility, no initial acquisition, corpse handling or whole combat replay |
 | Interaction reach | Exact float32 bits for loot, steal and lever distances with supplied radii | No route planning, inventory transfer or lever state change |
 | Attack decision | Boolean hit decisions at zero-spread and aimed-attack boundaries | Synthetic attributes; no damage, armour, backstab or RNG equivalence |
 | Hit probability | Original hit decisions enumerated over every supplied roll residue, weighted uniformly, versus the remake probability query | Unaimed attacks with supplied attributes; no whole combat or RNG stream replay |

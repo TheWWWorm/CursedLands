@@ -3,6 +3,13 @@ import math
 import random
 
 CONTRACTS = {
+    "noticed_retention": {
+        "entry": ["0x5cac76", "0x5cad02", "0x5cae03"],
+        "scope": "Original living-target retention branch in 5caa00 versus the production UnitAI.player_perceive drop pass.",
+        "stubs": ["hostility predicate", "party flag", "supplied senses and distance", "no separate Aggression target"],
+        "limits": "Already noticed living targets only. Does not establish initial acquisition, pathing, corpse handling or full combat execution.",
+        "tolerances": {},
+    },
     "village_gate": {
         "entry": ["0x603e79", "0x603ea3", "0x60410d"],
         "scope": "Original village-talk eligibility branch versus GameUnit.village_talk_ready.",
@@ -45,6 +52,14 @@ def scenarios(seed, fuzz):
     rows = []
     def add(kind, name, inputs):
         rows.append({"id":kind + "/" + name, "kind":kind, "inputs":inputs})
+    for party in [False,True]:
+        for hostile in [False,True]:
+            for fighting in [False,True]:
+                for factor,detect,life in [(1.,1.,0.),(.5,1.,0.),(.5,.5,0.),(.5,0.,4.)]:
+                    for distance in [0.,3.,4.5,8.,9.,11.,20.,50.]:
+                        add("noticed_retention",f"party{int(party)}_hostile{int(hostile)}_fighting{int(fighting)}_factor{factor}_detect{detect}_life{life}_d{distance}",
+                            {"party":party,"hostile":hostile,"fighting":fighting,"sight":8.5,"sight_factor":factor,
+                             "visibility":1.,"detect":detect,"life":life,"life_detect":1.,"distance":distance})
     for current in range(12):
         for posted in range(12):
             add("village_gate", f"current_{current}_posted_{posted}", {"current":current, "posted":posted})

@@ -380,7 +380,8 @@ func handle_input(e: InputEvent) -> bool:
 			return true
 		if key == "direct_interact":
 			if e.pressed and not e.echo:
-				interact()
+				if field().friendly_spell(): cast_self()
+				else: interact()
 			return true
 	return false
 
@@ -547,8 +548,8 @@ func arm_targeting() -> void:
 	_repeat = 0.0
 
 
-## Explicit self casting (Ctrl shortcut, double tap, or controller action)
-## remains separate from interacting with the world.
+## A selected friendly spell gives the interact key its self-cast action.
+## The same eligibility checks serve the keyboard and controller shortcuts.
 func _self_target() -> Dictionary:
 	if not field().friendly_spell(): return {}
 	var info := game.pending_target(leader())
@@ -613,6 +614,9 @@ func key_label(action: String) -> String:
 
 
 func interaction_hint() -> Dictionary:
+	if field().friendly_spell():
+		var verb := RemakeText.t("Cast on self")
+		return {"text":key_label("interact")+": " + verb,"verb":verb,"enabled":not _self_target().is_empty()}
 	var action := _interaction_target(true)
 	if action.is_empty(): return {}
 	var verb := "Use"

@@ -11,7 +11,7 @@ func forget(w:GameWorld,u:GameUnit) -> void:
 	# Each phase explicitly constructs a new observation scene while ordinary
 	# world ticks are frozen. Update teleported occupancy and let the original
 	# 8–11 tick candidate cache expire; prior alarms do not belong to this phase.
-	for key in ["noticed","perceived","seen_corpses","suspect","patrol_last_seen"]:u.remove_meta(key)
+	for key in ["noticed","perceived","seen_corpses","suspect"]:u.remove_meta(key)
 	w.nav.track_unit(u)
 	w.time+=12.0*GameUnit.TICK
 func has_target(w:GameWorld,by:GameUnit,target:GameUnit) -> bool:
@@ -47,9 +47,8 @@ func gameplay(s:Session,nalo:GameUnit) -> void:
 	check(has_target(w,by,nalo),"removing invisibility restores acquisition")
 	Spells.apply(w,nalo,spell,nalo,nalo.pos)
 	w.time+=GameUnit.TICK
-	check(not has_target(w,by,nalo),"ordinary campaign patrol loses an opponent beyond its reduced notice range")
-	# Stable 1.19.0 deliberately lets ordinary patrols lose escaped opponents;
-	# authored Aggression still retains the original persistent pursuit.
+	check(has_target(w,by,nalo),"original NPC rule retains a previously noticed hostile after invisibility")
+	# Scripted Aggression has the same hostile-retention rule.
 	nalo.buffs.clear();nalo.refresh_max_hp();forget(w,by)
 	by.set_meta("um",UnitAI.MOT_AGGRESSION)
 	check(has_target(w,by,nalo),"scripted aggression acquires the unbuffed opponent")

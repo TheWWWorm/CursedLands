@@ -1,8 +1,7 @@
 extends "third_person_kbm.gd"
 ## Original item records and models on Ingos terrain. Prepared hostile orders
 ## exercise the AI attack/approach and native release animation. Explicit
-## scripted Aggression and a noticed hostile isolate range from patrol escape;
-## ordinary patrol detection/escape is covered by patrol_escape_alerts.gd.
+## An ordinary NPC and a noticed hostile exercise the original retention rule.
 var rows := []
 
 func _ready() -> void:
@@ -180,15 +179,11 @@ func _place(archer:GameUnit,start:Vector2,axis:Vector2,distance:float) -> void:
 	archer._pending_hit={};archer._attack_cd=0;archer._anim_lock=0;archer.action="idle";archer.alert=true
 	archer._pose_snap=true;archer._update_pose();archer._anim_lock=0
 	for u:GameUnit in [archer,hero]:s.world.nav.track_unit(u);u._sync_transform(0)
-	# _perceive_next only suppresses the ordinary actor scan. Attack rechoice
-	# still queries perception, and ordinary patrols now lose unseen enemies.
-	# Establish the advertised noticed-hostile fixture through the existing
-	# scripted-pursuit motivation, keeping real attack selection and movement.
+	# Attack rechoice must retain an already noticed hostile for an ordinary
+	# NPC too; a scripted Aggression override would hide retention regressions.
 	s.world.set_relation(archer.faction,hero.faction,2)
-	archer.set_meta("um",UnitAI.MOT_AGGRESSION)
 	archer.set_meta("noticed",{hero.get_instance_id():hero})
 	archer.remove_meta("perceived")
-	archer.remove_meta("patrol_last_seen")
 	check(s.world.is_enemy(archer,hero) and s.world.ai.enemies(archer).has(hero),"range fixture retains its explicitly noticed hostile")
 	s.world.ai._attack(archer,hero)
 

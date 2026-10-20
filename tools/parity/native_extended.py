@@ -1,6 +1,33 @@
 """Additional bounded original-instruction adapters for the pinned executable."""
 import struct
-from unicorn.x86_const import UC_X86_REG_EAX, UC_X86_REG_EBX
+from unicorn.x86_const import UC_X86_REG_EAX, UC_X86_REG_EBX, UC_X86_REG_ESI, UC_X86_REG_EBP, UC_X86_REG_ESP, UC_X86_REG_EIP
+
+
+def noticed_retention(o, case):
+    """Execute the native living-target drop predicate, not a Python rewrite."""
+    observer, target, own, other, frame = [o.alloc(n) for n in [0x600,0x600,0xc00,0xc00,0x100]]
+    frame += 0x80
+    o.write(frame + 8, own)
+    o.write(frame - 0x18, other)
+    o.uc.mem_write(frame - 1, bytes([int(case['party'])]))
+    o.floats(frame - 0xc, 1.0 if case['party'] else 1.05, case['distance'])
+    o.floats(other + 0x900, case['visibility'])
+    o.floats(own + 0x904, case['sight_factor'])
+    o.floats(other + 0x2c4, case['detect'])
+    o.floats(own + 0x294, case['sight'])
+    o.floats(other + 0x2d4, case['life_detect'])
+    o.floats(own + 0x2a4, case['life'])
+    o.uc.mem_write(other + 0x174, bytes([int(case['fighting'])]))
+    o.write(other + 0x9ac, observer if case['fighting'] else 0)
+    o.hook(0x530150, lambda:o.ret(int(case['hostile']),cleanup=4))
+    o.hook(0x5d5f20, lambda:o.ret(0))  # no separate Aggression target
+    o.hook(0x5cae03, o.uc.emu_stop)
+    o.uc.reg_write(UC_X86_REG_EBP, frame)
+    o.uc.reg_write(UC_X86_REG_EBX, observer)
+    o.uc.reg_write(UC_X86_REG_ESI, target)
+    o.uc.reg_write(UC_X86_REG_ESP, 0x91ff000)
+    o.slice(0x5cac76, 0x5cad02, (0x5cae03,))
+    return [{'retained':o.uc.reg_read(UC_X86_REG_EIP)==0x5cae03}]
 
 
 def village_gate(o, case):
@@ -115,4 +142,5 @@ def path_refine(o, case):
 
 
 CAPTURES = {"village_gate":village_gate, "darkness":darkness, "eye_height":eye_height,
-            "faction_relation":faction_relation, "path_refine":path_refine}
+            "faction_relation":faction_relation, "path_refine":path_refine,
+            "noticed_retention":noticed_retention}

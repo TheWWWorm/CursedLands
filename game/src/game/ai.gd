@@ -650,20 +650,21 @@ func _player_target(u: GameUnit, around := Vector2.INF, radius := -1.0) -> GameU
 	return null
 
 
-## The noticed list (AI) of a unit with the Player motivation, brought
+## The noticed list (AI) of a creature, brought
 ## up to date once per AI tick, busy or not (
 ## every creature tick; GameUnit._tick): first the drop pass, then the scan
 ##  (can_notice: the sight cone, peripheral vision, life sense).
 ##  drops a living unit only when all : it is not hostile or the
-## observer is a party unit (always so here), it is not fighting the observer
+## observer is a party unit, it is not fighting the observer
 ## (combat stance with the observer as its target), it is
 ## beyond both notice distances (sight: its sight detectability x the
 ## observer's sight range and factor; life: its life detectability x the
 ## observer's life sense; x 1.0 for a party unit, 1.05 else), and
 ## it is not the observer's Aggression target (none for these units). The
-## vision cone is not part of it: a hostile once noticed (seen, or hitting
-## the unit) stays noticed while near or while it fights the
-## unit, also behind it. Dead units leave the list (the corpse business of
+## vision cone is not part of retention. An NPC retains an already noticed
+## living hostile regardless of distance. Party and non-hostile targets
+## stay while near or while fighting the observer, also behind it.
+## Dead units leave the list (the corpse business of
 ##  is the AI units'). Returns the list (meta "noticed").
 ## Approx.: "fighting the observer" = an attack or cast order on it.
 func player_perceive(u: GameUnit, force := false) -> Dictionary:
@@ -681,8 +682,6 @@ func player_perceive(u: GameUnit, force := false) -> Dictionary:
 	if not keep.is_empty(): k = notice_terms(u, sight)
 	var f := 1.0 if u.controller >= 0 else 1.05
 	var hostile_sides := {}
-	var can_escape := _escape_patrol(u)
-	var last_seen: Dictionary = u.get_meta("patrol_last_seen", {}) if can_escape else {}
 	for id in keep.keys():
 		var o = keep[id]
 		if not is_instance_valid(o) or o.dead:
@@ -691,18 +690,16 @@ func player_perceive(u: GameUnit, force := false) -> Dictionary:
 				if world.relation(u.faction, o.faction) == 0:
 					suspect(u, o.pos, 800.0, -3.0)
 			keep.erase(id)
-			last_seen.erase(id)
 			continue
-		if u.controller < 0 and not can_escape and _scan_enemy(u, o, hostile_sides) or _fights(o, u):
+		# Original 5caa00 / 5cac76: living hostiles remain known to NPCs.
+		# Detection range controls discovery, not an already provoked pursuit.
+		if u.controller < 0 and _scan_enemy(u, o, hostile_sides) or _fights(o, u):
 			continue
 		var d := u.dist3(o)
 		if d >= _sight_dist(o, k) * f and d >= o.detect(2) * k[4] * f:
 			if _scan_enemy(u, o, hostile_sides):
-				suspect(u, last_seen.get(id, o.pos), 1000.0, -2.0)
+				suspect(u, o.pos, 1000.0, -2.0)
 			keep.erase(id)
-			last_seen.erase(id)
-		elif can_escape:
-			last_seen[id] = o.pos
 	for id in corpses.keys():
 		var o = corpses[id]
 		if not is_instance_valid(o) or world.units.get(o.uid) != o:
@@ -741,12 +738,8 @@ func player_perceive(u: GameUnit, force := false) -> Dictionary:
 				suspect(u, o.pos, 800.0, -3.0)
 		else:
 			keep[id] = o
-			if can_escape: last_seen[id] = o.pos
 			if u.controller < 0 and world.zone.get("type", "") != "arena" and world.is_enemy(u, o):
 				call_for_help(u, o.pos)
-	if can_escape:
-		if last_seen.is_empty(): u.remove_meta("patrol_last_seen")
-		else: u.set_meta("patrol_last_seen", last_seen)
 	if keep.is_empty():
 		u.remove_meta("noticed")
 	else:
@@ -756,13 +749,6 @@ func player_perceive(u: GameUnit, force := false) -> Dictionary:
 	else:
 		u.set_meta("seen_corpses", corpses)
 	return keep
-
-
-## Ordinary campaign patrols forget escaped opponents at their normal notice
-## boundary. Scripted Aggression and arena combat retain persistent pursuit.
-func _escape_patrol(u: GameUnit) -> bool:
-	return u.controller < 0 and not u.has_meta("hero") and u.mode in CALM_MODES \
-		and world.zone.get("type", "") != "arena" and not u.has_meta("um")
 
 
 ## World.is_enemy is the observer's hostility/allowed masks and the target
@@ -1411,10 +1397,6 @@ func rechoose(u: GameUnit) -> bool:
 		return false
 	var foes := enemies(u)
 	if foes.is_empty():
-		if _escape_patrol(u):
-			u.command({"type": "wait", "t": 0.0})
-			u.target = null
-			return true
 		return false
 	var ch := choose(u, foes)
 	if ch.is_empty():

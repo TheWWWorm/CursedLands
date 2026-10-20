@@ -1203,7 +1203,9 @@ func _on_esc_board(action: String) -> void:
 			_menu.visible = false
 			_save_load.open(false, _esc_frame, true)
 		"exit":
-			_close_menu()
+			# Exiting is a teardown, not a return to play. Keep the menu pause
+			# until the local authority stops and Game leaves the tree.
+			_close_menu(false)
 			var main := get_tree().current_scene
 			if main and main.has_method("back_to_menu"):
 				main.call_deferred("back_to_menu")

@@ -19,10 +19,11 @@ func _ready()->void:
 	for i in 27:w.time+=GameUnit.TICK;w.ai.tick()
 	check(ally.has_meta("suspect"),"ally investigates the warning after its sound delay")
 	guard.order={"type":"attack","target":hero,"ai":true};guard.target=hero
-	var last:=hero.pos;hero.pos=Vector2(40,0);w.time+=GameUnit.TICK
-	check(w.ai.enemies(guard).is_empty(),"campaign guard loses escaped player")
-	check(guard.has_meta("suspect") and guard.get_meta("suspect").pos==last,"guard investigates the last known position")
-	check(w.ai.rechoose(guard) and guard.target==null,"lost target cancels the active AI pursuit")
+	hero.pos=Vector2(40,0);w.time+=GameUnit.TICK
+	check(w.ai.enemies(guard).has(hero),"original NPC rule retains an already noticed distant hostile")
+	check(not guard.has_meta("suspect"),"distance alone does not replace combat with investigation")
+	w.ai.rechoose(guard)
+	check(guard.target==hero and guard.order.get("type")=="attack","distant attacker remains the active combat target")
 	guard.orders.clear();guard.order={};hero.pos=Vector2(5,0);w.time+=GameUnit.TICK
 	check(not w.ai.enemies(guard).is_empty(),"guard can detect the player again")
 	guard.set_meta("um",UnitAI.MOT_AGGRESSION);hero.pos=Vector2(40,0);w.time+=GameUnit.TICK

@@ -56,6 +56,7 @@ func actor(owner: int, at := Vector2(100,100)) -> GameUnit:
 	return u
 
 func setup(owners := [0]) -> Array:
+	GameData.options.revive = 0   # Native oracle has no revival extension.
 	s = QuietSession.new(); allocations.append(s); s.online = true
 	s.state = CampaignState.new(); s.state.campaign_id = CampaignProfile.ORIGINAL
 	s.world = GameWorld.new(); allocations.append(s.world); s.world.session = s
@@ -248,6 +249,38 @@ func saved_absence(changed_alarm := false) -> void:
 	evidence["absent_"+str(changed_alarm)] = {"initial":sleep,"first":row_for(first,SLEEP,1),
 		"second":row_for(second,SLEEP,1),"third":row_for(third,SLEEP,1),"old_uid":old_uid,"return_uid":guest.uid}
 
+func revival_cooldown() -> void:
+	var actors := setup([0,1]); var body: GameUnit = actors[0]
+	GameData.options.revive = 1
+	var vm := vm_for(); start(vm)
+	body.pos = POINT; step(vm,2)
+	check(vm.actions.size() == 2, "living actor triggers the native spell and damage once")
+	body.dead = true
+	var sleep := row_for(vm.save_state(),SLEEP,0)
+	step(vm,140)
+	check(vm.actions.size() == 2 and same_sleep(sleep,row_for(vm.save_state(),SLEEP,0)),
+		"revivable corpse holds the exact native cooldown without repeated effects")
+	var restored := vm_for(); restored._restore(vm.save_state()); Compat.recover(restored)
+	step(restored,140)
+	check(restored.actions.is_empty() and same_sleep(sleep,row_for(restored.save_state(),SLEEP,0)),
+		"save and reload keep a revivable body's trap dormant")
+	actors[1].pos = POINT; step(restored,2)
+	check(restored.actions.size() == 2 and restored.actions.all(func(action):return action.owner == 1),
+		"another living actor still triggers the same trap beside a corpse")
+	actors[1].pos = Vector2(100,100); body.dead = false
+	var actions := restored.actions.size(); step(restored,1)
+	var active := pending(restored,SLEEP,body)
+	check(active.size() == 1 and is_equal_approx(active[0].wait_until-restored.time,float(sleep.w)-ScriptVM.POLL),
+		"revival resumes the remaining authored cooldown without a duplicate registration")
+	step(restored,62)
+	check(restored.actions.size() == actions+2 and restored.actions[-1].owner == 0,
+		"revived actor can trigger the original trap again after its remaining cooldown")
+	body.dead = true; step(restored,80); actions = restored.actions.size()
+	GameData.options.revive = 0; step(restored,65)
+	check(restored.actions.size() == actions+2 and restored.actions[-1].dead,
+		"turning revival off restores the native dead-actor rearm behavior")
+	GameData.options.revive = 0
+
 func legacy_and_solo() -> void:
 	var actors := setup([0]); var vm := vm_for(false); start(vm)
 	var old := vm.save_state()
@@ -291,7 +324,7 @@ func legacy_and_solo() -> void:
 func _ready() -> void:
 	raw = EIMob.load_bytes(GameData.read_file("maps/zone19.mob")).script_text
 	evidence.original_script_sha256 = raw.sha256_text()
-	definitions(); registration(); traces(); saved_absence(); saved_absence(true); legacy_and_solo()
+	definitions(); registration(); traces(); saved_absence(); saved_absence(true); legacy_and_solo(); revival_cooldown()
 	evidence.merge({"checks":checks,"failures":failures,
 		"scope":"Controlled actor/lever state and recorded native damage/spell calls; original predicates, instruction frames, registration and Sleep run. Actual damage and original-startup reachability are exercised separately over ENet. No full physical route, rendering, reward-economy or performance claim."})
 	FileAccess.open("user://prison-damage-state.json",FileAccess.WRITE).store_string(JSON.stringify(evidence,"\t")+"\n")
