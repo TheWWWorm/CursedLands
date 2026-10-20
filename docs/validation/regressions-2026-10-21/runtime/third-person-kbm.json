@@ -1,0 +1,433 @@
+{
+	"assertions": [
+		{
+			"label": "campaign: loaded scene accepts third-person keyboard input",
+			"ok": true
+		},
+		{
+			"label": "campaign: spell hotkey selects native heal",
+			"ok": true
+		},
+		{
+			"label": "campaign: sky-facing crosshair has no target",
+			"ok": true
+		},
+		{
+			"label": "campaign: selected friendly spell shows the self-cast key",
+			"ok": true
+		},
+		{
+			"label": "campaign: explicit self-cast queues through authority without aiming at a portrait",
+			"ok": true
+		},
+		{
+			"label": "campaign: successful self-cast ends targeting and keeps selection",
+			"ok": true
+		},
+		{
+			"label": "campaign: queued self-cast reaches native execution and pays stamina",
+			"ok": true
+		},
+		{
+			"label": "campaign: explicit self-cast refuses offensive spells",
+			"ok": true
+		},
+		{
+			"label": "campaign: insufficient stamina queues a waiting self-cast",
+			"ok": true
+		},
+		{
+			"label": "campaign: cannot-cast effect prevents self-cast",
+			"ok": true
+		},
+		{
+			"label": "campaign: lost training prevents self-cast",
+			"ok": true
+		},
+		{
+			"label": "campaign: pointer input cannot consume selected self spell",
+			"ok": true
+		},
+		{
+			"label": "campaign: loading input cannot consume selected self spell",
+			"ok": true
+		},
+		{
+			"label": "campaign: focus input cannot consume selected self spell",
+			"ok": true
+		},
+		{
+			"label": "campaign: pause input cannot consume selected self spell",
+			"ok": true
+		},
+		{
+			"label": "campaign: blocked input cannot consume selected self spell",
+			"ok": true
+		},
+		{
+			"label": "campaign: echo input cannot consume selected self spell",
+			"ok": true
+		},
+		{
+			"label": "campaign: neutral input cannot consume selected self spell",
+			"ok": true
+		},
+		{
+			"label": "campaign: panel input cannot consume selected self spell",
+			"ok": true
+		},
+		{
+			"label": "campaign: actual crosshair picks prepared ally native silhouette",
+			"ok": true
+		},
+		{
+			"label": "campaign: left click still casts selected heal on aimed ally",
+			"ok": true
+		},
+		{
+			"label": "campaign: ally targeting retains owned caster",
+			"ok": true
+		},
+		{
+			"label": "campaign: original item database supplies a friendly potion and charged wand",
+			"ok": true
+		},
+		{
+			"label": "campaign: E targets selected belt item at its holder: tiny potion 1",
+			"ok": true
+		},
+		{
+			"label": "campaign: item execution consumes potion/charge through normal native rule: tiny potion 1",
+			"ok": true
+		},
+		{
+			"label": "campaign: E targets selected belt item at its holder: wand 1.rock|healing{}",
+			"ok": true
+		},
+		{
+			"label": "campaign: item execution consumes potion/charge through normal native rule: wand 1.rock|healing{}",
+			"ok": true
+		},
+		{
+			"label": "campaign: spent wand cannot self-cast",
+			"ok": true
+		},
+		{
+			"label": "campaign: missing belt item cannot self-cast",
+			"ok": true
+		},
+		{
+			"label": "campaign: nearby body has a clear original navigation location",
+			"ok": true
+		},
+		{
+			"label": "campaign: body near feet is outside exact sky-facing crosshair",
+			"ok": true
+		},
+		{
+			"label": "campaign: E posts ordinary loot approach despite missing exact silhouette",
+			"ok": true
+		},
+		{
+			"label": "campaign: nearby loot action has a visible named prompt",
+			"ok": true
+		},
+		{
+			"label": "campaign: ordinary approach/use animation collects loot once",
+			"ok": true
+		},
+		{
+			"label": "campaign: repeating E cannot duplicate collected loot",
+			"ok": true
+		},
+		{
+			"label": "campaign: hidden body is not selected by proximity",
+			"ok": true
+		},
+		{
+			"label": "campaign: fogged body is not selected by proximity",
+			"ok": true
+		},
+		{
+			"label": "campaign: invisible body is not selected by proximity",
+			"ok": true
+		},
+		{
+			"label": "campaign: looted body is not selected by proximity",
+			"ok": true
+		},
+		{
+			"label": "campaign: distant body is not selected by proximity",
+			"ok": true
+		},
+		{
+			"label": "campaign: foreign_body body is not selected by proximity",
+			"ok": true
+		},
+		{
+			"label": "campaign: nearby loot behind solid native-navigation span is refused",
+			"ok": true
+		},
+		{
+			"label": "campaign: own original-multiplayer body remains eligible",
+			"ok": true
+		},
+		{
+			"label": "campaign: crosshair deliberately selects farther body",
+			"ok": true
+		},
+		{
+			"label": "campaign: explicit crosshair target precedes nearer loot",
+			"ok": true
+		},
+		{
+			"label": "campaign: loaded scene accepts third-person keyboard input",
+			"ok": true
+		},
+		{
+			"label": "campaign: safe zone blocks self-casting without issuing interaction",
+			"ok": true
+		},
+		{
+			"label": "campaign: self-cast hint reflects the safe-zone command restriction",
+			"ok": true
+		},
+		{
+			"label": "campaign: safe zone refuses spell selection",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: new native multiplayer game loads selected character",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: loaded scene accepts third-person keyboard input",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: safe zone blocks self-casting without issuing interaction",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: self-cast hint reflects the safe-zone command restriction",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: safe zone refuses spell selection",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: loaded scene accepts third-person keyboard input",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: spell hotkey selects native heal",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: sky-facing crosshair has no target",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: selected friendly spell shows the self-cast key",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: explicit self-cast queues through authority without aiming at a portrait",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: successful self-cast ends targeting and keeps selection",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: queued self-cast reaches native execution and pays stamina",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: explicit self-cast refuses offensive spells",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: insufficient stamina queues a waiting self-cast",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: cannot-cast effect prevents self-cast",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: lost training prevents self-cast",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: pointer input cannot consume selected self spell",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: loading input cannot consume selected self spell",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: focus input cannot consume selected self spell",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: pause input cannot consume selected self spell",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: blocked input cannot consume selected self spell",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: echo input cannot consume selected self spell",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: neutral input cannot consume selected self spell",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: panel input cannot consume selected self spell",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: actual crosshair picks prepared ally native silhouette",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: left click still casts selected heal on aimed ally",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: ally targeting retains owned caster",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: original item database supplies a friendly potion and charged wand",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: E targets selected belt item at its holder: tiny potion 1",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: item execution consumes potion/charge through normal native rule: tiny potion 1",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: E targets selected belt item at its holder: wand 1.rock|healing{}",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: item execution consumes potion/charge through normal native rule: wand 1.rock|healing{}",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: spent wand cannot self-cast",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: missing belt item cannot self-cast",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: nearby body has a clear original navigation location",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: body near feet is outside exact sky-facing crosshair",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: E posts ordinary loot approach despite missing exact silhouette",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: nearby loot action has a visible named prompt",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: ordinary approach/use animation collects loot once",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: repeating E cannot duplicate collected loot",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: hidden body is not selected by proximity",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: fogged body is not selected by proximity",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: invisible body is not selected by proximity",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: looted body is not selected by proximity",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: distant body is not selected by proximity",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: foreign_body body is not selected by proximity",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: nearby loot behind solid native-navigation span is refused",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: own original-multiplayer body remains eligible",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: crosshair deliberately selects farther body",
+			"ok": true
+		},
+		{
+			"label": "original multiplayer Ingos: explicit crosshair target precedes nearer loot",
+			"ok": true
+		}
+	],
+	"cases": [
+		{
+			"distance": 1.5,
+			"hero": [
+				52.5,
+				138.0
+			],
+			"loot": [
+				54.0,
+				138.0
+			],
+			"mode": "campaign",
+			"model": "unhuma",
+			"zone": "gz1g"
+		},
+		{
+			"distance": 1.5,
+			"hero": [
+				27.0,
+				115.0
+			],
+			"loot": [
+				28.5,
+				115.0
+			],
+			"mode": "original multiplayer Ingos",
+			"model": "unhuma",
+			"zone": "z12q1"
+		}
+	],
+	"checks": 99,
+	"failures": [],
+	"scope": "Injected keyboard/mouse input in loaded original campaign and original multiplayer worlds, prepared spell/loot cases; no ENet, full route, Windows or rendered acceptance."
+}

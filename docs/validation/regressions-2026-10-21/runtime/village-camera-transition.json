@@ -1,0 +1,12 @@
+{
+	"checks": 7,
+	"failures": 0,
+	"observations": [
+		{
+			"distance": 22.0,
+			"mode": "default",
+			"pitch": -0.75,
+			"yaw": 0.730000019073486
+		}
+	]
+}

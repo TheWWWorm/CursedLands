@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-21",
+  "reference": "GOG English Evil Islands 1.06",
+  "executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "runtime": "Wine 11.20 amd64 WoW64 on Linux; original 32-bit game.exe and copied original assets",
+  "isolation": {
+    "normal_profiles_modified": false,
+    "audio": "isolated ALSA null device configuration",
+    "mouse": "Wine virtual desktop, GrabFullscreen=N",
+    "requested_test_options": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    }
+  },
+  "observations": [
+    {
+      "test": "Open console with grave key at main menu",
+      "result": "Dark opaque top quarter panel, > input prompt at bottom; original 800x600 UI"
+    },
+    {
+      "test": "help before unlock",
+      "result": "Unknown command"
+    },
+    {
+      "test": "thingamabob, then help",
+      "result": "Activated!, then built-in command help"
+    },
+    {
+      "test": "console f, console t",
+      "result": "Fullscreen and top console positions work; position names, not numeric values"
+    },
+    {
+      "test": "Up/Down input history and PageUp/PageDown output scrolling",
+      "result": "Input history recalled; output scrolls independently and remains anchored across new output, with + scroll indicators"
+    },
+    {
+      "test": "lastfps",
+      "result": "Current FPS printed; examples 333.333 at menu and 142.857 in initial zone"
+    },
+    {
+      "test": "#1 in initial campaign zone",
+      "result": "1 printed by original script ConsoleFloat wrapper"
+    },
+    {
+      "test": "$\"console probe\" in campaign",
+      "result": "console probe printed by original script ConsoleString wrapper"
+    },
+    {
+      "test": "give without arguments",
+      "result": "Shows global-map restriction and original give [NPlayer] money [NMoney] / give [NPlayer] exp [NExp] syntax"
+    },
+    {
+      "test": "listvar 0 console-vars.txt",
+      "result": "Original script-variable dump written to isolated game copy"
+    },
+    {
+      "test": "quit",
+      "result": "Exit requested after captures"
+    }
+  ],
+  "limitations": [
+    "Command UI inspection, not full gameplay equivalence or native Windows qualification.",
+    "No whole console implementation added. Money/experience mutations, GodMode, arbitrary script commands and network/admin commands still need individual qualification.",
+    "Requested generic FPS option is not a qualified original-registry option; FPS was checked via the original lastfps command."
+  ],
+  "captures": [
+    "console-open.png",
+    "console-help-fullscreen.png",
+    "console-history-up.png",
+    "console-ingame-bottom.png",
+    "console-basics-verified.png",
+    "console-final-evidence.png"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "forest-budget-before": {
+    "errors": {
+      "ERROR: Too many instances using shader instance variables. Increase buffer size in Project Settings.": 347,
+      "ERROR: Condition \"global_shader_uniforms.instance_buffer_pos.has(p_instance)\" is true. Returning: -1": 347
+    },
+    "error_count": 694,
+    "process_exit": 0,
+    "log_sha256": "b1c30b122ed9174b7251cbb8da3f35be8408080e28bee89c3e75bf48a310dd04"
+  },
+  "forest-budget-after": {
+    "errors": {},
+    "error_count": 0,
+    "process_exit": 0,
+    "log_sha256": "d781a691f0eef7e137c1db1486ed33278c2a6b1582154e2c883967ddcebe9884"
+  }
+}

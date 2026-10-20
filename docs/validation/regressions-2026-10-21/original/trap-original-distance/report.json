@@ -1,0 +1,283 @@
+{
+  "schema": 1,
+  "status": "match",
+  "input_sha256": "c61eed72feb6418448dfdb6eb981fb18314f2a55aa75a24426d7f2b968fc9ff5",
+  "reference": {
+    "id": "evil-islands-gog-en-d0fc0bb2",
+    "campaign": "original",
+    "executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+    "patches": [],
+    "description": "Locally verified GOG base-game game.exe. Addresses are valid only for this digest."
+  },
+  "counts": {
+    "scenarios": 12,
+    "matches": 12,
+    "mismatches": 0,
+    "original_steps": 12
+  },
+  "scenarios": [
+    {
+      "id": "quest_predicate/trap_distance_dead0_[3, 4]",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "ae0104777b5daa9e464a4745a862d2b878fb230abf56cd0baeca7574206d934b",
+      "remake_trace_sha256": "ae0104777b5daa9e464a4745a862d2b878fb230abf56cd0baeca7574206d934b"
+    },
+    {
+      "id": "quest_predicate/trap_radius_dead0_[3, 4]",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/trap_distance_dead0_[0, 0]",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/trap_radius_dead0_[0, 0]",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/trap_distance_dead0_[5.000001, 0]",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "105c1cf9eb019a2dda6bad8d8d8509965facacc23694db8eba103f412ef3347d",
+      "remake_trace_sha256": "105c1cf9eb019a2dda6bad8d8d8509965facacc23694db8eba103f412ef3347d"
+    },
+    {
+      "id": "quest_predicate/trap_radius_dead0_[5.000001, 0]",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/trap_distance_dead1_[3, 4]",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "ae0104777b5daa9e464a4745a862d2b878fb230abf56cd0baeca7574206d934b",
+      "remake_trace_sha256": "ae0104777b5daa9e464a4745a862d2b878fb230abf56cd0baeca7574206d934b"
+    },
+    {
+      "id": "quest_predicate/trap_radius_dead1_[3, 4]",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/trap_distance_dead1_[0, 0]",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/trap_radius_dead1_[0, 0]",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/trap_distance_dead1_[5.000001, 0]",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "105c1cf9eb019a2dda6bad8d8d8509965facacc23694db8eba103f412ef3347d",
+      "remake_trace_sha256": "105c1cf9eb019a2dda6bad8d8d8509965facacc23694db8eba103f412ef3347d"
+    },
+    {
+      "id": "quest_predicate/trap_radius_dead1_[5.000001, 0]",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    }
+  ],
+  "repeatability": {
+    "captures_per_side": 2,
+    "verified": true
+  },
+  "provenance": {
+    "started_utc": "2026-10-20T22:08:06Z",
+    "game_source": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/game",
+    "game_source_sha256": "ca12efde9759e6ed0408863584085d5e8207db0b1fa656964f7ec749033043ef",
+    "godot": {
+      "build": "official",
+      "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (official)",
+      "timestamp": 0
+    },
+    "original_executable": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe",
+    "fpu_control_word": "0x027f",
+    "common_native_boundary": "Empty emulated Windows SEH chain at FS:[0]; no native exceptions are handled.",
+    "commands": [
+      {
+        "argv": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/suslanger-regressions-20261020/trap-original-distance/runtime",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--editor",
+          "--import"
+        ],
+        "seconds": 12.984,
+        "exit_code": 0,
+        "log": "import-bootstrap.log",
+        "log_sha256": "2f5898eb0f2e7eb75f69f8bac800971f15c4cd5c221bb6d99d016bd7acba4933",
+        "diagnostics": []
+      },
+      {
+        "argv": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/suslanger-regressions-20261020/trap-original-distance/runtime",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--editor",
+          "--import"
+        ],
+        "seconds": 6.974,
+        "exit_code": 0,
+        "log": "import.log",
+        "log_sha256": "480495d80feef6b4a104a237e1466f281bb17e5f8d0c93b7eef0ea61645d9495",
+        "diagnostics": []
+      },
+      {
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/../venv/bin/python",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/suslanger-regressions-20261020/trap-original-distance/harness/native.py",
+          "--binary",
+          "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe",
+          "--inputs",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/suslanger-regressions-20261020/trap-original-distance/inputs.json",
+          "--output",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/suslanger-regressions-20261020/trap-original-distance/original-0.json"
+        ],
+        "seconds": 0.214,
+        "exit_code": 0,
+        "log": "original-0.log",
+        "log_sha256": "9adb4c79faf9367e7666465eb074b4c256c6f5ab8e37ce197a8e638becc513e6",
+        "diagnostics": []
+      },
+      {
+        "argv": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/suslanger-regressions-20261020/trap-original-distance/runtime",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--fixed-fps",
+          "60",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=res://tools/parity_trace.gd",
+          "--parity-inputs=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/suslanger-regressions-20261020/trap-original-distance/inputs.json",
+          "--parity-output=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/suslanger-regressions-20261020/trap-original-distance/remake-0.json"
+        ],
+        "seconds": 5.123,
+        "exit_code": 0,
+        "log": "remake-0.log",
+        "log_sha256": "8f9a302c4e947620c7955a13413bf976994750ab16f6849e21a2ffd07ae9f35f",
+        "diagnostics": []
+      },
+      {
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/../venv/bin/python",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/suslanger-regressions-20261020/trap-original-distance/harness/native.py",
+          "--binary",
+          "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe",
+          "--inputs",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/suslanger-regressions-20261020/trap-original-distance/inputs.json",
+          "--output",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/suslanger-regressions-20261020/trap-original-distance/original-1.json"
+        ],
+        "seconds": 0.214,
+        "exit_code": 0,
+        "log": "original-1.log",
+        "log_sha256": "9adb4c79faf9367e7666465eb074b4c256c6f5ab8e37ce197a8e638becc513e6",
+        "diagnostics": []
+      },
+      {
+        "argv": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/suslanger-regressions-20261020/trap-original-distance/runtime",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--fixed-fps",
+          "60",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=res://tools/parity_trace.gd",
+          "--parity-inputs=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/suslanger-regressions-20261020/trap-original-distance/inputs.json",
+          "--parity-output=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/suslanger-regressions-20261020/trap-original-distance/remake-1.json"
+        ],
+        "seconds": 4.973,
+        "exit_code": 0,
+        "log": "remake-1.log",
+        "log_sha256": "220a3929d02c550cbbc4dc985b7eb0a4a25ef46b59c23b5b5696f17fca11d2bb",
+        "diagnostics": []
+      }
+    ],
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "original_data_files": {
+      "res/database.res": "50e5899fd7d467e11ea152122148f6911319cf339bf7717f1e205d38c63b13b0",
+      "res/texts.res": "7480721148bf443901bad59ea184606d7a09c97d565040560778ea4663cd5c41",
+      "config/ai.reg": "56e56bb9869a8e01ae33bbb6eca53323d8cbe1cf942f4340452c7ce3c8f93424"
+    },
+    "commit": null,
+    "working_tree": null
+  }
+}

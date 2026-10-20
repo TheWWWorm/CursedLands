@@ -1,0 +1,27 @@
+{
+	"checks": 7,
+	"failures": 0,
+	"samples": [
+		{
+			"frontend_time_scale": 1.0,
+			"ratio": 1.01309284351215,
+			"seconds": 2.985906,
+			"simulation_seconds": 3.025,
+			"speed": 1
+		},
+		{
+			"frontend_time_scale": 2.03703703703704,
+			"ratio": 2.03128072499253,
+			"seconds": 3.005493,
+			"simulation_seconds": 6.10499999999997,
+			"speed": 2
+		},
+		{
+			"frontend_time_scale": 1.0,
+			"ratio": 1.00558272937425,
+			"seconds": 3.008206,
+			"simulation_seconds": 3.02499999999998,
+			"speed": 1
+		}
+	]
+}
