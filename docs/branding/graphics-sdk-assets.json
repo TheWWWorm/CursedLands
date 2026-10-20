@@ -1,0 +1,31 @@
+{
+  "assets": [
+    {
+      "file": "game/assets/branding/vendors/amd-fsr-upscaling-white.png",
+      "source_page": "https://gpuopen.com/amd-fsr-naming-guidelines/",
+      "download_url": "https://gpuopen.com/images/253829738-a_amd_fsr_upscaling_lockup_rgb_wht.png",
+      "resolved_url": "https://gpuopen.com/images/253829738-a_amd_fsr_upscaling_lockup_rgb_wht.png",
+      "sha256": "e2d8f99efdf5066410d95f44705352b486d6606a0ab6bef2ac63313c2a939d31",
+      "bytes": 24836
+    },
+    {
+      "file": "game/assets/branding/vendors/amd-fsr-frame-generation-white.png",
+      "source_page": "https://gpuopen.com/amd-fsr-naming-guidelines/",
+      "download_url": "https://gpuopen.com/images/253829850-a_amd_fsr_frame_generation_lockup_rgb_wht.png",
+      "resolved_url": "https://gpuopen.com/images/253829850-a_amd_fsr_frame_generation_lockup_rgb_wht.png",
+      "sha256": "e397224845c725e11bf4ecf0807663e31ca57936329c47e226b984fd3e77a49e",
+      "bytes": 27372
+    }
+  ],
+  "master_sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18",
+  "presentation": {
+    "note": "Official transparent white AMD FSR lockups, uniformly resized with original aspect ratios, centered in two cells beneath the title.",
+    "cell_width": 256,
+    "gap": 40,
+    "row_height": 144
+  },
+  "regenerate": "node tools/generate_branding.cjs --fsr",
+  "derived_files": {
+    "game/assets/branding/splash-fsr.png": "251edf11e4d567bf11967d61e953a28ddfe216aef3d5a334350617f7df4c3557"
+  }
+}

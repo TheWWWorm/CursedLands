@@ -12,7 +12,7 @@
     "loading": "Loading the encyclopedia…",
     "variant": "Material / version",
     "spellNote": "Explore custom rune combinations with the spell builder in the in-game wiki.",
-    "source": "Names and descriptions come from the GOG editions. Statistics and examples use the Cursed Lands 1.9.0 calculations with the original armor rule. Map scripts, difficulty, equipment and effects can change values during play. Story articles are written from the original dialogue and cite their source scenes.",
+    "source": "Names and descriptions come from the GOG editions. Statistics and examples use the Cursed Lands calculations with the original armor rule. Map scripts, difficulty, equipment and effects can change values during play. Story articles are written from the original dialogue and cite their source scenes.",
     "project": "Project & source code",
     "matches": "{count} matching pages",
     "empty": "No matching pages",
@@ -54,7 +54,7 @@
     "lostInAstral": "Lost in Astral",
     "campaignHelp": "Choose the campaign to browse its items, spells and creatures.",
     "astralEdition": "LOST IN ASTRAL · EXPANSION",
-    "astralSource": "Expansion data comes from the original Lost in Astral installation. Russian names and descriptions are original; English and German use the GOG translations where shared and translated expansion text elsewhere. Statistics use Cursed Lands 1.9.0 with the original armor rule. Map scripts, difficulty, equipment and effects can change values during play. Story articles are written from the original dialogue and cite their source scenes.",
+    "astralSource": "Expansion data comes from the original Lost in Astral installation. Russian names and descriptions are original; English and German use the GOG translations where shared and translated expansion text elsewhere. Statistics use Cursed Lands with the original armor rule. Map scripts, difficulty, equipment and effects can change values during play. Story articles are written from the original dialogue and cite their source scenes.",
     "spellConstructor": "Spell constructor",
     "itemConstructor": "Item constructor",
     "previewOnly": "Preview only. Your character, inventory and saves are unchanged.",
@@ -206,7 +206,13 @@
     "meetCharacters": "Meet the characters",
     "meetCharactersHelp": "Read biographies and follow the events that connect the cast.",
     "discoverAllods": "Discover the allods",
-    "discoverAllodsHelp": "Explore the islands, their settlements and their place in the story."
+    "discoverAllodsHelp": "Explore the islands, their settlements and their place in the story.",
+    "filterCreatures": "Filter creatures",
+    "filterCreaturesPlaceholder": "Filter creatures by name…",
+    "filterCreaturesHelp": "Filter creature markers by their translated names. Exits and quest markers stay visible.",
+    "noMatchingCreatures": "No creatures match this name.",
+    "mapHighlight": "Highlighted: %s",
+    "dataVersion": "Reference data: %s"
   },
   "ru": {
     "encyclopedia": "Энциклопедия",
@@ -221,7 +227,7 @@
     "loading": "Загрузка энциклопедии…",
     "variant": "Материал / вариант",
     "spellNote": "Произвольные сочетания рун можно изучить в конструкторе заклинаний во внутриигровой энциклопедии.",
-    "source": "Названия и описания взяты из изданий GOG. Характеристики и примеры рассчитаны по правилам Cursed Lands 1.9.0 с оригинальной формулой брони. Сценарии карты, сложность, снаряжение и эффекты могут менять значения во время игры. Статьи об истории написаны по оригинальным диалогам и содержат ссылки на исходные сцены.",
+    "source": "Названия и описания взяты из изданий GOG. Характеристики и примеры рассчитаны по правилам Cursed Lands с оригинальной формулой брони. Сценарии карты, сложность, снаряжение и эффекты могут менять значения во время игры. Статьи об истории написаны по оригинальным диалогам и содержат ссылки на исходные сцены.",
     "project": "Проект и исходный код",
     "matches": "Найдено страниц: {count}",
     "empty": "Ничего не найдено",
@@ -263,7 +269,7 @@
     "lostInAstral": "Затерянные в Астрале",
     "campaignHelp": "Выберите кампанию, чтобы изучить её предметы, заклинания и существ.",
     "astralEdition": "ЗАТЕРЯННЫЕ В АСТРАЛЕ · ДОПОЛНЕНИЕ",
-    "astralSource": "Данные дополнения взяты из оригинальной установки «Затерянных в Астрале». Русские названия и описания сохранены; для английского и немецкого использованы общие тексты GOG и переводы новых текстов дополнения. Характеристики рассчитаны по правилам Cursed Lands 1.9.0 с оригинальной формулой брони. Сценарии карты, сложность, снаряжение и эффекты могут менять значения во время игры. Статьи об истории написаны по оригинальным диалогам и содержат ссылки на исходные сцены.",
+    "astralSource": "Данные дополнения взяты из оригинальной установки «Затерянных в Астрале». Русские названия и описания сохранены; для английского и немецкого использованы общие тексты GOG и переводы новых текстов дополнения. Характеристики рассчитаны по правилам Cursed Lands с оригинальной формулой брони. Сценарии карты, сложность, снаряжение и эффекты могут менять значения во время игры. Статьи об истории написаны по оригинальным диалогам и содержат ссылки на исходные сцены.",
     "spellConstructor": "Конструктор заклинаний",
     "itemConstructor": "Конструктор предметов",
     "previewOnly": "Только предварительный просмотр. Персонаж, инвентарь и сохранения не изменяются.",
@@ -415,7 +421,13 @@
     "meetCharacters": "Знакомство с героями",
     "meetCharactersHelp": "Читайте биографии и узнавайте, какие события связывают героев.",
     "discoverAllods": "Знакомство с аллодами",
-    "discoverAllodsHelp": "Изучайте острова, их поселения и роль в истории."
+    "discoverAllodsHelp": "Изучайте острова, их поселения и роль в истории.",
+    "filterCreatures": "Фильтр существ",
+    "filterCreaturesPlaceholder": "Фильтр существ по имени…",
+    "filterCreaturesHelp": "Фильтровать значки существ по именам на выбранном языке. Выходы и значки заданий остаются видимыми.",
+    "noMatchingCreatures": "Существ с таким именем не найдено.",
+    "mapHighlight": "Выделено: %s",
+    "dataVersion": "Версия справочных данных: %s"
   },
   "de": {
     "encyclopedia": "Enzyklopädie",
@@ -430,7 +442,7 @@
     "loading": "Enzyklopädie wird geladen…",
     "variant": "Material / Variante",
     "spellNote": "Eigene Runenkombinationen können mit dem Zauberbaukasten im spielinternen Wiki erkundet werden.",
-    "source": "Namen und Beschreibungen stammen aus den GOG-Ausgaben. Werte und Beispiele verwenden die Berechnungen von Cursed Lands 1.9.0 mit der ursprünglichen Rüstungsformel. Kartenskripte, Schwierigkeitsgrad, Ausrüstung und Effekte können die Werte im Spiel verändern. Die erzählerischen Artikel beruhen auf den Originaldialogen und nennen ihre Quellszenen.",
+    "source": "Namen und Beschreibungen stammen aus den GOG-Ausgaben. Werte und Beispiele verwenden die Berechnungen von Cursed Lands mit der ursprünglichen Rüstungsformel. Kartenskripte, Schwierigkeitsgrad, Ausrüstung und Effekte können die Werte im Spiel verändern. Die erzählerischen Artikel beruhen auf den Originaldialogen und nennen ihre Quellszenen.",
     "project": "Projekt und Quellcode",
     "matches": "{count} passende Seiten",
     "empty": "Keine passenden Seiten",
@@ -472,7 +484,7 @@
     "lostInAstral": "Lost in Astral",
     "campaignHelp": "Wählen Sie die Kampagne, um ihre Gegenstände, Zauber und Kreaturen zu erkunden.",
     "astralEdition": "LOST IN ASTRAL · ERWEITERUNG",
-    "astralSource": "Die Erweiterungsdaten stammen aus der Originalinstallation von Lost in Astral. Russische Namen und Beschreibungen sind original; Englisch und Deutsch verwenden gemeinsame GOG-Texte und Übersetzungen der zusätzlichen Erweiterungstexte. Werte werden nach Cursed Lands 1.9.0 mit der ursprünglichen Rüstungsformel berechnet. Kartenskripte, Schwierigkeitsgrad, Ausrüstung und Effekte können sie im Spiel verändern. Die erzählerischen Artikel beruhen auf den Originaldialogen und nennen ihre Quellszenen.",
+    "astralSource": "Die Erweiterungsdaten stammen aus der Originalinstallation von Lost in Astral. Russische Namen und Beschreibungen sind original; Englisch und Deutsch verwenden gemeinsame GOG-Texte und Übersetzungen der zusätzlichen Erweiterungstexte. Werte werden nach Cursed Lands mit der ursprünglichen Rüstungsformel berechnet. Kartenskripte, Schwierigkeitsgrad, Ausrüstung und Effekte können sie im Spiel verändern. Die erzählerischen Artikel beruhen auf den Originaldialogen und nennen ihre Quellszenen.",
     "spellConstructor": "Zauberkonstruktor",
     "itemConstructor": "Gegenstandskonstruktor",
     "previewOnly": "Nur eine Vorschau. Figur, Inventar und Spielstände bleiben unverändert.",
@@ -624,6 +636,12 @@
     "meetCharacters": "Die Figuren kennenlernen",
     "meetCharactersHelp": "Biografien lesen und den gemeinsamen Erlebnissen der Figuren folgen.",
     "discoverAllods": "Die Allods entdecken",
-    "discoverAllodsHelp": "Inseln, Siedlungen und ihre Rolle in der Geschichte erkunden."
+    "discoverAllodsHelp": "Inseln, Siedlungen und ihre Rolle in der Geschichte erkunden.",
+    "filterCreatures": "Kreaturen filtern",
+    "filterCreaturesPlaceholder": "Kreaturen nach Namen filtern…",
+    "filterCreaturesHelp": "Filtert Kreaturenmarkierungen nach ihren übersetzten Namen. Ausgänge und Questmarkierungen bleiben sichtbar.",
+    "noMatchingCreatures": "Keine Kreaturen mit diesem Namen gefunden.",
+    "mapHighlight": "Hervorgehoben: %s",
+    "dataVersion": "Referenzdaten: %s"
   }
 }

@@ -1,0 +1,1428 @@
+diff --git a/SConstruct b/SConstruct
+--- a/SConstruct
++++ b/SConstruct
+@@ -199,6 +199,7 @@
+ opts.Add(BoolVariable("d3d12", "Enable the Direct3D 12 rendering driver on supported platforms", False))
+ opts.Add(BoolVariable("metal", "Enable the Metal rendering driver on supported platforms (Apple arm64 only)", False))
+ opts.Add(BoolVariable("use_volk", "Use the volk library to load the Vulkan loader dynamically", True))
++opts.Add(BoolVariable("use_fsr_sdk", "Enable the experimental Windows D3D12 FidelityFX integration", False))
+ opts.Add(BoolVariable("accesskit", "Enable the AccessKit driver for screen reader support", True))
+ opts.Add(BoolVariable("angle", "Enable the ANGLE rendering driver for OpenGL ES 3.0 on supported platforms", True))
+ opts.Add(BoolVariable("sdl", "Enable the SDL3 input driver", True))
+@@ -595,6 +596,13 @@
+ 
+ if env["precision"] == "double":
+     env.Append(CPPDEFINES=["REAL_T_IS_DOUBLE"])
++
++if env["use_fsr_sdk"]:
++    if env["platform"] == "windows":
++        env.AppendUnique(CPPDEFINES=["FSR_SDK_ENABLED"])
++        env.Prepend(CPPPATH=["#thirdparty/directx_headers/include/directx"])
++    else:
++        env["use_fsr_sdk"] = False
+ 
+ # Library Support
+ if env["library_type"] != "executable":
+diff --git a/drivers/SCsub b/drivers/SCsub
+--- a/drivers/SCsub
++++ b/drivers/SCsub
+@@ -68,6 +68,9 @@
+ # Core dependencies
+ SConscript("png/SCsub")
+ 
++# FidelityFX
++SConscript("fsr_sdk/SCsub")
++
+ env.add_source_files(env.drivers_sources, "*.cpp")
+ 
+ lib = env.add_library("drivers", env.drivers_sources)
+diff --git a/drivers/d3d12/rendering_device_driver_d3d12.cpp b/drivers/d3d12/rendering_device_driver_d3d12.cpp
+--- a/drivers/d3d12/rendering_device_driver_d3d12.cpp
++++ b/drivers/d3d12/rendering_device_driver_d3d12.cpp
+@@ -29,6 +29,7 @@
+ /**************************************************************************/
+ 
+ #include "rendering_device_driver_d3d12.h"
++#include "drivers/fsr_sdk/fsr_sdk.h"
+ 
+ #include "core/config/engine.h"
+ #include "core/config/project_settings.h"
+@@ -38,6 +39,7 @@
+ 
+ #include <drivers/d3d12/godot_d3d12ma.h>
+ #include <drivers/d3d12/godot_nir.h>
++
+ #include <dxgi1_6.h>
+ 
+ #if !defined(_MSC_VER)
+@@ -2499,16 +2501,22 @@
+ 		}
+ 	}
+ 
++
+ 	HRESULT res;
+ 	bool any_present_failed = false;
+ 	for (uint32_t i = 0; i < p_swap_chains.size(); i++) {
+ 		SwapChain *swap_chain = (SwapChain *)(p_swap_chains[i].id);
++		#ifdef FSR_SDK_ENABLED
++		res = FidelityFX::get_singleton()->present(swap_chain->d3d_swap_chain.Get(), swap_chain->sync_interval, swap_chain->present_flags);
++#else
+ 		res = swap_chain->d3d_swap_chain->Present(swap_chain->sync_interval, swap_chain->present_flags);
++#endif
+ 		if (!SUCCEEDED(res)) {
+ 			print_verbose(vformat("D3D12: Presenting swapchain failed with error 0x%08ux.", (uint64_t)res));
+ 			any_present_failed = true;
+ 		}
+ 	}
++
+ 
+ 	return any_present_failed ? FAILED : OK;
+ }
+@@ -2675,6 +2683,9 @@
+ 		p_swap_chain->render_pass = RenderPassID();
+ 	}
+ 
++#ifdef FSR_SDK_ENABLED
++	FidelityFX::get_singleton()->release_swap_chain(p_swap_chain->d3d_swap_chain.Get());
++#endif
+ 	p_swap_chain->d3d_swap_chain.Reset();
+ }
+ 
+@@ -2745,6 +2756,7 @@
+ 		// Very likely the window is minimized, don't create a swap chain.
+ 		return ERR_SKIP;
+ 	}
++
+ 
+ 	HRESULT res;
+ 	const bool is_tearing_supported = context_driver->get_tearing_supported();
+@@ -2794,6 +2806,9 @@
+ 
+ 	DXGI_SWAP_CHAIN_DESC1 swap_chain_desc = {};
+ 	if (swap_chain->d3d_swap_chain != nullptr) {
++#ifdef FSR_SDK_ENABLED
++		if (swap_chain->d3d_swap_chain.Get() == FidelityFX::get_singleton()->swap_chain) { FidelityFX::get_singleton()->release_frame_generation(); }
++#endif
+ 		_swap_chain_release_buffers(swap_chain);
+ 		res = swap_chain->d3d_swap_chain->ResizeBuffers(p_desired_framebuffer_count, surface->width, surface->height, DXGI_FORMAT_UNKNOWN, creation_flags);
+ 		ERR_FAIL_COND_V(!SUCCEEDED(res), ERR_UNAVAILABLE);
+@@ -2831,7 +2846,17 @@
+ 				res = context_driver->dxgi_factory_get()->CreateSwapChainForHwnd(command_queue->d3d_queue.Get(), surface->hwnd, &swap_chain_desc, nullptr, nullptr, swap_chain_1.GetAddressOf());
+ 			}
+ 		} else {
+-			res = context_driver->dxgi_factory_get()->CreateSwapChainForHwnd(command_queue->d3d_queue.Get(), surface->hwnd, &swap_chain_desc, nullptr, nullptr, swap_chain_1.GetAddressOf());
++#ifdef FSR_SDK_ENABLED
++			IDXGISwapChain4 *fsr_swap = nullptr;
++			if (FidelityFX::get_singleton()->create_swap_chain(context_driver->dxgi_factory_get(), command_queue->d3d_queue.Get(), surface->hwnd, &swap_chain_desc, &fsr_swap)) {
++				swap_chain_1 = fsr_swap;
++				fsr_swap->Release();
++				res = S_OK;
++			} else
++#endif
++			{
++				res = context_driver->dxgi_factory_get()->CreateSwapChainForHwnd(command_queue->d3d_queue.Get(), surface->hwnd, &swap_chain_desc, nullptr, nullptr, swap_chain_1.GetAddressOf());
++			}
+ 		}
+ 
+ 		ERR_FAIL_COND_V(!SUCCEEDED(res), ERR_CANT_CREATE);
+@@ -5661,6 +5686,20 @@
+ 
+ void RenderingDeviceDriverD3D12::command_insert_breadcrumb(CommandBufferID p_cmd_buffer, uint32_t p_data) {
+ 	// TODO: Implement via DRED.
++}
++
++void *RenderingDeviceDriverD3D12::command_buffer_get_native_handle(CommandBufferID p_cmd_buffer) {
++	CommandBufferInfo *cmd_buf_info = (CommandBufferInfo *)p_cmd_buffer.id;
++	// The external SDK changes PSO/root signatures/heaps outside Godot's caches.
++	cmd_buf_info->graphics_pso = nullptr;
++	cmd_buf_info->compute_pso = nullptr;
++	cmd_buf_info->graphics_root_signature_crc = 0;
++	cmd_buf_info->compute_root_signature_crc = 0;
++	cmd_buf_info->descriptor_heaps_set = false;
++	cmd_buf_info->pending_dyn_params = true;
++	cmd_buf_info->nir_graphics_runtime_data_root_param_idx = UINT32_MAX;
++	cmd_buf_info->nir_compute_runtime_data_root_param_idx = UINT32_MAX;
++	return cmd_buf_info->cmd_list.Get();
+ }
+ 
+ /********************/
+@@ -5953,6 +5992,7 @@
+ 		}
+ 	}
+ 
++
+ 	if (D3D12Hooks::get_singleton() != nullptr) {
+ 		D3D12Hooks::get_singleton()->cleanup_device();
+ 	}
+@@ -6019,6 +6059,7 @@
+ 	} else {
+ 		PFN_D3D12_CREATE_DEVICE d3d_D3D12CreateDevice = (PFN_D3D12_CREATE_DEVICE)(void *)GetProcAddress(context_driver->lib_d3d12, "D3D12CreateDevice");
+ 		ERR_FAIL_NULL_V(d3d_D3D12CreateDevice, ERR_CANT_CREATE);
++
+ 
+ 		res = d3d_D3D12CreateDevice(adapter.Get(), requested_feature_level, IID_PPV_ARGS(device.GetAddressOf()));
+ 	}
+@@ -6398,9 +6439,16 @@
+ 	Error err = _initialize_device();
+ 	ERR_FAIL_COND_V(err != OK, ERR_CANT_CREATE);
+ 
++#ifdef FSR_SDK_ENABLED
++	FidelityFX::get_singleton()->initialize_device(device.Get());
++#endif
++
+ 	err = _check_capabilities();
+ 	ERR_FAIL_COND_V(err != OK, ERR_CANT_CREATE);
+ 
++
++
++
+ 	err = _get_device_limits();
+ 	ERR_FAIL_COND_V(err != OK, ERR_CANT_CREATE);
+ 
+@@ -6413,5 +6461,6 @@
+ 	err = _initialize_command_signatures();
+ 	ERR_FAIL_COND_V(err != OK, ERR_CANT_CREATE);
+ 
++
+ 	return OK;
+ }
+diff --git a/drivers/d3d12/rendering_device_driver_d3d12.h b/drivers/d3d12/rendering_device_driver_d3d12.h
+--- a/drivers/d3d12/rendering_device_driver_d3d12.h
++++ b/drivers/d3d12/rendering_device_driver_d3d12.h
+@@ -895,6 +895,7 @@
+ 	/**** DEBUG *****/
+ 	/****************/
+ 	virtual void command_insert_breadcrumb(CommandBufferID p_cmd_buffer, uint32_t p_data) override final;
++	virtual void *command_buffer_get_native_handle(CommandBufferID p_cmd_buffer) override final;
+ 
+ 	/********************/
+ 	/**** SUBMISSION ****/
+diff --git a/drivers/fsr_sdk/SCsub b/drivers/fsr_sdk/SCsub
+new file mode 100644
+--- /dev/null
++++ b/drivers/fsr_sdk/SCsub
+@@ -0,0 +1,8 @@
++#!/usr/bin/env python
++Import("env")
++env_fsr = env.Clone()
++if env["use_fsr_sdk"]:
++    env_fsr.Prepend(CPPPATH=["#thirdparty/directx_headers/include/directx"])
++objects = []
++env_fsr.add_source_files(objects, "*.cpp")
++env.drivers_sources += objects
+diff --git a/drivers/fsr_sdk/fsr_sdk.cpp b/drivers/fsr_sdk/fsr_sdk.cpp
+new file mode 100644
+--- /dev/null
++++ b/drivers/fsr_sdk/fsr_sdk.cpp
+@@ -0,0 +1,245 @@
++// Cursed Lands experimental FidelityFX integration. SPDX-License-Identifier: MIT
++#include "fsr_sdk.h"
++#include "core/config/engine.h"
++#include "core/os/os.h"
++#ifdef FSR_SDK_ENABLED
++#include "core/io/file_access.h"
++#endif
++
++FidelityFX *FidelityFX::singleton = nullptr;
++FidelityFX::FidelityFX() { singleton = this; }
++void FidelityFX::register_singleton() {
++	GDREGISTER_CLASS(FidelityFX);
++	Engine::get_singleton()->add_singleton(Engine::Singleton("FidelityFX", singleton));
++}
++void FidelityFX::_bind_methods() {
++	ClassDB::bind_method(D_METHOD("get_status"), &FidelityFX::get_status);
++	ClassDB::bind_method(D_METHOD("set_upscaler_version", "version"), &FidelityFX::set_upscaler_version);
++	ClassDB::bind_method(D_METHOD("set_frame_generation_version", "version"), &FidelityFX::set_frame_generation_version);
++}
++void FidelityFX::set_upscaler_version(int p_version) {
++	if (p_version == 3 || p_version == 4) { sr_version.set(p_version); }
++}
++void FidelityFX::set_frame_generation_version(int p_version) {
++	fg_version.set(p_version == 3 || p_version == 4 ? p_version : 0);
++}
++bool FidelityFX::sr_available() const {
++#ifdef FSR_SDK_ENABLED
++	return device && sr_supported[sr_version.get() - 3] && !sr_failed.get();
++#else
++	return false;
++#endif
++}
++Dictionary FidelityFX::get_status() const {
++	MutexLock lock(status_mutex);
++	Dictionary d;
++	d["compiled"] = false;
++	d["initialized"] = false;
++	d["sr3_supported"] = false;
++	d["sr4_supported"] = false;
++	d["fg3_supported"] = false;
++	d["fg4_supported"] = false;
++#ifdef FSR_SDK_ENABLED
++	d["compiled"] = true;
++	d["initialized"] = device != nullptr;
++	d["sr3_supported"] = sr_supported[0] && !sr_failed.get();
++	d["sr4_supported"] = sr_supported[1] && !sr_failed.get();
++	d["fg3_supported"] = fg_supported[0] && swap_chain && !fg_failed.get();
++	d["fg4_supported"] = fg_supported[1] && swap_chain && !fg_failed.get();
++	d["upscaler_provider"] = sr_provider;
++	d["frame_generation_provider"] = fg_provider;
++	d["upscale_evaluations"] = (int64_t)sr_evaluations.get();
++	d["frame_generation_dispatches"] = (int64_t)fg_dispatches.get();
++	d["generated_frames"] = (int64_t)generated_frames.get();
++	d["game_presents"] = (int64_t)game_presents.get();
++	d["presented_frames"] = (int64_t)presented_frames.get();
++	d["present_count_available"] = present_count_available.get() != 0;
++	d["frame_generation_active"] = fg_active.get() != 0;
++	d["last_error"] = last_error.get();
++#endif
++	return d;
++}
++
++#ifdef FSR_SDK_ENABLED
++void FidelityFX::initialize_device(ID3D12Device *p_device) {
++	if (!OS::get_singleton()->get_cmdline_user_args().find("--experimental-fsr") ||
++			OS::get_singleton()->get_current_rendering_method() != "forward_plus" ||
++			Engine::get_singleton()->is_editor_hint()) { return; }
++	// Only signed SDK binaries beside the executable, never the working directory.
++	HMODULE modules[3]{};
++	const char *names[] = { "amd_fidelityfx_upscaler_dx12.dll", "amd_fidelityfx_framegeneration_dx12.dll", "amd_fidelityfx_loader_dx12.dll" };
++	const char *hashes[] = { "d0dcccc74a43c44ba435b7a369b456e0970d8a4464e4bd683119b374f2c9fb46", "02297beedd285e822d3a64f314cf00faf378dcec0edc47ff0c4dd71b3a8c2f18", "e2d85aa05a9bd9ed8b38935fdf5199372cca6f74c12015143bb6f945ee1608aa" };
++	for (int i = 0; i < 3; i++) {
++		String path = OS::get_singleton()->get_executable_path().get_base_dir().path_join(names[i]);
++		Char16String wide = path.utf16();
++		if (FileAccess::get_sha256(path) != hashes[i]) {
++			WARN_PRINT("AMD FSR runtime is missing or does not match the pinned production SDK.");
++			return;
++		}
++		modules[i] = LoadLibraryExW((const wchar_t *)wide.get_data(), nullptr, LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR | LOAD_LIBRARY_SEARCH_DEFAULT_DIRS);
++		if (!modules[i]) { return; }
++	}
++	// Keep the modules resident until process exit; effect callbacks outlive frames.
++	create = (PfnFfxCreateContext)(void *)GetProcAddress(modules[2], "ffxCreateContext");
++	destroy = (PfnFfxDestroyContext)(void *)GetProcAddress(modules[2], "ffxDestroyContext");
++	query = (PfnFfxQuery)(void *)GetProcAddress(modules[2], "ffxQuery");
++	dispatch = (PfnFfxDispatch)(void *)GetProcAddress(modules[2], "ffxDispatch");
++	configure = (PfnFfxConfigure)(void *)GetProcAddress(modules[2], "ffxConfigure");
++	if (!create || !destroy || !query || !dispatch || !configure) { return; }
++	device = p_device;
++	for (int effect = 0; effect < 2; effect++) {
++		uint64_t count = 32, ids[32]{};
++		const char *names_available[32]{};
++		ffxQueryDescGetVersions q{};
++		q.header.type = FFX_API_QUERY_DESC_TYPE_GET_VERSIONS;
++		q.createDescType = effect == 0 ? FFX_API_CREATE_CONTEXT_DESC_TYPE_UPSCALE : FFX_API_CREATE_CONTEXT_DESC_TYPE_FRAMEGENERATION;
++		q.device = device;
++		q.outputCount = &count;
++		q.versionIds = ids;
++		q.versionNames = names_available;
++		if (query(nullptr, &q.header) != FFX_API_RETURN_OK) { continue; }
++		for (uint64_t i = 0; i < MIN(count, uint64_t(32)); i++) {
++			String name = String::utf8(names_available[i]);
++			print_line("FidelityFX provider: " + name);
++			int index = name.contains("3.1.") ? 0 : (name.contains("4.") ? 1 : -1);
++			if (index < 0) { continue; }
++			// Version IDs are opaque. Only reuse IDs actually returned for this device.
++			(effect == 0 ? sr_ids : fg_ids)[index] = ids[i];
++			(effect == 0 ? sr_supported : fg_supported)[index] = true;
++		}
++	}
++	debug_frames = OS::get_singleton()->get_cmdline_user_args().find("--fsr-debug-frames");
++}
++
++bool FidelityFX::check(ffxReturnCode_t p_code, bool p_fg) {
++	if (p_code == FFX_API_RETURN_OK) { return true; }
++	last_error.set(p_code);
++	(p_fg ? fg_failed : sr_failed).set(1);
++	WARN_PRINT(vformat("FidelityFX %s disabled after SDK error %d.", p_fg ? "frame generation" : "upscaling", p_code));
++	return false;
++}
++void FidelityFX::record_provider(ffxContext *p_context, bool p_fg) {
++	ffxQueryGetProviderVersion q{};
++	q.header.type = FFX_API_QUERY_DESC_TYPE_GET_PROVIDER_VERSION;
++	if (query(p_context, &q.header) == FFX_API_RETURN_OK && q.versionName) {
++		MutexLock lock(status_mutex);
++		(p_fg ? fg_provider : sr_provider) = String::utf8(q.versionName);
++	}
++}
++bool FidelityFX::create_swap_chain(IDXGIFactory *p_factory, ID3D12CommandQueue *p_queue, HWND p_hwnd, DXGI_SWAP_CHAIN_DESC1 *p_desc, IDXGISwapChain4 **r_swap) {
++	if (!device || swap_chain || (!fg_supported[0] && !fg_supported[1]) || p_desc->Format != DXGI_FORMAT_R8G8B8A8_UNORM) { return false; }
++	swap_desc = *p_desc;
++	swap_api_version.header.type = FFX_API_CREATE_CONTEXT_DESC_TYPE_FRAMEGENERATIONSWAPCHAIN_VERSION_DX12;
++	swap_api_version.version = FFX_FRAMEGENERATION_SWAPCHAIN_DX12_VERSION;
++	swap_create.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_FRAMEGENERATIONSWAPCHAIN_FOR_HWND_DX12, &swap_api_version.header };
++	swap_create.swapchain = &swap_chain;
++	swap_create.hwnd = p_hwnd;
++	swap_create.desc = &swap_desc;
++	swap_create.dxgiFactory = p_factory;
++	swap_create.gameQueue = p_queue;
++	if (!check(create(&swap_context, &swap_create.header, nullptr), true)) { swap_chain = nullptr; return false; }
++	last_present_count = 0;
++	*r_swap = swap_chain;
++	return true;
++}
++void FidelityFX::disable_frame_generation() {
++	if (fg_context && fg_config.frameGenerationEnabled) {
++		fg_config.frameGenerationEnabled = false;
++		check(configure(&fg_context, &fg_config.header), true);
++	}
++	fg_active.set(0);
++	prepared = false;
++}
++void FidelityFX::wait_for_presents() {
++	if (!swap_context) { return; }
++	ffxDispatchDescFrameGenerationSwapChainWaitForPresentsDX12 wait{};
++	wait.header.type = FFX_API_DISPATCH_DESC_TYPE_FRAMEGENERATIONSWAPCHAIN_WAIT_FOR_PRESENTS_DX12;
++	check(dispatch(&swap_context, &wait.header), true);
++}
++void FidelityFX::release_frame_generation() {
++	MutexLock lock(fg_mutex);
++	disable_frame_generation();
++	wait_for_presents();
++	if (fg_context) {
++		destroy(&fg_context, nullptr);
++		fg_context = nullptr;
++	}
++	active_fg_version = 0;
++}
++void FidelityFX::release_swap_chain(IDXGISwapChain3 *p_swap) {
++	if (p_swap != swap_chain) { return; }
++	release_frame_generation();
++	MutexLock lock(fg_mutex);
++	if (swap_context) { destroy(&swap_context, nullptr); swap_context = nullptr; }
++	swap_chain = nullptr; // Driver releases its final COM reference immediately afterwards.
++}
++HRESULT FidelityFX::present(IDXGISwapChain3 *p_swap, UINT p_interval, UINT p_flags) {
++	if (p_swap != swap_chain) { return p_swap->Present(p_interval, p_flags); }
++	MutexLock lock(fg_mutex);
++	if (!prepared || !fg_version.get() || fg_failed.get()) { disable_frame_generation(); }
++	HRESULT result = p_swap->Present(p_interval, p_flags);
++	if (SUCCEEDED(result)) { game_presents.increment(); }
++	// AMD forwards this query to the real swapchain, so it includes generated
++	// presents. It is not the game-loop FPS or the number of dispatch calls.
++	UINT count = 0;
++	if (SUCCEEDED(p_swap->GetLastPresentCount(&count))) {
++		present_count_available.set(1);
++		presented_frames.add(UINT(count - last_present_count));
++		last_present_count = count;
++	}
++	prepared = false;
++	frame_id++;
++	return result;
++}
++bool FidelityFX::ensure_frame_generation(uint32_t p_width, uint32_t p_height, uint32_t p_hudless_format) {
++	int version = fg_version.get();
++	if (!swap_chain || fg_failed.get() || version < 3 || version > 4 || !fg_supported[version - 3]) { return false; }
++	DXGI_SWAP_CHAIN_DESC1 actual{};
++	swap_chain->GetDesc1(&actual);
++	if (actual.Width != p_width || actual.Height != p_height || actual.Format != DXGI_FORMAT_R8G8B8A8_UNORM) { return false; }
++	if (fg_context && (active_fg_version != version || fg_desc.displaySize.width != p_width || fg_desc.displaySize.height != p_height)) {
++		disable_frame_generation();
++		wait_for_presents();
++		destroy(&fg_context, nullptr);
++		fg_context = nullptr;
++	}
++	if (fg_context) { return true; }
++	fg_backend.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_BACKEND_DX12, &fg_api_version.header };
++	fg_backend.device = device;
++	fg_api_version.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_FRAMEGENERATION_VERSION, &fg_hudless.header };
++	fg_api_version.version = FFX_FRAMEGENERATION_VERSION;
++	fg_hudless.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_FRAMEGENERATION_HUDLESS, &fg_override.header };
++	fg_hudless.hudlessBackBufferFormat = p_hudless_format;
++	fg_override.header = { FFX_API_DESC_TYPE_OVERRIDE_VERSION, nullptr };
++	fg_override.versionId = fg_ids[version - 3];
++	fg_desc = {};
++	fg_desc.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_FRAMEGENERATION, &fg_backend.header };
++	fg_desc.flags = FFX_FRAMEGENERATION_ENABLE_DEPTH_INVERTED;
++	fg_desc.displaySize = { p_width, p_height };
++	fg_desc.maxRenderSize = { p_width, p_height };
++	fg_desc.backBufferFormat = ffxApiGetSurfaceFormatDX12(actual.Format);
++	if (!check(create(&fg_context, &fg_desc.header, nullptr), true)) { return false; }
++	active_fg_version = version;
++	record_provider(&fg_context, true);
++	fg_config = {};
++	fg_config.header.type = FFX_API_CONFIGURE_DESC_TYPE_FRAMEGENERATION;
++	fg_config.swapChain = swap_chain;
++	fg_config.frameGenerationCallback = generate;
++	fg_config.frameGenerationCallbackUserContext = this;
++	// Non-async interpolation keeps the single HUD-less texture on the game queue.
++	fg_config.allowAsyncWorkloads = false;
++	fg_config.generationRect = { 0, 0, (int32_t)p_width, (int32_t)p_height };
++	if (debug_frames) { fg_config.flags = FFX_FRAMEGENERATION_FLAG_DRAW_DEBUG_TEAR_LINES | FFX_FRAMEGENERATION_FLAG_DRAW_DEBUG_RESET_INDICATORS; }
++	return true;
++}
++ffxReturnCode_t FidelityFX::generate(ffxDispatchDescFrameGeneration *p_desc, void *p_user) {
++	auto *self = static_cast<FidelityFX *>(p_user);
++	// Present holds fg_mutex. The SDK invokes this callback on that same thread.
++	ffxReturnCode_t code = self->dispatch(&self->fg_context, &p_desc->header);
++	if (self->check(code, true)) {
++		self->fg_dispatches.increment();
++		self->generated_frames.add(p_desc->numGeneratedFrames);
++	}
++	return code;
++}
++#endif
+diff --git a/drivers/fsr_sdk/fsr_sdk.h b/drivers/fsr_sdk/fsr_sdk.h
+new file mode 100644
+--- /dev/null
++++ b/drivers/fsr_sdk/fsr_sdk.h
+@@ -0,0 +1,89 @@
++// Cursed Lands experimental FidelityFX integration. SPDX-License-Identifier: MIT
++#pragma once
++
++#include "core/object/class_db.h"
++#include "core/object/object.h"
++#include "core/os/mutex.h"
++#include "core/templates/safe_refcount.h"
++
++#ifdef FSR_SDK_ENABLED
++#include "drivers/d3d12/godot_d3dx12.h"
++#include "thirdparty/amd-fsr-sdk/api/include/dx12/ffx_api_dx12.h"
++#include "thirdparty/amd-fsr-sdk/upscalers/include/ffx_upscale.h"
++#include "thirdparty/amd-fsr-sdk/framegeneration/include/ffx_framegeneration.h"
++#include "thirdparty/amd-fsr-sdk/framegeneration/include/dx12/ffx_api_framegeneration_dx12.h"
++#endif
++
++class FidelityFX : public Object {
++	GDCLASS(FidelityFX, Object);
++	static FidelityFX *singleton;
++	static void _bind_methods();
++	mutable Mutex status_mutex;
++	SafeNumeric<uint32_t> sr_version{ 3 };
++	SafeNumeric<uint32_t> fg_version{ 0 };
++
++public:
++	FidelityFX();
++	static FidelityFX *get_singleton() { return singleton; }
++	static void register_singleton();
++	Dictionary get_status() const;
++	void set_upscaler_version(int p_version);
++	void set_frame_generation_version(int p_version);
++	bool sr_available() const;
++	int get_upscaler_version() const { return sr_version.get(); }
++
++#ifdef FSR_SDK_ENABLED
++	PfnFfxCreateContext create = nullptr;
++	PfnFfxDestroyContext destroy = nullptr;
++	PfnFfxQuery query = nullptr;
++	PfnFfxDispatch dispatch = nullptr;
++	PfnFfxConfigure configure = nullptr;
++	ID3D12Device *device = nullptr; // Borrowed from RenderingDevice.
++	uint64_t sr_ids[2]{};
++	uint64_t fg_ids[2]{};
++	bool sr_supported[2]{};
++	bool fg_supported[2]{};
++	SafeNumeric<uint64_t> sr_evaluations{ 0 };
++	SafeNumeric<uint64_t> fg_dispatches{ 0 };
++	SafeNumeric<uint64_t> generated_frames{ 0 };
++	SafeNumeric<uint64_t> game_presents{ 0 };
++	SafeNumeric<uint64_t> presented_frames{ 0 };
++	SafeNumeric<uint32_t> present_count_available{ 0 };
++	UINT last_present_count = 0;
++	SafeNumeric<uint32_t> sr_failed{ 0 };
++	SafeNumeric<uint32_t> fg_failed{ 0 };
++	SafeNumeric<uint32_t> last_error{ 0 };
++	SafeNumeric<uint32_t> fg_active{ 0 };
++	Mutex fg_mutex;
++	ffxContext fg_context = nullptr;
++	ffxContext swap_context = nullptr;
++	IDXGISwapChain4 *swap_chain = nullptr; // Borrowed; swap context owns another reference.
++	DXGI_SWAP_CHAIN_DESC1 swap_desc{};
++	uint64_t frame_id = 0;
++	bool prepared = false;
++	int active_fg_version = 0;
++	String sr_provider;
++	String fg_provider;
++	ffxCreateBackendDX12Desc fg_backend{};
++	ffxCreateContextDescFrameGeneration fg_desc{};
++	ffxCreateContextDescFrameGenerationVersion fg_api_version{};
++	ffxCreateContextDescFrameGenerationHudless fg_hudless{};
++	ffxOverrideVersion fg_override{};
++	ffxConfigureDescFrameGeneration fg_config{};
++	ffxCreateContextDescFrameGenerationSwapChainForHwndDX12 swap_create{};
++	ffxCreateContextDescFrameGenerationSwapChainVersionDX12 swap_api_version{};
++	bool debug_frames = false;
++
++	void initialize_device(ID3D12Device *p_device);
++	bool create_swap_chain(IDXGIFactory *p_factory, ID3D12CommandQueue *p_queue, HWND p_hwnd, DXGI_SWAP_CHAIN_DESC1 *p_desc, IDXGISwapChain4 **r_swap);
++	HRESULT present(IDXGISwapChain3 *p_swap, UINT p_interval, UINT p_flags);
++	void release_swap_chain(IDXGISwapChain3 *p_swap);
++	void release_frame_generation();
++	void wait_for_presents();
++	void disable_frame_generation(); // Caller holds fg_mutex.
++	bool ensure_frame_generation(uint32_t p_width, uint32_t p_height, uint32_t p_hudless_format);
++	bool check(ffxReturnCode_t p_code, bool p_fg = false);
++	void record_provider(ffxContext *p_context, bool p_fg);
++	static ffxReturnCode_t generate(ffxDispatchDescFrameGeneration *p_desc, void *p_user);
++#endif
++};
+diff --git a/main/main.cpp b/main/main.cpp
+--- a/main/main.cpp
++++ b/main/main.cpp
+@@ -156,6 +156,8 @@
+ #endif // TOOLS_ENABLED && !GDSCRIPT_NO_LSP
+ #endif // MODULE_GDSCRIPT_ENABLED
+ 
++#include "drivers/fsr_sdk/fsr_sdk.h"
++
+ /* Static members */
+ 
+ // Singletons
+@@ -196,6 +198,7 @@
+ #ifndef XR_DISABLED
+ static XRServer *xr_server = nullptr;
+ #endif // XR_DISABLED
++static FidelityFX *fidelityfx = nullptr;
+ // We error out if setup2() doesn't turn this true
+ static bool _start_success = false;
+ 
+@@ -1080,6 +1083,9 @@
+ 	GLOBAL_DEF_RST("application/run/flush_stdout_on_print.debug", true);
+ 
+ 	MAIN_PRINT("Main: Parse CMDLine");
++
++	fidelityfx = memnew(FidelityFX);
++	FidelityFX::register_singleton();
+ 
+ 	/* argument parsing and main creation */
+ 	List<String> args;
+@@ -2676,6 +2682,7 @@
+ 	}
+ #endif
+ 
++
+ 	if (use_custom_res) {
+ 		if (!force_res) {
+ 			window_size.width = GLOBAL_GET("display/window/size/viewport_width");
+@@ -2957,6 +2964,11 @@
+ 
+ 	if (editor) {
+ 		OS::get_singleton()->remove_lock_file();
++	}
++
++	if (fidelityfx) {
++		memdelete(fidelityfx);
++		fidelityfx = nullptr;
+ 	}
+ 
+ 	EngineDebugger::deinitialize();
+@@ -4926,6 +4938,8 @@
+ bool Main::iteration() {
+ 	GodotProfileZone("Main::iteration");
+ 	GodotProfileZoneGroupedFirst(_profile_zone, "prepare");
++
++
+ 	iterating++;
+ 
+ 	const uint64_t ticks = OS::get_singleton()->get_ticks_usec();
+@@ -5078,6 +5092,7 @@
+ 	NavigationServer3D::get_singleton()->process(process_step * time_scale);
+ #endif // NAVIGATION_3D_DISABLED
+ 
++
+ 	GodotProfileZoneGrouped(_profile_zone, "RenderingServer::sync");
+ 	RenderingServer::get_singleton()->sync(); //sync if still drawing from previous frames.
+ 
+@@ -5204,6 +5219,7 @@
+ 		EditorNode::get_singleton()->unload_editor_addons();
+ 	}
+ #endif
++
+ 
+ 	return exit;
+ }
+@@ -5340,6 +5356,10 @@
+ 
+ 	finalize_display();
+ 
++	if (fidelityfx) {
++		memdelete(fidelityfx);
++		fidelityfx = nullptr;
++	}
+ 	if (input) {
+ 		memdelete(input);
+ 	}
+diff --git a/scene/main/viewport.cpp b/scene/main/viewport.cpp
+--- a/scene/main/viewport.cpp
++++ b/scene/main/viewport.cpp
+@@ -5065,6 +5065,20 @@
+ 	return scaling_3d_mode;
+ }
+ 
++void Viewport::set_frame_generation(bool p_frame_generation) {
++	ERR_MAIN_THREAD_GUARD;
++	if (frame_generation == p_frame_generation) {
++		return;
++	}
++
++	frame_generation = p_frame_generation;
++	RS::get_singleton()->viewport_set_frame_generation(viewport, p_frame_generation);
++}
++
++bool Viewport::get_frame_generation() const {
++	return frame_generation;
++}
++
+ void Viewport::set_scaling_3d_scale(float p_scaling_3d_scale) {
+ 	ERR_MAIN_THREAD_GUARD;
+ 	// Clamp to reasonable values that are actually useful.
+@@ -5328,6 +5342,9 @@
+ 
+ 	ClassDB::bind_method(D_METHOD("set_scaling_3d_scale", "scale"), &Viewport::set_scaling_3d_scale);
+ 	ClassDB::bind_method(D_METHOD("get_scaling_3d_scale"), &Viewport::get_scaling_3d_scale);
++
++	ClassDB::bind_method(D_METHOD("set_frame_generation", "frame_generation"), &Viewport::set_frame_generation);
++	ClassDB::bind_method(D_METHOD("get_frame_generation"), &Viewport::get_frame_generation);
+ 
+ 	ClassDB::bind_method(D_METHOD("set_fsr_sharpness", "fsr_sharpness"), &Viewport::set_fsr_sharpness);
+ 	ClassDB::bind_method(D_METHOD("get_fsr_sharpness"), &Viewport::get_fsr_sharpness);
+@@ -5373,6 +5390,7 @@
+ #ifndef _3D_DISABLED
+ 	ADD_GROUP("Scaling 3D", "");
+ 	ADD_PROPERTY(PropertyInfo(Variant::INT, "scaling_3d_mode", PROPERTY_HINT_ENUM, "Nearest (Fastest):5,Bilinear (Fastest):0,FSR 1.0 (Fast):1,FSR 2.2 (Slow):2,MetalFX (Spatial - Fast):3,MetalFX (Temporal - Slow):4"), "set_scaling_3d_mode", "get_scaling_3d_mode");
++	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "frame_generation"), "set_frame_generation", "get_frame_generation");
+ 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "scaling_3d_scale", PROPERTY_HINT_RANGE, "0.1,2.0,0.0001"), "set_scaling_3d_scale", "get_scaling_3d_scale");
+ 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "texture_mipmap_bias", PROPERTY_HINT_RANGE, "-2,2,0.001"), "set_texture_mipmap_bias", "get_texture_mipmap_bias");
+ 	ADD_PROPERTY(PropertyInfo(Variant::INT, "anisotropic_filtering_level", PROPERTY_HINT_ENUM, String::utf8("Disabled (Fastest),2× (Faster),4× (Fast),8× (Average),16x (Slow)")), "set_anisotropic_filtering_level", "get_anisotropic_filtering_level");
+@@ -5436,6 +5454,7 @@
+ 	BIND_ENUM_CONSTANT(SCALING_3D_MODE_METALFX_SPATIAL);
+ 	BIND_ENUM_CONSTANT(SCALING_3D_MODE_METALFX_TEMPORAL);
+ 	BIND_ENUM_CONSTANT(SCALING_3D_MODE_NEAREST);
++	BIND_ENUM_CONSTANT(SCALING_3D_MODE_FSR_SDK);
+ 	BIND_ENUM_CONSTANT(SCALING_3D_MODE_MAX);
+ 
+ 	BIND_ENUM_CONSTANT(MSAA_DISABLED);
+diff --git a/scene/main/viewport.h b/scene/main/viewport.h
+--- a/scene/main/viewport.h
++++ b/scene/main/viewport.h
+@@ -104,6 +104,7 @@
+ 		SCALING_3D_MODE_METALFX_SPATIAL,
+ 		SCALING_3D_MODE_METALFX_TEMPORAL,
+ 		SCALING_3D_MODE_NEAREST,
++		SCALING_3D_MODE_FSR_SDK,
+ 		SCALING_3D_MODE_MAX
+ 	};
+ 
+@@ -322,6 +323,7 @@
+ 
+ 	Scaling3DMode scaling_3d_mode = SCALING_3D_MODE_BILINEAR;
+ 	float scaling_3d_scale = 1.0;
++	bool frame_generation = false;
+ 	float fsr_sharpness = 0.2f;
+ 	float texture_mipmap_bias = 0.0f;
+ 	AnisotropicFiltering anisotropic_filtering_level = ANISOTROPY_4X;
+@@ -607,6 +609,9 @@
+ 	void set_scaling_3d_scale(float p_scaling_3d_scale);
+ 	float get_scaling_3d_scale() const;
+ 
++	void set_frame_generation(bool p_frame_generation);
++	bool get_frame_generation() const;
++
+ 	void set_fsr_sharpness(float p_fsr_sharpness);
+ 	float get_fsr_sharpness() const;
+ 
+diff --git a/servers/rendering/renderer_rd/effects/fsr_sdk.cpp b/servers/rendering/renderer_rd/effects/fsr_sdk.cpp
+new file mode 100644
+--- /dev/null
++++ b/servers/rendering/renderer_rd/effects/fsr_sdk.cpp
+@@ -0,0 +1,231 @@
++// Cursed Lands experimental FidelityFX integration. SPDX-License-Identifier: MIT
++#include "fsr_sdk.h"
++#include "drivers/fsr_sdk/fsr_sdk.h"
++#include "../uniform_set_cache_rd.h"
++
++using namespace RendererRD;
++#ifdef FSR_SDK_ENABLED
++namespace RendererRD {
++class FSRSDKContextDX12 : public FSRSDKContext {
++public:
++	ffxContext sr = nullptr;
++	ffxCreateContextDescUpscale desc{};
++	ffxCreateBackendDX12Desc backend{};
++	ffxCreateContextDescUpscaleVersion api_version{};
++	ffxOverrideVersion version_override{};
++	int version = 3;
++	Size2i target_size;
++	RID reactive;
++	RID hudless;
++	bool first = true;
++	bool evaluated = false;
++	~FSRSDKContextDX12() {
++		auto *api = FidelityFX::get_singleton();
++		RD::get_singleton()->_flush_and_stall_for_all_frames();
++		api->release_frame_generation();
++		if (sr) { api->destroy(&sr, nullptr); }
++		if (reactive.is_valid()) { RD::get_singleton()->free_rid(reactive); }
++		if (hudless.is_valid()) { RD::get_singleton()->free_rid(hudless); }
++	}
++};
++}
++
++// Enter the legacy barrier domain from the render graph's COMMON layout and
++// return each resource to that layout before Godot uses it again. The SDK
++// restores each resource to the state supplied in its FfxApiResource.
++class FSRResourceScope {
++	ID3D12GraphicsCommandList *commands;
++	D3D12_RESOURCE_BARRIER barriers[8]{};
++	uint32_t count = 0;
++public:
++	explicit FSRResourceScope(void *p_commands) : commands((ID3D12GraphicsCommandList *)p_commands) {}
++	FfxApiResource add(RID p_texture, uint32_t p_usage = 0) {
++		auto *native = (ID3D12Resource *)RD::get_singleton()->get_driver_resource(RD::DRIVER_RESOURCE_TEXTURE, p_texture);
++		auto &barrier = barriers[count++];
++		barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
++		barrier.Transition.pResource = native;
++		barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
++		barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COMMON;
++		barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE;
++		return ffxApiGetResourceDX12(native, FFX_API_RESOURCE_STATE_COMPUTE_READ, p_usage);
++	}
++	void begin() { commands->ResourceBarrier(count, barriers); }
++	~FSRResourceScope() {
++		for (uint32_t i = 0; i < count; i++) {
++			barriers[i].Transition.StateBefore = D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE;
++			barriers[i].Transition.StateAfter = D3D12_RESOURCE_STATE_COMMON;
++		}
++		commands->ResourceBarrier(count, barriers);
++	}
++};
++
++FSRSDKEffect::FSRSDKEffect() {
++	Vector<String> modes;
++	modes.push_back("\n");
++	shader.initialize(modes, "");
++	shader_version = shader.version_create();
++	pipeline = RD::get_singleton()->compute_pipeline_create(shader.version_get_shader(shader_version, 0));
++}
++FSRSDKEffect::~FSRSDKEffect() { shader.version_free(shader_version); }
++bool FSRSDKEffect::is_version_current(FSRSDKContext *p_context) const {
++	return p_context && static_cast<FSRSDKContextDX12 *>(p_context)->version == FidelityFX::get_singleton()->get_upscaler_version();
++}
++FSRSDKContext *FSRSDKEffect::create_context(Size2i p_internal, Size2i p_target) {
++	auto *api = FidelityFX::get_singleton();
++	if (!api->sr_available()) { return nullptr; }
++	auto *ctx = memnew(FSRSDKContextDX12);
++	ctx->version = api->get_upscaler_version();
++	ctx->target_size = p_target;
++	ctx->backend.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_BACKEND_DX12, &ctx->api_version.header };
++	ctx->backend.device = api->device;
++	ctx->api_version.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_UPSCALE_VERSION, &ctx->version_override.header };
++	ctx->api_version.version = FFX_UPSCALER_VERSION;
++	ctx->version_override.header.type = FFX_API_DESC_TYPE_OVERRIDE_VERSION;
++	ctx->version_override.versionId = api->sr_ids[ctx->version - 3];
++	ctx->desc.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_UPSCALE, &ctx->backend.header };
++	ctx->desc.flags = FFX_UPSCALE_ENABLE_HIGH_DYNAMIC_RANGE | FFX_UPSCALE_ENABLE_DEPTH_INVERTED | FFX_UPSCALE_ENABLE_AUTO_EXPOSURE;
++	ctx->desc.maxRenderSize = { (uint32_t)p_internal.x, (uint32_t)p_internal.y };
++	ctx->desc.maxUpscaleSize = { (uint32_t)p_target.x, (uint32_t)p_target.y };
++	if (!api->check(api->create(&ctx->sr, &ctx->desc.header, nullptr))) { memdelete(ctx); return nullptr; }
++	api->record_provider(&ctx->sr, false);
++	RD::TextureFormat format;
++	format.format = RD::DATA_FORMAT_R8_UNORM;
++	format.width = p_internal.x;
++	format.height = p_internal.y;
++	format.usage_bits = RD::TEXTURE_USAGE_STORAGE_BIT | RD::TEXTURE_USAGE_SAMPLING_BIT;
++	ctx->reactive = RD::get_singleton()->texture_create(format, RD::TextureView());
++	return ctx;
++}
++
++void FSRSDKEffect::upscale(const FSRSDKContext::Parameters &p_params) {
++	auto *ctx = static_cast<FSRSDKContextDX12 *>(p_params.context);
++	if (!ctx || !FidelityFX::get_singleton()->sr_available()) { return; }
++	ctx->last_parameters = p_params;
++	ctx->evaluated = false;
++	RD *rd = RD::get_singleton();
++	auto *cache = UniformSetCacheRD::get_singleton();
++	RID shader_rid = shader.version_get_shader(shader_version, 0);
++	RD::ComputeListID list = rd->compute_list_begin();
++	rd->compute_list_bind_compute_pipeline(list, pipeline);
++	RD::Uniform uniforms[] = {
++		RD::Uniform(RD::UNIFORM_TYPE_IMAGE, 0, p_params.velocity),
++		RD::Uniform(RD::UNIFORM_TYPE_TEXTURE, 0, p_params.depth),
++		RD::Uniform(RD::UNIFORM_TYPE_TEXTURE, 0, p_params.color),
++		RD::Uniform(RD::UNIFORM_TYPE_IMAGE, 0, ctx->reactive),
++	};
++	for (int i = 0; i < 4; i++) {
++		rd->compute_list_bind_uniform_set(list, cache->get_cache(shader_rid, i, uniforms[i]), i);
++	}
++	float constants[20]{};
++	constants[0] = p_params.internal_size.x;
++	constants[1] = p_params.internal_size.y;
++	memcpy(constants + 4, &p_params.reprojection.columns[0].x, sizeof(float) * 16);
++	rd->compute_list_set_push_constant(list, constants, sizeof(constants));
++	rd->compute_list_dispatch_threads(list, p_params.internal_size.x, p_params.internal_size.y, 1);
++	rd->compute_list_end();
++	RID textures[] = { p_params.color, p_params.depth, p_params.velocity, p_params.output, ctx->reactive };
++	RD::CallbackResource resources[5];
++	for (int i = 0; i < 5; i++) { resources[i].rid = textures[i]; resources[i].usage = RD::CALLBACK_RESOURCE_USAGE_GENERAL; }
++	rd->driver_callback_add(upscale_callback, ctx, VectorView<RD::CallbackResource>(resources, 5));
++}
++void FSRSDKEffect::upscale_callback(RenderingDeviceDriver *p_driver, RDD::CommandBufferID p_commands, void *p_userdata) {
++	auto *ctx = static_cast<FSRSDKContextDX12 *>(p_userdata);
++	auto *api = FidelityFX::get_singleton();
++	const auto &p = ctx->last_parameters;
++	ffxDispatchDescUpscale d{};
++	d.header.type = FFX_API_DISPATCH_DESC_TYPE_UPSCALE;
++	d.commandList = p_driver->command_buffer_get_native_handle(p_commands);
++	FSRResourceScope resources(d.commandList);
++	d.color = resources.add(p.color);
++	d.depth = resources.add(p.depth, FFX_API_RESOURCE_USAGE_DEPTHTARGET);
++	d.motionVectors = resources.add(p.velocity);
++	d.output = resources.add(p.output);
++	d.reactive = resources.add(ctx->reactive);
++	d.jitterOffset = { (float)p.jitter.x, (float)p.jitter.y };
++	d.motionVectorScale = { (float)p.internal_size.x, (float)p.internal_size.y };
++	d.renderSize = { (uint32_t)p.internal_size.x, (uint32_t)p.internal_size.y };
++	d.upscaleSize = { (uint32_t)ctx->target_size.x, (uint32_t)ctx->target_size.y };
++	d.frameTimeDelta = MAX(p.delta_time * 1000.0f, 0.1f);
++	d.preExposure = 1.0f;
++	d.reset = ctx->first || p.reset_accumulation;
++	d.cameraNear = p.z_near;
++	d.cameraFar = p.z_far;
++	d.cameraFovAngleVertical = Math::deg_to_rad(p.fovy);
++	d.viewSpaceToMetersFactor = 1.0f;
++	d.enableSharpening = true;
++	d.sharpness = p.sharpness;
++	resources.begin();
++	if (api->check(api->dispatch(&ctx->sr, &d.header))) {
++		ctx->evaluated = true;
++		api->sr_evaluations.increment();
++		ctx->first = false;
++	}
++}
++void FSRSDKEffect::prepare_frame_generation(FSRSDKContext *p_context, RID p_color) {
++	auto *ctx = static_cast<FSRSDKContextDX12 *>(p_context);
++	if (!ctx || !ctx->last_parameters.frame_generation) { return; }
++	RD *rd = RD::get_singleton();
++	RD::TextureFormat format = rd->texture_get_format(p_color);
++	if (!ctx->hudless.is_valid()) {
++		format.usage_bits = RD::TEXTURE_USAGE_SAMPLING_BIT | RD::TEXTURE_USAGE_CAN_COPY_TO_BIT;
++		ctx->hudless = rd->texture_create(format, RD::TextureView());
++	}
++	rd->texture_copy(p_color, ctx->hudless, Vector3(), Vector3(), Vector3(format.width, format.height, 1), 0, 0, 0, 0);
++	RID textures[] = { ctx->hudless, ctx->last_parameters.depth, ctx->last_parameters.velocity };
++	RD::CallbackResource resources[3];
++	for (int i = 0; i < 3; i++) { resources[i].rid = textures[i]; resources[i].usage = RD::CALLBACK_RESOURCE_USAGE_GENERAL; }
++	rd->driver_callback_add(frame_generation_callback, ctx, VectorView<RD::CallbackResource>(resources, 3));
++}
++void FSRSDKEffect::frame_generation_callback(RenderingDeviceDriver *p_driver, RDD::CommandBufferID p_commands, void *p_userdata) {
++	auto *ctx = static_cast<FSRSDKContextDX12 *>(p_userdata);
++	auto *api = FidelityFX::get_singleton();
++	if (!ctx->evaluated) { return; }
++	MutexLock lock(api->fg_mutex);
++	RD *rd = RD::get_singleton();
++	auto *hudless = (ID3D12Resource *)rd->get_driver_resource(RD::DRIVER_RESOURCE_TEXTURE, ctx->hudless);
++	FfxApiResource hudless_resource = ffxApiGetResourceDX12(hudless, FFX_API_RESOURCE_STATE_COMMON);
++	if (!api->ensure_frame_generation(ctx->target_size.x, ctx->target_size.y, hudless_resource.description.format)) { return; }
++	const auto &p = ctx->last_parameters;
++	// Required order: Configure -> PrepareV2 -> dispatch from proxy Present.
++	api->fg_config.frameGenerationEnabled = true;
++	api->fg_config.frameID = api->frame_id;
++	api->fg_config.HUDLessColor = hudless_resource;
++	if (!api->check(api->configure(&api->fg_context, &api->fg_config.header), true)) { return; }
++	ffxDispatchDescFrameGenerationPrepareV2 d{};
++	d.header.type = FFX_API_DISPATCH_DESC_TYPE_FRAMEGENERATION_PREPARE_V2;
++	d.commandList = p_driver->command_buffer_get_native_handle(p_commands);
++	FSRResourceScope resources(d.commandList);
++	d.depth = resources.add(p.depth, FFX_API_RESOURCE_USAGE_DEPTHTARGET);
++	d.motionVectors = resources.add(p.velocity);
++	d.frameID = api->frame_id;
++	d.flags = api->fg_config.flags;
++	d.jitterOffset = { (float)p.jitter.x, (float)p.jitter.y };
++	d.motionVectorScale = { (float)p.internal_size.x, (float)p.internal_size.y };
++	d.renderSize = { (uint32_t)p.internal_size.x, (uint32_t)p.internal_size.y };
++	d.frameTimeDelta = MAX(p.delta_time * 1000.0f, 0.1f);
++	d.reset = p.reset_accumulation || !api->fg_active.get();
++	d.cameraNear = p.z_near;
++	d.cameraFar = p.z_far;
++	d.cameraFovAngleVertical = Math::deg_to_rad(p.fovy);
++	d.viewSpaceToMetersFactor = 1.0f;
++	Vector3 pos = p.cam_transform.origin;
++	Vector3 up = p.cam_transform.basis.get_column(1);
++	Vector3 right = p.cam_transform.basis.get_column(0);
++	Vector3 forward = -p.cam_transform.basis.get_column(2);
++	for (int i = 0; i < 3; i++) {
++		d.cameraPosition[i] = pos[i]; d.cameraUp[i] = up[i]; d.cameraRight[i] = right[i]; d.cameraForward[i] = forward[i];
++	}
++	resources.begin();
++	if (api->check(api->dispatch(&api->fg_context, &d.header), true)) {
++		api->prepared = true;
++		api->fg_active.set(1);
++	}
++}
++#else
++FSRSDKEffect::FSRSDKEffect() {}
++FSRSDKEffect::~FSRSDKEffect() {}
++FSRSDKContext *FSRSDKEffect::create_context(Size2i, Size2i) { return nullptr; }
++bool FSRSDKEffect::is_version_current(FSRSDKContext *) const { return false; }
++void FSRSDKEffect::upscale(const FSRSDKContext::Parameters &) {}
++void FSRSDKEffect::prepare_frame_generation(FSRSDKContext *, RID) {}
++#endif
+diff --git a/servers/rendering/renderer_rd/effects/fsr_sdk.h b/servers/rendering/renderer_rd/effects/fsr_sdk.h
+new file mode 100644
+--- /dev/null
++++ b/servers/rendering/renderer_rd/effects/fsr_sdk.h
+@@ -0,0 +1,40 @@
++// Cursed Lands experimental FidelityFX integration. SPDX-License-Identifier: MIT
++#pragma once
++#include "core/math/projection.h"
++#include "core/math/transform_3d.h"
++#include "servers/rendering/rendering_device.h"
++#include "servers/rendering/renderer_rd/shaders/effects/fsr_sdk_prepare.glsl.gen.h"
++
++namespace RendererRD {
++// Temporal inputs for the AMD SDK, independent of other upscaler backends.
++class FSRSDKContext {
++public:
++    struct Parameters {
++        FSRSDKContext *context = nullptr;
++        Size2i internal_size;
++        RID color, depth, velocity, output;
++        float z_near = 0.1f, z_far = 1000.0f, fovy = 70.0f;
++        Vector2 jitter;
++        float delta_time = 0.0f, sharpness = 0.0f;
++        bool reset_accumulation = false, frame_generation = false;
++        Projection reprojection;
++        Transform3D cam_transform;
++    } last_parameters;
++    virtual ~FSRSDKContext() {}
++};
++class FSRSDKEffect {
++	FsrSdkPrepareShaderRD shader;
++	RID shader_version;
++	RID pipeline;
++	static void upscale_callback(RenderingDeviceDriver *, RDD::CommandBufferID, void *);
++	static void frame_generation_callback(RenderingDeviceDriver *, RDD::CommandBufferID, void *);
++
++public:
++	FSRSDKEffect();
++	~FSRSDKEffect();
++	FSRSDKContext *create_context(Size2i p_internal, Size2i p_target);
++	bool is_version_current(FSRSDKContext *p_context) const;
++	void upscale(const FSRSDKContext::Parameters &p_params);
++	void prepare_frame_generation(FSRSDKContext *p_context, RID p_color);
++};
++}
+diff --git a/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp b/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp
+--- a/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp
++++ b/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp
+@@ -84,6 +84,12 @@
+ 	}
+ }
+ 
++void RenderForwardClustered::RenderBufferDataForwardClustered::ensure_fsr_sdk(RendererRD::FSRSDKEffect *p_effect) {
++	if (fsr_sdk_context && !p_effect->is_version_current(fsr_sdk_context)) { memdelete(fsr_sdk_context); fsr_sdk_context = nullptr; }
++	if (!fsr_sdk_context) { fsr_sdk_context = p_effect->create_context(render_buffers->get_internal_size(), render_buffers->get_target_size()); }
++}
++
++
+ void RenderForwardClustered::RenderBufferDataForwardClustered::ensure_fsr2(RendererRD::FSR2Effect *p_effect) {
+ 	if (fsr2_context == nullptr) {
+ 		fsr2_context = p_effect->create_context(render_buffers->get_internal_size(), render_buffers->get_target_size());
+@@ -110,6 +116,7 @@
+ #endif
+ 
+ void RenderForwardClustered::RenderBufferDataForwardClustered::free_data() {
++	if (fsr_sdk_context) { memdelete(fsr_sdk_context); fsr_sdk_context = nullptr; }
+ 	// JIC, should already have been cleared
+ 	if (render_buffers) {
+ 		render_buffers->clear_context(RB_SCOPE_FORWARD_CLUSTERED);
+@@ -135,6 +142,7 @@
+ 		mfx_temporal_context = nullptr;
+ 	}
+ #endif
++
+ 
+ 	if (!render_sdfgi_uniform_set.is_null() && RD::get_singleton()->uniform_set_is_valid(render_sdfgi_uniform_set)) {
+ 		RD::get_singleton()->free_rid(render_sdfgi_uniform_set);
+@@ -1784,11 +1792,15 @@
+ 		SCALE_NONE,
+ 		SCALE_FSR2,
+ 		SCALE_MFX,
++		SCALE_FSR_SDK,
+ 	} scale_type = SCALE_NONE;
+ 
+ 	switch (rb->get_scaling_3d_mode()) {
+ 		case RSE::VIEWPORT_SCALING_3D_MODE_FSR2:
+ 			scale_type = SCALE_FSR2;
++			break;
++		case RSE::VIEWPORT_SCALING_3D_MODE_FSR_SDK:
++			scale_type = SCALE_FSR_SDK;
+ 			break;
+ 		case RSE::VIEWPORT_SCALING_3D_MODE_METALFX_TEMPORAL:
+ #ifdef METAL_MFXTEMPORAL_ENABLED
+@@ -2505,6 +2517,48 @@
+ 			}
+ 
+ 			RD::get_singleton()->draw_command_end_label();
++		} else if (scale_type == SCALE_FSR_SDK) {
++			RENDER_TIMESTAMP("FidelityFX");
++			rb_data->ensure_fsr_sdk(fsr_sdk_effect);
++
++
++			const bool cur_camera_reset = p_render_data->scene_data->cam_transform.origin.distance_to(p_render_data->scene_data->prev_cam_transform.origin) > 5.0f ||
++					p_render_data->scene_data->cam_transform.basis.get_column(2).dot(p_render_data->scene_data->prev_cam_transform.basis.get_column(2)) < 0.8f ||
++					Math::abs(p_render_data->scene_data->cam_projection.get_fov() - p_render_data->scene_data->prev_cam_projection.get_fov()) > 1.0f;
++			for (uint32_t v = 0; v < rb->get_view_count(); v++) {
++				real_t fov = p_render_data->scene_data->cam_projection.get_fov();
++				real_t aspect = p_render_data->scene_data->cam_projection.get_aspect();
++				real_t fovy = p_render_data->scene_data->cam_projection.get_fovy(fov, 1.0 / aspect);
++				Vector2 jitter = p_render_data->scene_data->taa_jitter * Vector2(rb->get_internal_size()) * 0.5f;
++				RendererRD::FSRSDKContext::Parameters params;
++				params.context = rb_data->get_fsr_sdk_context();
++				params.internal_size = rb->get_internal_size();
++				params.sharpness = CLAMP((rb->get_fsr_sharpness() / 2.0f), 0.0f, 1.0f);
++				params.color = rb->get_internal_texture(v);
++				params.depth = rb->get_depth_texture(v);
++				params.velocity = rb->get_velocity_buffer(false, v);
++				params.output = rb->get_upscaled_texture(v);
++				params.frame_generation = rb->get_frame_generation();
++				params.z_near = p_render_data->scene_data->z_near;
++				params.z_far = p_render_data->scene_data->z_far;
++				params.fovy = fovy;
++				params.jitter = jitter;
++				params.delta_time = float(time_step);
++				params.reset_accumulation = cur_camera_reset;
++
++				Projection correction;
++				correction.set_depth_correction(true, true, false);
++
++				const Projection &prev_proj = p_render_data->scene_data->prev_cam_projection;
++				const Projection &cur_proj = p_render_data->scene_data->cam_projection;
++				const Transform3D &prev_transform = p_render_data->scene_data->prev_cam_transform;
++				const Transform3D &cur_transform = p_render_data->scene_data->cam_transform;
++				params.reprojection = (correction * prev_proj) * prev_transform.affine_inverse() * cur_transform * (correction * cur_proj).inverse();
++				params.cam_transform = cur_transform;
++
++				copy_effects->copy_to_rect(params.color, params.output, Rect2i(Point2i(), rb->get_target_size()), false, false, true);
++				fsr_sdk_effect->upscale(params);
++			}
+ 		} else if (scale_type == SCALE_MFX) {
+ #ifdef METAL_MFXTEMPORAL_ENABLED
+ 			bool reset = rb_data->ensure_mfx_temporal(mfx_temporal_effect);
+@@ -2548,6 +2602,9 @@
+ 		RENDER_TIMESTAMP("Tonemap");
+ 
+ 		_render_buffers_post_process_and_tonemap(p_render_data);
++		if (scale_type == SCALE_FSR_SDK && rb->get_frame_generation() && rb->get_view_count() == 1) {
++			fsr_sdk_effect->prepare_frame_generation(rb_data->get_fsr_sdk_context(), RendererRD::TextureStorage::get_singleton()->render_target_get_rd_texture(rb->get_render_target()));
++		}
+ 	}
+ 
+ 	if (rb_data.is_valid()) {
+@@ -5237,6 +5294,7 @@
+ 	_update_global_pipeline_data_requirements_from_project();
+ 
+ 	taa = memnew(RendererRD::TAA);
++	fsr_sdk_effect = memnew(RendererRD::FSRSDKEffect);
+ 	fsr2_effect = memnew(RendererRD::FSR2Effect);
+ 	ss_effects = memnew(RendererRD::SSEffects);
+ #ifdef METAL_MFXTEMPORAL_ENABLED
+@@ -5246,6 +5304,7 @@
+ }
+ 
+ RenderForwardClustered::~RenderForwardClustered() {
++	memdelete(fsr_sdk_effect);
+ 	if (ss_effects != nullptr) {
+ 		memdelete(ss_effects);
+ 		ss_effects = nullptr;
+diff --git a/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.h b/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.h
+--- a/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.h
++++ b/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.h
+@@ -34,6 +34,7 @@
+ #include "servers/rendering/multi_uma_buffer.h"
+ #include "servers/rendering/renderer_rd/cluster_builder_rd.h"
+ #include "servers/rendering/renderer_rd/effects/fsr2.h"
++#include "servers/rendering/renderer_rd/effects/fsr_sdk.h"
+ #include "servers/rendering/renderer_rd/effects/motion_vectors_store.h"
+ #include "servers/rendering/renderer_rd/effects/ss_effects.h"
+ #include "servers/rendering/renderer_rd/effects/taa.h"
+@@ -96,6 +97,7 @@
+ 	private:
+ 		RenderSceneBuffersRD *render_buffers = nullptr;
+ 		RendererRD::FSR2Context *fsr2_context = nullptr;
++		RendererRD::FSRSDKContext *fsr_sdk_context = nullptr;
+ #ifdef METAL_MFXTEMPORAL_ENABLED
+ 		RendererRD::MFXTemporalContext *mfx_temporal_context = nullptr;
+ #endif
+@@ -142,6 +144,8 @@
+ 		RID get_voxelgi(uint32_t p_layer) { return render_buffers->get_texture_slice(RB_SCOPE_FORWARD_CLUSTERED, RB_TEX_VOXEL_GI, p_layer, 0); }
+ 		RID get_voxelgi_msaa(uint32_t p_layer) { return render_buffers->get_texture_slice(RB_SCOPE_FORWARD_CLUSTERED, RB_TEX_VOXEL_GI_MSAA, p_layer, 0); }
+ 
++		void ensure_fsr_sdk(RendererRD::FSRSDKEffect *p_effect);
++		RendererRD::FSRSDKContext *get_fsr_sdk_context() const { return fsr_sdk_context; }
+ 		void ensure_fsr2(RendererRD::FSR2Effect *p_effect);
+ 		RendererRD::FSR2Context *get_fsr2_context() const { return fsr2_context; }
+ 
+@@ -744,6 +748,7 @@
+ 
+ 	RendererRD::TAA *taa = nullptr;
+ 	RendererRD::FSR2Effect *fsr2_effect = nullptr;
++	RendererRD::FSRSDKEffect *fsr_sdk_effect = nullptr;
+ 	RendererRD::SSEffects *ss_effects = nullptr;
+ 
+ #ifdef METAL_MFXTEMPORAL_ENABLED
+diff --git a/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp b/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp
+--- a/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp
++++ b/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp
+@@ -470,7 +470,7 @@
+ 	bool can_use_storage = _render_buffers_can_be_storage();
+ 
+ 	RSE::ViewportScaling3DMode scale_mode = rb->get_scaling_3d_mode();
+-	bool use_upscaled_texture = rb->has_upscaled_texture() && (scale_mode == RSE::VIEWPORT_SCALING_3D_MODE_FSR2 || scale_mode == RSE::VIEWPORT_SCALING_3D_MODE_METALFX_TEMPORAL);
++	bool use_upscaled_texture = rb->has_upscaled_texture() && (scale_mode == RSE::VIEWPORT_SCALING_3D_MODE_FSR2 || scale_mode == RSE::VIEWPORT_SCALING_3D_MODE_METALFX_TEMPORAL || scale_mode == RSE::VIEWPORT_SCALING_3D_MODE_FSR_SDK);
+ 	SpatialUpscaler *spatial_upscaler = nullptr;
+ 	if (can_use_effects) {
+ 		if (scale_mode == RSE::VIEWPORT_SCALING_3D_MODE_FSR) {
+diff --git a/servers/rendering/renderer_rd/shaders/effects/fsr_sdk_prepare.glsl b/servers/rendering/renderer_rd/shaders/effects/fsr_sdk_prepare.glsl
+new file mode 100644
+--- /dev/null
++++ b/servers/rendering/renderer_rd/shaders/effects/fsr_sdk_prepare.glsl
+@@ -0,0 +1,28 @@
++#[compute]
++#version 450
++#VERSION_DEFINES
++#extension GL_EXT_samplerless_texture_functions : require
++#include "motion_vector_inc.glsl"
++layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
++layout(rg16f, set = 0, binding = 0) uniform restrict image2D velocity_buffer;
++layout(set = 1, binding = 0) uniform texture2D depth_buffer;
++layout(set = 2, binding = 0) uniform texture2D color_buffer;
++layout(r8, set = 3, binding = 0) uniform restrict writeonly image2D reactive_buffer;
++layout(push_constant, std430) uniform Params {
++	vec4 resolution;
++	mat4 reprojection;
++} params;
++void main() {
++	ivec2 pixel = ivec2(gl_GlobalInvocationID.xy);
++	if (any(greaterThanEqual(pixel, ivec2(params.resolution.xy)))) { return; }
++	vec2 velocity = imageLoad(velocity_buffer, pixel).rg;
++	if (all(lessThanEqual(velocity, vec2(-1.0)))) {
++		float depth = texelFetch(depth_buffer, pixel, 0).r;
++		vec2 uv = (vec2(pixel) + 0.5) / params.resolution.xy;
++		velocity = derive_motion_vector(uv, depth, params.reprojection);
++	}
++	imageStore(velocity_buffer, pixel, vec4(velocity, 0.0, 0.0));
++	// Godot stores its reactive mask in scene color alpha. Native SDK views
++	// cannot retain Godot's alpha-to-red swizzle, so materialize an R8 texture.
++	imageStore(reactive_buffer, pixel, vec4(texelFetch(color_buffer, pixel, 0).a));
++}
+diff --git a/servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.cpp b/servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.cpp
+--- a/servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.cpp
++++ b/servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.cpp
+@@ -107,7 +107,7 @@
+ 	float computed_mipmap_bias = texture_mipmap_bias;
+ 
+ 	if (use_taa || (RSE::scaling_3d_mode_type(scaling_3d_mode) == RSE::VIEWPORT_SCALING_3D_TYPE_TEMPORAL)) {
+-		// Use negative mipmap LOD bias when TAA or FSR2 is enabled to compensate for loss of sharpness.
++		// Use negative mipmap LOD bias when TAA or temporal upscaling is enabled to compensate for loss of sharpness.
+ 		// This restores sharpness in still images to be roughly at the same level as without TAA,
+ 		// but moving scenes will still be blurrier.
+ 		computed_mipmap_bias -= 0.5;
+@@ -166,6 +166,7 @@
+ 	msaa_3d = p_config->get_msaa_3d();
+ 	screen_space_aa = p_config->get_screen_space_aa();
+ 
++	frame_generation = p_config->get_use_frame_generation();
+ 	fsr_sharpness = p_config->get_fsr_sharpness();
+ 	texture_mipmap_bias = p_config->get_texture_mipmap_bias();
+ 	anisotropic_filtering_level = p_config->get_anisotropic_filtering_level();
+@@ -225,6 +226,7 @@
+ 	screen_space_aa = RSE::VIEWPORT_SCREEN_SPACE_AA_DISABLED;
+ 	use_taa = false;
+ 	use_debanding = false;
++	frame_generation = false;
+ 	view_count = 1;
+ 
+ 	// cleanout any old buffers we had.
+diff --git a/servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.h b/servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.h
+--- a/servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.h
++++ b/servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.h
+@@ -83,6 +83,7 @@
+ 	// The internal size of the textures we render 3D to in case we render at a lower resolution and upscale
+ 	Size2i internal_size = Size2i(0, 0);
+ 	RSE::ViewportScaling3DMode scaling_3d_mode = RSE::VIEWPORT_SCALING_3D_MODE_OFF;
++	bool frame_generation = false;
+ 	float fsr_sharpness = 0.2f;
+ 	float texture_mipmap_bias = 0.0f;
+ 	RSE::ViewportAnisotropicFiltering anisotropic_filtering_level = RSE::VIEWPORT_ANISOTROPY_4X;
+@@ -240,6 +241,8 @@
+ 	_FORCE_INLINE_ Size2i get_target_size() const { return target_size; }
+ 	_FORCE_INLINE_ RSE::ViewportScaling3DMode get_scaling_3d_mode() const { return scaling_3d_mode; }
+ 	_FORCE_INLINE_ float get_fsr_sharpness() const { return fsr_sharpness; }
++	_FORCE_INLINE_ bool get_frame_generation() const { return frame_generation; }
++	void set_frame_generation(bool p_enabled) override { frame_generation = p_enabled; }
+ 	_FORCE_INLINE_ RSE::ViewportMSAA get_msaa_3d() const { return msaa_3d; }
+ 	_FORCE_INLINE_ RD::TextureSamples get_texture_samples() const { return texture_samples; }
+ 	_FORCE_INLINE_ RSE::ViewportScreenSpaceAA get_screen_space_aa() const { return screen_space_aa; }
+diff --git a/servers/rendering/renderer_viewport.cpp b/servers/rendering/renderer_viewport.cpp
+--- a/servers/rendering/renderer_viewport.cpp
++++ b/servers/rendering/renderer_viewport.cpp
+@@ -31,6 +31,7 @@
+ #include "renderer_viewport.h"
+ 
+ #include "core/config/engine.h"
++#include "drivers/fsr_sdk/fsr_sdk.h"
+ #include "core/config/project_settings.h"
+ #include "core/math/transform_interpolator.h"
+ #include "core/object/worker_thread_pool.h"
+@@ -142,6 +143,9 @@
+ 			float scaling_3d_scale = p_viewport->scaling_3d_scale;
+ 			RSE::ViewportScaling3DMode scaling_3d_mode = p_viewport->scaling_3d_mode;
+ 			bool upscaler_available = p_viewport->fsr_enabled;
++			if (scaling_3d_mode == RSE::VIEWPORT_SCALING_3D_MODE_FSR_SDK && !FidelityFX::get_singleton()->sr_available()) {
++				scaling_3d_mode = p_viewport->fsr_enabled ? RSE::VIEWPORT_SCALING_3D_MODE_FSR2 : RSE::VIEWPORT_SCALING_3D_MODE_BILINEAR;
++			}
+ 			RSE::ViewportScaling3DType scaling_type = RSE::scaling_3d_mode_type(scaling_3d_mode);
+ 
+ 			if ((!upscaler_available || (scaling_type == RSE::VIEWPORT_SCALING_3D_TYPE_SPATIAL)) && scaling_3d_scale >= (1.0 - EPSILON) && scaling_3d_scale <= (1.0 + EPSILON)) {
+@@ -242,6 +246,7 @@
+ 				case RSE::VIEWPORT_SCALING_3D_MODE_METALFX_SPATIAL:
+ 				case RSE::VIEWPORT_SCALING_3D_MODE_METALFX_TEMPORAL:
+ 				case RSE::VIEWPORT_SCALING_3D_MODE_FSR:
++				case RSE::VIEWPORT_SCALING_3D_MODE_FSR_SDK:
+ 				case RSE::VIEWPORT_SCALING_3D_MODE_FSR2:
+ 					target_width = p_viewport->size.width;
+ 					target_height = p_viewport->size.height;
+@@ -295,6 +300,7 @@
+ 			rb_config.set_texture_mipmap_bias(texture_mipmap_bias);
+ 			rb_config.set_anisotropic_filtering_level(p_viewport->anisotropic_filtering_level);
+ 			rb_config.set_use_taa(use_taa);
++			rb_config.set_use_frame_generation(p_viewport->frame_generation);
+ 			rb_config.set_use_debanding(p_viewport->use_debanding);
+ 
+ 			p_viewport->render_buffers->configure(&rb_config);
+@@ -1096,6 +1102,14 @@
+ 	_configure_3d_render_buffers(viewport);
+ }
+ 
++void RendererViewport::viewport_set_frame_generation(RID p_viewport, bool p_frame_generation) {
++	Viewport *viewport = viewport_owner.get_or_null(p_viewport);
++	ERR_FAIL_NULL(viewport);
++
++	viewport->frame_generation = p_frame_generation;
++	if (viewport->render_buffers.is_valid()) { viewport->render_buffers->set_frame_generation(p_frame_generation); }
++}
++
+ void RendererViewport::viewport_set_size(RID p_viewport, int p_width, int p_height, int p_view_count) {
+ 	ERR_FAIL_COND(p_width < 0 || p_height < 0 || p_view_count < 0);
+ 
+diff --git a/servers/rendering/renderer_viewport.h b/servers/rendering/renderer_viewport.h
+--- a/servers/rendering/renderer_viewport.h
++++ b/servers/rendering/renderer_viewport.h
+@@ -61,6 +61,7 @@
+ 		float texture_mipmap_bias = 0.0f;
+ 		RSE::ViewportAnisotropicFiltering anisotropic_filtering_level = RSE::VIEWPORT_ANISOTROPY_4X;
+ 		bool fsr_enabled = false;
++		bool frame_generation = false;
+ 		uint32_t jitter_phase_count = 0;
+ 		RSE::ViewportUpdateMode update_mode = RSE::VIEWPORT_UPDATE_WHEN_VISIBLE;
+ 		RID render_target;
+@@ -234,6 +235,7 @@
+ 
+ 	void viewport_set_scaling_3d_mode(RID p_viewport, RSE::ViewportScaling3DMode p_mode);
+ 	void viewport_set_scaling_3d_scale(RID p_viewport, float p_scaling_3d_scale);
++	void viewport_set_frame_generation(RID p_viewport, bool p_frame_generation);
+ 	void viewport_set_fsr_sharpness(RID p_viewport, float p_sharpness);
+ 	void viewport_set_texture_mipmap_bias(RID p_viewport, float p_mipmap_bias);
+ 	void viewport_set_anisotropic_filtering_level(RID p_viewport, RSE::ViewportAnisotropicFiltering p_anisotropic_filtering_level);
+diff --git a/servers/rendering/rendering_device_driver.h b/servers/rendering/rendering_device_driver.h
+--- a/servers/rendering/rendering_device_driver.h
++++ b/servers/rendering/rendering_device_driver.h
+@@ -844,6 +844,9 @@
+ 	/****************/
+ 	virtual void command_insert_breadcrumb(CommandBufferID p_cmd_buffer, uint32_t p_data) = 0;
+ 
++	/// Returns the underlying native command buffer handle (e.g. ID3D12GraphicsCommandList* or VkCommandBuffer).
++	virtual void *command_buffer_get_native_handle(CommandBufferID p_cmd_buffer) { return nullptr; }
++
+ 	/********************/
+ 	/**** SUBMISSION ****/
+ 	/********************/
+diff --git a/servers/rendering/rendering_server.cpp b/servers/rendering/rendering_server.cpp
+--- a/servers/rendering/rendering_server.cpp
++++ b/servers/rendering/rendering_server.cpp
+@@ -2861,6 +2861,7 @@
+ 
+ 	ClassDB::bind_method(D_METHOD("viewport_set_scaling_3d_mode", "viewport", "scaling_3d_mode"), &RenderingServer::viewport_set_scaling_3d_mode);
+ 	ClassDB::bind_method(D_METHOD("viewport_set_scaling_3d_scale", "viewport", "scale"), &RenderingServer::viewport_set_scaling_3d_scale);
++	ClassDB::bind_method(D_METHOD("viewport_set_frame_generation", "viewport", "frame_generation"), &RenderingServer::viewport_set_frame_generation);
+ 	ClassDB::bind_method(D_METHOD("viewport_set_fsr_sharpness", "viewport", "sharpness"), &RenderingServer::viewport_set_fsr_sharpness);
+ 	ClassDB::bind_method(D_METHOD("viewport_set_texture_mipmap_bias", "viewport", "mipmap_bias"), &RenderingServer::viewport_set_texture_mipmap_bias);
+ 	ClassDB::bind_method(D_METHOD("viewport_set_anisotropic_filtering_level", "viewport", "anisotropic_filtering_level"), &RenderingServer::viewport_set_anisotropic_filtering_level);
+@@ -2920,6 +2921,7 @@
+ 	BIND_ENUM_CONSTANT(RSE::VIEWPORT_SCALING_3D_MODE_METALFX_SPATIAL);
+ 	BIND_ENUM_CONSTANT(RSE::VIEWPORT_SCALING_3D_MODE_METALFX_TEMPORAL);
+ 	BIND_ENUM_CONSTANT(RSE::VIEWPORT_SCALING_3D_MODE_NEAREST);
++	BIND_ENUM_CONSTANT(RSE::VIEWPORT_SCALING_3D_MODE_FSR_SDK);
+ 	BIND_ENUM_CONSTANT(RSE::VIEWPORT_SCALING_3D_MODE_MAX);
+ 
+ 	BIND_ENUM_CONSTANT(RSE::VIEWPORT_UPDATE_DISABLED);
+diff --git a/servers/rendering/rendering_server.h b/servers/rendering/rendering_server.h
+--- a/servers/rendering/rendering_server.h
++++ b/servers/rendering/rendering_server.h
+@@ -549,6 +549,7 @@
+ 
+ 	virtual void viewport_set_scaling_3d_mode(RID p_viewport, RSE::ViewportScaling3DMode p_scaling_3d_mode) = 0;
+ 	virtual void viewport_set_scaling_3d_scale(RID p_viewport, float p_scaling_3d_scale) = 0;
++	virtual void viewport_set_frame_generation(RID p_viewport, bool p_frame_generation) = 0;
+ 	virtual void viewport_set_fsr_sharpness(RID p_viewport, float p_fsr_sharpness) = 0;
+ 	virtual void viewport_set_texture_mipmap_bias(RID p_viewport, float p_texture_mipmap_bias) = 0;
+ 	virtual void viewport_set_anisotropic_filtering_level(RID p_viewport, RSE::ViewportAnisotropicFiltering p_anisotropic_filtering_level) = 0;
+diff --git a/servers/rendering/rendering_server_default.h b/servers/rendering/rendering_server_default.h
+--- a/servers/rendering/rendering_server_default.h
++++ b/servers/rendering/rendering_server_default.h
+@@ -776,6 +776,7 @@
+ 
+ 	FUNC2(viewport_set_scaling_3d_mode, RID, RSE::ViewportScaling3DMode)
+ 	FUNC2(viewport_set_scaling_3d_scale, RID, float)
++	FUNC2(viewport_set_frame_generation, RID, bool)
+ 	FUNC2(viewport_set_fsr_sharpness, RID, float)
+ 	FUNC2(viewport_set_texture_mipmap_bias, RID, float)
+ 	FUNC2(viewport_set_anisotropic_filtering_level, RID, RSE::ViewportAnisotropicFiltering)
+diff --git a/servers/rendering/rendering_server_enums.h b/servers/rendering/rendering_server_enums.h
+--- a/servers/rendering/rendering_server_enums.h
++++ b/servers/rendering/rendering_server_enums.h
+@@ -460,6 +460,7 @@
+ 	VIEWPORT_SCALING_3D_MODE_METALFX_SPATIAL,
+ 	VIEWPORT_SCALING_3D_MODE_METALFX_TEMPORAL,
+ 	VIEWPORT_SCALING_3D_MODE_NEAREST,
++	VIEWPORT_SCALING_3D_MODE_FSR_SDK,
+ 	VIEWPORT_SCALING_3D_MODE_MAX,
+ 	VIEWPORT_SCALING_3D_MODE_OFF = 255, // for internal use only
+ };
+@@ -474,7 +475,7 @@
+ inline ViewportScaling3DType scaling_3d_mode_type(ViewportScaling3DMode p_mode) {
+ 	if (p_mode == VIEWPORT_SCALING_3D_MODE_NEAREST || p_mode == VIEWPORT_SCALING_3D_MODE_BILINEAR || p_mode == VIEWPORT_SCALING_3D_MODE_FSR || p_mode == VIEWPORT_SCALING_3D_MODE_METALFX_SPATIAL) {
+ 		return VIEWPORT_SCALING_3D_TYPE_SPATIAL;
+-	} else if (p_mode == VIEWPORT_SCALING_3D_MODE_FSR2 || p_mode == VIEWPORT_SCALING_3D_MODE_METALFX_TEMPORAL) {
++	} else if (p_mode == VIEWPORT_SCALING_3D_MODE_FSR2 || p_mode == VIEWPORT_SCALING_3D_MODE_METALFX_TEMPORAL || p_mode == VIEWPORT_SCALING_3D_MODE_FSR_SDK) {
+ 		return VIEWPORT_SCALING_3D_TYPE_TEMPORAL;
+ 	}
+ 	return VIEWPORT_SCALING_3D_TYPE_NONE;
+diff --git a/servers/rendering/storage/render_scene_buffers.h b/servers/rendering/storage/render_scene_buffers.h
+--- a/servers/rendering/storage/render_scene_buffers.h
++++ b/servers/rendering/storage/render_scene_buffers.h
+@@ -52,6 +52,7 @@
+ 	float texture_mipmap_bias = 0.0;
+ 	bool use_taa = false;
+ 	bool use_debanding = false;
++	bool use_frame_generation = false;
+ 
+ protected:
+ 	static void _bind_methods();
+@@ -93,6 +94,9 @@
+ 	bool get_use_debanding() const { return use_debanding; }
+ 	void set_use_debanding(bool p_use_debanding) { use_debanding = p_use_debanding; }
+ 
++	bool get_use_frame_generation() const { return use_frame_generation; }
++	void set_use_frame_generation(bool p_frame_generation) { use_frame_generation = p_frame_generation; }
++
+ 	RenderSceneBuffersConfiguration() {}
+ 	virtual ~RenderSceneBuffersConfiguration() {}
+ };
+@@ -108,6 +112,7 @@
+ 	virtual ~RenderSceneBuffers() {}
+ 
+ 	virtual void configure(const RenderSceneBuffersConfiguration *p_config) = 0;
++	virtual void set_frame_generation(bool p_enabled) {}
+ 
+ 	// for those settings that are unlikely to require buffers to be recreated, we'll add setters
+ 	virtual void set_fsr_sharpness(float p_fsr_sharpness) = 0;

@@ -87,6 +87,7 @@ func _ready() -> void:
 		set_process_unhandled_input(false)
 		return
 	add_to_group("world_tooltip")
+	add_to_group("fsr_campaign_view")
 	_setup_env()
 	rig = CameraRig.new()
 	add_child(rig)

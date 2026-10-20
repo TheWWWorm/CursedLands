@@ -1,0 +1,67 @@
+{
+  "commit": "babe774841a6b54d998e467ef88fbe94f0a18ce3",
+  "url": "https://cursedlands.wwworm.com/wiki/",
+  "checked_at_utc": "2026-10-20T14:26:50Z",
+  "files": [
+    {
+      "file": "public/wiki/BUILD-INFO.json",
+      "bytes": 2236140,
+      "sha256": "5385c99fe65153cbf05cd6572b794ece5d00574a350348580ac9064c7c36b22d"
+    },
+    {
+      "file": "public/wiki/data/de/index.json",
+      "bytes": 567078,
+      "sha256": "a0d8870343342a7d675dbbeba80c19b3ed315068e0082870e084ffc9da32e04e"
+    },
+    {
+      "file": "public/wiki/data/en/index.json",
+      "bytes": 540690,
+      "sha256": "6a02ca0adaece9f998cb927e9ef007040ee1c4690adf92035cfb50b458ef16ad"
+    },
+    {
+      "file": "public/wiki/data/lost_in_astral/de/index.json",
+      "bytes": 766122,
+      "sha256": "5733a382f1c55bd742a3540aa8d54860a736b0a8fc40b1a7f08be433ae6f6266"
+    },
+    {
+      "file": "public/wiki/data/lost_in_astral/en/index.json",
+      "bytes": 734430,
+      "sha256": "fb6814827e8bec68e9eee40de30d551a6c9bf4b3afa30ab78ece117bcebc0517"
+    },
+    {
+      "file": "public/wiki/data/lost_in_astral/ru/index.json",
+      "bytes": 1035326,
+      "sha256": "b9f2185384d459902d60f54a6d8a4838e0a68755ac9aa487a6f99f69eabc8b68"
+    },
+    {
+      "file": "public/wiki/data/ru/index.json",
+      "bytes": 769148,
+      "sha256": "5c5eac7988d3922d1abd1a5ef5701277fabcf40e155cb41e15b893c4928b7adb"
+    },
+    {
+      "file": "public/wiki/i18n.json",
+      "bytes": 41685,
+      "sha256": "c36ab64e21801088b3b43af290711ad066959041d430431b0bb84dfb35495396"
+    },
+    {
+      "file": "public/wiki/index.html",
+      "bytes": 4605,
+      "sha256": "cf0e407a24693aa6d45138647f70cb472966f89e95a6704d200e6f176538556b"
+    },
+    {
+      "file": "public/wiki/maps.mjs",
+      "bytes": 9537,
+      "sha256": "e1a3f732b9328741a74e283d9193cc45419686c3bd339d64dab8993e8e8bed24"
+    },
+    {
+      "file": "public/wiki/wiki.css",
+      "bytes": 47357,
+      "sha256": "5f8fffb08694e78f11a619214ec10fbfd4e53b930af0ef87eeede57ec36f53eb"
+    },
+    {
+      "file": "public/wiki/wiki.js",
+      "bytes": 25473,
+      "sha256": "46c622ee9a136dbab9e44e7de8a62f0dd5b668aa89b380d231e83558163f9414"
+    }
+  ]
+}

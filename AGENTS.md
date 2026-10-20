@@ -46,6 +46,13 @@ browser start and an update from the previous service-worker cache, then confirm
 the Cloudflare deployment serves the committed assets. Desktop and mobile
 release uploads alone do not update the hosted browser build.
 
+For wiki changes, check both the native and standalone web interfaces. Refresh
+the hosted UI with `python3 tools/prepare_public_wiki.py --refresh-ui --output
+public/wiki`, and run the same tool with `--check` before publishing. Keep the
+exported article version intact unless the articles were actually re-exported;
+the manifest records the frontend version separately. Exercise new controls in
+the public wiki itself, including EN/RU/DE and browser Back/reload.
+
 # Localization
 
 Every player-visible string must be translated into all supported languages

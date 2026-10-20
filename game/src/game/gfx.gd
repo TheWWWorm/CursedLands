@@ -1298,6 +1298,7 @@ static func apply_quality(vp: Viewport) -> void:
 		atlas = [1024, 2048, 2048, 4096][q]
 	RenderingServer.directional_shadow_atlas_set_size(atlas, true)
 	vp.positional_shadow_atlas_size = atlas
+	FsrGraphics.apply_upscaling(vp)
 
 
 ## Option q_shadow_fit: the sun's four cascades span what can be seen, the

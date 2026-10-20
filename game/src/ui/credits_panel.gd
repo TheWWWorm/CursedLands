@@ -65,6 +65,7 @@ func _ready() -> void:
 			_speed = float(scr[1])
 			file = scr[2]
 	_text.text = rtf_to_bbcode(arc.read(file)) if arc and arc.has(file) else ""
+	_text.text = GraphicsAttribution.credits_bbcode() + _text.text
 	_music = AudioStreamPlayer.new()
 	_music.bus = "Music"
 	var track := String(EIAudio.music_table().get("common", {}).get("Credits", ""))

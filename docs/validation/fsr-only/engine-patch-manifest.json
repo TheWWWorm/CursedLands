@@ -1,0 +1,106 @@
+{
+  "SConstruct": {
+    "base": "b67bd31bf2d3bc1d91d4a1c5b2e4117c3d2dbd9c066ba3bb040cdd61226845f7",
+    "patched": "cc97ceb49f7906d7911a3ae2e5d354cc5c15d4fc4cdf12bc0910fd82c420c682"
+  },
+  "drivers/SCsub": {
+    "base": "9f729847a8d87bd1fde6ccf0a0987c9d6360a08970e9bf1095d4ab15d2b03082",
+    "patched": "faacde48700b50b63253bb132f20814dca0a0833a6397f25ac536f5c56c71cf6"
+  },
+  "drivers/d3d12/rendering_device_driver_d3d12.cpp": {
+    "base": "e78da0dfa04fe9ac3c4a12d199388a9a230eb57f9f3980b9610039fe761c1f0b",
+    "patched": "08324bbd71986b938604e29c8e37efcd5bcefbcd57ee74b734204322913c2213"
+  },
+  "drivers/d3d12/rendering_device_driver_d3d12.h": {
+    "base": "4c53f59d75024c1833904fcf856daa9d3eab67f6850719d20cf9d410cc9c868b",
+    "patched": "7a78322d0bb85d4e99cda41fe10434fcd285889a5e75c90eacf6f19f4410ddea"
+  },
+  "drivers/fsr_sdk/SCsub": {
+    "base": null,
+    "patched": "4387f90b3183fc60e37d99283f63593c35a2090e8ad9553a2fb0d126847ed511"
+  },
+  "drivers/fsr_sdk/fsr_sdk.cpp": {
+    "base": null,
+    "patched": "3ade3f9e973647d63e6ed584c9c3265fc337ee67c5e2c564b5f6ae1b8bed3cc2"
+  },
+  "drivers/fsr_sdk/fsr_sdk.h": {
+    "base": null,
+    "patched": "47f5066b88e2b80b805063d78cf63f10747a64a37251096393d939809a8bcbc4"
+  },
+  "main/main.cpp": {
+    "base": "168dfc2a5091d321908097eac0dddf846458db21c020f18f5696f3b58b5fd55b",
+    "patched": "d11dbf63298d17c2f23034c1fac51eda6dc40063f6331939b1523be0b8fa1ddc"
+  },
+  "scene/main/viewport.cpp": {
+    "base": "07ee80096cff2e7aa7a2a7a91e7cb3e9f7fe08d167b9a6c7a9cac90cf59801c9",
+    "patched": "491b28523158dec22cf4c8cdd614a4b2c1acb9b3cb66d45f9f486aad7b3a25cb"
+  },
+  "scene/main/viewport.h": {
+    "base": "c5b5f88521fa0e28eb7ad8bdef31b0217b8e4a1ea095fe670b2e0fc94d91edb7",
+    "patched": "cf63d0a5bed742f74136171fb9bbc1e48c3d3384babcd9f25add11b88f4354cd"
+  },
+  "servers/rendering/renderer_rd/effects/fsr_sdk.cpp": {
+    "base": null,
+    "patched": "51e246c915bc6852b3549c1f707f1699fd88e31f1676dead3f2ae295045f36ce"
+  },
+  "servers/rendering/renderer_rd/effects/fsr_sdk.h": {
+    "base": null,
+    "patched": "07f45c784d3d9b7020739555ffe53b7ec95991ff5d1e72f0c771c4ae189412c9"
+  },
+  "servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp": {
+    "base": "2373770a9b4cc978ae0dd64df9c85343d70472f3456fd283e73cbdb0c8330dcd",
+    "patched": "4ee77c30d979ac49d873cda3394081f6b82d03546c7691eaf9c338957a00988d"
+  },
+  "servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.h": {
+    "base": "173db11744b7cf8cfac758d93d5f024b4275e38ccb662d3d4389845e3b0acf0a",
+    "patched": "9863ea27c431ba7c402157ba4614560c2a6e22ed6dc411fa02ff2a045d714af3"
+  },
+  "servers/rendering/renderer_rd/renderer_scene_render_rd.cpp": {
+    "base": "3b89d9cc6c19933a4c74afc13e5d795989723f32336f446e06773d140ab8cd24",
+    "patched": "ad158b508c3090224e5382ec77dce2bfcff0310dba1faddff6ab4631bf2f6e2d"
+  },
+  "servers/rendering/renderer_rd/shaders/effects/fsr_sdk_prepare.glsl": {
+    "base": null,
+    "patched": "d298231bfca4619840ebf29f50cc4d5392a7d76c52731891c4573315be099d21"
+  },
+  "servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.cpp": {
+    "base": "4da6cc57743b727b52b0ce6b2c71fbfa0b54fe84d5eb32fde3125d5b5b916966",
+    "patched": "a137a02605115998fecdf6fc9ebcfdaffa6b155e8bed36ecec80e414763ee6a5"
+  },
+  "servers/rendering/renderer_rd/storage_rd/render_scene_buffers_rd.h": {
+    "base": "083ad4cc95921ab88bb946bb1a6e8005c621c94a486ff1a9757d210e058a063f",
+    "patched": "ba7015ebe5b871b71a625086fc2ba517989b0e2a66b0a206fbffd19b65ab0c41"
+  },
+  "servers/rendering/renderer_viewport.cpp": {
+    "base": "e1b9638d0e817a8784dbf1a6d3971d4b081bdb8f81884ada6b794336abe11ed2",
+    "patched": "e6da6000e6ce78686fb82d6a40f2bb4ab09019a84ff2a69e3b9b4b4c27a73b09"
+  },
+  "servers/rendering/renderer_viewport.h": {
+    "base": "368e56ea0b9d77a675d030089c0098f26b39b6cf8b04053dc9228f6cb3cf818c",
+    "patched": "d7b299d686f61511eb62b6a2a1d3d2c460f01ecb6743313f18c7816ee18a6c9b"
+  },
+  "servers/rendering/rendering_device_driver.h": {
+    "base": "a8cd10924e08f639c3457736b6626a21246bc2dedb28a592c22891c6a177a613",
+    "patched": "2ee2e3c2938625ec6ad637a5e0eff493eb5a72bae0ab59cdc7644a7e360bfef2"
+  },
+  "servers/rendering/rendering_server.cpp": {
+    "base": "4f668673a2096da2f7949326d7e37fc49f63b91bd74ef32a4d11a35cc3ee5ce7",
+    "patched": "ee2311ccc7e05c2c107f2ee1ea5d3e806aebfe30fe6bcc21fcd96aa851b43b41"
+  },
+  "servers/rendering/rendering_server.h": {
+    "base": "48af4abd50357b9a2b0012566f1354b9e56a66327adcefb7798b226eb3998a58",
+    "patched": "fc1e8d62a43f1b086ef067a56acf92c050d9da52bab62d2beac618b3376a404d"
+  },
+  "servers/rendering/rendering_server_default.h": {
+    "base": "4c5332cb15a83f38cc9ae89957ea659dc67f0478bf377b133dac68831ee87b78",
+    "patched": "a34e9487dd008d3a0e56d3ff4c2b5c0db62cda07265e646e57bbddabeccd4ec8"
+  },
+  "servers/rendering/rendering_server_enums.h": {
+    "base": "194c1e12997cc2fe4178c972dca250428627655a79b26e4ee93528f6a8b254a8",
+    "patched": "78ee89440bc06d73c3ac3438aec9ef3ee720cbcf146c16be5c3a324e51f96723"
+  },
+  "servers/rendering/storage/render_scene_buffers.h": {
+    "base": "b61e31cb22288d7679854b1f8b9d7d60996ce47a7fe9f50cc6e70f5f9a7e2f77",
+    "patched": "e16b688805fa7adf7f50ec747febac71c21d7d32bbca7e05296ab964440150d6"
+  }
+}

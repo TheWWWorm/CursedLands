@@ -1,0 +1,119 @@
+{
+  "version": "1.20.0-experimental.4",
+  "source_commit": "b6823be66c3346afd9014c6f1fca74f15d693a1f",
+  "public_base_commit": "c99dbba8",
+  "base_release": "v1.19.0",
+  "godot_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "engine_template_sha256": "54dc6c964191253b44b8297418813fc22c321ba32d5d109f31c0dfd7e99f43db",
+  "engine_patch_sha256": "c198b803f032813174df3634802398dc55c8f18bc14f46acbea4b0b2697211d6",
+  "exe_sha256": "777ebe01cde16fe322312e0e8de32350cf41ff552ddfc77c9d8ac012a6fb668d",
+  "pck_sha256": "7c26e1c133125db889eed7f75b42e9e495eee14c4d066ad058f4201195f02204",
+  "environment": {
+    "host": "Ubuntu 24.04.5",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "driver": "580.178.04",
+    "wine": "9.0",
+    "vkd3d_proton": "3.0.1",
+    "dxvk": "2.6.2",
+    "renderer": "Windows D3D12 / Forward+",
+    "render_thread": "safe"
+  },
+  "checks": {
+    "linux_attribution": 222,
+    "linux_options": 130,
+    "windows_attribution": 224,
+    "windows_render": 103,
+    "windows_campaign": 47,
+    "windows_missing_runtime": 132
+  },
+  "failures": 0,
+  "script_or_native_errors": 0,
+  "native_windows_qualified": false,
+  "fsr4_hardware_qualified": false,
+  "providers": {
+    "upscaling": "3.1.5",
+    "frame_generation": "3.1.6"
+  },
+  "frame_generation": {
+    "rendered": 120,
+    "generated": 120,
+    "presented": 240,
+    "campaign_rendered": 90,
+    "campaign_generated": 90,
+    "campaign_presented": 180
+  },
+  "branding": {
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "resolutions": [
+      [
+        800,
+        600
+      ],
+      [
+        1280,
+        720
+      ]
+    ],
+    "official_artwork_unchanged": true,
+    "approved_master_unchanged": true,
+    "transparent_pair_below_title": true
+  },
+  "isolation": {
+    "private_sdk_singleton_absent": true,
+    "private_scaling_enum_absent": true,
+    "private_scripts_and_artwork_absent": true,
+    "private_options_absent": true,
+    "excluded_native_symbols_absent": true,
+    "private_commits_absent_from_ancestry": true,
+    "negative_source_and_template_controls_rejected": true
+  },
+  "profile": {
+    "name": "Cursed Lands FSR Experiment",
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "package_verification": {
+    "sdk_notices_byte_identical": true,
+    "amd_production_dlls_verified": 3,
+    "agility_core_verified": true,
+    "embedded_icon_images_match": [
+      [
+        16,
+        16
+      ],
+      [
+        32,
+        32
+      ],
+      [
+        48,
+        48
+      ],
+      [
+        64,
+        64
+      ],
+      [
+        128,
+        128
+      ],
+      [
+        256,
+        256
+      ]
+    ],
+    "version_resource": "1.20.0.4",
+    "hashed_files_verified": 79,
+    "excluded_runtime_absent": true,
+    "source_commit": "b6823be66c3346afd9014c6f1fca74f15d693a1f",
+    "exe_sha256": "777ebe01cde16fe322312e0e8de32350cf41ff552ddfc77c9d8ac012a6fb668d",
+    "pck_sha256": "7c26e1c133125db889eed7f75b42e9e495eee14c4d066ad058f4201195f02204"
+  }
+}

@@ -5,6 +5,10 @@ The template recipe targets Godot 4.7, source commit
 order listed below and build normal release templates with the standard Godot
 build instructions. Adding a patch here does not update installed templates.
 
+`experimental-fsr.patch` is an optional Windows D3D12 integration applied after
+the sixteen common patches. Build with `use_fsr_sdk=yes` and the pinned AMD
+headers. See [FSR setup and build instructions](../../docs/integrations/fsr-experiment.md).
+
 1. `render-thread-shutdown.patch`
 2. `queued-image-snapshot.patch`
 3. `unobserved-pose.patch`

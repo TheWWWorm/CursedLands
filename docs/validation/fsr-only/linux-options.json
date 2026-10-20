@@ -1,0 +1,14 @@
+{
+	"checks": 130,
+	"facts": {
+		"api": false,
+		"engine": false,
+		"fg3": false,
+		"fg4": false,
+		"launch": false,
+		"sr3": false,
+		"sr4": false
+	},
+	"failures": 0,
+	"hardware_output_qualified": false
+}

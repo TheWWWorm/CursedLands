@@ -47,11 +47,61 @@ async function splash() {
       top: top + layout.logo_size + layout.gap},
   ]).png().toBuffer();
 }
+// SDK package variants only. Keep the approved master, ordinary splash and web
+// branding unchanged. Vendor assets are official, unmodified source files.
+async function fsrSplash() {
+  const layout = splashLayout;
+  const logo = await png(layout.logo_size);
+  const title = await sharp({text: {
+    text: '<span foreground="' + layout.color + '">' + layout.title + '</span>',
+    font: 'Liberation Serif ' + layout.font_size,
+    fontfile: path.join(root, layout.font), rgba: true,
+  }}).png().toBuffer({resolveWithObject: true});
+  const names = ['amd-fsr-upscaling-white.png', 'amd-fsr-frame-generation-white.png'];
+  const rowHeight = 144;
+  const cellWidth = 256;
+  const gap = 40;
+  const rowWidth = names.length * cellWidth + (names.length - 1) * gap;
+  const totalHeight = layout.logo_size + layout.gap + title.info.height + 64 + rowHeight;
+  const top = Math.floor((layout.canvas_size - totalHeight) / 2);
+  const rowTop = top + layout.logo_size + layout.gap + title.info.height + 64;
+  const layers = [
+    {input: logo, left: (layout.canvas_size - layout.logo_size) / 2, top},
+    {input: title.data, left: Math.floor((layout.canvas_size - title.info.width) / 2),
+      top: top + layout.logo_size + layout.gap},
+  ];
+  for (let i = 0; i < names.length; i++) {
+    let vendorSource = sharp(path.join(root, 'game/assets/branding/vendors', names[i]));
+    const vendor = await vendorSource.resize(cellWidth, 144, {fit: 'inside'})
+      .png().toBuffer({resolveWithObject: true});
+    layers.push({input: vendor.data,
+      left: Math.floor((layout.canvas_size - rowWidth) / 2 + i * (cellWidth + gap) + (cellWidth - vendor.info.width) / 2),
+      top: Math.floor(rowTop + (144 - vendor.info.height) / 2)});
+  }
+  return sharp({create: {width: layout.canvas_size, height: layout.canvas_size,
+    channels: 4, background: {r: 0, g: 0, b: 0, alpha: 0}}})
+    .composite(layers).png().toBuffer();
+}
 async function main() {
   const metadata = await sharp(source).metadata();
   if (metadata.width !== metadata.height) throw new Error('The approved master must be square.');
   if (!metadata.hasAlpha) throw new Error('The approved icon must retain its transparent background.');
   const sourceHash = sha(fs.readFileSync(source));
+  if (process.argv.includes('--fsr')) {
+    await save('game/assets/branding/splash-fsr.png', await fsrSplash());
+    const manifestPath = path.join(root, 'docs/branding/graphics-sdk-assets.json');
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+    manifest.master_sha256 = sourceHash;
+    manifest.presentation = {
+      note: 'Official transparent white AMD FSR lockups, uniformly resized with original aspect ratios, centered in two cells beneath the title.',
+      cell_width: 256, gap: 40, row_height: 144,
+    };
+    manifest.regenerate = 'node tools/generate_branding.cjs --fsr';
+    manifest.derived_files = outputs;
+    fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
+    console.log('Generated SDK splash variants; approved master ' + sourceHash);
+    return;
+  }
   // Refresh GitHub's cached README image whenever the approved master changes.
   const readmePath = path.join(root, 'README.md');
   const readme = fs.readFileSync(readmePath, 'utf8');

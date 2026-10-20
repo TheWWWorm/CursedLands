@@ -77,11 +77,17 @@ for table in ('REMAKE_OPTIONS', 'DISPLAY_CHOICES'):
     block = options_source.split('const ' + table + ' := {', 1)[1].split('\n}', 1)[0]
     for match in re.finditer(r'^\s*(' + STRING + r'):\s*(\[.*?\]),', block, re.M):
         name = json.loads(match[1])
-        for key in json.loads(match[2]):
+        for key in (json.loads(s) for s in re.findall(STRING, match[2])):
             if table == 'DISPLAY_CHOICES' and (key in neutral_choices or not any(c.isalpha() for c in key)):
                 continue  # numeric quantities and unchanged graphics acronyms
             if key not in entries:
                 errors.append(f'{table}[{name}]: missing RU/DE key: {key}')
+# FSR option choices, help and capability errors are selected dynamically.
+fsr_source = (ROOT / 'platform/fsr_graphics.gd').read_text()
+for match in re.finditer(r'^const (?:SECTION|SR_HELP|QUALITY_HELP|FG_HELP|VERSIONS|QUALITIES|UNAVAILABLE|START_LAUNCHER|NEED_API|NEED_SR|NEED_FG|ENABLE_SR) := (.+)$', fsr_source, re.M):
+    value = json.loads(match[1])
+    for key in value if isinstance(value, list) else [value]:
+        if key not in entries: errors.append(f'FSR experiment text missing RU/DE key: {key}')
 # The wiki translates categories, damage types, mechanics titles and stat
 # labels dynamically. Check their source tables as well as literal calls.
 permissions_source = (ROOT / 'game/coop_permissions.gd').read_text()

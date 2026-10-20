@@ -228,6 +228,8 @@ const OPTIONS := [
 	["pad_glyphs", 1, 5, 20, 6, 0], ["pad_swap_sticks", 1, 2, 20, 7, 0],
 	["pad_light", 1, 2, 20, 8, 1],
 	["pad_gyro", 1, 2, 20, 9, 0], ["pad_gyro_sensitivity", 0, 100, 20, 10, 50],
+	# Opt-in Windows/D3D12 experiment, disabled on fresh profiles.
+	["fsr_upscaling", 1, 3, 27, 0, 0], ["fsr_quality", 1, 4, 27, 1, 1], ["fsr_frame_generation", 1, 3, 27, 2, 0],
 ]
 ## The original's speed / quality switches (the original rows shadow_units
 ## shadow_buildings, shadow_flora) are not offered: always at their best.
@@ -235,6 +237,9 @@ const FIXED_OPTIONS := {"shadow_units": 1, "shadow_buildings": 1, "shadow_flora"
 ## Labels of the remake's multiple-choice rows (value = index); "resolution"
 ## is built from the monitor (resolutions()).
 const DISPLAY_CHOICES := {
+	"fsr_upscaling": FsrGraphics.VERSIONS,
+	"fsr_quality": FsrGraphics.QUALITIES,
+	"fsr_frame_generation": FsrGraphics.VERSIONS,
 	"coop_guest_clock": CoopPermissions.CLOCK_CHOICES,
 	"coop_guest_saves": CoopPermissions.SAVE_CHOICES,
 	"character_buff_icons": ["Off", "On"],
@@ -288,9 +293,13 @@ var resolution_size := "native"
 ## Terrain and vegetation (22) and Water (23) are direct graphics sections.
 const OPTION_GROUPS := ["video", "sound", "sens", "game", "select", "actions", "camera", "items",
 	"spells", "cshots", "windows", "remake", "screen", "r_world", "r_lighting", "r_effects",
-	"r_camera", "r_interface", "r_game", "r_coop", "gamepad", "gamepad_buttons", "r_terrain", "r_water", "direct_view", "direct_keys", "direct_pad"]
+	"r_camera", "r_interface", "r_game", "r_coop", "gamepad", "gamepad_buttons", "r_terrain", "r_water", "direct_view", "direct_keys", "direct_pad", "r_fsr"]
 ## Labels and tips of the remake's own option rows (texts.res has none).
 const REMAKE_OPTIONS := {
+	"r_fsr": FsrGraphics.SECTION,
+	"fsr_upscaling": ["FSR upscaling", FsrGraphics.SR_HELP],
+	"fsr_quality": ["FSR quality", FsrGraphics.QUALITY_HELP],
+	"fsr_frame_generation": ["FSR frame generation", FsrGraphics.FG_HELP],
 	"character_buff_icons": ["Character buff icons", "Show active effect icons with remaining seconds in a vertical stack at the top right of the character's general view."],
 	"hide_remake_hints": ["Hide remake hints", "Hide the extra control hints in isometric, first-person and third-person views. Controls and regular item and button tooltips stay unchanged."],
 	"discord_presence": ["Discord activity", "Show the current mode and location in Discord. Requires the Discord desktop app. No additional setup is needed. Off clears the activity."],
