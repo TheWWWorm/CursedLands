@@ -74,6 +74,8 @@ def build(args):
         out = args.output / f"CursedLands-{version}-{platform}"
         out.mkdir()
         run(platform, [args.godot, "--headless", "--path", str(game), "--export-release", preset, str(out / exe)])
+        if platform.startswith("linux"):
+            run("linux-strip", [args.strip_tool, "--strip-unneeded", str(out / exe)])
         native = out / "src/native/bin"
         native.mkdir(parents=True)
         shutil.copy2(game / f"src/native/bin/libmod_lua.{extension}", native)
@@ -112,6 +114,7 @@ def build(args):
             "game_tree": subprocess.check_output(["git", "rev-parse", commit + ":game"], cwd=ROOT, text=True).strip(),
             "protocol": 23, "formula_api": 1, "package_api": 3,
             "qualified_engine_template_sha256": digest(args.linux_template if extension == "so" else args.windows_template),
+            "linux_debug_symbols_removed": extension == "so",
             "files": {str(p.relative_to(out)): digest(p) for p in sorted(out.rglob("*")) if p.is_file()},
         }
         (out / "BUILD-INFO.json").write_text(json.dumps(info, indent=2) + "\n")
@@ -127,6 +130,7 @@ if __name__ == "__main__":
     parser.add_argument("--windows-template", type=Path, required=True)
     parser.add_argument("--engine-notices", type=Path)
     parser.add_argument("--godot", default="godot-4")
+    parser.add_argument("--strip-tool", default="strip")
     parser.add_argument("--ref", default="HEAD")
     args = parser.parse_args()
     for key in ("output", "linux_template", "windows_template", "engine_notices"):
