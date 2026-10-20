@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.19.0 — 2026-10-20
 
 - Add host-assigned guest permissions for shared pause, speed, quicksave and quickload. Configure defaults from the multiplayer menu and individual permissions from Players; save them with the campaign. ([#50](https://github.com/TheWWWorm/CursedLands/issues/50))
 - Separate horizontal and vertical sensitivity for the classic camera, preserving existing sensitivity when upgrading. Let the modern camera scroll at screen edges while hovering interactive HUD controls. ([#50](https://github.com/TheWWWorm/CursedLands/issues/50))
@@ -23,7 +23,7 @@
 - Attach elemental casting particles to the same animated mouth or hand as the released spell, and attach Horror lightning to its fingertips. Lower defeated Horrors onto the arena snow and hold their final death pose.
 - Retain footprints across the arena clearing within a bounded allocation.
 
-- Expire cancelled native tooltip timers so mouse movement does not accumulate background work during long sessions or after returning to the menu. Requires the updated engine executable.
+- Expire cancelled native tooltip timers on Windows and Linux so mouse movement does not accumulate background work during long sessions or after returning to the menu. Requires the updated engine executable.
 - Remember the selected campaign speed between zones, use normal speed in villages and on the route map, and restore the selection when returning to the field. Preserve the choice in saves and shared co-op clocks.
 
 ## 1.18.0 — 2026-10-19
