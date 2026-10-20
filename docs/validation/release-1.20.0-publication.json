@@ -1,0 +1,143 @@
+{
+  "version": "1.20.0",
+  "url": "https://github.com/TheWWWorm/CursedLands/releases/tag/v1.20.0",
+  "isDraft": false,
+  "isPrerelease": false,
+  "publishedAt": "2026-10-20T17:32:51Z",
+  "tag_commit": "be0c9af44f0114cbe1af722f6ff619cc333d9c8c",
+  "release_id": 418679481,
+  "assets": [
+    {
+      "name": "CursedLands-1.20.0-android.apk",
+      "bytes": 46600668,
+      "sha256": "sha256:ed5543c01247a0befc3f67b43854caddb30d420e0b5978ade3eeb9b8c751fa21",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.20.0/CursedLands-1.20.0-android.apk"
+    },
+    {
+      "name": "CursedLands-1.20.0-linux-x86_64.tar.gz",
+      "bytes": 60626454,
+      "sha256": "sha256:1a6c71e1548a1d7d5ca50701e0b228cd2420a78ab02c87fccf0f9ee8c57ca991",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.20.0/CursedLands-1.20.0-linux-x86_64.tar.gz"
+    },
+    {
+      "name": "CursedLands-1.20.0-macos-universal.zip",
+      "bytes": 88969181,
+      "sha256": "sha256:8c90bd8e574b064eba5a2bfb1b6d9a984695fc5810dad1c26d417ed863dd4e10",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.20.0/CursedLands-1.20.0-macos-universal.zip"
+    },
+    {
+      "name": "CursedLands-1.20.0-tools.zip",
+      "bytes": 71709,
+      "sha256": "sha256:3c37e9d5cd00bc15b91a33e138be8e508cbde1338e0283702c722890ac28f14a",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.20.0/CursedLands-1.20.0-tools.zip"
+    },
+    {
+      "name": "CursedLands-1.20.0-web.zip",
+      "bytes": 183852375,
+      "sha256": "sha256:1ea41151b679a17cb310fe787612516a9a52b6cbd6f3ab66f57a1ef4f79dcac5",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.20.0/CursedLands-1.20.0-web.zip"
+    },
+    {
+      "name": "CursedLands-1.20.0-windows-x86_64.zip",
+      "bytes": 110964619,
+      "sha256": "sha256:7d8a71d05466c705e0737b8f68a7cb5c544d03a457be462a2171b18213410406",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.20.0/CursedLands-1.20.0-windows-x86_64.zip"
+    },
+    {
+      "name": "expedition-xp-1.0.0.eimod",
+      "bytes": 1045,
+      "sha256": "sha256:2a8722d9902fe71afdd5a8ced85351626e3102f92c625f86a5d35fafdcf9dc31",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.20.0/expedition-xp-1.0.0.eimod"
+    },
+    {
+      "name": "field-medicine-1.0.0.eimod",
+      "bytes": 1293,
+      "sha256": "sha256:6d7f4726f3779294603ddd302ea8645b854de31c2efb65cd963c42ccd1f452ed",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.20.0/field-medicine-1.0.0.eimod"
+    },
+    {
+      "name": "quest-focus-1.0.0.eimod",
+      "bytes": 1417,
+      "sha256": "sha256:81f4a58fbe2b83d33f07a2f20dc38fa4985d074b20b4e11b4d065a2a32df928b",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.20.0/quest-focus-1.0.0.eimod"
+    },
+    {
+      "name": "quick-recovery-1.0.0.eimod",
+      "bytes": 546,
+      "sha256": "sha256:f1f32945f4a06d5e1f9b12dccc73b04dbc4ddbb30439683ad1e96892bfcb170b",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.20.0/quick-recovery-1.0.0.eimod"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "bytes": 967,
+      "sha256": "sha256:280410d97998d30dca8b2fe38a98008647d8a3805b6b21d0d3fda1e89f7aa159",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.20.0/SHA256SUMS.txt"
+    }
+  ],
+  "all_public_downloads_sha256_verified": true,
+  "issues_closed_after_publication": [
+    {
+      "number": 58,
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/58",
+      "state": "CLOSED",
+      "stateReason": "COMPLETED",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/58#issuecomment-6297100083",
+      "body": "Fixed in [Cursed Lands 1.20.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.20.0). Removed the duplicate price from item tooltips."
+    },
+    {
+      "number": 56,
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/56",
+      "state": "CLOSED",
+      "stateReason": "COMPLETED",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/56#issuecomment-6297101141",
+      "body": "Fixed in [Cursed Lands 1.20.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.20.0). Preserved NPC speech gestures when their figures refresh."
+    },
+    {
+      "number": 55,
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/55",
+      "state": "CLOSED",
+      "stateReason": "COMPLETED",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/55#issuecomment-6297102087",
+      "body": "Fixed in [Cursed Lands 1.20.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.20.0). Added automatic and fixed 32/48/64-pixel cursor sizes."
+    },
+    {
+      "number": 54,
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/54",
+      "state": "CLOSED",
+      "stateReason": "COMPLETED",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/54#issuecomment-6297103536",
+      "body": "Fixed in [Cursed Lands 1.20.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.20.0). Corrected the campaign variable used for the base-exit status."
+    },
+    {
+      "number": 52,
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/52",
+      "state": "CLOSED",
+      "stateReason": "COMPLETED",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/52#issuecomment-6297104514",
+      "body": "Fixed in [Cursed Lands 1.20.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.20.0). Included active and completed multiplayer side quests in the journal."
+    },
+    {
+      "number": 51,
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/51",
+      "state": "CLOSED",
+      "stateReason": "COMPLETED",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/51#issuecomment-6297105467",
+      "body": "Fixed in [Cursed Lands 1.20.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.20.0). Preserved animation playback when equipment or character dimensions change."
+    },
+    {
+      "number": 43,
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/43",
+      "state": "CLOSED",
+      "stateReason": "COMPLETED",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/43#issuecomment-6297106618",
+      "body": "Fixed in [Cursed Lands 1.20.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.20.0). Used dedicated distance-field fonts for Arena text."
+    }
+  ],
+  "tag_immutable": true,
+  "browser_deployment": {
+    "site": "https://cursedlands.wwworm.com/",
+    "all_live_hashes_match": true,
+    "verified_at": "2026-10-20T17:35:39Z",
+    "receipt": "release-1.20.0/deployment.json"
+  }
+}
