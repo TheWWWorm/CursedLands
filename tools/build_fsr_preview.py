@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export a committed FSR-only Windows preview. Does not publish or tag."""
+"""Export a committed Windows FSR build, including optional formula mods. Does not publish or tag."""
 import argparse
 import hashlib
 import json
@@ -41,13 +41,11 @@ def build(args):
     game = source / "game"
     project = game / "project.godot"
     version = re.search(r'^config/version="([^"]+)"', project.read_text(), re.M)[1]
-    if "-experimental." not in version:
-        raise ValueError("Only experimental versions may be packaged by this tool")
     project.write_text(project.read_text().replace(
         'boot_splash/image="res://assets/branding/splash.png"',
         'boot_splash/image="res://assets/branding/splash-fsr.png"\ngraphics_sdk/amd=true'))
     profile = args.output / "export-profile"
-    user = profile / "data/Cursed Lands FSR Experiment"
+    user = profile / "data/godot/app_userdata/Cursed Lands"
     user.mkdir(parents=True)
     (user / "settings.cfg").write_text("[options]\nconfine_mouse=0\nshow_fps=1\nvolume_sfx=0\nvolume_stream=0\nvolume_voice=0\n")
     env = dict(os.environ, **{f"XDG_{key}_HOME": str(profile / key.lower()) for key in ("DATA", "CONFIG", "CACHE")})
@@ -103,26 +101,30 @@ def build(args):
         shutil.copytree(source / "docs/validation/fsr-only", out / "docs/validation/fsr-only")
     shutil.copy2(source / "docs/releases" / (version + ".md"), out / "RELEASE-NOTES.md")
     (out / "README.txt").write_text(
-        "Cursed Lands — AMD FSR experiment\n\n"
-        "EN: Run Play-FSR.cmd. Options > Screen > AMD FSR experiment.\n"
-        "Upscaling and frame generation start Off. Unsupported versions are skipped.\n"
-        "FSR 4 and native Windows execution still need hardware validation.\n"
-        "RU: Запустите Play-FSR.cmd. Настройки > Экран > Эксперимент AMD FSR.\n"
-        "Масштабирование и генерация кадров по умолчанию выключены. Недоступные версии пропускаются.\n"
-        "FSR 4 и работа непосредственно в Windows ещё требуют проверки на оборудовании.\n"
-        "DE: Starten Sie Play-FSR.cmd. Optionen > Bildschirm > AMD-FSR-Experiment.\n"
-        "Skalierung und Frame-Generierung sind zunächst aus. Nicht verfügbare Versionen werden übersprungen.\n"
-        "FSR 4 und die native Windows-Ausführung müssen noch auf Hardware geprüft werden.\n\n"
-        "docs/integrations/fsr-experiment.md\n"
-        "Profile / Профиль / Profil: %APPDATA%\\Cursed Lands FSR Experiment\n"
+        "Cursed Lands — AMD FSR and formula mods\n\n"
+        "EN: Run CursedLands.exe. Select Forward+ (Direct3D 12) under Options > Screen > Renderer, restart if needed, then open AMD FSR. Upscaling and frame generation start Off. Import the example mods through Mods and rules.\n"
+        "RU: Запустите CursedLands.exe. Выберите Forward+ (Direct3D 12) в Настройки > Экран > Рендерер, при необходимости перезапустите игру и откройте AMD FSR. Масштабирование и генерация кадров по умолчанию выключены. Импортируйте примеры модов через Моды и правила.\n"
+        "DE: Starten Sie CursedLands.exe. Wählen Sie Forward+ (Direct3D 12) unter Optionen > Bildschirm > Renderer, starten Sie bei Bedarf neu und öffnen Sie AMD FSR. Skalierung und Frame-Generierung sind zunächst aus. Importieren Sie die Beispiel-Mods über Mods und Regeln.\n\n"
+        "docs/integrations/fsr-experiment.md\ndocs/mod-formulas.md\n"
         "Runtime / Библиотеки / Laufzeit: Microsoft Visual C++ v14 x64\n"
         "https://aka.ms/vc14/vc_redist.x64.exe\n", encoding="utf-8")
+    if (game / "src/native/bin/libmod_lua.dll").exists():
+        from package_mod import package
+        native = out / "src/native/bin"
+        native.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(game / "src/native/bin/libmod_lua.dll", native)
+        for name in ("mods.md", "mod-formulas.md", "versioning.md"):
+            shutil.copy2(source / "docs" / name, out / "docs" / name)
+        for name in ("expedition-xp", "quest-focus", "field-medicine", "quick-recovery"):
+            package(source / "examples/mods" / name, out / "mods" / (name + "-1.0.0.eimod"))
+            shutil.copytree(source / "examples/mods" / name, out / "examples/mods" / name)
     check_package(out)
     info = {
         "version": version, "source_commit": commit, "platform": "windows-x86_64",
         "base_release": "v1.19.0", "godot_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
         "engine_template_sha256": digest(args.windows_template), "protocol": 23,
         "fsr_sdk": prepare_fsr_sdk.VERSION,
+        "fsr_in_normal_settings": True, "formula_api": 1, "package_api": 3,
         "fsr_manifest_sha256": digest(source / "engine_patches/godot-4.7/fsr-sdk.json"),
         "fsr_engine_patch_sha256": digest(source / "engine_patches/godot-4.7/experimental-fsr.patch"),
         "agility_sdk": prepare_fsr_sdk.AGILITY_VERSION,
