@@ -52,5 +52,5 @@ func _ready() -> void:
 		else:s.apply_command({"t":"direct_move","units":[hero.uid],"direction":Vector2.RIGHT},0)
 		check(hero.order.get("type")!="cast" and not hero.orders.any(func(o):return o.get("type")=="cast"),"new movement cancels stamina wait")
 	g.queue_free();s.queue_free();await frames(10);TexUpscale.shutdown()
-	print("SPELL_STAMINA_WAIT ",checks," checks ",JSON.stringify(failures))
+	print("SPELL_STAMINA_WAIT ",JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

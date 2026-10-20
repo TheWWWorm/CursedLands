@@ -1,5 +1,7 @@
 extends Node
 ## Lossless large campaign documents and wall-time batching at double speed.
+## A deterministic generated campaign is the default; --route-save remains an
+## optional read-only diagnostic input. No player's save is needed by the suite.
 var checks := 0
 var failures := 0
 class CountSession extends Session:
@@ -10,12 +12,27 @@ func check(ok: bool,label: String) -> void:
 	checks+=1
 	if not ok: failures+=1
 	print("PASS " if ok else "FAIL ",label)
+func fixture() -> CampaignState:
+	var st:=CampaignState.new()
+	for player in 4:
+		st.ensure_hero(player,"Human Hero","Transport %d"%player)
+		for i in 512: st.set_var(player,"fixture.zone%d.trigger%d"%[i%32,i],float(i+player+1))
+	for i in 64:
+		st.quests["fixture%d"%i]={"state":i%3,"objectives":[true,false,i]}
+		st.visited["zone%d"%i]=true
+		st.party_bags["party%d"%i]={"items":["rune:e1","rune:e1","stone axe.rock@1"],"money":i*17}
+	st.items=["rune:e1","rune:e1","stone axe.rock|weak{it}@1~2"]
+	st.money=123456
+	st.shops[1]={"goods":{"rune:e1":12},"sold":{},"restock":false}
+	st.create_party("Waiting")
+	st.add_party_unit("Waiting","Hero","Human Hero")
+	return st
 func _ready() -> void:
 	var source := ""
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--route-save="): source=arg.trim_prefix("--route-save=")
-	var st := CampaignState.load_from(source)
-	check(st!=null,"read actual supplied campaign without changing it")
+	var st := fixture() if source.is_empty() else CampaignState.load_from(source)
+	check(st!=null,"generated campaign is ready" if source.is_empty() else "read supplied campaign without changing it")
 	if st==null: get_tree().quit(1); return
 	var ev := {"t":"state","money":st.money,"quests":st.quests,"quest_items":st.quest_items,"items":st.items,
 		"heroes":st.heroes,"mercs":st.mercs,"side_quests":st.side_quests,"shops":st.shops,"visited":st.visited,

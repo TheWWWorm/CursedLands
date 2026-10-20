@@ -32,5 +32,5 @@ func _ready() -> void:
 				for item: String in ready:
 					check(not Spells.parse(item.trim_prefix("spell:")).proto.is_empty(),"finished spell can be parsed")
 					check(goods[item] == 1,"identical spell retries do not inflate stock")
-	print("SHOP_SPELLS ",GameData.campaign_id," ",checks," checks ",failures," failures")
+	print("SHOP_SPELLS ",JSON.stringify({"campaign":GameData.campaign_id,"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

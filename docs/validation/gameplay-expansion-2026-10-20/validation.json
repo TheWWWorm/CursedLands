@@ -1,0 +1,2146 @@
+{
+  "schema": 1,
+  "date": "2026-10-20",
+  "base_version": "1.19.0",
+  "base_commit": "50fd5b06e7a17a6dea63fe85693f23c0485cfbb1",
+  "evidence": "Remake regressions; retained original-x86 comparison remains separate.",
+  "qualification_method": "Retain 56 previously qualified registrations after verifying all production files and selected test dependencies. Run 42 added configurations plus three new matrix configurations. Rerun four registrations after correcting metadata-only minimum counts and three after repairing fixture setup; all existing behavioral assertions remain. Raw reports remain unchanged. This is a consolidation, not a single fresh 101-program capture.",
+  "regressions": {
+    "status": "passed",
+    "programs": 101,
+    "added_programs": 45,
+    "checks": 184754,
+    "failed_checks": 0,
+    "added_checks": 48855,
+    "categories": {
+      "animation": {
+        "programs": 8,
+        "checks": 2655,
+        "added_programs": 0
+      },
+      "combat": {
+        "programs": 3,
+        "checks": 4624,
+        "added_programs": 3
+      },
+      "commands": {
+        "programs": 8,
+        "checks": 1284,
+        "added_programs": 2
+      },
+      "creatures": {
+        "programs": 7,
+        "checks": 23842,
+        "added_programs": 1
+      },
+      "effects": {
+        "programs": 11,
+        "checks": 73698,
+        "added_programs": 1
+      },
+      "inventory": {
+        "programs": 9,
+        "checks": 3425,
+        "added_programs": 9
+      },
+      "network": {
+        "programs": 3,
+        "checks": 251,
+        "added_programs": 3
+      },
+      "party": {
+        "programs": 2,
+        "checks": 36,
+        "added_programs": 2
+      },
+      "pathing": {
+        "programs": 7,
+        "checks": 42959,
+        "added_programs": 0
+      },
+      "persistence": {
+        "programs": 9,
+        "checks": 122,
+        "added_programs": 9
+      },
+      "progression": {
+        "programs": 5,
+        "checks": 345,
+        "added_programs": 5
+      },
+      "quests": {
+        "programs": 15,
+        "checks": 569,
+        "added_programs": 2
+      },
+      "spells": {
+        "programs": 8,
+        "checks": 27898,
+        "added_programs": 8
+      },
+      "stealth": {
+        "programs": 6,
+        "checks": 3046,
+        "added_programs": 0
+      }
+    },
+    "results": [
+      {
+        "id": "quests/script_dead_predicates",
+        "category": "quests",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 12,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 5.006,
+        "log": "tests/quests/script_dead_predicates/run.log",
+        "log_sha256": "d09c6962cb9f3acd20e95b7668db2ab78a6cf5232790b1eccc878d76b675c855",
+        "script": "tools/tests/script_dead_predicates.gd",
+        "dependencies": {
+          "tools/tests/script_dead_predicates.gd": "981e6cd80c2078af9959acf87b736b558a5663b323faf65eca12c1b51fe1ee58"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "quests/script_hero_references",
+        "category": "quests",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 11,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 4.906,
+        "log": "tests/quests/script_hero_references/run.log",
+        "log_sha256": "4380a1cd7df03cc40b56ccb48cb0036e4ee22822b07338362932c82d8188cf00",
+        "script": "tools/tests/script_hero_references.gd",
+        "dependencies": {
+          "tools/tests/script_hero_references.gd": "4ed8f447a3a483cd10b2e302f5e6c1a0968ec741a63ebc4d655d0fa2a2e17959"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "quests/story_coop_predicates",
+        "category": "quests",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 101,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 6.608,
+        "log": "tests/quests/story_coop_predicates/run.log",
+        "log_sha256": "69b8cb86fa698a8d3d3705b10cbb33a0e45f7d6a287da68529437cddbf000bbb",
+        "script": "tools/tests/story_coop_predicates.gd",
+        "dependencies": {
+          "tools/tests/story_coop_predicates.gd": "29668267f1e9cc53d6b9856016e5cb4f9f7151addd0e9ef76ad2f70dfc151562"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "quests/story_coop_traps",
+        "category": "quests",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 55,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 5.606,
+        "log": "tests/quests/story_coop_traps/run.log",
+        "log_sha256": "0b56506ff0d0501c026969552b56b0dce1dac97ca4688cbbbda24e829ad20915",
+        "script": "tools/tests/story_coop_traps.gd",
+        "dependencies": {
+          "tools/tests/story_coop_traps.gd": "a119e860c91c23faba2449aac220607706fbe18ce272e053d48db90a21938094"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "quests/story_coop_effects",
+        "category": "quests",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 167,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 6.608,
+        "log": "tests/quests/story_coop_effects/run.log",
+        "log_sha256": "94cc4479b8b19004c74b232090e6ef992c0bea0c0b6aae129f20fdc0c6d2d753",
+        "script": "tools/tests/story_coop_effects.gd",
+        "dependencies": {
+          "tools/tests/story_coop_effects.gd": "e3cba989cfd289d77ce8786f7ee0bae3ebd555d584c4ecf88148c82fd68b946d"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "quests/quest_carriers",
+        "category": "quests",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 12,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 4.906,
+        "log": "tests/quests/quest_carriers/run.log",
+        "log_sha256": "815011cf86fcb247660cf93fefff9d5e155af032272186e397f2e1231c1f932a",
+        "script": "tools/tests/quest_carriers.gd",
+        "dependencies": {
+          "tools/tests/quest_carriers.gd": "1349c14e18d5842441949ed9bf251d56478e0a0644334c356e624f2054837ba1"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "quests/quest_inventory_lifecycle",
+        "category": "quests",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 20,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 37.039,
+        "log": "tests/quests/quest_inventory_lifecycle/run.log",
+        "log_sha256": "42e3c1aed36cfca59a82bdf3fc5d72024ec352c35d41b3b1f8c802215c058d06",
+        "script": "tools/tests/quest_inventory_lifecycle.gd",
+        "dependencies": {
+          "tools/tests/quest_inventory_lifecycle.gd": "dc1e85d374fb21af93d7697bc132df06342f39deb1e8d2750f2077dc8a0648df"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "quests/quest_rewards",
+        "category": "quests",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 4,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 5.106,
+        "log": "tests/quests/quest_rewards/run.log",
+        "log_sha256": "00cf793a30033fed7e8b177b38a95d9dbb18e6ec9b61f22e6e3dad883312a9b9",
+        "script": "tools/tests/quest_rewards.gd",
+        "dependencies": {
+          "tools/tests/quest_rewards.gd": "e9590f400aa58d6d4f6fa1c6857ef1833772e048bd50a091d3d7c2731e06d06b"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "quests/quest_actor_removal",
+        "category": "quests",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 24,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 20.721,
+        "log": "tests/quests/quest_actor_removal/run.log",
+        "log_sha256": "9e32e70d053f75a5c1ca655d2fe2fbac29f6324a4f5f52ae7842fb3ebc52de96",
+        "script": "tools/tests/quest_actor_removal.gd",
+        "dependencies": {
+          "tools/tests/quest_actor_removal.gd": "a339f744553f9eafd498f8f6652ebf94b92bdae59052b6afd183878b5ac73b0d",
+          "tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "quests/catacomb_group_lever",
+        "category": "quests",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 26,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 18.32,
+        "log": "tests/quests/catacomb_group_lever/run.log",
+        "log_sha256": "7b6ed9a909b98836076672d1bd5398d10183f1dde5bce71309402143497dac69",
+        "script": "tools/tests/catacomb_group_lever.gd",
+        "dependencies": {
+          "tools/tests/catacomb_group_lever.gd": "64f16ba59606af122e1189b50dc1a630fe40830d9618aa7c68fb19bd413472f6"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "quests/lever_transition_save",
+        "category": "quests",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 59,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 16.318,
+        "log": "tests/quests/lever_transition_save/run.log",
+        "log_sha256": "3bd4aa2e6a140bea4268209db14498bbe45cab54678a9590dd0c576dbce29247",
+        "script": "tools/tests/lever_transition_save.gd",
+        "dependencies": {
+          "tools/tests/lever_transition_save.gd": "eac7c529e61d2141ef9d66c6826eba6b1ee6f1744557ba349e4250061ee3b88a"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "creatures/ai_activity_health",
+        "category": "creatures",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 45,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 4.806,
+        "log": "tests/creatures/ai_activity_health/run.log",
+        "log_sha256": "fbcb86884cef28b0f90d9095d5620b0d8943b13b86c92ff2be3e6ee69e165db2",
+        "script": "tools/tests/ai_activity_health.gd",
+        "dependencies": {
+          "tools/tests/ai_activity_health.gd": "b7665709f436e1969d5e9a0f00b79c5764e1ebff350c9631354c78699e5cf054"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "creatures/ai_activity_senses",
+        "category": "creatures",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 7340,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 5.106,
+        "log": "tests/creatures/ai_activity_senses/run.log",
+        "log_sha256": "3e19842cc45c437c5276cb41ce62e00ee8a963d2be9e4e60f47eddf6224901b6",
+        "script": "tools/tests/ai_activity_senses.gd",
+        "dependencies": {
+          "tools/tests/ai_activity_senses.gd": "dde7959314266d329c6facac037e443574c25bc49dd500e1005e8b2b03e94026"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "creatures/ai_live_eligibility",
+        "category": "creatures",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 4589,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 4.906,
+        "log": "tests/creatures/ai_live_eligibility/run.log",
+        "log_sha256": "7e6b7f6b902b53a8ac051cc584e471804336ca3c362620c1919cbca03e8e89e1",
+        "script": "tools/tests/ai_live_eligibility.gd",
+        "dependencies": {
+          "tools/tests/ai_live_eligibility.gd": "7883f56aa7b9199c08d84af3fe4880b44fe42030eeffb13408872ab82804cace"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "creatures/ai_reaction_recipients",
+        "category": "creatures",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 7,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 4.906,
+        "log": "tests/creatures/ai_reaction_recipients/run.log",
+        "log_sha256": "3f1530b5f8ef2984f4e489029827e89082bd619f52a5e8ddeb386a3666f0e044",
+        "script": "tools/tests/ai_reaction_recipients.gd",
+        "dependencies": {
+          "tools/tests/ai_reaction_recipients.gd": "4fec8296c30e11629e583c81df3d35afc4dda7d4cfe2460ffc3a96d4b3e21120"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "creatures/creature_alerts",
+        "category": "creatures",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 15,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 10.311,
+        "log": "tests/creatures/creature_alerts/run.log",
+        "log_sha256": "300b8883e2e84c4b0b29092f6174a777ff2a9c77cf47c8b7fbeaaa5441119627",
+        "script": "tools/tests/creature_alerts.gd",
+        "dependencies": {
+          "tools/tests/creature_alerts.gd": "fc82d47734d24582b8e6260b9570a61eab66208c79c25e68339ef350c4119525"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "creatures/creature_damage",
+        "category": "creatures",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 22,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 5.907,
+        "log": "tests/creatures/creature_damage/run.log",
+        "log_sha256": "262d6433c77da5a15b00d07b0b7a78b4ea8b855b7da31dd16d8a05b4f0e7a35e",
+        "script": "tools/tests/creature_damage.gd",
+        "dependencies": {
+          "tools/tests/creature_damage.gd": "27462c032531a592d2e885615f10a1dd7345491b93a2b2fb10672344a4b5c8f9"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "animation/creature_weapon_animations",
+        "category": "animation",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 196,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 5.206,
+        "log": "tests/animation/creature_weapon_animations/run.log",
+        "log_sha256": "b6e12e472e94770453bb588d9630d167810b98dd9e9842bc614fba7982b4d0b9",
+        "script": "tools/tests/creature_weapon_animations.gd",
+        "dependencies": {
+          "tools/tests/creature_weapon_animations.gd": "6bebeb782bbe853bb73ce3a56230392f99dac67d605cd0b57d301b66a46dff65"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "animation/direct_gait_continuity",
+        "category": "animation",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 1920,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 6.307,
+        "log": "tests/animation/direct_gait_continuity/run.log",
+        "log_sha256": "adaa90f5773cbe40cf6892b35dc0b4367b7edfcba59aca107bc80c64aa9131dc",
+        "script": "tools/tests/direct_gait_continuity.gd",
+        "dependencies": {
+          "tools/tests/direct_gait_continuity.gd": "803eb218e7e66cf8030056edb88105dd37bbfea204c5c56945e7c3ec58870b5d"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "animation/direct_moving_attacks",
+        "category": "animation",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 15,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 25.826,
+        "log": "tests/animation/direct_moving_attacks/run.log",
+        "log_sha256": "9893fca524ac844400d569985f89eea3a009b91cf68b2b0ddb8a829a7f0a7e81",
+        "script": "tools/tests/direct_moving_attacks.gd",
+        "dependencies": {
+          "tools/tests/direct_moving_attacks.gd": "e204b6e90cb21ebbf942fb67511c7445b5de79f6dc17d6c759153724e7e7af75",
+          "tools/tests/third_person_kbm.gd": "7d3fba490b0eab426d0601f6d42f70433b386cdecdc490a4d6b844c447692bf9"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "animation/direct_moving_casts",
+        "category": "animation",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 50,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 27.928,
+        "log": "tests/animation/direct_moving_casts/run.log",
+        "log_sha256": "1607ffa96cd8abc50694552f06835f69f9f0dc2b010932044283e74d5240afa9",
+        "script": "tools/tests/direct_moving_casts.gd",
+        "dependencies": {
+          "tools/tests/direct_moving_casts.gd": "6d1de4e0678f4df6f53ff9c845855bc3ab5e39f6d4c870f3eef2a79cd7b4601e",
+          "tools/tests/direct_moving_attacks.gd": "e204b6e90cb21ebbf942fb67511c7445b5de79f6dc17d6c759153724e7e7af75",
+          "tools/tests/third_person_kbm.gd": "7d3fba490b0eab426d0601f6d42f70433b386cdecdc490a4d6b844c447692bf9"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "animation/paused_spawn_pose",
+        "category": "animation",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 42,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 6.107,
+        "log": "tests/animation/paused_spawn_pose/run.log",
+        "log_sha256": "2a0dda8f8947c102ae9ad6cd5bb0af31d2d38ac0faaadd61c05758eb722f514f",
+        "script": "tools/tests/paused_spawn_pose.gd",
+        "dependencies": {
+          "tools/tests/paused_spawn_pose.gd": "70bee551f385f9c870c2fca9c5626911318806aec01395305678cb5577b4733b"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "animation/paused_load_pose",
+        "category": "animation",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 50,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 24.526,
+        "log": "tests/animation/paused_load_pose/run.log",
+        "log_sha256": "a0e669b4fe4d4915e8838cf0bd8d52125b583efcc187fcc4b3a3a1ab9d844d89",
+        "script": "tools/tests/paused_load_pose.gd",
+        "dependencies": {
+          "tools/tests/paused_load_pose.gd": "35b43f20c8c9132d6fd5c7b9636ebad9ba5764754a83cd28bddab43d1d9073b3",
+          "tools/tests/paused_spawn_pose.gd": "70bee551f385f9c870c2fca9c5626911318806aec01395305678cb5577b4733b",
+          "tools/tests/local_host_campaign.gd": "5cc3aa74b279f9bc0f00318ad3131d85c6fbfa4d409bd638f29e2bf12b7c488e"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "animation/dialogue_poses",
+        "category": "animation",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 54,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 9.61,
+        "log": "tests/animation/dialogue_poses/run.log",
+        "log_sha256": "88271f27ce27a29231a84d465f92c7b2f29e45667abdf719893c637b6d9be5b5",
+        "script": "tools/tests/dialogue_poses.gd",
+        "dependencies": {
+          "tools/tests/dialogue_poses.gd": "641ed44374708ce406f9954292045c0b3ddc77e04347246b667c7a3ee6782d40",
+          "tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "effects/creature_effect_attachments",
+        "category": "effects",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 1739,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 7.909,
+        "log": "tests/effects/creature_effect_attachments/run.log",
+        "log_sha256": "812c743509f7b10995c745847046e8e3ed00e00d67f77769bca0370cf6f4d492",
+        "script": "tools/tests/creature_effect_attachments.gd",
+        "dependencies": {
+          "tools/tests/creature_effect_attachments.gd": "06f641cbc0841bdde142bd201ef4e1e7b6536fb3986cb2559d8b74e44e776f11"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "effects/creature_projectile_origins",
+        "category": "effects",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 186,
+        "failures": 0,
+        "capture": "projectile-fixture-qualification",
+        "seconds": 7.409,
+        "log": "tests/effects/creature_projectile_origins/run.log",
+        "log_sha256": "46cd5a0652ede1860805e8992a0f4706da72d4ace1f803ef8a437ef9c4f3b487",
+        "script": "tools/tests/creature_projectile_origins.gd",
+        "dependencies": {
+          "tools/tests/creature_projectile_origins.gd": "deaacd2d095473a6815c478f4fa45c30f804b9e6612ac05a34ec56869df5f562"
+        },
+        "runtime_source_sha256": "a3542006b7aeea25bdb66734292f5f32b50c9ee277bc5ae657727e4728f1d792",
+        "new_registration": false
+      },
+      {
+        "id": "effects/particle_delay_lifetime",
+        "category": "effects",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 57,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 8.91,
+        "log": "tests/effects/particle_delay_lifetime/run.log",
+        "log_sha256": "42758cd247c68f91659a1ff930d5098397fe50410d1c777a47327888e30490ee",
+        "script": "tools/tests/particle_delay_lifetime.gd",
+        "dependencies": {
+          "tools/tests/particle_delay_lifetime.gd": "57fee32ffa2cb076a10e35404e0acc332d06484eda0bcb1be3d73461b8f4aeb0"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "effects/repeated_spells",
+        "category": "effects",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 86,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 6.408,
+        "log": "tests/effects/repeated_spells/run.log",
+        "log_sha256": "4fa100cbcf56b4f764dfe966ad07edd670cd727451779bc53324b325eacd16f8",
+        "script": "tools/tests/repeated_spells.gd",
+        "dependencies": {
+          "tools/tests/repeated_spells.gd": "7e4c207d9b7f65133e7e081a8cf33ba7a76610a0bc8c438f8211864ac3ef3970"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "effects/fire_particles",
+        "category": "effects",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 43389,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 5.707,
+        "log": "tests/effects/fire_particles/run.log",
+        "log_sha256": "dc07578889fa12870ad78a6eeffbba178ae206a056a7612e9d1db0fc7bb7d7f0",
+        "script": "tools/tests/fire_particles.gd",
+        "dependencies": {
+          "tools/tests/fire_particles.gd": "299f9ba16f3416eef037a55dbf6e30c93253df70f722eea2e21930fcdf1a40a2"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "effects/tornado_particles",
+        "category": "effects",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 26244,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 11.112,
+        "log": "tests/effects/tornado_particles/run.log",
+        "log_sha256": "5caaba13ffbb9e378de4567cd63a2e9756b5f81637574a015059f7179314a351",
+        "script": "tools/tests/tornado_particles.gd",
+        "dependencies": {
+          "tools/tests/tornado_particles.gd": "81b008c258b6deef7861819713c829ec92ad4d4deb1a4780c7696f61ad315232",
+          "tools/tests/fire_particles.gd": "299f9ba16f3416eef037a55dbf6e30c93253df70f722eea2e21930fcdf1a40a2"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "effects/healing_presentation",
+        "category": "effects",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 22,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 12.814,
+        "log": "tests/effects/healing_presentation/run.log",
+        "log_sha256": "1415d14ce65c52ee2e1ef65e1673642b8af0acab84da293f4c0854a77e510ea8",
+        "script": "tools/tests/healing_presentation.gd",
+        "dependencies": {
+          "tools/tests/healing_presentation.gd": "50802c880358260db11176675b8b2712950e48bbfe0760565b857f73d6812315",
+          "tools/tests/story_coop_traps_net.gd": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "effects/delayed_cast_lifetime",
+        "category": "effects",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 32,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 6.107,
+        "log": "tests/effects/delayed_cast_lifetime/run.log",
+        "log_sha256": "2995db03230ea0d1c930dba60dc9a5e2d4d20d07e2d4ee93a7bd3dafccc28308",
+        "script": "tools/tests/delayed_cast_lifetime.gd",
+        "dependencies": {
+          "tools/tests/delayed_cast_lifetime.gd": "74da1743c48568e9421936df179a47537d456bfae2680a95eb7fe16620d17c1d"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "stealth/stealth_effects",
+        "category": "stealth",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 19,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 11.812,
+        "log": "tests/stealth/stealth_effects/run.log",
+        "log_sha256": "d147a212972bed1aa264781e787ca8662e4f9b19074950acaa9d91606c19e0fb",
+        "script": "tools/tests/stealth_effects.gd",
+        "dependencies": {
+          "tools/tests/stealth_effects.gd": "1da57971085ecf18842e7f00d9f5d4c8a9af7ef473f9a6b145ccc363076a22d6"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "stealth/stealth_effects_net",
+        "category": "stealth",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 15,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 16.717,
+        "log": "tests/stealth/stealth_effects_net/run.log",
+        "log_sha256": "c7f197d3d4ef2c4bbb9cd471f09cc4db2aa930514a73f8b6e91d334cecadb5e3",
+        "script": "tools/tests/stealth_effects_net.gd",
+        "dependencies": {
+          "tools/tests/stealth_effects_net.gd": "45b3380a54c817ca2eadc959eb2ba73beaac15bae4f29129e01393ad17f4c9e9",
+          "tools/tests/coop_story.gd": "2d35e5d2f6f2ad8bb510d3f39e9022ca42dd0005ced74810c777b9471ce8a317"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "stealth/perception_batch",
+        "category": "stealth",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 2857,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 5.406,
+        "log": "tests/stealth/perception_batch/run.log",
+        "log_sha256": "b3c3dd84706053f3708a134e56bdaf8cf9db39e1dc3aa0db69a6c552d7e0b7c0",
+        "script": "tools/tests/perception_batch.gd",
+        "dependencies": {
+          "tools/tests/perception_batch.gd": "9c7c592db605f8b2022b56ffe9f88815111fabe7ba96dfca64c67c80c4fb595a"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "stealth/unit_visibility",
+        "category": "stealth",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 72,
+        "failures": 0,
+        "capture": "summary-format-qualification",
+        "seconds": 20.423,
+        "log": "tests/stealth/unit_visibility/run.log",
+        "log_sha256": "6e78c61808a87ac9d74e415ba54d155a4ca479313cde679d3d8ed6dd74165bdd",
+        "script": "tools/tests/unit_visibility.gd",
+        "dependencies": {
+          "tools/tests/unit_visibility.gd": "fefc5c56c3f337b3cda1f013c8c83f71028d9788df5ba5672d766828a4c9692f"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "stealth/hidden_presentation",
+        "category": "stealth",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 69,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 5.206,
+        "log": "tests/stealth/hidden_presentation/run.log",
+        "log_sha256": "9995c44a6cfecfc0199cfbc5ccc648dc4bc22b5b6128ef6d20c39ac3c36d0923",
+        "script": "tools/tests/hidden_presentation.gd",
+        "dependencies": {
+          "tools/tests/hidden_presentation.gd": "71ede6a4474ef6a7cd0308f326efdb7b0bdd1945a6f9a8cd49ff10fc129a0d41"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "commands/combat_inputs",
+        "category": "commands",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 918,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 5.306,
+        "log": "tests/commands/combat_inputs/run.log",
+        "log_sha256": "87ba19f5fb2126716be0d50fd8b6110e99f68a1570146a13bf97711daa3db476",
+        "script": "tools/tests/combat_inputs.gd",
+        "dependencies": {
+          "tools/tests/combat_inputs.gd": "9a45754a3bbec7eac23449cfe3196630f41bbbcc4b8a0a99e0934949f1c6c4d5"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "commands/direct_command_priority",
+        "category": "commands",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 37,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 11.212,
+        "log": "tests/commands/direct_command_priority/run.log",
+        "log_sha256": "388dbe7a75014663e9b6b4b43ec98867327337d082ec60f27048da5028e4653b",
+        "script": "tools/tests/direct_command_priority.gd",
+        "dependencies": {
+          "tools/tests/direct_command_priority.gd": "54e308da548608fb9183e905dce7c595558710d855827009e71308b76baf3f79",
+          "tools/tests/third_person_kbm.gd": "7d3fba490b0eab426d0601f6d42f70433b386cdecdc490a4d6b844c447692bf9"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "commands/issue_campaign_orders",
+        "category": "commands",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 28,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 10.011,
+        "log": "tests/commands/issue_campaign_orders/run.log",
+        "log_sha256": "cd810404ed48504f7acba52401dd0a4492ef74ac6b280ad3a5a7b9532b4fbfc4",
+        "script": "tools/tests/issue_campaign_orders.gd",
+        "dependencies": {
+          "tools/tests/issue_campaign_orders.gd": "0563091d3c4d508991838c83d75e2a35cd764d4e4768b8caf9c4982a933cf22e",
+          "tools/tests/third_person_kbm.gd": "7d3fba490b0eab426d0601f6d42f70433b386cdecdc490a4d6b844c447692bf9"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "commands/direct_interactions",
+        "category": "commands",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 8,
+        "failures": 0,
+        "capture": "command-fixture-qualification",
+        "seconds": 7.809,
+        "log": "tests/commands/direct_interactions/run.log",
+        "log_sha256": "3b2219be16f8449c840ffcb1b99c87919fcb34f778239940892d0084cfb1db6e",
+        "script": "tools/tests/direct_interactions.gd",
+        "dependencies": {
+          "tools/tests/direct_interactions.gd": "172d6cc0140e1a325d75e859813cb1ee36cabb675e9631b162d87b4e982a92a9",
+          "tools/tests/third_person_kbm.gd": "7d3fba490b0eab426d0601f6d42f70433b386cdecdc490a4d6b844c447692bf9"
+        },
+        "runtime_source_sha256": "fd996da6357b8e24b0adaeb1f74efe17a28efb1bd26d00ec63dcb623c7ebb064",
+        "new_registration": false
+      },
+      {
+        "id": "commands/command_retry",
+        "category": "commands",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 29,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 12.013,
+        "log": "tests/commands/command_retry/run.log",
+        "log_sha256": "abc254ea8c7e0016b4cda3fa2dba2eb4c8470076299bf6f35c869cc0fe97c49e",
+        "script": "tools/tests/command_retry.gd",
+        "dependencies": {
+          "tools/tests/command_retry.gd": "0df1509badea8a09384192b79a544ae9e51a765bf17053f3190f5dccb31f9238"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "commands/exhausted_interactions",
+        "category": "commands",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 192,
+        "failures": 0,
+        "capture": "command-fixture-qualification",
+        "seconds": 15.116,
+        "log": "tests/commands/exhausted_interactions/run.log",
+        "log_sha256": "5411bae3a5a496fc4af335389de76f34199cba29faf979a4db9c3ecbe4d2c0fb",
+        "script": "tools/tests/exhausted_interactions.gd",
+        "dependencies": {
+          "tools/tests/exhausted_interactions.gd": "e8a3c6cea75d95b447956727b9262a8c95366d73fddf16ee130827ade3cd397a"
+        },
+        "runtime_source_sha256": "fd996da6357b8e24b0adaeb1f74efe17a28efb1bd26d00ec63dcb623c7ebb064",
+        "new_registration": false
+      },
+      {
+        "id": "pathing/nav_turn_native",
+        "category": "pathing",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 2997,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 6.006,
+        "log": "tests/pathing/nav_turn_native/run.log",
+        "log_sha256": "6bce1bc24617c1a1810559c9f863cd80772a6f99a663fdc0b504b0550542b43e",
+        "script": "tools/tests/nav_turn_native.gd",
+        "dependencies": {
+          "tools/tests/nav_turn_native.gd": "fa8d6c8329f94e9073defa00d459648b5c3b5d974d6b0d5b13d732161f908339"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "pathing/nav_topology",
+        "category": "pathing",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 7072,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 8.509,
+        "log": "tests/pathing/nav_topology/run.log",
+        "log_sha256": "e66c482640f9c535fe8b34b21ddc380a9d57351a7ca0aee0762b441e071c5e14",
+        "script": "tools/tests/nav_topology.gd",
+        "dependencies": {
+          "tools/tests/nav_topology.gd": "abdb4beb861c039ef89046fb1aea129695f50be0c5bc9333852b802d59cdd850"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "pathing/nav_dynamic_topology",
+        "category": "pathing",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 11102,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 5.506,
+        "log": "tests/pathing/nav_dynamic_topology/run.log",
+        "log_sha256": "cee3eb2e81b9eed252c324c69a64bea90e31377cf9594b50f9c78e3c245742c8",
+        "script": "tools/tests/nav_dynamic_topology.gd",
+        "dependencies": {
+          "tools/tests/nav_dynamic_topology.gd": "31e958f7e15ce79e7e11d96139fddbb6ee03dfb711a0fceb5c029c4ce500cac4"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "pathing/nav_ray",
+        "category": "pathing",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 17835,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 6.107,
+        "log": "tests/pathing/nav_ray/run.log",
+        "log_sha256": "ffaf7b4b9640b7e391976d9663cb2890541e7252971e38b6d8684cb711022a0e",
+        "script": "tools/tests/nav_ray.gd",
+        "dependencies": {
+          "tools/tests/nav_ray.gd": "99f36f3a2edbc881a4829599deae3f68356f364d48bcceb4da8d07c1d55d49f0"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "pathing/nav_relocation_bounds",
+        "category": "pathing",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 3892,
+        "failures": 0,
+        "capture": "summary-format-qualification",
+        "seconds": 5.406,
+        "log": "tests/pathing/nav_relocation_bounds/run.log",
+        "log_sha256": "5b833480f860a788c9251f607f62a39cdefd0f72b7b230333cf7a8e4e2f42517",
+        "script": "tools/tests/nav_relocation_bounds.gd",
+        "dependencies": {
+          "tools/tests/nav_relocation_bounds.gd": "6c353fe3f6bbf985be67a8ca8e2416ed679ddc9e11f09db6fea3c7f49c0c52e2",
+          "tools/tests/nav_topology.gd": "abdb4beb861c039ef89046fb1aea129695f50be0c5bc9333852b802d59cdd850"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "pathing/path_preview",
+        "category": "pathing",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 8,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 10.512,
+        "log": "tests/pathing/path_preview/run.log",
+        "log_sha256": "5f7ca7e69c5e312cc98c23777619bc333fa8b4f3da5d2bef49e49f1f65e0e459",
+        "script": "tools/tests/path_preview.gd",
+        "dependencies": {
+          "tools/tests/path_preview.gd": "5d4b5395ea13daf14005c6b44e4ebd9c4ff4890710bba644592c2c4007ef6f3b"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "pathing/direct_passages",
+        "category": "pathing",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 53,
+        "failures": 0,
+        "capture": "summary-format-qualification",
+        "seconds": 10.312,
+        "log": "tests/pathing/direct_passages/run.log",
+        "log_sha256": "dd5e3706e7a5f17d0b626df5200d9889cf1c83a66f052406f9f2c0f032b71d6f",
+        "script": "tools/tests/direct_passages.gd",
+        "dependencies": {
+          "tools/tests/direct_passages.gd": "eac447e685585aef6d7afdde21a012a1ff9de807fd7d86900e904f018a0712fc",
+          "tools/tests/third_person_kbm.gd": "7d3fba490b0eab426d0601f6d42f70433b386cdecdc490a4d6b844c447692bf9"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "quests/quest_rewards_astral",
+        "category": "quests",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 12,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 5.506,
+        "log": "tests/quests/quest_rewards_astral/run.log",
+        "log_sha256": "dde1812d3f49dcdb0ca1035a575b2a014841e4c95688eb849c9e0f92fbc89d3c",
+        "script": "tools/tests/quest_rewards.gd",
+        "dependencies": {
+          "tools/tests/quest_rewards.gd": "e9590f400aa58d6d4f6fa1c6857ef1833772e048bd50a091d3d7c2731e06d06b"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "animation/creature_weapon_animations_astral",
+        "category": "animation",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 328,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 7.709,
+        "log": "tests/animation/creature_weapon_animations_astral/run.log",
+        "log_sha256": "1d48b9e12635f9ee12c98a64c237084e792bc0bff194465c2b9381184f01997a",
+        "script": "tools/tests/creature_weapon_animations.gd",
+        "dependencies": {
+          "tools/tests/creature_weapon_animations.gd": "6bebeb782bbe853bb73ce3a56230392f99dac67d605cd0b57d301b66a46dff65"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "effects/creature_effect_attachments_astral",
+        "category": "effects",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 1554,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 8.209,
+        "log": "tests/effects/creature_effect_attachments_astral/run.log",
+        "log_sha256": "54032149ae42f8005c836c39c246f8b0f2e11c3264723cae1baf78e9a2224159",
+        "script": "tools/tests/creature_effect_attachments.gd",
+        "dependencies": {
+          "tools/tests/creature_effect_attachments.gd": "06f641cbc0841bdde142bd201ef4e1e7b6536fb3986cb2559d8b74e44e776f11"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "effects/creature_projectile_origins_astral",
+        "category": "effects",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 186,
+        "failures": 0,
+        "capture": "projectile-fixture-qualification",
+        "seconds": 6.708,
+        "log": "tests/effects/creature_projectile_origins_astral/run.log",
+        "log_sha256": "0912fd935500411a562a0e404b582dc386ad0b769db1a5303fa89a991ecb1397",
+        "script": "tools/tests/creature_projectile_origins_astral.gd",
+        "dependencies": {
+          "tools/tests/creature_projectile_origins_astral.gd": "98a8f86f1537f853cde4eb5364da008e2d87d0b83a54a48d9b12bb3917ba3c2e",
+          "tools/tests/creature_projectile_origins.gd": "deaacd2d095473a6815c478f4fa45c30f804b9e6612ac05a34ec56869df5f562"
+        },
+        "runtime_source_sha256": "a3542006b7aeea25bdb66734292f5f32b50c9ee277bc5ae657727e4728f1d792",
+        "new_registration": false
+      },
+      {
+        "id": "stealth/patrol_escape_alerts",
+        "category": "stealth",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 14,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 5.006,
+        "log": "tests/stealth/patrol_escape_alerts/run.log",
+        "log_sha256": "89867cc2eeacc61485fdff36678554b1073819e531ef287fd1db9f0f9501a6fa",
+        "script": "tools/tests/patrol_escape_alerts.gd",
+        "dependencies": {
+          "tools/tests/patrol_escape_alerts.gd": "74e353f8e526e967adbe42f69d811218a1cc3b70236bc6e87837bc5aad81b224"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "quests/story_guard_escape",
+        "category": "quests",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 11,
+        "failures": 0,
+        "capture": "gameplay-qualification",
+        "seconds": 5.406,
+        "log": "tests/quests/story_guard_escape/run.log",
+        "log_sha256": "4d974838e850aa25d77d0f0e0fe2e1937a89778f56243daf68b9d9362ee3e3b5",
+        "script": "tools/tests/story_guard_escape.gd",
+        "dependencies": {
+          "tools/tests/story_guard_escape.gd": "3ada89fd0ab60864e7b4a8a7956106bd7b03180a38e203ac680b76bdeace1fa7",
+          "tools/tests/patrol_escape_alerts.gd": "74e353f8e526e967adbe42f69d811218a1cc3b70236bc6e87837bc5aad81b224"
+        },
+        "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e",
+        "new_registration": false
+      },
+      {
+        "id": "spells/spell_stamina_wait",
+        "category": "spells",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 47,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 12.515,
+        "log": "tests/spells/spell_stamina_wait/run.log",
+        "log_sha256": "514c57a3380daa369daa9bea2198a3b7d0be4101ca033f2c40c9ac9ca1daa428",
+        "script": "tools/tests/spell_stamina_wait.gd",
+        "dependencies": {
+          "tools/tests/spell_stamina_wait.gd": "d158be9553a83945d592bc5ac46f7356ea6e0d91c695548074fa038bcfc84892",
+          "tools/tests/third_person_kbm.gd": "7d3fba490b0eab426d0601f6d42f70433b386cdecdc490a4d6b844c447692bf9"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "spells/spell_stamina_network",
+        "category": "spells",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 14,
+        "failures": 0,
+        "capture": "expanded-counts",
+        "seconds": 15.419,
+        "log": "tests/spells/spell_stamina_network/run.log",
+        "log_sha256": "ecd6ccddf1ca898808739988cae1541b5fcbe434aa8beff740a9ccf4ded82e4e",
+        "script": "tools/tests/spell_stamina_network.gd",
+        "dependencies": {
+          "tools/tests/spell_stamina_network.gd": "764196a8e0c319866a3139cbe3a168f716c6d47084a130586f8656b1b3037591",
+          "tools/tests/coop_loot_network.gd": "64954039eb5d89dc767e3af0f20f9b05404d2036c57a3ddeca3340d3cd6a0a5c"
+        },
+        "runtime_source_sha256": "50153f9a35ff3a62eaea369e7c9523f8c95a8f0caabb8e62a139ed8d419deaa1",
+        "new_registration": true
+      },
+      {
+        "id": "spells/spell_requirements_coop",
+        "category": "spells",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 17,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 18.822,
+        "log": "tests/spells/spell_requirements_coop/run.log",
+        "log_sha256": "5841f27eb1d4ede1d66f1bf3949f2bb0c720188d3925397ace5376a7578e2b19",
+        "script": "tools/tests/spell_requirements_coop.gd",
+        "dependencies": {
+          "tools/tests/spell_requirements_coop.gd": "09bd2e9dcafa83ec8e81998dc18c45a1478e5fb0b474f7bc6ee848fe43282450",
+          "tools/tests/coop_story.gd": "2d35e5d2f6f2ad8bb510d3f39e9022ca42dd0005ced74810c777b9471ce8a317"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "spells/spell_requirements_coop_astral",
+        "category": "spells",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 17,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 54.564,
+        "log": "tests/spells/spell_requirements_coop_astral/run.log",
+        "log_sha256": "4338c910daeb9d7b884f77597efb45846a8c23c650b2c3f6c211590c453a5117",
+        "script": "tools/tests/spell_requirements_coop.gd",
+        "dependencies": {
+          "tools/tests/spell_requirements_coop.gd": "09bd2e9dcafa83ec8e81998dc18c45a1478e5fb0b474f7bc6ee848fe43282450",
+          "tools/tests/coop_story.gd": "2d35e5d2f6f2ad8bb510d3f39e9022ca42dd0005ced74810c777b9471ce8a317"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "spells/spell_constructor_transactions",
+        "category": "spells",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 52,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 16.12,
+        "log": "tests/spells/spell_constructor_transactions/run.log",
+        "log_sha256": "d22da5a1e079e9ec9106f9cda754762f459214e76cef4577b673dfc336326879",
+        "script": "tools/tests/spell_constructor_transactions.gd",
+        "dependencies": {
+          "tools/tests/spell_constructor_transactions.gd": "6760a902807f0ed824a282c463c34b0a06aef68bd561915eb54fd6434c7195da",
+          "tools/tests/coop_trade.gd": "1836198817853f59a7ca1ffb63b01f4fbc0b6e7767e84db926bb9ee23e82fe01"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "spells/shop_spells",
+        "category": "spells",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 13680,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 7.511,
+        "log": "tests/spells/shop_spells/run.log",
+        "log_sha256": "3a45b1d1042c9501a1bd3a13d5fe9c8dac9f0653e080b292174b5292d41b8c46",
+        "script": "tools/tests/shop_spells.gd",
+        "dependencies": {
+          "tools/tests/shop_spells.gd": "e84c27612ddddeea5651b62a0a40f1f5604354457cb121eb196fc9f0deaa1be5"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "inventory/market_prices",
+        "category": "inventory",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 28,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 14.218,
+        "log": "tests/inventory/market_prices/run.log",
+        "log_sha256": "ba7fadba569df548782807082e277f741c292fa1067e0fd6e3ce889688dcefdb",
+        "script": "tools/tests/market_prices.gd",
+        "dependencies": {
+          "tools/tests/market_prices.gd": "9fd87dd07d21e75be00425435c1560981d037d1306e634b540dbec0c1c9c0218"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "inventory/gipat_infusions",
+        "category": "inventory",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 36,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 7.009,
+        "log": "tests/inventory/gipat_infusions/run.log",
+        "log_sha256": "8b24caa4a0c67aa8ab5ad2b15d9194103fe6908d4c1ccb0bab20f155df4c6ea0",
+        "script": "tools/tests/gipat_infusions.gd",
+        "dependencies": {
+          "tools/tests/gipat_infusions.gd": "9c99ce3ef3345dae1619b2de8ed6de8062ab9fcdceccf7da8b8c77c6b72841ab"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "progression/training_reset",
+        "category": "progression",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 99,
+        "failures": 0,
+        "capture": "expanded-counts",
+        "seconds": 13.116,
+        "log": "tests/progression/training_reset/run.log",
+        "log_sha256": "4e27dc3d6a839503964cae9c56441f0867e6bd0e69d81c3dc76a6ded3b7d638c",
+        "script": "tools/tests/training_reset.gd",
+        "dependencies": {
+          "tools/tests/training_reset.gd": "05c3c262455d0cfc96958c90a16ae4832bebda025585dc3982364737cb6fe516"
+        },
+        "runtime_source_sha256": "50153f9a35ff3a62eaea369e7c9523f8c95a8f0caabb8e62a139ed8d419deaa1",
+        "new_registration": true
+      },
+      {
+        "id": "spells/shop_spells_astral",
+        "category": "spells",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 14038,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 7.81,
+        "log": "tests/spells/shop_spells_astral/run.log",
+        "log_sha256": "fc060657d1bd202be1379d52c5cdf0c045631b6975d6b196a869331bf8311ad2",
+        "script": "tools/tests/shop_spells.gd",
+        "dependencies": {
+          "tools/tests/shop_spells.gd": "e84c27612ddddeea5651b62a0a40f1f5604354457cb121eb196fc9f0deaa1be5"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "inventory/market_prices_astral",
+        "category": "inventory",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 25,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 17.021,
+        "log": "tests/inventory/market_prices_astral/run.log",
+        "log_sha256": "01866acbbeaa403da5c30f52c57354533bd65f2981de07409c570ebbbe0cea54",
+        "script": "tools/tests/market_prices.gd",
+        "dependencies": {
+          "tools/tests/market_prices.gd": "9fd87dd07d21e75be00425435c1560981d037d1306e634b540dbec0c1c9c0218"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "inventory/gipat_infusions_astral",
+        "category": "inventory",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 35,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 7.01,
+        "log": "tests/inventory/gipat_infusions_astral/run.log",
+        "log_sha256": "d0302f5fa02adba9d4f7b2d98c9bcbd13bb82a36ee0fb89c24e76ecf7185520c",
+        "script": "tools/tests/gipat_infusions.gd",
+        "dependencies": {
+          "tools/tests/gipat_infusions.gd": "9c99ce3ef3345dae1619b2de8ed6de8062ab9fcdceccf7da8b8c77c6b72841ab"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "progression/training_reset_astral",
+        "category": "progression",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 99,
+        "failures": 0,
+        "capture": "expanded-counts",
+        "seconds": 22.825,
+        "log": "tests/progression/training_reset_astral/run.log",
+        "log_sha256": "893d27b4384ee7bbdfc1d500006508dd7c3f87538495c561beab6e64ff50fec9",
+        "script": "tools/tests/training_reset.gd",
+        "dependencies": {
+          "tools/tests/training_reset.gd": "05c3c262455d0cfc96958c90a16ae4832bebda025585dc3982364737cb6fe516"
+        },
+        "runtime_source_sha256": "50153f9a35ff3a62eaea369e7c9523f8c95a8f0caabb8e62a139ed8d419deaa1",
+        "new_registration": true
+      },
+      {
+        "id": "inventory/camp_transactions",
+        "category": "inventory",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 53,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 15.821,
+        "log": "tests/inventory/camp_transactions/run.log",
+        "log_sha256": "878394105b8930a74045e1a7128118f8df2e808034602df9d8cbf47daeda914f",
+        "script": "tools/tests/camp_transactions.gd",
+        "dependencies": {
+          "tools/tests/camp_transactions.gd": "b6de35a6a514d0e344fa4c8f6e5dbdcf410c0bee74bf0e8838bfba7fba8a8712",
+          "tools/tests/coop_trade.gd": "1836198817853f59a7ca1ffb63b01f4fbc0b6e7767e84db926bb9ee23e82fe01"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "inventory/rune_loot",
+        "category": "inventory",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 15,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 15.119,
+        "log": "tests/inventory/rune_loot/run.log",
+        "log_sha256": "e59bfdb51c6d9013fb466d5f3a11e3b82cba084d18e2b2490596764dacda07d3",
+        "script": "tools/tests/rune_loot.gd",
+        "dependencies": {
+          "tools/tests/rune_loot.gd": "f723d3dd6f62d506d6e80f04e3d4189b199145dd7daa4b65f9e1bf10d401493c"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "inventory/special_equipment",
+        "category": "inventory",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 493,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 6.608,
+        "log": "tests/inventory/special_equipment/run.log",
+        "log_sha256": "d3166833ccea97228e7ceb5406aba7ed76a86ed550cac7c99a963ee931a73038",
+        "script": "tools/tests/special_equipment.gd",
+        "dependencies": {
+          "tools/tests/special_equipment.gd": "458a2e6d021d78ab51fce1fbd9283aa3dccf995d75391b3134d32e6278617adc"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "progression/training_coop",
+        "category": "progression",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 27,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 14.018,
+        "log": "tests/progression/training_coop/run.log",
+        "log_sha256": "d8484e8a2cf45658a7abd84882f0ec3c0d39ecb355e151aba708fe7af3a4dca4",
+        "script": "tools/tests/training_coop.gd",
+        "dependencies": {
+          "tools/tests/training_coop.gd": "7536965679f66206f0a4ff8d69e0075961c6ed02c886e07a49af5b2f6bdcff15",
+          "tools/tests/coop_story.gd": "2d35e5d2f6f2ad8bb510d3f39e9022ca42dd0005ced74810c777b9471ce8a317"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "progression/xp_distribution",
+        "category": "progression",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 96,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 6.108,
+        "log": "tests/progression/xp_distribution/run.log",
+        "log_sha256": "07a8aee27e451b41ae7c5d74f429d37652cbc7128f24b9d84992aef8e727243e",
+        "script": "tools/tests/xp_distribution.gd",
+        "dependencies": {
+          "tools/tests/xp_distribution.gd": "743f1cc0ff90eb949b291cd75498715a90b767e71544542a1cc35f78f7b9a601"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "progression/fallen_party_xp",
+        "category": "progression",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 24,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 17.121,
+        "log": "tests/progression/fallen_party_xp/run.log",
+        "log_sha256": "522afc7898ac6ca3932b0966e606c4ff2655494e0f5e34d0ae6ae36526717d6b",
+        "script": "tools/tests/fallen_party_xp.gd",
+        "dependencies": {
+          "tools/tests/fallen_party_xp.gd": "39f0b40b4e14efe7deaf90551387de8cf8bec0c2d3e0fb72be8d668a8c3a7312"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "party/pet_waiting",
+        "category": "party",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 13,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 18.522,
+        "log": "tests/party/pet_waiting/run.log",
+        "log_sha256": "64013362292106fff42a2cc67ad837fea0013d6a49a3110e5999ce13b23de465",
+        "script": "tools/tests/pet_waiting.gd",
+        "dependencies": {
+          "tools/tests/pet_waiting.gd": "851888d089ac1404ad63adca56294769c44d876ff1fcd4eea96db3372fc65e27"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "party/party_dependents",
+        "category": "party",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 23,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 90.795,
+        "log": "tests/party/party_dependents/run.log",
+        "log_sha256": "7b1964c0aac542d457ca2c0e8d1db0077b1392fb6591d6e76300fb8146ecaedc",
+        "script": "tools/tests/party_dependents.gd",
+        "dependencies": {
+          "tools/tests/party_dependents.gd": "252bd09337d3a546d9b0ecfe5e5ac81bc2bc4919979635c8dca0b5da45782032",
+          "tools/tests/coop_story.gd": "2d35e5d2f6f2ad8bb510d3f39e9022ca42dd0005ced74810c777b9471ce8a317"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "persistence/save_state_fields",
+        "category": "persistence",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 18,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 11.713,
+        "log": "tests/persistence/save_state_fields/run.log",
+        "log_sha256": "ff9aabc0eb61e689129eda4da9eb45f638e561fdf3d5a6c809b84ac8295b0a24",
+        "script": "tools/tests/save_state_fields.gd",
+        "dependencies": {
+          "tools/tests/save_state_fields.gd": "16104e570a35c5e0d09165e4ed61f00a41b80c45ab1f8206223bfa59d0029213"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "persistence/save_actor_refs",
+        "category": "persistence",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 14,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 6.108,
+        "log": "tests/persistence/save_actor_refs/run.log",
+        "log_sha256": "d070d9326d86648b5c149a99734957ba0cd8a6867a68685d835c9060a8534bff",
+        "script": "tools/tests/save_actor_refs.gd",
+        "dependencies": {
+          "tools/tests/save_actor_refs.gd": "bb06822f806eb9c971a2f249a2bfcd2900fdd0ffa0077fc9b0b8f9c2cbdd439b"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "persistence/save_frozen_clock",
+        "category": "persistence",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 6,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 18.824,
+        "log": "tests/persistence/save_frozen_clock/run.log",
+        "log_sha256": "21e8c3d288fe61836cc987a280a48075c14152bbab9881de2b73d0e07bd7e17e",
+        "script": "tools/tests/save_frozen_clock.gd",
+        "dependencies": {
+          "tools/tests/save_frozen_clock.gd": "df06e0a07c7e15ea42130330fdab9fd5ce1df77154702c1c7ffa9f138e2cd910"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "persistence/save_cast",
+        "category": "persistence",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 8,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 12.716,
+        "log": "tests/persistence/save_cast/run.log",
+        "log_sha256": "e410909335bea5840003dea245366218e683ff0ec9771552c18727acad18090c",
+        "script": "tools/tests/save_depth.gd",
+        "dependencies": {
+          "tools/tests/save_depth.gd": "6a6d1078551ca555d9eeff04643748b2062fc9bc0e70e169e0bbe8a3a6a473ae"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "persistence/save_taming",
+        "category": "persistence",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 18,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 13.117,
+        "log": "tests/persistence/save_taming/run.log",
+        "log_sha256": "58d70e7dab39cee435910b3a20815b51011fc5948938d5a7c66ba8d3390adf7b",
+        "script": "tools/tests/save_depth.gd",
+        "dependencies": {
+          "tools/tests/save_depth.gd": "6a6d1078551ca555d9eeff04643748b2062fc9bc0e70e169e0bbe8a3a6a473ae"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "persistence/save_pet",
+        "category": "persistence",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 8,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 13.318,
+        "log": "tests/persistence/save_pet/run.log",
+        "log_sha256": "e4ddc94db0197d634d5195cf9f0fb7e394c842fa696fa25b688df6b3dd93c7c2",
+        "script": "tools/tests/save_depth.gd",
+        "dependencies": {
+          "tools/tests/save_depth.gd": "6a6d1078551ca555d9eeff04643748b2062fc9bc0e70e169e0bbe8a3a6a473ae"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "persistence/save_boundaries",
+        "category": "persistence",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 30,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 25.131,
+        "log": "tests/persistence/save_boundaries/run.log",
+        "log_sha256": "1fa5274d54c184d08f46ef28426d822123a61026e41b1a2f4d0d1d1712942809",
+        "script": "tools/tests/save_depth.gd",
+        "dependencies": {
+          "tools/tests/save_depth.gd": "6a6d1078551ca555d9eeff04643748b2062fc9bc0e70e169e0bbe8a3a6a473ae"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "persistence/save_consumed_cast",
+        "category": "persistence",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 8,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 13.317,
+        "log": "tests/persistence/save_consumed_cast/run.log",
+        "log_sha256": "b446350dafdb4c0d8ab238b51b5f2e9f1d87981f2f5a9cd4bf8a1e6685d1c5be",
+        "script": "tools/tests/save_consumed_cast.gd",
+        "dependencies": {
+          "tools/tests/save_consumed_cast.gd": "bb212a085680957ba771e982328bf3fd8589d65fc4047456559995a13ad7db17",
+          "tools/tests/save_depth.gd": "6a6d1078551ca555d9eeff04643748b2062fc9bc0e70e169e0bbe8a3a6a473ae"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "persistence/load_spell_boundary",
+        "category": "persistence",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 12,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 16.42,
+        "log": "tests/persistence/load_spell_boundary/run.log",
+        "log_sha256": "0612556c5c0cb5f138e13f0804c8b22d4cb14d0dd2d8410ea47cce3d72dbaaec",
+        "script": "tools/tests/load_spell_boundary.gd",
+        "dependencies": {
+          "tools/tests/load_spell_boundary.gd": "20eeaf0f43c34e95aa7f93c6b958a66d2c6e5d33d06bef50f3246904d65cfb2a",
+          "tools/tests/save_depth.gd": "6a6d1078551ca555d9eeff04643748b2062fc9bc0e70e169e0bbe8a3a6a473ae"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "combat/direct_accuracy",
+        "category": "combat",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 11,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 6.308,
+        "log": "tests/combat/direct_accuracy/run.log",
+        "log_sha256": "c1bcc2e5ecd23589ebe4563d8e133a048f0c49e03f4068a0fad93b3c387fbb89",
+        "script": "tools/tests/direct_accuracy.gd",
+        "dependencies": {
+          "tools/tests/direct_accuracy.gd": "57c92c52e2c3b4af9325f138242dd105ec47e8a9db1a089d8953c00abc0ce7bf"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "combat/archer_range",
+        "category": "combat",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 584,
+        "failures": 0,
+        "capture": "expanded-fixtures",
+        "seconds": 18.719,
+        "log": "tests/combat/archer_range/run.log",
+        "log_sha256": "b02bb9bb9e8b37a40a624a787507dfed64a0caec02f1fcf4e69fa59c00b04f21",
+        "script": "tools/tests/archer_range.gd",
+        "dependencies": {
+          "tools/tests/archer_range.gd": "6b15c853b3a5a131f2970cb81f33d2e3875f971e42b4c95796d5de96ec689e14",
+          "tools/tests/third_person_kbm.gd": "7d3fba490b0eab426d0601f6d42f70433b386cdecdc490a4d6b844c447692bf9"
+        },
+        "runtime_source_sha256": "0c90503d5c4c3b465708dd57d2fa87aa2fc763653f8ffd8f272ec0604183b62d",
+        "new_registration": true
+      },
+      {
+        "id": "combat/body_records",
+        "category": "combat",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 4029,
+        "failures": 0,
+        "capture": "expanded-fixtures",
+        "seconds": 5.206,
+        "log": "tests/combat/body_records/run.log",
+        "log_sha256": "17aca49e1da3a41a6b8e99d25a4fe4a3ae83f3f7fc9fbbfa8321b3b49bb5761b",
+        "script": "tools/tests/body_records.gd",
+        "dependencies": {
+          "tools/tests/body_records.gd": "0dc9d42ab6d9b00d7960ed5387824f1c1e6ccf2a8fcfe78726281685ee39023c"
+        },
+        "runtime_source_sha256": "0c90503d5c4c3b465708dd57d2fa87aa2fc763653f8ffd8f272ec0604183b62d",
+        "new_registration": true
+      },
+      {
+        "id": "creatures/unit_simulation_state",
+        "category": "creatures",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 11824,
+        "failures": 0,
+        "capture": "expanded-fixtures",
+        "seconds": 6.91,
+        "log": "tests/creatures/unit_simulation_state/run.log",
+        "log_sha256": "5bfa7ef76449f869e2e9248706838d9725fe1262cc194d87c5ff5246559cfc92",
+        "script": "tools/tests/unit_simulation_state.gd",
+        "dependencies": {
+          "tools/tests/unit_simulation_state.gd": "3f1d0c90ca43a4167301e1993045683e708d0f6b9e4fb68b5b0d222cdf834504"
+        },
+        "runtime_source_sha256": "0c90503d5c4c3b465708dd57d2fa87aa2fc763653f8ffd8f272ec0604183b62d",
+        "new_registration": true
+      },
+      {
+        "id": "network/snapshot_codec",
+        "category": "network",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 209,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 6.408,
+        "log": "tests/network/snapshot_codec/run.log",
+        "log_sha256": "4d0829c0f2e733b12937f1bb5443a39e4ab2a5e0e0edd2e67bb84429720df95b",
+        "script": "tools/tests/snapshot_codec.gd",
+        "dependencies": {
+          "tools/tests/snapshot_codec.gd": "5c31154a0d7d2f53430b12de778a38f480db51a1aad83af3dc8007637ba34c71"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "network/snapshot_recovery",
+        "category": "network",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 18,
+        "failures": 0,
+        "capture": "expanded-fixtures",
+        "seconds": 10.051,
+        "log": "tests/network/snapshot_recovery/run.log",
+        "log_sha256": "1866057d37527a3d6a3cdc00c615994d5d43bd8609697423b71c10b4833705f8",
+        "script": "tools/tests/snapshot_recovery.gd",
+        "dependencies": {
+          "tools/tests/snapshot_recovery.gd": "276dc4d7f952e9d1cc29f86dc919d5d393f75f83890bea0cb682100e5e5442f1"
+        },
+        "runtime_source_sha256": "0c90503d5c4c3b465708dd57d2fa87aa2fc763653f8ffd8f272ec0604183b62d",
+        "new_registration": true
+      },
+      {
+        "id": "network/campaign_state_transport",
+        "category": "network",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 24,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 6.309,
+        "log": "tests/network/campaign_state_transport/run.log",
+        "log_sha256": "44dd06665ff25031e0e9b81c30d68bee593f77f53543b3214727dbfcc9df983d",
+        "script": "tools/tests/campaign_state_transport.gd",
+        "dependencies": {
+          "tools/tests/campaign_state_transport.gd": "30711e56e176af37f4428538a7482d9446f87391425797917c8eb1cc9942d6f0"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "quests/catacomb_mechanisms",
+        "category": "quests",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 15,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 38.849,
+        "log": "tests/quests/catacomb_mechanisms/run.log",
+        "log_sha256": "61857c09636630996eff72320c21510c7de9d984f7380bcc3e3b4cb78336a093",
+        "script": "tools/tests/catacomb_mechanisms.gd",
+        "dependencies": {
+          "tools/tests/catacomb_mechanisms.gd": "d7b1b2887877e371ff7477f4d61b1d20ff269877a0c15980ccdfbb2723efd43c"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "quests/story_coop_dragon",
+        "category": "quests",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 40,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 6.809,
+        "log": "tests/quests/story_coop_dragon/run.log",
+        "log_sha256": "82c4e41b0f0c1532173b13936f84f188c6d8f8707e97cf6811350ccff828a2af",
+        "script": "tools/tests/story_coop_dragon.gd",
+        "dependencies": {
+          "tools/tests/story_coop_dragon.gd": "0fdfcf207e9c21faa1d288c83e41533298a8a504f755e6b051d74dfd190fbc7f"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "commands/direct_spell_selection",
+        "category": "commands",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 15,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 13.216,
+        "log": "tests/commands/direct_spell_selection/run.log",
+        "log_sha256": "8977d88c1dc9097f5ff7a8c89a40838281a70a93abfb9969ef26a9c379f3793d",
+        "script": "tools/tests/direct_spell_selection.gd",
+        "dependencies": {
+          "tools/tests/direct_spell_selection.gd": "9f05faf67ffa449af231ffb6bc2ff8e9ea6ae8123069c66235388c5cc3ef5a69",
+          "tools/tests/third_person_kbm.gd": "7d3fba490b0eab426d0601f6d42f70433b386cdecdc490a4d6b844c447692bf9"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "commands/direct_release_aim",
+        "category": "commands",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 57,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 11.914,
+        "log": "tests/commands/direct_release_aim/run.log",
+        "log_sha256": "d4e71a938125500eb6637edd2f5180345b09eddac4a97922d558be0350f87c3d",
+        "script": "tools/tests/direct_release_aim.gd",
+        "dependencies": {
+          "tools/tests/direct_release_aim.gd": "2de072bf04c67d43f1f607b81726c4bc7c0fd131442ab6673b23668ee0ed4d28",
+          "tools/tests/third_person_kbm.gd": "7d3fba490b0eab426d0601f6d42f70433b386cdecdc490a4d6b844c447692bf9"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "spells/stamina_regen",
+        "category": "spells",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 33,
+        "failures": 0,
+        "capture": "expanded-first",
+        "seconds": 6.208,
+        "log": "tests/spells/stamina_regen/run.log",
+        "log_sha256": "12ed61d47d8c86dd523ef041eb4c1dcb4e713050aa20da74d5ceb894e761f6bb",
+        "script": "tools/tests/stamina_regen.gd",
+        "dependencies": {
+          "tools/tests/stamina_regen.gd": "5b800ae0c4efd582125cfe9f08564b9e168811710dc3e5785d1f7a68175cfb27"
+        },
+        "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d",
+        "new_registration": true
+      },
+      {
+        "id": "inventory/item_instance_matrix",
+        "category": "inventory",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 1370,
+        "failures": 0,
+        "capture": "expanded-matrix",
+        "seconds": 7.911,
+        "log": "tests/inventory/item_instance_matrix/run.log",
+        "log_sha256": "8e73b676e0fd780cb69b8dc5643bd6e67df96794716c890b2d1d5eea400415b9",
+        "script": "tools/tests/item_instance_matrix.gd",
+        "dependencies": {
+          "tools/tests/item_instance_matrix.gd": "d0354409c78f134e25dc1c3b259efbe05a66214bdb545a865f8e950f320d7b3b"
+        },
+        "runtime_source_sha256": "50153f9a35ff3a62eaea369e7c9523f8c95a8f0caabb8e62a139ed8d419deaa1",
+        "new_registration": true
+      },
+      {
+        "id": "inventory/item_instance_matrix_astral",
+        "category": "inventory",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 1370,
+        "failures": 0,
+        "capture": "expanded-matrix",
+        "seconds": 8.011,
+        "log": "tests/inventory/item_instance_matrix_astral/run.log",
+        "log_sha256": "7fb4407c90a20d61ac018a9b1e6d1b2e335c5a81075e6b6050309b7005307bb2",
+        "script": "tools/tests/item_instance_matrix.gd",
+        "dependencies": {
+          "tools/tests/item_instance_matrix.gd": "d0354409c78f134e25dc1c3b259efbe05a66214bdb545a865f8e950f320d7b3b"
+        },
+        "runtime_source_sha256": "50153f9a35ff3a62eaea369e7c9523f8c95a8f0caabb8e62a139ed8d419deaa1",
+        "new_registration": true
+      },
+      {
+        "id": "effects/effect_tick_boundaries",
+        "category": "effects",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 203,
+        "failures": 0,
+        "capture": "expanded-matrix",
+        "seconds": 6.409,
+        "log": "tests/effects/effect_tick_boundaries/run.log",
+        "log_sha256": "ab7d1942c8dca5b4e97007c15e57eb2e4ed8a8a716b539ac4a3353087c42318e",
+        "script": "tools/tests/effect_tick_boundaries.gd",
+        "dependencies": {
+          "tools/tests/effect_tick_boundaries.gd": "4f902a1fb17f6a1ac93169c8a72f1eafabf2295a920e7f7eb16fbf93a3b237b7"
+        },
+        "runtime_source_sha256": "50153f9a35ff3a62eaea369e7c9523f8c95a8f0caabb8e62a139ed8d419deaa1",
+        "new_registration": true
+      }
+    ]
+  },
+  "harness": {
+    "tests": 50,
+    "failures": 0,
+    "errors": 0,
+    "log_sha256": "8de48310f780b598b66fbd744401bcb752efa8ef3791a66b03e98a90d910d551"
+  },
+  "negative_controls": {
+    "capture": "expanded-negative",
+    "expected_exit": 1,
+    "mutations": [
+      {
+        "path": "src/game/items.gd",
+        "before": "return _with_state(base, lost, spent(id))",
+        "after": "return _with_state(base, lost, 0.0)",
+        "original_sha256": "5b6c097d32cdef7262d4e54db92d77399dc2791e54906caaf767fd2218c9e2fa",
+        "mutated_sha256": "061f7b25d853c1f7e7476fde447b0a4dd2ae5e688ab2b7932f7496a3f01e5bba"
+      },
+      {
+        "path": "src/game/unit.gd",
+        "before": "if left <= 0:\n\t\t\tbuffs.erase(code)",
+        "after": "if left < 0:\n\t\t\tbuffs.erase(code)",
+        "original_sha256": "511ed26cb49fa7e6ddeb12c49942e495a381ea28b360110a0699a9ea280fb015",
+        "mutated_sha256": "3809d7dfbf30b1fa054abc5a846f7c53dbe8905599e9edccacb8fbf7f2a0014f"
+      }
+    ],
+    "results": [
+      {
+        "id": "inventory/item_instance_matrix",
+        "status": "failed",
+        "checks": 1370,
+        "failures": 200,
+        "failure_messages": [
+          "FAIL stone axe.rock wear=0.0 charge=-10.0 independent edits commute",
+          "FAIL stone axe.rock wear=0.0 charge=-10.0 repair preserves spent charge",
+          "FAIL stone axe.rock wear=0.0 charge=0.0 independent edits commute",
+          "FAIL stone axe.rock wear=0.0 charge=0.0 repair preserves spent charge",
+          "FAIL stone axe.rock wear=0.0 charge=8.25 independent edits commute",
+          "FAIL stone axe.rock wear=0.0 charge=8.25 repair preserves spent charge",
+          "FAIL stone axe.rock wear=0.0 charge=16.5 independent edits commute",
+          "FAIL stone axe.rock wear=0.0 charge=16.5 repair preserves spent charge"
+        ],
+        "log_sha256": "de255d58236e3bf555deb8967ce2612a9a6e6849bb28c331912a35249cac920f"
+      },
+      {
+        "id": "effects/effect_tick_boundaries",
+        "status": "failed",
+        "checks": 203,
+        "failures": 9,
+        "failure_messages": [
+          "FAIL 1 at 0.0 dead=false host removes expired gameplay effect",
+          "FAIL 1 at 0.0 dead=true host removes expired gameplay effect",
+          "FAIL 1 at 100.125 dead=false host removes expired gameplay effect",
+          "FAIL 1 at 100.125 dead=true host removes expired gameplay effect",
+          "FAIL 1 at 1000000.0 dead=false host removes expired gameplay effect",
+          "FAIL 1 at 1000000.0 dead=true host removes expired gameplay effect",
+          "FAIL first expiry clears casting block only",
+          "FAIL second expiry clears speed only"
+        ],
+        "log_sha256": "d13848ed32317c05cd088fa9c6b0eab95182166ee497e2bf8df28c3921217773"
+      }
+    ]
+  },
+  "original": {
+    "qualification": "../gameplay-suite-2026-10-20/validation.json",
+    "status": "mismatch",
+    "counts": {
+      "scenarios": 430,
+      "matches": 425,
+      "mismatches": 5,
+      "original_steps": 1124
+    },
+    "repeatability": {
+      "captures_per_side": 2,
+      "verified": true
+    },
+    "note": "Retained evidence, not newly expanded or recaptured in this change; production and parity tooling unchanged."
+  },
+  "qualified_production_sha256": "d7cf76efc45d6d78c8335f449d3ab7bd65b758dd9d938192989579f59f8ce652",
+  "production_files_verified": 1074,
+  "required_assets_rechecked": 21,
+  "current_tool_source": {
+    "cases.py": "e3cf81728f0babadb866fe32d15bd58910451337b37cd958d7cac20d2a97cc8f",
+    "cases_extended.py": "3db76c475debb64bb903a253767e1a62002c71025a05dd87d05f30475c9b0aa5",
+    "compare.py": "f80f09a07daf86757e84a9a003f6efd9489309622f8232490ac20719ffa00f75",
+    "gameplay.py": "acc3a2d3a60b92a0211ec4c8e7bef56bb6eee509772c7c67c5ca4e8e53d19c4f",
+    "gameplay_bootstrap.gd": "16bf82c7d8869275cd493194d4c5d85b6ee7737af258bd0eb476df211189a26e",
+    "gameplay_catalog.json": "801f2f68d8e53de706e1c8ac62fe5c28d79d04f9900497063e013a7ff827cfdb",
+    "native.py": "6f887ce9a084c662dcae347593496992fb4dbb6b1f6eb826168af3a8bec0a458",
+    "native_extended.py": "fc3ef75966e526b12aa58c2fbf70dcf0f63e3ae95aa5b5dbd0a12add8c3d2362",
+    "remake_trace.gd": "86dac41dadaee260812db3b8bcb0f0df74831e6439927ff2aae58291746da21d",
+    "requirements.txt": "56bce36af734e3b9aeff2be4301bbc2a2c2b58ea1ea1e6ee6e792db84f96fbd4",
+    "run.py": "af9d53e29be2e4c9d68a11202c81243218c6907b32ee5dc42114fa9aa59218a0",
+    "test_gameplay.py": "1034e774acdc4edb7b0c8842a2648f195e970c6d8d2b9c294087a2c2b9393f72",
+    "test_harness.py": "effc237ef053556aca8e9d12d3594d0632d97a2db07234ffbd6b8927c48e65ee"
+  },
+  "runs": {
+    "command-fixture-qualification": {
+      "status": "passed",
+      "counts": {
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "programs": 2,
+        "checks": 200,
+        "failed_checks": 0
+      },
+      "report_sha256": "d55cfe483d11b4c445621433dec16a8d9ab0daa07994ca9ff15dad288afca7b9",
+      "runtime_source_sha256": "fd996da6357b8e24b0adaeb1f74efe17a28efb1bd26d00ec63dcb623c7ebb064"
+    },
+    "expanded-counts": {
+      "status": "passed",
+      "counts": {
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "programs": 3,
+        "checks": 212,
+        "failed_checks": 0
+      },
+      "report_sha256": "174bfbcf3f4952318c4444873aeebd4ecc1f1c79036e6057d12fc41f82114051",
+      "runtime_source_sha256": "50153f9a35ff3a62eaea369e7c9523f8c95a8f0caabb8e62a139ed8d419deaa1"
+    },
+    "expanded-first": {
+      "status": "error",
+      "counts": {
+        "passed": 35,
+        "failed": 1,
+        "error": 6,
+        "programs": 42,
+        "checks": 45656,
+        "failed_checks": 13
+      },
+      "report_sha256": "5619cff21ca5ffba30c3676a4e108e8ab865022c473b4faad3107cfdfc678951",
+      "runtime_source_sha256": "b2961345a6cc19b81835464fe3de5c3bccb26a4c61b134ed3c12c6fb1459263d"
+    },
+    "expanded-fixtures": {
+      "status": "passed",
+      "counts": {
+        "passed": 4,
+        "failed": 0,
+        "error": 0,
+        "programs": 4,
+        "checks": 16455,
+        "failed_checks": 0
+      },
+      "report_sha256": "9704ff1280c2b44360d572094c8a23a8a4d1d0c889819fc5d795fbf7abd9ffe8",
+      "runtime_source_sha256": "0c90503d5c4c3b465708dd57d2fa87aa2fc763653f8ffd8f272ec0604183b62d"
+    },
+    "expanded-matrix": {
+      "status": "passed",
+      "counts": {
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "programs": 3,
+        "checks": 2943,
+        "failed_checks": 0
+      },
+      "report_sha256": "43114db3d8156c6bc9da832201121ba30c2deb61b8e8330e0efe02f6a346058b",
+      "runtime_source_sha256": "50153f9a35ff3a62eaea369e7c9523f8c95a8f0caabb8e62a139ed8d419deaa1"
+    },
+    "gameplay-qualification": {
+      "status": "error",
+      "counts": {
+        "passed": 50,
+        "failed": 0,
+        "error": 6,
+        "programs": 56,
+        "checks": 131496,
+        "failed_checks": 0
+      },
+      "report_sha256": "b3e6291399a97ece22948f0d14dd273c4efab5b39b713cb4694163816089f60c",
+      "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e"
+    },
+    "projectile-fixture-qualification": {
+      "status": "passed",
+      "counts": {
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "programs": 2,
+        "checks": 372,
+        "failed_checks": 0
+      },
+      "report_sha256": "607a0e46845b719f633ac67cd25f89c7606bc6f788c64898aba57c681b3e1940",
+      "runtime_source_sha256": "a3542006b7aeea25bdb66734292f5f32b50c9ee277bc5ae657727e4728f1d792"
+    },
+    "summary-format-qualification": {
+      "status": "failed",
+      "counts": {
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "programs": 3,
+        "checks": 4017,
+        "failed_checks": 0
+      },
+      "report_sha256": "5c08ae2ce1bdb108d1d8f28d7658df274dd9e15951b2a04c29c5fbd3df311c1b",
+      "runtime_source_sha256": "5f89f8cc7ad56e47e100ea13ac1394d1a77348f0148108210b67558fa4b8130e"
+    }
+  },
+  "limits": [
+    "Assertions and registrations are not unique games or complete playthroughs.",
+    "Headless state, geometry and logic do not qualify rendered pixels or audio.",
+    "Local networking does not establish external Internet reliability.",
+    "Prepared taming transitions do not prove ordinary charm availability.",
+    "No production gameplay code or original mismatch exemption changed."
+  ]
+}

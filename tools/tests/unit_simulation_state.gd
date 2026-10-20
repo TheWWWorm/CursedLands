@@ -86,6 +86,12 @@ func _ready() -> void:
 	detached.update(&"controller",2)
 	check(not kernel.can_defer_owned(actor,w.ai,w.time,GameUnit),"old lease does not remove new registration")
 	detached.update(&"controller",-1)
+	# Gameplay does not hot-swap unit scripts. This registry-lifetime fixture
+	# deliberately does: release the old script's visibility subscriptions
+	# before running its inherited _init again. Keep the native record/lease
+	# alive so the following assertion still tests script-change invalidation.
+	for event:Signal in [actor.visibility_changed,actor.tree_entered,actor.tree_exiting]:
+		event.disconnect(actor._visibility_revision_changed)
 	actor.set_script(CustomUnit)
 	actor._max_hp=2.0
 	detached.update(&"controller",2)

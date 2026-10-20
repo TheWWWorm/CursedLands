@@ -69,6 +69,12 @@ func _ready() -> void:
 	u.restore_parts()
 	u.body_damage(8.0)
 	var shot := u.snapshot()
+	# Quiet snapshots also settle presentation. These synthetic body-only
+	# actors have no loaded figure; supply its empty adapter without replacing
+	# the production snapshot/body handling or introducing rendered assertions.
+	v.model=EIUnitModel.new();v.add_child(v.model)
+	v.model.set_meta("complexion",v.figure_complexion())
+	v.model.set_meta("peaceful_gear",v.peaceful_gear())
 	v.apply_snapshot(shot,true)
 	same(v,"snapshot invalidates each changed body fraction")
 	for i in 6:

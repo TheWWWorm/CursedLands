@@ -54,5 +54,5 @@ func _ready() -> void:
 	check(fitting.weapon and fitting.armor,"native weapon and armour recipes accept supplied infusion runes")
 	g.queue_free();s.queue_free()
 	for i in 8:await get_tree().process_frame
-	print("GIPAT_INFUSIONS ",GameData.campaign_id," ",checks," checks ",failures," failures")
+	print("GIPAT_INFUSIONS ",JSON.stringify({"campaign":GameData.campaign_id,"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

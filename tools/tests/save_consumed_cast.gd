@@ -1,4 +1,5 @@
 extends "save_depth.gd"
+func summary_marker() -> String: return "SAVE_CONSUMED_CAST"
 func probe_cast() -> void:
 	var h:=hero();h.hp=h.max_hp*0.4;h.facing=0.0
 	var item:="";var spell:=""

@@ -37,5 +37,6 @@ func _run() -> void:
 	FileAccess.open(out.path_join("clock-probe.json"),FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
 	game.queue_free(); s.queue_free()
 	for i in 10: await get_tree().process_frame
-	TexUpscale.shutdown(); print("AUDIT_CLOCK ",report.assertions.size()," checks")
+	TexUpscale.shutdown(); print("AUDIT_CLOCK ",JSON.stringify({
+		"checks":report.assertions.size(),"failures":report.assertions.filter(func(c):return not c.ok).size()}))
 	get_tree().quit(1 if report.assertions.any(func(c):return not c.ok) else 0)

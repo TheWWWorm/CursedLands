@@ -1013,6 +1013,815 @@
         "res/texts.res",
         "maps/zone19.mob"
       ]
+    },
+    {
+      "id": "spells/spell_stamina_wait",
+      "category": "spells",
+      "script": "tools/tests/spell_stamina_wait.gd",
+      "marker": "SPELL_STAMINA_WAIT",
+      "min_checks": 30,
+      "quick": false,
+      "description": "Queued self-casts, one acknowledgement, recovery and replacement movement",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "spells/spell_stamina_network",
+      "category": "spells",
+      "script": "tools/tests/spell_stamina_network.gd",
+      "marker": "SPELL_STAMINA_NETWORK",
+      "min_checks": 14,
+      "quick": false,
+      "description": "Guest stamina waits and automatic cast commitment over loopback",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "spells/spell_requirements_coop",
+      "category": "spells",
+      "script": "tools/tests/spell_requirements_coop.gd",
+      "marker": "SPELL_REQUIREMENTS_COOP",
+      "min_checks": 15,
+      "quick": false,
+      "description": "Training reset invalidates selection and authority; queued casts revalidate",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/bz2g.mob",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "spells/spell_requirements_coop_astral",
+      "category": "spells",
+      "script": "tools/tests/spell_requirements_coop.gd",
+      "marker": "SPELL_REQUIREMENTS_COOP",
+      "min_checks": 15,
+      "quick": false,
+      "description": "Expansion spell eligibility and queued execution after training reset",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/bz2h.mob",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "spells/spell_constructor_transactions",
+      "category": "spells",
+      "script": "tools/tests/spell_constructor_transactions.gd",
+      "marker": "SPELL_CONSTRUCTOR_TRANSACTIONS",
+      "min_checks": 45,
+      "quick": false,
+      "description": "Multi-rune assembly/disassembly, paused replies, duplicate delivery and atomic refusal",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/basecam.mob"
+      ]
+    },
+    {
+      "id": "spells/shop_spells",
+      "category": "spells",
+      "script": "tools/tests/shop_spells.gd",
+      "marker": "SHOP_SPELLS",
+      "min_checks": 100,
+      "quick": true,
+      "description": "Seeded shop generation preserves feasible spells, parseable stock and copy counts",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "inventory/market_prices",
+      "category": "inventory",
+      "script": "tools/tests/market_prices.gd",
+      "marker": "MARKET_PRICES",
+      "min_checks": 20,
+      "quick": false,
+      "description": "Construction fees, missing components, sale and spell disassembly",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/basecam.mob"
+      ]
+    },
+    {
+      "id": "inventory/gipat_infusions",
+      "category": "inventory",
+      "script": "tools/tests/gipat_infusions.gd",
+      "marker": "GIPAT_INFUSIONS",
+      "min_checks": 30,
+      "quick": true,
+      "description": "Old shop migration, sold-out stock persistence and infusion recipe compatibility",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "progression/training_reset",
+      "category": "progression",
+      "script": "tools/tests/training_reset.gd",
+      "marker": "TRAINING_RESET",
+      "min_checks": 99,
+      "quick": false,
+      "description": "Exhaustive purchase orders, exact refunds, rank limits and save/reload",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/bz2g.mob"
+      ]
+    },
+    {
+      "id": "spells/shop_spells_astral",
+      "category": "spells",
+      "script": "tools/tests/shop_spells.gd",
+      "marker": "SHOP_SPELLS",
+      "min_checks": 100,
+      "quick": true,
+      "description": "Seeded shop generation preserves feasible spells, parseable stock and copy counts",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "inventory/market_prices_astral",
+      "category": "inventory",
+      "script": "tools/tests/market_prices.gd",
+      "marker": "MARKET_PRICES",
+      "min_checks": 20,
+      "quick": false,
+      "description": "Construction fees, missing components, sale and spell disassembly",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/bz1h.mob"
+      ]
+    },
+    {
+      "id": "inventory/gipat_infusions_astral",
+      "category": "inventory",
+      "script": "tools/tests/gipat_infusions.gd",
+      "marker": "GIPAT_INFUSIONS",
+      "min_checks": 30,
+      "quick": true,
+      "description": "Old shop migration, sold-out stock persistence and infusion recipe compatibility",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "progression/training_reset_astral",
+      "category": "progression",
+      "script": "tools/tests/training_reset.gd",
+      "marker": "TRAINING_RESET",
+      "min_checks": 99,
+      "quick": false,
+      "description": "Exhaustive purchase orders, exact refunds, rank limits and save/reload",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/bz1h.mob"
+      ]
+    },
+    {
+      "id": "inventory/camp_transactions",
+      "category": "inventory",
+      "script": "tools/tests/camp_transactions.gd",
+      "marker": "CAMP_TRANSACTIONS",
+      "min_checks": 40,
+      "quick": false,
+      "description": "Repair and exchange stacks, stale selections, private purses and replayed commands",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/basecam.mob"
+      ]
+    },
+    {
+      "id": "inventory/rune_loot",
+      "category": "inventory",
+      "script": "tools/tests/rune_loot.gd",
+      "marker": "RUNE_LOOT",
+      "min_checks": 15,
+      "quick": false,
+      "description": "Authored rune theft, no corpse duplication and legacy bag/shop migration",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone3obr.mob"
+      ]
+    },
+    {
+      "id": "inventory/special_equipment",
+      "category": "inventory",
+      "script": "tools/tests/special_equipment.gd",
+      "marker": "SPECIAL_EQUIPMENT",
+      "min_checks": 100,
+      "quick": true,
+      "description": "Unique equipment, material variants, enchantments and exact sale/buyback",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "progression/training_coop",
+      "category": "progression",
+      "script": "tools/tests/training_coop.gd",
+      "marker": "TRAINING_COOP",
+      "min_checks": 25,
+      "quick": false,
+      "description": "Guest training/refunds, dependent ranks and persisted point balances",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/bz2g.mob"
+      ]
+    },
+    {
+      "id": "progression/xp_distribution",
+      "category": "progression",
+      "script": "tools/tests/xp_distribution.gd",
+      "marker": "XP_DISTRIBUTION",
+      "min_checks": 30,
+      "quick": true,
+      "description": "Kill/quest XP distribution, death debt and persisted rule choices",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "progression/fallen_party_xp",
+      "category": "progression",
+      "script": "tools/tests/fallen_party_xp.gd",
+      "marker": "FALLEN_PARTY_XP",
+      "min_checks": 20,
+      "quick": false,
+      "description": "Prepared recruited Kel death, XP while downed, save/reload and revival",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/bz1h.mob",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "party/pet_waiting",
+      "category": "party",
+      "script": "tools/tests/pet_waiting.gd",
+      "marker": "PET_WAITING",
+      "min_checks": 12,
+      "quick": false,
+      "description": "Substitute party travel, wounded pet persistence and disconnected ownership",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/basecam.mob",
+        "maps/bz2g.mob"
+      ]
+    },
+    {
+      "id": "party/party_dependents",
+      "category": "party",
+      "script": "tools/tests/party_dependents.gd",
+      "marker": "PARTY_DEPENDENTS",
+      "min_checks": 20,
+      "quick": false,
+      "description": "Expansion guest-owned companion and pet across chapter substitution and reload",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/bz1h.mob",
+        "maps/bz5h.mob",
+        "maps/bz5hmerc8.mob",
+        "maps/zone2.mob"
+      ]
+    },
+    {
+      "id": "persistence/save_state_fields",
+      "category": "persistence",
+      "script": "tools/tests/save_state_fields.gd",
+      "marker": "AUDIT_SAVE",
+      "min_checks": 18,
+      "quick": false,
+      "description": "Full save/load of hostility, wounds, stamina, scripted commands and projectiles",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "persistence/save_actor_refs",
+      "category": "persistence",
+      "script": "tools/tests/save_actor_refs.gd",
+      "marker": "SAVE_ACTOR_REFS",
+      "min_checks": 14,
+      "quick": true,
+      "description": "Hero/pet identity, UID reuse, absent actors and nested VM projections",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "persistence/save_frozen_clock",
+      "category": "persistence",
+      "script": "tools/tests/save_frozen_clock.gd",
+      "marker": "AUDIT_CLOCK",
+      "min_checks": 6,
+      "quick": false,
+      "description": "Authored frozen world clock remains frozen across a full save/load",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob",
+        "maps/cz1h.mob"
+      ]
+    },
+    {
+      "id": "persistence/save_cast",
+      "category": "persistence",
+      "script": "tools/tests/save_depth.gd",
+      "marker": "SAVE_DEPTH",
+      "min_checks": 8,
+      "quick": false,
+      "description": "Full session save/load at cast boundaries",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--case=cast"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "persistence/save_taming",
+      "category": "persistence",
+      "script": "tools/tests/save_depth.gd",
+      "marker": "SAVE_DEPTH",
+      "min_checks": 18,
+      "quick": false,
+      "description": "Full session save/load at taming boundaries",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--case=taming"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "persistence/save_pet",
+      "category": "persistence",
+      "script": "tools/tests/save_depth.gd",
+      "marker": "SAVE_DEPTH",
+      "min_checks": 8,
+      "quick": false,
+      "description": "Full session save/load at pet boundaries",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--case=pet"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "persistence/save_boundaries",
+      "category": "persistence",
+      "script": "tools/tests/save_depth.gd",
+      "marker": "SAVE_DEPTH",
+      "min_checks": 25,
+      "quick": false,
+      "description": "Save/load immediately before payment, before delivery, after delivery and after actor removal/death",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--case=boundaries"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "persistence/save_consumed_cast",
+      "category": "persistence",
+      "script": "tools/tests/save_consumed_cast.gd",
+      "marker": "SAVE_CONSUMED_CAST",
+      "min_checks": 8,
+      "quick": false,
+      "description": "Consumed potion remains spent while its delayed heal survives reload",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "persistence/load_spell_boundary",
+      "category": "persistence",
+      "script": "tools/tests/load_spell_boundary.gd",
+      "marker": "LOAD_SPELL_BOUNDARY",
+      "min_checks": 12,
+      "quick": false,
+      "description": "Alternating pre/post-wall checkpoints replace logic and replay state",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "combat/direct_accuracy",
+      "category": "combat",
+      "script": "tools/tests/direct_accuracy.gd",
+      "marker": "DIRECT_ACCURACY",
+      "min_checks": 11,
+      "quick": true,
+      "description": "Melee/projectile hit rolls, seeded contacts and alerted backstab rules",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "combat/archer_range",
+      "category": "combat",
+      "script": "tools/tests/archer_range.gd",
+      "marker": "ARCHER_RANGE",
+      "min_checks": 20,
+      "quick": false,
+      "description": "Authored weapon/spell ranges under explicit scripted pursuit; real attack/release and approach",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone11.mob"
+      ]
+    },
+    {
+      "id": "combat/body_records",
+      "category": "combat",
+      "script": "tools/tests/body_records.gd",
+      "marker": "BODY_RECORDS",
+      "min_checks": 4000,
+      "quick": true,
+      "description": "Wounds, severance, healing, resurrection and body-cache invalidation",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "creatures/unit_simulation_state",
+      "category": "creatures",
+      "script": "tools/tests/unit_simulation_state.gd",
+      "marker": "UNIT_SIMULATION_STATE",
+      "min_checks": 11000,
+      "quick": true,
+      "description": "Unit state publication, nested changes, script swaps and freed actor leases",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "network/snapshot_codec",
+      "category": "network",
+      "script": "tools/tests/snapshot_codec.gd",
+      "marker": "SNAPSHOT_CODEC",
+      "min_checks": 100,
+      "quick": true,
+      "description": "Seeded snapshot serialization across actor motion, poses and body states",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "network/snapshot_recovery",
+      "category": "network",
+      "script": "tools/tests/snapshot_recovery.gd",
+      "marker": "SNAPSHOT_RECOVERY",
+      "min_checks": 18,
+      "quick": true,
+      "description": "Packet loss/reordering, stale map generations and large perception lists",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "network/campaign_state_transport",
+      "category": "network",
+      "script": "tools/tests/campaign_state_transport.gd",
+      "marker": "CAMPAIGN_STATE_TRANSPORT",
+      "min_checks": 24,
+      "quick": true,
+      "description": "Self-contained large campaign, lossless compression and acknowledged batching",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/catacomb_mechanisms",
+      "category": "quests",
+      "script": "tools/tests/catacomb_mechanisms.gd",
+      "marker": "CATACOMB_MECHANISMS",
+      "min_checks": 15,
+      "quick": false,
+      "description": "Original lift cycles, call lever reuse, camera floor and cross-storey melee",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1dun2.mob"
+      ]
+    },
+    {
+      "id": "quests/story_coop_dragon",
+      "category": "quests",
+      "script": "tools/tests/story_coop_dragon.gd",
+      "marker": "STORY_COOP_DRAGON",
+      "min_checks": 20,
+      "quick": true,
+      "description": "Original dragon timers and co-op story adaptations against original script",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone6.mob"
+      ]
+    },
+    {
+      "id": "commands/direct_spell_selection",
+      "category": "commands",
+      "script": "tools/tests/direct_spell_selection.gd",
+      "marker": "DIRECT_SPELL_SELECTION",
+      "min_checks": 15,
+      "quick": false,
+      "description": "Selecting and clearing spells in direct controls",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "commands/direct_release_aim",
+      "category": "commands",
+      "script": "tools/tests/direct_release_aim.gd",
+      "marker": "DIRECT_RELEASE_AIM",
+      "min_checks": 20,
+      "quick": false,
+      "description": "Charged attack release and aim retention",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "spells/stamina_regen",
+      "category": "spells",
+      "script": "tools/tests/stamina_regen.gd",
+      "marker": "STAMINA_REGEN",
+      "min_checks": 30,
+      "quick": true,
+      "description": "Idle/follow/moving recovery, host rules, caps, death and saved choices",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "inventory/item_instance_matrix",
+      "category": "inventory",
+      "script": "tools/tests/item_instance_matrix.gd",
+      "marker": "ITEM_INSTANCE_MATRIX",
+      "min_checks": 1370,
+      "quick": true,
+      "description": "Wear/charge conservation, repair/recharge boundaries, duplicate items and disk round trips",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "inventory/item_instance_matrix_astral",
+      "category": "inventory",
+      "script": "tools/tests/item_instance_matrix.gd",
+      "marker": "ITEM_INSTANCE_MATRIX",
+      "min_checks": 1370,
+      "quick": true,
+      "description": "Expansion item wear/charge conservation and inventory persistence",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "effects/effect_tick_boundaries",
+      "category": "effects",
+      "script": "tools/tests/effect_tick_boundaries.gd",
+      "marker": "EFFECT_TICK_BOUNDARIES",
+      "min_checks": 203,
+      "quick": true,
+      "description": "Signed duration endpoints, host/client expiry, save/snapshot widths and overlapping status effects",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
     }
   ]
 }

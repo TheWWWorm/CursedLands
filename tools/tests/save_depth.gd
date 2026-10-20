@@ -24,6 +24,7 @@ func candidates() -> Array:
 func animal(u:GameUnit) -> Dictionary:
 	return {"uid":u.uid,"name":u.info.get("name",""),"proto":u.info.get("prototype",""),"stage":u.get_meta("tame_stage",0),"peace":u.get_meta("peace",[]),"faction":u.faction,"controller":u.controller,"hostile":s.world.is_enemy(u,hero()),"pet":CampaignState.is_pet(u),"original_faction":u.get_meta("tame_original_faction",-1),"tamer_faction":u.get_meta("tame_faction",-1)}
 func _ready() -> void: _run.call_deferred()
+func summary_marker() -> String: return "SAVE_DEPTH"
 func _run() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--audit-out="):out=arg.trim_prefix("--audit-out=")
@@ -45,7 +46,8 @@ func _run() -> void:
 	FileAccess.open(out.path_join("deep-save.json"),FileAccess.WRITE).store_string(JSON.stringify(result,"\t"))
 	game.queue_free();s.queue_free()
 	for i in 10: await get_tree().process_frame
-	TexUpscale.shutdown(); print("AUDIT_DEEP ",scenario," ",result.checks.size()," checks")
+	TexUpscale.shutdown(); print(summary_marker()," ",JSON.stringify({
+		"scenario":scenario,"checks":result.checks.size(),"failures":result.checks.filter(func(c):return not c.ok).size()}))
 	get_tree().quit(1 if result.checks.any(func(c): return not c.ok) else 0)
 
 func probe_cast() -> void:

@@ -1,9 +1,11 @@
 # Gameplay regression suite
 
-`tools/parity/gameplay.py` collects 56 test programs from the repository's
-existing regression tests into a repeatable runner. It stages the game and test
-sources, selects the required campaign, launches each program in a separate
-process, and retains assertion results, logs and reproduction inputs.
+`tools/parity/gameplay.py` runs 101 registered test configurations across 14
+areas. It combines existing regression programs with new item-state and
+effect-duration boundary matrices. A registration selects a script, campaign
+and arguments; some scripts are exercised in both campaigns or in several
+save/load scenarios. It stages the game and test sources, launches each
+configuration in a separate process, and retains logs and reproduction inputs.
 
 These are **remake regressions**. With `--with-original`, the runner also runs
 the independent [430-scenario original-executable suite](original-parity.md).
@@ -45,6 +47,12 @@ python3 tools/parity/gameplay.py \
   --game-dir /path/to/base-game --godot /path/to/godot \
   --out /tmp/alert-check --case creatures/creature_alerts
 
+# Exercise inventory, spells and save/load in both campaigns.
+python3 tools/parity/gameplay.py \
+  --game-dir /path/to/base-game --astral-dir /path/to/lost-in-astral \
+  --godot /path/to/godot --out /tmp/items-spells-saves \
+  --category inventory --category spells --category persistence
+
 # Repeat the retained program selection against the current source.
 /path/to/results/reproduce.sh /tmp/gameplay-repeat
 
@@ -67,13 +75,20 @@ asset roots, and each process confirms the campaign it actually loaded.
 
 | Area | Programs | Examples |
 |---|---:|---|
-| Quests | 13 | Dead/hero predicates, co-op triggers and traps, quest carriers, inventory lifecycle, rewards in both campaigns, actor removal, group lever operation, transition saves, whole-party guard escape |
-| Creatures | 6 | AI sleep/wake eligibility, senses, reaction recipients, witnessed attacks, hostility snapshots, authored creature spell damage |
+| Quests | 15 | Dead/hero predicates, co-op triggers and traps, quest carriers, inventory lifecycle, rewards in both campaigns, actor removal, group lever operation, transition saves, whole-party guard escape, Catacombs lift cycles, dragon story timers |
+| Creatures | 7 | AI sleep/wake eligibility, senses, reaction recipients, witnessed attacks, hostility snapshots, authored creature spell damage, native unit-state publication and actor lifetime |
 | Animation | 8 | Attack clips across both campaigns' creatures, gait continuity, moving attacks/casts, initial and loaded paused poses, original dialogue poses on peers |
-| Effects | 10 | Model attachment points and projectile origins in both campaigns, delayed effects, pause/lifetime/teardown, repeated spells, healing, fire and tornado particle kernels |
+| Effects | 11 | Model attachment points and projectile origins in both campaigns, delayed effects, pause/lifetime/teardown, repeated spells, healing, fire and tornado particle kernels, exact duration boundaries and overlapping status expiry |
 | Stealth | 6 | Invisibility, silence, patrol escape versus scripted pursuit, remembered targets, real loopback peers, perception batches, partially exposed units/corpses, hidden presentation |
-| Commands | 6 | Combat-state inputs, priority/replacement, held actions, interaction dispatch, consumed mechanisms, retries with simulated packet loss/reordering |
+| Commands | 8 | Combat-state inputs, priority/replacement, held actions, interaction dispatch, consumed mechanisms, retries with simulated packet loss/reordering, spell shortcuts, moving bow release and aim |
 | Pathing | 7 | Turn refinement, static/dynamic topology, ray boundaries, relocation search, preview lengths/contact cutoffs, actual narrow passages |
+| Spells | 8 | Stamina waits and regeneration, single acknowledgements, training requirements on host/guest, execution-time revalidation, paused construction transactions, seeded shop generation in both campaigns |
+| Inventory | 9 | Repair and exchange batches, duplicate copies, private purses, stale stock, unique equipment, legacy rune migration, construction fees, wear/charge conservation and disk round trips |
+| Progression | 5 | Training purchase orders, refunds and rank limits, guest training, XP distribution, downed companion XP and revival |
+| Party | 2 | Wounded pets, disconnected ownership, companion/pet chapter substitution, travel and save/load |
+| Persistence | 9 | Hostility, wounds, stamina, commands, actor references, frozen world clock, pending casts, all taming stages, pet identity, consumed potions and alternating wall-effect checkpoints |
+| Combat | 3 | Direct hit rolls and backstabs, authored ranged attacks, wounds, severance, healing, resurrection and body-cache invalidation |
+| Network | 3 | Seeded snapshot codec, packet loss and reordering, stale generations, perception lists, generated large campaign documents and acknowledgement batching |
 
 An assertion count is a count of checks, **not games played or unique
 features**. Large parameter sweeps contribute many checks. Several optimized
@@ -140,5 +155,18 @@ summary and campaign assignment before registering it. Keep a failing
 behavior visible while investigating; never lower coverage or change an
 expected outcome merely to get a green run.
 
-The [validation record](validation/gameplay-suite-2026-10-20/README.md)
-records qualification, fixture corrections and deliberately injected failures.
+The transport and fallen-companion programs now create their own deterministic
+campaign or prepared recruitment fixture. Their optional `--route-save` input
+remains available for separate diagnostics; the catalog never supplies a
+player's save. Taming tests call the existing production transition directly;
+they do not establish that a charm spell is available in ordinary shop stock.
+
+The new item matrix checks 150 wear/charge combinations per campaign, including
+duplicate storage and repeated repair/recharge. The duration matrix checks
+signed counter boundaries, exact save values, the existing 16-bit snapshot
+representation, client presentation versus authority expiry, and overlapping
+effects. Neither matrix is labelled as an original-executable comparison.
+
+The [initial validation record](validation/gameplay-suite-2026-10-20/README.md)
+and [expansion record](validation/gameplay-expansion-2026-10-20/README.md)
+retain qualification, fixture corrections and deliberately injected failures.

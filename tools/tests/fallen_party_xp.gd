@@ -1,5 +1,7 @@
 extends Node
 ## Real LiA companion, death, reward, save/reload and revival.
+## Default: prepare the original prison-camp Kel using the recruitment path.
+## --route-save optionally retains the previous read-only diagnostic workflow.
 var checks := 0
 var failures := 0
 class ProbeSession extends Session:
@@ -22,12 +24,20 @@ func _run() -> void:
 	GameData.options.merge({"autosave":0,"show_tutorial":0,"net_upnp":0,"net_lan":0,"net_directory":0,"auto_graphics":0,"confine_mouse":0,"control_mode":1,"display_mode":0}, true)
 	var s := ProbeSession.new(); add_child(s)
 	var g := Game.new(); g.session=s; s.game=g; add_child(g)
-	var state := CampaignState.load_from(source)
-	check(state != null and s._load_state("fallen_xp_fixture",state), "supplied LiA save loads")
+	s.set_physics_process(false)
+	if source.is_empty():
+		s.state=CampaignState.new();s.state.ensure_hero(0,"Human Hero")
+		await s.enter_zone("bz1h",1,false)
+		s.world.set_process(false);s.world.set_physics_process(false);s.world.vm.instances.clear()
+		s.state.set_var(0,"apartyn2",1);s.merc_changed(2,true,0)
+		check(s.world!=null,"prepared original LiA prison camp loads")
+	else:
+		var state := CampaignState.load_from(source)
+		check(state != null and s._load_state("fallen_xp_fixture",state), "supplied LiA save loads")
 	if s.world == null: get_tree().quit(1); return
 	s.set_physics_process(false); s.world.set_process(false); s.world.set_physics_process(false); s.world.vm.instances.clear()
 	var kel := kel_of(s)
-	check(kel != null, "supplied party includes recruited Kel")
+	check(kel != null, "party includes recruited Kel")
 	if kel == null: get_tree().quit(1); return
 	s.mod_config.rules.revive=1; GameData.options.revive=1
 	var original_max := kel.max_hp

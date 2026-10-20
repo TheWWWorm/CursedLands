@@ -79,5 +79,5 @@ func finish() -> void:
 	FileAccess.open(out.path_join("save-probe.json"),FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
 	game.queue_free(); s.queue_free()
 	for i in 10: await get_tree().process_frame
-	TexUpscale.shutdown(); print("AUDIT_SAVE ",checks," checks ",failures.size()," observed state mismatches")
+	TexUpscale.shutdown(); print("AUDIT_SAVE ",JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if not failures.is_empty() else 0)

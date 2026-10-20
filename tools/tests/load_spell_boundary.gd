@@ -1,5 +1,6 @@
 extends "save_depth.gd"
 ## Save before/after real lasting effects, then reload in the same process.
+func summary_marker() -> String: return "LOAD_SPELL_BOUNDARY"
 func probe_cast() -> void:
 	var h:=hero();var at:=h.pos+Vector2(3,0)
 	check(s.save_game("before-wall")==OK,"checkpoint before casting saves")

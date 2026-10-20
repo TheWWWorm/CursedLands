@@ -132,7 +132,8 @@ class GameplayExecution(unittest.TestCase):
     def test_all_catalog_programs_and_markers_exist(self):
         rows = catalog()
         self.assertEqual({row["category"] for row in rows},
-                         {"quests", "creatures", "animation", "effects", "stealth", "commands", "pathing"})
+                         {"quests", "creatures", "animation", "effects", "stealth", "commands", "pathing",
+                          "spells", "inventory", "progression", "party", "persistence", "combat", "network"})
         for row in rows:
             script = REPO / row["script"]
             self.assertTrue(script.is_file(), row["id"])
