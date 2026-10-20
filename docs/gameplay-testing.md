@@ -1,7 +1,7 @@
 # Gameplay regression suite
 
-`tools/parity/gameplay.py` runs 259 registered test configurations across 19
-areas, using 205 scripts. It combines existing regression programs with item,
+`tools/parity/gameplay.py` runs 283 registered test configurations across 19
+areas, using 223 scripts. It combines existing regression programs with item,
 effect, theft, crafting, side-quest, localization and travel boundary tests.
 A registration selects a script, campaign
 and arguments; some scripts are exercised in both campaigns or in several
@@ -9,15 +9,15 @@ save/load scenarios. It stages the game and test sources, launches each
 configuration in a separate process, and retains logs and reproduction inputs.
 
 These are **remake regressions**. With `--with-original`, the runner also runs
-the independent [430-scenario original-executable suite](original-parity.md).
+the independent [original-executable suite](original-parity.md).
 The reports keep those two kinds of evidence separate.
 
 ## Run
 
 Requirements: Linux, Python 3.11+, Godot 4.7, and owned base-game and Lost in
 Astral installations. The regression runner itself uses only Python's standard
-library. The 27 rendered configurations also require an explicitly selected
-private X display, such as Xvfb; the other 232 run headlessly.
+library. The 43 rendered configurations also require an explicitly selected
+private X display, such as Xvfb; the other 240 run headlessly.
 The optional original comparison additionally requires
 `tools/parity/requirements.txt` in the Python environment.
 
@@ -90,12 +90,12 @@ asset roots, and each process confirms the campaign it actually loaded.
 
 | Area | Programs | Examples |
 |---|---:|---|
-| Quests | 27 | Predicates, triggers, traps, quest items, rewards, actor removal, group levers, chapter transitions, captivity and escape, Catacombs, dragon timers and all 28 installed base side-quest archives |
+| Quests | 28 | Predicates, triggers, traps, numeric precision, area save compatibility, quest items, rewards, actor removal, group levers, chapter transitions, captivity and escape, Catacombs, dragon timers and all 28 installed base side-quest archives |
 | Creatures | 12 | AI sleep/wake eligibility, senses, reaction recipients, witnessed attacks, hostility snapshots, authored creature spell damage, actor lifetime, peasant help and registry queries |
-| Animation | 9 | Attack clips across both campaigns' creatures, gait continuity, moving attacks/casts, initial and loaded paused poses, original dialogue poses on peers and attack stance |
-| Effects | 11 | Model attachment points and projectile origins in both campaigns, delayed effects, pause/lifetime/teardown, repeated spells, healing, fire and tornado particle kernels, exact duration boundaries and overlapping status expiry |
+| Animation | 14 | Attack clips across both campaigns' creatures, gait continuity, moving attacks/casts, initial and loaded paused poses, original dialogue poses on peers and attack stance |
+| Effects | 14 | Model attachment points and projectile origins in both campaigns, delayed effects, pause/lifetime/teardown, repeated spells, healing, fire and tornado particle kernels, exact duration boundaries and overlapping status expiry |
 | Stealth | 8 | Invisibility, silence, pursuit, remembered targets, loopback peers, perception, partial visibility, theft completion/cancellation, quest pockets and personal hostility |
-| Commands | 14 | Combat inputs, priority/replacement, held actions, interactions, retries with packet loss/reordering, spell shortcuts, bow release, first-person selection, touch picking and travel confirmation/cancellation |
+| Commands | 16 | Combat inputs, priority/replacement, held actions, interactions, retries with packet loss/reordering, spell shortcuts, bow release, first-person selection, touch picking and travel confirmation/cancellation |
 | Pathing | 14 | Turn refinement, topology, ray boundaries, relocation, route previews, narrow passages, client placement, lift capacity, direct movement and campaign-map reveal |
 | Spells | 8 | Stamina waits and regeneration, single acknowledgements, training requirements on host/guest, execution-time revalidation, paused construction transactions, seeded shop generation in both campaigns |
 | Inventory | 26 | Repair, exchanges, duplicate copies, private purses, stale stock, equipment/runes, nine crafting recipes per campaign, belt/spell capacities, recruitment, network loot, real camp UI and persistence |
@@ -103,12 +103,12 @@ asset roots, and each process confirms the campaign it actually loaded.
 | Party | 3 | Wounded pets, disconnected ownership, companion/pet chapter substitution, travel, save/load and revival camera |
 | Persistence | 12 | Hostility, wounds, stamina, commands, actor references, frozen clock, casts, taming, pets, potions, wall effects, profile seeds and network save choices |
 | Combat | 4 | Hit rolls, backstabs, ranged attacks, wounds, severance, healing, resurrection, body cache and wisp spells |
-| Network | 3 | Seeded snapshot codec, packet loss and reordering, stale generations, perception lists, generated large campaign documents and acknowledgement batching |
+| Network | 5 | Seeded snapshot codec, packet loss and reordering, stale generations, perception lists, generated large campaign documents and acknowledgement batching |
 | Dialogue | 11 | Authored topics, walking/staging, cues, captive/elder/guard routes, Nalo rescue and Shaina disguise |
 | Co-op | 48 | Fresh heroes, malformed origins, classes/roles, ownership, renaming/reconnect, personal/shared checkpoints, chapter state, solo return and network world transfers |
 | Settings | 14 | Profiles, controls, camera, graphics presets, audio routing/echo, EN/RU/DE choices and every remake translation's format arguments |
-| Interface | 9 | Buff icons, loading progress/cover, tooltip lifetime, side-quest scrolling and localized quest/wiki text |
-| Arena | 21 | Recruitment, economy, alliances, deployment, shop, round settlement, saves, health/damage, species, standings, tournament and bot planning |
+| Interface | 19 | Buff icons, loading progress/cover, tooltip lifetime, side-quest scrolling and localized quest/wiki text |
+| Arena | 22 | Recruitment, economy, alliances, deployment, shop, round settlement, saves, health/damage, species, standings, tournament and bot planning |
 
 An assertion count is a count of checks, **not games played or unique
 features**. Large parameter sweeps contribute many checks. Several optimized

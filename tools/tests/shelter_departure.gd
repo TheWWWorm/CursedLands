@@ -22,6 +22,7 @@ func _ready() -> void:
 		await host.enter_zone("bz3h",1,false)
 		# The fixture advances the original script itself. Disable the world's
 		# frame clock too; disabling Session alone leaves world simulation live.
+		host.world.set_process(false)
 		host.world.set_physics_process(false)
 		require(await until(func():return client.zone_id=="bz3h" and not client.loading_game and not host.loading_game))
 		var old_host: WeakRef=weakref(host.world); var old_client: WeakRef=weakref(client.world)
@@ -46,6 +47,15 @@ func _ready() -> void:
 	check(await host.load_game_shown("shelter_departed"),"Shelter departure state reloads")
 	require(await until(func():return not host.loading_game and not client.loading_game and client.zone_id=="gz3h"))
 	check(host.state.get_pvar(1,"b.Glav.brief_49")==2,"guest conversation completion survives reload")
+	# queue_free runs at the end of the frame. Stop simulation and leave
+	# online mode before closing the peers, so combat cannot emit RPCs in
+	# the intervening frame. This is fixture teardown, after all quest checks.
+	for s: Session in [client,host]:
+		s.world.set_process(false)
+		s.world.set_physics_process(false)
+		s.set_process(false)
+		s.set_physics_process(false)
+		s.online=false
 	client.multiplayer.multiplayer_peer.close(); host.multiplayer.multiplayer_peer.close()
 	for root in branches:root.queue_free()
 	for i in 10:await get_tree().process_frame

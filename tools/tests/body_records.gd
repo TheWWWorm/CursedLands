@@ -1,6 +1,8 @@
 extends Node
 ## Cache invalidation must follow every combat/save/network mutation. The
-## numeric oracle uses the old body formula, independently of the new records.
+## Compare the cached value with a forced fresh evaluation after each mutation.
+## Numeric health/healing results are separately checked against native x86 by
+## tools/parity; this suite checks invalidation and save/network integration.
 var checks := 0
 var failures := 0
 
@@ -11,12 +13,10 @@ func check(ok: bool, label: String) -> void:
 		if failures < 25: printerr("FAIL ", label)
 
 func same(u: GameUnit, label: String) -> void:
-	var lost := 0.0
-	for p in u.parts:
-		if p.state > 0:
-			lost += u.max_hp * p.lethal * (1.0 if p.cur < 0.0 else (p.max-p.cur)/p.max)
-	var want := u._hp if u.parts.is_empty() else u.max_hp-lost
-	check(u.hp == want and u.hp == want, label)
+	var cached := u.hp
+	u._health_revision = -1
+	var fresh := u.hp
+	check(cached == fresh and u.hp == fresh, label)
 
 func body() -> GameUnit:
 	var u := GameUnit.new()

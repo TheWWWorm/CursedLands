@@ -15,20 +15,27 @@ def contracts(astral=False):
                                else ["0x4b41e0", "0x4bb520", "0x4b4030"])
     return {
         "quest_predicate": {
-            "entry": [evaluator, nested, "0x431d80" if astral else "0x460af0"],
-            "scope": "Native numeric quest expressions, including nested calls, versus ScriptVM._eval.",
+            "entry": [evaluator, nested, "0x431d80" if astral else "0x460af0",
+                      * (["0x4663e0", "0x466440", "0x464390", "0x46bc30"] if astral
+                         else ["0x4b1ed0", "0x4b2070", "0x4bce10"])],
+            "scope": "Native numeric quest expressions, nested calls, group quantifiers and constructed areas versus ScriptVM._eval.",
             "stubs": ["supplied unit position/HP/identity/lever records", "unit dead-state/type accessors",
                       "player-zero lookup", "single-player mode", "temporary string allocation/destruction",
-                      "CRT thread-local single-byte locale"],
+                      "CRT thread-local single-byte locale", "supplied group membership", "fixture actor reference release",
+                      "preallocated area containers, including empty missing IDs"],
             "limits": "Bounded expressions and ASCII keys/strings only; no quest rewards, inventory, script scheduler or campaign completion.",
             "tolerances": {},
         },
         "quest_trigger": {
-            "entry": [gate, evaluator, nested],
+            "entry": [gate, evaluator, nested,
+                      * (["0x4663e0", "0x466440", "0x464390", "0x46bc30"] if astral
+                         else ["0x4b1ed0", "0x4b2070", "0x4bce10"])],
             "scope": "Native ordered condition-list gate versus ScriptVM._run at supplied polls, recording body dispatch.",
             "stubs": ["supplied unit position/HP/identity/lever records", "unit dead-state/type accessors",
                       "player-zero lookup", "single-player mode", "temporary string allocation/destruction",
                       "CRT thread-local single-byte locale",
+                      "supplied group membership", "fixture actor reference release",
+                      "preallocated area containers, including empty missing IDs",
                       "native temporary-expression cleanup", "trigger body dispatch recorded as an event"],
             "limits": "Repeated independent condition polls; no sleep scheduling, one-shot disposal, quest rewards or full campaign playthrough.",
             "tolerances": {},
@@ -124,4 +131,74 @@ def scenarios(seed=20261020, fuzz=12):
                               call("IsEqual", call("GSGetVar", 0, {"string": "q.test"}), 2)],
             [{"units": [dict(unit, lever=lever)], "variables": {"q.test": flag}}
              for lever, flag in [(0, 0), (1, 0), (1, 2), (0, 2), (1, 2)]])
+    group, iterator = {"group": "guards"}, {"iterator": "guard"}
+    members = [dict(unit, uid=i + 10, hp=10 + i, pos=[i * 3, i * 4], dead=i == 1) for i in range(3)]
+    for indices in [[], [0], [1], [0, 1], [1, 0], [2, 1, 0]]:
+        suffix = "_".join(map(str, indices)) or "empty"
+        expressions = [
+            ("size", call("GroupSize", group)),
+            ("has_first", call("GroupHas", group, hero)),
+            ("has_null", call("GroupHas", group, absent)),
+        ]
+        for quantifier in ["Any", "Every"]:
+            for name, predicate in [
+                ("alive", call("IsAlive", iterator)), ("dead", call("IsDead", iterator)),
+                ("low_hp", call("IsLess", call("HP", iterator), 11)),
+                ("in_rect", call("UnitInSquare", iterator, 0, 0, 3, 4)),
+                ("near", call("IsLess", call("DistanceUnitPoint", iterator, 0, 0), 5)),
+                ("constant_zero", 0), ("constant_one", 1), ("constant_two", 2),
+            ]:
+                expressions.append((quantifier + "_" + name, call(quantifier, iterator, group, predicate)))
+        for name, expression in expressions:
+            add(f"group_{suffix}_{name}", expression, members)
+            rows[-1]["inputs"]["groups"] = {"guards": indices}
+    group_polls = [
+        {"units": members, "groups": {"guards": []}},
+        {"units": members, "groups": {"guards": [0, 1, 2]}},
+        {"units": [dict(u, dead=True, hp=0) for u in members], "groups": {"guards": [0, 1, 2]}},
+        {"units": members, "groups": {"guards": [1]}},
+        {"units": members, "groups": {"guards": [0]}},
+    ]
+    trigger("group_all_dead", [call("Not", call("Any", iterator, group, call("IsAlive", iterator)))], group_polls)
+    trigger("group_nonempty_all_dead", [call("IsGreater", call("GroupSize", group), 0),
+                                      call("Every", iterator, group, call("IsDead", iterator))], group_polls)
+    trigger("group_iterator_after_short_circuit", [call("Any", iterator, group, call("IsDead", iterator)),
+                                                call("IsEqual", call("GetObjectID", iterator), 11)], group_polls)
+    for i in range(fuzz * 4):
+        # Raw arithmetic observations and cancellation expose rounding that
+        # sign-only random predicates can miss.
+        a, b, c = [rng.uniform(-1000, 1000) for _ in range(3)]
+        add(f"arithmetic_chain_{i:03}", call("Sub", call("Add", call("Mul", a, b), c), call("Mul", a, b)))
+        point = [rng.uniform(-10000, 10000) for _ in range(2)]
+        add(f"distance_translated_{i:03}", call("DistanceUnitPoint", hero, *point),
+            [dict(unit, pos=[rng.uniform(-10000, 10000), rng.uniform(-10000, 10000)])])
+        add(f"distance_translated_units_{i:03}", call("DistanceUnitUnit", hero, other),
+            [rows[-1]["inputs"]["units"][0], dict(unit, pos=point, uid=2)])
+    shapes = [
+        ("rectangle", [{"rect": [0, 0, 10, 10]}]),
+        ("reversed_x", [{"rect": [10, 0, 0, 10]}]),
+        ("reversed_y", [{"rect": [0, 10, 10, 0]}]),
+        ("point", [{"rect": [0, 0, 0, 0]}]),
+        ("circle", [{"circle": [0, 0, 5]}]),
+        ("negative_circle", [{"circle": [0, 0, -5]}]),
+        ("zero_circle", [{"circle": [0, 0, 0]}]),
+        ("union", [{"rect": [20, 20, 30, 30]}, {"circle": [0, 0, 5]}]),
+        ("empty", []),
+    ]
+    for name, records in shapes:
+        for i, point in enumerate([[0, 0], [10, 10], [10, 5], [5, 10], [3, 4],
+                                    [3, 3.999999], [0, -5], [0, -4.999999], [25, 25], [30, 30]]):
+            add(f"area_{name}_{i}", call("IsInArea", 1, *point), [])
+            rows[-1]["inputs"]["areas"] = [{"id": 1, "shapes": records}]
+    add("area_missing", call("IsInArea", 2, 0, 0), [])
+    rows[-1]["inputs"]["areas"] = [{"id": 1, "shapes": [{"rect": [-1, -1, 1, 1]}]}]
+    for i in range(fuzz * 2):
+        x1, y1 = [rng.uniform(-1000, 1000) for _ in range(2)]
+        x2, y2 = [rng.uniform(-1000, 1000) for _ in range(2)]
+        for edge, point in enumerate([[x1, y1], [x2, y2]]):
+            add(f"area_fractional_corner_{i:03}_{edge}", call("IsInArea", 1, *point), [])
+            rows[-1]["inputs"]["areas"] = [{"id": 1, "shapes": [{"rect": [x1, y1, x2, y2]}]}]
+    trigger("area_enter_exit_reenter", [call("IsInArea", 1, call("GetX", hero), call("GetY", hero))],
+            [{"units": [dict(unit, pos=point)], "areas": [{"id": 1, "shapes": [{"rect": [0, 0, 10, 10]}]}]}
+             for point in [[-1, 5], [0, 5], [10, 5], [10.00001, 5], [5, 10], [5, 5]]])
     return rows

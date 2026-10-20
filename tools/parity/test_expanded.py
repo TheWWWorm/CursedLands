@@ -3,7 +3,7 @@ import copy
 import struct
 import unittest
 
-from campaign_quests import Reader, normalize, script_bytes, samples
+from campaign_quests import Reader, normalize, script_bytes, samples, iterator_names
 from cases import make_inputs, contracts_for
 from compare import digest, validate_trace
 from run import check_inputs
@@ -101,6 +101,43 @@ class AuthoredInputs(unittest.TestCase):
         rows = samples(conditions, 2)
         self.assertTrue(any(r["units"][0] and r["units"][0]["pos"] != r["units"][1]["pos"] for r in rows))
         self.assertEqual(rows[-1]["units"], [None, None])
+
+    def test_group_iterator_binding_is_shared_with_following_condition(self):
+        expressions = [
+            {"call": "Any", "args": [{"symbol": "i"}, {"symbol": "guards"},
+                                      {"call": "IsDead", "args": [{"symbol": "i"}]}]},
+            {"call": "IsAlive", "args": [{"symbol": "i"}]},
+        ]
+        bindings, groups = {}, {}
+        iterators = iterator_names(expressions)
+        converted = [normalize(e, bindings, groups=groups, iterators=iterators) for e in expressions]
+        self.assertEqual(bindings, {})
+        self.assertEqual(groups, {"guards": 0})
+        self.assertEqual(converted[0]["args"][0], {"iterator": "i"})
+        self.assertEqual(converted[0]["args"][2]["args"][0], converted[1]["args"][0])
+
+    def test_dynamic_group_lookup_not_replaced_with_empty_group(self):
+        with self.assertRaisesRegex(ValueError, "dynamic group"):
+            normalize({"call": "GroupSize", "args": [{"call": "GetUnits", "args": [0]}]}, {})
+
+    def test_group_samples_keep_members_present_and_cover_empty_mixed_dead(self):
+        rows = samples([], 0, {"guards": 0})
+        for row in rows:
+            self.assertTrue(all(row["units"][i] is not None for i in row["groups"]["guards"]))
+        self.assertTrue(any(not r["groups"]["guards"] for r in rows))
+        self.assertTrue(any(r["groups"]["guards"] and
+                            all(r["units"][i]["dead"] for i in r["groups"]["guards"]) for r in rows))
+        self.assertTrue(any(0 < sum(r["units"][i]["dead"] for i in r["groups"]["guards"])
+                            < len(r["groups"]["guards"]) for r in rows))
+
+    def test_dynamic_area_id_rejected(self):
+        with self.assertRaisesRegex(ValueError, "dynamic area"):
+            normalize({"call": "IsInArea", "args": [{"call": "Add", "args": [1, 1]}, 0, 0]}, {})
+
+    def test_area_samples_do_not_claim_map_initialization(self):
+        rows = samples([{"call": "IsInArea", "args": [7, 0, 0]}], 1)
+        self.assertEqual(rows[0]["areas"][0]["id"], 7)
+        self.assertEqual(rows[-1]["areas"], [])
 
 
 class Observations(unittest.TestCase):

@@ -59,7 +59,7 @@
         "animation/direct_attack_stance"
       ],
       "scope": "Melee/ranged behavior, damage/body state, aim, recovery and queued spell priority.",
-      "remaining": "Native unaimed hit-probability mismatches remain separately reported; no exhaustive combat sequence exploration."
+      "remaining": "Native hit probabilities have bounded comparison coverage; no exhaustive damage, armour or combat sequence exploration."
     },
     {
       "id": "follow",
@@ -343,7 +343,8 @@
         "persistence/save_actor_refs",
         "persistence/save_cast",
         "persistence/save_taming",
-        "persistence/load_spell_boundary"
+        "persistence/load_spell_boundary",
+        "quests/script_parity_boundaries"
       ],
       "scope": "Authority, load generations, actor/effect references, spell consumption and menu choices.",
       "remaining": "Corrupt-file UI, disk-full handling and migration from all historical releases remain gaps."
@@ -353,6 +354,7 @@
       "title": "Trigger, revisit and complete story objectives",
       "commands": [],
       "tests": [
+        "quests/script_parity_boundaries",
         "quests/story_coop_predicates",
         "quests/story_coop_traps",
         "quests/story_coop_effects",

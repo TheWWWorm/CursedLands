@@ -1,5 +1,9 @@
 # Quest, Astral and body parity — 20 October 2026
 
+This is the retained pre-fix result. The
+[subsequent fix report](../parity-fixes-2026-10-20/README.md) resolves all 72
+differences and adds further comparisons; the original receipts below remain unchanged.
+
 **2,400 original-versus-remake scenarios ran, with two identical captures per
 side: 2,328 matched and 72 differed.** This adds 1,806 comparisons to the
 previous 594-scenario base-game suite. All 594 existing scenarios still match.

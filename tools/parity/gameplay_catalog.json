@@ -2,6 +2,20 @@
   "schema": 1,
   "tests": [
     {
+      "id": "quests/script_parity_boundaries",
+      "category": "quests",
+      "script": "tools/tests/script_parity_boundaries.gd",
+      "marker": "SCRIPT_PARITY_BOUNDARIES",
+      "min_checks": 20,
+      "quick": true,
+      "description": "Parsed numeric precision, missing actors, shared quest areas and old/new area save records",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": ["res/database.res", "res/texts.res", "maps/zone1.mob"]
+    },
+    {
       "id": "quests/script_dead_predicates",
       "category": "quests",
       "script": "tools/tests/script_dead_predicates.gd",

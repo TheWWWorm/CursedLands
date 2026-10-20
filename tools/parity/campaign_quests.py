@@ -16,6 +16,8 @@ SIGNATURES = {
     "Not": "n", **{name: "u" for name in ["HP", "MaxHP", "GetX", "GetY", "GetObjectID", "IsAlive", "IsDead"]},
     "DistanceUnitUnit": "uu", "DistanceUnitPoint": "unn", "UnitInSquare": "unnnn",
     "GetLeverState": "u", "GSGetVar": "ns", "IsEqualString": "ss",
+    "GroupSize": "g", "GroupHas": "gu", "Any": "ign", "Every": "ign",
+    "IsInArea": "nnn",
 }
 TOKEN = re.compile(r'//[^\n]*|"(?:[^"]*)"|[(),=:]|[^\s(),=:"]+')
 
@@ -116,16 +118,26 @@ class Reader:
         return rows
 
 
-def normalize(expression, bindings, kind="n"):
+def normalize(expression, bindings, kind="n", groups=None, iterators=None):
+    groups = {} if groups is None else groups
+    iterators = set() if iterators is None else iterators
     if kind == "s":
         if not isinstance(expression, dict) or "string" not in expression:
             raise ValueError("dynamic string")
         expression["string"].encode("ascii")
         return expression
-    if kind == "u":
+    if kind in ("u", "g", "i"):
         if not isinstance(expression, dict) or "symbol" not in expression:
-            raise ValueError("dynamic actor lookup")
+            raise ValueError("dynamic group lookup" if kind == "g" else "dynamic actor lookup")
         name = expression["symbol"]
+        if kind == "g":
+            groups.setdefault(name, len(groups))
+            return {"group": name}
+        if kind == "i":
+            iterators.add(name)
+            return {"iterator": name}
+        if name in iterators:
+            return {"iterator": name}
         if name == "NULL":
             return {"unit": -1}
         if name not in bindings:
@@ -139,20 +151,35 @@ def normalize(expression, bindings, kind="n"):
     signature = SIGNATURES[name]
     if len(signature) != len(expression["args"]):
         raise ValueError("arity:" + name)
-    return {"call": name, "args": [normalize(arg, bindings, k) for arg, k in zip(expression["args"], signature)]}
+    if name == "IsInArea":
+        area = expression["args"][0]
+        if not isinstance(area, (float, int)) or area != int(area):
+            raise ValueError("dynamic area ID")
+    return {"call": name, "args": [normalize(arg, bindings, k, groups, iterators)
+                                   for arg, k in zip(expression["args"], signature)]}
 
 
-def samples(conditions, count):
+def samples(conditions, count, groups=None):
+    group_names = list(groups or {})
+    actor_count = count
+    if group_names:
+        count += 3  # supplied live/dead members, separate from named actors
     points = [[0, 0], [1000, 1000]]
     levers, variables = set(), set()
+    area_ids = set()
     pairwise = [False]
 
     def walk(e):
         if not isinstance(e, dict) or "call" not in e:
             return
         args = e["args"]
-        if e["call"] == "GetLeverState" and args[0]["unit"] >= 0: levers.add(args[0]["unit"])
+        if e["call"] == "GetLeverState":
+            if args[0].get("unit", -1) >= 0: levers.add(args[0]["unit"])
+            if "iterator" in args[0]: levers.update(range(actor_count, count))
         if e["call"] == "GSGetVar": variables.add(args[1]["string"])
+        if e["call"] == "IsInArea":
+            area_ids.add(int(args[0]))
+            points.extend([[0, 0], [10, 10], [10, 5], [5, 10], [30, 30], [33, 34], [33, 33.99999]])
         if e["call"] == "DistanceUnitUnit": pairwise[0] = True
         if e["call"] == "UnitInSquare" and all(isinstance(x, (int, float)) for x in args[1:]):
             x1, y1, x2, y2 = args[1:]
@@ -182,7 +209,41 @@ def samples(conditions, count):
     snapshots.append({"units": [{"pos": list(unique[-1]), "hp": 0, "max_hp": 100, "dead": True, "uid": i+1}
                                 for i in range(count)]})
     snapshots.append({"units": [None] * count})
+    if group_names:
+        members = list(range(actor_count, count))
+        for snapshot in snapshots:
+            snapshot["groups"] = {name: members if snapshot["units"][0] is not None else [] for name in group_names}
+        for selected, dead in [([], []), (members, []), (members, members),
+                               (members, members[:1]), (members[::-1], members[:1]),
+                               (members[:1], members[:1]), (members[1:], members[:1])]:
+            snapshots.append({
+                "units": [{"pos": [i * 3, i * 4], "hp": 0 if i in dead else 100,
+                           "max_hp": 100, "dead": i in dead, "uid": i+1} for i in range(count)],
+                "groups": {name: selected for name in group_names},
+            })
+    if area_ids:
+        for snapshot in snapshots:
+            snapshot["areas"] = [{"id": area_id, "shapes": [{"rect": [0, 0, 10, 10]},
+                                                           {"circle": [30, 30, 5]}]}
+                                for area_id in sorted(area_ids)]
+        # The area registry is supplied, not inferred from campaign progress.
+        # Exercise a missing registry as well as the common controlled shapes.
+        snapshots.append({"units": [{"pos": [0, 0], "hp": 100, "max_hp": 100, "dead": False, "uid": i+1}
+                                    for i in range(count)],
+                          "groups": {name: list(range(actor_count, count)) for name in group_names}, "areas": []})
     return snapshots
+
+
+def iterator_names(expressions):
+    names = set()
+    def visit(e):
+        if not isinstance(e, dict) or "call" not in e:
+            return
+        if e["call"] in ("Any", "Every") and e["args"] and isinstance(e["args"][0], dict) and "symbol" in e["args"][0]:
+            names.add(e["args"][0]["symbol"])
+        for arg in e["args"]: visit(arg)
+    for e in expressions: visit(e)
+    return names
 
 
 def has_call(expression, name):
@@ -211,12 +272,14 @@ def append_campaign_cases(inputs, game_dir, limit=120):
                 skipped["empty authored conditions"] += 1
                 continue
             bindings = {}
+            groups = {}
+            iterators = iterator_names(conditions)
             try:
-                converted = [normalize(c, bindings) for c in conditions]
+                converted = [normalize(c, bindings, groups=groups, iterators=iterators) for c in conditions]
                 if not all(isinstance(c, dict) and "call" in c for c in converted):
                     raise ValueError("constant condition root")
                 # Constant-only gates add little campaign coverage.
-                if not bindings and not any(has_call(c, "GSGetVar") for c in converted):
+                if not bindings and not groups and not any(has_call(c, "GSGetVar") for c in converted):
                     raise ValueError("no actor binding")
             except (ValueError, UnicodeError) as exc:
                 skipped[str(exc)] += 1
@@ -225,8 +288,9 @@ def append_campaign_cases(inputs, game_dir, limit=120):
                 "id": f"quest_trigger/authored/{path.stem}/{name}/block{index}",
                 "kind": "quest_trigger",
                 "source": {"mob": path.name, "sha256": fingerprint, "script": name, "block": index,
-                           "actor_bindings": bindings},
-                "inputs": {"conditions": converted, "snapshots": samples(converted, len(bindings))},
+                           "actor_bindings": bindings, "group_bindings": groups,
+                           "iterators": sorted(iterators)},
+                "inputs": {"conditions": converted, "snapshots": samples(converted, len(bindings), groups)},
             })
     eligible = sum(map(len, by_map.values()))
     selected = []
@@ -239,7 +303,7 @@ def append_campaign_cases(inputs, game_dir, limit=120):
         raise ValueError("No supported authored quest condition lists found")
     inputs["scenarios"].extend(selected)
     inputs["authored_quests"] = {
-        "scope": "Unmodified condition trees with supplied actor records; trigger bodies are not replayed.",
+        "scope": "Unmodified condition trees with supplied actors, groups and controlled area geometry; trigger bodies and map initialization are not replayed.",
         "eligible_condition_lists": eligible, "selected_condition_lists": len(selected),
         "limit": limit, "skipped": dict(sorted(skipped.items())), "sources": sources,
     }

@@ -865,10 +865,11 @@ func _get_hp() -> float:
 	var lost := 0.0
 	for p: UnitBodyPart in _parts:
 		if p.state > 0:
-			lost += _max_hp * p.lethal * _part_frac(p)
+			# Native 0x5259b0 keeps this order in the x87 accumulator.
+			lost += _part_frac(p) * p.lethal * _max_hp
 	_health_revision = _parts_revision.value
 	_health_max = _max_hp
-	_health_value = _max_hp - lost
+	_health_value = float(PackedFloat32Array([_max_hp - lost])[0])
 	return _health_value
 
 
@@ -892,15 +893,21 @@ func _set_max_hp(v: float) -> void:
 	# part maxima follow the unit maximum, current values keep
 	# their ratio.
 	var old := _max_hp
+	v = float(PackedFloat32Array([v])[0])
 	_max_hp = v
 	if parts.is_empty():
 		return
 	var torso_size: float = parts[1].size
+	# Native 0x525a70 stores the torso factor and the per-part ratio before
+	# applying them. The ratio uses the unrounded new maximum.
+	var factor := float(PackedFloat32Array([v / torso_size])[0])
 	for p: UnitBodyPart in parts:
 		if p.state > 0:
-			var m: float = v * p.size / torso_size
-			p.cur = minf(p.cur * m / p.max, m) if p.max > 0.0 else m
-			p.max = m
+			var m := factor * p.size
+			var old_max := p.max
+			var ratio := float(PackedFloat32Array([m / old_max])[0]) if old_max > 0.0 else 0.0
+			p.max = float(PackedFloat32Array([m])[0])
+			p.cur = minf(float(PackedFloat32Array([ratio * p.cur])[0]), p.max) if old_max > 0.0 else p.max
 	_wounds_dirty = true
 	_pose_dirty = true
 	if old <= 0.0:
@@ -928,18 +935,24 @@ func heal(amount: float) -> void:
 	if parts.is_empty():
 		_hp = minf(_max_hp, _hp + amount)
 		return
+	amount = float(PackedFloat32Array([amount])[0])
+	# Native 0x525800 compares the float argument against double 0.001.
+	# A no-op must not reactivate a disabled part.
+	if absf(amount) <= 0.001:
+		return
 	var w := 0.0
 	for p: UnitBodyPart in parts:
 		if p.state > 1 and p.cur < p.max:
 			w += p.lethal
-	if w <= 0.0:
+	if w == 0.0:
 		return
+	var factor := float(PackedFloat32Array([amount / (w * _max_hp)])[0])
 	for p: UnitBodyPart in parts:
 		if p.state > 1 and p.cur < p.max:
-			p.cur = minf(p.max, p.cur + amount / (w * _max_hp) * p.max)
+			p.cur = minf(p.max, float(PackedFloat32Array([factor * p.max + p.cur])[0]))
 			_wounds_dirty = true
 			_pose_dirty = true
-			if p.cur >= 0.001:
+			if p.cur >= 0.0010000000474974513:
 				p.state = 3
 
 

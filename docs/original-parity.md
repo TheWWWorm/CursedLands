@@ -48,8 +48,8 @@ executing any native address**. Astral currently qualifies quest predicates,
 quest condition gates and Random; it does not inherit the base game's combat,
 body, effects, clock or path addresses. Neither reference includes extra patches.
 
-The default base suite has **789 scenarios in 16 families**; the Astral suite
-has **151 scenarios in three families**. `--authored-quests` adds up to 120
+The default base suite has **1,238 scenarios in 16 families**; the Astral suite
+has **552 scenarios in three families**. `--authored-quests` adds up to 120
 supported condition lists from that installation's original MOB files.
 The default seed is `20261020`. Each side runs twice in
 fresh captures; differing repeat captures are an error, even if one pair
@@ -115,9 +115,9 @@ does not verify repeatability.
 | Eye height | Exact float32 bits across normal figure heights, postures, dead/alive and ground heights | Ground/dead getters supplied; no flying figures or occlusion query |
 | Faction relation | Friend/enemy masks after each update, including side 31, reversed pairs and self-relations | No individual hate or notification side effects |
 | Path refinement | Refined cells and cost across 64 direction pairs plus seeded terrain/occupancy routes | Supplied routes and heading codes; flat height/slope fixtures, no whole-route search or splines |
-| Quest predicates | Exact result bits and truth values for numeric/string comparisons, nested arithmetic, rectangles, actor distances, HP/death/identity queries, quest flags and levers | Supplied actor records, player zero and single-player mode; ASCII strings, supplied temporary-string allocation; native hash/collision/key comparisons execute normally |
-| Quest trigger gates | Ordered condition evaluations, short-circuiting, body-dispatch events and cumulative dispatch counts across supplied states | Executes native condition-list dispatcher against `ScriptVM._run`; records body dispatch rather than replaying quest rewards or entire bodies; no sleep/one-shot lifecycle |
-| Body health | Aggregate HP and all six part states/current/max HP before and after healing or rescaling; absent, severed, disabled and active parts, tiny heals and repeated operations | Base executable only; no armour absorption, death dispatch, regeneration schedule or visuals |
+| Quest predicates | Exact result bits and truth values for comparisons, nested arithmetic, actor distances, HP/death/identity, flags, levers, group membership/size, Any/Every and rectangle/circle areas | Supplied actors/groups, player zero, single-player mode and ASCII strings; native group iteration, string comparison, hash lookup, area construction and containment execute normally; area IDs are literal integers |
+| Quest trigger gates | Ordered condition evaluations, short-circuiting, body-dispatch events and cumulative dispatch counts across supplied states; empty/live/dead groups, iterator reuse and area entry/exit | Executes native condition-list dispatcher against `ScriptVM._run`; records body dispatch rather than replaying quest rewards or entire bodies; no sleep/one-shot lifecycle |
+| Body health | Aggregate HP and all six part states/current/max HP before and after healing or rescaling; absent, severed, disabled and active parts, tiny/negative heals, varied sizes/lethalities and repeated mixed operations | Base executable only; supplied records, no armour absorption, death dispatch, regeneration schedule or visuals |
 | Effect lifetime | Signed counter boundaries, wrap, expiry and retained membership over successive authoritative ticks, on live and dead actors | Base executable only; one feeblemind lifetime, no effect application/stacking/client presentation |
 
 The machine-readable contracts in `tools/parity/cases*.py` list native addresses,
@@ -148,17 +148,22 @@ each owned MOB's declared root. It preserves condition order and nested calls,
 then selects only whole condition lists that the native adapter supports.
 Selection rotates through maps so the 120-list cap is not filled by one region.
 Use `--quest-limit 0` to include every supported list, or a positive cap.
-Inputs retain each MOB's SHA-256, script name, block index and actor bindings.
+Inputs retain each MOB's SHA-256, script name, block index, actor/group bindings
+and iterator names.
 
 The fixtures supply positions, HP, death states, lever states and quest flag
-values. They include null actors, separated actor pairs, rectangle edges and
-flag/lever transitions. These are controlled condition replays, not saved
+values, group memberships and controlled area geometry. They include null
+actors, separated actor pairs, rectangle/circle edges, empty/all-dead/mixed
+groups and flag/lever transitions. Native area containers are preallocated;
+their construction and lookup run, while heap allocation is outside the scope.
+The area shapes are supplied fixtures, not recovered map initialization.
+These are controlled condition replays, not saved
 campaign playthroughs or evidence that all supplied states are reachable.
 Parsing and object resolution inside either complete game are outside this
 contract. Unsupported calls or bindings skip the whole condition list and are
 counted in `inputs.json` under `authored_quests.skipped`; they never become
 automatically true conditions. Full quest bodies, inventory predicates,
-group quantifiers, sleep timing, co-op adaptations and reward/save continuity
+dynamic group construction, sleep timing, co-op adaptations and reward/save continuity
 still need additional native coverage.
 
 ## Results and failures
@@ -194,7 +199,10 @@ records five hit-probability differences and a live mutation control.
 The [expanded validation](validation/gameplay-suite-2026-10-20/README.md)
 records 430 scenarios, two captures per side and a dialogue-gate mutation control.
 The [quest, Astral and body validation](validation/quest-parity-2026-10-20/README.md)
-records the newer independent campaign captures and their unresolved differences.
+records the initial independent campaign captures and 72 differences.
+The [subsequent fixes and expanded validation](validation/parity-fixes-2026-10-20/README.md)
+resolve all 72 and extend coverage to 3,511 matching scenarios, including group
+conditions, registered quest areas and varied health-state sequences.
 
 ## Extend the suite
 

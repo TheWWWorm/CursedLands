@@ -1,0 +1,2387 @@
+[
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/IsEqual_3",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/IsEqual_4",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/IsEqual_5",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/nested_rounded_sum",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/nested_division",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/string_2",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/string_4",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/rectangle_10_10",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/rectangle_10_5",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/rectangle_5_10",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/rectangle_reversed",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/rectangle_degenerate",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/distance_point_[0.1, 0.2]",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1046804782,
+      "actual": 1046804783,
+      "delta": 1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/distance_units_[0.1, 0.2]",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1046804782,
+      "actual": 1046804783,
+      "delta": 1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/distance_missing_unit",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1900671690,
+      "actual": 1203982208,
+      "delta": -696689482,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/distance_missing_point",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1900671690,
+      "actual": 1203982208,
+      "delta": -696689482,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/missing_distance_large_threshold",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_trigger/enter_leave_reenter_rectangle",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[3].state.dispatches",
+      "reason": "value",
+      "expected": 3,
+      "actual": 2,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_trigger/nested_equality",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[1].state.dispatches",
+      "reason": "value",
+      "expected": 0,
+      "actual": 1,
+      "delta": 1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/head_state2_hp-64",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[2].state.parts[0].cur_bits",
+      "reason": "value",
+      "expected": 3263168512,
+      "actual": 3263168381,
+      "delta": -131,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/head_state2_hp0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[2].state.hp_bits",
+      "reason": "value",
+      "expected": 1115684864,
+      "actual": 1115684930,
+      "delta": 66,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/head_state2_hp0.0009",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[2].state.hp_bits",
+      "reason": "value",
+      "expected": 1115684982,
+      "actual": 1115685048,
+      "delta": 66,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/head_state2_hp0.001",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[1].state.parts[0].state",
+      "reason": "value",
+      "expected": 2,
+      "actual": 3,
+      "delta": 1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/head_state2_hp16",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[1].state.parts[0].state",
+      "reason": "value",
+      "expected": 2,
+      "actual": 3,
+      "delta": 1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/head_state3_hp-64",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[2].state.parts[0].cur_bits",
+      "reason": "value",
+      "expected": 3263168512,
+      "actual": 3263168381,
+      "delta": -131,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/head_state3_hp0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[2].state.hp_bits",
+      "reason": "value",
+      "expected": 1115684864,
+      "actual": 1115684930,
+      "delta": 66,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/head_state3_hp0.0009",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[2].state.hp_bits",
+      "reason": "value",
+      "expected": 1115684982,
+      "actual": 1115685048,
+      "delta": 66,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/head_state3_hp0.001",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[2].state.hp_bits",
+      "reason": "value",
+      "expected": 1115684995,
+      "actual": 1115685061,
+      "delta": 66,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/head_state3_hp16",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[2].state.hp_bits",
+      "reason": "value",
+      "expected": 1117782016,
+      "actual": 1117782082,
+      "delta": 66,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/multiple_wounds",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[1].state.hp_bits",
+      "reason": "value",
+      "expected": 3259760641,
+      "actual": 3259760640,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/seeded_000",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[2].state.hp_bits",
+      "reason": "value",
+      "expected": 3248622657,
+      "actual": 3248622659,
+      "delta": 2,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/seeded_001",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[1].state.parts[3].cur_bits",
+      "reason": "value",
+      "expected": 3246623682,
+      "actual": 3246623681,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/seeded_002",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[2].state.hp_bits",
+      "reason": "value",
+      "expected": 3268651815,
+      "actual": 3268651816,
+      "delta": 1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/seeded_003",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[2].state.hp_bits",
+      "reason": "value",
+      "expected": 3259458182,
+      "actual": 3259458183,
+      "delta": 1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/seeded_004",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[2].state.hp_bits",
+      "reason": "value",
+      "expected": 3248317720,
+      "actual": 3248317719,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/seeded_005",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[1].state.parts[4].cur_bits",
+      "reason": "value",
+      "expected": 3217755360,
+      "actual": 3217755357,
+      "delta": -3,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/seeded_006",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[2].state.parts[1].cur_bits",
+      "reason": "value",
+      "expected": 3242979214,
+      "actual": 3242979215,
+      "delta": 1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/seeded_008",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[1].state.parts[0].cur_bits",
+      "reason": "value",
+      "expected": 1099693206,
+      "actual": 1099693205,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/seeded_009",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[2].state.parts[0].cur_bits",
+      "reason": "value",
+      "expected": 3257162157,
+      "actual": 3257162156,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/seeded_010",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[2].state.parts[5].cur_bits",
+      "reason": "value",
+      "expected": 1105965944,
+      "actual": 1105965943,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "body_health/seeded_011",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[1].state.parts[1].cur_bits",
+      "reason": "value",
+      "expected": 1075547842,
+      "actual": 1075547841,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_trigger/authored/zone2/VCheck#0#88/block0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[3].state.dispatches",
+      "reason": "value",
+      "expected": 2,
+      "actual": 1,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_trigger/authored/zone19/VCheck#0#115/block0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[3].state.dispatches",
+      "reason": "value",
+      "expected": 2,
+      "actual": 1,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_trigger/authored/zone19/VCheck#0#116/block0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[3].state.dispatches",
+      "reason": "value",
+      "expected": 2,
+      "actual": 1,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_trigger/authored/zone19/VCheck#0#117/block0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[3].state.dispatches",
+      "reason": "value",
+      "expected": 2,
+      "actual": 1,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_trigger/authored/zone19/VCheck#0#118/block0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[3].state.dispatches",
+      "reason": "value",
+      "expected": 2,
+      "actual": 1,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_trigger/authored/zone19/VCheck#0#119/block0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[3].state.dispatches",
+      "reason": "value",
+      "expected": 2,
+      "actual": 1,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_trigger/authored/zone19/VCheck#0#120/block0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[3].state.dispatches",
+      "reason": "value",
+      "expected": 2,
+      "actual": 1,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_trigger/authored/zone19/VCheck#0#121/block0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[3].state.dispatches",
+      "reason": "value",
+      "expected": 2,
+      "actual": 1,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_trigger/authored/zone19/VCheck#0#122/block0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[3].state.dispatches",
+      "reason": "value",
+      "expected": 2,
+      "actual": 1,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_trigger/authored/zone19/VCheck#0#279/block0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[3].state.dispatches",
+      "reason": "value",
+      "expected": 2,
+      "actual": 1,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_trigger/authored/zone19/VCheck#0#295/block0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[3].state.dispatches",
+      "reason": "value",
+      "expected": 2,
+      "actual": 1,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_trigger/authored/zone19/VCheck#0#300/block0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/base-all-quests",
+    "first_divergence": {
+      "field": "$.steps[3].state.dispatches",
+      "reason": "value",
+      "expected": 2,
+      "actual": 1,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/IsEqual_3",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/IsEqual_4",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/IsEqual_5",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/nested_rounded_sum",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/nested_division",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/string_2",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/string_4",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/rectangle_10_10",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/rectangle_10_5",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/rectangle_5_10",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/rectangle_reversed",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/rectangle_degenerate",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/distance_point_[0.1, 0.2]",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1046804782,
+      "actual": 1046804783,
+      "delta": 1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/distance_units_[0.1, 0.2]",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1046804782,
+      "actual": 1046804783,
+      "delta": 1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/distance_missing_unit",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1900671690,
+      "actual": 1203982208,
+      "delta": -696689482,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/distance_missing_point",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1900671690,
+      "actual": 1203982208,
+      "delta": -696689482,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/missing_distance_large_threshold",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_trigger/enter_leave_reenter_rectangle",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[3].state.dispatches",
+      "reason": "value",
+      "expected": 3,
+      "actual": 2,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_trigger/nested_equality",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/expanded-checks-20261020/astral-all-quests",
+    "first_divergence": {
+      "field": "$.steps[1].state.dispatches",
+      "reason": "value",
+      "expected": 0,
+      "actual": 1,
+      "delta": 1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "previously_reported"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/group_empty_Any_constant_one",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-groups-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/group_empty_Any_constant_two",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-groups-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/group_empty_Every_constant_zero",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-groups-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/group_empty_Every_constant_two",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-groups-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1073741824,
+      "actual": 1065353216,
+      "delta": -8388608,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/group_0_Every_constant_two",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-groups-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1073741824,
+      "actual": 1065353216,
+      "delta": -8388608,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/group_1_Every_constant_two",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-groups-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1073741824,
+      "actual": 1065353216,
+      "delta": -8388608,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/group_0_1_Every_constant_two",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-groups-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1073741824,
+      "actual": 1065353216,
+      "delta": -8388608,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/group_1_0_Every_constant_two",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-groups-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1073741824,
+      "actual": 1065353216,
+      "delta": -8388608,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/group_2_1_0_Every_constant_two",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-groups-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1073741824,
+      "actual": 1065353216,
+      "delta": -8388608,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_rectangle_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_rectangle_2",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_rectangle_3",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_reversed_x_0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_reversed_x_4",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_reversed_x_5",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_reversed_y_0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_reversed_y_4",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_reversed_y_5",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_point_0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_circle_4",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_circle_6",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_negative_circle_0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_negative_circle_5",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_negative_circle_7",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_zero_circle_0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_union_4",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_union_6",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_union_9",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_000_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_003_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_004_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_005_0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_006_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_007_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_009_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_010_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_011_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_014_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_015_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_016_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_017_0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_017_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_018_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_019_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_020_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_021_0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/area_fractional_corner_023_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_rectangle_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_rectangle_2",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_rectangle_3",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_reversed_x_0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_reversed_x_4",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_reversed_x_5",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_reversed_y_0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_reversed_y_4",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_reversed_y_5",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_point_0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_circle_4",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_circle_6",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_negative_circle_0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_negative_circle_5",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_negative_circle_7",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_zero_circle_0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_union_4",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_union_6",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_union_9",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_000_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_003_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_004_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_005_0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_006_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_007_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_009_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_010_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_011_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_014_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_015_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_016_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_017_0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_017_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_018_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_019_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_020_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_021_0",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/area_fractional_corner_023_1",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-areas-diagnostic",
+    "first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/distance_translated_004",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-final",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1175374317,
+      "actual": 1175374316,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/distance_translated_012",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-final",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1170441877,
+      "actual": 1170441876,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/distance_translated_031",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-final",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1181241429,
+      "actual": 1181241428,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/distance_translated_036",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-final",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1170828029,
+      "actual": 1170828028,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/distance_translated_041",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-final",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1176077119,
+      "actual": 1176077120,
+      "delta": 1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/distance_translated_043",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-final",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1179084550,
+      "actual": 1179084549,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/distance_translated_046",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-final",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1186586135,
+      "actual": 1186586134,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "original",
+    "scenario": "quest_predicate/distance_translated_047",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/base-final",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1173855309,
+      "actual": 1173855308,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/distance_translated_004",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-final",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1175374317,
+      "actual": 1175374316,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/distance_translated_012",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-final",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1170441877,
+      "actual": 1170441876,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/distance_translated_031",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-final",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1181241429,
+      "actual": 1181241428,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/distance_translated_036",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-final",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1170828029,
+      "actual": 1170828028,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/distance_translated_041",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-final",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1176077119,
+      "actual": 1176077120,
+      "delta": 1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/distance_translated_043",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-final",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1179084550,
+      "actual": 1179084549,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/distance_translated_046",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-final",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1186586135,
+      "actual": 1186586134,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "scenario": "quest_predicate/distance_translated_047",
+    "diagnostic": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-final",
+    "first_divergence": {
+      "field": "$.steps[0].state.value_bits",
+      "reason": "value",
+      "expected": 1173855309,
+      "actual": 1173855308,
+      "delta": -1,
+      "absolute_tolerance": 0
+    },
+    "final_status": "match",
+    "phase": "newly_exposed"
+  }
+]

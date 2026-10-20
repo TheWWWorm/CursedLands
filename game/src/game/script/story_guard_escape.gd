@@ -34,10 +34,7 @@ static func contact(vm: ScriptVM, guards: Array, target: GameUnit) -> bool:
 	return false
 
 static func _inside_gate(vm: ScriptVM, point: Vector2) -> bool:
-	for area in vm.areas.get(1,[]):
-		if area is Rect2 and area.has_point(point): return true
-		if area is Vector3 and point.distance_to(Vector2(area.x,area.y)) <= area.z: return true
-	return false
+	return vm._is_in_area(1, point)
 
 static func escaped(vm: ScriptVM, guards: Array) -> bool:
 	if guards.is_empty(): return false

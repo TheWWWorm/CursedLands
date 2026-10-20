@@ -55,6 +55,22 @@ def scenarios(seed=20261020, fuzz=12):
         body(f"seeded_{i:03}", records, [{"kind": "heal", "value": rng.uniform(.01, 30)},
                                        {"kind": "rescale", "value": rng.uniform(40, 200)},
                                        {"kind": "heal", "value": 1000}])
+    for i in range(fuzz * 4):
+        # Unequal sizes/lethalities and long mixed operation sequences probe
+        # native storage boundaries that a power-of-two body does not expose.
+        records = copy.deepcopy(parts)
+        for p in records:
+            p.update(size=rng.uniform(.05, 2.0), lethal=rng.uniform(.01, 1.25),
+                     max=rng.uniform(1, 300), state=rng.choice([0, 1, 2, 3]))
+            p["cur"] = rng.uniform(-p["max"], p["max"])
+        operations = [{"kind": "heal", "value": value} for value in
+                      [0, -.0009999999, .0009999999, -.001, .001, -.001001, .001001, -1.25, 2.5]]
+        for j in range(3):
+            operations.extend([{"kind": "rescale", "value": rng.uniform(1, 400)},
+                               {"kind": "heal", "value": rng.uniform(.01, 100)}])
+        operations.append({"kind": "heal", "value": 10000})
+        body(f"varied_body_{i:03}", records, operations)
+        rows[-1]["inputs"]["max_hp"] = rng.uniform(1, 400)
     for counter in [-2147483648, -1, 0, 1, 2, 3, 65535, 65536, 65537, 2147483647]:
         for dead in [False, True]:
             rows.append({"id": f"effect_lifetime/counter{counter}_dead{dead}", "kind": "effect_lifetime",

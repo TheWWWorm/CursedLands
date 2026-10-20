@@ -3,13 +3,16 @@
 No operation below calculates a predicate result. Nested expressions are
 evaluated by the executable itself, including its intermediate float stores.
 """
+import struct
 from unicorn.x86_const import UC_X86_REG_ECX
 
 ADDRESSES = {
     "original": {"eval": 0x4b41e0, "gate": 0x4bb520, "cleanup": 0x4bec80, "body": 0x4bc420,
-                 "player": 0x594180, "network": 0x57f440, "string": 0x70099e},
+                 "player": 0x594180, "network": 0x57f440, "string": 0x70099e,
+                 "rect": 0x4b1ed0, "circle": 0x4b2070},
     "lost_in_astral": {"eval": 0x46cca0, "gate": 0x473b50, "cleanup": 0x46a610, "body": 0x473a70,
-                       "player": 0x4e6c40, "network": 0x4de200, "string": 0x412ab0},
+                       "player": 0x4e6c40, "network": 0x4de200, "string": 0x412ab0,
+                       "rect": 0x4663e0, "circle": 0x466440},
 }
 OPS = {
     "IsEqual": 0x45, "IsLess": 0x46, "IsGreater": 0x47, "Add": 0x49,
@@ -18,23 +21,34 @@ OPS = {
     "DistanceUnitPoint": 0x54, "GetX": 0x55, "GetY": 0x56,
     "IsAlive": 0x63, "IsDead": 0x64, "GetObjectID": 0x66, "UnitInSquare": 0xbc,
     "IsEqualString": 0x48, "GSGetVar": 0x80, "GetLeverState": 0x90,
+    "GroupSize": 0x58, "GroupHas": 0x5c, "Every": 0x68, "Any": 0x69,
+    "IsInArea": 0xc5,
 }
 
 
 class Expressions:
-    def __init__(self, o, units, variables=None):
+    def __init__(self, o, units, variables=None, groups=None, areas=None):
         self.o = o
         self.hook_start = len(o.hooks)
         self.units = []
         self.dead = {}
         self.types = {}
+        self.iterators = {}
+        self.groups = {}
+        self.areas = {}
         self.context = o.alloc(0x220)
+        self.area_records = o.alloc(128 * 24)
+        o.write(self.context + 0x198, self.area_records, 0)
         self.instance = o.alloc(0xc0)
         vt = o.alloc(0x50)
         o.write(vt + 0x44, 0x1800)
         o.write(vt + 0x30, 0x1810)
+        o.write(vt + 0x10, 0x1820)
         o.hook(0x1800, lambda: o.ret(self.dead[o.uc.reg_read(UC_X86_REG_ECX)]))
         o.hook(0x1810, lambda: o.ret(self.types[o.uc.reg_read(UC_X86_REG_ECX)]))
+        # Fixture actors stay alive for the capture; releasing an iterator's
+        # reference cannot destroy them. Native assignment and loops run.
+        o.hook(0x1820, lambda: o.ret())
         for row in units:
             if row is None:
                 self.units.append(0)
@@ -50,7 +64,24 @@ class Expressions:
             self.types[unit] = 0x5d if "lever" in row else 0x50
             o.write(unit + 0x238, row.get("lever", 0))
             self.units.append(unit)
+        for name, indices in (groups or {}).items():
+            members = [self.units[i] for i in indices]
+            if any(not member for member in members):
+                raise ValueError("Group fixtures require present actor records")
+            group, entries = o.alloc(20), o.alloc(max(1, len(members)) * 4)
+            if members:
+                o.write(entries, *members)
+            o.write(group + 4, entries, len(members))
+            self.groups[name] = group
         addresses = ADDRESSES[o.campaign]
+        for area in areas or []:
+            record = self.ensure_area(area["id"], len(area["shapes"]))
+            for shape in area["shapes"]:
+                kind, values = next(iter(shape.items()))
+                words = [struct.unpack("<I", struct.pack("<f", value))[0] for value in values]
+                # Native construction stores corners / squares the radius;
+                # capacity is supplied so allocator behavior is out of scope.
+                o.run(addresses[kind], record, words)
         player, bucket = o.alloc(0x140), o.alloc(4)
         o.write(player + 0xc8, bucket, bucket + 4)
         head = 0
@@ -81,6 +112,16 @@ class Expressions:
             o.write(0x6bda2c, locale)
             o.hook(0x5f25dd, lambda: o.ret(thread))
 
+    def ensure_area(self, area_id, capacity=1):
+        if area_id not in self.areas:
+            if len(self.areas) >= 128:
+                raise ValueError("Area fixture capacity exceeded")
+            record = self.area_records + len(self.areas) * 24
+            self.areas[area_id] = record
+            self.o.write(record + 4, self.o.alloc(max(1, capacity) * 20), 0, max(1, capacity), 0, area_id)
+            self.o.write(self.context + 0x19c, len(self.areas))
+        return self.areas[area_id]
+
     def string(self, text):
         raw = text.encode("ascii") + b"\0"
         allocation = self.o.alloc(16 + len(raw))
@@ -95,7 +136,14 @@ class Expressions:
     def compile(self, expression, at=None):
         o = self.o
         cmd = o.alloc(0x94) if at is None else at
-        numeric, objects, strings, children = [], [], [], []
+        if expression["call"] == "IsInArea":
+            # Missing IDs are empty areas in the native registry. Reserve the
+            # empty record without exercising heap allocation during lookup.
+            area_id = expression["args"][0]
+            if not isinstance(area_id, (int, float)) or area_id != int(area_id):
+                raise ValueError("Area fixtures require literal integer IDs")
+            self.ensure_area(int(area_id))
+        numeric, objects, strings, groups, children = [], [], [], [], []
         for arg in expression["args"]:
             if isinstance(arg, dict) and "unit" in arg:
                 index = arg["unit"]
@@ -103,6 +151,13 @@ class Expressions:
                 slot = o.alloc(4)
                 o.write(slot, value)
                 objects.append(slot)
+            elif isinstance(arg, dict) and "iterator" in arg:
+                name = arg["iterator"]
+                if name not in self.iterators:
+                    self.iterators[name] = o.alloc(4)
+                objects.append(self.iterators[name])
+            elif isinstance(arg, dict) and "group" in arg:
+                groups.append(self.groups[arg["group"]])
             elif isinstance(arg, dict) and "string" in arg:
                 strings.append(self.string(arg["string"]))
             elif isinstance(arg, dict):
@@ -123,6 +178,10 @@ class Expressions:
             values = o.alloc(4 * len(strings))
             o.write(values, *strings)
             o.write(cmd + 0x1c, values)
+        if groups:
+            values = o.alloc(4 * len(groups))
+            o.write(values, *groups)
+            o.write(cmd + 0x44, values)
         if children:
             values = o.alloc(12 * len(children))
             for i, (index, child) in enumerate(children):
@@ -132,7 +191,7 @@ class Expressions:
 
 
 def predicate(o, case):
-    fixture = Expressions(o, case["units"], case.get("variables"))
+    fixture = Expressions(o, case["units"], case.get("variables"), case.get("groups"), case.get("areas"))
     command, output = fixture.compile(case["expression"]), o.alloc(4)
     o.run(ADDRESSES[o.campaign]["eval"], command, [fixture.context, fixture.instance, output])
     return [{"value_bits": o.ints(output)[0], "truth": o.number(output) != 0}]
@@ -160,7 +219,7 @@ def trigger(o, case):
     for snapshot in case["snapshots"]:
         # Retire the previous supplied accessor before replacing its unit set.
         # Native expression/gate instructions remain untouched.
-        fixture = Expressions(o, snapshot["units"], snapshot.get("variables"))
+        fixture = Expressions(o, snapshot["units"], snapshot.get("variables"), snapshot.get("groups"), snapshot.get("areas"))
         count = len(case["conditions"])
         records = o.alloc(max(1, count) * 0x94)
         roots.clear()

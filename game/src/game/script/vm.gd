@@ -27,7 +27,7 @@ var ast: ScriptParser
 var briefings: Briefings
 var globals := {}
 var instances: Array = []
-var areas := {}            # area id -> Array of Rect2 / Vector3(x, y, r)
+var areas := {}            # area id -> Array of packed rectangle corners / Vector3(x, y, r); old saves also use Rect2
 var time := 0.0
 var time_fixed := false
 var _uid_counter := 0
@@ -367,12 +367,17 @@ func _set_var(name: String, v, inst: Instance) -> void:
 
 
 func _eval(e: Array, inst: Instance):
+	var value
 	match e[0]:
-		P.N_NUM: return e[1]
+		P.N_NUM: value = e[1]
 		P.N_STR: return e[1]
-		P.N_VAR: return _get_var(e[1], inst)
-		P.N_CALL: return _call(e[1], e[2], inst)
-	return null
+		P.N_VAR: value = _get_var(e[1], inst)
+		P.N_CALL: value = _call(e[1], e[2], inst)
+	# Native script slots and each nested numeric result are float32. Keep
+	# that storage boundary before a parent predicate consumes the value.
+	if value is float or value is int:
+		return float(PackedFloat32Array([value])[0])
+	return value
 
 
 func _args(a: Array, inst: Instance) -> Array:
@@ -409,6 +414,42 @@ func _xy(v) -> Vector2:
 		var p: Vector3 = v.get_meta("ei").position
 		return Vector2(p.x, p.y)
 	return Vector2.ZERO
+
+
+static func _script_distance(a: Vector2, b: Vector2) -> float:
+	# Native 0x53/0x54 retain the differences and squared sum in x87 double
+	# precision. Vector2 subtraction would introduce an extra float32 store.
+	var dx := float(a.x) - float(b.x)
+	var dy := float(a.y) - float(b.y)
+	return float(PackedFloat32Array([sqrt(dx * dx + dy * dy)])[0])
+
+
+static func _inside_rect(p: Vector2, x1: float, y1: float, x2: float, y2: float) -> bool:
+	# Script rectangles include both edges; reversed corners stay reversed.
+	return x1 <= p.x and p.x <= x2 and y1 <= p.y and p.y <= y2
+
+
+static func _area_has_point(shape, p: Vector2) -> bool:
+	if shape is PackedFloat32Array and shape.size() == 4:
+		return _inside_rect(p, shape[0], shape[1], shape[2], shape[3])
+	if shape is Rect2:
+		# Preserve older saves and remake-authored Rect2 area records.
+		return _inside_rect(p, shape.position.x, shape.position.y, shape.end.x, shape.end.y)
+	if shape is Vector3:
+		# Native circles store radius squared as float32, but retain double
+		# precision for the distance calculation. The boundary is strict.
+		var dx: float = float(p.x) - shape.x
+		var dy: float = float(p.y) - shape.y
+		var radius2 := float(PackedFloat32Array([float(shape.z) * shape.z])[0])
+		return dx * dx + dy * dy < radius2
+	return false
+
+
+func _is_in_area(id: int, p: Vector2) -> bool:
+	for shape in areas.get(id, []):
+		if _area_has_point(shape, p):
+			return true
+	return false
 
 
 func _group(v) -> Array:
@@ -480,6 +521,12 @@ func _call(name: String, a: Array, inst: Instance):
 			var var_name: String = a[0][1]
 			var items := _group(_eval(a[1], inst))
 			var want_all := name == "Every"
+			# Native 0x68/0x69 only iterate a nested command. A literal or
+			# numeric variable is returned directly (Any converts to bool),
+			# even for an empty group; it also leaves the iterator alone.
+			if a[2][0] != P.N_CALL:
+				var value = _eval(a[2], inst)
+				return _num(value) if want_all else (1.0 if _truthy(value) else 0.0)
 			for x in items:
 				_set_var(var_name, x, inst)
 				var ok := _truthy(_eval(a[2], inst))
@@ -512,15 +559,10 @@ func _call(name: String, a: Array, inst: Instance):
 		"Not": return 0.0 if _truthy(v[0]) else 1.0
 		"IsEqual":
 			if typeof(v[0]) == TYPE_OBJECT or typeof(v[1]) == TYPE_OBJECT: return 1.0 if is_same(v[0],v[1]) else 0.0
-			var left := _num(v[0]); var right := _num(v[1])
-			# IDs and counters are whole numbers, even though the script
-			# language represents them as floats. Relative tolerance makes
-			# neighbouring generated actor IDs compare equal at this scale.
-			if left == floor(left) and right == floor(right): return 1.0 if left == right else 0.0
-			return 1.0 if is_equal_approx(left,right) else 0.0
+			return 1.0 if _num(v[0]) == _num(v[1]) else 0.0
 		"IsLess": return 1.0 if _num(v[0]) < _num(v[1]) else 0.0
 		"IsGreater": return 1.0 if _num(v[0]) > _num(v[1]) else 0.0
-		"IsEqualString": return 1.0 if str(v[0]).to_lower() == str(v[1]).to_lower() else 0.0
+		"IsEqualString": return 1.0 if str(v[0]) == str(v[1]) else 0.0
 		"Add": return _num(v[0]) + _num(v[1])
 		"Sub": return _num(v[0]) - _num(v[1])
 		"Mul": return _num(v[0]) * _num(v[1])
@@ -623,16 +665,16 @@ func _call(name: String, a: Array, inst: Instance):
 					left -= d
 			return p.x if name == "GetFutureX" else p.y
 		"DistanceUnitUnit":
-			if v[0] == null or v[1] == null:
-				return 99999.0
-			return _xy(v[0]).distance_to(_xy(v[1]))
+			if typeof(v[0]) != TYPE_OBJECT or not is_instance_valid(v[0]) or typeof(v[1]) != TYPE_OBJECT or not is_instance_valid(v[1]):
+				return float(PackedFloat32Array([1e30])[0])
+			return _script_distance(_xy(v[0]), _xy(v[1]))
 		"DistanceUnitPoint":
-			if v[0] == null:
-				return 99999.0
-			return _xy(v[0]).distance_to(Vector2(_num(v[1]), _num(v[2])))
+			if typeof(v[0]) != TYPE_OBJECT or not is_instance_valid(v[0]):
+				return float(PackedFloat32Array([1e30])[0])
+			return _script_distance(_xy(v[0]), Vector2(_num(v[1]), _num(v[2])))
 		"UnitInSquare":
 			var p := _xy(v[0])
-			return 1.0 if v[0] != null and Rect2(Vector2(_num(v[1]), _num(v[2])), Vector2.ZERO).expand(Vector2(_num(v[3]), _num(v[4]))).has_point(p) else 0.0
+			return 1.0 if typeof(v[0]) == TYPE_OBJECT and is_instance_valid(v[0]) and _inside_rect(p, _num(v[1]), _num(v[2]), _num(v[3]), _num(v[4])) else 0.0
 		"IsDead":
 			# Native builtin 0x64 returns false without a unit/body. In the
 			# cave, RemoveUnitFromServer replaces the healthy queen before
@@ -883,16 +925,14 @@ func _call(name: String, a: Array, inst: Instance):
 		"AlarmPosY": return float(world.ai.alarm(int(_num(v[0]))).pos.y)
 		# ---- areas
 		"AddRectToArea":
-			areas.get_or_add(int(_num(v[0])), []).append(Rect2(Vector2(_num(v[1]), _num(v[2])), Vector2.ZERO).expand(Vector2(_num(v[3]), _num(v[4]))))
+			# Store both authored corners. Rect2's float32 size/end round trip
+			# can move a fractional edge, and expand() normalizes reversed ones.
+			areas.get_or_add(int(_num(v[0])), []).append(PackedFloat32Array([_num(v[1]), _num(v[2]), _num(v[3]), _num(v[4])]))
 		"AddRoundToArea":
 			areas.get_or_add(int(_num(v[0])), []).append(Vector3(_num(v[1]), _num(v[2]), _num(v[3])))
 		"DeleteArea": areas.erase(int(_num(v[0])))
 		"IsInArea":
-			var p := Vector2(_num(v[1]), _num(v[2]))
-			for s in areas.get(int(_num(v[0])), []):
-				if (s is Rect2 and s.has_point(p)) or (s is Vector3 and p.distance_to(Vector2(s.x, s.y)) <= s.z):
-					return 1.0
-			return 0.0
+			return 1.0 if _is_in_area(int(_num(v[0])), Vector2(_num(v[1]), _num(v[2]))) else 0.0
 		# ---- levers and traps
 		"GetLeverState": return float(world.levers.get(_obj_id(v[0]), {}).get("state", 0))
 		# the original builtins 0x91 / 0x9e -> (state, time): state −1 =
@@ -2296,16 +2336,15 @@ func _objective_met(o: Array, d: Dictionary) -> bool:
 		"QObjArea":
 			var id := int(String(o[1]).to_float())
 			for h: GameUnit in heroes():
-				for s in areas.get(id, []):
-					if (s is Rect2 and s.has_point(h.pos)) or (s is Vector3 and h.pos.distance_to(Vector2(s.x, s.y)) <= s.z):
-						return true
+				if _is_in_area(id, h.pos):
+					return true
 			return false
 		"QObjSeeObject":
 			if target == null:
-				return false   # DistanceUnitUnit with no unit: 99999
+				return false   # DistanceUnitUnit with no unit: 1e30
 			var p: Vector2 = target.pos if target is GameUnit else _obj_pos(target)
 			for h: GameUnit in heroes():
-				if h.pos.distance_to(p) < 7.0:
+				if _script_distance(h.pos, p) < 7.0:
 					return true
 			return false
 		"QObjSeeUnit":

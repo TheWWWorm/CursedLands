@@ -148,6 +148,11 @@ func quest_units(rows: Array, world: GameWorld) -> Array:
 func quest_expression(value, inst: ScriptVM.Instance, units: Array) -> Array:
 	if value is Dictionary:
 		if value.has("string"): return [ScriptParser.N_STR, String(value.string)]
+		if value.has("group"): return [ScriptParser.N_VAR, "group_" + String(value.group)]
+		if value.has("iterator"):
+			var key := "iterator_" + String(value.iterator)
+			if not inst.locals.has(key): inst.locals[key] = null
+			return [ScriptParser.N_VAR, key]
 		if value.has("unit"):
 			var index := int(value.unit)
 			var key := "unit_" + str(index)
@@ -159,6 +164,21 @@ func quest_expression(value, inst: ScriptVM.Instance, units: Array) -> Array:
 	# Script literals are native float32 inputs on both sides. Production
 	# arithmetic decides intermediate precision; the adapter does not change it.
 	return [ScriptParser.N_NUM, f32(float(value))]
+
+func quest_groups(groups: Dictionary, inst: ScriptVM.Instance, units: Array) -> void:
+	for name: String in groups:
+		var members := []
+		for index in groups[name]: members.append(units[int(index)])
+		inst.locals["group_" + name] = members
+
+func quest_areas(areas: Array, vm: ScriptVM, inst: ScriptVM.Instance) -> void:
+	vm.areas.clear()
+	for area: Dictionary in areas:
+		for shape: Dictionary in area.shapes:
+			var kind: String = shape.keys()[0]
+			var args := [[ScriptParser.N_NUM, float(area.id)]]
+			for value in shape[kind]: args.append([ScriptParser.N_NUM, f32(float(value))])
+			vm._call("AddRectToArea" if kind == "rect" else "AddRoundToArea", args, inst)
 
 func free_quest_units(units: Array) -> void:
 	for u in units:
@@ -181,6 +201,8 @@ func capture_quest_predicate(data: Dictionary) -> Array:
 	vm.session = session
 	var units := quest_units(data.units, world)
 	var inst := ScriptVM.Instance.new()
+	quest_groups(data.get("groups", {}), inst, units)
+	quest_areas(data.get("areas", []), vm, inst)
 	var expression := quest_expression(data.expression, inst, units)
 	var result = vm._eval(expression, inst)
 	var states := [{"value_bits": bits(float(result)), "truth": vm._truthy(result)}]
@@ -203,6 +225,8 @@ func capture_quest_trigger(data: Dictionary) -> Array:
 		session.state = quest_state(snapshot.get("variables", {}))
 		var units := quest_units(snapshot.units, world)
 		var inst := ScriptVM.Instance.new()
+		quest_groups(snapshot.get("groups", {}), inst, units)
+		quest_areas(snapshot.get("areas", []), vm, inst)
 		var conditions := []
 		for expr in data.conditions: conditions.append(quest_expression(expr, inst, units))
 		vm.roots = conditions
