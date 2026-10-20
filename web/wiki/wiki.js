@@ -29,6 +29,8 @@ function route() {
     campaign: CAMPAIGNS.includes(params.get('campaign')) ? params.get('campaign') : 'cursed_lands',
     craft:params.get('craft')==='1',slot:EQUIPMENT_SLOTS.includes(params.get('slot'))?params.get('slot'):'',
     key: params.get('page') || 'home', variant: params.get('version') || '',
+    creature:params.get('creature')||'',mapFilter:(params.get('mapFilter')||'').slice(0,256),
+    mapLayers:params.has('mapLayers')?params.get('mapLayers').split(',').filter(kind=>['exit','quest','inhabitant'].includes(kind)):null,
     spell:params.get('spell') || '', runes:params.has('runes') ? params.get('runes').split(';').filter(Boolean) : null};
 }
 
@@ -36,6 +38,8 @@ function href(key, variant = '', language = lang, game = campaign) {
   const params = new URLSearchParams({lang: language, page: key});
   if (game !== 'cursed_lands') params.set('campaign', game);
   if (variant) params.set('version', variant);
+  // Put the context in the link itself so opening a new tab works too.
+  if(key.startsWith('map/')&&entry?.kind==='creature'&&game===campaign)params.set('creature',entry.key);
   return '/wiki/?' + params + (plans.has(game) ? '#build='+encode(plans.get(game)) : '');
 }
 
@@ -43,7 +47,7 @@ function navigate(key, variant = '', language = lang) {
   const url = new URL(href(key, variant, language),location.origin);
   if (key === route().key) {
     const current = new URLSearchParams(location.search);
-    for (const name of ['spell','runes','craft','slot']) if (current.has(name)) url.searchParams.set(name,current.get(name));
+    for (const name of ['spell','runes','craft','slot','creature','mapFilter','mapLayers']) if (current.has(name)) url.searchParams.set(name,current.get(name));
   }
   if (document.body.classList.contains('workbench-mode') && /^(item|spell)\//.test(key)) url.searchParams.set('craft','1');
   if (location.href !== url.href) history.pushState(null, '', url);
@@ -159,7 +163,15 @@ function showVersion(id) {
   $('#variant').value = version.id;
   const content = article(version.html);
   content.id = 'article'; content.tabIndex = -1;
-  if(version.image&&entry.kind==='map'&&version.image_kind!=='scene')content.querySelector('h1').after(mapFigure(version,{strings,href}));
+  if(version.image&&entry.kind==='map'&&version.image_kind!=='scene'){
+    const state=route(),highlight=catalog.entries.some(row=>row.key===state.creature&&row.kind==='creature')?state.creature:'';
+    content.querySelector('h1').after(mapFigure(version,{strings,href,highlight,query:state.mapFilter,layers:state.mapLayers,onChange:map=>{
+      const url=new URL(location.href);
+      if(map.query)url.searchParams.set('mapFilter',map.query);else url.searchParams.delete('mapFilter');
+      url.searchParams.set('mapLayers',map.layers.join(','));
+      history.replaceState(null,'',url);
+    }}));
+  }
   else if(version.image){
     const figure=document.createElement('figure'),img=document.createElement('img'),caption=document.createElement('figcaption');
     img.src='/wiki/images/'+version.image+'.webp';img.alt=version.title;img.width=260;img.height=260;img.decoding='async';
@@ -228,7 +240,7 @@ async function load() {
       itemCategories();
       $('#search').value = '';
     }
-    $('#version').textContent = catalog.version;
+    $('#version').textContent = strings.dataVersion.replace('%s',catalog.version);
     if(target.key==='local-library'){entry=null;search(changed);showLibrary();$('#notice').textContent='';return;}
     entry = catalog.entries.find(row => row.key === target.key);
     search(changed);

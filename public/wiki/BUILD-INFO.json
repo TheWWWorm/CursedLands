@@ -26,7 +26,7 @@
       "normalized_equipment_links": 0
     }
   },
-  "translation_keys": 207,
+  "translation_keys": 213,
   "requires_game_files": false,
   "requires_game_engine": false,
   "requires_account": false,
@@ -36607,8 +36607,8 @@
       "sha256": "a7534ab3d64d63085a89265c2ecafd5688fc240c479cbd07fe11e2c8baaf0991"
     },
     "i18n.json": {
-      "bytes": 40384,
-      "sha256": "e5e1337213879a27092545afb4b653c5a2d9f9dd175a14935757dc1ea2e3a207"
+      "bytes": 41685,
+      "sha256": "c36ab64e21801088b3b43af290711ad066959041d430431b0bb84dfb35495396"
     },
     "icon-allod.svg": {
       "bytes": 256,
@@ -53799,8 +53799,8 @@
       "sha256": "ec3dd544ad658f3f783382edffde2770eb21b9fc8032329ca6826a1ff8c335fd"
     },
     "index.html": {
-      "bytes": 4565,
-      "sha256": "21cab2ea8b6dceddd7fa105604e8149c617aedf06106aa62f627c25a54e1f51e"
+      "bytes": 4605,
+      "sha256": "cf0e407a24693aa6d45138647f70cb472966f89e95a6704d200e6f176538556b"
     },
     "keystone-cursed_lands-acid_column.webp": {
       "bytes": 820,
@@ -54147,8 +54147,8 @@
       "sha256": "fa9e776e35c8be24d0d31556a1dd2e35b120c105b37bf702995fd5c722ae769e"
     },
     "maps.mjs": {
-      "bytes": 7400,
-      "sha256": "3ec3e6b7642211e64dd3f1715d6bb2e2ef170a2b8071cb65905ce78289e43133"
+      "bytes": 9537,
+      "sha256": "e1a3f732b9328741a74e283d9193cc45419686c3bd339d64dab8993e8e8bed24"
     },
     "plan-ui.mjs": {
       "bytes": 13976,
@@ -54171,12 +54171,12 @@
       "sha256": "01dae6b41b5e2ac5803422b497838f90576fd446da575c0fffd4e2a3e45f1f56"
     },
     "wiki.css": {
-      "bytes": 46716,
-      "sha256": "23a5137163252cf908b9c40091b05a2f6dd832a2eac7c60a16633bac30a47f87"
+      "bytes": 47357,
+      "sha256": "5f8fffb08694e78f11a619214ec10fbfd4e53b930af0ef87eeede57ec36f53eb"
     },
     "wiki.js": {
-      "bytes": 24531,
-      "sha256": "f717a789c33f4fde3a3cae1b2d340c4c00078aef352e77a7aaf6501fdca62865"
+      "bytes": 25473,
+      "sha256": "46c622ee9a136dbab9e44e7de8a62f0dd5b668aa89b380d231e83558163f9414"
     },
     "workbench-camp.webp": {
       "bytes": 12950,
@@ -54191,5 +54191,6 @@
       "sha256": "29aec0935f5d56923fe3c1a66f35e4965ab6eda83b3eaabd8b673a828109e313"
     }
   },
-  "bytes": 202265599
+  "bytes": 202270660,
+  "frontend_version": "1.19.0"
 }

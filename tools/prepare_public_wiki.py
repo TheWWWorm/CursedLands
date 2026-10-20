@@ -16,6 +16,57 @@ def read(path):
     return json.loads(path.read_text(), strict=False)
 
 
+SOURCE = Path(__file__).resolve().parents[1] / 'web/wiki'
+
+
+def interface_labels():
+    labels = read(SOURCE / 'i18n.json')
+    assert set(labels) == {'en', 'ru', 'de'}
+    assert all(set(v) == set(labels['en']) and all(v.values()) for v in labels.values())
+    return labels
+
+
+def write_manifest(output, report):
+    report['frontend_version'] = re.search(
+        r'^config/version="([^"]+)"', (SOURCE.parents[1] / 'game/project.godot').read_text(), re.M)[1]
+    report['translation_keys'] = len(interface_labels()['en'])
+    report['files'] = {str(p.relative_to(output)): {'bytes': p.stat().st_size, 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()}
+                       for p in sorted(output.rglob('*')) if p.is_file() and p.name != 'BUILD-INFO.json'}
+    report['bytes'] = sum(row['bytes'] for row in report['files'].values())
+    (output / 'BUILD-INFO.json').write_text(json.dumps(report, indent=2) + '\n')
+    return report
+
+
+def check_package(output):
+    """Catch stale frontend copies and edits made after the package was built."""
+    interface_labels()
+    report = read(output / 'BUILD-INFO.json')
+    for source in SOURCE.iterdir():
+        assert (output / source.name).read_bytes() == source.read_bytes(), f'Stale wiki interface: {source.name}'
+    actual = {str(p.relative_to(output)) for p in output.rglob('*') if p.is_file() and p.name != 'BUILD-INFO.json'}
+    assert actual == set(report['files']), 'Wiki file inventory differs from BUILD-INFO.json'
+    for name, row in report['files'].items():
+        data = (output / name).read_bytes()
+        assert len(data) == row['bytes'] and hashlib.sha256(data).hexdigest() == row['sha256'], f'Stale wiki manifest: {name}'
+    indexes = set((output / 'data').rglob('index.json'))
+    expected = {output / 'data' / campaign / lang / 'index.json'
+                for campaign in ['', 'lost_in_astral'] for lang in ['en', 'ru', 'de']}
+    assert indexes == expected, 'Wiki needs both campaigns in all three languages'
+    for index in indexes:
+        assert read(index)['version'] == report['version'], f'Catalogue version differs from exported data: {index}'
+    print(f"Wiki package verified: {len(actual)} files; data {report['version']}; interface {report.get('frontend_version', report['version'])}")
+
+
+def refresh_ui(output):
+    """Publish current web controls without claiming the articles were re-exported."""
+    report = read(output / 'BUILD-INFO.json')
+    interface_labels()
+    for source in SOURCE.iterdir():
+        shutil.copy2(source, output / source.name)
+    write_manifest(output, report)
+    check_package(output)
+
+
 def prepare_campaign(data, images, target_data, campaign, labels, used_images):
     expected_source = "GOG" if campaign == "cursed_lands" else "Lost in Astral"
     languages = {}
@@ -131,10 +182,8 @@ def prepare_campaign(data, images, target_data, campaign, labels, used_images):
 
 
 def prepare(data, images, output, astral_data, astral_images):
-    source = Path(__file__).resolve().parents[1] / 'web/wiki'
-    labels = json.loads((source / 'i18n.json').read_text())
-    assert set(labels) == {'en', 'ru', 'de'}
-    assert all(set(v) == set(labels['en']) and all(v.values()) for v in labels.values())
+    source = SOURCE
+    labels = interface_labels()
     output.mkdir(parents=True, exist_ok=True)
     for file in source.iterdir():
         shutil.copy2(file, output / file.name)
@@ -151,20 +200,28 @@ def prepare(data, images, output, astral_data, astral_images):
     for image, path in sorted(used_images.items()):
         shutil.copy2(path, output / 'images' / (image + '.webp'))
     report['illustrations'] = len(used_images)
-    report['files'] = {str(p.relative_to(output)): {'bytes': p.stat().st_size, 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()}
-                       for p in sorted(output.rglob('*')) if p.is_file() and p.name != 'BUILD-INFO.json'}
-    report['bytes'] = sum(row['bytes'] for row in report['files'].values())
-    (output / 'BUILD-INFO.json').write_text(json.dumps(report, indent=2) + '\n')
+    write_manifest(output, report)
+    check_package(output)
     print(json.dumps({k: v for k, v in report.items() if k != 'files'}, indent=2))
     return report
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--data', type=Path, required=True)
-    parser.add_argument('--images', type=Path, required=True)
+    parser.add_argument('--data', type=Path)
+    parser.add_argument('--images', type=Path)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--astral-data', type=Path, required=True)
-    parser.add_argument('--astral-images', type=Path, required=True)
+    parser.add_argument('--astral-data', type=Path)
+    parser.add_argument('--astral-images', type=Path)
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--refresh-ui', action='store_true', help='Refresh web controls and manifest, retaining the exported article version.')
+    mode.add_argument('--check', action='store_true', help='Verify deployed frontend copies, catalogue versions and every file hash.')
     args = parser.parse_args()
-    prepare(args.data, args.images, args.output, args.astral_data, args.astral_images)
+    if args.refresh_ui:
+        refresh_ui(args.output)
+    elif args.check:
+        check_package(args.output)
+    elif not all([args.data, args.images, args.astral_data, args.astral_images]):
+        parser.error('A full export needs --data, --images, --astral-data and --astral-images.')
+    else:
+        prepare(args.data, args.images, args.output, args.astral_data, args.astral_images)

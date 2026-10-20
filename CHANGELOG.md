@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Bring creature-name filtering and creature-to-map highlights to the standalone web wiki. Preserve map filters and layers through browser Back, reload and shared links, with English, Russian and German controls.
+- Validate hosted wiki frontend files and package hashes separately from the exported reference-data version.
+
 ## 1.19.0 — 2026-10-20
 
 - Add host-assigned guest permissions for shared pause, speed, quicksave and quickload. Configure defaults from the multiplayer menu and individual permissions from Players; save them with the campaign. ([#50](https://github.com/TheWWWorm/CursedLands/issues/50))

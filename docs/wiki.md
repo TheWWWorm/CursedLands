@@ -67,7 +67,12 @@ quest areas are shown initially; creatures are an optional layer. Nearby points
 of the same kind cluster at the displayed zoom. Select a marker to open its list
 of named locations or articles in an interactive popup beside the marker;
 zooming separates groups. Exits use green directional arrows like the game. No point is discarded
-from the underlying data. Quest pages show authored objectives, rewards and
+from the underlying data. In both interfaces, the creature-name filter uses the
+selected language and leaves enabled exit and quest layers visible. Following a
+creature's map link enables creature markers and highlights that species' authored
+positions, including within crowded areas. Web links retain that context when
+opened in a new tab; the filter and layer choices survive Back and reload.
+Quest pages show authored objectives, rewards and
 available original hints by default, with an optional collapse control. They do
 not disclose the current save's progress or invent missing walkthrough steps.
 
@@ -246,7 +251,8 @@ retained. Optional base-game quest descriptions also use the original English,
 Russian and German `.mq` texts. Bundled translations are applied only when the
 source fingerprint matches a known original; edited data-mod text stays intact.
 The footer identifies the source and translation treatment for each
-campaign. All statistics use the 1.7.0 calculations and original armor rule.
+campaign. The reference-data version identifies the exported calculations;
+the wiki uses the original armor rule.
 
 Creature equipment links lead to available base material articles. Obsolete
 prototype combinations that the expansion's item builder no longer supports
@@ -296,8 +302,22 @@ English or German translation, and does not substitute Russian text silently.
 
 `web/wiki/` owns the website source and EN/RU/DE interface catalogue. The packager
 checks every article, cross-reference, material version and translation key.
-Keep `public/wiki` when rebuilding the browser export, and include it in the
-standalone web archive. `worker.js` serves `/wiki` independently of the engine
+Keep the verified `public/wiki` when rebuilding the browser export, and include it in the
+standalone web archive. UI-only changes can use the existing article export:
+
+```sh
+python3 tools/prepare_public_wiki.py --refresh-ui --output public/wiki
+python3 tools/prepare_public_wiki.py --check --output public/wiki
+```
+
+The check compares the packaged frontend with `web/wiki`, validates all file
+hashes and checks article-version consistency. Do not overwrite index versions
+with a new game version without regenerating the articles. `BUILD-INFO.json`
+keeps `version` for the article export and `frontend_version` for the interface.
+The footer labels the former as reference data, not the current game release.
+Run the same package check on the staged wiki before archiving a browser build.
+
+`worker.js` serves `/wiki` independently of the engine
 and applies a restrictive content security policy to the wiki.
 
 ## In-game data sources
@@ -394,5 +414,14 @@ node tools/tests/wiki_rework.mjs /private/wiki-plan-oracle.json /private/wiki-si
 The JavaScript checks cover native/web plan parity, malformed payloads, typo
 matching and marker clustering without losing points. Retain the existing
 `wiki_features.gd`, `wiki_quest_locales.gd` and constructor parity checks too.
+
+`tools/tests/wiki_map_browser.mjs` exercises creature-to-map links, translated
+filtering, highlighted clusters, keyboard dismissal, Back/reload and desktop/phone
+layouts in both campaigns and all three languages. Pass `--public-dir=public`,
+`--output=/private/wiki-map-check` and `--chrome=/path/to/chromium`; it uses
+Playwright in an isolated browser. `--previous-ref=<commit>` additionally loads
+the previous frontend under the game's service worker and verifies an ordinary
+reload picks up the new controls. Use `--url=https://cursedlands.wwworm.com` to
+repeat the feature checks on the deployed site.
 
 The encyclopedia is introduced in 1.6.0 under the [versioning policy](versioning.md).
