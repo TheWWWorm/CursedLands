@@ -1,0 +1,3 @@
+Previous stable started
+Update waits for old tabs
+PASS: fresh and upgraded starts, cache transition and preserved IndexedDB
