@@ -3,6 +3,7 @@ extends "startup_graphics_recovery.gd"
 var restarts := 0
 
 func _run() -> void:
+	TutorialPanel.auto_show = false
 	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS, true)
 	GameData.options.confine_mouse = 0
 	GameData.options.display_mode = 0
@@ -45,7 +46,7 @@ func _run() -> void:
 		box.queue_free(); await settle()
 		var panel := OptionsPanel.new(); get_parent().add_child(panel); panel.open()
 		panel._show_group(12); await settle()
-		var row: Dictionary = panel._rows[12]
+		var row: Dictionary = panel._rows[13]
 		check(row.name == "renderer" and row.choices.size() == 4, "Windows offers Automatic, Direct3D 12, Vulkan and OpenGL")
 		for choice: String in row.choices:
 			check(panel.text_width(choice, 1) <= 160, lang + " renderer choice fits")
@@ -56,11 +57,17 @@ func _run() -> void:
 		get_viewport().get_texture().get_image().save_png("user://windows-option-compat-" + lang + ".png")
 		panel._set_value("renderer", 1)
 		check(panel._box == null, "Windows Forward+ does not show the phone experiment warning")
-		panel._sel = 12
+		panel._sel = 13
 		GameData._tips.delay = 0.001
-		Input.warp_mouse(panel.get_global_transform_with_canvas() * panel.p8(Vector2(400, panel._row_y(12) + 10)))
-		await settle(); GameData._tips._since = 0; GameData._tips._process(0)
+		# Deliver hover to the actual viewport; a no-focus test window must not
+		# depend on the desktop user's pointer staying still between frames.
+		var hover := InputEventMouseMotion.new()
+		hover.position = panel.get_global_transform_with_canvas() * panel.p8(Vector2(400, panel._row_y(13) + 10))
+		Input.warp_mouse(hover.position)
 		await settle()
+		get_viewport().push_input(hover, true)
+		GameData._tips._process(0)
+		GameData._tips._since = 0; GameData._tips._process(0)
 		check(GameData._tips._panel.visible and GameData._tips._text == row.tip, lang + " help displayed")
 		check(get_viewport().get_visible_rect().encloses(GameData._tips._panel.get_rect()), lang + " help fits 800x600")
 		get_viewport().get_texture().get_image().save_png("user://windows-help-" + lang + ".png")

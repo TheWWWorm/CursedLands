@@ -1280,9 +1280,10 @@ static func setup_sun_casters(sun: DirectionalLight3D) -> void:
 static func apply_quality(vp: Viewport) -> void:
 	apply_effect_quality()
 	var aa := GameData.option("q_aa")
-	vp.msaa_3d = Viewport.MSAA_4X if aa == 2 or aa == 3 else Viewport.MSAA_DISABLED
-	vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_SMAA if (aa == 1 or aa == 3) and not Portability.compatibility() else Viewport.SCREEN_SPACE_AA_DISABLED
-	vp.use_taa = aa == 4 and RenderingServer.get_current_rendering_method() == "forward_plus"
+	if vp != GameData.get_tree().root or not FsrGraphics.sr_active():
+		vp.msaa_3d = Viewport.MSAA_4X if aa == 2 or aa == 3 else Viewport.MSAA_DISABLED
+		vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_SMAA if (aa == 1 or aa == 3) and not Portability.compatibility() else Viewport.SCREEN_SPACE_AA_DISABLED
+		vp.use_taa = aa == 4 and RenderingServer.get_current_rendering_method() == "forward_plus"
 	vp.anisotropic_filtering_level = clampi(GameData.option("q_aniso"), 0, 4) as Viewport.AnisotropicFiltering
 	apply_unit_sharpness()
 	var q := clampi(GameData.option("q_shadows"), 0, 3)

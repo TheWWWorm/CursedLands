@@ -6,11 +6,11 @@ const UPSCALING := "fsr_upscaling"
 const QUALITY := "fsr_quality"
 const FRAME_GENERATION := "fsr_frame_generation"
 const OPTIONS := [UPSCALING, QUALITY, FRAME_GENERATION]
-const GROUP := 27
+const GROUP := 12 # Screen; there is no separate FSR page.
 const SECTION := ["AMD FSR", "FSR 3.1 and FSR 4 for the campaign view on Windows. Select Forward+ (Direct3D 12) in Screen settings and restart if needed. Upscaling and frame generation are off by default."]
-const SR_HELP := "Select FSR 3.1 or FSR 4 explicitly. FSR 4 requires a supported Radeon RX 7000 discrete GPU or RX 9000 or newer. FSR 3.1 also supports other compatible GPUs. Unavailable versions are skipped. Overrides anti-aliasing and Render scale while active."
+const SR_HELP := "Select FSR 3.1 or FSR 4 explicitly. FSR 4 requires a supported Radeon RX 7000 discrete GPU or RX 9000 or newer. FSR 3.1 also supports other compatible GPUs. Unavailable versions are disabled. Overrides Render scale while active."
 const QUALITY_HELP := "Native AA renders at full resolution. Quality, Balanced and Performance render fewer pixels and reconstruct the image. Requires FSR upscaling to be selected."
-const FG_HELP := "Generate one extra display frame per rendered frame during campaign gameplay. FSR 3.1 supports compatible AMD and NVIDIA GPUs; FSR 4 requires Windows 11 and Radeon RX 9000 or newer. Requires FSR upscaling. Pauses during menus, loading and loss of focus. The FPS counter shows rendered frames."
+const FG_HELP := "Generate an extra frame during campaign gameplay, with or without FSR upscaling. FSR 3.1 supports compatible AMD and NVIDIA GPUs; FSR 4 requires Windows 11 and Radeon RX 9000 or newer. Pauses in menus, while loading and on focus loss. The FPS counter shows rendered FPS and measured presented FPS, including generated frames."
 const VERSIONS := ["Off", "FSR 3.1", "FSR 4"]
 const QUALITIES := ["Native AA", "Quality", "Balanced", "Performance"]
 const SCALES := [1.0, 2.0 / 3.0, 1.0 / 1.7, 0.5]
@@ -19,10 +19,19 @@ const NEED_API := "Requires Windows and Forward+ (Direct3D 12). Select that rend
 const NEED_SR := "The selected FSR upscaler is unavailable on this GPU or driver, or its runtime could not be loaded."
 const NEED_FG := "The selected FSR frame-generation version is unavailable on this GPU, operating system or driver."
 const ENABLE_SR := "Select FSR 3.1 or FSR 4 upscaling first."
+const RENDERER_HINT := "FSR: select Forward+ (Direct3D 12), apply and restart."
+
+static func screen_hint(info: Dictionary) -> String:
+	if OS.get_name() == "Windows" and not info.get("api", false): return RENDERER_HINT
+	if not info.get("engine", false): return UNAVAILABLE
+	if not info.get("sr3", false) and not info.get("sr4", false) and not info.get("fg3", false) and not info.get("fg4", false):
+		return "FSR is unavailable on this GPU or driver. See option help."
+	return ""
 
 var _previous_fg := 0
 var _upscaling_applied := false
 var _telemetry_time := 0.0
+var _preparing_label: Label
 
 static func bridge() -> Object:
 	return Engine.get_singleton("FidelityFX") if Engine.has_singleton("FidelityFX") else null
@@ -44,12 +53,13 @@ static func facts() -> Dictionary:
 static func reason_for(name: String, info: Dictionary, sr: int, fg: int = 0) -> String:
 	if not info.get("engine", false): return UNAVAILABLE
 	if not info.get("api", false): return NEED_API
-	if name != UPSCALING and sr <= 0: return ENABLE_SR
-	if sr > 0 and not info.get("sr" + str(sr + 2), false): return NEED_SR
-	if sr == 0 and not info.get("sr3", false) and not info.get("sr4", false): return NEED_SR
 	if name == FRAME_GENERATION:
 		if fg > 0 and not info.get("fg" + str(fg + 2), false): return NEED_FG
 		if fg == 0 and not info.get("fg3", false) and not info.get("fg4", false): return NEED_FG
+		return ""
+	if name == QUALITY and sr <= 0: return ENABLE_SR
+	if sr > 0 and not info.get("sr" + str(sr + 2), false): return NEED_SR
+	if sr == 0 and not info.get("sr3", false) and not info.get("sr4", false): return NEED_SR
 	return ""
 
 static func reason(name: String, values: Dictionary = {}) -> String:
@@ -69,6 +79,17 @@ static func next_value(name: String, current: int, values: Dictionary) -> int:
 static func sr_active() -> bool:
 	return GameData.option(UPSCALING) > 0 and reason(UPSCALING).is_empty()
 
+static func aa_selection(values: Dictionary) -> int:
+	# Retain the old saved keys and the non-FSR fallback on unsupported builds.
+	var sr := int(values.get(UPSCALING, 0))
+	return sr + 5 if sr > 0 else int(values.get("q_aa", 1))
+
+static func aa_reason(selection: int, values: Dictionary) -> String:
+	if selection < 6: return ""
+	var proposed := values.duplicate()
+	proposed[UPSCALING] = selection - 5
+	return reason(UPSCALING, proposed)
+
 static func apply_upscaling(vp: Viewport) -> void:
 	if vp != GameData.get_tree().root or not sr_active(): return
 	bridge().call("set_upscaler_version", GameData.option(UPSCALING) + 2)
@@ -83,6 +104,20 @@ static func apply_upscaling(vp: Viewport) -> void:
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	set_process(facts().engine and facts().api)
+	if not is_processing(): return
+	var layer := CanvasLayer.new()
+	layer.layer = 126
+	add_child(layer)
+	_preparing_label = Label.new()
+	_preparing_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	_preparing_label.offset_bottom = -8
+	_preparing_label.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	_preparing_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_preparing_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_preparing_label.add_theme_constant_override("outline_size", 4)
+	_preparing_label.add_theme_color_override("font_outline_color", Color.BLACK)
+	_preparing_label.hide()
+	layer.add_child(_preparing_label)
 
 func _process(dt: float) -> void:
 	var root := get_tree().root
@@ -103,10 +138,12 @@ func _process(dt: float) -> void:
 		root.set("frame_generation", enable)
 		bridge().call("set_frame_generation_version", version)
 		_previous_fg = version
+	var status: Dictionary = bridge().call("get_status")
+	_preparing_label.visible = (applied or enable) and (status.get("temporal_shaders_initializing", false) or status.get("upscaler_initializing", false) or status.get("frame_generation_initializing", false))
+	if _preparing_label.visible: _preparing_label.text = RemakeText.t("Preparing FSR…")
 	_telemetry_time += dt
 	if _telemetry_time >= 1.0:
 		_telemetry_time = 0.0
-		var status: Dictionary = bridge().call("get_status")
 		status["requested_upscaling"] = GameData.option(UPSCALING)
 		status["requested_quality"] = GameData.option(QUALITY)
 		status["requested_frame_generation"] = GameData.option(FRAME_GENERATION)

@@ -45,6 +45,15 @@ func sample(label: String, selection: int, moving := false, generate := false) -
 	get_tree().root.set("frame_generation", generate)
 	GameData._apply_window()
 	Engine.max_fps = 120
+	var deadline := Time.get_ticks_msec() + 60_000
+	var initial := status()
+	while selection >= 0 or generate:
+		var ready := status()
+		if (selection < 0 or int(ready.upscale_evaluations) > int(initial.upscale_evaluations)) and (not generate or ready.frame_generation_active): break
+		if Time.get_ticks_msec() > deadline:
+			check(false, label + ": initialization completed")
+			break
+		await RenderingServer.frame_post_draw
 	await settle(40)
 	var before := status()
 	var start := Time.get_ticks_usec()
@@ -74,7 +83,8 @@ func sample(label: String, selection: int, moving := false, generate := false) -
 		check(FsrGraphics.sr_active(), label + ": FSR remains supported")
 		check(String(after.get("upscaler_provider", "")).begins_with("3.1."), label + ": actual FSR 3.1 SR provider")
 	else:
-		check(is_equal_approx(get_tree().root.scaling_3d_scale, 1.0), label + ": ordinary scale restored")
+		var expected_scale: float = GameData.FSR2_SCALE if GameData.option("q_aa") == 5 else GameData.RENDER_SCALES[GameData.option("render_scale")]
+		check(is_equal_approx(get_tree().root.scaling_3d_scale, expected_scale), label + ": ordinary scale preserved")
 	rows.append({
 		"label": label, "selection": selection, "upscale_evaluations": delta, "generated_frames": generated, "presented_frames": presented,
 		"sampled_frames": 120, "elapsed_ms": (Time.get_ticks_usec() - start) / 1000.0,
@@ -95,10 +105,11 @@ func _run() -> void:
 	get_parent().add_child(options)
 	options.open()
 	options._show_group(FsrGraphics.GROUP)
-	check(not options._rows[0].disabled, "normal graphics menu enables supported FSR")
-	options._toggle(0)
+	check(not options._rows[5].disabled, "frame generation can be selected while upscaling is off")
+	check(not options._screen_pickers["q_aa"].is_item_disabled(6), "normal graphics menu enables supported FSR")
+	options._screen_pickers["q_aa"].item_selected.emit(6)
 	check(options._values[FsrGraphics.UPSCALING] == 1, "normal menu selects supported FSR 3.1")
-	options._toggle(2)
+	options._screen_pickers[FsrGraphics.FRAME_GENERATION].item_selected.emit(1)
 	check(options._values[FsrGraphics.FRAME_GENERATION] == 1, "normal menu selects supported frame generation")
 	options.free()
 	get_tree().root.get_node("FsrExperiment").set_process(false)
@@ -143,6 +154,16 @@ func _run() -> void:
 	await sample("performance", 3)
 	await sample("quality-motion", 1, true)
 	await sample("fg-quality-motion", 1, true, true)
+	await settle(30)
+	var creations := status()
+	var root_before := [get_tree().root.size,get_tree().root.scaling_3d_scale,get_tree().root.get("frame_generation"),get_tree().root.get("scaling_3d_mode")]
+	var pipeline_draws := RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_PIPELINE_COMPILATIONS_DRAW)
+	var pipeline_specializations := RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_PIPELINE_COMPILATIONS_SPECIALIZATION)
+	GameData._apply_window()
+	await settle(30)
+	print("FSR_REAPPLY ",JSON.stringify({"before":creations,"after":status(),"root_before":root_before,"root_after":[get_tree().root.size,get_tree().root.scaling_3d_scale,get_tree().root.get("frame_generation"),get_tree().root.get("scaling_3d_mode")]}))
+	check(status().upscaler_context_creations == creations.upscaler_context_creations and status().frame_generation_context_creations == creations.frame_generation_context_creations, "reapplying unchanged settings preserves SDK contexts")
+	check(RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_PIPELINE_COMPILATIONS_DRAW) == pipeline_draws and RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_PIPELINE_COMPILATIONS_SPECIALIZATION) == pipeline_specializations, "reapplying unchanged settings preserves scene pipelines")
 	if OS.get_cmdline_user_args().has("--fsr-capture"):
 		print("FSR_CAPTURE_READY")
 		for frame in 1200:
@@ -150,7 +171,17 @@ func _run() -> void:
 			await RenderingServer.frame_post_draw
 	await sample("fg-disabled", 1, true, false)
 	await sample("off-restored", -1)
+	var before_native := status()
+	for aa in [0, 1, 2, 3, 4, 5]:
+		GameData.options.q_aa = aa
+		await sample("fg-without-fsr-aa-" + str(aa), -1, true, true)
+	check(status().upscaler_context_creations == before_native.upscaler_context_creations, "standalone FG never creates an FSR SDK upscaler")
+	GameData.options.q_aa = 0
+	GameData.options.render_scale = 2
+	await sample("fg-spatial-scale", -1, true, true)
+	GameData.options.render_scale = 4
 	get_tree().root.size = Vector2i(960, 540)
+	await sample("fg-native-resized", -1, true, true)
 	await sample("fg-resized", 1, true, true)
 	check(get_tree().root.size == Vector2i(960, 540), "resize changes the actual swapchain")
 	# Keep generation enabled through shutdown to exercise context lifetime.

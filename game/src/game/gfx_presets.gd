@@ -44,7 +44,8 @@ static func values(preset: int, method: String = RenderingServer.get_current_ren
 		for key in ["gfx_volumetric", "gfx_ssao", "gfx_water_reflections", "gfx_depth_of_field"]:
 			result[key] = 0
 	if method == "gl_compatibility": result.q_aa = 0
+	result.fsr_upscaling = 0 # The preset's AA choice replaces the unified selector.
 	return result
 
 static func controls(key: String) -> bool:
-	return key.begins_with("gfx_") or key in ["q_aa", "q_shadows", "q_aniso", "q_shadow_fit", "render_scale"]
+	return key.begins_with("gfx_") or key in ["q_aa", "fsr_upscaling", "fsr_quality", "q_shadows", "q_aniso", "q_shadow_fit", "render_scale"]

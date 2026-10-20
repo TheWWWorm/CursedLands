@@ -33,6 +33,9 @@ func save_result(blocked := false) -> void:
 	print("FSR_CAMPAIGN ", JSON.stringify(result))
 
 func sample(label: String, expect_fg: bool, moving := false) -> void:
+	var deadline := Time.get_ticks_msec() + 60_000
+	while expect_fg and not status().frame_generation_active and Time.get_ticks_msec() < deadline:
+		await settle(1)
 	await settle(30)
 	var before := status()
 	var original_camera := game.rig.camera.transform
@@ -131,7 +134,16 @@ func _run() -> void:
 	await sample("menu-closed", true, true)
 	GameData.options.fsr_upscaling = 0
 	GameData._apply_window()
-	await sample("upscaling-off", false)
+	await sample("upscaling-off", true, true)
+	var previous: int = status().upscale_evaluations
+	await sample("native-gameplay", true, true)
+	check(status().upscale_evaluations == previous, "native gameplay uses FG without FSR upscaling")
+	game.hud._open_menu()
+	await sample("native-menu", false)
+	game.hud._close_menu()
+	await sample("native-menu-closed", true, true)
+	GameData.options.fsr_frame_generation = 0
+	await sample("all-fsr-off", false)
 	game.queue_free()
 	session.queue_free()
 	await settle(10)

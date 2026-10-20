@@ -1,7 +1,6 @@
 # AMD FSR on Windows
 
-Cursed Lands 1.20.0 includes AMD FSR in the normal Windows executable, alongside
-formula mods and the campaign fixes. It uses a custom native Godot renderer;
+Cursed Lands includes AMD FSR in the normal Windows executable. It uses a custom native Godot renderer;
 an ordinary Godot export alone cannot enable it. Upscaling and frame generation
 both start **Off**.
 
@@ -10,18 +9,21 @@ both start **Off**.
 1. Extract the complete Windows package and run `CursedLands.exe` as usual.
 2. Open **Options → Screen → Renderer**. If necessary, select
    **Forward+ (Direct3D 12)** and accept the normal restart prompt.
-3. Open **Options → Screen → AMD FSR**.
-4. Select **FSR 3.1** or **FSR 4** for upscaling, then choose **Native AA**,
+3. In **Screen → Anti-aliasing**, choose ordinary AA or **FSR 3.1 / FSR 4**.
+4. For FSR, use the adjacent **Upscale quality** dropdown to choose **Native AA**,
    **Quality**, **Balanced** or **Performance**.
-5. Select an available frame-generation version to generate one intermediate
-   frame per rendered frame during campaign gameplay.
+5. Choose an available **Frame generation** version on the same screen. It
+   generates one intermediate frame per rendered frame during campaign gameplay
+   and also works with ordinary AA, without FSR upscaling.
 
 The same installation, settings, saves and mod profiles are used. No special
 launcher or command-line flag is needed. The earlier local experimental profile
 is not imported automatically; existing ordinary release profiles stay in place.
 
 Version availability is queried from the SDK on the active device. Unsupported
-choices are skipped. An FSR 4 request never silently uses FSR 3.1; the runtime
+choices are greyed out and cannot be selected. Screen shows a renderer-switch
+instruction when Direct3D 12 is required; option help explains other blockers.
+Saved unsupported requests can still be switched off. An FSR 4 request never silently uses FSR 3.1; the runtime
 records the actual provider version after context creation.
 
 | Feature | Hardware and qualification |
@@ -50,8 +52,9 @@ Native AA uses scale 1; the other scales are 2/3, 1/1.7 and 1/2. The integration
 provides linear HDR color, reverse-Z depth, decoded motion vectors, jitter,
 camera-cut resets and an extracted reactive mask before tonemapping.
 
-Frame generation requires an active supported FSR upscaler. The normal game
-controller suspends it during pauses, loading, movies, camera-blocking HUD
+Frame generation can use native resolution, the ordinary render scale and
+Off, SMAA, MSAA, TAA or FSR 2 anti-aliasing, independently of AMD SDK upscaling.
+The normal game controller suspends it during pauses, loading, movies, camera-blocking HUD
 panels and loss of window focus. It resumes automatically in active campaign
 gameplay. Trials and portrait/reflection subviewports retain their own scaling.
 
@@ -69,12 +72,28 @@ further image-quality review on native Windows and AMD hardware. This is 2×
 generation only; it does not include path tracing, ray reconstruction or
 generation of more than one intermediate frame.
 
-The FPS overlay counts **rendered** frames. `fsr-status.json` in the game
-profile reports actual SDK versions, successful upscale dispatches, generated
+While frame generation is active, the FPS overlay shows **rendered FPS** and
+**presented FPS**, sampled from the actual game and underlying DXGI present
+counters over the same rolling time interval. It never assumes a 2× multiplier.
+A short “…” appears until a valid presentation sample exists; pauses, resumes,
+resets and long gaps discard stale samples. With FG off, the ordinary single FPS
+counter remains. Frame generation has a processing cost, so rendered FPS can
+fall while presented FPS increases.
+
+`fsr-status.json` in the game profile reports actual SDK versions, successful upscale dispatches, generated
 frames, game presents, real DXGI presents and errors. `presented_frames`
 counts calls reaching the underlying swapchain; it does not measure how many
 frames a monitor physically scanned out. Screenshots taken through Godot
 capture rendered frames, not the interpolated frames.
+
+First activation prepares the engine's motion-vector shaders and pipelines on
+Godot's compiler workers, then creates the requested AMD context on a bounded
+background worker. The ordinary color pass continues, with spatial scaling if
+needed, until the feature is ready. **Preparing FSR…** is localized in EN/RU/DE.
+Readiness is retained for the configured render buffers, so later unrelated
+pipeline compilation does not repeatedly suspend FG. Applying unchanged settings
+preserves the current context. Obsolete pending size/version requests are
+discarded at handoff; device shutdown joins the worker before releasing D3D12.
 
 The loader verifies the exact SHA-256 of each production AMD DLL before
 loading it from beside the executable. Missing or mismatched DLLs leave the

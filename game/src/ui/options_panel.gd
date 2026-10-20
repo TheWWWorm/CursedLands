@@ -35,9 +35,10 @@ extends Interface800
 ## only its rows (its free rows empty), but Graphics starts at the top (no
 ## rows for the original's three shadow switches, always : FIXED_OPTIONS) and
 ## its brightness / contrast / gamma are on Screen. Screen (SCREEN_GROUP):
-## display mode, resolution, render scale, anti-aliasing, frame-rate limit,
-## VSync, smooth motion, FPS counter, brightness / contrast / gamma and (Android
-## only) the renderer — multiple-choice rows stepped by a click / Enter
+## display mode, resolution, render scale, anti-aliasing (including FSR),
+## upscale quality, independent frame generation, frame-rate limit,
+## VSync, smooth motion, FPS counter, brightness / contrast / gamma and the
+## platform renderer — multiple-choice rows stepped by a click / Enter
 ## (forward) or Left / Right, applied at once like the volumes, restored by ✗;
 ## the renderer row asks first when stepped to Forward+ (experimental on
 ## phones, ✗ puts it back) and ✓ with it changed offers a restart. Graphics
@@ -110,7 +111,7 @@ const SECTIONS := [WORLD_GROUP, TERRAIN_GROUP, LIGHT_GROUP, WATER_GROUP, EFFECTS
 ## The remake pages and the page their « row (and Esc / B) leads back to; the
 ## parent's button is lit while one is up. The graphics sections also hang
 ## under Graphics (GRAPHICS_LINKS) when opened from there (`_came_from`).
-const PARENT := {FsrGraphics.GROUP: SCREEN_GROUP, DIRECT_GROUP: CAMERA_GROUP, DIRECT_KEYS_GROUP: DIRECT_GROUP, DIRECT_PAD_GROUP: DIRECT_GROUP, WORLD_GROUP: REMAKE_GROUP, LIGHT_GROUP: REMAKE_GROUP,
+const PARENT := {DIRECT_GROUP: CAMERA_GROUP, DIRECT_KEYS_GROUP: DIRECT_GROUP, DIRECT_PAD_GROUP: DIRECT_GROUP, WORLD_GROUP: REMAKE_GROUP, LIGHT_GROUP: REMAKE_GROUP,
 	EFFECTS_GROUP: REMAKE_GROUP, CAMERA_GROUP: REMAKE_GROUP, INTERFACE_GROUP: REMAKE_GROUP,
 	GAMEPLAY_GROUP: REMAKE_GROUP, COOP_GROUP: REMAKE_GROUP, PAD_GROUP: REMAKE_GROUP,
 	PAD_BUTTONS_GROUP: PAD_GROUP, TERRAIN_GROUP: REMAKE_GROUP, WATER_GROUP: REMAKE_GROUP}
@@ -183,6 +184,8 @@ var _profile: PlayerProfileDialog
 var _game_setup: DifficultyPanel
 var _preset_picker: OptionButton
 var _preset_scale := Vector2.ZERO
+var _screen_pickers: Dictionary = {}
+var _fsr_hint := ""
 
 
 func _ready() -> void:
@@ -214,6 +217,25 @@ func _ready() -> void:
 	_preset_picker.get_popup().add_theme_color_override("font_color", TEXT)
 	_preset_picker.get_popup().add_theme_color_override("font_hover_color", TEXT)
 	_preset_picker.get_popup().add_theme_stylebox_override("hover", SettingsDialog.plate(BAR, Color.TRANSPARENT, 4))
+	for name: String in ["q_aa", FsrGraphics.QUALITY, FsrGraphics.FRAME_GENERATION]:
+		var picker := ScrollOptionButton.new()
+		picker.fit_to_longest_item = false
+		CampaignChoices.style_button(picker)
+		picker.add_theme_color_override("font_color", TEXT)
+		picker.add_theme_color_override("font_disabled_color", GREY)
+		add_child(picker)
+		picker.hide()
+		_screen_pickers[name] = picker
+		picker.item_selected.connect(func(index):
+			if name == "q_aa": _set_aa_value(picker.get_item_id(index))
+			else: _set_value(name, picker.get_item_id(index))
+			_sel = 3 if name == "q_aa" else (4 if name == FsrGraphics.QUALITY else 5))
+		picker.get_popup().add_theme_font_override("font", font())
+		picker.get_popup().add_theme_stylebox_override("panel", SettingsDialog.plate(Color("24241c"), Color("8b7953"), 8))
+		picker.get_popup().add_theme_color_override("font_color", TEXT)
+		picker.get_popup().add_theme_color_override("font_disabled_color", GREY)
+		picker.get_popup().add_theme_color_override("font_hover_color", TEXT)
+		picker.get_popup().add_theme_stylebox_override("hover", SettingsDialog.plate(BAR, Color.TRANSPARENT, 4))
 	resized.connect(queue_redraw)
 
 
@@ -354,11 +376,17 @@ func _show_group(g: int) -> void:
 		_rows[int(o[4])] = {"kind": "slider" if int(o[1]) == 0 else "switch", "name": name,
 			"max": choices.size() if not choices.is_empty() else int(o[2]), "label": label, "tip": tip,
 			"choices": choices}
+		if name == "q_aa":
+			_rows[int(o[4])].kind = "dropdown"
+			_rows[int(o[4])].choices = choices + RemakeText.tl(["FSR 3.1", "FSR 4"])
+			_rows[int(o[4])].max = choices.size() + 2
+			_rows[int(o[4])].tip += "\n\n" + RemakeText.t(FsrGraphics.SR_HELP)
 		if ModSchema.RULES.has(name):
 			var reason := ModStore.editable(name)
 			_rows[int(o[4])].disabled = reason != ""
 			if reason != "": _rows[int(o[4])].tip += "\n" + RemakeText.t(reason)
 		if name in FsrGraphics.OPTIONS:
+			_rows[int(o[4])].kind = "dropdown"
 			var reason := FsrGraphics.reason(name, _values)
 			_rows[int(o[4])].disabled = reason != "" and (name == FsrGraphics.QUALITY or int(_values.get(name, 0)) == 0)
 			if reason != "": _rows[int(o[4])].tip += "\n\n" + RemakeText.t(reason)
@@ -390,8 +418,6 @@ func _show_group(g: int) -> void:
 			"tip":RemakeText.t("Choose a graphics level, then confirm with ✓. Ultra enables every remake effect at its highest quality. Volumetric fog, ambient occlusion, water reflections and depth of field need Forward+ for the full effect. Manual changes become Custom.")}
 		for i in GRAPHICS_LINKS.size():
 			_rows[GRAPHICS_LINK_ROW + i] = _section_link(GRAPHICS_LINKS[i])
-	elif _group == SCREEN_GROUP:
-		_rows[13] = _section_link(FsrGraphics.GROUP)
 	elif _parent(_group) >= 0:
 		_rows[BACK_ROW] = {"kind": "link", "name": "", "to": _parent(_group),
 			"label": "« " + _section_label(_parent(_group)), "tip": ""}
@@ -425,7 +451,40 @@ func _show_group(g: int) -> void:
 		if _rows.has(r):
 			_sel = r
 			break
+	_refresh_screen_pickers()
 	queue_redraw()
+
+
+func _refresh_screen_pickers() -> void:
+	_fsr_hint = RemakeText.t(FsrGraphics.screen_hint(FsrGraphics.facts())) if _group == SCREEN_GROUP else ""
+	for name: String in _screen_pickers:
+		var picker: OptionButton = _screen_pickers[name]
+		picker.get_popup().hide()
+		picker.clear()
+		if _group != SCREEN_GROUP: continue
+		var row: Dictionary = _rows[3 if name == "q_aa" else (4 if name == FsrGraphics.QUALITY else 5)]
+		picker.disabled = row.get("disabled", false)
+		picker.tooltip_text = row.tip
+		for i in row.choices.size():
+			picker.add_item(row.choices[i], i)
+			var reason := ""
+			if name == "q_aa": reason = FsrGraphics.aa_reason(i, _values)
+			elif name == FsrGraphics.FRAME_GENERATION and i > 0:
+				var proposed := _values.duplicate()
+				proposed[name] = i
+				reason = FsrGraphics.reason(name, proposed)
+			picker.set_item_disabled(i, not reason.is_empty())
+			picker.get_popup().set_item_tooltip(i, RemakeText.t(reason) if not reason.is_empty() else row.tip)
+	_sync_screen_pickers()
+
+
+func _set_aa_value(selection: int) -> void:
+	if not FsrGraphics.aa_reason(selection, _values).is_empty(): return
+	if selection >= 6:
+		_set_value(FsrGraphics.UPSCALING, selection - 5)
+	else:
+		_set_value(FsrGraphics.UPSCALING, 0)
+		_set_value("q_aa", selection)
 
 
 # ------------------------------------------------------------------ keys
@@ -599,6 +658,8 @@ func _set_value(name: String, v: int) -> void:
 		var selected := _sel
 		_show_group(_group)
 		_sel = selected
+	elif name == "q_aa" or name == "graphics_preset":
+		_refresh_screen_pickers()
 	queue_redraw()
 
 
@@ -609,7 +670,8 @@ func _toggle(r: int) -> void:
 	if row.get("disabled", false): return
 	match row.kind:
 		"dropdown":
-			_preset_picker.show_popup()
+			var picker: OptionButton = _preset_picker if row.name == "graphics_preset" else _screen_pickers[row.name]
+			picker.show_popup()
 		"switch":
 			sound("messbox\\ok")
 			_set_value(row.name, FsrGraphics.next_value(row.name, int(_values.get(row.name, 0)), _values) if row.name in FsrGraphics.OPTIONS else (int(_values.get(row.name, 0)) + 1) % int(row.max))
@@ -778,6 +840,7 @@ func _ask_experimental(was: int) -> void:
 # ------------------------------------------------------------------ drawing
 
 func _sync_preset_picker() -> void:
+	_sync_screen_pickers()
 	if _preset_picker == null: return
 	_preset_picker.visible = _group == 0 and not hide_text and not MessageBox.is_up(_box) and not ((is_instance_valid(_game_setup) and _game_setup.visible) or is_instance_valid(_profile))
 	if not _preset_picker.visible: return
@@ -798,6 +861,32 @@ func _sync_preset_picker() -> void:
 		popup.add_theme_constant_override("v_separation", maxi(8, roundi(8 * kv().y)))
 	_preset_picker.size = rect.size
 	_preset_picker.select(_preset_picker.get_item_index(int(_values.get("graphics_preset", GfxPresets.CUSTOM))))
+
+
+func _sync_screen_pickers() -> void:
+	for name: String in _screen_pickers:
+		var picker: OptionButton = _screen_pickers[name]
+		picker.visible = visible and _group == SCREEN_GROUP and not hide_text and not MessageBox.is_up(_box) and not ((is_instance_valid(_game_setup) and _game_setup.visible) or is_instance_valid(_profile))
+		if not picker.visible:
+			picker.get_popup().hide()
+			continue
+		var row := 3 if name == "q_aa" else (4 if name == FsrGraphics.QUALITY else 5)
+		var rect := r8(Rect2(530, _row_y(row), 160, 24))
+		picker.position = rect.position
+		if picker.get_meta("layout_scale", Vector2.ZERO) != kv():
+			picker.set_meta("layout_scale", kv())
+			for state in ["normal", "hover", "pressed", "disabled", "focus"]:
+				var style := picker.get_theme_stylebox(state).duplicate() as StyleBox
+				style.content_margin_left = 8 * kv().x
+				style.content_margin_right = 16 * kv().x
+				style.content_margin_top = 0
+				style.content_margin_bottom = 0
+				picker.add_theme_stylebox_override(state, style)
+			picker.add_theme_font_size_override("font_size", font_px(1))
+			picker.get_popup().add_theme_font_size_override("font_size", font_px(1))
+			picker.get_popup().add_theme_constant_override("v_separation", maxi(8, roundi(8 * kv().y)))
+		picker.size = rect.size
+		picker.select(FsrGraphics.aa_selection(_values) if name == "q_aa" else int(_values.get(name, 0)))
 
 
 func group_font_px(g: int) -> int:
@@ -837,6 +926,8 @@ func _draw() -> void:
 	var ui := tex("saveload")
 	panel(Rect2(100, 100, 600, 400))
 	text(Rect2(100, 110, 600, 24), _group_label(_group), 2, TEXT, HORIZONTAL_ALIGNMENT_CENTER)
+	if _group == SCREEN_GROUP and not _fsr_hint.is_empty():
+		text(Rect2(104, 136, 592, 18), _fsr_hint, 1, TEXT, HORIZONTAL_ALIGNMENT_CENTER)
 	# Group buttons.
 	for i in _group_count():
 		var g: int = TAB_ORDER[i]
@@ -865,7 +956,7 @@ func _draw() -> void:
 			"slider":
 				hslider(_slider_rect(r), float(_values.get(row.name, 0)), float(row.max))
 			"switch":
-				text(Rect2(530, y + 4, 160, 16), _switch_text(row), 1, TEXT)
+				text(Rect2(530, y + 4, 160, 16), _switch_text(row), 1, col)
 			"keys":
 				text(Rect2(530, y + 4, 160, 20), row["keys"], 1, col)
 			"padbtn":
@@ -1023,7 +1114,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 			_show_group(TAB_ORDER[posmod(i, TAB_ORDER.size())])
 		KEY_LEFT, KEY_RIGHT:
 			if _rows.has(_sel) and _rows[_sel].kind == "dropdown":
-				_preset_picker.show_popup()
+				_toggle(_sel)
 			elif _rows.has(_sel) and _rows[_sel].kind == "slider":
 				var row: Dictionary = _rows[_sel]
 				var d := -1 if e.keycode == KEY_LEFT else 1

@@ -36,6 +36,21 @@ diff --git a/drivers/SCsub b/drivers/SCsub
  env.add_source_files(env.drivers_sources, "*.cpp")
  
  lib = env.add_library("drivers", env.drivers_sources)
+diff --git a/drivers/d3d12/rendering_context_driver_d3d12.cpp b/drivers/d3d12/rendering_context_driver_d3d12.cpp
+--- a/drivers/d3d12/rendering_context_driver_d3d12.cpp
++++ b/drivers/d3d12/rendering_context_driver_d3d12.cpp
+@@ -267,6 +267,11 @@
+ 
+ void RenderingContextDriverD3D12::surface_set_vsync_mode(SurfaceID p_surface, DisplayServerEnums::VSyncMode p_vsync_mode) {
+ 	Surface *surface = (Surface *)(p_surface);
++	// Reapplying settings must not resize the swap chain or recreate its FSR
++	// frame-generation context when the presentation mode did not change.
++	if (surface->vsync_mode == p_vsync_mode) {
++		return;
++	}
+ 	surface->vsync_mode = p_vsync_mode;
+ 	surface->needs_resize = true;
+ }
 diff --git a/drivers/d3d12/rendering_device_driver_d3d12.cpp b/drivers/d3d12/rendering_device_driver_d3d12.cpp
 --- a/drivers/d3d12/rendering_device_driver_d3d12.cpp
 +++ b/drivers/d3d12/rendering_device_driver_d3d12.cpp
@@ -146,15 +161,25 @@ diff --git a/drivers/d3d12/rendering_device_driver_d3d12.cpp b/drivers/d3d12/ren
  }
  
  /********************/
-@@ -5953,6 +5992,7 @@
+@@ -5945,6 +5984,9 @@
+ }
+ 
+ RenderingDeviceDriverD3D12::~RenderingDeviceDriverD3D12() {
++#ifdef FSR_SDK_ENABLED
++	if (auto *fsr = FidelityFX::get_singleton()) { fsr->shutdown_device(device.Get()); }
++#endif
+ 	rtv_descriptor_heap_pool.free(null_rtv_alloc);
+ 
+ 	for (FrameInfo &f : frames) {
+@@ -5952,6 +5994,7 @@
+ 			resource_descriptor_heap.free(alloc);
  		}
  	}
- 
 +
+ 
  	if (D3D12Hooks::get_singleton() != nullptr) {
  		D3D12Hooks::get_singleton()->cleanup_device();
- 	}
-@@ -6019,6 +6059,7 @@
+@@ -6019,6 +6062,7 @@
  	} else {
  		PFN_D3D12_CREATE_DEVICE d3d_D3D12CreateDevice = (PFN_D3D12_CREATE_DEVICE)(void *)GetProcAddress(context_driver->lib_d3d12, "D3D12CreateDevice");
  		ERR_FAIL_NULL_V(d3d_D3D12CreateDevice, ERR_CANT_CREATE);
@@ -162,7 +187,7 @@ diff --git a/drivers/d3d12/rendering_device_driver_d3d12.cpp b/drivers/d3d12/ren
  
  		res = d3d_D3D12CreateDevice(adapter.Get(), requested_feature_level, IID_PPV_ARGS(device.GetAddressOf()));
  	}
-@@ -6398,9 +6439,16 @@
+@@ -6398,9 +6442,16 @@
  	Error err = _initialize_device();
  	ERR_FAIL_COND_V(err != OK, ERR_CANT_CREATE);
  
@@ -179,7 +204,7 @@ diff --git a/drivers/d3d12/rendering_device_driver_d3d12.cpp b/drivers/d3d12/ren
  	err = _get_device_limits();
  	ERR_FAIL_COND_V(err != OK, ERR_CANT_CREATE);
  
-@@ -6413,5 +6461,6 @@
+@@ -6413,5 +6464,6 @@
  	err = _initialize_command_signatures();
  	ERR_FAIL_COND_V(err != OK, ERR_CANT_CREATE);
  
@@ -214,7 +239,7 @@ diff --git a/drivers/fsr_sdk/fsr_sdk.cpp b/drivers/fsr_sdk/fsr_sdk.cpp
 new file mode 100644
 --- /dev/null
 +++ b/drivers/fsr_sdk/fsr_sdk.cpp
-@@ -0,0 +1,244 @@
+@@ -0,0 +1,348 @@
 +// Cursed Lands experimental FidelityFX integration. SPDX-License-Identifier: MIT
 +#include "fsr_sdk.h"
 +#include "core/config/engine.h"
@@ -225,6 +250,12 @@ new file mode 100644
 +
 +FidelityFX *FidelityFX::singleton = nullptr;
 +FidelityFX::FidelityFX() { singleton = this; }
++FidelityFX::~FidelityFX() {
++#ifdef FSR_SDK_ENABLED
++	finish_context_job();
++#endif
++	singleton = nullptr;
++}
 +void FidelityFX::register_singleton() {
 +	GDREGISTER_CLASS(FidelityFX);
 +	Engine::get_singleton()->add_singleton(Engine::Singleton("FidelityFX", singleton));
@@ -273,11 +304,113 @@ new file mode 100644
 +	d["present_count_available"] = present_count_available.get() != 0;
 +	d["frame_generation_active"] = fg_active.get() != 0;
 +	d["last_error"] = last_error.get();
++	d["temporal_shaders_initializing"] = temporal_shaders_initializing.get() != 0;
++	d["upscaler_initializing"] = initializing_effect.get() == 1;
++	d["frame_generation_initializing"] = initializing_effect.get() == 2;
++	d["upscaler_create_ms"] = sr_create_usec.get() / 1000.0;
++	d["upscaler_max_dispatch_ms"] = sr_max_dispatch_usec.get() / 1000.0;
++	d["prepare_max_ms"] = prepare_max_usec.get() / 1000.0;
++	d["frame_generation_create_ms"] = fg_create_usec.get() / 1000.0;
++	d["upscaler_context_creations"] = (int64_t)sr_context_creations.get();
++	d["frame_generation_context_creations"] = (int64_t)fg_context_creations.get();
 +#endif
 +	return d;
 +}
 +
 +#ifdef FSR_SDK_ENABLED
++void FidelityFX::create_context_worker(void *p_userdata) {
++	auto *job = static_cast<ContextJob *>(p_userdata);
++	auto *api = job->api;
++	Thread::set_name("FSR context preparation");
++	const uint64_t started = OS::get_singleton()->get_ticks_usec();
++	ffxCreateBackendDX12Desc backend{};
++	backend.header.type = FFX_API_CREATE_CONTEXT_DESC_TYPE_BACKEND_DX12;
++	backend.device = api->device;
++	ffxOverrideVersion version{};
++	version.header.type = FFX_API_DESC_TYPE_OVERRIDE_VERSION;
++	version.versionId = (job->fg ? api->fg_ids : api->sr_ids)[job->version - 3];
++	if (job->fg) {
++		ffxCreateContextDescFrameGenerationVersion api_version{};
++		api_version.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_FRAMEGENERATION_VERSION, &version.header };
++		api_version.version = FFX_FRAMEGENERATION_VERSION;
++		ffxCreateContextDescFrameGenerationHudless hudless{};
++		hudless.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_FRAMEGENERATION_HUDLESS, &api_version.header };
++		hudless.hudlessBackBufferFormat = job->hudless_format;
++		backend.header.pNext = &hudless.header;
++		ffxCreateContextDescFrameGeneration desc{};
++		desc.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_FRAMEGENERATION, &backend.header };
++		desc.flags = FFX_FRAMEGENERATION_ENABLE_DEPTH_INVERTED;
++		desc.displaySize = { (uint32_t)job->target_size.x, (uint32_t)job->target_size.y };
++		desc.maxRenderSize = { (uint32_t)job->render_size.x, (uint32_t)job->render_size.y };
++		desc.backBufferFormat = ffxApiGetSurfaceFormatDX12(DXGI_FORMAT_R8G8B8A8_UNORM);
++		job->result = api->create(&job->context, &desc.header, nullptr);
++		api->fg_create_usec.set(OS::get_singleton()->get_ticks_usec() - started);
++		api->fg_context_creations.increment();
++	} else {
++		ffxCreateContextDescUpscaleVersion api_version{};
++		api_version.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_UPSCALE_VERSION, &version.header };
++		api_version.version = FFX_UPSCALER_VERSION;
++		backend.header.pNext = &api_version.header;
++		ffxCreateContextDescUpscale desc{};
++		desc.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_UPSCALE, &backend.header };
++		desc.flags = FFX_UPSCALE_ENABLE_HIGH_DYNAMIC_RANGE | FFX_UPSCALE_ENABLE_DEPTH_INVERTED | FFX_UPSCALE_ENABLE_AUTO_EXPOSURE;
++		desc.maxRenderSize = { (uint32_t)job->render_size.x, (uint32_t)job->render_size.y };
++		desc.maxUpscaleSize = { (uint32_t)job->target_size.x, (uint32_t)job->target_size.y };
++		job->result = api->create(&job->context, &desc.header, nullptr);
++		api->sr_create_usec.set(OS::get_singleton()->get_ticks_usec() - started);
++		api->sr_context_creations.increment();
++	}
++	api->initializing_effect.set(0);
++	job->done.set(1); // Publish the context/result only after creation is complete.
++}
++
++ffxContext FidelityFX::request_context(bool p_fg, int p_version, Size2i p_render, Size2i p_target, uint32_t p_hudless_format) {
++	if (context_job) {
++		if (!context_job->done.get()) { return nullptr; }
++		context_job->thread.wait_to_finish();
++		const bool matches = context_job->fg == p_fg && context_job->version == p_version &&
++				context_job->render_size == p_render && context_job->target_size == p_target && context_job->hudless_format == p_hudless_format;
++		if (matches) {
++			const bool ok = check(context_job->result, p_fg);
++			ffxContext result = ok ? context_job->context : nullptr;
++			if (!ok && context_job->context) { destroy(&context_job->context, nullptr); }
++			memdelete(context_job);
++			context_job = nullptr;
++			return result;
++		}
++		// An unused context has never been submitted to the GPU or configured
++		// on the swapchain. Discard stale size/version requests without a stall.
++		finish_context_job();
++	}
++	context_job = memnew(ContextJob);
++	context_job->api = this;
++	context_job->fg = p_fg;
++	context_job->version = p_version;
++	context_job->render_size = p_render;
++	context_job->target_size = p_target;
++	context_job->hudless_format = p_hudless_format;
++	initializing_effect.set(p_fg ? 2 : 1);
++	Thread::Settings settings;
++	settings.priority = Thread::PRIORITY_LOW;
++	context_job->thread.start(create_context_worker, context_job, settings);
++	return nullptr;
++}
++
++void FidelityFX::finish_context_job() {
++	if (!context_job) { return; }
++	if (context_job->thread.is_started()) { context_job->thread.wait_to_finish(); }
++	if (context_job->context) { destroy(&context_job->context, nullptr); }
++	memdelete(context_job);
++	context_job = nullptr;
++	initializing_effect.set(0);
++}
++
++void FidelityFX::shutdown_device(ID3D12Device *p_device) {
++	if (p_device != device) { return; }
++	finish_context_job();
++	device = nullptr;
++}
++
 +void FidelityFX::initialize_device(ID3D12Device *p_device) {
 +	if (OS::get_singleton()->get_current_rendering_method() != "forward_plus" ||
 +			Engine::get_singleton()->is_editor_hint()) { return; }
@@ -407,34 +540,30 @@ new file mode 100644
 +	frame_id++;
 +	return result;
 +}
-+bool FidelityFX::ensure_frame_generation(uint32_t p_width, uint32_t p_height, uint32_t p_hudless_format) {
++bool FidelityFX::ensure_frame_generation(Size2i p_render, Size2i p_target, uint32_t p_hudless_format) {
 +	int version = fg_version.get();
 +	if (!swap_chain || fg_failed.get() || version < 3 || version > 4 || !fg_supported[version - 3]) { return false; }
 +	DXGI_SWAP_CHAIN_DESC1 actual{};
 +	swap_chain->GetDesc1(&actual);
-+	if (actual.Width != p_width || actual.Height != p_height || actual.Format != DXGI_FORMAT_R8G8B8A8_UNORM) { return false; }
-+	if (fg_context && (active_fg_version != version || fg_desc.displaySize.width != p_width || fg_desc.displaySize.height != p_height)) {
++	if (actual.Width != (uint32_t)p_target.x || actual.Height != (uint32_t)p_target.y || actual.Format != DXGI_FORMAT_R8G8B8A8_UNORM) { return false; }
++	// Reserve at least display resolution, so ordinary quality changes can
++	// reuse the same FG context, including switching upscaling off entirely.
++	p_render = p_render.max(p_target);
++	if (fg_context && (active_fg_version != version || fg_desc.displaySize.width != (uint32_t)p_target.x || fg_desc.displaySize.height != (uint32_t)p_target.y ||
++			fg_desc.maxRenderSize.width != (uint32_t)p_render.x || fg_desc.maxRenderSize.height != (uint32_t)p_render.y)) {
 +		disable_frame_generation();
 +		wait_for_presents();
 +		destroy(&fg_context, nullptr);
 +		fg_context = nullptr;
 +	}
 +	if (fg_context) { return true; }
-+	fg_backend.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_BACKEND_DX12, &fg_api_version.header };
-+	fg_backend.device = device;
-+	fg_api_version.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_FRAMEGENERATION_VERSION, &fg_hudless.header };
-+	fg_api_version.version = FFX_FRAMEGENERATION_VERSION;
-+	fg_hudless.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_FRAMEGENERATION_HUDLESS, &fg_override.header };
-+	fg_hudless.hudlessBackBufferFormat = p_hudless_format;
-+	fg_override.header = { FFX_API_DESC_TYPE_OVERRIDE_VERSION, nullptr };
-+	fg_override.versionId = fg_ids[version - 3];
-+	fg_desc = {};
-+	fg_desc.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_FRAMEGENERATION, &fg_backend.header };
-+	fg_desc.flags = FFX_FRAMEGENERATION_ENABLE_DEPTH_INVERTED;
-+	fg_desc.displaySize = { p_width, p_height };
-+	fg_desc.maxRenderSize = { p_width, p_height };
-+	fg_desc.backBufferFormat = ffxApiGetSurfaceFormatDX12(actual.Format);
-+	if (!check(create(&fg_context, &fg_desc.header, nullptr), true)) { return false; }
++	// The worker owns a separate, unconfigured context. Present cannot touch
++	// it until this render-thread handoff under fg_mutex. No worker holds
++	// fg_mutex during compilation, so ordinary presents continue meanwhile.
++	fg_context = request_context(true, version, p_render, p_target, p_hudless_format);
++	if (!fg_context) { return false; }
++	fg_desc.displaySize = { (uint32_t)p_target.x, (uint32_t)p_target.y };
++	fg_desc.maxRenderSize = { (uint32_t)p_render.x, (uint32_t)p_render.y };
 +	active_fg_version = version;
 +	record_provider(&fg_context, true);
 +	fg_config = {};
@@ -444,7 +573,7 @@ new file mode 100644
 +	fg_config.frameGenerationCallbackUserContext = this;
 +	// Non-async interpolation keeps the single HUD-less texture on the game queue.
 +	fg_config.allowAsyncWorkloads = false;
-+	fg_config.generationRect = { 0, 0, (int32_t)p_width, (int32_t)p_height };
++	fg_config.generationRect = { 0, 0, p_target.x, p_target.y };
 +	if (debug_frames) { fg_config.flags = FFX_FRAMEGENERATION_FLAG_DRAW_DEBUG_TEAR_LINES | FFX_FRAMEGENERATION_FLAG_DRAW_DEBUG_RESET_INDICATORS; }
 +	return true;
 +}
@@ -463,13 +592,14 @@ diff --git a/drivers/fsr_sdk/fsr_sdk.h b/drivers/fsr_sdk/fsr_sdk.h
 new file mode 100644
 --- /dev/null
 +++ b/drivers/fsr_sdk/fsr_sdk.h
-@@ -0,0 +1,89 @@
+@@ -0,0 +1,111 @@
 +// Cursed Lands experimental FidelityFX integration. SPDX-License-Identifier: MIT
 +#pragma once
 +
 +#include "core/object/class_db.h"
 +#include "core/object/object.h"
 +#include "core/os/mutex.h"
++#include "core/os/thread.h"
 +#include "core/templates/safe_refcount.h"
 +
 +#ifdef FSR_SDK_ENABLED
@@ -490,6 +620,7 @@ new file mode 100644
 +
 +public:
 +	FidelityFX();
++	~FidelityFX();
 +	static FidelityFX *get_singleton() { return singleton; }
 +	static void register_singleton();
 +	Dictionary get_status() const;
@@ -520,6 +651,7 @@ new file mode 100644
 +	SafeNumeric<uint32_t> fg_failed{ 0 };
 +	SafeNumeric<uint32_t> last_error{ 0 };
 +	SafeNumeric<uint32_t> fg_active{ 0 };
++	SafeNumeric<uint32_t> temporal_shaders_initializing{ 0 };
 +	Mutex fg_mutex;
 +	ffxContext fg_context = nullptr;
 +	ffxContext swap_context = nullptr;
@@ -530,15 +662,34 @@ new file mode 100644
 +	int active_fg_version = 0;
 +	String sr_provider;
 +	String fg_provider;
-+	ffxCreateBackendDX12Desc fg_backend{};
 +	ffxCreateContextDescFrameGeneration fg_desc{};
-+	ffxCreateContextDescFrameGenerationVersion fg_api_version{};
-+	ffxCreateContextDescFrameGenerationHudless fg_hudless{};
-+	ffxOverrideVersion fg_override{};
 +	ffxConfigureDescFrameGeneration fg_config{};
 +	ffxCreateContextDescFrameGenerationSwapChainForHwndDX12 swap_create{};
 +	ffxCreateContextDescFrameGenerationSwapChainVersionDX12 swap_api_version{};
 +	bool debug_frames = false;
++	// Only the worker touches a pending context. Rendering adopts it after
++	// completion; disabling/resizing never waits for first-use compilation.
++	struct ContextJob {
++		FidelityFX *api = nullptr;
++		Thread thread;
++		SafeNumeric<uint32_t> done{ 0 };
++		bool fg = false;
++		int version = 0;
++		Size2i render_size, target_size;
++		uint32_t hudless_format = 0;
++		ffxContext context = nullptr;
++		ffxReturnCode_t result = FFX_API_RETURN_OK;
++	};
++	ContextJob *context_job = nullptr; // Render thread owns the bounded, single slot.
++	SafeNumeric<uint32_t> initializing_effect{ 0 };
++	SafeNumeric<uint64_t> sr_create_usec{ 0 }, fg_create_usec{ 0 };
++	SafeNumeric<uint64_t> sr_max_dispatch_usec{ 0 }, prepare_max_usec{ 0 };
++	SafeNumeric<uint64_t> sr_context_creations{ 0 }, fg_context_creations{ 0 };
++	static void create_context_worker(void *p_userdata);
++
++	ffxContext request_context(bool p_fg, int p_version, Size2i p_render, Size2i p_target, uint32_t p_hudless_format = 0);
++	void finish_context_job(); // Only shutdown may wait for an unfinished job.
++	void shutdown_device(ID3D12Device *p_device);
 +
 +	void initialize_device(ID3D12Device *p_device);
 +	bool create_swap_chain(IDXGIFactory *p_factory, ID3D12CommandQueue *p_queue, HWND p_hwnd, DXGI_SWAP_CHAIN_DESC1 *p_desc, IDXGISwapChain4 **r_swap);
@@ -547,7 +698,7 @@ new file mode 100644
 +	void release_frame_generation();
 +	void wait_for_presents();
 +	void disable_frame_generation(); // Caller holds fg_mutex.
-+	bool ensure_frame_generation(uint32_t p_width, uint32_t p_height, uint32_t p_hudless_format);
++	bool ensure_frame_generation(Size2i p_render, Size2i p_target, uint32_t p_hudless_format);
 +	bool check(ffxReturnCode_t p_code, bool p_fg = false);
 +	void record_provider(ffxContext *p_context, bool p_fg);
 +	static ffxReturnCode_t generate(ffxDispatchDescFrameGeneration *p_desc, void *p_user);
@@ -722,10 +873,11 @@ diff --git a/servers/rendering/renderer_rd/effects/fsr_sdk.cpp b/servers/renderi
 new file mode 100644
 --- /dev/null
 +++ b/servers/rendering/renderer_rd/effects/fsr_sdk.cpp
-@@ -0,0 +1,231 @@
+@@ -0,0 +1,232 @@
 +// Cursed Lands experimental FidelityFX integration. SPDX-License-Identifier: MIT
 +#include "fsr_sdk.h"
 +#include "drivers/fsr_sdk/fsr_sdk.h"
++#include "core/os/os.h"
 +#include "../uniform_set_cache_rd.h"
 +
 +using namespace RendererRD;
@@ -734,10 +886,6 @@ new file mode 100644
 +class FSRSDKContextDX12 : public FSRSDKContext {
 +public:
 +	ffxContext sr = nullptr;
-+	ffxCreateContextDescUpscale desc{};
-+	ffxCreateBackendDX12Desc backend{};
-+	ffxCreateContextDescUpscaleVersion api_version{};
-+	ffxOverrideVersion version_override{};
 +	int version = 3;
 +	Size2i target_size;
 +	RID reactive;
@@ -792,27 +940,24 @@ new file mode 100644
 +	pipeline = RD::get_singleton()->compute_pipeline_create(shader.version_get_shader(shader_version, 0));
 +}
 +FSRSDKEffect::~FSRSDKEffect() { shader.version_free(shader_version); }
-+bool FSRSDKEffect::is_version_current(FSRSDKContext *p_context) const {
-+	return p_context && static_cast<FSRSDKContextDX12 *>(p_context)->version == FidelityFX::get_singleton()->get_upscaler_version();
++bool FSRSDKEffect::is_version_current(FSRSDKContext *p_context, bool p_upscaling) const {
++	const int version = p_upscaling ? FidelityFX::get_singleton()->get_upscaler_version() : 0;
++	return p_context && static_cast<FSRSDKContextDX12 *>(p_context)->version == version;
 +}
-+FSRSDKContext *FSRSDKEffect::create_context(Size2i p_internal, Size2i p_target) {
++FSRSDKContext *FSRSDKEffect::create_context(Size2i p_internal, Size2i p_target, bool p_upscaling) {
 +	auto *api = FidelityFX::get_singleton();
-+	if (!api->sr_available()) { return nullptr; }
++	const int version = p_upscaling ? api->get_upscaler_version() : 0;
++	ffxContext sr = nullptr;
++	if (p_upscaling) {
++		if (!api->sr_available()) { return nullptr; }
++		sr = api->request_context(false, version, p_internal, p_target);
++		if (!sr) { return nullptr; }
++		api->record_provider(&sr, false);
++	}
 +	auto *ctx = memnew(FSRSDKContextDX12);
-+	ctx->version = api->get_upscaler_version();
++	ctx->sr = sr;
++	ctx->version = version;
 +	ctx->target_size = p_target;
-+	ctx->backend.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_BACKEND_DX12, &ctx->api_version.header };
-+	ctx->backend.device = api->device;
-+	ctx->api_version.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_UPSCALE_VERSION, &ctx->version_override.header };
-+	ctx->api_version.version = FFX_UPSCALER_VERSION;
-+	ctx->version_override.header.type = FFX_API_DESC_TYPE_OVERRIDE_VERSION;
-+	ctx->version_override.versionId = api->sr_ids[ctx->version - 3];
-+	ctx->desc.header = { FFX_API_CREATE_CONTEXT_DESC_TYPE_UPSCALE, &ctx->backend.header };
-+	ctx->desc.flags = FFX_UPSCALE_ENABLE_HIGH_DYNAMIC_RANGE | FFX_UPSCALE_ENABLE_DEPTH_INVERTED | FFX_UPSCALE_ENABLE_AUTO_EXPOSURE;
-+	ctx->desc.maxRenderSize = { (uint32_t)p_internal.x, (uint32_t)p_internal.y };
-+	ctx->desc.maxUpscaleSize = { (uint32_t)p_target.x, (uint32_t)p_target.y };
-+	if (!api->check(api->create(&ctx->sr, &ctx->desc.header, nullptr))) { memdelete(ctx); return nullptr; }
-+	api->record_provider(&ctx->sr, false);
 +	RD::TextureFormat format;
 +	format.format = RD::DATA_FORMAT_R8_UNORM;
 +	format.width = p_internal.x;
@@ -822,9 +967,10 @@ new file mode 100644
 +	return ctx;
 +}
 +
-+void FSRSDKEffect::upscale(const FSRSDKContext::Parameters &p_params) {
++void FSRSDKEffect::process(const FSRSDKContext::Parameters &p_params) {
 +	auto *ctx = static_cast<FSRSDKContextDX12 *>(p_params.context);
-+	if (!ctx || !FidelityFX::get_singleton()->sr_available()) { return; }
++	if (!ctx || (ctx->sr && !FidelityFX::get_singleton()->sr_available())) { return; }
++	uint64_t started = OS::get_singleton()->get_ticks_usec();
 +	ctx->last_parameters = p_params;
 +	ctx->evaluated = false;
 +	RD *rd = RD::get_singleton();
@@ -848,6 +994,9 @@ new file mode 100644
 +	rd->compute_list_set_push_constant(list, constants, sizeof(constants));
 +	rd->compute_list_dispatch_threads(list, p_params.internal_size.x, p_params.internal_size.y, 1);
 +	rd->compute_list_end();
++	auto *api = FidelityFX::get_singleton();
++	api->prepare_max_usec.set(MAX(api->prepare_max_usec.get(), OS::get_singleton()->get_ticks_usec() - started));
++	if (!ctx->sr) { ctx->evaluated = true; return; }
 +	RID textures[] = { p_params.color, p_params.depth, p_params.velocity, p_params.output, ctx->reactive };
 +	RD::CallbackResource resources[5];
 +	for (int i = 0; i < 5; i++) { resources[i].rid = textures[i]; resources[i].usage = RD::CALLBACK_RESOURCE_USAGE_GENERAL; }
@@ -880,7 +1029,10 @@ new file mode 100644
 +	d.enableSharpening = true;
 +	d.sharpness = p.sharpness;
 +	resources.begin();
-+	if (api->check(api->dispatch(&ctx->sr, &d.header))) {
++	const uint64_t started = OS::get_singleton()->get_ticks_usec();
++	const bool ok = api->check(api->dispatch(&ctx->sr, &d.header));
++	api->sr_max_dispatch_usec.set(MAX(api->sr_max_dispatch_usec.get(), OS::get_singleton()->get_ticks_usec() - started));
++	if (ok) {
 +		ctx->evaluated = true;
 +		api->sr_evaluations.increment();
 +		ctx->first = false;
@@ -909,7 +1061,7 @@ new file mode 100644
 +	RD *rd = RD::get_singleton();
 +	auto *hudless = (ID3D12Resource *)rd->get_driver_resource(RD::DRIVER_RESOURCE_TEXTURE, ctx->hudless);
 +	FfxApiResource hudless_resource = ffxApiGetResourceDX12(hudless, FFX_API_RESOURCE_STATE_COMMON);
-+	if (!api->ensure_frame_generation(ctx->target_size.x, ctx->target_size.y, hudless_resource.description.format)) { return; }
++	if (!api->ensure_frame_generation(ctx->last_parameters.internal_size, ctx->target_size, hudless_resource.description.format)) { return; }
 +	const auto &p = ctx->last_parameters;
 +	// Required order: Configure -> PrepareV2 -> dispatch from proxy Present.
 +	api->fg_config.frameGenerationEnabled = true;
@@ -949,9 +1101,9 @@ new file mode 100644
 +#else
 +FSRSDKEffect::FSRSDKEffect() {}
 +FSRSDKEffect::~FSRSDKEffect() {}
-+FSRSDKContext *FSRSDKEffect::create_context(Size2i, Size2i) { return nullptr; }
-+bool FSRSDKEffect::is_version_current(FSRSDKContext *) const { return false; }
-+void FSRSDKEffect::upscale(const FSRSDKContext::Parameters &) {}
++FSRSDKContext *FSRSDKEffect::create_context(Size2i, Size2i, bool) { return nullptr; }
++bool FSRSDKEffect::is_version_current(FSRSDKContext *, bool) const { return false; }
++void FSRSDKEffect::process(const FSRSDKContext::Parameters &) {}
 +void FSRSDKEffect::prepare_frame_generation(FSRSDKContext *, RID) {}
 +#endif
 diff --git a/servers/rendering/renderer_rd/effects/fsr_sdk.h b/servers/rendering/renderer_rd/effects/fsr_sdk.h
@@ -993,37 +1145,48 @@ new file mode 100644
 +public:
 +	FSRSDKEffect();
 +	~FSRSDKEffect();
-+	FSRSDKContext *create_context(Size2i p_internal, Size2i p_target);
-+	bool is_version_current(FSRSDKContext *p_context) const;
-+	void upscale(const FSRSDKContext::Parameters &p_params);
++	FSRSDKContext *create_context(Size2i p_internal, Size2i p_target, bool p_upscaling);
++	bool is_version_current(FSRSDKContext *p_context, bool p_upscaling) const;
++	void process(const FSRSDKContext::Parameters &p_params);
 +	void prepare_frame_generation(FSRSDKContext *p_context, RID p_color);
 +};
 +}
 diff --git a/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp b/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp
 --- a/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp
 +++ b/servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.cpp
-@@ -84,6 +84,12 @@
+@@ -29,6 +29,7 @@
+ /**************************************************************************/
+ 
+ #include "render_forward_clustered.h"
++#include "drivers/fsr_sdk/fsr_sdk.h"
+ 
+ #include "core/config/project_settings.h"
+ #include "servers/rendering/renderer_rd/environment/fog.h"
+@@ -83,6 +84,13 @@
+ 		}
  	}
  }
- 
++
 +void RenderForwardClustered::RenderBufferDataForwardClustered::ensure_fsr_sdk(RendererRD::FSRSDKEffect *p_effect) {
-+	if (fsr_sdk_context && !p_effect->is_version_current(fsr_sdk_context)) { memdelete(fsr_sdk_context); fsr_sdk_context = nullptr; }
-+	if (!fsr_sdk_context) { fsr_sdk_context = p_effect->create_context(render_buffers->get_internal_size(), render_buffers->get_target_size()); }
++	const bool upscaling = render_buffers->get_scaling_3d_mode() == RSE::VIEWPORT_SCALING_3D_MODE_FSR_SDK;
++	if (fsr_sdk_context && !p_effect->is_version_current(fsr_sdk_context, upscaling)) { memdelete(fsr_sdk_context); fsr_sdk_context = nullptr; }
++	if (!fsr_sdk_context) { fsr_sdk_context = p_effect->create_context(render_buffers->get_internal_size(), render_buffers->get_target_size(), upscaling); }
 +}
 +
-+
+ 
  void RenderForwardClustered::RenderBufferDataForwardClustered::ensure_fsr2(RendererRD::FSR2Effect *p_effect) {
  	if (fsr2_context == nullptr) {
- 		fsr2_context = p_effect->create_context(render_buffers->get_internal_size(), render_buffers->get_target_size());
-@@ -110,6 +116,7 @@
+@@ -110,6 +118,9 @@
  #endif
  
  void RenderForwardClustered::RenderBufferDataForwardClustered::free_data() {
++	fsr_pipelines_queued = false;
++	fsr_scene_prepared = false;
 +	if (fsr_sdk_context) { memdelete(fsr_sdk_context); fsr_sdk_context = nullptr; }
  	// JIC, should already have been cleared
  	if (render_buffers) {
  		render_buffers->clear_context(RB_SCOPE_FORWARD_CLUSTERED);
-@@ -135,6 +142,7 @@
+@@ -135,6 +146,7 @@
  		mfx_temporal_context = nullptr;
  	}
  #endif
@@ -1031,7 +1194,7 @@ diff --git a/servers/rendering/renderer_rd/forward_clustered/render_forward_clus
  
  	if (!render_sdfgi_uniform_set.is_null() && RD::get_singleton()->uniform_set_is_valid(render_sdfgi_uniform_set)) {
  		RD::get_singleton()->free_rid(render_sdfgi_uniform_set);
-@@ -1784,11 +1792,15 @@
+@@ -1784,11 +1796,15 @@
  		SCALE_NONE,
  		SCALE_FSR2,
  		SCALE_MFX,
@@ -1047,66 +1210,148 @@ diff --git a/servers/rendering/renderer_rd/forward_clustered/render_forward_clus
  			break;
  		case RSE::VIEWPORT_SCALING_3D_MODE_METALFX_TEMPORAL:
  #ifdef METAL_MFXTEMPORAL_ENABLED
-@@ -2505,6 +2517,48 @@
- 			}
+@@ -1801,7 +1817,44 @@
+ 			break;
+ 	}
  
- 			RD::get_singleton()->draw_command_end_label();
-+		} else if (scale_type == SCALE_FSR_SDK) {
-+			RENDER_TIMESTAMP("FidelityFX");
-+			rb_data->ensure_fsr_sdk(fsr_sdk_effect);
-+
-+
-+			const bool cur_camera_reset = p_render_data->scene_data->cam_transform.origin.distance_to(p_render_data->scene_data->prev_cam_transform.origin) > 5.0f ||
-+					p_render_data->scene_data->cam_transform.basis.get_column(2).dot(p_render_data->scene_data->prev_cam_transform.basis.get_column(2)) < 0.8f ||
-+					Math::abs(p_render_data->scene_data->cam_projection.get_fov() - p_render_data->scene_data->prev_cam_projection.get_fov()) > 1.0f;
-+			for (uint32_t v = 0; v < rb->get_view_count(); v++) {
-+				real_t fov = p_render_data->scene_data->cam_projection.get_fov();
-+				real_t aspect = p_render_data->scene_data->cam_projection.get_aspect();
-+				real_t fovy = p_render_data->scene_data->cam_projection.get_fovy(fov, 1.0 / aspect);
-+				Vector2 jitter = p_render_data->scene_data->taa_jitter * Vector2(rb->get_internal_size()) * 0.5f;
-+				RendererRD::FSRSDKContext::Parameters params;
-+				params.context = rb_data->get_fsr_sdk_context();
-+				params.internal_size = rb->get_internal_size();
-+				params.sharpness = CLAMP((rb->get_fsr_sharpness() / 2.0f), 0.0f, 1.0f);
-+				params.color = rb->get_internal_texture(v);
-+				params.depth = rb->get_depth_texture(v);
-+				params.velocity = rb->get_velocity_buffer(false, v);
-+				params.output = rb->get_upscaled_texture(v);
-+				params.frame_generation = rb->get_frame_generation();
-+				params.z_near = p_render_data->scene_data->z_near;
-+				params.z_far = p_render_data->scene_data->z_far;
-+				params.fovy = fovy;
-+				params.jitter = jitter;
-+				params.delta_time = float(time_step);
-+				params.reset_accumulation = cur_camera_reset;
-+
-+				Projection correction;
-+				correction.set_depth_correction(true, true, false);
-+
-+				const Projection &prev_proj = p_render_data->scene_data->prev_cam_projection;
-+				const Projection &cur_proj = p_render_data->scene_data->cam_projection;
-+				const Transform3D &prev_transform = p_render_data->scene_data->prev_cam_transform;
-+				const Transform3D &cur_transform = p_render_data->scene_data->cam_transform;
-+				params.reprojection = (correction * prev_proj) * prev_transform.affine_inverse() * cur_transform * (correction * cur_proj).inverse();
-+				params.cam_transform = cur_transform;
-+
-+				copy_effects->copy_to_rect(params.color, params.output, Rect2i(Point2i(), rb->get_target_size()), false, false, true);
-+				fsr_sdk_effect->upscale(params);
+-	bool using_upscaling = scale_type != SCALE_NONE;
++	bool using_frame_generation = !is_reflection_probe && rb->get_frame_generation() && rb->get_view_count() == 1;
++	bool fsr_preparing = false;
++	// Cancellation does not cancel shared compiler jobs. Keep material
++	// validation on the base group until the optional group actually finishes.
++	if (scene_shader.defer_advanced_compilation.is_set() && scene_shader.shader.is_group_compilation_ready(SceneShaderForwardClustered::SHADER_GROUP_ADVANCED)) {
++		scene_shader.defer_advanced_compilation.clear();
++	}
++#ifdef FSR_SDK_ENABLED
++	if (!is_reflection_probe && rb_data.is_valid() && !rb_data->fsr_scene_prepared && (scale_type == SCALE_FSR_SDK || using_frame_generation)) {
++		// Enabling motion vectors starts the advanced scene-shader group.
++		// Waiting for it on the first draw can freeze the menu for seconds.
++		// Keep the ordinary color pass until both shaders and its pipelines
++		// have finished on Godot's compiler workers. Low priority reserves
++		// workers for pipelines needed by the ordinary frames during preparation.
++		scene_shader.enable_advanced_shader_group(false, false);
++		fsr_preparing = !scene_shader.shader.is_group_compilation_ready(SceneShaderForwardClustered::SHADER_GROUP_ADVANCED);
++		scene_shader.defer_advanced_compilation.set_to(fsr_preparing);
++		if (!fsr_preparing) {
++			if (!rb_data->fsr_pipelines_queued) {
++				GlobalPipelineData requirements = global_pipeline_data_required;
++				requirements.use_motion_vectors = true;
++				requirements.texture_samples = rb->get_texture_samples();
++				for (SelfList<GeometryInstanceSurfaceDataCache> *E = geometry_surface_compilation_all_list.first(); E; E = E->next()) {
++					_mesh_generate_all_pipelines_for_surface_cache(E->self(), requirements);
++				}
++				rb_data->fsr_pipelines_queued = true;
 +			}
- 		} else if (scale_type == SCALE_MFX) {
- #ifdef METAL_MFXTEMPORAL_ENABLED
- 			bool reset = rb_data->ensure_mfx_temporal(mfx_temporal_effect);
-@@ -2548,6 +2602,9 @@
++			fsr_preparing = !scene_shader.are_pipelines_ready();
++			rb_data->fsr_scene_prepared = !fsr_preparing;
++		}
++	}
++	if (!is_reflection_probe) {
++		FidelityFX::get_singleton()->temporal_shaders_initializing.set(fsr_preparing ? 1 : 0);
++	}
++#endif
++	using_frame_generation = using_frame_generation && !fsr_preparing;
++	using_taa = using_taa && !fsr_preparing;
++	bool using_upscaling = scale_type != SCALE_NONE && !fsr_preparing;
+ 
+ 	// check if we need motion vectors
+ 	bool motion_vectors_required;
+@@ -1811,7 +1864,7 @@
+ 		motion_vectors_required = true;
+ 	} else if (!is_reflection_probe && using_taa) {
+ 		motion_vectors_required = true;
+-	} else if (!is_reflection_probe && using_upscaling) {
++	} else if ((!is_reflection_probe && using_upscaling) || using_frame_generation) {
+ 		motion_vectors_required = true;
+ 	} else {
+ 		motion_vectors_required = false;
+@@ -2357,7 +2410,7 @@
+ 		RD::get_singleton()->draw_list_end();
+ 	}
+ 
+-	if (rb_data.is_valid() && using_upscaling) {
++	if (rb_data.is_valid() && scale_type != SCALE_NONE) {
+ 		// Make sure the upscaled texture is initialized, but not necessarily filled, before running screen copies
+ 		// so it properly detect if a dedicated copy texture should be used.
+ 		rb->ensure_upscaled();
+@@ -2433,7 +2486,7 @@
+ 	RD::get_singleton()->draw_command_begin_label("Resolve");
+ 
+ 	if (rb_data.is_valid() && use_msaa) {
+-		bool resolve_velocity_buffer = (using_taa || using_upscaling || ce_needs_motion_vectors) && rb->has_velocity_buffer(true);
++		bool resolve_velocity_buffer = (using_taa || using_upscaling || using_frame_generation || ce_needs_motion_vectors) && rb->has_velocity_buffer(true);
+ 		for (uint32_t v = 0; v < rb->get_view_count(); v++) {
+ 			RD::get_singleton()->texture_resolve_multisample(rb->get_color_msaa(v), rb->get_internal_texture(v));
+ 			resolve_effects->resolve_depth(rb->get_depth_msaa(v), rb->get_depth_texture(v), rb->get_internal_size(), texture_multisamples[msaa]);
+@@ -2456,6 +2509,57 @@
+ 	{
+ 		RENDER_TIMESTAMP("Process Post Transparent Compositor Effects");
+ 		_process_compositor_effects(RSE::COMPOSITOR_EFFECT_CALLBACK_TYPE_POST_TRANSPARENT, p_render_data);
++	}
++
++	if (rb_data.is_valid() && fsr_preparing && scale_type != SCALE_NONE) {
++		for (uint32_t v = 0; v < rb->get_view_count(); v++) {
++			copy_effects->copy_to_rect(rb->get_internal_texture(v), rb->get_upscaled_texture(v), Rect2i(Point2i(), rb->get_target_size()), false, false, true);
++		}
++	} else if (rb_data.is_valid() && (scale_type == SCALE_FSR_SDK || using_frame_generation)) {
++		RENDER_TIMESTAMP("FidelityFX");
++		rb_data->ensure_fsr_sdk(fsr_sdk_effect);
++
++
++		const bool cur_camera_reset = p_render_data->scene_data->cam_transform.origin.distance_to(p_render_data->scene_data->prev_cam_transform.origin) > 5.0f ||
++				p_render_data->scene_data->cam_transform.basis.get_column(2).dot(p_render_data->scene_data->prev_cam_transform.basis.get_column(2)) < 0.8f ||
++				Math::abs(p_render_data->scene_data->cam_projection.get_fov() - p_render_data->scene_data->prev_cam_projection.get_fov()) > 1.0f;
++		for (uint32_t v = 0; v < rb->get_view_count(); v++) {
++			real_t fov = p_render_data->scene_data->cam_projection.get_fov();
++			real_t aspect = p_render_data->scene_data->cam_projection.get_aspect();
++			real_t fovy = p_render_data->scene_data->cam_projection.get_fovy(fov, 1.0 / aspect);
++			Vector2 jitter = p_render_data->scene_data->taa_jitter * Vector2(rb->get_internal_size()) * 0.5f;
++			RendererRD::FSRSDKContext::Parameters params;
++			params.context = rb_data->get_fsr_sdk_context();
++			params.internal_size = rb->get_internal_size();
++			params.sharpness = CLAMP((rb->get_fsr_sharpness() / 2.0f), 0.0f, 1.0f);
++			params.color = rb->get_internal_texture(v);
++			params.depth = rb->get_depth_texture(v);
++			params.velocity = rb->get_velocity_buffer(false, v);
++			if (scale_type == SCALE_FSR_SDK) { params.output = rb->get_upscaled_texture(v); }
++			params.frame_generation = using_frame_generation;
++			params.z_near = p_render_data->scene_data->z_near;
++			params.z_far = p_render_data->scene_data->z_far;
++			params.fovy = fovy;
++			params.jitter = jitter;
++			params.delta_time = float(time_step);
++			params.reset_accumulation = cur_camera_reset;
++
++			Projection correction;
++			correction.set_depth_correction(true, true, false);
++
++			const Projection &prev_proj = p_render_data->scene_data->prev_cam_projection;
++			const Projection &cur_proj = p_render_data->scene_data->cam_projection;
++			const Transform3D &prev_transform = p_render_data->scene_data->prev_cam_transform;
++			const Transform3D &cur_transform = p_render_data->scene_data->cam_transform;
++			params.reprojection = (correction * prev_proj) * prev_transform.affine_inverse() * cur_transform * (correction * cur_proj).inverse();
++			params.cam_transform = cur_transform;
++
++			if (scale_type == SCALE_FSR_SDK) {
++				// Spatial fallback while SDK pipeline compilation runs in the background.
++				copy_effects->copy_to_rect(params.color, params.output, Rect2i(Point2i(), rb->get_target_size()), false, false, true);
++			}
++			fsr_sdk_effect->process(params);
++		}
+ 	}
+ 
+ 	if (rb_data.is_valid() && (using_upscaling || using_taa)) {
+@@ -2548,6 +2652,9 @@
  		RENDER_TIMESTAMP("Tonemap");
  
  		_render_buffers_post_process_and_tonemap(p_render_data);
-+		if (scale_type == SCALE_FSR_SDK && rb->get_frame_generation() && rb->get_view_count() == 1) {
++		if (using_frame_generation) {
 +			fsr_sdk_effect->prepare_frame_generation(rb_data->get_fsr_sdk_context(), RendererRD::TextureStorage::get_singleton()->render_target_get_rd_texture(rb->get_render_target()));
 +		}
  	}
  
  	if (rb_data.is_valid()) {
-@@ -5237,6 +5294,7 @@
+@@ -5237,6 +5344,7 @@
  	_update_global_pipeline_data_requirements_from_project();
  
  	taa = memnew(RendererRD::TAA);
@@ -1114,7 +1359,7 @@ diff --git a/servers/rendering/renderer_rd/forward_clustered/render_forward_clus
  	fsr2_effect = memnew(RendererRD::FSR2Effect);
  	ss_effects = memnew(RendererRD::SSEffects);
  #ifdef METAL_MFXTEMPORAL_ENABLED
-@@ -5246,6 +5304,7 @@
+@@ -5246,6 +5354,7 @@
  }
  
  RenderForwardClustered::~RenderForwardClustered() {
@@ -1133,7 +1378,7 @@ diff --git a/servers/rendering/renderer_rd/forward_clustered/render_forward_clus
  #include "servers/rendering/renderer_rd/effects/motion_vectors_store.h"
  #include "servers/rendering/renderer_rd/effects/ss_effects.h"
  #include "servers/rendering/renderer_rd/effects/taa.h"
-@@ -96,6 +97,7 @@
+@@ -96,12 +97,15 @@
  	private:
  		RenderSceneBuffersRD *render_buffers = nullptr;
  		RendererRD::FSR2Context *fsr2_context = nullptr;
@@ -1141,7 +1386,15 @@ diff --git a/servers/rendering/renderer_rd/forward_clustered/render_forward_clus
  #ifdef METAL_MFXTEMPORAL_ENABLED
  		RendererRD::MFXTemporalContext *mfx_temporal_context = nullptr;
  #endif
-@@ -142,6 +144,8 @@
+ 
+ 	public:
+ 		ClusterBuilderRD *cluster_builder = nullptr;
++		bool fsr_pipelines_queued = false;
++		bool fsr_scene_prepared = false;
+ 
+ 		struct SSEffectsData {
+ 			Projection ssil_last_frame_projections[RendererSceneRender::MAX_RENDER_VIEWS];
+@@ -142,6 +146,8 @@
  		RID get_voxelgi(uint32_t p_layer) { return render_buffers->get_texture_slice(RB_SCOPE_FORWARD_CLUSTERED, RB_TEX_VOXEL_GI, p_layer, 0); }
  		RID get_voxelgi_msaa(uint32_t p_layer) { return render_buffers->get_texture_slice(RB_SCOPE_FORWARD_CLUSTERED, RB_TEX_VOXEL_GI_MSAA, p_layer, 0); }
  
@@ -1150,7 +1403,7 @@ diff --git a/servers/rendering/renderer_rd/forward_clustered/render_forward_clus
  		void ensure_fsr2(RendererRD::FSR2Effect *p_effect);
  		RendererRD::FSR2Context *get_fsr2_context() const { return fsr2_context; }
  
-@@ -744,6 +748,7 @@
+@@ -744,6 +750,7 @@
  
  	RendererRD::TAA *taa = nullptr;
  	RendererRD::FSR2Effect *fsr2_effect = nullptr;
@@ -1158,6 +1411,104 @@ diff --git a/servers/rendering/renderer_rd/forward_clustered/render_forward_clus
  	RendererRD::SSEffects *ss_effects = nullptr;
  
  #ifdef METAL_MFXTEMPORAL_ENABLED
+diff --git a/servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.cpp b/servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.cpp
+--- a/servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.cpp
++++ b/servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.cpp
+@@ -554,7 +554,7 @@
+ bool SceneShaderForwardClustered::ShaderData::is_valid() const {
+ 	if (version.is_valid()) {
+ 		ERR_FAIL_NULL_V(SceneShaderForwardClustered::singleton, false);
+-		return SceneShaderForwardClustered::singleton->shader.version_is_valid(version);
++		return SceneShaderForwardClustered::singleton->shader.version_is_valid(version, singleton->defer_advanced_compilation.is_set() ? SHADER_GROUP_BASE : -1);
+ 	} else {
+ 		return false;
+ 	}
+@@ -1012,6 +1012,13 @@
+ }
+ 
+ void SceneShaderForwardClustered::set_default_specialization(const ShaderSpecialization &p_specialization) {
++	// Reapplying unchanged graphics options must not drain pending compiler
++	// jobs and discard every cached pipeline (including while preparing FSR).
++	if (default_specialization.packed_0 == p_specialization.packed_0 &&
++			default_specialization.packed_1 == p_specialization.packed_1 &&
++			default_specialization.packed_2 == p_specialization.packed_2) {
++		return;
++	}
+ 	default_specialization = p_specialization;
+ 
+ 	for (SelfList<ShaderData> *E = shader_list.first(); E; E = E->next()) {
+@@ -1023,11 +1030,18 @@
+ 	shader.enable_group(SHADER_GROUP_MULTIVIEW);
+ }
+ 
+-void SceneShaderForwardClustered::enable_advanced_shader_group(bool p_needs_multiview) {
++void SceneShaderForwardClustered::enable_advanced_shader_group(bool p_needs_multiview, bool p_high_priority) {
+ 	if (p_needs_multiview || RendererCompositorRD::get_singleton()->is_xr_enabled()) {
+-		shader.enable_group(SHADER_GROUP_ADVANCED_MULTIVIEW);
+-	}
+-	shader.enable_group(SHADER_GROUP_ADVANCED);
++		shader.enable_group(SHADER_GROUP_ADVANCED_MULTIVIEW, p_high_priority);
++	}
++	shader.enable_group(SHADER_GROUP_ADVANCED, p_high_priority);
++}
++
++bool SceneShaderForwardClustered::are_pipelines_ready() {
++	for (SelfList<ShaderData> *E = shader_list.first(); E; E = E->next()) {
++		if (!E->self()->pipeline_hash_map.is_compilation_ready()) { return false; }
++	}
++	return true;
+ }
+ 
+ bool SceneShaderForwardClustered::is_multiview_shader_group_enabled() const {
+@@ -1035,6 +1049,7 @@
+ }
+ 
+ bool SceneShaderForwardClustered::is_advanced_shader_group_enabled(bool p_multiview) const {
++	if (defer_advanced_compilation.is_set()) { return false; }
+ 	if (p_multiview) {
+ 		return shader.is_group_enabled(SHADER_GROUP_ADVANCED_MULTIVIEW);
+ 	} else {
+diff --git a/servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.h b/servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.h
+--- a/servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.h
++++ b/servers/rendering/renderer_rd/forward_clustered/scene_shader_forward_clustered.h
+@@ -31,6 +31,7 @@
+ #pragma once
+ 
+ #include "servers/rendering/renderer_rd/pipeline_hash_map_rd.h"
++#include "core/templates/safe_refcount.h"
+ #include "servers/rendering/renderer_rd/shaders/forward_clustered/scene_forward_clustered.glsl.gen.h"
+ #include "servers/rendering/renderer_rd/storage_rd/material_storage.h"
+ #include "servers/rendering/rendering_server_types.h"
+@@ -380,7 +381,9 @@
+ 	void init(const String p_defines);
+ 	void set_default_specialization(const ShaderSpecialization &p_specialization);
+ 	void enable_multiview_shader_group();
+-	void enable_advanced_shader_group(bool p_needs_multiview = false);
++	void enable_advanced_shader_group(bool p_needs_multiview = false, bool p_high_priority = true);
++	bool are_pipelines_ready();
++	SafeFlag defer_advanced_compilation;
+ 	bool is_multiview_shader_group_enabled() const;
+ 	bool is_advanced_shader_group_enabled(bool p_multiview) const;
+ 	uint32_t get_pipeline_compilations(RSE::PipelineSource p_source);
+diff --git a/servers/rendering/renderer_rd/pipeline_hash_map_rd.h b/servers/rendering/renderer_rd/pipeline_hash_map_rd.h
+--- a/servers/rendering/renderer_rd/pipeline_hash_map_rd.h
++++ b/servers/rendering/renderer_rd/pipeline_hash_map_rd.h
+@@ -175,6 +175,15 @@
+ 		}
+ 	}
+ 
++	// Non-blocking readiness check for a rendering feature being prepared.
++	bool is_compilation_ready() {
++		MutexLock lock(local_mutex);
++		for (const KeyValue<uint32_t, WorkerThreadPool::TaskID> &task : compilation_tasks) {
++			if (!WorkerThreadPool::get_singleton()->is_task_completed(task.value)) { return false; }
++		}
++		return true;
++	}
++
+ 	// Retrieve a pipeline. It'll return an empty pipeline if it's not available yet, but it'll be guaranteed to succeed if 'wait for compilation' is true and stall as necessary. Source is just an optional number to aid debugging.
+ 	RID get_pipeline(const Key &p_key, uint32_t p_key_hash, bool p_wait_for_compilation, RSE::PipelineSource p_source) {
+ 		RBMap<uint32_t, RID>::Element *e = hash_map.find(p_key_hash);
 diff --git a/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp b/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp
 --- a/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp
 +++ b/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp
@@ -1170,6 +1521,127 @@ diff --git a/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp b/server
  	SpatialUpscaler *spatial_upscaler = nullptr;
  	if (can_use_effects) {
  		if (scale_mode == RSE::VIEWPORT_SCALING_3D_MODE_FSR) {
+diff --git a/servers/rendering/renderer_rd/shader_rd.cpp b/servers/rendering/renderer_rd/shader_rd.cpp
+--- a/servers/rendering/renderer_rd/shader_rd.cpp
++++ b/servers/rendering/renderer_rd/shader_rd.cpp
+@@ -712,7 +712,7 @@
+ 
+ // Try to compile all variants for a given group.
+ // Will skip variants that are disabled.
+-void ShaderRD::_compile_version_start(Version *p_version, int p_group) {
++void ShaderRD::_compile_version_start(Version *p_version, int p_group, bool p_high_priority) {
+ 	if (!group_enabled[p_group]) {
+ 		return;
+ 	}
+@@ -731,7 +731,7 @@
+ 	compile_data.version = p_version;
+ 	compile_data.group = p_group;
+ 
+-	WorkerThreadPool::GroupID group_task = WorkerThreadPool::get_singleton()->add_template_group_task(this, &ShaderRD::_compile_variant, compile_data, group_to_variant_map[p_group].size(), -1, true, SNAME("ShaderCompilation"));
++	WorkerThreadPool::GroupID group_task = WorkerThreadPool::get_singleton()->add_template_group_task(this, &ShaderRD::_compile_variant, compile_data, group_to_variant_map[p_group].size(), -1, p_high_priority, SNAME("ShaderCompilation"));
+ 	p_version->group_compilation_tasks.write[p_group] = group_task;
+ }
+ 
+@@ -861,7 +861,7 @@
+ 	_version_set(version, p_code, p_custom_defines);
+ }
+ 
+-bool ShaderRD::version_is_valid(RID p_version) {
++bool ShaderRD::version_is_valid(RID p_version, int p_group) {
+ 	Version *version = version_owner.get_or_null(p_version);
+ 	ERR_FAIL_NULL_V(version, false);
+ 
+@@ -878,7 +878,13 @@
+ 		}
+ 	}
+ 
+-	_compile_ensure_finished(version);
++	// A renderer preparing an optional group may keep drawing its already
++	// valid base group. Do not force that draw to join the optional work.
++	if (p_group < 0) {
++		_compile_ensure_finished(version);
++	} else {
++		_compile_version_end(version, p_group);
++	}
+ 
+ 	return version->valid;
+ }
+@@ -927,7 +933,7 @@
+ 	return variant_to_group[p_variant];
+ }
+ 
+-void ShaderRD::enable_group(int p_group) {
++void ShaderRD::enable_group(int p_group, bool p_high_priority) {
+ 	ERR_FAIL_INDEX(p_group, group_enabled.size());
+ 
+ 	if (group_enabled[p_group]) {
+@@ -941,13 +947,33 @@
+ 	for (const RID &version_rid : version_owner.get_owned_list()) {
+ 		Version *version = version_owner.get_or_null(version_rid);
+ 		version->mutex->lock();
+-		_compile_version_start(version, p_group);
++		_compile_version_start(version, p_group, p_high_priority);
+ 		version->mutex->unlock();
+ 	}
+ }
+ 
+ bool ShaderRD::is_group_enabled(int p_group) const {
+ 	return group_enabled[p_group];
++}
++
++// Poll background compilation without making the render thread join it.
++bool ShaderRD::is_group_compilation_ready(int p_group) {
++	ERR_FAIL_INDEX_V(p_group, group_enabled.size(), false);
++	if (!group_enabled[p_group]) { return false; }
++	for (const RID &version_rid : version_owner.get_owned_list()) {
++		const Version *version = version_owner.get_or_null(version_rid);
++		// Another compiler may hold this mutex while joining a shader job.
++		// A readiness poll must never wait for that mutex either.
++		if (!version->mutex->try_lock()) { return false; }
++		bool ready = true;
++		if (!version->dirty && version->group_compilation_tasks.size() > p_group) {
++			WorkerThreadPool::GroupID task = version->group_compilation_tasks[p_group];
++			ready = task == 0 || WorkerThreadPool::get_singleton()->is_group_task_completed(task);
++		}
++		version->mutex->unlock();
++		if (!ready) { return false; }
++	}
++	return true;
+ }
+ 
+ int64_t ShaderRD::get_group_count() const {
+diff --git a/servers/rendering/renderer_rd/shader_rd.h b/servers/rendering/renderer_rd/shader_rd.h
+--- a/servers/rendering/renderer_rd/shader_rd.h
++++ b/servers/rendering/renderer_rd/shader_rd.h
+@@ -102,7 +102,7 @@
+ 
+ 	void _initialize_version(Version *p_version);
+ 	void _clear_version(Version *p_version);
+-	void _compile_version_start(Version *p_version, int p_group);
++	void _compile_version_start(Version *p_version, int p_group, bool p_high_priority = true);
+ 	void _compile_version_end(Version *p_version, int p_group);
+ 	void _compile_ensure_finished(Version *p_version);
+ 	void _allocate_placeholders(Version *p_version, int p_group);
+@@ -227,7 +227,7 @@
+ 		return version->variants[p_variant];
+ 	}
+ 
+-	bool version_is_valid(RID p_version);
++	bool version_is_valid(RID p_version, int p_group = -1);
+ 
+ 	bool version_free(RID p_version);
+ 
+@@ -238,8 +238,9 @@
+ 	int get_variant_to_group(int p_variant) const;
+ 
+ 	// Enable/disable groups for things that might be enabled at run time.
+-	void enable_group(int p_group);
++	void enable_group(int p_group, bool p_high_priority = true);
+ 	bool is_group_enabled(int p_group) const;
++	bool is_group_compilation_ready(int p_group);
+ 	int64_t get_group_count() const;
+ 	const LocalVector<int> &get_group_to_variants(int p_group) const;
+ 
 diff --git a/servers/rendering/renderer_rd/shaders/effects/fsr_sdk_prepare.glsl b/servers/rendering/renderer_rd/shaders/effects/fsr_sdk_prepare.glsl
 new file mode 100644
 --- /dev/null
@@ -1288,7 +1760,7 @@ diff --git a/servers/rendering/renderer_viewport.cpp b/servers/rendering/rendere
  			rb_config.set_use_debanding(p_viewport->use_debanding);
  
  			p_viewport->render_buffers->configure(&rb_config);
-@@ -1096,6 +1102,14 @@
+@@ -1096,6 +1102,20 @@
  	_configure_3d_render_buffers(viewport);
  }
  
@@ -1296,13 +1768,28 @@ diff --git a/servers/rendering/renderer_viewport.cpp b/servers/rendering/rendere
 +	Viewport *viewport = viewport_owner.get_or_null(p_viewport);
 +	ERR_FAIL_NULL(viewport);
 +
++	if (viewport->frame_generation == p_frame_generation) { return; }
++	const bool motion_vectors_before = _viewport_requires_motion_vectors(viewport);
 +	viewport->frame_generation = p_frame_generation;
++	const bool motion_vectors_after = _viewport_requires_motion_vectors(viewport);
++	if (motion_vectors_before != motion_vectors_after) {
++		num_viewports_with_motion_vectors += motion_vectors_after ? 1 : -1;
++	}
 +	if (viewport->render_buffers.is_valid()) { viewport->render_buffers->set_frame_generation(p_frame_generation); }
 +}
 +
  void RendererViewport::viewport_set_size(RID p_viewport, int p_width, int p_height, int p_view_count) {
  	ERR_FAIL_COND(p_width < 0 || p_height < 0 || p_view_count < 0);
  
+@@ -1119,7 +1139,7 @@
+ }
+ 
+ bool RendererViewport::_viewport_requires_motion_vectors(Viewport *p_viewport) {
+-	return p_viewport->use_taa ||
++	return p_viewport->use_taa || p_viewport->frame_generation ||
+ 			RSE::scaling_3d_mode_type(p_viewport->scaling_3d_mode) == RSE::VIEWPORT_SCALING_3D_TYPE_TEMPORAL ||
+ 			p_viewport->debug_draw == RSE::VIEWPORT_DEBUG_DRAW_MOTION_VECTORS || p_viewport->force_motion_vectors;
+ }
 diff --git a/servers/rendering/renderer_viewport.h b/servers/rendering/renderer_viewport.h
 --- a/servers/rendering/renderer_viewport.h
 +++ b/servers/rendering/renderer_viewport.h

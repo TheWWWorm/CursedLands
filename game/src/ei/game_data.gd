@@ -57,8 +57,8 @@ const OPTIONS := [
 	["rubber_select", 0, 10, 2, 4, 2],
 	["marks", 1, 2, 0, 0, 1], ["footprints", 1, 2, 0, 1, 1],
 	["select_type", 1, 2, 0, 2, 0], ["show_path", 1, 2, 0, 3, 1],
-	["brightness", 0, 100, 12, 9, 50], ["contrast", 0, 100, 12, 10, 50],
-	["gamma", 0, 100, 12, 11, 50], ["show_flying_hp", 1, 2, 0, 4, 1],
+	["brightness", 0, 100, 12, 10, 50], ["contrast", 0, 100, 12, 11, 50],
+	["gamma", 0, 100, 12, 12, 50], ["show_flying_hp", 1, 2, 0, 4, 1],
 	["show_tutorial", 1, 2, 10, 11, 1], ["autosave", 1, 2, 3, 11, 1],
 	["tooltip_time", 0, 20, 2, 5, 2], ["switch_filters", 1, 2, 3, 12, 1],
 	["camera_reverse_x", 1, 2, 2, 6, 0], ["camera_reverse_y", 1, 2, 2, 7, 0],
@@ -68,19 +68,19 @@ const OPTIONS := [
 	# Screen tab (group 12) and the Remake tab's sub-pages (group 11 lists
 	# them, see OptionsPanel.SECTIONS; labels and tips in REMAKE_OPTIONS).
 	# Settings keys are the names; group / row are placement only.
-	# Screen (group 12; rows 9..11 the original's brightness / contrast / gamma).
+	# Screen (group 12; rows 10..12 the original's brightness / contrast / gamma).
 	# Its rows are applied at once like the volumes.
 	["display_mode", 1, 3, 12, 0, 1], ["resolution", 1, 1, 12, 1, 0], ["render_scale", 1, 8, 12, 2, 4],
 	# Render quality (not gfx_*, so the Original look preset leaves them;
 	# Gfx.apply_quality).
-	["q_aa", 1, 6, 12, 3, 1], ["fps_limit", 1, 8, 12, 4, 0], ["vsync", 1, 3, 12, 5, 1],
+	["q_aa", 1, 6, 12, 3, 1], ["fps_limit", 1, 8, 12, 6, 0], ["vsync", 1, 3, 12, 7, 1],
 	# Units drawn between their 60 Hz physics steps (default on). Visual only:
 	# the game state is unchanged; not gfx_*, so the preset leaves it.
-	["phys_interp", 1, 2, 12, 6, 1], ["show_fps", 1, 2, 12, 7, 0],
+	["phys_interp", 1, 2, 12, 8, 1], ["show_fps", 1, 2, 12, 9, 0],
 	# The renderer on Android and Windows (RendererChoice: 0 Compatibility, 1 Forward+,
 	# 2 Mobile); hidden elsewhere. Not gfx_*: the Original look preset and the
 	# graphics test leave it.
-	["renderer", 1, 3, 12, 12, 0],
+	["renderer", 1, 3, 12, 13, 0],
 	# The graphics test on the first start / a new GPU (GfxDetect), on the
 	# Graphics page: detection controls and the explicit preset selector.
 	# Neither key is a gfx_* effect switched by the Original look shortcut.
@@ -229,7 +229,9 @@ const OPTIONS := [
 	["pad_light", 1, 2, 20, 8, 1],
 	["pad_gyro", 1, 2, 20, 9, 0], ["pad_gyro_sensitivity", 0, 100, 20, 10, 50],
 	# Opt-in Windows/D3D12 experiment, disabled on fresh profiles.
-	["fsr_upscaling", 1, 3, 27, 0, 0], ["fsr_quality", 1, 4, 27, 1, 1], ["fsr_frame_generation", 1, 3, 27, 2, 0],
+	# The AA dropdown combines q_aa and the legacy FSR selection. Keep both
+	# saved keys for compatibility, with one visible selector on Screen.
+	["fsr_upscaling", 1, 3, -1, 0, 0], ["fsr_quality", 1, 4, 12, 4, 1], ["fsr_frame_generation", 1, 3, 12, 5, 0],
 ]
 ## The original's speed / quality switches (the original rows shadow_units
 ## shadow_buildings, shadow_flora) are not offered: always at their best.
@@ -298,8 +300,8 @@ const OPTION_GROUPS := ["video", "sound", "sens", "game", "select", "actions", "
 const REMAKE_OPTIONS := {
 	"r_fsr": FsrGraphics.SECTION,
 	"fsr_upscaling": ["FSR upscaling", FsrGraphics.SR_HELP],
-	"fsr_quality": ["FSR quality", FsrGraphics.QUALITY_HELP],
-	"fsr_frame_generation": ["FSR frame generation", FsrGraphics.FG_HELP],
+	"fsr_quality": ["Upscale quality", FsrGraphics.QUALITY_HELP],
+	"fsr_frame_generation": ["Frame generation", FsrGraphics.FG_HELP],
 	"character_buff_icons": ["Character buff icons", "Show active effect icons with remaining seconds in a vertical stack at the top right of the character's general view."],
 	"hide_remake_hints": ["Hide remake hints", "Hide the extra control hints in isometric, first-person and third-person views. Controls and regular item and button tooltips stay unchanged."],
 	"discord_presence": ["Discord activity", "Show the current mode and location in Discord. Requires the Discord desktop app. No additional setup is needed. Off clears the activity."],
@@ -483,7 +485,7 @@ const OPTIONS_APPLIED := ["hide_remake_hints", "discord_presence", "direct_hints
 	"gfx_ssao", "gfx_bloom", "gfx_depth_of_field", "gfx_far_view", "gfx_severed_limbs",
 	"gfx_hd_textures", "gfx_soft_particles", "gfx_lit_particles", "gfx_contact_shadows", "gfx_torch_glow", "gfx_water_reflections",
 	"gfx_firelight", "gfx_materials", "gfx_foliage_light", "gfx_weather_surfaces", "gfx_rain_puddles", "gfx_lava_light", "gfx_detailed_heads",
-	"gfx_sharp_units", "q_aa", "q_shadows", "q_shadow_fit", "q_aniso", "confine_mouse",
+	"gfx_sharp_units", "q_aa", "fsr_upscaling", "fsr_quality", "fsr_frame_generation", "q_shadows", "q_shadow_fit", "q_aniso", "confine_mouse",
 	"display_mode", "resolution", "fps_limit", "vsync", "show_fps", "render_scale", "phys_interp",
 	"control_mode", "character_light", "selection_glow", "camera_style", "cam_pan_speed", "cam_rotate_speed", "cam_zoom_speed", "cam_follow", "village_start_view",
 	"cam_see_through", "cam_wasd", "coop_full_xp", "coop_scale", "net_upnp", "net_websocket", "unit_fog", "distant_ai", "path_through", "sp_full_xp", "free_run", "stamina_regen", "armor_formula", "aim_press_once", "start_zones", "sp_death_notice", "revive", "coop_player_names", "coop_share_loot", "enemy_hp_bars", "smile_faces",
@@ -1317,10 +1319,11 @@ func _apply_window() -> void:
 		# supersampled scale (> 1) to FSR, the mode set before the scale made
 		# Godot warn "FSR ... not designed for downsampling" for that moment.
 		# Bilinear first, then the scale, then the mode.
-		if vp.scaling_3d_mode != smode:
-			vp.scaling_3d_mode = Viewport.SCALING_3D_MODE_BILINEAR
-		vp.scaling_3d_scale = scale
-		vp.scaling_3d_mode = smode
+		if not FsrGraphics.sr_active():
+			if vp.scaling_3d_mode != smode:
+				vp.scaling_3d_mode = Viewport.SCALING_3D_MODE_BILINEAR
+			vp.scaling_3d_scale = scale
+			vp.scaling_3d_mode = smode
 		Gfx.apply_quality(vp)
 	_show_fps(option("show_fps") != 0)
 	# Physics interpolation (phys_interp): only the units take part
@@ -1403,12 +1406,17 @@ func _fit_windowed(size: Vector2i) -> void:
 
 class FpsLabel extends Label:
 	var _t := 0.0
+	var meter := FrameRateMeter.new()
+	var rates: Dictionary = {}
 
 	func _process(dt: float) -> void:
 		_t += dt
 		if _t >= 0.25:
 			_t = 0.0
-			text = "%d FPS" % Engine.get_frames_per_second()
+			var native := FsrGraphics.bridge()
+			var status: Dictionary = native.call("get_status") if native else {}
+			rates = meter.sample(status, Time.get_ticks_usec(), Engine.get_frames_per_second())
+			text = FrameRateMeter.label_text(rates)
 
 
 func _show_fps(on: bool) -> void:
@@ -1422,7 +1430,8 @@ func _show_fps(on: bool) -> void:
 		_fps_layer.process_mode = Node.PROCESS_MODE_ALWAYS
 		var l := FpsLabel.new()
 		l.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-		l.offset_left = -110
+		l.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+		l.offset_left = -220
 		l.offset_right = -8
 		l.offset_top = 4
 		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
