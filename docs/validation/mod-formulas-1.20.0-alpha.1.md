@@ -48,9 +48,20 @@ enabled and all three game volume channels muted.
 
 ## Build and coverage limits
 
-The Lua helper was built for Linux x86-64 and Windows x86-64 from the same
-source and pinned godot-cpp revision. Desktop export results are recorded
-separately after testing the exported executables.
+Final packages were exported from commit `7cfd2852101551f1777deb2d282d2a79d6616f33`
+(game tree `37508a61f630f45e58ef9fa0fef3aee5161f1d85`) using the qualified 1.19.0
+desktop engine templates. Linux debug symbols were stripped before final testing.
+Both exported executables passed the 106-assertion formula suite and the
+25-assertion separate-process save/reload suite: **262 additional assertions**.
+Windows execution was through Wine with isolated test prefixes, not native
+Windows hardware.
+
+The PCK audit found 380 identical compiled game scripts across Linux and Windows,
+plus the optional runtime descriptor and notices, with no bundled original game
+data. The Lua helper was built from the same source and pinned godot-cpp revision
+for both platforms. The Windows EXE embeds all six approved icon sizes with exact
+pixel matches and numeric version 1.20.0.0. Build metadata records the full preview
+version, source commit, game tree, engine-template hash and file hashes.
 
 Android, macOS and browser script execution are intentionally unavailable;
 their existing non-script mod paths were not rebuilt in this preview. There is

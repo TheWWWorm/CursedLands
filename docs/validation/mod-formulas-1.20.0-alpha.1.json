@@ -135,6 +135,112 @@
   "notes": [
     "Initial formula test exposed StringName keys at the Godot boundary; the kernel now accepts them as plain strings.",
     "A revival-order assertion was corrected to inspect queued orders before a simulation tick.",
-    "Five deliberately invalid callback cases produce MOD_FORMULA_STOP diagnostics; these are expected containment tests."
-  ]
+    "Five deliberately invalid callback cases produce MOD_FORMULA_STOP diagnostics; these are expected containment tests.",
+    "A new Wine prefix initially lacked its own zlib1.dll; adding the existing Wine dependency fixed startup. No game code or packaged dependency was changed for Wine."
+  ],
+  "exported_checks": [
+    {
+      "tag": "final-linux-formulas",
+      "suite": "mod_formulas",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 3.12,
+      "summary": [
+        "MOD_FORMULAS 106 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "tag": "final-linux-worker",
+      "suite": "mod_worker",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 16.35,
+      "summary": [
+        "MOD_WORKER {\"checks\":25,\"failures\":0}"
+      ],
+      "errors": []
+    },
+    {
+      "tag": "wine-final-formulas",
+      "suite": "mod_formulas",
+      "exit": 0,
+      "seconds": 15.59,
+      "summary": [
+        "MOD_FORMULAS 106 checks 0 failures"
+      ],
+      "errors": []
+    },
+    {
+      "tag": "wine-final-worker",
+      "suite": "mod_worker",
+      "exit": 0,
+      "seconds": 32.32,
+      "summary": [
+        "MOD_WORKER {\"checks\":25,\"failures\":0}"
+      ],
+      "errors": []
+    }
+  ],
+  "builds": [
+    {
+      "version": "1.20.0-alpha.1",
+      "source_commit": "7cfd2852101551f1777deb2d282d2a79d6616f33",
+      "platform": "linux-x86_64",
+      "game_tree": "37508a61f630f45e58ef9fa0fef3aee5161f1d85",
+      "protocol": 23,
+      "formula_api": 1,
+      "package_api": 3,
+      "qualified_engine_template_sha256": "49d661ad0ff66c8a8ddc99fa569fc678af6491a197c1cb583a35e687c01f295d",
+      "linux_debug_symbols_removed": true,
+      "files": {
+        "CursedLands.pck": "bb6698edd150583f2325a529d3615097e5598342859ff61f7d302e3d0375b9aa",
+        "CursedLands.x86_64": "066085fde5912ddd234a9a98a820d07d6e59b93ba74ee8f523b21fcd7bd9dcda",
+        "libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+        "libterrain_search.so": "82af005d9eeaf9da64c16cac681d65d9cd00757347e6fbef5e0595be83099f48",
+        "src/native/bin/libmod_lua.so": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c"
+      }
+    },
+    {
+      "version": "1.20.0-alpha.1",
+      "source_commit": "7cfd2852101551f1777deb2d282d2a79d6616f33",
+      "platform": "windows-x86_64",
+      "game_tree": "37508a61f630f45e58ef9fa0fef3aee5161f1d85",
+      "protocol": 23,
+      "formula_api": 1,
+      "package_api": 3,
+      "qualified_engine_template_sha256": "cc483f30cc57ccf13ce303e88b52e75707fff998bce2abfcb56de0ffcd4c63d9",
+      "linux_debug_symbols_removed": false,
+      "files": {
+        "CursedLands.exe": "35fb85b2bc76ab9d66383bdd492953b7d428a01f50ec5ffb7ed320527e8638fe",
+        "CursedLands.pck": "bb6698edd150583f2325a529d3615097e5598342859ff61f7d302e3d0375b9aa",
+        "libmod_archive.dll": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+        "libterrain_search.dll": "5d9e2dfbbf3f3b10836168dc4d7cb5084c0233d90b2d820bda04325b5bb5d989",
+        "src/native/bin/libmod_lua.dll": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5"
+      }
+    }
+  ],
+  "branding": {
+    "windows_icon_sizes": [
+      16,
+      32,
+      48,
+      64,
+      128,
+      256
+    ],
+    "windows_icon_pixels_exact": true,
+    "windows_numeric_version": "1.20.0.0",
+    "approved_master_sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18"
+  },
+  "pack_audit": {
+    "compiled_scripts": 380,
+    "desktop_scripts_identical": true,
+    "optional_descriptor_and_notices_present": true,
+    "no_original_game_data": true,
+    "resource_counts": {
+      "linux-x86_64": 1188,
+      "windows-x86_64": 1188
+    }
+  }
 }
