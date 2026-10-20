@@ -84,7 +84,9 @@ def build(args):
         shutil.copytree(source / "licenses", out / "licenses")
         shutil.copytree(source / "docs", out / "docs", ignore=shutil.ignore_patterns("validation", "wiki*", "screenshots"))
         (out / "docs/validation").mkdir()
-        shutil.copy2(source / f"docs/validation/mod-formulas-{version}.md", out / "docs/validation")
+        for suffix in (".md", ".json"):
+            shutil.copy2(source / f"docs/validation/mod-formulas-{version}{suffix}", out / "docs/validation")
+        shutil.copytree(source / f"docs/validation/mod-formulas-{version}", out / f"docs/validation/mod-formulas-{version}")
         shutil.copy2(source / f"docs/releases/{version}.md", out / "RELEASE-NOTES.md")
         shutil.copy2(game / "fonts/LICENSE.txt", out / "FONT_LICENSE.txt")
         for notice in (game / "src/native").glob("*NOTICES.txt"):
