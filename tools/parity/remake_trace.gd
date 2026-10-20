@@ -36,6 +36,11 @@ class GroundWorld extends GameWorld:
 	func _stand_z(_point: Vector2) -> float:
 		return supplied_ground
 
+class QuestGrid extends NavGrid:
+	var heights := {}
+	func quantized_cell_height(point: Vector2) -> float:
+		return float(heights.get(point, 0.0))
+
 class FixtureGrid extends NavGrid:
 	var stamps := PackedInt32Array()
 	func _stamp_window(rect: Rect2i) -> PackedInt32Array:
@@ -123,6 +128,7 @@ func capture(kind: String, data: Dictionary) -> Array:
 		"path_refine": return capture_path_refine(data)
 		"quest_predicate": return capture_quest_predicate(data)
 		"quest_trigger": return capture_quest_trigger(data)
+		"quest_program": return capture_quest_program(data)
 		"body_health": return capture_body_health(data)
 		"effect_lifetime": return capture_effect_lifetime(data)
 	push_error("Unsupported parity adapter: " + kind)
@@ -134,6 +140,16 @@ func quest_units(rows: Array, world: GameWorld) -> Array:
 		if row == null:
 			units.append(null)
 			continue
+		var point := Vector2(float(row.pos[0]), float(row.pos[1]))
+		world.heights[point] = f32(float(row.get("ground", 0.0)))
+		if not world.nav is QuestGrid: world.nav = QuestGrid.new()
+		world.nav.heights[point] = f32(float(row.get("ground", 0.0)))
+		if row.has("lever"): world.levers[int(row.get("uid", 1))] = {"state": int(row.lever)}
+		if row.get("map_object", false):
+			var object := Node3D.new()
+			object.set_meta("ei", {"nid": int(row.get("uid", 1)), "position": Vector3(point.x, point.y, f32(float(row.get("relative_z", 0.0))))})
+			units.append(object)
+			continue
 		var u := GameUnit.new()
 		u.world = world
 		u.uid = int(row.get("uid", 1))
@@ -141,12 +157,15 @@ func quest_units(rows: Array, world: GameWorld) -> Array:
 		u.max_hp = f32(float(row.max_hp))
 		u.hp = f32(float(row.hp))
 		u.dead = bool(row.dead)
+		u.blocked = bool(row.get("blocked", false))
+		u.set_meta("looted", bool(row.get("looted", false)))
 		if row.has("lever"): world.levers[u.uid] = {"state": int(row.lever)}
 		units.append(u)
 	return units
 
 func quest_expression(value, inst: ScriptVM.Instance, units: Array) -> Array:
 	if value is Dictionary:
+		if value.has("global"): return [ScriptParser.N_VAR, String(value.global)]
 		if value.has("string"): return [ScriptParser.N_STR, String(value.string)]
 		if value.has("group"): return [ScriptParser.N_VAR, "group_" + String(value.group)]
 		if value.has("iterator"):
@@ -184,20 +203,33 @@ func free_quest_units(units: Array) -> void:
 	for u in units:
 		if u != null: u.free()
 
-func quest_state(variables: Dictionary) -> CampaignState:
+func quest_state(variables: Dictionary, environment: Dictionary = {}) -> CampaignState:
 	var state := CampaignState.new()
 	state.day = 1
-	state.world_time = 0.0
+	state.world_time = f32(float(environment.get("world_time", 0.0)))
+	state.money = int(environment.get("money", 0))
+	for id in environment.get("quest_items", []):
+		var name := str(int(id))
+		for row in GameData.db.table("quest_items"):
+			if int(row.get("script_id", -1)) == int(id): name = String(row.name).to_lower(); break
+		state.quest_items[name] = true
 	for key: String in variables:
 		state.set_var(0, key, f32(float(variables[key])))
 	return state
+
+func quest_session() -> Session:
+	var session := Session.new()
+	session.coop = CoopProgress.new()
+	session.coop.session = session
+	session.add_child(session.coop)
+	return session
 
 func capture_quest_predicate(data: Dictionary) -> Array:
 	var world := FixtureWorld.new()
 	var vm := ScriptVM.new()
 	vm.world = world
-	var session := Session.new()
-	session.state = quest_state(data.get("variables", {}))
+	var session := quest_session()
+	session.state = quest_state(data.get("variables", {}), data)
 	vm.session = session
 	var units := quest_units(data.units, world)
 	var inst := ScriptVM.Instance.new()
@@ -213,7 +245,7 @@ func capture_quest_predicate(data: Dictionary) -> Array:
 
 func capture_quest_trigger(data: Dictionary) -> Array:
 	var world := FixtureWorld.new()
-	var session := Session.new()
+	var session := quest_session()
 	var vm := ObservedQuestVM.new()
 	vm.world = world
 	vm.session = session
@@ -222,7 +254,7 @@ func capture_quest_trigger(data: Dictionary) -> Array:
 	var states := []
 	for snapshot: Dictionary in data.snapshots:
 		world.levers.clear()
-		session.state = quest_state(snapshot.get("variables", {}))
+		session.state = quest_state(snapshot.get("variables", {}), snapshot)
 		var units := quest_units(snapshot.units, world)
 		var inst := ScriptVM.Instance.new()
 		quest_groups(snapshot.get("groups", {}), inst, units)
@@ -239,6 +271,44 @@ func capture_quest_trigger(data: Dictionary) -> Array:
 		states.append({"fired": int(vm.globals.dispatches) != before, "dispatches": int(vm.globals.dispatches),
 			"evaluated": vm.evaluated.duplicate()})
 		free_quest_units(units)
+	session.free()
+	world.free()
+	return states
+
+func capture_quest_program(data: Dictionary) -> Array:
+	var world := FixtureWorld.new()
+	var session := quest_session()
+	session.state = quest_state({}, data)
+	var vm := ScriptVM.new()
+	vm.world = world
+	vm.session = session
+	vm.ast = ScriptParser.new()
+	for name: String in data.globals: vm.globals[name] = f32(float(data.globals[name]))
+	var inst := ScriptVM.Instance.new()
+	var units := quest_units(data.get("units", []), world)
+	var body := []
+	for statement: Dictionary in data.body:
+		if statement.has("set"):
+			body.append([ScriptParser.S_SET, String(statement.set), quest_expression(statement.value, inst, units)])
+		else:
+			var expr := quest_expression(statement, inst, units)
+			body.append([ScriptParser.S_CALL, expr[1], expr[2]])
+	inst.frames = [{"body": body, "i": 0}]
+	var observations := []
+	for expr in data.observe: observations.append(quest_expression(expr, inst, units))
+	var states := []
+	for index in data.ticks.size():
+		for name: String in data.ticks[index].get("globals", {}):
+			vm.globals[name] = f32(float(data.ticks[index].globals[name]))
+		vm.time = (index + 1) * ScriptVM.SLEEP_UNIT
+		vm._run(inst)
+		var values := {}
+		for name: String in data.globals: values[name] = bits(float(vm.globals[name]))
+		var observed := []
+		for expr in observations: observed.append(bits(float(vm._eval(expr, inst))))
+		states.append({"values": values, "observed_bits": observed,
+			"finished": inst.frames.is_empty(), "killed": inst.killed})
+	free_quest_units(units)
 	session.free()
 	world.free()
 	return states

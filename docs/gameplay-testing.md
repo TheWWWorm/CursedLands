@@ -1,7 +1,7 @@
 # Gameplay regression suite
 
-`tools/parity/gameplay.py` runs 283 registered test configurations across 19
-areas, using 223 scripts. It combines existing regression programs with item,
+`tools/parity/gameplay.py` runs 285 registered test configurations across 19
+areas, using 224 scripts. It combines existing regression programs with item,
 effect, theft, crafting, side-quest, localization and travel boundary tests.
 A registration selects a script, campaign
 and arguments; some scripts are exercised in both campaigns or in several
@@ -17,7 +17,7 @@ The reports keep those two kinds of evidence separate.
 Requirements: Linux, Python 3.11+, Godot 4.7, and owned base-game and Lost in
 Astral installations. The regression runner itself uses only Python's standard
 library. The 43 rendered configurations also require an explicitly selected
-private X display, such as Xvfb; the other 240 run headlessly.
+private X display, such as Xvfb; the other 242 run headlessly.
 The optional original comparison additionally requires
 `tools/parity/requirements.txt` in the Python environment.
 
@@ -90,7 +90,7 @@ asset roots, and each process confirms the campaign it actually loaded.
 
 | Area | Programs | Examples |
 |---|---:|---|
-| Quests | 28 | Predicates, triggers, traps, numeric precision, area save compatibility, quest items, rewards, actor removal, group levers, chapter transitions, captivity and escape, Catacombs, dragon timers and all 28 installed base side-quest archives |
+| Quests | 30 | Predicates, triggers, traps, numeric precision, wait timing and old/new save continuity in both campaigns, area save compatibility, quest items, rewards, actor removal, group levers, chapter transitions, captivity and escape, Catacombs, dragon timers and all 28 installed base side-quest archives |
 | Creatures | 12 | AI sleep/wake eligibility, senses, reaction recipients, witnessed attacks, hostility snapshots, authored creature spell damage, actor lifetime, peasant help and registry queries |
 | Animation | 14 | Attack clips across both campaigns' creatures, gait continuity, moving attacks/casts, initial and loaded paused poses, original dialogue poses on peers and attack stance |
 | Effects | 14 | Model attachment points and projectile origins in both campaigns, delayed effects, pause/lifetime/teardown, repeated spells, healing, fire and tornado particle kernels, exact duration boundaries and overlapping status expiry |
@@ -201,3 +201,6 @@ retain earlier qualification. The
 [player-encounter audit](validation/player-encounters-2026-10-20/README.md)
 records the broader coverage, current failures, corrected fixtures and
 deliberately injected failures.
+The [quest progression record](validation/quest-depth-2026-10-20/README.md)
+records subsequent quest, dialogue and persistence checks alongside the separate
+original-executable comparisons.

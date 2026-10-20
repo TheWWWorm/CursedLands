@@ -1,0 +1,1334 @@
+[
+  {
+    "campaign": "original",
+    "id": "quest_predicate/progression_item_bag_2_other_player",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "before_original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+    "before_remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+    "after_original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+    "after_remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_predicate/progression_item_bag_2_3_other_player",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "before_original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+    "before_remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+    "after_original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+    "after_remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_predicate/progression_item_bag_3_2_3_other_player",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "before_original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+    "before_remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+    "after_original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+    "after_remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_predicate/progression_WasLooted_missing",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+    "before_remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+    "after_original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+    "after_remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_-2",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7",
+    "before_remake_trace_sha256": "6f33ad956c5b5a7838ef93d5a02771d682584f736d7a2c7ebcc3b504d0cd593f",
+    "after_original_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7",
+    "after_remake_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_0",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7",
+    "before_remake_trace_sha256": "6f33ad956c5b5a7838ef93d5a02771d682584f736d7a2c7ebcc3b504d0cd593f",
+    "after_original_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7",
+    "after_remake_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_0.25",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7",
+    "before_remake_trace_sha256": "6f33ad956c5b5a7838ef93d5a02771d682584f736d7a2c7ebcc3b504d0cd593f",
+    "after_original_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7",
+    "after_remake_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_0.5",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7",
+    "before_remake_trace_sha256": "6f33ad956c5b5a7838ef93d5a02771d682584f736d7a2c7ebcc3b504d0cd593f",
+    "after_original_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7",
+    "after_remake_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_2.5",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[2].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "82183e0f51b5373474465e552838b44b52d762849105773ba0a0e0561b3400cf",
+    "before_remake_trace_sha256": "696b8655fb674d2ae98023ed22820e14ec1200502108adf1ff98cff6f1268f0a",
+    "after_original_trace_sha256": "82183e0f51b5373474465e552838b44b52d762849105773ba0a0e0561b3400cf",
+    "after_remake_trace_sha256": "82183e0f51b5373474465e552838b44b52d762849105773ba0a0e0561b3400cf"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_12",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[12].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "9b07e1f80f66b1f98186d8245b7221dea8604a1bd7daf6eaeab691f1bceceaa3",
+    "before_remake_trace_sha256": "54008b4606d7a8ab80b7d91bdaa8f78632bb98cad709c4435e26bf22bf86c15a",
+    "after_original_trace_sha256": "9b07e1f80f66b1f98186d8245b7221dea8604a1bd7daf6eaeab691f1bceceaa3",
+    "after_remake_trace_sha256": "9b07e1f80f66b1f98186d8245b7221dea8604a1bd7daf6eaeab691f1bceceaa3"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/until_initial_1",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "d4b147971c3b8036699dddde7286ac7ce7202574d63dcc01c18f72e4a777cbad",
+    "before_remake_trace_sha256": "9249674a9f6ceaf1cc9dd9d3256345967b7dd659b1daa8d86afc72ebc5c5b93a",
+    "after_original_trace_sha256": "d4b147971c3b8036699dddde7286ac7ce7202574d63dcc01c18f72e4a777cbad",
+    "after_remake_trace_sha256": "d4b147971c3b8036699dddde7286ac7ce7202574d63dcc01c18f72e4a777cbad"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/until_initial_-1",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "f0b92c81301c1877348807b06cbd3eec5c0e49d4c82d93bfc08d91feff0ae215",
+    "before_remake_trace_sha256": "b68faafcbb865762e50b6c40bc5ebb6d03fe35a95580a3090ef61cfc848fa2e8",
+    "after_original_trace_sha256": "f0b92c81301c1877348807b06cbd3eec5c0e49d4c82d93bfc08d91feff0ae215",
+    "after_remake_trace_sha256": "f0b92c81301c1877348807b06cbd3eec5c0e49d4c82d93bfc08d91feff0ae215"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/until_initial_2",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "d0308db9c2ec6c7d2ddb17b6cb018002883f9de824fdd4394c383e5a017d3633",
+    "before_remake_trace_sha256": "660c8852cd4ee649eff5c02bb6328deb380e1b09a8062c1e52ea3383601780b7",
+    "after_original_trace_sha256": "d0308db9c2ec6c7d2ddb17b6cb018002883f9de824fdd4394c383e5a017d3633",
+    "after_remake_trace_sha256": "d0308db9c2ec6c7d2ddb17b6cb018002883f9de824fdd4394c383e5a017d3633"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/zero_delays_do_not_split_body",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "d352cf0d76e4ea010fb9fa710d5f6ee256fba28c03e301eec48ee883d0544eb2",
+    "before_remake_trace_sha256": "9f4b98c0b3ad8d749c69951bc5c8cf5c1477baf9536d004d70550094eee2c591",
+    "after_original_trace_sha256": "d352cf0d76e4ea010fb9fa710d5f6ee256fba28c03e301eec48ee883d0544eb2",
+    "after_remake_trace_sha256": "d352cf0d76e4ea010fb9fa710d5f6ee256fba28c03e301eec48ee883d0544eb2"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/dynamic_delay_8",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[3].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "4525fb4d0705d75150a11c652a3b4f3e3242d76b0a5d249fe998bc6cb2b4e161",
+    "before_remake_trace_sha256": "462c4a59aef6087e99317c934ce4440c7d60cde1c5bb0df7b3f7252a669bbabd",
+    "after_original_trace_sha256": "4525fb4d0705d75150a11c652a3b4f3e3242d76b0a5d249fe998bc6cb2b4e161",
+    "after_remake_trace_sha256": "4525fb4d0705d75150a11c652a3b4f3e3242d76b0a5d249fe998bc6cb2b4e161"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/dynamic_delay_2",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[2].state.finished",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "before_original_trace_sha256": "4eaec7acb1249922917cbe16cfc0046169bca9eb7b5c13302cf67880eec84203",
+    "before_remake_trace_sha256": "160b4260301cd17d050ec7e6d8596aeff9486e82293457e8d91c92a1debe90a8",
+    "after_original_trace_sha256": "4eaec7acb1249922917cbe16cfc0046169bca9eb7b5c13302cf67880eec84203",
+    "after_remake_trace_sha256": "4eaec7acb1249922917cbe16cfc0046169bca9eb7b5c13302cf67880eec84203"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/dynamic_delay_12",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[5].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "ef381d89018e0877d4873d48c5aaff9b6c54ce93de0de219fbff580e00bd546b",
+    "before_remake_trace_sha256": "3e68710673d01a55e7f12e508400dcf349e995df0bb122a0032331a3f4d74f8a",
+    "after_original_trace_sha256": "ef381d89018e0877d4873d48c5aaff9b6c54ce93de0de219fbff580e00bd546b",
+    "after_remake_trace_sha256": "ef381d89018e0877d4873d48c5aaff9b6c54ce93de0de219fbff580e00bd546b"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/dynamic_delay_3",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[3].state.finished",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "before_original_trace_sha256": "2ddfcfb1d8ecbd7b5b0c347fefa9cf8181e8cbf37cb09928e6e336e43a14217e",
+    "before_remake_trace_sha256": "e02226ae93b9e8c350e64c3a7c411ebada577808cd48008c7bf8b9856d7646ca",
+    "after_original_trace_sha256": "2ddfcfb1d8ecbd7b5b0c347fefa9cf8181e8cbf37cb09928e6e336e43a14217e",
+    "after_remake_trace_sha256": "2ddfcfb1d8ecbd7b5b0c347fefa9cf8181e8cbf37cb09928e6e336e43a14217e"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_003",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[12].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "1d4b0e104f3a23c75eceb14974e5dbe817b70337ed4d51274cf3539fce37a737",
+    "before_remake_trace_sha256": "a615d90a2436bceb4826f3f563191b9da4c362f489ed17014aa7a1548c8d1109",
+    "after_original_trace_sha256": "1d4b0e104f3a23c75eceb14974e5dbe817b70337ed4d51274cf3539fce37a737",
+    "after_remake_trace_sha256": "1d4b0e104f3a23c75eceb14974e5dbe817b70337ed4d51274cf3539fce37a737"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_004",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[1].state.observed_bits[0]",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "7c8ac6e43bdfed1deec4d8ae1adfbe080159ac869e253424f79b42c7fd0513f9",
+    "before_remake_trace_sha256": "2a332648425d9d5c0c3cc0b4f66d4844676d85a2ba9b4d8c79adf60dca09d390",
+    "after_original_trace_sha256": "7c8ac6e43bdfed1deec4d8ae1adfbe080159ac869e253424f79b42c7fd0513f9",
+    "after_remake_trace_sha256": "7c8ac6e43bdfed1deec4d8ae1adfbe080159ac869e253424f79b42c7fd0513f9"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_008",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.values.phase",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "56a49252f38a1759cdf22248f6d5c4f360e673e62aad38b3429a1e729672bea8",
+    "before_remake_trace_sha256": "650c64823b03809c3cf465cc4c38170e92cd236cbacd8704cabab4dd84985669",
+    "after_original_trace_sha256": "56a49252f38a1759cdf22248f6d5c4f360e673e62aad38b3429a1e729672bea8",
+    "after_remake_trace_sha256": "56a49252f38a1759cdf22248f6d5c4f360e673e62aad38b3429a1e729672bea8"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_009",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.observed_bits[0]",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "16a7a8ee9fb4020d6699c4286083cec0762beb57774ed3162d56c1bee77d0cb8",
+    "before_remake_trace_sha256": "46aac99252339dbd1b2fea99b77cd072f70b8d5122870efc0ee30f930801ce7c",
+    "after_original_trace_sha256": "16a7a8ee9fb4020d6699c4286083cec0762beb57774ed3162d56c1bee77d0cb8",
+    "after_remake_trace_sha256": "16a7a8ee9fb4020d6699c4286083cec0762beb57774ed3162d56c1bee77d0cb8"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_010",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[6].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "7c7b8b1ff4975c63d3385061c4c98c9da2770238f98d1c9f171bc77f2f92d7ee",
+    "before_remake_trace_sha256": "81367ba6cc26c4c641a189170f0612842ab27b4a34f214c8cd0d43997f076995",
+    "after_original_trace_sha256": "7c7b8b1ff4975c63d3385061c4c98c9da2770238f98d1c9f171bc77f2f92d7ee",
+    "after_remake_trace_sha256": "7c7b8b1ff4975c63d3385061c4c98c9da2770238f98d1c9f171bc77f2f92d7ee"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_011",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[1].state.observed_bits[0]",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "bc3e1e161c66a97d6b6749e0bd85043daf868419230fcf9454c3fa6b3650132f",
+    "before_remake_trace_sha256": "429b38c15a36d1895a312fd0b5ca8dec838ef2fc19660aed4e0b359aa3e989c9",
+    "after_original_trace_sha256": "bc3e1e161c66a97d6b6749e0bd85043daf868419230fcf9454c3fa6b3650132f",
+    "after_remake_trace_sha256": "bc3e1e161c66a97d6b6749e0bd85043daf868419230fcf9454c3fa6b3650132f"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_012",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.values.phase",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "7c687f9fd5cad8b6d068b3f7c9a54c9a25196f51cdfaf4cef56d513d13fb13ba",
+    "before_remake_trace_sha256": "2a332648425d9d5c0c3cc0b4f66d4844676d85a2ba9b4d8c79adf60dca09d390",
+    "after_original_trace_sha256": "7c687f9fd5cad8b6d068b3f7c9a54c9a25196f51cdfaf4cef56d513d13fb13ba",
+    "after_remake_trace_sha256": "7c687f9fd5cad8b6d068b3f7c9a54c9a25196f51cdfaf4cef56d513d13fb13ba"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_013",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[4].state.values.phase",
+      "reason": "value",
+      "expected": 1077936128,
+      "actual": 1073741824,
+      "delta": -4194304,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "d6725784460781b07110900fe182c7b009695d2986280664acf83b663a2a9353",
+    "before_remake_trace_sha256": "cc2c10a516909e9bbc1faa8153e2b0b6db7c65a30c61392b5c45f38a5bd5a4d9",
+    "after_original_trace_sha256": "d6725784460781b07110900fe182c7b009695d2986280664acf83b663a2a9353",
+    "after_remake_trace_sha256": "d6725784460781b07110900fe182c7b009695d2986280664acf83b663a2a9353"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_014",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[3].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "e651d4c5be3259a3b74510501fcf85f5367724c1e8eb593d21d3372696da1f51",
+    "before_remake_trace_sha256": "2331b324bd35154ce44bcf5d632e4f27f2cafcafae32b0ffaaaafeaa44470a6e",
+    "after_original_trace_sha256": "e651d4c5be3259a3b74510501fcf85f5367724c1e8eb593d21d3372696da1f51",
+    "after_remake_trace_sha256": "e651d4c5be3259a3b74510501fcf85f5367724c1e8eb593d21d3372696da1f51"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_015",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.values.phase",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "158848e9b876eb12445290c4eabf505ab3b4b75a51e2233562618ddda5de539a",
+    "before_remake_trace_sha256": "55a27042a3adc8c50cba2d44a2e2a826d5c05ad98d2b057072c5f3191bfb286b",
+    "after_original_trace_sha256": "158848e9b876eb12445290c4eabf505ab3b4b75a51e2233562618ddda5de539a",
+    "after_remake_trace_sha256": "158848e9b876eb12445290c4eabf505ab3b4b75a51e2233562618ddda5de539a"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_016",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[8].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "fa00469f56ec45bf4a7050503654924409248a1e5f0284feb43fcaf08b11dcd8",
+    "before_remake_trace_sha256": "23ea994e07534e33f06cd82e35dfa2882e2c9ddb058cbe347c714b3313b6ced0",
+    "after_original_trace_sha256": "fa00469f56ec45bf4a7050503654924409248a1e5f0284feb43fcaf08b11dcd8",
+    "after_remake_trace_sha256": "fa00469f56ec45bf4a7050503654924409248a1e5f0284feb43fcaf08b11dcd8"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_017",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[2].state.observed_bits[0]",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "19afc6483a6cb3b61843b7233e81d4d038799900416092575042865fa0d05919",
+    "before_remake_trace_sha256": "c09718cf561af833b9f6e84276c5112f0e5f72c80fc01c1019b96aed8e64d720",
+    "after_original_trace_sha256": "19afc6483a6cb3b61843b7233e81d4d038799900416092575042865fa0d05919",
+    "after_remake_trace_sha256": "19afc6483a6cb3b61843b7233e81d4d038799900416092575042865fa0d05919"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_018",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.values.phase",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "d5d2d160db404be1827aebf9e44e8efbe0f3b6cbc174279ccced06a2eeae9110",
+    "before_remake_trace_sha256": "af507247e8d76a8d4d8e474ac21936b8a2bcd9208f033335eccb305e85fc17f6",
+    "after_original_trace_sha256": "d5d2d160db404be1827aebf9e44e8efbe0f3b6cbc174279ccced06a2eeae9110",
+    "after_remake_trace_sha256": "d5d2d160db404be1827aebf9e44e8efbe0f3b6cbc174279ccced06a2eeae9110"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_019",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[4].state.observed_bits[0]",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "7d809d9ff3a19580c57c0050d673115bd4678a84473a497b075b6001805efc20",
+    "before_remake_trace_sha256": "40b08f95f8fb7838a3e1390b360fd98fd678dac7d975d0fc926e32da981ca976",
+    "after_original_trace_sha256": "7d809d9ff3a19580c57c0050d673115bd4678a84473a497b075b6001805efc20",
+    "after_remake_trace_sha256": "7d809d9ff3a19580c57c0050d673115bd4678a84473a497b075b6001805efc20"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_020",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[7].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "4352dc8e24b7e83e6824afc125ac561298a7be74f2777acdb9ecf7fd86ab3d89",
+    "before_remake_trace_sha256": "7ef097d2b4c17dad981a178094bcbbf71107a83f54384b21a236728567d6c091",
+    "after_original_trace_sha256": "4352dc8e24b7e83e6824afc125ac561298a7be74f2777acdb9ecf7fd86ab3d89",
+    "after_remake_trace_sha256": "4352dc8e24b7e83e6824afc125ac561298a7be74f2777acdb9ecf7fd86ab3d89"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_022",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[3].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "e651d4c5be3259a3b74510501fcf85f5367724c1e8eb593d21d3372696da1f51",
+    "before_remake_trace_sha256": "2331b324bd35154ce44bcf5d632e4f27f2cafcafae32b0ffaaaafeaa44470a6e",
+    "after_original_trace_sha256": "e651d4c5be3259a3b74510501fcf85f5367724c1e8eb593d21d3372696da1f51",
+    "after_remake_trace_sha256": "e651d4c5be3259a3b74510501fcf85f5367724c1e8eb593d21d3372696da1f51"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_023",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.values.phase",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "10ded148efe1b8fa9ce0557fb3fd69bd164b16643b3c0ba308de0e4bf5d97ea8",
+    "before_remake_trace_sha256": "c3336df646f56ed13fed164c9c80145a921b5e3c0abb6b9913eea443a48bf86a",
+    "after_original_trace_sha256": "10ded148efe1b8fa9ce0557fb3fd69bd164b16643b3c0ba308de0e4bf5d97ea8",
+    "after_remake_trace_sha256": "10ded148efe1b8fa9ce0557fb3fd69bd164b16643b3c0ba308de0e4bf5d97ea8"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_024",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.values.phase",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "c4c70df20fac75c6824ebfc0e0785917140739c7d1dc3e879f2b10c9bde9d9ad",
+    "before_remake_trace_sha256": "2331b324bd35154ce44bcf5d632e4f27f2cafcafae32b0ffaaaafeaa44470a6e",
+    "after_original_trace_sha256": "c4c70df20fac75c6824ebfc0e0785917140739c7d1dc3e879f2b10c9bde9d9ad",
+    "after_remake_trace_sha256": "c4c70df20fac75c6824ebfc0e0785917140739c7d1dc3e879f2b10c9bde9d9ad"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_025",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.values.phase",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "92937c751b6fafc8aeb7f176bf05e9d0d3f861e38288234d958b7069283e0f1f",
+    "before_remake_trace_sha256": "c3336df646f56ed13fed164c9c80145a921b5e3c0abb6b9913eea443a48bf86a",
+    "after_original_trace_sha256": "92937c751b6fafc8aeb7f176bf05e9d0d3f861e38288234d958b7069283e0f1f",
+    "after_remake_trace_sha256": "92937c751b6fafc8aeb7f176bf05e9d0d3f861e38288234d958b7069283e0f1f"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_028",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[7].state.values.phase",
+      "reason": "value",
+      "expected": 1077936128,
+      "actual": 1073741824,
+      "delta": -4194304,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "d762911de18bd4b72d090c2314332766c2d205baabd38e332a53001f9f77ccaf",
+    "before_remake_trace_sha256": "612d76bfe2e68f13f9b6b495dc42094179074a9cd857152793f948f741906e0f",
+    "after_original_trace_sha256": "d762911de18bd4b72d090c2314332766c2d205baabd38e332a53001f9f77ccaf",
+    "after_remake_trace_sha256": "d762911de18bd4b72d090c2314332766c2d205baabd38e332a53001f9f77ccaf"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_029",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[5].state.values.phase",
+      "reason": "value",
+      "expected": 1077936128,
+      "actual": 1073741824,
+      "delta": -4194304,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "74f7c9003580d873aa407ae6ef22b40d03d995aa20ffb3165825e4ee08bed9f2",
+    "before_remake_trace_sha256": "09fd73326995d3e6fec0308b8e021e021e361ef0821d0a514ff551ec6c9c4b31",
+    "after_original_trace_sha256": "74f7c9003580d873aa407ae6ef22b40d03d995aa20ffb3165825e4ee08bed9f2",
+    "after_remake_trace_sha256": "74f7c9003580d873aa407ae6ef22b40d03d995aa20ffb3165825e4ee08bed9f2"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_032",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[1].state.observed_bits[0]",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "37bb27856fd670b71b23294056fd0413b9c20febdcd5aa92392a5a42e80246d6",
+    "before_remake_trace_sha256": "71b02fdabf5705c1817c0e92b66bd704e6aea4f7e1109800e4979cfaee298597",
+    "after_original_trace_sha256": "37bb27856fd670b71b23294056fd0413b9c20febdcd5aa92392a5a42e80246d6",
+    "after_remake_trace_sha256": "37bb27856fd670b71b23294056fd0413b9c20febdcd5aa92392a5a42e80246d6"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_033",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[6].state.values.phase",
+      "reason": "value",
+      "expected": 1077936128,
+      "actual": 1073741824,
+      "delta": -4194304,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "0013fc610200d8ad583cc190731c5a3ba7a11a64046ae4b8f5fff950af8ad5fa",
+    "before_remake_trace_sha256": "1c8972f503887eff2bac540ee64f14ac78dc747d67eac24d970e422fe8087c3f",
+    "after_original_trace_sha256": "0013fc610200d8ad583cc190731c5a3ba7a11a64046ae4b8f5fff950af8ad5fa",
+    "after_remake_trace_sha256": "0013fc610200d8ad583cc190731c5a3ba7a11a64046ae4b8f5fff950af8ad5fa"
+  },
+  {
+    "campaign": "original",
+    "id": "quest_program/sleep_sequence_035",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.values.phase",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "ff548ebce9035c574933010139349d49ffb83bf87b895819b7d341ce0ab7887c",
+    "before_remake_trace_sha256": "fbd83d63768d55db30b01e591b440587ed12f8a92e38d1074f0949f5f6fc69bc",
+    "after_original_trace_sha256": "ff548ebce9035c574933010139349d49ffb83bf87b895819b7d341ce0ab7887c",
+    "after_remake_trace_sha256": "ff548ebce9035c574933010139349d49ffb83bf87b895819b7d341ce0ab7887c"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_predicate/progression_item_bag_2_other_player",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "before_original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+    "before_remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+    "after_original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+    "after_remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_predicate/progression_item_bag_2_3_other_player",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "before_original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+    "before_remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+    "after_original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+    "after_remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_predicate/progression_item_bag_3_2_3_other_player",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "before_original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+    "before_remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+    "after_original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+    "after_remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_predicate/progression_WasLooted_missing",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.truth",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+    "before_remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+    "after_original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+    "after_remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_-2",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7",
+    "before_remake_trace_sha256": "6f33ad956c5b5a7838ef93d5a02771d682584f736d7a2c7ebcc3b504d0cd593f",
+    "after_original_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7",
+    "after_remake_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_0",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7",
+    "before_remake_trace_sha256": "6f33ad956c5b5a7838ef93d5a02771d682584f736d7a2c7ebcc3b504d0cd593f",
+    "after_original_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7",
+    "after_remake_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_0.25",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7",
+    "before_remake_trace_sha256": "6f33ad956c5b5a7838ef93d5a02771d682584f736d7a2c7ebcc3b504d0cd593f",
+    "after_original_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7",
+    "after_remake_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_0.5",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7",
+    "before_remake_trace_sha256": "6f33ad956c5b5a7838ef93d5a02771d682584f736d7a2c7ebcc3b504d0cd593f",
+    "after_original_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7",
+    "after_remake_trace_sha256": "7d395d170506fcc7f2e7ff4d0df440e7f73028a632eee903c0423dba8845e8f7"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_2.5",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[2].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "82183e0f51b5373474465e552838b44b52d762849105773ba0a0e0561b3400cf",
+    "before_remake_trace_sha256": "696b8655fb674d2ae98023ed22820e14ec1200502108adf1ff98cff6f1268f0a",
+    "after_original_trace_sha256": "82183e0f51b5373474465e552838b44b52d762849105773ba0a0e0561b3400cf",
+    "after_remake_trace_sha256": "82183e0f51b5373474465e552838b44b52d762849105773ba0a0e0561b3400cf"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_12",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[12].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "9b07e1f80f66b1f98186d8245b7221dea8604a1bd7daf6eaeab691f1bceceaa3",
+    "before_remake_trace_sha256": "54008b4606d7a8ab80b7d91bdaa8f78632bb98cad709c4435e26bf22bf86c15a",
+    "after_original_trace_sha256": "9b07e1f80f66b1f98186d8245b7221dea8604a1bd7daf6eaeab691f1bceceaa3",
+    "after_remake_trace_sha256": "9b07e1f80f66b1f98186d8245b7221dea8604a1bd7daf6eaeab691f1bceceaa3"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/until_initial_1",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "d4b147971c3b8036699dddde7286ac7ce7202574d63dcc01c18f72e4a777cbad",
+    "before_remake_trace_sha256": "9249674a9f6ceaf1cc9dd9d3256345967b7dd659b1daa8d86afc72ebc5c5b93a",
+    "after_original_trace_sha256": "d4b147971c3b8036699dddde7286ac7ce7202574d63dcc01c18f72e4a777cbad",
+    "after_remake_trace_sha256": "d4b147971c3b8036699dddde7286ac7ce7202574d63dcc01c18f72e4a777cbad"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/until_initial_-1",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "f0b92c81301c1877348807b06cbd3eec5c0e49d4c82d93bfc08d91feff0ae215",
+    "before_remake_trace_sha256": "b68faafcbb865762e50b6c40bc5ebb6d03fe35a95580a3090ef61cfc848fa2e8",
+    "after_original_trace_sha256": "f0b92c81301c1877348807b06cbd3eec5c0e49d4c82d93bfc08d91feff0ae215",
+    "after_remake_trace_sha256": "f0b92c81301c1877348807b06cbd3eec5c0e49d4c82d93bfc08d91feff0ae215"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/until_initial_2",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "d0308db9c2ec6c7d2ddb17b6cb018002883f9de824fdd4394c383e5a017d3633",
+    "before_remake_trace_sha256": "660c8852cd4ee649eff5c02bb6328deb380e1b09a8062c1e52ea3383601780b7",
+    "after_original_trace_sha256": "d0308db9c2ec6c7d2ddb17b6cb018002883f9de824fdd4394c383e5a017d3633",
+    "after_remake_trace_sha256": "d0308db9c2ec6c7d2ddb17b6cb018002883f9de824fdd4394c383e5a017d3633"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/zero_delays_do_not_split_body",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "d352cf0d76e4ea010fb9fa710d5f6ee256fba28c03e301eec48ee883d0544eb2",
+    "before_remake_trace_sha256": "9f4b98c0b3ad8d749c69951bc5c8cf5c1477baf9536d004d70550094eee2c591",
+    "after_original_trace_sha256": "d352cf0d76e4ea010fb9fa710d5f6ee256fba28c03e301eec48ee883d0544eb2",
+    "after_remake_trace_sha256": "d352cf0d76e4ea010fb9fa710d5f6ee256fba28c03e301eec48ee883d0544eb2"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/dynamic_delay_8",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[3].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "4525fb4d0705d75150a11c652a3b4f3e3242d76b0a5d249fe998bc6cb2b4e161",
+    "before_remake_trace_sha256": "462c4a59aef6087e99317c934ce4440c7d60cde1c5bb0df7b3f7252a669bbabd",
+    "after_original_trace_sha256": "4525fb4d0705d75150a11c652a3b4f3e3242d76b0a5d249fe998bc6cb2b4e161",
+    "after_remake_trace_sha256": "4525fb4d0705d75150a11c652a3b4f3e3242d76b0a5d249fe998bc6cb2b4e161"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/dynamic_delay_2",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[2].state.finished",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "before_original_trace_sha256": "4eaec7acb1249922917cbe16cfc0046169bca9eb7b5c13302cf67880eec84203",
+    "before_remake_trace_sha256": "160b4260301cd17d050ec7e6d8596aeff9486e82293457e8d91c92a1debe90a8",
+    "after_original_trace_sha256": "4eaec7acb1249922917cbe16cfc0046169bca9eb7b5c13302cf67880eec84203",
+    "after_remake_trace_sha256": "4eaec7acb1249922917cbe16cfc0046169bca9eb7b5c13302cf67880eec84203"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/dynamic_delay_12",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[5].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "ef381d89018e0877d4873d48c5aaff9b6c54ce93de0de219fbff580e00bd546b",
+    "before_remake_trace_sha256": "3e68710673d01a55e7f12e508400dcf349e995df0bb122a0032331a3f4d74f8a",
+    "after_original_trace_sha256": "ef381d89018e0877d4873d48c5aaff9b6c54ce93de0de219fbff580e00bd546b",
+    "after_remake_trace_sha256": "ef381d89018e0877d4873d48c5aaff9b6c54ce93de0de219fbff580e00bd546b"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/dynamic_delay_3",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[3].state.finished",
+      "reason": "value_or_type",
+      "expected": false,
+      "actual": true
+    },
+    "before_original_trace_sha256": "2ddfcfb1d8ecbd7b5b0c347fefa9cf8181e8cbf37cb09928e6e336e43a14217e",
+    "before_remake_trace_sha256": "e02226ae93b9e8c350e64c3a7c411ebada577808cd48008c7bf8b9856d7646ca",
+    "after_original_trace_sha256": "2ddfcfb1d8ecbd7b5b0c347fefa9cf8181e8cbf37cb09928e6e336e43a14217e",
+    "after_remake_trace_sha256": "2ddfcfb1d8ecbd7b5b0c347fefa9cf8181e8cbf37cb09928e6e336e43a14217e"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_003",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[12].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "1d4b0e104f3a23c75eceb14974e5dbe817b70337ed4d51274cf3539fce37a737",
+    "before_remake_trace_sha256": "a615d90a2436bceb4826f3f563191b9da4c362f489ed17014aa7a1548c8d1109",
+    "after_original_trace_sha256": "1d4b0e104f3a23c75eceb14974e5dbe817b70337ed4d51274cf3539fce37a737",
+    "after_remake_trace_sha256": "1d4b0e104f3a23c75eceb14974e5dbe817b70337ed4d51274cf3539fce37a737"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_004",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[1].state.observed_bits[0]",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "7c8ac6e43bdfed1deec4d8ae1adfbe080159ac869e253424f79b42c7fd0513f9",
+    "before_remake_trace_sha256": "2a332648425d9d5c0c3cc0b4f66d4844676d85a2ba9b4d8c79adf60dca09d390",
+    "after_original_trace_sha256": "7c8ac6e43bdfed1deec4d8ae1adfbe080159ac869e253424f79b42c7fd0513f9",
+    "after_remake_trace_sha256": "7c8ac6e43bdfed1deec4d8ae1adfbe080159ac869e253424f79b42c7fd0513f9"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_008",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.values.phase",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "56a49252f38a1759cdf22248f6d5c4f360e673e62aad38b3429a1e729672bea8",
+    "before_remake_trace_sha256": "650c64823b03809c3cf465cc4c38170e92cd236cbacd8704cabab4dd84985669",
+    "after_original_trace_sha256": "56a49252f38a1759cdf22248f6d5c4f360e673e62aad38b3429a1e729672bea8",
+    "after_remake_trace_sha256": "56a49252f38a1759cdf22248f6d5c4f360e673e62aad38b3429a1e729672bea8"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_009",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.observed_bits[0]",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "16a7a8ee9fb4020d6699c4286083cec0762beb57774ed3162d56c1bee77d0cb8",
+    "before_remake_trace_sha256": "46aac99252339dbd1b2fea99b77cd072f70b8d5122870efc0ee30f930801ce7c",
+    "after_original_trace_sha256": "16a7a8ee9fb4020d6699c4286083cec0762beb57774ed3162d56c1bee77d0cb8",
+    "after_remake_trace_sha256": "16a7a8ee9fb4020d6699c4286083cec0762beb57774ed3162d56c1bee77d0cb8"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_010",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[6].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "7c7b8b1ff4975c63d3385061c4c98c9da2770238f98d1c9f171bc77f2f92d7ee",
+    "before_remake_trace_sha256": "81367ba6cc26c4c641a189170f0612842ab27b4a34f214c8cd0d43997f076995",
+    "after_original_trace_sha256": "7c7b8b1ff4975c63d3385061c4c98c9da2770238f98d1c9f171bc77f2f92d7ee",
+    "after_remake_trace_sha256": "7c7b8b1ff4975c63d3385061c4c98c9da2770238f98d1c9f171bc77f2f92d7ee"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_011",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[1].state.observed_bits[0]",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "bc3e1e161c66a97d6b6749e0bd85043daf868419230fcf9454c3fa6b3650132f",
+    "before_remake_trace_sha256": "429b38c15a36d1895a312fd0b5ca8dec838ef2fc19660aed4e0b359aa3e989c9",
+    "after_original_trace_sha256": "bc3e1e161c66a97d6b6749e0bd85043daf868419230fcf9454c3fa6b3650132f",
+    "after_remake_trace_sha256": "bc3e1e161c66a97d6b6749e0bd85043daf868419230fcf9454c3fa6b3650132f"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_012",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.values.phase",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "7c687f9fd5cad8b6d068b3f7c9a54c9a25196f51cdfaf4cef56d513d13fb13ba",
+    "before_remake_trace_sha256": "2a332648425d9d5c0c3cc0b4f66d4844676d85a2ba9b4d8c79adf60dca09d390",
+    "after_original_trace_sha256": "7c687f9fd5cad8b6d068b3f7c9a54c9a25196f51cdfaf4cef56d513d13fb13ba",
+    "after_remake_trace_sha256": "7c687f9fd5cad8b6d068b3f7c9a54c9a25196f51cdfaf4cef56d513d13fb13ba"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_013",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[4].state.values.phase",
+      "reason": "value",
+      "expected": 1077936128,
+      "actual": 1073741824,
+      "delta": -4194304,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "d6725784460781b07110900fe182c7b009695d2986280664acf83b663a2a9353",
+    "before_remake_trace_sha256": "cc2c10a516909e9bbc1faa8153e2b0b6db7c65a30c61392b5c45f38a5bd5a4d9",
+    "after_original_trace_sha256": "d6725784460781b07110900fe182c7b009695d2986280664acf83b663a2a9353",
+    "after_remake_trace_sha256": "d6725784460781b07110900fe182c7b009695d2986280664acf83b663a2a9353"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_014",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[3].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "e651d4c5be3259a3b74510501fcf85f5367724c1e8eb593d21d3372696da1f51",
+    "before_remake_trace_sha256": "2331b324bd35154ce44bcf5d632e4f27f2cafcafae32b0ffaaaafeaa44470a6e",
+    "after_original_trace_sha256": "e651d4c5be3259a3b74510501fcf85f5367724c1e8eb593d21d3372696da1f51",
+    "after_remake_trace_sha256": "e651d4c5be3259a3b74510501fcf85f5367724c1e8eb593d21d3372696da1f51"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_015",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.values.phase",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "158848e9b876eb12445290c4eabf505ab3b4b75a51e2233562618ddda5de539a",
+    "before_remake_trace_sha256": "55a27042a3adc8c50cba2d44a2e2a826d5c05ad98d2b057072c5f3191bfb286b",
+    "after_original_trace_sha256": "158848e9b876eb12445290c4eabf505ab3b4b75a51e2233562618ddda5de539a",
+    "after_remake_trace_sha256": "158848e9b876eb12445290c4eabf505ab3b4b75a51e2233562618ddda5de539a"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_016",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[8].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "fa00469f56ec45bf4a7050503654924409248a1e5f0284feb43fcaf08b11dcd8",
+    "before_remake_trace_sha256": "23ea994e07534e33f06cd82e35dfa2882e2c9ddb058cbe347c714b3313b6ced0",
+    "after_original_trace_sha256": "fa00469f56ec45bf4a7050503654924409248a1e5f0284feb43fcaf08b11dcd8",
+    "after_remake_trace_sha256": "fa00469f56ec45bf4a7050503654924409248a1e5f0284feb43fcaf08b11dcd8"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_017",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[2].state.observed_bits[0]",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "19afc6483a6cb3b61843b7233e81d4d038799900416092575042865fa0d05919",
+    "before_remake_trace_sha256": "c09718cf561af833b9f6e84276c5112f0e5f72c80fc01c1019b96aed8e64d720",
+    "after_original_trace_sha256": "19afc6483a6cb3b61843b7233e81d4d038799900416092575042865fa0d05919",
+    "after_remake_trace_sha256": "19afc6483a6cb3b61843b7233e81d4d038799900416092575042865fa0d05919"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_018",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.values.phase",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "d5d2d160db404be1827aebf9e44e8efbe0f3b6cbc174279ccced06a2eeae9110",
+    "before_remake_trace_sha256": "af507247e8d76a8d4d8e474ac21936b8a2bcd9208f033335eccb305e85fc17f6",
+    "after_original_trace_sha256": "d5d2d160db404be1827aebf9e44e8efbe0f3b6cbc174279ccced06a2eeae9110",
+    "after_remake_trace_sha256": "d5d2d160db404be1827aebf9e44e8efbe0f3b6cbc174279ccced06a2eeae9110"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_019",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[4].state.observed_bits[0]",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "7d809d9ff3a19580c57c0050d673115bd4678a84473a497b075b6001805efc20",
+    "before_remake_trace_sha256": "40b08f95f8fb7838a3e1390b360fd98fd678dac7d975d0fc926e32da981ca976",
+    "after_original_trace_sha256": "7d809d9ff3a19580c57c0050d673115bd4678a84473a497b075b6001805efc20",
+    "after_remake_trace_sha256": "7d809d9ff3a19580c57c0050d673115bd4678a84473a497b075b6001805efc20"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_020",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[7].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "4352dc8e24b7e83e6824afc125ac561298a7be74f2777acdb9ecf7fd86ab3d89",
+    "before_remake_trace_sha256": "7ef097d2b4c17dad981a178094bcbbf71107a83f54384b21a236728567d6c091",
+    "after_original_trace_sha256": "4352dc8e24b7e83e6824afc125ac561298a7be74f2777acdb9ecf7fd86ab3d89",
+    "after_remake_trace_sha256": "4352dc8e24b7e83e6824afc125ac561298a7be74f2777acdb9ecf7fd86ab3d89"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_022",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[3].state.finished",
+      "reason": "value_or_type",
+      "expected": true,
+      "actual": false
+    },
+    "before_original_trace_sha256": "e651d4c5be3259a3b74510501fcf85f5367724c1e8eb593d21d3372696da1f51",
+    "before_remake_trace_sha256": "2331b324bd35154ce44bcf5d632e4f27f2cafcafae32b0ffaaaafeaa44470a6e",
+    "after_original_trace_sha256": "e651d4c5be3259a3b74510501fcf85f5367724c1e8eb593d21d3372696da1f51",
+    "after_remake_trace_sha256": "e651d4c5be3259a3b74510501fcf85f5367724c1e8eb593d21d3372696da1f51"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_023",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.values.phase",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "10ded148efe1b8fa9ce0557fb3fd69bd164b16643b3c0ba308de0e4bf5d97ea8",
+    "before_remake_trace_sha256": "c3336df646f56ed13fed164c9c80145a921b5e3c0abb6b9913eea443a48bf86a",
+    "after_original_trace_sha256": "10ded148efe1b8fa9ce0557fb3fd69bd164b16643b3c0ba308de0e4bf5d97ea8",
+    "after_remake_trace_sha256": "10ded148efe1b8fa9ce0557fb3fd69bd164b16643b3c0ba308de0e4bf5d97ea8"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_024",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.values.phase",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "c4c70df20fac75c6824ebfc0e0785917140739c7d1dc3e879f2b10c9bde9d9ad",
+    "before_remake_trace_sha256": "2331b324bd35154ce44bcf5d632e4f27f2cafcafae32b0ffaaaafeaa44470a6e",
+    "after_original_trace_sha256": "c4c70df20fac75c6824ebfc0e0785917140739c7d1dc3e879f2b10c9bde9d9ad",
+    "after_remake_trace_sha256": "c4c70df20fac75c6824ebfc0e0785917140739c7d1dc3e879f2b10c9bde9d9ad"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_025",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.values.phase",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "92937c751b6fafc8aeb7f176bf05e9d0d3f861e38288234d958b7069283e0f1f",
+    "before_remake_trace_sha256": "c3336df646f56ed13fed164c9c80145a921b5e3c0abb6b9913eea443a48bf86a",
+    "after_original_trace_sha256": "92937c751b6fafc8aeb7f176bf05e9d0d3f861e38288234d958b7069283e0f1f",
+    "after_remake_trace_sha256": "92937c751b6fafc8aeb7f176bf05e9d0d3f861e38288234d958b7069283e0f1f"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_028",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[7].state.values.phase",
+      "reason": "value",
+      "expected": 1077936128,
+      "actual": 1073741824,
+      "delta": -4194304,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "d762911de18bd4b72d090c2314332766c2d205baabd38e332a53001f9f77ccaf",
+    "before_remake_trace_sha256": "612d76bfe2e68f13f9b6b495dc42094179074a9cd857152793f948f741906e0f",
+    "after_original_trace_sha256": "d762911de18bd4b72d090c2314332766c2d205baabd38e332a53001f9f77ccaf",
+    "after_remake_trace_sha256": "d762911de18bd4b72d090c2314332766c2d205baabd38e332a53001f9f77ccaf"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_029",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[5].state.values.phase",
+      "reason": "value",
+      "expected": 1077936128,
+      "actual": 1073741824,
+      "delta": -4194304,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "74f7c9003580d873aa407ae6ef22b40d03d995aa20ffb3165825e4ee08bed9f2",
+    "before_remake_trace_sha256": "09fd73326995d3e6fec0308b8e021e021e361ef0821d0a514ff551ec6c9c4b31",
+    "after_original_trace_sha256": "74f7c9003580d873aa407ae6ef22b40d03d995aa20ffb3165825e4ee08bed9f2",
+    "after_remake_trace_sha256": "74f7c9003580d873aa407ae6ef22b40d03d995aa20ffb3165825e4ee08bed9f2"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_032",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[1].state.observed_bits[0]",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "37bb27856fd670b71b23294056fd0413b9c20febdcd5aa92392a5a42e80246d6",
+    "before_remake_trace_sha256": "71b02fdabf5705c1817c0e92b66bd704e6aea4f7e1109800e4979cfaee298597",
+    "after_original_trace_sha256": "37bb27856fd670b71b23294056fd0413b9c20febdcd5aa92392a5a42e80246d6",
+    "after_remake_trace_sha256": "37bb27856fd670b71b23294056fd0413b9c20febdcd5aa92392a5a42e80246d6"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_033",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[6].state.values.phase",
+      "reason": "value",
+      "expected": 1077936128,
+      "actual": 1073741824,
+      "delta": -4194304,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "0013fc610200d8ad583cc190731c5a3ba7a11a64046ae4b8f5fff950af8ad5fa",
+    "before_remake_trace_sha256": "1c8972f503887eff2bac540ee64f14ac78dc747d67eac24d970e422fe8087c3f",
+    "after_original_trace_sha256": "0013fc610200d8ad583cc190731c5a3ba7a11a64046ae4b8f5fff950af8ad5fa",
+    "after_remake_trace_sha256": "0013fc610200d8ad583cc190731c5a3ba7a11a64046ae4b8f5fff950af8ad5fa"
+  },
+  {
+    "campaign": "lost_in_astral",
+    "id": "quest_program/sleep_sequence_035",
+    "status": "resolved",
+    "before_first_divergence": {
+      "field": "$.steps[0].state.values.phase",
+      "reason": "value",
+      "expected": 1065353216,
+      "actual": 0,
+      "delta": -1065353216,
+      "absolute_tolerance": 0
+    },
+    "before_original_trace_sha256": "ff548ebce9035c574933010139349d49ffb83bf87b895819b7d341ce0ab7887c",
+    "before_remake_trace_sha256": "fbd83d63768d55db30b01e591b440587ed12f8a92e38d1074f0949f5f6fc69bc",
+    "after_original_trace_sha256": "ff548ebce9035c574933010139349d49ffb83bf87b895819b7d341ce0ab7887c",
+    "after_remake_trace_sha256": "ff548ebce9035c574933010139349d49ffb83bf87b895819b7d341ce0ab7887c"
+  }
+]

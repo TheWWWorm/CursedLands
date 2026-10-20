@@ -58,6 +58,8 @@ class Instance:
 	var poll := 0.0
 	var frames: Array = []   # running body: [{body, i, for_var, items, k}]
 	var wait_until := 0.0
+	var sleep_cond: Array = []
+	var sleep_ticks := 0
 	var wait_cond: Array = []
 	var wait_unit: Object = null
 	var block_index := -1
@@ -221,6 +223,16 @@ func _run(inst: Instance) -> void:
 		if inst.frames.is_empty():
 			return
 	# Waiting?
+	if not inst.sleep_cond.is_empty():
+		# Sleep's native counter advances once per thread run. Reevaluate
+		# its argument on each run: a quest can change the requested delay.
+		inst.sleep_ticks += 1
+		var duration := NavGrid.round_even(_num(_eval(inst.sleep_cond, inst)))
+		if inst.sleep_ticks < duration:
+			inst.wait_until = time + (duration - inst.sleep_ticks) * SLEEP_UNIT
+			return
+		inst.sleep_cond = []
+		inst.wait_until = 0.0
 	if time < inst.wait_until:
 		return
 	if not inst.wait_cond.is_empty():
@@ -464,9 +476,16 @@ func _group(v) -> Array:
 func _stmt_call(name: String, a: Array, inst: Instance) -> bool:
 	match name:
 		"Sleep":
-			inst.wait_until = time + _num(_eval(a[0], inst)) * SLEEP_UNIT
+			var duration := NavGrid.round_even(_num(_eval(a[0], inst)))
+			if duration <= 0:
+				return false
+			inst.sleep_cond = a[0]
+			inst.sleep_ticks = 0
+			inst.wait_until = time + duration * SLEEP_UNIT
 			return true
 		"SleepUntil":
+			if _truthy(_eval(a[0], inst)):
+				return false
 			inst.wait_cond = a[0]
 			return true
 		"SleepUntilIdle":
@@ -694,10 +713,12 @@ func _call(name: String, a: Array, inst: Instance):
 		"IsPlayerInDanger": return 1.0 if _in_danger() else 0.0
 		# Builtin 0xe5 IsUnitVisible(unit): in player 0's visible list.
 		"IsUnitVisible": return 1.0 if v[0] != null and _player_visible().has(v[0]) else 0.0
-		"WasLooted":   # builtin 0xe3: the object's flag +8 &
+		"WasLooted":   # builtin 0xe3: absent object or its looted flag
 			var u = v[0]
-			if typeof(u) == TYPE_OBJECT and not is_instance_valid(u):
-				return 0.0
+			# Native object references become null after removal. This is
+			# distinct from IsDead, which requires an actual dead unit.
+			if u == null or (typeof(u) == TYPE_OBJECT and not is_instance_valid(u)):
+				return 1.0
 			return 1.0 if u is GameUnit and u.get_meta("looted", false) else 0.0
 		# builtin 0xe6: the object's flag — BlockUnit or a
 		# "say_block" line playing (GameUnit.blocked).
@@ -1059,7 +1080,11 @@ func _call(name: String, a: Array, inst: Instance):
 			session.erase_quest_item(int(_num(v[0])), qi)
 		"RemoveQuestItem":
 			_remove_carried_quest(_unit(v[0]), _quest_item_name(v[1]))
-		"HaveItem": return 1.0 if session.have_quest_item(int(_num(v[0])), _quest_item_name(v[1])) else 0.0
+		"HaveItem":
+			var player := int(_num(v[0]))
+			if not session.players_include(player):
+				return 0.0
+			return 1.0 if session.have_quest_item(player, _quest_item_name(v[1])) else 0.0
 		# LiA case 0xe2 reads the named player's purse.
 		"GetMoney":
 			var player := int(_num(v[0]))
@@ -1897,6 +1922,9 @@ func save_state() -> Dictionary:
 			d.src = inst.src
 		if not inst.wait_cond.is_empty():
 			d.wc = inst.wait_cond.duplicate(true)
+		if not inst.sleep_cond.is_empty():
+			d.sc = inst.sleep_cond.duplicate(true)
+			d.st = inst.sleep_ticks
 		if inst.wait_unit != null and is_instance_valid(inst.wait_unit):
 			d.wu = _ser(inst.wait_unit)
 		insts.append(d)
@@ -2019,6 +2047,10 @@ func _restore(d: Dictionary) -> void:
 		if s.s == "WorldScript" and inst.frames.is_empty():
 			continue   # a finished one is gone (tick drops it)
 		inst.wait_until = time + float(s.get("w", 0.0))
+		var sc = s.get("sc", [])
+		if sc is Array and not sc.is_empty():
+			inst.sleep_cond = sc
+			inst.sleep_ticks = maxi(0, int(s.get("st", 0)))
 		inst.poll = time + float(s.get("p", 0.0))
 		var wc = s.get("wc", [])
 		if wc is Array and not wc.is_empty():

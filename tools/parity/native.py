@@ -315,6 +315,8 @@ from native_extended import CAPTURES as EXTRA_CAPTURES
 CAPTURES.update(EXTRA_CAPTURES)
 from native_quests import CAPTURES as QUEST_CAPTURES
 CAPTURES.update(QUEST_CAPTURES)
+from native_quest_programs import CAPTURES as PROGRAM_CAPTURES
+CAPTURES.update(PROGRAM_CAPTURES)
 from native_body import CAPTURES as BODY_CAPTURES
 CAPTURES.update(BODY_CAPTURES)
 

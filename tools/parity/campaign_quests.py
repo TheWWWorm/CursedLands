@@ -5,6 +5,7 @@ call/binding is outside the native adapter. It does not replace unsupported
 conditions with True or claim to execute trigger bodies.
 """
 from collections import Counter, defaultdict
+import copy
 import hashlib
 from pathlib import Path
 import re
@@ -18,6 +19,8 @@ SIGNATURES = {
     "GetLeverState": "u", "GSGetVar": "ns", "IsEqualString": "ss",
     "GroupSize": "g", "GroupHas": "gu", "Any": "ign", "Every": "ign",
     "IsInArea": "nnn",
+    "GetWorldTime": "", "GetMoney": "n", "HaveItem": "nn",
+    "WasLooted": "u", "IsUnitBlocked": "u", "GetZ": "u",
 }
 TOKEN = re.compile(r'//[^\n]*|"(?:[^"]*)"|[(),=:]|[^\s(),=:"]+')
 
@@ -167,12 +170,25 @@ def samples(conditions, count, groups=None):
     points = [[0, 0], [1000, 1000]]
     levers, variables = set(), set()
     area_ids = set()
+    environment_calls, item_ids, thresholds = set(), set(), set()
+    authored_flags = {}
     pairwise = [False]
 
     def walk(e):
         if not isinstance(e, dict) or "call" not in e:
             return
         args = e["args"]
+        if e["call"] in ("GetWorldTime", "GetMoney", "HaveItem", "WasLooted", "IsUnitBlocked", "GetZ"):
+            environment_calls.add(e["call"])
+        if e["call"] == "HaveItem" and isinstance(args[1], (int, float)):
+            item_ids.add(int(args[1]))
+        if e["call"] in ("IsEqual", "IsLess", "IsGreater"):
+            thresholds.update(value for value in args if isinstance(value, (int, float)))
+        if e["call"] == "IsEqual":
+            for query, value in [args, args[::-1]]:
+                if (isinstance(value, (int, float)) and isinstance(query, dict)
+                        and query.get("call") == "GSGetVar"):
+                    authored_flags[query["args"][1]["string"]] = value
         if e["call"] == "GetLeverState":
             if args[0].get("unit", -1) >= 0: levers.add(args[0]["unit"])
             if "iterator" in args[0]: levers.update(range(actor_count, count))
@@ -231,6 +247,55 @@ def samples(conditions, count, groups=None):
         snapshots.append({"units": [{"pos": [0, 0], "hp": 100, "max_hp": 100, "dead": False, "uid": i+1}
                                     for i in range(count)],
                           "groups": {name: list(range(actor_count, count)) for name in group_names}, "areas": []})
+    if environment_calls:
+        variants = []
+        if "GetWorldTime" in environment_calls:
+            times = {0, 6, 12, 18, 23.999998}
+            for threshold in thresholds:
+                if 0 <= threshold <= 24:
+                    times.update([max(0, threshold - .00001), threshold, min(24, threshold + .00001)])
+            variants.extend({"world_time": time} for time in sorted(times))
+        if "GetMoney" in environment_calls:
+            money = {0, 1, 999, 1000, 10000}
+            for threshold in thresholds:
+                if 0 <= threshold <= 1000000:
+                    money.update([max(0, int(threshold) - 1), int(threshold), int(threshold) + 1])
+            variants.extend({"money": value} for value in sorted(money))
+        if "HaveItem" in environment_calls:
+            variants.extend({"quest_items": items} for items in [[], sorted(item_ids), *[[i] for i in sorted(item_ids)]])
+        if "GetZ" in environment_calls:
+            variants.extend({"height": value, "map_object": obj} for value in [-1, 0, .001, 1, 4, 8, 16, 32]
+                            for obj in [False, True])
+        if environment_calls & {"WasLooted", "IsUnitBlocked"}:
+            variants.extend({"looted": looted, "blocked": blocked} for looted in [False, True] for blocked in [False, True])
+        template = next(row for row in snapshots if all(unit is not None for unit in row["units"]))
+        # A quest can require completed prerequisite A (2), active quest B
+        # (1), and an unused dialogue C (0) at the same time. Uniform flag
+        # values alone never open that gate. These are input candidates,
+        # not expected results or a substitute for evaluating the conditions.
+        flag_presets = [({key: flag for key in variables}, flag) for flag in [0, 1, 2, -1]]
+        if authored_flags:
+            flag_presets.append(({key: authored_flags.get(key, 0) for key in variables}, 0))
+        seen_presets = set()
+        unique_presets = []
+        for flags, lever in flag_presets:
+            signature = (tuple(sorted(flags.items())), lever if levers else 0)
+            if signature not in seen_presets:
+                seen_presets.add(signature)
+                unique_presets.append((flags, lever))
+        for variant in variants:
+            for flags, lever in unique_presets:
+                row = copy.deepcopy(template)
+                row.update({key: value for key, value in variant.items() if key in ["world_time", "money", "quest_items"]})
+                row["variables"] = flags.copy()
+                for unit in row["units"]:
+                    unit.update(ground=0, relative_z=0, map_object=variant.get("map_object", False),
+                                looted=variant.get("looted", False), blocked=variant.get("blocked", False))
+                    if "height" in variant:
+                        # Both unit and map-object paths, with supplied terrain.
+                        unit["ground"] = variant["height"]
+                    if "lever" in unit: unit["lever"] = lever
+                snapshots.append(row)
     return snapshots
 
 
@@ -279,7 +344,8 @@ def append_campaign_cases(inputs, game_dir, limit=120):
                 if not all(isinstance(c, dict) and "call" in c for c in converted):
                     raise ValueError("constant condition root")
                 # Constant-only gates add little campaign coverage.
-                if not bindings and not groups and not any(has_call(c, "GSGetVar") for c in converted):
+                if not bindings and not groups and not any(has_call(c, name) for c in converted
+                                                          for name in ["GSGetVar", "GetWorldTime", "GetMoney", "HaveItem"]):
                     raise ValueError("no actor binding")
             except (ValueError, UnicodeError) as exc:
                 skipped[str(exc)] += 1

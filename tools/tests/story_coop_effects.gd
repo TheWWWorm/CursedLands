@@ -167,8 +167,13 @@ func traps() -> void:
 			var cooldown: ScriptVM.Instance = vm.instances.back(); vm._run(cooldown)
 			check(cooldown.sname == "VCheck#0#5" and is_equal_approx(cooldown.wait_until, 25*ScriptVM.SLEEP_UNIT), "Acid trap keeps original 25-tick cooldown")
 			var saved := vm.save_state(); var resumed := vm_for(row[0], row[1]); resumed._restore(saved)
-			resumed.time = 25*ScriptVM.SLEEP_UNIT+.01
-			resumed._run(resumed.instances.back()); resumed._run(resumed.instances.back())
+			var restored_cooldown: ScriptVM.Instance = resumed.instances.back()
+			# Sleep counts delivered logic ticks, not a manually advanced clock.
+			for tick in 24:
+				resumed.time += ScriptVM.SLEEP_UNIT; resumed._run(restored_cooldown)
+			check(resumed.casts.is_empty() and resumed.instances.back() == restored_cooldown, "Acid trap cannot re-arm before tick 25")
+			resumed.time += ScriptVM.SLEEP_UNIT; resumed._run(restored_cooldown)
+			resumed.time += ScriptVM.SLEEP_UNIT; resumed._run(resumed.instances.back())
 			check(cast_count(resumed, party[2]) == 1, "Acid trap re-arms for guest after save and cooldown")
 	# The northern boundary is independent of the radial condition.
 	for u: GameUnit in party: u.pos = Vector2(2000,2000)
@@ -191,8 +196,12 @@ func saved_sleep() -> void:
 	var inst := run_script(old, "Tiger#1#1")
 	check(is_equal_approx(inst.wait_until, 40*ScriptVM.SLEEP_UNIT), "Original shrine save is inside authored Sleep(40)")
 	var saved := old.save_state(); var now := vm_for("gz5h", "zone5")
-	now._restore(saved); now.time = 40*ScriptVM.SLEEP_UNIT+.01
-	now._run(now.instances.back())
+	now._restore(saved)
+	var sleeping: ScriptVM.Instance = now.instances.back()
+	for tick in 39:
+		now.time += ScriptVM.SLEEP_UNIT; now._run(sleeping)
+	check(now.casts.is_empty() and now.instances.back() == sleeping, "Shrine cannot finish its cooldown before tick 40")
+	now.time += ScriptVM.SLEEP_UNIT; now._run(sleeping)
 	check(now.casts.is_empty() and now.instances.back().sname == "Tiger#1#2", "Old sleeping save resumes cooldown without recasting rewards")
 
 func unchanged_scripts() -> void:

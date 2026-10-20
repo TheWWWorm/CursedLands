@@ -1,0 +1,4308 @@
+{
+  "schema": 1,
+  "scope": "Bounded original x86 quest expressions, gates and command bodies; no complete campaign playthrough claim.",
+  "native_runs": {
+    "original": {
+      "schema": 1,
+      "status": "match",
+      "input_sha256": "fa786232ae7932767aff88ba6201a31e943fec481b9eb23fb2bfc8e18eca2143",
+      "reference": {
+        "id": "evil-islands-gog-en-d0fc0bb2",
+        "campaign": "original",
+        "executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+        "patches": [],
+        "description": "Locally verified GOG base-game game.exe. Addresses are valid only for this digest."
+      },
+      "counts": {
+        "scenarios": 2581,
+        "matches": 2581,
+        "mismatches": 0,
+        "original_steps": 15761
+      },
+      "repeatability": {
+        "captures_per_side": 2,
+        "verified": true
+      },
+      "provenance": {
+        "started_utc": "2026-10-20T19:55:19Z",
+        "game_source": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/game",
+        "game_source_sha256": "5a8fc149fceeec44c3faa97a66776fe89746bf4409b66afb74f70406ae8f13b6",
+        "godot": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "original_executable": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe",
+        "fpu_control_word": "0x027f",
+        "common_native_boundary": "Empty emulated Windows SEH chain at FS:[0]; no native exceptions are handled.",
+        "commands": [
+          {
+            "argv": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/base-qualified/runtime",
+              "--render-thread",
+              "safe",
+              "--audio-driver",
+              "Dummy",
+              "--editor",
+              "--import"
+            ],
+            "seconds": 13.037,
+            "exit_code": 0,
+            "log": "import-bootstrap.log",
+            "log_sha256": "36d0922f70cfbf7f98e2cc6523495a6ed1843e3f21d00b045947cb11ec3fe277",
+            "diagnostics": [
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/overview_friend.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Cannot infer the type of \"OVERVIEW_FRIEND\" constant because the value doesn't have a set type.",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/overview_enemy.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Cannot infer the type of \"OVERVIEW_ENEMY\" constant because the value doesn't have a set type.",
+              "SCRIPT ERROR: Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSans-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSerif-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/refresh.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/company.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/life.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/pause.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/sell.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/return.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/lock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/lock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/unlock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/life.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/play.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/pause.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/close.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/return.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/boards.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "ERROR: Failed to load script \"res://src/platform/discord_presence.gd\" with error \"Parse error\".",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/star_paper.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/star_gold.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/star_tier.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSans-Bold.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSans-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/overview_friend.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Cannot infer the type of \"OVERVIEW_FRIEND\" constant because the value doesn't have a set type.",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/overview_enemy.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Cannot infer the type of \"OVERVIEW_ENEMY\" constant because the value doesn't have a set type.",
+              "SCRIPT ERROR: Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSans-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSerif-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/refresh.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/company.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/life.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/pause.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/sell.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/return.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/lock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/lock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/unlock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/life.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/play.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/pause.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/close.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/return.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/boards.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension)."
+            ]
+          },
+          {
+            "argv": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/base-qualified/runtime",
+              "--render-thread",
+              "safe",
+              "--audio-driver",
+              "Dummy",
+              "--editor",
+              "--import"
+            ],
+            "seconds": 7.276,
+            "exit_code": 0,
+            "log": "import.log",
+            "log_sha256": "480495d80feef6b4a104a237e1466f281bb17e5f8d0c93b7eef0ea61645d9495",
+            "diagnostics": []
+          },
+          {
+            "argv": [
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/venv/bin/python",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/base-qualified/harness/native.py",
+              "--binary",
+              "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe",
+              "--inputs",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/base-qualified/inputs.json",
+              "--output",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/base-qualified/original-0.json"
+            ],
+            "seconds": 18.745,
+            "exit_code": 0,
+            "log": "original-0.log",
+            "log_sha256": "3f3b13fcccb536e97ac4249b7e7a7bd992804f1a7a90e52c7382cdc8aff6e7b8",
+            "diagnostics": []
+          },
+          {
+            "argv": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/base-qualified/runtime",
+              "--render-thread",
+              "safe",
+              "--audio-driver",
+              "Dummy",
+              "--fixed-fps",
+              "60",
+              "--",
+              "--no-movies",
+              "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+              "--tool=res://tools/parity_trace.gd",
+              "--parity-inputs=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/base-qualified/inputs.json",
+              "--parity-output=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/base-qualified/remake-0.json"
+            ],
+            "seconds": 7.076,
+            "exit_code": 0,
+            "log": "remake-0.log",
+            "log_sha256": "f58041f031db84616fff8757c941f30a95b12e175daec50ea454705a9e17672e",
+            "diagnostics": []
+          },
+          {
+            "argv": [
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/venv/bin/python",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/base-qualified/harness/native.py",
+              "--binary",
+              "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe",
+              "--inputs",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/base-qualified/inputs.json",
+              "--output",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/base-qualified/original-1.json"
+            ],
+            "seconds": 18.145,
+            "exit_code": 0,
+            "log": "original-1.log",
+            "log_sha256": "3f3b13fcccb536e97ac4249b7e7a7bd992804f1a7a90e52c7382cdc8aff6e7b8",
+            "diagnostics": []
+          },
+          {
+            "argv": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/base-qualified/runtime",
+              "--render-thread",
+              "safe",
+              "--audio-driver",
+              "Dummy",
+              "--fixed-fps",
+              "60",
+              "--",
+              "--no-movies",
+              "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+              "--tool=res://tools/parity_trace.gd",
+              "--parity-inputs=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/base-qualified/inputs.json",
+              "--parity-output=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/base-qualified/remake-1.json"
+            ],
+            "seconds": 6.776,
+            "exit_code": 0,
+            "log": "remake-1.log",
+            "log_sha256": "d6a5b5a8a8661cca70c5631e741fb3f25754a13c2b0acece49fc6495a0cc9eed",
+            "diagnostics": []
+          }
+        ],
+        "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+        "original_data_files": {
+          "res/database.res": "50e5899fd7d467e11ea152122148f6911319cf339bf7717f1e205d38c63b13b0",
+          "res/texts.res": "7480721148bf443901bad59ea184606d7a09c97d565040560778ea4663cd5c41",
+          "config/ai.reg": "56e56bb9869a8e01ae33bbb6eca53323d8cbe1cf942f4340452c7ce3c8f93424"
+        },
+        "commit": "db43e9bcd90eb23d768ae4028aa2f54cdbe9e1cf",
+        "working_tree": "M docs/gameplay-testing.md\n M docs/original-parity.md\n M game/src/game/script/vm.gd\n M tools/parity/campaign_quests.py\n M tools/parity/cases.py\n M tools/parity/cases_quests.py\n M tools/parity/compare.py\n M tools/parity/gameplay_catalog.json\n M tools/parity/native.py\n M tools/parity/native_quests.py\n M tools/parity/remake_trace.gd\n M tools/parity/test_expanded.py\n M tools/tests/script_dead_predicates.gd\n M tools/tests/story_coop_effects.gd\n?? tools/parity/cases_quest_progression.py\n?? tools/parity/native_quest_programs.py\n?? tools/tests/script_quest_waits.gd"
+      },
+      "local_capture_path": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/base-qualified",
+      "report_sha256": "448b81748c1335bd0068b614f2748ecb3e117a5f18f43e29e48b4a945b3380f3",
+      "contracts": {
+        "attack": {
+          "entry": [
+            "0x553df0",
+            "0x555bd0"
+          ],
+          "limits": "Synthetic no-spread boundary cases. Does not cover damage, armour, backstab or RNG equivalence.",
+          "scope": "Original hit decision with zero random spread versus Combat.attack_hits.",
+          "stubs": [
+            "attack/defence record accessors",
+            "target special-case predicate (false)",
+            "target use radius"
+          ],
+          "tolerances": {}
+        },
+        "attack_chance": {
+          "entry": [
+            "0x553df0",
+            "0x555bd0"
+          ],
+          "limits": "Compares the combat probability query for unaimed attacks. Does not test the remake RNG stream.",
+          "scope": "Enumerate all supplied native roll residues versus Combat.hit_chance.",
+          "stubs": [
+            "attack/defence record accessors",
+            "target special-case predicate (false)",
+            "target use radius",
+            "one-word native RNG queue"
+          ],
+          "tolerances": {
+            "probability": {
+              "abs": 1e-12
+            }
+          }
+        },
+        "body_health": {
+          "entry": [
+            "0x5259b0",
+            "0x525800",
+            "0x525a70"
+          ],
+          "limits": "Six supplied part records; no damage absorption, equipment, visuals, death dispatch or regeneration scheduling.",
+          "scope": "Native aggregate HP, healing and HP rescaling versus GameUnit body methods after each operation.",
+          "stubs": [],
+          "tolerances": {}
+        },
+        "cast_rank": {
+          "entry": [
+            "0x58eaab",
+            "0x58eb7e",
+            "0x58ec8c"
+          ],
+          "limits": "Does not cover target acquisition, line of sight, spell application or damage. This terrain fixture requires one ground height per XY coordinate.",
+          "scope": "Original candidate-selection loop versus Spells._cast_pick, including dead-node removal.",
+          "stubs": [
+            "dead predicate",
+            "removed-list-node cleanup",
+            "candidate list and ground heights"
+          ],
+          "tolerances": {}
+        },
+        "clock": {
+          "entry": [
+            "0x4571c1",
+            "0x457405"
+          ],
+          "limits": "No world simulation, input handling, rendering or worker debt retention is covered.",
+          "scope": "Original raw timestamp loop versus GameWorld._sample_frame; simulation bodies are counters.",
+          "stubs": [
+            "OS timestamp",
+            "application active flag",
+            "server/client dispatch bodies",
+            "render dispatch"
+          ],
+          "tolerances": {
+            "draw_fraction": {
+              "abs": 1.2e-07
+            },
+            "remainder_ms": {
+              "abs": 2e-05
+            }
+          }
+        },
+        "darkness": {
+          "entry": [
+            "0x55fc50"
+          ],
+          "limits": "Does not test rendered daylight, weather changes or the clock's progression.",
+          "scope": "Original simulation darkness versus GameWorld.darkness at clock boundaries.",
+          "stubs": [
+            "world hour",
+            "zero elapsed world-clock ticks"
+          ],
+          "tolerances": {}
+        },
+        "effect_lifetime": {
+          "entry": [
+            "0x6884f0"
+          ],
+          "limits": "One feeblemind counter; no application, stacking, client presentation, serialization or other effect modifiers.",
+          "scope": "Native signed-counter decrement/keep result versus authoritative GameUnit._tick_effects membership.",
+          "stubs": [],
+          "tolerances": {}
+        },
+        "eye_height": {
+          "entry": [
+            "0x5303a0"
+          ],
+          "limits": "Normal grounded figures only; no flying eye approximation or occlusion query.",
+          "scope": "Original normal-figure eye position versus GameUnit.eye_z.",
+          "stubs": [
+            "ground-height getter",
+            "dead predicate",
+            "figure half-height",
+            "posture"
+          ],
+          "tolerances": {}
+        },
+        "faction_relation": {
+          "entry": [
+            "0x4554e0"
+          ],
+          "limits": "Matrix updates only; individual hate, taming and notification side effects are separate regressions.",
+          "scope": "Original directional faction-bit updates versus GameWorld.set_relation.",
+          "stubs": [
+            "initial self-friend relation matrix",
+            "no unit-notification recipient"
+          ],
+          "tolerances": {}
+        },
+        "interaction_reach": {
+          "entry": [
+            "0x54c070"
+          ],
+          "limits": "Does not cover route planning, inventory transfer or actual lever use.",
+          "scope": "Original type-6 interaction distance versus ScriptVM._interact_reach.",
+          "stubs": [
+            "figure/use radii",
+            "target type accessor"
+          ],
+          "tolerances": {}
+        },
+        "path_refine": {
+          "entry": [
+            "0x5c42b0",
+            "0x5c46c0"
+          ],
+          "limits": "Refines supplied routes; does not establish whole-route search or collision/spline equivalence. Heading is a supplied direction code.",
+          "scope": "Original turn-template builder and local path-refinement pass versus NavTurn.refine.",
+          "stubs": [
+            "CRT allocation/free",
+            "supplied navigation costs, slopes and occupancy",
+            "unit move-class/threshold accessors"
+          ],
+          "tolerances": {}
+        },
+        "quest_predicate": {
+          "entry": [
+            "0x4b41e0",
+            "0x4b4030",
+            "0x460af0",
+            "0x4b1ed0",
+            "0x4b2070",
+            "0x4bce10",
+            "0x665600"
+          ],
+          "limits": "Bounded expressions and ASCII keys/strings only; no quest rewards, carried inventory or transfers, script scheduler or campaign completion.",
+          "scope": "Native numeric quest expressions, nested calls, group quantifiers and constructed areas versus ScriptVM._eval.",
+          "stubs": [
+            "supplied unit position/HP/identity/lever records",
+            "unit dead-state/type accessors",
+            "player-zero lookup",
+            "single-player mode",
+            "temporary string allocation/destruction",
+            "CRT thread-local single-byte locale",
+            "supplied group membership",
+            "fixture actor reference release",
+            "preallocated area containers, including empty missing IDs",
+            "supplied world time, player-zero purse and quest-item bag",
+            "empty owned-unit inventory table",
+            "supplied unit/object terrain heights"
+          ],
+          "tolerances": {}
+        },
+        "quest_program": {
+          "entry": [
+            "0x4b6760",
+            "0x4b41e0"
+          ],
+          "limits": "One already-started body, not native thread-list scheduling, spawning, save serialization, reward delivery or a complete campaign.",
+          "scope": "Persistent native command dispatcher versus ScriptVM._run at consecutive 55 ms logic ticks: numeric global assignments, Sleep, SleepUntil and KillScript.",
+          "stubs": [
+            "supplied initial globals and external per-tick changes",
+            "temporary command cleanup (no temporary values in fixture)"
+          ],
+          "tolerances": {}
+        },
+        "quest_trigger": {
+          "entry": [
+            "0x4bb520",
+            "0x4b41e0",
+            "0x4b4030",
+            "0x4b1ed0",
+            "0x4b2070",
+            "0x4bce10",
+            "0x665600"
+          ],
+          "limits": "Repeated independent condition polls; no sleep scheduling, one-shot disposal, quest rewards or full campaign playthrough.",
+          "scope": "Native ordered condition-list gate versus ScriptVM._run at supplied polls, recording body dispatch.",
+          "stubs": [
+            "supplied unit position/HP/identity/lever records",
+            "unit dead-state/type accessors",
+            "player-zero lookup",
+            "single-player mode",
+            "temporary string allocation/destruction",
+            "CRT thread-local single-byte locale",
+            "supplied group membership",
+            "fixture actor reference release",
+            "preallocated area containers, including empty missing IDs",
+            "supplied world time, player-zero purse and quest-item bag",
+            "empty owned-unit inventory table",
+            "supplied unit/object terrain heights",
+            "native temporary-expression cleanup",
+            "trigger body dispatch recorded as an event"
+          ],
+          "tolerances": {}
+        },
+        "script_random": {
+          "entry": [
+            "0x4b41e0",
+            "0x4667f0"
+          ],
+          "limits": "Tests the mapping, not the RNG generator or whole-game random draw order.",
+          "scope": "Original Random opcode with supplied uint32 words versus ScriptVM.random_value.",
+          "stubs": [
+            "one-word native RNG queue"
+          ],
+          "tolerances": {}
+        },
+        "sight_factor": {
+          "entry": [
+            "0x5536b0",
+            "0x553742"
+          ],
+          "limits": "Does not establish complete stealth, terrain occlusion or AI behavior.",
+          "scope": "Original observer sight multiplier versus GameUnit.sight_factor.",
+          "stubs": [
+            "world lookup",
+            "darkness/weather/night-sight/posture inputs"
+          ],
+          "tolerances": {}
+        },
+        "village_gate": {
+          "entry": [
+            "0x603e79",
+            "0x603ea3",
+            "0x60410d"
+          ],
+          "limits": "Tests eligibility for all command-code pairs, not command dispatch or dialogue content.",
+          "scope": "Original village-talk eligibility branch versus GameUnit.village_talk_ready.",
+          "stubs": [
+            "present unit controller",
+            "current and posted command records",
+            "branch endpoints"
+          ],
+          "tolerances": {}
+        }
+      },
+      "authored_quests": {
+        "eligible_condition_lists": 1092,
+        "limit": 0,
+        "scope": "Unmodified condition trees with supplied actors, groups and controlled area geometry; trigger bodies and map initialization are not replayed.",
+        "selected_condition_lists": 1092,
+        "skipped": {
+          "call/binding:GetDiplomacy": 2,
+          "call/binding:GetMercsNumber": 6,
+          "call/binding:IsAlarm": 4,
+          "call/binding:IsEnemy": 2,
+          "call/binding:IsPlayerInDanger": 17,
+          "call/binding:symbol": 6,
+          "dynamic actor lookup": 62,
+          "dynamic group lookup": 79,
+          "dynamic string": 226,
+          "empty authored conditions": 1864
+        },
+        "sources": [
+          {
+            "condition_lists": 104,
+            "mob": "basecam-mp.mob",
+            "sha256": "f9ad3b9deb8de69ba14c9b86ba7025f660a7f627d83f44f85e0c398e834b48e7"
+          },
+          {
+            "condition_lists": 355,
+            "mob": "basecam.mob",
+            "sha256": "f5633aa53d8a3acd969bc5227d4a6631fa52e63ae275ac76659bbc27f58f7291"
+          },
+          {
+            "condition_lists": 14,
+            "mob": "bz10k.mob",
+            "sha256": "e9abfde0d8dbdc3095eff73dd629d64abf6326e0dd5366d2ff80f04f8447a856"
+          },
+          {
+            "condition_lists": 36,
+            "mob": "bz11k.mob",
+            "sha256": "89e55c094d2e1e8508bc022a76894aae1d88e7b4f2c4610745140ae8d1c935fb"
+          },
+          {
+            "condition_lists": 16,
+            "mob": "bz13h.mob",
+            "sha256": "06b049ac734921b48c27cdecd3bc523c552a6ab1b62e00d16b6181ad1ff3c501"
+          },
+          {
+            "condition_lists": 20,
+            "mob": "bz14h-lmp.mob",
+            "sha256": "b2accd8b35fb160bf6192a1f751bc6bfabed926cec71a111addc64b1b004dbde"
+          },
+          {
+            "condition_lists": 42,
+            "mob": "bz14h.mob",
+            "sha256": "4c42a3a9d72f624cddc07a3982caf2070dec5d12a4f24ef9550659b3e38d874d"
+          },
+          {
+            "condition_lists": 13,
+            "mob": "bz15h.mob",
+            "sha256": "72f40a7625b34025fa41ed1308e3989e3bb3c80a6426b66b3fa88521ef4bb510"
+          },
+          {
+            "condition_lists": 18,
+            "mob": "bz16h.mob",
+            "sha256": "88c24d6006c2f3c8076b029d659eccd9d00198beb7a5c8fb5f6543a060525aba"
+          },
+          {
+            "condition_lists": 8,
+            "mob": "bz18h.mob",
+            "sha256": "8ac85dcac4e0f3024924617dd27ec6f4ce86508a36729086d2188642f783f87c"
+          },
+          {
+            "condition_lists": 96,
+            "mob": "bz2g.mob",
+            "sha256": "821a49f154ae832e7c79a2df7e774ed07fa2ba8e69c3c9bf929f22140e6f9236"
+          },
+          {
+            "condition_lists": 18,
+            "mob": "bz3g.mob",
+            "sha256": "420340ac5fac7fa459c5147a9e57fdb101d493a6a942838ee75dccfd2110f060"
+          },
+          {
+            "condition_lists": 25,
+            "mob": "bz4g.mob",
+            "sha256": "374ad316ea2c15a64c644ce3404abc6aa64fe3e1f1e8a1e0ef41d92fba29c632"
+          },
+          {
+            "condition_lists": 12,
+            "mob": "bz5g.mob",
+            "sha256": "45c8c42559e0d7bb1dc5821c760f4bab3382a26c3b037ba70e7a9ebe03c1eb67"
+          },
+          {
+            "condition_lists": 37,
+            "mob": "bz6g.mob",
+            "sha256": "5e3eb543e8df438eedf9f6da943e6cbec47330decfb6c18e50b20806e7dbe249"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "bz7g-lmp.mob",
+            "sha256": "7e16f04a8e1017b34e559805d4ffffba3ef827c86f446218b58e10eddda1b0a5"
+          },
+          {
+            "condition_lists": 60,
+            "mob": "bz7g.mob",
+            "sha256": "1d8c2c6054331aeae0ec8382f14c8c244ccfec815a16fd5598d82cec9acdbd98"
+          },
+          {
+            "condition_lists": 52,
+            "mob": "bz8k-lmp.mob",
+            "sha256": "517f2f6a95cf7e8edc1e248266e8d9f8f58dea74b98c11cbe39cfebae07baa30"
+          },
+          {
+            "condition_lists": 122,
+            "mob": "bz8k.mob",
+            "sha256": "ca9870d4f024072f24d05a23e2ebc0d6cbbc0eaaf1390d37ab80fada2ef22577"
+          },
+          {
+            "condition_lists": 28,
+            "mob": "bz9k.mob",
+            "sha256": "bd055afbfa8da9bb2be48eacd27e05e0279746ff3d26dee8c9476454c1be0294"
+          },
+          {
+            "condition_lists": 13,
+            "mob": "z12q1.mob",
+            "sha256": "b6d14d2238902f870f633b47e9557351f048d361d2bb2ca5c20fcb3751105d79"
+          },
+          {
+            "condition_lists": 5,
+            "mob": "z12q2.mob",
+            "sha256": "33f3057471b039c0b79bad18174847c4287234dbff738d58288031089fa7c994"
+          },
+          {
+            "condition_lists": 4,
+            "mob": "z12q3.mob",
+            "sha256": "898efe8f034a250fdbf7b14ab5a93517a141d4a70c5632b2edeceb9aa06e636c"
+          },
+          {
+            "condition_lists": 6,
+            "mob": "z13q1.mob",
+            "sha256": "fc3ab91eab6b30f5c45dd41c9dca52fc34f6d193b699c44193ec90212c37bd2f"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "z13q2.mob",
+            "sha256": "a00ede12a29b4d56ec12d9e1058917e2d6b2ee4a7aa33fa1df40a859404310da"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "z13q3.mob",
+            "sha256": "f657d3a67224277f2b1de23feebde2d0a5691b396721abe9a2e54eb5465f0988"
+          },
+          {
+            "condition_lists": 2,
+            "mob": "z17q1.mob",
+            "sha256": "e964b07ff802568199b096096e918f4f2bdbcdb3f43be00c5ad85eb8fcb6b8db"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "z17q2.mob",
+            "sha256": "21e78d7675aed9602c0cfafd347ddd82328503db8e487a4c1a86ef72410ecaed"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "z17q3.mob",
+            "sha256": "854704bebab51c2589bb5603ca51e1f480e5427b7eeaf1218f4ae6f7928cad5b"
+          },
+          {
+            "condition_lists": 22,
+            "mob": "z18q1.mob",
+            "sha256": "44964b5f4d4ed8543db7a06f0b4d2fc23874afef89bbb4189d57c46efc0244da"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "z18q2.mob",
+            "sha256": "5377c9bb5c28eaeba296a6266818ae3ed20dbcf1805a32c268a0c29d02fe164c"
+          },
+          {
+            "condition_lists": 5,
+            "mob": "z18q3.mob",
+            "sha256": "5c7fe8825c871df97e3b0dd125f4726d3517592b8db76d5278b768aae0a71bbd"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "z18q4.mob",
+            "sha256": "e9d61226efa2b82fb7cc6337b5d5fa9e5520c26900cd788d542389cb82b1b7a1"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "z19q1.mob",
+            "sha256": "5fffa5017a40299d8f66a5636d535a481492671976fa2e4b9d18c65326e9e82f"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "z19q2.mob",
+            "sha256": "7812ddef704ab54b98558d36fde4c10f1995e81e9fa04aa813466f1a8f69316a"
+          },
+          {
+            "condition_lists": 18,
+            "mob": "z19q3.mob",
+            "sha256": "2b30ec73fe6f0498a54a62467ac7fc2ff864c05b18a513da5338e9c3db6d483a"
+          },
+          {
+            "condition_lists": 5,
+            "mob": "z3q1.mob",
+            "sha256": "d5d2ef18f33966993621ef6b81f1f92c1cdc271c5c99d3e98250fb74a56c3eea"
+          },
+          {
+            "condition_lists": 2,
+            "mob": "z3q2.mob",
+            "sha256": "4bab43ac1cbfffc38c5ec4bef0f94913cb8927ff43b39a0b5c33f31929db9ae3"
+          },
+          {
+            "condition_lists": 4,
+            "mob": "z3q3.mob",
+            "sha256": "e1f8f38ca5ce7ae8cbefa1b95d516b7c5f163982214fa1072cd6af707c6bbef2"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "z6q1.mob",
+            "sha256": "29541d160feee0c83700d4c22bf5ce9b050411d3e6492b96e1db90c13f6f39b5"
+          },
+          {
+            "condition_lists": 4,
+            "mob": "z6q2.mob",
+            "sha256": "2397f51d0d844e0a875f6fa76ca4fc4a64eaab8017a4a6f5c68b70c001bef26f"
+          },
+          {
+            "condition_lists": 9,
+            "mob": "z6q3.mob",
+            "sha256": "da4b2a736cf8816983d8ef9e1d2e6e933b9ab0e48213591a0fcae83515b420fe"
+          },
+          {
+            "condition_lists": 20,
+            "mob": "z7q1.mob",
+            "sha256": "fb540bd25e5a6170d879f1b255a2a902cbf24d24d7a410049893b47539d6f4dd"
+          },
+          {
+            "condition_lists": 6,
+            "mob": "z7q2.mob",
+            "sha256": "f2ba36f088252dee13c6b68d1776b9f890f66e5a00f51c62a52d74c9d1f4d96f"
+          },
+          {
+            "condition_lists": 6,
+            "mob": "z7q3.mob",
+            "sha256": "76ca69c2ea8980bf38d6fbf2a445abf504a86a916cbb36be4959576e34f4503b"
+          },
+          {
+            "condition_lists": 6,
+            "mob": "z9q1.mob",
+            "sha256": "9e5e72d3be15d2b63cea0d10807568fe23029c49453457a472e3628466a01732"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "z9q2.mob",
+            "sha256": "ac8242df8e3e4167a643bc79d6f81a0454bb4f83fd9458e03105be281e446663"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "z9q3.mob",
+            "sha256": "17ad51da57689ee1643a08048c35ba671d6505dfef81d29ccefbc4859c567a5d"
+          },
+          {
+            "condition_lists": 142,
+            "mob": "zone1.mob",
+            "sha256": "e3cdecb0529323c020492f0dfec85b819588764ab605621b14b871d2a3b26d6f"
+          },
+          {
+            "condition_lists": 47,
+            "mob": "zone10.mob",
+            "sha256": "452a99d4d6a53a1f5d363c3dbf5e4df051d1635bddcf72a094979592db45fbd4"
+          },
+          {
+            "condition_lists": 113,
+            "mob": "zone11.mob",
+            "sha256": "c8bb948a464bee27a58feda99db5704653cb6acbf4a7b2a8bbc3ed12f82ff3b9"
+          },
+          {
+            "condition_lists": 5,
+            "mob": "zone12-lmp.mob",
+            "sha256": "a514523c245359162f241d8d70c1ad466b485d4f81f0dbc7aefc9b0bcdecb0f4"
+          },
+          {
+            "condition_lists": 107,
+            "mob": "zone12.mob",
+            "sha256": "20b4c82f69c09f0a27088e7dc07b03208a4d9eea05ca3afe722f9d604b5a4f46"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "zone12dm1.mob",
+            "sha256": "d141d4fa5463b21876f89a55092dac7f1e8f1a253ae7eb286bf4d086f9f8f826"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "zone12dm2.mob",
+            "sha256": "9f56f93f9b8eb728f92096ef34e44329ccf6d16e835ddc5db72956ad6e52055f"
+          },
+          {
+            "condition_lists": 7,
+            "mob": "zone12magess.mob",
+            "sha256": "65396021ea402d3afb3f9786d7604b4b08d13d07efc33b0dcdd7a8781ae97492"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "zone13-lmp.mob",
+            "sha256": "19f6d7f81dd4eca8c7e01e09693e32920ef987e33c2aa8b8646aac48bf4bdc7e"
+          },
+          {
+            "condition_lists": 113,
+            "mob": "zone13.mob",
+            "sha256": "654de0ceb0617b645abbe78283f1f7d276d79a567ae26282b97b36717967faf7"
+          },
+          {
+            "condition_lists": 70,
+            "mob": "zone14.mob",
+            "sha256": "30e9205f289ae537a7284ae6a8400a534035741e8d0034d02baa874e1dbe66d0"
+          },
+          {
+            "condition_lists": 149,
+            "mob": "zone15.mob",
+            "sha256": "8926acd53867f4fac4a20d6cb4e64eb004c10ad73b5aa6d3be53d643f0e8b275"
+          },
+          {
+            "condition_lists": 13,
+            "mob": "zone15night.mob",
+            "sha256": "c01c1020633571316be467618b062f8b2482f08598a8d44dfa8f208333bb72f4"
+          },
+          {
+            "condition_lists": 33,
+            "mob": "zone16.mob",
+            "sha256": "45a250c3e60484757255423b9482c50cd0f20c1e6c365bd2edfdd17fc8d698d8"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "zone17-lmp.mob",
+            "sha256": "e809d97218e1147dec51b7b130bff1d7e761d46216f55fe38292a7134e437cc9"
+          },
+          {
+            "condition_lists": 46,
+            "mob": "zone17.mob",
+            "sha256": "5ece830de3c68bb9b12b1a579749921c8ceb86dedefd3806b3d768b0f16742b9"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "zone18-lmp.mob",
+            "sha256": "ea8e12aea82191bf9ecc497adccb2c9d6796389906e809b9274dd602af11e65b"
+          },
+          {
+            "condition_lists": 94,
+            "mob": "zone18.mob",
+            "sha256": "5e7ddab61618d7f53ca1a0e70e08d6aa85c8111913a93109aab485b518a38ccf"
+          },
+          {
+            "condition_lists": 2,
+            "mob": "zone18market.mob",
+            "sha256": "0c125c6a2705aa075e2040d6841a4e889aedab56befe5d86bbac2c197d8e549c"
+          },
+          {
+            "condition_lists": 18,
+            "mob": "zone19-lmp.mob",
+            "sha256": "1f26146b4b4fba66b1ca35f9f19b715747ed10559eea22f141182d95a1c6dfa4"
+          },
+          {
+            "condition_lists": 164,
+            "mob": "zone19.mob",
+            "sha256": "cb84eaf58818f6cea27fe71f3da0d678abc3cf8118b544f3dc0a59b957b1ab68"
+          },
+          {
+            "condition_lists": 0,
+            "mob": "zone19alarm1.mob",
+            "sha256": "f816d51c3c63e208fa89058903ca3cd9787f5f4959a0304890bfcacb92dc1a47"
+          },
+          {
+            "condition_lists": 0,
+            "mob": "zone19alarm2.mob",
+            "sha256": "c3e583ff5d004113fc3e16a0c88d6b6daa8839701d1829c38954f3f84e5235e7"
+          },
+          {
+            "condition_lists": 6,
+            "mob": "zone19q71h.mob",
+            "sha256": "f4071d6e6f102a4ce6fe55a1daee88001ff741056886886f9dc05b13d3f794cd"
+          },
+          {
+            "condition_lists": 64,
+            "mob": "zone2.mob",
+            "sha256": "b6ad605534da2e0bd2418f2ebf3965d42ce0eaf00efbb476a8a5a6abb7d674b5"
+          },
+          {
+            "condition_lists": 11,
+            "mob": "zone20.mob",
+            "sha256": "b0ec5d5b0a76e6f38606767ec009f13a88280859c774c7ea00504a931d09329e"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "zone3obr-lmp.mob",
+            "sha256": "e6fa8070166f356ed962e135b832cdc41488b187865316dfd40af02b4fcf2bcd"
+          },
+          {
+            "condition_lists": 198,
+            "mob": "zone3obr.mob",
+            "sha256": "9006e9c34475c0e10288c7ef25e61ba1af085230dbdcea886577e5fd0b624292"
+          },
+          {
+            "condition_lists": 7,
+            "mob": "zone3obrvoev.mob",
+            "sha256": "e98f0be378c3dd51271619ed89c88b5666b0957fbb07a9bb245f93307e198415"
+          },
+          {
+            "condition_lists": 81,
+            "mob": "zone4.mob",
+            "sha256": "6abb4708bb21756b8e8c35bad3c105c07eaa4c3c85f1810393ae29a88753dc14"
+          },
+          {
+            "condition_lists": 19,
+            "mob": "zone4hadagans.mob",
+            "sha256": "6151bee488303cc50e3387a0ba9a067065f87463654d0aac079de1f958731780"
+          },
+          {
+            "condition_lists": 77,
+            "mob": "zone5_1.mob",
+            "sha256": "31ff36738cdced3922784469c79d7d59bf6b819573edcee00332d495035d90ca"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone5scrabpoison.mob",
+            "sha256": "f4c566c79154f436b46c981a0ea94549c07bd05be4d87fc376902305502b1010"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "zone6-lmp.mob",
+            "sha256": "98b993942252fb35c950123830f45692215dc9fb7962a2878bbce573d878efae"
+          },
+          {
+            "condition_lists": 87,
+            "mob": "zone6.mob",
+            "sha256": "c859fb0f36892107fee8dea4203bd4a04c7be8e184fc74864967843dfca7f9cf"
+          },
+          {
+            "condition_lists": 6,
+            "mob": "zone6dkin.mob",
+            "sha256": "c940f43fae92dee37c5bb0d2c3748d37f98c72814da9ae6968af24bb927602fb"
+          },
+          {
+            "condition_lists": 12,
+            "mob": "zone6flower.mob",
+            "sha256": "eed7bca11ea60be3ec2aea3fd7c472ca9d014627ea3e2ad4995a45a16e291364"
+          },
+          {
+            "condition_lists": 13,
+            "mob": "zone6gr.mob",
+            "sha256": "49fadf9db5b6ed68f3ef25db35d92f042dbc7f044d06a3f2698ae2140b205957"
+          },
+          {
+            "condition_lists": 5,
+            "mob": "zone6van.mob",
+            "sha256": "decbcdf3227e18af78f5b68c4684a3cf60a6aff8c042991f7022ef1cc720b77c"
+          },
+          {
+            "condition_lists": 10,
+            "mob": "zone6zs.mob",
+            "sha256": "18abf2dfebaf5a9ce20e8d2eaa3c6feba0bb29fc7077d616879b7efca55b3e30"
+          },
+          {
+            "condition_lists": 13,
+            "mob": "zone7-lmp.mob",
+            "sha256": "ec8c1a824fdac184c6033a12473567bc9eeb39328ca9d4b51589a53a489b07c8"
+          },
+          {
+            "condition_lists": 100,
+            "mob": "zone7.mob",
+            "sha256": "0108df01a28982ace30c20ffc8c0fdfc6b7fd5bad0f6ad9ee2b571a737c14619"
+          },
+          {
+            "condition_lists": 14,
+            "mob": "zone7altar.mob",
+            "sha256": "fad14d320e2bf9bc9f39a2a6d67cc75d81ec246256d6cc04544566e89be32e7a"
+          },
+          {
+            "condition_lists": 2,
+            "mob": "zone7chest.mob",
+            "sha256": "b28b5dee838e55bf1468545c5315defc509278489d70a7b330b52eb40e4aaa95"
+          },
+          {
+            "condition_lists": 19,
+            "mob": "zone7letter.mob",
+            "sha256": "eb3ef35415865e8deecb8b3249d73426ab3769039f698911bb99f9440cf219d0"
+          },
+          {
+            "condition_lists": 37,
+            "mob": "zone7zasada.mob",
+            "sha256": "71afb7824fb4980f4df8fcb35895ee4c3c2406802a1a388aa7823cbcca37b66c"
+          },
+          {
+            "condition_lists": 124,
+            "mob": "zone8.mob",
+            "sha256": "d33309ea26b989807fed59e1c197334fe2da1850c1df73dd8a985849b4d2ebfc"
+          },
+          {
+            "condition_lists": 7,
+            "mob": "zone8demon.mob",
+            "sha256": "972b54bbc41e030e74e901ad9c479c55e6af32829354a0f6f27c13bb01684b0d"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "zone9-lmp.mob",
+            "sha256": "7233e72db11c9612d67e2c07e1b3c0d112cb7e2b6edb6b05ad6cec97e7af77e5"
+          },
+          {
+            "condition_lists": 88,
+            "mob": "zone9.mob",
+            "sha256": "abcc5abd6604f056ee4eb98b585dd3081e39604444b827d8c43a720941098673"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "zonemainmenunew.mob",
+            "sha256": "b7462c845a3fbb4f171fbded60df8ba251717204eda80707e68337f2dde39ac6"
+          }
+        ]
+      },
+      "capture_hashes": {
+        "original-0.json": "052021c0736b23614a23c6d0027c656a414342f09cdf3fda69c895a816bb14f3",
+        "original-1.json": "052021c0736b23614a23c6d0027c656a414342f09cdf3fda69c895a816bb14f3",
+        "remake-0.json": "2bd811e7f73a443b14df3170475e5a695d454fab0e1cd618a5720753139ad3ee",
+        "remake-1.json": "2bd811e7f73a443b14df3170475e5a695d454fab0e1cd618a5720753139ad3ee"
+      },
+      "tool_source_sha256": "4ab488423f26b9033f848f890a44e6f35cc321f86654a6eeae395b9ef5b8c7db"
+    },
+    "lost_in_astral": {
+      "schema": 1,
+      "status": "match",
+      "input_sha256": "bad84fa7d282c8b6ebb337c9df395cb9b7ca3222e3ef3108fbc48db63303eb82",
+      "reference": {
+        "id": "lost-in-astral-f04a305b",
+        "campaign": "lost_in_astral",
+        "executable_sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff",
+        "patches": [],
+        "description": "Locally inspected Lost in Astral game.exe; separately qualified native addresses."
+      },
+      "counts": {
+        "scenarios": 1792,
+        "matches": 1792,
+        "mismatches": 0,
+        "original_steps": 16209
+      },
+      "repeatability": {
+        "captures_per_side": 2,
+        "verified": true
+      },
+      "provenance": {
+        "started_utc": "2026-10-20T19:55:20Z",
+        "game_source": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/game",
+        "game_source_sha256": "5a8fc149fceeec44c3faa97a66776fe89746bf4409b66afb74f70406ae8f13b6",
+        "godot": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "original_executable": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game/game.exe",
+        "fpu_control_word": "0x027f",
+        "common_native_boundary": "Empty emulated Windows SEH chain at FS:[0]; no native exceptions are handled.",
+        "commands": [
+          {
+            "argv": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/astral-qualified/runtime",
+              "--render-thread",
+              "safe",
+              "--audio-driver",
+              "Dummy",
+              "--editor",
+              "--import"
+            ],
+            "seconds": 12.989,
+            "exit_code": 0,
+            "log": "import-bootstrap.log",
+            "log_sha256": "36d0922f70cfbf7f98e2cc6523495a6ed1843e3f21d00b045947cb11ec3fe277",
+            "diagnostics": [
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/overview_friend.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Cannot infer the type of \"OVERVIEW_FRIEND\" constant because the value doesn't have a set type.",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/overview_enemy.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Cannot infer the type of \"OVERVIEW_ENEMY\" constant because the value doesn't have a set type.",
+              "SCRIPT ERROR: Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSans-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSerif-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/refresh.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/company.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/life.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/pause.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/sell.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/return.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/lock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/lock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/unlock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/life.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/play.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/pause.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/close.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/return.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/boards.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "ERROR: Failed to load script \"res://src/platform/discord_presence.gd\" with error \"Parse error\".",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/star_paper.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/star_gold.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/star_tier.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSans-Bold.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSans-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/overview_friend.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Cannot infer the type of \"OVERVIEW_FRIEND\" constant because the value doesn't have a set type.",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/overview_enemy.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Cannot infer the type of \"OVERVIEW_ENEMY\" constant because the value doesn't have a set type.",
+              "SCRIPT ERROR: Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSans-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSerif-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/refresh.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/company.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/life.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/pause.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/sell.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/return.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/lock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/lock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/unlock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/life.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/play.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/pause.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/close.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/return.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/boards.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension)."
+            ]
+          },
+          {
+            "argv": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/astral-qualified/runtime",
+              "--render-thread",
+              "safe",
+              "--audio-driver",
+              "Dummy",
+              "--editor",
+              "--import"
+            ],
+            "seconds": 7.276,
+            "exit_code": 0,
+            "log": "import.log",
+            "log_sha256": "480495d80feef6b4a104a237e1466f281bb17e5f8d0c93b7eef0ea61645d9495",
+            "diagnostics": []
+          },
+          {
+            "argv": [
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/venv/bin/python",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/astral-qualified/harness/native.py",
+              "--binary",
+              "/home/llm2x/Documents/EI/inspection/lost-in-astral/game/game.exe",
+              "--inputs",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/astral-qualified/inputs.json",
+              "--output",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/astral-qualified/original-0.json"
+            ],
+            "seconds": 12.935,
+            "exit_code": 0,
+            "log": "original-0.log",
+            "log_sha256": "3c3e09572da85528bd73ce3b4687bf954c7bac337a9e5cd746e063677c0d6ba5",
+            "diagnostics": []
+          },
+          {
+            "argv": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/astral-qualified/runtime",
+              "--render-thread",
+              "safe",
+              "--audio-driver",
+              "Dummy",
+              "--fixed-fps",
+              "60",
+              "--",
+              "--no-movies",
+              "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+              "--tool=res://tools/parity_trace.gd",
+              "--parity-inputs=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/astral-qualified/inputs.json",
+              "--parity-output=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/astral-qualified/remake-0.json"
+            ],
+            "seconds": 7.527,
+            "exit_code": 0,
+            "log": "remake-0.log",
+            "log_sha256": "21ebc934e4bc8de0150fff40790c6986e3a36f6249b3c69660e18e50d7feb306",
+            "diagnostics": []
+          },
+          {
+            "argv": [
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/venv/bin/python",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/astral-qualified/harness/native.py",
+              "--binary",
+              "/home/llm2x/Documents/EI/inspection/lost-in-astral/game/game.exe",
+              "--inputs",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/astral-qualified/inputs.json",
+              "--output",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/astral-qualified/original-1.json"
+            ],
+            "seconds": 12.585,
+            "exit_code": 0,
+            "log": "original-1.log",
+            "log_sha256": "3c3e09572da85528bd73ce3b4687bf954c7bac337a9e5cd746e063677c0d6ba5",
+            "diagnostics": []
+          },
+          {
+            "argv": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/astral-qualified/runtime",
+              "--render-thread",
+              "safe",
+              "--audio-driver",
+              "Dummy",
+              "--fixed-fps",
+              "60",
+              "--",
+              "--no-movies",
+              "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+              "--tool=res://tools/parity_trace.gd",
+              "--parity-inputs=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/astral-qualified/inputs.json",
+              "--parity-output=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/astral-qualified/remake-1.json"
+            ],
+            "seconds": 7.427,
+            "exit_code": 0,
+            "log": "remake-1.log",
+            "log_sha256": "cb76ec6ca8462381d68926183601bcf82db5bc18b09914152ce942eb7af98a53",
+            "diagnostics": []
+          }
+        ],
+        "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+        "original_data_files": {
+          "res/database.res": "b44fbff1c0a727b9ca72d2bc0c55c0fbfd2ddf38bfbbffe1f393a9541eedb36c",
+          "res/texts.res": "b9dcc0aca76bde9c1c3eb907a38a830a9c36ddae2ab90260c28f82abb8057f28",
+          "config/ai.reg": "b169cbc99b08e380952715bbc77c378ddc9e98fa7b16b00ba36dd1b61ed21fbf"
+        },
+        "commit": "db43e9bcd90eb23d768ae4028aa2f54cdbe9e1cf",
+        "working_tree": "M docs/gameplay-testing.md\n M docs/original-parity.md\n M game/src/game/script/vm.gd\n M tools/parity/campaign_quests.py\n M tools/parity/cases.py\n M tools/parity/cases_quests.py\n M tools/parity/compare.py\n M tools/parity/gameplay_catalog.json\n M tools/parity/native.py\n M tools/parity/native_quests.py\n M tools/parity/remake_trace.gd\n M tools/parity/test_expanded.py\n M tools/tests/script_dead_predicates.gd\n M tools/tests/story_coop_effects.gd\n?? tools/parity/cases_quest_progression.py\n?? tools/parity/native_quest_programs.py\n?? tools/tests/script_quest_waits.gd"
+      },
+      "local_capture_path": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/astral-qualified",
+      "report_sha256": "d0539b4b510df3fccbd859c0a0acc7b3994d7d6ba773b66287fe78219255e00b",
+      "contracts": {
+        "quest_predicate": {
+          "entry": [
+            "0x46cca0",
+            "0x46ee90",
+            "0x431d80",
+            "0x4663e0",
+            "0x466440",
+            "0x464390",
+            "0x46bc30",
+            "0x58f710"
+          ],
+          "limits": "Bounded expressions and ASCII keys/strings only; no quest rewards, carried inventory or transfers, script scheduler or campaign completion.",
+          "scope": "Native numeric quest expressions, nested calls, group quantifiers and constructed areas versus ScriptVM._eval.",
+          "stubs": [
+            "supplied unit position/HP/identity/lever records",
+            "unit dead-state/type accessors",
+            "player-zero lookup",
+            "single-player mode",
+            "temporary string allocation/destruction",
+            "CRT thread-local single-byte locale",
+            "supplied group membership",
+            "fixture actor reference release",
+            "preallocated area containers, including empty missing IDs",
+            "supplied world time, player-zero purse and quest-item bag",
+            "empty owned-unit inventory table",
+            "supplied unit/object terrain heights"
+          ],
+          "tolerances": {}
+        },
+        "quest_program": {
+          "entry": [
+            "0x4712c0",
+            "0x46cca0"
+          ],
+          "limits": "One already-started body, not native thread-list scheduling, spawning, save serialization, reward delivery or a complete campaign.",
+          "scope": "Persistent native command dispatcher versus ScriptVM._run at consecutive 55 ms logic ticks: numeric global assignments, Sleep, SleepUntil and KillScript.",
+          "stubs": [
+            "supplied initial globals and external per-tick changes",
+            "temporary command cleanup (no temporary values in fixture)"
+          ],
+          "tolerances": {}
+        },
+        "quest_trigger": {
+          "entry": [
+            "0x473b50",
+            "0x46cca0",
+            "0x46ee90",
+            "0x4663e0",
+            "0x466440",
+            "0x464390",
+            "0x46bc30",
+            "0x58f710"
+          ],
+          "limits": "Repeated independent condition polls; no sleep scheduling, one-shot disposal, quest rewards or full campaign playthrough.",
+          "scope": "Native ordered condition-list gate versus ScriptVM._run at supplied polls, recording body dispatch.",
+          "stubs": [
+            "supplied unit position/HP/identity/lever records",
+            "unit dead-state/type accessors",
+            "player-zero lookup",
+            "single-player mode",
+            "temporary string allocation/destruction",
+            "CRT thread-local single-byte locale",
+            "supplied group membership",
+            "fixture actor reference release",
+            "preallocated area containers, including empty missing IDs",
+            "supplied world time, player-zero purse and quest-item bag",
+            "empty owned-unit inventory table",
+            "supplied unit/object terrain heights",
+            "native temporary-expression cleanup",
+            "trigger body dispatch recorded as an event"
+          ],
+          "tolerances": {}
+        },
+        "script_random": {
+          "entry": [
+            "0x46cca0",
+            "0x43ac30",
+            "0x45e440"
+          ],
+          "limits": "Tests the mapping, not the RNG generator or whole-game random draw order.",
+          "scope": "Original Random opcode with supplied uint32 words versus ScriptVM.random_value.",
+          "stubs": [
+            "one-word native RNG queue"
+          ],
+          "tolerances": {}
+        }
+      },
+      "authored_quests": {
+        "eligible_condition_lists": 989,
+        "limit": 0,
+        "scope": "Unmodified condition trees with supplied actors, groups and controlled area geometry; trigger bodies and map initialization are not replayed.",
+        "selected_condition_lists": 989,
+        "skipped": {
+          "call/binding:symbol": 20,
+          "dynamic actor lookup": 934,
+          "dynamic group lookup": 18,
+          "dynamic string": 132,
+          "empty authored conditions": 747
+        },
+        "sources": [
+          {
+            "condition_lists": 63,
+            "mob": "bz11g.mob",
+            "sha256": "2a8b236757dbe43b2cf96dd712a1e5a757f0d523c7e633185c3f7f9c77bd3e0d"
+          },
+          {
+            "condition_lists": 13,
+            "mob": "bz12g.mob",
+            "sha256": "6c2081c4a95a6082fd5928c8d26e99168b64449256295217b9a2f9dd34860639"
+          },
+          {
+            "condition_lists": 7,
+            "mob": "bz13g.mob",
+            "sha256": "43825d6990d248473acc4e9937a9f4bcfe939c1ba6cf2333ec5d196d895a92bc"
+          },
+          {
+            "condition_lists": 7,
+            "mob": "bz14g.mob",
+            "sha256": "fb7855206cf2acc0aea5204caf581bad02c83a7ee13f80a4736646781d54b7c8"
+          },
+          {
+            "condition_lists": 37,
+            "mob": "bz1h.mob",
+            "sha256": "1a4f1e041db7aa017f73b206cd28dbc0e2ba1c35ea1c247ae6e3671c1330865e"
+          },
+          {
+            "condition_lists": 4,
+            "mob": "bz1r.mob",
+            "sha256": "7ccf9b65f475b18e8db5185be5a0da54028d85607c584c8946ed06cb15153460"
+          },
+          {
+            "condition_lists": 70,
+            "mob": "bz21k.mob",
+            "sha256": "95a30e40d1520aa3c41ff5d578b2f24067ca0ae90069a3fc6406542983c0e5ae"
+          },
+          {
+            "condition_lists": 58,
+            "mob": "bz22k.mob",
+            "sha256": "efa26befe4b62fa95d7dd361e9dce4544a58b913500c1f43c64ec73791e11e42"
+          },
+          {
+            "condition_lists": 12,
+            "mob": "bz23k.mob",
+            "sha256": "9479b1db4408194977fbc4ab560d7718298655823dc6997c7fe22f2eed4c37d9"
+          },
+          {
+            "condition_lists": 75,
+            "mob": "bz2h.mob",
+            "sha256": "b274f26d40468e1175c80e5d4754c8ec89f0a1b6d35c4d7d8d15f7e4e2f8b7fd"
+          },
+          {
+            "condition_lists": 73,
+            "mob": "bz31j.mob",
+            "sha256": "92662ee7289de666446f44d3e7984e06b3252679bc774ef1a08fa135d254ccda"
+          },
+          {
+            "condition_lists": 13,
+            "mob": "bz32j.mob",
+            "sha256": "07208f5b193579880047f6dcf6a1f1ee8afb63a2af7a496b5793b9c15f305817"
+          },
+          {
+            "condition_lists": 66,
+            "mob": "bz3h.mob",
+            "sha256": "31cf157841be59c50477e312a2e693676db6ee2a72b6cf55eba9c8548293a08a"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "bz3hkuzn.mob",
+            "sha256": "696447ec556ec537ff22c8246d2b21086ee1aee6d783fc5a2187e54f5475f49a"
+          },
+          {
+            "condition_lists": 13,
+            "mob": "bz4h.mob",
+            "sha256": "2c2779edf811eef1e7c6388bb7ce30a419ac329dc0bba82d473ad3b67c75b2bd"
+          },
+          {
+            "condition_lists": 170,
+            "mob": "bz5h.mob",
+            "sha256": "805df7256c13937dfbff6d724c107892d847eff1c629aa85d5cf663aae8bd5ac"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "bz5hmerc8.mob",
+            "sha256": "97040779fcd4dcc117dca9a10907528ef27dd1491fe44bbe735a35ffdd96e4da"
+          },
+          {
+            "condition_lists": 2,
+            "mob": "bz6h.mob",
+            "sha256": "906ff72a06924fef8b90a217dbbf587ce271eef334bffa2c9047cd60310cfe80"
+          },
+          {
+            "condition_lists": 23,
+            "mob": "bz7h.mob",
+            "sha256": "65d5a52b69f2961b2ff3b0c9dda00782aa79f2e3edd4a2818f7b1b490e034863"
+          },
+          {
+            "condition_lists": 40,
+            "mob": "bz8g.mob",
+            "sha256": "cef15b33757c0ad2e1a2346bf1ece36df36af383147f9285cc6b9810276dbe21"
+          },
+          {
+            "condition_lists": 4,
+            "mob": "cz0k.mob",
+            "sha256": "6217d6ff2d5039ed8938c0dd7f6b45166a64966bf7e65ea75a9e059dd96359eb"
+          },
+          {
+            "condition_lists": 12,
+            "mob": "cz1h.mob",
+            "sha256": "ee213e6694b70da4ae511a0517e3c9f507ad94547fe2892f8db00aabb845b6be"
+          },
+          {
+            "condition_lists": 48,
+            "mob": "cz1j.mob",
+            "sha256": "74b6d22b2e8381e932af23282ab524782761c93e6e9c8b9f52f83a8c810e240e"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "cz1k.mob",
+            "sha256": "c03a6a3f984f41d2284b14d606447172d1db72dc6cb7d46266431823b4759a2e"
+          },
+          {
+            "condition_lists": 11,
+            "mob": "cz2h.mob",
+            "sha256": "e0a34936d8121e9e955bfb46ed1c998980c132cbf72857bd67710607e2daf26d"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "cz2j.mob",
+            "sha256": "eb5ebf54d1376a83adb675d56088873ae5d3be9a8d9b608fa537ab41ef7c1c87"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "cz2k.mob",
+            "sha256": "69115203a80f87c8f1dba0cae5378ffaf2d292596f308745a01832003d5785b6"
+          },
+          {
+            "condition_lists": 18,
+            "mob": "cz3j.mob",
+            "sha256": "4dc306c19c0123e52eccff0bf80837982799e4d623aff65d395ed59a271ff16d"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "cz3k.mob",
+            "sha256": "e23cbf34d4d9a0c3337228b7e90b6c1628f72674d920b614c3b43430e11cda33"
+          },
+          {
+            "condition_lists": 4,
+            "mob": "cz4j.mob",
+            "sha256": "6d4499f5c7d4a919b61be64d0a07a763531e6e79e01444e6a369d6fade71347f"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "cz4k.mob",
+            "sha256": "2b8d4a5269f46c0d7106395743ea1f4e18143d7eea0cf23b55997501e2534c47"
+          },
+          {
+            "condition_lists": 196,
+            "mob": "zone1.mob",
+            "sha256": "4a5679b7685fa3d28c5981bb3dc60759015dc3a2b12105dfb19bbf05e372adf1"
+          },
+          {
+            "condition_lists": 82,
+            "mob": "zone10.mob",
+            "sha256": "4491fb477403c4baa3132815ef87032172ad1b2db5a30cb1ea4c7c08d03a909c"
+          },
+          {
+            "condition_lists": 0,
+            "mob": "zone10dday.mob",
+            "sha256": "34b23e28d30c08479645808f9aebbbc8b87e20129a525b49d6f641f741a8714c"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone10hunter.mob",
+            "sha256": "5e3e962fe34484af8d621ffd07e6f90bb4bf47544b346f5cbdda6a6fa5880c65"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone10karavan.mob",
+            "sha256": "f7457319d7818d618d585e83c4023ea5bbc72121c1cd7a7557e12cf9a1e50169"
+          },
+          {
+            "condition_lists": 88,
+            "mob": "zone11.mob",
+            "sha256": "fcd8cd1a940d38e1f46207c4f7fd788399039f528c62a18f9efce59c717b74c1"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone11clerk.mob",
+            "sha256": "f599f0b0fcaacbe9682d3460479f9d75be291d28091e472a42785caf4a5fee38"
+          },
+          {
+            "condition_lists": 29,
+            "mob": "zone11dun1.mob",
+            "sha256": "378b3b358cb7c806dd4b6aaed2847cf3b6e40bceee7b04ee64702769821b197c"
+          },
+          {
+            "condition_lists": 4,
+            "mob": "zone11dun2.mob",
+            "sha256": "1f38770e1678f802a8b904cc2c66285540243d16bb2dbfda1c5742ce581c6bc0"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone11harpy.mob",
+            "sha256": "bcfe51439accf3c21090711fef9a1b57ce880e4585ad7739019530649473ddbf"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone11mount.mob",
+            "sha256": "0c5e839f325381e938e596e25839a8a56e7355d75ffc5f204c565dea724f56a2"
+          },
+          {
+            "condition_lists": 19,
+            "mob": "zone12.mob",
+            "sha256": "57ba7057c68a281abe39b3db1af39839c3b1513dadb09dbf9ee657cb395daf87"
+          },
+          {
+            "condition_lists": 25,
+            "mob": "zone13.mob",
+            "sha256": "f2f68b23884509aa233e3b301753791be58d0fa0735dc0d08c2d2283d3fa9304"
+          },
+          {
+            "condition_lists": 13,
+            "mob": "zone14.mob",
+            "sha256": "04e2a3ffabd10a1b4d16cf49f89befd42842c5ee9a9662db31f7589a112365cb"
+          },
+          {
+            "condition_lists": 37,
+            "mob": "zone15.mob",
+            "sha256": "092a3187624158f51be8f9daf6e0ed207fc3365c00a703ef04f068286a62ade5"
+          },
+          {
+            "condition_lists": 101,
+            "mob": "zone16.mob",
+            "sha256": "aba195909addc8771cdb25ceb04d709a62243341291dd843dfc6393d603ba4d7"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone16babur.mob",
+            "sha256": "04c98006a11df5853b885039e56526e73e5d55ace59d99629fea2a12b1b486bf"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone1cityg.mob",
+            "sha256": "38d70747398c4ae719bd2c543c834930e43b818e05ba7a11ad01af23d09c08dd"
+          },
+          {
+            "condition_lists": 11,
+            "mob": "zone1dun1.mob",
+            "sha256": "ed4752c17e418330394cedb0826b115371b2a132f304190ed2cbea4ecc643fa0"
+          },
+          {
+            "condition_lists": 20,
+            "mob": "zone1dun2.mob",
+            "sha256": "213dd95caa01a2068eecf6e1d91143172081b9be4388d282d722338adf2f3211"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone1evil.mob",
+            "sha256": "47f3019329932cf6003feacf84dcd55f0a6013cc5560590ea915297e08bec3c1"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone1karav.mob",
+            "sha256": "ab88a66c0607a33931a6e873d63f61f974c485e9678e5faf41c9120dfc26f2a5"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone1karav2.mob",
+            "sha256": "f4546a348391583d18b16466708230bb4b647199b36dcaead205f4d02a53780a"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone1karav3.mob",
+            "sha256": "df3e9406b81bd1f7ca6112c59c243575ab4eb340b88bb3baa6dc3755b78dbfad"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone1letter.mob",
+            "sha256": "10a7d09d269d9dac572acb11422a142f328c71432ab96821928c913c13c33c02"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone1plen.mob",
+            "sha256": "1ed5b311cd69cf3a351e50419c3be99a34cf38939c56f47d550be4dcd87fd151"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone1rats.mob",
+            "sha256": "66689fe8f1c209510aa29d06f4d85c3c7a1bc7b950989daa4a4208242973fc40"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone1thief.mob",
+            "sha256": "5131631478be49268d9162175a6b55c136da697da285b0b2202de050299e7b12"
+          },
+          {
+            "condition_lists": 113,
+            "mob": "zone2.mob",
+            "sha256": "fb123e0468ae052b72292870a18522f1c12a90ae6efc78306ab7c79baa8e22eb"
+          },
+          {
+            "condition_lists": 76,
+            "mob": "zone21.mob",
+            "sha256": "22212a7bc8c7ae5b630f87607ad896298ec18c93b229fd81e0731d756633612f"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone21flower.mob",
+            "sha256": "12174690d40842ebebc22a92be2581b09c63d27b8cf81079368550843f6c3166"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone21flower1.mob",
+            "sha256": "46581e5c4a69f9c652f8d730b71a8dea1f0288c8e4fa059cf30bbdfcfe431bd1"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone21his.mob",
+            "sha256": "15dca380081519b74c8f65fbb6a946c0b0dad8cd1a1a8d651c0867e5df16ecc3"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone21hvost.mob",
+            "sha256": "e617a664b918b77b0022ca20469487672286748b21763d9fd5efc53065eb66ba"
+          },
+          {
+            "condition_lists": 60,
+            "mob": "zone22.mob",
+            "sha256": "e4605e257a62c15343fe417c28f627855ed3714f832e24a64eace394f1b5749a"
+          },
+          {
+            "condition_lists": 6,
+            "mob": "zone22dun1.mob",
+            "sha256": "3b1d838015098f9f053a6cd64efa50bbfc65b586ed4106b4e928cd82f85542f2"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone22spy.mob",
+            "sha256": "fe9f869e0d1502b4b03c40dcd8a75f80c1df917557ffc0c3063df95c491136f8"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone22tree1.mob",
+            "sha256": "19f0bd0fb3747bdde4b947a6516ef66e32246aa5862a990f67c2fa48b97a7835"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone22tree2.mob",
+            "sha256": "0950db3c587587978c84281959d09ceaa162e00f1a56e11fcfbd681eba25a779"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone22tree3.mob",
+            "sha256": "ec1259b338c679f10e5194a7285ff949ba5bb36ad6201d453636847a13dfc539"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone22tree4.mob",
+            "sha256": "2f931112f5bc89b145056bfd82b217aa235ede61a7aaec19e56705e267a90f9b"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone22tree5.mob",
+            "sha256": "d3d344c77b0b66580c1a63bd335a25c79af97b8c683144e0ae168f9759b6eac5"
+          },
+          {
+            "condition_lists": 44,
+            "mob": "zone23.mob",
+            "sha256": "d2987aee0dab81700d56552b52f9f60fe7e914d0f05f5753e14dbe3a7247660b"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone23caboom.mob",
+            "sha256": "b85e3babdfa322c9324f31f65c415f96e55d1e088b364c3740c99f88cf14fd72"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone23capital.mob",
+            "sha256": "84951b4999d956c26ad136614c5ee7318af95e96e52647f8304961e6707b79b2"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone23pred.mob",
+            "sha256": "41f1c95ce435aae9e90ee08aff13492abc8a9be141ead09cdcec09a1d7f42116"
+          },
+          {
+            "condition_lists": 26,
+            "mob": "zone24.mob",
+            "sha256": "9867af01ba542bd874cd7f4eac437185b52934d6b612c352cd76dc49cf4827bc"
+          },
+          {
+            "condition_lists": 17,
+            "mob": "zone25.mob",
+            "sha256": "beda7011e98e6998bdeb737655d905467a40a6ecddf728662ae43140a335a37a"
+          },
+          {
+            "condition_lists": 15,
+            "mob": "zone26.mob",
+            "sha256": "e5687241335ccff5647e1a45018447720546ee710eb457733370cd622d0db5f1"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone2kapr2.mob",
+            "sha256": "596c7100b99e5aba9079af0f16fb922e4613243865729f4c9b27e710a98ffc56"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone2mest.mob",
+            "sha256": "27f82ebd43cf5e4685e73040c9ea12f1446ccc16e52d68cf8f9f556f98891175"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone2necro.mob",
+            "sha256": "107748141eff257427d9c3b26046daeade10750755ce6e11e182329e31936676"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone2undead.mob",
+            "sha256": "a2331a60081d21ee2e1bc805914a67f3b03239afb42484aa8d5f60db1eaa4b69"
+          },
+          {
+            "condition_lists": 107,
+            "mob": "zone3.mob",
+            "sha256": "cf01e4111166ff31575593ccb93ef1749c056e4c37401c4c2c2225917864c605"
+          },
+          {
+            "condition_lists": 46,
+            "mob": "zone31.mob",
+            "sha256": "933541cb1636380936b92d26014507f253d15f574dc9937235baca404bb46eee"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone31vil.mob",
+            "sha256": "54892879d2f8849c47bc62c96a5ee455417208c7326843ffed980d9c15bcc632"
+          },
+          {
+            "condition_lists": 54,
+            "mob": "zone32.mob",
+            "sha256": "173c17f164e243121121a812722641d411627b1406ea4c403740bd9d140ecbd3"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone32duel.mob",
+            "sha256": "c699157bf628accd2aea519144c1aeea718fb25beb020a3a48a8439f4bf6de6c"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone32hero.mob",
+            "sha256": "65f5962f6107fcac2a86ed4791bd6eebc664c6e1fd93b3d073b18c4e1ba28f13"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone32necro.mob",
+            "sha256": "04938db4f5dcccf137fa717e438a7efbf9dabf665e867942caa34f6238339112"
+          },
+          {
+            "condition_lists": 59,
+            "mob": "zone33.mob",
+            "sha256": "759bc797fe81d740b0a8611996e486f7083aa3440ea85c7c05efac1bdfdc9281"
+          },
+          {
+            "condition_lists": 0,
+            "mob": "zone33battle.mob",
+            "sha256": "2044d5f9ed2b702121a741ee5b36e3ded5925b9b546244435e38cb18754f975c"
+          },
+          {
+            "condition_lists": 66,
+            "mob": "zone34.mob",
+            "sha256": "64482e2cde9876f691b620790c3b1798af1ba55a28ea61b31cdecd4634e2217f"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone34battle.mob",
+            "sha256": "ce3e25a97c506e2a835f3f915dda3743b087f06f61b54c97a10c0d1f165440d4"
+          },
+          {
+            "condition_lists": 9,
+            "mob": "zone34dun1.mob",
+            "sha256": "ba2c43ba6e2d2c807ea83eac96c981c6968e3b4d388a666e14d2b85b4874428b"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone34mon.mob",
+            "sha256": "1a0e27a639957dcd26c1c38ef4cca65e1fcc0249c8ead29cb3173da9f88711c2"
+          },
+          {
+            "condition_lists": 78,
+            "mob": "zone35.mob",
+            "sha256": "a384e7f2264f286c77643a406ee4b30ff17da47df4502556b54307ca395aea57"
+          },
+          {
+            "condition_lists": 0,
+            "mob": "zone35battle.mob",
+            "sha256": "808f5d8bd072fe58172285d2dab1065e7f338822206d730c6ab462a34610ac5d"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone3att.mob",
+            "sha256": "9e43ef65cd01bd48f33a1ee09276e510114d47be28955495ec531c60e259e7c3"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone3def.mob",
+            "sha256": "99c332b666caa5841cce4f81abdf60ac869dce23e6edd8862edca6c6c6b37c23"
+          },
+          {
+            "condition_lists": 58,
+            "mob": "zone3dun1.mob",
+            "sha256": "4f1f0674d737e42e3a94032f18a3bfd156d2d0b2117e92682e1a41dd72b63308"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone3harad.mob",
+            "sha256": "a11c0a08bef56b4022664d5aebb235ece5de432d3110830e12315a22e2b33adf"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone3harpy.mob",
+            "sha256": "ee3dc2d144ee0c5e19b5a568e3c2ea216cefe7ae24c7db89daec568e8ac9d934"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone3perst.mob",
+            "sha256": "29b48799226a0b979d816339edc2b8aa71c8c1831b73ea05ec72b8020d01ebd6"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone3plen.mob",
+            "sha256": "4d8c4ec46c0c78a5b246004bafd9c19a434f0337f798568f42125728489f687f"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone3plen2.mob",
+            "sha256": "775fa03d72dcbc1ddbc1be9011ec87c89b30cbcd15c9298f5523e482f3e5e56c"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone3pu.mob",
+            "sha256": "2542879cf1913ac6620448c46aaa9a45155852b2e2b48da4324a658971a54d03"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone3report.mob",
+            "sha256": "afb99e7d9f62462fb7f0375816a7c84425e72935229dfcb40d3cf19810ef31d9"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone3sack.mob",
+            "sha256": "21deab193b934ba5b7ab9bc3fe7cdea8d35b123a093bc7ca07b8661ae12cb297"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone3spear.mob",
+            "sha256": "ffb0985dc4d1cc861ee7ea1c05c1626392a73d2dca521414057dc4674bc0813b"
+          },
+          {
+            "condition_lists": 24,
+            "mob": "zone4.mob",
+            "sha256": "4746886e9becc163b03ae2c6046b30eceea682a3be40a8f8e241221eae6dc222"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "zone4duot.mob",
+            "sha256": "02d0fe023326a5e0167131bbdd5d969942e7d2af39eb38d98907f08c113b040c"
+          },
+          {
+            "condition_lists": 44,
+            "mob": "zone5.mob",
+            "sha256": "ea3db2f3eebfb2ef8ed54779a9895b4b3140405cf26901ec780cf4109fe1ac3d"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "zone5raz.mob",
+            "sha256": "8fabe94b256388c03a02dd581a7ded3161e33a1caf0b1a4f20b78d8a6ba82ad4"
+          },
+          {
+            "condition_lists": 9,
+            "mob": "zone6.mob",
+            "sha256": "f07ac4b1e8e172c7c44cf5ccde253dae47e110c36d15468bcf2c02ce7aa5dfb7"
+          },
+          {
+            "condition_lists": 78,
+            "mob": "zone7.mob",
+            "sha256": "c687c1f10e05eb4145e7ace36f36b912e823ef483c99c8b77c3b5d0a6ee46187"
+          },
+          {
+            "condition_lists": 12,
+            "mob": "zone7dun1.mob",
+            "sha256": "b761277181ca621b2596413996f0de1ae9301f0876c197b4f7653fe4556070b1"
+          },
+          {
+            "condition_lists": 9,
+            "mob": "zone7dun2.mob",
+            "sha256": "1d0de672664950b556b204d40c16bdf7fdb3c79ac26bccdf89fccf5bac46e6f5"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone7invalid.mob",
+            "sha256": "6a344c3bda84ef51befc157125f52b542e9b94c51d756b8d58d128f23a7f0166"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone7witch.mob",
+            "sha256": "fbeedd38ec5e6046471ea656665af3d49b2eba08d7912b6e9206ce4008d3071d"
+          },
+          {
+            "condition_lists": 16,
+            "mob": "zone8.mob",
+            "sha256": "f77314b995c8b21e9c632e7b4ed673c27092c9a8d6d38abf738b8acff81fb683"
+          },
+          {
+            "condition_lists": 103,
+            "mob": "zone9.mob",
+            "sha256": "7c163c85321eb1792ff7f3d5114861b53b3ff790d53609ffad159f53de3dce9f"
+          },
+          {
+            "condition_lists": 3,
+            "mob": "zone9battle.mob",
+            "sha256": "d397e034b3a844ff4e8da5bc447ad0173a05ffac1648f16aa33d05d7c5e8295b"
+          },
+          {
+            "condition_lists": 9,
+            "mob": "zone9dun1.mob",
+            "sha256": "6f436373f158b01ab245ca2456bc49e93f1c91677ccd55689477f3768493547f"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "zone9mushroom.mob",
+            "sha256": "b3562b70b762d1208075e846253696c68d92e1ba663057b50c22620222d9fe65"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "zone9mushroom1.mob",
+            "sha256": "bb07f8169338e30e50e407bfd0b0a86683989b292c764b821b982c07644b7938"
+          },
+          {
+            "condition_lists": 38,
+            "mob": "zonefinal.mob",
+            "sha256": "de7220f68d6b14622be17d5d1d1c4cec22aeade399499a1e3222bfeb9fcab9b0"
+          },
+          {
+            "condition_lists": 1,
+            "mob": "zonemainmenunew.mob",
+            "sha256": "49d3d0ecd91b84d209180aabe402fc4cdf612529237c6f22e24824e48a4d9008"
+          },
+          {
+            "condition_lists": 14,
+            "mob": "zonezero.mob",
+            "sha256": "76ffc970796c92b5dc72389d2a5c4cf5a6fe3168728be5a24a2cbab0dd791a49"
+          }
+        ]
+      },
+      "capture_hashes": {
+        "original-0.json": "0b00e3f6056b79baffb94dad8f84a2d5c82618ecd1fd11a33504e71e93c303bb",
+        "original-1.json": "0b00e3f6056b79baffb94dad8f84a2d5c82618ecd1fd11a33504e71e93c303bb",
+        "remake-0.json": "daac971a03159e5e22e125a7389a5a328a2692f06edb2cf8feacfeab22b4cbb3",
+        "remake-1.json": "daac971a03159e5e22e125a7389a5a328a2692f06edb2cf8feacfeab22b4cbb3"
+      },
+      "tool_source_sha256": "4ab488423f26b9033f848f890a44e6f35cc321f86654a6eeae395b9ef5b8c7db"
+    }
+  },
+  "prior_scenarios": {
+    "original": {
+      "count": 2221,
+      "all_retained": true,
+      "all_original_observation_hashes_unchanged": true,
+      "new_scenarios": 360
+    },
+    "lost_in_astral": {
+      "count": 1290,
+      "all_retained": true,
+      "all_original_observation_hashes_unchanged": true,
+      "new_scenarios": 502
+    }
+  },
+  "rollback_controls": {
+    "original": {
+      "local_capture_path": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-base",
+      "report_sha256": "56643289633123f7e9a7a0555dced2768b6faef75fa3eba80c888f3da60584da",
+      "counts": {
+        "scenarios": 251,
+        "matches": 209,
+        "mismatches": 42,
+        "original_steps": 1674
+      },
+      "repeatability": {
+        "captures_per_side": 2,
+        "verified": true
+      },
+      "provenance": {
+        "started_utc": "2026-10-20T19:49:54Z",
+        "game_source": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-game",
+        "game_source_sha256": "3048b78c82e55f53ee5869e4d3edd6a59b954eb8aceb8888fb59afa8e92f2b1a",
+        "godot": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "original_executable": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe",
+        "fpu_control_word": "0x027f",
+        "common_native_boundary": "Empty emulated Windows SEH chain at FS:[0]; no native exceptions are handled.",
+        "commands": [
+          {
+            "argv": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-base/runtime",
+              "--render-thread",
+              "safe",
+              "--audio-driver",
+              "Dummy",
+              "--editor",
+              "--import"
+            ],
+            "seconds": 12.988,
+            "exit_code": 0,
+            "log": "import-bootstrap.log",
+            "log_sha256": "36d0922f70cfbf7f98e2cc6523495a6ed1843e3f21d00b045947cb11ec3fe277",
+            "diagnostics": [
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/overview_friend.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Cannot infer the type of \"OVERVIEW_FRIEND\" constant because the value doesn't have a set type.",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/overview_enemy.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Cannot infer the type of \"OVERVIEW_ENEMY\" constant because the value doesn't have a set type.",
+              "SCRIPT ERROR: Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSans-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSerif-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/refresh.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/company.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/life.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/pause.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/sell.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/return.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/lock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/lock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/unlock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/life.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/play.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/pause.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/close.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/return.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/boards.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "ERROR: Failed to load script \"res://src/platform/discord_presence.gd\" with error \"Parse error\".",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/star_paper.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/star_gold.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/star_tier.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSans-Bold.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSans-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/overview_friend.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Cannot infer the type of \"OVERVIEW_FRIEND\" constant because the value doesn't have a set type.",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/overview_enemy.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Cannot infer the type of \"OVERVIEW_ENEMY\" constant because the value doesn't have a set type.",
+              "SCRIPT ERROR: Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSans-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSerif-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/refresh.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/company.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/life.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/pause.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/sell.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/return.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/lock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/lock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/unlock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/life.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/play.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/pause.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/close.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/return.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/boards.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension)."
+            ]
+          },
+          {
+            "argv": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-base/runtime",
+              "--render-thread",
+              "safe",
+              "--audio-driver",
+              "Dummy",
+              "--editor",
+              "--import"
+            ],
+            "seconds": 7.277,
+            "exit_code": 0,
+            "log": "import.log",
+            "log_sha256": "480495d80feef6b4a104a237e1466f281bb17e5f8d0c93b7eef0ea61645d9495",
+            "diagnostics": []
+          },
+          {
+            "argv": [
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/venv/bin/python",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-base/harness/native.py",
+              "--binary",
+              "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe",
+              "--inputs",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-base/inputs.json",
+              "--output",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-base/original-0.json"
+            ],
+            "seconds": 1.567,
+            "exit_code": 0,
+            "log": "original-0.log",
+            "log_sha256": "235fa44e1f6b1b9a03b67e3d735228beed62fd3db38dcfa4408aab870dc87adc",
+            "diagnostics": []
+          },
+          {
+            "argv": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-base/runtime",
+              "--render-thread",
+              "safe",
+              "--audio-driver",
+              "Dummy",
+              "--fixed-fps",
+              "60",
+              "--",
+              "--no-movies",
+              "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+              "--tool=res://tools/parity_trace.gd",
+              "--parity-inputs=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-base/inputs.json",
+              "--parity-output=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-base/remake-0.json"
+            ],
+            "seconds": 5.474,
+            "exit_code": 0,
+            "log": "remake-0.log",
+            "log_sha256": "21df2cf630062dc93c71f184361c1b694ac97cf0d32befbcb686cd40a9e47311",
+            "diagnostics": []
+          },
+          {
+            "argv": [
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/venv/bin/python",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-base/harness/native.py",
+              "--binary",
+              "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe",
+              "--inputs",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-base/inputs.json",
+              "--output",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-base/original-1.json"
+            ],
+            "seconds": 1.416,
+            "exit_code": 0,
+            "log": "original-1.log",
+            "log_sha256": "235fa44e1f6b1b9a03b67e3d735228beed62fd3db38dcfa4408aab870dc87adc",
+            "diagnostics": []
+          },
+          {
+            "argv": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-base/runtime",
+              "--render-thread",
+              "safe",
+              "--audio-driver",
+              "Dummy",
+              "--fixed-fps",
+              "60",
+              "--",
+              "--no-movies",
+              "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+              "--tool=res://tools/parity_trace.gd",
+              "--parity-inputs=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-base/inputs.json",
+              "--parity-output=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-base/remake-1.json"
+            ],
+            "seconds": 5.473,
+            "exit_code": 0,
+            "log": "remake-1.log",
+            "log_sha256": "cede5e0de879049d27d90705411da7b8f74fd9e2b1f8b8986904c3ab17cf1666",
+            "diagnostics": []
+          }
+        ],
+        "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+        "original_data_files": {
+          "res/database.res": "50e5899fd7d467e11ea152122148f6911319cf339bf7717f1e205d38c63b13b0",
+          "res/texts.res": "7480721148bf443901bad59ea184606d7a09c97d565040560778ea4663cd5c41",
+          "config/ai.reg": "56e56bb9869a8e01ae33bbb6eca53323d8cbe1cf942f4340452c7ce3c8f93424"
+        },
+        "commit": null,
+        "working_tree": null
+      },
+      "restored_source_revision": "db43e9bc",
+      "only_runtime_file_changed": [
+        "src/game/script/vm.gd"
+      ],
+      "all_251_original_observation_hashes_unchanged_after_fix": true,
+      "replay_note": "Use the retained harness for the exact old contract; the current contract clarifies inventory-transfer exclusions.",
+      "reproduction_argv": [
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/venv/bin/python",
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-base/harness/run.py",
+        "--game-dir",
+        "/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--game-source",
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-game",
+        "--godot",
+        "/home/llm2x/.local/bin/godot-4",
+        "--replay-inputs",
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-base/inputs.json",
+        "--repeat",
+        "2",
+        "--out",
+        "<new-output-directory>"
+      ]
+    },
+    "lost_in_astral": {
+      "local_capture_path": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-astral",
+      "report_sha256": "6eb70bf3aa70b0f3c1b4fa386a5cc0d52852122d0babc229320b22f57144ea36",
+      "counts": {
+        "scenarios": 251,
+        "matches": 209,
+        "mismatches": 42,
+        "original_steps": 1674
+      },
+      "repeatability": {
+        "captures_per_side": 2,
+        "verified": true
+      },
+      "provenance": {
+        "started_utc": "2026-10-20T19:49:54Z",
+        "game_source": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-game",
+        "game_source_sha256": "3048b78c82e55f53ee5869e4d3edd6a59b954eb8aceb8888fb59afa8e92f2b1a",
+        "godot": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "original_executable": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game/game.exe",
+        "fpu_control_word": "0x027f",
+        "common_native_boundary": "Empty emulated Windows SEH chain at FS:[0]; no native exceptions are handled.",
+        "commands": [
+          {
+            "argv": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-astral/runtime",
+              "--render-thread",
+              "safe",
+              "--audio-driver",
+              "Dummy",
+              "--editor",
+              "--import"
+            ],
+            "seconds": 12.986,
+            "exit_code": 0,
+            "log": "import-bootstrap.log",
+            "log_sha256": "36d0922f70cfbf7f98e2cc6523495a6ed1843e3f21d00b045947cb11ec3fe277",
+            "diagnostics": [
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/overview_friend.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Cannot infer the type of \"OVERVIEW_FRIEND\" constant because the value doesn't have a set type.",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/overview_enemy.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Cannot infer the type of \"OVERVIEW_ENEMY\" constant because the value doesn't have a set type.",
+              "SCRIPT ERROR: Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSans-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSerif-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/refresh.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/company.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/life.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/pause.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/sell.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/return.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/lock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/lock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/unlock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/life.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/play.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/pause.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/close.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/return.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/boards.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "ERROR: Failed to load script \"res://src/platform/discord_presence.gd\" with error \"Parse error\".",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/star_paper.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/star_gold.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/star_tier.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSans-Bold.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSans-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/overview_friend.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Cannot infer the type of \"OVERVIEW_FRIEND\" constant because the value doesn't have a set type.",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/overview_enemy.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Cannot infer the type of \"OVERVIEW_ENEMY\" constant because the value doesn't have a set type.",
+              "SCRIPT ERROR: Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSans-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://fonts/LiberationSerif-Regular.ttf\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/refresh.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/company.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/life.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/pause.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/sell.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/return.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/lock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/lock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/unlock.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/coin.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/life.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/play.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/pause.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/close.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/return.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/boards.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension).",
+              "SCRIPT ERROR: Parse Error: Preload file \"res://assets/arena/alliance_warrior.svg\" has no resource loaders (unrecognized file extension)."
+            ]
+          },
+          {
+            "argv": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-astral/runtime",
+              "--render-thread",
+              "safe",
+              "--audio-driver",
+              "Dummy",
+              "--editor",
+              "--import"
+            ],
+            "seconds": 7.377,
+            "exit_code": 0,
+            "log": "import.log",
+            "log_sha256": "480495d80feef6b4a104a237e1466f281bb17e5f8d0c93b7eef0ea61645d9495",
+            "diagnostics": []
+          },
+          {
+            "argv": [
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/venv/bin/python",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-astral/harness/native.py",
+              "--binary",
+              "/home/llm2x/Documents/EI/inspection/lost-in-astral/game/game.exe",
+              "--inputs",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-astral/inputs.json",
+              "--output",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-astral/original-0.json"
+            ],
+            "seconds": 1.316,
+            "exit_code": 0,
+            "log": "original-0.log",
+            "log_sha256": "235fa44e1f6b1b9a03b67e3d735228beed62fd3db38dcfa4408aab870dc87adc",
+            "diagnostics": []
+          },
+          {
+            "argv": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-astral/runtime",
+              "--render-thread",
+              "safe",
+              "--audio-driver",
+              "Dummy",
+              "--fixed-fps",
+              "60",
+              "--",
+              "--no-movies",
+              "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+              "--tool=res://tools/parity_trace.gd",
+              "--parity-inputs=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-astral/inputs.json",
+              "--parity-output=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-astral/remake-0.json"
+            ],
+            "seconds": 5.473,
+            "exit_code": 0,
+            "log": "remake-0.log",
+            "log_sha256": "79de3bb534287cdecfea8e525c3b47209d2c27294d376b93263d6406e6bec1fe",
+            "diagnostics": []
+          },
+          {
+            "argv": [
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/venv/bin/python",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-astral/harness/native.py",
+              "--binary",
+              "/home/llm2x/Documents/EI/inspection/lost-in-astral/game/game.exe",
+              "--inputs",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-astral/inputs.json",
+              "--output",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-astral/original-1.json"
+            ],
+            "seconds": 1.316,
+            "exit_code": 0,
+            "log": "original-1.log",
+            "log_sha256": "235fa44e1f6b1b9a03b67e3d735228beed62fd3db38dcfa4408aab870dc87adc",
+            "diagnostics": []
+          },
+          {
+            "argv": [
+              "/home/llm2x/.local/bin/godot-4",
+              "--headless",
+              "--path",
+              "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-astral/runtime",
+              "--render-thread",
+              "safe",
+              "--audio-driver",
+              "Dummy",
+              "--fixed-fps",
+              "60",
+              "--",
+              "--no-movies",
+              "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+              "--tool=res://tools/parity_trace.gd",
+              "--parity-inputs=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-astral/inputs.json",
+              "--parity-output=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-astral/remake-1.json"
+            ],
+            "seconds": 5.472,
+            "exit_code": 0,
+            "log": "remake-1.log",
+            "log_sha256": "d61eefeed42914a667b1ac5b74f6449b33f750b589336038def5fcd9ec2af298",
+            "diagnostics": []
+          }
+        ],
+        "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+        "original_data_files": {
+          "res/database.res": "b44fbff1c0a727b9ca72d2bc0c55c0fbfd2ddf38bfbbffe1f393a9541eedb36c",
+          "res/texts.res": "b9dcc0aca76bde9c1c3eb907a38a830a9c36ddae2ab90260c28f82abb8057f28",
+          "config/ai.reg": "b169cbc99b08e380952715bbc77c378ddc9e98fa7b16b00ba36dd1b61ed21fbf"
+        },
+        "commit": null,
+        "working_tree": null
+      },
+      "restored_source_revision": "db43e9bc",
+      "only_runtime_file_changed": [
+        "src/game/script/vm.gd"
+      ],
+      "all_251_original_observation_hashes_unchanged_after_fix": true,
+      "replay_note": "Use the retained harness for the exact old contract; the current contract clarifies inventory-transfer exclusions.",
+      "reproduction_argv": [
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/venv/bin/python",
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-astral/harness/run.py",
+        "--game-dir",
+        "/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--game-source",
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-game",
+        "--godot",
+        "/home/llm2x/.local/bin/godot-4",
+        "--replay-inputs",
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/before-astral/inputs.json",
+        "--repeat",
+        "2",
+        "--out",
+        "<new-output-directory>"
+      ]
+    }
+  },
+  "authored_coverage": {
+    "original": {
+      "total_lists": 1092,
+      "new_lists": 109,
+      "maps_represented": 70,
+      "new_lists_with_both_blocked_and_fired_observations": 109,
+      "new_list_outcomes": {
+        "quest_trigger/authored/bz8k-lmp/VCheck#0#146/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone5_1/VCheck#0#47/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#309/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz8k-lmp/VCheck#0#161/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone14/VCheck#0#28/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone4hadagans/VCheck#1#9/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone6dkin/VCheck#5#7/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone7zasada/VCheck#1#4/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#317/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz8k-lmp/VCheck#0#167/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/z19q3/VCheck#6#12/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone17/VCheck#0#25/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone7/VCheck#0#21/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#327/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz8k-lmp/VCheck#0#178/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone7letter/VCheck#2#15/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone8/VCheck#0#11/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#334/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz8k-lmp/VCheck#0#183/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#342/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz8k-lmp/VCheck#0#191/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#343/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz8k-lmp/VCheck#0#189/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz8k-lmp/VCheck#0#108/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#355/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone3obr/VCheck#0#83/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#356/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone12/VCheck#0#49/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#357/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone8/VCheck#0#43/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone9/VCheck#0#74/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#375/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#377/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz8k/VCheck#0#108/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone12/VCheck#0#71/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone13/VCheck#0#89/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#376/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz8k/VCheck#0#146/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#393/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz8k/VCheck#0#161/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#396/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz8k/VCheck#0#167/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#397/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz8k/VCheck#0#178/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone3obr/VCheck#0#200/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#412/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz8k/VCheck#0#183/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone3obr/VCheck#0#205/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#413/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz8k/VCheck#0#189/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone11/VCheck#0#60/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone8/VCheck#0#94/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#414/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz8k/VCheck#0#191/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone1/VCheck#0#221/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#431/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone13/VCheck#0#145/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone15/VCheck#0#86/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#434/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#435/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#450/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone11/VCheck#0#88/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#451/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#309/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam-mp/VCheck#0#452/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#317/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone6/VCheck#0#409/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#327/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone15/VCheck#0#152/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone8/VCheck#0#134/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#334/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone18/VCheck#0#142/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone8/VCheck#0#135/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#342/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#343/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone9/VCheck#0#140/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#355/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#356/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#357/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#375/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#376/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#377/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#393/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone9/VCheck#0#164/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#396/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone15/VCheck#0#222/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#397/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone3obr/VCheck#0#311/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#412/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone15/VCheck#0#241/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#413/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#414/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#431/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#434/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#435/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone19/VCheck#0#304/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#450/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone19/VCheck#0#313/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#451/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone19/VCheck#0#315/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#452/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#488/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#489/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#490/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#500/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#501/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#502/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#503/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/basecam/VCheck#0#504/block0": [
+          false,
+          true
+        ]
+      }
+    },
+    "lost_in_astral": {
+      "total_lists": 989,
+      "new_lists": 251,
+      "maps_represented": 123,
+      "new_lists_with_both_blocked_and_fired_observations": 251,
+      "new_list_outcomes": {
+        "quest_trigger/authored/bz11g/Spletnica#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz12g/Fire#11/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz21k/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz22k/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz23k/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz2h/Fire#11/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz31j/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz32j/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/Fire#11/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz7h/Fire#11/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz8g/Fire#11/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz3j/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz11g/Spletnica#1/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz12g/Fire#12/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz21k/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz22k/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz23k/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz2h/Fire#12/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz31j/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz32j/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/Fire#12/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz7h/Fire#12/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz8g/Fire#12/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz1h/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz1j/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz2h/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz3j/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone5/FastWater#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz12g/Fire#21/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz21k/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz22k/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz23k/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz2h/Fire#32/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz31j/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz32j/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/Fire#32/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz7h/Fire#32/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz8g/Fire#32/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz1h/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz1j/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz2h/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz3j/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone21/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone22/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone23/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone25/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone5/FastWater#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz11g/Spletnica#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz12g/Fire#32/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz21k/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz22k/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz23k/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz31j/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz32j/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/Skelet#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz1h/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz1j/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz2h/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz3j/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone11dun1/Water#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone21/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone22/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone23/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone25/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone5/FastWater#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz11g/Spletnica#2/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz32j/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/Skelet#1/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz1h/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz1j/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz2h/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz3j/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone21/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone22/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone23/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone25/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone5/FastWater#4/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz1h/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/cz2h/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone21/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone22/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone23/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone25/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone3dun1/VCheck#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone5/Water#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz11g/Spletnica#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/Skelet#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone10/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone11/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone12/VCheck#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone15/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone16/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone21/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone22/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone23/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone25/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone5/Water#1#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone9/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz11g/Spletnica#3/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/Skelet#2/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone10/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone11/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone15/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone16/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone5/Water#2#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone9/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone10/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone11/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone15/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone16/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone2/BigBasket#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone5/Water#2#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone7/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone9/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz11g/Spletnica#4/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/Skelet#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone10/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone11/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone15/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone16/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone2/BigBasket#1#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone35/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone5/Water#3#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone7/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone9/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz11g/Spletnica#4/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz31j/VCheck#0#6/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/Skelet#3/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone1/VCheck#0#2b/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone10/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone11/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone15/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone16/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone2/Undead#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone35/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone5/Water#3#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone7/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone9/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz31j/VCheck#0#6/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone2/Undead#1#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone31/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone34/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone35/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone5/Water#4#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone7/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz11g/Spletnica#5/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz31j/VCheck#0#6/block2": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/Skelet#4/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone2/Undead#3#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone22/VCheck#2#4/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone31/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone34/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone35/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone5/Water#4#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone7/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz11g/Spletnica#5/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/Skelet#4/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone11/VCheck#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone2/Undead#3#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone31/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone34/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone35/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz1h/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone31/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone34/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz11g/Fire#11/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz1h/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/Skelet#5/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone16/VCheck#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone21/VCheck#2#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone31/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone34/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz11g/Fire#12/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz1h/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/Skelet#5/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone33/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz11g/Fire#32/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz1h/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone1/VCheck#1#8b/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone33/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz1h/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone3/VCheck#5#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone33/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone16/VCheck#2#4/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone33/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone16/VCheck#2#5/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone33/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone5/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone5/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone5/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone5/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone5/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone1/VCheck#3#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone3/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone3/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone3/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone3/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone3/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone2/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone2/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone1/VCheck#6#6/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone2/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone2/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone2/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone1/VFire#0#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone1/VFire#1#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone1/VFire#0#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone1/VFire#0#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/zone1/VFire#1#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#1/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#1/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#2/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#2/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#3/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#3/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#4/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#4/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#5/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#5/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#6/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#6/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#7/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#7/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#8/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#8/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#9/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#9/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#10/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#10/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#11/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#11/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#12/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#12/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#13/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#13/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#14/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#14/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#15/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#15/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#16/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#16/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#17/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#17/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#18/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#18/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#19/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#19/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#20/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#20/block1": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#21/block0": [
+          false,
+          true
+        ],
+        "quest_trigger/authored/bz5h/BuyNSheriff#21/block1": [
+          false,
+          true
+        ]
+      }
+    }
+  },
+  "source_audit": {
+    "base-qualified": {
+      "manifest_sha256": "1cb933336248cd6bde416f036aac143b21606b0307e832891776de4bd7f44734",
+      "files_checked": 1150,
+      "changed_since_capture": [],
+      "production_source_matches": true
+    },
+    "astral-qualified": {
+      "manifest_sha256": "1cb933336248cd6bde416f036aac143b21606b0307e832891776de4bd7f44734",
+      "files_checked": 1150,
+      "changed_since_capture": [],
+      "production_source_matches": true
+    }
+  },
+  "static_evidence": [
+    {
+      "local_path": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/astral-queries-evidence.json",
+      "sha256": "515c0ec5b4038897cb145c5a9589f8c010761448f81d9f783085b05fa5d30b9e",
+      "providers": [
+        {
+          "id": "ghidra",
+          "name": "Ghidra",
+          "version": "12.1.4"
+        }
+      ],
+      "artifacts": [
+        {
+          "architecture": "x86",
+          "digest": {
+            "sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff"
+          },
+          "format": "pe"
+        }
+      ],
+      "evidence_ids": [
+        "ev_23a57f735e74fade092141e3b3ce62d55460fc8d7572c134c3b8061fd754c313",
+        "ev_7ab147e602cac536fc2bd4612ef3f1066aba3743688eea2ef626c7d8bb15413e",
+        "ev_89463871101119171cac70e5623bab1d46b1dc73eb707471a0af1ef8978f5079"
+      ],
+      "scope": "Ghidra static analysis, separate from executed original observations."
+    },
+    {
+      "local_path": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fix-and-expand-20261020/astral-expansion-evidence.json",
+      "sha256": "3bf8da85db54ca6cb40d2a4da949aea368bc530bcd225225c8357958cb65c966",
+      "providers": [
+        {
+          "id": "ghidra",
+          "name": "Ghidra",
+          "version": "12.1.4"
+        }
+      ],
+      "artifacts": [
+        {
+          "architecture": "x86",
+          "digest": {
+            "sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff"
+          },
+          "format": "pe"
+        }
+      ],
+      "evidence_ids": [
+        "ev_4f33511efa0d6e7e804a9a638cb3f098b022702c247fb6fb7ea1e2c3efef3096"
+      ],
+      "scope": "Ghidra static analysis, separate from executed original observations."
+    },
+    {
+      "local_path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/000b6/4b6760_FUN_004b6760.c",
+      "sha256": "9e40efad9108e85ee3ce8f0612a2bb79cadcd9fe40cda294daaff8c4023fd502",
+      "scope": "Previously exported base-game Ghidra pseudocode; source is retained locally only."
+    },
+    {
+      "local_path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/00265/665600_FUN_00665600.c",
+      "sha256": "0cb0e59dfe9cce9689431b8736c692afa5a86f0dccfda816a3905289d8af2a7f",
+      "scope": "Previously exported base-game Ghidra pseudocode; source is retained locally only."
+    },
+    {
+      "local_path": "/home/llm2x/Documents/EI/inspection/ghidra/decompiled/functions/000b4/4b41e0_FUN_004b41e0.c",
+      "sha256": "564261c6e6fae9c94d8f0086e531bae153b55853050732bc3dcad0bf388f9508",
+      "scope": "Previously exported base-game Ghidra pseudocode; source is retained locally only."
+    }
+  ],
+  "diagnostics": [
+    {
+      "local_capture_path": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/program-smoke-base",
+      "reason": "Initial adapter encoded global-assignment parameters in the wrong order; corrected before behavioral diagnosis.",
+      "report_sha256": "0153b948a45999e21bcd8753e0f965ea18b74e62db9410666a4e5bdc97465b90"
+    },
+    {
+      "local_capture_path": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/queries-diagnostic-astral",
+      "reason": "Incomplete fixture omitted Session.coop; not game behavior.",
+      "report_sha256": "778937742b2657525f5ef62133dd50511f2af457cfdf74419062eaf2fb0a82d5"
+    },
+    {
+      "local_capture_path": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/queries-diagnostic-astral-02",
+      "reason": "Fixture attempted to set heights on a normal NavGrid; replaced with the supplied-height fixture.",
+      "report_sha256": "0eda2d6ef9a4f39057d4edbcc3845fc0e01e642aa7930208623ea9fae3860346"
+    },
+    {
+      "local_capture_path": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/program-diagnostic-base",
+      "reason": "Single-capture diagnosis; superseded by repeated rollback and fixed captures.",
+      "report_sha256": "dc30a5de92785f3566a87248f58c48ba01515b3386159c87c9431a705e5039f7"
+    },
+    {
+      "local_capture_path": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/program-diagnostic-astral",
+      "reason": "Single-capture diagnosis; superseded by repeated rollback and fixed captures.",
+      "report_sha256": "daede589b22dc889d271bed70af84317c536b895972b3b0e782d412752ceea06"
+    },
+    {
+      "local_capture_path": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/queries-diagnostic-astral-03",
+      "reason": "Repeated query diagnosis captured four behavioral differences; all resolved in the full suite.",
+      "report_sha256": "d41600ce3111310d4f91300b1d46fb9b1e21268d9068b1cc202ed49ac921bb3f"
+    }
+  ],
+  "gameplay": {
+    "schema": 1,
+    "scope": "Headless remake regressions; distinct from original-executable comparisons.",
+    "aggregation": "Latest completed result per configuration; initial fixture failures remain recorded.",
+    "runs": {
+      "gameplay-verified": {
+        "local_capture_path": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/gameplay-verified",
+        "report_sha256": "52bcf94e0d175b3f2e9bf2119b77ebc7f1078b8ce88710541008d2cdfe3a928a",
+        "status": "failed",
+        "counts": {
+          "passed": 51,
+          "failed": 1,
+          "error": 0,
+          "programs": 52,
+          "checks": 2016,
+          "failed_checks": 2
+        },
+        "source_sha256": "38da81e354e313d7cfbd486a2054cd62ea83a77f08766c4daa60eda45d94ea99"
+      },
+      "story-effects-corrected": {
+        "local_capture_path": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/story-effects-corrected",
+        "report_sha256": "b3a4a2b236093ba82c7845ec78d6431e9a7e8ab7c47ce2a7e490530f59a487a2",
+        "status": "passed",
+        "counts": {
+          "passed": 1,
+          "failed": 0,
+          "error": 0,
+          "programs": 1,
+          "checks": 169,
+          "failed_checks": 0
+        },
+        "source_sha256": "da6fa1ccf1dea89bd787bb8c1273d403709ca0ae9202d06de67bf5e08db5357b"
+      }
+    },
+    "source_audit": {
+      "gameplay-verified": {
+        "manifest_sha256": "037331b4834ee000223278b5a6f74ba876e69d321adccbb0bcace4fd3d17afd4",
+        "files_checked": 1834,
+        "changed_since_capture": [
+          "tools/tests/story_coop_effects.gd"
+        ],
+        "production_source_matches": true
+      },
+      "story-effects-corrected": {
+        "manifest_sha256": "7ab525d70a5ec48f4b25366c606be44279a3eaad6e52ff6aaf07b90e42f96b5d",
+        "files_checked": 1834,
+        "changed_since_capture": [],
+        "production_source_matches": true
+      }
+    },
+    "resolved_fixture_failures": {
+      "test": "quests/story_coop_effects",
+      "initial_result": {
+        "id": "quests/story_coop_effects",
+        "category": "quests",
+        "script": "tools/tests/story_coop_effects.gd",
+        "marker": "STORY_COOP_EFFECTS",
+        "min_checks": 25,
+        "quick": true,
+        "description": "Authored quest actions, effects and co-op recipients",
+        "kind": "remake_regression",
+        "timeout": 240,
+        "args": [],
+        "campaign": "lost_in_astral",
+        "required_files": [
+          "res/database.res",
+          "res/texts.res",
+          "maps/zone1.mob",
+          "maps/zone3dun1.mob",
+          "maps/zone22.mob"
+        ],
+        "status": "failed",
+        "checks": 167,
+        "failures": 2,
+        "diagnostics": [],
+        "failure_messages": [
+          "FAIL Acid trap re-arms for guest after save and cooldown",
+          "FAIL Old sleeping save resumes cooldown without recasting rewards"
+        ],
+        "runtime": {
+          "campaign": "lost_in_astral",
+          "display": "headless",
+          "display_driver": "headless",
+          "engine": {
+            "build": "official",
+            "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+            "hex": 263936,
+            "major": 4,
+            "minor": 7,
+            "patch": 0,
+            "status": "stable",
+            "string": "4.7-stable (official)",
+            "timestamp": 0
+          },
+          "profile": {
+            "confine_mouse": 0,
+            "show_fps": 1,
+            "volume_sfx": 0,
+            "volume_stream": 0,
+            "volume_voice": 0
+          },
+          "rendering_method": "forward_plus",
+          "script": "res://tools/tests/story_coop_effects.gd",
+          "seed": 20261020,
+          "user_dir": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/gameplay-verified/tests/quests/story_coop_effects/profile/data/godot/app_userdata/Cursed Lands"
+        },
+        "seconds": 6.708,
+        "log": "tests/quests/story_coop_effects/run.log",
+        "log_sha256": "8165d183c149c7668ffbc3e9df5868c3cc694a4d5713aa64e2445d73aa818692",
+        "exit_code": 1,
+        "argv": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/gameplay-verified/runtime",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--headless",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=res://tools/gameplay_bootstrap.gd",
+          "--suite-script=res://tools/tests/story_coop_effects.gd",
+          "--suite-seed=20261020",
+          "--suite-campaign=lost_in_astral",
+          "--suite-display=headless"
+        ]
+      },
+      "cause": "Fixture jumped VM time to a deadline without delivering intervening native-style logic runs.",
+      "fix": "Advance every cooldown tick, check no early re-arm, then assert the original trap/shrine outcome.",
+      "rerun": "story-effects-corrected",
+      "final_checks": 169
+    },
+    "counts": {
+      "programs": 52,
+      "passed": 52,
+      "failed": 0,
+      "error": 0,
+      "checks": 2018,
+      "failed_checks": 0
+    },
+    "status": "passed",
+    "category_counts": {
+      "quests": 30,
+      "persistence": 11,
+      "dialogue": 11
+    }
+  },
+  "harness_tests": {
+    "passed": 91,
+    "log_sha256": "0488ecf6ed4ac975c05a06836066be72c84748b56813264afa34c329b9891564",
+    "local_log": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/quest-depth-20261020/harness-tests.log"
+  }
+}

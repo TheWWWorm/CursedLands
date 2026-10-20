@@ -2,6 +2,34 @@
   "schema": 1,
   "tests": [
     {
+      "id": "quests/script_quest_waits",
+      "category": "quests",
+      "script": "tools/tests/script_quest_waits.gd",
+      "marker": "SCRIPT_QUEST_WAITS",
+      "min_checks": 56,
+      "quick": true,
+      "description": "Native wait boundaries, dynamic delays, body completion and old/new script save continuity",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": ["res/database.res", "res/texts.res", "maps/zone1.mob"]
+    },
+    {
+      "id": "quests/script_quest_waits_astral",
+      "category": "quests",
+      "script": "tools/tests/script_quest_waits.gd",
+      "marker": "SCRIPT_QUEST_WAITS",
+      "min_checks": 56,
+      "quick": true,
+      "description": "Native wait boundaries and script save continuity with Lost in Astral data",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": ["res/database.res", "res/texts.res", "maps/zone1.mob"]
+    },
+    {
       "id": "quests/script_parity_boundaries",
       "category": "quests",
       "script": "tools/tests/script_parity_boundaries.gd",
@@ -20,7 +48,7 @@
       "category": "quests",
       "script": "tools/tests/script_dead_predicates.gd",
       "marker": "SCRIPT_DEAD_PREDICATES",
-      "min_checks": 10,
+      "min_checks": 16,
       "quick": true,
       "description": "Null, freed, live, dead and looted actor predicates",
       "kind": "remake_regression",

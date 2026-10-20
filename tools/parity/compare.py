@@ -65,14 +65,14 @@ def validate_trace(trace, inputs, role):
             if set(step) != {"step", "state"} or isinstance(step["step"], bool) or step["step"] != i or not isinstance(step["state"], dict) or not step["state"]:
                 raise ValueError(f"{role} {row['id']} has an invalid step {i}")
         counted_inputs = {"clock": "frames", "script_random": "words", "sight_factor": "postures",
-                          "faction_relation": "values", "quest_trigger": "snapshots", "effect_lifetime": "ticks"}
+                          "faction_relation": "values", "quest_trigger": "snapshots", "effect_lifetime": "ticks", "quest_program": "ticks"}
         expected_count = len(case["inputs"][counted_inputs[case["kind"]]]) if case["kind"] in counted_inputs else (
             None if case["kind"] == "cast_rank" else 1)
         if case["kind"] == "body_health":
             expected_count = 1 + len(case["inputs"]["operations"])
         if expected_count is not None and len(steps) != expected_count:
             raise ValueError(f"{role} {row['id']} captured {len(steps)} of {expected_count} requested steps")
-        if case["kind"] in ("quest_predicate", "quest_trigger", "body_health", "effect_lifetime"):
+        if case["kind"] in ("quest_predicate", "quest_trigger", "body_health", "effect_lifetime", "quest_program"):
             validate_expanded_states(case, steps, role)
         if case["kind"] == "cast_rank":
             for i, step in enumerate(steps):
@@ -99,6 +99,14 @@ def validate_expanded_states(case, steps, role):
         if kind == "quest_predicate":
             valid = (set(state) == {"value_bits", "truth"} and bits(state["value_bits"])
                      and type(state["truth"]) is bool)
+        elif kind == "quest_program":
+            valid = (set(state) == {"values", "observed_bits", "finished", "killed"}
+                     and isinstance(state["values"], dict) and set(state["values"]) == set(case["inputs"]["globals"])
+                     and all(bits(v) for v in state["values"].values())
+                     and isinstance(state["observed_bits"], list)
+                     and len(state["observed_bits"]) == len(case["inputs"]["observe"])
+                     and all(bits(v) for v in state["observed_bits"])
+                     and type(state["finished"]) is bool and type(state["killed"]) is bool)
         elif kind == "quest_trigger":
             if set(state) == {"fired", "dispatches", "evaluated"} and type(state["fired"]) is bool:
                 dispatches += int(state["fired"])

@@ -65,8 +65,8 @@ class AuthoredInputs(unittest.TestCase):
         self.assertEqual(conditions[0]["call"], "IsAlive")
 
     def test_unsupported_condition_rejected_whole(self):
-        with self.assertRaisesRegex(ValueError, "HaveItem"):
-            normalize({"call": "HaveItem", "args": [0, {"string": "key"}]}, {})
+        with self.assertRaisesRegex(ValueError, "GetSkill"):
+            normalize({"call": "GetSkill", "args": [{"symbol": "hero"}, {"string": "stealth"}]}, {})
 
     def test_dynamic_actor_lookup_rejected(self):
         with self.assertRaisesRegex(ValueError, "dynamic actor"):
@@ -138,6 +138,83 @@ class AuthoredInputs(unittest.TestCase):
         rows = samples([{"call": "IsInArea", "args": [7, 0, 0]}], 1)
         self.assertEqual(rows[0]["areas"][0]["id"], 7)
         self.assertEqual(rows[-1]["areas"], [])
+
+    def test_clock_gate_without_actor_samples_both_sides_of_authored_boundary(self):
+        condition = normalize({"call": "IsGreater", "args": [
+            {"call": "GetWorldTime", "args": []}, 17.5]}, {})
+        rows = samples([condition], 0)
+        times = {r["world_time"] for r in rows if "world_time" in r}
+        self.assertTrue({17.49999, 17.5, 17.50001} <= times)
+        self.assertTrue(all(r["units"] == [] for r in rows))
+
+    def test_money_gate_samples_authored_threshold_and_neighbors(self):
+        rows = samples([{"call": "IsGreater", "args": [
+            {"call": "GetMoney", "args": [0]}, 2500]}], 0)
+        self.assertTrue({2499, 2500, 2501} <= {r["money"] for r in rows if "money" in r})
+
+    def test_item_gate_samples_absent_each_and_combined_inventory(self):
+        rows = samples([{"call": "HaveItem", "args": [0, item]} for item in [2, 68]], 0)
+        bags = {tuple(r["quest_items"]) for r in rows if "quest_items" in r}
+        self.assertEqual(bags, {(), (2,), (68,), (2, 68)})
+
+    def test_loot_and_block_flags_sample_independently(self):
+        rows = samples([{"call": name, "args": [{"unit": 0}]} for name in ["WasLooted", "IsUnitBlocked"]], 1)
+        flags = {(u["looted"], u["blocked"]) for r in rows for u in r["units"] if u and "looted" in u}
+        self.assertEqual(flags, {(False, False), (False, True), (True, False), (True, True)})
+
+    def test_height_samples_include_both_object_types(self):
+        rows = samples([{"call": "GetZ", "args": [{"unit": 0}]}], 1)
+        paths = {u["map_object"] for r in rows for u in r["units"] if u and "map_object" in u}
+        self.assertEqual(paths, {False, True})
+
+    def test_environment_gate_includes_mixed_authored_prerequisites(self):
+        conditions = [{"call": "IsGreater", "args": [{"call": "GetMoney", "args": [0]}, 499]}]
+        conditions += [{"call": "IsEqual", "args": [
+            {"call": "GSGetVar", "args": [0, {"string": key}]}, value]}
+            for key, value in [("q.previous", 2), ("q.active", 1), ("b.unused", 0)]]
+        rows = samples(conditions, 0)
+        self.assertTrue(any(row.get("money") == 500 and row["variables"] ==
+                            {"q.previous": 2, "q.active": 1, "b.unused": 0} for row in rows))
+
+
+class ProgramObservations(unittest.TestCase):
+    def setUp(self):
+        self.inputs = make_inputs(pattern="quest_program/zero_delays_do_not_split_body")
+        case = self.inputs["scenarios"][0]["inputs"]
+        self.states = [{"values": {name: 0 for name in case["globals"]},
+                        "observed_bits": [0] * len(case["observe"]),
+                        "finished": True, "killed": True} for _ in case["ticks"]]
+
+    def test_complete_program_observations_accepted(self):
+        validate_trace(trace(self.inputs, self.states), self.inputs, "remake")
+
+    def test_program_requires_every_tick(self):
+        for states in [self.states[:-1], self.states + self.states[:1]]:
+            with self.subTest(length=len(states)), self.assertRaisesRegex(ValueError, "captured"):
+                validate_trace(trace(self.inputs, states), self.inputs, "remake")
+
+    def test_program_requires_all_global_values(self):
+        del self.states[0]["values"]["phase"]
+        with self.assertRaisesRegex(ValueError, "invalid"):
+            validate_trace(trace(self.inputs, self.states), self.inputs, "remake")
+
+    def test_program_requires_all_observed_expressions(self):
+        self.states[0]["observed_bits"].pop()
+        with self.assertRaisesRegex(ValueError, "invalid"):
+            validate_trace(trace(self.inputs, self.states), self.inputs, "remake")
+
+    def test_program_bits_cannot_be_boolean_float_or_out_of_range(self):
+        for value in [True, 0.0, -1, 0x100000000]:
+            self.states[0]["values"]["phase"] = value
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, "invalid"):
+                validate_trace(trace(self.inputs, self.states), self.inputs, "remake")
+
+    def test_program_completion_flags_must_be_boolean(self):
+        for field in ["finished", "killed"]:
+            states = copy.deepcopy(self.states)
+            states[0][field] = 1
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, "invalid"):
+                validate_trace(trace(self.inputs, states), self.inputs, "remake")
 
 
 class Observations(unittest.TestCase):

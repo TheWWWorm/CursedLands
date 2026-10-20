@@ -16,18 +16,23 @@ func _ready() -> void:
 	inst.locals.target = null
 	check(vm._call("IsDead",args,inst)==0.0,"missing actor is not a death")
 	check(vm._call("IsAlive",args,inst)==0.0,"missing actor is not alive")
+	check(vm._call("WasLooted",args,inst)==1.0,"missing actor satisfies native loot completion")
 	var u := GameUnit.new(); u.uid = 44; u.world = w; inst.locals.target = u
 	check(vm._call("IsDead",args,inst)==0.0,"living actor is not dead")
 	check(vm._call("IsAlive",args,inst)==1.0,"living actor is alive")
+	check(vm._call("WasLooted",args,inst)==0.0,"living unlooted actor does not complete looting")
 	u.dead = true
 	check(vm._call("IsDead",args,inst)==1.0,"dead actor satisfies death predicate")
 	check(vm._call("IsAlive",args,inst)==0.0,"dead actor is not alive")
 	w.looted[u.uid] = u
+	u.set_meta("looted", true)
+	check(vm._call("WasLooted",args,inst)==1.0,"retained looted corpse completes looting")
 	check(vm._call("IsDead",args,inst)==1.0,"retained looted corpse remains dead")
 	check(vm._call("IsAlive",args,inst)==0.0,"retained looted corpse is not alive")
 	w.looted.clear(); u.free()
 	check(vm._call("IsDead",args,inst)==0.0,"freed actor does not become a kill")
 	check(vm._call("IsAlive",args,inst)==0.0,"freed actor is not alive")
+	check(vm._call("WasLooted",args,inst)==1.0,"freed actor has the native removed-reference result")
 	var obj := Node3D.new(); inst.locals.target = obj
 	check(vm._call("IsDead",args,inst)==0.0,"map object without a unit body is not dead")
 	obj.free(); inst.locals.target = 7.0

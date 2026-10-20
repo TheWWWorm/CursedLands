@@ -16,26 +16,29 @@ def contracts(astral=False):
     return {
         "quest_predicate": {
             "entry": [evaluator, nested, "0x431d80" if astral else "0x460af0",
-                      * (["0x4663e0", "0x466440", "0x464390", "0x46bc30"] if astral
-                         else ["0x4b1ed0", "0x4b2070", "0x4bce10"])],
+                      * (["0x4663e0", "0x466440", "0x464390", "0x46bc30", "0x58f710"] if astral
+                         else ["0x4b1ed0", "0x4b2070", "0x4bce10", "0x665600"])],
             "scope": "Native numeric quest expressions, nested calls, group quantifiers and constructed areas versus ScriptVM._eval.",
             "stubs": ["supplied unit position/HP/identity/lever records", "unit dead-state/type accessors",
                       "player-zero lookup", "single-player mode", "temporary string allocation/destruction",
                       "CRT thread-local single-byte locale", "supplied group membership", "fixture actor reference release",
-                      "preallocated area containers, including empty missing IDs"],
-            "limits": "Bounded expressions and ASCII keys/strings only; no quest rewards, inventory, script scheduler or campaign completion.",
+                      "preallocated area containers, including empty missing IDs", "supplied world time, player-zero purse and quest-item bag",
+                      "empty owned-unit inventory table", "supplied unit/object terrain heights"],
+            "limits": "Bounded expressions and ASCII keys/strings only; no quest rewards, carried inventory or transfers, script scheduler or campaign completion.",
             "tolerances": {},
         },
         "quest_trigger": {
             "entry": [gate, evaluator, nested,
-                      * (["0x4663e0", "0x466440", "0x464390", "0x46bc30"] if astral
-                         else ["0x4b1ed0", "0x4b2070", "0x4bce10"])],
+                      * (["0x4663e0", "0x466440", "0x464390", "0x46bc30", "0x58f710"] if astral
+                         else ["0x4b1ed0", "0x4b2070", "0x4bce10", "0x665600"])],
             "scope": "Native ordered condition-list gate versus ScriptVM._run at supplied polls, recording body dispatch.",
             "stubs": ["supplied unit position/HP/identity/lever records", "unit dead-state/type accessors",
                       "player-zero lookup", "single-player mode", "temporary string allocation/destruction",
                       "CRT thread-local single-byte locale",
                       "supplied group membership", "fixture actor reference release",
                       "preallocated area containers, including empty missing IDs",
+                      "supplied world time, player-zero purse and quest-item bag", "empty owned-unit inventory table",
+                      "supplied unit/object terrain heights",
                       "native temporary-expression cleanup", "trigger body dispatch recorded as an event"],
             "limits": "Repeated independent condition polls; no sleep scheduling, one-shot disposal, quest rewards or full campaign playthrough.",
             "tolerances": {},
