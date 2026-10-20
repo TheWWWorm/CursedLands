@@ -33,6 +33,13 @@ const EXE_DEPTH := 7.0
 var _pivot: Node3D
 var _face_cam: Camera3D
 var _box_cam_size := 0.0
+var _face_fit_box := AABB()
+## Character selection can keep the whole head inside its cell.
+var fit_cell := false:
+	set(value):
+		if fit_cell == value: return
+		fit_cell = value
+		_place_face()
 
 var _key := ""
 var _model: Node3D
@@ -363,6 +370,15 @@ func _build_face(vp: SubViewport, names: PackedStringArray, c: Vector3) -> bool:
 	cam.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	_face_cam = cam
 	_box_cam_size = maxf(box.size.x, box.size.z) * 1.05
+	# Keep one framing for the complete nod/look/selection envelope. A fixed
+	# percentage of the neutral pose clips heads whose pivot is off-centre.
+	_face_fit_box = box
+	for pitch_step in range(-4,5):
+		for yaw_step in range(-2,3):
+			var q := Quaternion(Vector3.RIGHT,pitch_step*.1)*Quaternion(Vector3.UP,yaw_step*.09)
+			var turn := Basis(EISpace.quat(q.w,q.x,q.y,q.z))
+			for corner in 8:
+				_face_fit_box = _face_fit_box.expand(turn*box.get_endpoint(corner))
 	vp.add_child(cam)
 	_place_face()
 	var env := WorldEnvironment.new()
@@ -389,6 +405,12 @@ func _place_face() -> void:
 		cam.projection = Camera3D.PROJECTION_ORTHOGONAL
 		cam.size = _box_cam_size
 		cam.transform = Transform3D(Basis.looking_at(Vector3.DOWN, Vector3.FORWARD), Vector3(0, 10, 0))
+		if fit_cell:
+			# Sampling intervals are small; the margin also keeps silhouette
+			# edges clear of the viewport's bilinear-filter border.
+			cam.size = maxf(_face_fit_box.size.x,_face_fit_box.size.z)*1.06
+			cam.position.x = _face_fit_box.get_center().x
+			cam.position.z = _face_fit_box.get_center().z
 		_pivot.transform = Transform3D.IDENTITY
 		return
 	# The interface camera through exe_rect (as Paperdoll._ui_camera).

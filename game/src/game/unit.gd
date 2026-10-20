@@ -702,12 +702,13 @@ func refresh_figure(force := false) -> void:
 	# The replacement copies the old rig's current keys and transforms.
 	# Materialize a hidden figure's deferred pose before reading those keys.
 	model.flush_pending_pose()
-	var m := EIUnitModel.create(shown, false, false)
+	var m := EIUnitModel.create(shown, false, false, model.animation_rng)
 	if m == null:
 		return
 	m.set_invisible(buffs.has("invisible"))
 	var old := model
-	for property: String in ["pose_state", "pose_mod", "_current", "_cycle", "_cycle_pos", "_resume", "_resume_clip"]:
+	for property: String in ["pose_state", "pose_mod", "_current", "_cycle", "_cycle_pos", "_resume", "_resume_clip",
+			"_dialogue_active", "_dialogue_clip", "village_idle_clip"]:
 		m.set(property, old.get(property))
 	var was_acc := _anim_acc
 	var was_due := _anim_due
@@ -3721,17 +3722,20 @@ func rise(total := 1.0) -> void:
 
 ## Rebuilds the model with new armor/weapons (appearance follows equipment).
 func set_equipment(armors: PackedStringArray, weapons: PackedStringArray) -> void:
+	var changed_gear := PackedStringArray(info.get("armors", [])) != armors \
+		or PackedStringArray(info.get("weapons", [])) != weapons
 	info.armors = armors
 	info.weapons = weapons
 	_refresh_weapon_range()
+	if model:
+		# Redressing must keep the current clip, blend, queue and time.
+		# Stat-only updates can also change complexion without changing gear.
+		refresh_figure(changed_gear)
+		return
 	var m := EIUnitModel.create(figure_info())
 	if m == null:
 		return
 	m.set_invisible(buffs.has("invisible"))
-	if model:
-		m.pose_state = model.pose_state
-		m.pose_mod = model.pose_mod
-		model.queue_free()
 	model = m
 	_wounds_dirty = true
 	_pose_dirty = true

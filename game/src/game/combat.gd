@@ -116,20 +116,55 @@ func _init(w: GameWorld) -> void:
 ## Attack roll of the original: Attack plus a random
 ## step 2k - (B + 1), k = 0..B (B = "Tuning To hit Random", 40), minus the aimed
 ## strike penalty (head 25, limbs 10), must reach the target's Defence.
-## (The original also subtracts distance / (10 * size) and adds a tiny weapon-speed
-## ratio term; both are under one point in melee and left out.)
+## Native 555bd0 subtracts distance / (10 * target use radius) and adds
+## attacker actions / (20 * defender actions). Even sub-point terms decide
+## equality at a discrete roll boundary. Its stored intermediates are floats.
 func attack_hits(att: GameUnit, def: GameUnit, penalty := 0.0) -> bool:
-	var b := roundi(float(att.stats.get("hit_random", 40.0)))
-	var roll := maxf(float(attack_value(att)) + rng.randi_range(0, b) * 2 - (b + 1), 0.0)
-	return maxf(roll - penalty, 0.0) >= float(defence_value(def))
+	var spread := maxf(0.0, float(att.stats.get("hit_random", 40.0)))
+	var residue := rng.randi_range(0, _hit_spread_steps(spread)) if spread > 0.0 else 0
+	return _hit_roll(attack_value(att), spread, residue, _hit_adjustments(att, def), penalty) >= float(defence_value(def))
+
+
+static func _hit_spread_steps(spread: float) -> int:
+	# x87 FISTP uses nearest-even under the original 0x027f control word.
+	var lower := floori(spread)
+	if spread - lower == 0.5: return lower + (lower & 1)
+	return roundi(spread)
+
+
+func _hit_adjustments(att: GameUnit, def: GameUnit) -> Vector2:
+	var a_z := world.ground_at(att.pos.x, att.pos.y) if world else 0.0
+	var d_z := world.ground_at(def.pos.x, def.pos.y) if world else 0.0
+	var distance := Vector3(def.pos.x - att.pos.x, def.pos.y - att.pos.y, d_z - a_z).length()
+	var diameter := float(PackedFloat32Array([distance * 2.0])[0])
+	var radius := maxf(def.use_radius(), 0.000001)
+	return Vector2(PackedFloat32Array([diameter / (radius * 20.0)])[0],
+		PackedFloat32Array([att.actions() / (def.actions() * 20.0)])[0])
+
+
+static func _hit_roll(rating: int, spread: float, residue: int, adjustment: Vector2, penalty := 0.0) -> float:
+	var random_step := residue * 2.0 - (spread + 1.0) if spread > 0.0 else 0.0
+	var roll := maxf(0.0, PackedFloat32Array([(random_step + rating) - adjustment.x + adjustment.y])[0])
+	return maxf(0.0, PackedFloat32Array([roll - penalty])[0])
 
 
 func hit_chance(att: GameUnit, def: GameUnit) -> float:
-	var b := roundi(float(att.stats.get("hit_random", 40.0)))
-	if defence_value(def) <= 0:
+	var defence := defence_value(def)
+	if defence <= 0:
 		return 1.0   # the roll is kept >= 0, so Defence 0 is always reached
-	var need := ceili((float(defence_value(def)) - float(attack_value(att)) + b + 1) / 2.0)
-	return clampf(float(b - clampi(need, 0, b + 1) + 1) / (b + 1), 0.0, 1.0)
+	var spread := maxf(0.0, float(att.stats.get("hit_random", 40.0)))
+	var b := _hit_spread_steps(spread)
+	var rating := attack_value(att)
+	var adjustment := _hit_adjustments(att, def)
+	# Find the first successful residue using the same float-rounded decision
+	# as a real hit. Querying probability never consumes the combat RNG.
+	var low := 0
+	var high := b + 1
+	while low < high:
+		var mid := (low + high) / 2
+		if _hit_roll(rating, spread, mid, adjustment) >= defence: high = mid
+		else: low = mid + 1
+	return float(b + 1 - low) / float(b + 1)
 
 
 ## Damage of one hit, the original:

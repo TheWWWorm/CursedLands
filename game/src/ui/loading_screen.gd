@@ -267,11 +267,18 @@ func _remove() -> void:
 	if is_queued_for_deletion():
 		return
 	if _current == self: _current = null
+	# The node remains alive until the end of this frame, but its canvas
+	# does not. A replacement load or resize can still emit this signal.
+	if get_viewport().size_changed.is_connected(_draw_frame):
+		get_viewport().size_changed.disconnect(_draw_frame)
 	if RenderingServer.frame_post_draw.is_connected(_posted):
 		RenderingServer.frame_post_draw.disconnect(_posted)
 	RenderingServer.free_rid(_frame)
 	RenderingServer.free_rid(_item)
 	RenderingServer.free_rid(_canvas)
+	_frame = RID()
+	_item = RID()
+	_canvas = RID()
 	queue_free()
 
 
@@ -340,6 +347,7 @@ func _show(frame: int) -> void:
 
 ## Black screen with the frame letterboxed (aspect kept), then a draw.
 func _draw_frame() -> void:
+	if not _item.is_valid() or not _frame.is_valid(): return
 	var rs := RenderingServer
 	var screen := get_viewport().get_visible_rect().size
 	rs.canvas_item_clear(_item)

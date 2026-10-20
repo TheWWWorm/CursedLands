@@ -270,7 +270,7 @@ def attack(o, case, probability=False):
     o.write(vt + 0xc8, 0x1800)
     o.write(body_vt + 0xf0, 0x1840)
     o.floats(attacker + 0x1c, 0, 0, 0)
-    o.floats(defender + 0x1c, case["distance"], 0, 0)
+    o.floats(defender + 0x1c, case["distance"], 0, case.get("height", 0))
     o.floats(defender + 0x328, case["radius"])
     o.uc.mem_write(0x1840, b"\xd9\x05" + struct.pack("<I", defender + 0x328) + b"\xc3")
     o.hook(0x522b80, lambda: o.ret(0))

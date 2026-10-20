@@ -74,7 +74,7 @@ var _id := ""
 var _brief := ""
 var _cast := {}
 var _hidden_units: Array = []
-var _animated_models: Array = []
+var _animated_units: Array = []
 var _hidden_hud: Array = []
 var _timer := 0.0
 var _voiced := false
@@ -963,15 +963,15 @@ func _pose_actors(phrase: Dictionary, listening := false) -> void:
 			continue
 		u.anim_flush()
 		if u.model.begin_dialogue(u.uid == speaker, int(phrase.get("anim", 0)) if u.uid == speaker else 0):
-			if not u.model in _animated_models:
-				_animated_models.append(u.model)
+			if not u in _animated_units:
+				_animated_units.append(u)
 
 
 func _end_actor_poses() -> void:
-	for m in _animated_models:
-		if is_instance_valid(m):
-			m.end_dialogue()
-	_animated_models.clear()
+	for u in _animated_units:
+		if is_instance_valid(u) and is_instance_valid(u.model):
+			u.model.end_dialogue()
+	_animated_units.clear()
 
 func _cast_signature() -> String:
 	var out := ""

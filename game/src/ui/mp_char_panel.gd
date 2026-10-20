@@ -105,6 +105,14 @@ var _doll: Paperdoll
 var _cells: Array = []     # Portrait per face cell (male 0..6, female 7..13)
 var _items: Dictionary = {}   # slot key -> ItemView
 var _skill_rows: Array = []   # [rect, kind, key, desc]
+var _scroll_repeat := preload("res://src/ui/scroll_repeat.gd").new()
+
+func _notification(what: int) -> void:
+	if what in [NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_WM_WINDOW_FOCUS_OUT] \
+			or (what==NOTIFICATION_VISIBILITY_CHANGED and not is_visible_in_tree()):
+		_scroll_repeat.stop()
+		_turn=0
+		_hold=""
 
 
 func _ready() -> void:
@@ -170,6 +178,7 @@ func _clamp_sel() -> void:
 
 func _set_state(s: int) -> void:
 	state = s
+	_scroll_repeat.stop()
 	_turn = 0
 	_hold = ""
 	_doll.camp_angle = 0.0
@@ -248,6 +257,7 @@ func _layout_faces() -> void:
 		var r := r8(Rect2(50 + (i % CELLS) * 100 + 5, (0 if g == 0 else 500) + 5, 90, 90))
 		p.position = r.position
 		p.size = r.size
+		p.fit_cell = GameData.option("item_icon_fit") != 0
 		p.show_proto(String(faces[g][k]))
 
 
@@ -664,18 +674,26 @@ func _gui_input(e: InputEvent) -> void:
 		return
 	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT:
 		if e.pressed:
-			_press(_hit(to800(e.position)))
+			_press(_hit(to800(e.position)), e.shift_pressed)
 		else:
 			_turn = 0
 			_hold = ""
+			_scroll_repeat.stop()
 		accept_event()
-	elif e is InputEventMouseButton and e.pressed and e.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
-		var d := -1 if e.button_index == MOUSE_BUTTON_WHEEL_UP else 1
-		if state == SEL:
-			top = clampi(top + d, 0, maxi(0, chars.size() - ROWS))
+	elif e is InputEventMouseButton and e.pressed and e.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_LEFT, MOUSE_BUTTON_WHEEL_RIGHT]:
+		var d := -1 if e.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_LEFT] else 1
+		var point := to800(e.position)
+		if state == SEL and LIST_BAR.has_point(point):
+			_scroll_list("list", d, e.shift_pressed)
 		elif state == CREATE:
-			voice_top = clampi(voice_top + d, 0, maxi(0, (voices[voice_list] as Array).size() - VOICE_ROWS))
-		queue_redraw()
+			if Rect2(0, 0, 800, 100).has_point(point):
+				_scroll_list("face0", d, e.shift_pressed)
+			elif Rect2(0, 500, 800, 100).has_point(point):
+				_scroll_list("face1", d, e.shift_pressed)
+			elif Rect2(0, 300, 200, 200).has_point(point):
+				_scroll_list("voice", d, e.shift_pressed)
+			else: return
+		else: return
 		accept_event()
 	elif e is InputEventMouseMotion:
 		_update_help(_hit(to800(e.position)))
@@ -699,13 +717,43 @@ func _update_help(h: Array) -> void:
 		queue_redraw()
 
 
-func _press(h: Array) -> void:
+func _press(h: Array, edge := false) -> void:
 	if h.is_empty():
+		return
+	var which := ""
+	var delta := 0
+	match h[0]:
+		"face_scroll": which = "face%d" % int(h[1]); delta = int(h[2])
+		"list_scroll": which = "list"; delta = int(h[1])
+		"voice_scroll": which = "voice"; delta = int(h[1])
+	if not which.is_empty():
+		_scroll_list(which, delta, edge)
+		if not edge: _scroll_repeat.begin(which, delta)
+		else: _scroll_repeat.stop()
 		return
 	match state:
 		SEL: _press_select(h)
 		CREATE: _press_create(h)
 		_: _press_kit(h)
+	_layout()
+	queue_redraw()
+
+
+func _scroll_list(which: String, delta: int, edge := false) -> void:
+	var current := 0
+	var last := 0
+	match which:
+		"list": current = top; last = maxi(0, chars.size() - ROWS)
+		"voice": current = voice_top; last = maxi(0, voices[voice_list].size() - VOICE_ROWS)
+		"face0", "face1":
+			var g := int(which.right(1))
+			current = face_top[g]; last = maxi(0, faces[g].size() - CELLS)
+		_: return
+	var next := (0 if delta < 0 else last) if edge else clampi(current + delta, 0, last)
+	match which:
+		"list": top = next
+		"voice": voice_top = next
+		_: face_top[int(which.right(1))] = next
 	_layout()
 	queue_redraw()
 
@@ -1014,7 +1062,14 @@ func _rename_key(e: InputEventKey) -> void:
 
 func _process(dt: float) -> void:
 	if not visible:
+		_scroll_repeat.stop()
 		return
+	if not _scroll_repeat.key.is_empty():
+		if MessageBox.is_up(_box) or not (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or TouchInput.holding(self)):
+			_scroll_repeat.stop()
+		else:
+			var steps: int = _scroll_repeat.advance(dt / maxf(Engine.time_scale, 0.001))
+			if steps: _scroll_list(_scroll_repeat.key, steps, Input.is_key_pressed(KEY_SHIFT))
 	if state in [SEL, CREATE] and _turn != 0:
 		_doll.turn_camp_by((TURN_SPEED if _turn == 1 else -TURN_SPEED) * dt)
 	# a held "−" / "+" steps again every frame from 0.75 s .

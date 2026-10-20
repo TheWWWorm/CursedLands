@@ -68,18 +68,10 @@ func refresh() -> void:
 	if not visible:
 		return
 	var st := hud.game.session.state
-	var active := []
-	var done := []
-	var objectives := {}   # quest -> {n: state}
-	for k: String in st.vars:
-		var key := k.get_slice(":", 1)
-		if not key.begins_with("q."):
-			continue
-		var parts := key.split(".")
-		if parts.size() == 3:
-			(done if float(st.vars[k]) >= 2.0 else active).append(parts[2])
-		elif parts.size() == 4:
-			objectives.get_or_add(parts[2], {})[int(parts[3])] = float(st.vars[k])
+	var entries := quest_entries(st)
+	var active: Array = entries.active
+	var done: Array = entries.done
+	var objectives: Dictionary = entries.objectives
 	var out := ""
 	for q in active:
 		out += _quest(q, objectives.get(q, {}), false)
@@ -88,6 +80,32 @@ func refresh() -> void:
 		for q in done:
 			out += "[url=wiki://quest/%s]%s[/url]\n" % [String(q).uri_encode(),_parse(q).title]
 	_text.text = out if out else RemakeText.t("No quests yet.")
+
+
+## Multiplayer contracts have their own lifecycle, and some original .mq
+## archives do not publish a three-part campaign quest variable at all.
+static func quest_entries(st: CampaignState) -> Dictionary:
+	var active := []
+	var done := []
+	var objectives := {}   # quest -> {n: state}
+	var progress := {}
+	for k: String in st.vars:
+		var key := k.get_slice(":", 1)
+		if not key.begins_with("q."):
+			continue
+		var parts := key.split(".")
+		if parts.size() == 3 and float(st.vars[k]) > 0.0:
+			progress[parts[2]] = maxf(float(progress.get(parts[2], 0.0)), float(st.vars[k]))
+		elif parts.size() == 4:
+			objectives.get_or_add(parts[2], {})[int(parts[3])] = float(st.vars[k])
+	for q: String in st.side_quests:
+		match String(st.side_quests[q]):
+			"active": progress[q] = 1.0
+			"done", "rewarded": progress[q] = 2.0
+			"rejected": progress.erase(q)
+	for q: String in progress:
+		(done if float(progress[q]) >= 2.0 else active).append(q)
+	return {"active": active, "done": done, "objectives": objectives}
 
 
 func _quest(q: String, objs: Dictionary, _done: bool) -> String:

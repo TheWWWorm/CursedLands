@@ -27,7 +27,13 @@ func until(predicate:Callable,seconds:=10.0)->bool:
 	return bool(predicate.call())
 func _ready()->void:
 	process_mode=Node.PROCESS_MODE_ALWAYS
+	for i in 12: await get_tree().process_frame
 	GameData.options.merge({"auto_graphics":0,"confine_mouse":0,"display_mode":0,"control_mode":1,"autosave":0,"show_tutorial":0,"net_upnp":0,"net_websocket":0,"net_lan":0,"net_directory":0,"pad_enabled":0,"vsync":0},true)
+	GameData.options.merge(GfxDetect.original_look_values(true,{},-1),true)
+	GameData._window_gen+=1
+	get_window().mode=Window.MODE_WINDOWED;get_window().size=Vector2i(800,600)
+	# Keep shader compilation out of the worker startup/command measurement.
+	Gfx.ensure_globals();Gfx.apply_surface_options()
 	s=Session.new();get_parent().add_child(s);g=Game.new();g.session=s;s.game=g;get_parent().add_child(g)
 	s.state.ensure_hero(0,"Human Hero");await s.enter_zone("gz1g",1,false)
 	hero=s.party_units(0)[0]
@@ -37,7 +43,10 @@ func _ready()->void:
 	var h:Dictionary=hero.get_meta("hero");h.spells=["healing{}"];h.skills={"astral":100};h.int=80.0
 	Combat.hero_stats(hero,h);hero.mana=hero.max_mana;hero.hp=hero.max_hp*.5
 	check(s.save_game("animation_worker_fixture")==OK,"prepared original hero saves")
-	check(await s.local_host.start(0,1,true)==OK,"separate authority starts")
+	var started:=await s.local_host.start(0,1,true)
+	check(started==OK,"separate authority starts")
+	if started!=OK:
+		await s.local_host.stop();TexUpscale.shutdown();get_tree().quit(1);return
 	check(await s.load_game_shown("animation_worker_fixture"),"prepared scene loads through worker")
 	if s.world==null:await s.local_host.stop();get_tree().quit(1);return
 	hero=g.my_units()[0];g.selected.assign([hero]);g.rig.release()

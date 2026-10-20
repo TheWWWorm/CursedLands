@@ -293,6 +293,8 @@ var _reset_dialog: Control
 var _skill_rows: Array = []   # [rect, command, description, kind, optional right-click command]
 var _perk_scroll := 0    # known abilities
 var _avail_scroll := 0   # available abilities
+var _scroll_repeat := preload("res://src/ui/scroll_repeat.gd").new()
+var _selection_alpha := {}
 var _hold_cmd := {}      # the held skill row's command
 var _hold_t := 0.0
 ## Shop transfer repeats only the captured item, even when its row scrolls.
@@ -602,14 +604,14 @@ func touch_scroll(point: Vector2, delta: Vector2) -> void:
 	if absf(delta.x) > absf(delta.y):
 		var step := -1 if delta.x > 0 else 1
 		if p.y < 100 and shop_row():
-			shop_scroll = maxi(0, shop_scroll + step)
+			_scroll_list("shop", step)
 		elif p.y > 500:
-			scroll = maxi(0, scroll + step)
+			_scroll_list("bag", step)
 	elif mode == "spells":
-		if p.x < 200:
-			_perk_scroll = maxi(0, _perk_scroll + (-1 if delta.y > 0 else 1))
-		else:
-			_avail_scroll = maxi(0, _avail_scroll + (-1 if delta.y > 0 else 1))
+		if Rect2(210, 320, 180, 170).has_point(p):
+			_scroll_list("known", -1 if delta.y > 0 else 1)
+		elif Rect2(410, 125, 180, 365).has_point(p):
+			_scroll_list("avail", -1 if delta.y > 0 else 1)
 	queue_redraw()
 
 
@@ -1370,6 +1372,8 @@ func refresh(u: GameUnit) -> void:
 
 
 func _process(_dt: float) -> void:
+	_process_scroll(_dt / maxf(Engine.time_scale, 0.001))
+	_process_selection(_dt / maxf(Engine.time_scale, 0.001))
 	_process_transfer_hold(_dt)
 	if _turn_dir != 0:
 		if not is_visible_in_tree() or mode != "weapons" or tutorial_visible() \
@@ -1604,6 +1608,61 @@ func _notification(what: int) -> void:
 		_turn_dir = 0
 		_hold_cmd = {}
 		_stop_transfer_hold()
+		_scroll_repeat.stop()
+
+
+func _scroll_list(which: String, delta: int, edge := false) -> void:
+	var last := 0
+	var current := 0
+	match which:
+		"bag": last = maxi(0, bag_items().size() - BAG_CELLS); current = scroll
+		"shop": last = maxi(0, shop_items().size() - BAG_CELLS); current = shop_scroll
+		"known", "avail":
+			if _unit == null: return
+			var h: Dictionary = _unit.get_meta("hero", {})
+			var families := {}
+			for code: String in h.get("perks", []): families[code.rstrip("0123456789")] = true
+			last = maxi(0, families.size() - 10) if which == "known" \
+				else maxi(0, Perks.available(h).filter(func(code): return String(code).ends_with("1")).size() - 23)
+			current = _perk_scroll if which == "known" else _avail_scroll
+		_: return
+	var next := (0 if delta < 0 else last) if edge else clampi(current + delta, 0, last)
+	match which:
+		"bag": scroll = next
+		"shop": shop_scroll = next
+		"known": _perk_scroll = next
+		"avail": _avail_scroll = next
+	_sig = ""
+	queue_redraw()
+
+
+func _begin_scroll(which: String, delta: int, edge: bool) -> void:
+	_scroll_list(which, delta, edge)
+	if not edge: _scroll_repeat.begin(which, delta)
+	else: _scroll_repeat.stop()
+
+
+func _process_scroll(dt: float) -> void:
+	if _scroll_repeat.key.is_empty(): return
+	if not is_visible_in_tree() or tutorial_visible() \
+			or not (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or TouchInput.holding(self)):
+		_scroll_repeat.stop()
+		return
+	var steps: int = _scroll_repeat.advance(dt)
+	if steps: _scroll_list(_scroll_repeat.key, steps, Input.is_key_pressed(KEY_SHIFT))
+
+
+func _process_selection(dt: float) -> void:
+	var changed := false
+	for k: String in _content:
+		var selected: bool = _key_shown(k) and _content[k][0] != "" \
+			and _content[k][0] == selected_id and _content[k][1] == selected_where
+		var before := float(_selection_alpha.get(k, 0.0))
+		var after := move_toward(before, 1.0 if selected else 0.0, dt * 8.0)
+		if before != after:
+			_selection_alpha[k] = after
+			changed = true
+	if changed: queue_redraw()
 
 
 func _input(e: InputEvent) -> void:
@@ -1613,6 +1672,7 @@ func _input(e: InputEvent) -> void:
 		_turn_dir = 0
 		_hold_cmd = {}
 		_stop_transfer_hold()
+		_scroll_repeat.stop()
 
 
 func _gui_input(e: InputEvent) -> void:
@@ -1622,10 +1682,14 @@ func _gui_input(e: InputEvent) -> void:
 		var delta := -1 if e.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_LEFT] else 1
 		if Rect2(0, 500, 800, 100).has_point(point):
 			_stop_transfer_hold()
-			scroll = clampi(scroll + delta, 0, maxi(0, bag_items().size() - BAG_CELLS))
+			_scroll_list("bag", delta, e.shift_pressed)
 		elif shop_row() and Rect2(0, 0, 800, 100).has_point(point):
 			_stop_transfer_hold()
-			shop_scroll = clampi(shop_scroll + delta, 0, maxi(0, shop_items().size() - BAG_CELLS))
+			_scroll_list("shop", delta, e.shift_pressed)
+		elif mode == "spells" and Rect2(210, 320, 180, 170).has_point(point):
+			_scroll_list("known", delta, e.shift_pressed)
+		elif mode == "spells" and Rect2(410, 125, 180, 365).has_point(point):
+			_scroll_list("avail", delta, e.shift_pressed)
 		else: return
 		_sig = ""
 		queue_redraw()
@@ -1635,6 +1699,7 @@ func _gui_input(e: InputEvent) -> void:
 		_update_hover((e.position - _o()) / _s())
 		return
 	if e is InputEventMouseButton and not e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
+		_scroll_repeat.stop()
 		_hold_cmd = {}
 		_turn_dir = 0
 	# The top row's right-button handler (widget
@@ -1698,11 +1763,7 @@ func _gui_input(e: InputEvent) -> void:
 				continue
 			var cmd: Dictionary = row[1]
 			if row[3] == "arrow":
-				if cmd.list == "known":
-					_perk_scroll += int(cmd.d)
-				else:
-					_avail_scroll += int(cmd.d)
-				queue_redraw()
+				_begin_scroll(cmd.list, int(cmd.d), e.shift_pressed)
 				accept_event()
 				return
 			if GameSound.instance:
@@ -1721,7 +1782,7 @@ func _gui_input(e: InputEvent) -> void:
 		if hit < 10:
 			_set_bag_filter(hit)
 		else:
-			scroll += -1 if hit == 10 else 1
+			_begin_scroll("bag", -1 if hit == 10 else 1, e.shift_pressed)
 		accept_event()
 		return
 	if shop_row():
@@ -1731,7 +1792,7 @@ func _gui_input(e: InputEvent) -> void:
 			if hit < 10:
 				_set_shop_filter(hit)
 			else:
-				shop_scroll += -1 if hit == 10 else 1
+				_begin_scroll("shop", -1 if hit == 10 else 1, e.shift_pressed)
 			accept_event()
 			return
 	for k in _content:
@@ -2156,10 +2217,6 @@ func _get_tooltip(pos: Vector2) -> String:
 			var it: String = _content[k][0]
 			var n := bag_count(it) if _content[k][1] == "bag" else (shop_left(it) if _content[k][1] == "shop" else 1)
 			var t := Items.title(it) + (" x%d" % n if n > 1 else "")
-			match _content[k][1]:
-				"shop", "buy": t += "\n%d" % _price(it, true)
-				"sell": t += "\n%d" % _price(it, false)
-				"rep": t += "\n%d" % _repair_price(it)
 			return t
 	return ""
 
@@ -2271,8 +2328,9 @@ func _draw() -> void:
 
 	# Selection.
 	for k in _content:
-		if _key_shown(k) and _content[k][0] != "" and _content[k][0] == selected_id and _content[k][1] == selected_where:
-			draw_rect(_r(_slot_rect(k)).grow(-10 * s), Color(0.95, 0.8, 0.35), false, 2.0)
+		var alpha := float(_selection_alpha.get(k, 0.0))
+		if _key_shown(k) and alpha > 0.0:
+			draw_rect(_r(_slot_rect(k)).grow(-10 * s), Color(0.95, 0.8, 0.35, alpha), false, 2.0)
 	_overlay.queue_redraw()
 
 

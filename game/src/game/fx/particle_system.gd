@@ -1749,7 +1749,7 @@ func setup_zone() -> void:
 		var ef := spawn(0x2038, _ground_pt(c.x, c.y), 1.0, null,
 			{"k118": r.size.x * 0.5, "k11c": r.size.y * 0.5, "k120": 1.0, "k124": 0.0, "prewarm": 20})
 		if ef:
-			_exit_fx.append([ef, "z." + String(ex.to).to_lower()])
+			_exit_fx.append([ef, LmpMode.exit_var(String(ex.to).to_lower())])
 	exit_colours()   #  ends, after the prewarm
 	for node in world.objects.values():
 		if not is_instance_valid(node) or not node.has_meta("ei"):

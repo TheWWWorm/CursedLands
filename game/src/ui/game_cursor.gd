@@ -19,8 +19,9 @@ extends Node
 ## with 0, so the 16×16 "sm_cursor_*" set and 16 px cell are
 ## unused) and draws it 1:1 in screen pixels at every resolution. Remake
 ## improvement (user request): the cursor is scaled with the window like the
-## 800×600 HUD (height / 600, as party_faces / message_log), smoothly
-## filtered, hot spot scaled with it; still the OS (hardware) cursor.
+## 800×600 HUD (height / 600, as party_faces / message_log) in Automatic mode.
+## Fixed 32/48/64 screen-pixel choices retain their size after a resize.
+## Filtering and the hot spot follow the size; still the OS hardware cursor.
 
 ## The browser's cursor (web export), by path: no class_name load order.
 const WebCursor := preload("res://src/platform/web_cursor.gd")
@@ -115,6 +116,9 @@ static func scaled(name: String, px: int) -> Array:
 
 ## Cursor side in pixels for the current window: 32 × height / 600.
 static func size_px() -> int:
+	var fixed := GameData.option("cursor_size")
+	if fixed > 0:
+		return [32, 48, 64][clampi(fixed - 1, 0, 2)]
 	var h := DisplayServer.window_get_size().y if DisplayServer.get_name() != "headless" else 600
 	return clampi(roundi(32.0 * h / 600.0), 32, MAX_PX)
 

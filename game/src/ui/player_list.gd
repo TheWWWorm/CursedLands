@@ -44,7 +44,7 @@ func _process(_dt: float) -> void:
 	var s := game.session if game else null
 	# Not over a movie (the co-op intro plays once the first zone is built),
 	# nor over the full-screen camp / swap screens (their right info widget).
-	var on := s != null and s.multiplayer_game and not (game.hud and game.hud._movie and game.hud._movie.visible) \
+	var on := GameData.option("show_player_status") != 0 and s != null and s.multiplayer_game and not (game.hud and game.hud._movie and game.hud._movie.visible) \
 		and not (game.hud and game.hud._inventory and game.hud._inventory.visible)
 	visible = on
 	if not on:

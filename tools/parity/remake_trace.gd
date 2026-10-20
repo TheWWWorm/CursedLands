@@ -223,6 +223,7 @@ func capture_attack(data: Dictionary, probability: bool) -> Array:
 	defender.stats = {"to_hit": 0, "parry": int(data.defence)}
 	attacker.pos = Vector2.ZERO
 	defender.pos = Vector2(float(data.distance), 0.0)
+	world.heights[defender.pos] = f32(float(data.get("height", 0.0)))
 	attacker.stats.actions = float(data.attack_actions)
 	defender.stats.actions = float(data.defence_actions)
 	defender.figure_radius = f32(float(data.radius)) - f32(0.05)

@@ -140,6 +140,25 @@ def scenarios(seed=20261020, fuzz=12):
     for distance in [0, 0.25, 1, 5, 10]:
         for attack, defence in [(40, 40), (41, 40), (20, 10)]:
             add("attack_chance", f"a{attack}_d{defence}_distance{distance}", {"attack": attack, "defence": defence, "spread": 40, "aim": -1, "distance": distance, "radius": 0.5, "attack_actions": 15.0, "defence_actions": 15.0})
+    # Independent geometry/action-rate inputs, including deterministic
+    # zero-spread equality. These enter both processes without expectations.
+    hit_rng = random.Random(seed ^ 0x555BD0)
+    for i in range(144):
+        values = {"attack": hit_rng.choice([0, 1, 10, 20, 40, 41, 80]),
+                  "defence": hit_rng.choice([0, 1, 10, 20, 40, 41, 80]),
+                  "spread": hit_rng.choice([0, 1, 5, 40, 80]), "aim": -1,
+                  "distance": hit_rng.choice([0.25, 1, 5, 10, 50]),
+                  "height": hit_rng.choice([0, 0.5, 4, -4]),
+                  "radius": hit_rng.choice([0.1, 0.5, 2.0]),
+                  "attack_actions": hit_rng.choice([1.0, 5.0, 15.0, 50.0]),
+                  "defence_actions": hit_rng.choice([1.0, 5.0, 15.0, 50.0])}
+        add("attack_chance", f"geometry_actions_{i:03}", values)
+    for distance in [0, 0.25, 1, 5, 10]:
+        for aim in [-1, 0, 1, 2]:
+            add("attack", f"zero_spread_equality_d{distance}_aim{aim}",
+                {"attack": 40, "defence": 40 - (25 if aim == 0 else 10 if aim == 2 else 0),
+                 "spread": 0, "aim": aim, "distance": distance, "radius": 0.5,
+                 "attack_actions": 15.0, "defence_actions": 15.0})
     return rows + extra_scenarios(seed, fuzz)
 
 

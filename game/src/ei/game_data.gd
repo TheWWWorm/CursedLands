@@ -176,6 +176,8 @@ const OPTIONS := [
 	["spell_double_tap_self", 1, 2, 17, 8, 1],
 	["hide_remake_hints", 1, 2, 17, 9, 0],
 	["character_buff_icons", 1, 2, 17, 10, 1],
+	["cursor_size", 1, 4, 17, 11, 0],
+	["show_player_status", 1, 2, 17, 12, 1],
 	# Gameplay (group 18).
 	# The network game's unit visibility in single player too (UnitFog);
 	# default on (user request).
@@ -263,6 +265,9 @@ const DISPLAY_CHOICES := {
 	"gfx_terrain": ["Original", "Detailed", "Natural transitions"],
 	"coop_scale": ["Off", "Light", "Normal", "Strong"],
 	"enemy_hp_bars": ["Off", "Auto", "Always"],
+	"cursor_size": ["Automatic", "32 px", "48 px", "64 px"],
+	"show_player_status": ["Off", "On"],
+	"item_icon_fit": ["Off", "On"],
 	"pad_glyphs": ["Automatic", "Xbox", "PlayStation", "Nintendo", "Steam Deck"],
 	"renderer": ["Compatibility", "Forward+ (experimental)", "Mobile (Vulkan)"],   # RendererChoice.METHODS
 }
@@ -322,7 +327,7 @@ const REMAKE_OPTIONS := {
 	"direct_attack": ["Attack / cast", "Change this key for first and third person."],
 	"direct_quests": ["Quests", "Change this key for first and third person."],
 
-	"item_icon_fit": ["Fit items inside icons", "Keeps long inventory and shop items inside their icon cells while they turn. Off: the original fixed model scale."],
+	"item_icon_fit": ["Fit items inside icons", "Shrinks oversized inventory and shop items to fit their cells while they turn, without enlarging small items. Also fits character creation portraits. Off keeps fixed item scale and allows models to extend beyond their cells."],
 	"ui_active_buttons": ["Bright usable camp buttons", "Available camp modes and Exit are bright. Skills apply immediately, so their inactive Accept and Cancel controls are hidden. Deal controls show whether a transaction can be made or undone. Off: the original button layout and tint."],
 	"coop_clock": ["Shared pause and speed", "One pause and speed for the whole co-op game. The host can grant guests permission to control them. Off: co-op always runs at normal speed."],
 	"coop_guest_clock": ["Guest clock controls", "Default guest permissions for new co-op games. Adjust each player in the Players menu. Permissions are saved with the campaign; loading restores them. Speed-only permission cannot resume a paused game."],
@@ -409,6 +414,8 @@ const REMAKE_OPTIONS := {
 	"fps_limit": ["Frame rate limit", "Highest frames per second; Display refresh = the monitor's refresh rate."],
 	"vsync": ["VSync", "Wait for the monitor's refresh (no tearing); adaptive tears only when a frame is late."],
 	"show_fps": ["Show FPS", "A frames-per-second counter in the top right corner."],
+	"cursor_size": ["Cursor size", "Automatic scales the pointer with the window height. Choose a fixed size in screen pixels for a smaller or larger pointer."],
+	"show_player_status": ["Player status overlay", "Show player names, connection status and ping below the minimap. Local hosting includes the simulation worker's processing time in its ping."],
 	"confine_mouse": ["Keep mouse in window", "The pointer cannot leave the game window (e.g. onto a second monitor) while the game has focus; it is free again when you switch away."],
 	"sp_death_notice": ["Game-over notice at the hero's death", "Single player: when your main hero dies, the game-over sound plays at once and a small notice appears at the top of the screen, with Load, Main menu and Hide. The game is not paused and your companions fight on; leaving the area still ends the game. Off: as the original, nothing appears until the party tries to leave the area."],
 	"revive": ["Companions can revive the hero", "Select a living hero or companion and click a fallen party member (your hero, another player's hero or a hired companion): they walk to the body and tend it for 5 seconds, and it gets up with 1 health. Another order stops it; there is no other limit, but it is slow in a fight. Party bodies stay where they fell. Co-op: fallen heroes wait for help instead of rising after 5 seconds; changing the area still brings them back. Off: as the original, the dead stay dead."],
@@ -456,7 +463,7 @@ const OPTIONS_APPLIED := ["hide_remake_hints", "discord_presence", "direct_hints
 	"spell_double_tap_self", "character_buff_icons",
 	"volume_sfx", "volume_stream", "volume_voice", "power_kbd",
 	"graphics_preset",
-	"item_icon_fit", "ui_active_buttons", "original_rune_layout", "coop_clock", "merc_travel", "auto_exit", "mechanism_motion",
+	"item_icon_fit", "ui_active_buttons", "original_rune_layout", "coop_clock", "merc_travel", "auto_exit", "mechanism_motion", "cursor_size", "show_player_status",
 	"power_mouse", "scroll_border", "rubber_select", "marks", "footprints", "select_type", "show_path", "brightness", "contrast", "gamma",
 	"show_flying_hp", "show_tutorial", "autosave", "tooltip_time", "switch_filters",
 	"camera_reverse_x", "camera_reverse_y", "reverse_stereo", "cave_echo", "difficulty",

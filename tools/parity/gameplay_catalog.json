@@ -282,9 +282,9 @@
       "category": "creatures",
       "script": "tools/tests/creature_alerts.gd",
       "marker": "CREATURE_ALERTS",
-      "min_checks": 12,
+      "min_checks": 20,
       "quick": false,
-      "description": "Witnessed kills, unheard attacks and neutral hostility",
+      "description": "Authored bridge goblin perception, pig murder witnesses and original rabbits witnessing nonfatal assault; compressed hostility replication",
       "kind": "remake_regression",
       "timeout": 240,
       "args": [],
@@ -2093,7 +2093,7 @@
       "marker": "CAMP_INVENTORY_UI",
       "min_checks": 109,
       "quick": false,
-      "description": "U40\u2013U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
+      "description": "U40–U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
       "kind": "remake_regression",
       "timeout": 360,
       "args": [],
@@ -2113,7 +2113,7 @@
       "marker": "CAMP_INVENTORY_UI",
       "min_checks": 113,
       "quick": false,
-      "description": "U40\u2013U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
+      "description": "U40–U43: real original material text/art, constructor inventory categories, and held transfers through the live camp input path. No save is required.",
       "kind": "remake_regression",
       "timeout": 360,
       "args": [],
@@ -5159,6 +5159,479 @@
         "res/texts.res"
       ],
       "display": "headless"
+    },
+    {
+      "id": "interface/issue_ui_controls",
+      "category": "interface",
+      "script": "tools/tests/issue_ui_controls.gd",
+      "marker": "ISSUE_UI_CONTROLS",
+      "min_checks": 198,
+      "quick": true,
+      "description": "Wheel, Shift, held-arrow repeat, selection fade, cursor size and all 28 original optional-quest journal lifecycles",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "animation/equipment_continuity",
+      "category": "animation",
+      "script": "tools/tests/equipment_animation_continuity.gd",
+      "marker": "EQUIPMENT_ANIMATION_CONTINUITY",
+      "min_checks": 56,
+      "quick": true,
+      "description": "Original equipped rigs retain animation phase, blends, queues, dialogue, RNG and frozen corpses during gear/stat refresh",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "network/menu_lmp_flow_ingos",
+      "category": "network",
+      "script": "tools/tests/menu_lmp_flow.gd",
+      "marker": "MENU_LMP_FLOW",
+      "min_checks": 28,
+      "quick": false,
+      "description": "Real menu, original multiplayer quest, separate worker, live dialogue, journal and exit colours",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/databaselmp.res",
+        "res/textslmp.res",
+        "res/figures.res",
+        "maps/bz8k.mpr",
+        "maps/bz8k-lmp.mob"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "animation/worker_response",
+      "category": "animation",
+      "script": "tools/tests/worker_animation_response.gd",
+      "marker": "WORKER_ANIMATION_RESPONSE",
+      "min_checks": 13,
+      "quick": false,
+      "description": "Paused movement response and moving spell poses through the separate simulation worker",
+      "kind": "remake_regression",
+      "timeout": 360,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/zone1.mob",
+        "maps/zone1.mpr"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "animation/safe_zone_appearance",
+      "category": "animation",
+      "script": "tools/tests/safe_zone_appearance.gd",
+      "marker": "SAFE_ZONE_APPEARANCE",
+      "min_checks": 11,
+      "quick": false,
+      "description": "Equipment continuity through safe hubs, NPCs, party guests and travel",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/bz13h.mob",
+        "maps/bz13h.mpr",
+        "maps/zone15.mob",
+        "maps/zone15.mpr"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "commands/worker_clock",
+      "category": "commands",
+      "script": "tools/tests/worker_clock.gd",
+      "marker": "WORKER_CLOCK",
+      "min_checks": 8200,
+      "quick": true,
+      "description": "Original 55ms simulation cadence, retained time and bounded catch-up across lifecycle events",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "interface/pause_menu_clock",
+      "category": "interface",
+      "script": "tools/tests/pause_menu_clock.gd",
+      "marker": "PAUSE_MENU_CLOCK",
+      "min_checks": 21,
+      "quick": true,
+      "description": "Actual signpost animation at different gameplay speeds and while paused",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/pause_menu_frames",
+      "category": "interface",
+      "script": "tools/tests/pause_menu_frames.gd",
+      "marker": "PAUSE_MENU_FRAMES",
+      "min_checks": 25,
+      "quick": true,
+      "description": "Composited first opening frames at 15, 30 and 60 FPS, pause, speed changes and reopening",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/menu_hidden_viewports",
+      "category": "interface",
+      "script": "tools/tests/menu_hidden_viewports.gd",
+      "marker": "MENU_HIDDEN_VIEWPORTS_RESULT",
+      "min_checks": 7,
+      "quick": true,
+      "description": "Rendered main menu and options only redraw visible preview viewports",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "network/menu_lmp_flow_gipat",
+      "category": "network",
+      "script": "tools/tests/menu_lmp_flow.gd",
+      "marker": "MENU_LMP_FLOW",
+      "min_checks": 28,
+      "quick": false,
+      "description": "Real menu, original multiplayer quest, separate worker, live dialogue, journal and exit colours",
+      "kind": "remake_regression",
+      "timeout": 420,
+      "args": [
+        "--lmp-base=bz1mpg"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/databaselmp.res",
+        "res/textslmp.res",
+        "res/figures.res",
+        "maps/basegipat.mpr",
+        "maps/basecam-mp.mob"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/issue_ui_rendered_en",
+      "category": "interface",
+      "script": "tools/tests/issue_ui_rendered.gd",
+      "marker": "ISSUE_UI_RENDERED",
+      "min_checks": 1055,
+      "quick": false,
+      "description": "Rendered original models and localized interface at 1080p: en",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--ui-language=en"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/databaselmp.res",
+        "res/textslmp.res"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/scaled_menu_arena_text_en",
+      "category": "interface",
+      "script": "tools/tests/scaled_menu_arena_text.gd",
+      "marker": "SCALED_TEXT",
+      "min_checks": 32,
+      "quick": false,
+      "description": "Rendered original models and localized interface at 1080p: en",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--text-ui=en,1920,1080"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/databaselmp.res",
+        "res/textslmp.res"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/issue_ui_rendered_ru",
+      "category": "interface",
+      "script": "tools/tests/issue_ui_rendered.gd",
+      "marker": "ISSUE_UI_RENDERED",
+      "min_checks": 1055,
+      "quick": false,
+      "description": "Rendered original models and localized interface at 1080p: ru",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--ui-language=ru"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/databaselmp.res",
+        "res/textslmp.res"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/scaled_menu_arena_text_ru",
+      "category": "interface",
+      "script": "tools/tests/scaled_menu_arena_text.gd",
+      "marker": "SCALED_TEXT",
+      "min_checks": 32,
+      "quick": false,
+      "description": "Rendered original models and localized interface at 1080p: ru",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--text-ui=ru,1920,1080"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/databaselmp.res",
+        "res/textslmp.res"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/issue_ui_rendered_de",
+      "category": "interface",
+      "script": "tools/tests/issue_ui_rendered.gd",
+      "marker": "ISSUE_UI_RENDERED",
+      "min_checks": 1055,
+      "quick": false,
+      "description": "Rendered original models and localized interface at 1080p: de",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--ui-language=de"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/databaselmp.res",
+        "res/textslmp.res"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "interface/scaled_menu_arena_text_de",
+      "category": "interface",
+      "script": "tools/tests/scaled_menu_arena_text.gd",
+      "marker": "SCALED_TEXT",
+      "min_checks": 32,
+      "quick": false,
+      "description": "Rendered original models and localized interface at 1080p: de",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [
+        "--text-ui=de,1920,1080"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "res/databaselmp.res",
+        "res/textslmp.res"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "animation/unit_presentation_timing",
+      "category": "animation",
+      "script": "tools/tests/unit_presentation_timing.gd",
+      "marker": "UNIT_PRESENTATION_TIMING",
+      "min_checks": 30,
+      "quick": true,
+      "description": "Original frog windup, exact strike clips, delayed cast snapshots and final movement settling",
+      "kind": "remake_regression",
+      "timeout": 360,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "animation/network_render_clock",
+      "category": "animation",
+      "script": "tools/tests/network_render_clock.gd",
+      "marker": "NETWORK_RENDER_CLOCK",
+      "min_checks": 140,
+      "quick": true,
+      "description": "Real interpolation paths advance once per wall interval at 0.5x, 1x, 2x and 3x",
+      "kind": "remake_regression",
+      "timeout": 360,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "commands/mine_worker_cadence",
+      "category": "commands",
+      "script": "tools/tests/worker_cadence_response.gd",
+      "marker": "WORKER_RESPONSE_RESULT",
+      "min_checks": 39,
+      "quick": false,
+      "description": "Original Ingos mine with separate simulation worker: paused commands and sustained 1x/2x game time",
+      "kind": "remake_regression",
+      "timeout": 360,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/zone14.mob",
+        "maps/zone14.mpr"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "effects/footprint_surface",
+      "category": "effects",
+      "script": "tools/tests/footprint_surface_scene.gd",
+      "marker": "FOOTPRINT_SURFACE_SCENE",
+      "min_checks": 688,
+      "quick": false,
+      "description": "Original village walking surfaces, 49 footprints and 14 camera angles with actual rendered pixel comparisons",
+      "kind": "remake_regression",
+      "timeout": 360,
+      "args": [
+        "--full-scene"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/basegipat.mpr",
+        "maps/basecam.mob"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "effects/footprint_surface_enhanced",
+      "category": "effects",
+      "script": "tools/tests/footprint_surface_scene.gd",
+      "marker": "FOOTPRINT_SURFACE_SCENE",
+      "min_checks": 688,
+      "quick": false,
+      "description": "Original village footprints with enhanced ground settings and actual rendered pixel comparisons",
+      "kind": "remake_regression",
+      "timeout": 360,
+      "args": [
+        "--full-scene",
+        "--enhanced"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/basegipat.mpr",
+        "maps/basecam.mob"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "effects/running_footprints",
+      "category": "effects",
+      "script": "tools/tests/footprint_running_scene.gd",
+      "marker": "FOOTPRINT_RUNNING_SCENE",
+      "min_checks": 15,
+      "quick": false,
+      "description": "Original running footfalls at 1x/2x and low cadence; scripted path and rendered footprint visibility",
+      "kind": "remake_regression",
+      "timeout": 360,
+      "args": [
+        "--full-scene"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/figures.res",
+        "maps/basegipat.mpr",
+        "maps/basecam.mob"
+      ],
+      "display": "rendered"
     }
   ]
 }

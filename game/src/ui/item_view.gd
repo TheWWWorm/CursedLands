@@ -294,6 +294,10 @@ func _fit_slot() -> void:
 		first = false
 	var aspect := size.x / maxf(size.y, 1.0)
 	_fit_camera.size = maxf(0.1, maxf(box.size.z, box.size.x / maxf(aspect, 0.01)) * 1.12)
+	# Fitting constrains oversized icons; it must not magnify small authored
+	# items such as blueprints to fill the cell.
+	if unit_px > 0.0:
+		_fit_camera.size = maxf(_fit_camera.size, size.y / unit_px)
 	_fit_camera.position = box.get_center() + Vector3(0, -box.size.y * 0.5 - 2.0, 0)
 	_fit_camera.far = box.size.y + 4.0
 	_model.position = -(_model.basis * _fit_center)

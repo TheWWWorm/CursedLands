@@ -12,6 +12,8 @@ var _pending_snapshot := {}
 var _initial: Array = []
 var _prepared_round := -1
 var _clock_state: Array = []
+var _paused_packets: Array = []
+var _paused_serials := {}
 
 func _exit_tree() -> void:
 	if is_instance_valid(connection): connection.close();connection.queue_free()
@@ -36,6 +38,7 @@ func _boot() -> void:
 func synchronize() -> void:
 	if _round!=run.wave:
 		external_active=false;_initial.clear();_prepared_round=-1;_clock_state.clear()
+		_paused_packets.clear();_paused_serials.clear()
 	super.synchronize()
 
 func request_start(allow_empty := false) -> bool:
@@ -90,6 +93,15 @@ func _process(dt: float) -> void:
 	if not paused and not booting and not worker_ready and not worker_failed: _boot()
 	super._process(dt)
 	if external_active: _send_clock()
+	if not paused and not _paused_packets.is_empty():
+		var pending := _paused_packets
+		_paused_packets = []
+		_paused_serials.clear()
+		for packet: Array in pending:
+			match packet[0]:
+				"board": _board(packet[1])
+				"effects": _effects(packet[1])
+				"result": _result(packet[1])
 
 func _send_clock() -> void:
 	if not worker_ready or not external_active: return
@@ -109,22 +121,38 @@ func show_all() -> void:
 
 func _board(data: Dictionary) -> void:
 	if not external_active or int(data.round)!=run.wave: return
+	if paused:
+		# The loopback authority can have frames in flight when the menu
+		# opens. Retain them until resume, including full formation records.
+		# A stopped worker keeps publishing the same serial; retain it once.
+		var key := [data.get("seat"), data.get("generation"), data.get("serial"), data.get("phase"), data.get("full")]
+		if not _paused_serials.has(key):
+			_paused_serials[key] = true
+			_paused_packets.append(["board", data.duplicate(true)])
+		return
 	var battle: ArenaPveMatch=home if int(data.seat)==0 else boards.get(int(data.seat))
 	if battle: battle.apply_board(data)
 
 func _effects(data: Dictionary) -> void:
 	if not external_active or int(data.round)!=run.wave: return
+	if paused:
+		_paused_packets.append(["effects", data.duplicate(true)])
+		return
 	var battle: ArenaPveMatch=home if int(data.seat)==0 else boards.get(int(data.seat))
 	if battle: battle.apply_effects(data)
 
 func _result(data: Dictionary) -> void:
 	if not external_active or int(data.round)!=run.wave: return
+	if paused:
+		_paused_packets.append(["result", data.duplicate(true)])
+		return
 	var player:=int(data.seat)
 	if player==0: run.resolve(int(data.winner),float(data.time),data.damage,data.survivors)
 	else: run.record_board(player,int(data.winner),data.survivors)
 
 func _lost(_reason: String) -> void:
 	worker_ready=false;worker_failed=true
+	_paused_packets.clear();_paused_serials.clear()
 	if not external_active:
 		if starting: _inline_fallback()
 		return

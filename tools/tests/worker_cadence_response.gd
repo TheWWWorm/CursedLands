@@ -27,9 +27,22 @@ func _ready() -> void:
 		"autosave":0,"coop_clock":0,"difficulty":0,"distant_ai":0},true)
 	GameData.difficulty=0
 	GameData.options.merge(GfxDetect.original_look_values(true,{},-1),true)
-	var path := "user://fixtures/gz1h.sav"
+	var path := ""
+	var zone := "gz14k" # Original Ingos mine; map.txt resolves it to zone14.
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--save="): path=arg.trim_prefix("--save=")
+		if arg.begins_with("--zone="): zone=arg.trim_prefix("--zone=")
+	if path.is_empty():
+		var seed := Session.new();add_child(seed)
+		seed.local_host.worker=true;seed.local_host.single_player=true
+		var seed_game := Game.new();seed_game.session=seed;seed.game=seed_game;add_child(seed_game)
+		seed.state.ensure_hero(0,"Human Hero")
+		await seed.enter_zone(zone,1,false)
+		seed.restore_play_clock({"speed":0,"paused":true,"field_speed":0})
+		check(seed.save_game("worker-cadence-seed")==OK,"original map fixture saves")
+		path=SaveInfo.path("worker-cadence-seed")
+		seed_game.free();seed.free();get_tree().paused=false
+		for i in 5: await get_tree().process_frame
 	check(FileAccess.file_exists(path),"save fixture exists")
 	if failures: get_tree().quit(1);return
 	DirAccess.make_dir_recursive_absolute(SaveInfo.directory())
@@ -43,8 +56,11 @@ func _ready() -> void:
 	check(await session.load_game_shown(slot),"load through single-player worker")
 	if session.world==null: await session.local_host.stop();get_tree().quit(1);return
 	check(session.local_host.single_player and not session.multiplayer_game,"offline rules")
+	check(session.zone_id==zone or Array(OS.get_cmdline_user_args()).any(func(arg):return arg.begins_with("--save=")),"requested original map is running")
 	Engine.max_fps=60
-	game.set_speed(0)
+	# Sector zero toggles pause. The generated fixture already saves paused.
+	if not get_tree().paused: game.set_speed(0)
+	check(get_tree().paused,"clock fixture begins with presentation paused")
 	session.local_host._sync_single_clock()
 	check((await session.local_host.request("measure_save")).get("ok",false),"pause acknowledged")
 	await wait_real(0.5)
@@ -81,9 +97,10 @@ func _ready() -> void:
 		# from the speed request, including first progress and warm-up.
 		check(simulated>0.0 and phase_sim<phase_wall*requested+0.25,"complete speed phase advances without overrun")
 		if speed==1: check(phase_wall-phase_sim<0.5,"one-times full phase catches up to real time")
+		else: check(phase_sim>=phase_wall*requested*.9,"two-times speed advances the full simulation near its requested rate")
 		rates.append({"speed":speed,"wall_seconds":wall,"sim_seconds":simulated,"requested_rate":requested,"resume_ms":latency,"phase_wall_seconds":phase_wall,"phase_sim_seconds":phase_sim})
 	await session.local_host.stop()
 	check(not session.local_host._process_alive(),"worker shuts down")
 	latencies.sort()
-	print("WORKER_RESPONSE_RESULT ",JSON.stringify({"checks":checks,"failures":failures,"latencies_ms":latencies,"rates":rates}))
+	print("WORKER_RESPONSE_RESULT ",JSON.stringify({"checks":checks,"failures":failures,"latencies_ms":latencies,"rates":rates,"zone":session.zone_id,"scope":"Loaded original map and worker cadence; does not certify hardware rendering performance or an affected player's save."}))
 	get_tree().quit(1 if failures else 0)

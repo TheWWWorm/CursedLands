@@ -503,7 +503,7 @@ func renamed_slot(pid: int, player_name: String) -> int:
 ## complete transmitted origin, not its opt-in bit alone. Only the display
 ## name may differ by the client's language; stats, kit and context may not.
 static func _pristine_new_origin(data: Dictionary) -> bool:
-	if data.get("new_origin") != true or not data.get("hero") is Dictionary \
+	if not data.get("new_origin") is bool or not data.new_origin or not data.get("hero") is Dictionary \
 			or not data.hero.get("name") is String:
 		return false
 	if ModStore.configuration_error(data.get("mod_config")) != "":

@@ -11,6 +11,7 @@ var menu_database := []
 var travel_requested_msec := 0
 var travel_first_cover_msec := -1
 var travel_uncovered_after_grace := 0
+var base := "bz2mpg"
 
 func check(ok: bool, label: String) -> bool:
 	checks += 1
@@ -62,6 +63,8 @@ func menu_state(menu: Control, label: String) -> Dictionary:
 
 func _ready() -> void:
 	await get_tree().process_frame
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--lmp-base="): base=arg.get_slice("=",1)
 	var main := get_parent()
 	reparent(get_tree().root)
 	for option: Array in GameData.OPTIONS:
@@ -89,21 +92,26 @@ func _ready() -> void:
 	var before := menu_state(menu, "before")
 	check(not before.is_empty(), "original menu creatures and textures captured")
 	get_viewport().get_texture().get_image().save_png("user://lmp-menu-before.png")
-	menu._net.lmp_base = "bz2mpg"
+	menu._net.lmp_base = base
 	await menu._host(2)
 	check(menu._session.local_host.frontend, "real menu hosts through the separate process")
 	RenderingServer.frame_post_draw.connect(presented)
 	phase = "start"
 	menu._start_coop()
-	if not check(await until(func(): return session != null and session.world != null and session.zone_id == "bz2mpg" and not session.loading_game and not session._remote_loading), "original multiplayer enters Ingos"):
+	if not check(await until(func(): return session != null and session.world != null and session.zone_id == base and not session.loading_game and not session._remote_loading), "original multiplayer enters "+base):
 		await cleanup(main); return
 	phase = ""
 	check(session.my_index == 0 and not session.is_host and not session.world.authority, "host view remains player zero on client replication")
 	check(int(frames.get("start", {}).get("covered", 0)) > 0, "start is covered by loading picture")
 	check(int(frames.get("start", {}).get("exposed", 0)) == 0, "no empty HUD before original multiplayer loading")
-	check(LoadingScreen._current == null, "start loading screen closes")
+	check(await until(func(): return LoadingScreen._current==null,10), "start loading screen closes after its final presented frames")
 	var quest := String(session.lmp.get("quest", ""))
 	if quest.is_empty():
+		var exits := ParticleFx.of(session.world)
+		exits.exit_colours()
+		check(not exits._exit_fx.is_empty(),"unassigned multiplayer base has exit particles")
+		for exit_fx: Array in exits._exit_fx:
+			check(exit_fx[1]==LmpMode.GAME_ZONE_VAR and exit_fx[0].e.v130.x==1.0,"unassigned quest closes the base exit in red")
 		var topics: Array = session.lmp.get("topics", [])
 		if check(not topics.is_empty(), "original quest giver has an offered topic"):
 			var topic := String(topics[0])
@@ -115,9 +123,37 @@ func _ready() -> void:
 			if check(giver != null, "original quest giver exists"):
 				session.submit({"t":"topic", "var":topic, "uid":giver.uid})
 				check(await until(func(): return session.game.hud._dialog._id == topic and session.game.hud._dialog._mode >= DialogPanel.PLAYING, 45), "quest briefing opens through ordinary topic command")
+				var dialog := session.game.hud._dialog
+				dialog.set_process(false)
+				var poses := {}
+				for sample in 5:
+					for actor in dialog._cast.get("names",{}).values():
+						var u: GameUnit = session.world.units.get(int(actor))
+						if u and u.model and u.model._dialogue_active:
+							poses.get_or_add(u.uid,{})[[u.model._current,snappedf(u.model.player.current_animation_position,.001)]]=true
+					await get_tree().create_timer(.1,true,false,true).timeout
+				check(not poses.is_empty() and poses.values().all(func(values): return values.size()>1),"conversation actors animate through real worker snapshots")
+				print("LMP_DIALOGUE_PHASES ",str(poses))
+				for uid in poses:
+					var actor: GameUnit=session.world.units.get(int(uid))
+					actor.refresh_figure(true)
+					check(actor.model._dialogue_active,"conversation pose survives a figure refresh")
+				dialog.set_process(true)
 				session.game.hud._dialog._finish()
+				for uid in poses:
+					var actor: GameUnit=session.world.units.get(int(uid))
+					check(not actor.model._dialogue_active,"ending dialogue releases the current figure after redressing")
 				check(await until(func(): return String(session.lmp.get("quest", "")) == quest, 10), "original quest briefing completes")
 	if not quest.is_empty() and String(session.lmp.get("quest", "")) == quest:
+		var journal := JournalPanel.quest_entries(session.state)
+		check(journal.active.has(quest),"accepted multiplayer quest appears in the journal")
+		check(not JournalPanel._parse(quest).text.is_empty(),"accepted multiplayer quest has original description text")
+		var effects := ParticleFx.of(session.world)
+		effects.exit_colours()
+		check(not effects._exit_fx.is_empty(),"multiplayer base has exit particles")
+		for exit_fx: Array in effects._exit_fx:
+			check(exit_fx[1]==LmpMode.GAME_ZONE_VAR,"exit particles use the same case-sensitive variable as multiplayer travel")
+			check(exit_fx[0].e.v130.x==0.0,"accepted quest clears the closed-exit colour")
 		phase = "travel"
 		travel_requested_msec = Time.get_ticks_msec()
 		session.submit({"t":"travel", "zone":quest, "entrance":1})
@@ -127,7 +163,7 @@ func _ready() -> void:
 		check(int(frames.get("travel", {}).get("exposed", 0)) == 0, "no frozen transition view before loading")
 		check(travel_first_cover_msec >= 0 and travel_first_cover_msec < 1000, "loopback host presents travel loading picture within one second of request")
 		check(travel_uncovered_after_grace == 0, "worker map preparation leaves no exposed travel view after loopback grace")
-		check(LoadingScreen._current == null, "travel loading screen closes")
+		check(await until(func(): return LoadingScreen._current==null,10), "travel loading screen closes after its final presented frames")
 	await cleanup(main)
 	var after_menu: Control
 	for child: Node in main.get_children():

@@ -60,6 +60,28 @@ func _ready()->void:
 	check(w.is_enemy(animal,hero),"neutral pig witnessing a kill becomes hostile without being hit")
 	remote.apply_snapshot(NetSnapshot.unpack(NetSnapshot.pack([animal.snapshot()]))[0])
 	check(replica.is_enemy(remote,peer),"witness hostility also reaches the replica")
+	# The surviving-assault report concerns rabbits, not only a pig seeing a
+	# fatal blow. Use an authored rabbit and retain its original senses/AI.
+	var rabbits := GameData.db.table("monster_prototypes").filter(func(p: Dictionary):
+		return String(p.name).to_lower().begins_with("rabbit") or String(p.name).to_lower().begins_with("hare"))
+	check(not rabbits.is_empty(),"original database contains the reported rabbit species")
+	if not rabbits.is_empty():
+		var proto := String(rabbits[0].name)
+		print("ASSAULT_RABBIT_PROTOTYPE ",proto)
+		var witness_record := {"prototype":proto,"nid":900004,"player":2,"position":Vector3(20,20,0)}
+		var rabbit := w.spawn_unit(witness_record)
+		var other := w.spawn_unit({"prototype":proto,"nid":900005,"player":2,"position":Vector3(20,21,0)})
+		rabbit.faction=2;other.faction=2;rabbit.facing=PI/2.0
+		w.nav.track_unit(rabbit);w.nav.track_unit(other)
+		w.time+=12.0*GameUnit.TICK
+		check(w.ai.can_notice(rabbit,other,float(rabbit.stats.sight)) and w.ai.can_notice(rabbit,hero,float(rabbit.stats.sight)),
+			"rabbit witnesses both the nearby friend and attacker")
+		other.take_damage(minf(.6,other.max_hp*.1),hero)
+		check(not other.dead and w.is_enemy(other,hero),"surviving rabbit becomes hostile after damage")
+		check(w.is_enemy(rabbit,hero),"rabbit witnessing a nonfatal assault becomes hostile")
+		var remote_rabbit := replica.spawn_unit(witness_record)
+		remote_rabbit.apply_snapshot(NetSnapshot.unpack(NetSnapshot.pack([rabbit.snapshot()]))[0])
+		check(replica.is_enemy(remote_rabbit,peer),"rabbit witness hostility reaches the minimap replica")
 	replica.queue_free();game.queue_free();s.queue_free()
 	for i in 10:await get_tree().process_frame
 	print("CREATURE_ALERTS ",checks," checks ",failures," failures")

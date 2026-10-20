@@ -140,6 +140,11 @@ func _ready() -> void:
 	theme.default_font_size = 16
 	theme.default_font = preload("res://fonts/LiberationSans-Regular.ttf").duplicate()
 	_heading_font = preload("res://fonts/LiberationSerif-Regular.ttf").duplicate()
+	# A single distance-field atlas keeps glyphs stable when the logical
+	# canvas has a fractional scale and new modal text populates the cache.
+	# Private resources leave the original pixel-sized interface unchanged.
+	theme.default_font.multichannel_signed_distance_field = true
+	_heading_font.multichannel_signed_distance_field = true
 	theme.set_color("font_color", "Label", PAPER)
 	for kind in ["Button", "OptionButton", "LineEdit"]:
 		theme.set_color("font_color", kind, PAPER)
