@@ -52,14 +52,15 @@ var difficulty := 0
 const OPTIONS := [
 	["volume_sfx", 0, 100, 1, 0, 100], ["volume_stream", 0, 100, 1, 1, 100],
 	["volume_voice", 0, 100, 1, 2, 100], ["power_kbd", 0, 100, 2, 0, 25],
-	["power_mouse", 0, 100, 2, 1, 50], ["scroll_border", 0, 10, 2, 2, 5],
-	["rubber_select", 0, 10, 2, 3, 2],
+	["power_mouse", 0, 100, 2, 1, 50], ["scroll_border", 0, 10, 2, 3, 5],
+	["power_mouse_y", 0, 100, 2, 2, 50],
+	["rubber_select", 0, 10, 2, 4, 2],
 	["marks", 1, 2, 0, 0, 1], ["footprints", 1, 2, 0, 1, 1],
 	["select_type", 1, 2, 0, 2, 0], ["show_path", 1, 2, 0, 3, 1],
 	["brightness", 0, 100, 12, 9, 50], ["contrast", 0, 100, 12, 10, 50],
 	["gamma", 0, 100, 12, 11, 50], ["show_flying_hp", 1, 2, 0, 4, 1],
 	["show_tutorial", 1, 2, 10, 11, 1], ["autosave", 1, 2, 3, 11, 1],
-	["tooltip_time", 0, 20, 2, 4, 2], ["switch_filters", 1, 2, 3, 12, 1],
+	["tooltip_time", 0, 20, 2, 5, 2], ["switch_filters", 1, 2, 3, 12, 1],
 	["camera_reverse_x", 1, 2, 2, 6, 0], ["camera_reverse_y", 1, 2, 2, 7, 0],
 	["reverse_stereo", 1, 2, 1, 4, 0], ["difficulty", 1, 2, 3, 0, 0],
 	["cave_echo", 1, 2, 1, 5, 1],
@@ -174,6 +175,7 @@ const OPTIONS := [
 	["original_rune_layout", 1, 2, 17, 7, 0],
 	["spell_double_tap_self", 1, 2, 17, 8, 1],
 	["hide_remake_hints", 1, 2, 17, 9, 0],
+	["character_buff_icons", 1, 2, 17, 10, 1],
 	# Gameplay (group 18).
 	# The network game's unit visibility in single player too (UnitFog);
 	# default on (user request).
@@ -213,6 +215,7 @@ const OPTIONS := [
 	["coop_share_loot", 1, 2, 19, 2, 1], ["coop_player_names", 1, 2, 19, 3, 1],
 	["net_upnp", 1, 2, 19, 5, 1], ["net_websocket", 1, 2, 19, 6, 0],
 	["coop_clock", 1, 2, 19, 7, 1],
+	["coop_guest_clock", 1, 4, 19, 9, 0], ["coop_guest_saves", 1, 4, 19, 10, 0],
 	["discord_presence", 1, 2, 19, 8, 1],
 	# Gamepad (group 20; PadInput, PadField; docs/gamepad_design.md §8.8);
 	# the button layout is group 21 (row 12 "Buttons…"). On by default:
@@ -230,6 +233,9 @@ const FIXED_OPTIONS := {"shadow_units": 1, "shadow_buildings": 1, "shadow_flora"
 ## Labels of the remake's multiple-choice rows (value = index); "resolution"
 ## is built from the monitor (resolutions()).
 const DISPLAY_CHOICES := {
+	"coop_guest_clock": CoopPermissions.CLOCK_CHOICES,
+	"coop_guest_saves": CoopPermissions.SAVE_CHOICES,
+	"character_buff_icons": ["Off", "On"],
 	"hide_remake_hints": ["Off", "On"],
 	"sp_full_xp": XpRules.CHOICES,
 	"coop_full_xp": XpRules.CHOICES,
@@ -280,6 +286,7 @@ const OPTION_GROUPS := ["video", "sound", "sens", "game", "select", "actions", "
 	"r_camera", "r_interface", "r_game", "r_coop", "gamepad", "gamepad_buttons", "r_terrain", "r_water", "direct_view", "direct_keys", "direct_pad"]
 ## Labels and tips of the remake's own option rows (texts.res has none).
 const REMAKE_OPTIONS := {
+	"character_buff_icons": ["Character buff icons", "Show active effect icons with remaining seconds in a vertical stack at the top right of the character's general view."],
 	"hide_remake_hints": ["Hide remake hints", "Hide the extra control hints in isometric, first-person and third-person views. Controls and regular item and button tooltips stay unchanged."],
 	"discord_presence": ["Discord activity", "Show the current mode and location in Discord. Requires the Discord desktop app. No additional setup is needed. Off clears the activity."],
 	"cave_echo": ["Cave echo", "Add echo to sounds in caves. Turn off for dry sound. Changes apply immediately."],
@@ -317,7 +324,11 @@ const REMAKE_OPTIONS := {
 
 	"item_icon_fit": ["Fit items inside icons", "Keeps long inventory and shop items inside their icon cells while they turn. Off: the original fixed model scale."],
 	"ui_active_buttons": ["Bright usable camp buttons", "Available camp modes and Exit are bright. Skills apply immediately, so their inactive Accept and Cancel controls are hidden. Deal controls show whether a transaction can be made or undone. Off: the original button layout and tint."],
-	"coop_clock": ["Shared pause and speed", "Co-op host: pause the game or switch to 2x speed for everyone. Clients follow the host's speed. Off: co-op always runs at normal speed."],
+	"coop_clock": ["Shared pause and speed", "One pause and speed for the whole co-op game. The host can grant guests permission to control them. Off: co-op always runs at normal speed."],
+	"coop_guest_clock": ["Guest clock controls", "Default guest permissions for new co-op games. Adjust each player in the Players menu. Permissions are saved with the campaign; loading restores them. Speed-only permission cannot resume a paused game."],
+	"coop_guest_saves": ["Guest save controls", "Allow guests to trigger the host's quicksave or quickload with F5/F8 and the Save/Load menu. Guests cannot choose other save files. Set each player's permissions in Players. Permissions are saved with the campaign."],
+	"power_mouse": ["Horizontal mouse sensitivity", "Classic camera: horizontal rotation and horizontal dragging. Also controls mouse-wheel zoom. Vertical movement has its own sensitivity."],
+	"power_mouse_y": ["Vertical mouse sensitivity", "Classic camera: vertical tilt and vertical dragging. Independent of horizontal sensitivity; lower this if vertical movement feels too fast."],
 	"mechanism_motion": ["Drawbridge motion", "Fast drop lowers moving drawbridges in at most 330 ms of game time; physical access opens only when lowering finishes. Original timing keeps the original motion and immediate physical access. The host's setting applies in co-op."],
 	"auto_exit": ["Automatic zone exits", "Automatically opens travel when your party walks into an open exit. Off: click the ground inside the exit where the exit cursor appears. The host's setting applies in co-op; scripted story transfers still work."],
 	"merc_travel": ["Mercenaries travel between regions", "Hired companions stay with their owner when the party travels to another allod or region. The host's setting applies in co-op. Off: the original regional companion rule."],
@@ -440,8 +451,9 @@ const REMAKE_OPTIONS := {
 ## screen). "marks" = EnableBloodprints and "footprints" = EnableFootprints
 ## switch the ground marks (GroundMarks).
 const OPTIONS_APPLIED := ["hide_remake_hints", "discord_presence", "direct_hints", "direct_fov_first", "direct_fov_third", "direct_mouse_first", "direct_mouse_third", "direct_invert_x", "direct_invert_y", "direct_pad_x", "direct_pad_y", "direct_pad_deadzone", "direct_pad_curve", "direct_pad_invert_x", "direct_pad_invert_y",
+	"power_mouse_y", "coop_guest_clock", "coop_guest_saves",
 	"direct_first_person_actions",
-	"spell_double_tap_self",
+	"spell_double_tap_self", "character_buff_icons",
 	"volume_sfx", "volume_stream", "volume_voice", "power_kbd",
 	"graphics_preset",
 	"item_icon_fit", "ui_active_buttons", "original_rune_layout", "coop_clock", "merc_travel", "auto_exit", "mechanism_motion",
@@ -553,6 +565,8 @@ func _ready() -> void:
 	arena_speed = 2 if cfg.get_value("arena", "battle_speed", 1) == 2 else 1
 	for o: Array in OPTIONS:
 		options[o[0]] = cfg.get_value("options", o[0], o[5]) if cfg.has_section("options") else o[5]
+	if not cfg.has_section_key("options", "power_mouse_y"):
+		options.power_mouse_y = options.power_mouse
 	for key: String in Portability.defaults():
 		if not cfg.has_section_key("options", key):
 			options[key] = Portability.defaults()[key]

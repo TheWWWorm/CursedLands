@@ -117,6 +117,7 @@ var clock_speed := 0
 ## Co-op keeps this choice on the authority; peers receive the effective clock.
 var field_speed := 0
 var host_clock := false
+var _clock_preferences: Array = []
 ## A host save-load or campaign transfer is a reliable transaction: clients stop issuing orders
 ## and present their loading screen before the host rebuilds the world.
 var loading_game := false
@@ -197,6 +198,7 @@ func _ready() -> void:
 		var t := net.server_lost_text()
 		if t:
 			message.emit(t))
+	_clock_preferences = CoopPermissions.preferences()
 	GameData.options_changed.connect(_clock_options_changed)
 
 
@@ -391,30 +393,61 @@ static func _websocket_peer() -> WebSocketMultiplayerPeer:
 # ------------------------------------------------------------------ remake co-op clock
 
 func coop_clock_enabled() -> bool:
-	return multiplayer_game and lmp.is_empty() and (GameData.option("coop_clock") == 1 if is_host else host_clock)
+	return multiplayer_game and lmp.is_empty() and (bool(CoopPermissions.policy(self).get("enabled", true)) if is_host else host_clock)
 
 
 func _clock_options_changed() -> void:
 	if not multiplayer_game or not is_host:
 		return
-	host_clock = lmp.is_empty() and GameData.option("coop_clock") == 1
+	var prefs := CoopPermissions.preferences()
+	var rules := CoopPermissions.ensure(self)
+	if _clock_preferences.size() == 3:
+		if prefs[0] != _clock_preferences[0]: rules.enabled = prefs[0] == 1
+		var bits := int(rules.get("default", 0))
+		if prefs[1] != _clock_preferences[1]: bits = (bits & 12) | clampi(int(prefs[1]), 0, 3)
+		if prefs[2] != _clock_preferences[2]: bits = (bits & 3) | (clampi(int(prefs[2]), 0, 3) << 2)
+		rules.default = bits
+	_clock_preferences = prefs
+	host_clock = coop_clock_enabled()
 	if not host_clock:
 		_apply_clock(false, 0)
 	_send_clock()
 
 
-func set_coop_clock(sector: int) -> void:
+func can_change_clock(sector: int, player := -1) -> bool:
+	return sector in [0, 1, 2] and coop_clock_enabled() and CoopPermissions.allows(self,
+		my_index if player < 0 else player, CoopPermissions.PAUSE if sector == 0 else CoopPermissions.SPEED)
+
+
+func can_quick_save_load(save: bool) -> bool:
+	return lmp.is_empty() and (can_manage_game() or CoopPermissions.allows(self, my_index,
+		CoopPermissions.SAVE if save else CoopPermissions.LOAD))
+
+
+func set_player_permission(pid: int, permission: int, enabled: bool) -> void:
+	if local_host.frontend:
+		local_host.request("permission", {"pid": pid, "permission": permission, "enabled": enabled})
+		return
+	CoopPermissions.set_player(self, pid, permission, enabled)
+	_send_clock()
+
+
+func set_coop_clock(sector: int, player := 0) -> void:
 	if local_host.frontend:
 		local_host.request("clock", {"sector": sector})
 		return
-	if not is_host or not coop_clock_enabled() or loading_game or map_open or world == null:
+	if not is_host:
+		if can_change_clock(sector): submit({"t": "clock", "sector": sector})
+		return
+	if not can_change_clock(sector, player) or loading_game or map_open or movie_active() or world == null:
 		return
 	if sector == 0:
 		_apply_clock(not clock_paused, clock_speed)
 	elif sector in [1, 2]:
 		if shop_available(): return
 		field_speed = sector - 1
-		_apply_clock(false, sector - 1)
+		# Permission to change speed must not also grant permission to resume.
+		_apply_clock(clock_paused and not can_change_clock(0, player), sector - 1)
 	else:
 		return
 	_send_clock()
@@ -454,6 +487,7 @@ func _send_clock(pid := 0) -> void:
 		return
 	for peer in ([pid] if pid else players.keys()):
 		if int(peer) != 1 and CoopProgress.peer_alive(multiplayer, int(peer)):
+			_rpc_event.rpc_id(int(peer), {"t": "coop_permissions", "rules": CoopPermissions.ensure(self)})
 			_rpc_clock.rpc_id(int(peer), coop_clock_enabled(), clock_paused, clock_speed)
 
 
@@ -500,6 +534,7 @@ func new_campaign(intro := true) -> void:
 	swap.cancel_all()
 	state = CampaignState.new()
 	state.mod_config = mod_config.duplicate(true)
+	CoopPermissions.ensure(self)
 	coop.campaign_started()
 	for pid in players:
 		state.ensure_hero(players[pid].index, _hero_proto(players[pid].index), String(players[pid].name))
@@ -2318,11 +2353,37 @@ func _dispatch_cmd(cmd: Dictionary, pid: int) -> void:
 			or int(cmd.get("_generation", -1)) != _load_serial):
 		return   # an order issued before this transfer/reload cannot enter the new world
 	if players.has(pid):
+		if _shared_control(cmd, int(players[pid].index)):
+			return
 		if lmp_travel:
 			lmp_travel.command(cmd, int(players[pid].index))
 			return
 		# A joiner who brought its hero trades / loots with its own purse and bag.
 		coop.with_purse(players[pid].index, apply_command.bind(cmd, players[pid].index))
+
+
+## These commands operate on the host campaign, never inside a guest's purse.
+## The dispatcher supplies the authenticated sender's slot, not a packet field.
+func _shared_control(cmd: Dictionary, player: int) -> bool:
+	match String(cmd.get("t", "")):
+		"clock":
+			if is_host: set_coop_clock(int(cmd.get("sector", -1)), player)
+		"quick_save", "quick_load":
+			if is_host: _guest_quick.call_deferred(cmd.duplicate(), player)
+		_: return false
+	return true
+
+
+func _guest_quick(cmd: Dictionary, player: int) -> void:
+	var save := String(cmd.get("t", "")) == "quick_save"
+	if not is_host or not CoopPermissions.allows(self, player, CoopPermissions.SAVE if save else CoopPermissions.LOAD) \
+			or loading_game or movie_active() or world == null or String(cmd.get("_zone", "")) != zone_id \
+			or int(cmd.get("_generation", -1)) != _load_serial:
+		return
+	var pid := _pid_of(player)
+	var ok := save_game("quick") in [OK, ERR_BUSY] if save else await load_game_shown("quick")
+	if not ok and pid > 1 and CoopProgress.peer_alive(multiplayer, pid):
+		_rpc_event.rpc_id(pid, {"t": "guest_quick_failed", "save": save})
 
 
 ## The remake's approach distance of a talk order (approx.: the original has no
@@ -2400,6 +2461,7 @@ static func group_offset(i: int) -> Vector2:
 func apply_command(cmd: Dictionary, player: int) -> void:
 	if world == null or movie_active() or not command_allowed(cmd):
 		return
+	if _shared_control(cmd, player): return
 	if world.vm and String(cmd.get("t", "")) != "topic":
 		world.vm.briefings.clear_original_topics(player)
 	var mine: Array[GameUnit] = []
@@ -4427,6 +4489,13 @@ func _on_event(event: Dictionary) -> void:
 		event = NetState.unpack(event)
 		if event.is_empty(): return
 	var t := String(event.get("t", ""))
+	if t == "coop_permissions":
+		if not is_host and event.get("rules") is Dictionary:
+			state.coop[CoopPermissions.KEY] = event.rules.duplicate(true)
+		return
+	if t == "guest_quick_failed":
+		message.emit(RemakeText.t("Could not save the game.") if bool(event.get("save", false)) else RemakeText.t("The host's quicksave could not be loaded."))
+		return
 	if t == "lmp_load_begin":
 		var generation := int(event.get("generation", 0))
 		if not lmp.is_empty() and generation > lmp_generation:
@@ -5088,7 +5157,10 @@ func save_game(slot: String, save_name := "", frame: Image = null) -> Error:
 		local_host.save(slot, save_name, frame)
 		return OK   # accepted; the worker reports completion or failure
 	if not is_host:
-		message.emit(RemakeText.t("Only the host can save."))
+		if slot == "quick" and can_quick_save_load(true):
+			submit({"t": "quick_save"})
+			return OK
+		message.emit(RemakeText.t("The host has not allowed you to trigger quicksave."))
 		return ERR_UNAUTHORIZED
 	if not lmp.is_empty():
 		return ERR_UNAVAILABLE   # LMP keeps its network heroes separately
@@ -5172,6 +5244,7 @@ func _capture_save_state() -> void:
 	if not is_host or not lmp.is_empty() or loading_game or coop.purse_active() or state == null or world == null:
 		return
 	state.play_clock = saved_play_clock()
+	CoopPermissions.ensure(self)
 	state.collect_pets(world)
 	state.store_zone(zone_id, world)
 	state.current_zone = zone_id
@@ -5233,6 +5306,12 @@ func load_game(slot: String) -> bool:
 ## Cover the frontend before waiting for a local simulation service. Its
 ## startup/request can yield many frames before the host sends load-prepare.
 func load_game_shown(slot: String) -> bool:
+	if not is_host and not local_host.frontend:
+		if slot == "quick" and can_quick_save_load(false):
+			submit({"t": "quick_load"})
+			return true   # accepted; the host reports failure to this guest
+		message.emit(RemakeText.t("The host has not allowed you to trigger quickload."))
+		return false
 	if not local_host.frontend and not _may_load():
 		return false
 	var info := SaveInfo.read(slot)
@@ -5440,6 +5519,7 @@ func _load_state(slot: String, s: CampaignState) -> bool:
 		if idx > 0:
 			s.ensure_hero(idx, _hero_proto(idx), String(players[pid].name))
 	state = s
+	CoopPermissions.ensure(self)
 	if local_host.worker:
 		local_host.camera = state.camera.duplicate(true)
 	zone_id = ""

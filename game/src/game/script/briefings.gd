@@ -309,8 +309,8 @@ func _face(c: Dictionary, instant := false, _approached := false) -> void:
 	var d := float(b.proto.get("dialog_cam_distance", 0.0)) + 2.5
 	var a_at := a.pos
 	var b_at := b.pos
-	var a_z := a.position.y
-	var b_z := b.position.y
+	var a_z := _stage_height(a)
+	var b_z := _stage_height(b)
 	var cage := bool(vm.world.zone.get("cage", false))
 	if cage:
 		b_at = a.pos + Vector2.from_angle(a.facing) * d
@@ -337,8 +337,8 @@ func _face(c: Dictionary, instant := false, _approached := false) -> void:
 		# Freeze the actual stage, not an imaginary mark behind a wall/body.
 		a_at = a.pos
 		b_at = b.pos
-		a_z = a.position.y
-		b_z = b.position.y
+		a_z = _stage_height(a)
+		b_z = _stage_height(b)
 		if a_at != b_at:
 			a.facing = (b_at - a_at).angle()
 			b.facing = (a_at - b_at).angle()
@@ -353,7 +353,7 @@ func _face(c: Dictionary, instant := false, _approached := false) -> void:
 	c["at_z"] = {"a": a_z, "b": b_z}
 	if cu:
 		c["at"]["c"] = [c_at.x, c_at.y]
-		c["at_z"]["c"] = cu.position.y if instant else (a_z + b_z) * 0.5
+		c["at_z"]["c"] = _stage_height(cu) if instant else (a_z + b_z) * 0.5
 
 
 func _face_in_place(cast: Dictionary, a: GameUnit, b: GameUnit) -> void:
@@ -365,13 +365,19 @@ func _face_in_place(cast: Dictionary, a: GameUnit, b: GameUnit) -> void:
 		if u == null:
 			continue
 		cast.at[key] = [u.pos.x, u.pos.y]
-		cast.at_z[key] = u.position.y
+		cast.at_z[key] = _stage_height(u)
 		if u.blocked:
 			continue
 		var toward := b.pos if key == "a" else a.pos if key == "b" else middle
 		var angle := (toward - u.pos).angle() if toward != u.pos else u.facing
 		vm.world.dialog_movers[u] = {"to": u.pos, "angle": angle, "state": 2, "elapsed": 0.0, "wait": true}
 		u.command({"type": "rotate", "angle": angle, "turn_speed": 1.0 / GameUnit.TICK})
+
+
+## Logical placement is authoritative. The host may not draw the actor, and
+## an instant stage happens before the next presentation frame.
+func _stage_height(u: GameUnit) -> float:
+	return vm.world._stand_z(u.pos) if vm.world.terrain else u.position.y
 
 
 func _remember_return(u: GameUnit) -> void:

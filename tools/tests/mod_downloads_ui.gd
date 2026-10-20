@@ -21,7 +21,7 @@ func button(label: String) -> Button:
 func _ready() -> void:
 	if not OS.get_cmdline_user_args().has("--mod-tests"): get_tree().quit(2); return
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	GameData.options.merge({"auto_graphics":0,"show_tutorial":0,"display_mode":0,"volume_sfx":0,"volume_stream":0,"volume_voice":0}, true)
+	GameData.options.merge({"auto_graphics":0,"show_tutorial":0,"display_mode":0,"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0}, true)
 	TutorialPanel.auto_show = false
 	RenderingServer.set_render_loop_enabled(true)
 	for i in 20: await get_tree().process_frame
@@ -31,9 +31,12 @@ func _ready() -> void:
 	for language: String in ["en", "ru", "de"]:
 		RemakeText.lang = language
 		if panel != null: panel.free()
+		await frames() # Capture a clean background after removing the preceding locale.
 		panel = ModPanel.new()
 		add_child(panel)
 		for shape: Vector2i in [Vector2i(1280,720), Vector2i(540,960)]:
+			panel.close()
+			await frames()
 			get_tree().root.size = shape
 			panel.open("downloads")
 			await frames()
@@ -43,10 +46,18 @@ func _ready() -> void:
 			var install := button("Download & install")
 			check(install != null and not install.disabled, "install action is available")
 			check(button("Source page") != null, "original source link is available")
-			get_viewport().get_texture().get_image().save_png("user://downloads-%s-%d.png" % [language, shape.x])
+			if OS.has_feature("android"):
+				var note: Label
+				for label in panel._body.find_children("*", "Label", true, false):
+					if label.text == RemakeText.t(ModCatalog.ANDROID_INSTALL_NOTE): note = label
+				check(note != null, "Android installation requirements are visible")
+				if note != null:
+					check(note.size.x <= panel._scroll.size.x and note.get_line_count() == note.get_visible_line_count(), language + " installation requirements wrap without clipping")
+				if language != "en": check(RemakeText.t(ModCatalog.ANDROID_INSTALL_NOTE) != ModCatalog.ANDROID_INSTALL_NOTE, language + " installation requirements are translated")
 			install.grab_focus()
 			await frames()
 			check(panel._scroll.get_global_rect().encloses(install.get_global_rect()), "focused install button scrolls fully into view")
+			get_viewport().get_texture().get_image().save_png("user://downloads-%s-%d.png" % [language, shape.x])
 	RemakeText.lang = "en"
 	panel.free()
 	panel = ModPanel.new()

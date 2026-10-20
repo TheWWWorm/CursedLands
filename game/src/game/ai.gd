@@ -520,13 +520,11 @@ func swarm_tick(u: GameUnit) -> bool:
 		elif waiting:
 			if not _follower_far(u, 1.4):
 				waiting = false
-				u.order.run = false
 		elif _follower_far(u, 2.0):
 			waiting = true
 			u.ack(EIAcks.WAIT_FOLLOW)
 	elif waiting:
 		waiting = false
-		u.order.run = false
 	u.order.swarm_wait = waiting
 	var at: Vector2 = u.order.get("swarm", u.pos)
 	var t := _player_target(u, at, GameData.ai_value("Logic", "SwarmRadius", 10.0))
@@ -535,7 +533,7 @@ func swarm_tick(u: GameUnit) -> bool:
 			u._set_action("idle")
 		return waiting
 	u.ack(EIAcks.DECIDE_TO_ATTACK)
-	u.attack(t, false, int(u.order.get("aim", -1)), false, true)
+	u.attack(t, false, int(u.order.get("aim", -1)), bool(u.order.get("run", false)), true)
 	return true
 
 
@@ -683,6 +681,8 @@ func player_perceive(u: GameUnit, force := false) -> Dictionary:
 	if not keep.is_empty(): k = notice_terms(u, sight)
 	var f := 1.0 if u.controller >= 0 else 1.05
 	var hostile_sides := {}
+	var can_escape := _escape_patrol(u)
+	var last_seen: Dictionary = u.get_meta("patrol_last_seen", {}) if can_escape else {}
 	for id in keep.keys():
 		var o = keep[id]
 		if not is_instance_valid(o) or o.dead:
@@ -691,14 +691,18 @@ func player_perceive(u: GameUnit, force := false) -> Dictionary:
 				if world.relation(u.faction, o.faction) == 0:
 					suspect(u, o.pos, 800.0, -3.0)
 			keep.erase(id)
+			last_seen.erase(id)
 			continue
-		if u.controller < 0 and _scan_enemy(u, o, hostile_sides) or _fights(o, u):
+		if u.controller < 0 and not can_escape and _scan_enemy(u, o, hostile_sides) or _fights(o, u):
 			continue
 		var d := u.dist3(o)
 		if d >= _sight_dist(o, k) * f and d >= o.detect(2) * k[4] * f:
 			if _scan_enemy(u, o, hostile_sides):
-				suspect(u, o.pos, 1000.0, -2.0)
+				suspect(u, last_seen.get(id, o.pos), 1000.0, -2.0)
 			keep.erase(id)
+			last_seen.erase(id)
+		elif can_escape:
+			last_seen[id] = o.pos
 	for id in corpses.keys():
 		var o = corpses[id]
 		if not is_instance_valid(o) or world.units.get(o.uid) != o:
@@ -737,6 +741,12 @@ func player_perceive(u: GameUnit, force := false) -> Dictionary:
 				suspect(u, o.pos, 800.0, -3.0)
 		else:
 			keep[id] = o
+			if can_escape: last_seen[id] = o.pos
+			if u.controller < 0 and world.zone.get("type", "") != "arena" and world.is_enemy(u, o):
+				call_for_help(u, o.pos)
+	if can_escape:
+		if last_seen.is_empty(): u.remove_meta("patrol_last_seen")
+		else: u.set_meta("patrol_last_seen", last_seen)
 	if keep.is_empty():
 		u.remove_meta("noticed")
 	else:
@@ -746,6 +756,13 @@ func player_perceive(u: GameUnit, force := false) -> Dictionary:
 	else:
 		u.set_meta("seen_corpses", corpses)
 	return keep
+
+
+## Ordinary campaign patrols forget escaped opponents at their normal notice
+## boundary. Scripted Aggression and arena combat retain persistent pursuit.
+func _escape_patrol(u: GameUnit) -> bool:
+	return u.controller < 0 and not u.has_meta("hero") and u.mode in CALM_MODES \
+		and world.zone.get("type", "") != "arena" and not u.has_meta("um")
 
 
 ## World.is_enemy is the observer's hostility/allowed masks and the target
@@ -1055,11 +1072,8 @@ static func _healing_max(c: GameUnit) -> int:
 ## hostile, alive, not on its ignore list).
 func enemies(u: GameUnit) -> Array:
 	var out := []
-	# The noticed list (AI): drops a living unit only when
-	# it is not hostile or the observer is a party unit, so an
-	# NPC keeps every hostile it has noticed — out of sight, invisible or far
-	# away — until it dies or the perception is reset (: AI init
-	# death). Candidates: noticed, hostile, alive, not ignored.
+	# Candidates remain noticed, hostile, alive and not ignored. Campaign
+	# patrols can lose distant opponents; scripted pursuit retains them.
 	for o in player_perceive(u).values():
 		if is_instance_valid(o) and not o.dead and not o.hidden and world.is_enemy(u, o) and not ignored(u, o):
 			out.append(o)
@@ -1397,6 +1411,10 @@ func rechoose(u: GameUnit) -> bool:
 		return false
 	var foes := enemies(u)
 	if foes.is_empty():
+		if _escape_patrol(u):
+			u.command({"type": "wait", "t": 0.0})
+			u.target = null
+			return true
 		return false
 	var ch := choose(u, foes)
 	if ch.is_empty():
@@ -1433,6 +1451,7 @@ func on_attacked(u: GameUnit, by: GameUnit) -> void:
 		keep[by.get_instance_id()] = by
 		u.set_meta("noticed", keep)
 	hit_hook(u, by)
+	seen_assault(u, by)
 	if int(logic(u).get("alarm_cond", 0)) == 1:
 		_alert(u)
 	if fearful(u):
@@ -1730,15 +1749,25 @@ func on_corpse(dead: GameUnit) -> void:
 		player_perceive(o)
 
 
-## "Has seen murder" (twice, for a creature
-## killer): the friends of the dead unit (diplomacy, its side's bit) among
-## the observers of the dead unit and then of the killer get a full scan;
-## one whose noticed list then holds the dead unit (first call) or the killer
-## (second call) takes the killer into that list and (killer
-## observer): unless its hostility mask already has the killer's
-## side it gains it (`World.is_enemy`, meta "hate"), and for a party member
-## every unit of that party does. The two observer lists are the cached
-## perception grid lists, not a fresh distance sphere.
+## Visible assaults make neutral friends hostile before the victim dies.
+func seen_assault(victim: GameUnit, attacker: GameUnit) -> void:
+	if attacker == victim or attacker.dead: return
+	# A neutral friend reacts when it can actually see the assault. Seeing
+	# only an attacker or hearing a warning gives no knowledge of who hit whom.
+	for observer: GameUnit in _notice_candidates(victim):
+		if observer == victim or observer == attacker or observer.dead or observer.controller >= 0 \
+				or world.relation(observer.faction, victim.faction) != 0 \
+				or world.relation(observer.faction, attacker.faction) == 0 \
+				or _hates(observer, attacker.faction): continue
+		var noticed := player_perceive(observer, true)
+		if noticed.has(victim.get_instance_id()) and noticed.has(attacker.get_instance_id()):
+			_hate(observer, attacker.faction)
+			call_for_help(observer, attacker.pos)
+
+
+## "Has seen murder" (twice, for a creature killer): friends among the
+## observers of the victim and killer gain hostility toward the killer.
+## The observer lists come from the perception grid, not a distance sphere.
 func seen_murder(dead: GameUnit, killer: GameUnit) -> void:
 	if killer == null or not is_instance_valid(killer) or killer == dead:
 		return

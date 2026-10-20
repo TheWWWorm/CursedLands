@@ -34,6 +34,15 @@ for path in ROOT.rglob('*.gd'):
         if key and key not in entries:
             line = source[:match.start()].count('\n') + 1
             errors.append(f'{path.relative_to(ROOT)}:{line}: missing RU/DE key: {key}')
+# Download cards and availability messages are selected dynamically.
+catalog_source = (ROOT / 'game/mod_catalog.gd').read_text()
+for pattern in (r'^const ANDROID_INSTALL_NOTE := (' + STRING + r')',
+                r'"(?:title|description|notes)":\s*(' + STRING + r')',
+                r'return\s+(' + STRING + r')'):
+    for match in re.finditer(pattern, catalog_source, re.M):
+        key = json.loads(match[1])
+        if key and key not in entries:
+            errors.append(f'Mod download text missing RU/DE key: {key}')
 # Renderer labels and recovery help are chosen dynamically by platform.
 renderer_source = (ROOT / 'platform/renderer_choice.gd').read_text()
 for match in re.finditer(r'^const WINDOWS_[A-Z_]+ := (.+)$', renderer_source, re.M):
@@ -75,6 +84,16 @@ for table in ('REMAKE_OPTIONS', 'DISPLAY_CHOICES'):
                 errors.append(f'{table}[{name}]: missing RU/DE key: {key}')
 # The wiki translates categories, damage types, mechanics titles and stat
 # labels dynamically. Check their source tables as well as literal calls.
+permissions_source = (ROOT / 'game/coop_permissions.gd').read_text()
+for match in re.finditer(r'^const (?:CLOCK_CHOICES|SAVE_CHOICES) := (\[.*\])$', permissions_source, re.M):
+    for key in json.loads(match[1]):
+        if key not in entries: errors.append(f'Co-op permission choice missing RU/DE key: {key}')
+players_source = (ROOT / 'ui/players_panel.gd').read_text()
+for table in ('PERMISSION_LABELS', 'PERMISSION_HELP'):
+    block = players_source.split('const ' + table + ' := {', 1)[1].split('}', 1)[0]
+    for match in re.finditer(r':\s*(' + STRING + r')', block):
+        key = json.loads(match[1])
+        if key not in entries: errors.append(f'Player permission text missing RU/DE key: {key}')
 wiki_source = (ROOT / 'game/wiki_catalog.gd').read_text()
 wiki_keys = set()
 for table in ('CATEGORIES', 'DAMAGE_TYPES'):

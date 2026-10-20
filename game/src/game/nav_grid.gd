@@ -1160,6 +1160,10 @@ func _update_region(r: Rect2i) -> void:
 				L.land[i] = _closed_at(Vector2i(x, y), key, L.raw)
 				L.astar.set_point_solid(Vector2i(x, y), L.land[i] != 0 or _occ[i] != 0)
 		_label(L)
+	if _graphs_rev == map_rev - 1:
+		for cls: int in _native_graphs.keys():
+			if not _native_graphs[cls].update_region(g): _native_graphs.erase(cls)
+		_graphs_rev = map_rev
 
 
 ## `n`'s transform relative to the scene of `root` (both outside the tree too).

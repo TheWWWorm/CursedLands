@@ -24,6 +24,11 @@ boards hide their top-level effect renderers. Combat stops damaging projectiles
 at resolution, then drains the remaining visual effects for up to 1.5 seconds
 without advancing health or the combat clock.
 
+Elemental charge-up particles use the same animated mouth or hand as the
+released projectile. Horror lightning follows its extended fingertips. Its
+authored hovering death cycle descends onto the snow and then holds its final
+pose, including after combat and when a finished board is first scouted.
+
 Health is deducted when a board finishes, while the other boards keep fighting.
 The shared round settles income and places once every owner who entered the round
 reports a result, including owners eliminated by that result. Repeated results
@@ -81,11 +86,15 @@ Selecting an occupied reserve swaps the two creatures; either selection order
 works. Matching triples combine even when reserves are full. Rank appearances use the same species and native palette.
 
 The default camera fits the playable clearing and tall figures between the side
-HUD and reserves, using a 34-degree tilt. The lower view fits the full arena
+HUD and reserves, using a 34-degree tilt and a diagonal horizontal orbit. Its
+starting world height is unchanged from 1.18.0. The lower view fits the full arena
 at a closer scale instead of cropping its outer combat positions. Manual orbit, zoom and panning survive
 round transitions. The shop folds away at the battle bell and can be reopened.
 Lighter ambient illumination and snow-colored fog avoid a dark frame at the map
-edge. Preparation shows one low fire line along the forward deployment limit,
+edge. An atlas-textured snow ring continues beyond the courtyard, including the
+nine-board overview. The arena retains all 256 footprint tiles across the clearing
+and a 2.5 m shoulder; campaign deformation retains its 128-tile budget.
+Preparation shows one low fire line along the forward deployment limit,
 without side edges, a rear edge or a filled rectangle. The original animated fire
 atlas supplies tapered orange flames anchored to the snow, with reduced brightness,
 soft contact shading and warm reflected light. One visual emitter is capped at
@@ -273,6 +282,20 @@ purchases enter reserves or defer deployed evolutions until the next round;
 existing fighters and their bonuses keep their start-of-round state.
 
 ## Interface and saves
+
+Finished battle damage uses a snapshot of that battle's roster throughout
+preparation, including after selling, evolving or withdrawing creatures. The next
+battle clears it. Full board snapshots carry the previous report to workers and
+online viewers. Standings keep winners green and losers red through preparation,
+with localized result text available in the name tooltip; the next battle clears
+those colors. Draws remain neutral.
+
+Zero-health players show a localized pending status until all boards settle and
+the round's tie rules assign a finishing place. Eliminations are announced once
+per player, with sequential notices for simultaneous eliminations. Native result
+fire bolts start at animated casting sockets, resolve their source and
+destination through the HUD projection, and follow the losing player's identity
+when standings rows move.
 
 WASD pans relative to the current view, using the modern camera pan-speed setting.
 Held Q/E smoothly accelerates rotation; right-button dragging rotates and tilts

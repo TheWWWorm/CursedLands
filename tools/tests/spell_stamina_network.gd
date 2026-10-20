@@ -42,11 +42,11 @@ func _ready()->void:
 		(guest as SpellSession).spell_events.clear()
 		guest.submit({"t":"direct_cast" if direct else "cast","unit":caster.uid,"target":caster.uid,"spell":"healing{}"})
 		check(await until(func():return caster.orders.any(func(o):return o.get("stamina_notified",false))),"guest spell waits on authority")
-		check(await until(func():return (guest as SpellSession).spell_events.any(func(e):return e.t=="ack" and e.code==EIAcks.OUT_OF_STAMINA and e.to==1)),"stamina voice acknowledgement reaches casting peer")
+		check(await until(func():return (guest as SpellSession).spell_events.any(func(e):return e.t=="ack" and e.code==EIAcks.CANT_CAST and e.to==1)),"stamina voice acknowledgement reaches casting peer")
 		for i in 180:
 			host.world.time+=GameUnit.TICK;caster.tick(GameUnit.TICK)
 			if caster.action.begins_with("cast"):break
 		check(caster.action.begins_with("cast"),"authority commits after regeneration without another client command")
 		check(await until(func():return (guest as SpellSession).spell_events.any(func(e):return e.t=="castfx" and e.uid==caster.uid)),"committed spell reaches guest")
-		check((guest as SpellSession).spell_events.filter(func(e):return e.t=="ack" and e.code==EIAcks.OUT_OF_STAMINA).size()==1,"waiting does not flood co-op acknowledgements")
+		check((guest as SpellSession).spell_events.filter(func(e):return e.t=="ack" and e.code==EIAcks.CANT_CAST).size()==1,"waiting does not flood co-op acknowledgements")
 	await finish()

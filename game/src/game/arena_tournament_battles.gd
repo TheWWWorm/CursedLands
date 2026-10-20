@@ -158,7 +158,7 @@ func _apply_view() -> void:
 		match_node.update_presentation_processing()
 		var fx := match_node.world.get_node_or_null("ParticleFx") as ParticleFx
 		if fx: fx.sync_visibility()
-	if rendered: Gfx.set_border(Vector2.ONE * (192 if overview else 64), 8.0)
+	if rendered: Gfx.set_border(Vector2.ONE * (192 if overview else 64), 0.0)
 
 
 func _place_world(node: Node3D, at: Vector3) -> void:

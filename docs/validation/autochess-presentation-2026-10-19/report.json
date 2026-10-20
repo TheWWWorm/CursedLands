@@ -1,0 +1,369 @@
+{
+  "date": "2026-10-19",
+  "status": "local development preview",
+  "base_release": "1.18.0",
+  "base_commit": "ba04fa9ba3854ae231806616b85c239507e4dcd6",
+  "branch": "fix/autochess-snow-camera-20261019",
+  "environment": {
+    "os": "Ubuntu 24.04.5 LTS",
+    "engine": "qualified Cursed Lands 1.18.0 custom Godot 4.7 runtime",
+    "rendered_gpu": "NVIDIA GeForce RTX 3090",
+    "renderers": [
+      "gl_compatibility",
+      "forward_plus"
+    ]
+  },
+  "preferences_before_launch": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0,
+    "audio_driver": "Dummy",
+    "profiles": "isolated XDG data/config/cache directories"
+  },
+  "preview_profile_smoke": "7 checks; failures=[]",
+  "translation_coverage": {
+    "entries": 2814,
+    "dynamic_wiki_keys": 141,
+    "dynamic_arena_keys": 179,
+    "errors": 0
+  },
+  "checks": [
+    {
+      "suite": "arena_camera",
+      "locale": "en",
+      "renderer": "gl_compatibility",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 28.56,
+      "summary": [
+        "ARENA_CAMERA 26 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "arena_camera-en-gl_compatibility-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/arena_camera-en-gl_compatibility-1280x800"
+    },
+    {
+      "suite": "arena_creature_feedback",
+      "locale": "de",
+      "renderer": "headless",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 2.92,
+      "summary": [
+        "ARENA_CREATURE_FEEDBACK 65 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "arena_creature_feedback-de-headless-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/arena_creature_feedback-de-headless-1280x800"
+    },
+    {
+      "suite": "arena_creature_feedback",
+      "locale": "en",
+      "renderer": "headless",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 2.82,
+      "summary": [
+        "ARENA_CREATURE_FEEDBACK 65 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "arena_creature_feedback-en-headless-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/arena_creature_feedback-en-headless-1280x800"
+    },
+    {
+      "suite": "arena_creature_feedback",
+      "locale": "ru",
+      "renderer": "headless",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 3.02,
+      "summary": [
+        "ARENA_CREATURE_FEEDBACK 65 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "arena_creature_feedback-ru-headless-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/arena_creature_feedback-ru-headless-1280x800"
+    },
+    {
+      "suite": "arena_damage_retention",
+      "locale": "en",
+      "renderer": "headless",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 2.97,
+      "summary": [
+        "ARENA_DAMAGE_RETENTION 12 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "arena_damage_retention-en-headless-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/arena_damage_retention-en-headless-1280x800"
+    },
+    {
+      "suite": "arena_elimination_places",
+      "locale": "en",
+      "renderer": "headless",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 2.77,
+      "summary": [
+        "ARENA_ELIMINATION_PLACES 12 checks; failures=0"
+      ],
+      "errors": [],
+      "log": "arena_elimination_places-en-headless-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/arena_elimination_places-en-headless-1280x800"
+    },
+    {
+      "suite": "arena_online",
+      "locale": "en",
+      "renderer": "headless",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 22.95,
+      "summary": [
+        "ARENA_ONLINE 80 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "arena_online-en-headless-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/arena_online-en-headless-1280x800"
+    },
+    {
+      "suite": "arena_post_battle_ui",
+      "locale": "de",
+      "renderer": "gl_compatibility",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 13.49,
+      "summary": [
+        "ARENA_POST_BATTLE_UI 22 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "arena_post_battle_ui-de-gl_compatibility-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/arena_post_battle_ui-de-gl_compatibility-1280x800"
+    },
+    {
+      "suite": "arena_post_battle_ui",
+      "locale": "en",
+      "renderer": "gl_compatibility",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 13.34,
+      "summary": [
+        "ARENA_POST_BATTLE_UI 22 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "arena_post_battle_ui-en-gl_compatibility-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/arena_post_battle_ui-en-gl_compatibility-1280x800"
+    },
+    {
+      "suite": "arena_post_battle_ui",
+      "locale": "ru",
+      "renderer": "gl_compatibility",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 13.54,
+      "summary": [
+        "ARENA_POST_BATTLE_UI 22 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "arena_post_battle_ui-ru-gl_compatibility-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/arena_post_battle_ui-ru-gl_compatibility-1280x800"
+    },
+    {
+      "suite": "arena_snow_camera",
+      "locale": "de",
+      "renderer": "gl_compatibility",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 33.07,
+      "summary": [
+        "CAMERA_DEFAULT (1.673947, 42.10144, 17.71615) size=35.1263656616211 yaw=-0.5235987755983",
+        "CAMERA_WIDE (-41.93816, 99.43784, 89.28163) size=84.7877731323242",
+        "ARENA_SNOW_CAMERA 18 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "arena_snow_camera-de-gl_compatibility-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/arena_snow_camera-de-gl_compatibility-1280x800"
+    },
+    {
+      "suite": "arena_snow_camera",
+      "locale": "en",
+      "renderer": "forward_plus",
+      "size": "2560x1440",
+      "exit": 0,
+      "seconds": 11.53,
+      "summary": [
+        "CAMERA_DEFAULT (1.937754, 42.03366, 18.02376) size=28.7659950256348 yaw=-0.5235987755983",
+        "CAMERA_WIDE (-41.3014, 99.27422, 90.02413) size=69.4351577758789",
+        "ARENA_SNOW_CAMERA 19 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "arena_snow_camera-en-forward_plus-2560x1440.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/arena_snow_camera-en-forward_plus-2560x1440"
+    },
+    {
+      "suite": "arena_snow_camera",
+      "locale": "en",
+      "renderer": "gl_compatibility",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 13.89,
+      "summary": [
+        "CAMERA_DEFAULT (1.673947, 42.10144, 17.71615) size=35.1263656616211 yaw=-0.5235987755983",
+        "CAMERA_WIDE (-41.93816, 99.43784, 89.28163) size=84.7877731323242",
+        "ARENA_SNOW_CAMERA 20 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "arena_snow_camera-en-gl_compatibility-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/arena_snow_camera-en-gl_compatibility-1280x800"
+    },
+    {
+      "suite": "arena_snow_camera",
+      "locale": "ru",
+      "renderer": "forward_plus",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 16.69,
+      "summary": [
+        "CAMERA_DEFAULT (1.673947, 42.10144, 17.71615) size=35.1263656616211 yaw=-0.5235987755983",
+        "CAMERA_WIDE (-41.93816, 99.43784, 89.28163) size=84.7877731323242",
+        "ARENA_SNOW_CAMERA 18 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "arena_snow_camera-ru-forward_plus-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/arena_snow_camera-ru-forward_plus-1280x800"
+    },
+    {
+      "suite": "arena_snow_retention",
+      "locale": "en",
+      "renderer": "headless",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 2.77,
+      "summary": [
+        "ARENA_SNOW_RETENTION 7 checks; failures=0"
+      ],
+      "errors": [],
+      "log": "arena_snow_retention-en-headless-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/arena_snow_retention-en-headless-1280x800"
+    },
+    {
+      "suite": "arena_standings_results",
+      "locale": "de",
+      "renderer": "gl_compatibility",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 32.42,
+      "summary": [
+        "ARENA_STANDINGS_RESULTS 12 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "arena_standings_results-de-gl_compatibility-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/arena_standings_results-de-gl_compatibility-1280x800"
+    },
+    {
+      "suite": "arena_standings_results",
+      "locale": "en",
+      "renderer": "gl_compatibility",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 13.88,
+      "summary": [
+        "ARENA_STANDINGS_RESULTS 18 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "arena_standings_results-en-gl_compatibility-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/arena_standings_results-en-gl_compatibility-1280x800"
+    },
+    {
+      "suite": "arena_standings_results",
+      "locale": "ru",
+      "renderer": "gl_compatibility",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 31.41,
+      "summary": [
+        "ARENA_STANDINGS_RESULTS 12 checks; failures=[]"
+      ],
+      "errors": [],
+      "log": "arena_standings_results-ru-gl_compatibility-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/arena_standings_results-ru-gl_compatibility-1280x800"
+    },
+    {
+      "suite": "creature_projectile_origins",
+      "locale": "en",
+      "renderer": "headless",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 4.87,
+      "summary": [
+        "CREATURE_PROJECTILE_ORIGINS checks=186 failures=0"
+      ],
+      "errors": [],
+      "log": "creature_projectile_origins-en-headless-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/creature_projectile_origins-en-headless-1280x800"
+    },
+    {
+      "suite": "soft_ground_capacity",
+      "locale": "en",
+      "renderer": "headless",
+      "size": "1280x800",
+      "exit": 0,
+      "seconds": 3.07,
+      "summary": [
+        "DENSE_CAPACITY checks=24 failures=0"
+      ],
+      "errors": [],
+      "log": "soft_ground_capacity-en-headless-1280x800.txt",
+      "isolated_profile": "/home/llm2x/Documents/EI/local/scratchpad/autochess-snow-camera-20261019/checks/soft_ground_capacity-en-headless-1280x800"
+    }
+  ],
+  "source_sha256": {
+    "game/src/ei/remake_text.gd": "dbe2ea69e14a8708d6d752673d132a91d66d1173148664075de056d02628d926",
+    "game/src/game/arena_online_game.gd": "f98dcfaeaa96706137b569e1287be58bc489d736e871e848c0c44c52713d2e10",
+    "game/src/game/arena_online_match.gd": "c923f17b85a58cc55fc0cbb74218406c30d5c4f33764b79f21fafd50b01eac5c",
+    "game/src/game/arena_pve_match.gd": "8e28a82c187c253e34f407158c3eb98b34162bc10ccddaaf104db8e5f735abb5",
+    "game/src/game/arena_terrain.gd": "26366bae682cde888c5f27f9fa0b7552db2f5255338337fa60e4a009c18d4b43",
+    "game/src/game/arena_tournament_battles.gd": "8229410cf238e2b2189e4cb027dadc72c22605c6846e037ad71ced798d682854",
+    "game/src/game/arena_winter_terrain.gd": "a3623624c13dbbd01642fd0062d827971a6b09fe7b00d9d5757545adcc397dbb",
+    "game/src/game/fx/ground_dense_colors.gd": "5e506c052bc662f56966158a608791a4d208986a74171d6b526cc1ec82717995",
+    "game/src/game/fx/particle_system.gd": "772ade6b1623b44be340f7230e8fe425763ba9458ccae5ae63f80f8749617f4f",
+    "game/src/game/fx/soft_ground_deform.gd": "212c447c83ed470c7e0a6d198845637fe6c4ffbb09eb1e4877c4b14d6e142e93",
+    "game/src/ui/arena_damage_panel.gd": "0a5dce005592308f563e2d00a6e59c1acc456aa7bde7468b542d4202abf4ccdd",
+    "game/src/ui/arena_pve_field.gd": "31413440c22a250ddf7405976e4424fe22f59ff36f76386b2121ae376236d231",
+    "game/src/ui/arena_pve_screen.gd": "92edd8a23cadf1518a5cb95df969e15f339a0ceee98f6fc67f27fc440b8d471e",
+    "game/src/ui/arena_result_volley.gd": "e6096dfb2e5732b776c48219ad75bcaa88c1aae2cb8e55a5f591bcbfd94e411e",
+    "game/src/ui/arena_snow_surround.gd": "1099ffcff465be8cac24c86d03ae0ff06ed597c4dcc1b82a77a214aabef31455",
+    "game/src/ui/arena_snow_surround.gd.uid": "0dfdfa3f81c1460ca8b6139d75c1d29beeb7f364ee0903c4108f466fda3aa332",
+    "tools/tests/arena_creature_feedback.gd": "8cce86a5d8994b240eecac77dc0115e0bb726d8d2406dc3c526649047a896b7e",
+    "tools/tests/arena_damage_retention.gd": "e757bcbf89d3c0c982a1e21b34ee4ba451363c8f84a811c5771a7d09b8ef86d5",
+    "tools/tests/arena_elimination_places.gd": "bc60bb1a5acee36b4d4b0cebbd98c7166112780e99fd0b881241b17dba6a46fd",
+    "tools/tests/arena_post_battle_ui.gd": "e721313a210a8a46be0aa3e44fe371ccc6330e0e89e4971049adac704d51acd4",
+    "tools/tests/arena_snow_camera.gd": "1ace3936f12eba1c76436bea6058526da1e0c7e5b3984a772b3e3af4226e5a41",
+    "tools/tests/arena_snow_retention.gd": "48b6396157f2c508ddfcf64a0551d768b32deb761c618b0a2a849219ac7e8cfa",
+    "tools/tests/arena_standings_results.gd": "8c04a691e3605a3f77395249abcc4ee08a7faebb9a9a64a3164d748f466a9ae7",
+    "tools/tests/creature_projectile_origins.gd": "0fd622a5763431ee588492ed55886a0587e0a1e106dd7b4902979ec0aa78666c"
+  },
+  "local_artifact_sha256": {
+    "preview/CursedLands-preview.pck": "6cce50510b12fd75c6b340840b2ad253ef2de458195ba7ce13389f942f2afad9",
+    "preview/CursedLands-preview.x86_64": "4703975995aab2ce47fdbef10f43016efe33eec29655db5c005811d5def04024",
+    "preview/src/native/bin/libmod_archive.so": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+    "preview/src/native/bin/libterrain_search.so": "ac42b3731536ae3a404755f48fb04ff54c4bfe79c85ebcc8d78be4153632392c",
+    "run-preview.sh": "201e3b9e6ee00a7e8402b44fadc3edafea83abd6b7eae395ae4e298d6e95b266"
+  },
+  "captures": {
+    "dragon-mouth-release.png": "be98a3286e75c8329c7b748b9226e76bebe61a0f963042a8c0f020fe832e934b",
+    "elimination-de.png": "f3bb6f44d32f06be3455111b7cbf22a77c8b8c1abb6cb10874575beaec555fed",
+    "horror-corpse.png": "f4ebdd0a965b69b71b3cb392392f75f367a8066ae0e7b8389d844e37894915f8",
+    "horror-fingertips.png": "7274c7c82c2cb409e32bc15f9a8cf50e484db444cb87cc9f5f6aafe9d88d524e",
+    "result-colors.png": "5d9ae817c5a67f6b3cd7b826f23e3000c895547673631271a55f94bb76b13871",
+    "snow-default.png": "ae78f4f6441eda13b539f1bcc3de24c03a2de8ad67fca4fb3e373c76f79c8084",
+    "snow-wide.png": "ce561d920625603f37c9ac247d1d4d669eeb73efd0113951ff4ac25bee491ff9"
+  },
+  "limits": [
+    "Runtime validation was performed on Linux only.",
+    "No new public release was created. Release version metadata remains 1.18.0.",
+    "The test matrix spans revisions on this worktree; affected checks were repeated after relevant changes. The final exported preview passed the rendered standings/socket and post-battle fixtures."
+  ]
+}

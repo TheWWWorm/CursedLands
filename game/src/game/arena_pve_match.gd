@@ -6,6 +6,7 @@ var run: ArenaRun
 var rendered := true
 var contributions := {}
 var friendly_damage := {}
+var previous_damage := {}
 var selected_run_uid := 0
 var settle_remaining := 0.0
 var round_army: Array[Dictionary] = []
@@ -28,6 +29,7 @@ var serial := -1
 var staged_preparation := false
 var _queued_formation: Array[Dictionary] = []
 var _queued_origins := {}
+var _corpse_falls := {}
 signal presentation_finished
 
 
@@ -250,6 +252,8 @@ func _exit_tree() -> void:
 
 
 func prepare() -> void:
+	if _round_key.is_empty(): previous_damage.clear()
+	elif phase in [Phase.FIGHT, Phase.PAUSED, Phase.FINISHED]: _remember_damage()
 	if drives_clock: Engine.time_scale = 1.0
 	settle_remaining = 0.0
 	# Purchases may evolve or consume roster copies while their original
@@ -389,6 +393,7 @@ func start() -> bool:
 			unit.resync_drawn()
 			world.nav.track_unit(unit)
 	if team_count(1) == 0:
+		previous_damage.clear()
 		winner = 0; phase = Phase.FINISHED
 		changed.emit(); finished.emit(winner)
 		return true
@@ -401,6 +406,7 @@ func start() -> bool:
 
 
 func _start_combat() -> bool:
+	previous_damage.clear()
 	if not rendered: world.prepare_animation_bindings()
 	_start_pending = false
 	formation_motion.clear()
@@ -451,6 +457,7 @@ func _combat_event(kind: String, a: GameUnit, b: GameUnit, amount: float) -> voi
 
 
 func _resolved(side: int) -> void:
+	_remember_damage()
 	_stop_locomotion()
 	settle_remaining = 1.6 if rendered else 0.0
 	if rendered:
@@ -466,6 +473,15 @@ func _resolved(side: int) -> void:
 			var placement: Dictionary = unit.get_meta("arena_placement", {})
 			survivors[int(placement.get("team", 0))] += int(placement.get("rank", 0)) + 1
 	if run and not external_combat: run.resolve(side, world.time, damage, survivors)
+
+
+func _remember_damage() -> void:
+	previous_damage = {"army": round_army.duplicate(true), "damage": friendly_damage.duplicate()}
+
+
+func damage_report(army: Array) -> Dictionary:
+	if phase == Phase.DEPLOY and not previous_damage.is_empty(): return previous_damage
+	return {"army": army, "damage": friendly_damage}
 
 
 ## Authority and replicas must agree on the final stationary pose. A stopped
@@ -486,7 +502,10 @@ func _process(dt: float) -> void:
 	if phase == Phase.DEPLOY and not formation_motion.paused: prepare_owned_models()
 	if external_combat: _update_death_marks(dt)
 	else: super._process(dt)
-	if not rendered or phase != Phase.FINISHED or not is_instance_valid(world) or formation_motion.paused: return
+	if not rendered or not is_instance_valid(world) or formation_motion.paused or phase == Phase.PAUSED: return
+	if phase != Phase.FINISHED:
+		_update_corpse_falls(dt)
+		return
 	_finish_effects(dt)
 	# Combat is frozen by ArenaMatch. Advance only the figure clips so the
 	# final death and idle animations continue through results and camp,
@@ -494,9 +513,61 @@ func _process(dt: float) -> void:
 	for unit: GameUnit in world.unit_rows():
 		unit._anim_acc += dt
 		unit.anim_flush()
+	_update_corpse_falls(dt)
 	if settle_remaining <= 0: return
 	settle_remaining = maxf(0, settle_remaining - dt)
 	if settle_remaining == 0: presentation_finished.emit()
+
+
+## Horror's authored cdeath is a hovering cycle, without a descent track.
+## Supply the fall in Trials presentation, including after the combat clock
+## stops. Navigation, unit positions and the authority's combat stay untouched.
+func _update_corpse_falls(dt: float) -> void:
+	var present := {}
+	for unit: GameUnit in world.unit_rows():
+		if not is_instance_valid(unit.model): continue
+		var key := unit.get_instance_id()
+		if not unit.dead or unit.model.template != "unmocu":
+			if _corpse_falls.has(key):
+				if _corpse_falls[key].model.get_ref() == unit.model:
+					unit.model.position.y = float(_corpse_falls[key].base)
+				_corpse_falls.erase(key)
+			continue
+		present[key] = true
+		if not _corpse_falls.has(key) or _corpse_falls[key].model.get_ref() != unit.model:
+			_corpse_falls[key] = {"model":weakref(unit.model),"base":unit.model.position.y,
+				"age":0.0,"drop":0.0,"landed":false}
+		var fall: Dictionary = _corpse_falls[key]
+		if fall.landed: continue
+		fall.age += maxf(0,dt)
+		var drop := 4.9 * float(fall.age) * float(fall.age)
+		# A corpse received by scouting/late join is already in its last pose.
+		# Fit that pose to the snow immediately instead of replaying the fall.
+		var clearance := _corpse_clearance(unit)
+		if unit.is_frozen() or drop >= clearance + float(fall.drop):
+			unit.freeze_pose(true)
+			fall.drop = float(fall.drop) + _corpse_clearance(unit)
+			fall.landed = true
+		else:
+			fall.drop = drop
+		unit.model.position.y = float(fall.base) - float(fall.drop)
+	for key in _corpse_falls.keys():
+		if not present.has(key): _corpse_falls.erase(key)
+
+
+## Exact rigid mesh vertices avoid leaving wing/foot bounding-box padding
+## between the corpse and the floor. Horror has no vertex-morph meshes.
+static func _corpse_clearance(unit: GameUnit) -> float:
+	unit.model.flush_pending_pose()
+	var bottom := INF
+	var inverse := unit.global_transform.affine_inverse()
+	for mesh: MeshInstance3D in unit.model.find_children("*","MeshInstance3D",true,false):
+		if mesh.mesh == null or not mesh.visible: continue
+		var transform := inverse * mesh.global_transform
+		for surface in mesh.mesh.get_surface_count():
+			var vertices: PackedVector3Array = mesh.mesh.surface_get_arrays(surface)[Mesh.ARRAY_VERTEX]
+			for vertex in vertices: bottom = minf(bottom,(transform * vertex).y)
+	return bottom if is_finite(bottom) else 0.0
 
 
 ## Fixed-step native combat for research, including projectiles and world spell
@@ -588,6 +659,10 @@ func apply_board(data: Dictionary) -> void:
 		if row.size()==2: friendly_damage[int(row[0])] = maxf(0.0,float(row[1]))
 	var previous := phase
 	phase = int(data.phase) as Phase
+	if phase == Phase.DEPLOY:
+		if not data.get("previous_damage", {}).is_empty(): previous_damage = data.previous_damage.duplicate(true)
+	else:
+		previous_damage.clear()
 	# A worker snapshot already in flight must not undo a local pause.
 	# Online matches never set external_combat and keep server-owned phases.
 	if external_combat and previous == Phase.PAUSED and phase == Phase.FIGHT:

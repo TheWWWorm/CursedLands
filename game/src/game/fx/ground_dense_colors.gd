@@ -5,7 +5,7 @@ extends RefCounted
 ## Created lazily for contact consumers; the field holds only a weak reference.
 const VERTICES := 153
 const PARENTS := 8
-const MAX_TILES := 128 # Same global installed-tile cap as SoftGroundDeform.
+const MAX_TILES := 256 # Upper bound; campaign deformation still admits only 128.
 var texture := Texture2DArray.new()
 var tiles: ImageTexture
 var _tile_image: Image

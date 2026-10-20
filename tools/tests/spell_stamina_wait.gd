@@ -31,7 +31,7 @@ func _ready() -> void:
 			for i in 8:tick()
 			check(hero.order.get("type")=="cast" and hero.order.get("stamina_notified",false),"known spell remains queued while stamina recovers")
 			check(hero.pos==stopped and hero.direct_steering.is_empty(),"self-cast stops the previous movement")
-			check((s as ProbeSession).acknowledgements.count(EIAcks.OUT_OF_STAMINA)==1,"one spoken stamina acknowledgement per order")
+			check((s as ProbeSession).acknowledgements.count(EIAcks.CANT_CAST)==1,"one spoken stamina acknowledgement per order")
 			if camera_mode!=1:
 				g.direct.step(Vector2.UP,.1);tick()
 				check(hero.pos==stopped and hero.order.get("type")=="cast","held key cannot cancel the waiting self-cast")
@@ -43,7 +43,7 @@ func _ready() -> void:
 				tick()
 				if hero.action.begins_with("cast"):break
 			check(hero.action.begins_with("cast"),"spell commits automatically after stamina recovers")
-			check((s as ProbeSession).acknowledgements.count(EIAcks.OUT_OF_STAMINA)==1,"regeneration does not repeat voice acknowledgement")
+			check((s as ProbeSession).acknowledgements.count(EIAcks.CANT_CAST)==1,"regeneration does not repeat voice acknowledgement")
 		# Replacement movement must still cancel a wait, in both input styles.
 		reset();hero.stop_steering();hero.mana=0;hero._anim_lock=0
 		s.apply_command({"t":"direct_cast" if camera_mode!=1 else "cast","unit":hero.uid,"target":hero.uid,"spell":"healing{}"},0)

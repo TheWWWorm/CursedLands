@@ -670,6 +670,10 @@ func figure_info() -> Dictionary:
 	var shown := info.duplicate()
 	shown.complexion = figure_complexion()
 	shown.peaceful_gear = peaceful_gear()
+	if has_meta("hero") and not get_meta("hero").has("merc"):
+		# Training and temporary body effects must not select a different
+		# portrait face or stretch its facial features on the world figure.
+		shown.face_complexion = proto_complexion(proto)
 	# An actual effective zero build is not the absent-map-override sentinel.
 	shown.effective_complexion = true
 	return shown
@@ -1179,7 +1183,7 @@ func command(o: Dictionary, queue := false) -> void:
 		return
 	if o.get("type", "") == "cast" and o.get("known_spell", false) \
 			and mana < _spell_cost(Spells.parse(String(o.spell))) and not _sandbox_mana():
-		ack(EIAcks.OUT_OF_STAMINA)
+		ack(EIAcks.CANT_CAST)
 		o.stamina_notified = true
 		if o.get("target") == self:
 			stop_steering()
@@ -3282,7 +3286,7 @@ func _do_cast(dt: float) -> void:
 			# Stay stopped until enough stamina regenerates. A replacement
 			# order cancels this wait through command(), like any other order.
 			if not order.get("stamina_notified", false):
-				ack(EIAcks.OUT_OF_STAMINA)
+				ack(EIAcks.CANT_CAST)
 				order.stamina_notified = true
 			_set_action("idle")
 		else:
@@ -4629,7 +4633,14 @@ func apply_snapshot(s: Array, quiet := false, precise_body := PackedFloat64Array
 		max_mana = s[10]
 	pos = Vector2(s[1], s[2])
 	facing = s[3]
+	var arriving: bool = not quiet and s[4] == "idle" and (action in ["walk", "run", "crawl"] or not _settle_action.is_empty())
+	var approach_speed: float = net_view._speed if arriving else 0.0
 	net_view.got(pos, quiet, facing)   # co-op client: drawn gliding / turning between snapshots (NetSmooth)
+	if arriving and net_view.view.distance_to(pos) < NetSmooth.TELEPORT:
+		# The final packet may contain only a fraction of a stride. Finish it
+		# at the approach speed instead of stretching it over another entire
+		# packet interval and slowing both the body and its feet to a crawl.
+		net_view._speed = maxf(net_view._speed, approach_speed)
 	var previous_hp := hp
 	if exact_body:
 		# Arena packets already carry exact part health. Applying their rounded

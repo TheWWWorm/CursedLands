@@ -350,6 +350,10 @@ func carrier_point(e: FxEmitter, obj: Object) -> Vector3:
 		var u: GameUnit = obj
 		u.observe_presentation()
 		if e.flags & FxEmitter.F_BONE:
+			# Elemental charge-up and its released projectile share one animated
+			# mouth/hand. Other attached effects retain their native body anchors.
+			if e.bone == 0 and e.type in [0x2027, 0x2028, 0x2029]:
+				return cast_point(u)
 			return unit_point(u, e.bone)
 		return ei(u.global_position - display_origin())
 	if obj is Node3D:
@@ -387,7 +391,7 @@ const CAST_PARTS := {
 	"unmodr": ["rh3_tube00", Vector3(0, 1, 0)],
 	"unmosu": ["rh3", Vector3.ZERO],
 	"unmomi": ["lh3", Vector3.ZERO],
-	"unmocu": ["rh3", Vector3.ZERO],
+	"unmocu": ["rh4", Vector3(-1, 0, 0)],
 	"unmowi": ["bd01", Vector3.ZERO],
 }
 

@@ -1100,7 +1100,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	# Remake option gfx_detailed_heads: the HUD face model on the body
 	# (DetailedHead; not with a helmet).
 	if helm_layer == "" and nodes.has("hd") and mesh_for.get("hd", "") == "hd":
-		var face := DetailedHead.face_names(proto, race, complexion,
+		var face := DetailedHead.face_names(proto, race, unit.get("face_complexion", complexion),
 			int(unit.get("hair", proto.get("hair", 0))))
 		var head_mi: MeshInstance3D = null
 		for c in (nodes["hd"] as Node3D).get_children():
@@ -1108,7 +1108,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 				head_mi = c
 				break
 		if not face.is_empty() and head_mi:
-			_detail = DetailedHead.attach(nodes["hd"], face, model, mask, hair_part, head_mi.mesh, ui_preview)
+			_detail = DetailedHead.attach(nodes["hd"], face, model, mask, hair_part, head_mi.mesh, ui_preview, unit.has("face_complexion"))
 			if _detail:
 				_plain_head = [head_mi]
 				var hr := (nodes["hd"] as Node3D).get_node_or_null("hr")

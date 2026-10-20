@@ -1,0 +1,399 @@
+{
+  "date": "2026-10-19",
+  "scope": "Enable the pinned HD Lands download on Android; disable unaffordable arena rerolls and clarify disabled level-up visuals.",
+  "checkout": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/repo",
+    "base": "ba04fa9ba3854ae231806616b85c239507e4dcd6",
+    "base_release": "1.18.0",
+    "branch": "fix/android-hd-lands-download",
+    "state": "Local source changes; no public release or tag created."
+  },
+  "device": {
+    "model": "Retroid Pocket 5",
+    "android": "13 (API 33)",
+    "gpu": "Qualcomm Adreno 650",
+    "memory_gib_approx": 7.5,
+    "renderer": "gl_compatibility / opengl3",
+    "isolated_package": "org.cursedlands.hdlandstest"
+  },
+  "test_profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0,
+    "isolation": "Separate Android app and private desktop XDG directories. Normal player defaults, saves and settings were not changed."
+  },
+  "download": {
+    "url": "https://allods.gipat.ru/files/ei/mods/hdlands/hdlands-1-5-0.7z",
+    "bytes": 285931035,
+    "sha256": "574f9a2dd91e530054c07cc27c868d5db8e04f047254b89669460c621b43a955",
+    "package": "community.hd-lands-textures@1.5.0",
+    "textures": 390,
+    "storage_requirement_gib": 2,
+    "temporary_extra_memory_gib_approx": 0.8
+  },
+  "verified_behaviors": [
+    "The public start action permits the Android native installer and rejects unsupported campaigns.",
+    "Real HTTPS cancellation, verified installation, decoding all 390 textures, immutable installed version, temporary-file cleanup, manual activation and restoration to default resources passed.",
+    "The rendered village loaded with its hero; all eight 2048-pixel terrain atlas layers matched installed texture pixels while retaining the original 512-pixel logical layout and 64-pixel tiles.",
+    "Android download requirements are translated in English, Russian and German. Real-device landscape and desktop Android-feature portrait layouts were checked for wrapping and install-button visibility.",
+    "At zero gold both arena purchase buttons are disabled and ignore pointer activation without rejection feedback; exact-cost purchases disable the next purchase; a free reroll works at zero gold; both buttons re-enable when gold returns.",
+    "Level-up already used the authoritative spending check. Its disabled caption and XP progress arc now use the muted color."
+  ],
+  "tests": [
+    {
+      "suite": "mod_downloads",
+      "device": "Retroid Pocket 5",
+      "seconds": 7.58,
+      "summary": {
+        "checks": 76,
+        "failures": 0
+      },
+      "errors": [],
+      "memory_samples_kib": [
+        {
+          "seconds": 1.1,
+          "VmHWM": 197828,
+          "VmRSS": 197828
+        }
+      ],
+      "platform": "Android",
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/android-mod_downloads/logcat.txt",
+        "sha256": "aa7705d849858308a7b7bcb80309a2dba4ffabcb2b4ff4840188cd2a66425437"
+      }
+    },
+    {
+      "suite": "mod_downloads_ui",
+      "device": "Retroid Pocket 5",
+      "seconds": 11.58,
+      "summary": {
+        "checks": 59,
+        "failures": 0
+      },
+      "errors": [],
+      "memory_samples_kib": [
+        {
+          "seconds": 1.1,
+          "VmHWM": 369808,
+          "VmRSS": 369808
+        }
+      ],
+      "platform": "Android",
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/android-mod_downloads_ui/logcat.txt",
+        "sha256": "21aed04b5a92168b0be0e2a92d14c37e594e3ef06cbd54c155e4e4375189584e"
+      }
+    },
+    {
+      "suite": "mod_downloads_live",
+      "device": "Retroid Pocket 5",
+      "seconds": 75.71,
+      "summary": {
+        "backup": false,
+        "checks": 807,
+        "failures": 0,
+        "frames": 3700,
+        "max_installer_frame_ms": 111.254,
+        "seconds": 68.515
+      },
+      "errors": [],
+      "memory_samples_kib": [
+        {
+          "seconds": 1.1,
+          "VmHWM": 359224,
+          "VmRSS": 359224
+        },
+        {
+          "seconds": 21.1,
+          "VmHWM": 741272,
+          "VmRSS": 556084
+        },
+        {
+          "seconds": 41.2,
+          "VmHWM": 741272,
+          "VmRSS": 556412
+        },
+        {
+          "seconds": 61.2,
+          "VmHWM": 1236012,
+          "VmRSS": 1236012
+        }
+      ],
+      "platform": "Android",
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/android-mod_downloads_live/logcat.txt",
+        "sha256": "a920109284113913bced7438ce90f93db5f46b152f2482ff89688cb00576aade"
+      }
+    },
+    {
+      "suite": "mod_downloads_world",
+      "device": "Retroid Pocket 5",
+      "seconds": 167.19,
+      "summary": {
+        "checks": 16,
+        "failures": 0
+      },
+      "errors": [],
+      "memory_samples_kib": [
+        {
+          "seconds": 1.1,
+          "VmHWM": 351976,
+          "VmRSS": 351976
+        },
+        {
+          "seconds": 21.1,
+          "VmHWM": 1002540,
+          "VmRSS": 772136
+        },
+        {
+          "seconds": 41.2,
+          "VmHWM": 1679972,
+          "VmRSS": 1330584
+        },
+        {
+          "seconds": 61.6,
+          "VmHWM": 1679972,
+          "VmRSS": 1327068
+        },
+        {
+          "seconds": 81.6
+        },
+        {
+          "seconds": 101.6
+        },
+        {
+          "seconds": 121.6
+        },
+        {
+          "seconds": 141.7
+        },
+        {
+          "seconds": 161.7
+        }
+      ],
+      "platform": "Android",
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/android-mod_downloads_world/logcat.txt",
+        "sha256": "1209635eba6ec73a353bd284a4f7f7034d93464881e3b302637189239f8679b1"
+      }
+    },
+    {
+      "suite": "mod_downloads",
+      "exit": 0,
+      "seconds": 2.57,
+      "summary": [
+        "MOD_DOWNLOADS {\"checks\":76,\"failures\":0}"
+      ],
+      "errors": [],
+      "platform": "Linux",
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/desktop-mod_downloads/run.log",
+        "sha256": "a56be01b9d27be31b370d09a549b37f0c000b06508a1612eb5e69e9eabc2f925"
+      }
+    },
+    {
+      "suite": "mod_downloads_ui",
+      "exit": 0,
+      "seconds": 7.38,
+      "summary": [
+        "MOD_DOWNLOADS_UI {\"checks\":60,\"failures\":0}"
+      ],
+      "errors": [],
+      "platform": "Linux with Android export feature",
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/desktop-mod_downloads_ui-android-features/run.log",
+        "sha256": "0219e1d23be47e69a3c473d3d03b6c2ab89af589bba0d7111491545cafe8ac03"
+      }
+    },
+    {
+      "suite": "arena_latest_ui",
+      "exit": 0,
+      "seconds": 9.58,
+      "summary": [
+        "ARENA_SPENDING_UI latest-en-1280 checks=15 failures=[]"
+      ],
+      "errors": [],
+      "platform": "Linux",
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/desktop-arena_latest_ui-en-spending/run.log",
+        "sha256": "915ac17f1b491810326845a2a9ece4a5ee5ec3576d31e35b27e08d8e6b97d845"
+      }
+    },
+    {
+      "suite": "arena_latest_ui",
+      "exit": 0,
+      "seconds": 27.96,
+      "summary": [
+        "ARENA_SPENDING_UI latest-ru-1280 checks=15 failures=[]"
+      ],
+      "errors": [],
+      "platform": "Linux",
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/desktop-arena_latest_ui-ru-spending/run.log",
+        "sha256": "67e322ed227b4ec28ecff47d51304ba7695260149e86640f6cb32c1a8b9155ba"
+      }
+    },
+    {
+      "suite": "arena_latest_ui",
+      "exit": 0,
+      "seconds": 28.01,
+      "summary": [
+        "ARENA_SPENDING_UI latest-de-1280 checks=15 failures=[]"
+      ],
+      "errors": [],
+      "platform": "Linux",
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/desktop-arena_latest_ui-de-spending/run.log",
+        "sha256": "1e69ec2083cb824e057276d816a5a69ba682467e188600613b4e99f2d1804122"
+      }
+    }
+  ],
+  "translation_coverage": {
+    "entries": 2810,
+    "dynamic_wiki_keys": 141,
+    "dynamic_arena_keys": 179,
+    "errors": 0,
+    "command": "python3 tools/check_translations.py"
+  },
+  "apk": {
+    "apk": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/CursedLands-android-hd-lands-test.apk",
+    "bytes": 46197201,
+    "sha256": "1a2e6a56bd082d8480e3bdd840fdf3df34eb74f8ab3183a228913155212fb6cd",
+    "package": "org.cursedlands.hdlandstest",
+    "version": "1.18.0",
+    "version_code": 1,
+    "local_development_build": true,
+    "debug_certificate": true,
+    "debuggable": false,
+    "compiled_scripts_match_desktop_tests": 375,
+    "changed_since_hd_device_tests": [
+      "assets/src/ui/arena_pve_screen.gdc",
+      "assets/src/ui/arena_round_button.gdc"
+    ],
+    "native_libraries_and_java_match_published_1_18_0": true,
+    "production_startup_application": true,
+    "no_test_scripts_or_game_data": true,
+    "no_test_launch_arguments": true
+  },
+  "preview_smoke": {
+    "package": "org.cursedlands.hdlandstest",
+    "pid": "19312",
+    "foreground": true,
+    "main_menu_built": true,
+    "errors": [],
+    "screenshot": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/android-preview/main-menu.png",
+    "test_preferences_restored_before_install": true,
+    "hd_pack_installed": true,
+    "hd_pack_enabled_by_default": false
+  },
+  "screenshots": {
+    "android_village": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/android-mod_downloads_world/village.png",
+      "sha256": "d161ecc1d167816909ce94331983a5500e70ea064f749da91ed974dded7a0fc4"
+    },
+    "android_preview_main_menu": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/android-preview/main-menu.png",
+      "sha256": "9d13c77161cc81703c91eb472d24d3cafa37f9cd8266c4202dae9c4399d24d3b"
+    },
+    "android_preview_installed_pack": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/android-preview/mods-panel.png",
+      "sha256": "d006a542082341eb28da6f0a4c194c0a99f3d7c3df827a296c72fd92b7dafb54"
+    },
+    "android_catalog_en": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/android-mod_downloads_ui/downloads-en-540.png",
+      "sha256": "80f5c53d909149bd16c7b445b758c35bb5b0d97955b077f17a8110f64d161de3"
+    },
+    "portrait_catalog_en": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/desktop-mod_downloads_ui-android-features/data/godot/app_userdata/Cursed Lands/downloads-en-540.png",
+      "sha256": "0cbfbcd112e1858dfb37d75b0f3534d074b2e09e7dafaaecadf9eb65fa907a33"
+    },
+    "spending_en": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/desktop-arena_latest_ui-en-spending/data/godot/app_userdata/Cursed Lands/expansion-latest-en-1280-training.png",
+      "sha256": "abaca6bb433d7e422e071c265b4b5efbde39c81a674970009b3f8b58ec545e94"
+    },
+    "android_catalog_ru": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/android-mod_downloads_ui/downloads-ru-540.png",
+      "sha256": "cd0967f99afda1cccd63a76c1a3d245319ff423fc69c5e0e559219cd99d4ede8"
+    },
+    "portrait_catalog_ru": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/desktop-mod_downloads_ui-android-features/data/godot/app_userdata/Cursed Lands/downloads-ru-540.png",
+      "sha256": "6b8b0fa8d33c72589de9243d5647083f2c74a10cf9a1c488891013f0209e9087"
+    },
+    "spending_ru": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/desktop-arena_latest_ui-ru-spending/data/godot/app_userdata/Cursed Lands/expansion-latest-ru-1280-training.png",
+      "sha256": "3b4f4d8afed1febf526c345a561054d276c52231807f6d67a2be7c3bf153f846"
+    },
+    "android_catalog_de": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/android-mod_downloads_ui/downloads-de-540.png",
+      "sha256": "33ac6c93e4db9784f8426f5155787c278ff72f8491ed0317b372f6bda9db3920"
+    },
+    "portrait_catalog_de": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/desktop-mod_downloads_ui-android-features/data/godot/app_userdata/Cursed Lands/downloads-de-540.png",
+      "sha256": "242a0f243e3ebfe6bf1e4a4ab369a4b709ae0c675af8c015612265666aa8f763"
+    },
+    "spending_de": {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/desktop-arena_latest_ui-de-spending/data/godot/app_userdata/Cursed Lands/expansion-latest-de-1280-training.png",
+      "sha256": "59750bdb5ca8cf24b15c43e63e8c7c851ccd364f51cdf53c75e397342cad69f8"
+    }
+  },
+  "source_sha256": {
+    "game/src/game/mod_catalog.gd": "adc8bbffd650a70b275bc73cb4405cd24f2bfc43abe4f06a768529f69a7c4058",
+    "game/src/game/mod_download.gd": "16a0aee6794e1e417e5f4ef014c299bd37a2f103654bdd51450811b9fc819665",
+    "game/src/ui/mod_panel.gd": "7a1bc3cfdf65223419b382e136bd67e8828048a0ac0c39261e7b98868ae9d517",
+    "game/src/ei/remake_text.gd": "fd7c9ccd64777f015f01a9ac3697da2d9cb12f381d227aa836e6c7e632118182",
+    "game/src/ui/arena_pve_screen.gd": "b274644ec48d618fc697a617b8e2941fc8d93df97822bdc096a8d461800d47ae",
+    "game/src/ui/arena_round_button.gd": "0e01299e343f86f55c941b14e0a9410c21fe70310d04b46f9983509bdf7ccd10",
+    "tools/check_translations.py": "fc48bbd427d0f40871023234ad010a192995674a53b3238897034eba8ef978b9",
+    "tools/tests/mod_downloads.gd": "4a2fe01b7fe6736cdb185e33110a5e38d155487bf2214dadb7103c88624d30d1",
+    "tools/tests/mod_downloads_ui.gd": "5aac4a48fafe0b96f7579e40eec23f75b9db64f430b55f3f750f2727b7185c59",
+    "tools/tests/mod_downloads_live.gd": "66bfcab4e88e395b47b3ac3e32eb1b7e18ee8681eaa920ef3943b6f645d61b1f",
+    "tools/tests/mod_downloads_world.gd": "43f475cd6c1e10635523e596bbb0e84cac34b502a3a1a156afab0a5258c6be88",
+    "tools/tests/arena_latest_ui.gd": "04a8f2dd3be0fcfd874ba3ffb2cda94287bf11d074ac8bcfce68a1a3d1cc1a45"
+  },
+  "broader_ui_comparison": {
+    "current": {
+      "suite": "arena_latest_ui",
+      "exit": 1,
+      "seconds": 30.96,
+      "summary": [
+        "ARENA_PANELS_UI latest-en-1280 checks=48 failures=[\"reserve and shop have matching heights\"]"
+      ],
+      "errors": [
+        "FAIL reserve and shop have matching heights"
+      ],
+      "platform": "Linux",
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/desktop-arena_latest_ui-en/run.log",
+        "sha256": "bea86305b5a3e7b8357d0b1068b4ae0af0d4b6029b07880885baa67b6f988388"
+      }
+    },
+    "published_1_18_0": {
+      "suite": "arena_latest_ui",
+      "exit": 1,
+      "seconds": 30.77,
+      "summary": [
+        "ARENA_PANELS_UI latest-en-1280 checks=39 failures=[\"reserve and shop have matching heights\"]"
+      ],
+      "errors": [
+        "FAIL reserve and shop have matching heights"
+      ],
+      "platform": "Linux",
+      "log": {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/android-hd-lands-20261019/checks/desktop-arena_latest_ui-en-baseline/run.log",
+        "sha256": "dc49fe372c81b5d4f043c19b3da0013edf1082fd66c395779f49d3d6fb00a612"
+      }
+    },
+    "finding": "Both fail only the existing reserve-and-shop matching-height assertion. The baseline used the published executable/PCK and unchanged original fixture. New spending assertions passed in the broader current run and all three focused locale runs."
+  },
+  "limitations_and_harness_notes": [
+    "Device qualification covers this Retroid Pocket 5. Lower-memory devices, background installation and the live backup publisher were not qualified in this change.",
+    "The 68.515-second live result covers the completed installation and subsequent package checks; it is not a universal download-time estimate. Memory figures are sampled process high-water values, not additional decoder allocation measurements.",
+    "The world-test wrapper lost the streamed completion line and recovered it from device logcat. Its 167.19-second wrapper duration includes this monitoring delay; the game logged a normal clean exit after 66.85 seconds.",
+    "An early focused English run missed one simulated level-up click. Diagnostic and final English runs and the final Russian/German runs passed with unchanged production code.",
+    "The Android QA harness used a debuggable test manifest with current release Java/native libraries. The final standalone preview retains the production startup application, has no harness arguments or scripts, and is not debuggable. Only the two arena scripts differ from the APK used for the HD device tests; its final compiled scripts match the desktop-tested pack.",
+    "Android startup logged a Scudo size-class allocation warning and continued successfully to the main menu and through HD tests. No native crash, script error or failed assertion occurred in the final targeted Android checks.",
+    "The test app retains the installed HD pack but starts with it Off. Generated test profiles and fixtures were removed before installing the standalone preview. Normal player installations were not changed."
+  ]
+}

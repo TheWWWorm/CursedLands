@@ -22,7 +22,7 @@ Mouse, keyboard focus and controller navigation use the same controls. D-pad up/
 ## HD Lands texture download
 
 From the main menu, open **Mods and rules → Mods → HD Lands textures →
-Download & install**. The Windows and Linux apps fetch the pinned HD Lands
+Download & install**. The Windows, Linux and Android apps fetch the pinned HD Lands
 1.5.0 archive from its original publisher, verify its size and SHA-256, then
 install the texture package. Progress and cancellation remain available.
 Downloading does not enable the package: turn its switch **On**, then choose
@@ -55,8 +55,11 @@ and install 1.5.0, switch **1.4.0 Off** and **1.5.0 On**, then choose
 
 The archive is 272.7 MiB and installation requires 2 GiB free storage. Its
 solid 7z decoder temporarily uses approximately 0.8 GiB additional memory.
-This download is disabled on Android pending device qualification; the browser
-and macOS builds do not include the archive installer. This catalogue entry
+On Android, keep the app in the foreground until installation finishes. The
+download card shows the temporary memory requirement; HD textures also use
+more memory while playing. Installation uses the app's private storage and
+does not require access to the shared Downloads folder. The browser and macOS
+builds do not include the archive installer. This catalogue entry
 does not provide general legacy-mod or Jamais Vu support.
 
 The larger textures retain the map's logical tile layout, including detail
@@ -75,8 +78,9 @@ mod API remains 1. The existing command-line packaging/conversion tools still
 target API 1; the in-game downloader creates its own texture package.
 
 Implementation validation is recorded separately in
-[the HD Lands 1.5.0 update report](validation/hd-lands-1.5.0-2026-10-13.json)
-and [the 1.0.5 release checks](validation/stable-1.0.5-2026-10-13.json).
+[the HD Lands 1.5.0 update report](validation/hd-lands-1.5.0-2026-10-13.json),
+[the 1.0.5 release checks](validation/stable-1.0.5-2026-10-13.json) and
+[the Android download checks](validation/android-hd-lands-2026-10-19.json).
 
 ## Co-op compatibility
 

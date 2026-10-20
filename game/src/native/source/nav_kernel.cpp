@@ -62,6 +62,7 @@ class TerrainSearchKernel : public RefCounted {
     static constexpr int order[8] = {4,5,6,7,3,2,1,8};
 protected:
     static void _bind_methods() {
+        ClassDB::bind_method(D_METHOD("update_region", "land", "costs", "heights", "rect"), &TerrainSearchKernel::update_region);
         ClassDB::bind_method(D_METHOD("configure_topology", "cost_values"), &TerrainSearchKernel::configure_topology);
         ClassDB::bind_method(D_METHOD("topology_representative", "block"), &TerrainSearchKernel::topology_representative);
         ClassDB::bind_method(D_METHOD("topology_raw", "block"), &TerrainSearchKernel::topology_raw);

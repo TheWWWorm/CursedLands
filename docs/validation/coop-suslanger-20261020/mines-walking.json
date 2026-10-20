@@ -1,0 +1,84 @@
+[
+  {
+    "samples": [
+      {
+        "arrived": true,
+        "distance": 11.609375,
+        "final": "(38.60938, 115.0)",
+        "ms": 7988,
+        "rate": 1.0,
+        "sim": 8.02999999999999,
+        "speed": 1
+      },
+      {
+        "arrived": true,
+        "distance": 11.625,
+        "final": "(27.375, 115.0)",
+        "ms": 3895,
+        "rate": 2.03703703703704,
+        "sim": 8.02999999999996,
+        "speed": 2
+      },
+      {
+        "arrived": true,
+        "distance": 11.609375,
+        "final": "(38.60938, 115.0)",
+        "ms": 7994,
+        "rate": 1.0,
+        "sim": 7.97499999999996,
+        "speed": 1
+      },
+      {
+        "arrived": true,
+        "distance": 11.625,
+        "final": "(27.375, 115.0)",
+        "ms": 3903,
+        "rate": 2.03703703703704,
+        "sim": 8.02999999999996,
+        "speed": 2
+      }
+    ],
+    "single": true
+  },
+  {
+    "samples": [
+      {
+        "arrived": true,
+        "distance": 11.609375,
+        "final": "(38.60938, 115.0)",
+        "ms": 7989,
+        "rate": 1.0,
+        "sim": 8.02999999999999,
+        "speed": 1
+      },
+      {
+        "arrived": true,
+        "distance": 11.703125,
+        "final": "(27.29688, 115.0)",
+        "ms": 3999,
+        "rate": 2.0,
+        "sim": 8.02999999999996,
+        "speed": 2
+      },
+      {
+        "arrived": true,
+        "distance": 11.609375,
+        "final": "(38.60938, 115.0)",
+        "ms": 7960,
+        "rate": 1.0,
+        "sim": 7.97499999999996,
+        "speed": 1
+      },
+      {
+        "arrived": true,
+        "distance": 11.6875,
+        "final": "(27.3125, 115.0)",
+        "ms": 4000,
+        "rate": 2.0,
+        "sim": 8.02999999999996,
+        "speed": 2
+      }
+    ],
+    "single": false
+  }
+]

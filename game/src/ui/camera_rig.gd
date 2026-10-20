@@ -641,15 +641,15 @@ func _unhandled_input(e: InputEvent) -> void:
 ## yaw and pitch have the opposite sign to this rig's orbit angles.
 func _original_mouse_targets(raw: Vector2, size: Vector2, modified: bool) -> Dictionary:
 	var d := Vector2(int(int(raw.x) * 800 / maxf(1.0, size.x)), int(int(raw.y) * 600 / maxf(1.0, size.y)))
-	var mp := _mouse_power()
+	var mp := Vector2(_mouse_power(), GameData.option("power_mouse_y") / 50.0)
 	if modified:
 		return {"pan": Vector2(d.x * 0.0025, d.y / 300.0) * mp / TICK,
 			"yaw": 0.0, "pitch": 0.0}
 	var sx := -1.0 if GameData.option("camera_reverse_x") else 1.0
 	var sy := -1.0 if GameData.option("camera_reverse_y") else 1.0
 	var tilt := absf(d.y) > absf(d.x) or _pitch_v != 0.0 or _motion_targets.y != 0.0
-	return {"pan": Vector2.ZERO, "yaw": -d.x * 0.025 * sx * mp / TICK,
-		"pitch": -d.y * (500.0 / 300.0) * sy * mp / TICK if tilt else 0.0}
+	return {"pan": Vector2.ZERO, "yaw": -d.x * 0.025 * sx * mp.x / TICK,
+		"pitch": -d.y * (500.0 / 300.0) * sy * mp.y / TICK if tilt else 0.0}
 
 
 ##  on the view's CameraRig (if any); `at` in EI metres.
@@ -899,7 +899,8 @@ func _edge_scroll() -> Vector2i:
 	var border := float(GameData.option("scroll_border"))
 	# A pointer that left the window (a browser page, or a desktop window
 	# without "Keep mouse in window") keeps its last position: no scrolling.
-	if border >= 1.0 and _pointer_inside and DisplayServer.window_is_focused() and vp.gui_get_hovered_control() == null:
+	if border >= 1.0 and _pointer_inside and DisplayServer.window_is_focused() \
+			and (modern() or vp.gui_get_hovered_control() == null):
 		var mp := vp.get_mouse_position()
 		var sz := vp.get_visible_rect().size
 		if Rect2(Vector2.ZERO, sz).has_point(mp):

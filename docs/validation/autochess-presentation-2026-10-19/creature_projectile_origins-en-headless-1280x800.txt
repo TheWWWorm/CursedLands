@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 22:15:15 +2215ms] session 568db9f4cb92: 1.18.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+CREATURE_PROJECTILE_ORIGINS checks=186 failures=0
+[trace 22:15:18 +4615ms] clean exit

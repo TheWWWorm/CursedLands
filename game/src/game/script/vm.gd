@@ -703,6 +703,10 @@ func _call(name: String, a: Array, inst: Instance):
 				preload("res://src/game/script/story_compat.gd").story_move(self, inst.sname, u, to)
 		"RemakeEscapeReady":
 			return preload("res://src/game/script/story_compat.gd").escape_ready(self)
+		"RemakeGuardContact":
+			return preload("res://src/game/script/story_guard_escape.gd").contact(self, _group(v[0]), _unit(v[1]))
+		"RemakeGuardsEscaped":
+			return preload("res://src/game/script/story_guard_escape.gd").escaped(self, _group(v[0]))
 		# Builtins 0x8e SetCP / 0xad SetCPFast(object, x, y, z) put the object
 		# there at once (: position.., world grid
 		# re-link); a unit then drops what it was doing and stands

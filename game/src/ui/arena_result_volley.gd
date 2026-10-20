@@ -8,6 +8,7 @@ var _view: SubViewport
 var _camera: Camera3D
 var _fx: ParticleFx
 var _events: Array[Dictionary] = []
+var _flights: Array[Dictionary] = []
 var _popups: Array[Dictionary] = []
 var _tail := 0.0
 var launches := 0
@@ -55,7 +56,7 @@ func _fit() -> void:
 	_camera.look_at(center, Vector3(0, 0, -1))
 	_camera.size = size.y / PIXELS_PER_METRE
 
-func present(starts: PackedVector2Array, target: Vector2, damage: int, friendly_loss: bool, scale_factor: float) -> void:
+func present(starts: PackedVector2Array, target: Vector2, damage: int, friendly_loss: bool, scale_factor: float, follow_target := Callable()) -> void:
 	if damage <= 0: return
 	if not is_instance_valid(_fx):
 		_fx = ParticleFx.new()
@@ -63,7 +64,7 @@ func present(starts: PackedVector2Array, target: Vector2, damage: int, friendly_
 		_fx.set_process(false)
 	var delay := 0.0
 	for point in starts:
-		_events.append({"left":delay, "start":point, "target":target, "scale":scale_factor})
+		_events.append({"left":delay, "start":point, "target":target, "scale":scale_factor, "follow":follow_target})
 		delay += 0.065
 	# Use the actual combat atlas, colours, sizing, drift and fade. Leave room
 	# for the native up/right motion beside the standings at the screen edge.
@@ -88,12 +89,22 @@ func _process(delta: float) -> void:
 	for event in _events.duplicate():
 		event.left -= dt
 		if event.left > 0: continue
-		var start: Vector2 = event.start / PIXELS_PER_METRE
-		var target: Vector2 = event.target / PIXELS_PER_METRE
-		_fx._missile("arrow", Vector3(start.x, start.y, 1), null, Vector3(target.x, target.y, 1), 0.36 * float(event.scale), Spells.parse("arrow"))
+		var target: Vector2 = event.target
+		if event.follow.is_valid(): target = event.follow.call()
+		var count := _fx.missiles.size()
+		_fx._missile("arrow", _particle_point(event.start), null, _particle_point(target), 0.36 * float(event.scale), Spells.parse("arrow"))
+		if _fx.missiles.size() > count and event.follow.is_valid():
+			_flights.append({"missile":_fx.missiles.back(), "follow":event.follow})
 		launches += 1
 		_events.erase(event)
-	if is_instance_valid(_fx): _fx._process(dt)
+	if is_instance_valid(_fx):
+		# Native missiles travel in world units. At large HUD resolutions a
+		# valid flight can take longer than the minimum three-second tail.
+		if not _fx.missiles.is_empty(): _tail = maxf(_tail,0.5)
+		for flight in _flights.duplicate():
+			if not _fx.missiles.has(flight.missile): _flights.erase(flight)
+			elif flight.follow.is_valid(): flight.missile.point = _particle_point(flight.follow.call())
+		_fx._process(dt)
 	for popup in _popups.duplicate():
 		popup.age += dt
 		if popup.age >= FlyingHP.LIFE: _popups.erase(popup)
@@ -101,8 +112,15 @@ func _process(delta: float) -> void:
 	_tail -= dt
 	if _tail <= 0 and _events.is_empty() and _popups.is_empty(): clear()
 
+func _particle_point(point: Vector2) -> Vector3:
+	# Resolve pixels through the actual HUD projection. Assuming EI y follows
+	# screen y mirrored every destination around the middle of the viewport.
+	var hit: Vector3 = Plane(Vector3.UP, 1.0).intersects_ray(_camera.project_ray_origin(point), _camera.project_ray_normal(point))
+	return ParticleFx.ei(hit)
+
 func clear() -> void:
 	_events.clear()
+	_flights.clear()
 	_popups.clear()
 	if is_instance_valid(_fx): _fx.queue_free()
 	_fx = null

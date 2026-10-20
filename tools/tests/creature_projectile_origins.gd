@@ -95,6 +95,19 @@ func _ready() -> void:
 			check(absf(at.z-g.centre.z-g.max.z)<0.001 and absf(at.y-g.centre.y-g.min.y)<0.001,"unicorn uses tip of forward horn")
 		elif id.begins_with("Driad"):
 			check(fx.cast_point(u).distance_to(fx.ranged_point(u))<0.001,"woodsfolk spell and dart share the animated blowpipe muzzle")
+		elif id == "AncientCurseM25":
+			ArenaPveMatch._fit_figure(u)
+			var finger := fx._bone(u,"rh4")
+			var geometry := u.model.animated_part_geometry(finger)
+			var tip: Vector3 = geometry.centre + Vector3(geometry.min.x,0,0)
+			var expected := ParticleFx.ei(finger.to_global(ParticleFx.godot(tip)))
+			check(fx.cast_point(u).distance_to(expected)<0.001,"scaled Horror casts from its animated fingertips")
+			check(fx.cast_point(u).distance_to(fx.unit_point(u,0))>0.5,"Horror lightning source remains outside the torso")
+			fx.spell_cast({"code":"curse_magic","spell":"curse_magic","a":u.uid,"x":u.pos.x+6,"y":u.pos.y})
+			var bolt = fx.bolts.back()
+			check(bolt.a.distance_to(expected)<0.001,"live curse lightning begins at the visible fingertips")
+			u.model.player.seek(12.0/EIAnim.FPS,true); u.model.flush_pending_pose(); bolt.update_tick()
+			check(bolt.a.distance_to(fx.cast_point(u))<0.001,"curse lightning follows the animated fingers through its lifetime")
 		fx._point_cache_active=true
 		check(fx.cast_point(u)==fx.cast_point(u) and fx._point_cache[u.get_instance_id()].has("cast"),"overview reuses source sample separately from targets")
 		fx._point_cache_active=false;fx._point_cache.clear()

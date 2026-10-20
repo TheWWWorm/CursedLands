@@ -232,14 +232,14 @@ func _keep_selection() -> void:
 
 ## Clock dial sectors: 0 pause on/off, 1 normal speed, 2
 ## accelerated speed. The original's logic tick is 55 ms normally and 27 ms
-## accelerated. Remake option coop_clock lets the co-op host
-## control a shared pause and exact 2x rate; clients receive that choice.
+## accelerated. Remake option coop_clock shares pause and an exact 2x rate;
+## the host grants separate guest permissions for pause and speed.
 func set_speed(sector: int) -> void:
 	if sector not in [0, 1, 2] or (sector != 0 and (session.shop_available() or session.map_open)):
 		return
 	if session.multiplayer_game:
-		if session.coop_clock_enabled() and not session.can_manage_game():
-			session.message.emit(RemakeText.t("Only the host can change game speed."))
+		if session.coop_clock_enabled() and not session.can_change_clock(sector):
+			session.message.emit(RemakeText.t("The host has not allowed you to pause the game.") if sector == 0 else RemakeText.t("The host has not allowed you to change game speed."))
 		elif session.coop_clock_enabled():
 			if not session.local_host.frontend:
 				sound.ui("buttons\\battle\\clock.wav")
@@ -933,7 +933,9 @@ func _key_action(act: String, mod := false, keyboard := false) -> void:
 		"quicksave":
 			session.save_game("quick")
 		"quickload":
-			if session.can_manage_game() and not await session.load_game_shown("quick"):
+			if not session.can_quick_save_load(false):
+				hud.log_msg(RemakeText.t("The host has not allowed you to trigger quickload."))
+			elif not await session.load_game_shown("quick"):
 				hud.log_msg(RemakeText.t("No quick save."))
 		"follow":   # HUD Follow: the next click picks the unit to follow
 			if not selected.is_empty():

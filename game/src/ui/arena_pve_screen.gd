@@ -47,6 +47,12 @@ var _result_volley: ArenaResultVolley
 var _health_seen := {}
 var _health_session := ""
 var _name_flashes := {}
+const STANDING_WIN := Color("24612f")
+const STANDING_LOSS := Color("9e2832")
+var _eliminated_seen := {}
+var _elimination_queue: Array[String] = []
+var _elimination_notice: Label
+var _elimination_left := 0.0
 var _alliance_panel: PanelContainer
 var _train_button: ArenaRoundButton
 var _last_level := 0
@@ -322,6 +328,11 @@ func _ready() -> void:
 	_battle_sidebar.add_child(_sidebar_content)
 	_damage_panel = ArenaDamagePanel.new(); _sidebar_content.add_child(_damage_panel)
 	_round_banner = ArenaRoundBanner.new(); _hud.add_child(_round_banner)
+	_elimination_notice = _label(_hud, "", 18, PAPER)
+	_elimination_notice.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_elimination_notice.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_elimination_notice.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_elimination_notice.hide()
 	_result_volley = ArenaResultVolley.new()
 	add_child(_result_volley)
 	_result_volley.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -609,7 +620,7 @@ func _refresh() -> void:
 	_refresh_button.queue_redraw()
 	_refresh_button.tooltip_text = RemakeText.t("Refresh · %d gold") % run.refresh_cost() + "\n" + RemakeText.t("Refresh unlocked offers. All locked recruits stay.")
 	var refresh_error := RemakeText.t("Unlock an offer before refreshing.") if run.shop.all(func(offer): return offer.locked) else run.spending_error(run.refresh_cost())
-	_refresh_button.disabled = not run.can_shop()
+	_refresh_button.disabled = not run.can_shop() or not refresh_error.is_empty()
 	_refresh_button.accessibility_name = RemakeText.t("Refresh · %d gold") % run.refresh_cost()
 	if not refresh_error.is_empty(): _refresh_button.tooltip_text += "\n" + refresh_error
 	_army_title.text = RemakeText.t("Army %d/%d") % [run.deployed_count(), run.capacity()]
@@ -912,6 +923,7 @@ func _begin() -> void:
 	_board_key = ""
 	_saved = false
 	_last_level = 0
+	_health_session = ""
 	_result_key = -1; _result_remaining = 4.0
 	_clear_selection()
 	run.auto_save = true
@@ -1351,6 +1363,7 @@ func _process(dt: float) -> void:
 	var notice_top := 204.0 if _shop_panel.visible else 28.0
 	_round_banner.position = Vector2(roundf((_hud.size.x - _round_banner.size.x) * 0.5), notice_top)
 	_round_banner.update_round(run, dt / maxf(Engine.time_scale, 0.001), _result_remaining, landing or _modal_layer.visible or field.showing_boards())
+	_update_eliminations(dt / maxf(Engine.time_scale, 0.001), landing or _modal_layer.visible)
 	_update_name_flashes(dt / maxf(Engine.time_scale, 0.001))
 	_hover_inspector(dt)
 	if run is ArenaTournamentRun and run.stage == "fight": _update_fighting_icons()
@@ -2018,6 +2031,9 @@ func _build_standings() -> void:
 		_standing_rows.add_child(row)
 		var button := _button(row, league.player_title(player), _show_player.bind(player), RemakeText.t("Watch this player's board.") + "\n" + league.player_title(player))
 		button.set_meta("board_player", player)
+		var last_result := _standing_result(player)
+		if last_result != -2:
+			button.tooltip_text += "\n" + RemakeText.t("Last battle: %s") % RemakeText.t("Victory" if last_result == 0 else "Defeat" if last_result > 0 else "Draw")
 		button.add_theme_constant_override("icon_max_width", 16)
 		button.expand_icon = true
 		button.icon = preload("res://assets/arena/alliance_warrior.svg") if league.player_fighting(player) else null
@@ -2033,7 +2049,10 @@ func _build_standings() -> void:
 		button.add_theme_stylebox_override("pressed", button.get_theme_stylebox("hover"))
 		button.add_theme_stylebox_override("disabled", StyleBoxEmpty.new())
 		button.disabled = league.health(player) <= 0
-		var health := _label(row, str(league.health(player)) if league.health(player) > 0 else "#%d" % league.placements[player], 14, PAPER)
+		var rank := int(league.placements[player])
+		var health := _label(row, str(league.health(player)) if league.health(player) > 0 else "#%d" % rank if rank > 0 else RemakeText.t("Out"), 14, PAPER)
+		if league.health(player) <= 0 and rank == 0:
+			health.tooltip_text = RemakeText.t("Final place is determined when the round ends.")
 		_standing_ink(health, Color("712b35") if league.health(player) < 25 else ArenaCreatureCard.SNOW_INK)
 		health.custom_minimum_size.x = 24
 		health.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -2064,15 +2083,34 @@ func _mark_watched_player() -> void:
 	if not is_instance_valid(_tournament_battles): return
 	for button: Button in _standing_rows.find_children("*", "Button", true, false):
 		if not button.has_meta("board_player"): continue
-		button.icon = preload("res://assets/arena/alliance_warrior.svg") if run.player_fighting(int(button.get_meta("board_player"))) else null
-		var selected := int(button.get_meta("board_player")) == _tournament_battles.viewed_player
+		var player := int(button.get_meta("board_player"))
+		button.icon = preload("res://assets/arena/alliance_warrior.svg") if run.player_fighting(player) else null
+		var selected := player == _tournament_battles.viewed_player
 		var line := StyleBoxFlat.new()
 		line.bg_color = Color.TRANSPARENT
 		line.content_margin_left = 7
 		line.border_width_left = 3 if selected else 0
 		line.border_color = ArenaCreatureCard.SNOW_ACCENT
 		button.add_theme_stylebox_override("normal", line)
-		_standing_ink(button, ArenaCreatureCard.SNOW_ACCENT if selected else ArenaCreatureCard.SNOW_INK)
+		_standing_ink(button, _standing_color(player))
+
+
+func _standing_result(player: int) -> int:
+	if not run is ArenaTournamentRun: return -2
+	var result: Dictionary = run.company(player).last_result
+	if result.is_empty(): return -2
+	var wave := int(result.get("wave", -1))
+	if wave < run.wave - 1: return -2
+	var staging := run.preparing_battle or (is_instance_valid(_tournament_battles) and _tournament_battles.starting)
+	if run.stage == "fight" and wave != run.wave and not staging: return -2
+	return int(result.get("winner",-1))
+
+
+func _standing_color(player: int) -> Color:
+	var result := _standing_result(player)
+	if result == 0: return STANDING_WIN
+	if result > 0: return STANDING_LOSS
+	return ArenaCreatureCard.SNOW_ACCENT if is_instance_valid(_tournament_battles) and _tournament_battles.viewed_player == player else ArenaCreatureCard.SNOW_INK
 
 
 func _layout_standings() -> void:
@@ -2193,12 +2231,21 @@ func _capture_health_changes() -> void:
 	var session := "%d:%d" % [run.get_instance_id(), run.run_seed]
 	if session != _health_session or landing:
 		_health_session = session; _health_seen.clear(); _name_flashes.clear()
+		_eliminated_seen.clear(); _elimination_queue.clear(); _elimination_left = 0.0
+		_elimination_notice.hide()
 		_result_volley.clear()
+	var initialized := not _health_seen.is_empty()
 	for player in ArenaTournamentRun.PLAYER_COUNT:
 		if player > run.rivals.size(): continue
 		var health: int = run.health(player)
 		var previous := int(_health_seen.get(player, health))
 		_health_seen[player] = health
+		if health > 0: _eliminated_seen.erase(player)
+		if health <= 0 and not _eliminated_seen.has(player):
+			_eliminated_seen[player] = true
+			if initialized and not landing:
+				var rank := int(run.placements[player])
+				_elimination_queue.append(RemakeText.t("%s has been eliminated (place #%d).") % [run.player_title(player), rank] if rank > 0 else RemakeText.t("%s has been eliminated.") % run.player_title(player))
 		if health >= previous or landing: continue
 		_name_flashes[player] = 2.0
 		var starts := PackedVector2Array()
@@ -2206,10 +2253,13 @@ func _capture_health_changes() -> void:
 		var viewed := _tournament_battles.viewed_player if is_instance_valid(_tournament_battles) else 0
 		var team := 1 if player == viewed else 0 if player == run.opponent_for(viewed) else -1
 		if team >= 0 and not field.showing_boards() and is_instance_valid(watched) and is_instance_valid(watched.world):
+			var particles := ParticleFx.of(watched.world)
 			for unit: GameUnit in watched.world.unit_rows():
 				if unit.dead or int(unit.get_meta("arena_placement", {}).get("team", -1)) != team: continue
-				var at := field.camera.unproject_position(unit.global_position + Vector3(0, maxf(0.6, unit.figure_radius), 0))
-				if Rect2(Vector2.ZERO, field.size).has_point(at): starts.append(at + field.global_position - global_position)
+				var origin := ParticleFx.godot(particles.cast_point(unit)) + particles.display_origin()
+				var at := field.camera.unproject_position(origin)
+				if Rect2(Vector2.ZERO, field.size).has_point(at):
+					starts.append(_result_volley.get_global_transform_with_canvas().affine_inverse() * (field.get_global_transform_with_canvas() * at))
 		# Standings are rebuilt by this refresh. Resolve the target after the
 		# containers have laid out, rather than retaining a freed button.
 		_show_health_loss.call_deferred(player, previous - health, starts)
@@ -2221,10 +2271,27 @@ func _show_health_loss(player: int, loss: int, starts: PackedVector2Array) -> vo
 	if not is_inside_tree() or session != _health_session or landing or not is_instance_valid(_result_volley): return
 	for button: Button in _standing_rows.find_children("*", "Button", true, false):
 		if int(button.get_meta("board_player", -1)) != player: continue
-		var at := button.get_global_rect().get_center() - global_position
+		var at := _volley_target(player)
 		if not _standings.visible: return
-		_result_volley.present(starts, at, loss, player == 0, _hud.scale.x)
+		_result_volley.present(starts, at, loss, player == 0, _hud.scale.x, _volley_target.bind(player))
 		return
+
+func _volley_target(player: int) -> Vector2:
+	for button: Button in _standing_rows.find_children("*", "Button", true, false):
+		if int(button.get_meta("board_player", -1)) == player:
+			return _result_volley.get_global_transform_with_canvas().affine_inverse() * (button.get_global_transform_with_canvas() * (button.size * 0.5))
+	return Vector2.ZERO
+
+func _update_eliminations(dt: float, covered: bool) -> void:
+	if not covered:
+		_elimination_left = maxf(0.0, _elimination_left - dt)
+		if _elimination_left <= 0 and not _elimination_queue.is_empty():
+			_elimination_notice.text = _elimination_queue.pop_front()
+			_elimination_left = 3.5
+	_elimination_notice.position = _round_banner.position + Vector2(0,82)
+	_elimination_notice.size = Vector2(_round_banner.size.x,0)
+	_elimination_notice.visible = not covered and _elimination_left > 0
+	_elimination_notice.modulate.a = clampf(_elimination_left / 0.3,0,1)
 
 func _update_name_flashes(dt: float) -> void:
 	for player in _name_flashes.keys():
@@ -2234,9 +2301,9 @@ func _update_name_flashes(dt: float) -> void:
 		if not button.has_meta("board_player"): continue
 		var player := int(button.get_meta("board_player"))
 		var flashing := _name_flashes.has(player)
+		var color := _standing_color(player)
 		if flashing:
 			var pulse := 0.65 + 0.35 * absf(sin(float(_name_flashes[player]) * 9.0))
-			_standing_ink(button, ArenaCreatureCard.SNOW_INK.lerp(Color("ff6e69"), pulse))
-		elif bool(button.get_meta("loss_flash", false)):
-			_standing_ink(button)
+			color = color.lerp(Color("ff6e69"), pulse)
+		if button.get_theme_color("font_color") != color: _standing_ink(button,color)
 		button.set_meta("loss_flash", flashing)

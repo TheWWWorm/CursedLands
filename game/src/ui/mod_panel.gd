@@ -272,6 +272,8 @@ func _mods_page() -> void:
 			var section := card(_body)
 			_label(RemakeText.t(item.title) + "  " + item.version, section)
 			make_label(item.description, section, true)
+			if OS.has_feature("android") and item.format == "resource-7z":
+				make_label(ModCatalog.ANDROID_INSTALL_NOTE, section, true)
 			var actions := HFlowContainer.new()
 			actions.add_theme_constant_override("h_separation", 12)
 			section.add_child(actions)

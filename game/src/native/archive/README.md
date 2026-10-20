@@ -4,9 +4,10 @@
 execute archives, installers, DLLs or scripts. The wrapper uses Godot file I/O
 so Unicode application-data paths work on every supported native platform.
 
-The release catalogue enables the HD Lands download on Windows and Linux.
-Android remains disabled until the solid decoder and HD rendering have been
-qualified on-device; the Android library is retained for that qualification.
+The catalogue enables the HD Lands download on Windows, Linux and Android
+when the native installer is present. Android uses the bundled arm64 library
+and app-private storage. The download card explains the temporary RAM use
+and asks the player to keep the app open until installation finishes.
 
 The bundled decoder is the unmodified C decoding subset of Igor Pavlov's
 [LZMA SDK 26.04](https://www.7-zip.org/sdk.html), in the public domain. Its source

@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 22:17:11 +2373ms] session 4d5fc47a37c1: 1.18.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_CREATURE_FEEDBACK 65 checks; failures=[]
+[trace 22:17:11 +2753ms] clean exit

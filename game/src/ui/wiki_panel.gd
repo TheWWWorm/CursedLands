@@ -80,6 +80,8 @@ var _base_html := ""
 var _map_filters: HFlowContainer
 var _map_pins: Array = []
 var _map_kinds := {"exit":true,"quest":true,"inhabitant":false}
+var _map_checks := {}
+var _map_search: LineEdit
 var _import_text: LineEdit
 var _import_toggle: Button
 var _action_status: Label
@@ -165,7 +167,17 @@ func _ready() -> void:
 	_preview.scene_requested.connect(func(): _unavailable.visible = not _source.read(_preview.load_scene))
 	_map_filters=HFlowContainer.new();_preview_box.add_child(_map_filters)
 	for pair: Array in [["exit","Exits"],["quest","Quest areas"],["inhabitant","Creatures"]]:
-		var check := CheckButton.new();check.text=RemakeText.t(pair[1]);check.button_pressed=_map_kinds[pair[0]];check.tooltip_text=RemakeText.t("Show authored map markers. Quest and creature positions may reveal spoilers.");check.toggled.connect(func(on):_map_kinds[pair[0]]=on;_preview.set_pins(_map_pins.filter(func(pin):return _map_kinds.get(pin.kind,false))));_map_filters.add_child(check)
+		var check := CheckButton.new();check.text=RemakeText.t(pair[1]);check.button_pressed=_map_kinds[pair[0]];check.tooltip_text=RemakeText.t("Show authored map markers. Quest and creature positions may reveal spoilers.");check.toggled.connect(func(on):_map_kinds[pair[0]]=on;_refresh_map_pins());_map_filters.add_child(check)
+		_map_checks[pair[0]]=check
+	_map_search=LineEdit.new();_map_search.placeholder_text=RemakeText.t("Filter creatures by name…");_map_search.clear_button_enabled=true
+	_map_search.tooltip_text=RemakeText.t("Filter creature markers by their translated names. Exits and quest markers stay visible.")
+	_map_search.text_changed.connect(func(value):
+		if not value.strip_edges().is_empty():
+			_map_kinds.inhabitant=true
+			(_map_checks.inhabitant as CheckButton).set_pressed_no_signal(true)
+		if _history_at >= 0: _history[_history_at].map_filter=value
+		_refresh_map_pins())
+	_preview_box.add_child(_map_search)
 	var controls := HBoxContainer.new();controls.alignment=BoxContainer.ALIGNMENT_CENTER;_preview_box.add_child(controls)
 	_rotate_buttons.append(_button(controls,"",func():_preview.turn_by(-PI/6),RemakeText.t("Rotate left")));_rotate_buttons.append(_button(controls,"",func():_preview.turn_by(PI/6),RemakeText.t("Rotate right")))
 	_rotate_buttons[0].icon=load("res://icons/wiki/turn-left.svg");_rotate_buttons[1].icon=load("res://icons/wiki/turn-right.svg")
@@ -318,12 +330,18 @@ func navigate(key: String, remember := true, variant := "") -> void:
 
 func _navigate(key: String, remember: bool, variant: String) -> void:
 	if catalog == null or not catalog.entries.has(key): return
+	var highlight := ""
+	if catalog.entries[key].kind == "map":
+		if remember and catalog.entries.get(current, {}).get("kind", "") == "creature":
+			highlight = current
+		elif not remember and _history_at >= 0 and _history[_history_at].key == key:
+			highlight = _history[_history_at].get("highlight", "")
 	if remember:
 		if _history_at >= 0:
 			_history[_history_at].scroll = _article.get_v_scroll_bar().value
 		if _history_at < 0 or key != _history[_history_at].key:
 			_history.resize(_history_at + 1)
-			_history.append({"key": key, "scroll": 0.0, "variant": variant})
+			_history.append({"key": key, "scroll": 0.0, "variant": variant, "highlight": highlight})
 			if _history.size() > 100: _history.pop_front()
 			_history_at = _history.size() - 1
 	current = key
@@ -366,8 +384,15 @@ func _navigate(key: String, remember: bool, variant: String) -> void:
 	var is_map: bool = page.preview.get("kind", "") == "map"
 	var is_scene: bool = page.preview.get("kind", "") == "scene"
 	_map_filters.visible=is_map
+	_map_search.visible=is_map
+	_map_search.text=String(_history[_history_at].get("map_filter", "")) if not remember and _history_at >= 0 else ""
 	_map_pins=page.pins
-	_preview.set_pins(_map_pins.filter(func(pin): return _map_kinds.get(pin.kind,false)))
+	_preview.map_highlight = highlight if is_map else ""
+	if is_map and not highlight.is_empty():
+		_map_kinds.inhabitant = true
+		(_map_checks.inhabitant as CheckButton).set_pressed_no_signal(true)
+		_narrow_preview = true
+	_refresh_map_pins()
 	_model_title.text = RemakeText.t("Map overview") if is_map else RemakeText.t("Original location scene") if is_scene else RemakeText.t("3D preview")
 	_preview.tooltip_text = RemakeText.t("Scroll to zoom.") if is_scene else RemakeText.t("Drag to pan. Scroll to zoom.") if is_map else RemakeText.t("Drag to rotate. Scroll to zoom. The buttons also work with touch and a controller.")
 	for button: Button in _rotate_buttons: button.visible = not is_map and not is_scene
@@ -395,6 +420,12 @@ func _navigate(key: String, remember: bool, variant: String) -> void:
 	for index in _results.item_count:
 		if _results.get_item_metadata(index) == key: _results.select(index)
 	_layout()
+
+
+func _refresh_map_pins() -> void:
+	var query := _map_search.text.strip_edges().to_lower()
+	_preview.set_pins(_map_pins.filter(func(pin):
+		return _map_kinds.get(pin.kind,false) and (pin.kind != "inhabitant" or query.is_empty() or query in String(pin.title).to_lower())))
 
 
 func history(direction: int) -> void:

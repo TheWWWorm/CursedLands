@@ -20,11 +20,19 @@ extends Interface800
 
 signal closed
 
-const X := 210.0
-const W := 380.0
-const ROW_H := 22.0
-const BTN_W := 70.0
+const X := 60.0
+const W := 680.0
+const ROW_H := 26.0
+const BTN_W := 64.0
 const BTN_H := 20.0
+const PERMISSIONS := {"pause": CoopPermissions.PAUSE, "speed": CoopPermissions.SPEED,
+	"save": CoopPermissions.SAVE, "load": CoopPermissions.LOAD}
+const PERMISSION_LABELS := {"pause": "Pause", "speed": "Speed", "save": "Save", "load": "Load"}
+const PERMISSION_HELP := {
+	"pause": "Allow this player to pause and resume the shared game.",
+	"speed": "Allow this player to choose normal or double speed. Pausing needs separate permission.",
+	"save": "Allow this player to trigger the host's quicksave with F5 or the Save menu.",
+	"load": "Allow this player to trigger the host's quickload with F8 or the Load menu."}
 
 var session: Session
 var _hover := ""
@@ -92,19 +100,25 @@ func rows() -> Array:
 func _layout() -> Dictionary:
 	var th := line_h(2)
 	var list := rows()
-	var top := 300.0 - (th + 16.0 + list.size() * ROW_H + BTN_H + 26.0) * 0.5
-	var y := top + 8.0 + th + 8.0
+	var permissions := session != null and session.lmp.is_empty()
+	var top := 300.0 - (th + 42.0 + list.size() * ROW_H + BTN_H + 26.0) * 0.5
+	var header := top + 8.0 + th + 8.0
+	var y := header + ROW_H
 	var btn := {}
 	var lines := []
 	for r: Array in list:
 		lines.append([r, y])
 		if r[0] != session.host_player_id():
+			if permissions:
+				for i in PERMISSIONS.size():
+					btn["%s:%d" % [PERMISSIONS.keys()[i], r[0]]] = Rect2(X + 246 + i * 68, y + 1, 64, BTN_H)
 			btn["kick:%d" % r[0]] = Rect2(X + W - 10.0 - BTN_W * 2.0 - 6.0, y + 1.0, BTN_W, BTN_H)
 			btn["ban:%d" % r[0]] = Rect2(X + W - 10.0 - BTN_W, y + 1.0, BTN_W, BTN_H)
 		y += ROW_H
 	y += 8.0
 	btn["close"] = Rect2(X + (W - BTN_W * 1.4) * 0.5, y, BTN_W * 1.4, BTN_H)
-	return {"top": top, "th": th, "lines": lines, "btn": btn, "panel": Rect2(X, top, W, y + BTN_H + 8.0 - top)}
+	return {"top": top, "th": th, "header": header, "permissions": permissions,
+		"lines": lines, "btn": btn, "panel": Rect2(X, top, W, y + BTN_H + 8.0 - top)}
 
 
 func _draw() -> void:
@@ -115,11 +129,19 @@ func _draw() -> void:
 	panel(l.panel)
 	text_block(Rect2(X + 10.0, l.top + 8.0, W - 20.0, l.th), RemakeText.t("Players"), 2,
 		Interface800.colorref(0x31b3ff), HORIZONTAL_ALIGNMENT_CENTER)
+	if l.permissions:
+		for i in PERMISSIONS.size():
+			var label := RemakeText.t(PERMISSION_LABELS[PERMISSIONS.keys()[i]])
+			text_vc(Rect2(X + 246 + i * 68, l.header, 64, ROW_H),
+				label, 0 if text_width(label, 1) > 64 else 1, TEXT, HORIZONTAL_ALIGNMENT_CENTER)
 	for e: Array in l.lines:
 		var r: Array = e[0]
 		var y: float = e[1]
-		text_vc(Rect2(X + 12.0, y, 150.0, ROW_H), r[1], 1, r[2], HORIZONTAL_ALIGNMENT_LEFT)
-		text_vc(Rect2(X + 162.0, y, 60.0, ROW_H), r[3], 1, GREY, HORIZONTAL_ALIGNMENT_RIGHT)
+		text_vc(Rect2(X + 12.0, y, 158.0, ROW_H), r[1], 1, r[2], HORIZONTAL_ALIGNMENT_LEFT, true)
+		text_vc(Rect2(X + 174.0, y, 58.0, ROW_H), r[3], 1, GREY, HORIZONTAL_ALIGNMENT_RIGHT)
+		if l.permissions and r[0] == session.host_player_id():
+			for i in PERMISSIONS.size():
+				text_vc(Rect2(X + 246 + i * 68, y, 64, ROW_H), RemakeText.t("On"), 1, GREY, HORIZONTAL_ALIGNMENT_CENTER)
 	for b: String in l.btn:
 		var r: Rect2 = l.btn[b]
 		var on := b == _hover
@@ -131,6 +153,11 @@ func _draw() -> void:
 
 
 func _label(b: String) -> String:
+	var kind := b.get_slice(":", 0)
+	if PERMISSIONS.has(kind):
+		var pid := int(b.get_slice(":", 1))
+		var on := session.players.has(pid) and CoopPermissions.allows(session, int(session.players[pid].index), PERMISSIONS[kind])
+		return RemakeText.t("On") if on else RemakeText.t("Off")
 	match b.get_slice(":", 0):
 		"kick": return RemakeText.t("Kick")
 		"ban": return RemakeText.t("Ban")
@@ -147,6 +174,8 @@ func _button_at(at: Vector2) -> String:
 
 
 func _get_tooltip(at: Vector2) -> String:
+	var kind := _button_at(at).get_slice(":", 0)
+	if PERMISSION_HELP.has(kind): return RemakeText.t(PERMISSION_HELP[kind])
 	match _button_at(at).get_slice(":", 0):
 		"kick": return RemakeText.t("Remove this player from the game. Their hero stays with the party under the computer's control until they join again.")
 		"ban": return RemakeText.t("Remove this player and refuse their return until you stop hosting.")
@@ -176,6 +205,14 @@ func press(b: String) -> void:
 	var pid := int(b.get_slice(":", 1))
 	var ban := b.begins_with("ban:")
 	if session == null or not session.players.has(pid) or pid == session.host_player_id():
+		return
+	if not session.can_manage_game(): return
+	var kind := b.get_slice(":", 0)
+	if PERMISSIONS.has(kind):
+		var bit: int = PERMISSIONS[kind]
+		session.set_player_permission(pid, bit, not CoopPermissions.allows(session, int(session.players[pid].index), bit))
+		sound("messbox\\ok")
+		queue_redraw()
 		return
 	sound("messbox\\ok")
 	var who := String(session.players[pid].name)

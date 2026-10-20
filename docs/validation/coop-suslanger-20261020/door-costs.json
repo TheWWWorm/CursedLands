@@ -1,0 +1,156 @@
+{
+  "unit": "microseconds",
+  "measurement": "headless CPU; not FPS",
+  "before": [
+    {
+      "object": 150158,
+      "state": 1.0,
+      "parts": {
+        "footprint": 599,
+        "labels": 27898,
+        "region": 40718
+      },
+      "paths": [
+        127617,
+        12615,
+        24221,
+        52763,
+        12368,
+        11891,
+        11934
+      ],
+      "update": 41434
+    },
+    {
+      "object": 150158,
+      "state": 0.0,
+      "parts": {
+        "footprint": 561,
+        "labels": 23183,
+        "region": 34347
+      },
+      "paths": [
+        117952,
+        13055,
+        24921,
+        52891,
+        12278,
+        12111,
+        12219
+      ],
+      "update": 35047
+    },
+    {
+      "object": 46296,
+      "state": 1.0,
+      "parts": {
+        "footprint": 562
+      },
+      "paths": [
+        196,
+        205,
+        206,
+        247,
+        214,
+        201,
+        225
+      ],
+      "update": 584
+    },
+    {
+      "object": 46296,
+      "state": 0.0,
+      "parts": {
+        "footprint": 509,
+        "labels": 23120,
+        "region": 35411
+      },
+      "paths": [
+        117584,
+        11949,
+        24919,
+        54471,
+        12259,
+        11644,
+        12515
+      ],
+      "update": 36019
+    }
+  ],
+  "after": [
+    {
+      "object": 150158,
+      "state": 1.0,
+      "parts": {
+        "footprint": 588,
+        "labels": 28271,
+        "region": 45495
+      },
+      "paths": [
+        16617,
+        9643,
+        8226,
+        13967,
+        12048,
+        11502,
+        11849
+      ],
+      "update": 46200
+    },
+    {
+      "object": 150158,
+      "state": 0.0,
+      "parts": {
+        "footprint": 565,
+        "labels": 23442,
+        "region": 38477
+      },
+      "paths": [
+        10271,
+        9725,
+        8374,
+        14311,
+        12088,
+        11706,
+        12199
+      ],
+      "update": 39171
+    },
+    {
+      "object": 46296,
+      "state": 1.0,
+      "parts": {
+        "footprint": 564
+      },
+      "paths": [
+        192,
+        202,
+        198,
+        244,
+        225,
+        204,
+        219
+      ],
+      "update": 587
+    },
+    {
+      "object": 46296,
+      "state": 0.0,
+      "parts": {
+        "footprint": 523,
+        "labels": 23107,
+        "region": 39071
+      },
+      "paths": [
+        10708,
+        9629,
+        8333,
+        14959,
+        12046,
+        11529,
+        12160
+      ],
+      "update": 39694
+    }
+  ]
+}

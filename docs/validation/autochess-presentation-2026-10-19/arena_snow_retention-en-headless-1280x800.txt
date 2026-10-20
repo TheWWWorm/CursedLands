@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 22:17:39 +2293ms] session 7657205efea3: 1.18.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_SNOW_RETENTION 7 checks; failures=0
+[trace 22:17:40 +2600ms] clean exit

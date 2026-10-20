@@ -17,6 +17,8 @@ func prepare() -> void:
 
 func _process(dt: float) -> void:
 	_update_death_marks(dt)
+	if rendered and is_instance_valid(world) and phase != Phase.PAUSED and not formation_motion.paused:
+		_update_corpse_falls(dt)
 	if phase == Phase.FINISHED:
 		_finish_effects(dt)
 		settle_remaining = maxf(0.0, settle_remaining - dt)

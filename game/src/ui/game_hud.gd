@@ -816,8 +816,8 @@ func _show_game_over(event: Dictionary = {}) -> void:
 			_on_esc_board("exit"))
 
 
-## Remake co-op has one save owner. A dead party can wait, hide this notice,
-## or leave; only the host gets Load. A host load always dismisses it.
+## Remake co-op has one save owner. Guests with load permission can trigger
+## that owner's quickload. A shared load always dismisses this notice.
 func _show_coop_game_over(event: Dictionary = {}) -> void:
 	if is_instance_valid(_death_notice) and _death_notice.visible:
 		return
@@ -827,13 +827,13 @@ func _show_coop_game_over(event: Dictionary = {}) -> void:
 		_death_notice.name = "DeathNotice"
 		_death_notice.chosen.connect(_on_death_notice)
 		_add_ui(_death_notice)
-	_death_notice.allow_load = game.session.can_manage_game()
+	_death_notice.allow_load = game.session.can_quick_save_load(false)
 	# LiA can fail because a required companion died while other heroes
 	# remain alive. Only a host reload clears that authored failure.
 	_death_notice.still_dead = Callable() if event.get("scripted", false) else game.session.all_party_heroes_dead
 	_death_notice.title = GameData.text("string " + String(event.get("title", "game_over"))).strip_edges()
 	_death_notice.message = GameData.text("string " + String(event.get("text", "game_over_msg"))).strip_edges()
-	_death_notice.hint = "" if game.session.can_manage_game() else RemakeText.t("Waiting for the host to load the game.")
+	_death_notice.hint = "" if game.session.can_quick_save_load(false) else RemakeText.t("Waiting for the host to load the game.")
 	_death_notice.visible = true
 	_death_notice.queue_redraw()
 
@@ -1178,8 +1178,8 @@ func _on_esc_board(action: String) -> void:
 			# Remake (gamepad, Y / X held in the Esc menu): the quick save
 			# keys' actions (Game._key_action), the menu closed first; the
 			# save's picture is the frame under the menu.
-			if not _quick_ok():
-				log_msg(RemakeText.t("Only the host can save") if action == "quicksave" else RemakeText.t("Only the host can load"))
+			if not _quick_ok(action == "quicksave"):
+				log_msg(RemakeText.t("The host has not allowed you to trigger quicksave.") if action == "quicksave" else RemakeText.t("The host has not allowed you to trigger quickload."))
 				return
 			var frame := _esc_frame
 			_close_menu()
@@ -1192,13 +1192,13 @@ func _on_esc_board(action: String) -> void:
 			_options.open(_esc_frame, true)
 		"save":
 			if not game.session.can_manage_game():
-				log_msg(RemakeText.t("Only the host can save"))
+				_on_esc_board("quicksave")
 				return
 			_menu.visible = false
 			_save_load.open(true, _esc_frame, true, game.session.fresh_save_entry(_esc_frame))
 		"load":
 			if not game.session.can_manage_game():
-				log_msg(RemakeText.t("Only the host can load"))
+				_on_esc_board("quickload")
 				return
 			_menu.visible = false
 			_save_load.open(false, _esc_frame, true)
@@ -1212,17 +1212,16 @@ func _on_esc_board(action: String) -> void:
 
 
 ## Quick save / load from the Esc menu: the host of a game with saves.
-func _quick_ok() -> bool:
-	return game.session.can_manage_game() and game.session.lmp.is_empty()
+func _quick_ok(save := true) -> bool:
+	return game.session.can_quick_save_load(save)
 
 
 func _draw_esc_hints() -> void:
 	var k := _esc_hints.size.y / 600.0
 	var A := PadInput.button_of("interact")
-	var on := _quick_ok()
 	PadPrompts.draw_hints(_esc_hints, [[A, RemakeText.t("Select")], [PadInput.button_of("cancel"), RemakeText.t("Resume")],
-		[PadInput.button_of("pause"), OptionsPanel._t("string action_quicksave", "Quick save"), on],
-		[PadInput.button_of("context"), "%s (%s)" % [OptionsPanel._t("string action_quickload", "Quick load"), RemakeText.t("hold")], on]],
+		[PadInput.button_of("pause"), OptionsPanel._t("string action_quicksave", "Quick save"), _quick_ok(true)],
+		[PadInput.button_of("context"), "%s (%s)" % [OptionsPanel._t("string action_quickload", "Quick load"), RemakeText.t("hold")], _quick_ok(false)]],
 		Vector2(_esc_hints.size.x * 0.5, _esc_hints.size.y - 14.0 * k), k)
 
 

@@ -13,6 +13,7 @@ const SUBDIV := 16
 const DEPTH := 0.30 # maximum loose-snow depth; see the terrain material profiles
 const MAX_SECTORS := 8
 const MAX_TILES := 128
+const ARENA_MAX_TILES := 256 # The complete clearing and its feathered footprints.
 const MAX_STEPS := 384 # recent-contact log; the persistent field survives eviction
 const MAX_WALKERS := 1024 # separate foot identities, including multi-legged units
 const LINK_TIME := 8.0 # slow gaits; idle/death explicitly end the contact stream
@@ -233,6 +234,11 @@ func _add_mark(mark: Dictionary) -> void:
 			if rec.is_empty():
 				continue
 			var ids := _mark_tiles(mark, key)
+			if terrain is ArenaWinterTerrain:
+				# The entire playable clearing plus its 2.5 m shoulders fits in
+				# this fixed 16x16 tile window. Preserve every admitted imprint.
+				ids = PackedInt32Array(Array(ids).filter(func(id):return Rect2i(8,8,16,16).has_point(key*16+Vector2i(id%16,id/16))))
+				if ids.is_empty(): continue
 			var needed := 0
 			var installed: Dictionary = field._dense_sources.get(key,{})
 			for id: int in ids:
@@ -272,7 +278,8 @@ static func _tile_ids(p: Vector2, extent: Vector2, key: Vector2i) -> PackedInt32
 
 
 func _make_room(keep: Vector2i, needed: int = 1) -> void:
-	while _reserved_tile_count() + needed > MAX_TILES and sectors.size() > 1:
+	var limit := ARENA_MAX_TILES if terrain is ArenaWinterTerrain else MAX_TILES
+	while _reserved_tile_count() + needed > limit and sectors.size() > 1:
 		var oldest := keep
 		var time := INF
 		for key: Vector2i in sectors:
@@ -280,7 +287,7 @@ func _make_room(keep: Vector2i, needed: int = 1) -> void:
 				oldest = key
 				time = sectors[key].last
 		_restore(oldest)
-	if _reserved_tile_count() + needed > MAX_TILES:
+	if _reserved_tile_count() + needed > limit:
 		# A very long walk within a single sector also has a strict ceiling.
 		# Discard its old tracks as a group; the next footfall starts afresh.
 		var rec: Dictionary = sectors[keep]

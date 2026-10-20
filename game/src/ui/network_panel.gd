@@ -125,6 +125,7 @@ var _start_slots: Array = [""]
 var _start_titles := {}
 var _setup_button: Button
 var _save_choice: ScrollOptionButton
+var _coop_settings: OptionsPanel
 
 
 func _ready() -> void:
@@ -335,7 +336,7 @@ func _mode_desc(p: int) -> String:
 func _page_desc() -> String:
 	match page:
 		MODES: return RemakeText.t("Play Lost in Astral together. Every player needs the expansion and the same remake version.") if campaign_only else RemakeText.t("Choose what you want to play. Every player needs their own copy of Evil Islands.")
-		HOST_COOP: return RemakeText.t("You lead the story as %s; friends join with their own hero. Only the host can save.") % CampaignState.hero_name()
+		HOST_COOP: return RemakeText.t("You lead the story as %s; friends join with their own hero. Set guest permissions in Co-op settings.") % CampaignState.hero_name()
 		HOST_LMP: return RemakeText.t("The original game's multiplayer: every player has a network character, quests are taken at the base and played in their own zone. There is no saving; characters keep what they earn.")
 		JOIN_COOP: return RemakeText.t("Join a friend's campaign: you play in the host's world with your own hero.")
 		JOIN_LMP: return RemakeText.t("Join a friend's multiplayer game with your network character.")
@@ -468,7 +469,7 @@ func _rebuild_save_choices() -> void:
 
 func _sync_save_choice() -> void:
 	if _save_choice == null: return
-	_save_choice.visible = page in [HOST_COOP, JOIN_COOP] and not (_internet and _internet.visible)
+	_save_choice.visible = page in [HOST_COOP, JOIN_COOP] and not (_internet and _internet.visible) and not is_instance_valid(_coop_settings)
 	if not _save_choice.visible:
 		_save_choice.get_popup().hide()
 		return
@@ -538,6 +539,8 @@ func _status_text() -> String:
 
 
 func _get_tooltip(at: Vector2) -> String:
+	if _hit(to800(at)) == "coop_settings":
+		return RemakeText.t("Choose guest pause, speed, quicksave and quickload permissions for new campaigns. Saved campaigns restore their own permissions.")
 	var p := to800(at)
 	if STATUS_RECT.has_point(p):
 		return _status_text()
@@ -552,7 +555,7 @@ func _get_tooltip(at: Vector2) -> String:
 
 func _draw() -> void:
 	_targets.clear()
-	if _internet and _internet.visible:
+	if (_internet and _internet.visible) or is_instance_valid(_coop_settings):
 		return
 	# Connection and router messages share a bounded, wrapped area above the
 	# frame. Long router diagnostics must not escape the window or cover it.
@@ -564,6 +567,8 @@ func _draw() -> void:
 	_draw_buttons()
 	if page in [HOST_COOP, HOST_LMP, JOIN_COOP, JOIN_LMP]:
 		_plate("internet", Rect2(620, 506, 120, 19), RemakeText.t("Internet games"), not joining)
+	if page == HOST_COOP:
+		_plate("coop_settings", Rect2(100, 506, 200, 19), RemakeText.t("Co-op settings…"))
 	_draw_pad_glyphs()
 
 
@@ -1327,6 +1332,8 @@ func _gui_input(e: InputEvent) -> void:
 		go_back()
 	elif h == "internet" and not joining:
 		_internet.open(page in [HOST_COOP, HOST_LMP], _web(), _dim.texture.get_image() if _dim.texture else null)
+	elif h == "coop_settings":
+		open_coop_settings()
 	elif h.begins_with("sort:"):
 		_sort_by(h.trim_prefix("sort:").to_int())
 	elif h.begins_with("mode:"):
@@ -1401,7 +1408,7 @@ func _gui_input(e: InputEvent) -> void:
 
 
 func _unhandled_key_input(e: InputEvent) -> void:
-	if not is_visible_in_tree() or (_internet and _internet.visible) or not (e is InputEventKey) or not e.pressed:
+	if not is_visible_in_tree() or (_internet and _internet.visible) or is_instance_valid(_coop_settings) or not (e is InputEventKey) or not e.pressed:
 		return
 	var k := e as InputEventKey
 	if k.keycode == KEY_V and (k.ctrl_pressed or k.meta_pressed):
@@ -1530,6 +1537,24 @@ func pad_targets() -> Array:
 			continue
 		out.append({"rect": pad_rect(_targets[id]), "id": id})
 	return out
+
+
+func open_coop_settings() -> void:
+	if is_instance_valid(_coop_settings): return
+	_coop_settings = OptionsPanel.new()
+	add_child(_coop_settings)
+	_setup_button.visible = false
+	_save_choice.visible = false
+	_coop_settings.closed.connect(func():
+		_coop_settings.queue_free()
+		_coop_settings = null
+		_setup_button.visible = true
+		_sync_save_choice()
+		grab_focus()
+		queue_redraw())
+	_coop_settings.open(_dim.texture.get_image() if _dim.texture else null)
+	_coop_settings._show_group(OptionsPanel.COOP_GROUP)
+	queue_redraw()
 
 
 ## Where the D-pad starts: the selected choice or row.

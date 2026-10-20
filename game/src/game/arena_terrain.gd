@@ -33,12 +33,9 @@ static func create(rendered := true) -> EITerrain:
 				for x in 33:
 					var gx := sx * 32 + x
 					var gy := sy * 32 + y
-					var rim := maxf(absf(gx - 32), absf(gy - 32))
 					# A flat playable clearing, framed by rolling drifts rather than
 					# a straight square berm. Never change footing inside the field.
-					var edge := maxf(0, rim - 15.5)
-					var drift := 0.65 + 0.25 * sin(gx * 0.31 + gy * 0.17) + 0.10 * cos(gy * 0.55)
-					var height := minf(3.2, edge * edge * 0.032 * drift)
+					var height := snow_height(gx, gy)
 					var offset := 5 + (y * 33 + x) * 8
 					data.encode_u16(offset + 2, int(height / 8.0 * 65535))
 					data.encode_u32(offset + 4, (1000 << 22) | (1000 << 11) | 1000)
@@ -59,14 +56,20 @@ static func create(rendered := true) -> EITerrain:
 		ground._load_atlases()
 		ground._build(archive)
 		ArenaGroundDetails.install(ground)
-		# Fade the distant woodland into the arena's dark backdrop. The native
-		# campaign profile is too broad for this compact, overhead field.
-		Gfx.set_border(ground.size_ei(), 8.0)
+		# The rendered snow surround continues beyond the courtyard boundary.
+		Gfx.set_border(ground.size_ei(), 0.0)
 	else:
 		ground.water_base = ground.water.duplicate()
 		ground.surface.fill(0)
 	ground.set_process(false)
 	return ground
+
+
+static func snow_height(x: float, y: float) -> float:
+	var rim := maxf(absf(x - 32), absf(y - 32))
+	var edge := maxf(0, rim - 15.5)
+	var drift := 0.65 + 0.25 * sin(x * 0.31 + y * 0.17) + 0.10 * cos(y * 0.55)
+	return minf(3.2, edge * edge * 0.032 * drift)
 
 
 static func scenery(ground: EITerrain, parent: Node3D) -> Array[Node3D]:

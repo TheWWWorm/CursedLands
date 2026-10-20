@@ -1,0 +1,16 @@
+{
+  "source_files_and_rebuilt_helpers": {
+    "game/src/native/source/nav_kernel.cpp": "914e905917cf8c7c8c6ccc50586549f603b9d6fbcb854b23e3126524994047c8",
+    "game/src/native/source/nav_topology.h": "434f5954da4ba4a231a2dd12b672b3132ff4ebba4d4f857ad4db3bd9cced5aeb",
+    "game/src/native/bin/libterrain_search.so": "82af005d9eeaf9da64c16cac681d65d9cd00757347e6fbef5e0595be83099f48",
+    "game/src/native/bin/libterrain_search.dll": "5d9e2dfbbf3f3b10836168dc4d7cb5084c0233d90b2d820bda04325b5bb5d989",
+    "game/src/native/bin/libterrain_search_android.so": "b856cf628f85a7a08807037b1da8cbd73ea2e0ba7db072572ece3ac36da8bc44"
+  },
+  "qualified_runtime": [
+    "Linux x86_64",
+    "Windows x86_64 under Wine"
+  ],
+  "compile_only": [
+    "Android arm64"
+  ]
+}

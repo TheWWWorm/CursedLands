@@ -3,9 +3,9 @@ extends ArenaField
 signal board_chosen(player: int)
 const OVERVIEW_FRIEND := preload("res://assets/arena/overview_friend.svg")
 const OVERVIEW_ENEMY := preload("res://assets/arena/overview_enemy.svg")
+const DEFAULT_YAW := -PI / 6
 var evolution_pulses := {}
 var tournament: ArenaTournamentBattles
-var _arena_fog := Vector2(90, 100)
 var _board_headers := {}
 
 
@@ -48,6 +48,7 @@ var _right_orbit := false
 var _right_dragged := false
 var _right_distance := Vector2.ZERO
 var _guide_ground: ArenaWinterTerrain
+var _snow_surround: ArenaSnowSurround
 
 
 func _build_stage() -> void:
@@ -60,7 +61,7 @@ func _build_stage() -> void:
 	numeric_health = true
 	resized.connect(_update_camera)
 	zoom = 14.5
-	yaw = -PI / 2
+	yaw = DEFAULT_YAW
 	# Keep the board inside the depth range even at the highest orbit tilt.
 	camera.near = 0.5
 	camera.far = 90.0
@@ -99,10 +100,14 @@ func _build_stage() -> void:
 	sun.light_color = daylight
 	# Snow-colored fog hides the map edge without a black frame around play.
 	Gfx.set_fog_palette(Color("aebcc9"), Color("aebcc9"), Gfx.fog_depth)
-	_arena_fog = Gfx.fog_depth
 	environment.environment.fog_light_color = Color("aebcc9")
 	GameData.options_changed.connect(_apply_presentation)
 	_apply_presentation()
+	_snow_surround = ArenaSnowSurround.new()
+	_snow_surround.name = "SnowSurround"
+	_snow_surround.hide()
+	stage.add_child(_snow_surround)
+	_snow_surround.set_overview(false)
 
 
 func _apply_presentation() -> void:
@@ -116,7 +121,7 @@ func _apply_presentation() -> void:
 
 func reset_camera() -> void:
 	stop_camera_motion()
-	yaw = -PI / 2
+	yaw = DEFAULT_YAW
 	pitch_offset = 0.0
 	pan_offset = Vector2.ZERO
 	zoom = 14.5
@@ -210,6 +215,7 @@ func _update_deployment_guide() -> void:
 	if ground != _guide_ground:
 		if is_instance_valid(_guide_ground): _guide_ground.set_deployment_guide(0.0)
 		_guide_ground = ground
+		if is_instance_valid(ground): _snow_surround.bind(ground)
 	if not is_instance_valid(_guide_ground): return
 	var preparing := show_markers and not showing_boards() and match_state.phase == ArenaMatch.Phase.DEPLOY
 	_guide_ground.set_deployment_guide((0.8 if ghost_id.is_empty() else 1.0) if preparing else 0.0)
@@ -239,6 +245,7 @@ func _draw_overlay() -> void:
 
 
 func _update_camera() -> void:
+	if is_instance_valid(_snow_surround): _snow_surround.set_overview(showing_boards())
 	if camera and showing_boards():
 		camera.far = 300
 		camera.position = Vector3(96, 160, -96)
@@ -250,11 +257,12 @@ func _update_camera() -> void:
 	var board := match_state.bounds() if match_state else ArenaTerrain.PLAY_AREA
 	var point := board.get_center()
 	var center := Vector3(point.x + pan_offset.x, 0, -point.y - pan_offset.y)
-	# A shallower isometric view needs less vertical ground span, so figures
-	# are larger while the full battlefield still fits between the HUD rows.
+	# Look diagonally across the approach so front and rear ranks separate.
+	# The starting tilt and height are retained; only the horizontal orbit changes.
 	var angle := clampf(deg_to_rad(34.0) + pitch_offset, deg_to_rad(18.0), deg_to_rad(75.0))
 	var direction := Vector3(sin(yaw) * cos(angle), sin(angle), cos(yaw) * cos(angle))
-	camera.position = center + direction * 72.0
+	var distance := 72.0 * maxf(1.0, zoom / 14.5)
+	camera.position = center + direction * distance
 	camera.look_at(center)
 	# Fit the complete playable board and tall figures into the space between
 	# shelf, reserves and side panels. The frame is stable as units move; zoom,
@@ -274,8 +282,16 @@ func _update_camera() -> void:
 	var pixel_scale := size.y / camera.size
 	var shift := (size * 0.5 - safe.get_center()) / pixel_scale + (low + high) * 0.5
 	camera.position += camera.basis.x * shift.x - camera.basis.y * shift.y
-	camera.far = 150.0
-	Gfx.set_fog_palette(Color("aebcc9"), Color("aebcc9"), _arena_fog + Vector2.ONE * 20.0)
+	# HUD centering used to alter height when yaw changed the fitted width.
+	# Slide along the orthographic view ray to retain the old starting height
+	# exactly, without moving the board in the image or changing its zoom.
+	var reference_span := Vector2(board.size.y, board.size.x * sin(angle) + 4.5 * cos(angle))
+	var reference_size := maxf(reference_span.x * size.y / safe.size.x, reference_span.y * size.y / safe.size.y) * zoom / 14.5
+	var reference_shift := (size.y * 0.5 - safe.get_center().y) * reference_size / size.y - 2.25 * cos(angle)
+	var height := distance * sin(angle) - cos(angle) * reference_shift
+	camera.position += direction * ((height - camera.position.y) / direction.y)
+	camera.far = maxf(150.0, distance + camera.size / tan(angle) + 32.0)
+	Gfx.set_fog_palette(Color("aebcc9"), Color("aebcc9"), Vector2(300, 420))
 
 
 func battle_screen_rect() -> Rect2:

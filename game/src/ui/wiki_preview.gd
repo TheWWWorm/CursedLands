@@ -7,6 +7,7 @@ signal article_requested(key: String)
 signal scene_requested
 var eager_scenes := false
 var _pins: Array = []
+var map_highlight := ""
 var item: ItemView
 var creature: Paperdoll
 var map_view: TextureRect
@@ -30,9 +31,10 @@ class MapPin extends Button:
 	var tint := Color("3d6558")
 	var exit := false
 	var angle := 0.0
+	var highlighted := false
 	func _draw() -> void:
 		var centre := size*.5
-		var radius := 14.0 if count>1 else 6.0
+		var radius := 14.0 if count>1 else 9.0 if highlighted else 6.0
 		if exit:
 			var points := PackedVector2Array()
 			for v: Vector2 in [Vector2(0,-14),Vector2(13,9),Vector2(0,4),Vector2(-13,9),Vector2(0,-14)]:points.append(centre+v.rotated(angle))
@@ -40,6 +42,7 @@ class MapPin extends Button:
 		else:
 			draw_circle(centre,radius+2,Color("f4ead2"))
 			draw_circle(centre,radius,tint)
+			if highlighted: draw_arc(centre,radius+5,0,TAU,32,tint,2,true)
 		if has_focus():draw_arc(centre,radius+5,0,TAU,32,Color("d5ae57"),2,true)
 		if count>1:
 			var font := get_theme_font("font")
@@ -331,15 +334,20 @@ func _place_pins() -> void:
 		if not Rect2(-map_view.position-Vector2(16,16),size+Vector2(32,32)).has_point(point):continue
 		var cell := 82.0 if pin.kind=="inhabitant" else 42.0
 		var grid := Vector2i(floori(point.x/cell),floori(point.y/cell))
-		var id := String(pin.kind)+str(grid)
+		# Keep matching creatures separate from ordinary markers in the same
+		# cluster; otherwise a mixed group hides which positions match.
+		var highlighted: bool = pin.kind == "inhabitant" and pin.key == map_highlight
+		var id := String(pin.kind)+str(grid)+str(highlighted)
 		var group: Dictionary=groups.get_or_add(id,{"point":Vector2.ZERO,"pins":[]})
 		group.point+=point;group.pins.append(pin)
 	for group: Dictionary in groups.values():
 		var button := MapPin.new();button.count=group.pins.size();button.size=Vector2(36,36);button.custom_minimum_size=button.size;button.set_meta("map_pin",true)
 		button.exit=group.pins[0].kind=="exit"
+		button.highlighted=group.pins[0].kind=="inhabitant" and group.pins[0].key==map_highlight
+		button.z_index=1 if button.highlighted else 0
 		var location := Vector2(group.pins[0].x,group.pins[0].y)-Vector2(.5,.5)
 		button.angle=(PI if location.y<0 else 0.0) if absf(location.y)>=absf(location.x) else (-PI*.5 if location.x>0 else PI*.5)
-		button.tint=Color("90602d") if group.pins[0].kind=="quest" else Color("315a83") if group.pins[0].kind=="exit" else Color("3d6558")
+		button.tint=Color("b22676") if button.highlighted else Color("90602d") if group.pins[0].kind=="quest" else Color("315a83") if group.pins[0].kind=="exit" else Color("3d6558")
 		for state: String in ["normal","hover","pressed","focus"]:button.add_theme_stylebox_override(state,StyleBoxEmpty.new())
 		var names := PackedStringArray()
 		for pin: Dictionary in group.pins:

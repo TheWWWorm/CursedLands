@@ -68,7 +68,7 @@ func _ready() -> void:
 		w.lever_sys.set_state(DOOR,state,0)
 		check(nav.map_rev > rev,"door changes live map revision "+str(state))
 		var current = nav.native_graph(nav.layer(hero.move_class()))
-		check(current != previous,"door replaces cached graph "+str(state))
+		check(current == previous,"door retains unaffected prepared graph records "+str(state))
 		compare("door "+str(state),pairs)
 		previous = nav.native_graph(nav.layer(hero.move_class()))
 	var blocker: GameUnit = w.units[105543]

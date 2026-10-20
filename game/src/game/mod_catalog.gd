@@ -3,6 +3,7 @@ extends RefCounted
 ## Reviewed, version-pinned downloads. Nothing is fetched when opening the menu.
 ## Add a tested recipe and its original publisher URL here; never infer support
 ## from an archive extension or accept a remote catalog as executable policy.
+const ANDROID_INSTALL_NOTE := "Installation temporarily uses about 0.8 GiB of extra RAM. Keep the app open until it finishes. HD textures also use more memory while playing."
 const ENTRIES := [{
 	"id": "community.hd-lands-textures", "version": "1.5.0",
 	"title": "HD Lands textures", "author": "Atom",
@@ -79,9 +80,7 @@ static func key(item: Dictionary) -> String:
 	return item.id + "@" + item.version
 
 static func unavailable(item: Dictionary) -> String:
-	# The solid archive needs about 0.8 GiB temporary RAM. Keep this entry
-	# unavailable on Android until installation is qualified on-device.
-	if OS.has_feature("web") or OS.has_feature("android"): return "This download is available in the Windows and Linux apps."
+	if OS.has_feature("web"): return "This download is available in the Windows, Linux and Android apps."
 	if item.format == "resource-7z" and not ClassDB.class_exists("ModArchiveExtractor"):
 		return "This build does not include the archive installer."
 	if GameData.campaign_id not in item.campaigns: return "This download is for Cursed Lands."

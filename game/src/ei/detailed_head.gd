@@ -19,9 +19,9 @@ extends RefCounted
 ## one mesh, about 5.7× the body head's size, looking along its +Y (Godot).
 ## It is fitted once per face model, race model and hair to the body's
 ## hd + hair meshes at complexion FIT_C (iterative closest points with a
-## similarity transform: scale, pitch, offset), then stretched per axis
-## with the unit's own hd box, so thin / fat / tall builds keep their head
-## size. It is a child of the "hd" node, so it follows every animation,
+## similarity transform: scale, pitch, offset). NPC fits follow the unit's
+## head box per axis; the protagonist uses uniform scaling so body training
+## does not stretch the portrait face. It is a child of the "hd" node, so it follows every animation,
 ## and SeveredLimb copies it with the rest of the head chain.
 ##
 ## Kept original: units without an interface face (creatures, orcs, most
@@ -78,7 +78,7 @@ static func face_names(proto: Dictionary, race: Dictionary, c: Vector3, hair: in
 ## `head_mesh` is the body's hd mesh at the unit's complexion. Returns the
 ## MeshInstance3D, or null when the face cannot be fitted.
 static func attach(hd: Node3D, names: PackedStringArray, model: Dictionary, mask: String,
-		hair_part: String, head_mesh: Mesh, ui_preview: bool) -> MeshInstance3D:
+		hair_part: String, head_mesh: Mesh, ui_preview: bool, preserve_face := false) -> MeshInstance3D:
 	var fit := _fit(names[0], model, mask, hair_part)
 	if fit.is_empty() or head_mesh == null:
 		return null
@@ -88,6 +88,10 @@ static func attach(hd: Node3D, names: PackedStringArray, model: Dictionary, mask
 		return null
 	# Per-axis stretch from the fitted build's head box to this unit's.
 	var k := box.size / box0.size
+	if preserve_face:
+		# Keep the portrait's aspect ratio. Fit its overall size to the body
+		# without turning strength/dexterity changes into a longer face.
+		k = Vector3.ONE * pow(k.x * k.y * k.z, 1.0 / 3.0)
 	var stretch := Transform3D(Basis.from_scale(k), box.get_center() - box0.get_center() * k)
 	var mi := MeshInstance3D.new()
 	mi.name = "DetailedHead"

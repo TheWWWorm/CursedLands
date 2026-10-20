@@ -132,7 +132,7 @@ const PAD_ACTIONS := {
 	"interact": ["Act / confirm", "Acts on the highlighted target as a left click on it would: attack, loot, talk, use; confirms a spell's target. Held: forced attack."],
 	"cancel": ["Cancel / back", "Cancels a spell, item or aim being targeted, else stops the selected characters. Closes wheels and menus."],
 	"context": ["Target ring", "More actions for the highlighted target: aimed strikes, steal, follow, examine; on open ground: move, run, forced move."],
-	"pause": ["Pause", "Pauses or resumes the game. In co-op only the host changes the shared speed. Held: normal or fast speed."],
+	"pause": ["Pause", "Pauses or resumes the game. In co-op the host assigns pause and speed permissions. Held: normal or fast speed."],
 	"actions": ["Spells and actions wheel", "Spells, stance, Use/Steal and Follow. In an open wheel: the previous page."],
 	"items": ["Items wheel", "The belt and the weapons. In an open wheel: the next page."],
 	"mod": ["Modifier", "Held, it changes other buttons, as Ctrl / Alt on the keyboard: forced attack, forced move, use or cast at once, the unit panel's views."],

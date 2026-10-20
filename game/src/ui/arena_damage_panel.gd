@@ -25,13 +25,15 @@ func _ready() -> void:
 
 func update_damage(battle: ArenaPveMatch, army: Array, maximum_height: float) -> void:
 	if not is_instance_valid(list): return
-	var entries := army.filter(func(entry):return entry.deployed)
+	var report := battle.damage_report(army)
+	var amounts: Dictionary = report.damage
+	var entries: Array = report.army.filter(func(entry):return entry.deployed)
 	entries.sort_custom(func(a,b):
-		var da := float(battle.friendly_damage.get(int(a.uid),0.0))
-		var db := float(battle.friendly_damage.get(int(b.uid),0.0))
+		var da := float(amounts.get(int(a.uid),0.0))
+		var db := float(amounts.get(int(b.uid),0.0))
 		return da > db if not is_equal_approx(da,db) else int(a.uid)<int(b.uid))
 	var top := 1.0
-	for value in battle.friendly_damage.values(): top = maxf(top,float(value))
+	for value in amounts.values(): top = maxf(top,float(value))
 	var live := {}
 	for index in entries.size():
 		var entry: Dictionary = entries[index]
@@ -54,7 +56,7 @@ func update_damage(battle: ArenaPveMatch, army: Array, maximum_height: float) ->
 			bar.add_theme_stylebox_override("fill",ArenaCreatureCard.style(Color("a6c981"),Color.TRANSPARENT,Vector2.ZERO))
 			list.add_child(row); rows[uid]={"row":row,"portrait":portrait,"title":title,"value":value,"stars":stars,"bar":bar}
 		var widgets: Dictionary=rows[uid]
-		var amount := float(battle.friendly_damage.get(uid,0.0))
+		var amount := float(amounts.get(uid,0.0))
 		widgets.title.text = ArenaRules.title(entry.prototype)
 		widgets.value.text = str(roundi(amount))
 		widgets.row.tooltip_text = "%s %s · %s: %d" % [ArenaRules.title(entry.prototype),"★".repeat(int(entry.rank)+1),RemakeText.t("Damage"),roundi(amount)]

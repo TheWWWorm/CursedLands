@@ -1,0 +1,143 @@
+{
+  "archive_sha256": "4889adf6ec34ecef53d1e03b8dd6db49fce2d6b85c00e951cdc56d12453557b0",
+  "checkpoints": [
+    {
+      "slot": "autosave.sav",
+      "zone": "gz1g",
+      "day": 1,
+      "fragment": false,
+      "thief_sack": false,
+      "visited_gz19h": false,
+      "quests": {}
+    },
+    {
+      "slot": "copied-checkpoint",
+      "zone": "bz8k",
+      "day": 84,
+      "fragment": false,
+      "thief_sack": false,
+      "visited_gz19h": false,
+      "quests": {}
+    },
+    {
+      "slot": "recovered-host",
+      "zone": "bz8k",
+      "day": 104,
+      "fragment": false,
+      "thief_sack": false,
+      "visited_gz19h": false,
+      "quests": {}
+    },
+    {
+      "slot": "quick.sav",
+      "zone": "gz18h",
+      "day": 133,
+      "fragment": true,
+      "thief_sack": true,
+      "visited_gz19h": false,
+      "quests": {
+        "q60h": 2,
+        "q61h": 2,
+        "q62h": 2,
+        "q63h": 2,
+        "q65h": 2,
+        "q66h": 2,
+        "q67h": 2,
+        "q70h": 2,
+        "q71h": 1
+      }
+    },
+    {
+      "slot": "save1.sav",
+      "zone": "bz8k",
+      "day": 104,
+      "fragment": false,
+      "thief_sack": false,
+      "visited_gz19h": false,
+      "quests": {}
+    },
+    {
+      "slot": "save2.sav",
+      "zone": "gz12k",
+      "day": 112,
+      "fragment": false,
+      "thief_sack": false,
+      "visited_gz19h": false,
+      "quests": {}
+    },
+    {
+      "slot": "save3.sav",
+      "zone": "gz14k",
+      "day": 114,
+      "fragment": false,
+      "thief_sack": false,
+      "visited_gz19h": false,
+      "quests": {}
+    },
+    {
+      "slot": "save4.sav",
+      "zone": "gz1g",
+      "day": 1,
+      "fragment": false,
+      "thief_sack": false,
+      "visited_gz19h": false,
+      "quests": {}
+    },
+    {
+      "slot": "save5.sav",
+      "zone": "gz1g",
+      "day": 1,
+      "fragment": false,
+      "thief_sack": false,
+      "visited_gz19h": false,
+      "quests": {}
+    },
+    {
+      "slot": "save6.sav",
+      "zone": "gz1g",
+      "day": 1,
+      "fragment": false,
+      "thief_sack": false,
+      "visited_gz19h": false,
+      "quests": {}
+    },
+    {
+      "slot": "save7.sav",
+      "zone": "gz15h",
+      "day": 120,
+      "fragment": false,
+      "thief_sack": false,
+      "visited_gz19h": false,
+      "quests": {
+        "q60h": 1
+      }
+    },
+    {
+      "slot": "save8.sav",
+      "zone": "gz15h",
+      "day": 120,
+      "fragment": false,
+      "thief_sack": false,
+      "visited_gz19h": false,
+      "quests": {
+        "q60h": 1
+      }
+    },
+    {
+      "slot": "save9.sav",
+      "zone": "gz18h",
+      "day": 128,
+      "fragment": false,
+      "thief_sack": false,
+      "visited_gz19h": false,
+      "quests": {
+        "q60h": 2,
+        "q61h": 2,
+        "q62h": 2,
+        "q63h": 2,
+        "q65h": 1,
+        "q66h": 1
+      }
+    }
+  ]
+}

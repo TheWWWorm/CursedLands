@@ -257,12 +257,20 @@ func _ready() -> void:
 	check(host.party_units(0)[0].pos == SAFE,"protagonist remains outside the alarm area")
 	check(guest.pos == INTRUSION and not guest.dead,"position-controlled guest stays alive for predicate inspection")
 	capture("after_intrusion")
+	check(host.state.get_var(0,"q.gz19h.q72h.35")==1,"escape objective stays active while guest remains inside the gate")
+	guest.pos=SAFE+Vector2(0,3);guest.resync_drawn()
+	ticks(45)
+	check(vm.globals.a1.all(func(u):return not u.dead),"escape leaves all eight reinforcement guards alive")
+	check(host.state.get_var(0,"q.gz19h.q72h.35")==2,"original quest continuation completes after the whole party escapes")
+	check(vm.globals.a1.all(func(u):return u.mode_data.get("point",Vector2.INF)!=guest.pos),
+		"pursuit no longer updates sentry orders to the escaped guest's position")
+	capture("after_escape")
 	await done()
 
 func done() -> void:
 	evidence.merge({"checks":checks,"failures":failures,"arrival":arrival,"expected_guard_ids":expected_guards,
 		"renderer":RenderingServer.get_current_rendering_method(),"display":DisplayServer.get_name(),
-		"scope":"Actual original startup, real ENet registration and Session save/reload/reconnect, then disconnect, host-only reload, 25 native ticks, absent save, second host-only reload, 25 native ticks and normal rejoin before real alarm entry. Controlled positions and manual VM ticks, paused AI/combat. No full prison route, physical guard navigation or rendered acceptance."})
+		"scope":"Actual original startup, real ENet registration and Session save/reload/reconnect, absent reload/rejoin, real alarm entry and the original escape objective continuation with surviving guards. Controlled positions and manual VM ticks, paused AI/combat. No full prison route, physical guard navigation or rendered acceptance."})
 	FileAccess.open("user://prison-alarm-late-join.json",FileAccess.WRITE).store_string(JSON.stringify(evidence,"\t")+"\n")
 	print("PRISON_ALARM_LATE_JOIN ",checks," checks ",failures," failures")
 	await finish()

@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 21:58:05 +2333ms] session 83149f5b9ba8: 1.18.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_ELIMINATION_PLACES 12 checks; failures=0
+[trace 21:58:05 +2521ms] clean exit

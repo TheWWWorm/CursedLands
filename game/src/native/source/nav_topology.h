@@ -87,6 +87,42 @@ private:
         return bits;
     }
 public:
+    // A door changes a small cell rectangle. Keep all static routes whose
+    // local search windows cannot intersect that rectangle. Connectivity
+    // labels are global and must be recomputed, but can reuse those windows.
+    bool update_region(const PackedByteArray &p_land, const PackedInt32Array &p_costs,
+                       const PackedInt32Array &p_heights, Rect2i rect) {
+        const int64_t n = int64_t(width) * height;
+        if (!width || p_land.size() != n || p_costs.size() != n || p_heights.size() != n) return false;
+        land = p_land; costs = p_costs; heights = p_heights;
+        if (!topology_ready) {
+            std::fill(block_ready.begin(), block_ready.end(), 0);
+            return true;
+        }
+        const Rect2i changed = rect.grow(1);
+        const int bw = width / 8, bh = height / 8;
+        for (int y = 0; y < bh; ++y) {
+            for (int x = 0; x < bw; ++x) {
+                // Raw edges search 25x25 cells and use neighbouring 9x9
+                // representatives. Extra padding also covers incoming edges.
+                if (!Rect2i(Vector2i(x * 8 - 16, y * 8 - 16), Vector2i(41, 41)).intersects(changed)) continue;
+                const int i = y * bw + x;
+                topology_representatives[i] = Vector2i(-1, -1);
+                topology_connection_bits[i] = 0;
+                block_ready[i] = 0;
+            }
+        }
+        for (auto it = topology_labels.begin(); it != topology_labels.end();) {
+            const auto &[x, y, w, h] = it->first;
+            if (Rect2i(Vector2i(x, y), Vector2i(w, h)).intersects(changed)) it = topology_labels.erase(it);
+            else ++it;
+        }
+        std::fill(topology_components.begin(), topology_components.end(), 0);
+        topology_next_component = 0;
+        topology_seed_cache[0].clear(); topology_seed_cache[1].clear();
+        return true;
+    }
+
     bool configure_topology(const PackedInt32Array &values) {
         reset_topology();
         if (!width || !height || width % 8 || height % 8 || values.is_empty()) return false;

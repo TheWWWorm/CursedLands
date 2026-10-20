@@ -27,7 +27,7 @@ func _draw() -> void:
 	if progress >= 0:
 		draw_arc(center, 24, -PI / 2, TAU - PI / 2, 64, Color("414b46"), 3, true)
 		if progress > 0:
-			draw_arc(center, 24, -PI / 2, -PI / 2 + TAU * clampf(progress, 0, 1), 64, ArenaCreatureCard.GOLD, 3, true)
+			draw_arc(center, 24, -PI / 2, -PI / 2 + TAU * clampf(progress, 0, 1), 64, ArenaCreatureCard.GOLD if not disabled else ArenaCreatureCard.MUTED, 3, true)
 	if emblem:
 		draw_texture_rect(emblem, Rect2(center - Vector2(14, 14), Vector2(28, 28)), false, ink)
 	else:
@@ -38,7 +38,7 @@ func _draw() -> void:
 		draw_circle(badge, 11, ArenaCreatureCard.GOLD if not disabled else Color("8a8060"))
 		draw_arc(badge, 11, 0, TAU, 32, Color("50462e"), 1, true)
 		_centered(str(price), badge + Vector2(0, 5), 14, Color("19211e"))
-	_centered(caption, Vector2(size.x * 0.5, 72), 13, ArenaCreatureCard.PAPER)
+	_centered(caption, Vector2(size.x * 0.5, 72), 13, ink)
 
 
 func _centered(text: String, baseline: Vector2, pixels: int, color: Color) -> void:

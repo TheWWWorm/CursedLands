@@ -67,6 +67,13 @@ func _ready() -> void:
 	check(not ModCatalog.allowed_url("https://s1%2F.storage.yandex.net/a", reviewed.fallback.hosts), "encoded authority is rejected")
 	var transfer := RecordedDownload.new()
 	add_child(transfer)
+	check(transfer.start(reviewed.id).is_empty() and transfer.requests == [reviewed.url], "public download action accepts the supported platform")
+	transfer.cancel()
+	transfer.requests.clear()
+	var campaign := GameData.campaign_id
+	GameData.campaign_id = "lost_in_astral"
+	check(transfer.start(reviewed.id) == "This download is for Cursed Lands." and not transfer.busy and transfer.requests.is_empty(), "unsupported campaign cannot start a download")
+	GameData.campaign_id = campaign
 	check(transfer._begin(reviewed).is_empty() and transfer.requests == [reviewed.url], "Gipat is requested first")
 	check(not transfer._resolving and transfer._http.download_file.ends_with("source.download"), "primary download streams to disk")
 	ModStore.atomic_write(transfer._work.path_join("source.download"), "partial primary".to_utf8_buffer())

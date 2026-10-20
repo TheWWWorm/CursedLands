@@ -22,6 +22,7 @@ static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 				_prison_discovery_checks(ast)
 				_prison_route_checks(ast)
 			preload("res://src/game/script/story_coop_predicates.gd").apply_original(ast,zone)
+			if zone == "gz19h": preload("res://src/game/script/story_guard_escape.gd").apply(ast)
 			if zone == "gz15h": _prison_party_checks(ast)
 		if campaign == CampaignProfile.ORIGINAL and zone == "gz6g":
 			# The amulet dragon has three identical native follow/return

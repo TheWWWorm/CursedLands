@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 21:58:05 +2304ms] session b024d548291a: 1.18.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+DENSE_CAPACITY checks=24 failures=0
+[trace 21:58:06 +2856ms] clean exit

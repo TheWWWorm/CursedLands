@@ -317,6 +317,8 @@ func _rpc_request(serial: int, command: String, data: Dictionary) -> void:
 			result.progress = session.coop.transfer_stats.duplicate()
 		"clock":
 			session.set_coop_clock(int(data.get("sector", -1)))
+		"permission":
+			session.set_player_permission(int(data.get("pid", 0)), int(data.get("permission", 0)), bool(data.get("enabled", false)))
 		"sandbox":
 			result.error = session.sandbox_action(str(data.get("action", "")))
 			result.ok = result.error == ""

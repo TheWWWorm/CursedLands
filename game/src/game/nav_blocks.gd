@@ -111,6 +111,26 @@ func _init(grid, movement_layer) -> void:
 			_native_topology = _terrain_kernel.configure_topology(PackedInt32Array(_cost_lookup))
 	if not _terrain_kernel: _ensure_links()
 
+## Refresh a local obstacle change without discarding distant prepared paths.
+## Older native libraries keep the existing full-rebuild fallback.
+func update_region(rect: Rect2i) -> bool:
+	if not _native_topology or not _terrain_kernel.has_method("update_region"): return false
+	if not _terrain_kernel.update_region(layer.land, layer.cost, nav._hq, rect): return false
+	_land = layer.land; _cost = layer.cost; _heights = nav._hq
+	components.clear(); next_component = 0; components_prepared = false
+	_cell_components.clear(); _neighbour_components.clear(); _single_source.clear()
+	_seed_costs.clear(); _seed_topology.clear()
+	# These scalar caches can be populated by exceptional-start fallbacks.
+	for labels: Dictionary in [_reach_labels, _tile_labels]:
+		for area: Rect2i in labels.keys():
+			if area.intersects(rect.grow(1)): labels.erase(area)
+	if not _links.is_empty():
+		var changed := rect.grow(1).intersection(Rect2i(Vector2i.ZERO, Vector2i(_width, _height)))
+		for y in range(changed.position.y, changed.end.y):
+			for x in range(changed.position.x, changed.end.x): _links[y * _width + x] = -1
+	return true
+
+
 ## The native graph owns these computations. Allocate the large script edge
 ## tables only if a fallback actually needs them (including diagnostic switches).
 func _ensure_links() -> void:

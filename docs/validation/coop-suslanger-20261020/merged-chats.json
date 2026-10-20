@@ -1,0 +1,58 @@
+[
+  {
+    "source": "android-hd-lands-20261019",
+    "base": "ba04fa9ba3854ae231806616b85c239507e4dcd6",
+    "patch_sha256": "8ad51279bcb9a8a8f47b2a1e188360bd5f47b0c91a22625b9abbacd8aa9cdd11",
+    "untracked": [
+      "docs/validation/android-hd-lands-2026-10-19.json"
+    ],
+    "thread_id": "01a155c1-ed72-73a3-8349-feaa152999f3"
+  },
+  {
+    "source": "autochess-snow-camera-20261019",
+    "base": "ba04fa9ba3854ae231806616b85c239507e4dcd6",
+    "patch_sha256": "c7bab3aa9122662561b3e8599db0cd4576f94200c08946a016e46c744c7dea89",
+    "untracked": [
+      "docs/validation/autochess-presentation-2026-10-19/README.md",
+      "docs/validation/autochess-presentation-2026-10-19/arena_camera-en-gl_compatibility-1280x800.txt",
+      "docs/validation/autochess-presentation-2026-10-19/arena_creature_feedback-de-headless-1280x800.txt",
+      "docs/validation/autochess-presentation-2026-10-19/arena_creature_feedback-en-headless-1280x800.txt",
+      "docs/validation/autochess-presentation-2026-10-19/arena_creature_feedback-ru-headless-1280x800.txt",
+      "docs/validation/autochess-presentation-2026-10-19/arena_damage_retention-en-headless-1280x800.txt",
+      "docs/validation/autochess-presentation-2026-10-19/arena_elimination_places-en-headless-1280x800.txt",
+      "docs/validation/autochess-presentation-2026-10-19/arena_online-en-headless-1280x800.txt",
+      "docs/validation/autochess-presentation-2026-10-19/arena_post_battle_ui-de-gl_compatibility-1280x800.txt",
+      "docs/validation/autochess-presentation-2026-10-19/arena_post_battle_ui-en-gl_compatibility-1280x800.txt",
+      "docs/validation/autochess-presentation-2026-10-19/arena_post_battle_ui-ru-gl_compatibility-1280x800.txt",
+      "docs/validation/autochess-presentation-2026-10-19/arena_snow_camera-de-gl_compatibility-1280x800.txt",
+      "docs/validation/autochess-presentation-2026-10-19/arena_snow_camera-en-forward_plus-2560x1440.txt",
+      "docs/validation/autochess-presentation-2026-10-19/arena_snow_camera-en-gl_compatibility-1280x800.txt",
+      "docs/validation/autochess-presentation-2026-10-19/arena_snow_camera-ru-forward_plus-1280x800.txt",
+      "docs/validation/autochess-presentation-2026-10-19/arena_snow_retention-en-headless-1280x800.txt",
+      "docs/validation/autochess-presentation-2026-10-19/arena_standings_results-de-gl_compatibility-1280x800.txt",
+      "docs/validation/autochess-presentation-2026-10-19/arena_standings_results-en-gl_compatibility-1280x800.txt",
+      "docs/validation/autochess-presentation-2026-10-19/arena_standings_results-ru-gl_compatibility-1280x800.txt",
+      "docs/validation/autochess-presentation-2026-10-19/creature_projectile_origins-en-headless-1280x800.txt",
+      "docs/validation/autochess-presentation-2026-10-19/dragon-mouth-release.png",
+      "docs/validation/autochess-presentation-2026-10-19/elimination-de.png",
+      "docs/validation/autochess-presentation-2026-10-19/horror-corpse.png",
+      "docs/validation/autochess-presentation-2026-10-19/horror-fingertips.png",
+      "docs/validation/autochess-presentation-2026-10-19/preview-profile-smoke.txt",
+      "docs/validation/autochess-presentation-2026-10-19/report.json",
+      "docs/validation/autochess-presentation-2026-10-19/result-colors.png",
+      "docs/validation/autochess-presentation-2026-10-19/snow-default.png",
+      "docs/validation/autochess-presentation-2026-10-19/snow-wide.png",
+      "docs/validation/autochess-presentation-2026-10-19/soft_ground_capacity-en-headless-1280x800.txt",
+      "game/src/ui/arena_snow_surround.gd",
+      "game/src/ui/arena_snow_surround.gd.uid",
+      "tools/tests/arena_creature_feedback.gd",
+      "tools/tests/arena_damage_retention.gd",
+      "tools/tests/arena_elimination_places.gd",
+      "tools/tests/arena_post_battle_ui.gd",
+      "tools/tests/arena_snow_camera.gd",
+      "tools/tests/arena_snow_retention.gd",
+      "tools/tests/arena_standings_results.gd"
+    ],
+    "thread_id": "01a155a0-d09b-7b43-9bd4-26674ecaecee"
+  }
+]

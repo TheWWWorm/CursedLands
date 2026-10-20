@@ -297,7 +297,10 @@ func _draw_over() -> void:
 		if _unit:
 			_text(c, Rect2(5, 5, 150, 15), _unit.display_name, TEXT, HORIZONTAL_ALIGNMENT_CENTER, true)
 			match mode:
-				"general": _draw_general(c, _unit)
+				"general":
+					_draw_general(c, _unit)
+					if GameData.option("character_buff_icons") != 0:
+						_draw_buff_icons(c, _unit)
 				"parts":
 					_draw_parts(c, _unit)
 					_draw_general(c, _unit)
@@ -557,6 +560,32 @@ func _draw_effects(c: CanvasItem, u: GameUnit) -> void:
 			c.draw_texture_rect(tex, _r(Rect2(28, 38 + 30 * i, 24, 24)), false)
 		_text(c, Rect2(40, 35 + 30 * i, 115, 15), Spells.title(spell))
 		_text(c, Rect2(40, 50 + 30 * i, 115, 15), str(int(float(u.effect_ticks(code)) / 15.0)))
+
+
+## Shares the panel's original 800x600 coordinates and sliding animation.
+## Keep the whole column between the name and health bars, even with many
+## simultaneous effects. No spell names compete with the character figure.
+func _draw_buff_icons(c: CanvasItem, u: GameUnit) -> void:
+	var names := u.buffs.keys()
+	if names.is_empty(): return
+	var side := minf(24.0, 150.0 / names.size() - 2.0)
+	var font := Interface800.font()
+	var k := _k()
+	for i in names.size():
+		var code := String(names[i])
+		var spell := Spells.parse(Spells.effect_spell(code))
+		var texture := int(spell.proto.get("texture_type", -1))
+		var icon := SpellSlots.icon("spell%04d" % texture) if texture >= 0 else null
+		if icon == null: continue
+		var rect := _r(Rect2(178.0 - side, 28.0 + (side + 2.0) * i, side, side))
+		c.draw_texture_rect(icon, rect, false)
+		var seconds := str(ceili(maxi(0, u.effect_ticks(code)) * GameUnit.TICK))
+		var fs := maxi(6, roundi(minf(12.0, side * 0.5) * k))
+		while fs > 6 and font.get_string_size(seconds, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x > rect.size.x - 2.0 * k:
+			fs -= 1
+		var line := Vector2(rect.position.x, rect.end.y - 2.0 * k)
+		c.draw_string_outline(font, line, seconds, HORIZONTAL_ALIGNMENT_CENTER, rect.size.x, fs, maxi(1, roundi(k)), Color.BLACK)
+		c.draw_string(font, line, seconds, HORIZONTAL_ALIGNMENT_CENTER, rect.size.x, fs, Color.WHITE)
 
 
 func wiki_context() -> Dictionary:

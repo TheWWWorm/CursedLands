@@ -76,6 +76,12 @@ func _ready()->void:
 	for i in 40:runner._draw_step(Engine.time_scale/60.0)
 	check(runner._drawn.distance_to(runner.pos)<.001 and runner.model._current.to_lower().contains("idle"),"2x stop reaches idle at its destination")
 	Engine.time_scale=1
+	runner.action="run";runner.model.act("run");runner._settle_action=""
+	runner.net_view.got(runner.pos,true,0);runner.net_view._speed=4.0
+	runner._sync_transform(0);runner._speed_from=runner.pos
+	row=runner.snapshot();row[1]+=.05;row[4]="idle";row[13]=0.0
+	runner.apply_snapshot(row);runner._draw_step(1.0/60)
+	check(runner._drawn.distance_to(runner.pos)<.001 and runner.model._current.to_lower().contains("idle"),"final partial stride keeps approach speed instead of a slow-motion tail")
 	host.queue_free();view.queue_free()
 	for i in 5:await get_tree().process_frame
 	print("UNIT_PRESENTATION_TIMING ",checks," checks ",failures," failures")

@@ -2,6 +2,27 @@
 
 ## Unreleased
 
+- Add host-assigned guest permissions for shared pause, speed, quicksave and quickload. Configure defaults from the multiplayer menu and individual permissions from Players; save them with the campaign. ([#50](https://github.com/TheWWWorm/CursedLands/issues/50))
+- Separate horizontal and vertical sensitivity for the classic camera, preserving existing sensitivity when upgrading. Let the modern camera scroll at screen edges while hovering interactive HUD controls. ([#50](https://github.com/TheWWWorm/CursedLands/issues/50))
+
+- Add an enabled-by-default option for vertically stacked effect icons and remaining seconds in the top-right corner of the character's general view.
+- Add creature-name filtering to wiki maps. Following a creature's map link enables creature markers and highlights matching positions, retaining the selection when navigating back.
+- Apply the new water rendering to rectangular lion basins while retaining the original appearance when new water is disabled.
+- Preserve the protagonist's portrait face proportions on the world figure as body attributes change.
+- Stage dialogue cameras from the actors' destination ground height after scripted placement.
+- Retain unaffected navigation blocks when doors change, reducing path reconstruction after opening or closing a door.
+- Allow ordinary campaign patrols to lose escaped opponents and investigate their last known location. Stop the Suslanger gate alarm from tracking escaped intruders and complete its escape objective once the living party is clear.
+- Alert nearby allies when an enemy is first spotted. ([#49](https://github.com/TheWWWorm/CursedLands/issues/49))
+- Make visible witnesses of an assault react before their friend dies, retain running in aimed combat orders, use casting-specific stamina acknowledgements, and finish a replicated character's final partial stride at its approach speed. ([#48](https://github.com/TheWWWorm/CursedLands/issues/48))
+
+- Enable the optional HD Lands texture download on Android and show its installation memory requirements in English, Russian and German.
+- Disable unaffordable shop rerolls and mute the level upgrade's XP ring and caption while the button is disabled.
+- Extend the arena's textured snow beyond the courtyard and rotate the default camera while retaining its starting height.
+- Retain battle damage totals and winner/loser standings colors through preparation. Reset them when the next battle starts.
+- Start result fire bolts at animated casting sockets, align them with player names and follow standings reordering. Add elimination notices and show a pending status before finishing places are assigned.
+- Attach elemental casting particles to the same animated mouth or hand as the released spell, and attach Horror lightning to its fingertips. Lower defeated Horrors onto the arena snow and hold their final death pose.
+- Retain footprints across the arena clearing within a bounded allocation.
+
 - Expire cancelled native tooltip timers so mouse movement does not accumulate background work during long sessions or after returning to the menu. Requires the updated engine executable.
 - Remember the selected campaign speed between zones, use normal speed in villages and on the route map, and restore the selection when returning to the field. Preserve the choice in saves and shared co-op clocks.
 

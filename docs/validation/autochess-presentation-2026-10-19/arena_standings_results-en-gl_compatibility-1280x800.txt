@@ -1,0 +1,17 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3090
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+[trace 22:20:02 +2860ms] session 324198eba30c: 1.18.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, gl_compatibility / opengl3
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 22:20:06 +2222ms] session 19b56a3fe92b: 1.18.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+CAPTURE standings-results-en-prepare (1280.0, 800.0)
+CAPTURE horror-fingertip-cast (1280.0, 800.0)
+CAPTURE horror-grounded-corpse (1280.0, 800.0)
+CAPTURE dragon-mouth-charge (1280.0, 800.0)
+CAPTURE dragon-mouth-release (1280.0, 800.0)
+[trace 22:20:12 +8312ms] clean exit
+ARENA_STANDINGS_RESULTS 18 checks; failures=[]
+[trace 22:20:13 +13374ms] clean exit

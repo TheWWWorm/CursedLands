@@ -7,7 +7,7 @@ const WINTER_COLOR := """
 	// Powder has soft tonal variation, without paving or a coarse tile pattern.
 	float arena_snow = texture(macro_tex, wpos.xz * 0.035).r;
 	c = mix(vec3(0.83, 0.89, 0.95), c * vec3(0.88, 0.94, 1.0), 0.20);
-	c *= 0.97 + 0.04 * arena_snow;
+	c *= 0.94 + 0.10 * arena_snow;
 """
 const DEPLOY_GUIDE_UNIFORMS := """
 uniform float arena_deploy_weight = 0.0;

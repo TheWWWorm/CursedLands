@@ -34,7 +34,9 @@ func check(ok: bool, label: String) -> void:
 func actor(record: Dictionary, controller: int, uid: int) -> GameUnit:
 	var u:=GameUnit.new(); allocations.append(u)
 	u.world=s.world; u.uid=uid; u.controller=controller; u.pos=Vector2(100,100)
-	u.info={"name":record.get("unit_name","guard"),"complexion":Vector3.ONE}; u.proto={"name":"Human Hero"}
+	u.info={"name":record.get("unit_name","guard"),"complexion":Vector3.ONE}
+	u.proto={"name":"Human Hero","senses":[8.5,100.0,0.0],"detection":[1.0,1.0,1.0],"peripheral_skills":0.0,"vision_arc":180.0}
+	u.stats={"sight":8.5}
 	if not record.is_empty(): u.set_meta("hero",record)
 	s.world.set_unit(uid,u)
 	return u
@@ -61,6 +63,7 @@ func vm_for(adapt:=true) -> ProbeVM:
 func step(vm: ProbeVM, count: int) -> void:
 	for i in count:
 		vm.time+=ScriptVM.POLL
+		vm.world.time=vm.time
 		var live:=vm.instances.duplicate(); live.reverse()
 		for inst: ScriptVM.Instance in live: vm._run(inst)
 		vm.instances=vm.instances.filter(func(inst):return not inst.killed or not inst.frames.is_empty())
@@ -107,8 +110,12 @@ func _ready() -> void:
 	check(adapted.scripts.size()==pristine.scripts.size()+2 and adapted.scripts.has(registrar) \
 		and adapted.scripts.has(damage_registrar),"only the two named native-family registrars are added")
 	var native := without_shared_metadata(adapted.scripts)
-	check(pristine.scripts.keys().all(func(name):return name in ["VCheck#0#230","VTriger#0#235"] \
-		or pristine.scripts[name]==native[name]),"every other native definition and saved instruction index is unchanged; only fifteen named shared tags are allowed")
+	var pursuit_checks := ["VCheck#0#393","VCheck#0#398","VCheck#0#403","VCheck#0#439"]
+	check(pristine.scripts.keys().all(func(name):return name in ["VCheck#0#230","VTriger#0#235"] or name in pursuit_checks \
+		or pristine.scripts[name]==native[name]),"only admitted dispatch, pursuit conditions and shared metadata change")
+	for name: String in pursuit_checks:
+		check(pristine.scripts[name].blocks.map(func(b):return b.body)==native[name].blocks.map(func(b):return b.body),
+			name+" preserves original bodies and saved instruction indexes")
 	check(pristine.scripts["VCheck#0#12"]==adapted.scripts["VCheck#0#12"],"authored protagonist-only portal gate stays unchanged")
 	var again:=adapted.scripts.duplicate(true); Compat.apply(adapted,CampaignProfile.ORIGINAL,"gz19h")
 	check(again==adapted.scripts,"captivity adaptation is idempotent")

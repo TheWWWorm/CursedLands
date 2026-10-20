@@ -223,6 +223,7 @@ static func instantiate(template: String, texture: String, complexion: Vector3,
 				else (world_material_for(texture, material_id) if lit else material_for(texture))
 		mi.material_override = mat
 		node.add_child(mi)
+		EIObjectWater.attach(mi, template, texture)
 		if flora and mat is ShaderMaterial:
 			var y := 0.0
 			var q: Node = node

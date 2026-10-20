@@ -48,10 +48,11 @@ func _ready() -> void:
 	mode="issues 13 and 14"
 	for aggressive in [false,true]:
 		reset();hero.aggressive=aggressive
-		hero.order={"type":"move","to":at,"swarm":at,"path_notice":true};hero.ai_next=-1
+		hero.order={"type":"move","to":at,"swarm":at,"path_notice":true,"run":true,"aim":2};hero.ai_next=-1
 		hero.set_meta("noticed",{enemy.get_instance_id():enemy});hero.set_meta("perceived",s.world.time)
 		check(s.world.ai.swarm_tick(hero),"explicit attack-move acquires enemy, aggressive="+str(aggressive))
 		check(order_target(enemy) and hero.orders[0].get("path_notice",false),"automatic attack requests its new path")
+		check(hero.orders[0].get("run",false) and hero.orders[0].get("aim",-1)==2,"aimed attack-move retains the selected running gait")
 		check(hero.aggressive==aggressive,"attack-move leaves standing aggression preference intact")
 	reset();hero.aggressive=false
 	hero.set_meta("noticed",{enemy.get_instance_id():enemy});hero.set_meta("perceived",s.world.time)
