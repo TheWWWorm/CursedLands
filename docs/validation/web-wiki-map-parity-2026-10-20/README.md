@@ -35,3 +35,11 @@ the established field-guide design was preserved. Highlight markers use the
 existing brass, ink and reading-surface colors.
 
 See `local.json` for individual checks and the adjacent desktop/phone captures.
+
+## Live deployment
+
+Cloudflare serves commit `babe7748`. All 12 changed hosted files matched the
+committed bytes and returned `Cache-Control: no-cache`. A fresh isolated
+Chromium session against the live site passed 139 feature/layout checks across
+both campaigns and EN/RU/DE with no JavaScript exceptions. See `deployment.json`
+for SHA-256 receipts and `live.json` for the individual browser checks.
