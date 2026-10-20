@@ -16,14 +16,15 @@ const WeatherWind = preload("res://src/game/fx/weather_wind.gd")
 static var _models := {}
 static var _materials := {}
 static var _foliage := {}
-## Compatibility needs part_y on the material. Identical base/height pairs
-## share a variant, weakly retained while placed parts (or fades) own it.
+## Part height is static model data. Share equal base/height materials on all
+## renderers, instead of spending an instance-uniform block for every branch.
+## Dense original maps can exceed that global pool even before creatures load.
 static var _foliage_local := {}   # base material -> {part_y: WeakRef}
 
 ## Remake foliage: the original alpha-tested material plus optional wind
 ## (gfx_wind), bark detail (gfx_materials) and masked leaf transmission
 ## (gfx_foliage_light). Each switch returns to the corresponding original path.
-## The sway grows with the height above the object's root (instance uniform
+## The sway grows with the height above the object's root (material uniform
 ## part_y = the part's offset, + the vertex's own height), gusts travel across
 ## the island along the wind direction, and leaves flutter a little.
 ## Cacti (stiff = 1, see CACTUS_PREFIX) bend STIFF_K of that, nothing at the
@@ -43,7 +44,7 @@ uniform float wind = 1.0;
 global uniform vec4 ei_wind_state;
 global uniform vec4 ei_wind_phases;
 uniform float stiff = 0.0;
-instance uniform float part_y = 0.0;
+uniform float part_y = 0.0;
 """ + SurfaceResponse.RELIEF_SHADER + WeatherWind.SWAY + """
 const float STIFF_K = 0.2;
 const float STIFF_TOP = 2.5;
@@ -230,10 +231,7 @@ static func instantiate(template: String, texture: String, complexion: Vector3,
 			while q and q != root:
 				y += (q as Node3D).position.y
 				q = q.get_parent()
-			if Portability.compatibility():
-				mi.material_override = foliage_variant(mat, y)
-			else:
-				mi.set_instance_shader_parameter("part_y", y)
+			mi.material_override = foliage_variant(mat, y)
 		if morph:
 			mi.set_blend_shape_value(0, complexion.x)
 	return root
