@@ -65,11 +65,15 @@ def validate_trace(trace, inputs, role):
             if set(step) != {"step", "state"} or isinstance(step["step"], bool) or step["step"] != i or not isinstance(step["state"], dict) or not step["state"]:
                 raise ValueError(f"{role} {row['id']} has an invalid step {i}")
         counted_inputs = {"clock": "frames", "script_random": "words", "sight_factor": "postures",
-                          "faction_relation": "values"}
+                          "faction_relation": "values", "quest_trigger": "snapshots", "effect_lifetime": "ticks"}
         expected_count = len(case["inputs"][counted_inputs[case["kind"]]]) if case["kind"] in counted_inputs else (
             None if case["kind"] == "cast_rank" else 1)
+        if case["kind"] == "body_health":
+            expected_count = 1 + len(case["inputs"]["operations"])
         if expected_count is not None and len(steps) != expected_count:
             raise ValueError(f"{role} {row['id']} captured {len(steps)} of {expected_count} requested steps")
+        if case["kind"] in ("quest_predicate", "quest_trigger", "body_health", "effect_lifetime"):
+            validate_expanded_states(case, steps, role)
         if case["kind"] == "cast_rank":
             for i, step in enumerate(steps):
                 state = step["state"]
@@ -82,6 +86,41 @@ def validate_trace(trace, inputs, role):
                     raise ValueError(f"{role} {row['id']} has a truncated or overlong selection trace")
     # Also rejects NaN/Infinity in otherwise matching captures.
     canonical(trace)
+
+
+def validate_expanded_states(case, steps, role):
+    def bits(value):
+        return type(value) is int and 0 <= value <= 0xffffffff
+
+    dispatches = 0
+    for step in steps:
+        state, kind = step["state"], case["kind"]
+        valid = False
+        if kind == "quest_predicate":
+            valid = (set(state) == {"value_bits", "truth"} and bits(state["value_bits"])
+                     and type(state["truth"]) is bool)
+        elif kind == "quest_trigger":
+            if set(state) == {"fired", "dispatches", "evaluated"} and type(state["fired"]) is bool:
+                dispatches += int(state["fired"])
+                order = state["evaluated"]
+                size = len(case["inputs"]["conditions"])
+                valid = (type(state["dispatches"]) is int and state["dispatches"] == dispatches
+                         and isinstance(order, list) and all(type(i) is int for i in order)
+                         and len(order) <= size and order == list(range(len(order)))
+                         and (not state["fired"] or len(order) == size))
+        elif kind == "body_health":
+            valid = (set(state) == {"hp_bits", "max_hp_bits", "parts"}
+                     and bits(state["hp_bits"]) and bits(state["max_hp_bits"])
+                     and isinstance(state["parts"], list) and len(state["parts"]) == 6
+                     and all(isinstance(p, dict) and set(p) == {"state", "cur_bits", "max_bits"}
+                             and type(p["state"]) is int and 0 <= p["state"] <= 3
+                             and bits(p["cur_bits"]) and bits(p["max_bits"]) for p in state["parts"]))
+        elif kind == "effect_lifetime":
+            valid = (set(state) == {"alive", "ticks"} and type(state["alive"]) is bool
+                     and ((type(state["ticks"]) is int and 0 < state["ticks"] <= 0x7fffffff)
+                          if state["alive"] else state["ticks"] is None))
+        if not valid:
+            raise ValueError(f"{role} {case['id']} has an invalid {kind} observation")
 
 
 def compare(inputs, native, remake):

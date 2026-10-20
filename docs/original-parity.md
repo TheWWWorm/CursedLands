@@ -30,18 +30,28 @@ python3 -m venv .venv-parity
 ```
 
 The original directory must contain `game.exe` and the original game data.
-The qualified reference is the GOG English base-game executable with SHA-256:
+The default qualified reference is the GOG English base-game executable with SHA-256:
 
 ```text
 d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8
 ```
 
-The runner rejects other executables **before executing any native address**.
-This reference has no additional patches. Other languages, releases and patch
-sets need separately verified addresses and reference identities.
+Lost in Astral has a separately inspected adapter and executable identity:
 
-The default suite has 430 scenarios: 370 authored cases and 12 seeded cases in
-each of five families. The default seed is `20261020`. Each side runs twice in
+```text
+f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff
+```
+
+Use `--campaign lost_in_astral` with its installation directory. The runner
+rejects unqualified executable hashes and cross-campaign contracts **before
+executing any native address**. Astral currently qualifies quest predicates,
+quest condition gates and Random; it does not inherit the base game's combat,
+body, effects, clock or path addresses. Neither reference includes extra patches.
+
+The default base suite has **789 scenarios in 16 families**; the Astral suite
+has **151 scenarios in three families**. `--authored-quests` adds up to 120
+supported condition lists from that installation's original MOB files.
+The default seed is `20261020`. Each side runs twice in
 fresh captures; differing repeat captures are an error, even if one pair
 matches. The run creates a private source snapshot and fresh profiles with the
 cursor free, FPS enabled and all three audio volumes muted. It never reads or
@@ -50,6 +60,22 @@ copies a player's settings.
 ```sh
 # List inputs without Godot, Unicorn or game data.
 python3 tools/parity/run.py --list
+
+# Add real base-campaign condition lists with supplied actors and flags.
+.venv-parity/bin/python tools/parity/run.py \
+  --game-dir /path/to/original --out /tmp/parity-quests \
+  --authored-quests
+
+# Independently compare Lost in Astral with its own original executable.
+.venv-parity/bin/python tools/parity/run.py \
+  --campaign lost_in_astral --game-dir /path/to/astral \
+  --out /tmp/parity-astral --authored-quests
+
+# Include every condition list supported by the native adapter.
+# Unsupported lists are still recorded as gaps.
+.venv-parity/bin/python tools/parity/run.py \
+  --campaign lost_in_astral --game-dir /path/to/astral \
+  --out /tmp/parity-astral-all --authored-quests --quest-limit 0
 
 # Focus on one family; choose a new output directory.
 .venv-parity/bin/python tools/parity/run.py \
@@ -89,9 +115,12 @@ does not verify repeatability.
 | Eye height | Exact float32 bits across normal figure heights, postures, dead/alive and ground heights | Ground/dead getters supplied; no flying figures or occlusion query |
 | Faction relation | Friend/enemy masks after each update, including side 31, reversed pairs and self-relations | No individual hate or notification side effects |
 | Path refinement | Refined cells and cost across 64 direction pairs plus seeded terrain/occupancy routes | Supplied routes and heading codes; flat height/slope fixtures, no whole-route search or splines |
+| Quest predicates | Exact result bits and truth values for numeric/string comparisons, nested arithmetic, rectangles, actor distances, HP/death/identity queries, quest flags and levers | Supplied actor records, player zero and single-player mode; ASCII strings, supplied temporary-string allocation; native hash/collision/key comparisons execute normally |
+| Quest trigger gates | Ordered condition evaluations, short-circuiting, body-dispatch events and cumulative dispatch counts across supplied states | Executes native condition-list dispatcher against `ScriptVM._run`; records body dispatch rather than replaying quest rewards or entire bodies; no sleep/one-shot lifecycle |
+| Body health | Aggregate HP and all six part states/current/max HP before and after healing or rescaling; absent, severed, disabled and active parts, tiny heals and repeated operations | Base executable only; no armour absorption, death dispatch, regeneration schedule or visuals |
+| Effect lifetime | Signed counter boundaries, wrap, expiry and retained membership over successive authoritative ticks, on live and dead actors | Base executable only; one feeblemind lifetime, no effect application/stacking/client presentation |
 
-The machine-readable contracts in `tools/parity/cases.py` and
-`tools/parity/cases_extended.py` list native addresses,
+The machine-readable contracts in `tools/parity/cases*.py` list native addresses,
 supplied boundaries and numerical tolerances. Timing permits only its declared
 small conversion tolerances. Hit probability permits `1e-12` for JSON float
 serialization. Integer values, identities, booleans, order and captured float32
@@ -108,8 +137,29 @@ The remake adapter calls `GameWorld._sample_frame`, `Spells._cast_pick`,
 `ScriptVM.random_value`, `GameUnit.sight_factor`, `ScriptVM._interact_reach`,
 `Combat.attack_hits`, `Combat.hit_chance`, `GameUnit.village_talk_ready`,
 `GameWorld.darkness`, `GameUnit.eye_z`, `GameWorld.set_relation` and
-`NavTurn.refine`. It receives input fixtures only;
+`NavTurn.refine`, `ScriptVM._eval`, `ScriptVM._run`, `GameUnit.heal`,
+body HP getters/setters and `GameUnit._tick_effects`. It receives input fixtures only;
 the original observations and comparator are not staged into its project.
+
+### Authored campaign conditions
+
+`--authored-quests` reads the top-level encrypted/plain script section inside
+each owned MOB's declared root. It preserves condition order and nested calls,
+then selects only whole condition lists that the native adapter supports.
+Selection rotates through maps so the 120-list cap is not filled by one region.
+Use `--quest-limit 0` to include every supported list, or a positive cap.
+Inputs retain each MOB's SHA-256, script name, block index and actor bindings.
+
+The fixtures supply positions, HP, death states, lever states and quest flag
+values. They include null actors, separated actor pairs, rectangle edges and
+flag/lever transitions. These are controlled condition replays, not saved
+campaign playthroughs or evidence that all supplied states are reachable.
+Parsing and object resolution inside either complete game are outside this
+contract. Unsupported calls or bindings skip the whole condition list and are
+counted in `inputs.json` under `authored_quests.skipped`; they never become
+automatically true conditions. Full quest bodies, inventory predicates,
+group quantifiers, sleep timing, co-op adaptations and reward/save continuity
+still need additional native coverage.
 
 ## Results and failures
 
@@ -126,7 +176,7 @@ Each result directory contains:
 - `report.md`, `report.json` and `junit.xml`: per-scenario results and first differences.
 - `inputs.json`: exact input bytes, reference identity and comparison contracts.
 - `original-N.json` and `remake-N.json`: complete captures from each repetition.
-- `runtime/`, `runtime-source.json`, `tool-source.json`: tested source snapshot and hashes.
+- `runtime/`, `harness/`, `runtime-source.json`, `tool-source.json`: tested game/native harness snapshots and hashes.
 - Capture/import logs and isolated profiles.
 - `reproduce.sh`: repeat the same inputs against the current source in a new directory.
 
@@ -143,6 +193,8 @@ The initial [validation record](validation/original-parity-2026-10-20/README.md)
 records five hit-probability differences and a live mutation control.
 The [expanded validation](validation/gameplay-suite-2026-10-20/README.md)
 records 430 scenarios, two captures per side and a dialogue-gate mutation control.
+The [quest, Astral and body validation](validation/quest-parity-2026-10-20/README.md)
+records the newer independent campaign captures and their unresolved differences.
 
 ## Extend the suite
 
@@ -164,7 +216,7 @@ coordinate. Ambiguous fixtures are rejected instead of producing misleading
 game differences.
 
 The next original-comparison priorities are damage/armour, full movement paths,
-script/quest transitions and save/load state continuity. These need additional
+complete quest-thread lifecycles and save/load state continuity. These need additional
 native adapters and state fixtures. The gameplay regression suite already tests
 selected remake behavior in those areas; those assertions do not establish
 equivalence to the original executable.

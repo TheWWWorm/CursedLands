@@ -23,6 +23,14 @@ class RadiusUnit extends GameUnit:
 	func body_radius() -> float:
 		return supplied_body
 
+class ObservedQuestVM extends ScriptVM:
+	var roots: Array = []
+	var evaluated: Array = []
+	func _eval(e: Array, inst: ScriptVM.Instance):
+		for i in roots.size():
+			if is_same(e, roots[i]): evaluated.append(i)
+		return super._eval(e, inst)
+
 class GroundWorld extends GameWorld:
 	var supplied_ground := 0.0
 	func _stand_z(_point: Vector2) -> float:
@@ -68,6 +76,11 @@ func _ready() -> void:
 		get_tree().quit(2)
 		return
 	GameData.difficulty = 0
+	var expected_campaign := CampaignProfile.ORIGINAL if parsed.reference.campaign == "original" else CampaignProfile.ASTRAL
+	if GameData.campaign_id != expected_campaign:
+		push_error("Loaded campaign does not match the qualified reference")
+		get_tree().quit(2)
+		return
 	var rows := []
 	for case: Dictionary in parsed.scenarios:
 		var states: Array = capture(String(case.kind), case.inputs)
@@ -108,8 +121,144 @@ func capture(kind: String, data: Dictionary) -> Array:
 		"eye_height": return capture_eye_height(data)
 		"faction_relation": return capture_relations(data)
 		"path_refine": return capture_path_refine(data)
+		"quest_predicate": return capture_quest_predicate(data)
+		"quest_trigger": return capture_quest_trigger(data)
+		"body_health": return capture_body_health(data)
+		"effect_lifetime": return capture_effect_lifetime(data)
 	push_error("Unsupported parity adapter: " + kind)
 	return []
+
+func quest_units(rows: Array, world: GameWorld) -> Array:
+	var units := []
+	for row in rows:
+		if row == null:
+			units.append(null)
+			continue
+		var u := GameUnit.new()
+		u.world = world
+		u.uid = int(row.get("uid", 1))
+		u.pos = Vector2(float(row.pos[0]), float(row.pos[1]))
+		u.max_hp = f32(float(row.max_hp))
+		u.hp = f32(float(row.hp))
+		u.dead = bool(row.dead)
+		if row.has("lever"): world.levers[u.uid] = {"state": int(row.lever)}
+		units.append(u)
+	return units
+
+func quest_expression(value, inst: ScriptVM.Instance, units: Array) -> Array:
+	if value is Dictionary:
+		if value.has("string"): return [ScriptParser.N_STR, String(value.string)]
+		if value.has("unit"):
+			var index := int(value.unit)
+			var key := "unit_" + str(index)
+			inst.locals[key] = units[index] if index >= 0 and index < units.size() else null
+			return [ScriptParser.N_VAR, key]
+		var args := []
+		for arg in value.args: args.append(quest_expression(arg, inst, units))
+		return [ScriptParser.N_CALL, String(value.call), args]
+	# Script literals are native float32 inputs on both sides. Production
+	# arithmetic decides intermediate precision; the adapter does not change it.
+	return [ScriptParser.N_NUM, f32(float(value))]
+
+func free_quest_units(units: Array) -> void:
+	for u in units:
+		if u != null: u.free()
+
+func quest_state(variables: Dictionary) -> CampaignState:
+	var state := CampaignState.new()
+	state.day = 1
+	state.world_time = 0.0
+	for key: String in variables:
+		state.set_var(0, key, f32(float(variables[key])))
+	return state
+
+func capture_quest_predicate(data: Dictionary) -> Array:
+	var world := FixtureWorld.new()
+	var vm := ScriptVM.new()
+	vm.world = world
+	var session := Session.new()
+	session.state = quest_state(data.get("variables", {}))
+	vm.session = session
+	var units := quest_units(data.units, world)
+	var inst := ScriptVM.Instance.new()
+	var expression := quest_expression(data.expression, inst, units)
+	var result = vm._eval(expression, inst)
+	var states := [{"value_bits": bits(float(result)), "truth": vm._truthy(result)}]
+	free_quest_units(units)
+	session.free()
+	world.free()
+	return states
+
+func capture_quest_trigger(data: Dictionary) -> Array:
+	var world := FixtureWorld.new()
+	var session := Session.new()
+	var vm := ObservedQuestVM.new()
+	vm.world = world
+	vm.session = session
+	vm.ast = ScriptParser.new()
+	vm.globals["dispatches"] = 0.0
+	var states := []
+	for snapshot: Dictionary in data.snapshots:
+		world.levers.clear()
+		session.state = quest_state(snapshot.get("variables", {}))
+		var units := quest_units(snapshot.units, world)
+		var inst := ScriptVM.Instance.new()
+		var conditions := []
+		for expr in data.conditions: conditions.append(quest_expression(expr, inst, units))
+		vm.roots = conditions
+		vm.evaluated = []
+		var body := [[ScriptParser.S_SET, "dispatches", [ScriptParser.N_CALL, "Add",
+			[[ScriptParser.N_VAR, "dispatches"], [ScriptParser.N_NUM, 1.0]]]]]
+		inst.blocks = [{"conds": conditions, "body": body}]
+		var before := int(vm.globals.dispatches)
+		vm._run(inst)
+		states.append({"fired": int(vm.globals.dispatches) != before, "dispatches": int(vm.globals.dispatches),
+			"evaluated": vm.evaluated.duplicate()})
+		free_quest_units(units)
+	session.free()
+	world.free()
+	return states
+
+func body_observation(u: GameUnit) -> Dictionary:
+	var parts := []
+	for p: UnitBodyPart in u.parts:
+		parts.append({"state": p.state, "cur_bits": bits(p.cur), "max_bits": bits(p.max)})
+	return {"hp_bits": bits(u.hp), "max_hp_bits": bits(u.max_hp), "parts": parts}
+
+func capture_body_health(data: Dictionary) -> Array:
+	var u := GameUnit.new()
+	u.max_hp = f32(float(data.max_hp))
+	var parts := []
+	for row: Dictionary in data.parts:
+		var p := row.duplicate()
+		p.type = int(p.type)
+		p.state = int(p.state)
+		for key in ["cur", "max", "size", "lethal"]: p[key] = f32(float(p[key]))
+		parts.append(p)
+	u.parts = parts
+	var states := [body_observation(u)]
+	for operation: Dictionary in data.operations:
+		match String(operation.kind):
+			"heal": u.heal(f32(float(operation.value)))
+			"rescale": u.max_hp = f32(float(operation.value))
+		states.append(body_observation(u))
+	u.free()
+	return states
+
+func capture_effect_lifetime(data: Dictionary) -> Array:
+	var world := FixtureWorld.new()
+	var u := GameUnit.new()
+	u.world = world
+	u.dead = bool(data.dead)
+	u.buffs = {"feeblemind": {"_effect_ticks": int(data.counter), "no_cast": true}}
+	var states := []
+	for _tick in data.ticks:
+		u._tick_effects()
+		var alive := u.buffs.has("feeblemind")
+		states.append({"alive": alive, "ticks": u.effect_ticks("feeblemind") if alive else null})
+	u.free()
+	world.free()
+	return states
 
 func capture_clock(data: Dictionary) -> Array:
 	var world := FixtureWorld.new()

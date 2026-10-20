@@ -16,7 +16,7 @@ from unicorn.x86_const import (
     UC_X86_REG_EAX, UC_X86_REG_EBX, UC_X86_REG_EBP, UC_X86_REG_ECX,
     UC_X86_REG_EDI, UC_X86_REG_EIP, UC_X86_REG_ESP, UC_X86_REG_FPCW,
 )
-from cases import REFERENCE
+from cases import REFERENCES
 from compare import digest
 
 STOP = 0x1000
@@ -50,6 +50,7 @@ class Original:
         self.uc.reg_write(UC_X86_REG_FPCW, control)
         self.heap = 0x1000000
         self.hooks = []
+        self.campaign = "original"
 
     def close(self):
         # Break callback ownership cycles so a large suite stays bounded.
@@ -207,11 +208,18 @@ def script_random(o, case):
     def queue_word():
         o.write(o.uc.reg_read(UC_X86_REG_ECX) + 4, 1, word[0])
 
-    o.hook(0x4667f0, queue_word)
+    astral = o.campaign == "lost_in_astral"
+    if not astral:
+        o.hook(0x4667f0, queue_word)
     states = []
     for value in case["words"]:
         word[0] = value
-        o.run(0x4b41e0, command, [0, 0, result])
+        if astral:
+            # Astral's range function consumes its existing 256-word queue.
+            # Locate that object from the evaluator's MOV ECX immediate;
+            # its independently inspected address is pinned here.
+            o.write(0x69d440 + 4, 1, value)
+        o.run(0x46cca0 if astral else 0x4b41e0, command, [0, 0, result])
         states.append({"word": value, "value_bits": o.ints(result)[0]})
     return states
 
@@ -305,18 +313,26 @@ CAPTURES = {
 }
 from native_extended import CAPTURES as EXTRA_CAPTURES
 CAPTURES.update(EXTRA_CAPTURES)
+from native_quests import CAPTURES as QUEST_CAPTURES
+CAPTURES.update(QUEST_CAPTURES)
+from native_body import CAPTURES as BODY_CAPTURES
+CAPTURES.update(BODY_CAPTURES)
 
 
 def capture(binary, inputs):
     data = Path(binary).read_bytes()
     fingerprint = hashlib.sha256(data).hexdigest()
-    if fingerprint != REFERENCE["executable_sha256"] or inputs["reference"] != REFERENCE:
+    from run import check_inputs
+    check_inputs(inputs)
+    reference = inputs["reference"]
+    if fingerprint != reference["executable_sha256"]:
         raise ValueError("Unsupported original executable/reference. Never reuse addresses for another build.")
     result = {"schema": 1, "role": "original", "input_sha256": digest(inputs),
               "executable_sha256": fingerprint, "emulator": "Unicorn " + unicorn.__version__,
               "fpu_control_word": "0x027f", "scenarios": []}
     for case in inputs["scenarios"]:
         original = Original(data)
+        original.campaign = reference["campaign"]
         try:
             states = CAPTURES[case["kind"]](original, case["inputs"])
             result["scenarios"].append({"id": case["id"], "steps": [

@@ -19,7 +19,7 @@ import sys
 import time
 import xml.etree.ElementTree as ET
 
-from cases import CONTRACTS, REFERENCE, make_inputs
+from cases import REFERENCES, contracts_for, make_inputs
 from compare import canonical, compare, digest, first_difference, validate_trace
 
 HERE = Path(__file__).resolve().parent
@@ -85,13 +85,16 @@ def stage_game(source, output):
 
 
 def check_inputs(inputs):
-    if inputs.get("schema") != 1 or inputs.get("reference") != REFERENCE:
+    reference = inputs.get("reference", {})
+    campaign = reference.get("campaign")
+    if inputs.get("schema") != 1 or campaign not in REFERENCES or reference != REFERENCES[campaign]:
         raise ValueError("Unsupported input schema/reference")
+    contracts = contracts_for(campaign)
     rows = inputs.get("scenarios", [])
     if not rows or len({r["id"] for r in rows}) != len(rows):
         raise ValueError("Scenario IDs must be nonempty and unique")
     for row in rows:
-        if row["kind"] not in CONTRACTS or inputs["contracts"].get(row["kind"]) != CONTRACTS[row["kind"]]:
+        if row["kind"] not in contracts or inputs["contracts"].get(row["kind"]) != contracts[row["kind"]]:
             raise ValueError(f"Unrecognized or modified contract for {row['id']}")
         if row["kind"] == "cast_rank":
             heights = {}
@@ -152,19 +155,32 @@ def main():
     parser.add_argument("--seed", type=int, default=20261020)
     parser.add_argument("--fuzz", type=int, default=12, help="Seeded cases per supported numeric/ordering family")
     parser.add_argument("--case", help="Scenario ID substring filter")
+    parser.add_argument("--campaign", choices=list(REFERENCES), default="original",
+                        help="Qualified executable/campaign (replay uses the recorded reference)")
+    parser.add_argument("--authored-quests", action="store_true",
+                        help="Add up to 120 supported condition lists from this installation's MOBs")
+    parser.add_argument("--quest-limit", type=int, default=120,
+                        help="Authored condition-list cap; 0 includes every supported list")
     parser.add_argument("--replay-inputs", type=Path, help="Replay exact previously captured inputs")
     parser.add_argument("--repeat", type=int, choices=[1, 2, 3], default=2, help="Independent fresh captures to verify repeatability")
     parser.add_argument("--timeout", type=int, default=180, help="Seconds allowed for each subprocess")
     parser.add_argument("--list", action="store_true", help="List selected cases without loading the game/emulator")
     args = parser.parse_args()
-    if args.fuzz < 0 or args.fuzz > 1000 or args.timeout < 1:
-        parser.error("Use 0..1000 fuzz cases and a positive timeout")
+    if args.fuzz < 0 or args.fuzz > 1000 or args.timeout < 1 or args.quest_limit < 0:
+        parser.error("Use 0..1000 fuzz cases, a nonnegative quest limit and a positive timeout")
     if args.replay_inputs:
         inputs = json.loads(args.replay_inputs.read_text())
         if args.case:
             inputs["scenarios"] = [r for r in inputs["scenarios"] if args.case in r["id"]]
     else:
-        inputs = make_inputs(args.seed, args.fuzz, args.case)
+        inputs = make_inputs(args.seed, args.fuzz, None if args.authored_quests else args.case, args.campaign)
+        if args.authored_quests:
+            if not args.game_dir:
+                parser.error("--authored-quests requires --game-dir")
+            from campaign_quests import append_campaign_cases
+            append_campaign_cases(inputs, args.game_dir, args.quest_limit)
+            if args.case:
+                inputs["scenarios"] = [r for r in inputs["scenarios"] if args.case in r["id"]]
     check_inputs(inputs)
     if args.list:
         for row in inputs["scenarios"]:
@@ -184,7 +200,7 @@ def main():
     try:
         data = args.game_dir.resolve()
         binary = data / "game.exe"
-        if file_hash(binary) != REFERENCE["executable_sha256"]:
+        if file_hash(binary) != inputs["reference"]["executable_sha256"]:
             raise ValueError("Unsupported game.exe hash. This suite refuses to execute unverified addresses.")
         # Check before importing/staging, and give actionable dependency errors.
         import unicorn
@@ -193,6 +209,8 @@ def main():
         inputs_path = output / "inputs.json"
         inputs_path.write_bytes(canonical(inputs))
         write_json(output / "tool-source.json", {p.name: file_hash(p) for p in sorted(HERE.iterdir()) if p.is_file()})
+        harness = output / "harness"
+        shutil.copytree(HERE, harness, ignore=shutil.ignore_patterns("__pycache__"))
         runtime, source_digest = stage_game(source, output)
         name_match = re.search(r'^config/name="([^"]+)"', (runtime / "project.godot").read_text(), re.M)
         if not name_match or "/" in name_match[1] or "\\" in name_match[1]:
@@ -211,7 +229,7 @@ def main():
         for repetition in range(args.repeat):
             print(f"Capturing original and remake ({repetition + 1}/{args.repeat})...", flush=True)
             native_path, remake_path = output / f"original-{repetition}.json", output / f"remake-{repetition}.json"
-            commands.append(command([sys.executable, str(HERE / "native.py"), "--binary", str(binary),
+            commands.append(command([sys.executable, str(harness / "native.py"), "--binary", str(binary),
                                      "--inputs", str(inputs_path), "--output", str(native_path)],
                                     output / f"original-{repetition}.log", os.environ.copy(), args.timeout))
             env = isolated_environment(output / f"remake-profile-{repetition}", name, data)
