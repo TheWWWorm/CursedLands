@@ -84,7 +84,9 @@ func _build_stage() -> void:
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
 	sun.directional_shadow_fade_start = 1.0
 	sun.shadow_bias = 0.03
-	sun.shadow_normal_bias = 0.6
+	# GLES3 offsets receivers in shadow-map texels. The small RD bias leaves
+	# the flat snow inside its own filtered shadow, drawing diagonal bands.
+	sun.shadow_normal_bias = 2.0 if Portability.compatibility() else 0.6
 	sun.shadow_opacity = 0.85
 	sun.shadow_enabled = true
 	stage.add_child(sun)
