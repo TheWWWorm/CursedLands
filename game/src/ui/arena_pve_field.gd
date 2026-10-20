@@ -84,9 +84,6 @@ func _build_stage() -> void:
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
 	sun.directional_shadow_fade_start = 1.0
 	sun.shadow_bias = 0.03
-	# GLES3 offsets receivers in shadow-map texels. The small RD bias leaves
-	# the flat snow inside its own filtered shadow, drawing diagonal bands.
-	sun.shadow_normal_bias = 2.0 if Portability.compatibility() else 0.6
 	sun.shadow_opacity = 0.85
 	sun.shadow_enabled = true
 	stage.add_child(sun)
@@ -119,6 +116,9 @@ func _apply_presentation() -> void:
 	# A wider PCF footprint is clean at High/Ultra; keep the sparse Low and
 	# Medium filters tighter instead of spreading their samples into grain.
 	_sun_light.shadow_blur = 1.8 if GameData.option("q_shadows") >= 2 else 1.0
+	# GLES3 and the sparse Low-quality RD filter need a larger texel offset
+	# to keep flat snow out of its own shadow. Reapply when quality changes.
+	_sun_light.shadow_normal_bias = 2.0 if Portability.compatibility() or GameData.option("q_shadows") == 0 else 0.6
 
 
 func reset_camera() -> void:
