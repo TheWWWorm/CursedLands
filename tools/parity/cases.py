@@ -4,6 +4,7 @@ No expected results or copies of game formulas belong here. Adding an input
 does not approve a behavioral difference. All floating inputs are finite.
 """
 import random
+from cases_extended import CONTRACTS as EXTRA_CONTRACTS, scenarios as extra_scenarios
 
 SCHEMA = 1
 REFERENCE = {
@@ -67,6 +68,7 @@ CONTRACTS = {
         "tolerances": {"probability": {"abs": 1e-12}},
     },
 }
+CONTRACTS.update(EXTRA_CONTRACTS)
 
 
 def scenarios(seed=20261020, fuzz=12):
@@ -138,7 +140,7 @@ def scenarios(seed=20261020, fuzz=12):
     for distance in [0, 0.25, 1, 5, 10]:
         for attack, defence in [(40, 40), (41, 40), (20, 10)]:
             add("attack_chance", f"a{attack}_d{defence}_distance{distance}", {"attack": attack, "defence": defence, "spread": 40, "aim": -1, "distance": distance, "radius": 0.5, "attack_actions": 15.0, "defence_actions": 15.0})
-    return rows
+    return rows + extra_scenarios(seed, fuzz)
 
 
 def make_inputs(seed=20261020, fuzz=12, pattern=None):

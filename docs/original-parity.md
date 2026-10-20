@@ -6,8 +6,10 @@ inputs, and compares their observations. It reports the first differing step
 and field for each scenario. This makes small ordering, rounding and boundary
 differences reproducible.
 
-This first version covers **bounded subsystems**. It does not replay a whole
+This suite covers **bounded subsystems**. It does not replay a whole
 Windows game session or establish campaign equivalence.
+The companion [gameplay regression suite](gameplay-testing.md) exercises quest
+scripts, creatures, animation, effects, stealth, commands and pathing.
 
 ## Run it
 
@@ -38,8 +40,8 @@ The runner rejects other executables **before executing any native address**.
 This reference has no additional patches. Other languages, releases and patch
 sets need separately verified addresses and reference identities.
 
-The default suite has 126 scenarios: 78 authored cases and 12 seeded cases in
-each of four families. The default seed is `20261020`. Each side runs twice in
+The default suite has 430 scenarios: 370 authored cases and 12 seeded cases in
+each of five families. The default seed is `20261020`. Each side runs twice in
 fresh captures; differing repeat captures are an error, even if one pair
 matches. The run creates a private source snapshot and fresh profiles with the
 cursor free, FPS enabled and all three audio volumes muted. It never reads or
@@ -82,8 +84,14 @@ does not verify repeatability.
 | Interaction reach | Exact float32 bits for loot, steal and lever distances with supplied radii | No route planning, inventory transfer or lever state change |
 | Attack decision | Boolean hit decisions at zero-spread and aimed-attack boundaries | Synthetic attributes; no damage, armour, backstab or RNG equivalence |
 | Hit probability | Original hit decisions enumerated over every supplied roll residue, weighted uniformly, versus the remake probability query | Unaimed attacks with supplied attributes; no whole combat or RNG stream replay |
+| Village dialogue gate | All 144 pairs of current/posted command codes from 0 through 11 | Present controller and supplied records; no command dispatch or dialogue content |
+| Darkness | Exact float32 bits at dawn/dusk, midnight and clock-wrap boundaries | Supplied hour with zero elapsed clock ticks; no rendered lighting |
+| Eye height | Exact float32 bits across normal figure heights, postures, dead/alive and ground heights | Ground/dead getters supplied; no flying figures or occlusion query |
+| Faction relation | Friend/enemy masks after each update, including side 31, reversed pairs and self-relations | No individual hate or notification side effects |
+| Path refinement | Refined cells and cost across 64 direction pairs plus seeded terrain/occupancy routes | Supplied routes and heading codes; flat height/slope fixtures, no whole-route search or splines |
 
-The machine-readable contracts in `tools/parity/cases.py` list native addresses,
+The machine-readable contracts in `tools/parity/cases.py` and
+`tools/parity/cases_extended.py` list native addresses,
 supplied boundaries and numerical tolerances. Timing permits only its declared
 small conversion tolerances. Hit probability permits `1e-12` for JSON float
 serialization. Integer values, identities, booleans, order and captured float32
@@ -98,7 +106,9 @@ No original executable code bytes or assets are distributed with the suite.
 
 The remake adapter calls `GameWorld._sample_frame`, `Spells._cast_pick`,
 `ScriptVM.random_value`, `GameUnit.sight_factor`, `ScriptVM._interact_reach`,
-`Combat.attack_hits` and `Combat.hit_chance`. It receives input fixtures only;
+`Combat.attack_hits`, `Combat.hit_chance`, `GameUnit.village_talk_ready`,
+`GameWorld.darkness`, `GameUnit.eye_z`, `GameWorld.set_relation` and
+`NavTurn.refine`. It receives input fixtures only;
 the original observations and comparator are not staged into its project.
 
 ## Results and failures
@@ -131,6 +141,8 @@ process exit with script/runtime errors does not count as a successful capture.
 
 The initial [validation record](validation/original-parity-2026-10-20/README.md)
 records five hit-probability differences and a live mutation control.
+The [expanded validation](validation/gameplay-suite-2026-10-20/README.md)
+records 430 scenarios, two captures per side and a dialogue-gate mutation control.
 
 ## Extend the suite
 
@@ -151,6 +163,8 @@ For target ordering, the supplied terrain must have one ground height per XY
 coordinate. Ambiguous fixtures are rejected instead of producing misleading
 game differences.
 
-The next coverage priorities are damage/armour, blocked movement paths,
+The next original-comparison priorities are damage/armour, full movement paths,
 script/quest transitions and save/load state continuity. These need additional
-original adapters and state fixtures; the current suite does not cover them.
+native adapters and state fixtures. The gameplay regression suite already tests
+selected remake behavior in those areas; those assertions do not establish
+equivalence to the original executable.

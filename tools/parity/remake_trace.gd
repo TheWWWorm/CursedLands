@@ -23,6 +23,21 @@ class RadiusUnit extends GameUnit:
 	func body_radius() -> float:
 		return supplied_body
 
+class GroundWorld extends GameWorld:
+	var supplied_ground := 0.0
+	func _stand_z(_point: Vector2) -> float:
+		return supplied_ground
+
+class FixtureGrid extends NavGrid:
+	var stamps := PackedInt32Array()
+	func _stamp_window(rect: Rect2i) -> PackedInt32Array:
+		var out := PackedInt32Array()
+		out.resize(rect.size.x * rect.size.y)
+		for y in rect.size.y:
+			for x in rect.size.x:
+				out[y*rect.size.x+x] = stamps[(rect.position.y+y)*size.x+rect.position.x+x]
+		return out
+
 func f32(value: float) -> float:
 	return PackedFloat32Array([value])[0]
 
@@ -88,6 +103,11 @@ func capture(kind: String, data: Dictionary) -> Array:
 		"sight_factor": return capture_sight(data)
 		"interaction_reach": return capture_reach(data)
 		"attack", "attack_chance": return capture_attack(data, kind == "attack_chance")
+		"village_gate": return capture_village_gate(data)
+		"darkness": return capture_darkness(data)
+		"eye_height": return capture_eye_height(data)
+		"faction_relation": return capture_relations(data)
+		"path_refine": return capture_path_refine(data)
 	push_error("Unsupported parity adapter: " + kind)
 	return []
 
@@ -216,3 +236,74 @@ func capture_attack(data: Dictionary, probability: bool) -> Array:
 	combat.world = null
 	world.free()
 	return [result]
+
+func capture_village_gate(data: Dictionary) -> Array:
+	var unit := GameUnit.new()
+	unit._talk_command = int(data.current)
+	unit._talk_posted = int(data.posted)
+	var result := unit.village_talk_ready()
+	unit.free()
+	return [{"ready":result}]
+
+func capture_darkness(data: Dictionary) -> Array:
+	var world := GameWorld.new()
+	var session := Session.new()
+	session.state = CampaignState.new()
+	session.state.world_time = f32(float(data.hour))
+	world.session = session
+	var result := bits(world.darkness())
+	world.session = null
+	world.free()
+	session.free()
+	return [{"darkness_bits":result}]
+
+func capture_eye_height(data: Dictionary) -> Array:
+	var world := GroundWorld.new()
+	world.supplied_ground = f32(float(data.ground))
+	var unit := GameUnit.new()
+	unit.world = world
+	unit.figure_half_z = f32(float(data.half))
+	unit.dead = bool(data.dead)
+	unit.stance = GameUnit.STANCE_CRAWL if int(data.posture) == 0 else GameUnit.STANCE_KNEEL if int(data.posture) == 1 else GameUnit.STANCE_NONE
+	var result := bits(unit.eye_z())
+	unit.free()
+	world.free()
+	return [{"eye_bits":result}]
+
+func capture_relations(data: Dictionary) -> Array:
+	var world := GameWorld.new()
+	var states := []
+	for value in data["values"]:
+		world.set_relation(int(data.actor), int(data.target), int(value))
+		var state := {"actor_friend":0, "actor_enemy":0, "target_friend":0, "target_enemy":0}
+		for side in 32:
+			var a := world.relation(int(data.actor),side)
+			var b := world.relation(int(data.target),side)
+			if a == 0: state.actor_friend |= 1 << side
+			if a == 2: state.actor_enemy |= 1 << side
+			if b == 0: state.target_friend |= 1 << side
+			if b == 2: state.target_enemy |= 1 << side
+		states.append(state)
+	world.free()
+	return states
+
+func capture_path_refine(data: Dictionary) -> Array:
+	var nav := FixtureGrid.new()
+	nav.size = Vector2i(int(data["size"][0]),int(data["size"][1]))
+	nav._hq = PackedInt32Array(data.heights)
+	nav.stamps = PackedInt32Array(data.stamps)
+	var slopes := PackedInt32Array(data.slope)
+	nav._slope_tab = [slopes,slopes]
+	nav._ctx_thr = int(data.threshold)
+	var layer := NavGrid.Layer.new()
+	layer.cls = int(data.cls)
+	layer.land.resize(data["values"].size())
+	layer.cost.resize(data["values"].size())
+	for i in data["values"].size():
+		var value := int(data["values"][i])
+		layer.land[i] = int(value == 0)
+		layer.cost[i] = NavGrid.STEP_COST[value]
+	nav._layers[layer.cls] = layer
+	var result := NavTurn.refine(nav,layer,PackedInt32Array(data.cells),float(data.facing),
+		Vector2(float(data.end[0]),float(data.end[1])),bool(data.flat))
+	return [{"cost":int(result.cost),"cells":Array(result.cells)}]

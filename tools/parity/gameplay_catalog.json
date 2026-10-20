@@ -1,0 +1,1018 @@
+{
+  "schema": 1,
+  "tests": [
+    {
+      "id": "quests/script_dead_predicates",
+      "category": "quests",
+      "script": "tools/tests/script_dead_predicates.gd",
+      "marker": "SCRIPT_DEAD_PREDICATES",
+      "min_checks": 10,
+      "quick": true,
+      "description": "Null, freed, live, dead and looted actor predicates",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "quests/script_hero_references",
+      "category": "quests",
+      "script": "tools/tests/script_hero_references.gd",
+      "marker": "SCRIPT_HERO_REFERENCES",
+      "min_checks": 10,
+      "quick": true,
+      "description": "Saved hero identity, absent guests and reused unit IDs",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "quests/story_coop_predicates",
+      "category": "quests",
+      "script": "tools/tests/story_coop_predicates.gd",
+      "marker": "STORY_COOP_PREDICATES",
+      "min_checks": 30,
+      "quick": true,
+      "description": "Authored alarms, quest gates, proximity and party membership",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob",
+        "maps/zone3dun1.mob",
+        "maps/zone22.mob"
+      ]
+    },
+    {
+      "id": "quests/story_coop_traps",
+      "category": "quests",
+      "script": "tools/tests/story_coop_traps.gd",
+      "marker": "STORY_COOP_TRAPS",
+      "min_checks": 25,
+      "quick": true,
+      "description": "Authored trap triggers, guest entry and repeated activation",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob",
+        "maps/zone3dun1.mob",
+        "maps/zone22.mob"
+      ]
+    },
+    {
+      "id": "quests/story_coop_effects",
+      "category": "quests",
+      "script": "tools/tests/story_coop_effects.gd",
+      "marker": "STORY_COOP_EFFECTS",
+      "min_checks": 25,
+      "quick": true,
+      "description": "Authored quest actions, effects and co-op recipients",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob",
+        "maps/zone3dun1.mob",
+        "maps/zone22.mob"
+      ]
+    },
+    {
+      "id": "quests/quest_carriers",
+      "category": "quests",
+      "script": "tools/tests/quest_carriers.gd",
+      "marker": "QUEST_CARRIERS",
+      "min_checks": 10,
+      "quick": true,
+      "description": "Quest carrier registration, completion and replacement",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "quests/quest_inventory_lifecycle",
+      "category": "quests",
+      "script": "tools/tests/quest_inventory_lifecycle.gd",
+      "marker": "QUEST_INVENTORY_LIFECYCLE",
+      "min_checks": 15,
+      "quick": false,
+      "description": "Quest item transfer, removal and persistence",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "quests/quest_rewards",
+      "category": "quests",
+      "script": "tools/tests/quest_rewards.gd",
+      "marker": "QUEST_REWARDS",
+      "min_checks": 4,
+      "quick": false,
+      "description": "Reward and completion state transitions",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "quests/quest_actor_removal",
+      "category": "quests",
+      "script": "tools/tests/quest_actor_removal.gd",
+      "marker": "QUEST_ACTOR_REMOVAL",
+      "min_checks": 20,
+      "quick": false,
+      "description": "Actual Ingos replacement trigger and save/reload tombstones",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "quests/catacomb_group_lever",
+      "category": "quests",
+      "script": "tools/tests/catacomb_group_lever.gd",
+      "marker": "CATACOMB_GROUP_LEVER",
+      "min_checks": 4,
+      "quick": false,
+      "description": "Group lever story gates",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "quests/lever_transition_save",
+      "category": "quests",
+      "script": "tools/tests/lever_transition_save.gd",
+      "marker": "LEVER_TRANSITION_SAVE",
+      "min_checks": 20,
+      "quick": false,
+      "description": "Checkpoint during lever transitions and restored state",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "creatures/ai_activity_health",
+      "category": "creatures",
+      "script": "tools/tests/ai_activity_health.gd",
+      "marker": "AI_HEALTH_CHECKS",
+      "min_checks": 5,
+      "quick": true,
+      "description": "Injuries and health invalidate sleeping AI",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "creatures/ai_activity_senses",
+      "category": "creatures",
+      "script": "tools/tests/ai_activity_senses.gd",
+      "marker": "AI_SENSES_CHECKS",
+      "min_checks": 400,
+      "quick": true,
+      "description": "Spatial activity against independent all-pairs senses",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "creatures/ai_live_eligibility",
+      "category": "creatures",
+      "script": "tools/tests/ai_live_eligibility.gd",
+      "marker": "AI_LIVE_ELIGIBILITY",
+      "min_checks": 9,
+      "quick": true,
+      "description": "Live ownership, hostility and effect eligibility",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "creatures/ai_reaction_recipients",
+      "category": "creatures",
+      "script": "tools/tests/ai_reaction_recipients.gd",
+      "marker": "AI_REACTION_RECIPIENTS",
+      "min_checks": 7,
+      "quick": true,
+      "description": "Reaction recipients and ownership changes",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "creatures/creature_alerts",
+      "category": "creatures",
+      "script": "tools/tests/creature_alerts.gd",
+      "marker": "CREATURE_ALERTS",
+      "min_checks": 12,
+      "quick": false,
+      "description": "Witnessed kills, unheard attacks and neutral hostility",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "creatures/creature_damage",
+      "category": "creatures",
+      "script": "tools/tests/creature_damage.gd",
+      "marker": "CREATURE_DAMAGE",
+      "min_checks": 20,
+      "quick": true,
+      "description": "Natural weapons, wounded limbs and damage application",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "animation/creature_weapon_animations",
+      "category": "animation",
+      "script": "tools/tests/creature_weapon_animations.gd",
+      "marker": "CREATURE_WEAPON_ANIMATIONS",
+      "min_checks": 100,
+      "quick": true,
+      "description": "Available attack clips across original creature prototypes",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "animation/direct_gait_continuity",
+      "category": "animation",
+      "script": "tools/tests/direct_gait_continuity.gd",
+      "marker": "DIRECT_GAIT_CONTINUITY",
+      "min_checks": 500,
+      "quick": true,
+      "description": "Walking/running cycles across weapon and injury changes",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "animation/direct_moving_attacks",
+      "category": "animation",
+      "script": "tools/tests/direct_moving_attacks.gd",
+      "marker": "MOVING_ATTACKS",
+      "min_checks": 10,
+      "quick": false,
+      "description": "Attack timing and composed body/leg motion while moving",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "animation/direct_moving_casts",
+      "category": "animation",
+      "script": "tools/tests/direct_moving_casts.gd",
+      "marker": "MOVING_CASTS",
+      "min_checks": 10,
+      "quick": false,
+      "description": "Cast/recovery timing during movement",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "animation/paused_spawn_pose",
+      "category": "animation",
+      "script": "tools/tests/paused_spawn_pose.gd",
+      "marker": "PAUSED_SPAWN_POSE",
+      "min_checks": 10,
+      "quick": true,
+      "description": "First visible posture before animation evaluation",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "animation/paused_load_pose",
+      "category": "animation",
+      "script": "tools/tests/paused_load_pose.gd",
+      "marker": "PAUSED_LOAD_POSE",
+      "min_checks": 20,
+      "quick": false,
+      "description": "Paused saves restore posture and menu pause",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "animation/dialogue_poses",
+      "category": "animation",
+      "script": "tools/tests/dialogue_poses.gd",
+      "marker": "DIALOGUE_POSES",
+      "min_checks": 10,
+      "quick": false,
+      "description": "Authored dialogue poses across connected peers",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "effects/creature_effect_attachments",
+      "category": "effects",
+      "script": "tools/tests/creature_effect_attachments.gd",
+      "marker": "CREATURE_EFFECT_ATTACHMENTS",
+      "min_checks": 100,
+      "quick": true,
+      "description": "Effect attachment points and missing bones across rigs",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "effects/creature_projectile_origins",
+      "category": "effects",
+      "script": "tools/tests/creature_projectile_origins.gd",
+      "marker": "CREATURE_PROJECTILE_ORIGINS",
+      "min_checks": 25,
+      "quick": true,
+      "description": "Projectile origins and direction on creature models",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "effects/particle_delay_lifetime",
+      "category": "effects",
+      "script": "tools/tests/particle_delay_lifetime.gd",
+      "marker": "PARTICLE_DELAY_LIFETIME",
+      "min_checks": 25,
+      "quick": false,
+      "description": "Pause/speed, delayed ending bursts and world teardown",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "effects/repeated_spells",
+      "category": "effects",
+      "script": "tools/tests/repeated_spells.gd",
+      "marker": "REPEATED_SPELLS",
+      "min_checks": 8,
+      "quick": true,
+      "description": "Recasts and repeated effect application",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "effects/fire_particles",
+      "category": "effects",
+      "script": "tools/tests/fire_particles.gd",
+      "marker": "FIRE_PARTICLES",
+      "min_checks": 100,
+      "quick": true,
+      "description": "Particle simulation kernel versus retained script",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "effects/tornado_particles",
+      "category": "effects",
+      "script": "tools/tests/tornado_particles.gd",
+      "marker": "TORNADO_PARTICLES",
+      "min_checks": 100,
+      "quick": true,
+      "description": "Tornado state, particle lifetime and kernel consistency",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "effects/healing_presentation",
+      "category": "effects",
+      "script": "tools/tests/healing_presentation.gd",
+      "marker": "HEALING_PRESENTATION",
+      "min_checks": 10,
+      "quick": false,
+      "description": "Healing effect lifetime across host and guest",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "effects/delayed_cast_lifetime",
+      "category": "effects",
+      "script": "tools/tests/delayed_cast_lifetime.gd",
+      "marker": "DELAYED_CAST_LIFETIME",
+      "min_checks": 8,
+      "quick": true,
+      "description": "Delayed casts released with actors/worlds",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "stealth/stealth_effects",
+      "category": "stealth",
+      "script": "tools/tests/stealth_effects.gd",
+      "marker": "STEALTH_EFFECTS",
+      "min_checks": 15,
+      "quick": false,
+      "description": "Real guards, invisibility, remembered targets and silence",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "stealth/stealth_effects_net",
+      "category": "stealth",
+      "script": "tools/tests/stealth_effects_net.gd",
+      "marker": "STEALTH_EFFECTS_NET",
+      "min_checks": 10,
+      "quick": false,
+      "description": "Stealth effects and party visibility across peers",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "stealth/perception_batch",
+      "category": "stealth",
+      "script": "tools/tests/perception_batch.gd",
+      "marker": "PERCEPTION_BATCH",
+      "min_checks": 100,
+      "quick": true,
+      "description": "Optimized perception against script observations",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "stealth/unit_visibility",
+      "category": "stealth",
+      "script": "tools/tests/unit_visibility.gd",
+      "marker": "UNIT_VISIBILITY",
+      "min_checks": 10,
+      "quick": false,
+      "description": "Visibility, occluded eyes and live actor state",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "stealth/hidden_presentation",
+      "category": "stealth",
+      "script": "tools/tests/hidden_presentation.gd",
+      "marker": "HIDDEN_PRESENTATION",
+      "min_checks": 10,
+      "quick": true,
+      "description": "Hidden actors do not retain stale presentation",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "commands/combat_inputs",
+      "category": "commands",
+      "script": "tools/tests/combat_inputs.gd",
+      "marker": "COMBAT_INPUTS",
+      "min_checks": 8,
+      "quick": true,
+      "description": "Combat-state inputs across ownership, hostility, sight and action changes",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "commands/direct_command_priority",
+      "category": "commands",
+      "script": "tools/tests/direct_command_priority.gd",
+      "marker": "DIRECT_COMMAND_PRIORITY",
+      "min_checks": 12,
+      "quick": false,
+      "description": "Move, attack and interaction command priority",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "commands/issue_campaign_orders",
+      "category": "commands",
+      "script": "tools/tests/issue_campaign_orders.gd",
+      "marker": "ISSUE_CAMPAIGN_ORDERS",
+      "min_checks": 10,
+      "quick": false,
+      "description": "Campaign command replacement and held actions",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "commands/direct_interactions",
+      "category": "commands",
+      "script": "tools/tests/direct_interactions.gd",
+      "marker": "DIRECT_INTERACTIONS",
+      "min_checks": 8,
+      "quick": false,
+      "description": "Interaction dispatch and target validity",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "commands/command_retry",
+      "category": "commands",
+      "script": "tools/tests/command_retry.gd",
+      "marker": "COMMAND_RETRY",
+      "min_checks": 25,
+      "quick": false,
+      "description": "Real loopback loss/reordering and exactly-once commands",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "commands/exhausted_interactions",
+      "category": "commands",
+      "script": "tools/tests/exhausted_interactions.gd",
+      "marker": "EXHAUSTED_INTERACTIONS",
+      "min_checks": 6,
+      "quick": false,
+      "description": "Consumed mechanisms reject stale commands; repeatable switches remain usable",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "pathing/nav_turn_native",
+      "category": "pathing",
+      "script": "tools/tests/nav_turn_native.gd",
+      "marker": "NAV_TURN_NATIVE",
+      "min_checks": 2500,
+      "quick": true,
+      "description": "Direction-pair, slope, occupancy and refinement cross-checks",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "pathing/nav_topology",
+      "category": "pathing",
+      "script": "tools/tests/nav_topology.gd",
+      "marker": "NAV_TOPOLOGY",
+      "min_checks": 100,
+      "quick": true,
+      "description": "Static route topology and disconnected regions",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "pathing/nav_dynamic_topology",
+      "category": "pathing",
+      "script": "tools/tests/nav_dynamic_topology.gd",
+      "marker": "NAV_DYNAMIC_TOPOLOGY",
+      "min_checks": 100,
+      "quick": true,
+      "description": "Doors and moving occupancy invalidate affected paths",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "pathing/nav_ray",
+      "category": "pathing",
+      "script": "tools/tests/nav_ray.gd",
+      "marker": "NAV_RAY",
+      "min_checks": 15000,
+      "quick": true,
+      "description": "Ray boundaries, walls, floors and visibility spans",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "pathing/nav_relocation_bounds",
+      "category": "pathing",
+      "script": "tools/tests/nav_relocation_bounds.gd",
+      "marker": "NAV_RELOCATION_BOUNDS",
+      "min_checks": 100,
+      "quick": true,
+      "description": "Relocation search bounds versus full search",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "pathing/path_preview",
+      "category": "pathing",
+      "script": "tools/tests/path_preview.gd",
+      "marker": "PATH_PREVIEW",
+      "min_checks": 8,
+      "quick": false,
+      "description": "Long route previews, visible trail coverage and action contact cutoffs",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "pathing/direct_passages",
+      "category": "pathing",
+      "script": "tools/tests/direct_passages.gd",
+      "marker": "PASSAGE_CHECKS",
+      "min_checks": 10,
+      "quick": false,
+      "description": "Actual movement through authored narrow passages",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "quests/quest_rewards_astral",
+      "category": "quests",
+      "script": "tools/tests/quest_rewards.gd",
+      "marker": "QUEST_REWARDS",
+      "min_checks": 12,
+      "quick": false,
+      "description": "Reward and completion state transitions",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "animation/creature_weapon_animations_astral",
+      "category": "animation",
+      "script": "tools/tests/creature_weapon_animations.gd",
+      "marker": "CREATURE_WEAPON_ANIMATIONS",
+      "min_checks": 100,
+      "quick": true,
+      "description": "Available attack clips across original creature prototypes",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "effects/creature_effect_attachments_astral",
+      "category": "effects",
+      "script": "tools/tests/creature_effect_attachments.gd",
+      "marker": "CREATURE_EFFECT_ATTACHMENTS",
+      "min_checks": 100,
+      "quick": true,
+      "description": "Effect attachment points and missing bones across rigs",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "effects/creature_projectile_origins_astral",
+      "category": "effects",
+      "script": "tools/tests/creature_projectile_origins_astral.gd",
+      "marker": "CREATURE_PROJECTILE_ORIGINS",
+      "min_checks": 25,
+      "quick": true,
+      "description": "Projectile origins and direction on creature models",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "stealth/patrol_escape_alerts",
+      "category": "stealth",
+      "script": "tools/tests/patrol_escape_alerts.gd",
+      "marker": "PATROL_ESCAPE_ALERTS",
+      "min_checks": 14,
+      "quick": true,
+      "description": "Patrol escape, last known positions, scripted pursuit and assault witnesses",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/story_guard_escape",
+      "category": "quests",
+      "script": "tools/tests/story_guard_escape.gd",
+      "marker": "STORY_GUARD_ESCAPE",
+      "min_checks": 10,
+      "quick": true,
+      "description": "Suslanger alarm and whole-party escape quest boundaries",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone19.mob"
+      ]
+    }
+  ]
+}

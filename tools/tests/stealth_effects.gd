@@ -8,8 +8,12 @@ func check(ok:bool,label:String) -> void:
 func frames(n:=4) -> void:
 	for i in n:await get_tree().process_frame
 func forget(w:GameWorld,u:GameUnit) -> void:
-	u.remove_meta("noticed");u.remove_meta("perceived");u.remove_meta("notice_candidates")
-	w.time+=GameUnit.TICK
+	# Each phase explicitly constructs a new observation scene while ordinary
+	# world ticks are frozen. Update teleported occupancy and let the original
+	# 8–11 tick candidate cache expire; prior alarms do not belong to this phase.
+	for key in ["noticed","perceived","seen_corpses","suspect","patrol_last_seen"]:u.remove_meta(key)
+	w.nav.track_unit(u)
+	w.time+=12.0*GameUnit.TICK
 func has_target(w:GameWorld,by:GameUnit,target:GameUnit) -> bool:
 	return w.ai.player_perceive(by,true).has(target.get_instance_id())
 func gameplay(s:Session,nalo:GameUnit) -> void:
@@ -43,7 +47,15 @@ func gameplay(s:Session,nalo:GameUnit) -> void:
 	check(has_target(w,by,nalo),"removing invisibility restores acquisition")
 	Spells.apply(w,nalo,spell,nalo,nalo.pos)
 	w.time+=GameUnit.TICK
-	check(has_target(w,by,nalo),"already spotted hostile stays remembered, matching original AI")
+	check(not has_target(w,by,nalo),"ordinary campaign patrol loses an opponent beyond its reduced notice range")
+	# Stable 1.19.0 deliberately lets ordinary patrols lose escaped opponents;
+	# authored Aggression still retains the original persistent pursuit.
+	nalo.buffs.clear();nalo.refresh_max_hp();forget(w,by)
+	by.set_meta("um",UnitAI.MOT_AGGRESSION)
+	check(has_target(w,by,nalo),"scripted aggression acquires the unbuffed opponent")
+	Spells.apply(w,nalo,spell,nalo,nalo.pos);w.time+=GameUnit.TICK
+	check(has_target(w,by,nalo),"scripted aggression retains the already spotted invisible opponent")
+	by.remove_meta("um")
 	forget(w,by);Spells.apply(w,nalo,"invisibility{e2;e2;e2;e2;e2;e2;e2;e2}",nalo,nalo.pos)
 	check(nalo.detect(0)==0.0 and not has_target(w,by,nalo),"power runes can suppress ordinary sight completely")
 	by.pos=nalo.pos+Vector2(0.5,0);by.facing=PI
@@ -57,7 +69,7 @@ func gameplay(s:Session,nalo:GameUnit) -> void:
 	check(nalo.detect(3)==0.0 and w.ai._help.is_empty(),"Silent Step prevents movement noise from alerting nearby listeners")
 	nalo.buffs.silence[GameUnit.EFFECT_TICKS]=1;nalo._tick_effects()
 	w.ai.noise_event(nalo,nalo.noise()*nalo.detect(3))
-	check(nalo.detect(3)==1.0 and not w.ai._help.is_empty(),"hearing returns when the effect expires")
+	check(nalo.detect(3)==1.0 and w.ai._help.any(func(e:Array):return e[0]==by),"same listener hears footsteps again when the effect expires")
 	print("STEALTH_GAMEPLAY ",JSON.stringify({"sight_range":radius,"spell_power":Spells.parse(spell).effect,"observer":by.proto.name,"prone":true}))
 func capture(view:SubViewport,label:String) -> Image:
 	await frames(10);await RenderingServer.frame_post_draw

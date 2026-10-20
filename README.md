@@ -230,6 +230,9 @@ The [original-engine comparison suite](docs/original-parity.md) runs bounded
 scenarios against the original executable and the remake independently, records
 the first differing observation, and retains reproducible inputs. It requires
 an owned original installation; no original executable or assets are included.
+The [gameplay regression suite](docs/gameplay-testing.md) collects quest,
+creature, animation, effect, stealth, command and pathing checks into one
+isolated runner, with per-program reports and optional original comparisons.
 
 ## License
 

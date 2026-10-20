@@ -11,10 +11,14 @@ func check(ok: bool, label: String) -> void:
 	checks += 1
 	if not ok: failures += 1; printerr("FAIL ", label)
 
+func fixture_record(id: String) -> Dictionary:
+	return {"prototype":id, "nid":serial, "player":1}
+
 func unit(id: String) -> GameUnit:
 	serial += 1
 	var u := GameUnit.new()
-	check(u.setup(w, {"prototype":id, "nid":serial, "player":1}), "loads " + id)
+	var record := fixture_record(id)
+	check(u.setup(w, record), "loads " + String(record.prototype))
 	w.add_child(u); w.set_unit(u.uid, u)
 	u.pos = Vector2(20,20); u.facing = PI/2; u.resync_drawn()
 	u.model.set_process(false)

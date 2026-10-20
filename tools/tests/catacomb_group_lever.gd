@@ -73,7 +73,11 @@ func _ready() -> void:
 			s.state.ensure_hero(n,"Human Hero")
 			var r: Dictionary = s.state.party_records(n)[0]
 			r.nid = w.new_uid(); r.position = Vector3(30,54,0)
-			u = w.spawn_unit(r); u.faction = 0; u.mode = "player"; s.state.apply_hero(u)
+			u = w.spawn_unit(r); u.faction = 0; u.mode = "player"
+			# apply_hero resolves the record using its owner. Transfer control
+			# to the host only after the synthetic guest hero has been applied.
+			u.controller = n; s.state.apply_hero(u)
+			check(u.has_meta("hero") and u.stats.has("dex"),"synthetic rider receives its owner's hero stats "+str(n))
 		u.controller = 0
 		u.pos = Vector2(30+n*1.6,54); u.ai_next = INF; u._perceive_next = INF
 		w.nav.track_unit(u); riders.append(u)

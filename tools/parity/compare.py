@@ -64,7 +64,8 @@ def validate_trace(trace, inputs, role):
         for i, step in enumerate(steps):
             if set(step) != {"step", "state"} or isinstance(step["step"], bool) or step["step"] != i or not isinstance(step["state"], dict) or not step["state"]:
                 raise ValueError(f"{role} {row['id']} has an invalid step {i}")
-        counted_inputs = {"clock": "frames", "script_random": "words", "sight_factor": "postures"}
+        counted_inputs = {"clock": "frames", "script_random": "words", "sight_factor": "postures",
+                          "faction_relation": "values"}
         expected_count = len(case["inputs"][counted_inputs[case["kind"]]]) if case["kind"] in counted_inputs else (
             None if case["kind"] == "cast_rank" else 1)
         if expected_count is not None and len(steps) != expected_count:

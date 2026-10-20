@@ -303,6 +303,8 @@ CAPTURES = {
     "sight_factor": sight_factor, "interaction_reach": interaction_reach,
     "attack": attack, "attack_chance": lambda o, c: attack(o, c, True),
 }
+from native_extended import CAPTURES as EXTRA_CAPTURES
+CAPTURES.update(EXTRA_CAPTURES)
 
 
 def capture(binary, inputs):

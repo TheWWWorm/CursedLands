@@ -50,7 +50,12 @@ func _ready()->void:
 	var victim:=w.spawn_unit({"prototype":"PigF0","nid":900003,"player":2,"position":Vector3(20,21,0)})
 	animal.facing=PI/2.0;animal.remove_meta("perceived");animal.remove_meta("noticed")
 	w.nav.track_unit(animal);w.nav.track_unit(victim)
+	# This fixture freezes world processing and teleports/spawns actors.
+	# Allow the native 8–11 tick candidate-cache lifetime to expire before
+	# testing an assault in the newly constructed scene.
+	w.time += 12.0 * GameUnit.TICK
 	check(w.ai.can_notice(animal,victim,float(animal.stats.sight)),"neutral pig can see the nearby victim")
+	check(w.ai.can_notice(animal,hero,float(animal.stats.sight)),"neutral pig can see the nearby attacker")
 	victim.take_damage(victim.max_hp*10,hero)
 	check(w.is_enemy(animal,hero),"neutral pig witnessing a kill becomes hostile without being hit")
 	remote.apply_snapshot(NetSnapshot.unpack(NetSnapshot.pack([animal.snapshot()]))[0])

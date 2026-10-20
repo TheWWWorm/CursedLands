@@ -9,6 +9,9 @@ func frames(n:=4) -> void:
 func census() -> void:
 	var campaign:=CampaignMap.load_from(GameData.texts);var count:=0;var once:=0;var repeat:=0;var single:=[];var lift:={}
 	var w:=GameWorld.new()
+	# The census reads map records without loading a playable world.
+	# Normal map loading constructs this helper before interaction queries.
+	w.lever_sys=LeverSystem.new(w)
 	for zone:Dictionary in campaign.zones.values():
 		var data:=GameData.read_file("maps/"+String(zone.get("mob",""))+".mob")
 		if data.is_empty():continue
