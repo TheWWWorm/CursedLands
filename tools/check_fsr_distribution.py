@@ -39,6 +39,8 @@ def check_template(template):
             raise ValueError(f"Template includes excluded integration: {marker.decode()}")
     if b"FSR_SDK" not in binary or b"FidelityFX" not in binary:
         raise ValueError("Template does not expose the FidelityFX integration")
+    if b"--experimental-fsr" in binary:
+        raise ValueError("Template still requires the separate experimental FSR launcher")
 
 
 def check_package(package):

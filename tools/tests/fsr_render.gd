@@ -91,6 +91,16 @@ func _run() -> void:
 		save_result(true)
 		get_tree().quit(2)
 		return
+	var options := OptionsPanel.new()
+	get_parent().add_child(options)
+	options.open()
+	options._show_group(FsrGraphics.GROUP)
+	check(not options._rows[0].disabled, "normal graphics menu enables supported FSR")
+	options._toggle(0)
+	check(options._values[FsrGraphics.UPSCALING] == 1, "normal menu selects supported FSR 3.1")
+	options._toggle(2)
+	check(options._values[FsrGraphics.FRAME_GENERATION] == 1, "normal menu selects supported frame generation")
+	options.free()
 	get_tree().root.get_node("FsrExperiment").set_process(false)
 	GameData.options[FsrGraphics.FRAME_GENERATION] = 0
 	GameData.options[FsrGraphics.UPSCALING] = 0

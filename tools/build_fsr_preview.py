@@ -99,6 +99,8 @@ def build(args):
             shutil.copy2(source / relative, target)
     if (source / "docs/validation/fsr-only").exists():
         shutil.copytree(source / "docs/validation/fsr-only", out / "docs/validation/fsr-only")
+    for record in (source / "docs/validation").glob(f"release-{version}*.json"):
+        shutil.copy2(record, out / "docs/validation" / record.name)
     shutil.copy2(source / "docs/releases" / (version + ".md"), out / "RELEASE-NOTES.md")
     (out / "README.txt").write_text(
         "Cursed Lands — AMD FSR and formula mods\n\n"
