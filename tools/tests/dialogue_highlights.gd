@@ -39,7 +39,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	GameData.options.merge({"autosave":0,"show_tutorial":0,"net_upnp":0,"net_lan":0,
 		"net_directory":0,"auto_graphics":0,"scroll_border":0,"select_type":1,"control_mode":1},true)
-	host = branch(false); check(host.host(29947,2)==OK,"open highlight host")
+	host = branch(false); check(host.host(0,2)==OK,"open highlight host")
 	host.state = CampaignState.new(); host.state.ensure_hero(0,"Human Hero")
 	host.set_physics_process(false)
 	await host.enter_zone("bz1g",1,false); silent(host)
@@ -89,7 +89,7 @@ func _ready() -> void:
 	host.game.hud._dialog.visible=false
 	check(lit(host),"cancelling topics restores a still-pending cue")
 	client=branch(true); GameData.player_name="Highlight Guest"
-	check(client.join("127.0.0.1",29947)==OK,"connect highlight guest")
+	check(client.join("127.0.0.1",host.host_port)==OK,"connect highlight guest")
 	check(await until(loaded),"guest receives actual village and pending topic")
 	if client.world == null: await finish(); return
 	silent(client)

@@ -55,9 +55,9 @@ func _ready() -> void:
 	GameData.options.merge({"autosave":0, "show_tutorial":0, "net_upnp":0, "net_lan":0,
 		"net_directory":0, "auto_graphics":0, "coop_share_loot":1}, true)
 	host = peer("LootHost"); guest = peer("LootGuest")
-	check(host.host(29973, 2) == OK, "authority opens isolated ENet port")
+	check(host.host(0, 2) == OK, "authority opens isolated ENet port")
 	GameData.player_name = "Loot Guest"
-	check(guest.join("127.0.0.1", 29973) == OK, "guest connects over ENet")
+	check(guest.join("127.0.0.1", host.host_port) == OK, "guest connects over ENet")
 	check(await until(func(): return host.players.size() == 2 and guest.my_index == 1), "distinct host and guest identities")
 	if failures: await finish(); return
 	host.state = CampaignState.new()
@@ -109,6 +109,12 @@ func _ready() -> void:
 	host.coop.with_purse(1, host.take_loot.bind(owner, carried), true)
 	check(host.state.items.count(MATERIAL) == 3 and entry.purse.items.count(MATERIAL) == 3,
 		"looting three scripted grants transfers exactly three resources to each bag")
+	# Inventory snapshots and pickup notices use separate delivery paths. An
+	# empty inventory can arrive before the previous corpse's notice; wait for
+	# that fixture's actual event before clearing the observers for the race.
+	check(await until(func(): return host.notices.size() == 1 and guest.notices.size() == 1),
+		"scripted-corpse pickup notice reaches both peers before retry tests")
+	if failures: await finish(); return
 	host.state.items = []; entry.purse.items = []; host.sync_state()
 	await settle()
 	check(await until(func(): return guest.state.items.is_empty()), "scripted-corpse fixture inventory settles before retry tests")
@@ -146,6 +152,8 @@ func _ready() -> void:
 				and host.state.money == expected_money and entry.purse.money == expected_money,
 				"simultaneous clicks and late packets cannot duplicate either purse at %sx race=%s" % [speed, race])
 			check(host.notices.size() == 1 and guest.notices.size() == 1, "each player receives one corpse pickup notice at %sx race=%s" % [speed, race])
+			if host.notices.size() != 1 or guest.notices.size() != 1:
+				print("LOOT_NOTICE_MISMATCH ", JSON.stringify({"speed":speed,"race":race,"host":host.notices,"guest":guest.notices}))
 	# Script rewards use the same reliable inventory/notice path as a quest.
 	host.notices.clear(); guest.notices.clear()
 	host.give_item(-1, MATERIAL, 3); host.notify_got(-1, [MATERIAL, MATERIAL, MATERIAL])

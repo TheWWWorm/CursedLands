@@ -17,8 +17,8 @@ func _ready() -> void:
 	GameData.options.merge({"autosave":0,"show_tutorial":0,"net_upnp":0,"net_lan":0,"net_directory":0,"auto_graphics":0,"control_mode":1},true)
 	var a:=branch("Host",true);host=a.s;hg=a.g
 	var b:=branch("Guest",false);client=b.s;cg=b.g
-	require(host.host(29928,2)==OK);GameData.player_name="Spell Guest"
-	require(client.join("127.0.0.1",29928)==OK)
+	require(host.host(0,2)==OK);GameData.player_name="Spell Guest"
+	require(client.join("127.0.0.1",host.host_port)==OK)
 	require(await until(func():return host.players.size()==2 and client.my_index==1))
 	host.set_physics_process(false);client.set_physics_process(false)
 	host.state=CampaignState.new();host.state.ensure_hero(0,"Human Hero");host.state.ensure_hero(1,"Human Hero","Spell Guest")
