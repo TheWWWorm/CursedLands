@@ -226,6 +226,11 @@ run, set the active platform's **Thread Model** override to **Safe** in your loc
 project settings. The source checkout keeps GDScript and shader files at LF line
 endings through `.gitattributes`, including on Windows.
 
+The [original-engine comparison suite](docs/original-parity.md) runs bounded
+scenarios against the original executable and the remake independently, records
+the first differing observation, and retains reproducible inputs. It requires
+an owned original installation; no original executable or assets are included.
+
 ## License
 
 The engine's code is licensed under the Apache License 2.0 (see [LICENSE.md](LICENSE.md)); see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for third-party components. Evil Islands and all of its content belong to their respective owners and are not part of this project.

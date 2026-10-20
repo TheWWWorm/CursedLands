@@ -1,0 +1,527 @@
+{
+  "schema": 1,
+  "date": "2026-10-20",
+  "base_commit": "50fd5b06e7a17a6dea63fe85693f23c0485cfbb1",
+  "base_version": "1.19.0",
+  "reference": {
+    "id": "evil-islands-gog-en-d0fc0bb2",
+    "campaign": "original",
+    "executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+    "patches": [],
+    "description": "Locally verified GOG base-game game.exe. Addresses are valid only for this digest."
+  },
+  "godot": {
+    "build": "official",
+    "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "hex": 263936,
+    "major": 4,
+    "minor": 7,
+    "patch": 0,
+    "status": "stable",
+    "string": "4.7-stable (official)",
+    "timestamp": 0
+  },
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "unicorn": "2.1.4",
+  "fpu_control_word": "0x027f",
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "qualification": {
+    "status": "mismatch",
+    "counts": {
+      "scenarios": 126,
+      "matches": 121,
+      "mismatches": 5,
+      "original_steps": 788
+    },
+    "repeatability": {
+      "captures_per_side": 2,
+      "verified": true
+    },
+    "input_sha256": "37ff5ce3ee48cbfdcee9cf9df160a25b479f34226ef37f6a843ad9f93ee062d2",
+    "source_snapshot_sha256": "744dbb1407665531e91d3c6c64df2057ff43c3b26e8296d60a48ad4aae777b8d",
+    "tool_source": {
+      "cases.py": "78d9868f3ab2713217dc73ee04cdd3374067e29242b435c75966c67c237ed132",
+      "compare.py": "fe787344242045e57f0cbbb736fb7ad9675159a14dc28c9edad07a69d524d722",
+      "native.py": "243e52286135caec22e9a21c5c01536f7f3746921c7e511222a4318c16e450ea",
+      "remake_trace.gd": "43948cf6d26621006718c0b3c6b542495a0dd2d22dac8864e1662e2f7644ad9c",
+      "requirements.txt": "56bce36af734e3b9aeff2be4301bbc2a2c2b58ea1ea1e6ee6e792db84f96fbd4",
+      "run.py": "af9d53e29be2e4c9d68a11202c81243218c6907b32ee5dc42114fa9aa59218a0",
+      "test_harness.py": "effc237ef053556aca8e9d12d3594d0632d97a2db07234ffbd6b8927c48e65ee"
+    },
+    "scenarios": [
+      {
+        "case": {
+          "id": "attack_chance/a41_d40_distance1",
+          "inputs": {
+            "aim": -1,
+            "attack": 41,
+            "attack_actions": 15.0,
+            "defence": 40,
+            "defence_actions": 15.0,
+            "distance": 1,
+            "radius": 0.5,
+            "spread": 40
+          },
+          "kind": "attack_chance"
+        },
+        "original": {
+          "id": "attack_chance/a41_d40_distance1",
+          "steps": [
+            {
+              "step": 0,
+              "state": {
+                "probability": 0.4878048780487805
+              }
+            }
+          ]
+        },
+        "remake": {
+          "id": "attack_chance/a41_d40_distance1",
+          "steps": [
+            {
+              "state": {
+                "probability": 0.51219512195122
+              },
+              "step": 0
+            }
+          ]
+        },
+        "result": {
+          "id": "attack_chance/a41_d40_distance1",
+          "kind": "attack_chance",
+          "status": "mismatch",
+          "original_steps": 1,
+          "remake_steps": 1,
+          "original_trace_sha256": "e9c2fdcddce7cd12ed933fcc15cb67f3e6895ae0014ae1b3924064cf68776ce8",
+          "remake_trace_sha256": "39f0822a7928f4fee9d27dc0b98154cf717cb71e9d9254fe972475734cbd465e",
+          "first_divergence": {
+            "field": "$.steps[0].state.probability",
+            "reason": "value",
+            "expected": 0.4878048780487805,
+            "actual": 0.51219512195122,
+            "delta": 0.02439024390243949,
+            "absolute_tolerance": 1e-12
+          }
+        }
+      },
+      {
+        "case": {
+          "id": "attack_chance/a41_d40_distance5",
+          "inputs": {
+            "aim": -1,
+            "attack": 41,
+            "attack_actions": 15.0,
+            "defence": 40,
+            "defence_actions": 15.0,
+            "distance": 5,
+            "radius": 0.5,
+            "spread": 40
+          },
+          "kind": "attack_chance"
+        },
+        "original": {
+          "id": "attack_chance/a41_d40_distance5",
+          "steps": [
+            {
+              "step": 0,
+              "state": {
+                "probability": 0.4878048780487805
+              }
+            }
+          ]
+        },
+        "remake": {
+          "id": "attack_chance/a41_d40_distance5",
+          "steps": [
+            {
+              "state": {
+                "probability": 0.51219512195122
+              },
+              "step": 0
+            }
+          ]
+        },
+        "result": {
+          "id": "attack_chance/a41_d40_distance5",
+          "kind": "attack_chance",
+          "status": "mismatch",
+          "original_steps": 1,
+          "remake_steps": 1,
+          "original_trace_sha256": "e9c2fdcddce7cd12ed933fcc15cb67f3e6895ae0014ae1b3924064cf68776ce8",
+          "remake_trace_sha256": "39f0822a7928f4fee9d27dc0b98154cf717cb71e9d9254fe972475734cbd465e",
+          "first_divergence": {
+            "field": "$.steps[0].state.probability",
+            "reason": "value",
+            "expected": 0.4878048780487805,
+            "actual": 0.51219512195122,
+            "delta": 0.02439024390243949,
+            "absolute_tolerance": 1e-12
+          }
+        }
+      },
+      {
+        "case": {
+          "id": "attack_chance/a40_d40_distance10",
+          "inputs": {
+            "aim": -1,
+            "attack": 40,
+            "attack_actions": 15.0,
+            "defence": 40,
+            "defence_actions": 15.0,
+            "distance": 10,
+            "radius": 0.5,
+            "spread": 40
+          },
+          "kind": "attack_chance"
+        },
+        "original": {
+          "id": "attack_chance/a40_d40_distance10",
+          "steps": [
+            {
+              "step": 0,
+              "state": {
+                "probability": 0.4634146341463415
+              }
+            }
+          ]
+        },
+        "remake": {
+          "id": "attack_chance/a40_d40_distance10",
+          "steps": [
+            {
+              "state": {
+                "probability": 0.48780487804878
+              },
+              "step": 0
+            }
+          ]
+        },
+        "result": {
+          "id": "attack_chance/a40_d40_distance10",
+          "kind": "attack_chance",
+          "status": "mismatch",
+          "original_steps": 1,
+          "remake_steps": 1,
+          "original_trace_sha256": "4203a8b7f26e1acb1d6177c0d2d49d108d6639ac40a8256db502e100c722782a",
+          "remake_trace_sha256": "1b22bf13f67a2d5d51cf6677e104e66b164cf8e9386a19d9b828ffcb0ddeebc2",
+          "first_divergence": {
+            "field": "$.steps[0].state.probability",
+            "reason": "value",
+            "expected": 0.4634146341463415,
+            "actual": 0.48780487804878,
+            "delta": 0.02439024390243849,
+            "absolute_tolerance": 1e-12
+          }
+        }
+      },
+      {
+        "case": {
+          "id": "attack_chance/a41_d40_distance10",
+          "inputs": {
+            "aim": -1,
+            "attack": 41,
+            "attack_actions": 15.0,
+            "defence": 40,
+            "defence_actions": 15.0,
+            "distance": 10,
+            "radius": 0.5,
+            "spread": 40
+          },
+          "kind": "attack_chance"
+        },
+        "original": {
+          "id": "attack_chance/a41_d40_distance10",
+          "steps": [
+            {
+              "step": 0,
+              "state": {
+                "probability": 0.4878048780487805
+              }
+            }
+          ]
+        },
+        "remake": {
+          "id": "attack_chance/a41_d40_distance10",
+          "steps": [
+            {
+              "state": {
+                "probability": 0.51219512195122
+              },
+              "step": 0
+            }
+          ]
+        },
+        "result": {
+          "id": "attack_chance/a41_d40_distance10",
+          "kind": "attack_chance",
+          "status": "mismatch",
+          "original_steps": 1,
+          "remake_steps": 1,
+          "original_trace_sha256": "e9c2fdcddce7cd12ed933fcc15cb67f3e6895ae0014ae1b3924064cf68776ce8",
+          "remake_trace_sha256": "39f0822a7928f4fee9d27dc0b98154cf717cb71e9d9254fe972475734cbd465e",
+          "first_divergence": {
+            "field": "$.steps[0].state.probability",
+            "reason": "value",
+            "expected": 0.4878048780487805,
+            "actual": 0.51219512195122,
+            "delta": 0.02439024390243949,
+            "absolute_tolerance": 1e-12
+          }
+        }
+      },
+      {
+        "case": {
+          "id": "attack_chance/a20_d10_distance10",
+          "inputs": {
+            "aim": -1,
+            "attack": 20,
+            "attack_actions": 15.0,
+            "defence": 10,
+            "defence_actions": 15.0,
+            "distance": 10,
+            "radius": 0.5,
+            "spread": 40
+          },
+          "kind": "attack_chance"
+        },
+        "original": {
+          "id": "attack_chance/a20_d10_distance10",
+          "steps": [
+            {
+              "step": 0,
+              "state": {
+                "probability": 0.5853658536585366
+              }
+            }
+          ]
+        },
+        "remake": {
+          "id": "attack_chance/a20_d10_distance10",
+          "steps": [
+            {
+              "state": {
+                "probability": 0.609756097560976
+              },
+              "step": 0
+            }
+          ]
+        },
+        "result": {
+          "id": "attack_chance/a20_d10_distance10",
+          "kind": "attack_chance",
+          "status": "mismatch",
+          "original_steps": 1,
+          "remake_steps": 1,
+          "original_trace_sha256": "10401832a4f0583c76b5e02d4e83effd138ba309fa7e8cb75af4341b33150537",
+          "remake_trace_sha256": "6fa9413c5674c548d9581b89cd967ecf92732549985efa4554a04a45271bb61c",
+          "first_divergence": {
+            "field": "$.steps[0].state.probability",
+            "reason": "value",
+            "expected": 0.5853658536585366,
+            "actual": 0.609756097560976,
+            "delta": 0.02439024390243949,
+            "absolute_tolerance": 1e-12
+          }
+        }
+      }
+    ]
+  },
+  "harness_tests": {
+    "passed": 26,
+    "failed": 0,
+    "command": "python3 -m unittest discover -s tools/parity -p 'test_*.py' -v"
+  },
+  "mutation_control": {
+    "file": "game/src/game/spells.gd",
+    "from": "if is_nan(d) or is_nan(best) or d < best:",
+    "to": "if is_nan(d) or is_nan(best) or d <= best:",
+    "scope": "Isolated copy only; production source unchanged.",
+    "capture": {
+      "status": "mismatch",
+      "counts": {
+        "scenarios": 1,
+        "matches": 0,
+        "mismatches": 1,
+        "original_steps": 3
+      },
+      "repeatability": {
+        "captures_per_side": 2,
+        "verified": true
+      },
+      "input_sha256": "a42526b5b9e20ab754def3700feeeb8fdfd9f7e92b6fca63efd98490d8d9b72b",
+      "source_snapshot_sha256": "987a38a2f0a278e2cc03c9220a0276b1d73f68f00711f452cbeae41f53052c8e",
+      "tool_source": {
+        "cases.py": "78d9868f3ab2713217dc73ee04cdd3374067e29242b435c75966c67c237ed132",
+        "compare.py": "7c9f331d2313497043171b51e50034b65ad5376f3be003c3a2cc44d98c4b7b85",
+        "native.py": "243e52286135caec22e9a21c5c01536f7f3746921c7e511222a4318c16e450ea",
+        "remake_trace.gd": "43948cf6d26621006718c0b3c6b542495a0dd2d22dac8864e1662e2f7644ad9c",
+        "requirements.txt": "56bce36af734e3b9aeff2be4301bbc2a2c2b58ea1ea1e6ee6e792db84f96fbd4",
+        "run.py": "a30d8ea8c54b3d39f0cfb0e7ce13be8d0f21c6478c7b10129ecfcf851bff6759",
+        "test_harness.py": "94a1487d4c0cac9c1bf23ed3af610119900c76663e53459b3ede79bc2e6d93ea"
+      },
+      "scenarios": [
+        {
+          "case": {
+            "id": "cast_rank/equal_distance_stable",
+            "inputs": {
+              "point": [
+                0,
+                0,
+                0
+              ],
+              "pool": [
+                2,
+                0,
+                1
+              ],
+              "target": -1,
+              "units": [
+                {
+                  "dead": false,
+                  "pos": [
+                    0,
+                    0,
+                    5
+                  ]
+                },
+                {
+                  "dead": false,
+                  "pos": [
+                    3,
+                    4,
+                    0
+                  ]
+                },
+                {
+                  "dead": false,
+                  "pos": [
+                    -5,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            },
+            "kind": "cast_rank"
+          },
+          "original": {
+            "id": "cast_rank/equal_distance_stable",
+            "steps": [
+              {
+                "step": 0,
+                "state": {
+                  "selected": 2,
+                  "remaining": [
+                    0,
+                    1
+                  ]
+                }
+              },
+              {
+                "step": 1,
+                "state": {
+                  "selected": 0,
+                  "remaining": [
+                    1
+                  ]
+                }
+              },
+              {
+                "step": 2,
+                "state": {
+                  "selected": 1,
+                  "remaining": []
+                }
+              }
+            ]
+          },
+          "remake": {
+            "id": "cast_rank/equal_distance_stable",
+            "steps": [
+              {
+                "state": {
+                  "remaining": [
+                    2,
+                    0
+                  ],
+                  "selected": 1
+                },
+                "step": 0
+              },
+              {
+                "state": {
+                  "remaining": [
+                    2
+                  ],
+                  "selected": 0
+                },
+                "step": 1
+              },
+              {
+                "state": {
+                  "remaining": [],
+                  "selected": 2
+                },
+                "step": 2
+              }
+            ]
+          },
+          "result": {
+            "id": "cast_rank/equal_distance_stable",
+            "kind": "cast_rank",
+            "status": "mismatch",
+            "original_steps": 3,
+            "remake_steps": 3,
+            "original_trace_sha256": "a8367bac33a75c25bf1976d0c3418f4009216c7d76a4d13e713d73081202c46a",
+            "remake_trace_sha256": "c6516a2b270c8d6cc083d0f7a5c05f2a1458674d3b9448b70d667b4156406c27",
+            "first_divergence": {
+              "field": "$.steps[0].state.remaining[0]",
+              "reason": "value",
+              "expected": 0,
+              "actual": 2,
+              "delta": 2,
+              "absolute_tolerance": 0
+            }
+          }
+        }
+      ]
+    }
+  },
+  "replay_control": {
+    "status": "match",
+    "counts": {
+      "scenarios": 1,
+      "matches": 1,
+      "mismatches": 0,
+      "original_steps": 3
+    },
+    "repeatability": {
+      "captures_per_side": 2,
+      "verified": true
+    },
+    "input_sha256": "9245e2544a010eb18e47b76d6663b5a9d0e1e05c9bd4b6e77679830ac6ec6304",
+    "source_snapshot_sha256": "744dbb1407665531e91d3c6c64df2057ff43c3b26e8296d60a48ad4aae777b8d",
+    "tool_source": {
+      "cases.py": "78d9868f3ab2713217dc73ee04cdd3374067e29242b435c75966c67c237ed132",
+      "compare.py": "fe787344242045e57f0cbbb736fb7ad9675159a14dc28c9edad07a69d524d722",
+      "native.py": "243e52286135caec22e9a21c5c01536f7f3746921c7e511222a4318c16e450ea",
+      "remake_trace.gd": "43948cf6d26621006718c0b3c6b542495a0dd2d22dac8864e1662e2f7644ad9c",
+      "requirements.txt": "56bce36af734e3b9aeff2be4301bbc2a2c2b58ea1ea1e6ee6e792db84f96fbd4",
+      "run.py": "af9d53e29be2e4c9d68a11202c81243218c6907b32ee5dc42114fa9aa59218a0",
+      "test_harness.py": "effc237ef053556aca8e9d12d3594d0632d97a2db07234ffbd6b8927c48e65ee"
+    },
+    "scenarios": []
+  },
+  "limits": [
+    "Bounded subsystem execution with declared supplied boundaries; not full Windows game execution.",
+    "No campaign, save/load, complete AI, movement/collision, multiplayer or renderer validation.",
+    "Probability cases enumerate supplied roll residues uniformly; they do not compare RNG streams.",
+    "Five differences remain failures, consistent with the documented distance/speed terms omitted in combat.gd."
+  ]
+}
