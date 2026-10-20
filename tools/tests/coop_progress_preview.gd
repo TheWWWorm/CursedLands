@@ -17,7 +17,8 @@ func settle() -> void:
 	await RenderingServer.frame_post_draw
 
 func send(zone: String, money: int) -> void:
-	session.coop._rpc_package({"campaign_id":GameData.campaign_id, "host":"Preview host",
+	session.coop._rpc_package({"campaign_id":GameData.campaign_id, "mod_config":session.mod_config,
+		"host":"Preview host",
 		"hero":hero, "purse":{"money":money, "items":["rune:e1"]},
 		"move":{"zone":zone, "day":2, "world_time":8.0}})
 
@@ -108,5 +109,5 @@ func _ready() -> void:
 	SaveInfo.write_shot("ordinary_preview", get_viewport())
 	await settle()
 	check(not picture("ordinary_preview").is_empty(), "ordinary save capture still works without a guard")
-	print("COOP_PROGRESS_PREVIEW ", checks, " checks ", failures, " failures")
+	print("COOP_PROGRESS_PREVIEW ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

@@ -179,5 +179,5 @@ func done() -> void:
 	evidence.checks=checks;evidence.failures=failures
 	FileAccess.open(out.path_join("coop-effect-return.json"),FileAccess.WRITE).store_string(JSON.stringify(evidence,"\t"))
 	await stop_branches();TexUpscale.shutdown()
-	print("AUDIT_COOP_EFFECT_RETURN ",checks," checks ",failures," failures")
+	print("AUDIT_COOP_EFFECT_RETURN ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

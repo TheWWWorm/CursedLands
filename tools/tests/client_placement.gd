@@ -102,5 +102,5 @@ func _ready() -> void:
 	terrain.free(); replacement.free()
 	w.queue_free()
 	await get_tree().process_frame
-	print("CLIENT_PLACEMENT checks=",checks," failures=",failures)
+	print("CLIENT_PLACEMENT ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures == 0 else 1)

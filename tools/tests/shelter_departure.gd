@@ -24,7 +24,7 @@ func _ready() -> void:
 		# frame clock too; disabling Session alone leaves world simulation live.
 		host.world.set_physics_process(false)
 		require(await until(func():return client.zone_id=="bz3h" and not client.loading_game and not host.loading_game))
-		var old_host:=weakref(host.world); var old_client:=weakref(client.world)
+		var old_host: WeakRef=weakref(host.world); var old_client: WeakRef=weakref(client.world)
 		var vm:=host.world.vm
 		for i in 5:vm.tick(GameUnit.TICK)
 		vm.instances.clear()
@@ -49,6 +49,6 @@ func _ready() -> void:
 	client.multiplayer.multiplayer_peer.close(); host.multiplayer.multiplayer_peer.close()
 	for root in branches:root.queue_free()
 	for i in 10:await get_tree().process_frame
-	print("SHELTER_DEPARTURE ",checks," checks ",failures," failures")
+	print("SHELTER_DEPARTURE ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)
 func _process(_dt: float) -> void:pass

@@ -102,5 +102,5 @@ func _ready() -> void:
 	client.multiplayer.multiplayer_peer.close(); host.multiplayer.multiplayer_peer.close()
 	for root in branches: root.queue_free()
 	await frames(); get_tree().paused = false; Engine.time_scale = 1
-	print("COOP_PERMISSIONS ", checks, " checks ", failures, " failures")
+	print("COOP_PERMISSIONS ", JSON.stringify({"checks":checks,"failures":failures}))
 	TexUpscale.shutdown(); get_tree().quit(1 if failures else 0)

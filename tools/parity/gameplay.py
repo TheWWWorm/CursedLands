@@ -39,12 +39,23 @@ def catalog(selection=None):
             raise ValueError("Test IDs must be category/name")
         if (row["kind"] != "remake_regression" or type(row["min_checks"]) is not int
                 or row["min_checks"] < 1 or row["timeout"] < 1
-                or row["campaign"] not in ("cursed_lands", "lost_in_astral")):
+                or row["campaign"] not in ("cursed_lands", "lost_in_astral")
+                or row.get("display", "headless") not in ("headless", "rendered")):
             raise ValueError("Every entry must declare evidence type and nonzero minimum coverage")
         for name in row["required_files"]:
             if Path(name).is_absolute() or ".." in Path(name).parts:
                 raise ValueError("Required assets must stay within the campaign folder")
     return rows
+
+
+def engine_argv(godot, runtime, display="headless"):
+    base = [str(godot), "--path", str(runtime), "--render-thread", "safe", "--audio-driver", "Dummy"]
+    if display == "headless":
+        return base + ["--headless"]
+    # A real renderer on an explicitly selected, private X display. Pixel/UI
+    # checks must never silently fall back to the headless dummy renderer.
+    return base + ["--display-driver", "x11", "--rendering-method", "gl_compatibility",
+                   "--windowed", "--resolution", "1280x800", "--position", "0,0"]
 
 
 def run_program(argv, log, env, timeout):
@@ -114,6 +125,8 @@ def assess(text, spec, exit_code, error=None):
         if (start["profile"] != PROFILE or start["script"] != "res://" + spec["script"]
                 or start["campaign"] != spec["campaign"]):
             raise ValueError("Wrong profile, campaign or test script")
+        if start.get("display", "headless") != spec.get("display", "headless"):
+            raise ValueError("Wrong display mode; rendered checks require a real renderer")
         result["runtime"] = start
         result.update(parse_summary(text, spec["marker"], spec["min_checks"]))
         if diagnostics:
@@ -161,10 +174,13 @@ def render(report):
             lines += ["", "### " + row["id"], "", row.get("error", "Failed assertions:"), ""]
             lines += ["- " + msg.replace("\n", " ") for msg in row["failure_messages"][:12]]
             lines += ["- " + msg.replace("\n", " ") for msg in row["diagnostics"][:6]]
+    rendered = sum(row.get("display", "headless") == "rendered" for row in report["tests"])
     lines += ["", "## Scope", "",
-              "These headless checks cover gameplay state, authored scripts, animation state/rigs and "
-              "effect logic. Rendered pixels, sound, a full ordinary campaign playthrough and external "
-              "Internet play are not validated. C++-versus-GDScript checks compare two remake implementations.",
+              f"{rendered} configurations requested a real OpenGL renderer on a private display; "
+              "the remaining configurations run headlessly. Rendered checks qualify only their "
+              "specific UI/pixel assertions, not overall visual quality or other rendering backends. "
+              "Sound output, a full ordinary campaign playthrough and external Internet play are not "
+              "validated. C++-versus-GDScript checks compare two remake implementations.",
               "", "Each program runs in a fresh process and isolated muted profile. "
               "Runtime source hashes and required-asset hashes are retained. No failure is automatically approved.",
               "", "Run `reproduce.sh NEW_OUTPUT_DIRECTORY` to repeat this selection against the current source.", ""]
@@ -183,6 +199,18 @@ def save_report(report, output):
                        "failed" if counts["failed"] or original == "mismatch" else "passed")
     write_json(output / "report.json", report)
     (output / "report.md").write_text(render(report))
+    if "feature_inventory" in report:
+        rows = {row["id"]: row for row in report["tests"]}
+        lines = ["# Player feature coverage", "", report["feature_inventory"]["meaning"], "",
+                 "Direct dispatch gaps: " + (", ".join(report["feature_inventory"]["direct_command_gaps"]) or
+                                             "none in the inventoried campaign authority commands") + ".", "",
+                 "| Player function | Linked results in this run | Checked scope | Remaining gaps |",
+                 "|---|---|---|---|"]
+        for feature in report["feature_inventory"]["features"]:
+            feature_counts = Counter(rows[key]["status"] if key in rows else "not run" for key in feature["tests"])
+            status = ", ".join(f"{value} {key}" for key, value in sorted(feature_counts.items())) or "No registered test"
+            lines.append(f"| {feature['title']} | {status} | {feature['scope']} | {feature['remaining']} |")
+        (output / "features.md").write_text("\n".join(lines) + "\n")
     extra_error = int(not report.get("complete", False)) + int(original == "error")
     extra_failure = int(original == "mismatch")
     suite = ET.Element("testsuite", name="gameplay-regressions",
@@ -215,17 +243,20 @@ def main():
     parser.add_argument("--out", type=Path)
     parser.add_argument("--category", action="append", help="Repeat to combine categories")
     parser.add_argument("--case", help="Program ID substring")
+    parser.add_argument("--display", choices=("headless", "rendered"), help="Select only this execution mode")
     parser.add_argument("--quick", action="store_true", help="Select fixtures without full map sessions")
     parser.add_argument("--with-original", action="store_true", help="Also run independent original-x86 suite")
     parser.add_argument("--no-original", action="store_false", dest="with_original", help="Run remake regressions only")
     parser.add_argument("--replay-selection", type=Path, help="Replay a retained selection.json against current source")
     parser.add_argument("--seed", type=int, default=20261020)
     parser.add_argument("--timeout", type=int, help="Override per-program timeout in seconds")
+    parser.add_argument("--render-display", help="Private X display for rendered cases, e.g. :91; never uses the desktop implicitly")
     parser.add_argument("--list", action="store_true")
     args = parser.parse_args()
     tests = [row for row in catalog(args.replay_selection) if (not args.quick or row["quick"])
              and (not args.category or row["category"] in args.category)
-             and (not args.case or args.case in row["id"])]
+             and (not args.case or args.case in row["id"])
+             and (not args.display or row.get("display", "headless") == args.display)]
     if not tests:
         raise ValueError("No gameplay programs selected")
     if args.list:
@@ -245,7 +276,8 @@ def main():
     output.mkdir(parents=True, exist_ok=False)
     report = {"schema": 1, "tests": [], "selected": [r["id"] for r in tests], "complete": False,
               "seed": args.seed, "started_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-              "game_source": str(source), "evidence": "remake_regression"}
+              "game_source": str(source), "evidence": "remake_regression",
+              "feature_inventory": json.loads((HERE / "player_features.json").read_text())}
     try:
         runtime, _ = stage_game(source, output)
         shutil.copytree(REPO / "tools/tests", runtime / "tools/tests")
@@ -266,8 +298,7 @@ def main():
             sorted({name for row in tests if row["campaign"] == campaign for name in row["required_files"]})
             if (folder / name).is_file()}} for campaign, folder in data_roots.items()}
         name = re.search(r'^config/name="([^"/\\]+)"', (runtime / "project.godot").read_text(), re.M)[1]
-        engine = [str(shutil.which(args.godot) or Path(args.godot).resolve()), "--headless", "--path",
-                  str(runtime), "--render-thread", "safe", "--audio-driver", "Dummy"]
+        engine = engine_argv(shutil.which(args.godot) or Path(args.godot).resolve(), runtime)
         report["engine"] = {"path": engine[0], "sha256": file_hash(engine[0])}
         reproduce = [sys.executable, str(HERE / "gameplay.py"), "--game-dir", str(data),
                      "--game-source", str(source), "--godot", engine[0], "--seed", str(args.seed),
@@ -275,6 +306,7 @@ def main():
         if args.astral_dir: reproduce += ["--astral-dir", str(args.astral_dir.resolve())]
         if args.with_original: reproduce.append("--with-original")
         if args.timeout: reproduce += ["--timeout", str(args.timeout)]
+        if args.render_display: reproduce += ["--render-display", args.render_display]
         (output / "reproduce.sh").write_text('#!/bin/sh\nset -eu\noutput=${1:?"NEW_OUTPUT_DIRECTORY required"}\nshift\nexec '
                                             + shlex.join(reproduce) + ' --out "$output" "$@"\n')
         (output / "reproduce.sh").chmod(0o755)
@@ -299,11 +331,24 @@ def main():
                 save_report(report, output)
                 print(f"[{index+1}/{len(tests)}] {spec['id']}: error ({message})", flush=True)
                 continue
+            if spec.get("display") == "rendered" and not args.render_display:
+                message = "Rendered test requires --render-display pointing to a private X server"
+                log.write_text(message + "\n")
+                report["tests"].append(dict(spec, status="error", checks=0, failures=0, error=message,
+                    diagnostics=[], failure_messages=[], log=log.relative_to(output).as_posix()))
+                save_report(report, output)
+                print(f"[{index+1}/{len(tests)}] {spec['id']}: error ({message})", flush=True)
+                continue
             env = isolated_environment(directory / "profile", name, test_data)
             env.pop("EI_FIXED_FPS", None)
-            argv = engine + ["--", "--no-movies", "--ei-path=" + str(test_data),
+            display = spec.get("display", "headless")
+            if display == "rendered":
+                env["DISPLAY"] = args.render_display
+                env.pop("WAYLAND_DISPLAY", None)
+            argv = engine_argv(engine[0], runtime, display) + ["--", "--no-movies", "--ei-path=" + str(test_data),
                              "--tool=res://tools/gameplay_bootstrap.gd", "--suite-script=res://" + spec["script"],
-                             "--suite-seed=" + str(args.seed), "--suite-campaign=" + spec["campaign"], *spec["args"]]
+                             "--suite-seed=" + str(args.seed), "--suite-campaign=" + spec["campaign"],
+                             "--suite-display=" + display, *spec["args"]]
             start = time.monotonic()
             exit_code, error = run_program(argv, log, env, args.timeout or spec["timeout"])
             result = dict(spec, **assess(log.read_text(errors="replace"), spec, exit_code, error))

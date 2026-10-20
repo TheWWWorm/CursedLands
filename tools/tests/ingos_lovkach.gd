@@ -66,7 +66,7 @@ func _ready()->void:
 	check(w.unit_rows().is_empty(),"removed Lovkach is not recreated")
 	u.free();dispose_vm();s.world=null;w.free();s.queue_free()
 	await get_tree().process_frame;TexUpscale.shutdown()
-	print("INGOS_LOVKACH ",JSON.stringify({"checks":checks,"failures":failures}))
+	print("INGOS_LOVKACH ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)
 
 func tick()->void:

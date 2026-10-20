@@ -63,5 +63,5 @@ func _ready() -> void:
 		check(s.sp_game_over() == (mode != "coop"), mode + " dead hero blocks travel")
 		check(s.events.any(func(ev): return ev.t == "game_over") == (mode != "coop"), mode + " death sends single-player game-over event")
 		w.units = {}; main.free(); merc.free(); enemy.free(); w.free(); host.free(); s.free()
-	print("SINGLE_PLAYER_RULES ", checks, " checks ", failures, " failures")
+	print("SINGLE_PLAYER_RULES ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

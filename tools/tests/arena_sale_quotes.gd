@@ -28,5 +28,5 @@ func _ready() -> void:
 	var bank := company.gold
 	check(host.command(1,"sell",[entry.uid,quote])=="The sale value changed. Select the creature again.","stale one-star quote cannot sell the evolved unit")
 	check(company.gold==bank and not company.unit(entry.uid).is_empty(),"rejected quote leaves gold and creature intact")
-	print("ARENA_SALE_QUOTES ",checks," checks; failures=",JSON.stringify(failures))
+	print("ARENA_SALE_QUOTES ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)

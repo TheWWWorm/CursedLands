@@ -271,5 +271,5 @@ func _ready() -> void:
 	w.units={}; nav.ignored.clear(); restored.vm=null; b.vm=null; vm.briefings=null; vm.world=null; vm.session=null
 	for u in heroes: u.free()
 	npc.free(); nalo.free(); commander.free(); haburu.free(); other.free(); s.world=null; w.vm=null; w.session=null; w.free(); s.free()
-	print("LIA_HABURU_GUARDS ",checks," checks ",failures.size()," failures")
+	print("LIA_HABURU_GUARDS ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if not failures.is_empty() else 0)

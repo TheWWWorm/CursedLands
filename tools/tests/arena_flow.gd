@@ -43,7 +43,10 @@ func _ready() -> void:
 	run.advance()
 	check(run.stage == "prepare" and run.preparation_left == 60, "next wave resets preparation after a loss")
 	run.shop = [{"family": 0, "rank": 0, "locked": false}, {"family": 2, "rank": 0, "locked": false}, {"family": 4, "rank": 0, "locked": false}, {"family": 1, "rank": 0, "locked": false}, {"family": 3, "rank": 0, "locked": false}]
-	Fixture.buy_company(run, 1)
+	# Boar, wolf and bat are three distinct Beast families. Composition 1
+	# contains a goblin after the species roster migration.
+	Fixture.buy_company(run, 0)
+	check(run.alliances().beast == 3,"fixture begins with three distinct deployed Beasts")
 	for entry in run.army: entry.deployed = false
 	battle.prepare(); run.elapse_preparation(60); battle.expire_preparation()
 	check(run.stage == "fight" and run.deployed_count() == 3 and battle.phase == ArenaMatch.Phase.FIGHT, "timeout deploys reserves on an empty field and starts combat")
@@ -73,5 +76,5 @@ func _ready() -> void:
 	check(reward.is_empty() and run.preparation_left == 60, "leaving camp starts a fresh countdown")
 	check(run.alliances().beast == 3, "deployed lineup retains automatic alliance progress")
 	battle.queue_free()
-	print("ARENA_FLOW ",checks," checks; failures=",JSON.stringify(failures))
+	print("ARENA_FLOW ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)

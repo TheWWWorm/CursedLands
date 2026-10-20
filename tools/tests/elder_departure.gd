@@ -27,4 +27,4 @@ func _ready() -> void:
 	restore(w,s,saved)
 	check(s.state.get_var(0,"ElderRemoved")==0,"changed mod departure family is not replayed")
 	dispose(w);s.world=null;w.free();s.queue_free();await get_tree().process_frame
-	TexUpscale.shutdown();print("ELDER_DEPARTURE ",checks," checks ",failures," failures");get_tree().quit(1 if failures else 0)
+	TexUpscale.shutdown();print("ELDER_DEPARTURE ", JSON.stringify({"checks":checks,"failures":failures}));get_tree().quit(1 if failures else 0)

@@ -49,5 +49,5 @@ func _ready() -> void:
 	s.coop._credit_var(mismatch,"q.gz10g.q36ag.11",1,2)
 	check(mismatch.vars["q.gz10g.q36ag.11"]==3 and not mismatch.clean,"a genuinely different objective is never silently overwritten")
 	CampaignState.watch=Callable(); s.coop.free(); s.free()
-	print("COOP_PROGRESS_CLEANUP checks=",checks," failures=",failures)
+	print("COOP_PROGRESS_CLEANUP ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

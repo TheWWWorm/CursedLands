@@ -1,4 +1,6 @@
 extends "save_depth.gd"
+func summary_marker() -> String: return "PICKUP_MESSAGES"
+
 func probe_cast() -> void:
 	game.hud._field_on=true;game.hud._esc_open=false;game.hud._dialog.hide();game.hud._inventory.hide();game.hud._journal.hide();game.hud._side_quests.hide();game.hud._travel.hide()
 	var item:=Items.material_unit("steel")

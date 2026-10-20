@@ -112,5 +112,5 @@ func _ready() -> void:
 	hero.free(); session.world.free(); session.world = null
 	Engine.time_scale = 1.0
 	session.coop.free(); session.free()
-	print("COOP_LOOT_GRANTS ", checks, " checks ", failures, " failures")
+	print("COOP_LOOT_GRANTS ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(int(failures > 0))

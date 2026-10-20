@@ -44,5 +44,5 @@ func _ready()->void:
 	check(run.lives==90 and run.health(opponent)==90,"draw costs both paired owners ten health even if mirrored board differs")
 	check(run.last_result.income.victory==0 and run.last_result.health_lost==10,"draw income and health shown correctly")
 	var hp:=run.lives;run.record_board(0,-1,[9,9]);check(run.lives==hp,"draw settles once")
-	print("ARENA_BATTLE_LIMITS checks=",checks," failures=",JSON.stringify(failures))
+	print("ARENA_BATTLE_LIMITS ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)

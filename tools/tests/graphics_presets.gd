@@ -10,6 +10,9 @@ func frames() -> void:
 func _ready() -> void:
 	TutorialPanel.auto_show=false
 	GameData.options.merge({"auto_graphics":0,"show_tutorial":0,"volume_sfx":0,"volume_stream":0},true)
+	# Finish the startup display transition before capturing localized panels.
+	# The X11 fullscreen fallback settles after ten main-loop frames.
+	for i in 3: await frames()
 	var image := Image.create(800,600,false,Image.FORMAT_RGB8); image.fill(Color(.04,.04,.04))
 	var panel := OptionsPanel.new(); add_child(panel); panel.open(image)
 	check(panel._rows[8].name=="graphics_preset","main Graphics page exposes the preset selector")
@@ -88,7 +91,15 @@ func _ready() -> void:
 	panel._accept(); panel.open(image)
 	check(panel._values.gfx_water_reflections == 1 and panel._values.graphics_preset == GfxPresets.CUSTOM, "explicit Natural choice persists as Custom")
 	for lang in ["en","ru","de"]:
-		RemakeText.lang=lang; panel._show_group(0)
+		# Language is selected at startup from the supplied game edition.
+		# Recreate the panel so controls initialized in _ready use that edition.
+		panel._restore(); panel._close(); panel.free()
+		RemakeText.lang=lang
+		panel=OptionsPanel.new(); add_child(panel); panel.open(image)
+		panel._show_group(0)
+		for index in panel._preset_picker.item_count:
+			var id := panel._preset_picker.get_item_id(index)
+			check(panel._preset_picker.get_item_text(index) == RemakeText.t(GfxPresets.NAMES[id]), "localized dropdown choice "+lang+" "+str(id))
 		await frames()
 		if DisplayServer.get_name()!="headless":
 			await RenderingServer.frame_post_draw
@@ -99,7 +110,7 @@ func _ready() -> void:
 		panel._preset_picker.get_popup().hide()
 	panel._restore(); panel._close(); panel.free()
 	FileAccess.open("user://graphics-presets.json",FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures},"\t"))
-	print("GRAPHICS_PRESETS ",checks," checks ",failures," failures")
+	print("GRAPHICS_PRESETS ", JSON.stringify({"checks":checks,"failures":failures}))
 	TexUpscale.shutdown()
 	await frames()
 	get_tree().quit(1 if failures else 0)

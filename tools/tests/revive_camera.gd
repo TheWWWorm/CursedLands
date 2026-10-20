@@ -52,5 +52,5 @@ func finish()->void:
    s.online=false;s.multiplayer.multiplayer_peer=OfflineMultiplayerPeer.new();peer.close()
  for n:Node in branches:n.queue_free()
  await frames(8);TexUpscale.shutdown()
- print("REVIVE_CAMERA ",checks," checks ",failures," failures")
+ print("REVIVE_CAMERA ", JSON.stringify({"checks":checks,"failures":failures}))
  get_tree().quit(1 if failures else 0)

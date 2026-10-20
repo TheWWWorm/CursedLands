@@ -137,4 +137,4 @@ func _ready() -> void:
 	evidence.checks=checks;evidence.failures=failures;evidence.scope="Original loaded map and hero, authority movement/collision, injected gamepad A input; no physical playthrough claim."
 	FileAccess.open("user://direct-movement.json",FileAccess.WRITE).store_string(JSON.stringify(evidence,"\t"))
 	g.queue_free();s.queue_free();await frames(10);TexUpscale.shutdown()
-	print("DIRECT_MOVEMENT ",checks," checks ",failures.size()," failures");get_tree().quit(0 if failures.is_empty() else 1)
+	print("DIRECT_MOVEMENT ", JSON.stringify({"checks":checks,"failures":failures}));get_tree().quit(0 if failures.is_empty() else 1)

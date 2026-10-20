@@ -63,5 +63,5 @@ func _ready() -> void:
 	check(GameData.option("control_mode") == 3 and cfg.get_value("options", "control_mode", -1) == 3, "first-person choice persists")
 	check(GameData.option("character_light") == 1 and cfg.get_value("options", "character_light", -1) == 1, "character light override persists")
 	panel.queue_free(); await frames()
-	print("CONTROL_MODE_OPTIONS ", checks, " checks ", failures, " failures")
+	print("CONTROL_MODE_OPTIONS ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

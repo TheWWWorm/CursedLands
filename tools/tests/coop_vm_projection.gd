@@ -142,5 +142,5 @@ func families() -> void:
 		check(Snapshot._family_map(vm,definition,0).is_empty(),zone+": changed native counterpart is never guessed")
 
 func finish() -> void:
-	print("COOP_VM_PROJECTION ",checks," checks ",failures," failures")
+	print("COOP_VM_PROJECTION ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

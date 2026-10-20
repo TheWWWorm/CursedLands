@@ -3,6 +3,7 @@ import copy
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import sys
 import tempfile
@@ -10,7 +11,7 @@ import time
 import unittest
 import xml.etree.ElementTree as ET
 
-from gameplay import assess, catalog, parse_summary, run_program, save_report
+from gameplay import assess, catalog, engine_argv, parse_summary, run_program, save_report
 from run import HERE, PROFILE, REPO
 
 
@@ -43,6 +44,13 @@ class GameplayResults(unittest.TestCase):
 
     def test_wrong_campaign_cannot_pass(self):
         self.assertEqual(assess(capture(campaign="lost_in_astral"), SPEC, 0)["status"], "error")
+
+    def test_rendered_checks_cannot_pass_with_headless_or_missing_display(self):
+        rendered = dict(SPEC, display="rendered")
+        self.assertEqual(assess(capture(), rendered, 0)["status"], "error")
+        self.assertEqual(assess(capture(display="headless"), rendered, 0)["status"], "error")
+        self.assertEqual(assess(capture(display="rendered"), rendered, 0)["status"], "passed")
+        self.assertEqual(assess(capture(display="rendered"), SPEC, 0)["status"], "error")
 
     def test_unmuted_profile_cannot_pass(self):
         profile = dict(PROFILE, volume_voice=50)
@@ -107,8 +115,53 @@ class GameplayResults(unittest.TestCase):
             self.assertEqual(report["status"], "failed")
             self.assertEqual(ET.parse(Path(folder) / "junit.xml").getroot().get("failures"), "1")
 
+    def test_feature_report_keeps_failures_and_unrun_checks_visible(self):
+        row = dict(SPEC, **assess(capture("EXAMPLE 3 checks 1 failures"), SPEC, 1), log="example.log")
+        broken = dict(SPEC, id="quests/runtime_error")
+        error = dict(broken, **assess(capture() + "SCRIPT ERROR: example\n", broken, 0), log="error.log")
+        inventory = {"meaning": "Finite feature inventory.", "direct_command_gaps": [],
+                     "features": [{"title": "Quest", "tests": [SPEC["id"], broken["id"], "quests/not_run"],
+                                   "scope": "Reward", "remaining": "Other branches"}]}
+        report = {"tests": [row, error], "selected": [SPEC["id"], broken["id"]], "complete": True, "feature_inventory": inventory}
+        with tempfile.TemporaryDirectory() as folder:
+            save_report(report, Path(folder))
+            result = (Path(folder) / "features.md").read_text()
+            self.assertIn("1 error, 1 failed, 1 not run", result)
+            self.assertIn("Other branches", result)
+            self.assertEqual(report["status"], "error")
+            suite = ET.parse(Path(folder) / "junit.xml").getroot()
+            self.assertEqual((suite.get("tests"), suite.get("failures"), suite.get("errors")), ("2", "1", "1"))
+            self.assertEqual(len(suite.findall("testcase/failure")), 1)
+            self.assertEqual(len(suite.findall("testcase/error")), 1)
+
 
 class GameplayExecution(unittest.TestCase):
+    def test_player_inventory_accounts_for_every_authority_command(self):
+        inventory = json.loads((HERE / "player_features.json").read_text())
+        source = (REPO / "game/src/game/session.gd").read_text()
+        commands = set()
+        for name in ("apply_command", "_shared_control"):
+            body = source.split("func " + name + "(", 1)[1].split("\nfunc ", 1)[0]
+            for branch in re.findall(r'^\t\t((?:"[a-z_]+"(?:, )?)+):', body, re.M):
+                commands.update(re.findall(r'"([a-z_]+)"', branch))
+        mapped = [command for feature in inventory["features"] for command in feature["commands"]]
+        self.assertEqual(commands, set(mapped))
+        self.assertEqual(len(mapped), len(set(mapped)), "Each command has one primary feature owner")
+        ids = {row["id"] for row in catalog()}
+        for feature in inventory["features"]:
+            self.assertTrue(feature["scope"] and feature["remaining"], feature["id"])
+            self.assertFalse(set(feature["tests"]) - ids, feature["id"])
+        self.assertLessEqual(set(inventory["direct_command_gaps"]), commands)
+
+    def test_rendered_engine_has_real_display_and_audio_stays_muted(self):
+        for mode in ("headless", "rendered"):
+            argv = engine_argv("/godot", "/runtime", mode)
+            self.assertEqual("--headless" in argv, mode == "headless")
+            self.assertEqual(argv[argv.index("--audio-driver") + 1], "Dummy")
+            if mode == "rendered":
+                self.assertEqual(argv[argv.index("--display-driver") + 1], "x11")
+                self.assertEqual(argv[argv.index("--rendering-method") + 1], "gl_compatibility")
+
     def test_runtime_error_aborts_hung_program(self):
         with tempfile.TemporaryDirectory() as folder:
             log = Path(folder) / "run.log"
@@ -133,7 +186,8 @@ class GameplayExecution(unittest.TestCase):
         rows = catalog()
         self.assertEqual({row["category"] for row in rows},
                          {"quests", "creatures", "animation", "effects", "stealth", "commands", "pathing",
-                          "spells", "inventory", "progression", "party", "persistence", "combat", "network"})
+                          "spells", "inventory", "progression", "party", "persistence", "combat", "network",
+                          "settings", "dialogue", "coop", "interface", "arena"})
         for row in rows:
             script = REPO / row["script"]
             self.assertTrue(script.is_file(), row["id"])
@@ -162,6 +216,14 @@ class GameplayExecution(unittest.TestCase):
                                 capture_output=True, text=True, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertTrue(all(line.startswith("quests/") for line in result.stdout.splitlines()))
+
+    def test_display_selection_matches_execution_modes(self):
+        for mode in ("headless", "rendered"):
+            result = subprocess.run([sys.executable, str(HERE / "gameplay.py"), "--list", "--display", mode],
+                                    capture_output=True, text=True, timeout=10)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual({line.split()[0] for line in result.stdout.splitlines()},
+                             {row["id"] for row in catalog() if row.get("display", "headless") == mode})
 
     def test_existing_result_directory_is_never_overwritten(self):
         with tempfile.TemporaryDirectory() as folder:

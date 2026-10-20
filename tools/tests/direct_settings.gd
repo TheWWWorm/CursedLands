@@ -122,7 +122,7 @@ func _ready() -> void:
 			check(get_viewport().get_visible_rect().encloses(tip._panel.get_rect()),"action tooltip fits the 800x600 viewport in "+lang)
 			get_viewport().get_texture().get_image().save_png("user://direct-settings-help-%s.png"%lang)
 	panel.queue_free();g.queue_free();s.queue_free();await frames(10);TexUpscale.shutdown()
-	print("DIRECT_SETTINGS ",checks," checks ",failures.size()," failures")
+	print("DIRECT_SETTINGS ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)
 
 func posture_cases() -> void:

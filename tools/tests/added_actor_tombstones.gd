@@ -55,5 +55,5 @@ func _ready() -> void:
 	freeze(host); ticks(12)
 	check(not host.world.units.has(QUEEN) and not host.world.looted.has(QUEEN),"removed living actor never becomes a dead tombstone")
 	check(not original_dead(null) and host.state.get_var(0,QUEST+".1")==1,"missing living actor cannot satisfy IsDead or queen objective")
-	print("ADDED_ACTOR_TOMBSTONES ",checks," checks ",failures," failures")
+	print("ADDED_ACTOR_TOMBSTONES ", JSON.stringify({"checks":checks,"failures":failures}))
 	await finish()

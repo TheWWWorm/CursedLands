@@ -137,5 +137,5 @@ func _ready() -> void:
 func finish() -> void:
 	var file:=FileAccess.open("user://fresh-start-review.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"before_start":early,"campaign":GameData.campaign_id,"checks":checks,"failures":failures,"phases":phases},"  ")); file.close()
-	print("COOP_FRESH_START ",checks," checks ",failures," failures")
+	print("COOP_FRESH_START ", JSON.stringify({"checks":checks,"failures":failures}))
 	await super.finish()

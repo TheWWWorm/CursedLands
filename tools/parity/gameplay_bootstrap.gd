@@ -5,10 +5,17 @@ func _ready() -> void:
 	var script_path := ""
 	var test_seed := 20261020
 	var campaign := ""
+	var display := "headless"
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--suite-script="): script_path = arg.trim_prefix("--suite-script=")
 		if arg.begins_with("--suite-seed="): test_seed = int(arg.trim_prefix("--suite-seed="))
 		if arg.begins_with("--suite-campaign="): campaign = arg.trim_prefix("--suite-campaign=")
+		if arg.begins_with("--suite-display="): display = arg.trim_prefix("--suite-display=")
+	var actual_display := "headless" if DisplayServer.get_name() == "headless" else "rendered"
+	if actual_display != display:
+		push_error("Gameplay test display does not match the selected mode")
+		get_tree().quit(2)
+		return
 	var profile := {}
 	for key in ["confine_mouse", "show_fps", "volume_sfx", "volume_stream", "volume_voice"]:
 		profile[key] = GameData.option(key)
@@ -30,7 +37,9 @@ func _ready() -> void:
 		"net_upnp":0, "net_lan":0, "net_directory":0, "net_websocket":0}, true)
 	print("GAMEPLAY_SUITE_START ", JSON.stringify({
 		"script":script_path, "seed":test_seed, "profile":profile, "campaign":GameData.campaign_id,
-		"engine":Engine.get_version_info(), "user_dir":OS.get_user_data_dir()}))
+		"engine":Engine.get_version_info(), "user_dir":OS.get_user_data_dir(),
+		"display":actual_display, "display_driver":DisplayServer.get_name(),
+		"rendering_method":RenderingServer.get_current_rendering_method()}))
 	var script: Script = load(script_path)
 	if script == null or not script.can_instantiate():
 		push_error("Gameplay test could not be instantiated")

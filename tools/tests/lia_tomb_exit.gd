@@ -110,7 +110,7 @@ func _ready() -> void:
 	COMPAT.recover(host.world.vm)
 	check(startup_count()==0,"open exit does not replay startup again")
 	await leave_tomb()
-	print("LIA_TOMB_EXIT ",checks," checks ",failures," failures")
+	print("LIA_TOMB_EXIT ", JSON.stringify({"checks":checks,"failures":failures}))
 	await finish()
 
 func negative_controls() -> void:

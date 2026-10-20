@@ -143,5 +143,5 @@ func resume(slots: Array[String]) -> void:
 
 
 func finish() -> void:
-	print("COOP_PROGRESS_CONTEXT_NETWORK ",checks," checks ",failures," failures")
+	print("COOP_PROGRESS_CONTEXT_NETWORK ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

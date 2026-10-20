@@ -85,5 +85,5 @@ func _ready() -> void:
 	check(not a.alert,"ordinary idle still relaxes")
 	FileAccess.open("user://direct-attack-stance.json",FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures,"starts":starts,"neutral_frames":neutral_frames,"neutral_pose_frames":cross_frames},"\t"))
 	s.world=null; s.free(); w.free()
-	print("DIRECT_ATTACK_STANCE ",checks," checks ",failures," failures")
+	print("DIRECT_ATTACK_STANCE ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

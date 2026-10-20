@@ -1,0 +1,656 @@
+{
+  "schema": 1,
+  "date": "2026-10-20",
+  "base_version": "1.19.0",
+  "base_commit": "50fd5b06e7a17a6dea63fe85693f23c0485cfbb1",
+  "qualification_method": "Select the latest complete capture with matching script dependencies, campaign, arguments and display mode. Reassess its raw log against current coverage thresholds. Verify production, asset and engine hashes. Failing captures remain failures; no status-based selection.",
+  "regressions": {
+    "passed": 255,
+    "failed": 1,
+    "error": 3,
+    "programs": 259,
+    "checks": 223855,
+    "failed_checks": 3,
+    "status": "error",
+    "categories": {
+      "animation": {
+        "passed": 9,
+        "programs": 9,
+        "checks": 2694
+      },
+      "arena": {
+        "passed": 20,
+        "failed": 1,
+        "programs": 21,
+        "checks": 8338
+      },
+      "combat": {
+        "passed": 4,
+        "programs": 4,
+        "checks": 9052
+      },
+      "commands": {
+        "passed": 14,
+        "programs": 14,
+        "checks": 2764
+      },
+      "coop": {
+        "passed": 46,
+        "error": 2,
+        "programs": 48,
+        "checks": 1667
+      },
+      "creatures": {
+        "passed": 12,
+        "programs": 12,
+        "checks": 25192
+      },
+      "dialogue": {
+        "passed": 11,
+        "programs": 11,
+        "checks": 290
+      },
+      "effects": {
+        "passed": 11,
+        "programs": 11,
+        "checks": 73698
+      },
+      "interface": {
+        "passed": 8,
+        "error": 1,
+        "programs": 9,
+        "checks": 3724
+      },
+      "inventory": {
+        "passed": 26,
+        "programs": 26,
+        "checks": 4323
+      },
+      "network": {
+        "passed": 3,
+        "programs": 3,
+        "checks": 251
+      },
+      "party": {
+        "passed": 3,
+        "programs": 3,
+        "checks": 57
+      },
+      "pathing": {
+        "passed": 14,
+        "programs": 14,
+        "checks": 43249
+      },
+      "persistence": {
+        "passed": 12,
+        "programs": 12,
+        "checks": 195
+      },
+      "progression": {
+        "passed": 5,
+        "programs": 5,
+        "checks": 345
+      },
+      "quests": {
+        "passed": 27,
+        "programs": 27,
+        "checks": 1438
+      },
+      "settings": {
+        "passed": 14,
+        "programs": 14,
+        "checks": 15564
+      },
+      "spells": {
+        "passed": 8,
+        "programs": 8,
+        "checks": 27898
+      },
+      "stealth": {
+        "passed": 8,
+        "programs": 8,
+        "checks": 3116
+      }
+    },
+    "added_programs": 158,
+    "fresh_programs": 161,
+    "retained_programs": 98
+  },
+  "feature_inventory": {
+    "groups": 35,
+    "campaign_authority_verbs": 48,
+    "scripts": 205,
+    "rendered_configurations": 27
+  },
+  "harness": {
+    "tests": 55,
+    "failures": 0,
+    "errors": 0,
+    "log_sha256": "2553d9985953e4ee7cd06ec7f1cbb2ed4b99c3e251b3df7db8bd5a18fea51327"
+  },
+  "original": {
+    "capture": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/encounter-side-recheck/original",
+    "status": "mismatch",
+    "counts": {
+      "scenarios": 430,
+      "matches": 425,
+      "mismatches": 5,
+      "original_steps": 1124
+    },
+    "reference": {
+      "id": "evil-islands-gog-en-d0fc0bb2",
+      "campaign": "original",
+      "executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+      "patches": [],
+      "description": "Locally verified GOG base-game game.exe. Addresses are valid only for this digest."
+    },
+    "repeatability": {
+      "captures_per_side": 2,
+      "verified": true
+    },
+    "report_sha256": "dd53763f9505771b25c2c0e6d6f8d3cec9223d573f746e7ad84a3c1ecd1dd8ba",
+    "generated_import_metadata_files": 199,
+    "mismatches": [
+      {
+        "id": "attack_chance/a41_d40_distance1",
+        "kind": "attack_chance",
+        "status": "mismatch",
+        "original_steps": 1,
+        "remake_steps": 1,
+        "original_trace_sha256": "e9c2fdcddce7cd12ed933fcc15cb67f3e6895ae0014ae1b3924064cf68776ce8",
+        "remake_trace_sha256": "39f0822a7928f4fee9d27dc0b98154cf717cb71e9d9254fe972475734cbd465e",
+        "first_divergence": {
+          "field": "$.steps[0].state.probability",
+          "reason": "value",
+          "expected": 0.4878048780487805,
+          "actual": 0.51219512195122,
+          "delta": 0.02439024390243949,
+          "absolute_tolerance": 1e-12
+        }
+      },
+      {
+        "id": "attack_chance/a41_d40_distance5",
+        "kind": "attack_chance",
+        "status": "mismatch",
+        "original_steps": 1,
+        "remake_steps": 1,
+        "original_trace_sha256": "e9c2fdcddce7cd12ed933fcc15cb67f3e6895ae0014ae1b3924064cf68776ce8",
+        "remake_trace_sha256": "39f0822a7928f4fee9d27dc0b98154cf717cb71e9d9254fe972475734cbd465e",
+        "first_divergence": {
+          "field": "$.steps[0].state.probability",
+          "reason": "value",
+          "expected": 0.4878048780487805,
+          "actual": 0.51219512195122,
+          "delta": 0.02439024390243949,
+          "absolute_tolerance": 1e-12
+        }
+      },
+      {
+        "id": "attack_chance/a40_d40_distance10",
+        "kind": "attack_chance",
+        "status": "mismatch",
+        "original_steps": 1,
+        "remake_steps": 1,
+        "original_trace_sha256": "4203a8b7f26e1acb1d6177c0d2d49d108d6639ac40a8256db502e100c722782a",
+        "remake_trace_sha256": "1b22bf13f67a2d5d51cf6677e104e66b164cf8e9386a19d9b828ffcb0ddeebc2",
+        "first_divergence": {
+          "field": "$.steps[0].state.probability",
+          "reason": "value",
+          "expected": 0.4634146341463415,
+          "actual": 0.48780487804878,
+          "delta": 0.02439024390243849,
+          "absolute_tolerance": 1e-12
+        }
+      },
+      {
+        "id": "attack_chance/a41_d40_distance10",
+        "kind": "attack_chance",
+        "status": "mismatch",
+        "original_steps": 1,
+        "remake_steps": 1,
+        "original_trace_sha256": "e9c2fdcddce7cd12ed933fcc15cb67f3e6895ae0014ae1b3924064cf68776ce8",
+        "remake_trace_sha256": "39f0822a7928f4fee9d27dc0b98154cf717cb71e9d9254fe972475734cbd465e",
+        "first_divergence": {
+          "field": "$.steps[0].state.probability",
+          "reason": "value",
+          "expected": 0.4878048780487805,
+          "actual": 0.51219512195122,
+          "delta": 0.02439024390243949,
+          "absolute_tolerance": 1e-12
+        }
+      },
+      {
+        "id": "attack_chance/a20_d10_distance10",
+        "kind": "attack_chance",
+        "status": "mismatch",
+        "original_steps": 1,
+        "remake_steps": 1,
+        "original_trace_sha256": "10401832a4f0583c76b5e02d4e83effd138ba309fa7e8cb75af4341b33150537",
+        "remake_trace_sha256": "6fa9413c5674c548d9581b89cd967ecf92732549985efa4554a04a45271bb61c",
+        "first_divergence": {
+          "field": "$.steps[0].state.probability",
+          "reason": "value",
+          "expected": 0.5853658536585366,
+          "actual": 0.609756097560976,
+          "delta": 0.02439024390243949,
+          "absolute_tolerance": 1e-12
+        }
+      }
+    ]
+  },
+  "negative_controls": {
+    "capture": "encounter-negative-recheck",
+    "expected_exit": 1,
+    "mutations": [
+      {
+        "path": "src/game/script/briefings.gd",
+        "before": "f4631994669bebd3d52c76b636cd28153d7251c820049055173a72a17240aac0",
+        "after": "12b3ec39808977c6fff86194dacf5c6343d6a7d444c849389dae57d3bd04b432",
+        "mutation": "if false and var_name != active and not force:"
+      },
+      {
+        "path": "src/ei/remake_text.gd",
+        "before": "657f43e3f6e99644a0c3d526e5f148cafb2824a62d93b6805160da9910348dcb",
+        "after": "f83a3272df625047f33bf42525ba9d40c6d1347eb958a8bf229036b518ec267e",
+        "mutation": "\t\"Battle in %ds\": [\"\u0411\u043e\u0439 \u0447\u0435\u0440\u0435\u0437 %s \u0441\", \"Kampf in %d s\"],"
+      }
+    ],
+    "results": [
+      {
+        "id": "quests/side_quest_lifecycle",
+        "status": "failed",
+        "checks": 590,
+        "failures": 56,
+        "failure_messages": [
+          "FAIL z12q1: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z12q1: repeated completion does not emit another dialogue-close event",
+          "FAIL z12q2: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z12q2: repeated completion does not emit another dialogue-close event",
+          "FAIL z12q3: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z12q3: repeated completion does not emit another dialogue-close event",
+          "FAIL z13q1: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z13q1: repeated completion does not emit another dialogue-close event",
+          "FAIL z13q2: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z13q2: repeated completion does not emit another dialogue-close event",
+          "FAIL z13q3: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z13q3: repeated completion does not emit another dialogue-close event",
+          "FAIL z17q1: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z17q1: repeated completion does not emit another dialogue-close event",
+          "FAIL z17q2: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z17q2: repeated completion does not emit another dialogue-close event",
+          "FAIL z17q3: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z17q3: repeated completion does not emit another dialogue-close event",
+          "FAIL z18q1: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z18q1: repeated completion does not emit another dialogue-close event",
+          "FAIL z18q2: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z18q2: repeated completion does not emit another dialogue-close event",
+          "FAIL z18q3: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z18q3: repeated completion does not emit another dialogue-close event",
+          "FAIL z18q4: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z18q4: repeated completion does not emit another dialogue-close event",
+          "FAIL z19q1: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z19q1: repeated completion does not emit another dialogue-close event",
+          "FAIL z19q2: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z19q2: repeated completion does not emit another dialogue-close event",
+          "FAIL z19q3: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z19q3: repeated completion does not emit another dialogue-close event",
+          "FAIL z3q1: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z3q1: repeated completion does not emit another dialogue-close event",
+          "FAIL z3q2: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z3q2: repeated completion does not emit another dialogue-close event",
+          "FAIL z3q3: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z3q3: repeated completion does not emit another dialogue-close event",
+          "FAIL z6q1: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z6q1: repeated completion does not emit another dialogue-close event",
+          "FAIL z6q2: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z6q2: repeated completion does not emit another dialogue-close event",
+          "FAIL z6q3: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z6q3: repeated completion does not emit another dialogue-close event",
+          "FAIL z7q1: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z7q1: repeated completion does not emit another dialogue-close event",
+          "FAIL z7q2: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z7q2: repeated completion does not emit another dialogue-close event",
+          "FAIL z7q3: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z7q3: repeated completion does not emit another dialogue-close event",
+          "FAIL z9q1: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z9q1: repeated completion does not emit another dialogue-close event",
+          "FAIL z9q2: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z9q2: repeated completion does not emit another dialogue-close event",
+          "FAIL z9q3: repeated completion never repeats experience, including zero-money rewards",
+          "FAIL z9q3: repeated completion does not emit another dialogue-close event"
+        ],
+        "log_sha256": "73d5b0a9258f6885e201293865d74d1095c76d750a8704e53088d22db0719d93",
+        "exit_code": 1
+      },
+      {
+        "id": "settings/option_localization_matrix",
+        "status": "failed",
+        "checks": 14538,
+        "failures": 1,
+        "failure_messages": [
+          "FAIL format arguments preserve order and type: Battle in %ds / ru"
+        ],
+        "log_sha256": "116821925f3f6781f134b1e0d3e7c5303a77084381dee6c33c83407d6d339e61",
+        "exit_code": 1
+      }
+    ]
+  },
+  "qualified_production_sha256": "d7cf76efc45d6d78c8335f449d3ab7bd65b758dd9d938192989579f59f8ce652",
+  "production_files_verified": 1074,
+  "required_assets_rechecked": 113,
+  "current_tool_source": {
+    "cases.py": "e3cf81728f0babadb866fe32d15bd58910451337b37cd958d7cac20d2a97cc8f",
+    "cases_extended.py": "3db76c475debb64bb903a253767e1a62002c71025a05dd87d05f30475c9b0aa5",
+    "compare.py": "f80f09a07daf86757e84a9a003f6efd9489309622f8232490ac20719ffa00f75",
+    "gameplay.py": "191909043d52d6b2317dfece0d11908d636653c5c7c4c16813b3faead2888985",
+    "gameplay_bootstrap.gd": "9cb5d06ad566b2cc03e412f719b7bf9ec236daaad704324049849b11edaf49c9",
+    "gameplay_catalog.json": "10e001d2c970e2151fa456f1023daaec664620df7d3a44656bfa0d3c28d8a1c9",
+    "native.py": "6f887ce9a084c662dcae347593496992fb4dbb6b1f6eb826168af3a8bec0a458",
+    "native_extended.py": "fc3ef75966e526b12aa58c2fbf70dcf0f63e3ae95aa5b5dbd0a12add8c3d2362",
+    "player_features.json": "82692be112c66a39ff960638eaf8744b303a7e4004573f9a2eea561cd64543ac",
+    "remake_trace.gd": "86dac41dadaee260812db3b8bcb0f0df74831e6439927ff2aae58291746da21d",
+    "requirements.txt": "56bce36af734e3b9aeff2be4301bbc2a2c2b58ea1ea1e6ee6e792db84f96fbd4",
+    "run.py": "af9d53e29be2e4c9d68a11202c81243218c6907b32ee5dc42114fa9aa59218a0",
+    "test_gameplay.py": "a482e4c924e1829ac84425f616d85714c79926c77ec76d83b4ff3cf09ecf02a1",
+    "test_harness.py": "effc237ef053556aca8e9d12d3594d0632d97a2db07234ffbd6b8927c48e65ee"
+  },
+  "captures": {
+    "command-fixture-qualification": {
+      "report_sha256": "d55cfe483d11b4c445621433dec16a8d9ab0daa07994ca9ff15dad288afca7b9",
+      "counts": {
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "programs": 2,
+        "checks": 200,
+        "failed_checks": 0
+      },
+      "status": "passed",
+      "selected_results_used": true
+    },
+    "encounter-corrected": {
+      "report_sha256": "a13e2ed90a19f49f9996ce5b32a05c0f006a8ea835d0b450e304edaced4655dc",
+      "counts": {
+        "passed": 11,
+        "failed": 0,
+        "error": 0,
+        "programs": 11,
+        "checks": 503,
+        "failed_checks": 0
+      },
+      "status": "passed",
+      "selected_results_used": true
+    },
+    "encounter-crafting": {
+      "report_sha256": "47f4eb4380cc3d22ef1a9cf6a63b60af78dae539be5d19f74c956985c4077e0b",
+      "counts": {
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "programs": 2,
+        "checks": 152,
+        "failed_checks": 0
+      },
+      "status": "passed",
+      "selected_results_used": true
+    },
+    "encounter-dependent-recheck": {
+      "report_sha256": "72a60ec1aeab18e7d8dacf3577874ec4f92cde69cf89bf805656f19d29704270",
+      "counts": {
+        "passed": 10,
+        "failed": 0,
+        "error": 0,
+        "programs": 10,
+        "checks": 288,
+        "failed_checks": 0
+      },
+      "status": "passed",
+      "selected_results_used": true
+    },
+    "encounter-final-fixtures": {
+      "report_sha256": "46fafd42b9449beca3feb4ca67796eab2b47961a5b246a9a69c161d3bace0961",
+      "counts": {
+        "passed": 19,
+        "failed": 0,
+        "error": 1,
+        "programs": 20,
+        "checks": 7812,
+        "failed_checks": 0
+      },
+      "status": "error",
+      "selected_results_used": true
+    },
+    "encounter-first": {
+      "report_sha256": "533be55c070671ccbe20e07d18fbf1d692bd97921b5867b774fa19fac7674c1d",
+      "counts": {
+        "passed": 122,
+        "failed": 8,
+        "error": 20,
+        "programs": 150,
+        "checks": 18826,
+        "failed_checks": 50
+      },
+      "status": "error",
+      "selected_results_used": true
+    },
+    "encounter-graphics-stable": {
+      "report_sha256": "f5adad15f36f7efb3a401880d78a201b967cf0b094c198ccd22ecf6d65f5e26f",
+      "counts": {
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "programs": 1,
+        "checks": 259,
+        "failed_checks": 0
+      },
+      "status": "passed",
+      "selected_results_used": true
+    },
+    "encounter-lifecycles": {
+      "report_sha256": "4f74e67a5569a9ab0159d059e909c92f72fb4761c29ec4a3175315813b313a98",
+      "counts": {
+        "passed": 4,
+        "failed": 0,
+        "error": 2,
+        "programs": 6,
+        "checks": 15114,
+        "failed_checks": 0
+      },
+      "status": "error",
+      "selected_results_used": true
+    },
+    "encounter-new": {
+      "report_sha256": "2144caea7d4ebe87c5ce1bce015f2f09a2c3c2447d70476c0f529bdd3c14a2ea",
+      "counts": {
+        "passed": 1,
+        "failed": 3,
+        "error": 1,
+        "programs": 5,
+        "checks": 14734,
+        "failed_checks": 30
+      },
+      "status": "error",
+      "selected_results_used": true
+    },
+    "encounter-new-fixed": {
+      "report_sha256": "fff019a08c1c1ed051b31104eb307b38fc8771bf12d372c6a3e2d442b22e853a",
+      "counts": {
+        "passed": 0,
+        "failed": 3,
+        "error": 1,
+        "programs": 4,
+        "checks": 14606,
+        "failed_checks": 12
+      },
+      "status": "error",
+      "selected_results_used": false
+    },
+    "encounter-saved-opening": {
+      "report_sha256": "3bae63b785242a81816ef9289c23e2f271a2cf169da63393e9eab4a5e28c40ff",
+      "counts": {
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "programs": 1,
+        "checks": 11,
+        "failed_checks": 0
+      },
+      "status": "passed",
+      "selected_results_used": true
+    },
+    "encounter-side-recheck": {
+      "report_sha256": "9d42abf779d0fd18c3e8ebdbe662df04a14b05f6f9d2c8ed48f2190070cb4e53",
+      "counts": {
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "programs": 1,
+        "checks": 590,
+        "failed_checks": 0
+      },
+      "status": "failed",
+      "selected_results_used": true
+    },
+    "encounter-travel": {
+      "report_sha256": "bb619514a141d3f6778a6ead05d6af1dd57da71cb8066508aae4dba72b15fc39",
+      "counts": {
+        "passed": 0,
+        "failed": 0,
+        "error": 2,
+        "programs": 2,
+        "checks": 0,
+        "failed_checks": 0
+      },
+      "status": "error",
+      "selected_results_used": false
+    },
+    "encounter-travel-fixed": {
+      "report_sha256": "72745ceac1036c984cb8c0ea1b449b4bcb0030bb5d0b9387ef0780ea8970265a",
+      "counts": {
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "programs": 2,
+        "checks": 42,
+        "failed_checks": 0
+      },
+      "status": "passed",
+      "selected_results_used": true
+    },
+    "encounter-ui-recheck": {
+      "report_sha256": "bd49e5f295bf3a4f0e224aa6aaf7d5fd0e3fff2e5df811cc7ab895e9d1d99eb2",
+      "counts": {
+        "passed": 1,
+        "failed": 2,
+        "error": 0,
+        "programs": 3,
+        "checks": 839,
+        "failed_checks": 4
+      },
+      "status": "failed",
+      "selected_results_used": true
+    },
+    "expanded-counts": {
+      "report_sha256": "174bfbcf3f4952318c4444873aeebd4ecc1f1c79036e6057d12fc41f82114051",
+      "counts": {
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "programs": 3,
+        "checks": 212,
+        "failed_checks": 0
+      },
+      "status": "passed",
+      "selected_results_used": true
+    },
+    "expanded-first": {
+      "report_sha256": "5619cff21ca5ffba30c3676a4e108e8ab865022c473b4faad3107cfdfc678951",
+      "counts": {
+        "passed": 35,
+        "failed": 1,
+        "error": 6,
+        "programs": 42,
+        "checks": 45656,
+        "failed_checks": 13
+      },
+      "status": "error",
+      "selected_results_used": true
+    },
+    "expanded-fixtures": {
+      "report_sha256": "9704ff1280c2b44360d572094c8a23a8a4d1d0c889819fc5d795fbf7abd9ffe8",
+      "counts": {
+        "passed": 4,
+        "failed": 0,
+        "error": 0,
+        "programs": 4,
+        "checks": 16455,
+        "failed_checks": 0
+      },
+      "status": "passed",
+      "selected_results_used": true
+    },
+    "expanded-matrix": {
+      "report_sha256": "43114db3d8156c6bc9da832201121ba30c2deb61b8e8330e0efe02f6a346058b",
+      "counts": {
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "programs": 3,
+        "checks": 2943,
+        "failed_checks": 0
+      },
+      "status": "passed",
+      "selected_results_used": true
+    },
+    "gameplay-qualification": {
+      "report_sha256": "b3e6291399a97ece22948f0d14dd273c4efab5b39b713cb4694163816089f60c",
+      "counts": {
+        "passed": 50,
+        "failed": 0,
+        "error": 6,
+        "programs": 56,
+        "checks": 131496,
+        "failed_checks": 0
+      },
+      "status": "error",
+      "selected_results_used": true
+    },
+    "projectile-fixture-qualification": {
+      "report_sha256": "607a0e46845b719f633ac67cd25f89c7606bc6f788c64898aba57c681b3e1940",
+      "counts": {
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "programs": 2,
+        "checks": 372,
+        "failed_checks": 0
+      },
+      "status": "passed",
+      "selected_results_used": true
+    },
+    "summary-format-qualification": {
+      "report_sha256": "5c08ae2ce1bdb108d1d8f28d7658df274dd9e15951b2a04c29c5fbd3df311c1b",
+      "counts": {
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "programs": 3,
+        "checks": 4017,
+        "failed_checks": 0
+      },
+      "status": "failed",
+      "selected_results_used": true
+    }
+  },
+  "limits": [
+    "Finite player-feature inventory; no exhaustive game/code/path coverage.",
+    "98 earlier configurations are retained only when source and test dependencies still match.",
+    "Headless animation/effects assert state, not original rendered pixels.",
+    "Rendered UI uses Linux OpenGL under Xvfb/llvmpipe; other platforms and backends are unqualified.",
+    "Muted Dummy audio checks routing/settings, not audible output.",
+    "Loopback ENet is not Internet/NAT/cross-version qualification.",
+    "No mod distribution tests or uninterrupted full campaign playthrough.",
+    "Original comparison executes bounded x86 subsystem traces, not a complete original campaign.",
+    "Production gameplay and player profiles were not modified."
+  ]
+}

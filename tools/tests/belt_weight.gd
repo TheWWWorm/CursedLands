@@ -117,5 +117,5 @@ func _ready() -> void:
 	host.multiplayer.multiplayer_peer.close();client.multiplayer.multiplayer_peer.close()
 	for n in roots:n.queue_free()
 	await frames(10)
-	print("BELT_WEIGHT ",checks," checks ",failures," failures")
+	print("BELT_WEIGHT ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

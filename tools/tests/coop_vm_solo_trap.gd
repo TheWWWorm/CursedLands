@@ -106,5 +106,5 @@ func done() -> void:
 	evidence.checks = checks; evidence.failures = failures
 	FileAccess.open("user://coop-vm-solo-trap.json",FileAccess.WRITE).store_string(JSON.stringify(evidence,"\t"))
 	await stop_branches()
-	print("COOP_VM_SOLO_TRAP ",checks," checks ",failures," failures")
+	print("COOP_VM_SOLO_TRAP ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

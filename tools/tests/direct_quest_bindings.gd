@@ -16,5 +16,5 @@ func _ready() -> void:
 	EIKeymap._direct_map = upgraded; EIKeymap.save(2); EIKeymap._direct_loaded = false
 	check(not "direct_quests" in EIKeymap.bindings(2).values(), "intentional unbind survives reload")
 	check(EIKeymap.bindings(2).get(EIKeymap.scan_code(KEY_TAB)) == "direct_pointer", "Tab remains pointer toggle")
-	print("DIRECT_QUEST_BINDINGS ",checks," checks ",failures," failures")
+	print("DIRECT_QUEST_BINDINGS ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

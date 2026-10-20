@@ -168,5 +168,5 @@ func _ready() -> void:
 	host.multiplayer.multiplayer_peer.close();client.multiplayer.multiplayer_peer.close()
 	for n in roots: n.queue_free()
 	for i in 10:await get_tree().process_frame
-	print("COOP_TRADE ",checks," checks ",failures," failures")
+	print("COOP_TRADE ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

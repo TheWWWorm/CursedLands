@@ -197,5 +197,5 @@ func _ready() -> void:
 	s.world.free()
 	s.coop.free()
 	s.free()
-	print("COOP_PROGRESS_CONTEXT ", checks, " checks ", failures, " failures")
+	print("COOP_PROGRESS_CONTEXT ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

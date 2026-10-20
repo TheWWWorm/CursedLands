@@ -8,12 +8,12 @@ func check(ok: bool, label: String) -> void:
 	checks += 1
 	if not ok:
 		failures.append(label)
-		push_error(label)
+		printerr("FAIL ", label)
 
 func _ready() -> void:
 	spatial_queries()
 	party_membership()
-	print("REGISTRY_QUERIES PASS=", checks - failures.size(), " FAIL=", failures.size())
+	print("REGISTRY_QUERIES ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)
 
 static func exhaustive(w: GameWorld, p: Vector2, radius: float, live := false) -> Array:

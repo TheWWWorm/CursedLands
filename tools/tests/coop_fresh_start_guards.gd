@@ -122,5 +122,5 @@ func _ready() -> void:
 	for kind: String in ["different live zone","different saved zone","named chapter","alternate body","alternate identity","other visited zone","other saved zone","waiting party","waiting bag","hired companion","pet","quest journal","advanced quest","completed quest","quest item","side quest","unknown flag","later startup value","loading"]:
 		rejected_host(kind)
 	s.world.free();s.world=null;s.free()
-	print("COOP_FRESH_START_GUARDS ",checks," checks ",failures," failures")
+	print("COOP_FRESH_START_GUARDS ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

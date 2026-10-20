@@ -80,5 +80,5 @@ func _ready() -> void:
 	check(st.save(path) == OK, "merged chapter saves")
 	var restored := CampaignState.load_from(path)
 	check(restored != null and restored.current_party == st.current_party and CoopProgress.main_hero(restored).str == CoopProgress.main_hero(st).str and CoopProgress.main_bag(restored) == CoopProgress.main_bag(st), "save reload preserves merged protagonist and purse")
-	print("COOP_PROGRESS_CHAPTERS ", checks, " checks ", failures, " failures")
+	print("COOP_PROGRESS_CHAPTERS ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

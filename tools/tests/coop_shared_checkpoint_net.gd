@@ -54,5 +54,5 @@ func _ready() -> void:
 	await finish()
 
 func finish() -> void:
-	print("COOP_SHARED_CHECKPOINT_NET ",checks," checks ",failures," failures")
+	print("COOP_SHARED_CHECKPOINT_NET ", JSON.stringify({"checks":checks,"failures":failures}))
 	await super.finish()

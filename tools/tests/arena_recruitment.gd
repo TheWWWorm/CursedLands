@@ -53,6 +53,11 @@ func _ready() -> void:
 	check(run.shop.any(func(offer): return run.offer_cost(offer) <= ArenaRules.MIN_RECRUIT_COST), "training leaves an affordable opening recruit")
 	Fixture.begin(run, 6202)
 	var legacy := run.snapshot(); legacy.version = 4; legacy.preparation_left = 45; legacy.pact = ""; legacy.pact_rank = 0
+	# Schema 4 numbered boar/wolf/bat as 0/2/4. Merely relabelling a
+	# current snapshot as v4 makes its modern family IDs invalid.
+	for i in legacy.army.size(): legacy.army[i].family=[0,2,4][i]
+	legacy.shop=[]
+	for family in 5: legacy.shop.append({"family":family,"rank":0,"locked":false})
 	check(restored.restore(legacy) and restored.army == run.army, "existing expeditions retain their purchased or legacy army")
 	# Every three-family opening is affordable and viable against the first wave.
 	var match_state := ArenaPveMatch.new()
@@ -78,5 +83,5 @@ func _ready() -> void:
 				fights += 1
 				await get_tree().process_frame
 	check(hash(GameData.db.tables) == native, "native prototype data unchanged")
-	print("ARENA_RECRUITMENT ", checks, " checks; native_fights=", fights, "; failures=", JSON.stringify(failures))
+	print("ARENA_RECRUITMENT ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)

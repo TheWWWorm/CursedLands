@@ -56,5 +56,5 @@ func _ready() -> void:
 	var once:=capture(rebased); CoopProgress.merge(rebased,s.coop.package(entry))
 	check(capture(rebased)==once,"repeated acknowledged package does not multiply dependents")
 	s.world.free(); s.coop.free(); s.free()
-	print("COOP_SOLO_RETURN_DEPENDENTS ",checks," checks ",failures," failures")
+	print("COOP_SOLO_RETURN_DEPENDENTS ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

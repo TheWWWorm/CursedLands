@@ -1,8 +1,10 @@
 extends Node
 ## Native Fear(1) records from both campaigns: a nearby allied NPC hears a
 ## 26-tick delayed warning, then investigates even without seeing the enemy.
+var checks:=0
 var failures:=0
 func check(ok:bool,label:String)->void:
+	checks+=1
 	print("PASS " if ok else "FAIL ",label)
 	if not ok:failures+=1
 func _ready()->void:
@@ -39,4 +41,6 @@ func _ready()->void:
 	check(not w.ai.activity._eligible_script(guard),"warning remains visible to activity scheduling")
 	w.ai._help.clear();guard.remove_meta("suspect");w.ai.hit_hook(peon,enemy)
 	check(w.ai._help.any(func(e):return e[0]==guard),"being hit calls for help too")
-	w.free();get_tree().quit(1 if failures else 0)
+	w.free()
+	print("PEASANT_HELP ", JSON.stringify({"checks":checks,"failures":failures}))
+	get_tree().quit(1 if failures else 0)

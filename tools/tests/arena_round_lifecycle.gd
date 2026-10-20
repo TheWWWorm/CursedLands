@@ -79,9 +79,17 @@ func _ready() -> void:
 		screen._show_menu();await get_tree().create_timer(0.4).timeout
 		var paused_time:=screen.battle.world.time
 		await frames(8)
+		print("ARENA_PAUSE_SAMPLE ", JSON.stringify({"round":round_index,"before":paused_time,"after":screen.battle.world.time,"phase":screen.battle.phase,"boards_paused":boards.paused,"worker":boards is ArenaSoloBattles,"clock":boards._clock_state if boards is ArenaSoloBattles else []}))
 		check(screen.battle.world.time==paused_time,"menu pauses combat at 2x")
 		check(screen.battle.phase == ArenaMatch.Phase.PAUSED and screen.battle.world.process_mode == Node.PROCESS_MODE_DISABLED,"worker snapshots preserve the local paused phase and animations")
 		check(screen.battle.presentation_root().process_mode==Node.PROCESS_MODE_DISABLED,"menu pauses retained environment")
+		# Distinguish a late pre-pause snapshot from a worker that continues
+		# simulating. The original prompt-pause assertion remains above.
+		await get_tree().create_timer(1.0, true, false, true).timeout
+		var settled_time := screen.battle.world.time
+		await get_tree().create_timer(1.0, true, false, true).timeout
+		print("ARENA_PAUSE_SETTLED ", JSON.stringify({"round":round_index,"before":settled_time,"after":screen.battle.world.time}))
+		check(screen.battle.world.time == settled_time, "combat remains stopped after pending worker snapshots settle")
 		screen._close_modal();await get_tree().create_timer(0.7).timeout
 		check(screen.battle.world.time>paused_time,"closing menu resumes combat")
 		for battle: ArenaPveMatch in matches:
@@ -108,5 +116,5 @@ func _ready() -> void:
 	screen.queue_free();screen=null;await frames(8)
 	check(environment.get_ref()==null,"leaving the screen releases retained courtyard")
 	check(is_equal_approx(Engine.time_scale,1.0),"leaving restores normal engine speed")
-	print("ARENA_ROUND_LIFECYCLE ",checks," checks; failures=",JSON.stringify(failures))
+	print("ARENA_ROUND_LIFECYCLE ", JSON.stringify({"checks":checks,"failures":failures}))
 	TexUpscale.shutdown();get_tree().quit(0 if failures.is_empty() else 1)

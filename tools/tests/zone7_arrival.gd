@@ -155,5 +155,5 @@ func finish() -> void:
 	for i in 10: await get_tree().process_frame
 	TexUpscale.shutdown()
 	FileAccess.open("user://lia-zone7-arrival.json", FileAccess.WRITE).store_string(JSON.stringify({"checks":checks, "failures":failures, "evidence":evidence, "limits":"Actual headless LiA map and native entry/q1g definitions. Controlled player rosters, no network peers. Other AI/story threads paused. Static navigation queries ignore actor stamps. Quest-area checks use prepared positions; no full walking route. Portal particle dispatch is recorded, not rendered."}, "\t"))
-	print("LIA_ZONE7_ARRIVAL ", checks, " checks ", failures.size(), " failures")
+	print("LIA_ZONE7_ARRIVAL ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if not failures.is_empty() else 0)

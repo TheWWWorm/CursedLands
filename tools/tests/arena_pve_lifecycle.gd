@@ -47,5 +47,5 @@ func _ready() -> void:
 		check(not is_instance_valid(expedition), "exit releases expedition world")
 	check(Engine.time_scale == 1, "main menu restores normal clock")
 	check(main.get_children().any(func(n): return n.get_script() == load("res://src/ui/main_menu.gd")), "main menu returns")
-	print("ARENA_PVE_LIFECYCLE ", checks, " checks; failures=", failures)
+	print("ARENA_PVE_LIFECYCLE ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)

@@ -290,5 +290,5 @@ func _ready() -> void:
 	layer.queue_free()
 	game.queue_free(); session.queue_free()
 	await frame()
-	print("CAMP_INVENTORY_UI ", GameData.campaign_id, " ", checks, " checks ", failures, " failures")
+	print("CAMP_INVENTORY_UI ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

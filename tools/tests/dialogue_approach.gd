@@ -54,5 +54,5 @@ func _ready() -> void:
 	w.dialog_movers.clear(); w.units = {}
 	for u in units: u.free()
 	w.free()
-	print("DIALOG_STAGING_CHECKS ",checks," checks ",failures," failures")
+	print("DIALOG_STAGING_CHECKS ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

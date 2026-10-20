@@ -73,5 +73,5 @@ func finish_quest(game: Game) -> void:
 	for i in 8: await get_tree().process_frame
 	TexUpscale.shutdown()
 	FileAccess.open("user://lia-revenge-return.json",FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures}))
-	print("LIA_REVENGE_RETURN ",checks," checks ",failures)
+	print("LIA_REVENGE_RETURN ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

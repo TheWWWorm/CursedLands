@@ -1,8 +1,9 @@
 # Gameplay regression suite
 
-`tools/parity/gameplay.py` runs 101 registered test configurations across 14
-areas. It combines existing regression programs with new item-state and
-effect-duration boundary matrices. A registration selects a script, campaign
+`tools/parity/gameplay.py` runs 259 registered test configurations across 19
+areas, using 205 scripts. It combines existing regression programs with item,
+effect, theft, crafting, side-quest, localization and travel boundary tests.
+A registration selects a script, campaign
 and arguments; some scripts are exercised in both campaigns or in several
 save/load scenarios. It stages the game and test sources, launches each
 configuration in a separate process, and retains logs and reproduction inputs.
@@ -15,7 +16,9 @@ The reports keep those two kinds of evidence separate.
 
 Requirements: Linux, Python 3.11+, Godot 4.7, and owned base-game and Lost in
 Astral installations. The regression runner itself uses only Python's standard
-library. The optional original comparison additionally requires
+library. The 27 rendered configurations also require an explicitly selected
+private X display, such as Xvfb; the other 232 run headlessly.
+The optional original comparison additionally requires
 `tools/parity/requirements.txt` in the Python environment.
 
 From the repository root:
@@ -25,13 +28,13 @@ python3 tools/parity/gameplay.py \
   --game-dir /absolute/path/to/base-game \
   --astral-dir /absolute/path/to/lost-in-astral \
   --godot /absolute/path/to/godot \
-  --out /absolute/path/to/new-results
+  --out /absolute/path/to/new-results --display headless
 
 # Run both regressions and original-instruction comparisons.
 .venv-parity/bin/python tools/parity/gameplay.py \
   --game-dir /path/to/base-game --astral-dir /path/to/lost-in-astral \
   --godot /path/to/godot --out /tmp/gameplay-with-original \
-  --with-original
+  --render-display :91 --with-original
 
 # Inspect the catalog without launching Godot or requiring assets.
 python3 tools/parity/gameplay.py --list
@@ -51,7 +54,13 @@ python3 tools/parity/gameplay.py \
 python3 tools/parity/gameplay.py \
   --game-dir /path/to/base-game --astral-dir /path/to/lost-in-astral \
   --godot /path/to/godot --out /tmp/items-spells-saves \
-  --category inventory --category spells --category persistence
+  --category inventory --category spells --category persistence --display headless
+
+# Only rendered UI checks, on an already running private X server.
+python3 tools/parity/gameplay.py \
+  --game-dir /path/to/base-game --astral-dir /path/to/lost-in-astral \
+  --godot /path/to/godot --out /tmp/rendered-gameplay \
+  --display rendered --render-display :91
 
 # Repeat the retained program selection against the current source.
 /path/to/results/reproduce.sh /tmp/gameplay-repeat
@@ -67,6 +76,12 @@ to be deterministic traces. `--timeout` overrides the default per-program
 timeout. `--game-source` tests a different game checkout using this runner's
 test scripts; both are copied and hashed.
 
+`--render-display` never defaults to the user's desktop. Without it, selected
+rendered configurations produce explicit errors, not headless passes. An Xvfb
+server can be started with `Xvfb :91 -screen 0 1920x1200x24 -nolisten tcp`.
+The runner uses OpenGL compatibility on that display. It does not install
+Xvfb or change the machine's display configuration.
+
 Missing expansion data produces explicit errors for expansion programs.
 It is not counted as skipped or passed. Base and expansion tests use different
 asset roots, and each process confirms the campaign it actually loaded.
@@ -75,20 +90,25 @@ asset roots, and each process confirms the campaign it actually loaded.
 
 | Area | Programs | Examples |
 |---|---:|---|
-| Quests | 15 | Dead/hero predicates, co-op triggers and traps, quest carriers, inventory lifecycle, rewards in both campaigns, actor removal, group lever operation, transition saves, whole-party guard escape, Catacombs lift cycles, dragon story timers |
-| Creatures | 7 | AI sleep/wake eligibility, senses, reaction recipients, witnessed attacks, hostility snapshots, authored creature spell damage, native unit-state publication and actor lifetime |
-| Animation | 8 | Attack clips across both campaigns' creatures, gait continuity, moving attacks/casts, initial and loaded paused poses, original dialogue poses on peers |
+| Quests | 27 | Predicates, triggers, traps, quest items, rewards, actor removal, group levers, chapter transitions, captivity and escape, Catacombs, dragon timers and all 28 installed base side-quest archives |
+| Creatures | 12 | AI sleep/wake eligibility, senses, reaction recipients, witnessed attacks, hostility snapshots, authored creature spell damage, actor lifetime, peasant help and registry queries |
+| Animation | 9 | Attack clips across both campaigns' creatures, gait continuity, moving attacks/casts, initial and loaded paused poses, original dialogue poses on peers and attack stance |
 | Effects | 11 | Model attachment points and projectile origins in both campaigns, delayed effects, pause/lifetime/teardown, repeated spells, healing, fire and tornado particle kernels, exact duration boundaries and overlapping status expiry |
-| Stealth | 6 | Invisibility, silence, patrol escape versus scripted pursuit, remembered targets, real loopback peers, perception batches, partially exposed units/corpses, hidden presentation |
-| Commands | 8 | Combat-state inputs, priority/replacement, held actions, interaction dispatch, consumed mechanisms, retries with simulated packet loss/reordering, spell shortcuts, moving bow release and aim |
-| Pathing | 7 | Turn refinement, static/dynamic topology, ray boundaries, relocation search, preview lengths/contact cutoffs, actual narrow passages |
+| Stealth | 8 | Invisibility, silence, pursuit, remembered targets, loopback peers, perception, partial visibility, theft completion/cancellation, quest pockets and personal hostility |
+| Commands | 14 | Combat inputs, priority/replacement, held actions, interactions, retries with packet loss/reordering, spell shortcuts, bow release, first-person selection, touch picking and travel confirmation/cancellation |
+| Pathing | 14 | Turn refinement, topology, ray boundaries, relocation, route previews, narrow passages, client placement, lift capacity, direct movement and campaign-map reveal |
 | Spells | 8 | Stamina waits and regeneration, single acknowledgements, training requirements on host/guest, execution-time revalidation, paused construction transactions, seeded shop generation in both campaigns |
-| Inventory | 9 | Repair and exchange batches, duplicate copies, private purses, stale stock, unique equipment, legacy rune migration, construction fees, wear/charge conservation and disk round trips |
+| Inventory | 26 | Repair, exchanges, duplicate copies, private purses, stale stock, equipment/runes, nine crafting recipes per campaign, belt/spell capacities, recruitment, network loot, real camp UI and persistence |
 | Progression | 5 | Training purchase orders, refunds and rank limits, guest training, XP distribution, downed companion XP and revival |
-| Party | 2 | Wounded pets, disconnected ownership, companion/pet chapter substitution, travel and save/load |
-| Persistence | 9 | Hostility, wounds, stamina, commands, actor references, frozen world clock, pending casts, all taming stages, pet identity, consumed potions and alternating wall-effect checkpoints |
-| Combat | 3 | Direct hit rolls and backstabs, authored ranged attacks, wounds, severance, healing, resurrection and body-cache invalidation |
+| Party | 3 | Wounded pets, disconnected ownership, companion/pet chapter substitution, travel, save/load and revival camera |
+| Persistence | 12 | Hostility, wounds, stamina, commands, actor references, frozen clock, casts, taming, pets, potions, wall effects, profile seeds and network save choices |
+| Combat | 4 | Hit rolls, backstabs, ranged attacks, wounds, severance, healing, resurrection, body cache and wisp spells |
 | Network | 3 | Seeded snapshot codec, packet loss and reordering, stale generations, perception lists, generated large campaign documents and acknowledgement batching |
+| Dialogue | 11 | Authored topics, walking/staging, cues, captive/elder/guard routes, Nalo rescue and Shaina disguise |
+| Co-op | 48 | Fresh heroes, malformed origins, classes/roles, ownership, renaming/reconnect, personal/shared checkpoints, chapter state, solo return and network world transfers |
+| Settings | 14 | Profiles, controls, camera, graphics presets, audio routing/echo, EN/RU/DE choices and every remake translation's format arguments |
+| Interface | 9 | Buff icons, loading progress/cover, tooltip lifetime, side-quest scrolling and localized quest/wiki text |
+| Arena | 21 | Recruitment, economy, alliances, deployment, shop, round settlement, saves, health/damage, species, standings, tournament and bot planning |
 
 An assertion count is a count of checks, **not games played or unique
 features**. Large parameter sweeps contribute many checks. Several optimized
@@ -97,8 +117,16 @@ useful regression evidence but is not original-executable parity.
 
 The catalog is `tools/parity/gameplay_catalog.json`. It declares each script,
 campaign, required baseline files, completion marker, minimum check count,
-arguments, timeout and quick/full classification. Expansion-specific scripts
+arguments, timeout, display mode and quick/full classification. Expansion-specific scripts
 and shared model sweeps are explicitly assigned their asset set.
+
+`tools/parity/player_features.json` maps 35 player-facing feature groups and
+all 48 verbs in the campaign authority dispatchers to tests or explicit gaps.
+The harness checks that the command inventory stays complete. This is an
+inventory, not a code-coverage percentage or proof that every path works.
+Mod distribution and non-Linux platforms have no configurations in this run.
+Each report's `features.md` shows linked passes, failures, errors and tests not
+run, alongside the scope and remaining gaps.
 
 ## Isolation and failure handling
 
@@ -144,10 +172,10 @@ than silently adopting later catalog changes.
 ## Limits and extension
 
 Headless animation/effect checks inspect state, clips, transforms, attachment
-points and simulation values. They do not qualify rendered pixels, visual
-quality, sound, external Internet sessions or a full ordinary campaign
-playthrough. Render-only assertions in existing scripts remain outside this
-headless coverage.
+points and simulation values. Rendered configurations execute their specific
+UI interactions, geometry/pixel assertions and captures under real OpenGL.
+Neither establishes overall visual quality, audible fidelity, external
+Internet reliability or a complete ordinary campaign playthrough.
 
 Tests requiring private saves, manual input or unbounded play sessions are not
 automatically included. Add a self-contained fixture with an explicit numeric
@@ -169,4 +197,7 @@ effects. Neither matrix is labelled as an original-executable comparison.
 
 The [initial validation record](validation/gameplay-suite-2026-10-20/README.md)
 and [expansion record](validation/gameplay-expansion-2026-10-20/README.md)
-retain qualification, fixture corrections and deliberately injected failures.
+retain earlier qualification. The
+[player-encounter audit](validation/player-encounters-2026-10-20/README.md)
+records the broader coverage, current failures, corrected fixtures and
+deliberately injected failures.

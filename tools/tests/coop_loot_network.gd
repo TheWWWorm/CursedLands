@@ -48,7 +48,7 @@ func finish() -> void:
 		if s.multiplayer.multiplayer_peer: s.multiplayer.multiplayer_peer.close()
 	for root in roots: root.queue_free()
 	for i in 8: await get_tree().process_frame
-	print("COOP_LOOT_NETWORK ", checks, " checks ", failures, " failures")
+	print("COOP_LOOT_NETWORK ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(int(failures > 0))
 
 func _ready() -> void:

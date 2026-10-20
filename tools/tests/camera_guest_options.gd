@@ -125,5 +125,5 @@ func _ready() -> void:
 	players.press("speed:2")
 	check(not CoopPermissions.allows(owner,1,CoopPermissions.SPEED), "player permission button revokes access")
 	players.queue_free(); owner.online = false; owner.queue_free(); await frames()
-	print("CAMERA_GUEST_OPTIONS ", checks, " checks ", failures, " failures")
+	print("CAMERA_GUEST_OPTIONS ", JSON.stringify({"checks":checks,"failures":failures}))
 	TexUpscale.shutdown(); get_tree().quit(1 if failures else 0)

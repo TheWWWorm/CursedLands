@@ -59,5 +59,5 @@ func _ready() -> void:
 		check(changed==[4],"resolved melee impact damages only the selected leg in mode "+str(camera_mode))
 	var report={"checks":checks,"failures":failures,"assertions":evidence.assertions}
 	FileAccess.open("user://direct_aim_selection.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t"))
-	print("ALT_DIRECT_CHECKS ",checks," checks ",failures.size()," failures")
+	print("ALT_DIRECT_CHECKS ", JSON.stringify({"checks":checks,"failures":failures}))
 	g.queue_free();s.queue_free();await frames(10);TexUpscale.shutdown();get_tree().quit(0 if failures.is_empty() else 1)

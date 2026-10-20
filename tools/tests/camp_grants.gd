@@ -5,7 +5,7 @@ var failures := 0
 
 class ProbeSession extends Session:
 	var refreshed: Array = []
-	func _refresh_character(u: GameUnit, _h: Dictionary) -> void: refreshed.append(u.uid)
+	func _refresh_character(u: GameUnit, _h: Dictionary, _quiet := false) -> void: refreshed.append(u.uid)
 	func broadcast(_event: Dictionary) -> void: pass
 	func sync_state() -> void: pass
 
@@ -92,5 +92,5 @@ func _ready() -> void:
 		check(not Grants.catch_up(loaded,5),branch+" ambiguous story choice is not guessed")
 		w.units = {}
 		main.free(); joiner.free(); kel.free(); w.free(); s.free()
-	print("CAMP_GRANTS ",checks," checks ",failures," failures")
+	print("CAMP_GRANTS ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

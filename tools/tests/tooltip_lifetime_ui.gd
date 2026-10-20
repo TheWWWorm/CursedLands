@@ -54,5 +54,5 @@ func _ready() -> void:
 		check(not tips._panel.visible, lang + " leaving the control clears tooltip")
 		hover.show()
 	hover.queue_free(); await frames()
-	print("TOOLTIP_LIFETIME_UI ", checks, " checks ", failures, " failures")
+	print("TOOLTIP_LIFETIME_UI ", JSON.stringify({"checks":checks,"failures":failures}))
 	TexUpscale.shutdown(); get_tree().quit(1 if failures else 0)

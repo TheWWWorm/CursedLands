@@ -81,7 +81,7 @@ func _ready() -> void:
 		check(nav.native_graph(nav.layer(hero.move_class())) == previous,"moving actor retains static records")
 		compare("occupancy "+str(point),pairs.slice(0,4))
 		previous = nav.native_graph(nav.layer(hero.move_class()))
-	print("DYNAMIC_NAVIGATION ",checks," checks ",failures," failures")
+	print("DYNAMIC_NAVIGATION ", JSON.stringify({"checks":checks,"failures":failures}))
 	w.queue_free(); session.world = null; game.world = null
 	game.queue_free(); session.queue_free()
 	for i in 5: await get_tree().process_frame

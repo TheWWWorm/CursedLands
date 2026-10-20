@@ -10,7 +10,7 @@ func loaded()->bool:
   and client._pool_epoch==host._load_serial
 func pause_scene(s:Session)->void:
  freeze(s);s.game.set_process(false);s.game.direct.set_process(false)
- s.world.vm.briefings._check=INF
+ if s.world.vm: s.world.vm.briefings._check=INF
 func offer(allod:String)->Dictionary:
  for o:Dictionary in host.travel_options:
   if o.get("return_allod","")==allod:return o
@@ -120,4 +120,4 @@ func _ready()->void:
  pick(back);await frames(4)
  check(host.map_open and host.zone_id=="gz11k" and not host.loading_game,"authority rechecks sequence restrictions after the map opens")
  host.state.current_party=""
- print("ISLAND_RETURN ",checks," checks ",failures," failures");await finish()
+ print("ISLAND_RETURN ", JSON.stringify({"checks":checks,"failures":failures}));await finish()

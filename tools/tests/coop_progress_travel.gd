@@ -76,5 +76,5 @@ func _ready() -> void:
 	check(pkg.move.is_empty(), "a missed protagonist change cannot move an incompatible chapter")
 	s.coop.free()
 	s.free()
-	print("COOP_PROGRESS_TRAVEL ", checks, " checks ", failures, " failures")
+	print("COOP_PROGRESS_TRAVEL ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

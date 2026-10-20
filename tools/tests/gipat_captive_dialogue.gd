@@ -1,4 +1,6 @@
 extends "nalo_rescue_return.gd"
+func summary_marker() -> String: return "GIPAT_CAPTIVE_DIALOGUE"
+
 ## Prepared original camp-arrival briefing, then normal UI/script flow only.
 func _run() -> void:
 	evidence.setup="Prepared original bz4g arrival with b.bz4g.Ha29 offered; no topic completion or actor placement is forced."

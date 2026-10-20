@@ -43,5 +43,5 @@ func _ready() -> void:
 	check(result.heroes[0][0].str==49.0 and result.money==888,"next progress package cannot reset imported temporary-role earnings")
 	check(CoopProgress.main_hero(result).str==44.0 and CoopProgress.main_bag(result)=={"money":777,"items":["rune:ic"]},"normal protagonist and bag remain separately parked")
 	vm=null; s.world.free(); s.coop.free(); s.free()
-	print("COOP_SOLO_RETURN_ROLES ",checks," checks ",failures," failures")
+	print("COOP_SOLO_RETURN_ROLES ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

@@ -121,5 +121,5 @@ func _ready() -> void:
 	game.rig.free()
 	game.free()
 	w.free()
-	print("TOUCH_UNIT_PICKING ", checks, " checks ", failures, " failures; bounds ", detailed_before, " -> ", detailed_after)
+	print("TOUCH_UNIT_PICKING ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

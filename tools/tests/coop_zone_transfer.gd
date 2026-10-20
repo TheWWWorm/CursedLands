@@ -72,7 +72,7 @@ func _ready() -> void:
 	var old_world: WeakRef = weakref(host.world)
 	var old_client_world: WeakRef = weakref(client.world)
 	var old_time := host.world.time
-	host.travel_options = [{"zone":second,"entrance":1}]
+	host.travel_options = [{"zone":second,"entrance":1,"title":host.zone_title(second)}]
 	host.broadcast({"t":"travel", "options":host.travel_options})
 	await settle()
 	host._travel(second, 1)
@@ -118,7 +118,7 @@ func _ready() -> void:
 	host.multiplayer.multiplayer_peer.close()
 	for root in branches: root.queue_free()
 	await settle()
-	print("ZONE_TRANSFER ", checks, " checks ", failures, " failures")
+	print("ZONE_TRANSFER ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)
 
 func _process(_dt: float) -> void: pass

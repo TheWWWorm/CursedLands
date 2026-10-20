@@ -50,5 +50,5 @@ func _ready() -> void:
 	check(ModStore.active_id() == "default" and ModStore.profiles.size() == previous, "failed profile leaves selection intact")
 	check(DirAccess.get_directories_at(base.path_join("mods")).size() == 1, "failed creation removes only its new save folder")
 	DirAccess.remove_absolute(config_path)
-	print("PROFILE_SAVE_SEED ", checks, " checks ", failures, " failures")
+	print("PROFILE_SAVE_SEED ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

@@ -69,5 +69,5 @@ func _ready() -> void:
 	dialog.free()
 	game.queue_free(); session.queue_free()
 	await get_tree().process_frame
-	print("DIALOGUE_FEEDBACK ", checks, " checks ", failures, " failures")
+	print("DIALOGUE_FEEDBACK ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

@@ -74,5 +74,5 @@ func finish() -> void:
 	if s:s.queue_free()
 	for i in 10:await get_tree().process_frame
 	TexUpscale.shutdown();OS.remove_logger(errors)
-	print("SHAINA_ENTRY ",checks," checks ",failures.size()," failures")
+	print("SHAINA_ENTRY ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)

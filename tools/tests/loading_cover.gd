@@ -22,6 +22,9 @@ func _ready()->void:
 	check(LoadingScreen._current!=null,"completion does not remove cover synchronously")
 	LoadingScreen.prepare(get_tree(),{"id":"replacement"})
 	var replacement:=LoadingScreen._current
+	# A normal resize can arrive while the previous layer is queued for
+	# deletion. Exercise its size_changed delivery before the next frame.
+	get_tree().root.size+=Vector2i(1,0)
 	await frames()
 	check(LoadingScreen._current==replacement and is_instance_valid(replacement),"older completion cannot remove a newer load's cover")
 	LoadingScreen.end();await frames(4)
@@ -32,5 +35,5 @@ func _ready()->void:
 	pixels=get_viewport().get_texture().get_image()
 	check(pixels.get_pixel(20,20).r>0.9,"completed cover releases the underlying view")
 	GameData.root=root
-	print("LOADING_COVER ",checks," checks ",failures," failures")
+	print("LOADING_COVER ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

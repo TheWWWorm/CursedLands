@@ -1,4 +1,6 @@
 extends "nalo_rescue_return.gd"
+func summary_marker() -> String: return "NALO_RESCUE_ENTRY"
+
 ## Explicit prepared q60h return checkpoint, then only normal UI/world commands.
 func _run() -> void:
 	evidence.setup="Prepared original HeroAlone/q60h-complete/Kr60-offered village boundary. The actual Kr60 conversation and native party/quest handoff are not prepared or directly invoked."

@@ -67,5 +67,5 @@ func _ready() -> void:
 	GameData.set_option("cave_echo", 0); GameData.set_option("cave_echo", 1)
 	check(echo_is(false), "changing the preference outdoors never adds cave echo")
 	mixer.queue_free(); panel.queue_free(); await frames()
-	print("AUDIO_ECHO_OPTIONS ", RemakeText.lang, " ", checks, " checks; failures=", failures)
+	print("AUDIO_ECHO_OPTIONS ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)

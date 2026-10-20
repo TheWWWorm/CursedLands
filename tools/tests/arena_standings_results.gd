@@ -95,5 +95,5 @@ func _ready() -> void:
 			check((volley._events[0].start as Vector2).distance_to(expected)<0.1,"result salute starts at the dragon's mouth instead of its body")
 	screen.queue_free(); screen=null; await frames(8)
 	check(errors.messages.is_empty(),"no runtime errors: "+JSON.stringify(errors.messages.slice(0,3)))
-	print("ARENA_STANDINGS_RESULTS ",checks," checks; failures=",JSON.stringify(failures))
+	print("ARENA_STANDINGS_RESULTS ", JSON.stringify({"checks":checks,"failures":failures}))
 	OS.remove_logger(errors); TexUpscale.shutdown(); get_tree().quit(0 if failures.is_empty() else 1)

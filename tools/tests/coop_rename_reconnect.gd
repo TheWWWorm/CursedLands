@@ -150,11 +150,23 @@ func presented(app: Frontend,name_: String,label: String) -> void:
 	key(panel,KEY_ESCAPE)
 
 func leave_from_menu(label: String) -> String:
-	var saved:=guest.coop.last_merged
+	# NetStatus.leave waits for a final package before destroying the session.
+	# Observe its real exit; reading last_merged before clicking Exit races
+	# that delivery, especially immediately after a host reload.
+	var progress := guest.coop
+	var before := progress.merged_count
+	var captured := {"slot":"","count":before}
+	var fallback := progress._origin_slot
+	progress.tree_exiting.connect(func():
+		captured.slot=progress.last_merged
+		captured.count=progress.merged_count)
 	var count:=host.players.size()
 	guest.game.hud._on_signpost("exit"); key(guest.game.hud._quit_box,KEY_ENTER)
 	check(await until(func():return host.players.size()==count-1 and guest_app.session==null and menu_of(guest_app)!=null),"normal confirmed Exit disconnects "+label)
-	return saved
+	check(not String(captured.slot).is_empty() and int(captured.count)>before,
+		"normal confirmed Exit saves the final progress package for "+label)
+	# Keep independent controls runnable if the package assertion fails.
+	return String(captured.slot) if not String(captured.slot).is_empty() else fallback
 
 func current_identity(label: String,expected_uid: int) -> void:
 	check(guest.my_index==old_slot,label+" keeps the original slot")
@@ -272,8 +284,17 @@ func _ready() -> void:
 		if not await join_from_menu("Ally",merged_slot): await finish(); return
 		current_identity("same-name reconnect after two renames",current_uid)
 		await presented(host_app,"Ally","repeat-host"); await presented(guest_app,"Ally","repeat-guest")
-		check(await until(func():return not guest.coop.last_merged.is_empty()),"reconnected character receives current progress")
-		merged_slot=guest.coop.last_merged
+		var delivered := await until(func():return not guest.coop.last_merged.is_empty())
+		check(delivered,"reconnected character receives current progress")
+		if delivered:
+			merged_slot=guest.coop.last_merged
+		else:
+			print("RECONNECT_DIAGNOSTIC ",JSON.stringify({"paused":get_tree().paused,
+				"host_loading":host.loading_game,"host_multiplayer":host.multiplayer_game,
+				"sender_processing":host.coop.is_physics_processing(),"sender_can_process":host.coop.can_process(),
+				"send_timer":host.coop._send_t,"sent_keys":host.coop._sent_hash.keys(),
+				"origin":guest.coop._origin_slot,"last_merged":guest.coop.last_merged,
+				"peer":guest.multiplayer.get_unique_id(),"tally":host.coop.joiners.get("ally",{})}))
 		await rejected_identity("active",merged_slot,true)
 		merged_slot=await leave_from_menu("Ally before inactive controls")
 		for kind in ["unrelated","ambiguous","stale","future","invalid"]:
@@ -294,5 +315,5 @@ func finish() -> void:
 	CoopProgress.bring_slot=""
 	var file:=FileAccess.open("user://rename-receipt.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"campaign":GameData.campaign_id,"checks":checks,"failures":failures,"rows":rows},"\t"));file.close()
-	print("COOP_RENAME_RECONNECT ",checks," checks ",failures," failures")
+	print("COOP_RENAME_RECONNECT ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

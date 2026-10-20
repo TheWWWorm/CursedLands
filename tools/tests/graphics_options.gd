@@ -249,5 +249,5 @@ func _ready() -> void:
 	var receipt := {"checks": checks, "failures": failures, "pages": page_names,
 		"renderer": RenderingServer.get_current_rendering_method(), "display": DisplayServer.get_name()}
 	FileAccess.open("user://graphics-options.json", FileAccess.WRITE).store_string(JSON.stringify(receipt, "\t"))
-	print("GRAPHICS_OPTIONS ", checks, " checks ", failures.size(), " failures")
+	print("GRAPHICS_OPTIONS ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if not failures.is_empty() else 0)

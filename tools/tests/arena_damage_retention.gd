@@ -52,5 +52,5 @@ func _ready() -> void:
 	check(battle.previous_damage.is_empty(), "new game with the same seed clears the old report")
 	authority.free(); replica.queue_free(); battle.queue_free()
 	await get_tree().process_frame; await get_tree().process_frame
-	print("ARENA_DAMAGE_RETENTION ",checks," checks; failures=",JSON.stringify(failures))
+	print("ARENA_DAMAGE_RETENTION ", JSON.stringify({"checks":checks,"failures":failures}))
 	TexUpscale.shutdown(); get_tree().quit(0 if failures.is_empty() else 1)

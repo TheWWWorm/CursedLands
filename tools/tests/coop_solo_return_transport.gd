@@ -23,5 +23,5 @@ func _ready() -> void:
 	await finish()
 
 func finish() -> void:
-	print("COOP_SOLO_RETURN_TRANSPORT ",checks," checks ",failures," failures")
+	print("COOP_SOLO_RETURN_TRANSPORT ", JSON.stringify({"checks":checks,"failures":failures}))
 	await super.finish()

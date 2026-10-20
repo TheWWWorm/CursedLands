@@ -27,5 +27,5 @@ func _ready() -> void:
 	check(AudioServer.get_bus_send(0)==&"" and AudioServer.get_bus_send(AudioServer.get_bus_index("SFX"))==&"Master", "sample rerouting leaves the master and SFX parent topology intact")
 	mixer.stop_all(); mixer.queue_free()
 	for i in 8: await get_tree().process_frame
-	print("AUDIO_BUS_ROUTES %d checks %d failures"%[checks,failures])
+	print("AUDIO_BUS_ROUTES ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

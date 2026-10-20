@@ -68,5 +68,5 @@ func _ready() -> void:
 	ArenaBotPlanner.arrange(formation,"")
 	for entry in formation.army:
 		check(entry.deployed and entry.point[0]==(27.0 if entry.family==17 and entry.rank==2 else 22.0),"ranged and spellcasting creatures stay behind the melee hunter")
-	print("ARENA_BOT_PLANNER checks=", checks, " family=", pair.x, " filler=", pair.y, " failures=", JSON.stringify(failures))
+	print("ARENA_BOT_PLANNER ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)

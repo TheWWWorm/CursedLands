@@ -16,5 +16,5 @@ func _ready() -> void:
 	check(run.placements[1]==9 and run.placements[2]==8,"same-round elimination ranks use remaining health")
 	for player in 9:
 		check(run.health(player)>0 or run.placements[player]>0,"every settled eliminated player has a finishing place")
-	print("ARENA_ELIMINATION_PLACES ",checks," checks; failures=",failures)
+	print("ARENA_ELIMINATION_PLACES ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(int(failures>0))

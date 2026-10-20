@@ -218,5 +218,5 @@ func finish() -> void:
 		if app and is_instance_valid(app.session):
 			app.session.online=false
 			if app.session.multiplayer.multiplayer_peer: app.session.multiplayer.multiplayer_peer.close()
-	print("COOP_SOLO_RETURN ",checks," checks ",failures," failures")
+	print("COOP_SOLO_RETURN ", JSON.stringify({"checks":checks,"failures":failures}))
 	await super.finish()

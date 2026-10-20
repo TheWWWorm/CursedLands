@@ -81,5 +81,5 @@ func _ready() -> void:
 				check(actual >= raw*0.2-0.001 and actual <= raw+0.001, "native mitigation remains damageable %d:%d" % [family,channel])
 		battle.queue_free(); await get_tree().process_frame
 	check(hash(GameData.db.tables)==native, "campaign database is unchanged")
-	print("ARENA_SPECIES ", checks, " checks; failures=",JSON.stringify(failures))
+	print("ARENA_SPECIES ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)

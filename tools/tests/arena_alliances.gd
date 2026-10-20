@@ -140,7 +140,7 @@ func _ready() -> void:
 		check(not other.restore(invalid) and other.snapshot()==valid,"corrupt XP is rejected atomically")
 	check(hash(GameData.db.tables)==native,"native prototype tables unchanged")
 	check_localized_roster()
-	print("ARENA_ALLIANCES ",checks," checks; failures=",JSON.stringify(failures))
+	print("ARENA_ALLIANCES ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)
 
 

@@ -39,5 +39,5 @@ func _ready() -> void:
 	var held := g.rig.camera.global_transform;g.direct.apply_camera()
 	check(g.rig.camera.global_transform==held,"scripted camera framing retains ownership")
 	FileAccess.open("user://first-person-actions.json",FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures,"cases":evidence.cases,"assertions":evidence.assertions},"\t"))
-	print("FIRST_PERSON_ACTIONS ",checks," checks ",failures.size()," failures")
+	print("FIRST_PERSON_ACTIONS ", JSON.stringify({"checks":checks,"failures":failures}))
 	g.queue_free();s.queue_free();await frames(10);TexUpscale.shutdown();get_tree().quit(0 if failures.is_empty() else 1)

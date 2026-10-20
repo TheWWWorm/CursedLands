@@ -140,5 +140,5 @@ func _ready() -> void:
 	step()
 	check(Items.charge(h.weapons[0]) > Items.charge(frozen), "recharge resumes from saved charge")
 	w.free(); s.free()
-	print("ENCHANTED_EQUIPMENT ",checks," checks ",failures," failures")
+	print("ENCHANTED_EQUIPMENT ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

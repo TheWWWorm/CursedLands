@@ -23,6 +23,13 @@ func _ready() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--recruit="):n=int(arg.trim_prefix("--recruit="))
 	var rec:=host._find_merc_record(n)
+	if GameData.campaign_id==CampaignProfile.ASTRAL:
+		# The base-game fallback intentionally scans basecam/bz2g. LiA
+		# recruits are authored in its own chapter maps.
+		var mob := EIMob.load_bytes(GameData.read_file("maps/bz1h.mob"))
+		for row: Dictionary in mob.objects:
+			if row.get("kind")=="UNIT" and String(row.get("name","")).to_lower()=="merc%d"%n:
+				rec=row; break
 	check(not rec.is_empty(),"campaign supplies original recruit record")
 	if failures: await finish();return
 	print("RECRUIT_RECORD ",rec.name," ",rec.prototype)
@@ -47,5 +54,5 @@ func _ready() -> void:
 	check(range(7).all(func(i):return camp._content.get("armor%d"%i,["?"])[0]==""),"camp shows empty armour slots")
 	check(range(4).all(func(i):return camp._content.get("top%d"%i,["?"])[0]==""),"camp shows empty weapon slots")
 	check(is_same(replica.get_meta("hero"),client.state.mercs[n]),"subsequent inventory states keep the recruited record linked")
-	print("RECRUITED_EQUIPMENT_NET ",checks," checks ",failures," failures")
+	print("RECRUITED_EQUIPMENT_NET ", JSON.stringify({"checks":checks,"failures":failures}))
 	await finish()

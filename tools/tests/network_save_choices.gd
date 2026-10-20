@@ -55,5 +55,5 @@ func _ready() -> void:
 	panel.show_page(NetworkPanel.MODES); await frames()
 	check(not panel._save_choice.visible, "mode picker has no stray save dropdown")
 	panel.free()
-	print("NETWORK_SAVE_CHOICES ",checks," checks ",failures," failures")
+	print("NETWORK_SAVE_CHOICES ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

@@ -34,5 +34,5 @@ func _ready()->void:
 		if motion.movers.is_empty():break
 	check(motion.movers.is_empty() and unit.pos.distance_to(redirected)<0.05,"second move replaces the first destination")
 	check(battle.world.time==0 and battle.damage==[0.0,0.0],"movement leaves combat state untouched")
-	print("ARENA_FORMATION ",checks," checks; failures=",JSON.stringify(failures))
+	print("ARENA_FORMATION ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)

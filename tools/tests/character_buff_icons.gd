@@ -77,4 +77,4 @@ func _ready()->void:
 	var config:=ConfigFile.new()
 	check(config.load(GameData.CONFIG_PATH)==OK and config.get_value("options","character_buff_icons",-1)==0,"option persists on acceptance")
 	options.free();TexUpscale.shutdown()
-	print("CHARACTER_BUFF_ICONS ",checks," checks ",failures," failures");get_tree().quit(1 if failures else 0)
+	print("CHARACTER_BUFF_ICONS ", JSON.stringify({"checks":checks,"failures":failures}));get_tree().quit(1 if failures else 0)

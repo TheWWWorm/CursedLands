@@ -102,5 +102,5 @@ func _ready() -> void:
 				check(not ArenaUnitInfo.summary(id).contains(id),"no prototype IDs in stats")
 	RemakeText.lang="en"
 	check(hash(GameData.db.tables)==native,"native prototypes are unchanged")
-	print("ARENA_ECONOMY ",checks," checks; failures=",JSON.stringify(failures))
+	print("ARENA_ECONOMY ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)

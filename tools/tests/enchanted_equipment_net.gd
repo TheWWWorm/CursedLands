@@ -22,7 +22,7 @@ func finish() -> void:
 			if peer: peer.close()
 	for root in branches: root.queue_free()
 	for i in 5: await get_tree().process_frame
-	print("ENCHANTED_EQUIPMENT_NET ",checks," checks ",failures," failures")
+	print("ENCHANTED_EQUIPMENT_NET ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)
 
 func _ready() -> void:

@@ -100,5 +100,5 @@ func _ready()->void:
 	pkg=s.coop.package(e)
 	check(not pkg.replace_checkpoint and e.credits.vars.is_empty(),"equal checkpoint clears replacement state before a new cumulative tally")
 	s.world.free();s.coop.free();s.free()
-	print("COOP_SHARED_CHECKPOINT ",checks," checks ",failures," failures")
+	print("COOP_SHARED_CHECKPOINT ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

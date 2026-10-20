@@ -78,5 +78,5 @@ func _ready() -> void:
 	TouchInput.pinned=false; TouchInput.enabled=false
 	await frames(6); OS.remove_logger(errors)
 	check(errors.messages.is_empty(),"no runtime errors: "+str(errors.messages))
-	print("SIDE_QUEST_PANEL_UI ",checks," checks; failures=",JSON.stringify(failures))
+	print("SIDE_QUEST_PANEL_UI ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)

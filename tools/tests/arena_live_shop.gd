@@ -104,6 +104,6 @@ func _ready() -> void:
 		else:
 			check(run.stage == "won" and restored.restore(run.snapshot()), "surviving final wave completes expedition and saves")
 	check(hash(GameData.db.tables) == native, "campaign prototypes remain immutable")
-	print("ARENA_LIVE_SHOP ", checks, " checks; failures=", failures)
+	print("ARENA_LIVE_SHOP ", JSON.stringify({"checks":checks,"failures":failures}))
 	await get_tree().process_frame
 	get_tree().quit(0 if failures.is_empty() else 1)

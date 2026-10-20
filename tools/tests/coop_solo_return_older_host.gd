@@ -47,5 +47,5 @@ func _ready() -> void:
 	await finish()
 
 func finish() -> void:
-	print("COOP_SOLO_RETURN_OLDER_HOST ",checks," checks ",failures," failures")
+	print("COOP_SOLO_RETURN_OLDER_HOST ", JSON.stringify({"checks":checks,"failures":failures}))
 	await super.finish()

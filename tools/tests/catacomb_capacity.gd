@@ -114,5 +114,5 @@ func _ready() -> void:
 	check(is_equal_approx(w.objects[2240358].get_meta("ei").position.z,28.654),"fixed upper control still recalls descended lift")
 	g.queue_free();s.queue_free()
 	for i in 8:await get_tree().process_frame
-	print("CATACOMB_CAPACITY ",checks," checks ",failures," failures")
+	print("CATACOMB_CAPACITY ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

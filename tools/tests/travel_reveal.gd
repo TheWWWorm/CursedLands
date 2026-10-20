@@ -38,5 +38,5 @@ func _ready() -> void:
 	check(s.state.get_var(0, "z." + camp) == 0, "camp visibility remains controlled by its story script")
 	check(s.state.get_var(0, "z." + camp_region + "_" + camp) == 0, "entering an edge does not change its gate state")
 	s.free()
-	print("TRAVEL_REVEAL ", checks, " checks ", failures, " failures")
+	print("TRAVEL_REVEAL ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

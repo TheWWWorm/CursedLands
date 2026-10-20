@@ -32,5 +32,5 @@ func _ready() -> void:
 	run=fresh(); run.resolve(1,15,[0,100],[0,7]); run.record_board(1,1,[0,5])
 	run.rollback_round_health()
 	check(run.lives==100 and run.health(1)==100,"worker interruption rolls back partial health")
-	print("ARENA_RESULT_HEALTH ",checks," checks; failures=",JSON.stringify(failures))
+	print("ARENA_RESULT_HEALTH ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)

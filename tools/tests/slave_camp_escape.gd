@@ -104,13 +104,18 @@ func _ready() -> void:
 	vm._all(conditions,ScriptVM.Instance.new())
 	check(guests[0].orders.size()==1 and guests[0].orders[0]==player_order,
 		"escape recovery does not overwrite an active player command")
-	for i in guests.size(): guests[i].pos = held_positions[i]
+	for i in guests.size():
+		guests[i].pos = held_positions[i]
+		w.nav.track_unit(guests[i])
 	preload("res://src/game/script/story_compat.gd").recover(vm)
 	for tick in 1000:
 		w.time += GameUnit.TICK; w._logic_step += 1
 		w.ai.activity.begin_tick(GameUnit.TICK)
 		for u in guests: u.tick(GameUnit.TICK)
 		w.ai.activity.end_tick()
+		# The authored arrival watcher is responsible for retrying an idle
+		# guest after a blocked route. A frozen VM cannot exercise that path.
+		vm.tick(GameUnit.TICK)
 		if guests.all(func(u: GameUnit):return u.pos.y<80.0): break
 	for u in guests:
 		if u._motion:
@@ -133,5 +138,5 @@ func _ready() -> void:
 	check(s.village_move_limit()==limit,"missing barrier outside the night escape does not unlock the camp")
 	g.queue_free(); s.queue_free()
 	for i in 8: await get_tree().process_frame
-	print("SLAVE_CAMP_ESCAPE ",checks," checks ",failures," failures")
+	print("SLAVE_CAMP_ESCAPE ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

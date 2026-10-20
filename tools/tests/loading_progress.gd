@@ -23,5 +23,5 @@ func _ready()->void:
 		for i in 12:await get_tree().process_frame
 		check(LoadingScreen._current==null,"completed load releases its cover")
 	LoadingScreen.on_frame=Callable()
-	print("LOADING_PROGRESS ",checks," checks ",failures," failures ",stage)
+	print("LOADING_PROGRESS ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

@@ -95,5 +95,5 @@ func finish() -> void:
 	for root:Node in branches:
 		if is_instance_valid(root):root.queue_free()
 	await frames(8)
-	print("CATACOMB_CAPACITY_NET ",checks," checks ",failures," failures")
+	print("CATACOMB_CAPACITY_NET ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

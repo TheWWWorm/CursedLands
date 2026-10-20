@@ -145,5 +145,5 @@ func _ready() -> void:
 	check(await until(func():return client.state.get_pvar(1,topic)==1),"renewed topic reaches guest")
 	for s:Session in [host,client]:
 		check(lit(s,false),"peer %d immediately shows renewed speech after state event"%s.my_index)
-	print("DIALOGUE_HIGHLIGHTS ",checks," checks ",failures," failures")
+	print("DIALOGUE_HIGHLIGHTS ", JSON.stringify({"checks":checks,"failures":failures}))
 	await finish()

@@ -82,5 +82,5 @@ func _ready()->void:
 		check(empty.shop==committed.shop,"shop odds are independent of owned copies")
 	check(hash(GameData.db.tables)==native,"roster tuning leaves native campaign data unchanged")
 	caster.free()
-	print("ARENA_ROSTER checks=",checks," opening_pair_duplicate_rate=",duplicate_rate," failures=",JSON.stringify(failures))
+	print("ARENA_ROSTER ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)

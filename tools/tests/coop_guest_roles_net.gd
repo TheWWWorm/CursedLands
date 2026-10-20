@@ -161,5 +161,5 @@ func finish() -> void:
 	for root: Node in branches: root.queue_free()
 	for i in 5: await get_tree().process_frame
 	CoopProgress.bring_slot=""
-	print("COOP_GUEST_ROLES_NET ",checks," checks ",failures," failures")
+	print("COOP_GUEST_ROLES_NET ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

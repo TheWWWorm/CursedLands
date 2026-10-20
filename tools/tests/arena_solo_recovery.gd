@@ -36,5 +36,5 @@ func _ready() -> void:
 	check(league.stage=="result","late disconnect cannot undo settled results")
 	boards.queue_free();home.queue_free();stage.queue_free()
 	await get_tree().process_frame;await get_tree().process_frame
-	print("ARENA_SOLO_RECOVERY ",checks," checks; failures=",JSON.stringify(failures))
+	print("ARENA_SOLO_RECOVERY ", JSON.stringify({"checks":checks,"failures":failures}))
 	TexUpscale.shutdown();get_tree().quit(0 if failures.is_empty() else 1)

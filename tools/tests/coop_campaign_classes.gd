@@ -83,7 +83,7 @@ func _ready() -> void:
 	client.multiplayer.multiplayer_peer.close();host.multiplayer.multiplayer_peer.close()
 	for root in branches:root.queue_free()
 	await frames()
-	print("COOP_CAMPAIGN_CLASSES ",checks," checks ",failures," failures")
+	print("COOP_CAMPAIGN_CLASSES ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)
 
 func _process(_dt: float) -> void: pass

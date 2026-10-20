@@ -59,5 +59,5 @@ func _ready() -> void:
 			if w.units.has(666666): w.remove_unit(w.units[666666])
 	g.queue_free(); s.queue_free()
 	for i in 8: await get_tree().process_frame
-	print("ADDED_ACTOR_LIFETIME ",checks," checks ",failures," failures")
+	print("ADDED_ACTOR_LIFETIME ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

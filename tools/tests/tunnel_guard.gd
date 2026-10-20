@@ -45,5 +45,5 @@ func _ready()->void:
  g.queue_free();s.queue_free()
  for i in 10:await get_tree().process_frame
  TexUpscale.shutdown()
- print("TUNNEL_GUARD ",checks," checks ",failures," failures")
+ print("TUNNEL_GUARD ", JSON.stringify({"checks":checks,"failures":failures}))
  get_tree().quit(1 if failures else 0)

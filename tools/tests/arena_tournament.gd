@@ -99,5 +99,5 @@ func _ready() -> void:
 	check(fights>=35,"native creep and player rounds exercised")
 	check(run.stage in ["won","lost"] and run.placements[0]>0,"full native game ends with a placement")
 	check(is_equal_approx(Engine.time_scale,1.0),"background fights do not alter global speed")
-	print("ARENA_TOURNAMENT ",checks," checks; native_fights=",fights,"; failures=",JSON.stringify(failures))
+	print("ARENA_TOURNAMENT ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)

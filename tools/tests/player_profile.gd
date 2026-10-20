@@ -22,5 +22,5 @@ func _ready()->void:
 		var run:=ArenaTournamentRun.new();run.auto_save=false;run.begin(19)
 		check(run.player_title(0)==GameData.player_name,"solo standings use global name")
 		panel.queue_free();arena.queue_free();parent_cursor.queue_free();await frames(2)
-	print("PLAYER_PROFILE ",checks," checks; failures=",JSON.stringify(failures))
+	print("PLAYER_PROFILE ", JSON.stringify({"checks":checks,"failures":failures}))
 	TexUpscale.shutdown();get_tree().quit(0 if failures.is_empty() else 1)

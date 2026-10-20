@@ -10,6 +10,8 @@ var input_path := ""
 var completed := false
 var advance_dialogue := false
 
+func summary_marker() -> String: return "NALO_RELOAD"
+
 class Errors extends Logger:
 	var messages: Array[String] = []
 	func _log_error(fn: String, file: String, line: int, code: String,
@@ -172,5 +174,5 @@ func finish() -> void:
 	if s: s.queue_free()
 	for i in 10: await get_tree().process_frame
 	TexUpscale.shutdown(); OS.remove_logger(errors)
-	print("NALO_RELOAD ",checks," checks ",failures.size()," failures")
+	print(summary_marker(), " ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)

@@ -126,5 +126,5 @@ func _ready() -> void:
 	host.multiplayer.multiplayer_peer.close()
 	for root in branches: root.queue_free()
 	for i in 10: await get_tree().process_frame
-	print("NETWORK_DONE ",checks," checks ",failures," failures")
+	print("NETWORK_DONE ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures==0 else 1)

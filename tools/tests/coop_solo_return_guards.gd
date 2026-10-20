@@ -32,5 +32,5 @@ func _ready() -> void:
 			var pkg:=s.coop.package(e)
 			check(not e.clean and pkg.move.is_empty() and pkg.party_context.is_empty(),kind+(" host reload" if loading else " re-entry")+" cannot adopt a full story checkpoint")
 	s.world.free(); s.coop.free(); s.free()
-	print("COOP_SOLO_RETURN_GUARDS ",checks," checks ",failures," failures")
+	print("COOP_SOLO_RETURN_GUARDS ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)

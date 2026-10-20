@@ -146,5 +146,5 @@ func _ready() -> void:
 	check(entry.party_context == frozen if astral else true, "uncredited temporary return leaves progress context untouched")
 	check(helper.failures == 0, "all original party operations executed")
 	helper.free(); s.world.free(); s.coop.free(); s.free()
-	print("COOP_GUEST_ROLES ",checks," checks ",failures," failures")
+	print("COOP_GUEST_ROLES ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(1 if failures else 0)
