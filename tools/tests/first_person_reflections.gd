@@ -32,6 +32,8 @@ func difference(a: Image, b: Image) -> int:
 func _ready() -> void:
 	check(Reflection.supported(), "uses rendered Forward+ reflection path")
 	if not Reflection.supported(): get_tree().quit(1); return
+	var terrain_layers := EITerrain.SHADOW_RECEIVER_LAYER | EITerrain.DECAL_LAYER | Reflection.WATER_LAYER | GameUnit.OFFSCREEN_LAYER
+	check(((EIUnitModel.CLOSE_VIEW_LAYER | EIUnitModel.REFLECTION_LAYER) & terrain_layers) == 0,"character view layers do not overlap terrain, decals, water or distant units")
 	await frames(16)
 	var rig := CameraRig.new(); add_child(rig); rig.set_process(false)
 	check((rig.camera.cull_mask & EIUnitModel.REFLECTION_LAYER) == 0, "main game camera excludes complete reflection copies")

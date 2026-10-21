@@ -327,8 +327,8 @@ var _view_shadows: Array[Dictionary] = []
 var _view_active := false
 ## The local body is camera-adjusted. Mirrors draw the complete authored
 ## figure on a separate layer; the main camera excludes that layer.
-const CLOSE_VIEW_LAYER := 1 << 17
-const REFLECTION_LAYER := 1 << 18
+const CLOSE_VIEW_LAYER := 1 << 14
+const REFLECTION_LAYER := 1 << 15
 
 
 ## `unit` is a map object dictionary from EIMob (or a synthetic one with
