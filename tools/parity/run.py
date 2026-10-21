@@ -184,6 +184,8 @@ def main():
                 parser.error("--authored-quests requires --game-dir")
             from campaign_quests import append_campaign_cases
             append_campaign_cases(inputs, args.game_dir, args.quest_limit)
+            import extensions
+            extensions.authored(inputs, args.game_dir, args.quest_limit)
             if args.case:
                 inputs["scenarios"] = [r for r in inputs["scenarios"] if args.case in r["id"]]
     check_inputs(inputs)
