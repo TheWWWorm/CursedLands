@@ -81,7 +81,54 @@ texture access, alpha rejection, misses, water clipping, resizing and cleanup;
 real river views; camera and option transitions; and EN/RU/DE option/help
 captures. See the evidence for exact results and unqualified platforms.
 
-Frame timings are whole-frame CPU wall times on a shared development machine,
-not isolated GPU timings or a performance guarantee. The ray-traced pass draws
-less detail and at a lower resolution than Mirror, so the timings are not a
-quality-matched comparison.
+The initial frame timings are whole-frame wall times on a shared development
+machine. The follow-up below also measures the GPU reflection pass separately.
+Neither is a performance guarantee: RT draws less detail and at a lower
+resolution than normal Mirror, so this is not a quality-matched comparison.
+
+## Cyan water triangle follow-up
+
+The reported cyan wedge at the `gz3g` river bank also occurred in Off and Mirror.
+The translucent river mesh contains overlapping slopes. Godot reverses normals
+on back-facing triangles; the enhanced water shader clamped their negative
+view cosine to zero and therefore calculated 100% sky reflection. Using the
+absolute cosine evaluates Fresnel on both sides without removing those faces
+or changing the original water mode.
+
+`tools/tests/water_raytrace_artifact.gd` reproduces the exact camera and checks
+Off, Mirror and hardware RT, plus two nearby RT camera turns. A negative control
+restores the signed cosine and reproduces the wedge in every case. All 19
+checks pass; the sampled front-facing water has zero image difference. Before
+and after images and the pixel measurements are in
+`docs/validation/water-raytracing-followup-2026-10-21/`.
+
+## Measured reflection cost
+
+On the RTX 3090 at 1280 × 720, three interleaved rounds of 90 samples at the
+same frozen river camera produced these reflection-pass GPU median ranges:
+
+| Mode | Reflection target | GPU pass | Whole-frame FPS¹ |
+| --- | --- | --- | --- |
+| Normal Mirror | 1280 × 720, 2× MSAA | 0.37–0.58 ms | 18.0 |
+| Ray traced (test) | 640 × 360, one ray/pixel | 0.05–0.10 ms | 17.5 |
+| Diagnostic Mirror | 640 × 360, no MSAA | 0.25–0.45 ms | — |
+
+¹ Reciprocal of the median of three round-median wall times. This shared
+machine had substantial concurrent work: an earlier run measured about 24 FPS
+in both normal modes. The measurements establish a cheaper RT GPU pass for
+this scene, but do not establish an overall frame-rate gain. RT has one quarter
+of normal Mirror's pixels and simpler static-scene shading; even the matched
+resolution diagnostic is not a quality-matched comparison.
+
+The diagnostic Mirror controller is paused at its frozen camera after setting
+the smaller target once, so it cannot repeatedly resize the target back to the
+normal size. Only its GPU pass timing is used for comparison. The two normal
+modes retain their production controllers. RT GPU timestamps bracket its queued
+render-thread work; Mirror uses the engine's measured viewport GPU time.
+
+RT preparation took 3.5–5.4 seconds from selection in the final run, during which
+Mirror remains visible. This preparation and snapshot rebuild cost is excluded
+from the steady-frame GPU timings. See
+`docs/validation/water-raytracing-followup-2026-10-21.json` for raw data, methods,
+limits and captures. The reproducible harness is
+`tools/tests/water_raytrace_performance.gd`.

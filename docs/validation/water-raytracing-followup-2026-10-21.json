@@ -1,0 +1,188 @@
+{
+  "date": "2026-10-21",
+  "kind": "local experiment follow-up; no published release changed",
+  "source_parent": "e77395a23384abb5d0ce31929b0e3f1925b1afea",
+  "device": "NVIDIA GeForce RTX 3090",
+  "renderer": "Forward+ Vulkan",
+  "resolution": [
+    1280,
+    720
+  ],
+  "artifact": {
+    "cause": "Signed view cosine on back-facing overlapping water slopes was clamped to zero, forcing 100% sky Fresnel reflection.",
+    "fix": "Use the absolute view cosine for the two-sided enhanced water surface.",
+    "scope": "Same shared shader in Off, Mirror and Ray traced (test); original water material unchanged.",
+    "result": {
+      "cases": [
+        {
+          "case": "mode-0-turn-0.0",
+          "fixed_blue_mean": 0.342257079594305,
+          "front_error": 0.0,
+          "old_blue_mean": 0.610740386292525,
+          "wedge_pixels": 1673
+        },
+        {
+          "case": "mode-2-turn-0.0",
+          "fixed_blue_mean": 0.342257079594305,
+          "front_error": 0.0,
+          "old_blue_mean": 0.610740386292525,
+          "wedge_pixels": 1673
+        },
+        {
+          "case": "mode-3-turn-0.0",
+          "fixed_blue_mean": 0.342257079594305,
+          "front_error": 0.0,
+          "old_blue_mean": 0.610740386292525,
+          "wedge_pixels": 1673
+        },
+        {
+          "case": "mode-3-turn--0.025",
+          "fixed_blue_mean": 0.342602903924978,
+          "front_error": 0.0,
+          "old_blue_mean": 0.610871568230457,
+          "wedge_pixels": 1787
+        },
+        {
+          "case": "mode-3-turn-0.025",
+          "fixed_blue_mean": 0.340829572081566,
+          "front_error": 0.0,
+          "old_blue_mean": 0.610407263040543,
+          "wedge_pixels": 1560
+        }
+      ],
+      "checks": 19,
+      "failures": []
+    },
+    "run": {
+      "exit": 0,
+      "seconds": 52.03410489705857,
+      "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/artifact-fixed"
+    },
+    "before": "water-raytracing-followup-2026-10-21/cyan-wedge-before.png",
+    "after": "water-raytracing-followup-2026-10-21/cyan-wedge-fixed.png"
+  },
+  "performance": {
+    "summary": {
+      "off": {
+        "frame_median_ms": 48.038,
+        "fps_from_frame_median": 20.81685332445148,
+        "round_frame_medians_ms": [
+          48.038,
+          46.725,
+          56.428
+        ],
+        "round_reflection_gpu_medians_ms": [],
+        "reflection_gpu_range_ms": null,
+        "prepare_ms": [
+          690,
+          191,
+          262
+        ]
+      },
+      "mirror_full": {
+        "frame_median_ms": 55.523,
+        "fps_from_frame_median": 18.010554184752262,
+        "round_frame_medians_ms": [
+          55.523,
+          63.524,
+          53.873
+        ],
+        "round_reflection_gpu_medians_ms": [
+          0.391000002622604,
+          0.578000009059906,
+          0.365000009536743
+        ],
+        "reflection_gpu_range_ms": [
+          0.365000009536743,
+          0.578000009059906
+        ],
+        "prepare_ms": [
+          227,
+          322,
+          259
+        ]
+      },
+      "mirror_half": {
+        "frame_median_ms": 52.589,
+        "fps_from_frame_median": 19.015383445207174,
+        "round_frame_medians_ms": [
+          52.589,
+          51.533,
+          66.756
+        ],
+        "round_reflection_gpu_medians_ms": [
+          0.254999995231628,
+          0.291000008583069,
+          0.446999996900558
+        ],
+        "reflection_gpu_range_ms": [
+          0.254999995231628,
+          0.446999996900558
+        ],
+        "prepare_ms": [
+          236,
+          241,
+          253
+        ]
+      },
+      "rt_half": {
+        "frame_median_ms": 57.122,
+        "fps_from_frame_median": 17.506389832288786,
+        "round_frame_medians_ms": [
+          50.724,
+          65.911,
+          57.122
+        ],
+        "round_reflection_gpu_medians_ms": [
+          0.04784,
+          0.056448,
+          0.095424
+        ],
+        "reflection_gpu_range_ms": [
+          0.04784,
+          0.095424
+        ],
+        "prepare_ms": [
+          5371,
+          4815,
+          3478
+        ]
+      }
+    },
+    "run": {
+      "exit": 0,
+      "seconds": 124.48765996203292,
+      "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/reflection-benchmark-final"
+    },
+    "raw": "water-raytracing-followup-2026-10-21/performance.json",
+    "method": [
+      "Frozen gz3g scene and camera, other optional graphics off except enhanced water and sky; main-view AA and shadows off.",
+      "Three interleaved rounds, 35 settling frames and 90 wall-time samples per case; FPS limit and vsync disabled.",
+      "Mirror default: 1280x720, 2x MSAA; RT: 640x360, one ray per pixel.",
+      "Mirror GPU and CPU times use RenderingServer per-viewport measurements. RT GPU timestamps bracket the render-thread commands submitted by WaterReflection (process priorities 99/100/101).",
+      "GPU ranges are min/max of the three per-round medians. Whole-frame aggregate is the median of the three per-round medians.",
+      "Matched Mirror is a diagnostic 640x360, no-MSAA draw. Its already-positioned controller is paused to prevent full/half resizes each frame; use its GPU timing only, not its wall time, as a normal-mode comparison."
+    ],
+    "limits": [
+      "Shared development machine with concurrent GPU/CPU activity; not an isolated performance qualification.",
+      "RT uses simpler static-geometry shading, with no animated units or reflected shadows; not equal visual quality.",
+      "RT preparation took 3.478-5.371 seconds from selection in this run. Mirror remains active while the snapshot is prepared.",
+      "The earlier diagnostic run produced about 24 FPS in both normal modes; the final run produced about 18 FPS in both. Overall FPS differences are not reliable evidence of a speedup.",
+      "The earlier repeatedly resized half-Mirror diagnostic was superseded by this stable-target run.",
+      "The second NVIDIA GPU could not present to the private Xvfb display; all accepted measurements use GPU 0."
+    ]
+  },
+  "test_profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "logs": {
+    "artifact": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/artifact-fixed/run.log",
+    "performance": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/reflection-benchmark-final/run.log"
+  },
+  "result": "19 rendered regression checks passed; all 12 benchmark cases completed; no script/shader/runtime errors."
+}

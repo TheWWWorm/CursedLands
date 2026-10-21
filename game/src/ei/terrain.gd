@@ -747,7 +747,10 @@ void fragment() {
 		// Rain rings catch more of the sky.
 		// Mirror strengthens the scene reflection, capped so the water's
 		// own colour always stays.
-		float fres = 0.02 + 0.98 * pow(1.0 - clamp(dot(rn, VIEW), 0.0, 1.0), 5.0);
+		// Sloping river tiles can expose both sides of the translucent mesh.
+		// Godot flips a back face's normal; a negative cosine is the opposite
+		// side of the surface, not grazing incidence (100% sky reflection).
+		float fres = 0.02 + 0.98 * pow(1.0 - clamp(abs(dot(rn, VIEW)), 0.0, 1.0), 5.0);
 		vec3 R = ei_lin(ei_sky);
 		float w = fres + max(min(length(rain_slope) * 0.6, 0.18), rain_crest);
 		if (swamp) { w = max(w, mix(0.03, 0.055, sediment)); }
