@@ -1,0 +1,173 @@
+[
+  {
+    "suite": "console_commands",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 9.6,
+    "argv": [
+      "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/release-1.21.0/CursedLands-1.21.0-linux-x86_64/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--max-fps",
+      "120",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/tools/tests/console_commands.gd",
+      "--mod-tests",
+      "--examples=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/release-1.21.0/CursedLands-1.21.0-linux-x86_64/mods"
+    ],
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "CONSOLE_COMMANDS 123 checks 0 failures"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "console_god_mode",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 10.08,
+    "argv": [
+      "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/release-1.21.0/CursedLands-1.21.0-linux-x86_64/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--max-fps",
+      "120",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/tools/tests/console_god_mode.gd",
+      "--mod-tests",
+      "--examples=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/release-1.21.0/CursedLands-1.21.0-linux-x86_64/mods"
+    ],
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "CONSOLE_GOD_MODE 98 checks 0 failures"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "console_modern",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 9.08,
+    "argv": [
+      "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/release-1.21.0/CursedLands-1.21.0-linux-x86_64/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--max-fps",
+      "120",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/tools/tests/console_modern.gd",
+      "--mod-tests",
+      "--examples=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/release-1.21.0/CursedLands-1.21.0-linux-x86_64/mods"
+    ],
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "CONSOLE_MODERN 67 checks 0 failures"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "mod_redress",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 4.82,
+    "argv": [
+      "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/release-1.21.0/CursedLands-1.21.0-linux-x86_64/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--max-fps",
+      "120",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/tools/tests/mod_redress.gd",
+      "--mod-tests",
+      "--examples=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/release-1.21.0/CursedLands-1.21.0-linux-x86_64/mods"
+    ],
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "MOD_REDRESS 42 checks 0 failures"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "console_god_mode",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 17.26,
+    "argv": [
+      "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/release-1.21.0/CursedLands-1.21.0-linux-x86_64/CursedLands.x86_64",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--max-fps",
+      "120",
+      "--headless",
+      "--",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--no-movies",
+      "--tool=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/tools/tests/console_god_mode.gd",
+      "--mod-tests",
+      "--examples=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/release-1.21.0/CursedLands-1.21.0-linux-x86_64/mods",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+    ],
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "CONSOLE_GOD_MODE 98 checks 0 failures"
+    ],
+    "errors": []
+  }
+]

@@ -60,9 +60,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-## Liberation Serif font
+## Liberation fonts
 
-`game/fonts/LiberationSerif-Regular.ttf` (Liberation Fonts, Red Hat) is licensed under the SIL Open Font License 1.1; see [`game/fonts/LICENSE.txt`](game/fonts/LICENSE.txt). It stands in for Times New Roman, which the original uses for its text, because it has the same letter widths.
+`game/fonts/LiberationSerif-Regular.ttf`, the bundled Liberation Sans fonts and `game/fonts/LiberationMono-Regular.ttf` (Liberation Fonts, Red Hat) are licensed under the SIL Open Font License 1.1; see [`game/fonts/LICENSE.txt`](game/fonts/LICENSE.txt). Liberation Mono is used by the developer console. Liberation Serif stands in for Times New Roman, which the original uses for its text, because it has the same letter widths.
 
 ## Godot Engine
 
