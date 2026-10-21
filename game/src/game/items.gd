@@ -512,6 +512,22 @@ static func log_text(id: String, count := 1) -> String:
 	return fmt % ([kind_t, name, count] if count > 1 else [kind_t, name])
 
 
+## Pickup and shared-copy notices use the same localized stack descriptions.
+## Keep the complete item identity so distinct wear/charge/enchantments stay apart.
+static func log_stacks(items: Array) -> Array[String]:
+	var counts := {}
+	for item in items:
+		var stack := parse_stack(String(item))
+		var id := String(stack[0])
+		counts[id] = int(counts.get(id, 0)) + int(stack[1])
+	var lines: Array[String] = []
+	for id: String in counts:
+		var description := log_text(id)
+		if counts[id] > 1: description = RemakeText.t("%s x%d") % [description, counts[id]]
+		lines.append(description)
+	return lines
+
+
 ## The name gives an item (the first line of its texts entry
 ## ): weapons «weapon …», armour «armor …», quick «qitem …», quest
 ## «questitem …», loot «litem <prototype>» (`title`, without the remake's

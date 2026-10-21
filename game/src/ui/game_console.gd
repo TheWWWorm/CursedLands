@@ -30,6 +30,8 @@ var _exec_remaining:=0
 var _candidates:Array[Dictionary]=[]
 var _editing:=false
 var _buttons:Array[Dictionary]=[]
+var _cursor_interval:=0.0
+var _cursor_next_usec:=0
 
 func _button(parent:Control,text:String,tip:String,action:Callable) -> Button:
 	var b:=Button.new();b.text=RemakeText.t(text);b.tooltip_text=RemakeText.t(tip)
@@ -38,6 +40,7 @@ func _button(parent:Control,text:String,tip:String,action:Callable) -> Button:
 
 func _ready():
 	process_mode=Node.PROCESS_MODE_ALWAYS;layer=120;visible=false
+	set_process(false)
 	panel=PanelContainer.new();add_child(panel)
 	var style:=StyleBoxFlat.new();style.bg_color=Color("151d2af5")
 	style.border_color=Color("486184");style.set_border_width_all(1);style.set_content_margin_all(10)
@@ -71,8 +74,41 @@ func _ready():
 	hint=Label.new();hint.clip_text=true;hint.add_theme_color_override("font_color",Color("acbbd0"));box.add_child(hint)
 	_load_preferences();_refresh_labels();get_viewport().size_changed.connect(_layout);_layout()
 	visibility_changed.connect(func():
-		if visible:_refresh_labels();_bind_session();Input.mouse_mode=Input.MOUSE_MODE_VISIBLE;input.grab_focus()
+		if visible:_refresh_labels();_render_output();_bind_session();Input.mouse_mode=Input.MOUSE_MODE_VISIBLE;input.grab_focus()
 	)
+
+## Cursor diagnostics use local real time, including while the console is closed
+## or the campaign is paused. A delayed frame produces one sample, no catch-up burst.
+func _process(_dt:float):
+	if _cursor_interval<=0.0:return
+	var now:=Time.get_ticks_usec()
+	if now<_cursor_next_usec:return
+	_cursor_next_usec=now+roundi(_cursor_interval*1000000.0)
+	_log_cursor()
+
+func _log_cursor():
+	var point:=get_viewport().get_mouse_position()
+	var text:=RemakeText.t("Cursor at %.3f s: x=%.1f, y=%.1f px")%[Time.get_ticks_msec()/1000.0,point.x,point.y]
+	# Keep hidden-console sampling cheap; reopening redraws retained output.
+	lines.append(text)
+	while lines.size()>line_limit:lines.remove_at(0)
+	if visible:_render_output()
+	print("[cursor] ",text)
+
+func _cursor(words:PackedStringArray):
+	if words.size()==1:_log_cursor();return
+	if words.size()==2 and words[1].to_lower()=="off":
+		_cursor_interval=0.0;set_process(false)
+		append(RemakeText.t("Cursor logging stopped."));return
+	var valid:=words.size() in [2,3] and words[1].to_lower()=="on"
+	if valid and words.size()==3:valid=words[2].is_valid_float()
+	var interval:=float(words[2]) if valid and words.size()==3 else 0.1
+	if not valid or not is_finite(interval) or interval<0.05 or interval>10.0:
+		append(RemakeText.t("Usage: %s")%"cursor [on [0.05..10]|off]");return
+	_cursor_interval=interval
+	_cursor_next_usec=Time.get_ticks_usec()+roundi(interval*1000000.0)
+	append(RemakeText.t("Cursor logging every %.2f s. Use cursor off to stop.")%interval)
+	_log_cursor();set_process(true)
 
 func _refresh_labels():
 	title.text=RemakeText.t("Developer console")
@@ -336,6 +372,7 @@ func run(line:String):
 			else:_write(_path(name),"\n".join(lines)+"\n")
 			return
 		"lastfps":append(str(Engine.get_frames_per_second()));return
+		"cursor":_cursor(words);return
 	if not unlocked:append(RemakeText.t("Type thingamabob to unlock console commands."));return
 	if cmd in ["quit","exit"]:get_tree().quit();return
 	var s:=_bind_session()

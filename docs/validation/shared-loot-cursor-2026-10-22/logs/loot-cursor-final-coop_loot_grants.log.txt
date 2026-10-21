@@ -1,0 +1,33 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:28:45 +4956ms] session c55194b5a066: 1.22.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+PASS real material and shared quest-item fixtures
+PASS scripted resource stack reaches each distinct bag once at 1.0x
+PASS private guest sees one resource grant at 1.0x
+PASS host and class guest each hear the shared-bag pickup at 1.0x
+PASS scripted resource stack reaches each distinct bag once at 2.0x
+PASS private guest sees one resource grant at 2.0x
+PASS host and class guest each hear the shared-bag pickup at 2.0x
+PASS scripted money copied once per purse
+PASS private guest sees one money grant
+PASS quest item remains in the shared story list
+PASS mixed reward reports only the shared quest item in the guest pickup line
+PASS mixed reward separately reports its material and money copies
+PASS private guest pickup grants one stack per bag
+PASS class guest does not multiply the host's shared inventory
+PASS sharing disabled never tells a private guest they received campaign resources
+PASS sharing disabled still reports the campaign-bag reward
+PASS sharing disabled still reports shared quest items
+PASS direct pickup stays addressed to its finder
+PASS broken-item message retains its owner and flag
+PASS empty grants produce no pickup messages
+PASS single-player grant retains original broadcast
+PASS native multiplayer grant retains its explicit owner
+PASS corpse resource stack grants one copy to each purse
+PASS corpse money grants one copy to each purse
+PASS corpse is removed from interaction targets and marked consumed
+PASS repeated corpse completion grants no duplicate resources or money
+PASS granted inventory saves
+PASS save/load preserves resource counts in both purses
+COOP_LOOT_GRANTS {"checks":28,"failures":0}
+[trace 00:28:46 +5187ms] clean exit

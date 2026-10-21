@@ -1080,9 +1080,7 @@ func _give_copies(f: Dictionary) -> void:
 
 ## Player's line for a copy it got (Session._on_event "loot_copy").
 static func copy_text(event: Dictionary) -> String:
-	var parts := []
-	for it in event.get("items", []):
-		parts.append(Items.log_text(String(it)))
+	var parts := Items.log_stacks(event.get("items", []))
 	var money := int(event.get("money", 0))
 	if money > 0:
 		var fmt := GameData.text("string format_money").strip_edges()

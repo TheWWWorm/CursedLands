@@ -33,11 +33,21 @@ Use `help` to browse commands or `help teleport` to narrow the list and show exa
 | `listvar 0 vars.txt` / `loadvar 0 vars.txt` | Export/import campaign variables. Imports validate the whole batch before applying it. |
 | `report bug.txt` | Save build/platform/renderer/FPS, host campaign diagnostics when available, and console output. |
 | `log console.txt` / `copy` | Save/copy plain console output. |
+| `cursor` / `cursor on` / `cursor off` | Print cursor coordinates once, log continuously every 0.1 seconds, or stop. `cursor on 0.5` chooses an interval between 0.05 and 10 seconds. |
 | `exec commands.txt` | Run a text file containing one command per line. |
 | `console t` / `console f` | Top/fullscreen placement; also `b` bottom, `c` centre, `l` left and `r` right. |
 | `history 500` | Retain 500 output lines; accepted range 20–5000. This is separate from command recall. |
 
 Console files stay under `console/` inside the game's user-data folder. `help` and successful exports show the full local path. Imports are limited to 64 KiB; script files have a shared limit of 256 commands and four nested levels. `history.json` and `settings.json` are reserved for console preferences. Exported reports are local files; attach one to a bug report yourself when needed.
+
+Cursor coordinates are local pixels measured from the top-left of the game
+viewport, with X increasing rightward and Y downward. They are screen positions,
+not map coordinates. Samples include seconds since application startup and go
+to console output and, on desktop builds, the normal game log. Sampling continues while the
+console is closed or the campaign is paused; `cursor off` stops it. It uses real
+time, so campaign speed does not change the interval. `log cursor.txt` exports
+the retained console output. Cursor diagnostics also work before unlocking and
+without a loaded campaign, on each player's own client.
 
 Gameplay changes can be retained by a normal save. Load an earlier save to discard unwanted changes. Diagnostic exports do not include a save or the original game archives.
 
@@ -63,8 +73,25 @@ $"text"
 
 `party` показывает отряд; `inspect selected` осматривает выбранных персонажей; `heal party` лечит живой отряд; `god on` включает обычную неуязвимость, `god off` отключает её. `zones` ищет области, `travel gz1g 1` переносит туда без выполнения условий заданий. `report bug.txt` сохраняет локальный отчёт; путь появится в консоли. Изменять кампанию может только сервер. Команды пишутся по-английски при любом языке интерфейса.
 
+`cursor` показывает координаты курсора в пикселях от левого верхнего угла игровой
+области. `cursor on` записывает их каждые 0,1 с даже при закрытой консоли;
+`cursor on 0.5` задаёт другой интервал (0,05-10 с), `cursor off` останавливает
+запись. Отсчёт времени реальный, пауза и скорость кампании на него не влияют.
+Координаты попадают в консоль и, в настольных сборках, в журнал игры;
+`log cursor.txt` сохраняет вывод.
+Команда работает локально и до разблокировки, даже без загруженной кампании.
+
 ## Kurzanleitung
 
 Die Konsole mit der Taste unter Esc öffnen und **Befehle aktivieren** anklicken oder `thingamabob` eingeben. `help` zeigt die Hilfe; `help heal` grenzt sie ein. Tab ergänzt Text, Enter führt ihn aus. ↑/↓ wählt Vorschläge oder frühere Befehle, Strg+R durchsucht den Verlauf und Strg+F die Ausgabe. Vorschläge führen keine Befehle aus.
 
 `party` zeigt die Gruppe, `inspect selected` untersucht die Auswahl, `heal party` heilt die lebende Gruppe. `god on` aktiviert grundlegende Unverwundbarkeit, `god off` schaltet sie aus. `zones` sucht Gebiete; `travel gz1g 1` reist dorthin, ohne Aufgabenbedingungen zu erfüllen. `report bug.txt` speichert einen lokalen Bericht und zeigt den Pfad an. Nur der Host darf die Kampagne ändern. Befehle behalten in jeder Sprache ihre englische Schreibweise.
+
+`cursor` zeigt die Mauszeigerposition in Pixeln ab der linken oberen Ecke der
+Spielansicht. `cursor on` zeichnet sie alle 0,1 s auch bei geschlossener Konsole
+auf; `cursor on 0.5` setzt ein anderes Intervall (0,05-10 s), `cursor off`
+beendet die Aufzeichnung. Pause und Kampagnengeschwindigkeit ändern das reale
+Zeitintervall nicht. Die Ausgabe erscheint in der Konsole und bei Desktop-Versionen
+auch im Spielprotokoll;
+`log cursor.txt` speichert die Konsolenausgabe. Der lokale Befehl funktioniert
+auch vor dem Freischalten und ohne geladene Kampagne.

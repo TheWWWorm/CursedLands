@@ -3,6 +3,7 @@ extends Node
 ## notices. Deliberately resend reliable/fast packets and race both players.
 class ObservedSession extends Session:
 	var notices: Array[Dictionary] = []
+	var copy_messages: Array[String] = []
 	func _on_event(event: Dictionary) -> void:
 		if event.get("t", "") in ["got", "loot_copy"] and int(event.get("to", -1)) in [-1, my_index]:
 			notices.append(event.duplicate(true))
@@ -37,6 +38,7 @@ func peer(label: String) -> ObservedSession:
 	var api := SceneMultiplayer.new(); api.root_path = root.get_path()
 	get_tree().set_multiplayer(api, root.get_path())
 	var s := ObservedSession.new(); root.add_child(s)
+	s.message.connect(func(text: String): s.copy_messages.append(text))
 	var g := Game.new(); g.session = s; s.game = g; root.add_child(g)
 	return s
 
@@ -78,6 +80,22 @@ func _ready() -> void:
 	host.state.items = []; host.state.money = 0
 	entry.purse = {"items":[], "money":0}; host.sync_state()
 	check(await until(func(): return guest.state.items.is_empty() and guest.state.money == 0), "empty private inventory reaches guest")
+	# The actual loot_copy event must render the same x8 stack when either
+	# peer is the finder, rather than listing the material eight times.
+	var thin := "material.thin"
+	for finder in [0,1]:
+		host.notices.clear(); guest.notices.clear()
+		host.copy_messages.clear(); guest.copy_messages.clear()
+		host.coop.with_purse(finder,func():host.state.add_item(thin,8),true)
+		host.notify_got(finder,[thin+"[6]",thin,thin]); host.sync_state()
+		check(await until(func():return host.notices.size()==1 and guest.notices.size()==1),"eight-item pickup reaches both peers with finder %d" % finder)
+		var receiver: ObservedSession = guest if finder==0 else host
+		check(receiver.copy_messages.size()==1 and receiver.copy_messages[0].count(Items.log_name(thin))==1 and "x8" in receiver.copy_messages[0],"shared recipient displays one localized x8 material with finder %d" % finder)
+		check(await until(func():return guest.state.items.count(thin)==8*(finder+1)),"eight-item quantity reaches the private guest with finder %d" % finder)
+		check(host.state.items.count(thin)==8*(finder+1) and entry.purse.items.count(thin)==8*(finder+1),"message grouping preserves both bags with finder %d" % finder)
+	host.state.items=[];entry.purse.items=[];host.sync_state()
+	check(await until(func():return guest.state.items.is_empty()),"grouped-message fixture inventory settles before corpse tests")
+	host.notices.clear(); guest.notices.clear()
 	var record := {}
 	for u: GameUnit in host.world.units.values():
 		if not u.has_meta("hero") and not u.dead:
