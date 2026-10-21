@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Accept the parameterless `GetLeader()` in authored quest triggers, so the Open Police squares, Junophile follow and totem placement conditions can complete.
+
 ## 1.21.0 — 2026-10-21
 
 - Add a developer console with syntax colours, matching brackets, command and argument completion, searchable help and output, persistent history, adjustable text size, clipboard copying and local diagnostic exports. Add host testing commands for party inspection, healing, basic GodMode, teleporting, direct map travel and scene time. Retain supported original script expressions and authenticated host execution. Help and controls are available in English, Russian and German. ([#65](https://github.com/TheWWWorm/CursedLands/issues/65))
