@@ -27,7 +27,7 @@ func begin_gpu() -> void:
 	super.begin_gpu()
 
 func benchmark_orders() -> Array:
-	return [["mirror_full","rt_half"],["rt_half","mirror_full"],["mirror_full","rt_half"]]
+	return [["mirror_full","rt_full"],["rt_full","mirror_full"],["mirror_full","rt_full"]]
 
 func benchmark_note() -> String:
-	return "Frozen camera, one original character walking and moving every frame. Same motion in both modes; RT rebuilds live TLAS. Three interleaved rounds; not a crowded combat benchmark. RT uses quarter the pixels and approximate materials."
+	return "Frozen camera, one original character walking and moving every frame. Same motion in both modes; RT rebuilds live TLAS. Three interleaved rounds; not a crowded combat benchmark. RT uses four spatial samples per pixel and approximate materials; Mirror uses 2x MSAA at the same 1280x720 target."

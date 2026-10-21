@@ -4,6 +4,10 @@
 *.gdshader text eol=lf
 *.gdshaderinc text eol=lf
 
+# Keep the offline RT shader manifest reproducible on Windows checkouts too.
+*.hlsl text eol=lf
+tools/build_water_rt_shaders.py text eol=lf
+
 # Unified patch context deliberately prefixes tab-indented code with a space.
 engine_patches/**/*.patch -whitespace
 

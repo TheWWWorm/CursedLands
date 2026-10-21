@@ -1,0 +1,16 @@
+{
+  "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
+  "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
+  "builder_sha256": "5e6accdeed52b27d85a748d1d512c98fe9fb57efbe5240c24d825859b528e407",
+  "source_sha256": "dc3939f4e7fd6de187fdec93daec2f337e8e50fd01c8ff2efc1008d93c729e88",
+  "files": {
+    "water_raytrace_raygen.dxil": "980a8a714d2d45a1bf7532ce46cc5667a2ff5d530da55b8f09463877bf2c2e66",
+    "water_raytrace_raygen.spv": "78fb1bab276689600860227d396ae7146e14d0ca70e2bb0a91a288ee6ca0035e",
+    "water_raytrace_miss.dxil": "3a5ca9747f2f641eb80ce644c2468732fb86668b6f9903cb21085a565cc0c923",
+    "water_raytrace_miss.spv": "d33b8787b79acdae030b0b3542391e0f182ba8c834689d2042b4558f93f77824",
+    "water_raytrace_closest_hit.dxil": "8f588a1b3022d1fb8be26e0c9f2eda87ffeb8744803b30f37d81c16430d02980",
+    "water_raytrace_closest_hit.spv": "39c38d52a0ea22265b771985edf941daa4311673f7b6cb92982d76f98181cf97",
+    "water_raytrace_any_hit.dxil": "092e9a86765826c238cdce364c099faba1c99b5897cba1f4511f634fb848142f",
+    "water_raytrace_any_hit.spv": "167158b71b98d65ec749447881b7aa3a80b479d0807aa14d8d47e908a8568fa0"
+  }
+}

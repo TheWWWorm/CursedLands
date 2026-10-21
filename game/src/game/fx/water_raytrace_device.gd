@@ -1,156 +1,12 @@
 extends RefCounted
-## Experimental Vulkan RT pipeline. All RD resources belong to the render
-## thread. Queued callables retain this owner even after its scene is freed.
+## Shared hardware RT pipeline for DX12 and Vulkan. Resources belong to the
+## render thread; queued callables retain this owner until disposal finishes.
 signal prepared(ok: bool)
 
 const FRAME_BYTES := 352
-const COMMON := """#version 460
-#extension GL_EXT_ray_tracing : require
-layout(set=0,binding=0) uniform accelerationStructureEXT scene;
-layout(set=0,binding=1,rgba16f) uniform image2D output_image;
-struct Vertex { vec4 position_u; vec4 normal_v; vec4 diffuse; vec4 emission_layer; };
-struct Surface { vec4 colour; vec3 point; vec3 normal; vec3 diffuse; vec3 emission; float visible; float standard; };
-layout(set=0,binding=2,std430) readonly buffer Vertices { Vertex vertices[]; };
-layout(set=0,binding=3) uniform sampler2DArray colours;
-struct Geometry { uint first; uint flags; float cutoff; float pad; };
-layout(set=0,binding=5,std430) readonly buffer Materials { Geometry geometry[]; };
-layout(set=0,binding=4,std140) uniform Frame {
- mat4 inv_projection;
- mat4 camera_world;
- vec4 ambient;
- vec4 sun; // rgb, shadow rays enabled
- vec4 sun_plane;
- vec4 fog; // near, far, trace reach, orthographic projection
- vec4 sky; // rgb, ray cone width per pixel
- vec4 center_radius;
- vec4 point_position[4];
- vec4 point_colour[4]; // rgb, original additive / enhanced local marker
-} frame;
-vec3 linear_colour(vec3 c) {
- c=max(c,vec3(0.0));
- return mix(c/12.92,pow((c+0.055)/1.055,vec3(2.4)),step(vec3(0.04045),c));
-}
-"""
-const RAYGEN := COMMON + """
-layout(location=0) rayPayloadEXT Surface result;
-float visibility(vec3 point, vec3 normal, vec3 direction, float reach) {
- if(frame.sun.w<0.5) { return 1.0; }
- // Trace from the raygen stage so shadow rays need no recursive hit stack.
- // Any-hit remains enabled: leaves and fences cast their cutout silhouettes.
- result.visible=0.0;
- vec3 offset=normal*(dot(normal,direction)>=0.0 ? 0.015 : -0.015);
- traceRayEXT(scene,gl_RayFlagsTerminateOnFirstHitEXT|gl_RayFlagsSkipClosestHitShaderEXT,
-     2,0,0,0,point+offset,0.002,direction,max(reach-0.02,0.003),0);
- return result.visible;
-}
-void main() {
- ivec2 pixel=ivec2(gl_LaunchIDEXT.xy);
- vec2 uv=(vec2(pixel)+0.5)/vec2(gl_LaunchSizeEXT.xy);
- vec4 p=frame.inv_projection*vec4(uv.x*2.0-1.0,1.0-uv.y*2.0,-1.0,1.0);
- p/=p.w;
- vec3 origin=frame.camera_world[3].xyz;
- vec3 direction=normalize((frame.camera_world*vec4(p.xyz,0.0)).xyz);
- if(frame.fog.w>0.5) {
-  origin=(frame.camera_world*vec4(p.xyz,1.0)).xyz;
-  direction=-frame.camera_world[2].xyz;
- }
- result.colour=vec4(0.0);
- if(direction.y>0.00001) {
-  float entry=(frame.sun_plane.w-origin.y)/direction.y;
-  if(entry>0.0 && entry<frame.fog.z) {
-   traceRayEXT(scene,gl_RayFlagsNoneEXT,1,0,0,0,
-       origin+direction*(entry+0.025),0.001,direction,frame.fog.z-entry,0);
-  }
- }
- vec4 colour=result.colour;
- if(colour.a>0.0) {
-  vec3 point=result.point, n=result.normal, diffuse=result.diffuse, emission=result.emission;
-  float standard=result.standard;
-  vec3 light=frame.ambient.rgb;
-  vec3 spec=vec3(0.0), extra=vec3(0.0);
-  float facing=max(dot(n,frame.sun_plane.xyz),0.0);
-  if(facing>0.0) {
-   float lit=visibility(point,n,frame.sun_plane.xyz,frame.fog.z);
-   light=max(light,frame.sun.rgb*diffuse*facing*lit);
-  }
-  for(int i=0;i<4;i++) {
-   vec4 lamp=frame.point_position[i];
-   vec3 delta=lamp.xyz-point;
-   float distance=length(delta);
-   if(lamp.w<=0.0 || distance>=lamp.w || distance<0.001) { continue; }
-   vec3 l=delta/distance;
-   float facing=max(dot(n,l),0.0);
-   if(facing<=0.0) { continue; }
-   float attenuation=max(1.0-distance*distance/(lamp.w*lamp.w),0.0);
-   vec3 contribution=frame.point_colour[i].rgb*attenuation*facing*visibility(point,n,l,distance);
-   if(frame.point_colour[i].a>1.5) { extra+=linear_colour(contribution)*0.75; }
-   else {
-    light=max(light,contribution*diffuse);
-    if(frame.point_colour[i].a>0.5) { spec=max(spec,contribution); }
-   }
-  }
-  // Authored EI emissive terms multiply the texture; standard material
-  // emission is independent, linear radiance and may exceed one.
-  vec3 shaded=linear_colour(clamp(colour.rgb*min(light+(standard<0.5 ? emission : vec3(0.0)),vec3(1.0))+spec,0.0,1.0));
-  if(standard>0.5) { shaded+=emission; }
-  shaded+=linear_colour(colour.rgb)*extra;
-  float depth=dot(point-frame.camera_world[3].xyz,-frame.camera_world[2].xyz);
-  float fog=clamp((depth-frame.fog.x)/max(frame.fog.y-frame.fog.x,0.001),0.0,1.0);
-  colour.rgb=mix(shaded,linear_colour(frame.sky.rgb),fog);
-  if(frame.center_radius.w>0.0) {
-   colour.a*=1.0-smoothstep(frame.center_radius.w-12.0,frame.center_radius.w,length(point-frame.center_radius.xyz));
-  }
- }
- imageStore(output_image,pixel,colour);
-}
-"""
-const MISS := COMMON + """
-layout(location=0) rayPayloadInEXT Surface result;
-void main() { result.visible=1.0; }
-"""
-const HIT_COMMON := COMMON + """
-hitAttributeEXT vec2 bary;
-uint first_vertex() { return geometry[gl_InstanceCustomIndexEXT].first+3u*uint(gl_PrimitiveID); }
-vec2 hit_uv(uint i) {
- vec3 b=vec3(1.0-bary.x-bary.y,bary);
- return vec2(dot(b,vec3(vertices[i].position_u.w,vertices[i+1].position_u.w,vertices[i+2].position_u.w)),
-              dot(b,vec3(vertices[i].normal_v.w,vertices[i+1].normal_v.w,vertices[i+2].normal_v.w)));
-}
-"""
-const ANY_HIT := HIT_COMMON + """
-void main() {
- uint i=first_vertex();
- if(textureLod(colours,vec3(hit_uv(i),vertices[i].emission_layer.w),0.0).a*vertices[i].diffuse.a<geometry[gl_InstanceCustomIndexEXT].cutoff) { ignoreIntersectionEXT; }
-}
-"""
-const CLOSEST_HIT := HIT_COMMON + """
-layout(location=0) rayPayloadInEXT Surface result;
-void main() {
- uint i=first_vertex();
- vec3 b=vec3(1.0-bary.x-bary.y,bary);
- vec3 n=vertices[i].normal_v.xyz*b.x+vertices[i+1].normal_v.xyz*b.y+vertices[i+2].normal_v.xyz*b.z;
- result.normal=normalize(transpose(mat3(gl_WorldToObjectEXT))*n);
- result.point=gl_WorldRayOriginEXT+gl_WorldRayDirectionEXT*gl_HitTEXT;
- result.diffuse=vertices[i].diffuse.rgb;
- result.emission=vertices[i].emission_layer.rgb;
- result.standard=float(geometry[gl_InstanceCustomIndexEXT].flags & 1u);
- vec3 a=gl_ObjectToWorldEXT*vec4(vertices[i].position_u.xyz,1.0);
- vec3 c=gl_ObjectToWorldEXT*vec4(vertices[i+1].position_u.xyz,1.0);
- vec3 d=gl_ObjectToWorldEXT*vec4(vertices[i+2].position_u.xyz,1.0);
- vec2 ua=vec2(vertices[i].position_u.w,vertices[i].normal_v.w);
- vec2 uc=vec2(vertices[i+1].position_u.w,vertices[i+1].normal_v.w);
- vec2 ud=vec2(vertices[i+2].position_u.w,vertices[i+2].normal_v.w);
- float density=max(length(uc-ua)/max(length(c-a),0.001),length(ud-ua)/max(length(d-a),0.001));
- float distance=frame.fog.w>0.5 ? 1.0 : length(result.point-frame.camera_world[3].xyz);
- float footprint=distance*frame.sky.w*density*float(textureSize(colours,0).x);
- float lod=max(log2(max(footprint,1.0)),0.0);
- result.colour=vec4(textureLod(colours,vec3(hit_uv(i),vertices[i].emission_layer.w),lod).rgb,1.0);
- if(result.standard>0.5) {
-  result.colour.rgb*=result.diffuse;
-  result.diffuse=vec3(1.0);
- }
-}
-"""
+const SHADERS := "res://src/game/fx/shaders/water_raytrace_"
+const STAGES := {RenderingDevice.SHADER_STAGE_RAYGEN:"raygen", RenderingDevice.SHADER_STAGE_MISS:"miss",
+	RenderingDevice.SHADER_STAGE_CLOSEST_HIT:"closest_hit", RenderingDevice.SHADER_STAGE_ANY_HIT:"any_hit"}
 
 var output := Texture2DRD.new()
 var _rd: RenderingDevice
@@ -178,9 +34,13 @@ var _closed := false
 var _opaque_fast_path := not OS.get_cmdline_user_args().has("--ei-water-rt-force-anyhit")
 
 static func supported() -> bool:
-	if not OS.has_feature("ei_raytracing_uniform_stages"): return false
 	if DisplayServer.get_name() == "headless" or RenderingServer.get_current_rendering_method() != "forward_plus": return false
-	if RenderingServer.get_current_rendering_driver_name() != "vulkan": return false
+	var driver := RenderingServer.get_current_rendering_driver_name()
+	if driver == "vulkan":
+		if not OS.has_feature("ei_raytracing_uniform_stages"): return false
+	elif driver == "d3d12":
+		if not OS.has_feature("ei_d3d12_raytracing"): return false
+	else: return false
 	var rd := RenderingServer.get_rendering_device()
 	return rd != null and rd.has_feature(RenderingDevice.SUPPORTS_RAYTRACING_PIPELINE)
 
@@ -189,17 +49,25 @@ func _own(rid: RID) -> RID:
 	return rid
 
 func _compile() -> RDPipelineShader:
-	var source := RDShaderSource.new()
-	var stages := {RenderingDevice.SHADER_STAGE_RAYGEN:RAYGEN,RenderingDevice.SHADER_STAGE_MISS:MISS,
-		RenderingDevice.SHADER_STAGE_CLOSEST_HIT:CLOSEST_HIT,RenderingDevice.SHADER_STAGE_ANY_HIT:ANY_HIT}
-	for stage in stages: source.set_stage_source(stage,stages[stage])
-	var spirv := _rd.shader_compile_spirv_from_source(source)
-	for stage in stages:
-		var error := spirv.get_stage_compile_error(stage)
-		if not error.is_empty():
-			push_error("Water RT shader: " + error)
+	var spirv := RDShaderSPIRV.new()
+	var dxil := {}
+	var directx := RenderingServer.get_current_rendering_driver_name() == "d3d12"
+	for stage in STAGES:
+		var path: String = SHADERS + STAGES[stage]
+		var bytes := FileAccess.get_file_as_bytes(path + ".spv")
+		if bytes.is_empty():
+			push_error("Water RT shader is missing: " + path)
 			return null
-	var shader := _own(_rd.shader_create_from_spirv(spirv))
+		spirv.set_stage_bytecode(stage, bytes)
+		if directx:
+			dxil[stage] = FileAccess.get_file_as_bytes(path + ".dxil")
+			if dxil[stage].is_empty(): return null
+	var shader: RID
+	if directx:
+		shader = _rd.call("shader_create_from_spirv_and_dxil", spirv, dxil, "Water RT")
+	else:
+		shader = _rd.shader_create_from_spirv(spirv, "Water RT")
+	_own(shader)
 	if not shader.is_valid(): return null
 	_shader = shader
 	var wrapped := RDPipelineShader.new()
@@ -226,7 +94,8 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 		prepared.emit.call_deferred(false)
 		return
 	_vertices = _own(_rd.vertex_buffer_create(data.size(),data,
-		RenderingDevice.BUFFER_CREATION_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT | RenderingDevice.BUFFER_CREATION_AS_STORAGE_BIT))
+		RenderingDevice.BUFFER_CREATION_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT |
+		RenderingDevice.BUFFER_CREATION_DEVICE_ADDRESS_BIT | RenderingDevice.BUFFER_CREATION_AS_STORAGE_BIT))
 	if not _vertices.is_valid():
 		prepared.emit.call_deferred(false)
 		return
@@ -332,33 +201,39 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}) ->
 	if changed and _rd.tlas_build(_tlas,_active_instances.values()) != OK:
 		_ready = false; prepared.emit.call_deferred(false); return
 	if size != _size:
-		if _set.is_valid(): _rd.free_rid(_set)
-		_set = RID()
-		output.texture_rd_rid = RID()
-		if _target.is_valid(): _rd.free_rid(_target)
 		var format := RDTextureFormat.new()
 		format.width = size.x
 		format.height = size.y
 		format.format = RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT
 		format.usage_bits = RenderingDevice.TEXTURE_USAGE_STORAGE_BIT | RenderingDevice.TEXTURE_USAGE_SAMPLING_BIT | RenderingDevice.TEXTURE_USAGE_CAN_COPY_FROM_BIT
-		_target = _rd.texture_create(format,RDTextureView.new())
-		if not _target.is_valid():
+		var target := _rd.texture_create(format,RDTextureView.new())
+		if not target.is_valid():
 			_ready = false
 			prepared.emit.call_deferred(false)
 			return
-		_set = _rd.uniform_set_create([
+		var uniforms := _rd.uniform_set_create([
 			_uniform(RenderingDevice.UNIFORM_TYPE_ACCELERATION_STRUCTURE,0,[_tlas]),
-			_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,1,[_target]),
+			_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,1,[target]),
 			_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,2,[_vertices]),
-			_uniform(RenderingDevice.UNIFORM_TYPE_SAMPLER_WITH_TEXTURE,3,[_sampler,_colours]),
+			_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,3,[_colours]),
+			_uniform(RenderingDevice.UNIFORM_TYPE_SAMPLER,6,[_sampler]),
 			_uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,4,[_frame]),
 			_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,5,[_materials])],_shader,0)
-		if not _set.is_valid():
+		if not uniforms.is_valid():
+			_rd.free_rid(target)
 			_ready = false
 			prepared.emit.call_deferred(false)
 			return
+		# Replace the backing texture while the old one is still alive so
+		# Texture2DRD preserves the RS RID already bound by the water material.
+		var old_target := _target
+		var old_set := _set
+		_target = target
+		_set = uniforms
 		_size = size
-		output.texture_rd_rid = _target
+		output.texture_rd_rid = target
+		if old_set.is_valid(): _rd.free_rid(old_set)
+		if old_target.is_valid(): _rd.free_rid(old_target)
 	if frame.size() < FRAME_BYTES: frame.resize(FRAME_BYTES)
 	_rd.buffer_update(_frame,0,frame.size(),frame)
 	var list := _rd.raytracing_list_begin()

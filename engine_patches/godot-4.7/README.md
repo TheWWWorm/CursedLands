@@ -13,6 +13,13 @@ headers. See [FSR setup and build instructions](../../docs/integrations/fsr-expe
 after the common patches. It fixes RT uniform stage masks and adds a capability
 guard. See [the water experiment](../../docs/integrations/water-raytracing-experiment.md).
 
+`water-raytracing-d3d12.patch` adds the Windows DXR backend and explicit native
+DXIL library import. Apply it after `water-raytracing-uniform-stages.patch`
+(and after `experimental-fsr.patch` when including FSR). It requires rebuilding
+the Windows executable; a new PCK alone cannot enable DX12 ray tracing. The game
+ships matching DXIL/SPIR-V shaders built from one HLSL source. See the water guide
+for compiler pinning, limitations, and the DX12/Vulkan regression fixtures.
+
 1. `render-thread-shutdown.patch`
 2. `queued-image-snapshot.patch`
 3. `unobserved-pose.patch`

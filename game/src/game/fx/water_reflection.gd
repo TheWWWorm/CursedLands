@@ -16,6 +16,8 @@ const OMIT_SCREEN_EFFECT := """
 """
 const REACH := 64.0
 const MAX_SIZE := 2048.0
+const RT_MAX_SIZE := 1920.0
+const RT_SAMPLE_GRID := 2
 const RayDevice = preload("res://src/game/fx/water_raytrace_device.gd")
 const RayScene = preload("res://src/game/fx/water_raytrace_scene.gd")
 const CLIP := """
@@ -65,6 +67,11 @@ static func reflected_transform(source: Transform3D, height: float) -> Transform
 
 static func target_size(size: Vector2) -> Vector2i:
 	var scale := minf(1.0, MAX_SIZE / maxf(size.x, size.y))
+	return Vector2i(maxi(2, roundi(size.x * scale)), maxi(2, roundi(size.y * scale)))
+
+
+static func raytrace_target_size(size: Vector2) -> Vector2i:
+	var scale := minf(1.0, RT_MAX_SIZE / maxf(size.x, size.y))
 	return Vector2i(maxi(2, roundi(size.x * scale)), maxi(2, roundi(size.y * scale)))
 
 
@@ -180,8 +187,7 @@ func _update_raytrace(source: Camera3D) -> void:
 		_collect_raytrace_lights(source.global_position)
 	if not _rt_ready: return
 	var size := source.get_viewport().get_visible_rect().size
-	var scale := minf(0.5,960.0/maxf(size.x,size.y))
-	var target := Vector2i(maxi(2,roundi(size.x*scale)),maxi(2,roundi(size.y*scale)))
+	var target := raytrace_target_size(size)
 	var frame := PackedFloat32Array()
 	var inverse := camera.get_camera_projection().inverse()
 	var transform := Projection(camera.global_transform)
@@ -190,7 +196,7 @@ func _update_raytrace(source: Camera3D) -> void:
 			var v: Vector4 = matrix[axis]
 			frame.append_array(PackedFloat32Array([v.x,v.y,v.z,v.w]))
 	var sun_direction := Gfx._cloud_sun_direction
-	frame.append_array(PackedFloat32Array([Gfx.ambient.r,Gfx.ambient.g,Gfx.ambient.b,0,
+	frame.append_array(PackedFloat32Array([Gfx.ambient.r,Gfx.ambient.g,Gfx.ambient.b,RT_SAMPLE_GRID,
 		Gfx.sun.r,Gfx.sun.g,Gfx.sun.b,1,sun_direction.x,sun_direction.y,sun_direction.z,plane,
 		Gfx.fog_depth.x,Gfx.fog_depth.y,source.far,1.0 if source.projection == Camera3D.PROJECTION_ORTHOGONAL else 0.0,Gfx.fog_sky.r,Gfx.fog_sky.g,Gfx.fog_sky.b,
 		2.0/absf(camera.get_camera_projection().y.y)/target.y,
@@ -216,6 +222,7 @@ func _update_raytrace(source: Camera3D) -> void:
 	viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
 	rt_stats["active"] = true
 	rt_stats["size"] = [target.x,target.y]
+	rt_stats["samples_per_pixel"] = RT_SAMPLE_GRID * RT_SAMPLE_GRID
 
 
 func _collect_raytrace_lights(focus: Vector3) -> void:

@@ -20,7 +20,7 @@ func run() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--audit-out="): out = arg.trim_prefix("--audit-out=")
 	DirAccess.make_dir_recursive_absolute(out)
-	check(Device.supported(),"qualified Vulkan RT runtime is available")
+	check(Device.supported(),"qualified hardware RT runtime is available")
 	if not Device.supported(): finish(); return
 	var camera := Camera3D.new(); add_child(camera)
 	camera.position = Vector3(0,-1,3)
@@ -45,12 +45,17 @@ func run() -> void:
 		var ok: bool = await device.prepared
 		check(ok,"build hardware acceleration structure, alpha="+str(transparent))
 		if ok:
+			var material_texture := RID()
 			for size: Vector2i in [Vector2i(128,128),Vector2i(96,64)]:
 				RenderingServer.call_on_render_thread(device.render.bind(size,frame.to_byte_array()))
 				await frames(8); await RenderingServer.frame_post_draw
 				var image := device.output.get_image()
+				if material_texture.is_valid():
+					check(device.output.get_rid() == material_texture,"resize preserves the texture RID bound by water materials")
+				material_texture = device.output.get_rid()
 				check(image != null and image.get_size() == size,"RT target dimensions "+str(size))
 				var pixel := image.get_pixel(size.x/2,size.y/2)
+				check(image.get_format() == Image.FORMAT_RGBAH,"HDR colour and alpha survive GPU readback")
 				check(pixel.g > 0.99 and pixel.r < 0.01 if transparent else pixel.r > 0.99 and pixel.g < 0.01,
 					"alpha-tested front triangle reveals green rear hit" if transparent else "closest textured triangle reads red")
 				check(image.get_pixel(0,0).a < 0.01,"miss leaves reflected sky visible")

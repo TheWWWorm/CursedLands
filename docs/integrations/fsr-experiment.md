@@ -40,6 +40,14 @@ Compatible drivers and runtime support are also required. Native Windows
 execution remains unqualified; Linux testing used the Windows executable
 through Wine. See the [release validation](../validation/release-1.20.0-2026-10-20.json).
 
+The unreleased DX12 water build can combine FSR 3.1 with hardware ray-traced
+water. Its river regression measures actual generated/presented frames, the FPS
+overlay, Mirror/RT switches, resize and pause/resume. See the
+[water guide](water-raytracing-experiment.md). This requires the additional DXR
+engine patch; the published 1.23.0 DX12 executable still uses Mirror for that
+option. Vulkan RT remains available, but this FSR SDK integration still requires
+DX12. First use can show **Preparing FSR…** while temporal shaders compile.
+
 Start with SDR, native window/display size and VSync off. The package includes
 Microsoft's x64 Agility 1.618.5 runtime in `x86_64/`; keep that directory beside
 the executable. A Microsoft Visual C++ v14 x64 runtime may also be needed by

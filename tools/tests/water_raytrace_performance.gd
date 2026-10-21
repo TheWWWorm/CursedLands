@@ -1,6 +1,6 @@
 extends "res://tools/tests/water_raytrace_artifact.gd"
-## Repeated interleaved samples at one frozen camera. Mirror's matched case
-## uses the RT resolution and one sample; material/scene fidelity still differs.
+## Repeated interleaved samples at one frozen camera. Both targets are native
+## 1280x720; RT traces 4 samples per pixel and Mirror uses 2x MSAA.
 class BeforeReflection extends Node:
 	var audit: Node
 	func _process(_dt: float) -> void: audit.begin_gpu()
@@ -54,12 +54,12 @@ func summary(values: Array) -> Dictionary:
 	return {"n":values.size(),"median":values[values.size()/2],"p95":values[int(values.size()*0.95)]}
 
 func benchmark_orders() -> Array:
-	return [["off","mirror_full","rt_half","mirror_half"],
-		["mirror_half","rt_half","mirror_full","off"],
-		["rt_half","off","mirror_half","mirror_full"]]
+	return [["off","mirror_full","rt_full"],
+		["rt_full","mirror_full","off"],
+		["mirror_full","off","rt_full"]]
 
 func benchmark_note() -> String:
-	return "Frozen camera and units hidden; sun/local shadow rays and live-scene polling enabled. RT uses quarter the pixels and approximate materials. CPU bracket covers controller callbacks, not total frame work."
+	return "Frozen camera and units hidden; sun/local shadow rays and live-scene polling enabled. RT uses four spatial samples per pixel and approximate materials; Mirror uses 2x MSAA at the same 1280x720 target. CPU bracket covers controller callbacks, not total frame work."
 
 func run() -> void:
 	var context := await setup()
@@ -73,7 +73,7 @@ func run() -> void:
 		for name: String in order:
 			selected = name
 			if t._reflection != null: t._reflection.set_process(true)
-			var mode := 0 if name == "off" else 3 if name == "rt_half" else 2
+			var mode := 0 if name == "off" else 3 if name == "rt_full" else 2
 			var prepare_start := Time.get_ticks_msec()
 			GameData.options.gfx_water_reflections = mode; t.apply_gfx(); await frames(4)
 			if t._reflection != null:
@@ -86,13 +86,6 @@ func run() -> void:
 				if not t._reflection._rt_ready:
 					push_error("Hardware RT did not prepare for benchmark"); get_tree().quit(1); return
 			var prepare_ms := Time.get_ticks_msec()-prepare_start
-			if name == "mirror_half":
-				# This camera is frozen. Keep its last reflected pose and avoid
-				# resizing full -> half twice on every controller tick. Only use
-				# this case's GPU pass timing; normal modes retain their controllers.
-				t._reflection.set_process(false)
-				t._reflection.viewport.size = Vector2i(640,360)
-				t._reflection.viewport.msaa_3d = Viewport.MSAA_DISABLED
 			await frames(35)
 			var wall := []; var main_gpu := []; var reflection_gpu := []; var reflection_cpu := []
 			rt_gpu.clear(); controller_cpu.clear(); sampling = true
@@ -110,7 +103,6 @@ func run() -> void:
 				"reflection_gpu_ms":summary(rt_gpu.duplicate() if mode == 3 else reflection_gpu),
 				"reflection_cpu_ms":summary(reflection_cpu),
 				"controller_cpu_ms":summary(controller_cpu.duplicate()),
-				"controller_frozen":name == "mirror_half",
 				"reflection_size":str(t._reflection._rt._size) if mode == 3 else str(t._reflection.viewport.size) if mode == 2 else "none"}
 			runs.append(row); print("WATER_BENCH ",JSON.stringify(row))
 			FileAccess.open(out.path_join("performance.json"),FileAccess.WRITE).store_string(JSON.stringify({

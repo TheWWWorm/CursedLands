@@ -1,20 +1,23 @@
 # Water ray-tracing experiment
 
 This experimental feature adds **Options → Graphics → Water → Water reflections →
-Ray traced (test)**. It traces actual Vulkan hardware rays into nearby terrain
+Ray traced (test)**. The development build traces hardware rays with Direct3D 12 or Vulkan into nearby terrain
 objects and animated creatures, then feeds the result into the existing water tint,
 distortion and Fresnel shading. It is an optional fourth choice; defaults,
 automatic detection and all graphics presets continue to use existing modes.
 The label, choices and help are available in English, Russian and German.
 
-## Use the released experiment
+## API support
 
-Starting with 1.23.0, the Windows and Linux release executables include the
-required Vulkan RT patch. Select **Forward+ (Vulkan)** under Screen settings,
-then **Graphics → Water → Water reflections → Ray traced (test)**. The feature
-needs an RT-capable GPU and Vulkan driver. Other APIs retain the fallback;
-Windows FSR uses Direct3D 12 and cannot run together with this Vulkan feature.
-macOS, Android and browser builds retain their existing reflection paths.
+The published **1.23.0** Windows and Linux executables support this experiment
+with **Forward+ (Vulkan)**. Their Direct3D 12 mode falls back to Mirror.
+
+The **unreleased DX12 development build** adds DXR to the Windows executable.
+Select **Forward+ (Direct3D 12)** under Screen settings, then **Graphics → Water →
+Water reflections → Ray traced (test)**. DX12 is the primary Windows path;
+Vulkan remains supported. Both need a GPU and driver with hardware ray tracing.
+FSR frame generation still requires DX12. macOS, Android, browser and unqualified
+engines retain their established reflection paths.
 
 ## Local development build
 
@@ -75,8 +78,13 @@ measurements below describe the experiment before its integration into 1.23.0.
   snapshots: replacing a texture resource refreshes it, but in-place texture
   painting and mesh edits require a scene rebuild. Lighting and camera-specific
   body shaders are not reproduced exactly.
-- The target is half the display width and height, capped at 960 pixels on the
-  longer edge. Budgets are 320,000 unique triangles, 4,096 instances and 192
+- The development target retains native display pixels up to a 1920-pixel
+  longer edge (1920 × 1080 at 16:9). Four fixed subpixel rays per output pixel
+  smooth geometry and alpha-tested foliage edges without temporal history.
+  The HDR output carries premultiplied coverage through bilinear filtering,
+  matching the water compositor and avoiding bright edge halos. This costs
+  more than 1.23.0's half-resolution, single-sample RT; it is not a free FPS gain.
+- Budgets are 320,000 unique triangles, 4,096 instances and 192
   texture layers at 512 × 512 with mipmaps. CPU extraction is staged, although
   an individual mesh or GPU build can hitch. Texture and acceleration-structure
   memory is additional to the ordinary scene; each moving instance also adds
@@ -93,19 +101,41 @@ snapshot is prepared; it can still cause a visible lighting transition.
 
 ## Engine requirement
 
-Use the pinned Godot source and sixteen common patches documented in
-`engine_patches/godot-4.7/README.md`, then apply
-`engine_patches/godot-4.7/water-raytracing-uniform-stages.patch` and build a
-Linux x86-64 release template with Vulkan enabled. Export this branch's game
-PCK with the Godot 4.7 editor and include its native libraries as usual.
+Use the pinned Godot 4.7 source and sixteen common patches documented in
+[`engine_patches/godot-4.7/README.md`](../../engine_patches/godot-4.7/README.md).
+Apply `water-raytracing-uniform-stages.patch` for Vulkan. For Windows DX12 also
+apply `water-raytracing-d3d12.patch`, after `experimental-fsr.patch` when using
+FSR. Rebuild the Windows release template and export the executable with it;
+replacing the game pack alone cannot add the DXR backend. Keep the existing
+Agility/FSR runtime dependencies and native extensions beside the executable.
 
-The patch corrects ray-tracing uniform visibility: the shader container was
-combining stage enum values where stage bit masks were required. On the tested
-runtime, hit shaders could not correctly read textures and buffers without
-this change. The patch also exposes `ei_raytracing_uniform_stages`, checked
-alongside Vulkan, Forward+ and `SUPPORTS_RAYTRACING_PIPELINE`. An ordinary
-unpatched engine therefore takes the fallback instead of dispatching this
-pipeline. No vendor DLL or ray-query extension is required.
+The DX12 patch implements acceleration structures, shader tables, DXR pipeline
+creation and ray dispatch through the existing RenderingDevice command graph.
+It handles both legacy and enhanced barriers and clears new storage textures
+before ray dispatch. The runtime checks `ei_d3d12_raytracing`, the hardware DXR
+tier and shader model; Vulkan checks `ei_raytracing_uniform_stages`. Both also
+require Forward+ and `SUPPORTS_RAYTRACING_PIPELINE`. Unqualified engines fall back.
+
+Godot's pinned NIR translator does not compile ray-tracing shader stages. The
+new `shader_create_from_spirv_and_dxil` API imports native DXIL libraries with
+matching SPIR-V reflection. This experiment uses one HLSL source,
+`game/src/game/fx/shaders/water_raytrace.hlsl`, compiled to both formats with
+[Microsoft DXC v1.9.2609](https://github.com/microsoft/DirectXShaderCompiler/releases/tag/v1.9.2609).
+The API supports the water binding layout, no specialization/push/dynamic
+constants, payloads up to 128 bytes and attributes up to 32 bytes. It does not
+provide general GLSL-to-DXR translation or ray queries.
+
+```sh
+python3 tools/build_water_rt_shaders.py --dxc /path/to/dxc
+python3 tools/build_water_rt_shaders.py --check
+python3 tools/build_water_rt_shaders.py --check --dxc /path/to/dxc
+```
+
+The manifest pins source/builder/compiler/output hashes. `--check` verifies every stage;
+with DXC it reproduces all eight binaries without replacing them. Export presets
+include `.dxil` and `.spv`. The game loads these binaries at runtime, so this
+change adds no runtime DXC dependency. CPU scene extraction, materials, animation
+and shading are shared by DX12 and Vulkan.
 
 ## Validation
 
@@ -117,8 +147,62 @@ captures. See the evidence for exact results and unqualified platforms.
 
 The initial frame timings are whole-frame wall times on a shared development
 machine. The follow-up below also measures the GPU reflection pass separately.
-Neither is a performance guarantee: RT draws less detail and at a lower
-resolution than normal Mirror, so this is not a quality-matched comparison.
+Those historical results use the older, lower-resolution RT settings. They do
+not describe the new four-sample path. Compare reflection GPU time and whole-frame
+time separately: a CPU-limited scene may keep the same FPS even if RT uses less
+GPU time. RT and Mirror still differ in material fidelity.
+
+## DX12 and reflection clarity (unreleased)
+
+DX12 is the primary Windows development target. The shared shader now uses
+four spatial samples and native target pixels up to 1920 on the longer edge
+(1920 × 1080 for a 16:9 display); the 1.23.0 target
+used one sample and half the width/height. Ray hits, cutout foliage, direct-light
+shadows, live poses/material edits, and the Mirror fallback remain supported.
+Premultiplied coverage also fixes the old mismatch at filtered/fading edges.
+Resizing replaces the backing GPU texture without invalidating the texture
+already bound by the water material, avoiding a blank reflection during handoff.
+
+On the RTX 3090 test host through Wine/VKD3D-Proton, comparing 4-sample RT with
+2x-MSAA Mirror at **1280 × 720**, with one original animated character, the
+final build's median of three interleaved round medians was:
+
+| Measurement | RT | Mirror |
+| --- | ---: | ---: |
+| Reflection GPU time | 0.67 ms | 0.63 ms |
+| Whole-frame wall time | 9.72 ms | 12.53 ms |
+| Corresponding rendered frame rate | 103 FPS | 80 FPS |
+
+The added samples spend GPU time on clarity. This run does **not** establish
+that the RT GPU pass is cheaper than Mirror: its lower CPU submission cost
+helped the whole frame despite a slightly higher GPU cost. This is one river
+scene on a shared development machine, not a general FPS guarantee. An earlier
+session with the same sampling settings measured 84/79 FPS and 0.73/0.63 ms
+for RT/Mirror; both raw sessions are retained in the evidence. Materials
+still differ; particles, shader wind and the other omissions above remain.
+
+The GPU quality fixture compares silhouettes and cutout edges against a
+64-sample reference. Four samples reduced coverage error by 57–67% compared
+with one sample, preserved opaque interior colour, and produced deterministic
+pixels without temporal history. The FSR fixture verifies real SDK counts,
+including 90 generated frames and about 180 presentations per 90 rendered
+frames, mode switches, resize and pause/resume. First-use shader preparation
+must finish before frame generation and its additional FPS line become active.
+
+Useful fixtures under `tools/tests/`: `water_raytrace_quality.gd`,
+`water_raytrace_quality_scene.gd`, `water_raytrace_fsr.gd`, and
+`water_raytrace_dynamic_performance.gd`, alongside the existing device,
+lighting, material, live-scene, first-person and artifact regressions. Evidence
+is recorded in [the DX12 validation bundle](../validation/water-dx12-2026-10-21/summary.json).
+The final Vulkan device, lighting and quality fixtures have no API validation
+errors with Khronos validation layers 1.4.363.0. This caught and corrected a
+missing vertex-buffer address flag and an unused ray-query capability emitted
+by DXC. DX12 readbacks pass, but Wine/VKD3D still produces startup shader
+diagnostics also seen with the published engine, plus acceleration-structure
+range diagnostics consistent with its oversized shared-buffer views. Those
+messages and the source-based attribution are retained in the evidence; this
+is not a clean native D3D12 debug-layer result. Native Windows and other GPU
+vendors remain unqualified.
 
 ## Cyan water triangle follow-up
 
