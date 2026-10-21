@@ -79,6 +79,10 @@ func apply_pose(dt: float) -> void:
 	if is_instance_valid(model):
 		for part: EIAnimPart in parts:
 			if part.override_pose: part.force_update_transform()
+		# Shadow casters are culled before frame_pre_draw. Copy the mixed
+		# running legs now, alongside the visible body and its attachments.
+		if model._view_active:
+			model._update_first_person_shadows()
 
 
 func _compose_pose(dt: float) -> void:

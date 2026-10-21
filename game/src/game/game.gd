@@ -27,6 +27,7 @@ var _double := false
 ## Spell waiting for a target click ("" = none).
 var pending_spell := ""
 var _last_spell_key := {}
+var _self_cast_key := {}
 const SPELL_DOUBLE_TAP_MS := 350
 var sound: GameSound
 var marks: OrderMarks
@@ -692,6 +693,7 @@ func _apply_sky() -> void:
 ## Called by Session when a zone has been loaded.
 func attach_world(w: GameWorld) -> void:
 	_revived_focus = null
+	_self_cast_key.clear()
 	if world and world != w:
 		if session.lmp_travel and session.lmp_travel.contains(world):
 			# The host's base view and quest view are independent of its server:
@@ -856,6 +858,47 @@ func _unhandled_input(e: InputEvent) -> void:
 					hud.toggle_menu()
 
 
+## A burst belongs to its first self-cast, including time awaiting authority.
+## A new double-tap can request one follow-up after the cast's midpoint.
+func _self_cast_key_blocked(_slot: int, caster: GameUnit, spell: String, now: int) -> bool:
+	if _self_cast_key.is_empty() or not is_instance_valid(caster) or not is_instance_valid(world) \
+			or _self_cast_key.unit != caster.get_instance_id() or _self_cast_key.world != world.get_instance_id() \
+			or _self_cast_key.spell != spell:
+		return false
+	if caster.dead or caster.blocked or not Spells.known_usable(caster, spell):
+		_self_cast_key.clear()
+		return false
+	if caster.action.begins_with("cast") and caster._action_serial != _self_cast_key.action:
+		var elapsed := maxf(0.0, world.time - caster._action_started_at)
+		var remaining := maxf(0.0, caster._anim_lock)
+		if not world.authority:
+			# Replicas have the original start timestamp and authored clip/hold;
+			# their local animation lock is not the authority's recovery timer.
+			var clip := caster._cast_visual_clip
+			var length := caster.model.player.get_animation("ei/" + clip).length if caster.model and caster.model.has_anim(clip) else 1.2
+			var hold := int(caster.action.get_slice(":", 1)) if caster.action.contains(":") else 0
+			var plan := caster._cast_plan(Spells.parse(spell), clip)
+			var duration := maxf(maxf(length, 0.6) + hold * GameUnit.TICK, float(plan.fire) * GameUnit.TICK)
+			remaining = maxf(0.0, duration - elapsed)
+		if elapsed + 0.000000001 < remaining: return true
+		_self_cast_key.clear()
+		return false
+	var matching := func(order: Dictionary) -> bool:
+		return order.get("type", "") == "cast" and order.get("spell", "") == spell and order.get("target") == caster
+	if matching.call(caster.order) or caster.orders.any(matching): return true
+	if not world.authority and caster.combat_target_id() == caster.uid: return true
+	if session._input_out.pending.has(int(_self_cast_key.sequence)): return true
+	if _self_cast_key.get("awaiting_ack", false):
+		_self_cast_key.awaiting_ack = false
+		_self_cast_key.at = now
+	# A completed or replaced action releases the guard even if a whole cast
+	# elapsed between presses. Wall time only bridges the first network echo.
+	if caster._action_serial == _self_cast_key.action and now - int(_self_cast_key.at) <= SPELL_DOUBLE_TAP_MS:
+		return true
+	_self_cast_key.clear()
+	return false
+
+
 func _spell_shortcut(slot: int, mod: bool) -> void:
 	var now := Time.get_ticks_msec()
 	var caster: GameUnit = selected[0] if not selected.is_empty() else null
@@ -864,6 +907,12 @@ func _spell_shortcut(slot: int, mod: bool) -> void:
 		_last_spell_key.clear()
 		return
 	var requested := String(spells[slot])
+	if not mod and GameData.option("spell_double_tap_self") != 0 and _self_cast_key_blocked(slot, caster, requested, now):
+		_last_spell_key.clear()
+		if pending_spell == requested:
+			pending_spell = ""
+			hud.set_targeting("")
+		return
 	var repeated: bool = not mod and GameData.option("spell_double_tap_self") != 0 \
 		and not _last_spell_key.is_empty() and is_instance_valid(caster) and is_instance_valid(world) \
 		and _last_spell_key.slot == slot and _last_spell_key.unit == caster.get_instance_id() \
@@ -1473,7 +1522,19 @@ func issue(cmd: Dictionary) -> void:
 			var m: GameUnit = world.units.get(int(id))
 			if m and foe and unit_level(foe) - unit_level(m) > 5:
 				GameSound.ack(m, EIAcks.BIG_ATTACK)
+	var self_caster: GameUnit = world.units.get(int(cmd.get("unit", -1))) if world and t in ["cast", "direct_cast"] else null
+	var self_spell := String(cmd.get("spell", ""))
+	var self_slot := -1
+	if is_instance_valid(self_caster) and self_caster.has_meta("hero") and not Spells.offensive(self_spell) \
+			and (int(cmd.get("target", -1)) == self_caster.uid or (cmd.has("x") and cmd.has("y") \
+			and self_caster.pos.is_equal_approx(Vector2(float(cmd.x), float(cmd.y))))):
+		self_slot = self_caster.get_meta("hero").get("spells", []).find(self_spell)
+	var previous_action := self_caster._action_serial if is_instance_valid(self_caster) else -1
 	session.submit(cmd)
+	if self_slot >= 0:
+		_self_cast_key = {"slot":self_slot,"unit":self_caster.get_instance_id(),"world":world.get_instance_id(),
+			"spell":self_spell,"at":Time.get_ticks_msec(),"action":previous_action,"sequence":session._input_out.serial,
+			"awaiting_ack":session._input_out.pending.has(session._input_out.serial)}
 	# The order's acknowledgement: in the original the server's order handler
 	# answers for every unit given the order (per unit
 	# (code), net message 0xb to

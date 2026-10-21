@@ -652,6 +652,42 @@
       ]
     },
     {
+      "id": "animation/first_person_shadows",
+      "category": "animation",
+      "script": "tools/tests/first_person_shadows.gd",
+      "marker": "FIRST_PERSON_SHADOWS",
+      "min_checks": 28,
+      "quick": true,
+      "description": "Rendered first-person shadows match composed running, attack and cast poses",
+      "kind": "remake_regression",
+      "timeout": 120,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "animation/first_person_shadows_astral",
+      "category": "animation",
+      "script": "tools/tests/first_person_shadows.gd",
+      "marker": "FIRST_PERSON_SHADOWS",
+      "min_checks": 28,
+      "quick": true,
+      "description": "Rendered first-person shadows match composed running, attack and cast poses",
+      "kind": "remake_regression",
+      "timeout": 120,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered"
+    },
+    {
       "id": "animation/paused_spawn_pose",
       "category": "animation",
       "script": "tools/tests/paused_spawn_pose.gd",
@@ -1997,6 +2033,42 @@
       "timeout": 300,
       "args": [],
       "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "commands/self_cast_bursts",
+      "category": "commands",
+      "script": "tools/tests/self_cast_bursts.gd",
+      "marker": "SELF_CAST_BURSTS",
+      "min_checks": 166,
+      "quick": false,
+      "description": "Opening self-cast bursts clear selection; intentional repeats unlock at the cast midpoint",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "commands/self_cast_bursts_astral",
+      "category": "commands",
+      "script": "tools/tests/self_cast_bursts.gd",
+      "marker": "SELF_CAST_BURSTS",
+      "min_checks": 166,
+      "quick": false,
+      "description": "Opening self-cast bursts clear selection; intentional repeats unlock at the cast midpoint",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [],
+      "campaign": "lost_in_astral",
       "required_files": [
         "res/database.res",
         "res/texts.res",

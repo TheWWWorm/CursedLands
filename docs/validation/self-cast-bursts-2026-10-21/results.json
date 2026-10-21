@@ -1,0 +1,229 @@
+{
+  "schema": 1,
+  "captured_at_utc": "2026-10-21T10:22:49.377010+00:00",
+  "base_commit": "a8856ac1fd1c51a3d8236baebd4dc3f5680ac8b7",
+  "behavior": [
+    "Extra plain shortcut taps after a friendly self-cast keep targeting unselected until the cast midpoint.",
+    "A fresh double-tap at or after the midpoint may queue one follow-up; its own burst cannot add a third cast.",
+    "The guard covers duplicate spell slots, self/portrait confirmation, pending stamina and unacknowledged requests.",
+    "The clock follows simulation time and original snapshot start timestamps, including paused/slow and replica casts.",
+    "Other spell selection, explicit modified quick-casts and the disabled shortcut retain their behavior."
+  ],
+  "source_sha256": {
+    "game/src/game/game.gd": "0e403ce195bdaf4f3b2037a25a43ad7fb9e96328ecef7c17377788b447650609",
+    "game/src/game/unit.gd": "0b4413e33e0af3eb1f4a1619bed91085cda641953a307eeff817f8ba6056f340",
+    "game/src/ei/game_data.gd": "0deb0aa3e8c35c5b2b43316659914021864134117b7aa3b7798d92a2fcace7b4",
+    "game/src/ei/remake_text.gd": "ee703d97e1aafae418657038bb03d63b8c7607ff97231e5e80fb9dde8eb9a0be",
+    "tools/tests/third_person_kbm.gd": "73a97b9247ffb96af9e20b2d88a6294a703f8ca3529f095548a47bc0da6aa9f0",
+    "tools/tests/self_cast_bursts.gd": "36485548e77623dd88df2d30ca969778cef92b16d8331af04832ae3539544f1c"
+  },
+  "engine": {
+    "path": "/home/llm2x/.local/bin/godot-4",
+    "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+  },
+  "counts": {
+    "passed": 7,
+    "failed": 0,
+    "error": 0,
+    "programs": 7,
+    "checks": 590,
+    "failed_checks": 0
+  },
+  "tests": [
+    {
+      "id": "commands/self_cast_bursts",
+      "campaign": "cursed_lands",
+      "status": "passed",
+      "checks": 112,
+      "failures": 0,
+      "seconds": 11.11,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/self-cast-final-complete/tests/commands/self_cast_bursts/run.log"
+    },
+    {
+      "id": "commands/self_cast_bursts_astral",
+      "campaign": "lost_in_astral",
+      "status": "passed",
+      "checks": 112,
+      "failures": 0,
+      "seconds": 11.123,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/self-cast-final-complete/tests/commands/self_cast_bursts_astral/run.log"
+    },
+    {
+      "id": "commands/direct_spell_selection",
+      "campaign": "cursed_lands",
+      "status": "passed",
+      "checks": 15,
+      "failures": 0,
+      "seconds": 13.229,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/self-cast-final-complete/tests/commands/direct_spell_selection/run.log"
+    },
+    {
+      "id": "spells/spell_stamina_wait",
+      "campaign": "cursed_lands",
+      "status": "passed",
+      "checks": 47,
+      "failures": 0,
+      "seconds": 11.011,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/self-cast-final-complete/tests/spells/spell_stamina_wait/run.log"
+    },
+    {
+      "id": "commands/direct_command_priority",
+      "campaign": "cursed_lands",
+      "status": "passed",
+      "checks": 38,
+      "failures": 0,
+      "seconds": 11.413,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/self-cast-final-complete/tests/commands/direct_command_priority/run.log"
+    },
+    {
+      "id": "commands/direct_release_aim",
+      "campaign": "cursed_lands",
+      "status": "passed",
+      "checks": 57,
+      "failures": 0,
+      "seconds": 11.516,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/self-cast-final-complete/tests/commands/direct_release_aim/run.log"
+    },
+    {
+      "id": "network/snapshot_codec",
+      "campaign": "cursed_lands",
+      "status": "passed",
+      "checks": 209,
+      "failures": 0,
+      "seconds": 5.71,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/self-cast-final-complete/tests/network/snapshot_codec/run.log"
+    }
+  ],
+  "negative_control": {
+    "status": "failed",
+    "checks": 112,
+    "failures": 51,
+    "diagnostics": [],
+    "failure_messages": [
+      "FAIL camera 1: 3 opening taps leave no prepared spell",
+      "FAIL camera 1: 4 opening taps submit one self-cast",
+      "FAIL camera 1: 5 opening taps leave no prepared spell",
+      "FAIL camera 1: 5 opening taps submit one self-cast",
+      "FAIL camera 1: 8 opening taps submit one self-cast",
+      "FAIL camera 1: 9 opening taps leave no prepared spell",
+      "FAIL camera 1: 9 opening taps submit one self-cast",
+      "FAIL camera 1: an identical spell in another slot also leaves no prepared repeat",
+      "FAIL camera 1: early cast spam stays unselected even after a long wall-time gap",
+      "FAIL camera 1: first press after halfway selects the spell again",
+      "FAIL camera 1: second press after halfway buffers one self-cast",
+      "FAIL camera 1: continued spam cannot arm or queue a third cast",
+      "FAIL camera 1: a confirmed portrait/self action also absorbs the trailing key burst",
+      "FAIL camera 1: stamina waiting keeps one unselected request",
+      "FAIL camera 1: unacknowledged delivery suppresses duplicate selection beyond the tap window",
+      "FAIL camera 1: an acknowledgement arriving before the cast snapshot does not rearm the spell",
+      "FAIL camera 1: delayed authority delivery still executes one request",
+      "FAIL camera 2: 3 opening taps leave no prepared spell",
+      "FAIL camera 2: 4 opening taps submit one self-cast",
+      "FAIL camera 2: 5 opening taps leave no prepared spell",
+      "FAIL camera 2: 5 opening taps submit one self-cast",
+      "FAIL camera 2: 8 opening taps submit one self-cast",
+      "FAIL camera 2: 9 opening taps leave no prepared spell",
+      "FAIL camera 2: 9 opening taps submit one self-cast",
+      "FAIL camera 2: an identical spell in another slot also leaves no prepared repeat",
+      "FAIL camera 2: early cast spam stays unselected even after a long wall-time gap",
+      "FAIL camera 2: first press after halfway selects the spell again",
+      "FAIL camera 2: second press after halfway buffers one self-cast",
+      "FAIL camera 2: continued spam cannot arm or queue a third cast",
+      "FAIL camera 2: a confirmed portrait/self action also absorbs the trailing key burst",
+      "FAIL camera 2: stamina waiting keeps one unselected request",
+      "FAIL camera 2: unacknowledged delivery suppresses duplicate selection beyond the tap window",
+      "FAIL camera 2: an acknowledgement arriving before the cast snapshot does not rearm the spell",
+      "FAIL camera 2: delayed authority delivery still executes one request",
+      "FAIL camera 3: 3 opening taps leave no prepared spell",
+      "FAIL camera 3: 4 opening taps submit one self-cast",
+      "FAIL camera 3: 5 opening taps leave no prepared spell",
+      "FAIL camera 3: 5 opening taps submit one self-cast",
+      "FAIL camera 3: 8 opening taps submit one self-cast",
+      "FAIL camera 3: 9 opening taps leave no prepared spell",
+      "FAIL camera 3: 9 opening taps submit one self-cast",
+      "FAIL camera 3: an identical spell in another slot also leaves no prepared repeat",
+      "FAIL camera 3: early cast spam stays unselected even after a long wall-time gap",
+      "FAIL camera 3: first press after halfway selects the spell again",
+      "FAIL camera 3: second press after halfway buffers one self-cast",
+      "FAIL camera 3: continued spam cannot arm or queue a third cast",
+      "FAIL camera 3: a confirmed portrait/self action also absorbs the trailing key burst",
+      "FAIL camera 3: stamina waiting keeps one unselected request",
+      "FAIL camera 3: unacknowledged delivery suppresses duplicate selection beyond the tap window",
+      "FAIL camera 3: an acknowledgement arriving before the cast snapshot does not rearm the spell",
+      "FAIL camera 3: delayed authority delivery still executes one request"
+    ],
+    "runtime": {
+      "campaign": "cursed_lands",
+      "display": "headless",
+      "display_driver": "headless",
+      "engine": {
+        "build": "official",
+        "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+        "hex": 263936,
+        "major": 4,
+        "minor": 7,
+        "patch": 0,
+        "status": "stable",
+        "string": "4.7-stable (official)",
+        "timestamp": 0
+      },
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "rendering_method": "forward_plus",
+      "script": "res://tools/tests/self_cast_bursts.gd",
+      "seed": 20261020,
+      "user_dir": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/self-cast-negative-final/data/godot/app_userdata/Cursed Lands"
+    },
+    "argv": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/self-cast-initial/runtime",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--headless",
+      "--",
+      "--no-movies",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=res://tools/gameplay_bootstrap.gd",
+      "--suite-script=res://tools/tests/self_cast_bursts.gd",
+      "--suite-campaign=cursed_lands",
+      "--suite-display=headless"
+    ],
+    "exit_code": 1,
+    "mutation": "Bypass the burst guard only in the staged shortcut handler; retain all other new code and tests.",
+    "game_sha256": "cea5ea775d8e669c3a0ecc26829503297f58967cf2c65033cc6d001f4b7d5543",
+    "fixture_sha256": "36485548e77623dd88df2d30ca969778cef92b16d8331af04832ae3539544f1c"
+  },
+  "localization": {
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "catalog_entries": 2999,
+    "static_errors": 0,
+    "layout": "Existing tooltip font and 360-pixel wrapping at 800x600; line widths and total height pass in all three languages."
+  },
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "harness_tests": {
+    "command": "python3 -m unittest discover -s tools/parity -p 'test_gameplay*.py' -q",
+    "tests": 29,
+    "status": "passed"
+  },
+  "raw_evidence": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/self-cast-final-complete",
+  "reproduce": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/self-cast-final-complete/reproduce.sh NEW_OUTPUT_DIRECTORY",
+  "scope": "Native owned campaign data with injected keyboard events, manually stepped authority/effects, snapshot replay and simulated delayed delivery. Headless Linux; no physical-input, live ENet or target-OS claim. No public release."
+}

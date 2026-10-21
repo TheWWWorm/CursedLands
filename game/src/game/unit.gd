@@ -4832,6 +4832,7 @@ func apply_snapshot(s: Array, quiet := false, precise_body := PackedFloat64Array
 		# Simulation timestamps are independent of packet/display cadence and
 		# game speed. Duplicate refreshes must not restart or double-advance.
 		var received_at := snapshot_time if is_finite(snapshot_time) else world.time if world else 0.0
+		_action_started_at = float(visual[1])
 		var elapsed := maxf(0.0, received_at - float(visual[1]))
 		var advance := _held(_pre_cast(elapsed) * _remote_action_rate)
 		model.player.advance(advance)

@@ -309,7 +309,7 @@ const REMAKE_OPTIONS := {
 	"wiki_context": ["Wiki under pointer", "Open the wiki for the item, spell, creature or quest under the pointer. With no subject under the pointer, open the wiki home page."],
 	"direct_first_person_actions": ["First-person actions", "Stay in first person when picking up items, using levers and performing other actions. Off: show action animations in third person. Scripted cameras keep control."],
 	"direct_hints": ["Control guide", "Compact shows a small view/cursor shortcut hint. Full guide adds movement keys and crosshair explanations. Off hides the lower guide."],
-	"spell_double_tap_self": ["Double-tap spell key to self-cast", "Press the same spell shortcut twice quickly to cast a compatible friendly spell on yourself. One press selects a target normally. Off: a second press cancels spell selection."],
+	"spell_double_tap_self": ["Double-tap spell key to self-cast", "Double-tap a friendly spell shortcut to self-cast. Extra taps are ignored until halfway through that cast; then double-tap again to queue another. One press selects a target. Off: a second press cancels selection."],
 	"direct_fov_first": ["First-person FOV", "Vertical field of view in first person."],
 	"direct_fov_third": ["Third-person FOV", "Vertical field of view in third person."],
 	"direct_mouse_first": ["First-person look speed", "Mouse sensitivity in first person. The midpoint is the default speed."],
