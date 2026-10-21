@@ -10,7 +10,7 @@ var allocations: Array[Node] = []
 class ProbeSession extends Session:
 	func sync_state() -> void: pass
 	func broadcast(_event: Dictionary) -> void: pass
-	func _refresh_character(_u: GameUnit, _h: Dictionary) -> void: pass
+	func _refresh_character(_u: GameUnit, _h: Dictionary, _sync := true) -> void: pass
 
 func check(ok: bool, label: String) -> void:
 	checks += 1
@@ -48,6 +48,14 @@ func vm_call(vm: ScriptVM, name: String, values: Array) -> Variant:
 	for v in values: args.append([P.N_STR if v is String else P.N_NUM, v])
 	return vm._call(name, args, ScriptVM.Instance.new())
 
+func find_leader_calls(node, leaders: Array, squares: Array) -> void:
+	if not node is Array: return
+	if node.size() == 3 and node[0] is int and node[0] in [P.N_CALL,P.S_CALL]:
+		if node[1] == "GetLeader": leaders.append(node)
+		elif node[1] == "UnitInSquare" and node[2].size() == 5 and node[2][0] is Array and node[2][0][0] == P.N_CALL and node[2][0][1] == "GetLeader":
+			squares.append(node)
+	for x in node: find_leader_calls(x,leaders,squares)
+
 func _ready() -> void:
 	var s := fixture()
 	var main := actor(s, s.state.heroes[0][0], 0, 1500000001)
@@ -77,6 +85,29 @@ func _ready() -> void:
 		check(vm_call(vm,"GetUnitOfPlayer",[0.0,1.0]) == kel, "dead companion retains authored slot")
 		check(vm_call(vm,"GetMercsNumber",[0.0]) == 0.0, "dead companion is not counted alive")
 		kel.dead = false
+	if GameData.campaign_id != CampaignProfile.ASTRAL:
+		# Authored triggers call the original's parameterless GetLeader( ).
+		for mob: String in {"z18q1":4,"z7q3":2}:
+			vm = vm_for(s,mob)
+			var leaders := []
+			var squares := []
+			for script: Dictionary in vm.ast.scripts.values():
+				for block: Dictionary in script.blocks:
+					find_leader_calls(block.conds+block.body,leaders,squares)
+			check(leaders.size() == {"z18q1":4,"z7q3":2}[mob] and leaders.all(func(n): return n[2].is_empty()),mob+": authored GetLeader( ) calls have no arguments")
+			var inst := ScriptVM.Instance.new()
+			for dead in [false,true]:
+				main.dead = dead
+				check(leaders.all(func(n): return vm._eval(n,inst) == main),mob+": GetLeader( ) is party record zero, dead="+str(dead))
+			main.dead = false
+			for square: Array in squares:
+				var a: Array = square[2]
+				main.pos = Vector2((a[1][1]+a[3][1])/2.0,(a[2][1]+a[4][1])/2.0)
+				check(vm._eval(square,inst) == 1.0,mob+": authored leader square trigger fires inside")
+				main.pos = Vector2(a[1][1]-5.0,a[2][1]-5.0)
+				check(vm._eval(square,inst) == 0.0,mob+": authored leader square trigger stays off outside")
+			check(squares.size() == (2 if mob == "z18q1" else 0),mob+": authored leader square triggers found")
+		main.pos = Vector2.ZERO
 	if GameData.campaign_id == CampaignProfile.ASTRAL:
 		vm = vm_for(s,"zone31")
 		var inst := ScriptVM.Instance.new()

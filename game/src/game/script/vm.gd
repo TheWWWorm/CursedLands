@@ -635,8 +635,16 @@ func _call(name: String, a: Array, inst: Instance):
 			var hs := _story_records(int(_num(v[0])))
 			var k := int(_num(v[1]))
 			return hs[k] if k >= 0 and k < hs.size() else null
+		# Builtin 0xe4 GetLeader() takes no parameters (signature "O");
+		# authored z18q1/z7q3 triggers call GetLeader( ). Outside LMP the
+		# object evaluator returns party record 0's unit, dead or
+		# hidden alike, as GetUnitOfPlayer(0, 0) does. LMP keeps the first
+		# living, shown member of the player an optional argument names.
 		"GetLeader":
-			var hs := _story_records(int(_num(v[0]))).filter(func(u: GameUnit): return not u.dead and not u.hidden)
+			if session.lmp.is_empty():
+				var records := _story_records()
+				return records[0] if not records.is_empty() else null
+			var hs := _story_records(int(_num(v[0])) if not v.is_empty() else 0).filter(func(u: GameUnit): return not u.dead and not u.hidden)
 			return hs[0] if not hs.is_empty() else null
 		# Builtin 0xd1 GetMercsNumber(player) ->: the party records
 		# whose unit exists and lives, excluding the protagonist. Guest heroes
