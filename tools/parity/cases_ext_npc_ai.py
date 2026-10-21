@@ -278,7 +278,7 @@ def suspicion_scenarios(seed, fuzz):
     for radius, distances in ((7.0, (6.9, 7.0, 7.1)), (10.0, (9.99, 10.0))):
         for d in distances:
             _susp(rows, f"help_radius_{radius:g}_d{d:g}",
-                  [_unit(caller, help_radius=radius), _unit((8.0 + d, 8.0, 0.0))],
+                  [_unit((3.0, 8.0, 0.0), help_radius=radius), _unit((3.0 + d, 8.0, 0.0))],
                   [{"events": [{"kind": "help", "unit": 0, "point": [3.0, 4.0, 0.0]}]}] + _quiet(29))
     _susp(rows, "help_radius_height",
           [_unit(caller, help_radius=7.0), _unit((14.5, 8.0, 6.0))],
@@ -418,7 +418,7 @@ def score_scenarios(seed, fuzz):
         _eval(_opt(0, (3, 0, 4, 0, 0, 0, 0))), _eval(_opt(0, (0, 0, 5, 0, 0, 0, 0))),
         _eval(_opt(0, sword), threshold=8.0), _eval(_opt(0, sword), threshold=7.0),
         _eval(_opt(0, sword), threshold=-55.0), _eval(_opt(0, sword), candidate=3, members=(3,)),
-        _eval(_opt(0, (100, 200, 300, 400, 500, 600, 700)), candidate=2)])
+        _eval(_opt(0, (100, 200, 300, 400, 500, 600, 700)), candidate=2, members=(1, 2))])
     # Bolt: 1.3 D + bonus + 3 + D min(n - 1, k), damage sweep.
     evals = []
     for damage in (1, 7, 13, 100, 777, 1567, 2047, 3134, 5000, 12345, 32767):
@@ -479,7 +479,7 @@ def score_scenarios(seed, fuzz):
     _score_case(rows, "damage_edges", edge, [
         _eval(_opt(0, (32767,) * 7)), _eval(_opt(1, (32767,) * 7, n1=2), members=(1, 2, 3)),
         _eval(_opt(2, (32767,) * 7, radius=5.0, n1=2), members=(1, 2, 3)),
-        _eval(_opt(0, (1,) * 7), candidate=2, members=(2,)), _eval(_opt(0, (32767, 0, 0, 0, 0, 0, 0)), candidate=3)])
+        _eval(_opt(0, (1,) * 7), candidate=2, members=(2,)), _eval(_opt(0, (32767, 0, 0, 0, 0, 0, 0)), candidate=3, members=(3,))])
     rng = random.Random(seed ^ 0x5c0e)
     for trial in range(fuzz):
         units = []
