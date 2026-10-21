@@ -39,6 +39,7 @@ var _music: AudioStreamPlayer
 
 
 func _ready() -> void:
+	GameData.movie_audio_acquire(self)
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var bg := ColorRect.new()
 	bg.color = Color.BLACK
@@ -67,7 +68,7 @@ func _ready() -> void:
 	_text.text = rtf_to_bbcode(arc.read(file)) if arc and arc.has(file) else ""
 	_text.text = GraphicsAttribution.credits_bbcode() + _text.text
 	_music = AudioStreamPlayer.new()
-	_music.bus = "Music"
+	_music.bus = "Movie"
 	var track := String(EIAudio.music_table().get("common", {}).get("Credits", ""))
 	_music.stream = EIAudio.music(track) if track else null
 	add_child(_music)
@@ -87,6 +88,10 @@ func _ready() -> void:
 	set_process(true)
 	if _music.stream:
 		_music.play()
+
+
+func _exit_tree() -> void:
+	GameData.movie_audio_release(self)
 
 
 func _layout() -> void:

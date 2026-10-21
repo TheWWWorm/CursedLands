@@ -1,0 +1,133 @@
+{
+	"checks": 32,
+	"failures": 10,
+	"scope": "Real LiA map, original chest script, prepared skill/start, live operator route/animation, ENet and full save/load; unrelated simulation held still. Native permission captured separately.",
+	"trace": [
+		{
+			"label": "available-0",
+			"money": 0,
+			"peers": [
+				{
+					"enabled": true,
+					"hand": true,
+					"player": 0,
+					"state": 0,
+					"usable": true
+				},
+				{
+					"enabled": true,
+					"hand": true,
+					"player": 1,
+					"state": 0,
+					"usable": true
+				}
+			],
+			"time": 0.0
+		},
+		{
+			"label": "spent-0",
+			"money": 100,
+			"peers": [
+				{
+					"enabled": true,
+					"hand": true,
+					"player": 0,
+					"state": 0,
+					"usable": true
+				},
+				{
+					"enabled": true,
+					"hand": true,
+					"player": 1,
+					"state": 0,
+					"usable": true
+				}
+			],
+			"time": 6.32499999999999
+		},
+		{
+			"label": "available-1",
+			"money": 100,
+			"peers": [
+				{
+					"enabled": true,
+					"hand": true,
+					"player": 0,
+					"state": 0,
+					"usable": true
+				},
+				{
+					"enabled": true,
+					"hand": true,
+					"player": 1,
+					"state": 0,
+					"usable": true
+				}
+			],
+			"time": 6.32499999999999
+		},
+		{
+			"label": "spent-1",
+			"money": 200,
+			"peers": [
+				{
+					"enabled": true,
+					"hand": true,
+					"player": 0,
+					"state": 0,
+					"usable": true
+				},
+				{
+					"enabled": true,
+					"hand": true,
+					"player": 1,
+					"state": 0,
+					"usable": true
+				}
+			],
+			"time": 12.65
+		},
+		{
+			"label": "reloaded-spent",
+			"money": 200,
+			"peers": [
+				{
+					"enabled": true,
+					"hand": true,
+					"player": 0,
+					"state": 0,
+					"usable": true
+				},
+				{
+					"enabled": true,
+					"hand": true,
+					"player": 1,
+					"state": 0,
+					"usable": true
+				}
+			],
+			"time": 0.0
+		},
+		{
+			"label": "explicit-enable",
+			"money": 200,
+			"peers": [
+				{
+					"enabled": true,
+					"hand": false,
+					"player": 0,
+					"state": 1,
+					"usable": false
+				},
+				{
+					"enabled": true,
+					"hand": false,
+					"player": 1,
+					"state": 1,
+					"usable": false
+				}
+			],
+			"time": 0.0
+		}
+	]
+}

@@ -1,0 +1,2327 @@
+[
+  {
+    "file": "src/ei/acks.gd",
+    "repository": "fedb0d5c4cb14ea21d1b8b03396eb1d5f1325eca3a5d259c185d69c51afe5aaf",
+    "staging": "fedb0d5c4cb14ea21d1b8b03396eb1d5f1325eca3a5d259c185d69c51afe5aaf"
+  },
+  {
+    "file": "src/ei/anim.gd",
+    "repository": "55bd3e8ee648284dbf0a1aa808b30d474fb35c3844883660cb5df115997946ad",
+    "staging": "55bd3e8ee648284dbf0a1aa808b30d474fb35c3844883660cb5df115997946ad"
+  },
+  {
+    "file": "src/ei/anim_part.gd",
+    "repository": "3283f29bd60c6a6ed6beec2f0fbbae8d8c3e409eae6e69f4f503d6d13971fe3d",
+    "staging": "3283f29bd60c6a6ed6beec2f0fbbae8d8c3e409eae6e69f4f503d6d13971fe3d"
+  },
+  {
+    "file": "src/ei/astral_disc_import.gd",
+    "repository": "6280eb6519978761e51141ee348ad5cf2b8f1dee292ad9c8edac975190a2c02d",
+    "staging": "6280eb6519978761e51141ee348ad5cf2b8f1dee292ad9c8edac975190a2c02d"
+  },
+  {
+    "file": "src/ei/bink.gd",
+    "repository": "be55b928a24c06a1f7cff6605bab22011967b2f150c6f182dac1bfc4094f99e3",
+    "staging": "be55b928a24c06a1f7cff6605bab22011967b2f150c6f182dac1bfc4094f99e3"
+  },
+  {
+    "file": "src/ei/bink_audio.gd",
+    "repository": "0091141172fe3426cfd7a00976e8e137e878066f84ff04750a5986f1d92bf246",
+    "staging": "0091141172fe3426cfd7a00976e8e137e878066f84ff04750a5986f1d92bf246"
+  },
+  {
+    "file": "src/ei/bink_cache.gd",
+    "repository": "66197fe0415ca9535b8eb643b4404bf6a2be738f45598961ada6899d03370eb4",
+    "staging": "66197fe0415ca9535b8eb643b4404bf6a2be738f45598961ada6899d03370eb4"
+  },
+  {
+    "file": "src/ei/camera_track.gd",
+    "repository": "5f0ad5ef6493e8fd247f17c18b5cb2e6e23c0ca74d0618b6a374eeaa9fba3a63",
+    "staging": "5f0ad5ef6493e8fd247f17c18b5cb2e6e23c0ca74d0618b6a374eeaa9fba3a63"
+  },
+  {
+    "file": "src/ei/catacomb_lift.gd",
+    "repository": "cd8c0e31ebfcb4b85f7d3fc72a5a1a71120805dcae24969b910989ab37eeb98f",
+    "staging": "cd8c0e31ebfcb4b85f7d3fc72a5a1a71120805dcae24969b910989ab37eeb98f"
+  },
+  {
+    "file": "src/ei/crt_random.gd",
+    "repository": "acc03ff81f4529edbfe1ade1accfcbe70d135d24772e0837111068274e2bc873",
+    "staging": "acc03ff81f4529edbfe1ade1accfcbe70d135d24772e0837111068274e2bc873"
+  },
+  {
+    "file": "src/ei/database.gd",
+    "repository": "247e79904d80cb02beb9094430183d15d0621284e351fbac70d9df39d24aacc6",
+    "staging": "247e79904d80cb02beb9094430183d15d0621284e351fbac70d9df39d24aacc6"
+  },
+  {
+    "file": "src/ei/detailed_head.gd",
+    "repository": "544d37eb5b5998bc24ae44bc5772ff5d06059897eae89d2fa23254f3e22948b8",
+    "staging": "544d37eb5b5998bc24ae44bc5772ff5d06059897eae89d2fa23254f3e22948b8"
+  },
+  {
+    "file": "src/ei/ei_audio.gd",
+    "repository": "31adaa24ec21213fd9428a2eabfaeb24311f70d8ddacd07e87c0ba1c9620780c",
+    "staging": "31adaa24ec21213fd9428a2eabfaeb24311f70d8ddacd07e87c0ba1c9620780c"
+  },
+  {
+    "file": "src/ei/ei_space.gd",
+    "repository": "1e874061e8045b3c3dded3b37c82d8d03b89b4ffb8a9d579905dc8e5a5d4c5a7",
+    "staging": "1e874061e8045b3c3dded3b37c82d8d03b89b4ffb8a9d579905dc8e5a5d4c5a7"
+  },
+  {
+    "file": "src/ei/figure.gd",
+    "repository": "3856db0247ee8a3387ffac136e4785bfebf1d149f00585c1ceee87d46e3adbfb",
+    "staging": "3856db0247ee8a3387ffac136e4785bfebf1d149f00585c1ceee87d46e3adbfb"
+  },
+  {
+    "file": "src/ei/figure_geometry.gd",
+    "repository": "d3cd2be0fee1cd6024bdb90cbbde690c171609b1f25d0d8da44bcb80b2be2f5d",
+    "staging": "d3cd2be0fee1cd6024bdb90cbbde690c171609b1f25d0d8da44bcb80b2be2f5d"
+  },
+  {
+    "file": "src/ei/figure_material.gd",
+    "repository": "30f9de045ace9e6f7d3e497fab28a02350e242f8a00074de8e8b6f25f7b547e9",
+    "staging": "30f9de045ace9e6f7d3e497fab28a02350e242f8a00074de8e8b6f25f7b547e9"
+  },
+  {
+    "file": "src/ei/first_person_body.gd",
+    "repository": "de157abf28eac613184fd38e14a5c272f8a763c060732a40b21c07916a294393",
+    "staging": "de157abf28eac613184fd38e14a5c272f8a763c060732a40b21c07916a294393"
+  },
+  {
+    "file": "src/ei/game_data.gd",
+    "repository": "2f3fb5aa5ae7ab7d10fb8691d5db8d8bb6b4ba4397c70e8a5426e7f526d6389e",
+    "staging": "2f3fb5aa5ae7ab7d10fb8691d5db8d8bb6b4ba4397c70e8a5426e7f526d6389e"
+  },
+  {
+    "file": "src/ei/inno_setup.gd",
+    "repository": "206a64296645352e9bc45cdac34c5fb609b95799fcf2af9052dd1e6168fee10f",
+    "staging": "206a64296645352e9bc45cdac34c5fb609b95799fcf2af9052dd1e6168fee10f"
+  },
+  {
+    "file": "src/ei/iso_archive.gd",
+    "repository": "6d491d57c714b4d4fb482a5ef121b309119488f6b6efedf64d5775c5fe366041",
+    "staging": "6d491d57c714b4d4fb482a5ef121b309119488f6b6efedf64d5775c5fe366041"
+  },
+  {
+    "file": "src/ei/keymap.gd",
+    "repository": "5960049b31186a486844fbb02530096c18a34382a48ce600791ec8355a3a82fc",
+    "staging": "5960049b31186a486844fbb02530096c18a34382a48ce600791ec8355a3a82fc"
+  },
+  {
+    "file": "src/ei/lights.gd",
+    "repository": "c7d651a759f5030764f8e33479b3e171f4913a67b7fb05c65b2a146466dc192c",
+    "staging": "c7d651a759f5030764f8e33479b3e171f4913a67b7fb05c65b2a146466dc192c"
+  },
+  {
+    "file": "src/ei/lzma.gd",
+    "repository": "5ad3bc3328d2d03d2f4c4aaa326545fbc23dbd3b7d207b90d996777f8356e8b7",
+    "staging": "5ad3bc3328d2d03d2f4c4aaa326545fbc23dbd3b7d207b90d996777f8356e8b7"
+  },
+  {
+    "file": "src/ei/map_scene.gd",
+    "repository": "ceccd63e4b562c7427d2c08290e8fee4a261730c097c43ee419d39b0c5574b2e",
+    "staging": "ceccd63e4b562c7427d2c08290e8fee4a261730c097c43ee419d39b0c5574b2e"
+  },
+  {
+    "file": "src/ei/mmp_texture.gd",
+    "repository": "1c4aed0ea7cb368ca135c47cbe1d27e2266f31f81fa61f3281d610259b8fe609",
+    "staging": "1c4aed0ea7cb368ca135c47cbe1d27e2266f31f81fa61f3281d610259b8fe609"
+  },
+  {
+    "file": "src/ei/mob_reader.gd",
+    "repository": "f2e21805dbeb2c6af25cf614ab7aec8b93e76c3efaaf3591286f909b0e4e3e10",
+    "staging": "f2e21805dbeb2c6af25cf614ab7aec8b93e76c3efaaf3591286f909b0e4e3e10"
+  },
+  {
+    "file": "src/ei/object_water.gd",
+    "repository": "36359cf6d85709f243d7e5b8fef0c749092855883b16284135e6e0a258823d5a",
+    "staging": "36359cf6d85709f243d7e5b8fef0c749092855883b16284135e6e0a258823d5a"
+  },
+  {
+    "file": "src/ei/reg_file.gd",
+    "repository": "4e689d4bbe5ad5aa6d16294bc711aebd087688d0007712fe0a511add6fdf000a",
+    "staging": "4e689d4bbe5ad5aa6d16294bc711aebd087688d0007712fe0a511add6fdf000a"
+  },
+  {
+    "file": "src/ei/remake_text.gd",
+    "repository": "4e5dabdf9cc789e981064e22484f205977aa798bdf622cbb7eb08b7ad51ce35f",
+    "staging": "4e5dabdf9cc789e981064e22484f205977aa798bdf622cbb7eb08b7ad51ce35f"
+  },
+  {
+    "file": "src/ei/res_archive.gd",
+    "repository": "452c7ba33c1baffdc0f4f94d16fc59cf6bbbb960c04524b860e2cd05fe48ab1d",
+    "staging": "452c7ba33c1baffdc0f4f94d16fc59cf6bbbb960c04524b860e2cd05fe48ab1d"
+  },
+  {
+    "file": "src/ei/terrain.gd",
+    "repository": "5b04848f485e2a1a000eab9395e331fcb1d5c020de911b19c612728ec9db448d",
+    "staging": "5b04848f485e2a1a000eab9395e331fcb1d5c020de911b19c612728ec9db448d"
+  },
+  {
+    "file": "src/ei/terrain_sector.gd",
+    "repository": "d93683c8bb3a90aec006c711070c15b6ca1d522f0136100760bc709911a50552",
+    "staging": "d93683c8bb3a90aec006c711070c15b6ca1d522f0136100760bc709911a50552"
+  },
+  {
+    "file": "src/ei/text.gd",
+    "repository": "e27f07d6d87975122f5377285c09b6fdee6d9b8d4b40960c97bc7838cf416ea0",
+    "staging": "e27f07d6d87975122f5377285c09b6fdee6d9b8d4b40960c97bc7838cf416ea0"
+  },
+  {
+    "file": "src/ei/unit_model.gd",
+    "repository": "ec56a290234c05c168f9b74a47839b7829910f0ba162351e21eb0624aef2996f",
+    "staging": "ec56a290234c05c168f9b74a47839b7829910f0ba162351e21eb0624aef2996f"
+  },
+  {
+    "file": "src/ei/water_mesh.gd",
+    "repository": "bfb80b0462f103a59b328ee3fca5334969e6a3d0b9309d70c2e4f4e0fd4d7141",
+    "staging": "bfb80b0462f103a59b328ee3fca5334969e6a3d0b9309d70c2e4f4e0fd4d7141"
+  },
+  {
+    "file": "src/ei/water_waves.gd",
+    "repository": "24f3708a5dd0870da4750bdc89496d498fcb6bf596442fb9c25607d0740c548e",
+    "staging": "24f3708a5dd0870da4750bdc89496d498fcb6bf596442fb9c25607d0740c548e"
+  },
+  {
+    "file": "src/ei/wisp_glow.gd",
+    "repository": "079e4b569dc401c1261abb403ed0400ed92c56a406f8c7e357d8d242558e3caa",
+    "staging": "079e4b569dc401c1261abb403ed0400ed92c56a406f8c7e357d8d242558e3caa"
+  },
+  {
+    "file": "src/game/actor_refs.gd",
+    "repository": "e2c100b61e6a5b5901a30c2f71b91e2caf4fe5317f73adfb83295cf990ec2277",
+    "staging": "e2c100b61e6a5b5901a30c2f71b91e2caf4fe5317f73adfb83295cf990ec2277"
+  },
+  {
+    "file": "src/game/ai.gd",
+    "repository": "bb5eedb126abf155f52737ee5d7318265b4265cbcc9d593bd56f63825f225d08",
+    "staging": "3321330f160d7e3febf9777ded1eb2735f4b19f7064f80ce87e77a51bbe9b479"
+  },
+  {
+    "file": "src/game/ai_activity.gd",
+    "repository": "0b6b8d29aba56de8577e7cc0acce8a4837e1e052b0c2d8fc1a3c86e9bfc9f0c8",
+    "staging": "0b6b8d29aba56de8577e7cc0acce8a4837e1e052b0c2d8fc1a3c86e9bfc9f0c8"
+  },
+  {
+    "file": "src/game/ambient_sound.gd",
+    "repository": "65096b14e9b395a78c4c578ecf893eed0f1cb380d1257eb7ce8d1bc34ca7d440",
+    "staging": "65096b14e9b395a78c4c578ecf893eed0f1cb380d1257eb7ce8d1bc34ca7d440"
+  },
+  {
+    "file": "src/game/arena_alliances.gd",
+    "repository": "7b7d4e3f78e5a42eed55a5b4083d0b17e70b037155e209026421c3c91410b1e2",
+    "staging": "7b7d4e3f78e5a42eed55a5b4083d0b17e70b037155e209026421c3c91410b1e2"
+  },
+  {
+    "file": "src/game/arena_animation_warmup.gd",
+    "repository": "c3539d8a4173ba1f04189b07726088f22a32e87570381a6ca3316df8e0ec553f",
+    "staging": "c3539d8a4173ba1f04189b07726088f22a32e87570381a6ca3316df8e0ec553f"
+  },
+  {
+    "file": "src/game/arena_appearance.gd",
+    "repository": "1884338640ebc2dbb2657a53ed24548382ad2d24a0ef7e56ac22a890d05b7e11",
+    "staging": "1884338640ebc2dbb2657a53ed24548382ad2d24a0ef7e56ac22a890d05b7e11"
+  },
+  {
+    "file": "src/game/arena_bot_planner.gd",
+    "repository": "1147f73f48f7aa3c384fc79b5c484d61cd64bb785e7e6a3850e26de49f905622",
+    "staging": "1147f73f48f7aa3c384fc79b5c484d61cd64bb785e7e6a3850e26de49f905622"
+  },
+  {
+    "file": "src/game/arena_catalog.gd",
+    "repository": "97ae808e5ad59487f2a55389c39b9f1a8d167ca6bf2559a5e42595c844af1eda",
+    "staging": "97ae808e5ad59487f2a55389c39b9f1a8d167ca6bf2559a5e42595c844af1eda"
+  },
+  {
+    "file": "src/game/arena_formation_motion.gd",
+    "repository": "481d20e674d9dfb77482fc05875a2ae55adf427035156369207d9916eb923d69",
+    "staging": "481d20e674d9dfb77482fc05875a2ae55adf427035156369207d9916eb923d69"
+  },
+  {
+    "file": "src/game/arena_ground_details.gd",
+    "repository": "2d25b49a5658ca0fc0e6b427c40cf6487a8194b9d2181d5569b35956afe62e71",
+    "staging": "2d25b49a5658ca0fc0e6b427c40cf6487a8194b9d2181d5569b35956afe62e71"
+  },
+  {
+    "file": "src/game/arena_local_host.gd",
+    "repository": "65a3631d8b049c00d2d7dc190cbf0c9f650efc2566dc850a54906267b4027f85",
+    "staging": "65a3631d8b049c00d2d7dc190cbf0c9f650efc2566dc850a54906267b4027f85"
+  },
+  {
+    "file": "src/game/arena_match.gd",
+    "repository": "556a24bd2170dfa93cc0179d7327c15ab7e963fb62a9135d319d57835555f01c",
+    "staging": "556a24bd2170dfa93cc0179d7327c15ab7e963fb62a9135d319d57835555f01c"
+  },
+  {
+    "file": "src/game/arena_online_boards.gd",
+    "repository": "b07f585f75ca49366c14325082fa2ce190dcb09c633403b1a7199334436effda",
+    "staging": "b07f585f75ca49366c14325082fa2ce190dcb09c633403b1a7199334436effda"
+  },
+  {
+    "file": "src/game/arena_online_game.gd",
+    "repository": "f98dcfaeaa96706137b569e1287be58bc489d736e871e848c0c44c52713d2e10",
+    "staging": "f98dcfaeaa96706137b569e1287be58bc489d736e871e848c0c44c52713d2e10"
+  },
+  {
+    "file": "src/game/arena_online_match.gd",
+    "repository": "c923f17b85a58cc55fc0cbb74218406c30d5c4f33764b79f21fafd50b01eac5c",
+    "staging": "c923f17b85a58cc55fc0cbb74218406c30d5c4f33764b79f21fafd50b01eac5c"
+  },
+  {
+    "file": "src/game/arena_online_session.gd",
+    "repository": "7ce0dbdea3d76793ce8c88ec265f5c832183ff9c733a1bc6239aacb9ba6d53ef",
+    "staging": "7ce0dbdea3d76793ce8c88ec265f5c832183ff9c733a1bc6239aacb9ba6d53ef"
+  },
+  {
+    "file": "src/game/arena_online_tournament.gd",
+    "repository": "b187e85070022f9f3c58880d71f9812ce52da7739569984b35d9358339c59c90",
+    "staging": "b187e85070022f9f3c58880d71f9812ce52da7739569984b35d9358339c59c90"
+  },
+  {
+    "file": "src/game/arena_online_view.gd",
+    "repository": "98b1756e978a70732e9ca1e34c1c9856340507aad20a20e39598babff7c0adac",
+    "staging": "98b1756e978a70732e9ca1e34c1c9856340507aad20a20e39598babff7c0adac"
+  },
+  {
+    "file": "src/game/arena_pve_match.gd",
+    "repository": "8e28a82c187c253e34f407158c3eb98b34162bc10ccddaaf104db8e5f735abb5",
+    "staging": "8e28a82c187c253e34f407158c3eb98b34162bc10ccddaaf104db8e5f735abb5"
+  },
+  {
+    "file": "src/game/arena_rules.gd",
+    "repository": "e8fb8a501d8c67861c6bb259e328f0f7a28c4f13831a66bb060bef3a76f024ad",
+    "staging": "e8fb8a501d8c67861c6bb259e328f0f7a28c4f13831a66bb060bef3a76f024ad"
+  },
+  {
+    "file": "src/game/arena_run.gd",
+    "repository": "8e6e15a830cb438c6c15a875f4b897e1b9e22a88ba16a5d503d60001cb258afc",
+    "staging": "8e6e15a830cb438c6c15a875f4b897e1b9e22a88ba16a5d503d60001cb258afc"
+  },
+  {
+    "file": "src/game/arena_solo_battles.gd",
+    "repository": "1d639e6e10dc19723b1d2ef8f3a757a77703eb54e98f96be9319f107cc520531",
+    "staging": "1d639e6e10dc19723b1d2ef8f3a757a77703eb54e98f96be9319f107cc520531"
+  },
+  {
+    "file": "src/game/arena_surface_cache.gd",
+    "repository": "e4f3aa827fe8eebe2e77586a8391b68f7a3ec3b1102594744e81b71c8bfa50c0",
+    "staging": "e4f3aa827fe8eebe2e77586a8391b68f7a3ec3b1102594744e81b71c8bfa50c0"
+  },
+  {
+    "file": "src/game/arena_terrain.gd",
+    "repository": "26366bae682cde888c5f27f9fa0b7552db2f5255338337fa60e4a009c18d4b43",
+    "staging": "26366bae682cde888c5f27f9fa0b7552db2f5255338337fa60e4a009c18d4b43"
+  },
+  {
+    "file": "src/game/arena_terrain_color.gd",
+    "repository": "46ad3e5d52c290b171252c653083414a66cd219e32b356846fff5fb9287b04de",
+    "staging": "46ad3e5d52c290b171252c653083414a66cd219e32b356846fff5fb9287b04de"
+  },
+  {
+    "file": "src/game/arena_tournament_battles.gd",
+    "repository": "8229410cf238e2b2189e4cb027dadc72c22605c6846e037ad71ced798d682854",
+    "staging": "8229410cf238e2b2189e4cb027dadc72c22605c6846e037ad71ced798d682854"
+  },
+  {
+    "file": "src/game/arena_tournament_run.gd",
+    "repository": "fe10d204364f43356d65b96fd52121f73eac8dbf0f861f2f6f69455db69bcd63",
+    "staging": "fe10d204364f43356d65b96fd52121f73eac8dbf0f861f2f6f69455db69bcd63"
+  },
+  {
+    "file": "src/game/arena_unit_info.gd",
+    "repository": "f02dd6a11fce1744616ac57d020fa9899bbdca90034760094de17428c1a89ea1",
+    "staging": "f02dd6a11fce1744616ac57d020fa9899bbdca90034760094de17428c1a89ea1"
+  },
+  {
+    "file": "src/game/arena_winter_terrain.gd",
+    "repository": "a3623624c13dbbd01642fd0062d827971a6b09fe7b00d9d5757545adcc397dbb",
+    "staging": "a3623624c13dbbd01642fd0062d827971a6b09fe7b00d9d5757545adcc397dbb"
+  },
+  {
+    "file": "src/game/astral_challenge_reward_data.gd",
+    "repository": "d97ab0f1bcf776f56a6648f8cdf9a31a5a1554d428d031f8e8108e891b3624c0",
+    "staging": "d97ab0f1bcf776f56a6648f8cdf9a31a5a1554d428d031f8e8108e891b3624c0"
+  },
+  {
+    "file": "src/game/astral_challenge_rewards.gd",
+    "repository": "1acafb8edbb309e3ee47bee37e0b84d9584ea61b71a108a2e5049516d439a39b",
+    "staging": "1acafb8edbb309e3ee47bee37e0b84d9584ea61b71a108a2e5049516d439a39b"
+  },
+  {
+    "file": "src/game/body_part.gd",
+    "repository": "b7ccaf74b5163c71e52688f5f908b3677caa0b7eb2ac997316e83ad47f02c947",
+    "staging": "b7ccaf74b5163c71e52688f5f908b3677caa0b7eb2ac997316e83ad47f02c947"
+  },
+  {
+    "file": "src/game/campaign_map.gd",
+    "repository": "5fb68823b853f7a35ee063975d77263fcf7c34398e9bec195623d2e59c62b695",
+    "staging": "5fb68823b853f7a35ee063975d77263fcf7c34398e9bec195623d2e59c62b695"
+  },
+  {
+    "file": "src/game/campaign_profile.gd",
+    "repository": "66ff5cf575b770937c0862064ed05fadc64956fba5dc5d58cbd245f1af31ce20",
+    "staging": "66ff5cf575b770937c0862064ed05fadc64956fba5dc5d58cbd245f1af31ce20"
+  },
+  {
+    "file": "src/game/campaign_state.gd",
+    "repository": "aa9a5377ee95eca1c83b5416561add75bfb0aa3e7ec99a456a972a97d924d7c3",
+    "staging": "aa9a5377ee95eca1c83b5416561add75bfb0aa3e7ec99a456a972a97d924d7c3"
+  },
+  {
+    "file": "src/game/combat.gd",
+    "repository": "6ca8445d6b96a1aa12d0305bfd860918202bb859629b9e609ac41faa59297daa",
+    "staging": "6ca8445d6b96a1aa12d0305bfd860918202bb859629b9e609ac41faa59297daa"
+  },
+  {
+    "file": "src/game/console_commands.gd",
+    "repository": "79ed01e37068932e3b88c64b75595a9a286cdb8cbc891bd0293a10e30e8b28db",
+    "staging": "79ed01e37068932e3b88c64b75595a9a286cdb8cbc891bd0293a10e30e8b28db"
+  },
+  {
+    "file": "src/game/coop_checkpoint.gd",
+    "repository": "6f97e037e5a1f9f8bfe40fb886f94987ef6a6c4ca39cc543b799fd9c375249d2",
+    "staging": "6f97e037e5a1f9f8bfe40fb886f94987ef6a6c4ca39cc543b799fd9c375249d2"
+  },
+  {
+    "file": "src/game/coop_db.gd",
+    "repository": "94bff80921f5359d1f030794502705961413c630e62c05fda0227014a05424bd",
+    "staging": "94bff80921f5359d1f030794502705961413c630e62c05fda0227014a05424bd"
+  },
+  {
+    "file": "src/game/coop_guest_roles.gd",
+    "repository": "31eb28ddd70629dd73877bdbd65e72eda1839f4a088da63ef94eaf6f6e43c7f8",
+    "staging": "31eb28ddd70629dd73877bdbd65e72eda1839f4a088da63ef94eaf6f6e43c7f8"
+  },
+  {
+    "file": "src/game/coop_party_progress.gd",
+    "repository": "c87b3972ece53de8c8f2c96d38772bbb7ba585fae51b45b79a79dfbf0ba452f0",
+    "staging": "c87b3972ece53de8c8f2c96d38772bbb7ba585fae51b45b79a79dfbf0ba452f0"
+  },
+  {
+    "file": "src/game/coop_permissions.gd",
+    "repository": "de20438472c616eb393400c16f29e68baecbd061acbf11f5b37fbd73f2e7106e",
+    "staging": "de20438472c616eb393400c16f29e68baecbd061acbf11f5b37fbd73f2e7106e"
+  },
+  {
+    "file": "src/game/coop_progress.gd",
+    "repository": "d989ee22be2522f0ba1f195fe95a055600600b47ef7a9999f3313f0ba5d5efe3",
+    "staging": "d989ee22be2522f0ba1f195fe95a055600600b47ef7a9999f3313f0ba5d5efe3"
+  },
+  {
+    "file": "src/game/corpse_pools.gd",
+    "repository": "7db544ba6f4616f6e5509760423a408c84818abcdb432d8ebd5023246bebfcae",
+    "staging": "7db544ba6f4616f6e5509760423a408c84818abcdb432d8ebd5023246bebfcae"
+  },
+  {
+    "file": "src/game/dialog_camera.gd",
+    "repository": "fb8ae99ab8abb65925457c4098419699f8bb4b648d4629e7302d20d735e7aa37",
+    "staging": "fb8ae99ab8abb65925457c4098419699f8bb4b648d4629e7302d20d735e7aa37"
+  },
+  {
+    "file": "src/game/direct_combat.gd",
+    "repository": "9a946a079f1505f804866288bb47374b1e97d474e0ff3e53a8bd1fa5f866f5b6",
+    "staging": "9a946a079f1505f804866288bb47374b1e97d474e0ff3e53a8bd1fa5f866f5b6"
+  },
+  {
+    "file": "src/game/direct_control.gd",
+    "repository": "e8592587dc781ddd2e8c51d13b4d0c9e542b440d5c1cef40b643231edd24a42e",
+    "staging": "e8592587dc781ddd2e8c51d13b4d0c9e542b440d5c1cef40b643231edd24a42e"
+  },
+  {
+    "file": "src/game/direct_pose.gd",
+    "repository": "e5c75d4260ceb53cd4eec20f2ec6edcf039d0c9bec7cd349bbbbc74bfa361e03",
+    "staging": "e5c75d4260ceb53cd4eec20f2ec6edcf039d0c9bec7cd349bbbbc74bfa361e03"
+  },
+  {
+    "file": "src/game/distant_ai.gd",
+    "repository": "dbdaf9ae7c5bd32f50acb8f73597d06cf1103945af3ed2f08ff1913e4ea69c21",
+    "staging": "dbdaf9ae7c5bd32f50acb8f73597d06cf1103945af3ed2f08ff1913e4ea69c21"
+  },
+  {
+    "file": "src/game/flash_log.gd",
+    "repository": "79abf3b5255d9b970fb41ac550f6d5674f0c2072f056b9a3bbd3d3674d3163f3",
+    "staging": "79abf3b5255d9b970fb41ac550f6d5674f0c2072f056b9a3bbd3d3674d3163f3"
+  },
+  {
+    "file": "src/game/fx/ambient_ground.gd",
+    "repository": "443d0e07738ef50f59c773a2b8125e9cb41bab25f894d11540c339823d5521fd",
+    "staging": "443d0e07738ef50f59c773a2b8125e9cb41bab25f894d11540c339823d5521fd"
+  },
+  {
+    "file": "src/game/fx/ambient_habitats.gd",
+    "repository": "086dfae474e3224631c532579e1a2cc6d29cb6be2c1f19e3dd5397056118119b",
+    "staging": "086dfae474e3224631c532579e1a2cc6d29cb6be2c1f19e3dd5397056118119b"
+  },
+  {
+    "file": "src/game/fx/ambient_life.gd",
+    "repository": "da1ac0eb73c5a97fccf217ef3c11ad8d3a2efda6c9fc02549c6c775e818eec42",
+    "staging": "da1ac0eb73c5a97fccf217ef3c11ad8d3a2efda6c9fc02549c6c775e818eec42"
+  },
+  {
+    "file": "src/game/fx/ambient_models.gd",
+    "repository": "d1e84944763337e305917431e8773a4a1fde6586436f842ea52064f7aac5084e",
+    "staging": "d1e84944763337e305917431e8773a4a1fde6586436f842ea52064f7aac5084e"
+  },
+  {
+    "file": "src/game/fx/ambient_particles.gd",
+    "repository": "5fdd51d0811ca08418de7db0b026bbf2e5c1ed9d50b0e66343e7889b87834625",
+    "staging": "5fdd51d0811ca08418de7db0b026bbf2e5c1ed9d50b0e66343e7889b87834625"
+  },
+  {
+    "file": "src/game/fx/biome_cover.gd",
+    "repository": "ea3cabcb47f52dadf69c37cf4bbadb0e9d758bf5fcb69939f532d8164878f9ae",
+    "staging": "ea3cabcb47f52dadf69c37cf4bbadb0e9d758bf5fcb69939f532d8164878f9ae"
+  },
+  {
+    "file": "src/game/fx/biome_cover_contact.gd",
+    "repository": "16120ffa17d47fc4caef2d931a0bd729773d4fb32a7570fdd6bfe28a3f321954",
+    "staging": "16120ffa17d47fc4caef2d931a0bd729773d4fb32a7570fdd6bfe28a3f321954"
+  },
+  {
+    "file": "src/game/fx/biome_cover_mesh.gd",
+    "repository": "a204aba859a899d5778438588fa4593662dd28851f8c328fa64eb48e84d908ed",
+    "staging": "a204aba859a899d5778438588fa4593662dd28851f8c328fa64eb48e84d908ed"
+  },
+  {
+    "file": "src/game/fx/biome_cover_region_mesh.gd",
+    "repository": "3c8f21b5718b4b4627cff95fa84af33a9a77234bc09f56e1f41c049e1084d6d2",
+    "staging": "3c8f21b5718b4b4627cff95fa84af33a9a77234bc09f56e1f41c049e1084d6d2"
+  },
+  {
+    "file": "src/game/fx/biome_cover_regions.gd",
+    "repository": "36dc82c8f345153089ab2bdd36cb97bd02df0e823826078198c1825d52f36d3c",
+    "staging": "36dc82c8f345153089ab2bdd36cb97bd02df0e823826078198c1825d52f36d3c"
+  },
+  {
+    "file": "src/game/fx/biome_cover_tiles.gd",
+    "repository": "bc3f3f77f83e8a75b5d59f8acffff13d9c13642ccbeaf956844d2e6bc96f3d68",
+    "staging": "bc3f3f77f83e8a75b5d59f8acffff13d9c13642ccbeaf956844d2e6bc96f3d68"
+  },
+  {
+    "file": "src/game/fx/biome_cover_water.gd",
+    "repository": "af5851a50b7e72205993d10b7246e10d997cf3e7a7cf768cc0a234b2ce2384ab",
+    "staging": "af5851a50b7e72205993d10b7246e10d997cf3e7a7cf768cc0a234b2ce2384ab"
+  },
+  {
+    "file": "src/game/fx/biome_mounds.gd",
+    "repository": "0b9b7bcc31800b564273d8e41299ae287b32463bc09cb6e390faa27d594de1ed",
+    "staging": "0b9b7bcc31800b564273d8e41299ae287b32463bc09cb6e390faa27d594de1ed"
+  },
+  {
+    "file": "src/game/fx/biome_sand_tiles.gd",
+    "repository": "6d4b1c9378c1cf146404db4286a48ad7286ae5d30962979529224f1911a30b8a",
+    "staging": "6d4b1c9378c1cf146404db4286a48ad7286ae5d30962979529224f1911a30b8a"
+  },
+  {
+    "file": "src/game/fx/cloud_reflection_shader.gd",
+    "repository": "acca8e1797fd263dac0abffe34738455eae9b42797dc5351f7161e7940d5bac4",
+    "staging": "acca8e1797fd263dac0abffe34738455eae9b42797dc5351f7161e7940d5bac4"
+  },
+  {
+    "file": "src/game/fx/cloud_reflection_view.gd",
+    "repository": "27d9198ae2e4f2afb1a571949041a5d95c49d002a0da10b4586f231539d39d7a",
+    "staging": "27d9198ae2e4f2afb1a571949041a5d95c49d002a0da10b4586f231539d39d7a"
+  },
+  {
+    "file": "src/game/fx/cloud_shadow_field.gd",
+    "repository": "d5538797b69d06fec4f63fdae9d3a97fd80022a760249b92ee024e2d2698d973",
+    "staging": "d5538797b69d06fec4f63fdae9d3a97fd80022a760249b92ee024e2d2698d973"
+  },
+  {
+    "file": "src/game/fx/cloud_volume.gd",
+    "repository": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17",
+    "staging": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17"
+  },
+  {
+    "file": "src/game/fx/cloud_volume_noise.gd",
+    "repository": "a2d57c9a764e97256d93e478451d4c337980bfe396a08d756ebd175f79284a2c",
+    "staging": "a2d57c9a764e97256d93e478451d4c337980bfe396a08d756ebd175f79284a2c"
+  },
+  {
+    "file": "src/game/fx/clouds.gd",
+    "repository": "ecf5c56c27972161478b7dee1563e6cca8bbbd11bcceb3211835e950b4a356fd",
+    "staging": "ecf5c56c27972161478b7dee1563e6cca8bbbd11bcceb3211835e950b4a356fd"
+  },
+  {
+    "file": "src/game/fx/contact_shadows.gd",
+    "repository": "9e7eed47d131fffcbacb961e35e610e2920ac57e230c6a51f05eca362267ac76",
+    "staging": "9e7eed47d131fffcbacb961e35e610e2920ac57e230c6a51f05eca362267ac76"
+  },
+  {
+    "file": "src/game/fx/far_grass.gd",
+    "repository": "6e486f190a0e515bfaed0c2f74a0236e6ba9d9f027c1c987b17153b03ba479af",
+    "staging": "6e486f190a0e515bfaed0c2f74a0236e6ba9d9f027c1c987b17153b03ba479af"
+  },
+  {
+    "file": "src/game/fx/fx_emitter.gd",
+    "repository": "c9c6e9e21322ad05b579adca0456590de8531cc9471d0d2b91d7341a821a9b16",
+    "staging": "c9c6e9e21322ad05b579adca0456590de8531cc9471d0d2b91d7341a821a9b16"
+  },
+  {
+    "file": "src/game/fx/fx_ground.gd",
+    "repository": "36178826193f86bb3b8e0d66a40a4f9a58109daf79df10143f460012708fb664",
+    "staging": "36178826193f86bb3b8e0d66a40a4f9a58109daf79df10143f460012708fb664"
+  },
+  {
+    "file": "src/game/fx/fx_types.gd",
+    "repository": "bb4406fccdf1a50390efe8480bdd557075635a47f045c7672e6a2b23875af174",
+    "staging": "bb4406fccdf1a50390efe8480bdd557075635a47f045c7672e6a2b23875af174"
+  },
+  {
+    "file": "src/game/fx/ground_contact.gd",
+    "repository": "588f5c36b9d8e8a36146e5ab5e55d7e7208d09a17ed97352bc95276e637eb38a",
+    "staging": "588f5c36b9d8e8a36146e5ab5e55d7e7208d09a17ed97352bc95276e637eb38a"
+  },
+  {
+    "file": "src/game/fx/ground_contact_data.gd",
+    "repository": "cec4b21f7582cceef1f8db656c93e5b932bf65e558c4fc1cedcbf4b23536ebd9",
+    "staging": "cec4b21f7582cceef1f8db656c93e5b932bf65e558c4fc1cedcbf4b23536ebd9"
+  },
+  {
+    "file": "src/game/fx/ground_contact_shader.gd",
+    "repository": "707df8b2ad5b7e5e3965a507b080ff22a71d6bce923943c51319829aed8ba33c",
+    "staging": "707df8b2ad5b7e5e3965a507b080ff22a71d6bce923943c51319829aed8ba33c"
+  },
+  {
+    "file": "src/game/fx/ground_dense_colors.gd",
+    "repository": "5e506c052bc662f56966158a608791a4d208986a74171d6b526cc1ec82717995",
+    "staging": "5e506c052bc662f56966158a608791a4d208986a74171d6b526cc1ec82717995"
+  },
+  {
+    "file": "src/game/fx/ground_marks.gd",
+    "repository": "5f72f57a840b20a79173b4a0e2f7d1cebe8ed24e2e42b139ca5a453c3bf5d87b",
+    "staging": "5f72f57a840b20a79173b4a0e2f7d1cebe8ed24e2e42b139ca5a453c3bf5d87b"
+  },
+  {
+    "file": "src/game/fx/ground_surface_data.gd",
+    "repository": "d62e6fd57ceb2a2bcbe65b60a45377e3020f2a32df58394e097194b2ce95282a",
+    "staging": "d62e6fd57ceb2a2bcbe65b60a45377e3020f2a32df58394e097194b2ce95282a"
+  },
+  {
+    "file": "src/game/fx/ground_surface_shader.gd",
+    "repository": "d51b6c54a32f9cb1395bbfd3a17746a52da16934c65fb2c07a3e8537089569ca",
+    "staging": "d51b6c54a32f9cb1395bbfd3a17746a52da16934c65fb2c07a3e8537089569ca"
+  },
+  {
+    "file": "src/game/fx/lightning.gd",
+    "repository": "ada9449f2327511b0a3fab662b868a8d44ec47a20c1111d5ca16f131f386a5f9",
+    "staging": "ada9449f2327511b0a3fab662b868a8d44ec47a20c1111d5ca16f131f386a5f9"
+  },
+  {
+    "file": "src/game/fx/local_light_shader.gd",
+    "repository": "d856b1cdc4e0143aee769b84aa9e1819988c55f2fc21966405b35f23c1352a74",
+    "staging": "d856b1cdc4e0143aee769b84aa9e1819988c55f2fc21966405b35f23c1352a74"
+  },
+  {
+    "file": "src/game/fx/local_lighting.gd",
+    "repository": "84b98d94aa2427fc43c92db3e5c7c3abac340f70a3919b3aa19875e68500966f",
+    "staging": "84b98d94aa2427fc43c92db3e5c7c3abac340f70a3919b3aa19875e68500966f"
+  },
+  {
+    "file": "src/game/fx/particle_system.gd",
+    "repository": "37d8e8b67386f0cc2620f383789d68d7a71f4f06b2c2a115282ce64661277a29",
+    "staging": "37d8e8b67386f0cc2620f383789d68d7a71f4f06b2c2a115282ce64661277a29"
+  },
+  {
+    "file": "src/game/fx/quest_bird.gd",
+    "repository": "ba4f656c61fe31f97faa8d5381910463f388ffab8cd12fb6b9b7da194e69fb92",
+    "staging": "ba4f656c61fe31f97faa8d5381910463f388ffab8cd12fb6b9b7da194e69fb92"
+  },
+  {
+    "file": "src/game/fx/quest_lights.gd",
+    "repository": "097a8eaeb77803705df44446d6d01b4daef302d2c97b86cce8816d1fc801706d",
+    "staging": "097a8eaeb77803705df44446d6d01b4daef302d2c97b86cce8816d1fc801706d"
+  },
+  {
+    "file": "src/game/fx/rain_snow.gd",
+    "repository": "1d90586314d42679f50769457752b021be5f008d8d3a9546110e268f80ee13aa",
+    "staging": "1d90586314d42679f50769457752b021be5f008d8d3a9546110e268f80ee13aa"
+  },
+  {
+    "file": "src/game/fx/scenery_batch_watch.gd",
+    "repository": "b0af74667003955c9d91f8c5141f494a0fc030f9fab560ecbd8dd66656e40f1c",
+    "staging": "b0af74667003955c9d91f8c5141f494a0fc030f9fab560ecbd8dd66656e40f1c"
+  },
+  {
+    "file": "src/game/fx/scenery_batches.gd",
+    "repository": "84f0b413d9f1c11737de4b73a2bc806c4e8607c38c747a01cf1a6223f2d7baa6",
+    "staging": "84f0b413d9f1c11737de4b73a2bc806c4e8607c38c747a01cf1a6223f2d7baa6"
+  },
+  {
+    "file": "src/game/fx/scenery_light_groups.gd",
+    "repository": "db4961190b0e59a4e240915a00a6461d9f4fef21d9fa5f0c562692b1d28a91f0",
+    "staging": "db4961190b0e59a4e240915a00a6461d9f4fef21d9fa5f0c562692b1d28a91f0"
+  },
+  {
+    "file": "src/game/fx/severed_limb.gd",
+    "repository": "caa4f3a33df14ec23a5fd26484b8e77becb70cb19dd74aab95f2680b6ce4a82c",
+    "staging": "caa4f3a33df14ec23a5fd26484b8e77becb70cb19dd74aab95f2680b6ce4a82c"
+  },
+  {
+    "file": "src/game/fx/soft_ground_deform.gd",
+    "repository": "212c447c83ed470c7e0a6d198845637fe6c4ffbb09eb1e4877c4b14d6e142e93",
+    "staging": "212c447c83ed470c7e0a6d198845637fe6c4ffbb09eb1e4877c4b14d6e142e93"
+  },
+  {
+    "file": "src/game/fx/soft_ground_field.gd",
+    "repository": "ff04e60936782bb80976279a7af28bfd5bb8d15d6795476fd751c0d1dc3c05fa",
+    "staging": "ff04e60936782bb80976279a7af28bfd5bb8d15d6795476fd751c0d1dc3c05fa"
+  },
+  {
+    "file": "src/game/fx/surface_weather.gd",
+    "repository": "8cc8041f89ee018aa39cbc6144f0443a0f928a6b49eb0061afaf55da35187e4e",
+    "staging": "8cc8041f89ee018aa39cbc6144f0443a0f928a6b49eb0061afaf55da35187e4e"
+  },
+  {
+    "file": "src/game/fx/terrain_cliff.gd",
+    "repository": "5f9482fef924d1784f3ac11bee6484ffca0689ff9535588cd8c3751cf61e726b",
+    "staging": "5f9482fef924d1784f3ac11bee6484ffca0689ff9535588cd8c3751cf61e726b"
+  },
+  {
+    "file": "src/game/fx/terrain_cliff_shader.gd",
+    "repository": "4dbe939598202e7962eb00b4b6ff59409231a0f65b99da475b237cd39ad71fb5",
+    "staging": "4dbe939598202e7962eb00b4b6ff59409231a0f65b99da475b237cd39ad71fb5"
+  },
+  {
+    "file": "src/game/fx/terrain_cliff_tiles.gd",
+    "repository": "e1b5e2afb3ff6d6d82d9ad40cb81b72c0c21b90ec286e5a580b256419f0e25a1",
+    "staging": "e1b5e2afb3ff6d6d82d9ad40cb81b72c0c21b90ec286e5a580b256419f0e25a1"
+  },
+  {
+    "file": "src/game/fx/terrain_color_cache.gd",
+    "repository": "4a15ef3ea33eca341145f6902d98a1e5670080820b3d1f88aa146984bb386851",
+    "staging": "4a15ef3ea33eca341145f6902d98a1e5670080820b3d1f88aa146984bb386851"
+  },
+  {
+    "file": "src/game/fx/terrain_details.gd",
+    "repository": "b95f7451f5957a511b3f9fe900fc31eea198a05345e882e4d5377d9e06c3f1bd",
+    "staging": "b95f7451f5957a511b3f9fe900fc31eea198a05345e882e4d5377d9e06c3f1bd"
+  },
+  {
+    "file": "src/game/fx/terrain_sampling_shader.gd",
+    "repository": "3220bab6169f1d828b862d807279dddf1b3755262c0cacd97ce72cb34c29c8ec",
+    "staging": "3220bab6169f1d828b862d807279dddf1b3755262c0cacd97ce72cb34c29c8ec"
+  },
+  {
+    "file": "src/game/fx/terrain_transition.gd",
+    "repository": "5d90077e9ae26d463c4b56bc939e9ace9efcfac46a76c40f4ef6396ce00a0525",
+    "staging": "5d90077e9ae26d463c4b56bc939e9ace9efcfac46a76c40f4ef6396ce00a0525"
+  },
+  {
+    "file": "src/game/fx/terrain_transition_shader.gd",
+    "repository": "5253cb154d154447116f7b99603812c61a023aeafb0e4a53668a8f6aa38e4a11",
+    "staging": "5253cb154d154447116f7b99603812c61a023aeafb0e4a53668a8f6aa38e4a11"
+  },
+  {
+    "file": "src/game/fx/terrain_transition_tiles.gd",
+    "repository": "752a5f38b3bdc1c92acdf5eb859262139f0ffdcfac81426f06f8b17e75f4086e",
+    "staging": "752a5f38b3bdc1c92acdf5eb859262139f0ffdcfac81426f06f8b17e75f4086e"
+  },
+  {
+    "file": "src/game/fx/vegetation_interaction.gd",
+    "repository": "e999b431302615cf2a30fc01cecd1124bc137082b564b6a39c8feda7b95499cb",
+    "staging": "e999b431302615cf2a30fc01cecd1124bc137082b564b6a39c8feda7b95499cb"
+  },
+  {
+    "file": "src/game/fx/water_caustics.gd",
+    "repository": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6",
+    "staging": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6"
+  },
+  {
+    "file": "src/game/fx/water_current.gd",
+    "repository": "57e533c289a9bb194cb7363239017b6f73af015ff49e524a0a999ed52bc5dc92",
+    "staging": "57e533c289a9bb194cb7363239017b6f73af015ff49e524a0a999ed52bc5dc92"
+  },
+  {
+    "file": "src/game/fx/water_current_shader.gd",
+    "repository": "2f8bf1a57a3e3953ae3e504fdce635c100cdd34a63b74a192826ba4ad1c56442",
+    "staging": "2f8bf1a57a3e3953ae3e504fdce635c100cdd34a63b74a192826ba4ad1c56442"
+  },
+  {
+    "file": "src/game/fx/water_interaction.gd",
+    "repository": "c691ff44ef64ce326050852bdc2852ac5c3b7f538149d98a383d734ebafdcb18",
+    "staging": "c691ff44ef64ce326050852bdc2852ac5c3b7f538149d98a383d734ebafdcb18"
+  },
+  {
+    "file": "src/game/fx/water_interaction_shader.gd",
+    "repository": "b65a4420bc155a5539080c0706b8ce1f4b9f2c674156a4883a5fdac05617d653",
+    "staging": "b65a4420bc155a5539080c0706b8ce1f4b9f2c674156a4883a5fdac05617d653"
+  },
+  {
+    "file": "src/game/fx/water_reflection.gd",
+    "repository": "19adf04fc6f42c185940e8945199afa2c4201be7688d77906ced84ba2bafde5a",
+    "staging": "19adf04fc6f42c185940e8945199afa2c4201be7688d77906ced84ba2bafde5a"
+  },
+  {
+    "file": "src/game/fx/water_surface.gd",
+    "repository": "6ef19a9c9ac09510d1c7163a894742ce3a5a97bf0fb46c4c73f4c058160af197",
+    "staging": "6ef19a9c9ac09510d1c7163a894742ce3a5a97bf0fb46c4c73f4c058160af197"
+  },
+  {
+    "file": "src/game/fx/water_texture_data.gd",
+    "repository": "5dc6b740c394cb5735a09ee3a1c18225a33bdd52da6f784ce8d4fb578d7562eb",
+    "staging": "5dc6b740c394cb5735a09ee3a1c18225a33bdd52da6f784ce8d4fb578d7562eb"
+  },
+  {
+    "file": "src/game/fx/water_wave_field.gd",
+    "repository": "eb218f7fcc211455b63d9db2bdd4e242132afd0b4e9bef0ab633355a180c6c12",
+    "staging": "eb218f7fcc211455b63d9db2bdd4e242132afd0b4e9bef0ab633355a180c6c12"
+  },
+  {
+    "file": "src/game/fx/water_wave_shader.gd",
+    "repository": "1ad74048746e5b2a39f7e8bc0d38f1fa97ebeeb8059f216f54a36e97715757c2",
+    "staging": "1ad74048746e5b2a39f7e8bc0d38f1fa97ebeeb8059f216f54a36e97715757c2"
+  },
+  {
+    "file": "src/game/fx/waterfall_field.gd",
+    "repository": "eb901e23553277da65c01d6bb936477135fb9a910fb8f2c52eda23fd3bdf8aae",
+    "staging": "eb901e23553277da65c01d6bb936477135fb9a910fb8f2c52eda23fd3bdf8aae"
+  },
+  {
+    "file": "src/game/fx/waterfall_shader.gd",
+    "repository": "d26f34c0fc2467e5a328737b4d8873d07ca81394d950df2fda3658f5703155f1",
+    "staging": "d26f34c0fc2467e5a328737b4d8873d07ca81394d950df2fda3658f5703155f1"
+  },
+  {
+    "file": "src/game/fx/waterfalls.gd",
+    "repository": "17d24e4d6bc32f5689cef65381e53786a79b23273bf765c8542200aa6f28091b",
+    "staging": "17d24e4d6bc32f5689cef65381e53786a79b23273bf765c8542200aa6f28091b"
+  },
+  {
+    "file": "src/game/fx/weather_mist.gd",
+    "repository": "81e0a685997c2b6dddb01028ac0094e7aabf358c5655e6e218e31e2ef4f5570a",
+    "staging": "81e0a685997c2b6dddb01028ac0094e7aabf358c5655e6e218e31e2ef4f5570a"
+  },
+  {
+    "file": "src/game/fx/weather_mist_sources.gd",
+    "repository": "f5507b2f48f267779f489011fc370a3ba3995130eb6d281cd2daea85a3c396fe",
+    "staging": "f5507b2f48f267779f489011fc370a3ba3995130eb6d281cd2daea85a3c396fe"
+  },
+  {
+    "file": "src/game/fx/weather_wind.gd",
+    "repository": "fb42547a9ec04cc025c95bf9d6b7964227aeab3398431292f87797f4f6ec728d",
+    "staging": "fb42547a9ec04cc025c95bf9d6b7964227aeab3398431292f87797f4f6ec728d"
+  },
+  {
+    "file": "src/game/game.gd",
+    "repository": "f89f89edf09f070452408d1c2bbce2899d796b230fdf5b6ec03a319bc4e7f135",
+    "staging": "f89f89edf09f070452408d1c2bbce2899d796b230fdf5b6ec03a319bc4e7f135"
+  },
+  {
+    "file": "src/game/game_sound.gd",
+    "repository": "2838d36adda3f419c65745062087ce2014ac4237880d1ebeb7b47b1aea7e7a44",
+    "staging": "2838d36adda3f419c65745062087ce2014ac4237880d1ebeb7b47b1aea7e7a44"
+  },
+  {
+    "file": "src/game/gfx.gd",
+    "repository": "ec34bb72a29e52a9dbbee3eda597f9ae5d90087bc493eac33511b1525b5aa4bb",
+    "staging": "ec34bb72a29e52a9dbbee3eda597f9ae5d90087bc493eac33511b1525b5aa4bb"
+  },
+  {
+    "file": "src/game/gfx_detect.gd",
+    "repository": "fca7188219fd5746dae88fb6b555ffb6a4b7023e923af5029f3acb7d728b5b83",
+    "staging": "fca7188219fd5746dae88fb6b555ffb6a4b7023e923af5029f3acb7d728b5b83"
+  },
+  {
+    "file": "src/game/gfx_presets.gd",
+    "repository": "40a9a1ef4a19561301dc8a13a3b531de7606eb3a3ba3bac3b71565b544d48f68",
+    "staging": "40a9a1ef4a19561301dc8a13a3b531de7606eb3a3ba3bac3b71565b544d48f68"
+  },
+  {
+    "file": "src/game/internet_directory.gd",
+    "repository": "5b6f1b7269313894373ad112a01e79687862ea22c28723bfcfb3f862482cc9bc",
+    "staging": "5b6f1b7269313894373ad112a01e79687862ea22c28723bfcfb3f862482cc9bc"
+  },
+  {
+    "file": "src/game/items.gd",
+    "repository": "5b6c097d32cdef7262d4e54db92d77399dc2791e54906caaf767fd2218c9e2fa",
+    "staging": "5b6c097d32cdef7262d4e54db92d77399dc2791e54906caaf767fd2218c9e2fa"
+  },
+  {
+    "file": "src/game/lan_discovery.gd",
+    "repository": "8da4b2ee6bc370fd87879067032b30f90a2ae11f8750e14dd2153b0e619f2adf",
+    "staging": "8da4b2ee6bc370fd87879067032b30f90a2ae11f8750e14dd2153b0e619f2adf"
+  },
+  {
+    "file": "src/game/levers.gd",
+    "repository": "405761bd4ddc41dd596ddd5c2659438dc5f15137053651cb53a4785f4ad7322f",
+    "staging": "405761bd4ddc41dd596ddd5c2659438dc5f15137053651cb53a4785f4ad7322f"
+  },
+  {
+    "file": "src/game/lmp_mode.gd",
+    "repository": "c86a99c6cf5e55fad160d73d5700748ee3500ef7065383ff2b559e21017e242a",
+    "staging": "c86a99c6cf5e55fad160d73d5700748ee3500ef7065383ff2b559e21017e242a"
+  },
+  {
+    "file": "src/game/lmp_travel.gd",
+    "repository": "180d6d4cb3f4d89e31cab44fca0a0c3f301304bce5ca339e13a6ad8b461404af",
+    "staging": "180d6d4cb3f4d89e31cab44fca0a0c3f301304bce5ca339e13a6ad8b461404af"
+  },
+  {
+    "file": "src/game/local_host.gd",
+    "repository": "0ae7eeffba4989e7b4d869cbed98a6b22414c2d65c2be813aa37e6a66b87d71c",
+    "staging": "0ae7eeffba4989e7b4d869cbed98a6b22414c2d65c2be813aa37e6a66b87d71c"
+  },
+  {
+    "file": "src/game/mob_scaling.gd",
+    "repository": "cc0d918f9d490236493ae70f8794713fe8b155574d716ba93f985021995fc4ab",
+    "staging": "cc0d918f9d490236493ae70f8794713fe8b155574d716ba93f985021995fc4ab"
+  },
+  {
+    "file": "src/game/mod_catalog.gd",
+    "repository": "adc8bbffd650a70b275bc73cb4405cd24f2bfc43abe4f06a768529f69a7c4058",
+    "staging": "adc8bbffd650a70b275bc73cb4405cd24f2bfc43abe4f06a768529f69a7c4058"
+  },
+  {
+    "file": "src/game/mod_download.gd",
+    "repository": "16a0aee6794e1e417e5f4ef014c299bd37a2f103654bdd51450811b9fc819665",
+    "staging": "16a0aee6794e1e417e5f4ef014c299bd37a2f103654bdd51450811b9fc819665"
+  },
+  {
+    "file": "src/game/mod_formula.gd",
+    "repository": "03859521693464d67a8da793779eacd7f73ace35809db263d94bcbf9d7ae0c05",
+    "staging": "03859521693464d67a8da793779eacd7f73ace35809db263d94bcbf9d7ae0c05"
+  },
+  {
+    "file": "src/game/mod_schema.gd",
+    "repository": "a3f58717b2ab6aebb1db09df59a95188924fcb0d6acdd5f9fedfe1cb288a3065",
+    "staging": "a3f58717b2ab6aebb1db09df59a95188924fcb0d6acdd5f9fedfe1cb288a3065"
+  },
+  {
+    "file": "src/game/mod_store.gd",
+    "repository": "28906ba4f3f1219f59fbf11ecf3b65e1eb16128918b2fc0adf6f5b930be0b26f",
+    "staging": "28906ba4f3f1219f59fbf11ecf3b65e1eb16128918b2fc0adf6f5b930be0b26f"
+  },
+  {
+    "file": "src/game/mod_zip.gd",
+    "repository": "f5ea47f80948098531d92982761fef46a0a5682cc661ec05f49513280c1097d5",
+    "staging": "f5ea47f80948098531d92982761fef46a0a5682cc661ec05f49513280c1097d5"
+  },
+  {
+    "file": "src/game/mp_character.gd",
+    "repository": "cd0e93cc94610c2846ded3cc93e58fe448349bd0137abc1cb761ced5c4c1ea72",
+    "staging": "cd0e93cc94610c2846ded3cc93e58fe448349bd0137abc1cb761ced5c4c1ea72"
+  },
+  {
+    "file": "src/game/music_system.gd",
+    "repository": "ec3b7086a422b9d5931727c6f22474f109ba6313844af2efdb7138cd17659147",
+    "staging": "ec3b7086a422b9d5931727c6f22474f109ba6313844af2efdb7138cd17659147"
+  },
+  {
+    "file": "src/game/nav_blocks.gd",
+    "repository": "f79140f61964efef553ac7194addb08bc4b3e163a0a835b4de52a74c8cc576f6",
+    "staging": "f79140f61964efef553ac7194addb08bc4b3e163a0a835b4de52a74c8cc576f6"
+  },
+  {
+    "file": "src/game/nav_grid.gd",
+    "repository": "c28769d1e4a152308f83d4a648b6cf0d12a44a3d76bae882eb13298437a5b90b",
+    "staging": "c28769d1e4a152308f83d4a648b6cf0d12a44a3d76bae882eb13298437a5b90b"
+  },
+  {
+    "file": "src/game/nav_spline.gd",
+    "repository": "abfb966c48d47459da9f86548444f1a54110e7aa8fd75708865e4655b0970985",
+    "staging": "abfb966c48d47459da9f86548444f1a54110e7aa8fd75708865e4655b0970985"
+  },
+  {
+    "file": "src/game/nav_turn.gd",
+    "repository": "a13869c348ddf1a18635571b22ef13517b2ed945a6f2f43d1c7312221aac020a",
+    "staging": "a13869c348ddf1a18635571b22ef13517b2ed945a6f2f43d1c7312221aac020a"
+  },
+  {
+    "file": "src/game/net_input.gd",
+    "repository": "b9124f8589808fdc9b47d1d3badf665cc636e422728fa519cd123d4583fe5a26",
+    "staging": "b9124f8589808fdc9b47d1d3badf665cc636e422728fa519cd123d4583fe5a26"
+  },
+  {
+    "file": "src/game/net_sim.gd",
+    "repository": "3ab0ff6bbe1ff5df9813168be8a4d253e54967bf94d56a27642370903afc10bc",
+    "staging": "3ab0ff6bbe1ff5df9813168be8a4d253e54967bf94d56a27642370903afc10bc"
+  },
+  {
+    "file": "src/game/net_smooth.gd",
+    "repository": "7285a92c5d9a29af5b98d07cbb98dcc6be9d1aa3002b097a903f8ee1fdc81700",
+    "staging": "7285a92c5d9a29af5b98d07cbb98dcc6be9d1aa3002b097a903f8ee1fdc81700"
+  },
+  {
+    "file": "src/game/net_snapshot.gd",
+    "repository": "7cf128a40c253e87c643bfaa1161372d1f67d4aeb0a8050f367c86f1fc73201b",
+    "staging": "7cf128a40c253e87c643bfaa1161372d1f67d4aeb0a8050f367c86f1fc73201b"
+  },
+  {
+    "file": "src/game/net_state.gd",
+    "repository": "3160404ef9d189071b5d9c7e035f41354e608cc0af7c7dac516085b6adbd87a2",
+    "staging": "3160404ef9d189071b5d9c7e035f41354e608cc0af7c7dac516085b6adbd87a2"
+  },
+  {
+    "file": "src/game/net_status.gd",
+    "repository": "66934cb6ce406033dcd58ffb14cf458bdc3a50ec1004185ac5c6fc73c11a7912",
+    "staging": "66934cb6ce406033dcd58ffb14cf458bdc3a50ec1004185ac5c6fc73c11a7912"
+  },
+  {
+    "file": "src/game/order_marks.gd",
+    "repository": "290a410d353ff5d00153b1db34a4a72659e13c7256930a4cccec50169c80d355",
+    "staging": "290a410d353ff5d00153b1db34a4a72659e13c7256930a4cccec50169c80d355"
+  },
+  {
+    "file": "src/game/pad_field.gd",
+    "repository": "5a097bf54e036331f77cd6f0d0a8b97fa6d4d18a48b7829b619a2cd5ec5a1d8f",
+    "staging": "5a097bf54e036331f77cd6f0d0a8b97fa6d4d18a48b7829b619a2cd5ec5a1d8f"
+  },
+  {
+    "file": "src/game/perks.gd",
+    "repository": "b8a9eeaf30e525f2043117a5f4231faed19cd749f1f06beb7996674255d48403",
+    "staging": "b8a9eeaf30e525f2043117a5f4231faed19cd749f1f06beb7996674255d48403"
+  },
+  {
+    "file": "src/game/player_swap.gd",
+    "repository": "618724aef1515dbf8c55245ef14fcea735e1ca1aed7c6a3a61ad3632862dda10",
+    "staging": "618724aef1515dbf8c55245ef14fcea735e1ca1aed7c6a3a61ad3632862dda10"
+  },
+  {
+    "file": "src/game/projectile.gd",
+    "repository": "e695d8d651da79b5dfc6a425869ea584b74de1b63ba8d2e102d234cc057d07fc",
+    "staging": "e695d8d651da79b5dfc6a425869ea584b74de1b63ba8d2e102d234cc057d07fc"
+  },
+  {
+    "file": "src/game/revive.gd",
+    "repository": "20f79f6601f68bf747147780b453e1e6277dff0dc0219319a81de0b812a920d0",
+    "staging": "20f79f6601f68bf747147780b453e1e6277dff0dc0219319a81de0b812a920d0"
+  },
+  {
+    "file": "src/game/save_info.gd",
+    "repository": "fa3f9889dee8ac7d6d6afc110af35e88bc04e08848c18ddbea7bb4dc9c194f17",
+    "staging": "fa3f9889dee8ac7d6d6afc110af35e88bc04e08848c18ddbea7bb4dc9c194f17"
+  },
+  {
+    "file": "src/game/script/authored_village_talk.gd",
+    "repository": "663fccf90c9f3a2a4a05913c9bc17547d4ebc606532d43fb9fe4890736daffe6",
+    "staging": "663fccf90c9f3a2a4a05913c9bc17547d4ebc606532d43fb9fe4890736daffe6"
+  },
+  {
+    "file": "src/game/script/briefings.gd",
+    "repository": "57efa3d842879459101ed20f68653ff41085bd54e967ced3c59830c7276d31cc",
+    "staging": "57efa3d842879459101ed20f68653ff41085bd54e967ced3c59830c7276d31cc"
+  },
+  {
+    "file": "src/game/script/camp_grants.gd",
+    "repository": "5b4e74e2a655245ffadde263a374e7dab86e79ecbf432769ad208894b8094531",
+    "staging": "5b4e74e2a655245ffadde263a374e7dab86e79ecbf432769ad208894b8094531"
+  },
+  {
+    "file": "src/game/script/coop_vm_state.gd",
+    "repository": "b071a76622d7d54fe71e6c543c7be0d599e8306b241526c2e889e50d7864b832",
+    "staging": "b071a76622d7d54fe71e6c543c7be0d599e8306b241526c2e889e50d7864b832"
+  },
+  {
+    "file": "src/game/script/gs_table.gd",
+    "repository": "95e01b21ce54a1eca18373876b1473269ab60445b1a54694de6bce15a22c7c4b",
+    "staging": "95e01b21ce54a1eca18373876b1473269ab60445b1a54694de6bce15a22c7c4b"
+  },
+  {
+    "file": "src/game/script/scene_visibility.gd",
+    "repository": "b48be9bf5c27839e5bb6b75a25ddd9e6467f71a7c033224c2bcf4a77e636ab99",
+    "staging": "b48be9bf5c27839e5bb6b75a25ddd9e6467f71a7c033224c2bcf4a77e636ab99"
+  },
+  {
+    "file": "src/game/script/script_parser.gd",
+    "repository": "e71f9f06412e38a586c6cfb9158a1e680e656dcad07a31c79dea6583d3484919",
+    "staging": "e71f9f06412e38a586c6cfb9158a1e680e656dcad07a31c79dea6583d3484919"
+  },
+  {
+    "file": "src/game/script/story_astral_eavesdrop.gd",
+    "repository": "30cd6bec879181a67a75ce27056b9f9fce190b72773509713dfa067981df559e",
+    "staging": "30cd6bec879181a67a75ce27056b9f9fce190b72773509713dfa067981df559e"
+  },
+  {
+    "file": "src/game/script/story_astral_fortunes.gd",
+    "repository": "35ad671b2db163e7278284829ba0afaa3bd17eae0720a0a2d3ce554d67012d6b",
+    "staging": "35ad671b2db163e7278284829ba0afaa3bd17eae0720a0a2d3ce554d67012d6b"
+  },
+  {
+    "file": "src/game/script/story_compat.gd",
+    "repository": "c87803ccae82bdd6e0bff84701d97b1f7f564798f22effa48010cf729d114d46",
+    "staging": "c87803ccae82bdd6e0bff84701d97b1f7f564798f22effa48010cf729d114d46"
+  },
+  {
+    "file": "src/game/script/story_coop_effects.gd",
+    "repository": "7d432cb6007f390e7bf625f7537b2ba37fcc3d22b901fc301f5d57270ea77540",
+    "staging": "7d432cb6007f390e7bf625f7537b2ba37fcc3d22b901fc301f5d57270ea77540"
+  },
+  {
+    "file": "src/game/script/story_coop_predicates.gd",
+    "repository": "b69f35cd8487f141cab14d2cbc377278dbf4443d9474b5a28e5ca4e53676f33c",
+    "staging": "b69f35cd8487f141cab14d2cbc377278dbf4443d9474b5a28e5ca4e53676f33c"
+  },
+  {
+    "file": "src/game/script/story_coop_traps.gd",
+    "repository": "0fe31b248712b3aa735a3bb9467b41929cbeb5c861288e1937b2f47dae0523d3",
+    "staging": "0fe31b248712b3aa735a3bb9467b41929cbeb5c861288e1937b2f47dae0523d3"
+  },
+  {
+    "file": "src/game/script/story_guard_escape.gd",
+    "repository": "7fc64da15f96e1ba1d7aeeb013edbd5113f869232821f31f84d3c6b30ecfa0f3",
+    "staging": "7fc64da15f96e1ba1d7aeeb013edbd5113f869232821f31f84d3c6b30ecfa0f3"
+  },
+  {
+    "file": "src/game/script/story_revenge.gd",
+    "repository": "11f99c95aaef68b18136e6ebcd6fe7799c05040244e0c4859cb2bb31d1e6c08d",
+    "staging": "11f99c95aaef68b18136e6ebcd6fe7799c05040244e0c4859cb2bb31d1e6c08d"
+  },
+  {
+    "file": "src/game/script/vm.gd",
+    "repository": "0c0dd911e8896e3181211b3e556244febd32d9072dd9fee0bf7c616c21942744",
+    "staging": "0c0dd911e8896e3181211b3e556244febd32d9072dd9fee0bf7c616c21942744"
+  },
+  {
+    "file": "src/game/session.gd",
+    "repository": "4a34c30598d6da99483a7f13b06414b572f76290a1587a664a4d301d1186fa57",
+    "staging": "4a34c30598d6da99483a7f13b06414b572f76290a1587a664a4d301d1186fa57"
+  },
+  {
+    "file": "src/game/shader_warmup.gd",
+    "repository": "c4536cda6ead667178aea1aeba2a52dca495d95ff93a9fab22996d4f9d42cf97",
+    "staging": "c4536cda6ead667178aea1aeba2a52dca495d95ff93a9fab22996d4f9d42cf97"
+  },
+  {
+    "file": "src/game/shadow_diag.gd",
+    "repository": "836b6e7608c9b9ddd25f977847194a7f729a748551c4a9efb54a297c544ae41a",
+    "staging": "836b6e7608c9b9ddd25f977847194a7f729a748551c4a9efb54a297c544ae41a"
+  },
+  {
+    "file": "src/game/shops.gd",
+    "repository": "9b3cd5940bdde33c8cb94c9c50b20591ae3c0270549ccaf8d76587e4cddd776d",
+    "staging": "9b3cd5940bdde33c8cb94c9c50b20591ae3c0270549ccaf8d76587e4cddd776d"
+  },
+  {
+    "file": "src/game/side_quests.gd",
+    "repository": "2ebe05ff695ba157e7c6e5115659a16a8905f928c38e21d9b52ca8312a497544",
+    "staging": "2ebe05ff695ba157e7c6e5115659a16a8905f928c38e21d9b52ca8312a497544"
+  },
+  {
+    "file": "src/game/skills.gd",
+    "repository": "ad4a001a2db04e1a096f251b78a3f3b8054628844eb1c9c5b720dc6a7d967fbd",
+    "staging": "ad4a001a2db04e1a096f251b78a3f3b8054628844eb1c9c5b720dc6a7d967fbd"
+  },
+  {
+    "file": "src/game/sky.gd",
+    "repository": "c3094487b1801cfa56154efe81bfe28f3eedbb97632f1ae98cc906588e6899fa",
+    "staging": "c3094487b1801cfa56154efe81bfe28f3eedbb97632f1ae98cc906588e6899fa"
+  },
+  {
+    "file": "src/game/smile_faces.gd",
+    "repository": "34ece2b2bd496408d46a65b52fc9f8b3318a5d6037e4c97423f41cb535acaffe",
+    "staging": "34ece2b2bd496408d46a65b52fc9f8b3318a5d6037e4c97423f41cb535acaffe"
+  },
+  {
+    "file": "src/game/sound_mixer.gd",
+    "repository": "d305d823158f4cfbbbf83c127fd925e2ee169faaa50cfee99a34f48f659d8a6f",
+    "staging": "d305d823158f4cfbbbf83c127fd925e2ee169faaa50cfee99a34f48f659d8a6f"
+  },
+  {
+    "file": "src/game/spell_fx.gd",
+    "repository": "9aa6e92621304450964f73df6434fba007c9032a97077ec4f446be3b1798dc13",
+    "staging": "9aa6e92621304450964f73df6434fba007c9032a97077ec4f446be3b1798dc13"
+  },
+  {
+    "file": "src/game/spell_sounds.gd",
+    "repository": "7ee844eb895b06556724ca2f62e46715f5560426b27fe2cb68b2cb3616817946",
+    "staging": "7ee844eb895b06556724ca2f62e46715f5560426b27fe2cb68b2cb3616817946"
+  },
+  {
+    "file": "src/game/spells.gd",
+    "repository": "521b0c426ff4a90f9f7611052d83186b2f7e01342050bb4f4fa270193c2c6946",
+    "staging": "521b0c426ff4a90f9f7611052d83186b2f7e01342050bb4f4fa270193c2c6946"
+  },
+  {
+    "file": "src/game/surface_materials.gd",
+    "repository": "8f0c79025c06944e7fd817949c6bbc5b83566d5add95ed7f04db534e6b16c7bb",
+    "staging": "8f0c79025c06944e7fd817949c6bbc5b83566d5add95ed7f04db534e6b16c7bb"
+  },
+  {
+    "file": "src/game/tex_upscale.gd",
+    "repository": "0f13cadea2b2b96b73e97469612b74ed05e4e5400b2bbf7aa7bd349da9bc0079",
+    "staging": "0f13cadea2b2b96b73e97469612b74ed05e4e5400b2bbf7aa7bd349da9bc0079"
+  },
+  {
+    "file": "src/game/tex_upscale_texture.gd",
+    "repository": "d2c84c17341be6c0ff018f6d588cd78b4864f56250e81d2691def6b963e467be",
+    "staging": "d2c84c17341be6c0ff018f6d588cd78b4864f56250e81d2691def6b963e467be"
+  },
+  {
+    "file": "src/game/tornado.gd",
+    "repository": "efcb45ba70cd9c6eadac1e54ee45edf2303865df11184372f111fde35ad4acb2",
+    "staging": "efcb45ba70cd9c6eadac1e54ee45edf2303865df11184372f111fde35ad4acb2"
+  },
+  {
+    "file": "src/game/training_refund.gd",
+    "repository": "68b6f43959b57f16394174beaa1ba81f233cbe1c5657880ce5334def33ea7cb9",
+    "staging": "68b6f43959b57f16394174beaa1ba81f233cbe1c5657880ce5334def33ea7cb9"
+  },
+  {
+    "file": "src/game/traps.gd",
+    "repository": "4f7e1be5a7b39d187f7c06b4394992ff1ba1b510aa28fc417e724f2f7b50acf6",
+    "staging": "4f7e1be5a7b39d187f7c06b4394992ff1ba1b510aa28fc417e724f2f7b50acf6"
+  },
+  {
+    "file": "src/game/unit.gd",
+    "repository": "68ed930b19140cce274f93f6d1e05a67a3556495874e38b01f9e3778baf5568b",
+    "staging": "68ed930b19140cce274f93f6d1e05a67a3556495874e38b01f9e3778baf5568b"
+  },
+  {
+    "file": "src/game/unit_fog.gd",
+    "repository": "1a0c84fe8f0e0a6d9029ce0d594c9e44ec37c373f3d4eb3215371359cdcc97b3",
+    "staging": "1a0c84fe8f0e0a6d9029ce0d594c9e44ec37c373f3d4eb3215371359cdcc97b3"
+  },
+  {
+    "file": "src/game/unit_sounds.gd",
+    "repository": "abf23c12f5678698af22902ce79d8f147d282c37c56246796a1ed80a2d4660e0",
+    "staging": "abf23c12f5678698af22902ce79d8f147d282c37c56246796a1ed80a2d4660e0"
+  },
+  {
+    "file": "src/game/unit_wounds.gd",
+    "repository": "7ce19d06ae90948644357ac653d27d6b8ae271b084f0dcb5ed813ca196cb52be",
+    "staging": "7ce19d06ae90948644357ac653d27d6b8ae271b084f0dcb5ed813ca196cb52be"
+  },
+  {
+    "file": "src/game/upnp_port.gd",
+    "repository": "721ba99399c6f994b099251409c454df5a8e7a46aff5fad73f1ce9d835326e11",
+    "staging": "721ba99399c6f994b099251409c454df5a8e7a46aff5fad73f1ce9d835326e11"
+  },
+  {
+    "file": "src/game/vision_fog.gd",
+    "repository": "8df02d201df0821622eeaea2c390285a20fecdb9230ec7172daae5a9f1b278ce",
+    "staging": "8df02d201df0821622eeaea2c390285a20fecdb9230ec7172daae5a9f1b278ce"
+  },
+  {
+    "file": "src/game/weather.gd",
+    "repository": "0aa4661441ced16b64aadd47431a8a8a47d4e4b08126c65f15941f5074bd22c8",
+    "staging": "0aa4661441ced16b64aadd47431a8a8a47d4e4b08126c65f15941f5074bd22c8"
+  },
+  {
+    "file": "src/game/wiki_catalog.gd",
+    "repository": "10d724e79145d233c1714fcaa89a817a3f939bbdea464b5482b31f2698c0fca8",
+    "staging": "10d724e79145d233c1714fcaa89a817a3f939bbdea464b5482b31f2698c0fca8"
+  },
+  {
+    "file": "src/game/wiki_knowledge.gd",
+    "repository": "a26706023ecd43edfc83c285897f8e358884d14662a051560524f1da28268453",
+    "staging": "a26706023ecd43edfc83c285897f8e358884d14662a051560524f1da28268453"
+  },
+  {
+    "file": "src/game/wiki_library.gd",
+    "repository": "54fecb7199e1bf641f25988e7df931a15ec9a789674a38668d680235b2a32f30",
+    "staging": "54fecb7199e1bf641f25988e7df931a15ec9a789674a38668d680235b2a32f30"
+  },
+  {
+    "file": "src/game/wiki_lore.gd",
+    "repository": "9b66ce05cbeb70d109fc8cb86a1956a3c6f4b61c297feb3272cfec98b201a3d1",
+    "staging": "9b66ce05cbeb70d109fc8cb86a1956a3c6f4b61c297feb3272cfec98b201a3d1"
+  },
+  {
+    "file": "src/game/wiki_lore_data.gd",
+    "repository": "113e6ad064f9fc19a100563628f8b51e507a507afea2a523322409ce970a268f",
+    "staging": "113e6ad064f9fc19a100563628f8b51e507a507afea2a523322409ce970a268f"
+  },
+  {
+    "file": "src/game/wiki_plan.gd",
+    "repository": "dc231753018fa72bbb43aae5a2464e36dbfdaefc6027e6311aa79f8697dbb614",
+    "staging": "dc231753018fa72bbb43aae5a2464e36dbfdaefc6027e6311aa79f8697dbb614"
+  },
+  {
+    "file": "src/game/wiki_quest_text.gd",
+    "repository": "024e39ffd6f803361181daec5aafbbddc6e8912351c0abf437d3e11daba68b52",
+    "staging": "024e39ffd6f803361181daec5aafbbddc6e8912351c0abf437d3e11daba68b52"
+  },
+  {
+    "file": "src/game/wiki_reference_text.gd",
+    "repository": "222bb017f506ee1fc0447eda55297274c8676ee10b08bccdfa54ab7cbc09a83e",
+    "staging": "222bb017f506ee1fc0447eda55297274c8676ee10b08bccdfa54ab7cbc09a83e"
+  },
+  {
+    "file": "src/game/wiki_search.gd",
+    "repository": "fe5d6c469f13f5f5cc35cdf57ba158449becce49eced937c9ebe44b1e91a0caa",
+    "staging": "fe5d6c469f13f5f5cc35cdf57ba158449becce49eced937c9ebe44b1e91a0caa"
+  },
+  {
+    "file": "src/game/wiki_source.gd",
+    "repository": "58f863844f00a887cffb82b6a3830e620a5edb3400789602510ca9585b33acde",
+    "staging": "58f863844f00a887cffb82b6a3830e620a5edb3400789602510ca9585b33acde"
+  },
+  {
+    "file": "src/game/wiki_world_text.gd",
+    "repository": "dfa084492974ba9314d0293a99ced75f2ad56fa7d04ed33b9d205090d0a479d9",
+    "staging": "dfa084492974ba9314d0293a99ced75f2ad56fa7d04ed33b9d205090d0a479d9"
+  },
+  {
+    "file": "src/game/world.gd",
+    "repository": "5440a7133866c88bb907fb2d0c435cbaa3b5a34346f9171162a1d0fb3b170969",
+    "staging": "5440a7133866c88bb907fb2d0c435cbaa3b5a34346f9171162a1d0fb3b170969"
+  },
+  {
+    "file": "src/game/xp_rules.gd",
+    "repository": "64e0b9ca80708dc56747acf3b9aaa2ed253ed604f7407e82861c9e4590c1eed4",
+    "staging": "64e0b9ca80708dc56747acf3b9aaa2ed253ed604f7407e82861c9e4590c1eed4"
+  },
+  {
+    "file": "src/main.gd",
+    "repository": "466ca19909cca95dd8873c73ab7f23a6fc20e7d7cbad7a6584d5e1864ff38645",
+    "staging": "466ca19909cca95dd8873c73ab7f23a6fc20e7d7cbad7a6584d5e1864ff38645"
+  },
+  {
+    "file": "src/native/archive/vendor/lzma-26.04/7z.h",
+    "repository": "efbe9391f40ff82547e71e75bab0d3f9650391ee01b60dcefa13291c76bb2417",
+    "staging": "efbe9391f40ff82547e71e75bab0d3f9650391ee01b60dcefa13291c76bb2417"
+  },
+  {
+    "file": "src/native/archive/vendor/lzma-26.04/7zBuf.h",
+    "repository": "88e9233f4acae553bb835e667b3aca271975eff8c6fb280e28cfd190500277bc",
+    "staging": "88e9233f4acae553bb835e667b3aca271975eff8c6fb280e28cfd190500277bc"
+  },
+  {
+    "file": "src/native/archive/vendor/lzma-26.04/7zCrc.h",
+    "repository": "39931db69404c46c018f5241845c02ab161f166de1dada882df87db5b3581b7f",
+    "staging": "39931db69404c46c018f5241845c02ab161f166de1dada882df87db5b3581b7f"
+  },
+  {
+    "file": "src/native/archive/vendor/lzma-26.04/7zTypes.h",
+    "repository": "126c3ce886391042443fcc82764d26be7aacda2298588c6ec9bb7ce8c7b47732",
+    "staging": "126c3ce886391042443fcc82764d26be7aacda2298588c6ec9bb7ce8c7b47732"
+  },
+  {
+    "file": "src/native/archive/vendor/lzma-26.04/7zWindows.h",
+    "repository": "228be01470e87c8cee44ee2e6c1cc2a431ed26ec3a325edfbaa166b7ef4f492e",
+    "staging": "228be01470e87c8cee44ee2e6c1cc2a431ed26ec3a325edfbaa166b7ef4f492e"
+  },
+  {
+    "file": "src/native/archive/vendor/lzma-26.04/Bcj2.h",
+    "repository": "02d4cec99b5f682edce072ee281e4f4b5b3f393df8ffca75e78e276aefc21982",
+    "staging": "02d4cec99b5f682edce072ee281e4f4b5b3f393df8ffca75e78e276aefc21982"
+  },
+  {
+    "file": "src/native/archive/vendor/lzma-26.04/Bra.h",
+    "repository": "ee0ddc7215e6f2639909070face1102f734aa0386c211fa169b3d719e7fd8f0f",
+    "staging": "ee0ddc7215e6f2639909070face1102f734aa0386c211fa169b3d719e7fd8f0f"
+  },
+  {
+    "file": "src/native/archive/vendor/lzma-26.04/Compiler.h",
+    "repository": "cfafaa89ba98a7f4f38cc589533fc03facb98ae1176dfe29d58217767ed5f149",
+    "staging": "cfafaa89ba98a7f4f38cc589533fc03facb98ae1176dfe29d58217767ed5f149"
+  },
+  {
+    "file": "src/native/archive/vendor/lzma-26.04/CpuArch.h",
+    "repository": "207f823fe5c7c0e3b13349f27f6e53946844da1dd4bcfa3abc72bd1357b833c5",
+    "staging": "207f823fe5c7c0e3b13349f27f6e53946844da1dd4bcfa3abc72bd1357b833c5"
+  },
+  {
+    "file": "src/native/archive/vendor/lzma-26.04/Delta.h",
+    "repository": "b09eae281931648ee79153516208093a454fe9c46e8d8ea7afd1cb72fd39873a",
+    "staging": "b09eae281931648ee79153516208093a454fe9c46e8d8ea7afd1cb72fd39873a"
+  },
+  {
+    "file": "src/native/archive/vendor/lzma-26.04/Lzma2Dec.h",
+    "repository": "9f91dc1124b0767ceb77dd084259899bd4bcf88182dba906cdd182ab674fe31c",
+    "staging": "9f91dc1124b0767ceb77dd084259899bd4bcf88182dba906cdd182ab674fe31c"
+  },
+  {
+    "file": "src/native/archive/vendor/lzma-26.04/LzmaDec.h",
+    "repository": "3a3b0ece1ba58601a8265a421a91b9720b39ee92ce898fadecb22f052bc3011f",
+    "staging": "3a3b0ece1ba58601a8265a421a91b9720b39ee92ce898fadecb22f052bc3011f"
+  },
+  {
+    "file": "src/native/archive/vendor/lzma-26.04/Ppmd.h",
+    "repository": "0356e2eb0258e3723bf49355d97e52a712a9abfdda60f177410a406353e056dd",
+    "staging": "0356e2eb0258e3723bf49355d97e52a712a9abfdda60f177410a406353e056dd"
+  },
+  {
+    "file": "src/native/archive/vendor/lzma-26.04/Ppmd7.h",
+    "repository": "dbb8572208a5670dd01be9121c3a65870ccc50d82b47dd959f5f811be7f0e459",
+    "staging": "dbb8572208a5670dd01be9121c3a65870ccc50d82b47dd959f5f811be7f0e459"
+  },
+  {
+    "file": "src/native/archive/vendor/lzma-26.04/Precomp.h",
+    "repository": "88acadbc12902012872fa29337c86564bb8f9198d6be416aad6119bb537425d1",
+    "staging": "88acadbc12902012872fa29337c86564bb8f9198d6be416aad6119bb537425d1"
+  },
+  {
+    "file": "src/native/archive/vendor/lzma-26.04/RotateDefs.h",
+    "repository": "7592940d5dff6d0e0f2003fcd48040909819e2129d401d5aa56811b300b1624d",
+    "staging": "7592940d5dff6d0e0f2003fcd48040909819e2129d401d5aa56811b300b1624d"
+  },
+  {
+    "file": "src/native/bin/libmod_archive.dll",
+    "repository": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63",
+    "staging": "a23b3b9888404efcfc8703bde1fda55cd26d16658464d0215a3b2522046e9e63"
+  },
+  {
+    "file": "src/native/bin/libmod_archive.so",
+    "repository": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f",
+    "staging": "cead7ee8434f816c93e4805c917916687c887e74e92ee1ec1d0d5a958c7b729f"
+  },
+  {
+    "file": "src/native/bin/libmod_archive_android.so",
+    "repository": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+    "staging": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1"
+  },
+  {
+    "file": "src/native/bin/libmod_lua.dll",
+    "repository": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5",
+    "staging": "88bd185884b6990ac1312b1a5c69b6dd5fb278a06f7049147489a54434bf1ff5"
+  },
+  {
+    "file": "src/native/bin/libmod_lua.so",
+    "repository": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c",
+    "staging": "d167e4d1f5287dfd28f2585688420e660fec4de4792ef28912f343cc790ccc4c"
+  },
+  {
+    "file": "src/native/bin/libterrain_search.dll",
+    "repository": "63ff43c26ce5ee013c1d54bfe3c8fe45106fe15da0e391018c642efd340be38a",
+    "staging": "63ff43c26ce5ee013c1d54bfe3c8fe45106fe15da0e391018c642efd340be38a"
+  },
+  {
+    "file": "src/native/bin/libterrain_search.so",
+    "repository": "8570e98507bdb0150144378b1a0dd0b9ddfd38fa58ababb106daacf3c05ef45a",
+    "staging": "8570e98507bdb0150144378b1a0dd0b9ddfd38fa58ababb106daacf3c05ef45a"
+  },
+  {
+    "file": "src/native/bin/libterrain_search_android.so",
+    "repository": "db4560020be613f63e061defa86ac14555d0cd8ea8c7d0b7c72d306f306dff1a",
+    "staging": "db4560020be613f63e061defa86ac14555d0cd8ea8c7d0b7c72d306f306dff1a"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/lapi.h",
+    "repository": "4aea4c1b975d43184f4f1fd1a42c79cf11d74d2801315740cec07fe9abebb56d",
+    "staging": "4aea4c1b975d43184f4f1fd1a42c79cf11d74d2801315740cec07fe9abebb56d"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/lauxlib.h",
+    "repository": "c741f9c1587f29fd08a79acbe0c46884768a47f89bee4147669f774c5cf50fc0",
+    "staging": "c741f9c1587f29fd08a79acbe0c46884768a47f89bee4147669f774c5cf50fc0"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/lcode.h",
+    "repository": "97d5a37f3b1b19eda1ef39607b3358aa0f7e917568ccd27ed0f14bc6a70d4b17",
+    "staging": "97d5a37f3b1b19eda1ef39607b3358aa0f7e917568ccd27ed0f14bc6a70d4b17"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/ldebug.h",
+    "repository": "d036f0dbb996bdecd48d505746f72c31b82fb2fc38f111b780568338d4ed9e9c",
+    "staging": "d036f0dbb996bdecd48d505746f72c31b82fb2fc38f111b780568338d4ed9e9c"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/ldo.h",
+    "repository": "591ad9a90098d3fbf06839da3de752d2c2585cbf5801dde4cdaffe12b23a182e",
+    "staging": "591ad9a90098d3fbf06839da3de752d2c2585cbf5801dde4cdaffe12b23a182e"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/lfunc.h",
+    "repository": "3cea0071ffda94eac378adb5f1ecb467ef2ffafff4315459e4ccdf05b5119da4",
+    "staging": "3cea0071ffda94eac378adb5f1ecb467ef2ffafff4315459e4ccdf05b5119da4"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/lgc.h",
+    "repository": "fbab2b989515377729d4c029dd58b3b6242877a88a7c4cfa703ea0deeb069a1e",
+    "staging": "fbab2b989515377729d4c029dd58b3b6242877a88a7c4cfa703ea0deeb069a1e"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/llex.h",
+    "repository": "0f3715d22b025727ef11debd641600a123b81718d195cd8445ac6378814458e6",
+    "staging": "0f3715d22b025727ef11debd641600a123b81718d195cd8445ac6378814458e6"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/llimits.h",
+    "repository": "1910669296681d9d2814ca46c325063724bb634c0428dae4e5ff59be54e0b758",
+    "staging": "1910669296681d9d2814ca46c325063724bb634c0428dae4e5ff59be54e0b758"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/lmem.h",
+    "repository": "abd1258418486c69bf5a93ceea3a1b9f8af2c7497a4fa6c27b442ffec2c5bbb1",
+    "staging": "abd1258418486c69bf5a93ceea3a1b9f8af2c7497a4fa6c27b442ffec2c5bbb1"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/lobject.h",
+    "repository": "274c18373fbbad71bfebd534cae4b2d2e49934abf6672f44735edc6646fb6a8b",
+    "staging": "274c18373fbbad71bfebd534cae4b2d2e49934abf6672f44735edc6646fb6a8b"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/lopcodes.h",
+    "repository": "a15fe349da7c1e73b563e8c3249fe7d535eccc844cb30ec80b4e335b0699279b",
+    "staging": "a15fe349da7c1e73b563e8c3249fe7d535eccc844cb30ec80b4e335b0699279b"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/lparser.h",
+    "repository": "84512d6540b83ab599cd8de5a1c8c4deaf71ff353f8e4fbc2e4ca135ba4e9ef0",
+    "staging": "84512d6540b83ab599cd8de5a1c8c4deaf71ff353f8e4fbc2e4ca135ba4e9ef0"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/lstate.h",
+    "repository": "dc64ea7ec74d7c1efaeaf6a9e2257f0b7856a5c988747948af2e76cf079d20fe",
+    "staging": "dc64ea7ec74d7c1efaeaf6a9e2257f0b7856a5c988747948af2e76cf079d20fe"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/lstring.h",
+    "repository": "c0e8af4eb33e3357be79f906e7e1191ba53a3a790d36ca15b50471d3a339e1f0",
+    "staging": "c0e8af4eb33e3357be79f906e7e1191ba53a3a790d36ca15b50471d3a339e1f0"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/ltable.h",
+    "repository": "219e6ac2bf43aaa93093c6bcd571c012660325e6b87ea3d6c1b40679a0acfd64",
+    "staging": "219e6ac2bf43aaa93093c6bcd571c012660325e6b87ea3d6c1b40679a0acfd64"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/ltm.h",
+    "repository": "54f4c2fa76b8ed8d48163e31807a19999f5d65b009ae862cb757e0773f2aa485",
+    "staging": "54f4c2fa76b8ed8d48163e31807a19999f5d65b009ae862cb757e0773f2aa485"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/lua.h",
+    "repository": "470551c185f058360f8d0f9e5c54a29a3950f78af6a93f3fe9e4039a380c7b87",
+    "staging": "470551c185f058360f8d0f9e5c54a29a3950f78af6a93f3fe9e4039a380c7b87"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/luaconf.h",
+    "repository": "0410ff22f66c275ba8fcee1fa87a0749d26d7952ed30d3bc9161688b39775464",
+    "staging": "0410ff22f66c275ba8fcee1fa87a0749d26d7952ed30d3bc9161688b39775464"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/lualib.h",
+    "repository": "13f880e9dd997a0f7fd0b17ccd949c98f33e95bd120f084de66084e888217413",
+    "staging": "13f880e9dd997a0f7fd0b17ccd949c98f33e95bd120f084de66084e888217413"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/lundump.h",
+    "repository": "9f3a2924d1585620993a70eea6cf3def34acb8322b2d9c3629bcdacc037edc64",
+    "staging": "9f3a2924d1585620993a70eea6cf3def34acb8322b2d9c3629bcdacc037edc64"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/lvm.h",
+    "repository": "db4b79dc7f4e7656078aa527350fbf14b2fde5d136ccf1cb4f3dc397def5fb67",
+    "staging": "db4b79dc7f4e7656078aa527350fbf14b2fde5d136ccf1cb4f3dc397def5fb67"
+  },
+  {
+    "file": "src/native/mod_lua/vendor/lua-5.1.5/lzio.h",
+    "repository": "0ec77d0179bf29c1ccab97028fed761944d5c21c02808e10cd7b5883b58b2ca6",
+    "staging": "0ec77d0179bf29c1ccab97028fed761944d5c21c02808e10cd7b5883b58b2ca6"
+  },
+  {
+    "file": "src/native/source/ai_activity.h",
+    "repository": "7805227ffa60b9d48a8ae70eb08a85e6803942ebc197c277633d1d9ecfb94902",
+    "staging": "7805227ffa60b9d48a8ae70eb08a85e6803942ebc197c277633d1d9ecfb94902"
+  },
+  {
+    "file": "src/native/source/ai_activity_core.h",
+    "repository": "e95e0c4d95e186b09db6241773b9dbd807f4609d47614bb491920fd10ebbbf19",
+    "staging": "e95e0c4d95e186b09db6241773b9dbd807f4609d47614bb491920fd10ebbbf19"
+  },
+  {
+    "file": "src/native/source/audio_decode.h",
+    "repository": "599faba594daf05f1fdd0ef9cef8fc035ec4024cc5302ea5cf55c740648598c2",
+    "staging": "599faba594daf05f1fdd0ef9cef8fc035ec4024cc5302ea5cf55c740648598c2"
+  },
+  {
+    "file": "src/native/source/discord_ipc.h",
+    "repository": "04cd5f9af59d228f767d7b9f76e51c7d9bb712c81db25bdfb0e0f4acf546a91a",
+    "staging": "04cd5f9af59d228f767d7b9f76e51c7d9bb712c81db25bdfb0e0f4acf546a91a"
+  },
+  {
+    "file": "src/native/source/figure_geometry.h",
+    "repository": "4bb7927608c4f94119e10157d2b52723c592980f732b62b6363c5730f3a8d045",
+    "staging": "4bb7927608c4f94119e10157d2b52723c592980f732b62b6363c5730f3a8d045"
+  },
+  {
+    "file": "src/native/source/fire_particles.h",
+    "repository": "7a92bcbdaa38b78d1f2885c2a02f0be24aa87ff155b93d7051cbe994a769dc84",
+    "staging": "7a92bcbdaa38b78d1f2885c2a02f0be24aa87ff155b93d7051cbe994a769dc84"
+  },
+  {
+    "file": "src/native/source/grass_chunk.h",
+    "repository": "e22c5ac62e0dbcd78941ff59bb993d084316cfd77f92acc1e8d086e04470b167",
+    "staging": "e22c5ac62e0dbcd78941ff59bb993d084316cfd77f92acc1e8d086e04470b167"
+  },
+  {
+    "file": "src/native/source/lightning_geometry.h",
+    "repository": "a5f5a17f681e2229b0b968a53de057bde17e2483fc909a9c54ce6ffe44109d1a",
+    "staging": "a5f5a17f681e2229b0b968a53de057bde17e2483fc909a9c54ce6ffe44109d1a"
+  },
+  {
+    "file": "src/native/source/mmp_texture.h",
+    "repository": "13ff760ea47d9f6b83471510775667e58b1ff3ab727bec601e7564dc28c7c7b7",
+    "staging": "13ff760ea47d9f6b83471510775667e58b1ff3ab727bec601e7564dc28c7c7b7"
+  },
+  {
+    "file": "src/native/source/motion_spline.h",
+    "repository": "7b2e58e10357aa9530aa59b2a086771f4fac656f65f69a06117b27fe002bc2e6",
+    "staging": "7b2e58e10357aa9530aa59b2a086771f4fac656f65f69a06117b27fe002bc2e6"
+  },
+  {
+    "file": "src/native/source/nav_build.h",
+    "repository": "2a057c39f4e7f5fe84e3b0968ee656e5f28c90389b226ecb4622e768f9918753",
+    "staging": "2a057c39f4e7f5fe84e3b0968ee656e5f28c90389b226ecb4622e768f9918753"
+  },
+  {
+    "file": "src/native/source/nav_topology.h",
+    "repository": "434f5954da4ba4a231a2dd12b672b3132ff4ebba4d4f857ad4db3bd9cced5aeb",
+    "staging": "434f5954da4ba4a231a2dd12b672b3132ff4ebba4d4f857ad4db3bd9cced5aeb"
+  },
+  {
+    "file": "src/native/source/nav_turn.h",
+    "repository": "f676add4ccd7ee42b4a1c2a5c1ed0f8d39d29842387c32102001fc9bc87d9797",
+    "staging": "f676add4ccd7ee42b4a1c2a5c1ed0f8d39d29842387c32102001fc9bc87d9797"
+  },
+  {
+    "file": "src/native/source/net_smooth.h",
+    "repository": "f71812baafc999838bff9761e74e1c60d7322269d72becff01d60466f59419c3",
+    "staging": "f71812baafc999838bff9761e74e1c60d7322269d72becff01d60466f59419c3"
+  },
+  {
+    "file": "src/native/source/particle_draw.h",
+    "repository": "3ffe0d4be02ab06fbaeda1d9b1e6ce416dd7baf57d9bceb15a273d14bb2c3e28",
+    "staging": "3ffe0d4be02ab06fbaeda1d9b1e6ce416dd7baf57d9bceb15a273d14bb2c3e28"
+  },
+  {
+    "file": "src/native/source/perception_batch.h",
+    "repository": "9f06163af45f688d5bff19462681cb15e5df0648c0505d4b3766035601e40f77",
+    "staging": "9f06163af45f688d5bff19462681cb15e5df0648c0505d4b3766035601e40f77"
+  },
+  {
+    "file": "src/native/source/screen_rect.h",
+    "repository": "a2d8a1968e76e7e4c10f840c689104b92191e5f792d3df4c26ed0e6b50fc98d9",
+    "staging": "a2d8a1968e76e7e4c10f840c689104b92191e5f792d3df4c26ed0e6b50fc98d9"
+  },
+  {
+    "file": "src/native/source/soft_ground_mesh.h",
+    "repository": "50019e4f4f6f15c0b81e5a702d826e904a50b13f1f8bef64e863bf4a669cb188",
+    "staging": "50019e4f4f6f15c0b81e5a702d826e904a50b13f1f8bef64e863bf4a669cb188"
+  },
+  {
+    "file": "src/native/source/soft_ground_paint.h",
+    "repository": "c26910fdd4be1e19e6b7443ddb375574b8c00728ac642ab6f9705050386c5d4f",
+    "staging": "c26910fdd4be1e19e6b7443ddb375574b8c00728ac642ab6f9705050386c5d4f"
+  },
+  {
+    "file": "src/native/source/spell_particles.h",
+    "repository": "9f1d5deadad0d929df655c477b65b9fa677a037a78e007ee03a9cb7d6e789af1",
+    "staging": "9f1d5deadad0d929df655c477b65b9fa677a037a78e007ee03a9cb7d6e789af1"
+  },
+  {
+    "file": "src/native/source/terrain_color.h",
+    "repository": "bea88dfd0c4ab9cfa145d9b2a1fbd5824bb3b3e297f9b8b148b5d4c6d94ef343",
+    "staging": "bea88dfd0c4ab9cfa145d9b2a1fbd5824bb3b3e297f9b8b148b5d4c6d94ef343"
+  },
+  {
+    "file": "src/native/source/unit_presentation.h",
+    "repository": "c7707507ee566df2141c417ce31ac0c55147c7a69eb217a75d8b62da4ceff5da",
+    "staging": "c7707507ee566df2141c417ce31ac0c55147c7a69eb217a75d8b62da4ceff5da"
+  },
+  {
+    "file": "src/native/source/unit_query.h",
+    "repository": "4a3487ae068fb4d1d92586ba3ccc59bf945473acf9f7345af994ee79a89c1aa4",
+    "staging": "4a3487ae068fb4d1d92586ba3ccc59bf945473acf9f7345af994ee79a89c1aa4"
+  },
+  {
+    "file": "src/native/source/unit_simulation_state.h",
+    "repository": "7aba4d46165b76783bd5c7ec23ed63a470d428dc432a226e3aa802db1b0692a0",
+    "staging": "7aba4d46165b76783bd5c7ec23ed63a470d428dc432a226e3aa802db1b0692a0"
+  },
+  {
+    "file": "src/native/source/water_current.h",
+    "repository": "787227298fd9e8df6d792d88bc12259344c4636308d7f7448756136d59628bdc",
+    "staging": "787227298fd9e8df6d792d88bc12259344c4636308d7f7448756136d59628bdc"
+  },
+  {
+    "file": "src/native/source/water_surface.h",
+    "repository": "770686c3c0a2af7e259c21c692d89322b95f7a5a97698ae1d042b9a12c2cd16a",
+    "staging": "770686c3c0a2af7e259c21c692d89322b95f7a5a97698ae1d042b9a12c2cd16a"
+  },
+  {
+    "file": "src/native/source/water_wave.h",
+    "repository": "b0d2f1393b6fc5c8379179c1e2115736e12f2a95afed388f3b6ac3a37bc0f4d5",
+    "staging": "b0d2f1393b6fc5c8379179c1e2115736e12f2a95afed388f3b6ac3a37bc0f4d5"
+  },
+  {
+    "file": "src/native/source/window_frontier.h",
+    "repository": "5b6fec4461ca39959daffa4c31da167526f9719a556512fb77b4cfad082895c4",
+    "staging": "5b6fec4461ca39959daffa4c31da167526f9719a556512fb77b4cfad082895c4"
+  },
+  {
+    "file": "src/platform/crash_report.gd",
+    "repository": "93afdd059803364a2324230219602564b1785d64d768d593c289a09afa67dc34",
+    "staging": "93afdd059803364a2324230219602564b1785d64d768d593c289a09afa67dc34"
+  },
+  {
+    "file": "src/platform/data_import.gd",
+    "repository": "ab317ea76e1e12278a1d53ab88b696e211e757b39453df3d26fd95040ce978ec",
+    "staging": "ab317ea76e1e12278a1d53ab88b696e211e757b39453df3d26fd95040ce978ec"
+  },
+  {
+    "file": "src/platform/data_switch.gd",
+    "repository": "9e56b62e78aa15698fa43926044ed0abadc152534fefc9695599e7847dfb4867",
+    "staging": "9e56b62e78aa15698fa43926044ed0abadc152534fefc9695599e7847dfb4867"
+  },
+  {
+    "file": "src/platform/discord_presence.gd",
+    "repository": "cfd6c283be955a0af3b42226ffd0280fc04574001299c82ff8d18fa7698bc7e7",
+    "staging": "cfd6c283be955a0af3b42226ffd0280fc04574001299c82ff8d18fa7698bc7e7"
+  },
+  {
+    "file": "src/platform/frame_rate_meter.gd",
+    "repository": "ff89d528c177e6a3fc8cc8104327ebf6f29799dee6b13a4876b9f8ec3a0424d9",
+    "staging": "ff89d528c177e6a3fc8cc8104327ebf6f29799dee6b13a4876b9f8ec3a0424d9"
+  },
+  {
+    "file": "src/platform/fsr_graphics.gd",
+    "repository": "114dc3e1daab101d64fafe9c8abc4ba8969728578ac804fef855c60e76e14ca1",
+    "staging": "114dc3e1daab101d64fafe9c8abc4ba8969728578ac804fef855c60e76e14ca1"
+  },
+  {
+    "file": "src/platform/game_files.gd",
+    "repository": "9a66aca761b4ea50018b70a15b073a50aa7673ba116c5602bd04454db740c92d",
+    "staging": "9a66aca761b4ea50018b70a15b073a50aa7673ba116c5602bd04454db740c92d"
+  },
+  {
+    "file": "src/platform/pad_gyro.gd",
+    "repository": "0aa128beea31dcce40084b12339f5c4a6006b0715617d4b3b16920a4807642c9",
+    "staging": "0aa128beea31dcce40084b12339f5c4a6006b0715617d4b3b16920a4807642c9"
+  },
+  {
+    "file": "src/platform/pad_input.gd",
+    "repository": "3f93f18509317fb6945292139113698180665882caeaf84087937e188234c7c7",
+    "staging": "3f93f18509317fb6945292139113698180665882caeaf84087937e188234c7c7"
+  },
+  {
+    "file": "src/platform/pad_ui.gd",
+    "repository": "e5dbdeeb08c6c6c53cb349c7d5d217e9d4513ca5580200ae0a32096fde3bd33b",
+    "staging": "e5dbdeeb08c6c6c53cb349c7d5d217e9d4513ca5580200ae0a32096fde3bd33b"
+  },
+  {
+    "file": "src/platform/performance_log.gd",
+    "repository": "fd94ed498e9100d0becd0003c7c9bf07864fc4a0194d8aa84c5501b6b3c01fde",
+    "staging": "fd94ed498e9100d0becd0003c7c9bf07864fc4a0194d8aa84c5501b6b3c01fde"
+  },
+  {
+    "file": "src/platform/portability.gd",
+    "repository": "6ec17950f2bb45117d1b34410ba19da3996f3bfea53c4722498f83a3de45763e",
+    "staging": "6ec17950f2bb45117d1b34410ba19da3996f3bfea53c4722498f83a3de45763e"
+  },
+  {
+    "file": "src/platform/read_cursor.gd",
+    "repository": "91b1e255a43bedd1fa7759973431f4f50474714c84caa9ec944c9ca264903f41",
+    "staging": "91b1e255a43bedd1fa7759973431f4f50474714c84caa9ec944c9ca264903f41"
+  },
+  {
+    "file": "src/platform/renderer_choice.gd",
+    "repository": "5917f6b6f1719153745fcb94be66dba4a3dab9122bb89ffc631a0b500a12ee70",
+    "staging": "5917f6b6f1719153745fcb94be66dba4a3dab9122bb89ffc631a0b500a12ee70"
+  },
+  {
+    "file": "src/platform/renderer_detector.gd",
+    "repository": "97ad961cc04dfc1c3ed8e07a1b8a36784f5fe52a268d2f30b267a70c1fc50e13",
+    "staging": "97ad961cc04dfc1c3ed8e07a1b8a36784f5fe52a268d2f30b267a70c1fc50e13"
+  },
+  {
+    "file": "src/platform/renderer_probe.gd",
+    "repository": "e274956026066983b5084a32dc7a23b4bd0011eb1609e9a1aced5372b44802f8",
+    "staging": "e274956026066983b5084a32dc7a23b4bd0011eb1609e9a1aced5372b44802f8"
+  },
+  {
+    "file": "src/platform/startup_graphics_probe.gd",
+    "repository": "0c75906d7edc2aec96f3f9a5bc1bf4cdc950e348525e09f732228eea4ee70902",
+    "staging": "0c75906d7edc2aec96f3f9a5bc1bf4cdc950e348525e09f732228eea4ee70902"
+  },
+  {
+    "file": "src/platform/touch_input.gd",
+    "repository": "514d63fc429f052ab6f0ac471588f251581ddae385ba0e23efb1d7dc6166ed34",
+    "staging": "514d63fc429f052ab6f0ac471588f251581ddae385ba0e23efb1d7dc6166ed34"
+  },
+  {
+    "file": "src/platform/web_cursor.gd",
+    "repository": "890fbbf27db8c274bf64800b34f8efa4b4eaf2bbddb2001c52799d570af1a87e",
+    "staging": "890fbbf27db8c274bf64800b34f8efa4b4eaf2bbddb2001c52799d570af1a87e"
+  },
+  {
+    "file": "src/platform/web_music.gd",
+    "repository": "caf971f0f1cffc94fbb875a37507a4bb8f613385c62a9458e85bc3e175793fec",
+    "staging": "caf971f0f1cffc94fbb875a37507a4bb8f613385c62a9458e85bc3e175793fec"
+  },
+  {
+    "file": "src/platform/windows_native_startup.gd",
+    "repository": "4a1540bd4693b0b94e4b71c1ca06e8c45f0b024c56795ae84cdda43729c6ae41",
+    "staging": "4a1540bd4693b0b94e4b71c1ca06e8c45f0b024c56795ae84cdda43729c6ae41"
+  },
+  {
+    "file": "src/platform/windows_renderer.gd",
+    "repository": "e819bd468a93d287a81a9fface11ef2798ceab52d41e73a0b4b246b3e3ebd1ff",
+    "staging": "e819bd468a93d287a81a9fface11ef2798ceab52d41e73a0b4b246b3e3ebd1ff"
+  },
+  {
+    "file": "src/ui/action_strip.gd",
+    "repository": "84ee6b4cf8a5648393b4fb7d9bc02eb375df62b61e05d133b27567ab350464e7",
+    "staging": "84ee6b4cf8a5648393b4fb7d9bc02eb375df62b61e05d133b27567ab350464e7"
+  },
+  {
+    "file": "src/ui/arena_alliance_badge.gd",
+    "repository": "efcb10dece0e3936a66b9420dea40758f22debf0f85adf91544dcb6131488175",
+    "staging": "efcb10dece0e3936a66b9420dea40758f22debf0f85adf91544dcb6131488175"
+  },
+  {
+    "file": "src/ui/arena_creature_card.gd",
+    "repository": "7388d55015037001216fc17155a98d8290a76852cedc16749cf6f1a18070d333",
+    "staging": "7388d55015037001216fc17155a98d8290a76852cedc16749cf6f1a18070d333"
+  },
+  {
+    "file": "src/ui/arena_damage_panel.gd",
+    "repository": "0a5dce005592308f563e2d00a6e59c1acc456aa7bde7468b542d4202abf4ccdd",
+    "staging": "0a5dce005592308f563e2d00a6e59c1acc456aa7bde7468b542d4202abf4ccdd"
+  },
+  {
+    "file": "src/ui/arena_evolution_notice.gd",
+    "repository": "d7997c155f5ac1b78dca713fd9da64a2037fb4bcd2142aad9f200a2d923033b7",
+    "staging": "d7997c155f5ac1b78dca713fd9da64a2037fb4bcd2142aad9f200a2d923033b7"
+  },
+  {
+    "file": "src/ui/arena_evolution_path.gd",
+    "repository": "89a441f51f447a0cf985ce6dcb40bbda2108482f0d0746a2c86f4c31541e727f",
+    "staging": "89a441f51f447a0cf985ce6dcb40bbda2108482f0d0746a2c86f4c31541e727f"
+  },
+  {
+    "file": "src/ui/arena_field.gd",
+    "repository": "33b227c6d0c533f278e7112f833299af0e8b3ab0b722579c8d9cd213b88e55b9",
+    "staging": "33b227c6d0c533f278e7112f833299af0e8b3ab0b722579c8d9cd213b88e55b9"
+  },
+  {
+    "file": "src/ui/arena_hit_numbers.gd",
+    "repository": "fb0c93e58ecaf85bc829ca92ceec168f370210770214499b62c50dcd9681ea80",
+    "staging": "fb0c93e58ecaf85bc829ca92ceec168f370210770214499b62c50dcd9681ea80"
+  },
+  {
+    "file": "src/ui/arena_hud_panel.gd",
+    "repository": "344ed43adfeb82693eda2651f663a6f64888373f13939f1a7c7049e6b6278aa4",
+    "staging": "344ed43adfeb82693eda2651f663a6f64888373f13939f1a7c7049e6b6278aa4"
+  },
+  {
+    "file": "src/ui/arena_info_panel.gd",
+    "repository": "4ede3a00cfd0aa7db2ba5d1bbf668fa4734c941ecddcd5b9995cab4c731d8fb6",
+    "staging": "4ede3a00cfd0aa7db2ba5d1bbf668fa4734c941ecddcd5b9995cab4c731d8fb6"
+  },
+  {
+    "file": "src/ui/arena_online_lobby.gd",
+    "repository": "316d96debc50e03769d3b18ba61d72ab8594d67e4e701fde47401be6b77623cd",
+    "staging": "316d96debc50e03769d3b18ba61d72ab8594d67e4e701fde47401be6b77623cd"
+  },
+  {
+    "file": "src/ui/arena_online_panel.gd",
+    "repository": "d293edc406ee2d134c88163920f7011a6af289ec0103d10b64cdf1b099c299b5",
+    "staging": "d293edc406ee2d134c88163920f7011a6af289ec0103d10b64cdf1b099c299b5"
+  },
+  {
+    "file": "src/ui/arena_online_screen.gd",
+    "repository": "837c2e9e0e9754a307d520cd61a7904b08bce08395b078d43a1d03ae0135a15d",
+    "staging": "837c2e9e0e9754a307d520cd61a7904b08bce08395b078d43a1d03ae0135a15d"
+  },
+  {
+    "file": "src/ui/arena_portraits.gd",
+    "repository": "76572f1610310cdb19548c85c450c178ba27347f8b66edcf9f699cea080b2733",
+    "staging": "76572f1610310cdb19548c85c450c178ba27347f8b66edcf9f699cea080b2733"
+  },
+  {
+    "file": "src/ui/arena_pve_field.gd",
+    "repository": "2a3ba5e487b1cbedf9fbada1f474d9fe2fda68bdb105c97622cf3748b61c853c",
+    "staging": "2a3ba5e487b1cbedf9fbada1f474d9fe2fda68bdb105c97622cf3748b61c853c"
+  },
+  {
+    "file": "src/ui/arena_pve_screen.gd",
+    "repository": "70980da2d5a1fbd374bb2fe9cc12b88184e566b1c9948ae3ef9d21a29fde97ce",
+    "staging": "70980da2d5a1fbd374bb2fe9cc12b88184e566b1c9948ae3ef9d21a29fde97ce"
+  },
+  {
+    "file": "src/ui/arena_result_volley.gd",
+    "repository": "e6096dfb2e5732b776c48219ad75bcaa88c1aae2cb8e55a5f591bcbfd94e411e",
+    "staging": "e6096dfb2e5732b776c48219ad75bcaa88c1aae2cb8e55a5f591bcbfd94e411e"
+  },
+  {
+    "file": "src/ui/arena_reward_card.gd",
+    "repository": "80542db3efcebfebe85d90b420634607ac07924dcc4b73d73995ffefa31e124f",
+    "staging": "80542db3efcebfebe85d90b420634607ac07924dcc4b73d73995ffefa31e124f"
+  },
+  {
+    "file": "src/ui/arena_round_banner.gd",
+    "repository": "c735e868f84464eef3c54412b67e0c3cc64cfe1f04b53d2c83e0084900deab72",
+    "staging": "c735e868f84464eef3c54412b67e0c3cc64cfe1f04b53d2c83e0084900deab72"
+  },
+  {
+    "file": "src/ui/arena_round_button.gd",
+    "repository": "0e01299e343f86f55c941b14e0a9410c21fe70310d04b46f9983509bdf7ccd10",
+    "staging": "0e01299e343f86f55c941b14e0a9410c21fe70310d04b46f9983509bdf7ccd10"
+  },
+  {
+    "file": "src/ui/arena_screen.gd",
+    "repository": "4f5de323ba0709cc51d6cd9ac559c0af8b63c5348a8036075bf64889d27ec159",
+    "staging": "4f5de323ba0709cc51d6cd9ac559c0af8b63c5348a8036075bf64889d27ec159"
+  },
+  {
+    "file": "src/ui/arena_shop_action.gd",
+    "repository": "81b867db84a48af0d04651d7215b3716f6db78d5cd2b62c1c1b50fe4353512fe",
+    "staging": "81b867db84a48af0d04651d7215b3716f6db78d5cd2b62c1c1b50fe4353512fe"
+  },
+  {
+    "file": "src/ui/arena_snow_surround.gd",
+    "repository": "1099ffcff465be8cac24c86d03ae0ff06ed597c4dcc1b82a77a214aabef31455",
+    "staging": "1099ffcff465be8cac24c86d03ae0ff06ed597c4dcc1b82a77a214aabef31455"
+  },
+  {
+    "file": "src/ui/arena_stars.gd",
+    "repository": "6bf39080eb4e269270ba8355e2e5da6159f95028b26a0d4361d785abced56d31",
+    "staging": "6bf39080eb4e269270ba8355e2e5da6159f95028b26a0d4361d785abced56d31"
+  },
+  {
+    "file": "src/ui/arena_tooltips.gd",
+    "repository": "2bdc3b639c7fedcaacf8d636a30d247817a2d095a17f76bfaabbfb499185d62c",
+    "staging": "2bdc3b639c7fedcaacf8d636a30d247817a2d095a17f76bfaabbfb499185d62c"
+  },
+  {
+    "file": "src/ui/base_strip.gd",
+    "repository": "c30ebd6588c8355519f72ef9db26c50791623a7b38fe7f9cecbf65cd90581eb7",
+    "staging": "c30ebd6588c8355519f72ef9db26c50791623a7b38fe7f9cecbf65cd90581eb7"
+  },
+  {
+    "file": "src/ui/belt_strip.gd",
+    "repository": "f5132685b4b3123447091adba036ea0bce948f085b41a08d9554594403334943",
+    "staging": "f5132685b4b3123447091adba036ea0bce948f085b41a08d9554594403334943"
+  },
+  {
+    "file": "src/ui/build_version.gd",
+    "repository": "046131197c199c6692f0b4fa2b0154f887310b251f096e1204ecc406f6203cdf",
+    "staging": "046131197c199c6692f0b4fa2b0154f887310b251f096e1204ecc406f6203cdf"
+  },
+  {
+    "file": "src/ui/camera_depth_of_field.gd",
+    "repository": "e44f901b53eeba2f0b59ae48a88b8191b6ca96e5b4c13e85b5289cc5dc3f50c8",
+    "staging": "e44f901b53eeba2f0b59ae48a88b8191b6ca96e5b4c13e85b5289cc5dc3f50c8"
+  },
+  {
+    "file": "src/ui/camera_fade.gd",
+    "repository": "90c94a4c3b32cb360d00ce531fc87d708bf1a219bd4a57ac853d0baeb4fa7bcd",
+    "staging": "90c94a4c3b32cb360d00ce531fc87d708bf1a219bd4a57ac853d0baeb4fa7bcd"
+  },
+  {
+    "file": "src/ui/camera_rig.gd",
+    "repository": "1588eba7b7aa6e433fa42136a8067e567d5c5ab096a9e7061b553dc3154b19a8",
+    "staging": "1588eba7b7aa6e433fa42136a8067e567d5c5ab096a9e7061b553dc3154b19a8"
+  },
+  {
+    "file": "src/ui/camp_view.gd",
+    "repository": "964df28fcc828729484db7a80590ad7aa0b795438483220f0637058f38eaa173",
+    "staging": "964df28fcc828729484db7a80590ad7aa0b795438483220f0637058f38eaa173"
+  },
+  {
+    "file": "src/ui/campaign_choices.gd",
+    "repository": "8566c8ff436b3ec00b7e97bbfac1c4a5b3277efb3fb1d85505ebfd06b96d6f7b",
+    "staging": "8566c8ff436b3ec00b7e97bbfac1c4a5b3277efb3fb1d85505ebfd06b96d6f7b"
+  },
+  {
+    "file": "src/ui/chat_line.gd",
+    "repository": "330cc12f7564dfd21eede7e616580be78484ea0b3d289775e288e408b745e319",
+    "staging": "330cc12f7564dfd21eede7e616580be78484ea0b3d289775e288e408b745e319"
+  },
+  {
+    "file": "src/ui/chat_overlay.gd",
+    "repository": "86c831fd12c152912a23a0260c887b52dde0a10793f96c535ad536d482ec5d67",
+    "staging": "86c831fd12c152912a23a0260c887b52dde0a10793f96c535ad536d482ec5d67"
+  },
+  {
+    "file": "src/ui/crash_report_box.gd",
+    "repository": "bd3c9ad86731b60a71005aa4b0e94332fd44f1b86a5da45ac07c8adc1c3f7512",
+    "staging": "bd3c9ad86731b60a71005aa4b0e94332fd44f1b86a5da45ac07c8adc1c3f7512"
+  },
+  {
+    "file": "src/ui/credits_panel.gd",
+    "repository": "9ed3ac965ca2d568ef3d20096265b050c9cdc7061a2487566fac079bbfad372b",
+    "staging": "9ed3ac965ca2d568ef3d20096265b050c9cdc7061a2487566fac079bbfad372b"
+  },
+  {
+    "file": "src/ui/dialog_panel.gd",
+    "repository": "cba3df7d3257f5aa1f63b90e52897eb7e367546ea6cee0f7cd3b3cb87c2bf3c1",
+    "staging": "cba3df7d3257f5aa1f63b90e52897eb7e367546ea6cee0f7cd3b3cb87c2bf3c1"
+  },
+  {
+    "file": "src/ui/difficulty_panel.gd",
+    "repository": "142261bc7085a42ceae3869129008c3130e73c937d18f1613e6e345efaf38a43",
+    "staging": "142261bc7085a42ceae3869129008c3130e73c937d18f1613e6e345efaf38a43"
+  },
+  {
+    "file": "src/ui/enemy_bars.gd",
+    "repository": "238dda7fc6cae9a0aa81625222598bc4a3f15aad9ddfb8e74c62d78eaab7c568",
+    "staging": "238dda7fc6cae9a0aa81625222598bc4a3f15aad9ddfb8e74c62d78eaab7c568"
+  },
+  {
+    "file": "src/ui/esc_signpost.gd",
+    "repository": "f0f42bbfedc71dbc92332567751801417f2fe143972b6cd6cdd3bc5d1f93893c",
+    "staging": "f0f42bbfedc71dbc92332567751801417f2fe143972b6cd6cdd3bc5d1f93893c"
+  },
+  {
+    "file": "src/ui/flying_hp.gd",
+    "repository": "4dafa9efd85b7e599095ff0f068c9b3935e47348b7815b722d7c6e1e2fc5c542",
+    "staging": "4dafa9efd85b7e599095ff0f068c9b3935e47348b7815b722d7c6e1e2fc5c542"
+  },
+  {
+    "file": "src/ui/game_console.gd",
+    "repository": "cdc84dbf5c6df9712550727648687eeb679f4104cbf02cf353d8f1aa007e1226",
+    "staging": "cdc84dbf5c6df9712550727648687eeb679f4104cbf02cf353d8f1aa007e1226"
+  },
+  {
+    "file": "src/ui/game_cursor.gd",
+    "repository": "d07401a6852dc361a74400377aae84f2fd975a5703e04e7113442dd13f902a3d",
+    "staging": "d07401a6852dc361a74400377aae84f2fd975a5703e04e7113442dd13f902a3d"
+  },
+  {
+    "file": "src/ui/game_hud.gd",
+    "repository": "698aed5f28b1150077690c5bc6d8ec79e0c5696e1b32ae1ef8529c4c5ccbff96",
+    "staging": "698aed5f28b1150077690c5bc6d8ec79e0c5696e1b32ae1ef8529c4c5ccbff96"
+  },
+  {
+    "file": "src/ui/game_over_notice.gd",
+    "repository": "af8070a07ad7c9ed715f0ac80c81251f331baa75c1cbb08b679c6b21526f07a4",
+    "staging": "af8070a07ad7c9ed715f0ac80c81251f331baa75c1cbb08b679c6b21526f07a4"
+  },
+  {
+    "file": "src/ui/graphics_attribution.gd",
+    "repository": "f678c35106e5e2b249855c730509f202af091ea39e4e84008443c3f218611e4b",
+    "staging": "f678c35106e5e2b249855c730509f202af091ea39e4e84008443c3f218611e4b"
+  },
+  {
+    "file": "src/ui/graphics_check_box.gd",
+    "repository": "ef72db3bf245c7fdc4a0ad0af06e5c6164c93300fa974a1560eebac330e539f0",
+    "staging": "ef72db3bf245c7fdc4a0ad0af06e5c6164c93300fa974a1560eebac330e539f0"
+  },
+  {
+    "file": "src/ui/hud_dial.gd",
+    "repository": "3e876e5a8359158db3968c49489e90de1ff870f41a47e72e740baa5e786b8324",
+    "staging": "3e876e5a8359158db3968c49489e90de1ff870f41a47e72e740baa5e786b8324"
+  },
+  {
+    "file": "src/ui/interface800.gd",
+    "repository": "abb84fbe48b33aebf911624ec5e1932f19e521d88dc70330e6142a959f5bd883",
+    "staging": "abb84fbe48b33aebf911624ec5e1932f19e521d88dc70330e6142a959f5bd883"
+  },
+  {
+    "file": "src/ui/interface_board.gd",
+    "repository": "303b84405faefb57d13c3a41fd58b0ea354a5f54e6857cb59094dd7f064bc7db",
+    "staging": "303b84405faefb57d13c3a41fd58b0ea354a5f54e6857cb59094dd7f064bc7db"
+  },
+  {
+    "file": "src/ui/internet_panel.gd",
+    "repository": "949e15a6576b6ced36398fcda875bcdb02245e9ddef60454e392e7065631d09e",
+    "staging": "949e15a6576b6ced36398fcda875bcdb02245e9ddef60454e392e7065631d09e"
+  },
+  {
+    "file": "src/ui/inventory_panel.gd",
+    "repository": "209cc5998277b49aae6326d417c5b210d976c567594116572ed2b8ca0ca2720f",
+    "staging": "209cc5998277b49aae6326d417c5b210d976c567594116572ed2b8ca0ca2720f"
+  },
+  {
+    "file": "src/ui/item_view.gd",
+    "repository": "9dcc993a3d113e5e6bd9f5179790139759acbe43e5ce7842dc06309859d07d65",
+    "staging": "9dcc993a3d113e5e6bd9f5179790139759acbe43e5ce7842dc06309859d07d65"
+  },
+  {
+    "file": "src/ui/journal_panel.gd",
+    "repository": "b5e3a4bf64219aa85e7c2d234c8cf9c6e60f1c47cbcc97bb73d099f60e9e266c",
+    "staging": "b5e3a4bf64219aa85e7c2d234c8cf9c6e60f1c47cbcc97bb73d099f60e9e266c"
+  },
+  {
+    "file": "src/ui/load_panel.gd",
+    "repository": "2e6439eeabc0bd4d6acccd6f6e61867593106a2c0d18a5cd5307aabeefe81e3f",
+    "staging": "2e6439eeabc0bd4d6acccd6f6e61867593106a2c0d18a5cd5307aabeefe81e3f"
+  },
+  {
+    "file": "src/ui/loading_screen.gd",
+    "repository": "0a5837b63e0d37933f22e96cc50f24a36aaef01ae2a3f6659732fcf249df9abc",
+    "staging": "0a5837b63e0d37933f22e96cc50f24a36aaef01ae2a3f6659732fcf249df9abc"
+  },
+  {
+    "file": "src/ui/main_menu.gd",
+    "repository": "6ca321a54b410cc1cc52bdab4fa01d950b7b285cb286763384082b0a0e20c75c",
+    "staging": "6ca321a54b410cc1cc52bdab4fa01d950b7b285cb286763384082b0a0e20c75c"
+  },
+  {
+    "file": "src/ui/map_viewer.gd",
+    "repository": "37e3a56ae3a28e743608aa3faf1a89bc1047372e471fd88724201545231b471c",
+    "staging": "37e3a56ae3a28e743608aa3faf1a89bc1047372e471fd88724201545231b471c"
+  },
+  {
+    "file": "src/ui/menu_scene.gd",
+    "repository": "d3d5390dffbaa9d1cceeff5d01e71ff947f6e6b45ae0a2671d9e2634cff407ec",
+    "staging": "d3d5390dffbaa9d1cceeff5d01e71ff947f6e6b45ae0a2671d9e2634cff407ec"
+  },
+  {
+    "file": "src/ui/mesh_screen_rect.gd",
+    "repository": "b5cc367539d819b52526ad576ce52bdb8e86d3c2a0ae2237ec2663629de8c600",
+    "staging": "b5cc367539d819b52526ad576ce52bdb8e86d3c2a0ae2237ec2663629de8c600"
+  },
+  {
+    "file": "src/ui/message_box.gd",
+    "repository": "0bb9711aabc4bd5eccc5850084fcd4538546a81bbe1ce0ed61f5fdf5aea2f9e7",
+    "staging": "0bb9711aabc4bd5eccc5850084fcd4538546a81bbe1ce0ed61f5fdf5aea2f9e7"
+  },
+  {
+    "file": "src/ui/message_log.gd",
+    "repository": "73c3110f67031f8168cd3f8bf15b85152227191747a3072764a0106d0ae06027",
+    "staging": "73c3110f67031f8168cd3f8bf15b85152227191747a3072764a0106d0ae06027"
+  },
+  {
+    "file": "src/ui/minimap.gd",
+    "repository": "0fdd30128328824b7fdd3c67a2ae293d092ab26a6a9da915c8a2b6f7e55033c6",
+    "staging": "0fdd30128328824b7fdd3c67a2ae293d092ab26a6a9da915c8a2b6f7e55033c6"
+  },
+  {
+    "file": "src/ui/mod_panel.gd",
+    "repository": "6e3f3730522db9677d0502581cd5a1e1cbe8331666c04b0851434d5d069c88d6",
+    "staging": "6e3f3730522db9677d0502581cd5a1e1cbe8331666c04b0851434d5d069c88d6"
+  },
+  {
+    "file": "src/ui/movie_player.gd",
+    "repository": "028987965ea87f7efcde74a443f24e65d4ed339e999f23e122d763b17dab5775",
+    "staging": "028987965ea87f7efcde74a443f24e65d4ed339e999f23e122d763b17dab5775"
+  },
+  {
+    "file": "src/ui/movie_sequence.gd",
+    "repository": "8e328f596014905afdbcea0e014210484e6832f42317185c0f04977367445866",
+    "staging": "8e328f596014905afdbcea0e014210484e6832f42317185c0f04977367445866"
+  },
+  {
+    "file": "src/ui/mp_char_panel.gd",
+    "repository": "089f054b794c9930247621f91a47fcf594420aba0cc4c0e45e9e5f009b69555f",
+    "staging": "089f054b794c9930247621f91a47fcf594420aba0cc4c0e45e9e5f009b69555f"
+  },
+  {
+    "file": "src/ui/network_panel.gd",
+    "repository": "f662a92f6e5090559961e65f7a1b815fc65a83f9b74cdce1221c54f1a0bc8b33",
+    "staging": "f662a92f6e5090559961e65f7a1b815fc65a83f9b74cdce1221c54f1a0bc8b33"
+  },
+  {
+    "file": "src/ui/notify_line.gd",
+    "repository": "1af667503a9b9eb13ddd5194f9901187dd90f6e94ccf3e0b4da3355ede9b78f8",
+    "staging": "1af667503a9b9eb13ddd5194f9901187dd90f6e94ccf3e0b4da3355ede9b78f8"
+  },
+  {
+    "file": "src/ui/options_panel.gd",
+    "repository": "464cf473ce98a892847ff26c91e1351c8b1c7b6b9e2a46510d817cbc8ddce16c",
+    "staging": "464cf473ce98a892847ff26c91e1351c8b1c7b6b9e2a46510d817cbc8ddce16c"
+  },
+  {
+    "file": "src/ui/pad_prompts.gd",
+    "repository": "9d75b686e1799f64073316aae61e4208f57f87a65d11f1f1dbefdf037ac11149",
+    "staging": "9d75b686e1799f64073316aae61e4208f57f87a65d11f1f1dbefdf037ac11149"
+  },
+  {
+    "file": "src/ui/pad_wheel.gd",
+    "repository": "618a5316adbadb33c3311ec59bbaec00851c55fa90e1fa8069c299c75a6c33e0",
+    "staging": "618a5316adbadb33c3311ec59bbaec00851c55fa90e1fa8069c299c75a6c33e0"
+  },
+  {
+    "file": "src/ui/paperdoll.gd",
+    "repository": "2addc8f20dbc13dda042ace98e7c71d1ad4baf834a93020750b693da8afc3ca3",
+    "staging": "2addc8f20dbc13dda042ace98e7c71d1ad4baf834a93020750b693da8afc3ca3"
+  },
+  {
+    "file": "src/ui/party_faces.gd",
+    "repository": "1246d48090a751b09fd20cf48800e5e1a5d078131ac54b839a9df51bc41de5f3",
+    "staging": "1246d48090a751b09fd20cf48800e5e1a5d078131ac54b839a9df51bc41de5f3"
+  },
+  {
+    "file": "src/ui/player_list.gd",
+    "repository": "3e5502450449b22fb68fd8e59786c790c43691242a360c1fe557e040722fcdc4",
+    "staging": "3e5502450449b22fb68fd8e59786c790c43691242a360c1fe557e040722fcdc4"
+  },
+  {
+    "file": "src/ui/player_names.gd",
+    "repository": "224dfd166ed5c892e2e0f83b8b362d0530e393d1ee95acbcce6adb09bf5de340",
+    "staging": "224dfd166ed5c892e2e0f83b8b362d0530e393d1ee95acbcce6adb09bf5de340"
+  },
+  {
+    "file": "src/ui/player_profile_dialog.gd",
+    "repository": "5d363003b460941e8054726603dddcb77028728e98a01271574e4ded9d97254c",
+    "staging": "5d363003b460941e8054726603dddcb77028728e98a01271574e4ded9d97254c"
+  },
+  {
+    "file": "src/ui/players_panel.gd",
+    "repository": "0dce7ba3cad3606683dd314e4cc4b40d28d69058e312807b9b3bcc469b8f15f4",
+    "staging": "0dce7ba3cad3606683dd314e4cc4b40d28d69058e312807b9b3bcc469b8f15f4"
+  },
+  {
+    "file": "src/ui/portable_setup.gd",
+    "repository": "3a04fcd904f020b015e1eef4f2eb9c209595a4a7caab8edce9a521cd196ccc44",
+    "staging": "3a04fcd904f020b015e1eef4f2eb9c209595a4a7caab8edce9a521cd196ccc44"
+  },
+  {
+    "file": "src/ui/portrait.gd",
+    "repository": "1ffe3e4026bb6e04b19ab56757d5225615ce292214ed7424dd16d4a4209a5b35",
+    "staging": "1ffe3e4026bb6e04b19ab56757d5225615ce292214ed7424dd16d4a4209a5b35"
+  },
+  {
+    "file": "src/ui/revive_overlay.gd",
+    "repository": "0b912689fd86e062c464f8e001ee3313a04b434ae2758c6d767091febaa373bb",
+    "staging": "0b912689fd86e062c464f8e001ee3313a04b434ae2758c6d767091febaa373bb"
+  },
+  {
+    "file": "src/ui/save_transfer.gd",
+    "repository": "4bad376a70cac0f05549dd8376b83f50fd9b95b2ab48935efac9ee696a884472",
+    "staging": "4bad376a70cac0f05549dd8376b83f50fd9b95b2ab48935efac9ee696a884472"
+  },
+  {
+    "file": "src/ui/scroll_option_button.gd",
+    "repository": "e625684feb81d0337b2ab37386485dcbe386a80aae6551a57d2057ac4491e9ba",
+    "staging": "e625684feb81d0337b2ab37386485dcbe386a80aae6551a57d2057ac4491e9ba"
+  },
+  {
+    "file": "src/ui/scroll_repeat.gd",
+    "repository": "9856f7a1c184f0881f2569ff3487967f7c14d2933ac623f28c517691e944b410",
+    "staging": "9856f7a1c184f0881f2569ff3487967f7c14d2933ac623f28c517691e944b410"
+  },
+  {
+    "file": "src/ui/selection_frame.gd",
+    "repository": "bbc8555ebd6baef44b7123d618b22057d57a5f484b6828b7fbb28e1d0716efa9",
+    "staging": "bbc8555ebd6baef44b7123d618b22057d57a5f484b6828b7fbb28e1d0716efa9"
+  },
+  {
+    "file": "src/ui/settings_dialog.gd",
+    "repository": "56f06082a33407d1bc99bc49cf544bbd33365acc731d39fa4b423514aa40e049",
+    "staging": "56f06082a33407d1bc99bc49cf544bbd33365acc731d39fa4b423514aa40e049"
+  },
+  {
+    "file": "src/ui/setup_screen.gd",
+    "repository": "b20f6bcc47d33814c4e6921db30eea023aa250fec675da5513a8bbab7d3acdf0",
+    "staging": "b20f6bcc47d33814c4e6921db30eea023aa250fec675da5513a8bbab7d3acdf0"
+  },
+  {
+    "file": "src/ui/side_quest_panel.gd",
+    "repository": "1f46e48e3dc6a2e9be4368b617ba630cbe5b13404e53ab40958aa3317864155d",
+    "staging": "1f46e48e3dc6a2e9be4368b617ba630cbe5b13404e53ab40958aa3317864155d"
+  },
+  {
+    "file": "src/ui/spell_slots.gd",
+    "repository": "4ec6eee131f1cda6a09cefb4c4acc2a977115b2ad9f906d6ddaa668beef8d773",
+    "staging": "4ec6eee131f1cda6a09cefb4c4acc2a977115b2ad9f906d6ddaa668beef8d773"
+  },
+  {
+    "file": "src/ui/startup_screen.gd",
+    "repository": "23b7daee1cd605e0c3dff63f34a8034fe835185f16e4575eae09e5642bce3681",
+    "staging": "23b7daee1cd605e0c3dff63f34a8034fe835185f16e4575eae09e5642bce3681"
+  },
+  {
+    "file": "src/ui/touch_actions.gd",
+    "repository": "17fcec9e61ad7dab905eb08fc250c0e4e1c50b57d507bd8f310c8eb5b49eaaa6",
+    "staging": "17fcec9e61ad7dab905eb08fc250c0e4e1c50b57d507bd8f310c8eb5b49eaaa6"
+  },
+  {
+    "file": "src/ui/touch_text_edit.gd",
+    "repository": "5a997b665eb2c29e33d90949c9f83d51927c73adbfd870c8db3aaa5d33e51506",
+    "staging": "5a997b665eb2c29e33d90949c9f83d51927c73adbfd870c8db3aaa5d33e51506"
+  },
+  {
+    "file": "src/ui/training_reset_dialog.gd",
+    "repository": "d80ab861190907f377e5555ecd71c23acb29e08744bfa810bf063332d41452d0",
+    "staging": "d80ab861190907f377e5555ecd71c23acb29e08744bfa810bf063332d41452d0"
+  },
+  {
+    "file": "src/ui/travel_map.gd",
+    "repository": "086a5f9639471032f71612b9961b80941c59f7c04dbc5a2d828e7f2df9cc36c9",
+    "staging": "086a5f9639471032f71612b9961b80941c59f7c04dbc5a2d828e7f2df9cc36c9"
+  },
+  {
+    "file": "src/ui/tutorial_panel.gd",
+    "repository": "1d032d6f3c659d5202fc2f0b4457f80c1f317ff197b0542c60fd96de74695fd8",
+    "staging": "1d032d6f3c659d5202fc2f0b4457f80c1f317ff197b0542c60fd96de74695fd8"
+  },
+  {
+    "file": "src/ui/unit_panel.gd",
+    "repository": "ade82d0fc1ad6f0612ae3e57a77b10cf34ba159e715397a24e04612a026a9aaa",
+    "staging": "ade82d0fc1ad6f0612ae3e57a77b10cf34ba159e715397a24e04612a026a9aaa"
+  },
+  {
+    "file": "src/ui/village_name.gd",
+    "repository": "62681450bd00e932920d28895627e4e1d6c6e6fee0d61fc61b56059276880e8b",
+    "staging": "62681450bd00e932920d28895627e4e1d6c6e6fee0d61fc61b56059276880e8b"
+  },
+  {
+    "file": "src/ui/weapon_bar.gd",
+    "repository": "d2fcd123ac827e43eb474ca3f2c4a00ee43b091a5606f97165760e0fc980b6f1",
+    "staging": "d2fcd123ac827e43eb474ca3f2c4a00ee43b091a5606f97165760e0fc980b6f1"
+  },
+  {
+    "file": "src/ui/wiki_camp_art.gd",
+    "repository": "20baa6b1ae5cc95721a507a40472fa2a3213636836f535da23d1fc94887805e7",
+    "staging": "20baa6b1ae5cc95721a507a40472fa2a3213636836f535da23d1fc94887805e7"
+  },
+  {
+    "file": "src/ui/wiki_camp_constructor.gd",
+    "repository": "bd3c589c3b8f1486a6501e6f26c5c3b5ce3448be84787aba4957cd9bd392fc4f",
+    "staging": "bd3c589c3b8f1486a6501e6f26c5c3b5ce3448be84787aba4957cd9bd392fc4f"
+  },
+  {
+    "file": "src/ui/wiki_context.gd",
+    "repository": "d3fa09eba6b6a81f083c4167d4d2eaf1d14694ae3d01c86edbefc339b3c9be52",
+    "staging": "d3fa09eba6b6a81f083c4167d4d2eaf1d14694ae3d01c86edbefc339b3c9be52"
+  },
+  {
+    "file": "src/ui/wiki_equipment.gd",
+    "repository": "5f11006a59de542c5a767e94fd7c2f702959ce1a4ee47c02bc19cfcf48ca726c",
+    "staging": "5f11006a59de542c5a767e94fd7c2f702959ce1a4ee47c02bc19cfcf48ca726c"
+  },
+  {
+    "file": "src/ui/wiki_home.gd",
+    "repository": "6515650c67d0acff3a73a18b643f28c10169a0292d043ed8b471077fc23b69d4",
+    "staging": "6515650c67d0acff3a73a18b643f28c10169a0292d043ed8b471077fc23b69d4"
+  },
+  {
+    "file": "src/ui/wiki_html.gd",
+    "repository": "7f831af70e491e7dbef72476a916d22a5bba071b68872ef4ef5ff4fb23d5c6ef",
+    "staging": "7f831af70e491e7dbef72476a916d22a5bba071b68872ef4ef5ff4fb23d5c6ef"
+  },
+  {
+    "file": "src/ui/wiki_library_view.gd",
+    "repository": "ca62948d61cd5c9889c3078ed527de6539a302c76d9f7c40a5d6e2557b1e0451",
+    "staging": "ca62948d61cd5c9889c3078ed527de6539a302c76d9f7c40a5d6e2557b1e0451"
+  },
+  {
+    "file": "src/ui/wiki_panel.gd",
+    "repository": "0051496456c481a835642c2f53eee27282ddbcd766340a095ead9f8ff5395e2e",
+    "staging": "0051496456c481a835642c2f53eee27282ddbcd766340a095ead9f8ff5395e2e"
+  },
+  {
+    "file": "src/ui/wiki_planner.gd",
+    "repository": "0d4beb468a61cd5005544a706f4e7f147ac3882212dc6791f478e53998b9e790",
+    "staging": "0d4beb468a61cd5005544a706f4e7f147ac3882212dc6791f478e53998b9e790"
+  },
+  {
+    "file": "src/ui/wiki_preview.gd",
+    "repository": "c07a9dc6e4d1c0bd2865aa82aa6805c8edd3be83dfa3966c2ef338de5d00028d",
+    "staging": "c07a9dc6e4d1c0bd2865aa82aa6805c8edd3be83dfa3966c2ef338de5d00028d"
+  },
+  {
+    "file": "src/ui/wiki_results.gd",
+    "repository": "97886cd530e6a5aa9bde5ab8d16ee405458438de0ddf959bd1028ddfd90e90ff",
+    "staging": "97886cd530e6a5aa9bde5ab8d16ee405458438de0ddf959bd1028ddfd90e90ff"
+  },
+  {
+    "file": "src/ui/wiki_scene_preview.gd",
+    "repository": "18e5fb34ebfeb5ac2a97e472face244030c598b0931a2671488583c0ff432472",
+    "staging": "18e5fb34ebfeb5ac2a97e472face244030c598b0931a2671488583c0ff432472"
+  },
+  {
+    "file": "src/ui/wiki_workbench.gd",
+    "repository": "86a68e67858af781192d3519ad7b1d771c0fe496cad445bf1a3b8d36d9db8c3b",
+    "staging": "86a68e67858af781192d3519ad7b1d771c0fe496cad445bf1a3b8d36d9db8c3b"
+  },
+  {
+    "file": "src/ui/world_labels.gd",
+    "repository": "4691d9b4b77d4ffe4ba8136f333c77cdebfaeda35cf6e624e31d591d1e567a95",
+    "staging": "4691d9b4b77d4ffe4ba8136f333c77cdebfaeda35cf6e624e31d591d1e567a95"
+  },
+  {
+    "file": "src/ui/zone_objectives.gd",
+    "repository": "72b1cba9de1dd9776c5d9baec3fa4f87014e4956d77cb628a97a796d894f3cba",
+    "staging": "72b1cba9de1dd9776c5d9baec3fa4f87014e4956d77cb628a97a796d894f3cba"
+  }
+]

@@ -297,6 +297,7 @@ var _scroll_repeat := preload("res://src/ui/scroll_repeat.gd").new()
 var _selection_alpha := {}
 var _hold_cmd := {}      # the held skill row's command
 var _hold_t := 0.0
+var _hold_button := MOUSE_BUTTON_LEFT
 ## Shop transfer repeats only the captured item, even when its row scrolls.
 ## It stages copies locally; Accept still sends one atomic trade command.
 const TRANSFER_DELAY := 0.5
@@ -1385,15 +1386,7 @@ func _process(_dt: float) -> void:
 	if ctrl != _ctrl:
 		_ctrl = ctrl
 		queue_redraw()
-	# a held skill rises every frame once 0.25 s past the
-	# click's −0.5 s.
-	if not _hold_cmd.is_empty():
-		if mode != "spells" or not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			_hold_cmd = {}
-		else:
-			_hold_t += _dt
-			if _hold_t >= 0.25:
-				construct.emit(_hold_cmd)
+	_process_training_hold(_dt)
 	if not visible or hud == null:
 		_row_arrivals.clear()
 		return
@@ -1652,6 +1645,33 @@ func _process_scroll(dt: float) -> void:
 	if steps: _scroll_list(_scroll_repeat.key, steps, Input.is_key_pressed(KEY_SHIFT))
 
 
+func _process_training_hold(dt: float) -> void:
+	if _hold_cmd.is_empty(): return
+	if not is_visible_in_tree() or mode != "spells" or tutorial_visible() \
+		or not Input.is_mouse_button_pressed(_hold_button) or not is_instance_valid(_unit) \
+		or _unit.uid != int(_hold_cmd.get("unit", -1)) or _unit.dead:
+		_hold_cmd = {}
+		return
+	_hold_t += dt
+	if _hold_t < 0.25: return # Same 0.75 s initial delay and repeat cadence as raising.
+	var h: Dictionary = _unit.get_meta("hero", {})
+	if _hold_cmd.t == "untrain" and Skills.level(h, _hold_cmd.stat) <= 0:
+		_hold_cmd = {}
+		return
+	if _hold_cmd.t == "unperk":
+		# Capture the family, not its row: removing its last rank may move
+		# another ability into that row. Only follow this family's next rank.
+		var family := String(_hold_cmd.perk).rstrip("0123456789")
+		var code := ""
+		for learned: String in h.get("perks", []):
+			if learned.rstrip("0123456789") == family and (code.is_empty() or learned > code): code = learned
+		if code.is_empty():
+			_hold_cmd = {}
+			return
+		_hold_cmd.perk = code
+	construct.emit(_hold_cmd.duplicate())
+
+
 func _process_selection(dt: float) -> void:
 	var changed := false
 	for k: String in _content:
@@ -1666,16 +1686,19 @@ func _process_selection(dt: float) -> void:
 
 
 func _input(e: InputEvent) -> void:
+	if e is InputEventMouseButton and not e.pressed and e.button_index == _hold_button:
+		_hold_cmd = {}
 	#  captures the mouse; stops on release even
 	# outside the arrow. Catch release before another control can consume it.
 	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT and not e.pressed:
 		_turn_dir = 0
-		_hold_cmd = {}
 		_stop_transfer_hold()
 		_scroll_repeat.stop()
 
 
 func _gui_input(e: InputEvent) -> void:
+	if e is InputEventMouseButton and not e.pressed and e.button_index == _hold_button:
+		_hold_cmd = {}
 	if e is InputEventMouseButton and e.pressed and e.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_LEFT, MOUSE_BUTTON_WHEEL_RIGHT]:
 		if tutorial_visible(): return
 		var point: Vector2 = (e.position - _o()) / _s()
@@ -1722,9 +1745,12 @@ func _gui_input(e: InputEvent) -> void:
 		var rp: Vector2 = (e.position - _o()) / _s()
 		for row: Array in _skill_rows:
 			if row.size() < 5 or not Rect2(350, row[0].position.y, 40, 15).has_point(rp): continue
-			_hold_cmd = {} # one rank per click, never repeat a held refund
+			_hold_cmd = {}
 			if row.size() > 4 and not row[4].is_empty():
 				if GameSound.instance: GameSound.instance.ui("buttons\\camp\\perk.wav")
+				_hold_cmd = row[4].duplicate()
+				_hold_button = MOUSE_BUTTON_RIGHT
+				_hold_t = -0.5
 				construct.emit(row[4])
 			accept_event()
 			return
@@ -1773,6 +1799,7 @@ func _gui_input(e: InputEvent) -> void:
 				else: construct.emit(cmd)
 				if row[3] == "skill":
 					_hold_cmd = cmd
+					_hold_button = MOUSE_BUTTON_LEFT
 					_hold_t = -0.5
 			accept_event()
 			return
@@ -3215,7 +3242,7 @@ func _draw_skills() -> void:
 		if lv == 100 and can_remove:
 			_region("campinfo", Rect2(350, r.position.y, 40, 15), plate)
 			_t(r, "−", 0, Interface800.TEXT, HORIZONTAL_ALIGNMENT_RIGHT)
-		if can_remove: desc += [RemakeText.t("Right-click: unlearn one level (+%s points).") % _cost_text(int(refund))]
+		if can_remove: desc += [RemakeText.t("Right-click: unlearn one level (+%s points). Hold to keep lowering.") % _cost_text(int(refund))]
 		_skill_rows.append([Rect2(r.position, Vector2(175, 15)),
 			{"t": "train", "unit": _unit.uid, "stat": sk} if at_camp and not _unit.dead and lv < 100 and xp >= c else {},
 			desc, "skill", {"t": "untrain", "unit": _unit.uid, "stat": sk} if can_remove else {}])
@@ -3253,7 +3280,7 @@ func _draw_skills() -> void:
 		if (n >= 3 or Perks.get_perk(nxt).is_empty()) and can_remove:
 			_region("campinfo", Rect2(350, y, 40, 15), plate)
 			_t(r, "−", 0, Interface800.TEXT, HORIZONTAL_ALIGNMENT_RIGHT)
-		if can_remove: desc += [RemakeText.t("Right-click: unlearn one level (+%s points).") % _cost_text(int(refund))]
+		if can_remove: desc += [RemakeText.t("Right-click: unlearn one level (+%s points). Hold to keep lowering.") % _cost_text(int(refund))]
 		_skill_rows.append([Rect2(r.position, Vector2(175, 15)), cmd, desc, "perk",
 			{"t": "unperk", "unit": _unit.uid, "perk": code} if can_remove else {}])
 		y += 15.0

@@ -1,0 +1,5021 @@
+{
+  "campaign": "cursed_lands",
+  "errors": [],
+  "maps": 37,
+  "scripts": [
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#48",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "Sub",
+                    [
+                      [
+                        3,
+                        "GSGetVar",
+                        [
+                          [
+                            0,
+                            0.0
+                          ],
+                          [
+                            1,
+                            "gtime"
+                          ]
+                        ]
+                      ],
+                      [
+                        3,
+                        "GSGetVar",
+                        [
+                          [
+                            0,
+                            0.0
+                          ],
+                          [
+                            1,
+                            "GTwolf"
+                          ]
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    0,
+                    47.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "Not",
+                [
+                  [
+                    3,
+                    "IsEqual",
+                    [
+                      [
+                        3,
+                        "GSGetVar",
+                        [
+                          [
+                            0,
+                            0.0
+                          ],
+                          [
+                            1,
+                            "q.gz3g.q1g"
+                          ]
+                        ]
+                      ],
+                      [
+                        0,
+                        2.0
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [
+            [
+              0,
+              0.0
+            ],
+            [
+              1,
+              "gtime"
+            ]
+          ],
+          "command": "GSGetVar"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#47",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#51",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsEqual",
+                [
+                  [
+                    3,
+                    "GSGetVar",
+                    [
+                      [
+                        0,
+                        0.0
+                      ],
+                      [
+                        1,
+                        "q.gz9g.q12g"
+                      ]
+                    ]
+                  ],
+                  [
+                    0,
+                    1.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "Not",
+                [
+                  [
+                    3,
+                    "IsEqual",
+                    [
+                      [
+                        3,
+                        "GSGetVar",
+                        [
+                          [
+                            0,
+                            0.0
+                          ],
+                          [
+                            1,
+                            "q.gz9g.q12g"
+                          ]
+                        ]
+                      ],
+                      [
+                        0,
+                        2.0
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              [
+                3,
+                "Not",
+                [
+                  [
+                    3,
+                    "IsEqual",
+                    [
+                      [
+                        3,
+                        "GSGetVar",
+                        [
+                          [
+                            0,
+                            0.0
+                          ],
+                          [
+                            1,
+                            "GTgold"
+                          ]
+                        ]
+                      ],
+                      [
+                        0,
+                        0.0
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "Sub",
+                    [
+                      [
+                        3,
+                        "GSGetVar",
+                        [
+                          [
+                            0,
+                            0.0
+                          ],
+                          [
+                            1,
+                            "gtime"
+                          ]
+                        ]
+                      ],
+                      [
+                        3,
+                        "GSGetVar",
+                        [
+                          [
+                            0,
+                            0.0
+                          ],
+                          [
+                            1,
+                            "GTgold"
+                          ]
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    0,
+                    47.0
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [
+            [
+              0,
+              0.0
+            ],
+            [
+              1,
+              "gtime"
+            ]
+          ],
+          "command": "GSGetVar"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#50",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#310",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    4.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    23.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#312",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#309",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#320",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    4.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    23.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#324",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#317",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#331",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    4.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    23.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#312",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#327",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#335",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    10.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    13.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#336",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#334",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#340",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    10.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    13.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#348",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#342",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#349",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    10.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    13.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#336",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#343",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#354",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    17.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    20.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#359",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#355",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#358",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    17.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    20.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#360",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#356",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#361",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    17.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    20.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#359",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#357",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#374",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    16.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    21.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#379",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#375",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#380",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    16.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    21.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#378",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#376",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#373",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    16.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    21.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#378",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#377",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#392",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    7.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    12.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#395",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#393",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#394",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    7.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    12.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#398",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#396",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#399",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    7.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    12.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#395",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#397",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#411",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    9.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    14.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#416",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#412",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#415",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    9.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    14.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#417",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#413",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#418",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    9.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    14.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#416",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#414",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#430",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    16.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    21.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#433",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#431",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VCheck#0#594",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    16.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    21.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#436",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#434",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#437",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    16.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    21.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#433",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#435",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#449",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    8.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    11.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#454",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#450",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#453",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    8.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    11.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#455",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#451",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#456",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    8.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    11.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#454",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#452",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#331",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    4.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    23.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#324",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#488",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#349",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    10.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    13.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#348",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#489",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#361",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    17.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    20.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#360",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#490",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#380",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    16.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    21.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#379",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#500",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#399",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    7.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    12.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#398",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#501",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#418",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    9.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    14.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#417",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#502",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#437",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    16.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    21.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#436",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#503",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#456",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    8.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    11.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#455",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "basecam.mob",
+      "script": "VCheck#0#504",
+      "type": "brief",
+      "zone": "bz1g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "InvokeAlarm",
+                [
+                  [
+                    0,
+                    1.0
+                  ],
+                  [
+                    0,
+                    100.0
+                  ],
+                  [
+                    0,
+                    84.0
+                  ]
+                ]
+              ],
+              [
+                6,
+                "GSSetVar",
+                [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    1,
+                    "z.gz9g.a1"
+                  ],
+                  [
+                    3,
+                    "GSGetVar",
+                    [
+                      [
+                        0,
+                        0.0
+                      ],
+                      [
+                        1,
+                        "gtime"
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [
+            [
+              0,
+              0.0
+            ],
+            [
+              1,
+              "gtime"
+            ]
+          ],
+          "command": "GSGetVar"
+        }
+      ],
+      "file": "zone9.mob",
+      "script": "VTriger#0#5",
+      "type": "game",
+      "zone": "gz9g"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#116",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    7.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    18.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#138",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "bz8k.mob",
+      "script": "VCheck#0#108",
+      "type": "brief",
+      "zone": "bz8k"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#143",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    7.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    18.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#138",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "bz8k.mob",
+      "script": "VCheck#0#146",
+      "type": "brief",
+      "zone": "bz8k"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#164",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    10.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    15.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#163",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "bz8k.mob",
+      "script": "VCheck#0#161",
+      "type": "brief",
+      "zone": "bz8k"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#165",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    10.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    15.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#163",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "bz8k.mob",
+      "script": "VCheck#0#167",
+      "type": "brief",
+      "zone": "bz8k"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#166",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    10.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    15.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#181",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "bz8k.mob",
+      "script": "VCheck#0#178",
+      "type": "brief",
+      "zone": "bz8k"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#152",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    7.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    18.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#186",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "bz8k.mob",
+      "script": "VCheck#0#183",
+      "type": "brief",
+      "zone": "bz8k"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#193",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    14.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    17.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#190",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "bz8k.mob",
+      "script": "VCheck#0#189",
+      "type": "brief",
+      "zone": "bz8k"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#192",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    14.0
+                  ]
+                ]
+              ],
+              [
+                3,
+                "IsLess",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    17.0
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#190",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        },
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "bz8k.mob",
+      "script": "VCheck#0#191",
+      "type": "brief",
+      "zone": "bz8k"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "QuestComplete",
+                [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    1,
+                    "q61h"
+                  ]
+                ]
+              ],
+              [
+                6,
+                "Sleep",
+                [
+                  [
+                    0,
+                    30.0
+                  ]
+                ]
+              ],
+              [
+                6,
+                "SetCurrentParty",
+                [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    1,
+                    "HeroAlone"
+                  ]
+                ]
+              ],
+              [
+                6,
+                "GSSetVarMax",
+                [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    1,
+                    "b.Nalo.Kr61"
+                  ],
+                  [
+                    0,
+                    1.0
+                  ]
+                ]
+              ],
+              [
+                6,
+                "FixWorldTime",
+                [
+                  [
+                    0,
+                    0.0
+                  ]
+                ]
+              ],
+              [
+                6,
+                "LeaveToZone",
+                [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    1,
+                    "bz13h"
+                  ],
+                  [
+                    0,
+                    0.0
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [
+            [
+              0,
+              0.0
+            ]
+          ],
+          "command": "FixWorldTime"
+        }
+      ],
+      "file": "zone15.mob",
+      "script": "VTriger#0#23",
+      "type": "game",
+      "zone": "gz15h"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "PlayMusic",
+                [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    1,
+                    "chance"
+                  ]
+                ]
+              ],
+              [
+                6,
+                "FixWorldTime",
+                [
+                  [
+                    0,
+                    12.0
+                  ]
+                ]
+              ],
+              [
+                6,
+                "SetScience",
+                [
+                  [
+                    2,
+                    "CageLever"
+                  ],
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    0,
+                    0.0
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [
+            [
+              0,
+              12.0
+            ]
+          ],
+          "command": "FixWorldTime"
+        }
+      ],
+      "file": "zone15.mob",
+      "script": "VTriger#0#68",
+      "type": "game",
+      "zone": "gz15h"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "FixWorldTime",
+                [
+                  [
+                    0,
+                    0.0
+                  ]
+                ]
+              ],
+              [
+                6,
+                "AddMob",
+                [
+                  [
+                    1,
+                    "zone15night.mob"
+                  ]
+                ]
+              ],
+              [
+                6,
+                "SwitchLeverState",
+                [
+                  [
+                    2,
+                    "PChest"
+                  ],
+                  [
+                    0,
+                    1.0
+                  ]
+                ]
+              ],
+              [
+                6,
+                "SetCPFast",
+                [
+                  [
+                    2,
+                    "HeroStatue"
+                  ],
+                  [
+                    3,
+                    "GetX",
+                    [
+                      [
+                        2,
+                        "HeroStatue"
+                      ]
+                    ]
+                  ],
+                  [
+                    3,
+                    "GetY",
+                    [
+                      [
+                        2,
+                        "HeroStatue"
+                      ]
+                    ]
+                  ],
+                  [
+                    0,
+                    -3.0
+                  ]
+                ]
+              ],
+              [
+                6,
+                "Sleep",
+                [
+                  [
+                    0,
+                    15.0
+                  ]
+                ]
+              ],
+              [
+                6,
+                "VTriger#0#101",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [
+            [
+              0,
+              0.0
+            ]
+          ],
+          "command": "FixWorldTime"
+        }
+      ],
+      "file": "zone15.mob",
+      "script": "VTriger#0#81",
+      "type": "game",
+      "zone": "gz15h"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "VTriger#0#88",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsGreater",
+                [
+                  [
+                    3,
+                    "GetWorldTime",
+                    []
+                  ],
+                  [
+                    0,
+                    23.5
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [],
+          "command": "GetWorldTime"
+        }
+      ],
+      "file": "zone15.mob",
+      "script": "VCheck#0#86",
+      "type": "game",
+      "zone": "gz15h"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "FixWorldTime",
+                [
+                  [
+                    0,
+                    0.0
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [
+            [
+              0,
+              0.0
+            ]
+          ],
+          "command": "FixWorldTime"
+        }
+      ],
+      "file": "zone15.mob",
+      "script": "VTriger#0#88",
+      "type": "game",
+      "zone": "gz15h"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "SetCPFast",
+                [
+                  [
+                    2,
+                    "HeroStatue"
+                  ],
+                  [
+                    3,
+                    "GetX",
+                    [
+                      [
+                        2,
+                        "HeroStatue"
+                      ]
+                    ]
+                  ],
+                  [
+                    3,
+                    "GetY",
+                    [
+                      [
+                        2,
+                        "HeroStatue"
+                      ]
+                    ]
+                  ],
+                  [
+                    0,
+                    0.2
+                  ]
+                ]
+              ],
+              [
+                6,
+                "RunWorldTime",
+                [
+                  [
+                    0,
+                    12.0
+                  ]
+                ]
+              ],
+              [
+                6,
+                "VCheck#0#86",
+                [
+                  [
+                    2,
+                    "this"
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [
+            [
+              0,
+              12.0
+            ]
+          ],
+          "command": "RunWorldTime"
+        }
+      ],
+      "file": "zone15.mob",
+      "script": "VTriger#0#90",
+      "type": "game",
+      "zone": "gz15h"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "SwitchLeverState",
+                [
+                  [
+                    2,
+                    "HeroPrisonOpened"
+                  ],
+                  [
+                    0,
+                    1.0
+                  ]
+                ]
+              ],
+              [
+                6,
+                "FixWorldTime",
+                [
+                  [
+                    0,
+                    0.0
+                  ]
+                ]
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      },
+      "calls": [
+        {
+          "args": [
+            [
+              0,
+              0.0
+            ]
+          ],
+          "command": "FixWorldTime"
+        }
+      ],
+      "file": "bz13h.mob",
+      "script": "VTriger#0#8",
+      "type": "brief",
+      "zone": "bz13h"
+    },
+    {
+      "body": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "GSSetVarMax",
+                [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    1,
+                    "z.gz15h"
+                  ],
+                  [
+                    0,
+                    1.0
+                  ]
+                ]
+              ],
+              [
+                6,
+                "LeaveToZone",
+                [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    1,
+                    "gz15h"
+                  ],
+                  [
+                    0,
+                    1.0
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsEqualString",
+                [
+                  [
+                    2,
+                    "szComplete"
+                  ],
+                  [
+                    1,
+                    "b.bz13h.Hns59"
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "CopyStats",
+                [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    1,
+                    "HeroAlone::Hero"
+                  ],
+                  [
+                    1,
+                    "Hero"
+                  ]
+                ]
+              ],
+              [
+                6,
+                "AddLoot",
+                [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    1,
+                    "HeroAlone"
+                  ],
+                  [
+                    1,
+                    ""
+                  ]
+                ]
+              ],
+              [
+                6,
+                "SetCurrentParty",
+                [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    1,
+                    ""
+                  ]
+                ]
+              ],
+              [
+                6,
+                "FixItems",
+                []
+              ],
+              [
+                6,
+                "RunWorldTime",
+                [
+                  [
+                    0,
+                    0.0
+                  ]
+                ]
+              ],
+              [
+                6,
+                "LeaveToZone",
+                [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    1,
+                    "gz15h"
+                  ],
+                  [
+                    0,
+                    3.0
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsEqualString",
+                [
+                  [
+                    2,
+                    "szComplete"
+                  ],
+                  [
+                    1,
+                    "b.Nalo.Kr61"
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "CreateParty",
+                [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    1,
+                    "Pretty"
+                  ]
+                ]
+              ],
+              [
+                6,
+                "AddUnitToParty",
+                [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    1,
+                    "Pretty::Nalo"
+                  ],
+                  [
+                    1,
+                    "Human Hadagan Pretty"
+                  ]
+                ]
+              ],
+              [
+                6,
+                "SetCurrentParty",
+                [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    1,
+                    "Pretty"
+                  ]
+                ]
+              ],
+              [
+                6,
+                "LeaveToZone",
+                [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    1,
+                    "gz15h"
+                  ],
+                  [
+                    0,
+                    3.0
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsEqualString",
+                [
+                  [
+                    2,
+                    "szComplete"
+                  ],
+                  [
+                    1,
+                    "b.Nalo.Kr60"
+                  ]
+                ]
+              ]
+            ]
+          },
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ]
+            ],
+            "conds": []
+          }
+        ],
+        "params": [
+          "nPlayer",
+          "szComplete"
+        ]
+      },
+      "calls": [
+        {
+          "args": [
+            [
+              0,
+              0.0
+            ]
+          ],
+          "command": "RunWorldTime"
+        }
+      ],
+      "file": "bz13h.mob",
+      "script": "#OnBriefingComplete",
+      "type": "brief",
+      "zone": "bz13h"
+    }
+  ]
+}

@@ -1,0 +1,465 @@
+{
+  "campaign-clock-native-final": [
+    {
+      "id": "quests/campaign_clock",
+      "campaign": "cursed_lands",
+      "status": "passed",
+      "checks": 1152,
+      "failures": 0,
+      "runtime": {
+        "campaign": "cursed_lands",
+        "display": "headless",
+        "display_driver": "headless",
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "rendering_method": "forward_plus",
+        "script": "res://tools/tests/campaign_clock.gd",
+        "seed": 20261020,
+        "user_dir": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/campaign-clock-native-final/tests/quests/campaign_clock/profile/data/godot/app_userdata/Cursed Lands"
+      },
+      "log_sha256": "416d341b89f2a58bea55bb51520c8ea042c5119d7fc99d2d42a1b2c6eef3c88c"
+    },
+    {
+      "id": "quests/campaign_clock_astral",
+      "campaign": "lost_in_astral",
+      "status": "passed",
+      "checks": 1152,
+      "failures": 0,
+      "runtime": {
+        "campaign": "lost_in_astral",
+        "display": "headless",
+        "display_driver": "headless",
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "rendering_method": "forward_plus",
+        "script": "res://tools/tests/campaign_clock.gd",
+        "seed": 20261020,
+        "user_dir": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/campaign-clock-native-final/tests/quests/campaign_clock_astral/profile/data/godot/app_userdata/Cursed Lands"
+      },
+      "log_sha256": "d937002192ce1953ce9217ff8e95fc78f07fddd808b4554553c5986de9f8c709"
+    }
+  ],
+  "campaign-clock-catalog": [
+    {
+      "id": "quests/campaign_clock_coop",
+      "campaign": "cursed_lands",
+      "status": "passed",
+      "checks": 62,
+      "failures": 0,
+      "runtime": {
+        "campaign": "cursed_lands",
+        "display": "headless",
+        "display_driver": "headless",
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "rendering_method": "forward_plus",
+        "script": "res://tools/tests/campaign_clock_coop.gd",
+        "seed": 20261020,
+        "user_dir": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/campaign-clock-catalog/tests/quests/campaign_clock_coop/profile/data/godot/app_userdata/Cursed Lands"
+      },
+      "log_sha256": "33d92103afc94ef3dc52300dcb42775136bb6347f02454e3a5fe45b6be7d1776"
+    },
+    {
+      "id": "quests/campaign_clock_coop_astral",
+      "campaign": "lost_in_astral",
+      "status": "passed",
+      "checks": 62,
+      "failures": 0,
+      "runtime": {
+        "campaign": "lost_in_astral",
+        "display": "headless",
+        "display_driver": "headless",
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "rendering_method": "forward_plus",
+        "script": "res://tools/tests/campaign_clock_coop.gd",
+        "seed": 20261020,
+        "user_dir": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/campaign-clock-catalog/tests/quests/campaign_clock_coop_astral/profile/data/godot/app_userdata/Cursed Lands"
+      },
+      "log_sha256": "77a40cbe706d8f1a85c78bebbc73e5bce46d1a16e2df89093ebc9fbd69871c24"
+    }
+  ],
+  "campaign-clock-adjacent": [
+    {
+      "id": "quests/script_clock",
+      "campaign": "cursed_lands",
+      "status": "passed",
+      "checks": 1408,
+      "failures": 0,
+      "runtime": {
+        "campaign": "cursed_lands",
+        "display": "headless",
+        "display_driver": "headless",
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "rendering_method": "forward_plus",
+        "script": "res://tools/tests/script_clock.gd",
+        "seed": 20261020,
+        "user_dir": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/campaign-clock-adjacent/tests/quests/script_clock/profile/data/godot/app_userdata/Cursed Lands"
+      },
+      "log_sha256": "401adaed4b19d958a43f4a008fc731b469f4d1caa3f3268e9213a3e9dba822d4"
+    },
+    {
+      "id": "quests/script_clock_astral",
+      "campaign": "lost_in_astral",
+      "status": "passed",
+      "checks": 1408,
+      "failures": 0,
+      "runtime": {
+        "campaign": "lost_in_astral",
+        "display": "headless",
+        "display_driver": "headless",
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "rendering_method": "forward_plus",
+        "script": "res://tools/tests/script_clock.gd",
+        "seed": 20261020,
+        "user_dir": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/campaign-clock-adjacent/tests/quests/script_clock_astral/profile/data/godot/app_userdata/Cursed Lands"
+      },
+      "log_sha256": "9670fecb9d08a4972613212573a153147842d6d765ae5eed3a711c1b63f74b53"
+    },
+    {
+      "id": "quests/script_clock_coop",
+      "campaign": "lost_in_astral",
+      "status": "passed",
+      "checks": 17,
+      "failures": 0,
+      "runtime": {
+        "campaign": "lost_in_astral",
+        "display": "headless",
+        "display_driver": "headless",
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "rendering_method": "forward_plus",
+        "script": "res://tools/tests/script_clock_coop.gd",
+        "seed": 20261020,
+        "user_dir": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/campaign-clock-adjacent/tests/quests/script_clock_coop/profile/data/godot/app_userdata/Cursed Lands"
+      },
+      "log_sha256": "133e3c6cccf6d5203570d1cc2c266647ea8c82a87d35bb92e5da753773067aff"
+    }
+  ],
+  "campaign-clock-boundaries": [
+    {
+      "id": "commands/console_commands",
+      "campaign": "cursed_lands",
+      "status": "passed",
+      "checks": 96,
+      "failures": 0,
+      "runtime": {
+        "campaign": "cursed_lands",
+        "display": "headless",
+        "display_driver": "headless",
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "rendering_method": "forward_plus",
+        "script": "res://tools/tests/console_commands.gd",
+        "seed": 20261020,
+        "user_dir": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/campaign-clock-boundaries/tests/commands/console_commands/profile/data/godot/app_userdata/Cursed Lands"
+      },
+      "log_sha256": "efecad7890aeeb7d3238933cbbf903078d21f16266dff16ecb584aa98abff70c"
+    },
+    {
+      "id": "persistence/save_state_fields",
+      "campaign": "cursed_lands",
+      "status": "passed",
+      "checks": 18,
+      "failures": 0,
+      "runtime": {
+        "campaign": "cursed_lands",
+        "display": "headless",
+        "display_driver": "headless",
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "rendering_method": "forward_plus",
+        "script": "res://tools/tests/save_state_fields.gd",
+        "seed": 20261020,
+        "user_dir": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/campaign-clock-boundaries/tests/persistence/save_state_fields/profile/data/godot/app_userdata/Cursed Lands"
+      },
+      "log_sha256": "9dee18df9861e8c3801c8fec4c0fdb7bd59f4ef2c0eac6e3c525a0a43a3b7634"
+    },
+    {
+      "id": "coop/coop_progress_travel",
+      "campaign": "cursed_lands",
+      "status": "passed",
+      "checks": 15,
+      "failures": 0,
+      "runtime": {
+        "campaign": "cursed_lands",
+        "display": "headless",
+        "display_driver": "headless",
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "rendering_method": "forward_plus",
+        "script": "res://tools/tests/coop_progress_travel.gd",
+        "seed": 20261020,
+        "user_dir": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/campaign-clock-boundaries/tests/coop/coop_progress_travel/profile/data/godot/app_userdata/Cursed Lands"
+      },
+      "log_sha256": "e96761b1eda5cf99eee4c5722aee5e0866e96f76265d819e35dd5fc5eca46f3e"
+    },
+    {
+      "id": "coop/coop_progress_travel_astral",
+      "campaign": "lost_in_astral",
+      "status": "passed",
+      "checks": 15,
+      "failures": 0,
+      "runtime": {
+        "campaign": "lost_in_astral",
+        "display": "headless",
+        "display_driver": "headless",
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "rendering_method": "forward_plus",
+        "script": "res://tools/tests/coop_progress_travel.gd",
+        "seed": 20261020,
+        "user_dir": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/campaign-clock-boundaries/tests/coop/coop_progress_travel_astral/profile/data/godot/app_userdata/Cursed Lands"
+      },
+      "log_sha256": "61d446c32715aa5cbe3681a775aec08c6261f48d09db89912339d6a5d7c977ae"
+    },
+    {
+      "id": "commands/travel_command_lifecycle",
+      "campaign": "cursed_lands",
+      "status": "passed",
+      "checks": 21,
+      "failures": 0,
+      "runtime": {
+        "campaign": "cursed_lands",
+        "display": "headless",
+        "display_driver": "headless",
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "rendering_method": "forward_plus",
+        "script": "res://tools/tests/travel_command_lifecycle.gd",
+        "seed": 20261020,
+        "user_dir": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/campaign-clock-boundaries/tests/commands/travel_command_lifecycle/profile/data/godot/app_userdata/Cursed Lands"
+      },
+      "log_sha256": "88abbd686c48594227e29b699aabf83c6de9ebfa71e3721b16eeb9430b2cec91"
+    },
+    {
+      "id": "commands/travel_command_lifecycle_astral",
+      "campaign": "lost_in_astral",
+      "status": "passed",
+      "checks": 21,
+      "failures": 0,
+      "runtime": {
+        "campaign": "lost_in_astral",
+        "display": "headless",
+        "display_driver": "headless",
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "rendering_method": "forward_plus",
+        "script": "res://tools/tests/travel_command_lifecycle.gd",
+        "seed": 20261020,
+        "user_dir": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/campaign-clock-boundaries/tests/commands/travel_command_lifecycle_astral/profile/data/godot/app_userdata/Cursed Lands"
+      },
+      "log_sha256": "cd84b59fde61c2a0a74b6aaa4e0c26a02120d87c43a4536c7cc8b930bc331bf6"
+    }
+  ]
+}

@@ -1228,7 +1228,7 @@ func _draw_esc_hints() -> void:
 
 
 func blocks_input() -> bool:
-	return game.session.loading_game or MessageBox.is_up(_item_info_box) or _esc_open or _menu.visible or _dialog.visible or _travel.visible or (TouchInput.enabled and _panel_open())
+	return DeveloperConsole.visible or game.session.ending_active or game.session.loading_game or MessageBox.is_up(_item_info_box) or _esc_open or _menu.visible or _dialog.visible or _travel.visible or (TouchInput.enabled and _panel_open())
 
 
 ## Polling the keyboard bypasses GUI event consumption, so the camera must

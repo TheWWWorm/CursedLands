@@ -1,0 +1,133 @@
+{
+  "base": {
+    "maps": 36,
+    "mechanisms": 291,
+    "science_nonzero": 184,
+    "initially_terminal": []
+  },
+  "astral": {
+    "maps": 67,
+    "mechanisms": 1595,
+    "science_nonzero": 1194,
+    "initially_terminal": []
+  },
+  "authored_chest": {
+    "cycled": 0,
+    "id": 3435027,
+    "map": "zone11.mob",
+    "name": "OgreChest1",
+    "science": [
+      5,
+      0,
+      65
+    ],
+    "scripts": {
+      "OChest#1": {
+        "blocks": [
+          {
+            "body": [
+              [
+                6,
+                "KillScript",
+                []
+              ],
+              [
+                6,
+                "GiveMoney",
+                [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    0,
+                    100.0
+                  ]
+                ]
+              ],
+              [
+                6,
+                "QuestComplete",
+                [
+                  [
+                    0,
+                    0.0
+                  ],
+                  [
+                    1,
+                    "ochest"
+                  ]
+                ]
+              ],
+              [
+                6,
+                "Sleep",
+                [
+                  [
+                    0,
+                    40.0
+                  ]
+                ]
+              ],
+              [
+                6,
+                "SwitchLeverState",
+                [
+                  [
+                    3,
+                    "GetObject",
+                    [
+                      [
+                        0,
+                        3435027.0
+                      ]
+                    ]
+                  ],
+                  [
+                    0,
+                    0.0
+                  ]
+                ]
+              ]
+            ],
+            "conds": [
+              [
+                3,
+                "IsEqual",
+                [
+                  [
+                    3,
+                    "GetLeverState",
+                    [
+                      [
+                        3,
+                        "GetObject",
+                        [
+                          [
+                            0,
+                            3435027.0
+                          ]
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    0,
+                    1.0
+                  ]
+                ]
+              ]
+            ]
+          }
+        ],
+        "params": [
+          "this"
+        ]
+      }
+    },
+    "state": 0,
+    "states": 2,
+    "template": "stst84",
+    "zone": "gz11g"
+  }
+}

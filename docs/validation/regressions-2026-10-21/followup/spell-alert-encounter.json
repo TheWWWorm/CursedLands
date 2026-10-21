@@ -1,0 +1,2491 @@
+{
+  "ally": {
+    "_equipment_resolved": true,
+    "aggression": 0,
+    "alarm_cond": 0,
+    "alarm_raise": 0,
+    "alarm_use": 1,
+    "always_active": 0,
+    "armors": [],
+    "complexion": "(0.5, 0.5, 0.0)",
+    "cyclic": 1,
+    "guard_point": "(188.5791, 63.32378, 0.0)",
+    "guard_radius": 5.0,
+    "help_radius": 7.0,
+    "kind": "UNIT",
+    "logic": [
+      {
+        "aggression": 0,
+        "alarm_cond": 0,
+        "alarm_raise": 0,
+        "alarm_use": 1,
+        "always_active": 0,
+        "cyclic": 1,
+        "guard_point": "(188.5791, 63.32378, 0.0)",
+        "guard_radius": 5.0,
+        "help_radius": 7.0,
+        "logic_model": 1,
+        "logic_wait": -1.0
+      },
+      {
+        "aggression": 0,
+        "alarm_cond": 0,
+        "alarm_raise": 0,
+        "alarm_use": 0,
+        "always_active": 0,
+        "cyclic": 1,
+        "guard_point": "(188.5791, 63.32378, 0.0)",
+        "guard_radius": 10.0,
+        "help_radius": 7.0,
+        "logic_model": 3,
+        "logic_wait": -1.0
+      },
+      {
+        "aggression": 0,
+        "alarm_cond": 0,
+        "alarm_raise": 0,
+        "alarm_use": 0,
+        "always_active": 0,
+        "cyclic": 1,
+        "guard_point": "(188.5791, 63.32378, 0.0)",
+        "guard_radius": 10.0,
+        "help_radius": 7.0,
+        "logic_model": 3,
+        "logic_wait": -1.0
+      },
+      {
+        "aggression": 0,
+        "alarm_cond": 0,
+        "alarm_raise": 0,
+        "alarm_use": 0,
+        "always_active": 0,
+        "cyclic": 1,
+        "guard_point": "(188.5791, 63.32378, 0.0)",
+        "guard_radius": 10.0,
+        "help_radius": 7.0,
+        "logic_model": 3,
+        "logic_wait": -1.0
+      },
+      {
+        "aggression": 0,
+        "alarm_cond": 0,
+        "alarm_raise": 0,
+        "alarm_use": 0,
+        "always_active": 0,
+        "cyclic": 1,
+        "guard_point": "(188.5791, 63.32378, 0.0)",
+        "guard_radius": 10.0,
+        "help_radius": 7.0,
+        "logic_model": 3,
+        "logic_wait": -1.0
+      }
+    ],
+    "logic_model": 1,
+    "logic_wait": -1.0,
+    "name": "RatSmallF1-4593",
+    "need_import": 0,
+    "nid": 4593,
+    "parent_id": 4294967295,
+    "parent_template": "RatSmallF1",
+    "parts": [],
+    "player": 6,
+    "position": "(188.5791, 63.32378, 0.0)",
+    "prototype": "RatSmallF1",
+    "quest_info": "",
+    "quest_items": [],
+    "quick_items": [],
+    "rotation": "(0, 0, 0, 1)",
+    "spells": [],
+    "stats": [
+      25,
+      25,
+      11,
+      11,
+      1065353216,
+      1097859072,
+      1053721014,
+      1040746633,
+      1049135241,
+      1040746633,
+      613232640,
+      1071225242,
+      613232640,
+      1053609165,
+      257,
+      0,
+      1095761920,
+      1094713344,
+      1065353216,
+      1090519040,
+      1086324736,
+      1065353216,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      7,
+      1091043328,
+      1120403456,
+      0,
+      1077097267,
+      1077237077,
+      1092616192,
+      1065353216,
+      1065353216,
+      1065353216,
+      1065353216,
+      1065353216,
+      1065353216,
+      328965,
+      0
+    ],
+    "template": "unanwira",
+    "texture": "rat00",
+    "type": 52,
+    "use_in_script": 0,
+    "weapons": []
+  },
+  "before": {
+    "action": "idle",
+    "buffs": [],
+    "hp": 25.0,
+    "investigating": false,
+    "noticed": [],
+    "order": "",
+    "position": [
+      190.508743286133,
+      63.1182670593262
+    ],
+    "target": -1,
+    "uid": 4594
+  },
+  "calls": [
+    {
+      "ai_tick": 16,
+      "at": [
+        170.553466796875,
+        49.7845802307129
+      ],
+      "from_notification": true,
+      "recipients": [
+        4593
+      ],
+      "source": 4594,
+      "time": 1.54
+    }
+  ],
+  "checks": 8,
+  "distance": 1.94052481651306,
+  "failures": 0,
+  "matched_warnings": [
+    {
+      "ai_tick": 43,
+      "at": [
+        170.553466796875,
+        49.7845802307129
+      ],
+      "time": 3.025,
+      "unit": 4593
+    }
+  ],
+  "scope": "Authored map and AI; prepared hero start/equipment; quest VM frozen; no original whole-scene replay",
+  "spell": {
+    "area": 0.0,
+    "code": "stun",
+    "complex": 74.0,
+    "duration": 5.0,
+    "effect": 15.0,
+    "filter": 0,
+    "flags": 268435456,
+    "id": "stun{r2;r2;m2;m2}",
+    "mana": 100.0,
+    "name": "Stun",
+    "point": false,
+    "price": 2030000.0,
+    "radius": 0.0,
+    "range": 25.0,
+    "subtype": "domination",
+    "targets": 1
+  },
+  "target": {
+    "_equipment_resolved": true,
+    "aggression": 0,
+    "alarm_cond": 0,
+    "alarm_raise": 0,
+    "alarm_use": 1,
+    "always_active": 0,
+    "armors": [],
+    "complexion": "(0.5, 0.5, 0.0)",
+    "cyclic": 1,
+    "guard_point": "(190.5087, 63.11827, 0.0)",
+    "guard_radius": 5.0,
+    "help_radius": 7.0,
+    "kind": "UNIT",
+    "logic": [
+      {
+        "aggression": 0,
+        "alarm_cond": 0,
+        "alarm_raise": 0,
+        "alarm_use": 1,
+        "always_active": 0,
+        "cyclic": 1,
+        "guard_point": "(190.5087, 63.11827, 0.0)",
+        "guard_radius": 5.0,
+        "help_radius": 7.0,
+        "logic_model": 1,
+        "logic_wait": -1.0
+      },
+      {
+        "aggression": 0,
+        "alarm_cond": 0,
+        "alarm_raise": 0,
+        "alarm_use": 0,
+        "always_active": 0,
+        "cyclic": 1,
+        "guard_point": "(190.5087, 63.11827, 0.0)",
+        "guard_radius": 10.0,
+        "help_radius": 7.0,
+        "logic_model": 3,
+        "logic_wait": -1.0
+      },
+      {
+        "aggression": 0,
+        "alarm_cond": 0,
+        "alarm_raise": 0,
+        "alarm_use": 0,
+        "always_active": 0,
+        "cyclic": 1,
+        "guard_point": "(190.5087, 63.11827, 0.0)",
+        "guard_radius": 10.0,
+        "help_radius": 7.0,
+        "logic_model": 3,
+        "logic_wait": -1.0
+      },
+      {
+        "aggression": 0,
+        "alarm_cond": 0,
+        "alarm_raise": 0,
+        "alarm_use": 0,
+        "always_active": 0,
+        "cyclic": 1,
+        "guard_point": "(190.5087, 63.11827, 0.0)",
+        "guard_radius": 10.0,
+        "help_radius": 7.0,
+        "logic_model": 3,
+        "logic_wait": -1.0
+      },
+      {
+        "aggression": 0,
+        "alarm_cond": 0,
+        "alarm_raise": 0,
+        "alarm_use": 0,
+        "always_active": 0,
+        "cyclic": 1,
+        "guard_point": "(190.5087, 63.11827, 0.0)",
+        "guard_radius": 10.0,
+        "help_radius": 7.0,
+        "logic_model": 3,
+        "logic_wait": -1.0
+      }
+    ],
+    "logic_model": 1,
+    "logic_wait": -1.0,
+    "name": "RatSmallF1-4594",
+    "need_import": 0,
+    "nid": 4594,
+    "parent_id": 4294967295,
+    "parent_template": "RatSmallF1",
+    "parts": [],
+    "player": 6,
+    "position": "(190.5087, 63.11827, 0.0)",
+    "prototype": "RatSmallF1",
+    "quest_info": "",
+    "quest_items": [],
+    "quick_items": [],
+    "rotation": "(0, 0, 0, 1)",
+    "spells": [],
+    "stats": [
+      25,
+      25,
+      11,
+      11,
+      1065353216,
+      1097859072,
+      1053721014,
+      1040746633,
+      1049135241,
+      1040746633,
+      613232640,
+      1071225242,
+      613232640,
+      1053609165,
+      257,
+      0,
+      1095761920,
+      1094713344,
+      1065353216,
+      1090519040,
+      1086324736,
+      1065353216,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      7,
+      1091043328,
+      1120403456,
+      0,
+      1077097267,
+      1077237077,
+      1092616192,
+      1065353216,
+      1065353216,
+      1065353216,
+      1065353216,
+      1065353216,
+      1065353216,
+      328965,
+      0
+    ],
+    "template": "unanwira",
+    "texture": "rat00",
+    "type": 52,
+    "use_in_script": 0,
+    "weapons": []
+  },
+  "trace": [
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          188.517074584961,
+          63.3426666259766
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "cast",
+        "buffs": [],
+        "hp": 145.18376159668,
+        "investigating": false,
+        "noticed": [],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          190.457321166992,
+          63.1568489074707
+        ],
+        "target": -1,
+        "uid": 4594
+      },
+      "tick": 0,
+      "time": 0.715
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          188.191925048828,
+          63.4416007995605
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "cast",
+        "buffs": [],
+        "hp": 145.18376159668,
+        "investigating": false,
+        "noticed": [],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          190.185470581055,
+          63.3608322143555
+        ],
+        "target": -1,
+        "uid": 4594
+      },
+      "tick": 5,
+      "time": 0.99
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          187.927642822266,
+          63.6594772338867
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "cast",
+        "buffs": [],
+        "hp": 145.18376159668,
+        "investigating": false,
+        "noticed": [],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          189.925384521484,
+          63.5795783996582
+        ],
+        "target": -1,
+        "uid": 4594
+      },
+      "tick": 10,
+      "time": 1.265
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          187.76872253418,
+          63.9625625610352
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "cast",
+        "buffs": [],
+        "hp": 145.18376159668,
+        "investigating": false,
+        "noticed": [],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "walk",
+        "buffs": [
+          "stun"
+        ],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "",
+        "position": [
+          189.682373046875,
+          63.8176231384277
+        ],
+        "target": -1,
+        "uid": 4594
+      },
+      "tick": 15,
+      "time": 1.54
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          187.616622924805,
+          64.2665023803711
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "cast",
+        "buffs": [],
+        "hp": 145.18376159668,
+        "investigating": false,
+        "noticed": [],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          188.766662597656,
+          63.3833236694336
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 20,
+      "time": 1.815
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          187.429321289062,
+          64.5510025024414
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "cast",
+        "buffs": [],
+        "hp": 145.18376159668,
+        "investigating": false,
+        "noticed": [],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          187.854690551758,
+          62.9273490905762
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 25,
+      "time": 2.09
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          187.198211669922,
+          64.8017883300781
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "cast",
+        "buffs": [],
+        "hp": 145.18376159668,
+        "investigating": false,
+        "noticed": [],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          186.960693359375,
+          62.4386291503906
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 30,
+      "time": 2.365
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          186.957885742188,
+          65.0421142578125
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "cast",
+        "buffs": [],
+        "hp": 145.18376159668,
+        "investigating": false,
+        "noticed": [],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          186.228057861328,
+          61.7280540466309
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 35,
+      "time": 2.64
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          186.717559814453,
+          65.2824401855469
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "cast",
+        "buffs": [],
+        "hp": 145.18376159668,
+        "investigating": false,
+        "noticed": [],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          185.507080078125,
+          61.007080078125
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 40,
+      "time": 2.915
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          186.449172973633,
+          65.2736358642578
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "cast",
+        "buffs": [],
+        "hp": 145.18376159668,
+        "investigating": false,
+        "noticed": [],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          184.786102294922,
+          60.2861099243164
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 45,
+      "time": 3.19
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          186.160018920898,
+          65.0948867797852
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 116.519493103027,
+        "investigating": false,
+        "noticed": [
+          4596
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          184.065139770508,
+          59.5651359558105
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 50,
+      "time": 3.465
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          185.927337646484,
+          64.8426361083984
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 116.519493103027,
+        "investigating": false,
+        "noticed": [
+          4596
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          183.295272827148,
+          58.8986473083496
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 55,
+      "time": 3.74
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          185.77018737793,
+          64.5403747558594
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 117.245414733887,
+        "investigating": false,
+        "noticed": [
+          4596
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          182.409194946289,
+          58.3966293334961
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 60,
+      "time": 4.01500000000001
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          185.618194580078,
+          64.2363891601562
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 117.245414733887,
+        "investigating": false,
+        "noticed": [
+          4596
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          181.681396484375,
+          57.6813926696777
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 65,
+      "time": 4.29
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          185.466201782227,
+          63.9323997497559
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 117.245414733887,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          180.960418701172,
+          56.9604187011719
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 70,
+      "time": 4.565
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          185.314208984375,
+          63.6284103393555
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 117.971336364746,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          180.163208007812,
+          56.3316078186035
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 75,
+      "time": 4.84
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          185.162216186523,
+          63.3244247436523
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 117.971336364746,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          179.251251220703,
+          55.8756256103516
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 80,
+      "time": 5.115
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          185.017456054688,
+          63.0167541503906
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 117.971336364746,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          178.339279174805,
+          55.4196434020996
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 85,
+      "time": 5.39
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          184.899322509766,
+          62.6979484558105
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 118.697257995605,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          177.427322387695,
+          54.9636611938477
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 90,
+      "time": 5.665
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          184.791839599609,
+          62.3755226135254
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 118.697257995605,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          176.525848388672,
+          54.4879341125488
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 95,
+      "time": 5.94
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          184.684356689453,
+          62.0530967712402
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 107.733772277832,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          175.785461425781,
+          53.7854652404785
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 100,
+      "time": 6.21499999999999
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          184.57682800293,
+          61.7306861877441
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 108.459686279297,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          175.064498901367,
+          53.0644950866699
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 105,
+      "time": 6.48999999999999
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          184.452560424805,
+          61.4141311645508
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 108.459686279297,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          174.343521118164,
+          52.3435211181641
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 110,
+      "time": 6.76499999999999
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          184.304138183594,
+          61.1082763671875
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 108.459686279297,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          173.515350341797,
+          51.7576751708984
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 115,
+      "time": 7.03999999999999
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          184.152145385742,
+          60.8042869567871
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 109.185600280762,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          172.680740356445,
+          51.1807479858398
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 120,
+      "time": 7.31499999999999
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          184.019897460938,
+          60.5398025512695
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 109.185600280762,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "run",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          171.959777832031,
+          50.4597778320312
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 125,
+      "time": 7.58999999999999
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          183.891952514648,
+          60.2839088439941
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 109.185600280762,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "attack",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          171.959777832031,
+          50.4597778320312
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 130,
+      "time": 7.86499999999999
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          183.743148803711,
+          59.9862899780273
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 109.911506652832,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "attack",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          171.959777832031,
+          50.4597778320312
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 135,
+      "time": 8.13999999999998
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          183.589385986328,
+          59.6831817626953
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "hit",
+        "buffs": [],
+        "hp": 76.1475448608398,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "attack",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          171.959777832031,
+          50.4597778320312
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 140,
+      "time": 8.41499999999998
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          183.392715454102,
+          59.4045448303223
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "hit",
+        "buffs": [],
+        "hp": 76.1475448608398,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "attack",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          171.959777832031,
+          50.4597778320312
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 145,
+      "time": 8.68999999999998
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          183.149673461914,
+          59.1496696472168
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 66.6238708496094,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "attack",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          171.959777832031,
+          50.4597778320312
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 150,
+      "time": 8.96499999999998
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          182.888229370117,
+          58.8882217407227
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 66.6238708496094,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          171.959777832031,
+          50.4597778320312
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 155,
+      "time": 9.23999999999998
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          182.636734008789,
+          58.6367301940918
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 66.6238708496094,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          171.959777832031,
+          50.4597778320312
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 160,
+      "time": 9.51499999999998
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          182.396408081055,
+          58.3964080810547
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 67.3497924804688,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          171.959777832031,
+          50.4597778320312
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 165,
+      "time": 9.78999999999998
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          182.15608215332,
+          58.1560821533203
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 67.3497924804688,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          171.959777832031,
+          50.4597778320312
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 170,
+      "time": 10.065
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          181.915756225586,
+          57.9157600402832
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 67.3497924804688,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "attack",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          171.959777832031,
+          50.4597778320312
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 175,
+      "time": 10.34
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          181.675430297852,
+          57.6754379272461
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 68.0757141113281,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "attack",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          171.959777832031,
+          50.4597778320312
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 180,
+      "time": 10.615
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          181.435119628906,
+          57.4351119995117
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "hit",
+        "buffs": [],
+        "hp": 61.0548820495605,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "attack",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          171.959777832031,
+          50.4597778320312
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 185,
+      "time": 10.89
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          181.194793701172,
+          57.1947898864746
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "hit",
+        "buffs": [],
+        "hp": 61.0548820495605,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595,
+          4593
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "attack",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          171.959777832031,
+          50.4597778320312
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 190,
+      "time": 11.165
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          180.954467773438,
+          56.9544639587402
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "hit",
+        "buffs": [],
+        "hp": 53.9164772033691,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595,
+          4593
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "attack",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          171.959777832031,
+          50.4597778320312
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 195,
+      "time": 11.44
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          180.713760375977,
+          56.7144088745117
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 53.9164772033691,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595,
+          4593
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "attack",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          171.959777832031,
+          50.4597778320312
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 200,
+      "time": 11.715
+    },
+    {
+      "ally": {
+        "action": "walk",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": true,
+        "noticed": [],
+        "order": "move",
+        "position": [
+          180.451278686523,
+          56.495777130127
+        ],
+        "target": -1,
+        "uid": 4593
+      },
+      "hero": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 53.9164772033691,
+        "investigating": false,
+        "noticed": [
+          4596,
+          4594,
+          4595,
+          4593
+        ],
+        "order": "",
+        "position": [
+          170.553466796875,
+          49.7845802307129
+        ],
+        "target": -1,
+        "uid": 1500000001
+      },
+      "target": {
+        "action": "idle",
+        "buffs": [],
+        "hp": 25.0,
+        "investigating": false,
+        "noticed": [
+          1500000001
+        ],
+        "order": "attack",
+        "position": [
+          171.959777832031,
+          50.4597778320312
+        ],
+        "target": 1500000001,
+        "uid": 4594
+      },
+      "tick": 205,
+      "time": 11.99
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "suite": "mine_passage_presentation",
+  "platform": "windows",
+  "renderer": "d3d12",
+  "exit": 0,
+  "seconds": 84.47,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/wine-tools/root/usr/lib/wine/wine64",
+    "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/package/CursedLands.exe",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "120",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "d3d12",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/tools/tests/mine_passage_presentation.gd",
+    "--mod-tests",
+    "--examples=Z:/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/CursedLands-1.20.0-windows-x86_64/mods",
+    "--ei-path=Z:/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "608083.087:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\mine-passage-video-windows-final\\vkd3d-proton.CursedLands.exe.cache.",
+    "608083.087:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\mine-passage-video-windows-final\\vkd3d-proton.CursedLands.exe.cache.",
+    "608083.090:0020:0124:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\mine-passage-video-windows-final\\vkd3d-proton.CursedLands.exe.cache.",
+    "MINE_PASSAGE_PRESENTATION 101 checks 0 failures"
+  ],
+  "errors": []
+}

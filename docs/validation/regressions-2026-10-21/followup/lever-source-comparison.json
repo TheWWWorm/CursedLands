@@ -1,0 +1,24 @@
+{
+  "files": {
+    "game/src/game/levers.gd": {
+      "before": "e97b36af5c95254b9ec648d28479680e169f46501cc5c9c05bf551ebafa9f2bf",
+      "after": "22ff8828e7ac7b5db31a2965dbda51609986bf0a700c3debd4f89d7bbf7b3c7e"
+    },
+    "game/src/game/script/vm.gd": {
+      "before": "479a22dd27b4bb0c97133aae97fa512e66f705c1c5f3f32256a68def6eb5cbdc",
+      "after": "f32863d3ac0bf4264229730c93a0b93fda88f2f77da86f760fa62ffe5aebd205"
+    },
+    "game/src/game/script/story_compat.gd": {
+      "before": "0180c73eb4cd509bb7e0adc27959da4ef1dee5422936e1a2465dafdd2b53b3a4",
+      "after": "f9f77ce47c6ee94f319879675c6c49a7631986e42aa09fb278c3507bf83b0576"
+    }
+  },
+  "scope": "Same 32-assertion actual-map fixture with only these three files replaced by their pre-fix working copies, restored in finally.",
+  "current_sha256": {
+    "game/src/game/levers.gd": "405761bd4ddc41dd596ddd5c2659438dc5f15137053651cb53a4785f4ad7322f",
+    "game/src/game/script/vm.gd": "2c59b6b94363a44058ae5aadd15a5d4bbd648ba550193601f3989ae5c11b858e",
+    "game/src/game/script/story_compat.gd": "c87803ccae82bdd6e0bff84701d97b1f7f564798f22effa48010cf729d114d46",
+    "game/src/game/session.gd": "5cd2190724bcabcdf3de586fc00309c32f7f30712ce08e6cc856ee2f8df75d6a"
+  },
+  "current_note": "Later cleanup changes formatting and removes an unreachable empty-tail append. Session.lever_requirement additionally removes the same terminal-pose shortcut; locked_hover covers it. The Windows capture run changes only the fixture camera angle, retaining all 32 assertions."
+}

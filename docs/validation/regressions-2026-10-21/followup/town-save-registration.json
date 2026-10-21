@@ -1,0 +1,36 @@
+[
+  {
+    "id": "persistence/town_save_continuation",
+    "category": "persistence",
+    "script": "tools/tests/town_save_continuation.gd",
+    "marker": "TOWN_SAVE_CONTINUATION",
+    "min_checks": 46,
+    "quick": false,
+    "description": "Original town save-route contract, exact authored script continuation, pending dialogue flags, independent clocks and ENet reload",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "cursed_lands",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ]
+  },
+  {
+    "id": "persistence/town_save_continuation_astral",
+    "category": "persistence",
+    "script": "tools/tests/town_save_continuation.gd",
+    "marker": "TOWN_SAVE_CONTINUATION",
+    "min_checks": 43,
+    "quick": false,
+    "description": "Original town save-route contract, exact authored script continuation, pending dialogue flags, independent clocks and ENet reload",
+    "kind": "remake_regression",
+    "timeout": 240,
+    "args": [],
+    "campaign": "lost_in_astral",
+    "required_files": [
+      "res/database.res",
+      "res/texts.res"
+    ]
+  }
+]

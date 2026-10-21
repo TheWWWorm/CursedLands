@@ -1,0 +1,205 @@
+{
+  "scope": "Capture original movement-speed bytes, including authored race values.\n\nExecute each original stats-packing prefix without hooks, ending immediately\nafter the four gait bytes and the movement-factor byte are written. The LiA\nrounding helper runs as original machine code too. The supplied stats include\nthe already-computed movement/wound factor. This does not replay injury\ncalculation, terrain, route planning, animation or whole-game movement.\n",
+  "repeat_capture_identical": true,
+  "cases": {
+    "base": {
+      "before": {
+        "run": "movement-speed-qualified-before-base",
+        "exit": 1,
+        "errors": [
+          "FAIL authored/original/Banshee/gait3/turn0 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/original/Banshee/gait3/turn1 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/original/Banshee Dgun/gait3/turn0 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/original/Banshee Dgun/gait3/turn1 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/lost_in_astral/Banshee Hadagan F/gait3/turn0 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/lost_in_astral/Banshee Hadagan F/gait3/turn1 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/lost_in_astral/Banshee Hadagan M/gait3/turn0 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/lost_in_astral/Banshee Hadagan M/gait3/turn1 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/lost_in_astral/Banshee Gipath F/gait3/turn0 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/lost_in_astral/Banshee Gipath F/gait3/turn1 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/lost_in_astral/Banshee Gipath M/gait3/turn0 got=0.0719723183391 expected=0.0639753940792"
+        ],
+        "seconds": 5.12,
+        "summary": [
+          "MOVEMENT_SPEED_PACKING 15273 checks 2316 failures"
+        ]
+      },
+      "linux_after": {
+        "run": "movement-speed-after-base",
+        "exit": 0,
+        "errors": [],
+        "seconds": 5.07,
+        "summary": [
+          "MOVEMENT_SPEED_PACKING 15273 checks 0 failures"
+        ]
+      },
+      "windows_after": {
+        "run": "movement-speed-windows-base",
+        "suite": "movement_speed_packing",
+        "platform": "windows",
+        "renderer": "headless",
+        "exit": 0,
+        "seconds": 10.23,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/wine-tools/root/usr/lib/wine/wine64",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/package/CursedLands.exe",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "120",
+          "--headless",
+          "--",
+          "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--no-movies",
+          "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/tools/tests/movement_speed_packing.gd",
+          "--mod-tests",
+          "--examples=Z:/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/CursedLands-1.20.0-windows-x86_64/mods"
+        ],
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "summary": [
+          "MOVEMENT_SPEED_PACKING 15273 checks 0 failures"
+        ],
+        "errors": []
+      }
+    },
+    "astral": {
+      "before": {
+        "run": "movement-speed-qualified-before-astral",
+        "exit": 1,
+        "errors": [
+          "FAIL authored/original/Banshee/gait3/turn0 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/original/Banshee/gait3/turn1 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/original/Banshee Dgun/gait3/turn0 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/original/Banshee Dgun/gait3/turn1 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/lost_in_astral/Banshee Hadagan F/gait3/turn0 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/lost_in_astral/Banshee Hadagan F/gait3/turn1 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/lost_in_astral/Banshee Hadagan M/gait3/turn0 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/lost_in_astral/Banshee Hadagan M/gait3/turn1 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/lost_in_astral/Banshee Gipath F/gait3/turn0 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/lost_in_astral/Banshee Gipath F/gait3/turn1 got=0.0719723183391 expected=0.0639753940792",
+          "FAIL authored/lost_in_astral/Banshee Gipath M/gait3/turn0 got=0.0719723183391 expected=0.0639753940792"
+        ],
+        "seconds": 5.17,
+        "summary": [
+          "MOVEMENT_SPEED_PACKING 15273 checks 2316 failures"
+        ]
+      },
+      "linux_after": {
+        "run": "movement-speed-after-astral",
+        "exit": 0,
+        "errors": [],
+        "seconds": 5.18,
+        "summary": [
+          "MOVEMENT_SPEED_PACKING 15273 checks 0 failures"
+        ]
+      },
+      "windows_after": {
+        "run": "movement-speed-windows-astral",
+        "suite": "movement_speed_packing",
+        "platform": "windows",
+        "renderer": "headless",
+        "exit": 0,
+        "seconds": 10.33,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/wine-tools/root/usr/lib/wine/wine64",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/package/CursedLands.exe",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "120",
+          "--headless",
+          "--",
+          "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--no-movies",
+          "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/tools/tests/movement_speed_packing.gd",
+          "--mod-tests",
+          "--examples=Z:/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/CursedLands-1.20.0-windows-x86_64/mods",
+          "--ei-path=Z:/home/llm2x/Documents/EI/inspection/lost-in-astral/game"
+        ],
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "summary": [
+          "MOVEMENT_SPEED_PACKING 15273 checks 0 failures"
+        ],
+        "errors": []
+      }
+    }
+  },
+  "authored_differences": [
+    {
+      "actual": 0.0719723183391003,
+      "case": "authored/original/Banshee/gait3/turn0",
+      "expected": 0.0639753940792003
+    },
+    {
+      "actual": 0.0719723183391003,
+      "case": "authored/original/Banshee/gait3/turn1",
+      "expected": 0.0639753940792003
+    },
+    {
+      "actual": 0.0719723183391003,
+      "case": "authored/original/Banshee Dgun/gait3/turn0",
+      "expected": 0.0639753940792003
+    },
+    {
+      "actual": 0.0719723183391003,
+      "case": "authored/original/Banshee Dgun/gait3/turn1",
+      "expected": 0.0639753940792003
+    },
+    {
+      "actual": 0.0719723183391003,
+      "case": "authored/lost_in_astral/Banshee Hadagan F/gait3/turn0",
+      "expected": 0.0639753940792003
+    },
+    {
+      "actual": 0.0719723183391003,
+      "case": "authored/lost_in_astral/Banshee Hadagan F/gait3/turn1",
+      "expected": 0.0639753940792003
+    },
+    {
+      "actual": 0.0719723183391003,
+      "case": "authored/lost_in_astral/Banshee Hadagan M/gait3/turn0",
+      "expected": 0.0639753940792003
+    },
+    {
+      "actual": 0.0719723183391003,
+      "case": "authored/lost_in_astral/Banshee Hadagan M/gait3/turn1",
+      "expected": 0.0639753940792003
+    },
+    {
+      "actual": 0.0719723183391003,
+      "case": "authored/lost_in_astral/Banshee Gipath F/gait3/turn0",
+      "expected": 0.0639753940792003
+    },
+    {
+      "actual": 0.0719723183391003,
+      "case": "authored/lost_in_astral/Banshee Gipath F/gait3/turn1",
+      "expected": 0.0639753940792003
+    },
+    {
+      "actual": 0.0719723183391003,
+      "case": "authored/lost_in_astral/Banshee Gipath M/gait3/turn0",
+      "expected": 0.0639753940792003
+    },
+    {
+      "actual": 0.0719723183391003,
+      "case": "authored/lost_in_astral/Banshee Gipath M/gait3/turn1",
+      "expected": 0.0639753940792003
+    }
+  ]
+}

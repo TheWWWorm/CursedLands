@@ -74,6 +74,7 @@ func interact(_unit: GameUnit, target: Object, player: int, original_stage := fa
 	var constr := []
 	var entries := available_for(t, player)
 	var grouped := _smith_assortment(t, entries)
+	if grouped: entries = _smith_entries(entries, player)
 	var has_assortment := false
 	for e: Array in entries:
 		var purchase := grouped and String(e[1]).to_lower().begins_with("buy_") and String(e[1]).to_lower() != "buy_1"
@@ -120,6 +121,15 @@ func topic(player: int, var_name: String, uid: int) -> void:
 	if var_name in ["@smith_assortment", "@smith_back"] and _smith_assortment(t, entries):
 		interact(null, t, player, false, var_name == "@smith_assortment")
 		return
+	if _smith_assortment(t, entries):
+		entries = _smith_entries(entries, player)
+		# The buyer may have spent or received money since opening the list.
+		# Keep the selected offer, but re-evaluate its authored response.
+		for e: Array in entries:
+			if String(e[1]).begins_with("buy_") and ("b.%s.%s" % e).to_lower().trim_suffix("f") == var_name.to_lower().trim_suffix("f"):
+				var_name = "b.%s.%s" % e
+				break
+	var_name = preload("res://src/game/script/story_astral_fortunes.gd").selected_topic(vm, entries, var_name)
 	for e: Array in entries:
 		if "b.%s.%s" % e == var_name:
 			var id := String(e[1])
@@ -150,6 +160,27 @@ func _smith_assortment(u: GameUnit, entries: Array) -> bool:
 	return false
 
 
+func _smith_entries(entries: Array, player: int) -> Array:
+	# bz5h's BuyNSheriff scripts select success/failure from GetMoney(0)
+	# once per catalogue refresh. That shared flag can be stale, and cannot
+	# represent two co-op purses. Retain the original offer, price, response
+	# and reward; choose the response from this buyer's current balance.
+	var result := []
+	var seen := {}
+	for entry: Array in entries:
+		var id := String(entry[1]).to_lower()
+		var base := id.trim_suffix("f")
+		var row := GameData.db.find("briefings", base) if base.begins_with("buy_") else {}
+		var price := -int(float(row.get("money", 0)))
+		if price > 0 and not GameData.text("briefing " + base + "f").is_empty():
+			if seen.has(base): continue
+			seen[base] = true
+			result.append([entry[0], base + ("f" if vm.session.coop.owner_money(player) < price else "")])
+		else:
+			result.append(entry)
+	return result
+
+
 func available(npc: String) -> Array:
 	var pre := "b.%s." % npc
 	var out := []
@@ -164,7 +195,7 @@ func available(npc: String) -> Array:
 ## (ScriptVM.name_id) — usually the unit's own name, but e.g. "OrcC" is the
 ## unit named Shaivar.
 func available_for(u: GameUnit, player := 0) -> Array:
-	return pending_for(vm.session.state, u, player)
+	return preload("res://src/game/script/story_astral_fortunes.gd").paid_entries(vm, pending_for(vm.session.state, u, player), player)
 
 
 ## The same from the synced state (clients use it for the village click).
@@ -453,6 +484,7 @@ func complete(player: int, var_name: String, force := false) -> void:
 	else:
 		vm.session.coop.with_purse(player, _rewards.bind(id, player), true)
 	vm.fire_event("#OnBriefingComplete", [float(player), key])
+	preload("res://src/game/script/story_astral_fortunes.gd").recover(vm)
 	# Leave the temporary co-op purse scope before sending the resulting
 	# topics/rewards. This also covers briefings without a database reward row.
 	vm.session.sync_state.call_deferred()
@@ -618,6 +650,13 @@ func _actor_unit(actor: String, player: int) -> GameUnit:
 					return u
 				fallback = u if fallback == null else fallback
 		elif String(u.info.get("name", "")).to_lower() == actor or u.uid == ScriptVM.name_id(actor):
+			# Astral names the current protagonist Hero2/Hero3/... instead
+			# of Hero. A guest initiating that conversation takes the same
+			# role. Keeping the host as a second protagonist would push the
+			# merchant into slot c and walk them to the guest's triangle mark.
+			var roster: Array = vm.session.state.heroes.get(0, [])
+			if not roster.is_empty() and is_same(u.get_meta("hero", {}), roster[0]):
+				return _actor_unit("hero", player)
 			return u
 	return fallback
 

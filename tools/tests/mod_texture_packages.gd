@@ -13,7 +13,7 @@ func _ready() -> void:
 	for api in [0, 1.5, 3, 4, true, "2"]:
 		invalid.api = api
 		check(not ModSchema.manifest_error(invalid).is_empty(), "unsupported API rejected: " + str(api))
-	for archive in ["figures.res", "redress.res", "database.res", "menus.res", "sfx.res"]:
+	for archive in ["figures.res", "database.res", "menus.res", "sfx.res"]:
 		invalid = m.duplicate(true)
 		invalid.overrides[0].archive = archive
 		check(not ModSchema.manifest_error(invalid).is_empty(), "broader resource capability remains unavailable: " + archive)

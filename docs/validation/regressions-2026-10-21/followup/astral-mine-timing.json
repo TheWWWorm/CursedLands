@@ -1,0 +1,1891 @@
+{
+  "scope": "Remake runtime measurement on actual LiA gz24k (zone24.mpr/mob), not original executable gameplay replay. Prepared route and synthetic party do not reproduce issue 47.",
+  "correction": "Earlier generic gz14k coverage used the base Forbidden Catacombs. The reported video contains the LiA Full Bucket, Tree of Life and House in the Village clues; the installed campaign maps this mine to gz24k.",
+  "runs": {
+    "loaded-rate-astral-mine-02": {
+      "result": {
+        "exit": 0,
+        "errors": [],
+        "seconds": 68.18,
+        "summary": [
+          "LOCAL_HOST_LOADED_RATE 55 checks 0 failures"
+        ]
+      },
+      "measurements": {
+        "animation_binding_prepare": false,
+        "animation_cache_retention": false,
+        "checks": 55,
+        "failures": 0,
+        "fixture": {
+          "campaign": "lost_in_astral",
+          "from": [
+            176.847686767578,
+            47.2051582336426
+          ],
+          "mob": "zone24",
+          "mpr": "zone24",
+          "population": 63,
+          "title": "Рудники",
+          "to": [
+            141.505004882812,
+            36.5050010681152
+          ],
+          "zone": "gz24k"
+        },
+        "samples": [
+          {
+            "cap": 60,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 60.0264932464367,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "rate": 0.977615945833952,
+              "simulation": 3.35499999999998,
+              "stamina_change": 5.4375,
+              "wall": 3.431818
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 1.09799099019965,
+              "distance": 18.6935310587287,
+              "first_motion_sim": 0.165,
+              "first_motion_wall": 0.527551,
+              "fps": 60.2386491668846,
+              "metres_per_sim_second": 4.65592305323255,
+              "moving": true,
+              "rate": 0.995301137469309,
+              "simulation": 4.01500000000001,
+              "stamina_change": -6.625,
+              "wall": 4.033955
+            },
+            "paused": false,
+            "population": 63,
+            "speed": 1
+          },
+          {
+            "cap": 60,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 59.511907142381,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "rate": 2.02935603355518,
+              "simulation": 3.40999999999998,
+              "stamina_change": 5.5,
+              "wall": 1.680336
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 2.55986328871229,
+              "distance": 18.4543618261814,
+              "first_motion_sim": 0.33,
+              "first_motion_wall": 0.503748,
+              "fps": 57.6345741576861,
+              "metres_per_sim_second": 4.59635412856324,
+              "moving": true,
+              "rate": 2.06609656467063,
+              "simulation": 4.01500000000001,
+              "stamina_change": -6.5,
+              "wall": 1.943278
+            },
+            "paused": false,
+            "population": 63,
+            "speed": 2
+          },
+          {
+            "cap": 20,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 20.0263391194508,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "rate": 1.01925099100488,
+              "simulation": 3.40999999999998,
+              "stamina_change": 5.4375,
+              "wall": 3.345594
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 1.08562027143565,
+              "distance": 18.8067688047886,
+              "first_motion_sim": 0.11,
+              "first_motion_wall": 0.441935,
+              "fps": 20.3022711061296,
+              "metres_per_sim_second": 4.68412672597474,
+              "moving": true,
+              "rate": 0.994068518184275,
+              "simulation": 4.01500000000001,
+              "stamina_change": -6.625,
+              "wall": 4.038957
+            },
+            "paused": false,
+            "population": 63,
+            "speed": 1
+          },
+          {
+            "cap": 20,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 20.5609013899169,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "rate": 2.15568200509909,
+              "simulation": 3.35499999999998,
+              "stamina_change": 5.4375,
+              "wall": 1.556352
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 2.56151683194703,
+              "distance": 18.7017532289028,
+              "first_motion_sim": 0.055,
+              "first_motion_wall": 0.437537,
+              "fps": 20.6705735731254,
+              "metres_per_sim_second": 4.65797091628961,
+              "moving": true,
+              "rate": 2.02420372917314,
+              "simulation": 4.01500000000001,
+              "stamina_change": -6.625,
+              "wall": 1.983496
+            },
+            "paused": false,
+            "population": 63,
+            "speed": 2
+          },
+          {
+            "cap": 10,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 10.0200873280081,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "rate": 1.00495581730905,
+              "simulation": 3.40999999999998,
+              "stamina_change": 5.5,
+              "wall": 3.393184
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 1.08551223390356,
+              "distance": 18.9068954885006,
+              "first_motion_sim": 0.165,
+              "first_motion_wall": 0.492228,
+              "fps": 10.26993296179,
+              "metres_per_sim_second": 4.64542886695346,
+              "moving": true,
+              "rate": 0.995205408440126,
+              "simulation": 4.07,
+              "stamina_change": -6.6875,
+              "wall": 4.089608
+            },
+            "paused": false,
+            "population": 63,
+            "speed": 1
+          },
+          {
+            "cap": 10,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 10.133536163014,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "rate": 2.06545310616726,
+              "simulation": 3.46499999999998,
+              "stamina_change": 5.4375,
+              "wall": 1.677598
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 2.47747902745185,
+              "distance": 18.7545939087868,
+              "first_motion_sim": 0.055,
+              "first_motion_wall": 0.387327,
+              "fps": 10.5754771806382,
+              "metres_per_sim_second": 4.6711317331972,
+              "moving": true,
+              "rate": 2.02193051810774,
+              "simulation": 4.01500000000001,
+              "stamina_change": -6.625,
+              "wall": 1.985726
+            },
+            "paused": false,
+            "population": 63,
+            "speed": 2
+          }
+        ],
+        "window": "command submission through four simulation seconds",
+        "zone": "gz24k"
+      }
+    },
+    "loaded-rate-astral-mine-windows": {
+      "result": {
+        "suite": "local_host_loaded_rate",
+        "platform": "windows",
+        "renderer": "d3d12",
+        "exit": 0,
+        "seconds": 76.78,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/wine-tools/root/usr/lib/wine/wine64",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/package/CursedLands.exe",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "120",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "d3d12",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--no-movies",
+          "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/tools/tests/local_host_loaded_rate.gd",
+          "--mod-tests",
+          "--examples=Z:/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/CursedLands-1.20.0-windows-x86_64/mods",
+          "--ei-path=Z:/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--zone=gz24k",
+          "--avoid-combat"
+        ],
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "summary": [
+          "596165.389:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\loaded-rate-astral-mine-windows\\vkd3d-proton.CursedLands.exe.cache.",
+          "596165.389:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\loaded-rate-astral-mine-windows\\vkd3d-proton.CursedLands.exe.cache.",
+          "596165.390:0020:0124:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\loaded-rate-astral-mine-windows\\vkd3d-proton.CursedLands.exe.cache.",
+          "LOCAL_HOST_LOADED_RATE 55 checks 0 failures"
+        ],
+        "errors": []
+      },
+      "measurements": {
+        "animation_binding_prepare": true,
+        "animation_cache_retention": true,
+        "checks": 55,
+        "failures": 0,
+        "fixture": {
+          "campaign": "lost_in_astral",
+          "from": [
+            176.847686767578,
+            47.2051582336426
+          ],
+          "mob": "zone24",
+          "mpr": "zone24",
+          "population": 63,
+          "title": "Рудники",
+          "to": [
+            141.505004882813,
+            36.5050010681152
+          ],
+          "zone": "gz24k"
+        },
+        "samples": [
+          {
+            "cap": 60,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 60.0518547765996,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "rate": 1.02388412394102,
+              "simulation": 3.40999999999998,
+              "stamina_change": 5.4375,
+              "wall": 3.330455
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 1.00980957876515,
+              "distance": 18.3848653137684,
+              "first_motion_sim": 0.165,
+              "first_motion_wall": 0.090496,
+              "fps": 59.6962001447056,
+              "metres_per_sim_second": 4.57904491002948,
+              "moving": true,
+              "rate": 1.02867057330898,
+              "simulation": 4.015,
+              "stamina_change": -6.4375,
+              "wall": 3.903096
+            },
+            "paused": false,
+            "population": 63,
+            "speed": 1
+          },
+          {
+            "cap": 60,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 60.1069531971322,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "rate": 2.07895698944719,
+              "simulation": 3.35499999999998,
+              "stamina_change": 5.5,
+              "wall": 1.61379
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 2.05602172169838,
+              "distance": 18.5195415765047,
+              "first_motion_sim": 0.165,
+              "first_motion_wall": 0.042454,
+              "fps": 60.7698301483247,
+              "metres_per_sim_second": 4.55025591560312,
+              "moving": true,
+              "rate": 2.09604414155663,
+              "simulation": 4.07,
+              "stamina_change": -6.5,
+              "wall": 1.941753
+            },
+            "paused": false,
+            "population": 63,
+            "speed": 2
+          },
+          {
+            "cap": 20,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 20.0333889816361,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "rate": 0.990055890251864,
+              "simulation": 3.40999999999998,
+              "stamina_change": 5.4375,
+              "wall": 3.44425
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 1.00107772875075,
+              "distance": 18.751615434885,
+              "first_motion_sim": 0.11,
+              "first_motion_wall": 0.084588,
+              "fps": 20.3242648638124,
+              "metres_per_sim_second": 4.67038989660897,
+              "moving": true,
+              "rate": 1.00743115343465,
+              "simulation": 4.01500000000001,
+              "stamina_change": -6.625,
+              "wall": 3.985384
+            },
+            "paused": false,
+            "population": 63,
+            "speed": 1
+          },
+          {
+            "cap": 20,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 20.123653934707,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "rate": 1.98573114561593,
+              "simulation": 3.35499999999998,
+              "stamina_change": 5.5,
+              "wall": 1.689554
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 2.05691626902253,
+              "distance": 18.519060343504,
+              "first_motion_sim": 0.165,
+              "first_motion_wall": 0.029937,
+              "fps": 20.7424769628865,
+              "metres_per_sim_second": 4.55013767653659,
+              "moving": true,
+              "rate": 2.11054703097371,
+              "simulation": 4.07,
+              "stamina_change": -6.5,
+              "wall": 1.92841
+            },
+            "paused": false,
+            "population": 63,
+            "speed": 2
+          },
+          {
+            "cap": 10,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 10.0241036732898,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "rate": 0.992386263655688,
+              "simulation": 3.46499999999998,
+              "stamina_change": 5.4375,
+              "wall": 3.491584
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 1.01498590809969,
+              "distance": 18.740028321743,
+              "first_motion_sim": 0.055,
+              "first_motion_wall": 0.083904,
+              "fps": 10.2874566295883,
+              "metres_per_sim_second": 4.66750394065828,
+              "moving": true,
+              "rate": 1.00741800897066,
+              "simulation": 4.01500000000001,
+              "stamina_change": -6.625,
+              "wall": 3.985436
+            },
+            "paused": false,
+            "population": 63,
+            "speed": 1
+          },
+          {
+            "cap": 10,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 10.0636496239747,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "rate": 2.05120858512189,
+              "simulation": 3.46499999999998,
+              "stamina_change": 5.5,
+              "wall": 1.689248
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 2.05789184395014,
+              "distance": 18.659773170948,
+              "first_motion_sim": 0.165,
+              "first_motion_wall": 0.08583,
+              "fps": 10.5878633842946,
+              "metres_per_sim_second": 4.58471085281278,
+              "moving": true,
+              "rate": 2.05202876067043,
+              "simulation": 4.07,
+              "stamina_change": -6.625,
+              "wall": 1.983403
+            },
+            "paused": false,
+            "population": 63,
+            "speed": 2
+          }
+        ],
+        "window": "command submission through four simulation seconds",
+        "zone": "gz24k"
+      }
+    },
+    "loaded-rate-astral-mine-party-qualified": {
+      "result": {
+        "exit": 0,
+        "errors": [],
+        "seconds": 68.88,
+        "summary": [
+          "LOCAL_HOST_LOADED_RATE 133 checks 0 failures"
+        ]
+      },
+      "measurements": {
+        "animation_binding_prepare": false,
+        "animation_cache_retention": false,
+        "checks": 133,
+        "failures": 0,
+        "fixture": {
+          "campaign": "lost_in_astral",
+          "from": [
+            176.847686767578,
+            47.2051582336426
+          ],
+          "mob": "zone24",
+          "mpr": "zone24",
+          "party_size": 3,
+          "party_starts": [
+            [
+              176.847686767578,
+              47.2051582336426
+            ],
+            [
+              178.666412353516,
+              46.5437545776367
+            ],
+            [
+              180.572525024414,
+              47.5933265686035
+            ]
+          ],
+          "population": 65,
+          "title": "Рудники",
+          "to": [
+            141.505004882812,
+            36.5050010681152
+          ],
+          "zone": "gz24k"
+        },
+        "samples": [
+          {
+            "cap": 60,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 60.017547398394,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 4.3125,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.4375,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 4.875,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.4375,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 5.125,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 1.03793232743098,
+              "simulation": 3.35499999999998,
+              "stamina_change": 5.4375,
+              "wall": 3.232388
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 1.11158429634549,
+              "distance": 18.7857289910316,
+              "first_motion_sim": 0.165,
+              "first_motion_wall": 0.573907,
+              "fps": 60.4344543759499,
+              "metres_per_sim_second": 4.67888642366915,
+              "moving": true,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 18.7857289910316,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.67888642366915,
+                  "stamina_change": -6.625,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 17.2472608834505,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.29570632215454,
+                  "stamina_change": -6.0625,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 16.7185674309731,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.164026757403,
+                  "stamina_change": -5.8125,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 0.994443993112455,
+              "simulation": 4.01500000000001,
+              "stamina_change": -6.625,
+              "wall": 4.037432
+            },
+            "paused": false,
+            "population": 65,
+            "speed": 1
+          },
+          {
+            "cap": 60,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 60.0580400899429,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 5.75,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 6.3125,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 6.5625,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 2.08101108911651,
+              "simulation": 3.46499999999998,
+              "stamina_change": 5.5,
+              "wall": 1.665056
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 2.59490778394876,
+              "distance": 18.5982633531094,
+              "first_motion_sim": 0.33,
+              "first_motion_wall": 0.537568,
+              "fps": 60.2761362179381,
+              "metres_per_sim_second": 4.63219510662748,
+              "moving": true,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 18.5982633531094,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.63219510662748,
+                  "stamina_change": -6.5,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 17.0576858520508,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.24848962691177,
+                  "stamina_change": -6.0,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 16.1854068338871,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.03123457880127,
+                  "stamina_change": -5.6875,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 2.05092107555103,
+              "simulation": 4.01500000000001,
+              "stamina_change": -6.5,
+              "wall": 1.957657
+            },
+            "paused": false,
+            "population": 65,
+            "speed": 2
+          },
+          {
+            "cap": 20,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 20.0285760654392,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 4.3125,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.4375,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 4.875,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.4375,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 5.125,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 0.98817459852277,
+              "simulation": 3.35499999999998,
+              "stamina_change": 5.4375,
+              "wall": 3.395149
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 1.03327701130622,
+              "distance": 18.8889372497797,
+              "first_motion_sim": 0.44,
+              "first_motion_wall": 0.592831,
+              "fps": 20.2334396082411,
+              "metres_per_sim_second": 4.70459209209955,
+              "moving": true,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 18.8889372497797,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.70459209209955,
+                  "stamina_change": -6.625,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 17.3484778553247,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.32091602872347,
+                  "stamina_change": -6.0625,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 16.5361777469516,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.11859968790823,
+                  "stamina_change": -5.8125,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 0.990698293013271,
+              "simulation": 4.01500000000001,
+              "stamina_change": -6.625,
+              "wall": 4.052697
+            },
+            "paused": false,
+            "population": 65,
+            "speed": 1
+          },
+          {
+            "cap": 20,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 20.2843750055931,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 5.6875,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.4375,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 6.1875,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 6.5,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 2.06721645277588,
+              "simulation": 3.46499999999998,
+              "stamina_change": 5.4375,
+              "wall": 1.676167
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 2.58557814287739,
+              "distance": 18.8886017799377,
+              "first_motion_sim": 0.33,
+              "first_motion_wall": 0.535194,
+              "fps": 20.6895264066481,
+              "metres_per_sim_second": 4.6409340982648,
+              "moving": true,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 18.8886017799377,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.6409340982648,
+                  "stamina_change": -6.625,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 17.3685292601585,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.26745190667285,
+                  "stamina_change": -6.0625,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 16.5192318558693,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.05877932576641,
+                  "stamina_change": -5.8125,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 2.05381396280629,
+              "simulation": 4.07,
+              "stamina_change": -6.625,
+              "wall": 1.981679
+            },
+            "paused": false,
+            "population": 65,
+            "speed": 2
+          },
+          {
+            "cap": 10,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 10.1019164523971,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 4.125,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 4.6875,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.4375,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 4.9375,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 1.01316279713747,
+              "simulation": 3.40999999999998,
+              "stamina_change": 5.5,
+              "wall": 3.365698
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 1.08096347201592,
+              "distance": 19.1152275055647,
+              "first_motion_sim": 0.165,
+              "first_motion_wall": 0.492115,
+              "fps": 10.2323398949431,
+              "metres_per_sim_second": 4.69661609473333,
+              "moving": true,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 19.1152275055647,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.69661609473333,
+                  "stamina_change": -6.6875,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 17.9232538789511,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.40374788180616,
+                  "stamina_change": -6.125,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 16.7299512326717,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.11055312842057,
+                  "stamina_change": -5.875,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 0.991562461248059,
+              "simulation": 4.07,
+              "stamina_change": -6.6875,
+              "wall": 4.104633
+            },
+            "paused": false,
+            "population": 65,
+            "speed": 1
+          },
+          {
+            "cap": 10,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 10.0723431232559,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 5.6875,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.4375,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 6.1875,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 6.5,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 2.05298052482832,
+              "simulation": 3.46499999999998,
+              "stamina_change": 5.4375,
+              "wall": 1.68779
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 2.4782128259136,
+              "distance": 18.7484399080276,
+              "first_motion_sim": 0.605,
+              "first_motion_wall": 0.589797,
+              "fps": 10.5634759268444,
+              "metres_per_sim_second": 4.60649629189868,
+              "moving": true,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 18.7484399080276,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.60649629189868,
+                  "stamina_change": -6.625,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 17.2344877123833,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.23451786545043,
+                  "stamina_change": -6.0625,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 16.2074475288391,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 3.9821738400096,
+                  "stamina_change": -5.8125,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 2.04730223915509,
+              "simulation": 4.07,
+              "stamina_change": -6.625,
+              "wall": 1.987982
+            },
+            "paused": false,
+            "population": 65,
+            "speed": 2
+          }
+        ],
+        "window": "command submission through four simulation seconds",
+        "zone": "gz24k"
+      }
+    },
+    "loaded-rate-astral-mine-party-windows-timing": {
+      "result": {
+        "suite": "local_host_loaded_rate",
+        "platform": "windows",
+        "renderer": "d3d12",
+        "exit": 0,
+        "seconds": 73.49,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/wine-tools/root/usr/lib/wine/wine64",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/package/CursedLands.exe",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "120",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "d3d12",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--no-movies",
+          "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/tools/tests/local_host_loaded_rate.gd",
+          "--mod-tests",
+          "--examples=Z:/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/CursedLands-1.20.0-windows-x86_64/mods",
+          "--ei-path=Z:/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--zone=gz24k",
+          "--avoid-combat",
+          "--party-size=3"
+        ],
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "summary": [
+          "596666.000:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\loaded-rate-astral-mine-party-windows-timing\\vkd3d-proton.CursedLands.exe.cache.",
+          "596666.000:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\loaded-rate-astral-mine-party-windows-timing\\vkd3d-proton.CursedLands.exe.cache.",
+          "596666.002:0020:0124:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\loaded-rate-astral-mine-party-windows-timing\\vkd3d-proton.CursedLands.exe.cache.",
+          "LOCAL_HOST_LOADED_RATE 133 checks 0 failures"
+        ],
+        "errors": []
+      },
+      "measurements": {
+        "animation_binding_prepare": true,
+        "animation_cache_retention": true,
+        "checks": 133,
+        "failures": 0,
+        "fixture": {
+          "campaign": "lost_in_astral",
+          "from": [
+            176.847686767578,
+            47.2051582336426
+          ],
+          "mob": "zone24",
+          "mpr": "zone24",
+          "party_size": 3,
+          "party_starts": [
+            [
+              176.847686767578,
+              47.2051582336426
+            ],
+            [
+              178.666412353516,
+              46.5437545776367
+            ],
+            [
+              180.572525024414,
+              47.5933265686035
+            ]
+          ],
+          "population": 65,
+          "title": "Рудники",
+          "to": [
+            141.505004882813,
+            36.5050010681152
+          ],
+          "zone": "gz24k"
+        },
+        "samples": [
+          {
+            "cap": 60,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 60.068532735075,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 4.375,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 4.9375,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 5.1875,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 1.01782791578877,
+              "simulation": 3.35499999999998,
+              "stamina_change": 5.5,
+              "wall": 3.296235
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 1.00250510751322,
+              "distance": 18.5713311731815,
+              "first_motion_sim": 0.11,
+              "first_motion_wall": 0.049103,
+              "fps": 59.3254393314986,
+              "metres_per_sim_second": 4.6254872162345,
+              "moving": true,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 18.5713311731815,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.6254872162345,
+                  "stamina_change": -6.5,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 17.650109142065,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.39604212753799,
+                  "stamina_change": -6.0,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 17.1050856411457,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.26029530290054,
+                  "stamina_change": -5.6875,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 1.01791298682037,
+              "simulation": 4.015,
+              "stamina_change": -6.5,
+              "wall": 3.944345
+            },
+            "paused": false,
+            "population": 65,
+            "speed": 1
+          },
+          {
+            "cap": 60,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 60.1435135840636,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 5.75,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 6.3125,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 6.5625,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 2.08022152654157,
+              "simulation": 3.35499999999998,
+              "stamina_change": 5.5,
+              "wall": 1.612809
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 2.07968412234401,
+              "distance": 18.4765057861805,
+              "first_motion_sim": 0.165,
+              "first_motion_wall": 0.066134,
+              "fps": 60.705115640673,
+              "metres_per_sim_second": 4.53968201134655,
+              "moving": true,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 18.4765057861805,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.53968201134655,
+                  "stamina_change": -6.5,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 17.3258871212602,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.25697472266834,
+                  "stamina_change": -6.0,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 16.5509940292686,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.06658329957459,
+                  "stamina_change": -5.6875,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 2.09381203947067,
+              "simulation": 4.07,
+              "stamina_change": -6.5,
+              "wall": 1.943823
+            },
+            "paused": false,
+            "population": 65,
+            "speed": 2
+          },
+          {
+            "cap": 20,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 20.0414681554334,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 4.3125,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.4375,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 4.875,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.4375,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 5.125,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 0.988810671492333,
+              "simulation": 3.35499999999998,
+              "stamina_change": 5.4375,
+              "wall": 3.392965
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 1.00149596054747,
+              "distance": 18.812086686492,
+              "first_motion_sim": 0.11,
+              "first_motion_wall": 0.083816,
+              "fps": 20.3365166258555,
+              "metres_per_sim_second": 4.68545122951231,
+              "moving": true,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 18.812086686492,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.68545122951231,
+                  "stamina_change": -6.625,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 17.4087305441499,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.33592292506846,
+                  "stamina_change": -6.0625,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 16.798770815134,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.1840026936822,
+                  "stamina_change": -5.8125,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 1.00803844756556,
+              "simulation": 4.01500000000001,
+              "stamina_change": -6.625,
+              "wall": 3.982983
+            },
+            "paused": false,
+            "population": 65,
+            "speed": 1
+          },
+          {
+            "cap": 20,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 20.1004074470827,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 5.5625,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 6.125,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 6.375,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 2.04846799423945,
+              "simulation": 3.46499999999998,
+              "stamina_change": 5.5,
+              "wall": 1.691508
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 2.05572407287108,
+              "distance": 18.7368968725204,
+              "first_motion_sim": 0.165,
+              "first_motion_wall": 0.080877,
+              "fps": 20.7023551706152,
+              "metres_per_sim_second": 4.60366016523843,
+              "moving": true,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 18.7368968725204,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.60366016523843,
+                  "stamina_change": -6.625,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 17.2975257709622,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.25000633193175,
+                  "stamina_change": -6.0625,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 16.3432855978608,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.01554928694368,
+                  "stamina_change": -5.8125,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 2.05508745230253,
+              "simulation": 4.07,
+              "stamina_change": -6.625,
+              "wall": 1.980451
+            },
+            "paused": false,
+            "population": 65,
+            "speed": 2
+          },
+          {
+            "cap": 10,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 10.0343677094047,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 4.3125,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.4375,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 4.875,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.4375,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 5.125,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 0.990155990148607,
+              "simulation": 3.35499999999998,
+              "stamina_change": 5.4375,
+              "wall": 3.388355
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 1.00112084515622,
+              "distance": 18.8025286793709,
+              "first_motion_sim": 0.11,
+              "first_motion_wall": 0.089292,
+              "fps": 10.2758952560452,
+              "metres_per_sim_second": 4.68307065488689,
+              "moving": true,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 18.8025286793709,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.68307065488689,
+                  "stamina_change": -6.625,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 17.2590601369739,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.29864511506198,
+                  "stamina_change": -6.0625,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 16.7735930234194,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.17773176174828,
+                  "stamina_change": -5.8125,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 1.0062858403176,
+              "simulation": 4.01500000000001,
+              "stamina_change": -6.625,
+              "wall": 3.98992
+            },
+            "paused": false,
+            "population": 65,
+            "speed": 1
+          },
+          {
+            "cap": 10,
+            "dead": false,
+            "hp_after": 13.6875,
+            "hp_before": 13.6875,
+            "idle": {
+              "after_first_motion_rate": 0.0,
+              "distance": 0.0,
+              "first_motion_sim": 0.0,
+              "first_motion_wall": -1.0,
+              "fps": 10.0833537471819,
+              "metres_per_sim_second": 0.0,
+              "moving": false,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 5.5625,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 6.125,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 0.0,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 6.375,
+                  "metres_per_sim_second": 0.0,
+                  "stamina_change": 5.5,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 2.08784736412235,
+              "simulation": 3.51999999999998,
+              "stamina_change": 5.5,
+              "wall": 1.685947
+            },
+            "movie": false,
+            "moving": {
+              "after_first_motion_rate": 2.05413986772497,
+              "distance": 19.0627337098122,
+              "first_motion_sim": 0.22,
+              "first_motion_wall": 0.085413,
+              "fps": 10.5716121003679,
+              "metres_per_sim_second": 4.62126877813628,
+              "moving": true,
+              "party": [
+                {
+                  "dead": false,
+                  "distance": 19.0627337098122,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.62126877813628,
+                  "stamina_change": -6.6875,
+                  "uid": 1500000001
+                },
+                {
+                  "dead": false,
+                  "distance": 17.4973680973053,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.24178620540734,
+                  "stamina_change": -6.125,
+                  "uid": 1500000002
+                },
+                {
+                  "dead": false,
+                  "distance": 16.7025037705898,
+                  "hp": 13.6875,
+                  "hp_change": 0.0,
+                  "mana": 11.0,
+                  "metres_per_sim_second": 4.04909182317329,
+                  "stamina_change": -5.875,
+                  "uid": 1500000003
+                }
+              ],
+              "rate": 2.07656666257227,
+              "simulation": 4.125,
+              "stamina_change": -6.6875,
+              "wall": 1.986452
+            },
+            "paused": false,
+            "population": 65,
+            "speed": 2
+          }
+        ],
+        "window": "command submission through four simulation seconds",
+        "zone": "gz24k"
+      }
+    }
+  }
+}

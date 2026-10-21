@@ -20,6 +20,9 @@ var gs_tables := {}
 var gs_reconstructed := false
 ## player index -> Array of hero records (prototype, name, stats, items...)
 var heroes := {}
+## Original player flag (GodMode): ordinary invulnerability and free running.
+## Stored per controller; absent entries and legacy saves keep it disabled.
+var god_modes := {}
 ## zone id -> {dead: [nid], removed: [nid], looted: [nid], hidden: [nid], levers: {nid: state}, units: {nid: [x, y, hp]}}
 var zones := {}
 var visited := {}
@@ -54,6 +57,11 @@ var current_zone := "gz1g"
 ## Hours. the original (new game, creates the "Human Hero") sets
 ## GS var "gtime" = 6.0: a new campaign starts at 06:00.
 var world_time := 6.0
+## The original keeps elapsed campaign hours in the player's GS store and
+## scene daylight in the world's rate/offset clock. Null imports old saves
+## using their only available day/hour pair; the lost elapsed time cannot be
+## reconstructed after an older build already changed that pair.
+var campaign_time: Variant = null
 ## Day counter shown on the global map ("День N, hh:mm").
 var day := 1
 ## Remake co-op (CoopProgress, not in the original): "host" = the joining players'
@@ -87,21 +95,27 @@ const BELT_SLOTS := 4
 
 
 func advance_hours(h: float) -> void:
-	world_time += h
-	while world_time >= 24.0:
-		world_time -= 24.0
-		day += 1
+	campaign_time = PackedFloat32Array([get_var(0, "gtime") + h])[0]
+	day = int(float(campaign_time) / 24.0) + 1
+	world_time = fmod(world_time + h, 24.0)
 	_gs_clock()
+
+
+func set_scene_hour(hour: float) -> void:
+	# FixWorldTime/RunWorldTime change the scene offset, never the player's
+	# elapsed hours (base 58eea0/58d280; LiA 4f0aa0/4e69a0).
+	campaign_time = get_var(0, "gtime")
+	world_time = fmod(float(PackedFloat32Array([hour])[0]), 24.0)
 
 
 ## GS var "gtime" is the campaign clock in hours since the start of day 1
 ## (the original advances it every tick; the global map shows day
 ## gtime·60/1440 + 1). Scripts read it for timeouts
 ## (bz1g GTwolf/GTgold, bz2g FrTime, zone9 z.gz9g.a1); the remake keeps it as
-## day/world_time and derives the var.
+## a separate elapsed value once the clock has advanced or a scene sets time.
 func get_var(player: int, key: String) -> float:
 	if key == "gtime":
-		return float(day - 1) * 24.0 + world_time
+		return float(campaign_time) if campaign_time != null else float(day - 1) * 24.0 + world_time
 	return float(vars.get("%d:%s" % [player, key], 0.0))
 
 
@@ -111,8 +125,10 @@ func set_var(player: int, key: String, v: float) -> void:
 	v = PackedFloat32Array([v])[0]   # native stores a float32
 	var table := _gs_table(player)
 	if key == "gtime":
+		campaign_time = v
 		day = int(v / 24.0) + 1
-		world_time = fposmod(v, 24.0)
+		# Native GS writes update the player's store without resetting the
+		# scene clock (base 460bc0; LiA 431f10). Zone entry sets its hour.
 		if v == 0.0:
 			GSTable.erase(table, key)
 		else:
@@ -135,6 +151,11 @@ func set_var(player: int, key: String, v: float) -> void:
 
 
 func del_var(player: int, key: String) -> void:
+	if key == "gtime":
+		# Like native GSSetVar(...,0), deletion must clear the value too,
+		# including its separate serialized representation.
+		set_var(player, key, 0.0)
+		return
 	var k := "%d:%s" % [player, key]
 	var old := float(vars.get(k, 0.0))
 	vars.erase(k)
@@ -1115,7 +1136,7 @@ func store_zone(id: String, world: GameWorld) -> void:
 		# Both living actors and corpses keep their actual location and
 		# facing. Resetting a guard's angle on load changes who it can see.
 		z.units[u.uid] = [u.pos.x, u.pos.y, 0.0 if u.dead else u.hp, u.faction, u.hidden,
-			{} if u.dead else body_state(u), u.facing]
+			{} if u.dead else body_state(u), u.facing, u.placement_z]
 	# Looted corpses (Session.take_loot) are off the world but WasLooted still
 	# sees them (GameWorld.looted).
 	z.looted = world.looted.keys()
@@ -1294,6 +1315,7 @@ func restore_zone(id: String, world: GameWorld) -> void:
 			var s: Array = z.units[nid]
 			u.pos = Vector2(s[0], s[1])
 			u.hp = s[2]
+			u.placement_z = float(s[7]) if s.size() > 7 and (s[7] is float or s[7] is int) and is_finite(float(s[7])) else 0.0
 			if s.size() > 4:   # script SetPlayer / HideObject
 				u.faction = int(s[3])
 				u.hidden = bool(s[4])
@@ -1357,7 +1379,7 @@ func to_dict() -> Dictionary:
 	return {"version": 2, "campaign_id": campaign_id, "mod_config": mod_config, "vars": vars, "gs_tables": tables, "gs_reconstructed": gs_reconstructed, "heroes": heroes, "zones": zones, "visited": visited, "island_returns": island_returns,
 		"quests": quests, "money": money, "items": items, "quest_items": quest_items,
 		"parties": parties, "current_party": current_party, "party_bags": party_bags, "experience": experience, "mercs": mercs, "dismissed_mercs": dismissed_mercs, "pets": pets, "side_quests": side_quests, "shops": shops, "current_zone": current_zone,
-		"world_time": world_time, "day": day, "coop": coop, "camera": camera, "play_clock": play_clock}
+		"world_time": world_time, "day": day, "campaign_time": get_var(0, "gtime"), "coop": coop, "camera": camera, "play_clock": play_clock, "god_modes": god_modes}
 
 
 func save(path: String) -> Error:

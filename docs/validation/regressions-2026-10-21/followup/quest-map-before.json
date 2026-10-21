@@ -1,0 +1,34 @@
+{
+	"checks": 13,
+	"failures": 2,
+	"scope": "Authored map/overlay and actual perception, controlled hero start and fatal hit, full campaign save/load. No original whole-scene replay.",
+	"trace": [
+		{
+			"hero": [
+				241.430999755859,
+				217.895004272461
+			],
+			"objective": false,
+			"seen": true,
+			"tick": 0
+		},
+		{
+			"hero": [
+				241.430999755859,
+				217.895004272461
+			],
+			"objective": false,
+			"seen": true,
+			"tick": 1
+		},
+		{
+			"hero": [
+				241.430999755859,
+				217.895004272461
+			],
+			"objective": true,
+			"seen": true,
+			"tick": 2
+		}
+	]
+}

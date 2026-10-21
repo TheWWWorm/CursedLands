@@ -5,6 +5,8 @@ extends Node
 ## runs scripts and owns the campaign state. Clients send commands and receive
 ## the zone to load (from their own game files), unit snapshots and events.
 
+signal console_output(lines: PackedStringArray, request: int)
+
 signal players_changed
 signal message(text: String)
 signal mod_rules_result(problem: String)
@@ -71,6 +73,7 @@ var travel_options: Array = []   # host: destinations currently offered
 var _travel_ev := {}        # host: the open global map event (for joiners)
 var map_open := false       # every peer: the global map is up ("travel" until "travel_close" / a zone)
 var _dialog_ev := {}        # host: the running conversation event (for joiners)
+var ending_active := false
 var _movie_ev := {}
 var _movie_wait := {}       # peer IDs still presenting the current movie
 var _movie_queue: Array[String] = []
@@ -963,6 +966,12 @@ func _enter_zone(id: String, entrance: int, autosave := true, island_resume: Dic
 	zone_id = id
 	_last_snap.clear()
 	z = _zone_variant(z)
+	if not _restoring:
+		# The native zone handoff sets the hour from the party's elapsed
+		# clock (base 57c5df; LiA 4e1d2a), even on a saved-zone revisit.
+		# Full game saves instead keep their saved scene clock. The VM's
+		# saved freeze/rate is restored independently by _build_world/create.
+		state.set_scene_hour(state.get_var(0, "gtime"))
 	_movie_on_enter(id)
 	GameData.trace("zone load %s (entrance %d)" % [id, entrance])
 	# A zone already in the campaign state loads like a save (
@@ -1064,7 +1073,7 @@ func _build_world(z: Dictionary, authority: bool, attach := true) -> void:
 	w.retain_logic_debt = local_host.worker
 	_building = true   # NetStatus.keep_alive polls the network meanwhile
 	w.load_map(z.mpr, z.get("mob", z.mpr), authority)
-	if String(z.get("id", "")) == ENDING_ZONE:   # the end credits' movies, ahead of time
+	if w.presentation and MoviePlayer.enabled and String(z.get("id", "")) == ENDING_ZONE:   # the end credits' movies, ahead of time
 		MoviePlayer.preconvert(Array(MoviePlayer.ini_movies("Crdtfin")) + ["crdt"]
 			+ Array(MoviePlayer.ini_movies("Crdtfout")))
 	if authority:
@@ -2276,6 +2285,13 @@ func _travel(zone: String, entrance: int) -> void:
 # ------------------------------------------------------------------ commands
 
 func submit(cmd: Dictionary) -> void:
+	# Camera/input cleanup can run after a guest's transport has closed.
+	# Drop those commands before preparing retries or issuing an RPC. Local
+	# worker frontends also use this path, so test the peer, not `online`.
+	if not is_host and (not multiplayer.has_multiplayer_peer() \
+			or multiplayer.multiplayer_peer.get_connection_status()!=MultiplayerPeer.CONNECTION_CONNECTED \
+			or not CoopProgress.peer_alive(multiplayer,1)):
+		return
 	if String(cmd.get("t", "")) == "movie_done":
 		if is_host: _movie_ack(1, int(cmd.get("serial", -1)))
 		elif online: _rpc_cmd.rpc_id(1, cmd)
@@ -2374,6 +2390,11 @@ func _dispatch_cmd(cmd: Dictionary, pid: int) -> void:
 ## The dispatcher supplies the authenticated sender's slot, not a packet field.
 func _shared_control(cmd: Dictionary, player: int) -> bool:
 	match String(cmd.get("t", "")):
+		"console":
+			if is_host and player == 0:
+				var selection:Variant=cmd.get("selection",[])
+				var result := ConsoleCommands.execute(self, String(cmd.get("line", "")), player, selection if selection is Array else [])
+				broadcast({"t":"console_result", "to":player, "lines":result, "request":int(cmd.get("request",0))})
 		"clock":
 			if is_host: set_coop_clock(int(cmd.get("sector", -1)), player)
 		"quick_save", "quick_load":
@@ -2467,7 +2488,7 @@ static func group_offset(i: int) -> Vector2:
 
 
 func apply_command(cmd: Dictionary, player: int) -> void:
-	if mod_script_failed: return
+	if mod_script_failed or ending_active: return
 	if world == null or movie_active() or not command_allowed(cmd):
 		return
 	if _shared_control(cmd, player): return
@@ -3918,8 +3939,7 @@ func lever_requirement(nid: int, actors: Array[GameUnit]) -> String:
 		return ""
 	var lever: Dictionary = world.levers[nid]
 	var science: Array = lever.get("science", LeverSystem.DEFAULT_SCIENCE)
-	if science.size() < 3 or (int(science[0]) & 1) == 0 or int(science[2]) <= 0 \
-		or int(lever.get("state", 0)) >= int(lever.get("states", 2)) - 1:
+	if science.size() < 3 or (int(science[0]) & 1) == 0 or int(science[2]) <= 0:
 		return ""
 	var eligible := false
 	for actor in actors:
@@ -4135,7 +4155,7 @@ static func _recharge_list(items: Array) -> bool:
 
 func _physics_process(dt: float) -> void:
 	if mod_script_failed: return
-	if get_tree().paused or loading_game or movie_active() or local_host.awaiting_view:
+	if get_tree().paused or loading_game or movie_active() or ending_active or local_host.awaiting_view:
 		return
 	if is_host:
 		_mp_tick(dt)
@@ -4495,6 +4515,12 @@ func _state_ack(pid: int, serial: int) -> void:
 
 
 func _on_event(event: Dictionary) -> void:
+	if String(event.get("t", "")) == "console_result" and int(event.get("to", -1)) == my_index:
+		console_output.emit(PackedStringArray(event.get("lines", [])),int(event.get("request",0)))
+		return
+	if String(event.get("t", "")) == "ending":
+		ending_active = true
+		if world: world.process_mode = Node.PROCESS_MODE_DISABLED
 	if event.get("t") == "state_zip":
 		event = NetState.unpack(event)
 		if event.is_empty(): return
@@ -4612,6 +4638,9 @@ func _on_event(event: Dictionary) -> void:
 				var b: GameUnit = world.units.get(int(event.b))
 				if a and b:
 					Projectile.launch(world, a, b, false)
+			"world_clock":
+				state.set_scene_hour(float(event.hour))
+				world.clock_fixed = bool(event.fixed)
 			"state":
 				set_meta("host_revive", int(event.get("revive", 0)))
 				state.money = event.money
@@ -4622,6 +4651,7 @@ func _on_event(event: Dictionary) -> void:
 				state.current_party = String(event.get("current_party", state.current_party))
 				state.parties = event.get("parties", state.parties)
 				state.party_bags = event.get("party_bags", state.party_bags)
+				state.god_modes = event.get("god_modes", {})
 				state.mercs = event.get("mercs", state.mercs)
 				state.side_quests = event.get("side_quests", {})
 				state.shops = event.get("shops", state.shops)
@@ -4632,6 +4662,8 @@ func _on_event(event: Dictionary) -> void:
 				state.last_quest = String(event.get("last_quest", state.last_quest))
 				state.world_time = float(event.get("world_time", state.world_time))
 				state.day = int(event.get("day", state.day))
+				state.campaign_time = event.get("campaign_time", null)
+				world.clock_fixed = bool(event.get("clock_fixed", false))
 				lmp_locations = event.get("lmp_locations", lmp_locations)
 				if event.get("lmp_settings") is Dictionary and not lmp.is_empty():
 					lmp = event.lmp_settings.duplicate(true)
@@ -4789,8 +4821,11 @@ func _sync_state_to(only_pid: int, periodic: bool) -> void:
 			# Expansion chapters replace the host's active party. The live
 			# state must carry the same roster/bag identity as a zone snapshot.
 			"current_party": state.current_party, "parties": state.parties, "party_bags": state.party_bags,
+			"god_modes": state.god_modes,
 			"vars": state.vars, "gs_tables": state.gs_metadata(), "gs_reconstructed": state.gs_reconstructed,
 			"last_quest": state.last_quest, "world_time": state.world_time, "day": state.day,
+			"campaign_time": state.get_var(0, "gtime"),
+			"clock_fixed": world.vm.time_fixed if world and world.vm else false,
 			"revive": GameData.option(Revive.OPTION), "unit_stats": _hero_stat_records(),
 			"lmp_settings": lmp}   # host options / effective stats
 		# Each peer sees its own purse and bag (CoopProgress.state_for).
@@ -4805,6 +4840,8 @@ func _sync_state_to(only_pid: int, periodic: bool) -> void:
 						own.unit_stats = _hero_stat_records()
 						own.world_time = state.world_time
 						own.day = state.day
+						own.campaign_time = state.get_var(0, "gtime")
+						own.clock_fixed = w.vm.time_fixed if w and w.vm else false
 						own.lmp_locations = lmp_locations
 						lmp_travel.send_event(pid, NetState.pack(own)))
 				else:
@@ -5363,6 +5400,7 @@ func _may_load() -> bool:
 
 
 func _begin_host_load(id: String, cancel_movie := true, saved_mods: Dictionary = {}) -> void:
+	ending_active = false
 	_menu_sync_pending = false
 	_state_waiting.clear()
 	_state_pending.clear()
@@ -5417,6 +5455,7 @@ func _rpc_load_prepare(serial: int, id: String, travel := false) -> void:
 	_pool_epoch = maxi(_pool_epoch, serial)
 	if serial <= _load_serial:
 		return
+	ending_active = false
 	_load_serial = serial
 	_remote_loading = true
 	_remote_load_end_serial = -1

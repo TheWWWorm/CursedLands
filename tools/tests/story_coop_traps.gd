@@ -186,6 +186,10 @@ func definitions() -> void:
 		check(before.scripts.size() == count,row[0]+": divergent modded trap is not cloned")
 
 func _ready() -> void:
+	if GameData.campaign_id != CampaignProfile.ASTRAL:
+		printerr("This fixture requires the Lost in Astral campaign assets (--ei-path).")
+		get_tree().quit(2)
+		return
 	oneshot("gz36j","zonefinal",["Trap#0#3","Trap#0#4"],Vector2(48,76),2)
 	oneshot("gz1h","zone1",["Lift#64","Lift#65","Lift#66"],Vector2(165,419),3)
 	acid(); old_saves(); definitions()

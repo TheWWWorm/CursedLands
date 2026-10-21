@@ -65,7 +65,10 @@ func figure_t(nid: int) -> float:
 	return float(_morph.get(nid, {}).get("t", 0.0))
 
 
-## Whether a hero may advance it: switches, chests, gates and doors alike;
+## Native 52bb00 / LiA 4ab3b0: permission is independent of the morph state.
+## A successful use consumes it; only EnableLever restores it. Script-driven
+## state changes must neither consume nor restore permission.
+## Whether a hero may try it: switches, chests, gates and doors alike;
 ## those whose LEVER_SCIENCE_STATS start with 0 ([0, 0, 0] house doors, cave
 ## doors, bridges, script gates) can never pass and are driven
 ## by scripts only.
@@ -73,13 +76,18 @@ func usable(nid: int) -> bool:
 	if not world.levers.has(nid) or not bool(world.levers[nid].get("enabled", true)):
 		return false
 	var lever: Dictionary = world.levers[nid]
-	var states := maxi(1, int(lever.get("states", 2)))
-	if states <= 1 or int(lever.get("cycled", 0)) == 0 and int(lever.get("state", 0)) >= states - 1:
-		# The restored Catacombs lift has a meaningful recall operation even
-		# after its call switch reaches the end of its authored morph states.
-		return preload("res://src/game/script/story_compat.gd").lift_recall_available(world, nid)
+	var compat := preload("res://src/game/script/story_compat.gd")
+	if compat.is_lift_recall_switch(world, nid) and int(lever.get("state", 0)) >= int(lever.get("states", 2)) - 1:
+		return compat.lift_recall_available(world, nid)
 	var l: Array = lever.get("science", DEFAULT_SCIENCE)
 	return l.is_empty() or int(l[0]) != 0
+
+
+## Native successful use marks the lever disabled, including cycled levers.
+## Keep the remake's explicitly restored lift recall as a separate exception.
+func consume_use(nid: int) -> void:
+	if world.levers.has(nid) and not preload("res://src/game/script/story_compat.gd").is_lift_recall_switch(world, nid):
+		world.levers[nid].enabled = false
 
 
 ## Use on a lever, the original action 0 -> CLeverObject
@@ -312,14 +320,15 @@ func export_row(nid: int) -> Array:
 	var data := motion_payload(nid)
 	if data.is_empty():
 		data = _ordinary_payload(nid)
-	if not data.is_empty():
-		row.append(data)
+	# Old saves inferred exhaustion from position; new rows retain the exact
+	# permission even when a script re-enables an object at its final state.
+	data.use_v = 1
+	row.append(data)
 	# Keep legacy motion tails intact. Authored lock changes also belong in
 	# zone snapshots: clients never restore the authoritative script VM.
 	var node: Node3D = world.objects.get(nid)
 	var science: Array = world.levers[nid].get("science", DEFAULT_SCIENCE)
 	if is_instance_valid(node) and science != Array(node.get_meta("ei", {}).get("lever_science", DEFAULT_SCIENCE)):
-		if row.size() == 3: row.append({})
 		row.append(science.duplicate())
 	return row
 
@@ -343,6 +352,15 @@ func restore_row(nid: int, row: Variant) -> void:
 	restore(nid, int(row[0]), float(row[1]))
 	if row.size() > 2:
 		world.levers[nid].enabled = bool(row[2])
+	var exact_use: bool = row.size() > 3 and row[3] is Dictionary and row[3].get("use_v", 0) == 1
+	if not exact_use and not preload("res://src/game/script/story_compat.gd").is_lift_recall_switch(world, nid):
+		# Preserve legacy exhausted chests. Those rows did not record whether
+		# use, rather than a script, reached the endpoint. EnableLever can
+		# still explicitly restore them; a pose reset alone must not do so.
+		var l: Dictionary = world.levers[nid]
+		var states := maxi(1, int(l.get("states", 2)))
+		if states <= 1 or int(l.get("cycled", 0)) == 0 and int(l.state) >= states - 1:
+			l.enabled = false
 	if row.size() > 4:
 		restore_science(nid, row[4])
 	if row.size() > 3:

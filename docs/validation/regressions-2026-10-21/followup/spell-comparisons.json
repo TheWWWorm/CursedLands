@@ -1,0 +1,150 @@
+{
+  "dispatch": {
+    "before": {
+      "run": "spell-alerts-before-qualified",
+      "exit": 1,
+      "errors": [
+        "FAIL original dispatch AI notification: stench / enemy",
+        "FAIL original dispatch individual hostility: stench / enemy",
+        "FAIL original dispatch AI notification: stench / neutral",
+        "FAIL original dispatch individual hostility: stench / neutral",
+        "FAIL original dispatch AI notification: stench / friend",
+        "FAIL original dispatch AI notification: stun / enemy",
+        "FAIL original dispatch individual hostility: stun / enemy",
+        "FAIL original dispatch AI notification: stun / neutral",
+        "FAIL original dispatch individual hostility: stun / neutral",
+        "FAIL original dispatch AI notification: stun / friend",
+        "FAIL original dispatch AI notification: weak / enemy",
+        "FAIL original dispatch individual hostility: weak / enemy",
+        "FAIL original dispatch AI notification: weak / neutral",
+        "FAIL original dispatch individual hostility: weak / neutral",
+        "FAIL original dispatch AI notification: weak / friend",
+        "FAIL original dispatch AI notification: feeblemind / enemy",
+        "FAIL original dispatch individual hostility: feeblemind / enemy",
+        "FAIL original dispatch AI notification: feeblemind / neutral",
+        "FAIL original dispatch individual hostility: feeblemind / neutral",
+        "FAIL original dispatch AI notification: feeblemind / friend",
+        "FAIL original dispatch AI notification: slow / enemy",
+        "FAIL original dispatch individual hostility: slow / enemy",
+        "FAIL original dispatch AI notification: slow / neutral",
+        "FAIL original dispatch individual hostility: slow / neutral",
+        "FAIL original dispatch AI notification: slow / friend",
+        "FAIL original dispatch AI notification: shrink / enemy",
+        "FAIL original dispatch individual hostility: shrink / enemy",
+        "FAIL original dispatch AI notification: shrink / neutral",
+        "FAIL original dispatch individual hostility: shrink / neutral",
+        "FAIL original dispatch AI notification: shrink / friend"
+      ],
+      "seconds": 5.82,
+      "summary": [
+        "SPELL_ALERTS 313 checks 30 failures"
+      ]
+    },
+    "after": {
+      "run": "spell-alerts-fixed-base",
+      "exit": 0,
+      "errors": [],
+      "seconds": 5.82,
+      "summary": [
+        "SPELL_ALERTS 313 checks 0 failures"
+      ]
+    }
+  },
+  "size": {
+    "before": {
+      "run": "size-spells-before",
+      "exit": 1,
+      "errors": [
+        "FAIL native effect registration: enlarge / ticks=0.0 / target=true",
+        "FAIL native effect type: enlarge / ticks=0.0 / target=true",
+        "FAIL native effect registration: enlarge / ticks=1.0 / target=true",
+        "FAIL native effect type: enlarge / ticks=1.0 / target=true",
+        "FAIL native effect duration: enlarge / ticks=1.0 / target=true",
+        "FAIL native effect registration: enlarge / ticks=5.0 / target=true",
+        "FAIL native effect type: enlarge / ticks=5.0 / target=true",
+        "FAIL native effect duration: enlarge / ticks=5.0 / target=true",
+        "FAIL native effect registration: enlarge / ticks=120.0 / target=true",
+        "FAIL native effect type: enlarge / ticks=120.0 / target=true",
+        "FAIL native effect duration: enlarge / ticks=120.0 / target=true",
+        "FAIL native effect registration: shrink / ticks=0.0 / target=true",
+        "FAIL native effect type: shrink / ticks=0.0 / target=true",
+        "FAIL native effect registration: shrink / ticks=1.0 / target=true",
+        "FAIL native effect type: shrink / ticks=1.0 / target=true",
+        "FAIL native effect duration: shrink / ticks=1.0 / target=true",
+        "FAIL native effect registration: shrink / ticks=5.0 / target=true",
+        "FAIL native effect type: shrink / ticks=5.0 / target=true",
+        "FAIL native effect duration: shrink / ticks=5.0 / target=true",
+        "FAIL native effect registration: shrink / ticks=120.0 / target=true",
+        "FAIL native effect type: shrink / ticks=120.0 / target=true",
+        "FAIL native effect duration: shrink / ticks=120.0 / target=true",
+        "FAIL authored size effect registers: enlarge",
+        "FAIL size effect changes all three figure axes: enlarge",
+        "FAIL live figure uses changed build: enlarge",
+        "FAIL serialized client state includes size effect: enlarge",
+        "FAIL client figure refreshes after size snapshot: enlarge",
+        "FAIL recast refreshes original duration: enlarge",
+        "FAIL recast does not compound body size: enlarge",
+        "FAIL authored size effect registers: shrink",
+        "FAIL size effect changes all three figure axes: shrink",
+        "FAIL live figure uses changed build: shrink",
+        "FAIL serialized client state includes size effect: shrink",
+        "FAIL client figure refreshes after size snapshot: shrink",
+        "FAIL recast refreshes original duration: shrink",
+        "FAIL recast does not compound body size: shrink",
+        "FAIL opposite size effects coexist and cancel their visual offset",
+        "FAIL authored size effect registers: enlarge",
+        "FAIL size effect changes all three figure axes: enlarge",
+        "FAIL live figure uses changed build: enlarge",
+        "FAIL serialized client state includes size effect: enlarge",
+        "FAIL client figure refreshes after size snapshot: enlarge",
+        "FAIL recast refreshes original duration: enlarge",
+        "FAIL recast does not compound body size: enlarge",
+        "FAIL authored size effect registers: shrink",
+        "FAIL size effect changes all three figure axes: shrink",
+        "FAIL live figure uses changed build: shrink",
+        "FAIL serialized client state includes size effect: shrink",
+        "FAIL client figure refreshes after size snapshot: shrink",
+        "FAIL recast refreshes original duration: shrink",
+        "FAIL recast does not compound body size: shrink",
+        "FAIL opposite size effects coexist and cancel their visual offset"
+      ],
+      "seconds": 5.92,
+      "summary": [
+        "SIZE_SPELLS 143 checks 52 failures"
+      ]
+    },
+    "after": {
+      "run": "size-spells-fixed-base",
+      "exit": 0,
+      "errors": [],
+      "seconds": 6.68,
+      "summary": [
+        "SIZE_SPELLS 143 checks 0 failures"
+      ]
+    }
+  },
+  "encounter": {
+    "before": {
+      "run": "spell-alert-encounter-before-qualified",
+      "exit": 1,
+      "errors": [
+        "FAIL spell target calls its authored nearby ally",
+        "FAIL ally receives the spell warning when the original counter passes below zero",
+        "FAIL warned ally leaves calm wandering to investigate or fight"
+      ],
+      "seconds": 8.08,
+      "summary": [
+        "SPELL_ALERT_ENCOUNTER 8 checks 3 failures"
+      ]
+    },
+    "after": {
+      "run": "spell-alert-encounter-phase-qualified",
+      "exit": 0,
+      "errors": [],
+      "seconds": 8.18,
+      "summary": [
+        "SPELL_ALERT_ENCOUNTER 8 checks 0 failures"
+      ]
+    }
+  }
+}

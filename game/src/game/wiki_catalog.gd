@@ -228,6 +228,7 @@ func _prepare_items() -> void:
 		var name := recipe_name(base)
 		var info := Items.info(base)
 		var craftable := Items.has_blueprint(info.table, info.row) and not name.is_empty() and not "_" in name
+		var fixed_name := ""
 		if not craftable:
 			var choices: Array[String] = []
 			for id: String in _families[base]:
@@ -236,9 +237,12 @@ func _prepare_items() -> void:
 			if choices.is_empty(): choices.append(_families[base][0])
 			_families[base] = [choices[0]] as Array[String]
 			_fixed[base] = choices[0]
-			var authored := authored_name(choices[0])
-			if authored: entry.title = authored
-		if "_" in name:
+			fixed_name = authored_name(choices[0])
+		if not fixed_name.is_empty():
+			# A fixed finished item can reuse a craftable prototype's recipe.
+			# The recipe's name must not replace the installed item's name.
+			entry.title = fixed_name
+		elif "_" in name:
 			unnamed += 1
 			entry.title = RemakeText.t("%s (variant %d)") % [Items.type_text(base), unnamed]
 			_placeholder_names[name] = entry.title

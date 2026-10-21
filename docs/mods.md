@@ -105,7 +105,7 @@ again by the built-in HD texture option. Interface sprites use the original
 logical atlas coordinates at the replacement texture’s resolution; borders,
 bars, tutorial buttons and camp controls retain their layout.
 
-Package API 2 is accepted only for texture packs in this release: `textures.res`
+Package API 2 accepts texture packs: `textures.res` and `redress.res`
 MMP overrides and optional `.txt`, `.md` or `.rst` documentation in
 `attachments`. Its total package limit is 1 GiB, with 128 MiB per asset and
 1 MiB for `mod.json`. Members are staged individually. Other resource types,
@@ -183,7 +183,23 @@ An `overrides` entry maps an existing archive entry to a package-relative file:
 }
 ```
 
-Supported API 1 archives are `textures.res` (MMP), `sfx.res` (game-supported WAV), and `speech.res` (MP3). Use forward slashes in archive entry names. Textures must use an entry ending in `.mmp`. Supply files in the formats the existing readers accept. The overlay is consulted by those readers and leaves the player's source archives intact. It is not a filesystem-wide replacement mechanism. New entries can be read by name and are included in archive suffix listings. API 2 accepts only texture overrides and documentation, as described above.
+Supported API 1 archives are `textures.res` and `redress.res` (MMP), `sfx.res` (game-supported WAV), and `speech.res` (MP3). Use forward slashes in archive entry names. Textures must use an entry ending in `.mmp`. Supply files in the formats the existing readers accept. The overlay is consulted by those readers and leaves the player's source archives intact. It is not a filesystem-wide replacement mechanism. New entries can be read by name and are included in archive suffix listings. API 2 accepts only texture overrides and documentation, as described above. API 3 also accepts these archive overrides alongside its formula contract.
+
+`redress.res` holds character skin, clothing and equipment layers. For example:
+
+```json
+{
+  "archive": "redress.res",
+  "entry": "unhufeax_01.gr.0.mmp",
+  "file": "assets/redress.res/unhufeax_01.gr.0.mmp"
+}
+```
+
+Enable the package in a named profile and use **Apply & restart**. Disabling it
+and restarting restores the original textures. Clothing and equipment textures
+remain local cosmetic choices in co-op. Two enabled packages that replace the
+same archive entry are reported as a conflict. The legacy converter also accepts
+changed MMP entries from `redress.res`.
 
 ### Numeric database patches
 

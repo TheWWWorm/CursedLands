@@ -1,0 +1,104 @@
+{
+  "kind": "static shipped-asset audit; not audible runtime observation",
+  "inputs": {
+    "/home/llm2x/Documents/EI/inspection/lost-in-astral/game/maps/zone1.mob": "4a5679b7685fa3d28c5981bb3dc60759015dc3a2b12105dfb19bbf05e372adf1",
+    "/home/llm2x/Documents/EI/inspection/lost-in-astral/game/maps/zone1plen.mob": "1ed5b311cd69cf3a351e50419c3be99a34cf38939c56f47d550be4dcd87fd151"
+  },
+  "quest": "q.gz1h.q12h",
+  "quest_scripts": [
+    "VCheck#5#1",
+    "VCheck#5#2",
+    "VCheck#5#3",
+    "VCheck#5#4",
+    "VCheck#5#5",
+    "VCheck#5#6",
+    "VCheck#5#7",
+    "VCheck#5#8"
+  ],
+  "quest_calls": [
+    "AddMob",
+    "AddRoundToArea",
+    "Any",
+    "CreateParticleSource",
+    "CreatePointLight",
+    "DeleteArea",
+    "DeleteParticleSource",
+    "DeletePointLight",
+    "GSGetVar",
+    "GSSetVarMax",
+    "GetObject",
+    "GetUnitOfPlayer",
+    "GetX",
+    "GetY",
+    "GroupHas",
+    "IsAlive",
+    "IsEqual",
+    "IsInArea",
+    "KillScript",
+    "Not",
+    "QuestComplete",
+    "RemoveUnitFromServer",
+    "Sleep",
+    "UMFollow",
+    "UMSentry",
+    "UnitSee",
+    "VCheck#5#1",
+    "VCheck#5#2",
+    "VCheck#5#3",
+    "VCheck#5#4",
+    "VCheck#5#5",
+    "VCheck#5#6",
+    "VCheck#5#7",
+    "VCheck#5#8"
+  ],
+  "quest_script": "Script VCheck#5#1\n(\n  if\n  (\n    IsEqual( GSGetVar( 0, \"q.gz1h.q12h\" ) , 1 )\n  )\n  then\n  (\n    KillScript(  )\n    Sleep( 20 )\n    GSSetVarMax( 0, \"q.gz1h.q12h.1\", 1 )\n    RemoveUnitFromServer( GetObject( 400630 ) )\n    RemoveUnitFromServer( GetObject( 760995 ) )\n    CreateParticleSource( 1, 94, 19, 12, 0.5, \"campfire\" )\n    CreatePointLight( 1, 94, 19, 12, 3, 255, 255, 255 ) \n    AddRoundToArea( 3, 158, 73 , 5 )\n    AddRoundToArea( 4, 153, 66 , 3.5 )\n    AddRoundToArea( 5, 110, 227 , 10 )\n    AddRoundToArea( 6, 126, 88 , 1 )\n    AddMob( \"zone1plen.mob\" )\n    VCheck#5#2( this )\n    VCheck#5#5( this )\n    VCheck#5#8( this )\n  )\n)\n\nScript VCheck#5#2\n(\n  if\n  (\n    Any( i, Heroes, IsInArea( 3, GetX( i ) , GetY( i )  )  )\n    IsAlive( GetObject ( 1012005 ) )\n    Not( GroupHas( UnitSee( GetObject ( 1012005 ) ), GetUnitOfPlayer( 0, 0 ) ) )\n    Not( GroupHas( UnitSee( GetObject ( 1012005 ) ), GetUnitOfPlayer( 0, 1 ) ) )\n  )\n  then\n  (\n    KillScript(  )\n    GSSetVarMax( 0, \"q.gz1h.q12h.1\", 2 )\n    GSSetVarMax( 0, \"q.gz1h.q12h.2\", 1 )\n    DeleteArea( 3 )\n    VCheck#5#3( this )\n  )\n)\n\nScript VCheck#5#3\n(\n  if\n  (\n    Any( i, Heroes, IsInArea( 4, GetX( i ) , GetY( i )  )  )\n    IsAlive( GetObject ( 1012005 ) )\n    Not( GroupHas( UnitSee( GetObject ( 1012005 ) ), GetUnitOfPlayer( 0, 0 ) ) )\n    Not( GroupHas( UnitSee( GetObject ( 1012005 ) ), GetUnitOfPlayer( 0, 1 ) ) )\n  )\n  then\n  (\n    KillScript(  )\n    GSSetVarMax( 0, \"q.gz1h.q12h.2\", 2 )\n    GSSetVarMax( 0, \"q.gz1h.q12h.3\", 1 )\n    GSSetVarMax( 0, \"q.gz1h.q12h.4\", 1 )\n    DeleteArea( 4 )\n    VCheck#5#4( this )\n    Sleep( 30 )\n    UMSentry( GetObject( 1012005 ) , 170 , 73 )\n    Sleep( 125 )\n    UMSentry( GetObject( 1012005 ) , 164 , 83 )\n    Sleep( 125 )\n    UMSentry( GetObject( 1012005 ) , 126 , 88 )\n    VCheck#5#7( this )\n  )\n)\n\nScript VCheck#5#4\n(\n  if\n  (\n    Not( IsAlive( GetObject ( 1012005 ) ) )\n  )\n  then\n  (\n    KillScript(  )\n    GSSetVarMax( 0, \"q.gz1h.q12h.3\", 2 )\n  )\n)\n\nScript VCheck#5#7\n(\n  if\n  (\n    IsInArea( 6, GetX( GetObject( 1012001 ) ) , GetY( GetObject( 1012001 ) ) )\n  )\n  then\n  (\n    KillScript(  )\n    RemoveUnitFromServer( GetObject( 1012005 ) )\n    GSSetVarMax( 0, \"q.gz1h.q12h.3\", 3 )\n  )\n)\n\nScript VCheck#5#5\n(\n  if\n  (\n    Not( IsAlive( GetObject ( 1012002 ) ) )\n    Not( IsAlive( GetObject ( 1012003 ) ) )\n    IsAlive( GetObject ( 1012001 ) )\n  )\n  then\n  (\n    KillScript(  )\n    GSSetVarMax( 0, \"q.gz1h.q12h.4\", 2 )\n    GSSetVarMax( 0, \"q.gz1h.q12h.5\", 1 )\n    UMFollow( GetObject( 1012001 ) , GetUnitOfPlayer( 0 , 0 ) )\n    VCheck#5#6( this )\n  )\n)\n\nScript VCheck#5#6\n(\n  if\n  (\n    IsInArea( 5, GetX( GetObject( 1012001 ) ) , GetY( GetObject( 1012001 ) ) )\n    IsAlive( GetObject ( 1012001 ) )\n  )\n  then\n  (\n    KillScript(  )\n    RemoveUnitFromServer( GetObject( 1012001 ) )\n    GSSetVarMax( 0, \"q.gz1h.q12h.5\", 2 )\n    GSSetVarMax( 0, \"q.gz1h.q12h\", 2 )\n    QuestComplete( 0, \"q12h\" )\n    GSSetVarMax( 0, \"b.YCF.brief_36\", 1 )\n    DeleteArea( 5 )\n    DeleteParticleSource( 1 )\n    DeletePointLight( 1 )\n  )\n)\n\nScript VCheck#5#8\n(\n  if\n  (\n    Not( IsAlive( GetObject ( 1012001 ) ) )\n    IsEqual( GSGetVar( 0, \"q.gz1h.q12h\" ) , 1 )\n  )\n  then\n  (\n    KillScript(  )\n    GSSetVarMax( 0, \"q.gz1h.q12h\", 3 )\n  )\n)\n\n",
+  "extra_map_script": "GlobalVars (\n  NULL : object,\n  VSS#i#val : object,\n  i : object,\n  ScrabMotherP : object \n)\n\nDeclareScript VCheck#1#1 (  this : object )\nDeclareScript VCheck#1#2 (  this : object )\nDeclareScript VTriger#1#3 (  this : object )\n\nScript VCheck#1#1\n(\n  if\n  (\n    IsLess( GSGetVar( 0, \"q.gz5g.q22g.1\" ) , 2 ) \n  )\n  then\n  (\n    KillScript(  ) \n    VCheck#1#2( this ) \n  )\n)\n\nScript VCheck#1#2\n(\n  if\n  (\n    IsDead( ScrabMotherP ) \n  )\n  then\n  (\n    KillScript(  ) \n    VTriger#1#3( this ) \n  )\n)\n\nScript VTriger#1#3\n(\n  if\n  (\n  )\n  then\n  (\n    KillScript(  ) \n    GSSetVarMax( 0, \"q.gz5g.q22g.1\", 2 ) \n  )\n)\n\nWorldScript\n(\n  Sleep( 2 ) \n  ScrabMotherP = GetObjectByID( \"1000027\" ) \n  VCheck#1#1( NULL ) \n)\n",
+  "sound_inventory": {
+    "zone1.mob": [
+      {
+        "id": 997041,
+        "position": [
+          426.385986328125,
+          228.99400329589844,
+          34.324501037597656
+        ],
+        "inner": 10,
+        "outer": 15,
+        "waves": [
+          "nature/Fire/small.wav"
+        ]
+      },
+      {
+        "id": 2013423,
+        "position": [
+          138,
+          210,
+          11.800000190734863
+        ],
+        "inner": 10,
+        "outer": 15,
+        "waves": [
+          "nature/Fire/small.wav"
+        ]
+      }
+    ],
+    "zone1plen.mob": []
+  },
+  "authored_listening": {
+    "centre": [
+      153,
+      66
+    ],
+    "radius": 3.5,
+    "required_observer": 1012005,
+    "state_changes": {
+      "q.gz1h.q12h.2": 2,
+      "q.gz1h.q12h.3": 1,
+      "q.gz1h.q12h.4": 1
+    },
+    "speech_call": null,
+    "briefing_call": null
+  },
+  "conclusion": "The listening branch changes objectives and later orders the NPC to walk. Neither its script family nor the loaded mob script starts a briefing or explicit speech. The maps have no placed conversation emitter at the house. This does not establish which generic unit/ambient sounds the original executable played.",
+  "runtime_limit": "The earlier native-game observation was muted and only established objective progression without a separate dialogue window."
+}

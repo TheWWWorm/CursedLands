@@ -1,0 +1,33 @@
+{
+  "changes": [
+    {
+      "file": "game/src/game/campaign_state.gd",
+      "before_sha256": "27cf8b9bf08f28a2eafa13f982173b518ec4c1a2e0512d9f2a8297ec704a7f2a",
+      "after_sha256": "aa9a5377ee95eca1c83b5416561add75bfb0aa3e7ec99a456a972a97d924d7c3",
+      "diff": "--- before/game/src/game/campaign_state.gd\n+++ after/game/src/game/campaign_state.gd\n@@ -127,7 +127,8 @@\n \tif key == \"gtime\":\n \t\tcampaign_time = v\n \t\tday = int(v / 24.0) + 1\n-\t\tworld_time = fposmod(v, 24.0)\n+\t\t# Native GS writes update the player's store without resetting the\n+\t\t# scene clock (base 460bc0; LiA 431f10). Zone entry sets its hour.\n \t\tif v == 0.0:\n \t\t\tGSTable.erase(table, key)\n \t\telse:\n@@ -150,6 +151,11 @@\n \n \n func del_var(player: int, key: String) -> void:\n+\tif key == \"gtime\":\n+\t\t# Like native GSSetVar(...,0), deletion must clear the value too,\n+\t\t# including its separate serialized representation.\n+\t\tset_var(player, key, 0.0)\n+\t\treturn\n \tvar k := \"%d:%s\" % [player, key]\n \tvar old := float(vars.get(k, 0.0))\n \tvars.erase(k)\n"
+    },
+    {
+      "file": "game/src/game/session.gd",
+      "before_sha256": "82268aadf96d78339cc86e7c0a235dee5ebeda585dcb011de3171c279adda6fb",
+      "after_sha256": "4a34c30598d6da99483a7f13b06414b572f76290a1587a664a4d301d1186fa57",
+      "diff": "--- before/game/src/game/session.gd\n+++ after/game/src/game/session.gd\n@@ -966,6 +966,12 @@\n \tzone_id = id\n \t_last_snap.clear()\n \tz = _zone_variant(z)\n+\tif not _restoring:\n+\t\t# The native zone handoff sets the hour from the party's elapsed\n+\t\t# clock (base 57c5df; LiA 4e1d2a), even on a saved-zone revisit.\n+\t\t# Full game saves instead keep their saved scene clock. The VM's\n+\t\t# saved freeze/rate is restored independently by _build_world/create.\n+\t\tstate.set_scene_hour(state.get_var(0, \"gtime\"))\n \t_movie_on_enter(id)\n \tGameData.trace(\"zone load %s (entrance %d)\" % [id, entrance])\n \t# A zone already in the campaign state loads like a save (\n"
+    }
+  ],
+  "history": {
+    "commit": "5ceae2fe",
+    "date": "2026-10-02",
+    "finding": "The original remake coupled GS time writes to scene hour and did not clear the clock through GSDelVar. Both predate the mod merge.",
+    "map_entry": "The entry reset completes the preceding unpublished clock separation. It was caught by the new lifecycle tests before publication; it is not attributed to the mod merge."
+  },
+  "package_sha256": {
+    "CursedLands.pck": "585415d32f863874ef22b34cff1361fa9379ba572035b6f5d47c02242ba1309e",
+    "CursedLands.exe": "73aeb229b303f15e27cdf53c43d379366688dbcf858c01ffcd02f51cbd88580d"
+  },
+  "limits": [
+    "Native interpreter, GS lookup/write/erase, clock query and post-load modulo/setter slice execute in Unicorn. Temporary strings, table capacity, player lookup and network/render boundaries are supplied.",
+    "Original map file loading and complete native save reload are not replayed. The LiA loader disassembly distinguishes full gameplay saves from ordinary zone entry; real full reload and revisits are tested in the remake.",
+    "Brief-zone full-save reconstruction is qualified by town-save-comparisons.json; legacy LMP world switching remains outside that fixture.",
+    "The installed-map census includes configured map script bodies, not briefing databases or a complete quest playthrough.",
+    "Windows export passes under Wine; native Windows hardware qualification is separate."
+  ]
+}

@@ -1,0 +1,891 @@
+{
+  "scope": "Diagnostic profiles on the same disposable Suslanger save, full roster, 12 initial idle ticks and two 30-tick movement segments. Different engine/platform builds; this is not a native-original comparison or a newly applied optimization.",
+  "seed_sha256": "7dcf391afdda53056bbaa7072821453a6273fba52f85e86d7402ad6866305c3e",
+  "stock_linux_animation_api_probe": {
+    "version": "4.7-stable official 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "prepare_track_caches": false,
+    "set_preserve_track_caches_on_finish": false
+  },
+  "rows": [
+    {
+      "run": "loaded-movement-profile-01",
+      "engine": "Stock Linux Godot 4.7",
+      "rows": [
+        {
+          "command_us": 0,
+          "counts": {
+            "ai_notice_candidates": 142,
+            "ai_tick": 12,
+            "aicalm_tick": 130,
+            "aichatter": 888,
+            "aiplayer_perceive": 158,
+            "aithink": 888,
+            "script": 12,
+            "tornadoes": 12,
+            "traps": 12,
+            "unit_do_move": 588,
+            "unit_ensure_motion": 588,
+            "unit_housekeeping": 888,
+            "unit_logic": 888,
+            "unit_move_base": 1200,
+            "unit_set_action": 864,
+            "unit_stamp": 888,
+            "unit_step_along_path": 588,
+            "units": 12,
+            "water": 12,
+            "world": 12
+          },
+          "dead": false,
+          "from": [
+            87.2867965698242,
+            296.286804199219
+          ],
+          "paths": {
+            "failed": 0,
+            "max_us": 3524,
+            "memo_hits": 0,
+            "queries": 49,
+            "search_us": 7814,
+            "turn_us": 6341
+          },
+          "phase": "initial_idle",
+          "slow": [
+            {
+              "part": "unit_do_move",
+              "uid": 914709,
+              "us": 11033
+            },
+            {
+              "part": "unit_logic",
+              "uid": 914709,
+              "us": 11326
+            },
+            {
+              "part": "unit_set_action",
+              "uid": 914710,
+              "us": 9496
+            },
+            {
+              "part": "unit_step_along_path",
+              "uid": 914710,
+              "us": 9576
+            },
+            {
+              "part": "unit_do_move",
+              "uid": 914710,
+              "us": 9854
+            },
+            {
+              "part": "unit_logic",
+              "uid": 914710,
+              "us": 10065
+            },
+            {
+              "part": "unit_set_action",
+              "uid": 914711,
+              "us": 8172
+            },
+            {
+              "part": "unit_step_along_path",
+              "uid": 914711,
+              "us": 8248
+            },
+            {
+              "part": "unit_do_move",
+              "uid": 914711,
+              "us": 8399
+            },
+            {
+              "part": "unit_logic",
+              "uid": 914711,
+              "us": 8641
+            },
+            {
+              "part": "unit_set_action",
+              "uid": 914712,
+              "us": 7389
+            },
+            {
+              "part": "unit_step_along_path",
+              "uid": 914712,
+              "us": 7457
+            },
+            {
+              "part": "unit_do_move",
+              "uid": 914712,
+              "us": 7773
+            },
+            {
+              "part": "unit_logic",
+              "uid": 914712,
+              "us": 7979
+            },
+            {
+              "part": "unit_set_action",
+              "uid": 914713,
+              "us": 8535
+            },
+            {
+              "part": "unit_step_along_path",
+              "uid": 914713,
+              "us": 8606
+            },
+            {
+              "part": "unit_do_move",
+              "uid": 914713,
+              "us": 8782
+            },
+            {
+              "part": "unit_logic",
+              "uid": 914713,
+              "us": 8987
+            },
+            {
+              "part": "unit_set_action",
+              "uid": 914720,
+              "us": 12179
+            },
+            {
+              "part": "unit_step_along_path",
+              "uid": 914720,
+              "us": 12265
+            },
+            {
+              "part": "unit_do_move",
+              "uid": 914720,
+              "us": 12580
+            },
+            {
+              "part": "unit_logic",
+              "uid": 914720,
+              "us": 12845
+            },
+            {
+              "part": "unit_set_action",
+              "uid": 914721,
+              "us": 9543
+            },
+            {
+              "part": "unit_step_along_path",
+              "uid": 914721,
+              "us": 9619
+            },
+            {
+              "part": "unit_do_move",
+              "uid": 914721,
+              "us": 9873
+            },
+            {
+              "part": "unit_logic",
+              "uid": 914721,
+              "us": 10062
+            },
+            {
+              "part": "units",
+              "uid": -1,
+              "us": 428612
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 429099
+            },
+            {
+              "part": "units",
+              "uid": -1,
+              "us": 5484
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 6116
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 6148
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 5095
+            }
+          ],
+          "slow_paths": [],
+          "ticks_us": [
+            429102,
+            6119,
+            6153,
+            5098,
+            4285,
+            4052,
+            4248,
+            4024,
+            4182,
+            4020,
+            4170,
+            3941
+          ],
+          "to": [
+            87.2867965698242,
+            296.286804199219
+          ],
+          "world_us": {
+            "ai_notice_candidates": 4035,
+            "ai_tick": 13,
+            "aicalm_tick": 742,
+            "aichatter": 2649,
+            "aiplayer_perceive": 6982,
+            "aithink": 19762,
+            "script": 7671,
+            "tornadoes": 31,
+            "traps": 16,
+            "unit_do_move": 430824,
+            "unit_ensure_motion": 7136,
+            "unit_housekeeping": 1953,
+            "unit_logic": 459682,
+            "unit_move_base": 4336,
+            "unit_set_action": 394265,
+            "unit_stamp": 4277,
+            "unit_step_along_path": 411434,
+            "units": 468933,
+            "water": 8,
+            "world": 479366
+          }
+        },
+        {
+          "command_us": 60,
+          "counts": {
+            "ai_notice_candidates": 94,
+            "ai_tick": 30,
+            "aicalm_tick": 64,
+            "aichatter": 2220,
+            "aiplayer_perceive": 99,
+            "aithink": 2190,
+            "script": 30,
+            "tornadoes": 30,
+            "traps": 30,
+            "unit_do_move": 1326,
+            "unit_ensure_motion": 1326,
+            "unit_housekeeping": 2220,
+            "unit_logic": 2220,
+            "unit_move_base": 2668,
+            "unit_set_action": 2204,
+            "unit_stamp": 2220,
+            "unit_step_along_path": 1326,
+            "units": 30,
+            "water": 30,
+            "world": 30
+          },
+          "dead": false,
+          "from": [
+            87.2867965698242,
+            296.286804199219
+          ],
+          "paths": {
+            "failed": 0,
+            "max_us": 3127,
+            "memo_hits": 0,
+            "queries": 1,
+            "search_us": 2937,
+            "turn_us": 190
+          },
+          "phase": "first_move",
+          "slow": [
+            {
+              "part": "units",
+              "uid": -1,
+              "us": 6960
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 7777
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 5302
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 5970
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 5262
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 5080
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 5944
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 5499
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 5272
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 5276
+            }
+          ],
+          "slow_paths": [],
+          "ticks_us": [
+            7778,
+            4031,
+            5304,
+            5974,
+            4119,
+            4114,
+            5265,
+            5084,
+            4664,
+            4359,
+            3981,
+            3982,
+            4103,
+            4081,
+            4056,
+            4543,
+            4212,
+            4735,
+            4240,
+            5947,
+            4178,
+            5502,
+            4166,
+            4020,
+            3866,
+            5274,
+            3990,
+            4663,
+            4298,
+            5277
+          ],
+          "to": [
+            89.449592590332,
+            289.600830078125
+          ],
+          "world_us": {
+            "ai_notice_candidates": 943,
+            "ai_tick": 2001,
+            "aicalm_tick": 268,
+            "aichatter": 6522,
+            "aiplayer_perceive": 2524,
+            "aithink": 19422,
+            "script": 20427,
+            "tornadoes": 36,
+            "traps": 31,
+            "unit_do_move": 50086,
+            "unit_ensure_motion": 14058,
+            "unit_housekeeping": 5485,
+            "unit_logic": 92579,
+            "unit_move_base": 9288,
+            "unit_set_action": 7435,
+            "unit_stamp": 6716,
+            "unit_step_along_path": 41633,
+            "units": 111539,
+            "water": 26,
+            "world": 139759
+          }
+        },
+        {
+          "command_us": 43,
+          "counts": {
+            "ai_notice_candidates": 143,
+            "ai_tick": 30,
+            "aicalm_tick": 113,
+            "aichatter": 2220,
+            "aiplayer_perceive": 147,
+            "aithink": 2190,
+            "script": 30,
+            "tornadoes": 30,
+            "traps": 30,
+            "unit_do_move": 974,
+            "unit_ensure_motion": 974,
+            "unit_housekeeping": 2220,
+            "unit_logic": 2220,
+            "unit_move_base": 1973,
+            "unit_set_action": 2194,
+            "unit_stamp": 2220,
+            "unit_step_along_path": 974,
+            "units": 30,
+            "water": 30,
+            "world": 30
+          },
+          "dead": false,
+          "from": [
+            89.449592590332,
+            289.600830078125
+          ],
+          "paths": {
+            "failed": 0,
+            "max_us": 1774,
+            "memo_hits": 0,
+            "queries": 5,
+            "search_us": 2108,
+            "turn_us": 458
+          },
+          "phase": "second_move",
+          "slow": [
+            {
+              "part": "units",
+              "uid": -1,
+              "us": 5036
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 5800
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 5167
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 5945
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 5065
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 5094
+            }
+          ],
+          "slow_paths": [],
+          "ticks_us": [
+            5801,
+            3932,
+            5170,
+            5948,
+            4779,
+            4639,
+            3809,
+            4728,
+            3897,
+            4069,
+            4106,
+            5068,
+            3971,
+            4088,
+            3725,
+            4346,
+            3601,
+            5097,
+            3937,
+            3875,
+            3818,
+            4363,
+            4206,
+            3864,
+            4338,
+            3607,
+            3702,
+            3497,
+            3866,
+            3713
+          ],
+          "to": [
+            93.8250122070312,
+            283.174987792969
+          ],
+          "world_us": {
+            "ai_notice_candidates": 1154,
+            "ai_tick": 1526,
+            "aicalm_tick": 417,
+            "aichatter": 6419,
+            "aiplayer_perceive": 3313,
+            "aithink": 20252,
+            "script": 21477,
+            "tornadoes": 88,
+            "traps": 27,
+            "unit_do_move": 38294,
+            "unit_ensure_motion": 10665,
+            "unit_housekeeping": 5159,
+            "unit_logic": 80955,
+            "unit_move_base": 7016,
+            "unit_set_action": 6791,
+            "unit_stamp": 5999,
+            "unit_step_along_path": 31453,
+            "units": 99085,
+            "water": 19,
+            "world": 127522
+          }
+        }
+      ],
+      "units": 74,
+      "zone": "gz15h"
+    },
+    {
+      "run": "loaded-movement-profile-windows",
+      "engine": "Custom Windows engine under Wine",
+      "rows": [
+        {
+          "command_us": 0,
+          "counts": {
+            "ai_notice_candidates": 142,
+            "ai_tick": 12,
+            "aicalm_tick": 130,
+            "aichatter": 888,
+            "aiplayer_perceive": 158,
+            "aithink": 888,
+            "script": 12,
+            "tornadoes": 12,
+            "traps": 12,
+            "unit_do_move": 588,
+            "unit_ensure_motion": 588,
+            "unit_housekeeping": 888,
+            "unit_logic": 888,
+            "unit_move_base": 1200,
+            "unit_set_action": 864,
+            "unit_stamp": 888,
+            "unit_step_along_path": 588,
+            "units": 12,
+            "water": 12,
+            "world": 12
+          },
+          "dead": false,
+          "from": [
+            87.2867965698242,
+            296.286804199219
+          ],
+          "paths": {
+            "failed": 0,
+            "max_us": 3686,
+            "memo_hits": 0,
+            "queries": 49,
+            "search_us": 7686,
+            "turn_us": 5480
+          },
+          "phase": "initial_idle",
+          "slow": [
+            {
+              "part": "units",
+              "uid": -1,
+              "us": 34402
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 34848
+            },
+            {
+              "part": "units",
+              "uid": -1,
+              "us": 5472
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 6035
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 6225
+            }
+          ],
+          "slow_paths": [],
+          "ticks_us": [
+            34851,
+            6038,
+            6226,
+            4914,
+            4723,
+            4184,
+            4205,
+            4196,
+            4217,
+            4244,
+            4254,
+            4097
+          ],
+          "to": [
+            87.2867965698242,
+            296.286804199219
+          ],
+          "world_us": {
+            "ai_notice_candidates": 2588,
+            "ai_tick": 11,
+            "aicalm_tick": 587,
+            "aichatter": 2605,
+            "aiplayer_perceive": 5040,
+            "aithink": 16299,
+            "script": 7152,
+            "tornadoes": 22,
+            "traps": 14,
+            "unit_do_move": 42120,
+            "unit_ensure_motion": 7015,
+            "unit_housekeeping": 1858,
+            "unit_logic": 67423,
+            "unit_move_base": 4404,
+            "unit_set_action": 7369,
+            "unit_stamp": 4096,
+            "unit_step_along_path": 24199,
+            "units": 76453,
+            "water": 9,
+            "world": 86129
+          }
+        },
+        {
+          "command_us": 46,
+          "counts": {
+            "ai_notice_candidates": 93,
+            "ai_tick": 30,
+            "aicalm_tick": 63,
+            "aichatter": 2220,
+            "aiplayer_perceive": 97,
+            "aithink": 2190,
+            "script": 30,
+            "tornadoes": 30,
+            "traps": 30,
+            "unit_do_move": 1328,
+            "unit_ensure_motion": 1328,
+            "unit_housekeeping": 2220,
+            "unit_logic": 2220,
+            "unit_move_base": 2671,
+            "unit_set_action": 2205,
+            "unit_stamp": 2220,
+            "unit_step_along_path": 1328,
+            "units": 30,
+            "water": 30,
+            "world": 30
+          },
+          "dead": false,
+          "from": [
+            87.2867965698242,
+            296.286804199219
+          ],
+          "paths": {
+            "failed": 0,
+            "max_us": 3122,
+            "memo_hits": 0,
+            "queries": 2,
+            "search_us": 3101,
+            "turn_us": 209
+          },
+          "phase": "first_move",
+          "slow": [
+            {
+              "part": "units",
+              "uid": -1,
+              "us": 7123
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 7829
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 5281
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 5271
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 6110
+            }
+          ],
+          "slow_paths": [],
+          "ticks_us": [
+            7830,
+            4225,
+            4510,
+            5283,
+            4122,
+            5274,
+            4282,
+            4274,
+            4393,
+            4228,
+            4110,
+            4088,
+            4119,
+            4180,
+            4164,
+            4226,
+            4284,
+            4508,
+            4296,
+            6113,
+            4162,
+            4094,
+            4023,
+            4012,
+            3876,
+            3984,
+            4066,
+            3885,
+            4529,
+            3718
+          ],
+          "to": [
+            89.449592590332,
+            289.600830078125
+          ],
+          "world_us": {
+            "ai_notice_candidates": 822,
+            "ai_tick": 2009,
+            "aicalm_tick": 232,
+            "aichatter": 6478,
+            "aiplayer_perceive": 2236,
+            "aithink": 18371,
+            "script": 17048,
+            "tornadoes": 33,
+            "traps": 28,
+            "unit_do_move": 50190,
+            "unit_ensure_motion": 14265,
+            "unit_housekeeping": 4888,
+            "unit_logic": 90529,
+            "unit_move_base": 9302,
+            "unit_set_action": 7417,
+            "unit_stamp": 6329,
+            "unit_step_along_path": 41472,
+            "units": 109077,
+            "water": 22,
+            "world": 132825
+          }
+        },
+        {
+          "command_us": 42,
+          "counts": {
+            "ai_notice_candidates": 148,
+            "ai_tick": 30,
+            "aicalm_tick": 118,
+            "aichatter": 2220,
+            "aiplayer_perceive": 151,
+            "aithink": 2190,
+            "script": 30,
+            "tornadoes": 30,
+            "traps": 30,
+            "unit_do_move": 990,
+            "unit_ensure_motion": 990,
+            "unit_housekeeping": 2220,
+            "unit_logic": 2220,
+            "unit_move_base": 2010,
+            "unit_set_action": 2189,
+            "unit_stamp": 2220,
+            "unit_step_along_path": 990,
+            "units": 30,
+            "water": 30,
+            "world": 30
+          },
+          "dead": false,
+          "from": [
+            89.449592590332,
+            289.600830078125
+          ],
+          "paths": {
+            "failed": 0,
+            "max_us": 1790,
+            "memo_hits": 0,
+            "queries": 4,
+            "search_us": 2107,
+            "turn_us": 296
+          },
+          "phase": "second_move",
+          "slow": [
+            {
+              "part": "units",
+              "uid": -1,
+              "us": 5228
+            },
+            {
+              "part": "world",
+              "uid": -1,
+              "us": 5920
+            }
+          ],
+          "slow_paths": [],
+          "ticks_us": [
+            5922,
+            3957,
+            4163,
+            4328,
+            3963,
+            4710,
+            3882,
+            3632,
+            3787,
+            3745,
+            3896,
+            3926,
+            3823,
+            3631,
+            3707,
+            3927,
+            3923,
+            4069,
+            3656,
+            3575,
+            3578,
+            4429,
+            4081,
+            4226,
+            3779,
+            3708,
+            4025,
+            3795,
+            3547,
+            3362
+          ],
+          "to": [
+            93.8250122070313,
+            283.174987792969
+          ],
+          "world_us": {
+            "ai_notice_candidates": 1225,
+            "ai_tick": 1592,
+            "aicalm_tick": 404,
+            "aichatter": 6145,
+            "aiplayer_perceive": 3297,
+            "aithink": 19831,
+            "script": 16800,
+            "tornadoes": 37,
+            "traps": 29,
+            "unit_do_move": 37334,
+            "unit_ensure_motion": 10674,
+            "unit_housekeeping": 4573,
+            "unit_logic": 78568,
+            "unit_move_base": 7018,
+            "unit_set_action": 6704,
+            "unit_stamp": 5619,
+            "unit_step_along_path": 30797,
+            "units": 95884,
+            "water": 17,
+            "world": 118709
+          }
+        }
+      ],
+      "units": 74,
+      "zone": "gz15h"
+    }
+  ]
+}

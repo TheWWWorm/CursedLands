@@ -1,0 +1,2164 @@
+{
+  "schema": 1,
+  "status": "match",
+  "input_sha256": "1635382dda816af87546a9788cd8662fb3c71a90d7bc1a0e9a0a6175af8556e7",
+  "reference": {
+    "id": "lost-in-astral-f04a305b",
+    "campaign": "lost_in_astral",
+    "executable_sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff",
+    "patches": [],
+    "description": "Locally inspected Lost in Astral game.exe; separately qualified native addresses."
+  },
+  "counts": {
+    "scenarios": 221,
+    "matches": 221,
+    "mismatches": 0,
+    "original_steps": 3288
+  },
+  "scenarios": [
+    {
+      "id": "quest_predicate/progression_time_0",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/progression_time_0_before_6",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_0_before_12",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_0_before_18",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_0.001",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "b0fdbadc2012253d7fca8fbbbeee5e9ed75006b16d0de8f3a604427d63bceb3f",
+      "remake_trace_sha256": "b0fdbadc2012253d7fca8fbbbeee5e9ed75006b16d0de8f3a604427d63bceb3f"
+    },
+    {
+      "id": "quest_predicate/progression_time_0.001_before_6",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_0.001_before_12",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_0.001_before_18",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_5.999999",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "03ff962da96ce07609501909c052a71ee45a8dd74061ffd72ea88667f622da30",
+      "remake_trace_sha256": "03ff962da96ce07609501909c052a71ee45a8dd74061ffd72ea88667f622da30"
+    },
+    {
+      "id": "quest_predicate/progression_time_5.999999_before_6",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_5.999999_before_12",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_5.999999_before_18",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_6",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "30aae02ac66f6eb08ffb0e4f7a24791f7e6c8e734c56233e6202dd30e9a836b9",
+      "remake_trace_sha256": "30aae02ac66f6eb08ffb0e4f7a24791f7e6c8e734c56233e6202dd30e9a836b9"
+    },
+    {
+      "id": "quest_predicate/progression_time_6_before_6",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/progression_time_6_before_12",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_6_before_18",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_6.000001",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "093178a5c3f34a77d2bac1a3def461a720617ce7e9bf31b10cab783c1e7647e5",
+      "remake_trace_sha256": "093178a5c3f34a77d2bac1a3def461a720617ce7e9bf31b10cab783c1e7647e5"
+    },
+    {
+      "id": "quest_predicate/progression_time_6.000001_before_6",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/progression_time_6.000001_before_12",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_6.000001_before_18",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_11.999999",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "b4c532fac6b492a1f151bc013e125559817d7ebfab35db4f6ad4f25ccb34da61",
+      "remake_trace_sha256": "b4c532fac6b492a1f151bc013e125559817d7ebfab35db4f6ad4f25ccb34da61"
+    },
+    {
+      "id": "quest_predicate/progression_time_11.999999_before_6",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/progression_time_11.999999_before_12",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_11.999999_before_18",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_12",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "ee337064c41533ac71933ba4a1fac0c5a97873de009b1df33b0826128714a344",
+      "remake_trace_sha256": "ee337064c41533ac71933ba4a1fac0c5a97873de009b1df33b0826128714a344"
+    },
+    {
+      "id": "quest_predicate/progression_time_12_before_6",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/progression_time_12_before_12",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/progression_time_12_before_18",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_17.999998",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8150dac9a677005bd2160c564a9d3887aa85a35367224cb90bfc60015bdbbd7a",
+      "remake_trace_sha256": "8150dac9a677005bd2160c564a9d3887aa85a35367224cb90bfc60015bdbbd7a"
+    },
+    {
+      "id": "quest_predicate/progression_time_17.999998_before_6",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/progression_time_17.999998_before_12",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/progression_time_17.999998_before_18",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_18",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "69e93251eb06a3578c22eecfdd0f94b6edde92f7f26d6cc91a31b72bbb058fa8",
+      "remake_trace_sha256": "69e93251eb06a3578c22eecfdd0f94b6edde92f7f26d6cc91a31b72bbb058fa8"
+    },
+    {
+      "id": "quest_predicate/progression_time_18_before_6",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/progression_time_18_before_12",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/progression_time_18_before_18",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/progression_time_18.000002",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "f6ccda599de0f6f41466dd699e98c78c40aeddf3b15cba0ff2187935774c96c5",
+      "remake_trace_sha256": "f6ccda599de0f6f41466dd699e98c78c40aeddf3b15cba0ff2187935774c96c5"
+    },
+    {
+      "id": "quest_predicate/progression_time_18.000002_before_6",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/progression_time_18.000002_before_12",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/progression_time_18.000002_before_18",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/progression_time_23.999998",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "eee6f8d4bc72e248f8c2c62595f89988ee22a617fab8478bdb587de25cceefcc",
+      "remake_trace_sha256": "eee6f8d4bc72e248f8c2c62595f89988ee22a617fab8478bdb587de25cceefcc"
+    },
+    {
+      "id": "quest_predicate/progression_time_23.999998_before_6",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/progression_time_23.999998_before_12",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/progression_time_23.999998_before_18",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/progression_time_24",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001",
+      "remake_trace_sha256": "8bb6e16ff9e89df0739cc83eed7e82a6591860e1ad0f98ff8b80f13235800001"
+    },
+    {
+      "id": "quest_predicate/progression_time_24_before_6",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_24_before_12",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_predicate/progression_time_24_before_18",
+      "kind": "quest_predicate",
+      "status": "match",
+      "original_steps": 1,
+      "remake_steps": 1,
+      "original_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271",
+      "remake_trace_sha256": "4b3788be38b608f685d5d194240021b03f21aa318ff7ec42d62e4e448ddac271"
+    },
+    {
+      "id": "quest_trigger/progression_night_gate",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 7,
+      "remake_steps": 7,
+      "original_trace_sha256": "9eea42d9011e1fa41e9a1fe319217d1853fc67d9dde2a1417493078491595242",
+      "remake_trace_sha256": "9eea42d9011e1fa41e9a1fe319217d1853fc67d9dde2a1417493078491595242"
+    },
+    {
+      "id": "quest_trigger/authored/bz12g/Fire#11/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/bz21k/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 15,
+      "remake_steps": 15,
+      "original_trace_sha256": "8a8d08d524c9383b017c61a4cb261cfb2f035012cb5614ccc573971e5f2790e9",
+      "remake_trace_sha256": "8a8d08d524c9383b017c61a4cb261cfb2f035012cb5614ccc573971e5f2790e9"
+    },
+    {
+      "id": "quest_trigger/authored/bz22k/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 15,
+      "remake_steps": 15,
+      "original_trace_sha256": "8a8d08d524c9383b017c61a4cb261cfb2f035012cb5614ccc573971e5f2790e9",
+      "remake_trace_sha256": "8a8d08d524c9383b017c61a4cb261cfb2f035012cb5614ccc573971e5f2790e9"
+    },
+    {
+      "id": "quest_trigger/authored/bz23k/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 15,
+      "remake_steps": 15,
+      "original_trace_sha256": "8a8d08d524c9383b017c61a4cb261cfb2f035012cb5614ccc573971e5f2790e9",
+      "remake_trace_sha256": "8a8d08d524c9383b017c61a4cb261cfb2f035012cb5614ccc573971e5f2790e9"
+    },
+    {
+      "id": "quest_trigger/authored/bz2h/Fire#11/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/bz31j/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/bz32j/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/bz5h/Fire#11/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/bz7h/Fire#11/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/bz8g/Fire#11/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/cz3j/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/bz12g/Fire#12/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "c8f4de6104d50342ff159b1bda3039bbcd00568090fbcb1f9c6136d0a10ce30d",
+      "remake_trace_sha256": "c8f4de6104d50342ff159b1bda3039bbcd00568090fbcb1f9c6136d0a10ce30d"
+    },
+    {
+      "id": "quest_trigger/authored/bz21k/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 15,
+      "remake_steps": 15,
+      "original_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2",
+      "remake_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2"
+    },
+    {
+      "id": "quest_trigger/authored/bz22k/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 15,
+      "remake_steps": 15,
+      "original_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2",
+      "remake_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2"
+    },
+    {
+      "id": "quest_trigger/authored/bz23k/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 15,
+      "remake_steps": 15,
+      "original_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2",
+      "remake_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2"
+    },
+    {
+      "id": "quest_trigger/authored/bz2h/Fire#12/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/bz31j/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/bz32j/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/bz5h/Fire#12/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "c8f4de6104d50342ff159b1bda3039bbcd00568090fbcb1f9c6136d0a10ce30d",
+      "remake_trace_sha256": "c8f4de6104d50342ff159b1bda3039bbcd00568090fbcb1f9c6136d0a10ce30d"
+    },
+    {
+      "id": "quest_trigger/authored/bz7h/Fire#12/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/bz8g/Fire#12/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "c8f4de6104d50342ff159b1bda3039bbcd00568090fbcb1f9c6136d0a10ce30d",
+      "remake_trace_sha256": "c8f4de6104d50342ff159b1bda3039bbcd00568090fbcb1f9c6136d0a10ce30d"
+    },
+    {
+      "id": "quest_trigger/authored/cz1h/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/cz1j/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/cz2h/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/cz3j/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone5/FastWater#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 40,
+      "remake_steps": 40,
+      "original_trace_sha256": "1aa424536013e175a4a5798c3f14a340333eaa73981cd0ab67d6fc448f98ece5",
+      "remake_trace_sha256": "1aa424536013e175a4a5798c3f14a340333eaa73981cd0ab67d6fc448f98ece5"
+    },
+    {
+      "id": "quest_trigger/authored/bz12g/Fire#21/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "c8f4de6104d50342ff159b1bda3039bbcd00568090fbcb1f9c6136d0a10ce30d",
+      "remake_trace_sha256": "c8f4de6104d50342ff159b1bda3039bbcd00568090fbcb1f9c6136d0a10ce30d"
+    },
+    {
+      "id": "quest_trigger/authored/bz21k/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/bz22k/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/bz23k/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/bz2h/Fire#32/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/bz31j/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/bz32j/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/bz5h/Fire#32/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 19,
+      "remake_steps": 19,
+      "original_trace_sha256": "38c575e3b4075177627676e9321f78b91a30ddd4f51cb6a19cd827c449a6dd52",
+      "remake_trace_sha256": "38c575e3b4075177627676e9321f78b91a30ddd4f51cb6a19cd827c449a6dd52"
+    },
+    {
+      "id": "quest_trigger/authored/bz7h/Fire#32/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/bz8g/Fire#32/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 19,
+      "remake_steps": 19,
+      "original_trace_sha256": "38c575e3b4075177627676e9321f78b91a30ddd4f51cb6a19cd827c449a6dd52",
+      "remake_trace_sha256": "38c575e3b4075177627676e9321f78b91a30ddd4f51cb6a19cd827c449a6dd52"
+    },
+    {
+      "id": "quest_trigger/authored/cz1h/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/cz1j/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/cz2h/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/cz3j/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone21/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 15,
+      "remake_steps": 15,
+      "original_trace_sha256": "8a8d08d524c9383b017c61a4cb261cfb2f035012cb5614ccc573971e5f2790e9",
+      "remake_trace_sha256": "8a8d08d524c9383b017c61a4cb261cfb2f035012cb5614ccc573971e5f2790e9"
+    },
+    {
+      "id": "quest_trigger/authored/zone22/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 15,
+      "remake_steps": 15,
+      "original_trace_sha256": "8a8d08d524c9383b017c61a4cb261cfb2f035012cb5614ccc573971e5f2790e9",
+      "remake_trace_sha256": "8a8d08d524c9383b017c61a4cb261cfb2f035012cb5614ccc573971e5f2790e9"
+    },
+    {
+      "id": "quest_trigger/authored/zone23/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 15,
+      "remake_steps": 15,
+      "original_trace_sha256": "8a8d08d524c9383b017c61a4cb261cfb2f035012cb5614ccc573971e5f2790e9",
+      "remake_trace_sha256": "8a8d08d524c9383b017c61a4cb261cfb2f035012cb5614ccc573971e5f2790e9"
+    },
+    {
+      "id": "quest_trigger/authored/zone25/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 15,
+      "remake_steps": 15,
+      "original_trace_sha256": "8a8d08d524c9383b017c61a4cb261cfb2f035012cb5614ccc573971e5f2790e9",
+      "remake_trace_sha256": "8a8d08d524c9383b017c61a4cb261cfb2f035012cb5614ccc573971e5f2790e9"
+    },
+    {
+      "id": "quest_trigger/authored/zone5/FastWater#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 52,
+      "remake_steps": 52,
+      "original_trace_sha256": "7af2a7d92f31d1a8501a89f39c61527f7dcf623d2f6165da68e92643b13cc3ea",
+      "remake_trace_sha256": "7af2a7d92f31d1a8501a89f39c61527f7dcf623d2f6165da68e92643b13cc3ea"
+    },
+    {
+      "id": "quest_trigger/authored/bz12g/Fire#32/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 19,
+      "remake_steps": 19,
+      "original_trace_sha256": "38c575e3b4075177627676e9321f78b91a30ddd4f51cb6a19cd827c449a6dd52",
+      "remake_trace_sha256": "38c575e3b4075177627676e9321f78b91a30ddd4f51cb6a19cd827c449a6dd52"
+    },
+    {
+      "id": "quest_trigger/authored/bz21k/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 19,
+      "remake_steps": 19,
+      "original_trace_sha256": "5c9a373d5a84813d6f80c1b5462fb247782f784244283c5b04d3c62bca52c87e",
+      "remake_trace_sha256": "5c9a373d5a84813d6f80c1b5462fb247782f784244283c5b04d3c62bca52c87e"
+    },
+    {
+      "id": "quest_trigger/authored/bz22k/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 19,
+      "remake_steps": 19,
+      "original_trace_sha256": "5c9a373d5a84813d6f80c1b5462fb247782f784244283c5b04d3c62bca52c87e",
+      "remake_trace_sha256": "5c9a373d5a84813d6f80c1b5462fb247782f784244283c5b04d3c62bca52c87e"
+    },
+    {
+      "id": "quest_trigger/authored/bz23k/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 19,
+      "remake_steps": 19,
+      "original_trace_sha256": "5c9a373d5a84813d6f80c1b5462fb247782f784244283c5b04d3c62bca52c87e",
+      "remake_trace_sha256": "5c9a373d5a84813d6f80c1b5462fb247782f784244283c5b04d3c62bca52c87e"
+    },
+    {
+      "id": "quest_trigger/authored/bz31j/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/bz32j/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/cz1h/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/cz1j/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/cz2h/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/cz3j/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/zone21/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 15,
+      "remake_steps": 15,
+      "original_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2",
+      "remake_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2"
+    },
+    {
+      "id": "quest_trigger/authored/zone22/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 15,
+      "remake_steps": 15,
+      "original_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2",
+      "remake_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2"
+    },
+    {
+      "id": "quest_trigger/authored/zone23/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 15,
+      "remake_steps": 15,
+      "original_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2",
+      "remake_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2"
+    },
+    {
+      "id": "quest_trigger/authored/zone25/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "c8f4de6104d50342ff159b1bda3039bbcd00568090fbcb1f9c6136d0a10ce30d",
+      "remake_trace_sha256": "c8f4de6104d50342ff159b1bda3039bbcd00568090fbcb1f9c6136d0a10ce30d"
+    },
+    {
+      "id": "quest_trigger/authored/zone5/FastWater#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 52,
+      "remake_steps": 52,
+      "original_trace_sha256": "efea5de048e9abadbc4480d40e521f42144448a9694c681fc6f3a46f1687cd1f",
+      "remake_trace_sha256": "efea5de048e9abadbc4480d40e521f42144448a9694c681fc6f3a46f1687cd1f"
+    },
+    {
+      "id": "quest_trigger/authored/bz32j/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/cz1h/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/cz1j/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/cz2h/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/cz3j/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/zone21/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 15,
+      "remake_steps": 15,
+      "original_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2",
+      "remake_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2"
+    },
+    {
+      "id": "quest_trigger/authored/zone22/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 15,
+      "remake_steps": 15,
+      "original_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2",
+      "remake_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2"
+    },
+    {
+      "id": "quest_trigger/authored/zone23/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 15,
+      "remake_steps": 15,
+      "original_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2",
+      "remake_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2"
+    },
+    {
+      "id": "quest_trigger/authored/zone25/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "c8f4de6104d50342ff159b1bda3039bbcd00568090fbcb1f9c6136d0a10ce30d",
+      "remake_trace_sha256": "c8f4de6104d50342ff159b1bda3039bbcd00568090fbcb1f9c6136d0a10ce30d"
+    },
+    {
+      "id": "quest_trigger/authored/zone5/FastWater#4/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 44,
+      "remake_steps": 44,
+      "original_trace_sha256": "10ff8b849c7dd3bc9c9e239aa1a5c45a91b81a581f16e897e1818b2965bd3390",
+      "remake_trace_sha256": "10ff8b849c7dd3bc9c9e239aa1a5c45a91b81a581f16e897e1818b2965bd3390"
+    },
+    {
+      "id": "quest_trigger/authored/cz1h/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/cz2h/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/zone21/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/zone22/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/zone23/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/zone25/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 19,
+      "remake_steps": 19,
+      "original_trace_sha256": "324ccbe48db5020bc3696adf5fa41912f584248346d11583018b02a7ea41e997",
+      "remake_trace_sha256": "324ccbe48db5020bc3696adf5fa41912f584248346d11583018b02a7ea41e997"
+    },
+    {
+      "id": "quest_trigger/authored/zone5/Water#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 15,
+      "remake_steps": 15,
+      "original_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2",
+      "remake_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2"
+    },
+    {
+      "id": "quest_trigger/authored/zone10/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/zone11/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/zone15/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/zone16/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/zone21/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 19,
+      "remake_steps": 19,
+      "original_trace_sha256": "5c9a373d5a84813d6f80c1b5462fb247782f784244283c5b04d3c62bca52c87e",
+      "remake_trace_sha256": "5c9a373d5a84813d6f80c1b5462fb247782f784244283c5b04d3c62bca52c87e"
+    },
+    {
+      "id": "quest_trigger/authored/zone22/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 19,
+      "remake_steps": 19,
+      "original_trace_sha256": "5c9a373d5a84813d6f80c1b5462fb247782f784244283c5b04d3c62bca52c87e",
+      "remake_trace_sha256": "5c9a373d5a84813d6f80c1b5462fb247782f784244283c5b04d3c62bca52c87e"
+    },
+    {
+      "id": "quest_trigger/authored/zone23/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 19,
+      "remake_steps": 19,
+      "original_trace_sha256": "5c9a373d5a84813d6f80c1b5462fb247782f784244283c5b04d3c62bca52c87e",
+      "remake_trace_sha256": "5c9a373d5a84813d6f80c1b5462fb247782f784244283c5b04d3c62bca52c87e"
+    },
+    {
+      "id": "quest_trigger/authored/zone25/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 19,
+      "remake_steps": 19,
+      "original_trace_sha256": "5c9a373d5a84813d6f80c1b5462fb247782f784244283c5b04d3c62bca52c87e",
+      "remake_trace_sha256": "5c9a373d5a84813d6f80c1b5462fb247782f784244283c5b04d3c62bca52c87e"
+    },
+    {
+      "id": "quest_trigger/authored/zone5/Water#1#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "ad5ec0f3a9265608ab5b3b7dc8ef550443b23834aa7cc09b29dca1143c5160cf",
+      "remake_trace_sha256": "ad5ec0f3a9265608ab5b3b7dc8ef550443b23834aa7cc09b29dca1143c5160cf"
+    },
+    {
+      "id": "quest_trigger/authored/zone9/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/zone10/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone11/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone15/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone16/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone5/Water#2#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "ad5ec0f3a9265608ab5b3b7dc8ef550443b23834aa7cc09b29dca1143c5160cf",
+      "remake_trace_sha256": "ad5ec0f3a9265608ab5b3b7dc8ef550443b23834aa7cc09b29dca1143c5160cf"
+    },
+    {
+      "id": "quest_trigger/authored/zone9/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone10/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone11/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone15/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone16/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone2/BigBasket#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 78,
+      "remake_steps": 78,
+      "original_trace_sha256": "9edb6400b75e80e40741efbe9e4dd8e4f16ce3af161210ae79514a4cf729f714",
+      "remake_trace_sha256": "9edb6400b75e80e40741efbe9e4dd8e4f16ce3af161210ae79514a4cf729f714"
+    },
+    {
+      "id": "quest_trigger/authored/zone5/Water#2#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "82382da3b77079adba7587492c86debc720282a1eddf472fd2c2309eda891827",
+      "remake_trace_sha256": "82382da3b77079adba7587492c86debc720282a1eddf472fd2c2309eda891827"
+    },
+    {
+      "id": "quest_trigger/authored/zone7/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 19,
+      "remake_steps": 19,
+      "original_trace_sha256": "ea4c8346034152701965b3d4b416dc52677f9ed1ca7de95e049c2b981e2bbf8a",
+      "remake_trace_sha256": "ea4c8346034152701965b3d4b416dc52677f9ed1ca7de95e049c2b981e2bbf8a"
+    },
+    {
+      "id": "quest_trigger/authored/zone9/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone10/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/zone11/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/zone15/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/zone16/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/zone2/BigBasket#1#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 68,
+      "remake_steps": 68,
+      "original_trace_sha256": "2f6c22b104467e883a12e78213ba707efb4951b4e353a8e4886025aab95d2dd4",
+      "remake_trace_sha256": "2f6c22b104467e883a12e78213ba707efb4951b4e353a8e4886025aab95d2dd4"
+    },
+    {
+      "id": "quest_trigger/authored/zone35/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/zone5/Water#3#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "82382da3b77079adba7587492c86debc720282a1eddf472fd2c2309eda891827",
+      "remake_trace_sha256": "82382da3b77079adba7587492c86debc720282a1eddf472fd2c2309eda891827"
+    },
+    {
+      "id": "quest_trigger/authored/zone7/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/zone9/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/zone10/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/zone11/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/zone15/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/zone16/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/zone2/Undead#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 68,
+      "remake_steps": 68,
+      "original_trace_sha256": "697f2b2bcf06fdc6aa7acf08166d69c49863bc23dd83f15ebde7ef6edd585062",
+      "remake_trace_sha256": "697f2b2bcf06fdc6aa7acf08166d69c49863bc23dd83f15ebde7ef6edd585062"
+    },
+    {
+      "id": "quest_trigger/authored/zone35/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone5/Water#3#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/zone7/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone9/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/zone2/Undead#1#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "c8f4de6104d50342ff159b1bda3039bbcd00568090fbcb1f9c6136d0a10ce30d",
+      "remake_trace_sha256": "c8f4de6104d50342ff159b1bda3039bbcd00568090fbcb1f9c6136d0a10ce30d"
+    },
+    {
+      "id": "quest_trigger/authored/zone31/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/zone34/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/zone35/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone5/Water#4#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/zone7/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/zone2/Undead#3#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 83,
+      "remake_steps": 83,
+      "original_trace_sha256": "70d540179a0b4dd7b11ceb2dff48c9f58a52409dd701ba9cbf6fe4483cec7c75",
+      "remake_trace_sha256": "70d540179a0b4dd7b11ceb2dff48c9f58a52409dd701ba9cbf6fe4483cec7c75"
+    },
+    {
+      "id": "quest_trigger/authored/zone31/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone34/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone35/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/zone5/Water#4#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 15,
+      "remake_steps": 15,
+      "original_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2",
+      "remake_trace_sha256": "4a715a3b0e759b4d41d1ffad7ec374bdd3469182b953448b2ed685146893bdb2"
+    },
+    {
+      "id": "quest_trigger/authored/zone7/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/zone2/Undead#3#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/zone31/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone34/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone35/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/bz1h/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/zone31/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/zone34/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/bz11g/Fire#11/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/bz1h/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone31/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/zone34/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/bz11g/Fire#12/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/bz1h/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone33/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/bz11g/Fire#32/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/bz1h/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/zone33/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/bz1h/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/zone33/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone33/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/zone33/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/zone5/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/zone5/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone5/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone5/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/zone5/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/zone3/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/zone3/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone3/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone3/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/zone3/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/zone2/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/zone2/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone2/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone2/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/zone2/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    },
+    {
+      "id": "quest_trigger/authored/zone1/VFire#0#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71",
+      "remake_trace_sha256": "b27211469e44d20e468758bf64dfc5e1a5b26857d09e7e732be5b4d526810a71"
+    },
+    {
+      "id": "quest_trigger/authored/zone1/VFire#1#1/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone1/VFire#0#2/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 16,
+      "remake_steps": 16,
+      "original_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611",
+      "remake_trace_sha256": "f6faa368a54d80b521e071683ec217417d62d61883c9ce5887c1d871090a5611"
+    },
+    {
+      "id": "quest_trigger/authored/zone1/VFire#0#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593",
+      "remake_trace_sha256": "50786c6dabcea7d790d0a8db0ba2e59247314adeb8dd0da837691c2b2ccf0593"
+    },
+    {
+      "id": "quest_trigger/authored/zone1/VFire#1#3/block0",
+      "kind": "quest_trigger",
+      "status": "match",
+      "original_steps": 18,
+      "remake_steps": 18,
+      "original_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068",
+      "remake_trace_sha256": "5e674951a916a8384bb8f54f72966338c5e1eb973b25b7ba8e02493323087068"
+    }
+  ],
+  "repeatability": {
+    "captures_per_side": 2,
+    "verified": true
+  },
+  "provenance": {
+    "started_utc": "2026-10-21T05:49:17Z",
+    "game_source": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/game",
+    "game_source_sha256": "78d4edbadef005675dc166bf47a94b8ade4663fa02c4af927569cc05dbb9cb29",
+    "godot": {
+      "build": "official",
+      "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (official)",
+      "timestamp": 0
+    },
+    "original_executable": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game/game.exe",
+    "fpu_control_word": "0x027f",
+    "common_native_boundary": "Empty emulated Windows SEH chain at FS:[0]; no native exceptions are handled.",
+    "commands": [
+      {
+        "argv": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/script-clock-astral-comparison/runtime",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--editor",
+          "--import"
+        ],
+        "seconds": 12.938,
+        "exit_code": 0,
+        "log": "import-bootstrap.log",
+        "log_sha256": "cbb86d1d9ac497b8712168435fd07f9c79ebc962feef4f2e87f4f7b07b20dffc",
+        "diagnostics": []
+      },
+      {
+        "argv": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/script-clock-astral-comparison/runtime",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--editor",
+          "--import"
+        ],
+        "seconds": 7.177,
+        "exit_code": 0,
+        "log": "import.log",
+        "log_sha256": "480495d80feef6b4a104a237e1466f281bb17e5f8d0c93b7eef0ea61645d9495",
+        "diagnostics": []
+      },
+      {
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/../venv/bin/python",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/script-clock-astral-comparison/harness/native.py",
+          "--binary",
+          "/home/llm2x/Documents/EI/inspection/lost-in-astral/game/game.exe",
+          "--inputs",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/script-clock-astral-comparison/inputs.json",
+          "--output",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/script-clock-astral-comparison/original-0.json"
+        ],
+        "seconds": 2.718,
+        "exit_code": 0,
+        "log": "original-0.log",
+        "log_sha256": "6903e1a68572bd27227148eb887c864783f3d7bb834b2590b7dc8ac68c8f0330",
+        "diagnostics": []
+      },
+      {
+        "argv": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/script-clock-astral-comparison/runtime",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--fixed-fps",
+          "60",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=res://tools/parity_trace.gd",
+          "--parity-inputs=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/script-clock-astral-comparison/inputs.json",
+          "--parity-output=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/script-clock-astral-comparison/remake-0.json"
+        ],
+        "seconds": 5.624,
+        "exit_code": 0,
+        "log": "remake-0.log",
+        "log_sha256": "07d8b042c2103e74cde59780bf92e5aff47df25b64c6c78e72ff0b4b14302075",
+        "diagnostics": []
+      },
+      {
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/../venv/bin/python",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/script-clock-astral-comparison/harness/native.py",
+          "--binary",
+          "/home/llm2x/Documents/EI/inspection/lost-in-astral/game/game.exe",
+          "--inputs",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/script-clock-astral-comparison/inputs.json",
+          "--output",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/script-clock-astral-comparison/original-1.json"
+        ],
+        "seconds": 2.067,
+        "exit_code": 0,
+        "log": "original-1.log",
+        "log_sha256": "6903e1a68572bd27227148eb887c864783f3d7bb834b2590b7dc8ac68c8f0330",
+        "diagnostics": []
+      },
+      {
+        "argv": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--headless",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/script-clock-astral-comparison/runtime",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--fixed-fps",
+          "60",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+          "--tool=res://tools/parity_trace.gd",
+          "--parity-inputs=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/script-clock-astral-comparison/inputs.json",
+          "--parity-output=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/script-clock-astral-comparison/remake-1.json"
+        ],
+        "seconds": 5.624,
+        "exit_code": 0,
+        "log": "remake-1.log",
+        "log_sha256": "83cd71a30ce00054235d06883319efb9ccca35c10391bc63ef1adc3d70e72fa6",
+        "diagnostics": []
+      }
+    ],
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "original_data_files": {
+      "res/database.res": "b44fbff1c0a727b9ca72d2bc0c55c0fbfd2ddf38bfbbffe1f393a9541eedb36c",
+      "res/texts.res": "b9dcc0aca76bde9c1c3eb907a38a830a9c36ddae2ab90260c28f82abb8057f28",
+      "config/ai.reg": "b169cbc99b08e380952715bbc77c378ddc9e98fa7b16b00ba36dd1b61ed21fbf"
+    },
+    "commit": null,
+    "working_tree": null
+  }
+}

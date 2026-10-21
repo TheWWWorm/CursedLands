@@ -1,0 +1,2205 @@
+[
+  {
+    "area": "Fortune completion and downstream gates",
+    "suite": "astral_fortune",
+    "run": "astral-fortune-paid-followup",
+    "checks": 267,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ASTRAL_FORTUNE 267 checks 0 failures"
+    ],
+    "scope": "Original map scripts; controlled inputs, time boundaries and real paid briefing completion"
+  },
+  {
+    "area": "Torch / host",
+    "suite": "astral_torch",
+    "run": "astral-torch-fresh-host",
+    "checks": 17,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ASTRAL_TORCH 17 checks 0 failures"
+    ],
+    "scope": "Rendered original map; real ENet command and original operator path/use animation, unrelated combat frozen"
+  },
+  {
+    "area": "Torch / guest",
+    "suite": "astral_torch",
+    "run": "astral-torch-fresh-guest",
+    "checks": 17,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ASTRAL_TORCH 17 checks 0 failures"
+    ],
+    "scope": "Separate fresh one-shot mechanism; same real two-peer path"
+  },
+  {
+    "area": "Arhar merchant",
+    "suite": "astral_market",
+    "run": "astral-market-paid-followup",
+    "checks": 43,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ASTRAL_MARKET 43 checks 0 failures"
+    ],
+    "scope": "Real original briefings with separate purses and first-attempt purchase"
+  },
+  {
+    "area": "LiA purse ownership / trade UI",
+    "suite": "astral_swap",
+    "run": "astral-swap-fixed",
+    "checks": 11,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ASTRAL_SWAP 11 checks 0 failures"
+    ],
+    "scope": "Original story-party changes and co-op ownership publication"
+  },
+  {
+    "area": "Co-op NPC dialogue roles",
+    "suite": "astral_dialogue_staging",
+    "run": "astral-staging-clean",
+    "checks": 57,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ASTRAL_DIALOGUE_STAGING 57 checks 0 failures"
+    ],
+    "scope": "Actual ENet participants; Hero2/3/4, Jun, Shaina and real third-actor controls"
+  },
+  {
+    "area": "Eavesdrop rescue branch",
+    "suite": "astral_eavesdrop",
+    "run": "final-astral-eavesdrop",
+    "checks": 72,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ASTRAL_EAVESDROP 72 checks 0 failures"
+    ],
+    "scope": "Original script traces and dead/looted speakers; does not verify audible native speech"
+  },
+  {
+    "area": "Neighbouring quest predicates",
+    "suite": "story_coop_predicates",
+    "run": "final-astral-quest-neighbours",
+    "checks": 101,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "STORY_COOP_PREDICATES 101 checks 0 failures"
+    ],
+    "scope": "Original LiA gates with guest, hidden, dead and disconnected actors"
+  },
+  {
+    "area": "Village route gates",
+    "suite": "authored_village_talk",
+    "run": "closing-authored_village_talk",
+    "checks": 90,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "PASS commander selection rechecks a newly reachable route",
+      "LIA_HABURU_GUARDS {\"checks\":90,\"failures\":[]}"
+    ],
+    "scope": "Original LiA village interaction routes"
+  },
+  {
+    "area": "Dialogue speakers",
+    "suite": "dialogue_speakers",
+    "run": "closing-dialogue_speakers",
+    "checks": 298,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "DIALOGUE_SPEAKERS shots=88 checks=298 failures=0",
+      "STORY_COOP_TRAPS_NET 298 checks 0 failures"
+    ],
+    "scope": "Authored speech roles and original presentation"
+  },
+  {
+    "area": "Dialogue approach",
+    "suite": "dialogue_approach",
+    "run": "closing-dialogue_approach",
+    "checks": 18,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "DIALOG_STAGING_CHECKS {\"checks\":18,\"failures\":0}"
+    ],
+    "scope": "Conversation approach ordering"
+  },
+  {
+    "area": "Dialogue poses",
+    "suite": "dialogue_poses",
+    "run": "closing-dialogue_poses",
+    "checks": 54,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "DIALOGUE_POSES 54 checks 0 failures",
+      "STORY_COOP_TRAPS_NET 54 checks 0 failures"
+    ],
+    "scope": "Authored dialogue poses and ownership"
+  },
+  {
+    "area": "Challenge rewards",
+    "suite": "astral_challenge_rewards",
+    "run": "astral-challenge-fixed",
+    "checks": 1161,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ASTRAL_CHALLENGE_REWARDS 1161 checks 0 failures"
+    ],
+    "scope": "Intentional reward addition; 247 selected placements across 46 groups, not original-game parity"
+  },
+  {
+    "area": "Alt target selection",
+    "suite": "classic_aim_selection",
+    "run": "classic-aim-fixed",
+    "checks": 13,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CLASSIC_AIM 13 checks 0 failures"
+    ],
+    "scope": "Auto-combat and the body-part wheel"
+  },
+  {
+    "area": "Direct target selection",
+    "suite": "direct_aim_selection",
+    "run": "final-direct_aim_selection",
+    "checks": 17,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ALT_DIRECT_CHECKS {\"checks\":17,\"failures\":[]}"
+    ],
+    "scope": "Adjacent direct-control behaviour"
+  },
+  {
+    "area": "Direct aim release",
+    "suite": "direct_release_aim",
+    "run": "final-direct_release_aim",
+    "checks": 57,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "DIRECT_RELEASE_AIM 57 checks 0 failures"
+    ],
+    "scope": "Adjacent release behaviour"
+  },
+  {
+    "area": "Console commands",
+    "suite": "console_commands",
+    "run": "console-commands-expanded",
+    "checks": 96,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CONSOLE_COMMANDS 96 checks 0 failures"
+    ],
+    "scope": "Rendered EN/RU/DE help; command parsing, arithmetic/type boundaries, files and normal save/load"
+  },
+  {
+    "area": "Training / co-op",
+    "suite": "training_coop",
+    "run": "training-right-hold",
+    "checks": 39,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "TRAINING_COOP 39 checks 0 failures"
+    ],
+    "scope": "Real ENet refund repeat and point conservation"
+  },
+  {
+    "area": "Credits audio",
+    "suite": "credits_audio",
+    "run": "credits-audio-full",
+    "checks": 28,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CREDITS_AUDIO 28 checks 0 failures"
+    ],
+    "scope": "Movie sequence/audio-bus ownership and original Bink audio streams"
+  },
+  {
+    "area": "Movie audio",
+    "suite": "movie_audio",
+    "run": "final-movie_audio",
+    "checks": 16,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "MOVIE_AUDIO 16 checks 0 failures"
+    ],
+    "scope": "Adjacent movie audio lifetime"
+  },
+  {
+    "area": "Co-op movie",
+    "suite": "coop_movie",
+    "run": "final-coop_movie-astral",
+    "checks": 15,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "MOVIE_GATE 15 checks 0 failures"
+    ],
+    "scope": "LiA movie synchronization"
+  },
+  {
+    "area": "Curse placement / Linux",
+    "suite": "ending_scene",
+    "run": "ending-native-fixed",
+    "checks": 51,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ENDING_SCENE 51 checks 0 failures"
+    ],
+    "scope": "Six original x86 placement observations, reveal timing and credits audio ownership"
+  },
+  {
+    "area": "Curse placement / Windows",
+    "suite": "ending_scene",
+    "run": "ending-native-windows",
+    "checks": 51,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ENDING_SCENE 51 checks 0 failures"
+    ],
+    "scope": "Rebuilt Windows executable under Wine; not native Windows hardware qualification"
+  },
+  {
+    "area": "Compiled placement / Linux",
+    "suite": "unit_presentation",
+    "run": "placement-kernel-fixed",
+    "checks": 40969,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "UNIT_PRESENTATION checks=40969 failures=0"
+    ],
+    "scope": "Native helper versus retained GDScript oracle"
+  },
+  {
+    "area": "Compiled placement / Windows",
+    "suite": "unit_presentation",
+    "run": "placement-kernel-windows",
+    "checks": 40969,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "UNIT_PRESENTATION checks=40969 failures=0"
+    ],
+    "scope": "Rebuilt Windows DLL versus retained GDScript oracle under Wine"
+  },
+  {
+    "area": "Client placement",
+    "suite": "client_placement",
+    "run": "final-client_placement",
+    "checks": 18,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CLIENT_PLACEMENT {\"checks\":18,\"failures\":0}"
+    ],
+    "scope": "Replicated actor presentation"
+  },
+  {
+    "area": "Snapshot codec",
+    "suite": "snapshot_codec",
+    "run": "final-snapshot_codec",
+    "checks": 209,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SNAPSHOT_CODEC 209 checks 0 failures"
+    ],
+    "scope": "Network state compatibility"
+  },
+  {
+    "area": "Wiki item names / base",
+    "suite": "wiki_item_names",
+    "run": "final-wiki_item_names",
+    "checks": 380,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "WIKI_ITEM_NAMES 380 checks 0 failures"
+    ],
+    "scope": "Original localized finished-item labels"
+  },
+  {
+    "area": "Wiki item names / LiA",
+    "suite": "wiki_item_names",
+    "run": "wiki-names-fixed",
+    "checks": 464,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "WIKI_ITEM_NAMES 464 checks 0 failures"
+    ],
+    "scope": "Original localized finished-item labels"
+  },
+  {
+    "area": "Wiki / English",
+    "suite": "wiki_item_names_visual",
+    "run": "wiki-finished-name-en",
+    "checks": 4,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "WIKI_NAMES_VISUAL en 4 checks 0 failures Extra-heavy club"
+    ],
+    "scope": "Native 800px interface; standalone site also exercised"
+  },
+  {
+    "area": "Wiki / Russian",
+    "suite": "wiki_item_names_visual",
+    "run": "wiki-item-final-ru",
+    "checks": 4,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "WIKI_NAMES_VISUAL ru 4 checks 0 failures Перетяжеленная дубина"
+    ],
+    "scope": "Native 800px interface; standalone site also exercised"
+  },
+  {
+    "area": "Wiki / German",
+    "suite": "wiki_item_names_visual",
+    "run": "wiki-finished-name-de",
+    "checks": 4,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "WIKI_NAMES_VISUAL de 4 checks 0 failures Überschwere Keule"
+    ],
+    "scope": "Native 800px interface; standalone site also exercised"
+  },
+  {
+    "area": "Mod formula audit",
+    "suite": "mod_formulas",
+    "run": "mod-regression-audit",
+    "checks": 106,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "MOD_FORMULAS 106 checks 0 failures"
+    ],
+    "scope": "No-mod behaviour, custom formulas, save guards and errors; not every possible mod combination"
+  },
+  {
+    "area": "Zako / in process",
+    "suite": "zako_dialogue",
+    "run": "zako-camera-final-fixed-fixture",
+    "checks": 27,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ZAKO_DIALOGUE 27 checks 0 failures"
+    ],
+    "scope": "Three original conversations plus actual post-dialogue zoom/rotation; reported freeze not reproduced"
+  },
+  {
+    "area": "Zako / worker host",
+    "suite": "zako_worker",
+    "run": "zako-worker-submit-guard",
+    "checks": 16,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ZAKO_WORKER 16 checks 0 failures"
+    ],
+    "scope": "Separate authoritative process; 11 original camera/dialogue checks and five additional GodMode owner/guest replication checks"
+  },
+  {
+    "area": "Localization",
+    "suite": "option_localization_matrix",
+    "run": "batch-localization-final",
+    "checks": 15119,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "OPTION_LOCALIZATION_MATRIX {\"checks\":15119,\"choice_groups\":38,\"failures\":[],\"options\":164,\"translation_keys\":2566}"
+    ],
+    "scope": "Runtime option/help/choice coverage and formatting in EN/RU/DE"
+  },
+  {
+    "area": "Training / held refund",
+    "suite": "training_hold",
+    "run": "training-hold-focus-final",
+    "checks": 48,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "TRAINING_HOLD 48 checks 0 failures"
+    ],
+    "scope": "Actual refund rows, input repeat, all skill/perk families, cancellation and point-budget conservation"
+  },
+  {
+    "area": "Paid rumour replies and handoffs",
+    "suite": "astral_paid_topics",
+    "run": "astral-paid-topics-extended-valid",
+    "checks": 804,
+    "scope": "Ten original offers, 40 unadapted/adapted settled traces; both purses, opening/selection races, refresh, save/load, original downstream gates and mod exclusions",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ASTRAL_PAID_TOPICS 804 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Paid rumours / real ENet",
+    "suite": "astral_paid_topics_coop",
+    "run": "astral-paid-topics-enet",
+    "checks": 198,
+    "scope": "Original bz5h/bz11g maps and scripts; real topic buttons and close by either peer, with unrelated combat/story frozen",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ASTRAL_PAID_TOPICS_COOP 198 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Nearby original dialogue feedback",
+    "suite": "dialogue_feedback",
+    "run": "dialogue-feedback-paid-followup-lia",
+    "checks": 16,
+    "scope": "LiA original map, adjacent briefing feedback after paid-rumour changes",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "DIALOGUE_FEEDBACK {\"checks\":16,\"failures\":0}"
+    ]
+  },
+  {
+    "area": "Console / original base comparisons",
+    "suite": "console_god_mode",
+    "run": "console-god-mode-native-base-qualified",
+    "checks": 98,
+    "scope": "Captured original x86 outcomes; real load/leg state, running/damage, commands, save/load and unsupported requests",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CONSOLE_GOD_MODE 98 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Console / original LiA comparisons",
+    "suite": "console_god_mode",
+    "run": "console-god-mode-native-astral",
+    "checks": 98,
+    "scope": "Captured original LiA x86 outcomes; same real unit and persistence checks",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CONSOLE_GOD_MODE 98 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Stamina recovery with GodMode disabled",
+    "suite": "stamina_regen",
+    "run": "console-adjacent-stamina",
+    "checks": 33,
+    "scope": "Native/default recovery, optional rule, idle/follow/movement, limits, save/load and authority",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "STAMINA_REGEN 33 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Spell waiting with GodMode disabled",
+    "suite": "spell_stamina_wait",
+    "run": "console-adjacent-casting",
+    "checks": 47,
+    "scope": "Self-cast from portrait and shortcut in three input modes; stamina recovery, one acknowledgement and movement cancellation",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SPELL_STAMINA_WAIT {\"checks\":47,\"failures\":[]}"
+    ]
+  },
+  {
+    "area": "Zako normal interaction, Linux",
+    "suite": "zako_topics",
+    "run": "zako-topics-enet-01",
+    "checks": 248,
+    "scope": "Actual interact command, topic selection and staged dialogue on two ENet peers; both initiators/closers, journal interruption, classic/modern camera input",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ZAKO_TOPICS 248 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Zako normal interaction, Windows D3D12 under Wine",
+    "suite": "zako_topics",
+    "run": "zako-topics-windows-d3d12",
+    "checks": 250,
+    "scope": "Same 16 scenarios in the Windows build under Wine with D3D12; rendered dialogue/restored view; not native Windows hardware qualification",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ZAKO_TOPICS 250 checks 0 failures"
+    ]
+  },
+  {
+    "area": "LiA eavesdrop on actual map",
+    "suite": "astral_eavesdrop_map",
+    "run": "astral-eavesdrop-map-qualified",
+    "checks": 1351,
+    "scope": "588 positions/time/posture samples on shipped Portal geometry with actual quest actors and AI visibility; original-script host/reference versus co-op adaptation; guest state replication, not native EXE execution",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ASTRAL_EAVESDROP_MAP 1351 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Zako first/third-person cameras",
+    "suite": "zako_topics",
+    "run": "zako-topics-direct-fixed",
+    "checks": 280,
+    "scope": "Real ENet topic path in first and third person, both initiators/closers and journal interruption; actual mouse-look acceptance and transform changes; clean disconnected teardown",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ZAKO_TOPICS 280 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Loaded-map speed, running and recovery",
+    "suite": "local_host_loaded_rate",
+    "run": "loaded-rate-gipat-02",
+    "checks": 55,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "LOCAL_HOST_LOADED_RATE 55 checks 0 failures"
+    ],
+    "scope": "Stock Linux Godot, headless / Gipat; real authority process; frontend capped at 60/20/10 FPS; actual movement, stamina use/recovery, normal and accelerated clock; not the reporter's exact save or machine"
+  },
+  {
+    "area": "Loaded-map speed, running and recovery",
+    "suite": "local_host_loaded_rate",
+    "run": "loaded-rate-gipat-windows-d3d12",
+    "checks": 55,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "LOCAL_HOST_LOADED_RATE 55 checks 0 failures"
+    ],
+    "scope": "Custom Windows D3D12 under Wine / Gipat; real authority process; frontend capped at 60/20/10 FPS; actual movement, stamina use/recovery, normal and accelerated clock; not the reporter's exact save or machine"
+  },
+  {
+    "area": "Loaded-map speed, running and recovery",
+    "suite": "local_host_loaded_rate",
+    "run": "loaded-rate-suslanger-whole-command",
+    "checks": 55,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "LOCAL_HOST_LOADED_RATE 55 checks 0 failures"
+    ],
+    "scope": "Stock Linux Godot, headless / Suslanger; real authority process; frontend capped at 60/20/10 FPS; actual movement, stamina use/recovery, normal and accelerated clock; not the reporter's exact save or machine"
+  },
+  {
+    "area": "Loaded-map speed, running and recovery",
+    "suite": "local_host_loaded_rate",
+    "run": "loaded-rate-suslanger-windows-d3d12",
+    "checks": 55,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "LOCAL_HOST_LOADED_RATE 55 checks 0 failures"
+    ],
+    "scope": "Custom Windows D3D12 under Wine / Suslanger; real authority process; frontend capped at 60/20/10 FPS; actual movement, stamina use/recovery, normal and accelerated clock; not the reporter's exact save or machine"
+  },
+  {
+    "area": "Spell reactions / original base",
+    "suite": "spell_alerts",
+    "run": "spell-alerts-complete-base",
+    "checks": 409,
+    "scope": "480 bounded x86 observations across both campaigns; 130 remake dispatch scenarios plus retained-corpse checks; no whole original encounter replay",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SPELL_ALERTS 409 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Spell reactions / original LiA",
+    "suite": "spell_alerts",
+    "run": "spell-alerts-complete-astral",
+    "checks": 409,
+    "scope": "LiA executable reference; living targets, friends, neutral targets, missing caster/target and retained corpses",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SPELL_ALERTS 409 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Spell reactions / Windows base",
+    "suite": "spell_alerts",
+    "run": "spell-alerts-final-windows-base",
+    "checks": 409,
+    "scope": "Same comparisons in the rebuilt custom Windows executable under Wine, headless",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SPELL_ALERTS 409 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Spell reactions / Windows LiA",
+    "suite": "spell_alerts",
+    "run": "spell-alerts-final-windows-astral",
+    "checks": 409,
+    "scope": "Same LiA comparisons in the rebuilt custom Windows executable under Wine, headless",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SPELL_ALERTS 409 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Size spells / original base",
+    "suite": "size_spells",
+    "run": "size-spells-fixed-base",
+    "checks": 143,
+    "scope": "64 bounded native registration observations across both EXEs; actual casts, live human/creature figures, refresh/expiry and serialized client state",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SIZE_SPELLS 143 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Size spells / original LiA",
+    "suite": "size_spells",
+    "run": "size-spells-fixed-astral",
+    "checks": 143,
+    "scope": "LiA original registration reference and authored spells; figure build is temporary and never overwrites saved base build",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SIZE_SPELLS 143 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Size spells / Windows base",
+    "suite": "size_spells",
+    "run": "size-spells-windows-base",
+    "checks": 143,
+    "scope": "Same casting, presentation and snapshot checks in rebuilt Windows under Wine, headless",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SIZE_SPELLS 143 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Size spells / Windows LiA",
+    "suite": "size_spells",
+    "run": "size-spells-windows-astral",
+    "checks": 143,
+    "scope": "Same LiA checks in rebuilt Windows under Wine, headless",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SIZE_SPELLS 143 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Authored rat encounter / Linux",
+    "suite": "spell_alert_encounter",
+    "run": "spell-alert-encounter-phase-qualified",
+    "checks": 8,
+    "scope": "Actual Gipat gz5g rat group; prepared hero, normal cast animation/timer, specifically spell-triggered help and native counter expiry; quest VM frozen",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SPELL_ALERT_ENCOUNTER 8 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Authored rat encounter / Windows",
+    "suite": "spell_alert_encounter",
+    "run": "spell-alert-encounter-final-windows",
+    "checks": 8,
+    "scope": "Same complete spell-to-warning sequence in rebuilt Windows under Wine; original scene not replayed",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SPELL_ALERT_ENCOUNTER 8 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Adjacent repeated spells",
+    "suite": "repeated_spells",
+    "run": "spell-alerts-repeated",
+    "checks": 86,
+    "scope": "Repeated weakness, slow, strength and healing; effect expiry and refresh",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "REPEATED_SPELLS 86 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Adjacent damage and witnesses",
+    "suite": "creature_alerts",
+    "run": "spell-alerts-damage-adjacent",
+    "checks": 20,
+    "scope": "Surviving/fatal blows, witnesses, neutral hostility and compressed snapshots",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CREATURE_ALERTS 20 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Adjacent spell requirements / real ENet",
+    "suite": "spell_requirements_coop",
+    "run": "spell-alerts-coop-adjacent",
+    "checks": 17,
+    "scope": "Learned-spell admission, training reset, queued casts and host/guest authority",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SPELL_REQUIREMENTS_COOP 17 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Objective chains / Linux",
+    "suite": "quest_objective_chains",
+    "run": "quest-chains-final-linux",
+    "checks": 650,
+    "scope": "26 authored base side-quest chains, empty/16-step boundaries, every-step serialized VM reload and one-tick area/sighting contacts; reference source generated by original x86 code",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "QUEST_OBJECTIVE_CHAINS 650 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Objective chains / Windows",
+    "suite": "quest_objective_chains",
+    "run": "quest-chains-final-windows",
+    "checks": 650,
+    "scope": "Same controlled-world comparisons in the rebuilt Windows executable under Wine, headless",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "QUEST_OBJECTIVE_CHAINS 650 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Loaded side quest / Linux",
+    "suite": "quest_objective_map",
+    "run": "quest-map-final-linux",
+    "checks": 13,
+    "scope": "Actual z3q2 overlay, live perception, full campaign save/reload, normal fatal-damage path and pending reward; prepared hero start and fatal hit",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "QUEST_OBJECTIVE_MAP 13 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Loaded side quest / Windows",
+    "suite": "quest_objective_map",
+    "run": "quest-map-final-windows",
+    "checks": 13,
+    "scope": "Same loaded-map checks in the rebuilt Windows executable under Wine, headless",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "QUEST_OBJECTIVE_MAP 13 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Objective registration / Linux",
+    "suite": "quest_objective_registration",
+    "run": "quest-registration-fixed",
+    "checks": 14,
+    "scope": "Save while QStart/QFinish registration is paused; empty, nonempty and ambiguous legacy state",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "QUEST_OBJECTIVE_REGISTRATION 14 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Objective registration / Windows",
+    "suite": "quest_objective_registration",
+    "run": "quest-registration-final-windows",
+    "checks": 14,
+    "scope": "Same save-boundary guard in the rebuilt Windows executable under Wine, headless",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "QUEST_OBJECTIVE_REGISTRATION 14 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Adjacent side-quest rewards",
+    "suite": "side_quest_lifecycle",
+    "run": "quest-chains-rewards-adjacent",
+    "checks": 590,
+    "scope": "28 installed quest archives; offer, accept, exact reward, duplicate completion and persistence",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SIDE_QUEST_LIFECYCLE {\"archives\":28,\"campaign_routes\":28,\"checks\":590,\"failures\":[]}"
+    ]
+  },
+  {
+    "area": "Adjacent LiA quest gates",
+    "suite": "astral_fortune",
+    "run": "quest-chains-astral-gates-adjacent",
+    "checks": 267,
+    "scope": "Actual LiA fortune, torch, basket, undead and cave prerequisites; this campaign has no installed .mq objective chains",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ASTRAL_FORTUNE 267 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Adjacent LiA dialogue / real ENet",
+    "suite": "astral_paid_topics_coop",
+    "run": "quest-chains-astral-enet-adjacent",
+    "checks": 198,
+    "scope": "Both paid-rumour markets, separate purses, shared completion, duplicate close and unlock replication in Windows under Wine",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "PASS paid-rumour peers connect",
+      "PASS two paid-rumour participants registered",
+      "PASS bz5h: both peers loaded",
+      "PASS bz5h: actual fortune-teller exists",
+      "PASS bz5h: current buyer receives topic list",
+      "PASS bz5h: topic list reflects buyer balance",
+      "PASS bz5h: topic button reaches host authority",
+      "PASS bz5h: authority reevaluates stale wallet on selection",
+      "PASS bz5h: original actors finish staging",
+      "PASS bz5h: authored response reaches both peers",
+      "PASS bz5h: peer closes initiator's conversation",
+      "PASS bz5h: unlock survives immediate catalogue refresh",
+      "PASS bz5h: actual buyer pays once",
+      "PASS bz5h: closing peer's purse is untouched",
+      "PASS bz5h: private money and shared unlock replicate",
+      "PASS bz5h: late duplicate close cannot charge again",
+      "PASS bz5h: current buyer receives topic list",
+      "PASS bz5h: topic list reflects buyer balance",
+      "PASS bz5h: topic button reaches host authority",
+      "PASS bz5h: authority reevaluates stale wallet on selection",
+      "PASS bz5h: original actors finish staging",
+      "PASS bz5h: authored response reaches both peers",
+      "PASS bz5h: peer closes initiator's conversation",
+      "PASS bz5h: unlock survives immediate catalogue refresh",
+      "PASS bz5h: actual buyer pays once",
+      "PASS bz5h: closing peer's purse is untouched",
+      "PASS bz5h: private money and shared unlock replicate",
+      "PASS bz5h: late duplicate close cannot charge again",
+      "PASS bz5h: current buyer receives topic list",
+      "PASS bz5h: topic list reflects buyer balance",
+      "PASS bz5h: topic button reaches host authority",
+      "PASS bz5h: authority reevaluates stale wallet on selection",
+      "PASS bz5h: original actors finish staging",
+      "PASS bz5h: authored response reaches both peers",
+      "PASS bz5h: peer closes initiator's conversation",
+      "PASS bz5h: unlock survives immediate catalogue refresh",
+      "PASS bz5h: actual buyer pays once",
+      "PASS bz5h: closing peer's purse is untouched",
+      "PASS bz5h: private money and shared unlock replicate",
+      "PASS bz5h: late duplicate close cannot charge again",
+      "PASS bz5h: current buyer receives topic list",
+      "PASS bz5h: topic list reflects buyer balance",
+      "PASS bz5h: topic button reaches host authority",
+      "PASS bz5h: authority reevaluates stale wallet on selection",
+      "PASS bz5h: original actors finish staging",
+      "PASS bz5h: authored response reaches both peers",
+      "PASS bz5h: peer closes initiator's conversation",
+      "PASS bz5h: unlock survives immediate catalogue refresh",
+      "PASS bz5h: actual buyer pays once",
+      "PASS bz5h: closing peer's purse is untouched",
+      "PASS bz5h: private money and shared unlock replicate",
+      "PASS bz5h: late duplicate close cannot charge again",
+      "PASS bz5h: current buyer receives topic list",
+      "PASS bz5h: topic list reflects buyer balance",
+      "PASS bz5h: topic button reaches host authority",
+      "PASS bz5h: authority reevaluates stale wallet on selection",
+      "PASS bz5h: original actors finish staging",
+      "PASS bz5h: authored response reaches both peers",
+      "PASS bz5h: peer closes initiator's conversation",
+      "PASS bz5h: unlock survives immediate catalogue refresh",
+      "PASS bz5h: actual buyer pays once",
+      "PASS bz5h: closing peer's purse is untouched",
+      "PASS bz5h: private money and shared unlock replicate",
+      "PASS bz5h: late duplicate close cannot charge again",
+      "PASS bz5h: current buyer receives topic list",
+      "PASS bz5h: topic list reflects buyer balance",
+      "PASS bz5h: topic button reaches host authority",
+      "PASS bz5h: authority reevaluates stale wallet on selection",
+      "PASS bz5h: original actors finish staging",
+      "PASS bz5h: authored response reaches both peers",
+      "PASS bz5h: peer closes initiator's conversation",
+      "PASS bz5h: unlock survives immediate catalogue refresh",
+      "PASS bz5h: actual buyer pays once",
+      "PASS bz5h: closing peer's purse is untouched",
+      "PASS bz5h: private money and shared unlock replicate",
+      "PASS bz5h: late duplicate close cannot charge again",
+      "PASS bz5h: current buyer receives topic list",
+      "PASS bz5h: topic list reflects buyer balance",
+      "PASS bz5h: topic button reaches host authority",
+      "PASS bz5h: authority reevaluates stale wallet on selection",
+      "PASS bz5h: original actors finish staging",
+      "PASS bz5h: authored response reaches both peers",
+      "PASS bz5h: peer closes initiator's conversation",
+      "PASS bz5h: unlock survives immediate catalogue refresh",
+      "PASS bz5h: actual buyer pays once",
+      "PASS bz5h: closing peer's purse is untouched",
+      "PASS bz5h: private money and shared unlock replicate",
+      "PASS bz5h: late duplicate close cannot charge again",
+      "PASS bz5h: current buyer receives topic list",
+      "PASS bz5h: topic list reflects buyer balance",
+      "PASS bz5h: topic button reaches host authority",
+      "PASS bz5h: authority reevaluates stale wallet on selection",
+      "PASS bz5h: original actors finish staging",
+      "PASS bz5h: authored response reaches both peers",
+      "PASS bz5h: peer closes initiator's conversation",
+      "PASS bz5h: unlock survives immediate catalogue refresh",
+      "PASS bz5h: actual buyer pays once",
+      "PASS bz5h: closing peer's purse is untouched",
+      "PASS bz5h: private money and shared unlock replicate",
+      "PASS bz5h: late duplicate close cannot charge again",
+      "PASS bz11g: both peers loaded",
+      "PASS bz11g: actual fortune-teller exists",
+      "PASS bz11g: current buyer receives topic list",
+      "PASS bz11g: topic list reflects buyer balance",
+      "PASS bz11g: topic button reaches host authority",
+      "PASS bz11g: authority reevaluates stale wallet on selection",
+      "PASS bz11g: original actors finish staging",
+      "PASS bz11g: authored response reaches both peers",
+      "PASS bz11g: peer closes initiator's conversation",
+      "PASS bz11g: unlock survives immediate catalogue refresh",
+      "PASS bz11g: actual buyer pays once",
+      "PASS bz11g: closing peer's purse is untouched",
+      "PASS bz11g: private money and shared unlock replicate",
+      "PASS bz11g: late duplicate close cannot charge again",
+      "PASS bz11g: current buyer receives topic list",
+      "PASS bz11g: topic list reflects buyer balance",
+      "PASS bz11g: topic button reaches host authority",
+      "PASS bz11g: authority reevaluates stale wallet on selection",
+      "PASS bz11g: original actors finish staging",
+      "PASS bz11g: authored response reaches both peers",
+      "PASS bz11g: peer closes initiator's conversation",
+      "PASS bz11g: unlock survives immediate catalogue refresh",
+      "PASS bz11g: actual buyer pays once",
+      "PASS bz11g: closing peer's purse is untouched",
+      "PASS bz11g: private money and shared unlock replicate",
+      "PASS bz11g: late duplicate close cannot charge again",
+      "PASS bz11g: current buyer receives topic list",
+      "PASS bz11g: topic list reflects buyer balance",
+      "PASS bz11g: topic button reaches host authority",
+      "PASS bz11g: authority reevaluates stale wallet on selection",
+      "PASS bz11g: original actors finish staging",
+      "PASS bz11g: authored response reaches both peers",
+      "PASS bz11g: peer closes initiator's conversation",
+      "PASS bz11g: unlock survives immediate catalogue refresh",
+      "PASS bz11g: actual buyer pays once",
+      "PASS bz11g: closing peer's purse is untouched",
+      "PASS bz11g: private money and shared unlock replicate",
+      "PASS bz11g: late duplicate close cannot charge again",
+      "PASS bz11g: current buyer receives topic list",
+      "PASS bz11g: topic list reflects buyer balance",
+      "PASS bz11g: topic button reaches host authority",
+      "PASS bz11g: authority reevaluates stale wallet on selection",
+      "PASS bz11g: original actors finish staging",
+      "PASS bz11g: authored response reaches both peers",
+      "PASS bz11g: peer closes initiator's conversation",
+      "PASS bz11g: unlock survives immediate catalogue refresh",
+      "PASS bz11g: actual buyer pays once",
+      "PASS bz11g: closing peer's purse is untouched",
+      "PASS bz11g: private money and shared unlock replicate",
+      "PASS bz11g: late duplicate close cannot charge again",
+      "PASS bz11g: current buyer receives topic list",
+      "PASS bz11g: topic list reflects buyer balance",
+      "PASS bz11g: topic button reaches host authority",
+      "PASS bz11g: authority reevaluates stale wallet on selection",
+      "PASS bz11g: original actors finish staging",
+      "PASS bz11g: authored response reaches both peers",
+      "PASS bz11g: peer closes initiator's conversation",
+      "PASS bz11g: unlock survives immediate catalogue refresh",
+      "PASS bz11g: actual buyer pays once",
+      "PASS bz11g: closing peer's purse is untouched",
+      "PASS bz11g: private money and shared unlock replicate",
+      "PASS bz11g: late duplicate close cannot charge again",
+      "PASS bz11g: current buyer receives topic list",
+      "PASS bz11g: topic list reflects buyer balance",
+      "PASS bz11g: topic button reaches host authority",
+      "PASS bz11g: authority reevaluates stale wallet on selection",
+      "PASS bz11g: original actors finish staging",
+      "PASS bz11g: authored response reaches both peers",
+      "PASS bz11g: peer closes initiator's conversation",
+      "PASS bz11g: unlock survives immediate catalogue refresh",
+      "PASS bz11g: actual buyer pays once",
+      "PASS bz11g: closing peer's purse is untouched",
+      "PASS bz11g: private money and shared unlock replicate",
+      "PASS bz11g: late duplicate close cannot charge again",
+      "PASS bz11g: current buyer receives topic list",
+      "PASS bz11g: topic list reflects buyer balance",
+      "PASS bz11g: topic button reaches host authority",
+      "PASS bz11g: authority reevaluates stale wallet on selection",
+      "PASS bz11g: original actors finish staging",
+      "PASS bz11g: authored response reaches both peers",
+      "PASS bz11g: peer closes initiator's conversation",
+      "PASS bz11g: unlock survives immediate catalogue refresh",
+      "PASS bz11g: actual buyer pays once",
+      "PASS bz11g: closing peer's purse is untouched",
+      "PASS bz11g: private money and shared unlock replicate",
+      "PASS bz11g: late duplicate close cannot charge again",
+      "PASS bz11g: current buyer receives topic list",
+      "PASS bz11g: topic list reflects buyer balance",
+      "PASS bz11g: topic button reaches host authority",
+      "PASS bz11g: authority reevaluates stale wallet on selection",
+      "PASS bz11g: original actors finish staging",
+      "PASS bz11g: authored response reaches both peers",
+      "PASS bz11g: peer closes initiator's conversation",
+      "PASS bz11g: unlock survives immediate catalogue refresh",
+      "PASS bz11g: actual buyer pays once",
+      "PASS bz11g: closing peer's purse is untouched",
+      "PASS bz11g: private money and shared unlock replicate",
+      "PASS bz11g: late duplicate close cannot charge again",
+      "ASTRAL_PAID_TOPICS_COOP 198 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Lever permission / base Linux",
+    "suite": "lever_use_flags",
+    "run": "lever-use-typed-base",
+    "checks": 240,
+    "scope": "Original x86 eligibility and use/reset/enable sequences; controlled remake world and saved-row imports",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "LEVER_USE_FLAGS 240 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Lever permission / LiA Linux",
+    "suite": "lever_use_flags",
+    "run": "lever-use-typed-astral",
+    "checks": 240,
+    "scope": "Same selected contracts captured independently from LiA x86 code",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "LEVER_USE_FLAGS 240 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Lever permission / base Windows",
+    "suite": "lever_use_flags",
+    "run": "lever-permission-windows-base",
+    "checks": 240,
+    "scope": "Rebuilt Windows executable under Wine, headless; native reference is the original base executable",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "LEVER_USE_FLAGS 240 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Lever permission / LiA Windows",
+    "suite": "lever_use_flags",
+    "run": "lever-permission-windows-astral",
+    "checks": 240,
+    "scope": "Rebuilt Windows executable under Wine, headless; native reference is the original LiA executable",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "LEVER_USE_FLAGS 240 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Authored LiA chest / Linux ENet",
+    "suite": "astral_chest_permission",
+    "run": "lever-chest-after-diagnostic",
+    "checks": 32,
+    "scope": "gz11g OgreChest1, both operators, original reward/reset script, clicks, routing, animation, permission replication and full save/load; prepared skill/start",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ASTRAL_CHEST_PERMISSION 32 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Authored LiA chest / Windows ENet",
+    "suite": "astral_chest_permission",
+    "run": "lever-chest-windows-clear-view",
+    "checks": 32,
+    "scope": "Same assertions in Windows under Wine with Direct3D 12; clearer camera angle for report captures",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "594178.124:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\lever-chest-windows-clear-view\\vkd3d-proton.CursedLands.exe.cache.",
+      "594178.124:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\lever-chest-windows-clear-view\\vkd3d-proton.CursedLands.exe.cache.",
+      "594178.125:0020:0124:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\lever-chest-windows-clear-view\\vkd3d-proton.CursedLands.exe.cache.",
+      "PASS chest peers connect",
+      "PASS two chest players",
+      "PASS both peers load original gz11g",
+      "PASS fixture uses authored OgreChest1",
+      "PASS authored chest reward/reset script is loaded",
+      "PASS prepared operator meets authored lock skill 0",
+      "PASS both peers show the unused chest hand 0",
+      "PASS player 0 click reaches authority",
+      "PASS player 0 walks and uses the original chest",
+      "PASS original chest script awards exactly 100 gold 0",
+      "PASS original Sleep(40) branch closes the chest 0",
+      "PASS closed pose replicates to guest 0",
+      "PASS script closure preserves consumed permission on both peers 0",
+      "PASS closed spent chest offers no hand on either peer 0",
+      "PASS authority rejects a stale second use 0",
+      "PASS prepared operator meets authored lock skill 1",
+      "PASS both peers show the unused chest hand 1",
+      "PASS player 1 click reaches authority",
+      "PASS player 1 walks and uses the original chest",
+      "PASS original chest script awards exactly 100 gold 1",
+      "PASS original Sleep(40) branch closes the chest 1",
+      "PASS closed pose replicates to guest 1",
+      "PASS script closure preserves consumed permission on both peers 1",
+      "PASS closed spent chest offers no hand on either peer 1",
+      "PASS authority rejects a stale second use 1",
+      "PASS save spent closed chest",
+      "PASS full co-op save reload succeeds",
+      "PASS guest receives restored map",
+      "PASS save reload preserves consumed permission on both peers",
+      "PASS save reload preserves absent hand on both peers",
+      "PASS explicit enable at terminal pose reaches both peers",
+      "PASS explicit enable restores hand at terminal pose",
+      "ASTRAL_CHEST_PERMISSION 32 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Lever map census / base",
+    "suite": "exhausted_interactions",
+    "run": "lever-permission-adjacent-base",
+    "checks": 378,
+    "scope": "184 science-enabled mechanisms from 36 installed maps plus actual rendered base-map picking, legacy save permission and explicit re-enable",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "EXHAUSTED_INTERACTIONS 378 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Lever map census / LiA",
+    "suite": "exhausted_interactions",
+    "run": "lever-permission-adjacent-astral",
+    "checks": 2391,
+    "scope": "1194 science-enabled mechanisms from 67 installed maps plus scoped remake lift-recall checks; inventory is not whole-campaign playthrough",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "EXHAUSTED_INTERACTIONS 2391 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Lever animation save compatibility",
+    "suite": "lever_transition_save",
+    "run": "lever-permission-transitions-final",
+    "checks": 59,
+    "scope": "Ordinary prison-gate transitions, legacy/malformed tails and existing fast drawbridge clock; use-version tag leaves motion fields intact",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "LEVER_TRANSITION_SAVE 59 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Lever requirement tooltip",
+    "suite": "locked_hover",
+    "run": "lever-permission-tooltip",
+    "checks": 26,
+    "scope": "Actual LiA metadata, selected skill/key validation and frontend hint; terminal pose does not suppress an enabled lock requirement",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "LOCKED_HOVER 26 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Lift group / adjacent permission",
+    "suite": "catacomb_group_lever",
+    "run": "lever-permission-lift-group",
+    "checks": 26,
+    "scope": "Original Catacombs scripts and narrow geometry; selected qualified fallback operator and repeated lift trips",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CATACOMB_GROUP_LEVER 26 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Lift ENet / adjacent permission",
+    "suite": "catacomb_capacity_net",
+    "run": "lever-permission-lift-network",
+    "checks": 36,
+    "scope": "Actual guest and four host riders, production lift, both directions, repeat trip and full co-op reload",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CATACOMB_CAPACITY_NET {\"checks\":36,\"failures\":0}"
+    ]
+  },
+  {
+    "area": "Torch host / adjacent permission",
+    "suite": "astral_torch",
+    "run": "lever-permission-torch-host",
+    "checks": 17,
+    "scope": "Original Portal torch, original quest handoff, actual hand/picking and host route/use through ENet",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ASTRAL_TORCH 17 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Torch guest / adjacent permission",
+    "suite": "astral_torch",
+    "run": "lever-permission-torch-guest",
+    "checks": 17,
+    "scope": "Independent Portal fixture with guest operator; original entrance watcher and one-shot permission",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "ASTRAL_TORCH 17 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Movement packing / base Linux",
+    "suite": "movement_speed_packing",
+    "run": "movement-speed-after-base",
+    "checks": 15273,
+    "scope": "1697 captured native rows, four gaits, turning and overload; supplied movement/wound factor",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "MOVEMENT_SPEED_PACKING 15273 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Movement packing / LiA Linux",
+    "suite": "movement_speed_packing",
+    "run": "movement-speed-after-astral",
+    "checks": 15273,
+    "scope": "Same corpus captured independently from LiA x86, including its original rounding helper",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "MOVEMENT_SPEED_PACKING 15273 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Movement packing / base Windows",
+    "suite": "movement_speed_packing",
+    "run": "movement-speed-windows-base",
+    "checks": 15273,
+    "scope": "Rebuilt Windows executable under Wine; native reference is the original base executable",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "MOVEMENT_SPEED_PACKING 15273 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Movement packing / LiA Windows",
+    "suite": "movement_speed_packing",
+    "run": "movement-speed-windows-astral",
+    "checks": 15273,
+    "scope": "Rebuilt Windows executable under Wine; native reference is the original LiA executable",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "MOVEMENT_SPEED_PACKING 15273 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Movement packing / adjacent gait animation",
+    "suite": "direct_gait_continuity",
+    "run": "movement-speed-direct-gaits",
+    "checks": 1920,
+    "scope": "Existing direct gait and animation-selection regression fixture after the packing fix",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "DIRECT_GAIT_CONTINUITY {\"checks\":1920,\"clips\":{\"crun01\":504,\"crun02\":72,\"cwalk01\":24,\"cwalk02\":168,\"cwalk06\":192,\"cwalk08\":24,\"cwalk10\":168},\"failures\":0,\"wrong_healthy_selections\":0}"
+    ]
+  },
+  {
+    "area": "Movement packing / adjacent stamina",
+    "suite": "spell_stamina_wait",
+    "run": "movement-speed-stamina",
+    "checks": 47,
+    "scope": "Existing running, stamina and spell-wait regression fixture after the packing fix",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SPELL_STAMINA_WAIT {\"checks\":47,\"failures\":[]}"
+    ]
+  },
+  {
+    "area": "LiA mine / loaded Windows timing",
+    "suite": "local_host_loaded_rate",
+    "run": "loaded-rate-astral-mine-windows",
+    "checks": 55,
+    "scope": "Actual LiA gz24k, 63 actors, real authority, 60/20/10 FPS and 1x/2x; prepared combat-free route, original-look settings",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "596165.389:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\loaded-rate-astral-mine-windows\\vkd3d-proton.CursedLands.exe.cache.",
+      "596165.389:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\loaded-rate-astral-mine-windows\\vkd3d-proton.CursedLands.exe.cache.",
+      "596165.390:0020:0124:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\loaded-rate-astral-mine-windows\\vkd3d-proton.CursedLands.exe.cache.",
+      "LOCAL_HOST_LOADED_RATE 55 checks 0 failures"
+    ]
+  },
+  {
+    "area": "LiA mine / loaded Linux party",
+    "suite": "local_host_loaded_rate",
+    "run": "loaded-rate-astral-mine-party-qualified",
+    "checks": 133,
+    "scope": "Actual LiA gz24k, three controlled heroes and 62 authored actors; full authority save/load, group command, per-member movement/stamina, 60/20/10 FPS and 1x/2x",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "LOCAL_HOST_LOADED_RATE 133 checks 0 failures"
+    ]
+  },
+  {
+    "area": "LiA mine / loaded Windows party",
+    "suite": "local_host_loaded_rate",
+    "run": "loaded-rate-astral-mine-party-windows-timing",
+    "checks": 133,
+    "scope": "Actual LiA gz24k, three controlled heroes and 62 authored actors; full authority save/load, group command, per-member movement/stamina, 60/20/10 FPS and 1x/2x",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "596666.000:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\loaded-rate-astral-mine-party-windows-timing\\vkd3d-proton.CursedLands.exe.cache.",
+      "596666.000:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\loaded-rate-astral-mine-party-windows-timing\\vkd3d-proton.CursedLands.exe.cache.",
+      "596666.002:0020:0124:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\loaded-rate-astral-mine-party-windows-timing\\vkd3d-proton.CursedLands.exe.cache.",
+      "LOCAL_HOST_LOADED_RATE 133 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Future queries / base Linux",
+    "suite": "script_future_queries",
+    "run": "future-query-final-base",
+    "checks": 1434,
+    "scope": "194 original dispatcher observations; 336 supplied-route movement cases; eleven installed prison trap bodies in 44 preparations; omitted-delay console shorthand",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_FUTURE_QUERIES 1434 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Future queries / LiA Linux",
+    "suite": "script_future_queries",
+    "run": "future-query-final-astral",
+    "checks": 1257,
+    "scope": "194 LiA dispatcher observations; 336 supplied-route movement cases; no authored LiA GetFuture query was found in the installed 130-map census",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_FUTURE_QUERIES 1257 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Future queries / base Windows",
+    "suite": "script_future_queries",
+    "run": "future-query-windows-final-base",
+    "checks": 1434,
+    "scope": "Same base corpus in the rebuilt Windows package under Wine; no full original scene replay",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_FUTURE_QUERIES 1434 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Future queries / LiA Windows",
+    "suite": "script_future_queries",
+    "run": "future-query-windows-final-astral",
+    "checks": 1257,
+    "scope": "Same LiA corpus in the rebuilt Windows package under Wine; no full original scene replay",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_FUTURE_QUERIES 1257 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Future queries / base console",
+    "suite": "console_god_mode",
+    "run": "future-query-console-final-base",
+    "checks": 98,
+    "scope": "Actual loaded base map, typed console expressions, omitted query delays and existing GodMode/damage/stamina/persistence checks",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CONSOLE_GOD_MODE 98 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Future queries / LiA console",
+    "suite": "console_god_mode",
+    "run": "future-query-console-final-astral",
+    "checks": 98,
+    "scope": "Actual loaded LiA map and the same typed-command regression checks",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CONSOLE_GOD_MODE 98 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Future queries / LiA co-op trap scripts",
+    "suite": "story_coop_traps",
+    "run": "future-query-traps-astral",
+    "checks": 55,
+    "scope": "Existing LiA independent trap families, rearming and saved continuations; supplied actors and observed hit boundary, no ENet",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "STORY_COOP_TRAPS 55 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Future queries / prison trap states",
+    "suite": "prison_damage_state",
+    "run": "future-query-prison-base",
+    "checks": 172,
+    "scope": "Existing base prison trap damage/state regression, including revivable corpses and independent living actors",
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "PRISON_DAMAGE_STATE 172 checks 0 failures"
+    ]
+  },
+  {
+    "area": "Script clock / quests/script_clock",
+    "suite": "script_clock",
+    "run": "script-clock-catalog/quests/script_clock",
+    "checks": 1408,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_CLOCK 1408 checks 0 failures"
+    ],
+    "scope": "Original scene/campaign clock commands, saves and legacy import; cursed_lands; headless"
+  },
+  {
+    "area": "Script clock / quests/script_clock_astral",
+    "suite": "script_clock",
+    "run": "script-clock-catalog/quests/script_clock_astral",
+    "checks": 1408,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_CLOCK 1408 checks 0 failures"
+    ],
+    "scope": "LiA original scene/campaign clock commands, saves and legacy import; lost_in_astral; headless"
+  },
+  {
+    "area": "Script clock / quests/script_clock_coop",
+    "suite": "script_clock_coop",
+    "run": "script-clock-catalog/quests/script_clock_coop",
+    "checks": 17,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_CLOCK_COOP 17 checks 0 failures"
+    ],
+    "scope": "Installed LiA prison freeze, ENet hour/rate delivery, full save/load and client daylight; lost_in_astral; headless"
+  },
+  {
+    "area": "Script clock / network/campaign_state_transport",
+    "suite": "campaign_state_transport",
+    "run": "script-clock-adjacent/network/campaign_state_transport",
+    "checks": 24,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CAMPAIGN_STATE_TRANSPORT 24 checks 0 failures"
+    ],
+    "scope": "Self-contained large campaign, lossless compression and acknowledged batching; cursed_lands; headless"
+  },
+  {
+    "area": "Script clock / coop/coop_progress_chapters",
+    "suite": "coop_progress_chapters",
+    "run": "script-clock-adjacent/coop/coop_progress_chapters",
+    "checks": 7,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "COOP_PROGRESS_CHAPTERS 7 checks 0 failures"
+    ],
+    "scope": "Personal hero/purse merge follows the same protagonist as the import. Complete party-context transfer is a separate concern: these cases all start with an existing chapter or temporary substitution in the recipient.; cursed_lands; headless"
+  },
+  {
+    "area": "Script clock / coop/coop_progress_chapters_astral",
+    "suite": "coop_progress_chapters",
+    "run": "script-clock-adjacent/coop/coop_progress_chapters_astral",
+    "checks": 17,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "COOP_PROGRESS_CHAPTERS 17 checks 0 failures"
+    ],
+    "scope": "Personal hero/purse merge follows the same protagonist as the import. Complete party-context transfer is a separate concern: these cases all start with an existing chapter or temporary substitution in the recipient.; lost_in_astral; headless"
+  },
+  {
+    "area": "Script clock / coop/coop_progress_cleanup",
+    "suite": "coop_progress_cleanup",
+    "run": "script-clock-adjacent/coop/coop_progress_cleanup",
+    "checks": 11,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "COOP_PROGRESS_CLEANUP 11 checks 0 failures"
+    ],
+    "scope": "Completed original quests continue changing their objectives. Replay the actual GSSetVarMax instructions, then cross the island boundary and merge a resumable save. Divergent/absent guests keep their existing protection.; cursed_lands; headless"
+  },
+  {
+    "area": "Script clock / coop/coop_progress_context",
+    "suite": "coop_progress_context",
+    "run": "script-clock-adjacent/coop/coop_progress_context",
+    "checks": 72,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "COOP_PROGRESS_CONTEXT 72 checks 0 failures"
+    ],
+    "scope": "Real original-data party instruction sequences, package/merge and private save roundtrips. Does not pretend to play their surrounding quests.; cursed_lands; headless"
+  },
+  {
+    "area": "Script clock / coop/coop_progress_context_astral",
+    "suite": "coop_progress_context",
+    "run": "script-clock-adjacent/coop/coop_progress_context_astral",
+    "checks": 76,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "COOP_PROGRESS_CONTEXT 76 checks 0 failures"
+    ],
+    "scope": "Real original-data party instruction sequences, package/merge and private save roundtrips. Does not pretend to play their surrounding quests.; lost_in_astral; headless"
+  },
+  {
+    "area": "Script clock / commands/travel_command_lifecycle",
+    "suite": "travel_command_lifecycle",
+    "run": "script-clock-adjacent/commands/travel_command_lifecycle",
+    "checks": 21,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "TRAVEL_COMMAND_LIFECYCLE 21 checks 0 failures"
+    ],
+    "scope": "Exit confirmation, cancel/reopen, stale routes, authority, death and once-only travel charges; final world load recorded; cursed_lands; headless"
+  },
+  {
+    "area": "Script clock / commands/travel_command_lifecycle_astral",
+    "suite": "travel_command_lifecycle",
+    "run": "script-clock-adjacent/commands/travel_command_lifecycle_astral",
+    "checks": 21,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "TRAVEL_COMMAND_LIFECYCLE 21 checks 0 failures"
+    ],
+    "scope": "Exit confirmation, cancel/reopen, stale routes, authority, death and once-only travel charges; final world load recorded; lost_in_astral; headless"
+  },
+  {
+    "area": "Script clock / coop/coop_progress_preview",
+    "suite": "coop_progress_preview",
+    "run": "script-clock-preview-private/coop/coop_progress_preview",
+    "checks": 15,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "COOP_PROGRESS_PREVIEW 15 checks 0 failures"
+    ],
+    "scope": "Actual saved progress and deferred thumbnails, using isolated save slots.; cursed_lands; rendered"
+  },
+  {
+    "area": "Script clock / coop/coop_progress_preview_astral",
+    "suite": "coop_progress_preview",
+    "run": "script-clock-preview-private/coop/coop_progress_preview_astral",
+    "checks": 15,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "COOP_PROGRESS_PREVIEW 15 checks 0 failures"
+    ],
+    "scope": "Actual saved progress and deferred thumbnails, using isolated save slots.; lost_in_astral; rendered"
+  },
+  {
+    "area": "Script clock / script-clock-windows-base",
+    "suite": "script_clock",
+    "run": "script-clock-windows-base",
+    "checks": 1408,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_CLOCK 1408 checks 0 failures"
+    ],
+    "scope": "Native-clock corpus and saved state; rebuilt Windows package under Wine; base"
+  },
+  {
+    "area": "Script clock / script-clock-windows-astral",
+    "suite": "script_clock",
+    "run": "script-clock-windows-astral",
+    "checks": 1408,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_CLOCK 1408 checks 0 failures"
+    ],
+    "scope": "Native-clock corpus and saved state; rebuilt Windows package under Wine; LiA"
+  },
+  {
+    "area": "Script clock / script-clock-coop-windows",
+    "suite": "script_clock_coop",
+    "run": "script-clock-coop-windows",
+    "checks": 17,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "PASS clock peers connect",
+      "PASS two clock players",
+      "PASS guest loads actual cz1h",
+      "PASS authored prison scene freezes at 00:18",
+      "PASS authored night reset preserves elapsed campaign time",
+      "PASS host scene hour reaches guest",
+      "PASS elapsed campaign time reaches guest separately",
+      "PASS guest daylight stays frozen between network packets",
+      "PASS save actual frozen co-op scene",
+      "PASS load actual frozen co-op scene",
+      "PASS guest completes saved-world load",
+      "PASS authored freeze flag survives full load",
+      "PASS both campaign timers survive full load",
+      "PASS loaded guest daylight remains frozen",
+      "PASS clock release reaches guest without a full-state poll",
+      "PASS guest daylight resumes after release",
+      "PASS release does not overwrite campaign time",
+      "SCRIPT_CLOCK_COOP 17 checks 0 failures"
+    ],
+    "scope": "Installed cz1h script, real ENet, full save/load and frontend daylight; rebuilt Windows package under Wine; LiA"
+  },
+  {
+    "area": "Script clock / original predicates / original",
+    "suite": "original_x86_clock_predicates",
+    "run": "script-clock-original-comparison",
+    "checks": 122,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "122 match, 0 differ; repeated twice"
+    ],
+    "scope": "Original x86 predicates and supported authored conditions with supplied time/state inputs; not a complete scene replay"
+  },
+  {
+    "area": "Script clock / original predicates / lost_in_astral",
+    "suite": "original_x86_clock_predicates",
+    "run": "script-clock-astral-comparison",
+    "checks": 221,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "221 match, 0 differ; repeated twice"
+    ],
+    "scope": "Original x86 predicates and supported authored conditions with supplied time/state inputs; not a complete scene replay"
+  },
+  {
+    "area": "Campaign clock / quests/campaign_clock",
+    "suite": "campaign_clock",
+    "run": "campaign-clock-native-final/quests/campaign_clock",
+    "checks": 1152,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CAMPAIGN_CLOCK 1152 checks 0 failures"
+    ],
+    "scope": "Original GS clock set/max/delete, hash presence and independent saved time; cursed_lands; headless"
+  },
+  {
+    "area": "Campaign clock / quests/campaign_clock_astral",
+    "suite": "campaign_clock",
+    "run": "campaign-clock-native-final/quests/campaign_clock_astral",
+    "checks": 1152,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CAMPAIGN_CLOCK 1152 checks 0 failures"
+    ],
+    "scope": "Original GS clock set/max/delete, hash presence and independent saved time; lost_in_astral; headless"
+  },
+  {
+    "area": "Campaign clock / quests/campaign_clock_coop",
+    "suite": "campaign_clock_coop",
+    "run": "campaign-clock-catalog/quests/campaign_clock_coop",
+    "checks": 62,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CAMPAIGN_CLOCK_COOP 62 checks 0 failures"
+    ],
+    "scope": "Actual map entry/revisit, independent clocks, full gameplay save/load and ENet delivery; cursed_lands; headless"
+  },
+  {
+    "area": "Campaign clock / quests/campaign_clock_coop_astral",
+    "suite": "campaign_clock_coop",
+    "run": "campaign-clock-catalog/quests/campaign_clock_coop_astral",
+    "checks": 62,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CAMPAIGN_CLOCK_COOP 62 checks 0 failures"
+    ],
+    "scope": "Actual map entry/revisit, independent clocks, full gameplay save/load and ENet delivery; lost_in_astral; headless"
+  },
+  {
+    "area": "Campaign clock / quests/script_clock",
+    "suite": "script_clock",
+    "run": "campaign-clock-adjacent/quests/script_clock",
+    "checks": 1408,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_CLOCK 1408 checks 0 failures"
+    ],
+    "scope": "Original scene/campaign clock commands, saves and legacy import; cursed_lands; headless"
+  },
+  {
+    "area": "Campaign clock / quests/script_clock_astral",
+    "suite": "script_clock",
+    "run": "campaign-clock-adjacent/quests/script_clock_astral",
+    "checks": 1408,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_CLOCK 1408 checks 0 failures"
+    ],
+    "scope": "LiA original scene/campaign clock commands, saves and legacy import; lost_in_astral; headless"
+  },
+  {
+    "area": "Campaign clock / quests/script_clock_coop",
+    "suite": "script_clock_coop",
+    "run": "campaign-clock-adjacent/quests/script_clock_coop",
+    "checks": 17,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "SCRIPT_CLOCK_COOP 17 checks 0 failures"
+    ],
+    "scope": "Installed LiA prison freeze, ENet hour/rate delivery, full save/load and client daylight; lost_in_astral; headless"
+  },
+  {
+    "area": "Campaign clock / commands/console_commands",
+    "suite": "console_commands",
+    "run": "campaign-clock-boundaries/commands/console_commands",
+    "checks": 96,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CONSOLE_COMMANDS 96 checks 0 failures"
+    ],
+    "scope": "Loaded console authority, expressions, variable files, command batches, malformed input, localization and persistence; cursed_lands; headless"
+  },
+  {
+    "area": "Campaign clock / persistence/save_state_fields",
+    "suite": "save_state_fields",
+    "run": "campaign-clock-boundaries/persistence/save_state_fields",
+    "checks": 18,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "AUDIT_SAVE 18 checks 0 failures"
+    ],
+    "scope": "Full save/load of hostility, wounds, stamina, scripted commands and projectiles; cursed_lands; headless"
+  },
+  {
+    "area": "Campaign clock / coop/coop_progress_travel",
+    "suite": "coop_progress_travel",
+    "run": "campaign-clock-boundaries/coop/coop_progress_travel",
+    "checks": 15,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "COOP_PROGRESS_TRAVEL 15 checks 0 failures"
+    ],
+    "scope": "Campaign transfer eligibility without inventing z.<destination> unlocks. The ENet chapter fixture separately loads/deploys the returned saves.; cursed_lands; headless"
+  },
+  {
+    "area": "Campaign clock / coop/coop_progress_travel_astral",
+    "suite": "coop_progress_travel",
+    "run": "campaign-clock-boundaries/coop/coop_progress_travel_astral",
+    "checks": 15,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "COOP_PROGRESS_TRAVEL 15 checks 0 failures"
+    ],
+    "scope": "Campaign transfer eligibility without inventing z.<destination> unlocks. The ENet chapter fixture separately loads/deploys the returned saves.; lost_in_astral; headless"
+  },
+  {
+    "area": "Campaign clock / commands/travel_command_lifecycle",
+    "suite": "travel_command_lifecycle",
+    "run": "campaign-clock-boundaries/commands/travel_command_lifecycle",
+    "checks": 21,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "TRAVEL_COMMAND_LIFECYCLE 21 checks 0 failures"
+    ],
+    "scope": "Exit confirmation, cancel/reopen, stale routes, authority, death and once-only travel charges; final world load recorded; cursed_lands; headless"
+  },
+  {
+    "area": "Campaign clock / commands/travel_command_lifecycle_astral",
+    "suite": "travel_command_lifecycle",
+    "run": "campaign-clock-boundaries/commands/travel_command_lifecycle_astral",
+    "checks": 21,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "TRAVEL_COMMAND_LIFECYCLE 21 checks 0 failures"
+    ],
+    "scope": "Exit confirmation, cancel/reopen, stale routes, authority, death and once-only travel charges; final world load recorded; lost_in_astral; headless"
+  },
+  {
+    "area": "Campaign clock / campaign-clock-windows-base",
+    "suite": "campaign_clock",
+    "run": "campaign-clock-windows-base",
+    "checks": 1152,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CAMPAIGN_CLOCK 1152 checks 0 failures"
+    ],
+    "scope": "Native GS references and saved values; rebuilt Windows under Wine; base"
+  },
+  {
+    "area": "Campaign clock / campaign-clock-coop-windows-base",
+    "suite": "campaign_clock_coop",
+    "run": "campaign-clock-coop-windows-base",
+    "checks": 62,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "PASS campaign clock peers connect",
+      "PASS two campaign clock players",
+      "PASS guest completes entry to gz1g",
+      "PASS fresh map / scene hour / host",
+      "PASS fresh map / campaign hours / host",
+      "PASS fresh map / freeze state / host",
+      "PASS fresh map / scene hour / guest",
+      "PASS fresh map / campaign hours / guest",
+      "PASS fresh map / freeze state / guest",
+      "PASS freeze reaches guest",
+      "PASS GSSetVar reaches guest",
+      "PASS set while frozen / scene hour / host",
+      "PASS set while frozen / campaign hours / host",
+      "PASS set while frozen / freeze state / host",
+      "PASS set while frozen / scene hour / guest",
+      "PASS set while frozen / campaign hours / guest",
+      "PASS set while frozen / freeze state / guest",
+      "PASS save scene with different clocks",
+      "PASS full saved-game load",
+      "PASS guest completes full load",
+      "PASS full load preserves scene / scene hour / host",
+      "PASS full load preserves scene / campaign hours / host",
+      "PASS full load preserves scene / freeze state / host",
+      "PASS full load preserves scene / scene hour / guest",
+      "PASS full load preserves scene / campaign hours / guest",
+      "PASS full load preserves scene / freeze state / guest",
+      "PASS guest completes entry to gz5g",
+      "PASS fresh destination / scene hour / host",
+      "PASS fresh destination / campaign hours / host",
+      "PASS fresh destination / freeze state / host",
+      "PASS fresh destination / scene hour / guest",
+      "PASS fresh destination / campaign hours / guest",
+      "PASS fresh destination / freeze state / guest",
+      "PASS GSSetVar reaches guest",
+      "PASS set while running / scene hour / host",
+      "PASS set while running / campaign hours / host",
+      "PASS set while running / freeze state / host",
+      "PASS set while running / scene hour / guest",
+      "PASS set while running / campaign hours / guest",
+      "PASS set while running / freeze state / guest",
+      "PASS guest completes entry to gz1g",
+      "PASS revisit restores rate but resets hour / scene hour / host",
+      "PASS revisit restores rate but resets hour / campaign hours / host",
+      "PASS revisit restores rate but resets hour / freeze state / host",
+      "PASS revisit restores rate but resets hour / scene hour / guest",
+      "PASS revisit restores rate but resets hour / campaign hours / guest",
+      "PASS revisit restores rate but resets hour / freeze state / guest",
+      "PASS GSDelVar reaches guest",
+      "PASS delete while frozen / scene hour / host",
+      "PASS delete while frozen / campaign hours / host",
+      "PASS delete while frozen / freeze state / host",
+      "PASS delete while frozen / scene hour / guest",
+      "PASS delete while frozen / campaign hours / guest",
+      "PASS delete while frozen / freeze state / guest",
+      "PASS deleted campaign clock stays absent on both peers",
+      "PASS guest completes entry to gz5g",
+      "PASS revisit after delete / scene hour / host",
+      "PASS revisit after delete / campaign hours / host",
+      "PASS revisit after delete / freeze state / host",
+      "PASS revisit after delete / scene hour / guest",
+      "PASS revisit after delete / campaign hours / guest",
+      "PASS revisit after delete / freeze state / guest",
+      "CAMPAIGN_CLOCK_COOP 62 checks 0 failures"
+    ],
+    "scope": "Actual maps, full save/reload and ENet; rebuilt Windows under Wine; base"
+  },
+  {
+    "area": "Campaign clock / campaign-clock-windows-astral",
+    "suite": "campaign_clock",
+    "run": "campaign-clock-windows-astral",
+    "checks": 1152,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "CAMPAIGN_CLOCK 1152 checks 0 failures"
+    ],
+    "scope": "Native GS references and saved values; rebuilt Windows under Wine; astral"
+  },
+  {
+    "area": "Campaign clock / campaign-clock-coop-windows-astral",
+    "suite": "campaign_clock_coop",
+    "run": "campaign-clock-coop-windows-astral",
+    "checks": 62,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "PASS campaign clock peers connect",
+      "PASS two campaign clock players",
+      "PASS guest completes entry to gz1h",
+      "PASS fresh map / scene hour / host",
+      "PASS fresh map / campaign hours / host",
+      "PASS fresh map / freeze state / host",
+      "PASS fresh map / scene hour / guest",
+      "PASS fresh map / campaign hours / guest",
+      "PASS fresh map / freeze state / guest",
+      "PASS freeze reaches guest",
+      "PASS GSSetVar reaches guest",
+      "PASS set while frozen / scene hour / host",
+      "PASS set while frozen / campaign hours / host",
+      "PASS set while frozen / freeze state / host",
+      "PASS set while frozen / scene hour / guest",
+      "PASS set while frozen / campaign hours / guest",
+      "PASS set while frozen / freeze state / guest",
+      "PASS save scene with different clocks",
+      "PASS full saved-game load",
+      "PASS guest completes full load",
+      "PASS full load preserves scene / scene hour / host",
+      "PASS full load preserves scene / campaign hours / host",
+      "PASS full load preserves scene / freeze state / host",
+      "PASS full load preserves scene / scene hour / guest",
+      "PASS full load preserves scene / campaign hours / guest",
+      "PASS full load preserves scene / freeze state / guest",
+      "PASS guest completes entry to gz2h",
+      "PASS fresh destination / scene hour / host",
+      "PASS fresh destination / campaign hours / host",
+      "PASS fresh destination / freeze state / host",
+      "PASS fresh destination / scene hour / guest",
+      "PASS fresh destination / campaign hours / guest",
+      "PASS fresh destination / freeze state / guest",
+      "PASS GSSetVar reaches guest",
+      "PASS set while running / scene hour / host",
+      "PASS set while running / campaign hours / host",
+      "PASS set while running / freeze state / host",
+      "PASS set while running / scene hour / guest",
+      "PASS set while running / campaign hours / guest",
+      "PASS set while running / freeze state / guest",
+      "PASS guest completes entry to gz1h",
+      "PASS revisit restores rate but resets hour / scene hour / host",
+      "PASS revisit restores rate but resets hour / campaign hours / host",
+      "PASS revisit restores rate but resets hour / freeze state / host",
+      "PASS revisit restores rate but resets hour / scene hour / guest",
+      "PASS revisit restores rate but resets hour / campaign hours / guest",
+      "PASS revisit restores rate but resets hour / freeze state / guest",
+      "PASS GSDelVar reaches guest",
+      "PASS delete while frozen / scene hour / host",
+      "PASS delete while frozen / campaign hours / host",
+      "PASS delete while frozen / freeze state / host",
+      "PASS delete while frozen / scene hour / guest",
+      "PASS delete while frozen / campaign hours / guest",
+      "PASS delete while frozen / freeze state / guest",
+      "PASS deleted campaign clock stays absent on both peers",
+      "PASS guest completes entry to gz2h",
+      "PASS revisit after delete / scene hour / host",
+      "PASS revisit after delete / campaign hours / host",
+      "PASS revisit after delete / freeze state / host",
+      "PASS revisit after delete / scene hour / guest",
+      "PASS revisit after delete / campaign hours / guest",
+      "PASS revisit after delete / freeze state / guest",
+      "CAMPAIGN_CLOCK_COOP 62 checks 0 failures"
+    ],
+    "scope": "Actual maps, full save/reload and ENet; rebuilt Windows under Wine; astral"
+  },
+  {
+    "area": "Town save / base / linux",
+    "suite": "town_save_continuation",
+    "run": "town-save-base-first",
+    "checks": 46,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "TOWN_SAVE_CONTINUATION 46 checks 0 failures"
+    ],
+    "scope": "Actual bz1g map, full save/load, two ENet peers, pending dialogue flags and authored VCheck#0#47 continuation; Linux headless"
+  },
+  {
+    "area": "Town save / base / windows",
+    "suite": "town_save_continuation",
+    "run": "town-save-windows-base",
+    "checks": 46,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "TOWN_SAVE_CONTINUATION 46 checks 0 failures"
+    ],
+    "scope": "Actual bz1g map, full save/load, two ENet peers, pending dialogue flags and authored VCheck#0#47 continuation; Windows export under Wine"
+  },
+  {
+    "area": "Town save / astral / linux",
+    "suite": "town_save_continuation",
+    "run": "town-save-astral-first",
+    "checks": 43,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "TOWN_SAVE_CONTINUATION 43 checks 0 failures"
+    ],
+    "scope": "Actual bz5h map, full save/load, two ENet peers, pending dialogue flags and authored Fire#12 continuation; Linux headless"
+  },
+  {
+    "area": "Town save / astral / windows",
+    "suite": "town_save_continuation",
+    "run": "town-save-windows-astral",
+    "checks": 43,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "TOWN_SAVE_CONTINUATION 43 checks 0 failures"
+    ],
+    "scope": "Actual bz5h map, full save/load, two ENet peers, pending dialogue flags and authored Fire#12 continuation; Windows export under Wine"
+  },
+  {
+    "area": "Redress package / base / Linux",
+    "suite": "mod_redress",
+    "run": "mod-redress-fixed-base",
+    "checks": 42,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "MOD_REDRESS 42 checks 0 failures"
+    ],
+    "scope": "Headless actual character composer; generated PNT3; isolated profile"
+  },
+  {
+    "area": "Redress package / LiA / Linux",
+    "suite": "mod_redress",
+    "run": "mod-redress-astral-proof",
+    "checks": 42,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "MOD_REDRESS 42 checks 0 failures"
+    ],
+    "scope": "OpenGL rendered original/modded/restored characters; same import/material/profile checks"
+  },
+  {
+    "area": "Redress package / base / Windows under Wine",
+    "suite": "mod_redress",
+    "run": "mod-redress-windows-visual",
+    "checks": 42,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "604719.022:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\mod-redress-windows-visual\\vkd3d-proton.CursedLands.exe.cache.",
+      "604719.022:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\mod-redress-windows-visual\\vkd3d-proton.CursedLands.exe.cache.",
+      "604719.023:0020:0124:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\mod-redress-windows-visual\\vkd3d-proton.CursedLands.exe.cache.",
+      "MOD_REDRESS 42 checks 0 failures"
+    ],
+    "scope": "Exported custom engine, D3D12 under Wine; actual material binding and profile restoration"
+  },
+  {
+    "area": "Existing texture packages",
+    "suite": "mod_texture_packages",
+    "run": "mod-redress-existing-packages",
+    "checks": 42,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "MOD_TEXTURE_PACKAGES {\"checks\":42,\"failures\":0}"
+    ],
+    "scope": "Import, documentation, enumeration, signatures and allocation bounds"
+  },
+  {
+    "area": "Existing mod profiles",
+    "suite": "mod_profiles",
+    "run": "mod-redress-existing-profiles",
+    "checks": 87,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "MOD_PROFILES {\"checks\":87,\"details\":[],\"failures\":0}"
+    ],
+    "scope": "Profile lifecycle, saves, numeric patches, conflicts and cosmetic signatures"
+  },
+  {
+    "area": "LiA CDoorY passage / Linux OpenGL",
+    "suite": "mine_passage_presentation",
+    "run": "mine-video-linux-cleanup",
+    "checks": 101,
+    "exit": 0,
+    "errors": [
+      "ERROR: Texture with GL ID of 114: leaked 349524 bytes.",
+      "ERROR: Texture with GL ID of 115: leaked 349524 bytes."
+    ],
+    "summary": [
+      "MINE_PASSAGE_PRESENTATION 101 checks 0 failures"
+    ],
+    "scope": "Prepared independent three-member party, actual gz24k gate, separate authority, group/follow orders, 20 FPS, normal/accelerated speed, rendered and replicated progress; neutralized hostility. Not the reporter's save or a native comparison. Movement assertions pass; two GL texture diagnostics remain at shutdown.",
+    "evidence": "../mine-video/linux-mine-passage-presentation.json"
+  },
+  {
+    "area": "LiA CDoorY passage / Windows D3D12 under Wine",
+    "suite": "mine_passage_presentation",
+    "run": "mine-passage-video-windows-final",
+    "checks": 101,
+    "exit": 0,
+    "errors": [],
+    "summary": [
+      "MINE_PASSAGE_PRESENTATION 101 checks 0 failures"
+    ],
+    "scope": "Prepared independent three-member party, actual gz24k gate, separate authority, group/follow orders, 20 FPS, normal/accelerated speed, rendered and replicated progress; neutralized hostility. Not the reporter's save or a native comparison.",
+    "evidence": "../mine-video/windows-mine-passage-presentation.json"
+  }
+]

@@ -1,0 +1,59 @@
+{
+  "inventory_checks": "Catalogue files/markers and complete authority-command mapping both pass.",
+  "runs": {
+    "future-query-catalog": {
+      "selected": [
+        "quests/script_future_queries",
+        "quests/script_future_queries_astral"
+      ],
+      "complete": true,
+      "tests": [
+        {
+          "id": "quests/script_future_queries",
+          "status": "passed",
+          "checks": 1434,
+          "failures": 0,
+          "campaign": "cursed_lands"
+        },
+        {
+          "id": "quests/script_future_queries_astral",
+          "status": "passed",
+          "checks": 1257,
+          "failures": 0,
+          "campaign": "lost_in_astral"
+        }
+      ]
+    },
+    "future-query-console-catalog": {
+      "selected": [
+        "commands/console_commands",
+        "commands/console_god_mode",
+        "commands/console_god_mode_astral"
+      ],
+      "complete": true,
+      "tests": [
+        {
+          "id": "commands/console_commands",
+          "status": "passed",
+          "checks": 96,
+          "failures": 0,
+          "campaign": "cursed_lands"
+        },
+        {
+          "id": "commands/console_god_mode",
+          "status": "passed",
+          "checks": 98,
+          "failures": 0,
+          "campaign": "cursed_lands"
+        },
+        {
+          "id": "commands/console_god_mode_astral",
+          "status": "passed",
+          "checks": 98,
+          "failures": 0,
+          "campaign": "lost_in_astral"
+        }
+      ]
+    }
+  }
+}

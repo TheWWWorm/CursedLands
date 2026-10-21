@@ -1,0 +1,6961 @@
+{
+  "scope": "Native GS clock writes/deletion and the zone-entry daylight handoff.\n\nThe original interpreter, GS hash lookup/update/erase, clock query and the\nzone-entry modulo/setter instructions execute in Unicorn. Supplied boundaries\nare retained temporary strings, player lookup, locale storage, node release,\nand outgoing network/render notifications. Base-game hash capacity is supplied.\nMap file loading is not executed.\n",
+  "campaigns": {
+    "original": {
+      "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+      "locations": {
+        "world": "0x7aff50",
+        "scale": "0x79be4c",
+        "hour": "0x58eea0",
+        "rate": "0x58eee0",
+        "read": "0x460af0",
+        "release": "0x461710",
+        "zone_start": "0x57c5df",
+        "zone_end": "0x57c606",
+        "local_table": "0x78",
+        "notify": "0x58b6d0",
+        "render": "0x58ccd0",
+        "first": "0x404920",
+        "next": "0x404960",
+        "set": "0x66edd0",
+        "set_max": "0x66ee40"
+      },
+      "cases": [
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.25,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.5,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 6.0,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 6.0,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 45.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 21.0,
+                "gtime": 45.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.25,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.5,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 6.0,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 6.0,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 45.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 21.0,
+                "gtime": 45.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.25,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.5,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 45.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 21.0,
+                "gtime": 45.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.25,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.5,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 45.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 21.0,
+                "gtime": 45.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.25,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.5,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499969482421875,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499969482421875,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499969482421875,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.25,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.5,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499969482421875,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499969482421875,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499969482421875,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.2500001192092896,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.7648562788963318e-07,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.499999761581421,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.7648562788963318e-07,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 6.0,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 6.0,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 45.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 21.0,
+                "gtime": 45.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.25,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.5,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 6.0,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 6.0,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 45.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 21.0,
+                "gtime": 45.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.2500001192092896,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.7648562788963318e-07,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.499999761581421,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.7648562788963318e-07,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 45.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 21.0,
+                "gtime": 45.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.25,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.5,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 45.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 21.0,
+                "gtime": 45.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.2500001192092896,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.7648562788963318e-07,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.499999761581421,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.7648562788963318e-07,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499967098236084,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499967098236084,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499967098236084,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.25,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.5,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499969482421875,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499969482421875,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499969482421875,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "lost_in_astral": {
+      "sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff",
+      "locations": {
+        "world": "0x6a33d8",
+        "scale": "0x676a4c",
+        "hour": "0x4f0aa0",
+        "rate": "0x4f0ae0",
+        "read": "0x431d80",
+        "release": "0x5d8df0",
+        "zone_start": "0x4e1d2a",
+        "zone_end": "0x4e1d51",
+        "local_table": "0x78",
+        "notify": "0x4e6910",
+        "render": "0x4f01f0",
+        "first": "0x402250",
+        "next": "0x402290",
+        "set": "0x5943e0",
+        "set_max": "0x594450"
+      },
+      "cases": [
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.25,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.5,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 6.0,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 6.0,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 45.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 21.0,
+                "gtime": 45.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.25,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.5,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 6.0,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 6.0,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 45.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 21.0,
+                "gtime": 45.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.25,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.5,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 45.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 21.0,
+                "gtime": 45.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.25,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.5,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 45.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 21.0,
+                "gtime": 45.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.25,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.5,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499969482421875,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499969482421875,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499969482421875,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.25,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.5,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499969482421875,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499969482421875,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 0,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499969482421875,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.2500001192092896,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.7648562788963318e-07,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.499999761581421,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.7648562788963318e-07,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 6.0,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 6.0,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 6.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 45.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 21.0,
+                "gtime": 45.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.25,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.5,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 6.0,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 6.0,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 6.0,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 6.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 45.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 21.0,
+                "gtime": 45.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.2500001192092896,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.7648562788963318e-07,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.499999761581421,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.7648562788963318e-07,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 45.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 21.0,
+                "gtime": 45.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.25,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.5,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 11.75,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 35.75,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 35.75,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 45.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 21.0,
+                "gtime": 45.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.2500001192092896,
+                "gtime": -1.25,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.7648562788963318e-07,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.499999761581421,
+                "gtime": 50.5,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 11.75,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.7648562788963318e-07,
+                "gtime": 0.0,
+                "fixed": false,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499967098236084,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499967098236084,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": false,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 11.75,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499967098236084,
+                "gtime": 99.94999694824219,
+                "fixed": false,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": -1.25,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": -1.25,
+                "gtime": -1.25,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 19.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 19.0,
+                "gtime": 19.0,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVar",
+          "value": 50.5,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 2.5,
+                "gtime": 50.5,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSDelVar",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSDelVar",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 0.0,
+                "gtime": 0.0,
+                "fixed": true,
+                "present": false
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": -4.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499969482421875,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 0.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499969482421875,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        },
+        {
+          "now": 12345,
+          "initial": 99.94999694824219,
+          "fixed": true,
+          "op": "GSSetVarMax",
+          "value": 45.0,
+          "rows": [
+            {
+              "action": "initial",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "GSSetVarMax",
+              "state": {
+                "hour": 0.30000001192092896,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            },
+            {
+              "action": "zone_hour",
+              "state": {
+                "hour": 3.9499969482421875,
+                "gtime": 99.94999694824219,
+                "fixed": true,
+                "present": true
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

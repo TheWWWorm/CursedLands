@@ -34,6 +34,16 @@ for path in ROOT.rglob('*.gd'):
         if key and key not in entries:
             line = source[:match.start()].count('\n') + 1
             errors.append(f'{path.relative_to(ROOT)}:{line}: missing RU/DE key: {key}')
+# Console descriptions, button labels and typed argument hints are dynamic.
+console_catalog = (ROOT / 'ui/console_catalog.gd').read_text()
+console_keys = {'unit', 'text', 'number', 'Read an original script expression.', 'On', 'Off', 'Yes', 'No'}
+for match in re.finditer(r'^\s*(\[".*\]),$', console_catalog, re.M):
+    console_keys.add(json.loads(match[1])[1])
+console_ui = (ROOT / 'ui/game_console.gd').read_text()
+for match in re.finditer(r'_button\(header,(' + STRING + r'),(' + STRING + r')', console_ui):
+    console_keys.update(json.loads(s) for s in match.groups())
+for key in console_keys:
+    if key not in entries: errors.append(f'Console dynamic text missing RU/DE key: {key}')
 # Download cards and availability messages are selected dynamically.
 catalog_source = (ROOT / 'game/mod_catalog.gd').read_text()
 for pattern in (r'^const ANDROID_INSTALL_NOTE := (' + STRING + r')',

@@ -1,0 +1,284 @@
+[
+  {
+    "run": "landmarks",
+    "reason": "Initial launcher selected base data; a campaign flag cannot substitute for the LiA asset path. Excluded.",
+    "scratch_directory": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/mine-video-20261021/landmarks",
+    "result": null
+  },
+  {
+    "run": "routes-01",
+    "reason": "Fresh low-level party entered combat and died; later movement measurements were invalid. Replaced with explicitly neutralized hostility.",
+    "scratch_directory": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/mine-video-20261021/routes-01",
+    "result": {
+      "exit": 0,
+      "seconds": 20.63,
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/game",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/mine-video-20261021/routes.gd"
+      ],
+      "errors": [],
+      "summary": [
+        "MINE_VIDEO_ROUTE (134.0, 135.0) -> (149.0, 135.0) group [{ \"p\": [146.245681762695, 135.844284057617], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 0.64870154835553, \"motion_tick\": 12.0, \"failed\": false, \"hp\": -32.6345901489258, \"mana\": 8.68427454240262 }, { \"p\": [145.500442504883, 134.564697265625], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 0.64870154835553, \"motion_tick\": 21.0, \"failed\": false, \"hp\": -32.6345901489258, \"mana\": 4.844911106095 }, { \"p\": [143.5, 136.127136230469], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 0.64870154835553, \"motion_tick\": 2.0, \"failed\": false, \"hp\": -32.6345901489258, \"mana\": 10.329716131863 }]",
+        "MINE_VIDEO_ROUTE (134.0, 135.0) -> (149.0, 135.0) follow [{ \"p\": [134.0, 135.0], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 12.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }, { \"p\": [134.0, 136.5], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 21.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }, { \"p\": [133.75, 137.75], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 2.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }]",
+        "MINE_VIDEO_ROUTE (127.0, 136.0) -> (140.0, 135.0) group [{ \"p\": [127.0, 136.0], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 12.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }, { \"p\": [126.75, 136.75], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 21.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }, { \"p\": [126.25, 137.25], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 2.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }]",
+        "MINE_VIDEO_ROUTE (127.0, 136.0) -> (140.0, 135.0) follow [{ \"p\": [127.0, 136.0], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 12.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }, { \"p\": [126.75, 136.75], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 21.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }, { \"p\": [126.25, 137.25], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 2.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }]",
+        "MINE_VIDEO_ROUTE (140.0, 118.0) -> (142.0, 111.0) group [{ \"p\": [140.0, 118.0], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 12.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }, { \"p\": [140.0, 119.5], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 21.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }, { \"p\": [140.25, 120.75], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 2.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }]",
+        "MINE_VIDEO_ROUTE (140.0, 118.0) -> (142.0, 111.0) follow [{ \"p\": [140.0, 118.0], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 12.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }, { \"p\": [140.0, 119.5], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 21.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }, { \"p\": [140.25, 120.75], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 2.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }]",
+        "MINE_VIDEO_ROUTE (134.0, 117.0) -> (142.0, 112.0) group [{ \"p\": [134.0, 117.0], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 12.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }, { \"p\": [134.0, 118.5], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 21.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }, { \"p\": [134.75, 119.75], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 2.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }]",
+        "MINE_VIDEO_ROUTE (134.0, 117.0) -> (142.0, 112.0) follow [{ \"p\": [134.0, 117.0], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 12.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }, { \"p\": [134.0, 118.5], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 21.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }, { \"p\": [134.75, 119.75], \"path\": 0, \"action\": \"death\", \"speed\": 0.0, \"base\": 4.72545524448639, \"motion_tick\": 2.0, \"failed\": false, \"hp\": 13.7120122909546, \"mana\": 13.7120125644199 }]"
+      ]
+    }
+  },
+  {
+    "run": "presentation-01",
+    "reason": "Aborted after fixture assertions: synthetic hero record aliasing, loading not fully settled, and an unsupported 2 m peak packet-to-draw lag bound. Not an accepted movement run.",
+    "scratch_directory": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/mine-video-20261021/presentation-01",
+    "result": {
+      "exit": -15,
+      "seconds": 42.49,
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/game",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--rendering-driver",
+        "opengl3",
+        "--windowed",
+        "--resolution",
+        "960x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/tools/tests/mine_passage_presentation.gd"
+      ],
+      "errors": [
+        "FAIL displayed movement tracks replicated position",
+        "FAIL displayed movement tracks replicated position",
+        "FAIL displayed movement tracks replicated position"
+      ],
+      "summary": []
+    }
+  },
+  {
+    "run": "presentation-02",
+    "reason": "Repeated Human Hero records aliased through the legacy prototype fallback. Also used the unsupported peak-lag bound. Later fixtures verify saved and restored distinct positions and sustained displacement instead.",
+    "scratch_directory": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/mine-video-20261021/presentation-02",
+    "result": {
+      "exit": 1,
+      "seconds": 61.94,
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/game",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--rendering-driver",
+        "opengl3",
+        "--windowed",
+        "--resolution",
+        "960x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/tools/tests/mine_passage_presentation.gd"
+      ],
+      "errors": [
+        "FAIL displayed movement tracks replicated position",
+        "FAIL displayed movement tracks replicated position",
+        "FAIL displayed movement tracks replicated position",
+        "FAIL displayed movement tracks replicated position",
+        "FAIL displayed movement tracks replicated position",
+        "FAIL displayed movement tracks replicated position",
+        "FAIL displayed movement tracks replicated position",
+        "ERROR: Texture with GL ID of 114: leaked 349524 bytes.",
+        "ERROR: Texture with GL ID of 115: leaked 349524 bytes."
+      ],
+      "summary": [
+        "MINE_PASSAGE_PRESENTATION 68 checks 7 failures"
+      ]
+    }
+  },
+  {
+    "run": "presentation-qualified",
+    "reason": "A map/spawn record was bound instead of the persistent hero record, so prepared positions were not saved and the party appeared at the entrance. Startup snapshots were not fully settled. Excluded.",
+    "scratch_directory": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/mine-video-20261021/presentation-qualified",
+    "result": {
+      "exit": 1,
+      "seconds": 58.7,
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/game",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--rendering-driver",
+        "opengl3",
+        "--windowed",
+        "--resolution",
+        "960x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/tools/tests/mine_passage_presentation.gd"
+      ],
+      "errors": [
+        "FAIL distinct prepared party position survives save/load",
+        "FAIL distinct prepared party position survives save/load",
+        "FAIL distinct prepared party position survives save/load",
+        "FAIL distinct prepared party position survives save/load",
+        "FAIL distinct prepared party position survives save/load",
+        "FAIL distinct prepared party position survives save/load",
+        "FAIL simulation keeps requested wall-clock rate",
+        "FAIL distinct prepared party position survives save/load",
+        "FAIL distinct prepared party position survives save/load",
+        "FAIL distinct prepared party position survives save/load",
+        "FAIL distinct prepared party position survives save/load",
+        "FAIL distinct prepared party position survives save/load",
+        "FAIL distinct prepared party position survives save/load",
+        "FAIL simulation keeps requested wall-clock rate",
+        "ERROR: Texture with GL ID of 114: leaked 349524 bytes.",
+        "ERROR: Texture with GL ID of 115: leaked 349524 bytes."
+      ],
+      "summary": [
+        "MINE_PASSAGE_PRESENTATION 92 checks 14 failures"
+      ]
+    }
+  },
+  {
+    "run": "presentation-distinct",
+    "reason": "Base-campaign companion prototype names were unavailable in LiA, leaving only one actor. Replaced by independently saved synthetic companions with a verified LiA prototype.",
+    "scratch_directory": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/mine-video-20261021/presentation-distinct",
+    "result": {
+      "exit": 1,
+      "seconds": 57.69,
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/game",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--rendering-driver",
+        "opengl3",
+        "--windowed",
+        "--resolution",
+        "960x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/tools/tests/mine_passage_presentation.gd"
+      ],
+      "errors": [
+        "FAIL three heroes in the real frontend replica",
+        "FAIL three heroes in the real frontend replica",
+        "FAIL simulation keeps requested wall-clock rate",
+        "FAIL three heroes in the real frontend replica",
+        "FAIL three heroes in the real frontend replica",
+        "FAIL simulation keeps requested wall-clock rate",
+        "ERROR: Texture with GL ID of 114: leaked 349524 bytes.",
+        "ERROR: Texture with GL ID of 115: leaked 349524 bytes."
+      ],
+      "summary": [
+        "MINE_PASSAGE_PRESENTATION 45 checks 6 failures"
+      ]
+    }
+  },
+  {
+    "run": "presentation-companions",
+    "reason": "All 100 movement assertions passed. Linux emitted two GL texture warnings at shutdown; superseded by the final fixture with animation sampling and teardown cleanup.",
+    "scratch_directory": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/mine-video-20261021/presentation-companions",
+    "result": {
+      "exit": 0,
+      "seconds": 70.93,
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/game",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--rendering-driver",
+        "opengl3",
+        "--windowed",
+        "--resolution",
+        "960x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/tools/tests/mine_passage_presentation.gd"
+      ],
+      "errors": [
+        "ERROR: Texture with GL ID of 114: leaked 349524 bytes.",
+        "ERROR: Texture with GL ID of 115: leaked 349524 bytes."
+      ],
+      "summary": [
+        "MINE_PASSAGE_PRESENTATION 100 checks 0 failures"
+      ]
+    }
+  },
+  {
+    "run": "linux-final",
+    "reason": "All 101 movement assertions passed. Two GL texture warnings remained at shutdown. Explicit procedural-cache teardown in the final run did not remove them; retained as an unresolved renderer diagnostic, not a gameplay failure or an accepted clean pass.",
+    "scratch_directory": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/mine-video-20261021/linux-final",
+    "result": {
+      "exit": 0,
+      "seconds": 90.76,
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/game",
+        "--audio-driver",
+        "Dummy",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--rendering-driver",
+        "opengl3",
+        "--windowed",
+        "--resolution",
+        "960x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/tools/tests/mine_passage_presentation.gd"
+      ],
+      "errors": [
+        "ERROR: Texture with GL ID of 114: leaked 349524 bytes.",
+        "ERROR: Texture with GL ID of 115: leaked 349524 bytes."
+      ],
+      "summary": [
+        "MINE_PASSAGE_PRESENTATION 101 checks 0 failures"
+      ]
+    }
+  }
+]

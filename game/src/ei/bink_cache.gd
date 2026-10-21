@@ -291,7 +291,7 @@ func _decode_audio(src: String) -> void:
 ## A finished cache file opened for playback, or null when `file` is missing,
 ## incomplete or not a cache. Returns {file, width, height, frames, fps,
 ## offsets, pcm, audio_rate, audio_channels}.
-static func open_cache(file: String) -> Dictionary:
+static func open_cache(file: String, metadata_only := false) -> Dictionary:
 	var f := FileAccess.open(file, FileAccess.READ)
 	if f == null or f.get_length() < HEADER or f.get_32() != MAGIC or f.get_32() != 1:
 		return {}
@@ -309,6 +309,7 @@ static func open_cache(file: String) -> Dictionary:
 	var n: int = r.frames
 	if index_off + (n + 1) * 8 > f.get_length():
 		return {}
+	if metadata_only: return r
 	f.seek(index_off)
 	var offs := PackedInt64Array()
 	offs.resize(n + 1)

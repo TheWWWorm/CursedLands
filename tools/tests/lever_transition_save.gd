@@ -88,10 +88,10 @@ func metadata_controls() -> void:
 	check(near(ls.figure_t(GATE),native_pose(0,1,duration,duration+0.25)),"client snapshot resumes the same remaining authored duration")
 	step(0.75)
 	check(near(ls.figure_t(GATE),1),"default transition ends at its original 23-tick deadline")
-	check(ls.export_row(GATE).size()==3,"finished ordinary transition leaves no stale optional timing")
+	check(not ls.export_row(GATE)[3].has('kind') and not ls.export_row(GATE)[3].has('total'),"finished ordinary transition leaves no stale optional timing")
 	s.world.authority = true
 	call_state(0,10.0); step(2.0); call_state(1,0.0)
-	check(ls.export_row(GATE).size()==3 and near(ls.figure_t(GATE),1),"new immediate command cancels obsolete transition metadata")
+	check(not ls.export_row(GATE)[3].has('kind') and not ls.export_row(GATE)[3].has('total') and near(ls.figure_t(GATE),1),"new immediate command cancels obsolete transition metadata")
 	ls.restore_row(GATE,[1,0.25,false])
 	check(near(ls.figure_t(GATE),0.25) and near(ls.physical_t(GATE),0.25) and not s.world.levers[GATE].enabled,"legacy rows preserve their settled interpretation")
 	var good := {"kind":"ordinary","v":1,"from":0.0,"target":1.0,"ticks":10.0,"elapsed":4.0}
@@ -104,11 +104,13 @@ func metadata_controls() -> void:
 		ls.restore_row(GATE,[1,0.25,true,bad[i]])
 		step(2.0)
 		check(near(ls.figure_t(GATE),0.25) and near(ls.physical_t(GATE),0.25),"malformed/unknown transition tail ignored "+str(i))
-	# The existing drawbridge serialization/clock importer must remain byte-for-byte compatible.
+	# Permission metadata must not alter the existing drawbridge motion fields.
 	var fast := {"v":1,"seq":7,"stage":0,"physical":1.0,"from":1.0,"target":0.0,"elapsed":3,"total":6}
 	ls.restore_row(GATE,[0,0.5,true,fast])
 	var retained := ls.export_row(GATE)
-	check(retained.size()==4 and retained[3]==fast,"existing drawbridge transition payload remains unchanged")
+	var retained_motion: Dictionary = retained[3].duplicate()
+	retained_motion.erase("use_v")
+	check(retained.size()==4 and retained_motion==fast,"existing drawbridge transition fields remain unchanged")
 	for i in 3:
 		s.world._logic_step += 1; ls.tick()
 	check(near(ls.figure_t(GATE),0) and near(ls.physical_t(GATE),0),"existing drawbridge remaining ticks still commit normally")

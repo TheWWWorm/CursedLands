@@ -209,7 +209,7 @@ static func preconvert(names: Array) -> void:
 	for n: String in names:
 		n = n.to_lower()
 		var cached := ProjectSettings.globalize_path("user://movies/%s.eiv" % n)
-		if _converters.has(n) or not EIBinkCache.open_cache(cached).is_empty():
+		if _converters.has(n) or not EIBinkCache.open_cache(cached, true).is_empty():
 			continue
 		var src := GameData.root.path_join("movies/%s.bik" % n)
 		if GameData.root.is_empty() or not GameFiles.exists(src):

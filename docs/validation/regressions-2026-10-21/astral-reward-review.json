@@ -1,0 +1,659 @@
+{
+  "scope": "Authored LiA placements, including reachable AddMob populations; one-time additions, not original-game parity.",
+  "selection": "At least four authored levels above the 75th percentile of already-rewarded placements in the same zone, and zero XP or no authored loot. Reviewed explicit IDs; no runtime strength inference.",
+  "zones_audited": 40,
+  "placements_audited": 5088,
+  "exclusions": [
+    "Friendly final-battle armies and ordinary creatures outside the strength threshold.",
+    "High-level actors in late-game areas where that level is normal.",
+    "Dynamically spawned copies without reviewed map IDs.",
+    "Existing loot is retained, including zero loot after pickpocketing."
+  ],
+  "additions": [
+    {
+      "zone": "gz1g",
+      "prototype": "zonezero Human Fighter1 M",
+      "title": "Охранник",
+      "level": 15,
+      "local_rewarded_enemy_level_75th_percentile": 1,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 1,
+      "added_xp": 42,
+      "added_loot": [
+        "money [84]"
+      ]
+    },
+    {
+      "zone": "gz1g",
+      "prototype": "zonezero Human Fighter2 M",
+      "title": "Охранник",
+      "level": 15,
+      "local_rewarded_enemy_level_75th_percentile": 1,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 1,
+      "added_xp": 42,
+      "added_loot": [
+        "money [84]"
+      ]
+    },
+    {
+      "zone": "gz1g",
+      "prototype": "zonezero Human Fighter3 M",
+      "title": "Гвардеец Фиреза",
+      "level": 20,
+      "local_rewarded_enemy_level_75th_percentile": 1,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 1,
+      "added_xp": 125,
+      "added_loot": [
+        "money [250]"
+      ]
+    },
+    {
+      "zone": "gz1h",
+      "prototype": "q11h Human Guard M",
+      "title": "Охранник",
+      "level": 17,
+      "local_rewarded_enemy_level_75th_percentile": 4,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 3,
+      "added_xp": 54,
+      "added_loot": [
+        "money [108]"
+      ]
+    },
+    {
+      "zone": "gz1h",
+      "prototype": "zone1 DragonBlue",
+      "title": "Черный дракон",
+      "level": 19,
+      "local_rewarded_enemy_level_75th_percentile": 4,
+      "original_xp": 0.0,
+      "original_loot": true,
+      "placements": 1,
+      "added_xp": 100,
+      "added_loot": []
+    },
+    {
+      "zone": "gz1h",
+      "prototype": "zone1 Human Archer1 F",
+      "title": "Рядовая стражница",
+      "level": 18,
+      "local_rewarded_enemy_level_75th_percentile": 4,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 5,
+      "added_xp": 75,
+      "added_loot": [
+        "money [150]"
+      ]
+    },
+    {
+      "zone": "gz1h",
+      "prototype": "zone1 Human Archer2 F",
+      "title": "Сержант стражник",
+      "level": 19,
+      "local_rewarded_enemy_level_75th_percentile": 4,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 7,
+      "added_xp": 100,
+      "added_loot": [
+        "money [200]"
+      ]
+    },
+    {
+      "zone": "gz1h",
+      "prototype": "zone1 Human Expeditor M",
+      "title": "Начальник экспедиции",
+      "level": 19,
+      "local_rewarded_enemy_level_75th_percentile": 4,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 1,
+      "added_xp": 100,
+      "added_loot": [
+        "money [200]"
+      ]
+    },
+    {
+      "zone": "gz1h",
+      "prototype": "zone1 Human Fighter0 M",
+      "title": "Охранник",
+      "level": 17,
+      "local_rewarded_enemy_level_75th_percentile": 4,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 5,
+      "added_xp": 54,
+      "added_loot": [
+        "money [108]"
+      ]
+    },
+    {
+      "zone": "gz1h",
+      "prototype": "zone1 Human Fighter1 M",
+      "title": "Рядовой стражник",
+      "level": 18,
+      "local_rewarded_enemy_level_75th_percentile": 4,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 52,
+      "added_xp": 75,
+      "added_loot": [
+        "money [150]"
+      ]
+    },
+    {
+      "zone": "gz1h",
+      "prototype": "zone1 Human Fighter2 M",
+      "title": "Сержант стражи",
+      "level": 19,
+      "local_rewarded_enemy_level_75th_percentile": 4,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 13,
+      "added_xp": 100,
+      "added_loot": [
+        "money [200]"
+      ]
+    },
+    {
+      "zone": "gz1h",
+      "prototype": "zone1 Human Fighter3 M",
+      "title": "Лейтенант стражи",
+      "level": 19,
+      "local_rewarded_enemy_level_75th_percentile": 4,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 6,
+      "added_xp": 100,
+      "added_loot": [
+        "money [200]"
+      ]
+    },
+    {
+      "zone": "gz1h",
+      "prototype": "zone1 Human Mage1 F",
+      "title": "Неопытный маг",
+      "level": 18,
+      "local_rewarded_enemy_level_75th_percentile": 4,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 4,
+      "added_xp": 75,
+      "added_loot": [
+        "money [150]"
+      ]
+    },
+    {
+      "zone": "gz1h",
+      "prototype": "zone1 Human Mage2 F",
+      "title": "Маг",
+      "level": 19,
+      "local_rewarded_enemy_level_75th_percentile": 4,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 2,
+      "added_xp": 100,
+      "added_loot": [
+        "money [200]"
+      ]
+    },
+    {
+      "zone": "gz1h",
+      "prototype": "zone1 Human Map M",
+      "title": "Капитан",
+      "level": 19,
+      "local_rewarded_enemy_level_75th_percentile": 4,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 2,
+      "added_xp": 100,
+      "added_loot": [
+        "money [200]"
+      ]
+    },
+    {
+      "zone": "gz1h",
+      "prototype": "zone1 Human PortalKey M",
+      "title": "Генерал Гейм Эррор",
+      "level": 19,
+      "local_rewarded_enemy_level_75th_percentile": 4,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 1,
+      "added_xp": 100,
+      "added_loot": [
+        "money [200]"
+      ]
+    },
+    {
+      "zone": "gz1h",
+      "prototype": "zone1 JunEvil",
+      "title": "Ужас",
+      "level": 100,
+      "local_rewarded_enemy_level_75th_percentile": 4,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 1,
+      "added_xp": 1000,
+      "added_loot": [
+        "material.mithrill [4]",
+        "money [2000]"
+      ]
+    },
+    {
+      "zone": "gz1h",
+      "prototype": "zone1 Zombie M",
+      "title": "Зомбированный воин",
+      "level": 19,
+      "local_rewarded_enemy_level_75th_percentile": 4,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 2,
+      "added_xp": 100,
+      "added_loot": [
+        "money [200]"
+      ]
+    },
+    {
+      "zone": "gz2h",
+      "prototype": "q5h Human Kapr M",
+      "title": "Начальник стражи",
+      "level": 19,
+      "local_rewarded_enemy_level_75th_percentile": 5,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 1,
+      "added_xp": 100,
+      "added_loot": [
+        "money [200]"
+      ]
+    },
+    {
+      "zone": "gz2h",
+      "prototype": "zone2 DragonBlue",
+      "title": "Черный дракон",
+      "level": 19,
+      "local_rewarded_enemy_level_75th_percentile": 5,
+      "original_xp": 0.0,
+      "original_loot": true,
+      "placements": 1,
+      "added_xp": 100,
+      "added_loot": []
+    },
+    {
+      "zone": "gz2h",
+      "prototype": "zone2 Human Archer1 F",
+      "title": "Рядовая стражница",
+      "level": 18,
+      "local_rewarded_enemy_level_75th_percentile": 5,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 2,
+      "added_xp": 75,
+      "added_loot": [
+        "money [150]"
+      ]
+    },
+    {
+      "zone": "gz2h",
+      "prototype": "zone2 Human Fighter1 M",
+      "title": "Рядовой стражник",
+      "level": 18,
+      "local_rewarded_enemy_level_75th_percentile": 5,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 13,
+      "added_xp": 75,
+      "added_loot": [
+        "money [150]"
+      ]
+    },
+    {
+      "zone": "gz2h",
+      "prototype": "zone2 Human Fighter2 M",
+      "title": "Сержант стражи",
+      "level": 19,
+      "local_rewarded_enemy_level_75th_percentile": 5,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 9,
+      "added_xp": 100,
+      "added_loot": [
+        "money [200]"
+      ]
+    },
+    {
+      "zone": "gz2h",
+      "prototype": "zone2 Human Mage3 F",
+      "title": "Маг",
+      "level": 19,
+      "local_rewarded_enemy_level_75th_percentile": 5,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 2,
+      "added_xp": 100,
+      "added_loot": [
+        "money [200]"
+      ]
+    },
+    {
+      "zone": "gz3h",
+      "prototype": "zone3 DragonBrown",
+      "title": "Красный дракон",
+      "level": 19,
+      "local_rewarded_enemy_level_75th_percentile": 6,
+      "original_xp": 0.0,
+      "original_loot": true,
+      "placements": 1,
+      "added_xp": 100,
+      "added_loot": []
+    },
+    {
+      "zone": "gz3h",
+      "prototype": "zone3 Human Archer1 F",
+      "title": "Рядовая стражница",
+      "level": 18,
+      "local_rewarded_enemy_level_75th_percentile": 6,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 10,
+      "added_xp": 75,
+      "added_loot": [
+        "money [150]"
+      ]
+    },
+    {
+      "zone": "gz3h",
+      "prototype": "zone3 Human Fighter1 M",
+      "title": "Охранник",
+      "level": 17,
+      "local_rewarded_enemy_level_75th_percentile": 6,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 10,
+      "added_xp": 54,
+      "added_loot": [
+        "money [108]"
+      ]
+    },
+    {
+      "zone": "gz3h",
+      "prototype": "zone3 Human Fighter2 M",
+      "title": "Рядовой стражник",
+      "level": 18,
+      "local_rewarded_enemy_level_75th_percentile": 6,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 12,
+      "added_xp": 75,
+      "added_loot": [
+        "money [150]"
+      ]
+    },
+    {
+      "zone": "gz3h",
+      "prototype": "zone3 Human Fighter3 M",
+      "title": "Лейтенант стражи",
+      "level": 19,
+      "local_rewarded_enemy_level_75th_percentile": 6,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 3,
+      "added_xp": 100,
+      "added_loot": [
+        "money [200]"
+      ]
+    },
+    {
+      "zone": "gz3h",
+      "prototype": "zone3 Human Mage1 F",
+      "title": "Неопытный маг",
+      "level": 18,
+      "local_rewarded_enemy_level_75th_percentile": 6,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 6,
+      "added_xp": 75,
+      "added_loot": [
+        "money [150]"
+      ]
+    },
+    {
+      "zone": "gz3h",
+      "prototype": "zone3 Human Mage2 F",
+      "title": "Маг",
+      "level": 19,
+      "local_rewarded_enemy_level_75th_percentile": 6,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 2,
+      "added_xp": 100,
+      "added_loot": [
+        "money [200]"
+      ]
+    },
+    {
+      "zone": "gz3h",
+      "prototype": "zone3 Zombie1 F",
+      "title": "Зомбированная охранница",
+      "level": 19,
+      "local_rewarded_enemy_level_75th_percentile": 6,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 10,
+      "added_xp": 100,
+      "added_loot": [
+        "money [200]"
+      ]
+    },
+    {
+      "zone": "gz3h",
+      "prototype": "zone3 Zombie1 M",
+      "title": "Зомбированный воин",
+      "level": 19,
+      "local_rewarded_enemy_level_75th_percentile": 6,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 10,
+      "added_xp": 100,
+      "added_loot": [
+        "money [200]"
+      ]
+    },
+    {
+      "zone": "gz5h",
+      "prototype": "zone5 Human Archer1 F",
+      "title": "Рядовая стражница",
+      "level": 18,
+      "local_rewarded_enemy_level_75th_percentile": 6,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 2,
+      "added_xp": 75,
+      "added_loot": [
+        "money [150]"
+      ]
+    },
+    {
+      "zone": "gz5h",
+      "prototype": "zone5 Human Fighter1 M",
+      "title": "Охранник",
+      "level": 17,
+      "local_rewarded_enemy_level_75th_percentile": 6,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 4,
+      "added_xp": 54,
+      "added_loot": [
+        "money [108]"
+      ]
+    },
+    {
+      "zone": "gz5h",
+      "prototype": "zone5 Human Fighter2 M",
+      "title": "Рядовой стражник",
+      "level": 18,
+      "local_rewarded_enemy_level_75th_percentile": 6,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 3,
+      "added_xp": 75,
+      "added_loot": [
+        "money [150]"
+      ]
+    },
+    {
+      "zone": "gz5h",
+      "prototype": "zone5 Human Mage1 F",
+      "title": "Неопытный маг",
+      "level": 18,
+      "local_rewarded_enemy_level_75th_percentile": 6,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 1,
+      "added_xp": 75,
+      "added_loot": [
+        "money [150]"
+      ]
+    },
+    {
+      "zone": "gz3d1",
+      "prototype": "zone3dun1 Human Fighter M",
+      "title": "Тюремщик",
+      "level": 17,
+      "local_rewarded_enemy_level_75th_percentile": 4,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 6,
+      "added_xp": 54,
+      "added_loot": [
+        "money [108]"
+      ]
+    },
+    {
+      "zone": "gz7g",
+      "prototype": "zone7 Elemental",
+      "title": "Элементаль-страж",
+      "level": 28,
+      "local_rewarded_enemy_level_75th_percentile": 13,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 1,
+      "added_xp": 750,
+      "added_loot": [
+        "material.mithrill [2]",
+        "money [750]"
+      ]
+    },
+    {
+      "zone": "gz9g",
+      "prototype": "zone9 DragonGreen",
+      "title": "Зеленый дракон",
+      "level": 24,
+      "local_rewarded_enemy_level_75th_percentile": 11,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 2,
+      "added_xp": 300,
+      "added_loot": [
+        "material.dragon red bones [2]",
+        "money [500]"
+      ]
+    },
+    {
+      "zone": "gz11g",
+      "prototype": "zone11 Cyclop",
+      "title": "Старый циклоп",
+      "level": 24,
+      "local_rewarded_enemy_level_75th_percentile": 10,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 1,
+      "added_xp": 300,
+      "added_loot": [
+        "money [1000]"
+      ]
+    },
+    {
+      "zone": "gz11g",
+      "prototype": "zone11 DragonBlue",
+      "title": "Синий дракон",
+      "level": 24,
+      "local_rewarded_enemy_level_75th_percentile": 10,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 4,
+      "added_xp": 300,
+      "added_loot": [
+        "material.dragon red bones [2]",
+        "money [500]"
+      ]
+    },
+    {
+      "zone": "gz11g",
+      "prototype": "zone11 DragonGreen",
+      "title": "Зеленый дракон",
+      "level": 24,
+      "local_rewarded_enemy_level_75th_percentile": 10,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 1,
+      "added_xp": 300,
+      "added_loot": [
+        "material.dragon red bones [2]",
+        "money [500]"
+      ]
+    },
+    {
+      "zone": "gz11d1",
+      "prototype": "zone11dun1 LizardMonstr",
+      "title": "Страж гробницы",
+      "level": 24,
+      "local_rewarded_enemy_level_75th_percentile": 13,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 1,
+      "added_xp": 300,
+      "added_loot": [
+        "money [600]"
+      ]
+    },
+    {
+      "zone": "gz14g",
+      "prototype": "zone14 Golem Horizontal",
+      "title": "Голем",
+      "level": 28,
+      "local_rewarded_enemy_level_75th_percentile": 17,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 15,
+      "added_xp": 500,
+      "added_loot": [
+        "material.mithrill [2]",
+        "money [500]"
+      ]
+    },
+    {
+      "zone": "gz14g",
+      "prototype": "zone14 Golem Vertical",
+      "title": "Голем",
+      "level": 28,
+      "local_rewarded_enemy_level_75th_percentile": 17,
+      "original_xp": 0.0,
+      "original_loot": false,
+      "placements": 6,
+      "added_xp": 500,
+      "added_loot": [
+        "material.mithrill [2]",
+        "money [500]"
+      ]
+    }
+  ]
+}

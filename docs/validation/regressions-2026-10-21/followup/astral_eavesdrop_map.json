@@ -1,0 +1,7104 @@
+{
+	"areas": {
+		"3": [
+			"(158.0, 73.0, 5.0)"
+		],
+		"4": [
+			"(153.0, 66.0, 3.5)"
+		],
+		"5": [
+			"(110.0, 227.0, 10.0)"
+		],
+		"6": [
+			"(126.0, 88.0, 1.0)"
+		]
+	},
+	"checks": 1351,
+	"failures": [],
+	"observations": [
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": true,
+			"point": [
+				147.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": true,
+			"point": [
+				149.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": true,
+			"point": [
+				151.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": true,
+			"point": [
+				153.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": true,
+			"point": [
+				147.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": true,
+			"point": [
+				149.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": true,
+			"point": [
+				151.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": true,
+			"point": [
+				153.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": true,
+			"point": [
+				149.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": true,
+			"point": [
+				151.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": true,
+			"point": [
+				153.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 12.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": true,
+			"point": [
+				149.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": true,
+			"point": [
+				151.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": true,
+			"point": [
+				153.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 0,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": true,
+			"point": [
+				151.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": true,
+			"point": [
+				153.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 1,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				67.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				69.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				71.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				73.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				75.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				77.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				152.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				154.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				156.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				158.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				160.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				162.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				164.0,
+				79.0
+			],
+			"stage": "discovery",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				60.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				62.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": true,
+			"point": [
+				151.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": true,
+			"point": [
+				153.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				64.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				66.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": true,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				68.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				70.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": false
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				147.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				149.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				151.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				153.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				155.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				157.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		},
+		{
+			"fires": false,
+			"hour": 23.0,
+			"noticed": false,
+			"point": [
+				159.0,
+				72.0
+			],
+			"stage": "listening",
+			"stance": 2,
+			"walkable": true
+		}
+	],
+	"speakers": [
+		{
+			"facing": -1.5707963267949,
+			"name": "q12h Human Citizen M-150088",
+			"pos": [
+				153.0,
+				65.0
+			],
+			"prototype": "q12h Human Citizen M",
+			"sight": 8.5,
+			"uid": 1012004
+		},
+		{
+			"facing": -1.5707963267949,
+			"name": "q12h Human Citizen M-150088",
+			"pos": [
+				153.0,
+				65.0
+			],
+			"prototype": "q12h Human Citizen M",
+			"sight": 8.5,
+			"uid": 1012005
+		}
+	],
+	"usable": {
+		"discovery": 90,
+		"listening": 24
+	}
+}

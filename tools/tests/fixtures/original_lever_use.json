@@ -1,0 +1,6565 @@
+{
+  "scope": "Replay native lever eligibility, use consumption, state reset and re-enable.\n\nBoth original x86 executables run in Unicorn. The permission query executes\nwithout hooks; the use handler consumes a supplied skill verdict. SetState's\ninteger transition executes with a supplied zero duration and an offline world\nthat omits navigation/render updates. Replication notifications are stubbed.\nThis observes logical state and permission, not animation, collision or UI.\n",
+  "campaigns": {
+    "original": {
+      "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+      "locations": {
+        "eligible": "0x52bb00",
+        "use": "0x52bb50",
+        "skill": "0x522a80",
+        "state": "0x52b7a0",
+        "enable": "0x52bad0",
+        "world": "0x455950",
+        "notify": "0x50e9f0"
+      },
+      "eligibility": [
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": true
+          }
+        }
+      ],
+      "sequences": [
+        {
+          "states": 2,
+          "cycled": 0,
+          "success": false,
+          "steps": [
+            {
+              "action": "initial",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "use",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              },
+              "success": false
+            },
+            {
+              "action": "reset",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "enable_at_end",
+              "expected": {
+                "state": 1,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "disable",
+              "expected": {
+                "state": 1,
+                "enabled": false,
+                "usable": false
+              }
+            }
+          ]
+        },
+        {
+          "states": 2,
+          "cycled": 0,
+          "success": true,
+          "steps": [
+            {
+              "action": "initial",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "use",
+              "expected": {
+                "state": 1,
+                "enabled": false,
+                "usable": false
+              },
+              "success": true
+            },
+            {
+              "action": "reset",
+              "expected": {
+                "state": 0,
+                "enabled": false,
+                "usable": false
+              }
+            },
+            {
+              "action": "enable_at_end",
+              "expected": {
+                "state": 1,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "disable",
+              "expected": {
+                "state": 1,
+                "enabled": false,
+                "usable": false
+              }
+            }
+          ]
+        },
+        {
+          "states": 2,
+          "cycled": 1,
+          "success": false,
+          "steps": [
+            {
+              "action": "initial",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "use",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              },
+              "success": false
+            },
+            {
+              "action": "reset",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "enable_at_end",
+              "expected": {
+                "state": 1,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "disable",
+              "expected": {
+                "state": 1,
+                "enabled": false,
+                "usable": false
+              }
+            }
+          ]
+        },
+        {
+          "states": 2,
+          "cycled": 1,
+          "success": true,
+          "steps": [
+            {
+              "action": "initial",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "use",
+              "expected": {
+                "state": 1,
+                "enabled": false,
+                "usable": false
+              },
+              "success": true
+            },
+            {
+              "action": "reset",
+              "expected": {
+                "state": 0,
+                "enabled": false,
+                "usable": false
+              }
+            },
+            {
+              "action": "enable_at_end",
+              "expected": {
+                "state": 1,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "disable",
+              "expected": {
+                "state": 1,
+                "enabled": false,
+                "usable": false
+              }
+            }
+          ]
+        },
+        {
+          "states": 3,
+          "cycled": 0,
+          "success": false,
+          "steps": [
+            {
+              "action": "initial",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "use",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              },
+              "success": false
+            },
+            {
+              "action": "reset",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "enable_at_end",
+              "expected": {
+                "state": 2,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "disable",
+              "expected": {
+                "state": 2,
+                "enabled": false,
+                "usable": false
+              }
+            }
+          ]
+        },
+        {
+          "states": 3,
+          "cycled": 0,
+          "success": true,
+          "steps": [
+            {
+              "action": "initial",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "use",
+              "expected": {
+                "state": 1,
+                "enabled": false,
+                "usable": false
+              },
+              "success": true
+            },
+            {
+              "action": "reset",
+              "expected": {
+                "state": 0,
+                "enabled": false,
+                "usable": false
+              }
+            },
+            {
+              "action": "enable_at_end",
+              "expected": {
+                "state": 2,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "disable",
+              "expected": {
+                "state": 2,
+                "enabled": false,
+                "usable": false
+              }
+            }
+          ]
+        },
+        {
+          "states": 3,
+          "cycled": 1,
+          "success": false,
+          "steps": [
+            {
+              "action": "initial",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "use",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              },
+              "success": false
+            },
+            {
+              "action": "reset",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "enable_at_end",
+              "expected": {
+                "state": 2,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "disable",
+              "expected": {
+                "state": 2,
+                "enabled": false,
+                "usable": false
+              }
+            }
+          ]
+        },
+        {
+          "states": 3,
+          "cycled": 1,
+          "success": true,
+          "steps": [
+            {
+              "action": "initial",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "use",
+              "expected": {
+                "state": 1,
+                "enabled": false,
+                "usable": false
+              },
+              "success": true
+            },
+            {
+              "action": "reset",
+              "expected": {
+                "state": 0,
+                "enabled": false,
+                "usable": false
+              }
+            },
+            {
+              "action": "enable_at_end",
+              "expected": {
+                "state": 2,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "disable",
+              "expected": {
+                "state": 2,
+                "enabled": false,
+                "usable": false
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "lost_in_astral": {
+      "sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff",
+      "locations": {
+        "eligible": "0x4ab3b0",
+        "use": "0x4ad5e0",
+        "skill": "0x4a68b0",
+        "state": "0x4ad2e0",
+        "enable": "0x4ab370",
+        "world": "0x432210",
+        "notify": "0x498bd0"
+      },
+      "eligibility": [
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 1,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 1,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 2,
+            "state": 1,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 1,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 2,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 3,
+            "state": 2,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 2,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 0,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 0,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 0,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 0,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              1,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              5,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              8,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": true
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": false
+          },
+          "expected": {
+            "state": 3,
+            "enabled": false,
+            "usable": false
+          }
+        },
+        {
+          "input": {
+            "states": 4,
+            "state": 3,
+            "cycled": 1,
+            "science": [
+              15,
+              0,
+              0
+            ],
+            "enabled": true
+          },
+          "expected": {
+            "state": 3,
+            "enabled": true,
+            "usable": true
+          }
+        }
+      ],
+      "sequences": [
+        {
+          "states": 2,
+          "cycled": 0,
+          "success": false,
+          "steps": [
+            {
+              "action": "initial",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "use",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              },
+              "success": false
+            },
+            {
+              "action": "reset",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "enable_at_end",
+              "expected": {
+                "state": 1,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "disable",
+              "expected": {
+                "state": 1,
+                "enabled": false,
+                "usable": false
+              }
+            }
+          ]
+        },
+        {
+          "states": 2,
+          "cycled": 0,
+          "success": true,
+          "steps": [
+            {
+              "action": "initial",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "use",
+              "expected": {
+                "state": 1,
+                "enabled": false,
+                "usable": false
+              },
+              "success": true
+            },
+            {
+              "action": "reset",
+              "expected": {
+                "state": 0,
+                "enabled": false,
+                "usable": false
+              }
+            },
+            {
+              "action": "enable_at_end",
+              "expected": {
+                "state": 1,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "disable",
+              "expected": {
+                "state": 1,
+                "enabled": false,
+                "usable": false
+              }
+            }
+          ]
+        },
+        {
+          "states": 2,
+          "cycled": 1,
+          "success": false,
+          "steps": [
+            {
+              "action": "initial",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "use",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              },
+              "success": false
+            },
+            {
+              "action": "reset",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "enable_at_end",
+              "expected": {
+                "state": 1,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "disable",
+              "expected": {
+                "state": 1,
+                "enabled": false,
+                "usable": false
+              }
+            }
+          ]
+        },
+        {
+          "states": 2,
+          "cycled": 1,
+          "success": true,
+          "steps": [
+            {
+              "action": "initial",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "use",
+              "expected": {
+                "state": 1,
+                "enabled": false,
+                "usable": false
+              },
+              "success": true
+            },
+            {
+              "action": "reset",
+              "expected": {
+                "state": 0,
+                "enabled": false,
+                "usable": false
+              }
+            },
+            {
+              "action": "enable_at_end",
+              "expected": {
+                "state": 1,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "disable",
+              "expected": {
+                "state": 1,
+                "enabled": false,
+                "usable": false
+              }
+            }
+          ]
+        },
+        {
+          "states": 3,
+          "cycled": 0,
+          "success": false,
+          "steps": [
+            {
+              "action": "initial",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "use",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              },
+              "success": false
+            },
+            {
+              "action": "reset",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "enable_at_end",
+              "expected": {
+                "state": 2,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "disable",
+              "expected": {
+                "state": 2,
+                "enabled": false,
+                "usable": false
+              }
+            }
+          ]
+        },
+        {
+          "states": 3,
+          "cycled": 0,
+          "success": true,
+          "steps": [
+            {
+              "action": "initial",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "use",
+              "expected": {
+                "state": 1,
+                "enabled": false,
+                "usable": false
+              },
+              "success": true
+            },
+            {
+              "action": "reset",
+              "expected": {
+                "state": 0,
+                "enabled": false,
+                "usable": false
+              }
+            },
+            {
+              "action": "enable_at_end",
+              "expected": {
+                "state": 2,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "disable",
+              "expected": {
+                "state": 2,
+                "enabled": false,
+                "usable": false
+              }
+            }
+          ]
+        },
+        {
+          "states": 3,
+          "cycled": 1,
+          "success": false,
+          "steps": [
+            {
+              "action": "initial",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "use",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              },
+              "success": false
+            },
+            {
+              "action": "reset",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "enable_at_end",
+              "expected": {
+                "state": 2,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "disable",
+              "expected": {
+                "state": 2,
+                "enabled": false,
+                "usable": false
+              }
+            }
+          ]
+        },
+        {
+          "states": 3,
+          "cycled": 1,
+          "success": true,
+          "steps": [
+            {
+              "action": "initial",
+              "expected": {
+                "state": 0,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "use",
+              "expected": {
+                "state": 1,
+                "enabled": false,
+                "usable": false
+              },
+              "success": true
+            },
+            {
+              "action": "reset",
+              "expected": {
+                "state": 0,
+                "enabled": false,
+                "usable": false
+              }
+            },
+            {
+              "action": "enable_at_end",
+              "expected": {
+                "state": 2,
+                "enabled": true,
+                "usable": true
+              }
+            },
+            {
+              "action": "disable",
+              "expected": {
+                "state": 2,
+                "enabled": false,
+                "usable": false
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -17,6 +17,10 @@ const DAMAGE_SCHOOLS := {
 }
 ## Damage type slot (piercing .. general) of each elemental school.
 const DAMAGE_TYPE_INDEX := {"fire": 3, "acid": 4, "lightning": 5}
+## Native base 58e7a7 / LiA 4e7db7: these six non-damaging effects
+## notify the target's AI and provoke a non-friendly target at dispatch.
+## Damage spells provoke through their surviving-hit path instead.
+const PROVOKING_EFFECTS := ["stench", "stun", "weak", "feeblemind", "slow", "shrink"]
 const PROTECTS := {"prot_fire": "fire", "prot_electro": "lightning", "prot_acid": "acid"}
 ## Saved/network buff keys predate the spell code used by texts and icons.
 const BUFF_SPELLS := {"invisible": "invisibility"}
@@ -248,7 +252,7 @@ static func light_time(spell: String) -> float:
 
 static func is_hostile(spell: String) -> bool:
 	var p := parse(spell)
-	return DAMAGE_SCHOOLS.has(p.code) or p.code in ["weak", "slow", "stun", "feeblemind", "silence"]
+	return DAMAGE_SCHOOLS.has(p.code) or p.code in PROVOKING_EFFECTS
 
 
 ## Host: apply a spell cast by `caster` at a unit or ground point.
@@ -326,6 +330,12 @@ static func apply(world: GameWorld, caster: GameUnit, spell: String, target: Gam
 		"stun":
 			for u: GameUnit in victims:
 				_buff(u, "stun", effect_ticks, {})   # effect 0x19: shown, read by nothing (see GameUnit)
+		"enlarge", "shrink":
+			# Native base 680e5e / LiA 5a35a1 register effects 37/38
+			# through the same lasting-effect path. Figure refresh reads
+			# their presence; the saved body build and combat stats stay intact.
+			for u: GameUnit in victims:
+				_buff(u, p.code, effect_ticks, {})
 		"feeblemind":   # a flag that refuses spell-casting orders
 			for u: GameUnit in victims:
 				_buff(u, "feeblemind", effect_ticks, {"no_cast": true})
@@ -429,6 +439,17 @@ static func _cast_unit_one(world: GameWorld, caster: GameUnit, spell: String, p:
 	var at := target.pos if target else point
 	var tu: GameUnit = null if int(p.flags) & 0x20000000 else target
 	var audio := apply(world, caster, spell, tu, at, Vector2.INF, auto_heal)
+	# This is a spell notification, not a zero-damage hit: do not add impact
+	# sounds, hit animations, wounds or damage callbacks. Script/ground casts
+	# have no targeted creature/caster pair and never enter this branch.
+	# The native branch checks creature type, without an alive-only gate.
+	if tu != null and p.code in PROVOKING_EFFECTS:
+		if world.relation(tu.faction, caster.faction) != 0:
+			world.ai._hate(tu, caster.faction)
+		if tu.controller < 0:
+			world.ai.on_attacked(tu, caster)
+		else:
+			world.ai.on_player_attacked(tu, caster)
 	if world.session:
 		var fx := {"t": "spellfx", "code": p.code, "sub": p.subtype, "spell": spell,
 			"x": at.x, "y": at.y, "a": caster.uid, "tu": tu.uid if tu else -1,

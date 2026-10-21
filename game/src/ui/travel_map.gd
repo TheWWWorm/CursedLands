@@ -563,9 +563,10 @@ func _draw_hud() -> void:
 	_panel(Rect2(20, 20, 150, 50), Rect2(15, 15, 160, 60))
 	_text(Rect2(20, 25, 150, 20), GameData.text("allod " + allod).get_slice("\n", 0).strip_edges(), HORIZONTAL_ALIGNMENT_CENTER)
 	var st := session.state
-	var mins := int(st.world_time * 60.0)
+	var hours := st.get_var(0, "gtime")
+	var mins := int(fposmod(hours, 24.0) * 60.0)
 	var day := GameData.text("string save_day").strip_edges()
-	_text(Rect2(20, 45, 150, 20), "%s  %d,  %d:%02d" % [day if day else "Day", st.day, mins / 60, mins % 60], HORIZONTAL_ALIGNMENT_CENTER)
+	_text(Rect2(20, 45, 150, 20), "%s  %d,  %d:%02d" % [day if day else "Day", int(hours / 24.0)+1, mins / 60, mins % 60], HORIZONTAL_ALIGNMENT_CENTER)
 	# Buttons.
 	if _ui:
 		for b: Array in [BTN_LEFT, BTN_RIGHT] + ([] if _nocamp else [BTN_CAMP]):

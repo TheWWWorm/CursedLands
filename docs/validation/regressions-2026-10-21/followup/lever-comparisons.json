@@ -1,0 +1,200 @@
+{
+  "scope": "Native x86 eligibility executes without hooks. Use receives a supplied skill verdict; native integer SetState executes with zero duration and offline-world/render/replication boundaries supplied. No native whole-game UI or animation playback.",
+  "observations_per_campaign": {
+    "eligibility": 160,
+    "use_sequence_steps": 40
+  },
+  "cases": {
+    "base": {
+      "before": {
+        "run": "lever-use-qualified-before-base",
+        "exit": 1,
+        "errors": [
+          "FAIL native eligibility 3",
+          "FAIL native eligibility 5",
+          "FAIL native eligibility 7",
+          "FAIL native eligibility 9",
+          "FAIL native eligibility 13",
+          "FAIL native eligibility 15",
+          "FAIL native eligibility 17",
+          "FAIL native eligibility 19",
+          "FAIL native eligibility 23",
+          "FAIL native eligibility 25",
+          "FAIL native eligibility 27",
+          "FAIL native eligibility 29",
+          "FAIL native eligibility 33",
+          "FAIL native eligibility 35",
+          "FAIL native eligibility 37",
+          "FAIL native eligibility 39",
+          "FAIL native eligibility 63",
+          "FAIL native eligibility 65",
+          "FAIL native eligibility 67",
+          "FAIL native eligibility 69",
+          "FAIL native eligibility 103",
+          "FAIL native eligibility 105",
+          "FAIL native eligibility 107",
+          "FAIL native eligibility 109",
+          "FAIL native eligibility 143",
+          "FAIL native eligibility 145",
+          "FAIL native eligibility 147",
+          "FAIL native eligibility 149",
+          "FAIL native use sequence 0 / enable_at_end",
+          "FAIL saved use sequence 0 / enable_at_end",
+          "FAIL native use sequence 1 / use",
+          "FAIL saved use sequence 1 / use",
+          "FAIL native use sequence 1 / reset",
+          "FAIL saved use sequence 1 / reset",
+          "FAIL native use sequence 1 / enable_at_end",
+          "FAIL saved use sequence 1 / enable_at_end",
+          "FAIL native use sequence 3 / use",
+          "FAIL saved use sequence 3 / use",
+          "FAIL native use sequence 3 / reset",
+          "FAIL saved use sequence 3 / reset",
+          "FAIL native use sequence 4 / enable_at_end",
+          "FAIL saved use sequence 4 / enable_at_end",
+          "FAIL native use sequence 5 / use",
+          "FAIL saved use sequence 5 / use",
+          "FAIL native use sequence 5 / reset",
+          "FAIL saved use sequence 5 / reset",
+          "FAIL native use sequence 5 / enable_at_end",
+          "FAIL saved use sequence 5 / enable_at_end",
+          "FAIL native use sequence 7 / use",
+          "FAIL saved use sequence 7 / use",
+          "FAIL native use sequence 7 / reset",
+          "FAIL saved use sequence 7 / reset"
+        ],
+        "seconds": 5.47,
+        "summary": [
+          "LEVER_USE_FLAGS 240 checks 52 failures"
+        ]
+      },
+      "after": {
+        "run": "lever-use-typed-base",
+        "exit": 0,
+        "errors": [],
+        "seconds": 5.37,
+        "summary": [
+          "LEVER_USE_FLAGS 240 checks 0 failures"
+        ]
+      }
+    },
+    "astral": {
+      "before": {
+        "run": "lever-use-qualified-before-astral",
+        "exit": 1,
+        "errors": [
+          "FAIL native eligibility 3",
+          "FAIL native eligibility 5",
+          "FAIL native eligibility 7",
+          "FAIL native eligibility 9",
+          "FAIL native eligibility 13",
+          "FAIL native eligibility 15",
+          "FAIL native eligibility 17",
+          "FAIL native eligibility 19",
+          "FAIL native eligibility 23",
+          "FAIL native eligibility 25",
+          "FAIL native eligibility 27",
+          "FAIL native eligibility 29",
+          "FAIL native eligibility 33",
+          "FAIL native eligibility 35",
+          "FAIL native eligibility 37",
+          "FAIL native eligibility 39",
+          "FAIL native eligibility 63",
+          "FAIL native eligibility 65",
+          "FAIL native eligibility 67",
+          "FAIL native eligibility 69",
+          "FAIL native eligibility 103",
+          "FAIL native eligibility 105",
+          "FAIL native eligibility 107",
+          "FAIL native eligibility 109",
+          "FAIL native eligibility 143",
+          "FAIL native eligibility 145",
+          "FAIL native eligibility 147",
+          "FAIL native eligibility 149",
+          "FAIL native use sequence 0 / enable_at_end",
+          "FAIL saved use sequence 0 / enable_at_end",
+          "FAIL native use sequence 1 / use",
+          "FAIL saved use sequence 1 / use",
+          "FAIL native use sequence 1 / reset",
+          "FAIL saved use sequence 1 / reset",
+          "FAIL native use sequence 1 / enable_at_end",
+          "FAIL saved use sequence 1 / enable_at_end",
+          "FAIL native use sequence 3 / use",
+          "FAIL saved use sequence 3 / use",
+          "FAIL native use sequence 3 / reset",
+          "FAIL saved use sequence 3 / reset",
+          "FAIL native use sequence 4 / enable_at_end",
+          "FAIL saved use sequence 4 / enable_at_end",
+          "FAIL native use sequence 5 / use",
+          "FAIL saved use sequence 5 / use",
+          "FAIL native use sequence 5 / reset",
+          "FAIL saved use sequence 5 / reset",
+          "FAIL native use sequence 5 / enable_at_end",
+          "FAIL saved use sequence 5 / enable_at_end",
+          "FAIL native use sequence 7 / use",
+          "FAIL saved use sequence 7 / use",
+          "FAIL native use sequence 7 / reset",
+          "FAIL saved use sequence 7 / reset"
+        ],
+        "seconds": 5.57,
+        "summary": [
+          "LEVER_USE_FLAGS 240 checks 52 failures"
+        ]
+      },
+      "after": {
+        "run": "lever-use-typed-astral",
+        "exit": 0,
+        "errors": [],
+        "seconds": 5.37,
+        "summary": [
+          "LEVER_USE_FLAGS 240 checks 0 failures"
+        ]
+      }
+    },
+    "actual_chest": {
+      "before": {
+        "run": "lever-chest-qualified-before",
+        "exit": 1,
+        "errors": [
+          "FAIL script closure preserves consumed permission on both peers 0",
+          "FAIL closed spent chest offers no hand on either peer 0",
+          "FAIL authority rejects a stale second use 0",
+          "FAIL script closure preserves consumed permission on both peers 1",
+          "FAIL closed spent chest offers no hand on either peer 1",
+          "FAIL authority rejects a stale second use 1",
+          "FAIL save reload preserves consumed permission on both peers",
+          "FAIL save reload preserves absent hand on both peers",
+          "FAIL explicit enable at terminal pose reaches both peers",
+          "FAIL explicit enable restores hand at terminal pose"
+        ],
+        "seconds": 25.21,
+        "summary": [
+          "ASTRAL_CHEST_PERMISSION 32 checks 10 failures"
+        ]
+      },
+      "after": {
+        "run": "lever-chest-after-diagnostic",
+        "exit": 0,
+        "errors": [],
+        "seconds": 25.66,
+        "summary": [
+          "ASTRAL_CHEST_PERMISSION 32 checks 0 failures"
+        ]
+      }
+    }
+  },
+  "native_locations": {
+    "base": {
+      "eligible": "0x52bb00",
+      "use": "0x52bb50",
+      "state": "0x52b7a0",
+      "enable": "0x52bad0"
+    },
+    "astral": {
+      "eligible": "0x4ab3b0",
+      "use": "0x4ad5e0",
+      "state": "0x4ad2e0",
+      "enable": "0x4ab370"
+    }
+  }
+}

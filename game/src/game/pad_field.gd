@@ -883,9 +883,7 @@ func _input(e: InputEvent) -> void:
 func open_keyboard_aim() -> void:
 	var direct := game.direct and game.direct.active() and not game.direct.pointer
 	var point := get_viewport().get_visible_rect().size * 0.5 if direct else get_viewport().get_mouse_position()
-	var u := game.pick_unit(point, leader())
 	close_wheel()
-	_ring_target = {"unit":u} if u and not u.dead and game.world.is_enemy(leader(), u) else {}
 	if not direct: _stop_moving()
 	if game.direct:
 		game.direct._fire = false
@@ -909,15 +907,9 @@ func finish_keyboard_aim() -> void:
 	last_aim = int(entry.id[1])
 	game.cancel_touch_target()
 	game.touch_aim = last_aim
-	# The centre clears the preference without ordering an attack.
-	if last_aim < 0: return
-	# Direct controls keep aiming with the camera. A classic target order
-	# would consume the selection before the next directional strike.
-	if game.direct and game.direct.active() and not game.direct.pointer: return
-	var u: GameUnit = _ring_target.get("unit")
-	if is_instance_valid(u) and not u.dead and u.world == game.world:
-		game.forced_on("aim", u, null)
-		game.touch_aim = -1
+	# The wheel chooses a body part, not an attack target. Consuming it here
+	# made the cursor disappear whenever the wheel opened over an enemy,
+	# especially during auto-combat. Only the next world click consumes it.
 
 
 static func aim_entries() -> Array:

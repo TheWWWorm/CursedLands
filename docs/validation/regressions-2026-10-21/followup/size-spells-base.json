@@ -1,0 +1,580 @@
+{
+  "campaign": "original",
+  "checks": 143,
+  "failures": 0,
+  "reference": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "rows": [
+    {
+      "label": "native effect registration: strength / ticks=0.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect type: strength / ticks=0.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect duration: strength / ticks=0.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: strength / ticks=0.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "no target receives no effect: strength / ticks=0.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: strength / ticks=1.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect type: strength / ticks=1.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect duration: strength / ticks=1.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: strength / ticks=1.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "no target receives no effect: strength / ticks=1.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: strength / ticks=5.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect type: strength / ticks=5.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect duration: strength / ticks=5.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: strength / ticks=5.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "no target receives no effect: strength / ticks=5.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: strength / ticks=120.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect type: strength / ticks=120.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect duration: strength / ticks=120.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: strength / ticks=120.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "no target receives no effect: strength / ticks=120.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: weak / ticks=0.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect type: weak / ticks=0.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect duration: weak / ticks=0.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: weak / ticks=0.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "no target receives no effect: weak / ticks=0.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: weak / ticks=1.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect type: weak / ticks=1.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect duration: weak / ticks=1.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: weak / ticks=1.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "no target receives no effect: weak / ticks=1.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: weak / ticks=5.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect type: weak / ticks=5.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect duration: weak / ticks=5.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: weak / ticks=5.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "no target receives no effect: weak / ticks=5.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: weak / ticks=120.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect type: weak / ticks=120.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect duration: weak / ticks=120.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: weak / ticks=120.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "no target receives no effect: weak / ticks=120.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: enlarge / ticks=0.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect type: enlarge / ticks=0.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect duration: enlarge / ticks=0.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: enlarge / ticks=0.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "no target receives no effect: enlarge / ticks=0.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: enlarge / ticks=1.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect type: enlarge / ticks=1.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect duration: enlarge / ticks=1.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: enlarge / ticks=1.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "no target receives no effect: enlarge / ticks=1.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: enlarge / ticks=5.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect type: enlarge / ticks=5.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect duration: enlarge / ticks=5.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: enlarge / ticks=5.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "no target receives no effect: enlarge / ticks=5.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: enlarge / ticks=120.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect type: enlarge / ticks=120.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect duration: enlarge / ticks=120.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: enlarge / ticks=120.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "no target receives no effect: enlarge / ticks=120.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: shrink / ticks=0.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect type: shrink / ticks=0.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect duration: shrink / ticks=0.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: shrink / ticks=0.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "no target receives no effect: shrink / ticks=0.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: shrink / ticks=1.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect type: shrink / ticks=1.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect duration: shrink / ticks=1.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: shrink / ticks=1.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "no target receives no effect: shrink / ticks=1.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: shrink / ticks=5.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect type: shrink / ticks=5.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect duration: shrink / ticks=5.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: shrink / ticks=5.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "no target receives no effect: shrink / ticks=5.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: shrink / ticks=120.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect type: shrink / ticks=120.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect duration: shrink / ticks=120.0 / target=true",
+      "ok": true
+    },
+    {
+      "label": "native effect registration: shrink / ticks=120.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "no target receives no effect: shrink / ticks=120.0 / target=false",
+      "ok": true
+    },
+    {
+      "label": "authored creature prototype available",
+      "ok": true
+    },
+    {
+      "label": "ordinary cast schedules one effect: enlarge",
+      "ok": true
+    },
+    {
+      "label": "ordinary cast delivers effect: enlarge",
+      "ok": true
+    },
+    {
+      "label": "authored size effect registers: enlarge",
+      "ok": true
+    },
+    {
+      "label": "size effect changes all three figure axes: enlarge",
+      "ok": true
+    },
+    {
+      "label": "live figure uses changed build: enlarge",
+      "ok": true
+    },
+    {
+      "label": "size effect preserves base build and HP: enlarge",
+      "ok": true
+    },
+    {
+      "label": "serialized client state includes size effect: enlarge",
+      "ok": true
+    },
+    {
+      "label": "client figure refreshes after size snapshot: enlarge",
+      "ok": true
+    },
+    {
+      "label": "ordinary cast schedules one effect: enlarge",
+      "ok": true
+    },
+    {
+      "label": "ordinary cast delivers effect: enlarge",
+      "ok": true
+    },
+    {
+      "label": "recast refreshes original duration: enlarge",
+      "ok": true
+    },
+    {
+      "label": "recast does not compound body size: enlarge",
+      "ok": true
+    },
+    {
+      "label": "expiry restores original figure build: enlarge",
+      "ok": true
+    },
+    {
+      "label": "expiry restores client build: enlarge",
+      "ok": true
+    },
+    {
+      "label": "saved base build remains unchanged: enlarge",
+      "ok": true
+    },
+    {
+      "label": "ordinary cast schedules one effect: shrink",
+      "ok": true
+    },
+    {
+      "label": "ordinary cast delivers effect: shrink",
+      "ok": true
+    },
+    {
+      "label": "authored size effect registers: shrink",
+      "ok": true
+    },
+    {
+      "label": "size effect changes all three figure axes: shrink",
+      "ok": true
+    },
+    {
+      "label": "live figure uses changed build: shrink",
+      "ok": true
+    },
+    {
+      "label": "size effect preserves base build and HP: shrink",
+      "ok": true
+    },
+    {
+      "label": "serialized client state includes size effect: shrink",
+      "ok": true
+    },
+    {
+      "label": "client figure refreshes after size snapshot: shrink",
+      "ok": true
+    },
+    {
+      "label": "ordinary cast schedules one effect: shrink",
+      "ok": true
+    },
+    {
+      "label": "ordinary cast delivers effect: shrink",
+      "ok": true
+    },
+    {
+      "label": "recast refreshes original duration: shrink",
+      "ok": true
+    },
+    {
+      "label": "recast does not compound body size: shrink",
+      "ok": true
+    },
+    {
+      "label": "expiry restores original figure build: shrink",
+      "ok": true
+    },
+    {
+      "label": "expiry restores client build: shrink",
+      "ok": true
+    },
+    {
+      "label": "saved base build remains unchanged: shrink",
+      "ok": true
+    },
+    {
+      "label": "opposite size effects coexist and cancel their visual offset",
+      "ok": true
+    },
+    {
+      "label": "ordinary cast schedules one effect: enlarge",
+      "ok": true
+    },
+    {
+      "label": "ordinary cast delivers effect: enlarge",
+      "ok": true
+    },
+    {
+      "label": "authored size effect registers: enlarge",
+      "ok": true
+    },
+    {
+      "label": "size effect changes all three figure axes: enlarge",
+      "ok": true
+    },
+    {
+      "label": "live figure uses changed build: enlarge",
+      "ok": true
+    },
+    {
+      "label": "size effect preserves base build and HP: enlarge",
+      "ok": true
+    },
+    {
+      "label": "serialized client state includes size effect: enlarge",
+      "ok": true
+    },
+    {
+      "label": "client figure refreshes after size snapshot: enlarge",
+      "ok": true
+    },
+    {
+      "label": "ordinary cast schedules one effect: enlarge",
+      "ok": true
+    },
+    {
+      "label": "ordinary cast delivers effect: enlarge",
+      "ok": true
+    },
+    {
+      "label": "recast refreshes original duration: enlarge",
+      "ok": true
+    },
+    {
+      "label": "recast does not compound body size: enlarge",
+      "ok": true
+    },
+    {
+      "label": "expiry restores original figure build: enlarge",
+      "ok": true
+    },
+    {
+      "label": "expiry restores client build: enlarge",
+      "ok": true
+    },
+    {
+      "label": "saved base build remains unchanged: enlarge",
+      "ok": true
+    },
+    {
+      "label": "ordinary cast schedules one effect: shrink",
+      "ok": true
+    },
+    {
+      "label": "ordinary cast delivers effect: shrink",
+      "ok": true
+    },
+    {
+      "label": "authored size effect registers: shrink",
+      "ok": true
+    },
+    {
+      "label": "size effect changes all three figure axes: shrink",
+      "ok": true
+    },
+    {
+      "label": "live figure uses changed build: shrink",
+      "ok": true
+    },
+    {
+      "label": "size effect preserves base build and HP: shrink",
+      "ok": true
+    },
+    {
+      "label": "serialized client state includes size effect: shrink",
+      "ok": true
+    },
+    {
+      "label": "client figure refreshes after size snapshot: shrink",
+      "ok": true
+    },
+    {
+      "label": "ordinary cast schedules one effect: shrink",
+      "ok": true
+    },
+    {
+      "label": "ordinary cast delivers effect: shrink",
+      "ok": true
+    },
+    {
+      "label": "recast refreshes original duration: shrink",
+      "ok": true
+    },
+    {
+      "label": "recast does not compound body size: shrink",
+      "ok": true
+    },
+    {
+      "label": "expiry restores original figure build: shrink",
+      "ok": true
+    },
+    {
+      "label": "expiry restores client build: shrink",
+      "ok": true
+    },
+    {
+      "label": "saved base build remains unchanged: shrink",
+      "ok": true
+    },
+    {
+      "label": "opposite size effects coexist and cancel their visual offset",
+      "ok": true
+    }
+  ]
+}

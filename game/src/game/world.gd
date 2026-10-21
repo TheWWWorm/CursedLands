@@ -107,6 +107,8 @@ var dialog_actors := {}
 var presentation := true
 var arena_overview := false # Distant presentation only; native combat is unchanged.
 var authority := true
+## Replicated scene-clock state for clients, which do not run ScriptVM.
+var clock_fixed := false
 var session: Session
 ## SetWaterLevel state, the original's list at server (adds
 ##  ticks): map material -> [ticks left, offset, offset per tick].
@@ -793,7 +795,7 @@ func _client_effect_active() -> bool:
 	if authority or (is_inside_tree() and get_tree().paused):
 		return false
 	return session == null or (session.world == self and not session.loading_game \
-		and not session._zone_holding and not session._remote_loading and not session.movie_active())
+		and not session._zone_holding and not session._remote_loading and not session.movie_active() and not session.ending_active)
 
 
 func _sample_client_effect_frame(now_ms: int, rate: float) -> void:
@@ -823,7 +825,7 @@ func _advance_client_effects(dt: float) -> void:
 
 func _deliver(dt: float) -> void:
 	if session != null and session.mod_script_failed: return
-	if not authority or (session and session.movie_active()):
+	if not authority or (session and (session.movie_active() or session.ending_active)):
 		return
 	if session and session.lmp_travel:
 		if session.lmp_travel.can_tick(self):
@@ -850,7 +852,7 @@ func _advance(dt: float) -> void:
 		_logic_accumulator = maxf(_logic_accumulator - TICK, 0.0)
 		_tick(TICK)
 		steps += 1
-		if is_queued_for_deletion() or (session and session.movie_active()):
+		if is_queued_for_deletion() or (session and (session.movie_active() or session.ending_active)):
 			break
 		if retain_logic_debt and steps >= 5:
 			break
@@ -1141,14 +1143,20 @@ func on_death(u: GameUnit, killer: GameUnit) -> void:
 		session.broadcast({"t": "party"})
 		session.check_party_defeat()
 	if not u.has_meta("hero"):
+		var challenge := preload("res://src/game/astral_challenge_rewards.gd").claim(self, u, killer)
 		# What was not stolen stays in its pockets.
 		var loot: Array = u.get_meta("pockets") if u.has_meta("pockets") else Items.roll_loot(u.proto, u.info, combat.rng)
+		if not challenge.get("items", []).is_empty():
+			loot = loot.duplicate()
+			loot.append_array(challenge.items)
 		if not loot.is_empty():
 			u.set_meta("loot", loot)
 			session.broadcast({"t": "loot", "uid": u.uid, "has": true})
 		# the original: the prototype "experience" for
 		# the killer's party (XpRules: who gets it and how it is shared).
 		XpRules.on_kill(session, u, killer if is_instance_valid(killer) else null)
+		if float(challenge.get("xp", 0.0)) > 0.0:
+			XpRules.give(session, float(challenge.xp), "kill", XpRules.party_of(killer))
 
 
 ## Separate arena boards and presentation callbacks must not consume each

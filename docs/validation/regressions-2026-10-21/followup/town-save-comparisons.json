@@ -1,0 +1,813 @@
+{
+  "scope": "Native branch execution plus real remake town load/ENet/script continuation; no complete native save-file replay.",
+  "production_changes": [],
+  "runs": [
+    {
+      "campaign": "base",
+      "platform": "linux",
+      "run": "town-save-base-first",
+      "trace": {
+        "authored": {
+          "after": {
+            "b": -1,
+            "f": [],
+            "i": 0,
+            "k": false,
+            "l": {
+              "this": null
+            },
+            "p": 0.055,
+            "s": "VCheck#0#47",
+            "w": 0.0
+          },
+          "before": {
+            "b": -1,
+            "f": [],
+            "i": 0,
+            "k": false,
+            "l": {
+              "this": null
+            },
+            "p": 0.055,
+            "s": "VCheck#0#47",
+            "w": 0.0
+          },
+          "body": {
+            "blocks": [
+              {
+                "body": [
+                  [
+                    6,
+                    "KillScript",
+                    []
+                  ],
+                  [
+                    6,
+                    "VTriger#0#48",
+                    [
+                      [
+                        2,
+                        "this"
+                      ]
+                    ]
+                  ]
+                ],
+                "conds": [
+                  [
+                    3,
+                    "IsGreater",
+                    [
+                      [
+                        3,
+                        "Sub",
+                        [
+                          [
+                            3,
+                            "GSGetVar",
+                            [
+                              [
+                                0,
+                                0.0
+                              ],
+                              [
+                                1,
+                                "gtime"
+                              ]
+                            ]
+                          ],
+                          [
+                            3,
+                            "GSGetVar",
+                            [
+                              [
+                                0,
+                                0.0
+                              ],
+                              [
+                                1,
+                                "GTwolf"
+                              ]
+                            ]
+                          ]
+                        ]
+                      ],
+                      [
+                        0,
+                        47.0
+                      ]
+                    ]
+                  ],
+                  [
+                    3,
+                    "Not",
+                    [
+                      [
+                        3,
+                        "IsEqual",
+                        [
+                          [
+                            3,
+                            "GSGetVar",
+                            [
+                              [
+                                0,
+                                0.0
+                              ],
+                              [
+                                1,
+                                "q.gz3g.q1g"
+                              ]
+                            ]
+                          ],
+                          [
+                            0,
+                            2.0
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ],
+            "params": [
+              "this"
+            ]
+          },
+          "continuation": {
+            "b": -1,
+            "f": [],
+            "i": 0,
+            "k": false,
+            "l": {
+              "this": null
+            },
+            "p": 0.0,
+            "s": "VTriger#0#48",
+            "w": 0.0
+          },
+          "next": "VTriger#0#48",
+          "script": "VCheck#0#47",
+          "zone": "bz1g"
+        },
+        "campaign": "original",
+        "checks": 46,
+        "failures": 0,
+        "trace": [
+          {
+            "fixed": false,
+            "gtime": 35.75,
+            "hour": 11.75,
+            "peer": "host",
+            "phase": "enter town"
+          },
+          {
+            "fixed": false,
+            "gtime": 35.75,
+            "hour": 11.75,
+            "peer": "guest",
+            "phase": "enter town"
+          },
+          {
+            "fixed": true,
+            "gtime": 19.0,
+            "hour": 0.300000011920929,
+            "peer": "host",
+            "phase": "full town reload"
+          },
+          {
+            "fixed": true,
+            "gtime": 19.0,
+            "hour": 0.300000011920929,
+            "peer": "guest",
+            "phase": "full town reload"
+          },
+          {
+            "fixed": false,
+            "gtime": 50.5,
+            "hour": 22.75,
+            "peer": "host",
+            "phase": "running town reload"
+          },
+          {
+            "fixed": false,
+            "gtime": 50.5,
+            "hour": 22.75,
+            "peer": "guest",
+            "phase": "running town reload"
+          }
+        ]
+      },
+      "log_sha256": "734535ee2a8cf3aeb3f3fe3385dc856645bce0a911f40fd77a41c63eefb462d1",
+      "scope": "Actual bz1g map, full save/load, two ENet peers, pending dialogue flags and authored VCheck#0#47 continuation; Linux headless"
+    },
+    {
+      "campaign": "base",
+      "platform": "windows",
+      "run": "town-save-windows-base",
+      "trace": {
+        "authored": {
+          "after": {
+            "b": -1,
+            "f": [],
+            "i": 0,
+            "k": false,
+            "l": {
+              "this": null
+            },
+            "p": 0.055,
+            "s": "VCheck#0#47",
+            "w": 0.0
+          },
+          "before": {
+            "b": -1,
+            "f": [],
+            "i": 0,
+            "k": false,
+            "l": {
+              "this": null
+            },
+            "p": 0.055,
+            "s": "VCheck#0#47",
+            "w": 0.0
+          },
+          "body": {
+            "blocks": [
+              {
+                "body": [
+                  [
+                    6,
+                    "KillScript",
+                    []
+                  ],
+                  [
+                    6,
+                    "VTriger#0#48",
+                    [
+                      [
+                        2,
+                        "this"
+                      ]
+                    ]
+                  ]
+                ],
+                "conds": [
+                  [
+                    3,
+                    "IsGreater",
+                    [
+                      [
+                        3,
+                        "Sub",
+                        [
+                          [
+                            3,
+                            "GSGetVar",
+                            [
+                              [
+                                0,
+                                0.0
+                              ],
+                              [
+                                1,
+                                "gtime"
+                              ]
+                            ]
+                          ],
+                          [
+                            3,
+                            "GSGetVar",
+                            [
+                              [
+                                0,
+                                0.0
+                              ],
+                              [
+                                1,
+                                "GTwolf"
+                              ]
+                            ]
+                          ]
+                        ]
+                      ],
+                      [
+                        0,
+                        47.0
+                      ]
+                    ]
+                  ],
+                  [
+                    3,
+                    "Not",
+                    [
+                      [
+                        3,
+                        "IsEqual",
+                        [
+                          [
+                            3,
+                            "GSGetVar",
+                            [
+                              [
+                                0,
+                                0.0
+                              ],
+                              [
+                                1,
+                                "q.gz3g.q1g"
+                              ]
+                            ]
+                          ],
+                          [
+                            0,
+                            2.0
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ],
+            "params": [
+              "this"
+            ]
+          },
+          "continuation": {
+            "b": -1,
+            "f": [],
+            "i": 0,
+            "k": false,
+            "l": {
+              "this": null
+            },
+            "p": 0.0,
+            "s": "VTriger#0#48",
+            "w": 0.0
+          },
+          "next": "VTriger#0#48",
+          "script": "VCheck#0#47",
+          "zone": "bz1g"
+        },
+        "campaign": "original",
+        "checks": 46,
+        "failures": 0,
+        "trace": [
+          {
+            "fixed": false,
+            "gtime": 35.75,
+            "hour": 11.75,
+            "peer": "host",
+            "phase": "enter town"
+          },
+          {
+            "fixed": false,
+            "gtime": 35.75,
+            "hour": 11.75,
+            "peer": "guest",
+            "phase": "enter town"
+          },
+          {
+            "fixed": true,
+            "gtime": 19.0,
+            "hour": 0.300000011920929,
+            "peer": "host",
+            "phase": "full town reload"
+          },
+          {
+            "fixed": true,
+            "gtime": 19.0,
+            "hour": 0.300000011920929,
+            "peer": "guest",
+            "phase": "full town reload"
+          },
+          {
+            "fixed": false,
+            "gtime": 50.5,
+            "hour": 22.75,
+            "peer": "host",
+            "phase": "running town reload"
+          },
+          {
+            "fixed": false,
+            "gtime": 50.5,
+            "hour": 22.75,
+            "peer": "guest",
+            "phase": "running town reload"
+          }
+        ]
+      },
+      "log_sha256": "19c7f28bf4d4c7e28e2128127fa5ef4d4b4b65c8799c81a75dca6f7be4885181",
+      "scope": "Actual bz1g map, full save/load, two ENet peers, pending dialogue flags and authored VCheck#0#47 continuation; Windows export under Wine"
+    },
+    {
+      "campaign": "astral",
+      "platform": "linux",
+      "run": "town-save-astral-first",
+      "trace": {
+        "authored": {
+          "after": {
+            "b": 0,
+            "f": [
+              {
+                "i": 2
+              }
+            ],
+            "i": 2,
+            "k": true,
+            "l": {
+              "this": null
+            },
+            "p": 0.0,
+            "s": "Fire#12",
+            "sc": [
+              0,
+              30.0
+            ],
+            "st": 6,
+            "w": 1.32
+          },
+          "before": {
+            "b": 0,
+            "f": [
+              {
+                "i": 2
+              }
+            ],
+            "i": 2,
+            "k": true,
+            "l": {
+              "this": null
+            },
+            "p": 0.0,
+            "s": "Fire#12",
+            "sc": [
+              0,
+              30.0
+            ],
+            "st": 6,
+            "w": 1.32
+          },
+          "body": {
+            "blocks": [
+              {
+                "body": [
+                  [
+                    6,
+                    "KillScript",
+                    []
+                  ],
+                  [
+                    6,
+                    "Sleep",
+                    [
+                      [
+                        0,
+                        30.0
+                      ]
+                    ]
+                  ],
+                  [
+                    6,
+                    "Fire#11",
+                    [
+                      [
+                        2,
+                        "this"
+                      ]
+                    ]
+                  ]
+                ],
+                "conds": [
+                  [
+                    3,
+                    "IsLess",
+                    [
+                      [
+                        3,
+                        "GetWorldTime",
+                        []
+                      ],
+                      [
+                        0,
+                        7.0
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ],
+            "params": [
+              "this"
+            ]
+          },
+          "continuation": {
+            "b": -1,
+            "f": [],
+            "i": 0,
+            "k": false,
+            "l": {
+              "this": null
+            },
+            "p": 0.0,
+            "s": "Fire#11",
+            "w": 0.0
+          },
+          "next": "Fire#11",
+          "script": "Fire#12",
+          "zone": "bz5h"
+        },
+        "campaign": "lost_in_astral",
+        "checks": 43,
+        "failures": 0,
+        "trace": [
+          {
+            "fixed": false,
+            "gtime": 35.75,
+            "hour": 11.75,
+            "peer": "host",
+            "phase": "enter town"
+          },
+          {
+            "fixed": false,
+            "gtime": 35.75,
+            "hour": 11.75,
+            "peer": "guest",
+            "phase": "enter town"
+          },
+          {
+            "fixed": true,
+            "gtime": 19.0,
+            "hour": 0.300000011920929,
+            "peer": "host",
+            "phase": "full town reload"
+          },
+          {
+            "fixed": true,
+            "gtime": 19.0,
+            "hour": 0.300000011920929,
+            "peer": "guest",
+            "phase": "full town reload"
+          },
+          {
+            "fixed": false,
+            "gtime": 50.5,
+            "hour": 22.75,
+            "peer": "host",
+            "phase": "running town reload"
+          },
+          {
+            "fixed": false,
+            "gtime": 50.5,
+            "hour": 22.75,
+            "peer": "guest",
+            "phase": "running town reload"
+          }
+        ]
+      },
+      "log_sha256": "5e47f182b9c5c7967d445f55ad8cd40469492e04e9a7b1fed574df9a64ae4d6e",
+      "scope": "Actual bz5h map, full save/load, two ENet peers, pending dialogue flags and authored Fire#12 continuation; Linux headless"
+    },
+    {
+      "campaign": "astral",
+      "platform": "windows",
+      "run": "town-save-windows-astral",
+      "trace": {
+        "authored": {
+          "after": {
+            "b": 0,
+            "f": [
+              {
+                "i": 2
+              }
+            ],
+            "i": 2,
+            "k": true,
+            "l": {
+              "this": null
+            },
+            "p": 0.0,
+            "s": "Fire#12",
+            "sc": [
+              0,
+              30.0
+            ],
+            "st": 6,
+            "w": 1.32
+          },
+          "before": {
+            "b": 0,
+            "f": [
+              {
+                "i": 2
+              }
+            ],
+            "i": 2,
+            "k": true,
+            "l": {
+              "this": null
+            },
+            "p": 0.0,
+            "s": "Fire#12",
+            "sc": [
+              0,
+              30.0
+            ],
+            "st": 6,
+            "w": 1.32
+          },
+          "body": {
+            "blocks": [
+              {
+                "body": [
+                  [
+                    6,
+                    "KillScript",
+                    []
+                  ],
+                  [
+                    6,
+                    "Sleep",
+                    [
+                      [
+                        0,
+                        30.0
+                      ]
+                    ]
+                  ],
+                  [
+                    6,
+                    "Fire#11",
+                    [
+                      [
+                        2,
+                        "this"
+                      ]
+                    ]
+                  ]
+                ],
+                "conds": [
+                  [
+                    3,
+                    "IsLess",
+                    [
+                      [
+                        3,
+                        "GetWorldTime",
+                        []
+                      ],
+                      [
+                        0,
+                        7.0
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ],
+            "params": [
+              "this"
+            ]
+          },
+          "continuation": {
+            "b": -1,
+            "f": [],
+            "i": 0,
+            "k": false,
+            "l": {
+              "this": null
+            },
+            "p": 0.0,
+            "s": "Fire#11",
+            "w": 0.0
+          },
+          "next": "Fire#11",
+          "script": "Fire#12",
+          "zone": "bz5h"
+        },
+        "campaign": "lost_in_astral",
+        "checks": 43,
+        "failures": 0,
+        "trace": [
+          {
+            "fixed": false,
+            "gtime": 35.75,
+            "hour": 11.75,
+            "peer": "host",
+            "phase": "enter town"
+          },
+          {
+            "fixed": false,
+            "gtime": 35.75,
+            "hour": 11.75,
+            "peer": "guest",
+            "phase": "enter town"
+          },
+          {
+            "fixed": true,
+            "gtime": 19.0,
+            "hour": 0.300000011920929,
+            "peer": "host",
+            "phase": "full town reload"
+          },
+          {
+            "fixed": true,
+            "gtime": 19.0,
+            "hour": 0.300000011920929,
+            "peer": "guest",
+            "phase": "full town reload"
+          },
+          {
+            "fixed": false,
+            "gtime": 50.5,
+            "hour": 22.75,
+            "peer": "host",
+            "phase": "running town reload"
+          },
+          {
+            "fixed": false,
+            "gtime": 50.5,
+            "hour": 22.75,
+            "peer": "guest",
+            "phase": "running town reload"
+          }
+        ]
+      },
+      "log_sha256": "2f36e564b99c977f02aa9e35ad92aeeeae8bf20ed6dc0e43cec5b4b5b1509a08",
+      "scope": "Actual bz5h map, full save/load, two ENet peers, pending dialogue flags and authored Fire#12 continuation; Windows export under Wine"
+    }
+  ],
+  "negative_control": {
+    "scope": "Deliberately wrong behavior in a separate source copy; not failures in production.",
+    "mutations": {
+      "scope": "Deliberate isolated negative control; these are not observed production defects",
+      "changes": [
+        {
+          "file": "src/game/session.gd",
+          "before_sha256": "4a34c30598d6da99483a7f13b06414b572f76290a1587a664a4d301d1186fa57",
+          "after_sha256": "c33184bb4f9c8e60247186e70eb4976eeaa0c011717f8db61cd99f97086e0958",
+          "old": "if not _restoring:\n\t\t# The native zone handoff",
+          "new": "if true:\n\t\t# The native zone handoff"
+        },
+        {
+          "file": "src/game/script/vm.gd",
+          "before_sha256": "0c0dd911e8896e3181211b3e556244febd32d9072dd9fee0bf7c616c21942744",
+          "after_sha256": "e70518a2a36539432efc1ed9a5b64a9e623dbcbbbb71eb007c473438db7ce2fd",
+          "old": "if not s._restoring or restored.is_empty():\n\t\tvm.recalc_merc_briefings()",
+          "new": "if true:\n\t\tvm.recalc_merc_briefings()"
+        }
+      ]
+    },
+    "results": [
+      {
+        "id": "persistence/town_save_continuation",
+        "campaign": "cursed_lands",
+        "checks": 46,
+        "failures": 7,
+        "failure_messages": [
+          "FAIL full town reload / scene hour / host",
+          "FAIL full town reload / scene hour / guest",
+          "FAIL pending completed hire flag survives for player 0",
+          "FAIL pending completed hire flag survives for player 1",
+          "FAIL guest receives its saved completed hire flag",
+          "FAIL running town reload / scene hour / host",
+          "FAIL running town reload / scene hour / guest"
+        ],
+        "log_sha256": "10642db5557f0345d0af512c3c0cf5f856bc3faaed622326792212f1b5f5da41"
+      },
+      {
+        "id": "persistence/town_save_continuation_astral",
+        "campaign": "lost_in_astral",
+        "checks": 43,
+        "failures": 7,
+        "failure_messages": [
+          "FAIL full town reload / scene hour / host",
+          "FAIL full town reload / scene hour / guest",
+          "FAIL pending completed hire flag survives for player 0",
+          "FAIL pending completed hire flag survives for player 1",
+          "FAIL guest receives its saved completed hire flag",
+          "FAIL running town reload / scene hour / host",
+          "FAIL running town reload / scene hour / guest"
+        ],
+        "log_sha256": "fa57113701e360faab80d3c651a42022ace547b0fa6162c491659866af1a5e80"
+      }
+    ]
+  },
+  "native_repeat_identical": true,
+  "evidence": {
+    "base_load": "ev_ea71961e33706a2f09caecc614884d5ceac924508f325b180f63c3107bda8043",
+    "base_save": "ev_485ad2cf535027eb337253abd54cb1087d139772639b703ee1823e16d249d538",
+    "astral_load": "ev_e9519ce220325e563a0b5ec29874637c5b7b642933cd055b82a2ebb54d80a2e3",
+    "town_type_mapping": [
+      "ev_f6d97939b80e623892f5883bab77eed9c05856d552a9d25396605ef0e0846637",
+      "ev_3101b298e388850e5339e167b046ddaacbdd6242c8c9482e3f0eaa1262171754"
+    ]
+  },
+  "limits": [
+    "The native fixture executes only the zone-type branch after a supplied zone lookup, stopping before file I/O. It does not deserialize an original save.",
+    "The remake loads actual town maps and saves; unrelated simulation is stopped and one unchanged authored routine advances under controlled inputs.",
+    "The completed hire flags are controlled pending inputs, not a full replay of hiring a mercenary.",
+    "The authored-script bodies are checked against the installed-map census. Native interpreter/clock predicate behavior is covered by the preceding reports, not reimplemented in this test.",
+    "Windows results use Wine; native Windows hardware, legacy LMP world switching and uninterrupted campaign play remain outside this fixture."
+  ]
+}

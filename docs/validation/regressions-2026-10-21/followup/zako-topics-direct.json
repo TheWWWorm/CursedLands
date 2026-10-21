@@ -1,0 +1,182 @@
+{
+	"cases": [
+		{
+			"camera_style": 1,
+			"closer": 0,
+			"control_mode": 2,
+			"guest_blocked": false,
+			"guest_held": false,
+			"host_blocked": false,
+			"host_held": false,
+			"journal": false,
+			"player": 0
+		},
+		{
+			"camera_style": 1,
+			"closer": 0,
+			"control_mode": 2,
+			"guest_blocked": false,
+			"guest_held": false,
+			"host_blocked": false,
+			"host_held": false,
+			"journal": true,
+			"player": 0
+		},
+		{
+			"camera_style": 1,
+			"closer": 1,
+			"control_mode": 2,
+			"guest_blocked": false,
+			"guest_held": false,
+			"host_blocked": false,
+			"host_held": false,
+			"journal": false,
+			"player": 0
+		},
+		{
+			"camera_style": 1,
+			"closer": 1,
+			"control_mode": 2,
+			"guest_blocked": false,
+			"guest_held": false,
+			"host_blocked": false,
+			"host_held": false,
+			"journal": true,
+			"player": 0
+		},
+		{
+			"camera_style": 1,
+			"closer": 0,
+			"control_mode": 2,
+			"guest_blocked": false,
+			"guest_held": false,
+			"host_blocked": false,
+			"host_held": false,
+			"journal": false,
+			"player": 1
+		},
+		{
+			"camera_style": 1,
+			"closer": 0,
+			"control_mode": 2,
+			"guest_blocked": false,
+			"guest_held": false,
+			"host_blocked": false,
+			"host_held": false,
+			"journal": true,
+			"player": 1
+		},
+		{
+			"camera_style": 1,
+			"closer": 1,
+			"control_mode": 2,
+			"guest_blocked": false,
+			"guest_held": false,
+			"host_blocked": false,
+			"host_held": false,
+			"journal": false,
+			"player": 1
+		},
+		{
+			"camera_style": 1,
+			"closer": 1,
+			"control_mode": 2,
+			"guest_blocked": false,
+			"guest_held": false,
+			"host_blocked": false,
+			"host_held": false,
+			"journal": true,
+			"player": 1
+		},
+		{
+			"camera_style": 1,
+			"closer": 0,
+			"control_mode": 3,
+			"guest_blocked": false,
+			"guest_held": false,
+			"host_blocked": false,
+			"host_held": false,
+			"journal": false,
+			"player": 0
+		},
+		{
+			"camera_style": 1,
+			"closer": 0,
+			"control_mode": 3,
+			"guest_blocked": false,
+			"guest_held": false,
+			"host_blocked": false,
+			"host_held": false,
+			"journal": true,
+			"player": 0
+		},
+		{
+			"camera_style": 1,
+			"closer": 1,
+			"control_mode": 3,
+			"guest_blocked": false,
+			"guest_held": false,
+			"host_blocked": false,
+			"host_held": false,
+			"journal": false,
+			"player": 0
+		},
+		{
+			"camera_style": 1,
+			"closer": 1,
+			"control_mode": 3,
+			"guest_blocked": false,
+			"guest_held": false,
+			"host_blocked": false,
+			"host_held": false,
+			"journal": true,
+			"player": 0
+		},
+		{
+			"camera_style": 1,
+			"closer": 0,
+			"control_mode": 3,
+			"guest_blocked": false,
+			"guest_held": false,
+			"host_blocked": false,
+			"host_held": false,
+			"journal": false,
+			"player": 1
+		},
+		{
+			"camera_style": 1,
+			"closer": 0,
+			"control_mode": 3,
+			"guest_blocked": false,
+			"guest_held": false,
+			"host_blocked": false,
+			"host_held": false,
+			"journal": true,
+			"player": 1
+		},
+		{
+			"camera_style": 1,
+			"closer": 1,
+			"control_mode": 3,
+			"guest_blocked": false,
+			"guest_held": false,
+			"host_blocked": false,
+			"host_held": false,
+			"journal": false,
+			"player": 1
+		},
+		{
+			"camera_style": 1,
+			"closer": 1,
+			"control_mode": 3,
+			"guest_blocked": false,
+			"guest_held": false,
+			"host_blocked": false,
+			"host_held": false,
+			"journal": true,
+			"player": 1
+		}
+	],
+	"checks": 280,
+	"failures": []
+}

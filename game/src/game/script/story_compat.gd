@@ -31,6 +31,8 @@ static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 				"root":"VCheck#0#404", "peer":"VCheck#0#393", "slot":2, "caller":"WorldScript",
 				"chain":{"VTriger#0#401":"VTriger#0#394", "VCheck#0#402":"VCheck#0#396", "VTriger#0#406":"VTriger#0#398"}})
 		return
+	preload("res://src/game/script/story_astral_fortunes.gd").apply(ast,zone)
+	if zone == "gz1h": preload("res://src/game/script/story_astral_eavesdrop.gd").apply(ast)
 	preload("res://src/game/script/story_coop_effects.gd").apply(ast, zone)
 	preload("res://src/game/script/story_coop_traps.gd").apply(ast, zone)
 	preload("res://src/game/script/story_coop_predicates.gd").apply(ast, zone)
@@ -288,11 +290,16 @@ static func escape_ready(vm: ScriptVM) -> bool:
 ## The stationary call switch only starts Lift#01 once in the original.
 ## Reuse it at the lower stop so a separated party can call the lift back.
 ## The original up/down threads, timing and moving controls remain in charge.
-static func lift_recall_available(w: GameWorld, nid: int) -> bool:
+static func is_lift_recall_switch(w: GameWorld, nid: int) -> bool:
 	if nid != 1369841 or w.session == null or w.session.state.campaign_id != CampaignProfile.ASTRAL \
 			or w.zone.get("id", "") != "gz1d2": return false
 	var lift: Node3D = w.objects.get(2240358)
-	if lift == null or lift.get_meta("ei", {}).get("template", "") != "stbr6": return false
+	return lift != null and lift.get_meta("ei", {}).get("template", "") == "stbr6"
+
+
+static func lift_recall_available(w: GameWorld, nid: int) -> bool:
+	if not is_lift_recall_switch(w, nid): return false
+	var lift: Node3D = w.objects[2240358]
 	# Replica worlds have no script VM. Their cursor follows the replicated
 	# mechanism state; the authority also checks the inspected native scripts.
 	if w.vm:

@@ -1,0 +1,137 @@
+{
+  "issue": "https://github.com/TheWWWorm/CursedLands/issues/66",
+  "change": "Allow MMP overrides from redress.res in package APIs 1, 2 and 3; legacy converter uses the same resource scope. Existing archive readers and profile restart/cache lifecycle retained.",
+  "baseline": {
+    "exit": 1,
+    "errors": [
+      "FAIL redress MMP accepted by package API 1",
+      "FAIL redress MMP accepted by package API 2",
+      "FAIL redress MMP accepted by package API 3"
+    ],
+    "seconds": 5.02,
+    "summary": [
+      "MOD_REDRESS 4 checks 3 failures"
+    ]
+  },
+  "final_runs": [
+    {
+      "tag": "mod-redress-fixed-base",
+      "scope": "Headless actual character composer; generated PNT3; isolated profile",
+      "result": {
+        "exit": 0,
+        "errors": [],
+        "seconds": 6.88,
+        "summary": [
+          "MOD_REDRESS 42 checks 0 failures"
+        ]
+      }
+    },
+    {
+      "tag": "mod-redress-astral-proof",
+      "scope": "OpenGL rendered original/modded/restored characters; same import/material/profile checks",
+      "result": {
+        "exit": 0,
+        "errors": [],
+        "seconds": 11.83,
+        "summary": [
+          "MOD_REDRESS 42 checks 0 failures"
+        ]
+      }
+    },
+    {
+      "tag": "mod-redress-windows-visual",
+      "scope": "Exported custom engine, D3D12 under Wine; actual material binding and profile restoration",
+      "result": {
+        "suite": "mod_redress",
+        "platform": "windows",
+        "renderer": "d3d12",
+        "exit": 0,
+        "seconds": 16.44,
+        "argv": [
+          "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/wine-tools/root/usr/lib/wine/wine64",
+          "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/package/CursedLands.exe",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "120",
+          "--rendering-method",
+          "forward_plus",
+          "--rendering-driver",
+          "d3d12",
+          "--windowed",
+          "--resolution",
+          "1280x720",
+          "--",
+          "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--no-movies",
+          "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/tools/tests/mod_redress.gd",
+          "--mod-tests",
+          "--examples=Z:/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/CursedLands-1.20.0-windows-x86_64/mods",
+          "--mod-tests"
+        ],
+        "profile": {
+          "confine_mouse": 0,
+          "show_fps": 1,
+          "volume_sfx": 0,
+          "volume_stream": 0,
+          "volume_voice": 0
+        },
+        "summary": [
+          "604719.022:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\mod-redress-windows-visual\\vkd3d-proton.CursedLands.exe.cache.",
+          "604719.022:0020:0024:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\mod-redress-windows-visual\\vkd3d-proton.CursedLands.exe.cache.",
+          "604719.023:0020:0124:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\original-parity-20261020\\fsr-first-use-20261020\\checks\\mod-redress-windows-visual\\vkd3d-proton.CursedLands.exe.cache.",
+          "MOD_REDRESS 42 checks 0 failures"
+        ],
+        "errors": []
+      }
+    },
+    {
+      "tag": "mod-redress-existing-packages",
+      "scope": "Import, documentation, enumeration, signatures and allocation bounds",
+      "result": {
+        "exit": 0,
+        "errors": [],
+        "seconds": 5.02,
+        "summary": [
+          "MOD_TEXTURE_PACKAGES {\"checks\":42,\"failures\":0}"
+        ]
+      }
+    },
+    {
+      "tag": "mod-redress-existing-profiles",
+      "scope": "Profile lifecycle, saves, numeric patches, conflicts and cosmetic signatures",
+      "result": {
+        "exit": 0,
+        "errors": [],
+        "seconds": 5.47,
+        "summary": [
+          "MOD_PROFILES {\"checks\":87,\"details\":[],\"failures\":0}"
+        ]
+      }
+    }
+  ],
+  "python_checks": {
+    "converter_tests": 20,
+    "parity_runner_tests": 29,
+    "translation_errors": 0
+  },
+  "source_sha256": {
+    "game/src/game/mod_schema.gd": "a3f58717b2ab6aebb1db09df59a95188924fcb0d6acdd5f9fedfe1cb288a3065",
+    "game/src/ei/remake_text.gd": "4e5dabdf9cc789e981064e22484f205977aa798bdf622cbb7eb08b7ad51ce35f",
+    "tools/convert_legacy_mod.py": "46486bd1a3fdfa19da788f485aa6657d09e66b3c1f87110e287d40b891dcb37a",
+    "tools/tests/mod_redress.gd": "d5d2f988022ae0e34622976a3461b94e5aa6821f959f338a218a1d93a08cdbf7",
+    "tools/tests/mod_texture_packages.gd": "01218a82bb7668a6e3f8f60eff9275f959d7f7a7633e7b91dbd44024aff14066",
+    "tools/tests/test_legacy_mod_converter.py": "6ef8c795d33158fc256c86ee5f6ffd6cf4fd0a9aef920f39f9d4f5493dd22ea3",
+    "docs/mods.md": "ba5f9cf4ad5c5128fbdd5c64f736fdc15d697ee35750462d03f680405cd4cfce"
+  },
+  "limitations": [
+    "Generated diagnostic textures, not a qualification of every community texture pack.",
+    "Co-op compatibility checks compare real package/configuration signatures; this fixture does not connect separate live peers with different clothing textures.",
+    "Same-process reload exercises the cache boundary used on web/Android; no browser export or Android device test in this pass.",
+    "Windows rendered validation runs under Wine, not on native Windows.",
+    "Redress support is a remake mod feature, not an original-engine parity result.",
+    "Refreshing the existing browser report tab was blocked by the browser security policy. New HTML links and source fingerprints were checked locally; native game capture images were visually inspected. No browser visual inspection of the new section is claimed."
+  ]
+}

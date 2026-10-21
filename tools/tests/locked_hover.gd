@@ -33,7 +33,9 @@ func _ready() -> void:
 		check(s.lever_requirement(nid,actors).is_empty()==s.lever_science_ok(hero,nid),"effective dexterity, nearest-even and legacy unsigned skill: "+str(use))
 	hero.stats.dex=25.0
 	s.world.levers[nid].state=1
-	check(s.lever_requirement(nid,actors).is_empty(),"open container has no locked tooltip")
+	check(s.lever_requirement(nid,actors).contains("22"),"explicitly enabled terminal object retains its skill requirement")
+	s.world.lever_sys.consume_use(nid)
+	check(s.lever_requirement(nid,actors).is_empty(),"used container has no locked tooltip")
 	s.world.levers[nid].state=0;s.world.levers[nid].enabled=false
 	check(s.lever_requirement(nid,actors).is_empty(),"disabled script object has no skill tooltip")
 	s.world.levers[nid].enabled=true

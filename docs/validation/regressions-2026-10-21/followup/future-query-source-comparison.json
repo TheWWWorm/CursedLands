@@ -1,0 +1,20 @@
+{
+  "file": "game/src/game/script/vm.gd",
+  "before_sha256": "2c59b6b94363a44058ae5aadd15a5d4bbd648ba550193601f3989ae5c11b858e",
+  "after_sha256": "79028c3652027b70eb399cbfd3f9bd75d4e22a47d7e0feac9fdf60d71505bf13",
+  "diff": "--- before/vm.gd\n+++ after/vm.gd\n@@ -666,24 +666,19 @@\n \t\t\"HP\", \"MaxHP\":\n \t\t\tvar u := _unit(v[0])\n \t\t\treturn (u.hp if name == \"HP\" else u.max_hp) if u else 0.0\n-\t\t# Builtins 0xbf / 0xc0 GetFutureX / Y(unit, ticks): the\n-\t\t# unit's position at logic tick now + ticks (round), its\n-\t\t# (the point reached along its path). 0 for no unit. Remake: along the\n-\t\t# path at the current speed, 55 ms ticks.\n+\t\t# Native 0xbf/0xc0 (base4b41e0, LiA46cca0) round the float32\n+\t\t# absolute tick nearest-even, then invoke the object's predictor.\n+\t\t# Use the active movement spline, including turn holds and node speeds.\n \t\t\"GetFutureX\", \"GetFutureY\":\n \t\t\tvar u := _unit(v[0])\n \t\t\tif u == null and not (v[0] is Node3D and is_instance_valid(v[0])):\n \t\t\t\treturn 0.0\n \t\t\tvar p := _xy(v[0])\n-\t\t\tif u and not u.path.is_empty():\n-\t\t\t\tvar left := u.speed() * roundf(_num(v[1])) * GameUnit.TICK\n-\t\t\t\tfor q: Vector2 in u.path:\n-\t\t\t\t\tvar d := p.distance_to(q)\n-\t\t\t\t\tif d >= left:\n-\t\t\t\t\t\tp += (q - p) * (left / maxf(d, 0.0001))\n-\t\t\t\t\t\tbreak\n-\t\t\t\t\tp = q\n-\t\t\t\t\tleft -= d\n+\t\t\tif u:\n+\t\t\t\tvar now := roundi(world.time / GameUnit.TICK)\n+\t\t\t\tvar delay := _num(v[1]) if n > 1 else 0.0\n+\t\t\t\tvar at := float(PackedFloat32Array([float(now) + delay])[0])\n+\t\t\t\tp = u.future_pos(GameUnit._fistp(at) - now)\n \t\t\treturn p.x if name == \"GetFutureX\" else p.y\n \t\t\"DistanceUnitUnit\":\n \t\t\tif typeof(v[0]) != TYPE_OBJECT or not is_instance_valid(v[0]) or typeof(v[1]) != TYPE_OBJECT or not is_instance_valid(v[1]):\n",
+  "history": {
+    "commit": "7038f5da",
+    "date": "2026-10-02",
+    "finding": "Constant-speed polyline approximation is present before mod merge 4118bbc7 (October 20)."
+  },
+  "package_sha256": {
+    "CursedLands.pck": "3d3cd8d51f804cbe6b35e86744471c1ba80bf0038ca1b6afc4656895de6ecb98",
+    "CursedLands.exe": "73aeb229b303f15e27cdf53c43d379366688dbcf858c01ffcd02f51cbd88580d"
+  },
+  "limits": [
+    "Original interpreter execution supplies only the object prediction callback; the original spline is not replayed by that corpus.",
+    "Native base vtable +0xd0 points to 52fcc0; its inspected code calls movement sampler 5c7430 for an active movement record. This is static evidence, not whole-scene execution.",
+    "Actual movement cases supply routes and node speeds. They exclude new collisions, replanning, combat, changing terrain and negative-delay trajectory equivalence."
+  ]
+}

@@ -382,9 +382,12 @@ func _process(_dt: float) -> void:
 		return
 	if session.lmp_travel:
 		return   # the coordinator cancels only the departing owner's exchange
-	if session.zone_id != _zone:
+	# Story parties can give a guest a private purse without a new join or
+	# zone. The trade controls and player strip need the new ownership keys.
+	if session.zone_id != _zone or keys != _purse_keys():
 		_zone = session.zone_id
 		cancel_all()
+		if keys != _purse_keys(): _publish()
 
 
 # ---------------------------------------------------------------- host purses
@@ -437,11 +440,16 @@ func _name(idx: int) -> String:
 
 # ---------------------------------------------------------------- replication
 
+func _purse_keys() -> Dictionary:
+	var result := {}
+	for p: Dictionary in session.players.values():
+		result[int(p.index)] = _key(int(p.index))
+	return result
+
+
 func _publish() -> void:
 	if session.is_host:
-		keys = {}
-		for p: Dictionary in session.players.values():
-			keys[int(p.index)] = _key(int(p.index))
+		keys = _purse_keys()
 		if session.online:
 			_rpc_offers.rpc(offers, keys)
 	changed.emit()

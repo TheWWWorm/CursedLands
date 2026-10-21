@@ -1,0 +1,396 @@
+{
+  "scope": "Capture supported GodMode(0, 0|1) behavior from both shipped executables.\n\nBounded x86 replay in Unicorn, not a full Windows playthrough. The command\ndispatcher, damage-acceptance branch, running gate and stamina arithmetic\nexecute from the original machine code.\nActor records, the existing player's lookup, load/leg refusal and replicated\nnotifications are supplied boundaries. No original outcome is computed here.\n",
+  "campaigns": {
+    "original": {
+      "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+      "locations": {
+        "run": "0x548520",
+        "world": "0x455940",
+        "refusal": "0x5241c0",
+        "placement": "0x5ba5a0",
+        "update": "0x50e9f0",
+        "transform": "0x530570",
+        "drain": "0x548263",
+        "drain_end": "0x548392",
+        "drain_skip": "0x548399",
+        "ack": "0x66d6a0",
+        "damage": "0x554139",
+        "damage_yes": "0x55416d",
+        "damage_no": "0x55437e"
+      },
+      "setter": [
+        {
+          "owner": 0,
+          "mode": 1,
+          "stored": 1
+        },
+        {
+          "owner": 0,
+          "mode": 0,
+          "stored": 0
+        },
+        {
+          "owner": 0,
+          "mode": 1,
+          "stored": 1
+        },
+        {
+          "owner": 7,
+          "mode": 0,
+          "stored": 1
+        },
+        {
+          "owner": 0,
+          "mode": 0,
+          "stored": 0
+        }
+      ],
+      "movement": [
+        {
+          "mode": 0,
+          "mana": 0.0,
+          "refusal": 0,
+          "can_run": false,
+          "after_running_tick": 0.0
+        },
+        {
+          "mode": 0,
+          "mana": 0.0,
+          "refusal": 1,
+          "can_run": false,
+          "after_running_tick": 0.0
+        },
+        {
+          "mode": 0,
+          "mana": 0.0,
+          "refusal": 2,
+          "can_run": false,
+          "after_running_tick": 0.0
+        },
+        {
+          "mode": 0,
+          "mana": 0.5,
+          "refusal": 0,
+          "can_run": true,
+          "after_running_tick": 0.0
+        },
+        {
+          "mode": 0,
+          "mana": 0.5,
+          "refusal": 1,
+          "can_run": false,
+          "after_running_tick": 0.0
+        },
+        {
+          "mode": 0,
+          "mana": 0.5,
+          "refusal": 2,
+          "can_run": false,
+          "after_running_tick": 0.0
+        },
+        {
+          "mode": 0,
+          "mana": 50.0,
+          "refusal": 0,
+          "can_run": true,
+          "after_running_tick": 49.0
+        },
+        {
+          "mode": 0,
+          "mana": 50.0,
+          "refusal": 1,
+          "can_run": false,
+          "after_running_tick": 49.0
+        },
+        {
+          "mode": 0,
+          "mana": 50.0,
+          "refusal": 2,
+          "can_run": false,
+          "after_running_tick": 49.0
+        },
+        {
+          "mode": 1,
+          "mana": 0.0,
+          "refusal": 0,
+          "can_run": true,
+          "after_running_tick": 0.0
+        },
+        {
+          "mode": 1,
+          "mana": 0.0,
+          "refusal": 1,
+          "can_run": false,
+          "after_running_tick": 0.0
+        },
+        {
+          "mode": 1,
+          "mana": 0.0,
+          "refusal": 2,
+          "can_run": false,
+          "after_running_tick": 0.0
+        },
+        {
+          "mode": 1,
+          "mana": 0.5,
+          "refusal": 0,
+          "can_run": true,
+          "after_running_tick": 0.5
+        },
+        {
+          "mode": 1,
+          "mana": 0.5,
+          "refusal": 1,
+          "can_run": false,
+          "after_running_tick": 0.5
+        },
+        {
+          "mode": 1,
+          "mana": 0.5,
+          "refusal": 2,
+          "can_run": false,
+          "after_running_tick": 0.5
+        },
+        {
+          "mode": 1,
+          "mana": 50.0,
+          "refusal": 0,
+          "can_run": true,
+          "after_running_tick": 50.0
+        },
+        {
+          "mode": 1,
+          "mana": 50.0,
+          "refusal": 1,
+          "can_run": false,
+          "after_running_tick": 50.0
+        },
+        {
+          "mode": 1,
+          "mana": 50.0,
+          "refusal": 2,
+          "can_run": false,
+          "after_running_tick": 50.0
+        }
+      ],
+      "damage": [
+        {
+          "owned": false,
+          "mode": 0,
+          "accepts_damage": true
+        },
+        {
+          "owned": false,
+          "mode": 1,
+          "accepts_damage": true
+        },
+        {
+          "owned": true,
+          "mode": 0,
+          "accepts_damage": true
+        },
+        {
+          "owned": true,
+          "mode": 1,
+          "accepts_damage": false
+        }
+      ]
+    },
+    "lost_in_astral": {
+      "sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff",
+      "locations": {
+        "run": "0x4be220",
+        "world": "0x432200",
+        "refusal": "0x4a7bc0",
+        "placement": "0x5086e0",
+        "update": "0x498bd0",
+        "transform": "0x4b0390",
+        "drain": "0x4c4597",
+        "drain_end": "0x4c469f",
+        "drain_skip": "0x4c46a6",
+        "ack": "0x593fb0",
+        "gait": "0x4bc3a0",
+        "damage": "0x4c92be",
+        "damage_yes": "0x4c92f3",
+        "damage_no": "0x4c94d8"
+      },
+      "setter": [
+        {
+          "owner": 0,
+          "mode": 1,
+          "stored": 1
+        },
+        {
+          "owner": 0,
+          "mode": 0,
+          "stored": 0
+        },
+        {
+          "owner": 0,
+          "mode": 1,
+          "stored": 1
+        },
+        {
+          "owner": 7,
+          "mode": 0,
+          "stored": 1
+        },
+        {
+          "owner": 0,
+          "mode": 0,
+          "stored": 0
+        }
+      ],
+      "movement": [
+        {
+          "mode": 0,
+          "mana": 0.0,
+          "refusal": 0,
+          "can_run": false,
+          "after_running_tick": 0.0
+        },
+        {
+          "mode": 0,
+          "mana": 0.0,
+          "refusal": 1,
+          "can_run": false,
+          "after_running_tick": 0.0
+        },
+        {
+          "mode": 0,
+          "mana": 0.0,
+          "refusal": 2,
+          "can_run": false,
+          "after_running_tick": 0.0
+        },
+        {
+          "mode": 0,
+          "mana": 0.5,
+          "refusal": 0,
+          "can_run": true,
+          "after_running_tick": 0.0
+        },
+        {
+          "mode": 0,
+          "mana": 0.5,
+          "refusal": 1,
+          "can_run": false,
+          "after_running_tick": 0.0
+        },
+        {
+          "mode": 0,
+          "mana": 0.5,
+          "refusal": 2,
+          "can_run": false,
+          "after_running_tick": 0.0
+        },
+        {
+          "mode": 0,
+          "mana": 50.0,
+          "refusal": 0,
+          "can_run": true,
+          "after_running_tick": 49.0
+        },
+        {
+          "mode": 0,
+          "mana": 50.0,
+          "refusal": 1,
+          "can_run": false,
+          "after_running_tick": 49.0
+        },
+        {
+          "mode": 0,
+          "mana": 50.0,
+          "refusal": 2,
+          "can_run": false,
+          "after_running_tick": 49.0
+        },
+        {
+          "mode": 1,
+          "mana": 0.0,
+          "refusal": 0,
+          "can_run": true,
+          "after_running_tick": 0.0
+        },
+        {
+          "mode": 1,
+          "mana": 0.0,
+          "refusal": 1,
+          "can_run": false,
+          "after_running_tick": 0.0
+        },
+        {
+          "mode": 1,
+          "mana": 0.0,
+          "refusal": 2,
+          "can_run": false,
+          "after_running_tick": 0.0
+        },
+        {
+          "mode": 1,
+          "mana": 0.5,
+          "refusal": 0,
+          "can_run": true,
+          "after_running_tick": 0.5
+        },
+        {
+          "mode": 1,
+          "mana": 0.5,
+          "refusal": 1,
+          "can_run": false,
+          "after_running_tick": 0.5
+        },
+        {
+          "mode": 1,
+          "mana": 0.5,
+          "refusal": 2,
+          "can_run": false,
+          "after_running_tick": 0.5
+        },
+        {
+          "mode": 1,
+          "mana": 50.0,
+          "refusal": 0,
+          "can_run": true,
+          "after_running_tick": 50.0
+        },
+        {
+          "mode": 1,
+          "mana": 50.0,
+          "refusal": 1,
+          "can_run": false,
+          "after_running_tick": 50.0
+        },
+        {
+          "mode": 1,
+          "mana": 50.0,
+          "refusal": 2,
+          "can_run": false,
+          "after_running_tick": 50.0
+        }
+      ],
+      "damage": [
+        {
+          "owned": false,
+          "mode": 0,
+          "accepts_damage": true
+        },
+        {
+          "owned": false,
+          "mode": 1,
+          "accepts_damage": true
+        },
+        {
+          "owned": true,
+          "mode": 0,
+          "accepts_damage": true
+        },
+        {
+          "owned": true,
+          "mode": 1,
+          "accepts_damage": false
+        }
+      ]
+    }
+  }
+}

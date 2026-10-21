@@ -2,6 +2,218 @@
   "schema": 1,
   "tests": [
     {
+      "id": "quests/campaign_clock",
+      "category": "quests",
+      "script": "tools/tests/campaign_clock.gd",
+      "marker": "CAMPAIGN_CLOCK",
+      "min_checks": 1152,
+      "quick": true,
+      "description": "Original GS clock set/max/delete, hash presence and independent saved time",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/campaign_clock_coop",
+      "category": "quests",
+      "script": "tools/tests/campaign_clock_coop.gd",
+      "marker": "CAMPAIGN_CLOCK_COOP",
+      "min_checks": 62,
+      "quick": false,
+      "description": "Actual map entry/revisit, independent clocks, full gameplay save/load and ENet delivery",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "quests/campaign_clock_astral",
+      "category": "quests",
+      "script": "tools/tests/campaign_clock.gd",
+      "marker": "CAMPAIGN_CLOCK",
+      "min_checks": 1152,
+      "quick": true,
+      "description": "Original GS clock set/max/delete, hash presence and independent saved time",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/campaign_clock_coop_astral",
+      "category": "quests",
+      "script": "tools/tests/campaign_clock_coop.gd",
+      "marker": "CAMPAIGN_CLOCK_COOP",
+      "min_checks": 62,
+      "quick": false,
+      "description": "Actual map entry/revisit, independent clocks, full gameplay save/load and ENet delivery",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "quests/script_clock",
+      "category": "quests",
+      "script": "tools/tests/script_clock.gd",
+      "marker": "SCRIPT_CLOCK",
+      "min_checks": 1408,
+      "quick": true,
+      "description": "Original scene/campaign clock commands, saves and legacy import",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/script_clock_astral",
+      "category": "quests",
+      "script": "tools/tests/script_clock.gd",
+      "marker": "SCRIPT_CLOCK",
+      "min_checks": 1408,
+      "quick": true,
+      "description": "LiA original scene/campaign clock commands, saves and legacy import",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/script_clock_coop",
+      "category": "quests",
+      "script": "tools/tests/script_clock_coop.gd",
+      "marker": "SCRIPT_CLOCK_COOP",
+      "min_checks": 17,
+      "quick": false,
+      "description": "Installed LiA prison freeze, ENet hour/rate delivery, full save/load and client daylight",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/cz1h.mob"
+      ]
+    },
+    {
+      "id": "commands/console_commands",
+      "category": "commands",
+      "script": "tools/tests/console_commands.gd",
+      "marker": "CONSOLE_COMMANDS",
+      "min_checks": 96,
+      "quick": false,
+      "description": "Loaded console authority, expressions, variable files, command batches, malformed input, localization and persistence",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "commands/console_god_mode",
+      "category": "commands",
+      "script": "tools/tests/console_god_mode.gd",
+      "marker": "CONSOLE_GOD_MODE",
+      "min_checks": 98,
+      "quick": false,
+      "description": "Original GodMode observations, loaded damage and stamina, typed unit queries and saved mode",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "commands/console_god_mode_astral",
+      "category": "commands",
+      "script": "tools/tests/console_god_mode.gd",
+      "marker": "CONSOLE_GOD_MODE",
+      "min_checks": 98,
+      "quick": false,
+      "description": "LiA original GodMode observations, loaded damage and stamina, typed unit queries and saved mode",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "quests/script_future_queries",
+      "category": "quests",
+      "script": "tools/tests/script_future_queries.gd",
+      "marker": "SCRIPT_FUTURE_QUERIES",
+      "min_checks": 1434,
+      "quick": true,
+      "description": "Original future-position dispatch capture, actual curved movement and eleven authored prison trap bodies",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone19.mob"
+      ]
+    },
+    {
+      "id": "quests/script_future_queries_astral",
+      "category": "quests",
+      "script": "tools/tests/script_future_queries.gd",
+      "marker": "SCRIPT_FUTURE_QUERIES",
+      "min_checks": 1257,
+      "quick": true,
+      "description": "LiA original future-position dispatch capture, rounding, actual curved movement and console shorthand",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
       "id": "quests/script_quest_waits",
       "category": "quests",
       "script": "tools/tests/script_quest_waits.gd",
@@ -13,7 +225,11 @@
       "timeout": 240,
       "args": [],
       "campaign": "cursed_lands",
-      "required_files": ["res/database.res", "res/texts.res", "maps/zone1.mob"]
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
     },
     {
       "id": "quests/script_quest_waits_astral",
@@ -27,7 +243,11 @@
       "timeout": 240,
       "args": [],
       "campaign": "lost_in_astral",
-      "required_files": ["res/database.res", "res/texts.res", "maps/zone1.mob"]
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
     },
     {
       "id": "quests/script_parity_boundaries",
@@ -41,7 +261,11 @@
       "timeout": 240,
       "args": [],
       "campaign": "cursed_lands",
-      "required_files": ["res/database.res", "res/texts.res", "maps/zone1.mob"]
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
     },
     {
       "id": "quests/script_dead_predicates",
@@ -5695,6 +5919,148 @@
         "maps/zone11.mpr"
       ],
       "display": "rendered"
+    },
+    {
+      "id": "persistence/town_save_continuation",
+      "category": "persistence",
+      "script": "tools/tests/town_save_continuation.gd",
+      "marker": "TOWN_SAVE_CONTINUATION",
+      "min_checks": 46,
+      "quick": false,
+      "description": "Original town save-route contract, exact authored script continuation, pending dialogue flags, independent clocks and ENet reload",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "persistence/town_save_continuation_astral",
+      "category": "persistence",
+      "script": "tools/tests/town_save_continuation.gd",
+      "marker": "TOWN_SAVE_CONTINUATION",
+      "min_checks": 43,
+      "quick": false,
+      "description": "Original town save-route contract, exact authored script continuation, pending dialogue flags, independent clocks and ENet reload",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "settings/mod_redress",
+      "category": "settings",
+      "script": "tools/tests/mod_redress.gd",
+      "marker": "MOD_REDRESS",
+      "min_checks": 42,
+      "quick": false,
+      "description": "Package import, actual character/weapon materials, transparent PNT3, profile restoration and cosmetic compatibility",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [
+        "--mod-tests"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "res/redress.res",
+        "res/figures.res"
+      ]
+    },
+    {
+      "id": "settings/mod_redress_astral",
+      "category": "settings",
+      "script": "tools/tests/mod_redress.gd",
+      "marker": "MOD_REDRESS",
+      "min_checks": 42,
+      "quick": false,
+      "description": "LiA character textures, package isolation, archive restoration and cosmetic compatibility",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [
+        "--mod-tests"
+      ],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "res/redress.res",
+        "res/figures.res"
+      ]
+    },
+    {
+      "id": "settings/mod_texture_packages",
+      "category": "settings",
+      "script": "tools/tests/mod_texture_packages.gd",
+      "marker": "MOD_TEXTURE_PACKAGES",
+      "min_checks": 42,
+      "quick": false,
+      "description": "Texture package import, metadata, archive enumeration and allocation limits",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [
+        "--mod-tests"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "res/redress.res",
+        "res/figures.res"
+      ]
+    },
+    {
+      "id": "commands/mine_passage_presentation_astral",
+      "category": "commands",
+      "script": "tools/tests/mine_passage_presentation.gd",
+      "marker": "MINE_PASSAGE_PRESENTATION",
+      "min_checks": 101,
+      "quick": false,
+      "description": "Prepared gz24k CDoorY passage: distinct saved party, separate solo authority, group/follow movement and rendered progress at normal/accelerated speed. Neutralized combat; not the reporter's save or a native comparison.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "maps/zone24.mob",
+        "maps/zone24.mpr",
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "settings/mod_profiles",
+      "category": "settings",
+      "script": "tools/tests/mod_profiles.gd",
+      "marker": "MOD_PROFILES",
+      "min_checks": 87,
+      "quick": false,
+      "description": "Profile lifecycle, package conflicts, saves, numeric patches and local cosmetic signatures",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [
+        "--mod-tests"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "res/redress.res",
+        "res/figures.res"
+      ]
     }
   ]
 }

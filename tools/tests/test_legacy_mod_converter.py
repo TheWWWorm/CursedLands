@@ -144,6 +144,24 @@ class ConversionTest(unittest.TestCase):
         self.assertEqual(c.manifest["title"], "Example")
         self.assertEqual(c.manifest["modes"], ["original_multiplayer"])
 
+    def test_redress_delta_preserves_source_archives(self):
+        entry = "unhufeax_01.gr.0.mmp"
+        old = struct.pack("<5I", 0x504D4D, 1, 1, 4, 0x33544E50) + bytes(56) + bytes([0, 0, 255, 255])
+        new = old[:-4] + bytes([255, 0, 0, 255])
+        self.put(self.base, "res/redress.res", archive({entry: old, "same.mmp": old}))
+        self.put(self.source, "res/redress.res", archive({entry: new, "same.mmp": old}))
+        before = {p: p.read_bytes() for p in (self.base / "res/redress.res", self.source / "res/redress.res")}
+        code, out, report = self.run_cli()
+        self.assertEqual(code, 0)
+        self.assertEqual(report["unchanged_entries"], 1)
+        with zipfile.ZipFile(out / "test.legacy.eimod") as z:
+            path = "assets/redress.res/" + entry
+            m = json.loads(z.read("mod.json"))
+            self.assertEqual(m["overrides"], [{"archive": "redress.res", "entry": entry, "file": path}])
+            self.assertEqual(z.read(path), new)
+        for path, data in before.items():
+            self.assertEqual(path.read_bytes(), data)
+
     def test_multiple_distinct_archives_and_conflicting_precedence(self):
         self.sound()
         self.put(self.source, "res/second.res", archive({"same.wav": wav(100)}))

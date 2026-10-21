@@ -1,0 +1,31 @@
+{
+  "exit": 0,
+  "seconds": 95.2,
+  "argv": [
+    "/home/llm2x/.local/bin/godot-4",
+    "--path",
+    "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/game",
+    "--audio-driver",
+    "Dummy",
+    "--render-thread",
+    "safe",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--windowed",
+    "--resolution",
+    "960x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo/tools/tests/mine_passage_presentation.gd"
+  ],
+  "errors": [
+    "ERROR: Texture with GL ID of 114: leaked 349524 bytes.",
+    "ERROR: Texture with GL ID of 115: leaked 349524 bytes."
+  ],
+  "summary": [
+    "MINE_PASSAGE_PRESENTATION 101 checks 0 failures"
+  ]
+}

@@ -78,6 +78,15 @@ var controller := -1:   # player index, -1 = AI
 			notice_revision += 1
 var display_name := ""
 
+## Authored/script relative height, independent of the terrain surface.
+## zone20's Curse starts below the floor until SetCP reveals it.
+var placement_z := 0.0:
+	set(value):
+		if placement_z == value: return
+		placement_z = value
+		_xf_pos = Vector2.INF
+		_placement_revision += 1
+
 ## Setting it keeps the unit's spatial bucket (NavGrid.rebucket) exact, so
 ## nearby-unit queries see a unit moved outside its own tick (scripts,
 ## teleports, snapshots, placement) at once, as a scan of every unit would.
@@ -486,6 +495,7 @@ func setup(w: GameWorld, record: Dictionary) -> bool:
 		display_name = RemakeText.t("Creature")
 	var p: Vector3 = record.get("position", Vector3.ZERO)
 	pos = Vector2(p.x, p.y)
+	placement_z = p.z
 	var q: Quaternion = record.get("rotation", Quaternion.IDENTITY)
 	facing = q.get_euler().y - MODEL_YAW_OFFSET
 	var animation_random: RandomNumberGenerator
@@ -1303,9 +1313,18 @@ func _move_base(for_turn := false) -> float:
 		v = s[2] if stance == STANCE_KNEEL else s[3]
 	elif for_turn:
 		v = float(s[0])
-	var sb := mini(255, _fistp(v * 255.0 / 2.0))
-	var fb := mini(255, _fistp(float(proto.get("tuning_move", 1.0)) * wound_factor(3) * 25.5))
+	var sb := _movement_byte(v, 127.5)
+	var fb := _movement_byte(float(proto.get("tuning_move", 1.0)) * wound_factor(3), 25.5)
 	return sb * 2.0 / 255.0 * fb / 25.5
+
+
+## Both native packers store the scaled value as float32 before FISTP
+## (base 522ce0, LiA 4a7620). Rounding the double directly changes ties,
+## including the shipped banshee crawl speed: 8.5 rounds to 8, not 9.
+static func _movement_byte(value: float, scale: float) -> int:
+	var stored := float(PackedFloat32Array([value])[0])
+	var scaled := float(PackedFloat32Array([stored * scale])[0])
+	return mini(_fistp(scaled) & 0xffffffff, 255)
 
 
 ## x87 FISTP in its default mode: to the nearest integer, ties to even.
@@ -1613,9 +1632,17 @@ func _sandbox_mana() -> bool:
 	return controller >= 0 and world.session != null and world.session.mod_config.get("sandbox", false) and GameData.option("sandbox_mana") == 1
 
 
+func god_mode() -> bool:
+	return controller >= 0 and world != null and world.session != null \
+		and int(world.session.state.god_modes.get(controller,0)) != 0
+
+
 ## This is a shared gameplay rule, resolved by the authority's party danger
 ## state, never the local camera or input mode. Spell costs are independent.
 func free_running() -> bool:
+	# Native548520 / LiA4be220 bypass only the stamina gate. cannot_run
+	# still checks wounds/load; casting still spends its original stamina.
+	if god_mode(): return true
 	if controller < 0 or not has_meta("hero") or world == null: return false
 	var enabled := GameData.option("free_run")
 	if world.session and not world.session.mod_config.is_empty():
@@ -3491,6 +3518,10 @@ static func is_dying_hp(v: float) -> bool:
 ## preserve bit4 from the pre-armour record; `types` here
 ## normally contains only what armour left for body-part severance.
 func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFloat32Array(), hit_flags := 0, layers := Callable(), owner_only := false) -> void:
+	# Native554139 / LiA4c92be reject the damage record for an invulnerable
+	# player's units. Spell effects, direct script death and wound repair
+	# retain their separate paths; toggling the flag never heals the unit.
+	if god_mode(): return
 	if controller >= 0 and world.session != null and world.session.mod_config.get("sandbox", false) and GameData.option("sandbox_invulnerable") == 1:
 		return
 	if dead:
@@ -4393,7 +4424,7 @@ func _sync_transform(draw_dt := -1.0) -> void:
 		return
 	_drawn = p
 	var xf := Transform3D(Basis(Vector3.UP, yaw + MODEL_YAW_OFFSET),
-		EISpace.pos(p.x, p.y, world.ground_at(p.x, p.y)))
+		EISpace.pos(p.x, p.y, world.ground_at(p.x, p.y) + placement_z))
 	if transform != xf:
 		# A jump (placement, teleport, revive, a snapshot far off): drawn there
 		# at once, not slid there over a physics step.
@@ -4534,6 +4565,7 @@ func snapshot() -> Array:
 	if not action in _STEADY and model:
 		row[19] = [_cast_visual_clip if action.begins_with("cast") else model._current,
 			_action_started_at, float(stats.get("attack_rate", 1.0)) if action == "attack" else 1.0]
+	row.append(placement_z)
 	return row
 
 
@@ -4648,6 +4680,7 @@ func apply_snapshot(s: Array, quiet := false, precise_body := PackedFloat64Array
 		if maximum_changed:
 			_set_max_hp(incoming_max)
 		max_mana = s[10]
+	placement_z = float(s[20]) if s.size() > 20 and (s[20] is float or s[20] is int) and is_finite(float(s[20])) else 0.0
 	pos = Vector2(s[1], s[2])
 	facing = s[3]
 	var arriving: bool = not quiet and s[4] == "idle" and (action in ["walk", "run", "crawl"] or not _settle_action.is_empty())

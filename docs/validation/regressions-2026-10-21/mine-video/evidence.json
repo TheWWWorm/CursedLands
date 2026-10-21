@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-21",
+  "branch": "test/original-parity-expanded",
+  "head": "5d95878afc00dce5d4b569cd176cd20e30a1e89e",
+  "video": {
+    "path": "/home/llm2x/Downloads/баг-SnapYT.App.mp4",
+    "sha256": "0269404463ae95d6ab015631d9d5c468c872194ee3f8cd18f8007cc2e82adc34",
+    "bytes": 3846889,
+    "duration_seconds": 15.93,
+    "width": 720,
+    "height": 1280,
+    "fps": 30,
+    "audio_stream": false,
+    "frame": "video-frame.png",
+    "frame_note": "Frame 9 of a 2 fps extraction, approximately 4 seconds into the clip."
+  },
+  "localization": {
+    "campaign": "lost_in_astral",
+    "zone": "gz24k",
+    "assets": [
+      "maps/zone24.mob",
+      "maps/zone24.mpr"
+    ],
+    "gate": "CDoorY",
+    "object_id": 4306,
+    "position": [
+      129.515,
+      135.658
+    ],
+    "basis": "Visual match of gate, plate, green passage and adjacent water against installed map landmarks."
+  },
+  "provenance": {
+    "production_changed": false,
+    "matched_source_files": 464,
+    "total_source_files": 465,
+    "only_staging_difference": "src/game/ai.gd: comments only, no executable change",
+    "windows_executable_sha256": "73aeb229b303f15e27cdf53c43d379366688dbcf858c01ffcd02f51cbd88580d",
+    "windows_fixture_sha256": "3f9f0b198cd1dede0f7765c3641335407c56821d2bb009678711765f24216964",
+    "windows_fixture_note": "Retained source before the subsequent Linux texture-cache teardown cleanup and removal of an unused alternate-gate argument. Measurement logic is identical.",
+    "linux_fixture_sha256": "c2e8e66bd120312528539a1afc350992db045cde8b8187184594672a1f6a8292"
+  },
+  "limits": [
+    "Reporter game version, save, hardware, equipment, injuries and reload behavior are unknown. The user is forwarding another player's report.",
+    "Prepared party and route, original-look graphics, opened gate and neutralized hostility are controlled inputs. All 62 authored actors, original scripts and obstacles remain loaded.",
+    "This is a remake regression check, not an original executable comparison or a reproduction of the reporter's saved state.",
+    "Windows results use Wine on Linux, not native Windows.",
+    "A passing control does not establish that the external report is fixed or invalid.",
+    "Linux OpenGL completes all movement assertions and exits 0, but emits two 349,524-byte GL texture-leak diagnostics during shutdown. Explicit test cache cleanup did not remove them. It is not a clean renderer result, and no causal connection to the reported slowdown is established."
+  ],
+  "status": "Severe reported slowdown not reproduced; no production fix claimed.",
+  "runs": [
+    {
+      "platform": "linux",
+      "renderer": "OpenGL",
+      "checks": 101,
+      "assertion_failures": 0,
+      "process_exit": 0,
+      "diagnostics": [
+        "ERROR: Texture with GL ID of 114: leaked 349524 bytes.",
+        "ERROR: Texture with GL ID of 115: leaked 349524 bytes."
+      ],
+      "measurements": "linux-mine-passage-presentation.json",
+      "result": "linux-result.json"
+    },
+    {
+      "platform": "windows",
+      "renderer": "D3D12 under Wine",
+      "checks": 101,
+      "assertion_failures": 0,
+      "process_exit": 0,
+      "diagnostics": [],
+      "measurements": "windows-mine-passage-presentation.json",
+      "result": "windows-result.json"
+    }
+  ]
+}

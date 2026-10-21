@@ -1,0 +1,6 @@
+{
+  "scope": "Only runtime spells.gd restored to repository HEAD; other follow-up source retained. Runtime restored in finally.",
+  "base": "5d95878afc00dce5d4b569cd176cd20e30a1e89e",
+  "baseline_spells_sha256": "d0609f837c63a6b896846f45fe0636b5b1ddd38c47b12583728a3ffe1e1d39a7",
+  "fixed_spells_sha256": "521b0c426ff4a90f9f7611052d83186b2f7e01342050bb4f4fa270193c2c6946"
+}

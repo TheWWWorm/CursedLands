@@ -23,7 +23,7 @@ class UnitPresentationKernel : public RefCounted {
     const StringName xf_pos_key = "_xf_pos", xf_yaw_key = "_xf_facing", xf_tid_key = "_xf_tid";
     const StringName xf_rev_key = "_xf_rev", xf_floor_key = "_xf_floor_rev", xf_key = "_xf";
     const StringName screen_key = "_screen", frame_key = "_placement_frame";
-    const StringName placement_revision_key = "_placement_revision";
+    const StringName placement_revision_key = "_placement_revision", placement_z_key = "placement_z";
     struct Ground {
         Object *world = nullptr;
         int64_t terrain = 0, surface = 0, floor = 0;
@@ -61,7 +61,7 @@ class UnitPresentationKernel : public RefCounted {
             if (point == cache.point && yaw == cache.yaw && state.terrain == cache.terrain &&
                     state.surface == cache.surface && state.floor == cache.floor && current == cache.transform) return true;
             unit->set(drawn_key, point);
-            const double height = state.world->call(ground_method, point.x, point.y);
+            const double height = double(state.world->call(ground_method, point.x, point.y)) + double(unit->get(placement_z_key));
             const Transform3D next(Basis(Vector3(0, 1, 0), yaw + Math::PI * 0.5), Vector3(point.x, height, -point.y));
             if (current != next) {
                 const bool jump = current.origin.distance_squared_to(next.origin) > 4.0;
@@ -93,7 +93,7 @@ class UnitPresentationKernel : public RefCounted {
                 state.terrain == int64_t(unit->get(xf_tid_key)) && state.surface == int64_t(unit->get(xf_rev_key)) &&
                 state.floor == int64_t(unit->get(xf_floor_key)) && current == Transform3D(unit->get(xf_key))) return true;
         unit->set(drawn_key, point);
-        const double height = state.world->call(ground_method, point.x, point.y);
+        const double height = double(state.world->call(ground_method, point.x, point.y)) + double(unit->get(placement_z_key));
         const Transform3D next(Basis(Vector3(0, 1, 0), yaw + Math::PI * 0.5), Vector3(point.x, height, -point.y));
         if (current != next) {
             const bool jump = current.origin.distance_squared_to(next.origin) > 4.0;

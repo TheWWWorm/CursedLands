@@ -57,6 +57,8 @@ func _ready() -> void:
 					u.facing = facing
 					u.net_view._speed = speed
 					u.net_view._yaw_speed = turn
+			if step % 7 == 0:
+				for u: GameUnit in [a,b]: u.placement_z = [-20.0,0.0,-0.55,1.25][(step/7+i)%4]
 			if step % 23 == 0:
 				for u: GameUnit in [a,b]: u.transform = Transform3D(Basis.IDENTITY, Vector3(-2,3,4))
 			if step % 31 == 0:

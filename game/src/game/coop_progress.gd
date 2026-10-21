@@ -398,6 +398,7 @@ static func merge(st: CampaignState, pkg: Dictionary) -> void:
 		st.current_zone = String(move.zone)
 		st.world_time = clampf(_num(move.get("world_time", st.world_time), st.world_time), 0.0, 23.999)
 		st.day = maxi(1, int(_num(move.get("day", st.day), st.day)))
+		st.campaign_time = _num(move.get("campaign_time"), float(st.day-1)*24.0+st.world_time)
 		if context != null and pkg.get("complete_checkpoint", false) and not sid.is_empty():
 			st.coop.applied[sid].checkpoint = Checkpoint.signature(Checkpoint.story(st))
 			st.coop.applied[sid].checkpoint_world = Checkpoint.world_signature(st)
@@ -1104,6 +1105,17 @@ func bag_of(player: int) -> Array:
 	return e.purse.get_or_add("items", []) if not e.is_empty() else session.state.items
 
 
+## Resolve an explicit owner even inside another player's transaction.
+func owner_money(player: int) -> int:
+	if not session.is_host:
+		return session.state.money if player == session.my_index else 0
+	if not _swap.is_empty() and int(_swap.e.get("idx", -1)) == player:
+		return session.state.money
+	var e := purse_entry(player)
+	if not e.is_empty(): return int(e.purse.get("money", 0))
+	return int(_swap.money) if not _swap.is_empty() and not _swap.get("shared", false) else session.state.money
+
+
 ## Explicit owner lookup, even during another player's temporary purse swap.
 ## Native LMP script builtins name the player; they cannot read or erase an
 ## item from whichever purse happens to stand in for state.items at that time.
@@ -1297,7 +1309,8 @@ func package(e: Dictionary) -> Dictionary:
 	zones = preload("res://src/game/script/coop_vm_state.gd").mark_zones(zones, int(e.idx))
 	var move := {}
 	if e.in_sync and e.clean and e.present and session.zone_id:
-		move = {"zone": session.zone_id, "world_time": st.world_time, "day": st.day}
+		move = {"zone": session.zone_id, "world_time": st.world_time, "day": st.day,
+			"campaign_time": st.get_var(0, "gtime")}
 	var purse: Dictionary = personal.purse
 	var context := PartyProgress.read(e.get("party_context"))
 	var party_context := {}

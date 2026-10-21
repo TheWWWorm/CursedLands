@@ -1,0 +1,37 @@
+{
+  "executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "entry": "0x5c11d0",
+  "scope": "Native XYZ placement writes for zone20 height values; legal same-cell map relink supplied, no movement/rendering equivalence claim.",
+  "rows": [
+    {
+      "requested_z": -20.0,
+      "actual_z": -20.0,
+      "success": true
+    },
+    {
+      "requested_z": -5.55,
+      "actual_z": -5.550000190734863,
+      "success": true
+    },
+    {
+      "requested_z": -0.55,
+      "actual_z": -0.550000011920929,
+      "success": true
+    },
+    {
+      "requested_z": 0.0,
+      "actual_z": 0.0,
+      "success": true
+    },
+    {
+      "requested_z": 1.25,
+      "actual_z": 1.25,
+      "success": true
+    },
+    {
+      "requested_z": 20.0,
+      "actual_z": 20.0,
+      "success": true
+    }
+  ]
+}

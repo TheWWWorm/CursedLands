@@ -1,0 +1,102 @@
+
+/home/llm2x/Documents/EI/inspection/extracted/app/game.exe:     file format pei-i386
+
+
+Disassembly of section .text:
+
+0052fcc0 <.text+0x12ecc0>:
+  52fcc0:	83 ec 28             	sub    esp,0x28
+  52fcc3:	56                   	push   esi
+  52fcc4:	8b f1                	mov    esi,ecx
+  52fcc6:	57                   	push   edi
+  52fcc7:	8b 8e 40 02 00 00    	mov    ecx,DWORD PTR [esi+0x240]
+  52fccd:	8b 01                	mov    eax,DWORD PTR [ecx]
+  52fccf:	ff 50 40             	call   DWORD PTR [eax+0x40]
+  52fcd2:	8b 16                	mov    edx,DWORD PTR [esi]
+  52fcd4:	8b ce                	mov    ecx,esi
+  52fcd6:	8b f8                	mov    edi,eax
+  52fcd8:	ff 92 dc 00 00 00    	call   DWORD PTR [edx+0xdc]
+  52fcde:	85 c0                	test   eax,eax
+  52fce0:	74 19                	je     0x52fcfb
+  52fce2:	8b 7c 24 34          	mov    edi,DWORD PTR [esp+0x34]
+  52fce6:	8b 06                	mov    eax,DWORD PTR [esi]
+  52fce8:	57                   	push   edi
+  52fce9:	8b ce                	mov    ecx,esi
+  52fceb:	ff 90 d4 00 00 00    	call   DWORD PTR [eax+0xd4]
+  52fcf1:	8b c7                	mov    eax,edi
+  52fcf3:	5f                   	pop    edi
+  52fcf4:	5e                   	pop    esi
+  52fcf5:	83 c4 28             	add    esp,0x28
+  52fcf8:	c2 08 00             	ret    0x8
+  52fcfb:	83 3f 02             	cmp    DWORD PTR [edi],0x2
+  52fcfe:	0f 85 c2 00 00 00    	jne    0x52fdc6
+  52fd04:	f7 46 08 00 00 00 08 	test   DWORD PTR [esi+0x8],0x8000000
+  52fd0b:	0f 85 b5 00 00 00    	jne    0x52fdc6
+  52fd11:	d9 05 b8 e9 73 00    	fld    DWORD PTR ds:0x73e9b8
+  52fd17:	d8 0d 6c b8 73 00    	fmul   DWORD PTR ds:0x73b86c
+  52fd1d:	8d 4e 1c             	lea    ecx,[esi+0x1c]
+  52fd20:	d8 3d 4c b8 73 00    	fdivr  DWORD PTR ds:0x73b84c
+  52fd26:	8b 11                	mov    edx,DWORD PTR [ecx]
+  52fd28:	89 54 24 18          	mov    DWORD PTR [esp+0x18],edx
+  52fd2c:	8d 54 24 0c          	lea    edx,[esp+0xc]
+  52fd30:	8b 41 04             	mov    eax,DWORD PTR [ecx+0x4]
+  52fd33:	52                   	push   edx
+  52fd34:	89 44 24 20          	mov    DWORD PTR [esp+0x20],eax
+  52fd38:	8d 44 24 14          	lea    eax,[esp+0x14]
+  52fd3c:	8b 49 08             	mov    ecx,DWORD PTR [ecx+0x8]
+  52fd3f:	50                   	push   eax
+  52fd40:	89 4c 24 28          	mov    DWORD PTR [esp+0x28],ecx
+  52fd44:	8d 4c 24 1c          	lea    ecx,[esp+0x1c]
+  52fd48:	8d 54 24 2c          	lea    edx,[esp+0x2c]
+  52fd4c:	51                   	push   ecx
+  52fd4d:	8d 44 24 24          	lea    eax,[esp+0x24]
+  52fd51:	52                   	push   edx
+  52fd52:	8d 4c 24 1b          	lea    ecx,[esp+0x1b]
+  52fd56:	50                   	push   eax
+  52fd57:	51                   	push   ecx
+  52fd58:	51                   	push   ecx
+  52fd59:	8b ce                	mov    ecx,esi
+  52fd5b:	d9 c0                	fld    st(0)
+  52fd5d:	d8 4c 24 34          	fmul   DWORD PTR [esp+0x34]
+  52fd61:	d9 5c 24 34          	fstp   DWORD PTR [esp+0x34]
+  52fd65:	d8 4c 24 38          	fmul   DWORD PTR [esp+0x38]
+  52fd69:	d9 5c 24 38          	fstp   DWORD PTR [esp+0x38]
+  52fd6d:	db 44 24 54          	fild   DWORD PTR [esp+0x54]
+  52fd71:	d9 1c 24             	fstp   DWORD PTR [esp]
+  52fd74:	57                   	push   edi
+  52fd75:	e8 d6 5b f2 ff       	call   0x455950
+  52fd7a:	50                   	push   eax
+  52fd7b:	8d 8e 7c 02 00 00    	lea    ecx,[esi+0x27c]
+  52fd81:	e8 aa 76 09 00       	call   0x5c7430
+  52fd86:	d9 05 b8 e9 73 00    	fld    DWORD PTR ds:0x73e9b8
+  52fd8c:	d8 0d 6c b8 73 00    	fmul   DWORD PTR ds:0x73b86c
+  52fd92:	8b 44 24 34          	mov    eax,DWORD PTR [esp+0x34]
+  52fd96:	5f                   	pop    edi
+  52fd97:	8b d0                	mov    edx,eax
+  52fd99:	5e                   	pop    esi
+  52fd9a:	d9 c0                	fld    st(0)
+  52fd9c:	d8 4c 24 10          	fmul   DWORD PTR [esp+0x10]
+  52fda0:	d9 5c 24 10          	fstp   DWORD PTR [esp+0x10]
+  52fda4:	8b 4c 24 10          	mov    ecx,DWORD PTR [esp+0x10]
+  52fda8:	d8 4c 24 14          	fmul   DWORD PTR [esp+0x14]
+  52fdac:	89 0a                	mov    DWORD PTR [edx],ecx
+  52fdae:	d9 5c 24 14          	fstp   DWORD PTR [esp+0x14]
+  52fdb2:	8b 4c 24 14          	mov    ecx,DWORD PTR [esp+0x14]
+  52fdb6:	89 4a 04             	mov    DWORD PTR [edx+0x4],ecx
+  52fdb9:	8b 4c 24 18          	mov    ecx,DWORD PTR [esp+0x18]
+  52fdbd:	89 4a 08             	mov    DWORD PTR [edx+0x8],ecx
+  52fdc0:	83 c4 28             	add    esp,0x28
+  52fdc3:	c2 08 00             	ret    0x8
+  52fdc6:	8b 44 24 34          	mov    eax,DWORD PTR [esp+0x34]
+  52fdca:	83 c6 1c             	add    esi,0x1c
+  52fdcd:	8b d0                	mov    edx,eax
+  52fdcf:	5f                   	pop    edi
+  52fdd0:	8b 0e                	mov    ecx,DWORD PTR [esi]
+  52fdd2:	89 0a                	mov    DWORD PTR [edx],ecx
+  52fdd4:	8b 4e 04             	mov    ecx,DWORD PTR [esi+0x4]
+  52fdd7:	89 4a 04             	mov    DWORD PTR [edx+0x4],ecx
+  52fdda:	8b 4e 08             	mov    ecx,DWORD PTR [esi+0x8]
+  52fddd:	5e                   	pop    esi
+  52fdde:	89 4a 08             	mov    DWORD PTR [edx+0x8],ecx
+  52fde1:	83 c4 28             	add    esp,0x28
+  52fde4:	c2 08 00             	ret    0x8

@@ -1,0 +1,16 @@
+{
+  "file": "game/src/game/unit.gd",
+  "before_sha256": "edbfdd68ab34c24979b898855cf15456bed8d44f0db03347735f4deb6b6531c4",
+  "after_sha256": "68ed930b19140cce274f93f6d1e05a67a3556495874e38b01f9e3778baf5568b",
+  "method": "Before runs replace only unit.gd with the saved pre-fix copy; other current changes are retained. After runs use the current source and rebuilt Windows package.",
+  "diff": "--- before/unit.gd\n+++ after/unit.gd\n@@ -1313,9 +1313,18 @@\n \t\tv = s[2] if stance == STANCE_KNEEL else s[3]\n \telif for_turn:\n \t\tv = float(s[0])\n-\tvar sb := mini(255, _fistp(v * 255.0 / 2.0))\n-\tvar fb := mini(255, _fistp(float(proto.get(\"tuning_move\", 1.0)) * wound_factor(3) * 25.5))\n+\tvar sb := _movement_byte(v, 127.5)\n+\tvar fb := _movement_byte(float(proto.get(\"tuning_move\", 1.0)) * wound_factor(3), 25.5)\n \treturn sb * 2.0 / 255.0 * fb / 25.5\n+\n+\n+## Both native packers store the scaled value as float32 before FISTP\n+## (base 522ce0, LiA 4a7620). Rounding the double directly changes ties,\n+## including the shipped banshee crawl speed: 8.5 rounds to 8, not 9.\n+static func _movement_byte(value: float, scale: float) -> int:\n+\tvar stored := float(PackedFloat32Array([value])[0])\n+\tvar scaled := float(PackedFloat32Array([stored * scale])[0])\n+\treturn mini(_fistp(scaled) & 0xffffffff, 255)\n \n \n ## x87 FISTP in its default mode: to the nearest integer, ties to even.\n",
+  "history": {
+    "commit": "5ceae2fe",
+    "date": "2026-10-02",
+    "finding": "The initial 0.1.0 movement packer rounded double precision directly; this predates mod merge 4118bbc7."
+  },
+  "package_sha256": {
+    "CursedLands.pck": "17204aa07c26a44a9239dd368077fa178d0d99bc07a555dc1ec19f4503d83066",
+    "CursedLands.exe": "73aeb229b303f15e27cdf53c43d379366688dbcf858c01ffcd02f51cbd88580d"
+  }
+}

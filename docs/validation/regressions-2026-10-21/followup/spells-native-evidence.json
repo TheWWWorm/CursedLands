@@ -1,0 +1,268 @@
+{
+  "scope": "REA navigation evidence for bounded original EXE comparisons. Reproducible observations are in original-spell-alerts.json and original-size-effects.json. No full original encounter playback is claimed.",
+  "records": [
+    {
+      "evidence_id": "ev_b2a9a00f9821bcac8a3205a1bd1d1edd4b9177f1745aa2a2419cf1e17102f1b3",
+      "subject": {
+        "name": "game.exe",
+        "digest": {
+          "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+        },
+        "format": "pe",
+        "architecture": "x86",
+        "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+      },
+      "authority": "shipped-artifact",
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels."
+      ],
+      "procedure": {
+        "address": "0x58e670",
+        "name": "FUN_0058e670",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x58e670",
+              "end": "0x58e827"
+            }
+          ],
+          "total_bytes": 440,
+          "span_bytes": 440,
+          "non_contiguous": false,
+          "contains_entry": true
+        },
+        "signature": "undefined FUN_0058e670()",
+        "locals": [
+          {
+            "description": "undefined4 local_10 @ Stack[-0x10]:4",
+            "provenance": "ghidra-function-database"
+          },
+          {
+            "description": "undefined4 local_14 @ Stack[-0x14]:4",
+            "provenance": "ghidra-function-database"
+          },
+          {
+            "description": "undefined4 local_18 @ Stack[-0x18]:4",
+            "provenance": "ghidra-function-database"
+          },
+          {
+            "description": "undefined4 local_1c @ Stack[-0x1c]:4",
+            "provenance": "ghidra-function-database"
+          }
+        ]
+      }
+    },
+    {
+      "evidence_id": "ev_538f518ec5fdd35cf885e848e8503e2de71f43741e2a36330c73544435e60c3d",
+      "subject": {
+        "name": "game.exe",
+        "digest": {
+          "sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff"
+        },
+        "format": "pe",
+        "architecture": "x86",
+        "local_path": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game/game.exe"
+      },
+      "authority": "shipped-artifact",
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels."
+      ],
+      "procedure": {
+        "address": "0x4e7cd0",
+        "name": "FUN_004e7cd0",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x4e7cd0",
+              "end": "0x4e7e2e"
+            }
+          ],
+          "total_bytes": 351,
+          "span_bytes": 351,
+          "non_contiguous": false,
+          "contains_entry": true
+        },
+        "signature": "undefined FUN_004e7cd0()",
+        "locals": [
+          {
+            "description": "undefined4 local_10 @ Stack[-0x10]:4",
+            "provenance": "ghidra-function-database"
+          },
+          {
+            "description": "undefined4 local_14 @ Stack[-0x14]:4",
+            "provenance": "ghidra-function-database"
+          },
+          {
+            "description": "undefined4 local_18 @ Stack[-0x18]:4",
+            "provenance": "ghidra-function-database"
+          }
+        ]
+      }
+    },
+    {
+      "evidence_id": "ev_058439aec6ea61fdb8f977d6d7a5118b342c370aa0950ba7c6268e0d6d8aeb48",
+      "subject": {
+        "name": "game.exe",
+        "digest": {
+          "sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff"
+        },
+        "format": "pe",
+        "architecture": "x86",
+        "local_path": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game/game.exe"
+      },
+      "authority": "shipped-artifact",
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels."
+      ],
+      "procedure": {
+        "address": "0x51bb30",
+        "name": "FUN_0051bb30",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x51bb30",
+              "end": "0x51bd32"
+            }
+          ],
+          "total_bytes": 515,
+          "span_bytes": 515,
+          "non_contiguous": false,
+          "contains_entry": true
+        },
+        "signature": "undefined FUN_0051bb30()",
+        "locals": [
+          {
+            "description": "undefined4 local_1c @ Stack[-0x1c]:4",
+            "provenance": "ghidra-function-database"
+          },
+          {
+            "description": "undefined4 local_20 @ Stack[-0x20]:4",
+            "provenance": "ghidra-function-database"
+          },
+          {
+            "description": "undefined4 local_24 @ Stack[-0x24]:4",
+            "provenance": "ghidra-function-database"
+          },
+          {
+            "description": "undefined4 local_28 @ Stack[-0x28]:4",
+            "provenance": "ghidra-function-database"
+          },
+          {
+            "description": "undefined4 local_2c @ Stack[-0x2c]:4",
+            "provenance": "ghidra-function-database"
+          },
+          {
+            "description": "undefined4 local_30 @ Stack[-0x30]:4",
+            "provenance": "ghidra-function-database"
+          },
+          {
+            "description": "undefined4 local_34 @ Stack[-0x34]:4",
+            "provenance": "ghidra-function-database"
+          },
+          {
+            "description": "undefined4 local_c @ Stack[-0xc]:4",
+            "provenance": "ghidra-function-database"
+          }
+        ]
+      }
+    },
+    {
+      "evidence_id": "ev_691bcff52ba0264f0f2289041f8d2a8ad9c9b13e461cbd4a4a42feecf94477a7",
+      "subject": {
+        "name": "game.exe",
+        "digest": {
+          "sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff"
+        },
+        "format": "pe",
+        "architecture": "x86",
+        "local_path": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game/game.exe"
+      },
+      "authority": "shipped-artifact",
+      "limitations": [
+        "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels."
+      ],
+      "procedure": {
+        "address": "0x5a27b0",
+        "name": "FUN_005a27b0",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x5a27b0",
+              "end": "0x5a4050"
+            }
+          ],
+          "total_bytes": 6305,
+          "span_bytes": 6305,
+          "non_contiguous": false,
+          "contains_entry": true
+        },
+        "signature": "undefined FUN_005a27b0()",
+        "locals": []
+      }
+    }
+  ]
+}

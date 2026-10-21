@@ -1,0 +1,13 @@
+{
+	"checks": 42,
+	"details": [],
+	"failures": 0,
+	"observations": {
+		"campaign": "cursed_lands",
+		"error_de": "Texturersatz erfordert MMP-Dateien.",
+		"error_en": "Texture overrides must be MMP files.",
+		"error_ru": "Для замены текстур нужны файлы MMP.",
+		"skin": "unhumaskin_00.mmp",
+		"weapon": "unhufeax_01.gr.0.mmp"
+	}
+}

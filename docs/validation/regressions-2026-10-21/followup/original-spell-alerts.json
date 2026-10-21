@@ -1,0 +1,3091 @@
+{
+  "scope": "Replay the original spell-dispatch provocation branch from shipped x86 code.\n\nThis captures dispatch-side AI notifications and hostility writes, not spell\ndamage/effects or a complete encounter. Spell index, target kind, caster and\nfriendship are supplied inputs. The AI notification and replication transport\nare observed boundaries. Hostility selection and writes execute natively.\n",
+  "campaigns": {
+    "original": {
+      "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+      "locations": {
+        "begin": "0x58e7a7",
+        "end": "0x58e813",
+        "hit": "0x5d7e90",
+        "replicate": "0x50e9f0",
+        "world_diplomacy": "0x12c64",
+        "spell_stack": "0x30"
+      },
+      "rows": [
+        {
+          "index": 0,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 0,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 0,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 0,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 0,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 0,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 1,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 1,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 1,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 1,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 1,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 1,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 2,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 2,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 2,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 2,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 2,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 2,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 3,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 3,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 3,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 3,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 3,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 3,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 4,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 4,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 4,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 4,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 4,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 4,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 5,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 5,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 5,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 5,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 5,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 5,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 6,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 6,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 6,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 6,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 6,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 6,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 7,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 7,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 7,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 7,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 7,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 7,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 8,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 8,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 8,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 8,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 8,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 8,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 9,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 9,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 9,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 9,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 9,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 9,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 10,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 10,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 10,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 10,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 10,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 10,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 11,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 11,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 11,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 11,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 11,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 11,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 12,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 12,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 12,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 12,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 12,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 12,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 13,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 13,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 13,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 13,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 13,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 13,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 14,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 14,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 14,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 14,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 14,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 14,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 15,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 15,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 15,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 15,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 15,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 15,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 16,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 16,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 16,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 16,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 16,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 16,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 17,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 17,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 17,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 17,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 17,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 17,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 18,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 18,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 18,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 18,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 18,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 18,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 19,
+          "situation": "enemy",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 19,
+          "situation": "neutral",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 19,
+          "situation": "friend",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": false
+        },
+        {
+          "index": 19,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 19,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 19,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 20,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 20,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 20,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 20,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 20,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 20,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 21,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 21,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 21,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 21,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 21,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 21,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 22,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 22,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 22,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 22,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 22,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 22,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 23,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 23,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 23,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 23,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 23,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 23,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 24,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 24,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 24,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 24,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 24,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 24,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 25,
+          "situation": "enemy",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 25,
+          "situation": "neutral",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 25,
+          "situation": "friend",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": false
+        },
+        {
+          "index": 25,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 25,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 25,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 26,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 26,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 26,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 26,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 26,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 26,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 27,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 27,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 27,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 27,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 27,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 27,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 28,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 28,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 28,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 28,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 28,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 28,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 29,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 29,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 29,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 29,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 29,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 29,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 30,
+          "situation": "enemy",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 30,
+          "situation": "neutral",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 30,
+          "situation": "friend",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": false
+        },
+        {
+          "index": 30,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 30,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 30,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 31,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 31,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 31,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 31,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 31,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 31,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 32,
+          "situation": "enemy",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 32,
+          "situation": "neutral",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 32,
+          "situation": "friend",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": false
+        },
+        {
+          "index": 32,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 32,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 32,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 33,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 33,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 33,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 33,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 33,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 33,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 34,
+          "situation": "enemy",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 34,
+          "situation": "neutral",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 34,
+          "situation": "friend",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": false
+        },
+        {
+          "index": 34,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 34,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 34,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 35,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 35,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 35,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 35,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 35,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 35,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 36,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 36,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 36,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 36,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 36,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 36,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 37,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 37,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 37,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 37,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 37,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 37,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 38,
+          "situation": "enemy",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 38,
+          "situation": "neutral",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 38,
+          "situation": "friend",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": false
+        },
+        {
+          "index": 38,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 38,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 38,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 39,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 39,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 39,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 39,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 39,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 39,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        }
+      ]
+    },
+    "lost_in_astral": {
+      "sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff",
+      "locations": {
+        "begin": "0x4e7db7",
+        "end": "0x4e7e1a",
+        "hit": "0x51bee0",
+        "replicate": "0x498bd0",
+        "world_diplomacy": "0x12c64",
+        "spell_stack": "0x2c"
+      },
+      "rows": [
+        {
+          "index": 0,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 0,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 0,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 0,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 0,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 0,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 1,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 1,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 1,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 1,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 1,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 1,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 2,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 2,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 2,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 2,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 2,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 2,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 3,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 3,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 3,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 3,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 3,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 3,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 4,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 4,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 4,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 4,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 4,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 4,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 5,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 5,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 5,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 5,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 5,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 5,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 6,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 6,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 6,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 6,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 6,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 6,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 7,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 7,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 7,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 7,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 7,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 7,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 8,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 8,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 8,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 8,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 8,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 8,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 9,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 9,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 9,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 9,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 9,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 9,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 10,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 10,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 10,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 10,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 10,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 10,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 11,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 11,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 11,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 11,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 11,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 11,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 12,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 12,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 12,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 12,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 12,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 12,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 13,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 13,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 13,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 13,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 13,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 13,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 14,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 14,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 14,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 14,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 14,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 14,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 15,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 15,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 15,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 15,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 15,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 15,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 16,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 16,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 16,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 16,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 16,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 16,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 17,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 17,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 17,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 17,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 17,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 17,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 18,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 18,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 18,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 18,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 18,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 18,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 19,
+          "situation": "enemy",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 19,
+          "situation": "neutral",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 19,
+          "situation": "friend",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": false
+        },
+        {
+          "index": 19,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 19,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 19,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 20,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 20,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 20,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 20,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 20,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 20,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 21,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 21,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 21,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 21,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 21,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 21,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 22,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 22,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 22,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 22,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 22,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 22,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 23,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 23,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 23,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 23,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 23,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 23,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 24,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 24,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 24,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 24,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 24,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 24,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 25,
+          "situation": "enemy",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 25,
+          "situation": "neutral",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 25,
+          "situation": "friend",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": false
+        },
+        {
+          "index": 25,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 25,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 25,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 26,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 26,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 26,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 26,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 26,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 26,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 27,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 27,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 27,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 27,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 27,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 27,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 28,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 28,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 28,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 28,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 28,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 28,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 29,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 29,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 29,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 29,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 29,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 29,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 30,
+          "situation": "enemy",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 30,
+          "situation": "neutral",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 30,
+          "situation": "friend",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": false
+        },
+        {
+          "index": 30,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 30,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 30,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 31,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 31,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 31,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 31,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 31,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 31,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 32,
+          "situation": "enemy",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 32,
+          "situation": "neutral",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 32,
+          "situation": "friend",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": false
+        },
+        {
+          "index": 32,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 32,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 32,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 33,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 33,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 33,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 33,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 33,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 33,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 34,
+          "situation": "enemy",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 34,
+          "situation": "neutral",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 34,
+          "situation": "friend",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": false
+        },
+        {
+          "index": 34,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 34,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 34,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 35,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 35,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 35,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 35,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 35,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 35,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 36,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 36,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 36,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 36,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 36,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 36,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 37,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 37,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 37,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 37,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 37,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 37,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 38,
+          "situation": "enemy",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 38,
+          "situation": "neutral",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": true
+        },
+        {
+          "index": 38,
+          "situation": "friend",
+          "notifications": [
+            {
+              "target": true,
+              "caster": true
+            }
+          ],
+          "hates_caster": false
+        },
+        {
+          "index": 38,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 38,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 38,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 39,
+          "situation": "enemy",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 39,
+          "situation": "neutral",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 39,
+          "situation": "friend",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 39,
+          "situation": "no_caster",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 39,
+          "situation": "point",
+          "notifications": [],
+          "hates_caster": false
+        },
+        {
+          "index": 39,
+          "situation": "object",
+          "notifications": [],
+          "hates_caster": false
+        }
+      ]
+    }
+  }
+}

@@ -9,12 +9,12 @@ from unicorn.x86_const import UC_X86_REG_ECX
 ADDRESSES = {
     "original": {"eval": 0x4b41e0, "gate": 0x4bb520, "cleanup": 0x4bec80, "body": 0x4bc420,
                  "player": 0x594180, "network": 0x57f440, "string": 0x70099e,
-                 "rect": 0x4b1ed0, "circle": 0x4b2070, "world_time": 0x7affd4,
+                 "rect": 0x4b1ed0, "circle": 0x4b2070, "world": 0x7aff50,
                  "unit_ground": 0x530280, "object_ground": 0x594220,
                  "program": 0x4b6760},
     "lost_in_astral": {"eval": 0x46cca0, "gate": 0x473b50, "cleanup": 0x46a610, "body": 0x473a70,
                        "player": 0x4e6c40, "network": 0x4de200, "string": 0x412ab0,
-                       "rect": 0x4663e0, "circle": 0x466440, "world_time": 0x6a345c,
+                       "rect": 0x4663e0, "circle": 0x466440, "world": 0x6a33d8,
                        "unit_ground": 0x4ae4d0, "object_ground": 0x4e7460,
                        "program": 0x4712c0},
 }
@@ -27,7 +27,7 @@ OPS = {
     "IsEqualString": 0x48, "GSGetVar": 0x80, "GetLeverState": 0x90,
     "GroupSize": 0x58, "GroupHas": 0x5c, "Every": 0x68, "Any": 0x69,
     "IsInArea": 0xc5,
-    "GetWorldTime": 0xaa, "GetMoney": 0xe2, "HaveItem": 0x7c,
+    "GetWorldTime": 0xb5, "GetMoney": 0xe2, "HaveItem": 0x7c,
     "WasLooted": 0xe3, "IsUnitBlocked": 0xe6, "GetZ": 0x57,
 }
 
@@ -85,7 +85,12 @@ class Expressions:
             o.write(group + 4, entries, len(members))
             self.groups[name] = group
         addresses = ADDRESSES[o.campaign]
-        o.floats(addresses["world_time"], environment.get("world_time", 0))
+        # GetWorldTime is opcode b5 and computes (tick * rate + offset) % 24.
+        # aa reads the night's intensity, not an hour. A frozen supplied hour
+        # gives these predicate fixtures an actual native world-clock input.
+        o.write(addresses["world"] + 0x64, 0)
+        o.floats(addresses["world"] + 0x20, 0)
+        o.floats(addresses["world"] + 0x1c, environment.get("world_time", 0))
         heights = {tuple(struct.unpack("<2f", struct.pack("<2f", *row["pos"]))): row.get("ground", 0)
                    for row in units if row is not None}
         ground_value = o.alloc(4)

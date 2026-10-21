@@ -37,6 +37,7 @@ func _capture() -> Dictionary:
 		ctx[key] = session.get(key)
 	ctx.world_time = session.state.world_time
 	ctx.day = session.state.day
+	ctx.campaign_time = session.state.campaign_time
 	return ctx
 
 
@@ -46,6 +47,7 @@ func _install(ctx: Dictionary) -> void:
 			session.set(key, ctx[key])
 	session.state.world_time = float(ctx.get("world_time", session.state.world_time))
 	session.state.day = int(ctx.get("day", session.state.day))
+	session.state.campaign_time = ctx.get("campaign_time", null)
 
 
 func _store(ctx: Dictionary) -> void:
@@ -214,7 +216,8 @@ func _new_context(id: String) -> Dictionary:
 		"_last_snap": {}, "_exit_t": 0.0, "_leave_armed": -1, "_auto_exit": -1,
 		"_auto_world": null, "travel_options": [], "_travel_ev": {}, "map_open": false,
 		"_dialog_ev": {}, "_alone_exit": {}, "_alone_world": null,
-		"_lmp_entrance": 1, "world_time": session.state.world_time, "day": session.state.day}
+		"_lmp_entrance": 1, "world_time": session.state.world_time, "day": session.state.day,
+		"campaign_time": session.state.campaign_time}
 
 
 func ensure_world(id: String) -> GameWorld:

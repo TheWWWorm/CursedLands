@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.21.0 — 2026-10-21
+
+- Add a developer console with syntax colours, matching brackets, command and argument completion, searchable help and output, persistent history, adjustable text size, clipboard copying and local diagnostic exports. Add host testing commands for party inspection, healing, basic GodMode, teleporting, direct map travel and scene time. Retain supported original script expressions and authenticated host execution. Help and controls are available in English, Russian and German. ([#65](https://github.com/TheWWWorm/CursedLands/issues/65))
+- Support `redress.res` texture overrides in API 1/2/3 mod packages and the legacy converter, covering character skins, clothing and equipment. ([#66](https://github.com/TheWWWorm/CursedLands/issues/66))
+- Prepare Windows FSR resources asynchronously, expose frame generation independently of upscaling, and distinguish presented from rendered frame rates. Keep capability guidance in Screen settings.
+- Share foliage height materials to reduce shader parameter-buffer exhaustion.
+- Preserve attackers after ranged hits, restore context-sensitive self-casting and Alt target selection, retain curse placement and presentation, and handle ending audio transitions. ([#48](https://github.com/TheWWWorm/CursedLands/issues/48))
+- Correct LiA merchant purchases and party ownership, stage co-op dialogue actors consistently, recover the eavesdrop objective when speakers die, and complete the paid-rumour torch handoff through the original mechanism script. ([#47](https://github.com/TheWWWorm/CursedLands/issues/47))
+- Align objective-chain completion, mechanism permission consumption, movement rounding, future-position queries, scene/campaign clocks and town-save continuation with the supported original behavior. Preserve Enlarge/Shrink duration and notify nearby allies about non-damaging hostile spells. ([#62](https://github.com/TheWWWorm/CursedLands/issues/62), [#64](https://github.com/TheWWWorm/CursedLands/issues/64))
+- Add LiA challenge rewards, use finished-item names in the wiki, and allow held right-click to reduce camp stats and skills.
+
 ## 1.20.0 — 2026-10-20
 
 - Add optional AMD FSR 3.1 and FSR 4 upscaling and frame generation to the Windows executable. Configure them under **Options → Screen → AMD FSR** with the **Forward+ (Direct3D 12)** renderer. Both features start off; no separate installation, profile or launcher is required. Include the AMD splash artwork, credits and runtime notices.

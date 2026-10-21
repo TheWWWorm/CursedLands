@@ -35,7 +35,6 @@ var _pending_zone := []
 ## Side-quest objectives (QStart/QObj*/QFinish): quest -> {objs: [[kind, arg, arg2, done]], items: n}
 var qobjs := {}
 var _q_recording := ""
-var _q_check := 0.0
 ## Lever locks changed by SetScience: nid -> [flags, id, value] (saved with the zone).
 var sciences := {}
 ## Builtins called by the script that the VM does not know (tools/quest_test.gd).
@@ -171,9 +170,12 @@ func _tick(dt: float) -> void:
 	if not time_fixed:
 		session.state.advance_hours(dt / CampaignState.HOUR_SECONDS)
 	_refresh_heroes()
+	preload("res://src/game/script/story_astral_eavesdrop.gd").recover(self)
+	preload("res://src/game/script/story_astral_fortunes.gd").recover(self)
 	_check_interactions()
-	if not qobjs.is_empty() and time >= _q_check:
-		_q_check = time + 0.5
+	# QFinish's native Su0..SuN threads poll on each 55 ms logic tick.
+	# A slower timer can miss a brief sighting or crossing altogether.
+	if not qobjs.is_empty():
 		_check_quest_objectives()
 	briefings.tick()
 	# Script threads keep running during a conversation: the world tick
@@ -664,24 +666,19 @@ func _call(name: String, a: Array, inst: Instance):
 		"HP", "MaxHP":
 			var u := _unit(v[0])
 			return (u.hp if name == "HP" else u.max_hp) if u else 0.0
-		# Builtins 0xbf / 0xc0 GetFutureX / Y(unit, ticks): the
-		# unit's position at logic tick now + ticks (round), its
-		# (the point reached along its path). 0 for no unit. Remake: along the
-		# path at the current speed, 55 ms ticks.
+		# Native 0xbf/0xc0 (base4b41e0, LiA46cca0) round the float32
+		# absolute tick nearest-even, then invoke the object's predictor.
+		# Use the active movement spline, including turn holds and node speeds.
 		"GetFutureX", "GetFutureY":
 			var u := _unit(v[0])
 			if u == null and not (v[0] is Node3D and is_instance_valid(v[0])):
 				return 0.0
 			var p := _xy(v[0])
-			if u and not u.path.is_empty():
-				var left := u.speed() * roundf(_num(v[1])) * GameUnit.TICK
-				for q: Vector2 in u.path:
-					var d := p.distance_to(q)
-					if d >= left:
-						p += (q - p) * (left / maxf(d, 0.0001))
-						break
-					p = q
-					left -= d
+			if u:
+				var now := roundi(world.time / GameUnit.TICK)
+				var delay := _num(v[1]) if n > 1 else 0.0
+				var at := float(PackedFloat32Array([float(now) + delay])[0])
+				p = u.future_pos(GameUnit._fistp(at) - now)
 			return p.x if name == "GetFutureX" else p.y
 		"DistanceUnitUnit":
 			if typeof(v[0]) != TYPE_OBJECT or not is_instance_valid(v[0]) or typeof(v[1]) != TYPE_OBJECT or not is_instance_valid(v[1]):
@@ -787,6 +784,8 @@ func _call(name: String, a: Array, inst: Instance):
 				u.target = null
 				u._set_action("idle")
 				u.pos = Vector2(_num(v[1]), _num(v[2]))
+				u.placement_z = _num(v[3]) if n > 3 else 0.0
+				u._sync_transform(0)
 			elif v[0] is Node3D and is_instance_valid(v[0]) and n >= 3:
 				var nid := _obj_id(v[0])
 				var p3 := Vector3(_num(v[1]), _num(v[2]), _num(v[3]) if n > 3 else 0.0)
@@ -1035,15 +1034,7 @@ func _call(name: String, a: Array, inst: Instance):
 			pass
 		# ---- quests, items, money
 		"QuestComplete":
-			SmileFaces.party(session)   # remake option "smile_faces"
-			if SideQuests.get_quest(str(v[1])).is_empty():
-				_quest_complete(str(v[1]))
-			else:
-				SideQuests.finish(session, str(v[1]))
-			# Single player: flags every trader for a restock
-			# the network game's branch does not.
-			if session.lmp.is_empty():
-				session.restock_shops()
+			_script_quest_complete(str(v[1]))
 		# Builtins 0x92 GiveQuestItem / 0xa6 GiveItem (one case):
 		# the item made from the name goes into the player's
 		# items through, like a conversation reward. Its client
@@ -1090,8 +1081,16 @@ func _call(name: String, a: Array, inst: Instance):
 			var player := int(_num(v[0]))
 			if not session.players_include(player):
 				return 0.0
-			var entry := session.coop.purse_entry(player)
-			return float(session.state.money if entry.is_empty() else entry.purse.get("money", 0))
+			return float(session.coop.owner_money(player))
+		# Original opcode 0x97 stores a byte on the named player. Expose
+		# ordinary off/on; the separate enhanced attack mode is not supported.
+		"GodMode":
+			var player := int(_num(v[0]))
+			var mode := int(_num(v[1]))
+			if session.players_include(player) and mode in [0,1]:
+				if mode==0:session.state.god_modes.erase(player)
+				else:session.state.god_modes[player]=mode
+				session.mark_dirty()
 		# Expansion-only 0xe9/0xea explicitly end play even with a living
 		# hero (player).
 		"GameOver": session.script_game_over()
@@ -1107,6 +1106,8 @@ func _call(name: String, a: Array, inst: Instance):
 			if not qobjs.has(_q_recording):
 				qobjs[_q_recording] = {"objs": [], "items": session.state.quest_items.size()}
 		"QFinish":
+			if qobjs.has(_q_recording):
+				qobjs[_q_recording].defined = true
 			_q_recording = ""
 		"QObjArea", "QObjSeeUnit", "QObjSeeObject", "QObjKillUnit", "QObjKillGroup", "QObjGetItem", "QObjUse":
 			if _q_recording and qobjs.has(_q_recording):
@@ -1182,15 +1183,11 @@ func _call(name: String, a: Array, inst: Instance):
 				_fx_auto -= 1
 			session.broadcast({"t": "fxcmd", "f": name, "a": args})
 		# ---- time and zones
-		"GetWorldTime": return session.state.world_time
+		"GetWorldTime": return float(PackedFloat32Array([fmod(session.state.world_time, 24.0)])[0])
 		"FixWorldTime":   # stop the zone's clock at the given hour
-			time_fixed = true
-			if not v.is_empty():
-				session.state.world_time = fmod(_num(v[0]), 24.0)
+			_set_scene_clock(_num(v[0]) if not v.is_empty() else session.state.world_time, true)
 		"RunWorldTime":   # set the hour and let the clock run again
-			time_fixed = false
-			if not v.is_empty():
-				session.state.world_time = fmod(_num(v[0]), 24.0)
+			_set_scene_clock(_num(v[0]) if not v.is_empty() else session.state.world_time, false)
 		"LeaveToZone":   # the entrance is the original's 0-based exit index (map.txt "#exit" = index + 1)
 			_pending_zone = [str(v[1]).to_lower(), int(_num(v[2])) + 1]
 			if not session.lmp.is_empty():
@@ -1304,7 +1301,10 @@ func _lever_science_ok(u: GameUnit, nid: int) -> bool:
 func _use_lever(u: GameUnit, nid: int) -> void:
 	if _lever_science_ok(u, nid):
 		var time := world.lever_sys.set_state(nid, -1)
+		world.lever_sys.consume_use(nid)
 		session.broadcast({"t": "lever", "nid": nid, "state": world.levers[nid].state, "time": time})
+		# State and permission are separate events in the existing protocol.
+		session.broadcast({"t": "lever", "nid": nid, "enabled": world.levers[nid].get("enabled", true)})
 		preload("res://src/game/script/story_compat.gd").lift_recall(self, nid)
 	else:
 		u.ack(EIAcks.SCIENCE_FAILED)   # ack 0x11
@@ -1652,6 +1652,18 @@ func _quest_complete(q: String) -> void:
 		session.give_experience(exp)
 
 
+## Shared by the explicit builtin and QFinish's generated completion step.
+func _script_quest_complete(q: String) -> void:
+	SmileFaces.party(session)   # remake option "smile_faces"
+	if SideQuests.get_quest(q).is_empty():
+		_quest_complete(q)
+	else:
+		SideQuests.finish(session, q)
+	# Native single player flags traders for restock; LMP does not.
+	if session.lmp.is_empty():
+		session.restock_shops()
+
+
 func _on_var_changed(key: String) -> void:
 	session.mark_dirty()
 	if key.begins_with("apartyn") and key.substr(7).is_valid_int():
@@ -1928,7 +1940,8 @@ func save_state() -> Dictionary:
 		if inst.wait_unit != null and is_instance_valid(inst.wait_unit):
 			d.wu = _ser(inst.wait_unit)
 		insts.append(d)
-	var saved := {"globals": g, "instances": insts, "areas": areas, "alarms": _alarm_save(), "qobjs": qobjs, "sciences": sciences,
+	var saved := {"globals": g, "instances": insts, "areas": areas, "alarms": _alarm_save(), "qobjs": qobjs,
+		"q_recording": _q_recording, "sciences": sciences,
 		"story_orders": _save_story_orders(), "time_fixed": time_fixed,
 		"script_ai": _save_script_ai(),
 		"briefing_queue": _ser(briefings._after_movie) if briefings else [],
@@ -1936,6 +1949,15 @@ func save_state() -> Dictionary:
 		"fx_auto": _fx_auto,   # the replayed CreateFXSource(-1) sources keep their ids (zone "fx")
 		"quest": String(world.get_meta("quest_mob", "")) if world.has_meta("quest_mob") else ""}
 	return preload("res://src/game/script/story_coop_traps.gd").save_registration(self,saved)
+
+
+func _set_scene_clock(hour: float, fixed: bool) -> void:
+	time_fixed = fixed
+	world.clock_fixed = fixed
+	session.state.set_scene_hour(hour)
+	# Clients have no interpreter: send both the offset change and its rate
+	# immediately, rather than letting their daylight drift between state polls.
+	session.broadcast({"t":"world_clock", "hour":session.state.world_time, "fixed":fixed})
 
 
 func _alarm_save() -> Array:
@@ -1969,6 +1991,7 @@ func _alarm_load(al) -> void:
 func _restore(d: Dictionary) -> void:
 	d = preload("res://src/game/script/coop_vm_state.gd").restore(self,d)
 	time_fixed = bool(d.get("time_fixed", false))
+	world.clock_fixed = time_fixed
 	for row: Dictionary in d.get("script_ai", []):
 		var u = _deser(row.get("actor"))
 		if not u is GameUnit or u.dead or u.has_meta("hero"): continue
@@ -2012,6 +2035,8 @@ func _restore(d: Dictionary) -> void:
 	areas = d.get("areas", {})
 	_alarm_load(d.get("alarms", []))
 	qobjs = d.get("qobjs", {})
+	_q_recording = String(d.get("q_recording", ""))
+	if not qobjs.has(_q_recording): _q_recording = ""
 	sciences = d.get("sciences", {})
 	_fx_auto = mini(_fx_auto, int(d.get("fx_auto", -1)))
 	for nid in sciences:
@@ -2326,7 +2351,11 @@ func _refs(e: Array, v: String) -> bool:
 func _check_quest_objectives() -> void:
 	for q: String in qobjs.keys():
 		var d: Dictionary = qobjs[q]
-		if d.get("finished", false) or d.objs.is_empty() or q == _q_recording:
+		if d.get("finished", false) or q == _q_recording:
+			continue
+		# QFinish must have closed an empty registration. Older saves carry
+		# no recording state, so an empty unqualified registry is ambiguous.
+		if d.objs.is_empty() and not d.get("defined", false):
 			continue
 		d.defined = true
 		# QFinish compiles the recorded objectives into a chain
@@ -2346,7 +2375,7 @@ func _check_quest_objectives() -> void:
 				_set_quest_var("%s.%d" % [base, cur + 2], 1.0)
 		elif cur >= d.objs.size():
 			d.finished = true
-			SideQuests.finish(session, q)
+			_script_quest_complete(q)
 			_set_quest_var("q.%s.%s" % [q, q], 2.0)
 
 

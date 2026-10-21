@@ -1,0 +1,761 @@
+{
+  "scope": "Replay native effect registration for Enlarge/Shrink and adjacent effects.\n\nThe real switch, target guard, effect-record copy and presentation-strength\ncalculation execute from each shipped EXE. A supplied prototype record replaces\nthe database lookup; the target's AddEffect virtual call is an observed boundary.\nThe captured records establish registration/type/duration, not a full render.\n",
+  "campaigns": {
+    "original": {
+      "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+      "locations": {
+        "begin": "0x67f8ba",
+        "end": "0x681411",
+        "prototype": "0x68b9e0"
+      },
+      "rows": [
+        {
+          "spell": "strength",
+          "index": 29,
+          "ticks": 0,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 29,
+              "visual_strength": 12,
+              "ticks": 0,
+              "power": 15.0,
+              "raw": "1d0c000000000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "strength",
+          "index": 29,
+          "ticks": 0,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "strength",
+          "index": 29,
+          "ticks": 1,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 29,
+              "visual_strength": 12,
+              "ticks": 1,
+              "power": 15.0,
+              "raw": "1d0c000001000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "strength",
+          "index": 29,
+          "ticks": 1,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "strength",
+          "index": 29,
+          "ticks": 5,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 29,
+              "visual_strength": 12,
+              "ticks": 5,
+              "power": 15.0,
+              "raw": "1d0c000005000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "strength",
+          "index": 29,
+          "ticks": 5,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "strength",
+          "index": 29,
+          "ticks": 120,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 29,
+              "visual_strength": 12,
+              "ticks": 120,
+              "power": 15.0,
+              "raw": "1d0c000078000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "strength",
+          "index": 29,
+          "ticks": 120,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "weak",
+          "index": 30,
+          "ticks": 0,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 30,
+              "visual_strength": 12,
+              "ticks": 0,
+              "power": 15.0,
+              "raw": "1e0c000000000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "weak",
+          "index": 30,
+          "ticks": 0,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "weak",
+          "index": 30,
+          "ticks": 1,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 30,
+              "visual_strength": 12,
+              "ticks": 1,
+              "power": 15.0,
+              "raw": "1e0c000001000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "weak",
+          "index": 30,
+          "ticks": 1,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "weak",
+          "index": 30,
+          "ticks": 5,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 30,
+              "visual_strength": 12,
+              "ticks": 5,
+              "power": 15.0,
+              "raw": "1e0c000005000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "weak",
+          "index": 30,
+          "ticks": 5,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "weak",
+          "index": 30,
+          "ticks": 120,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 30,
+              "visual_strength": 12,
+              "ticks": 120,
+              "power": 15.0,
+              "raw": "1e0c000078000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "weak",
+          "index": 30,
+          "ticks": 120,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "enlarge",
+          "index": 37,
+          "ticks": 0,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 37,
+              "visual_strength": 12,
+              "ticks": 0,
+              "power": 15.0,
+              "raw": "250c000000000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "enlarge",
+          "index": 37,
+          "ticks": 0,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "enlarge",
+          "index": 37,
+          "ticks": 1,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 37,
+              "visual_strength": 12,
+              "ticks": 1,
+              "power": 15.0,
+              "raw": "250c000001000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "enlarge",
+          "index": 37,
+          "ticks": 1,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "enlarge",
+          "index": 37,
+          "ticks": 5,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 37,
+              "visual_strength": 12,
+              "ticks": 5,
+              "power": 15.0,
+              "raw": "250c000005000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "enlarge",
+          "index": 37,
+          "ticks": 5,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "enlarge",
+          "index": 37,
+          "ticks": 120,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 37,
+              "visual_strength": 12,
+              "ticks": 120,
+              "power": 15.0,
+              "raw": "250c000078000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "enlarge",
+          "index": 37,
+          "ticks": 120,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "shrink",
+          "index": 38,
+          "ticks": 0,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 38,
+              "visual_strength": 12,
+              "ticks": 0,
+              "power": 15.0,
+              "raw": "260c000000000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "shrink",
+          "index": 38,
+          "ticks": 0,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "shrink",
+          "index": 38,
+          "ticks": 1,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 38,
+              "visual_strength": 12,
+              "ticks": 1,
+              "power": 15.0,
+              "raw": "260c000001000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "shrink",
+          "index": 38,
+          "ticks": 1,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "shrink",
+          "index": 38,
+          "ticks": 5,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 38,
+              "visual_strength": 12,
+              "ticks": 5,
+              "power": 15.0,
+              "raw": "260c000005000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "shrink",
+          "index": 38,
+          "ticks": 5,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "shrink",
+          "index": 38,
+          "ticks": 120,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 38,
+              "visual_strength": 12,
+              "ticks": 120,
+              "power": 15.0,
+              "raw": "260c000078000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "shrink",
+          "index": 38,
+          "ticks": 120,
+          "has_target": false,
+          "records": []
+        }
+      ]
+    },
+    "lost_in_astral": {
+      "sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff",
+      "locations": {
+        "begin": "0x5a2839",
+        "end": "0x5a3a7f",
+        "prototype": "0x5a7cc0"
+      },
+      "rows": [
+        {
+          "spell": "strength",
+          "index": 29,
+          "ticks": 0,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 29,
+              "visual_strength": 12,
+              "ticks": 0,
+              "power": 15.0,
+              "raw": "1d0c000000000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "strength",
+          "index": 29,
+          "ticks": 0,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "strength",
+          "index": 29,
+          "ticks": 1,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 29,
+              "visual_strength": 12,
+              "ticks": 1,
+              "power": 15.0,
+              "raw": "1d0c000001000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "strength",
+          "index": 29,
+          "ticks": 1,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "strength",
+          "index": 29,
+          "ticks": 5,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 29,
+              "visual_strength": 12,
+              "ticks": 5,
+              "power": 15.0,
+              "raw": "1d0c000005000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "strength",
+          "index": 29,
+          "ticks": 5,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "strength",
+          "index": 29,
+          "ticks": 120,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 29,
+              "visual_strength": 12,
+              "ticks": 120,
+              "power": 15.0,
+              "raw": "1d0c000078000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "strength",
+          "index": 29,
+          "ticks": 120,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "weak",
+          "index": 30,
+          "ticks": 0,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 30,
+              "visual_strength": 12,
+              "ticks": 0,
+              "power": 15.0,
+              "raw": "1e0c000000000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "weak",
+          "index": 30,
+          "ticks": 0,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "weak",
+          "index": 30,
+          "ticks": 1,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 30,
+              "visual_strength": 12,
+              "ticks": 1,
+              "power": 15.0,
+              "raw": "1e0c000001000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "weak",
+          "index": 30,
+          "ticks": 1,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "weak",
+          "index": 30,
+          "ticks": 5,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 30,
+              "visual_strength": 12,
+              "ticks": 5,
+              "power": 15.0,
+              "raw": "1e0c000005000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "weak",
+          "index": 30,
+          "ticks": 5,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "weak",
+          "index": 30,
+          "ticks": 120,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 30,
+              "visual_strength": 12,
+              "ticks": 120,
+              "power": 15.0,
+              "raw": "1e0c000078000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "weak",
+          "index": 30,
+          "ticks": 120,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "enlarge",
+          "index": 37,
+          "ticks": 0,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 37,
+              "visual_strength": 12,
+              "ticks": 0,
+              "power": 15.0,
+              "raw": "250c000000000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "enlarge",
+          "index": 37,
+          "ticks": 0,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "enlarge",
+          "index": 37,
+          "ticks": 1,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 37,
+              "visual_strength": 12,
+              "ticks": 1,
+              "power": 15.0,
+              "raw": "250c000001000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "enlarge",
+          "index": 37,
+          "ticks": 1,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "enlarge",
+          "index": 37,
+          "ticks": 5,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 37,
+              "visual_strength": 12,
+              "ticks": 5,
+              "power": 15.0,
+              "raw": "250c000005000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "enlarge",
+          "index": 37,
+          "ticks": 5,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "enlarge",
+          "index": 37,
+          "ticks": 120,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 37,
+              "visual_strength": 12,
+              "ticks": 120,
+              "power": 15.0,
+              "raw": "250c000078000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "enlarge",
+          "index": 37,
+          "ticks": 120,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "shrink",
+          "index": 38,
+          "ticks": 0,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 38,
+              "visual_strength": 12,
+              "ticks": 0,
+              "power": 15.0,
+              "raw": "260c000000000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "shrink",
+          "index": 38,
+          "ticks": 0,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "shrink",
+          "index": 38,
+          "ticks": 1,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 38,
+              "visual_strength": 12,
+              "ticks": 1,
+              "power": 15.0,
+              "raw": "260c000001000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "shrink",
+          "index": 38,
+          "ticks": 1,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "shrink",
+          "index": 38,
+          "ticks": 5,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 38,
+              "visual_strength": 12,
+              "ticks": 5,
+              "power": 15.0,
+              "raw": "260c000005000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "shrink",
+          "index": 38,
+          "ticks": 5,
+          "has_target": false,
+          "records": []
+        },
+        {
+          "spell": "shrink",
+          "index": 38,
+          "ticks": 120,
+          "has_target": true,
+          "records": [
+            {
+              "target_matches": true,
+              "type": 38,
+              "visual_strength": 12,
+              "ticks": 120,
+              "power": 15.0,
+              "raw": "260c000078000000000070410000000000000000"
+            }
+          ]
+        },
+        {
+          "spell": "shrink",
+          "index": 38,
+          "ticks": 120,
+          "has_target": false,
+          "records": []
+        }
+      ]
+    }
+  }
+}

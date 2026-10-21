@@ -1,0 +1,217 @@
+{
+  "scope": "Fixture-development diagnostics, excluded from passing evidence and from game-regression counts",
+  "runs": [
+    {
+      "run": "astral-eavesdrop-map-01",
+      "failure_count": 7,
+      "cause": "Successful original bodies delete the shared one-shot area; the initial fixture did not restore it between the original and adapted evaluations. The fresh campaign also started the unrelated prison escape."
+    },
+    {
+      "run": "astral-eavesdrop-map-02",
+      "failure_count": 0,
+      "limitation": "Comparison reset corrected; unrelated escape area remained. Superseded by the completed-escape fixture."
+    },
+    {
+      "run": "zako-topics-direct",
+      "checks": 280,
+      "assertion_failures": 0,
+      "engine_errors": 3,
+      "cause": "Disconnected-client RPC during direct-control cleanup; not passing evidence."
+    },
+    {
+      "run": "zako-topics-direct-qualified",
+      "checks": 280,
+      "assertion_failures": 0,
+      "engine_errors": 1,
+      "cause": "Still reproduced after stopping fixture process callbacks; traced to Session.submit from DirectControl._exit_tree. Fixed at the transport boundary, not counted as a Zako-camera fix."
+    },
+    {
+      "run": "loaded-rate-gipat-01",
+      "failure_count": 1,
+      "cause": "Fixture required a straight forty-metre corridor near the spawn. The map has a traversable curved route instead; corrected to use the actual navigation path."
+    },
+    {
+      "run": "loaded-rate-suslanger-01",
+      "engine_errors": 1,
+      "cause": "Fixture selected LiA's gz1h identifier against the base campaign. Corrected to base Suslanger gz15h; added explicit fixture zone/load guards. Invalid run was stopped and is not game-regression evidence."
+    },
+    {
+      "run": "loaded-rate-suslanger-qualified",
+      "checks": 55,
+      "failure_count": 24,
+      "cause": "The initial route entered combat: hero health changed and the game paused, invalidating steady running/recovery comparisons. Replaced by a route at least thirty metres from initial actors; the map roster remains active."
+    },
+    {
+      "run": "loaded-rate-suslanger-safe-route",
+      "checks": 55,
+      "failure_count": 3,
+      "cause": "Movement-only stopwatch began after the first replicated movement, excluding the stock engine's initial animation-binding stall but including retained simulation debt. The command-to-completion window passes all 55 checks; custom Windows also passes and has the animation preparation/retention APIs."
+    },
+    {
+      "run": "spell-alerts-before",
+      "cause": "Initial fixture called nonexistent _rebuild_stats; stopped. Replaced by refresh_max_hp before the qualified baseline."
+    },
+    {
+      "run": "spell-alerts-fixed-astral",
+      "cause": "Base-only rat prototype naming filter did not match LiA zone-prefixed names; no game failure."
+    },
+    {
+      "run": "spell-alert-encounter-01",
+      "cause": "Untyped loop value caused parse error; stopped before gameplay."
+    },
+    {
+      "run": "spell-alert-encounter-qualified",
+      "cause": "Selected gz1g, which has no rat placements; corrected from map census to gz5g."
+    },
+    {
+      "run": "spell-alert-rat-diagnostic",
+      "cause": "Read-only diagnostic confirmed no rats on gz1g; excluded from regression counts."
+    },
+    {
+      "run": "spell-alert-map-census",
+      "cause": "Initial benchmark used nonexistent GameData.campaign; fixed to load CampaignMap from shipped texts."
+    },
+    {
+      "run": "spell-alert-rats-gz5g",
+      "cause": "Unmodified Stun range is 5 m but the initial setup searched starting distances of 6–12 m. Replaced with a valid rune-modified spell."
+    },
+    {
+      "run": "spell-alert-encounter-ranged",
+      "cause": "Prepared skills and spell but not accumulated XP; hero lacked required maximum stamina. Qualified fixture uses ordinary trained-hero pools."
+    },
+    {
+      "run": "spell-alert-encounter-trained",
+      "cause": "Early fixture counted any help call and inferred wall-time delay; superseded by specifically tracking the spell notification and native queue updates."
+    },
+    {
+      "run": "spell-alert-encounter-windows-rendered",
+      "cause": "Eight assertions passed, but early warning attribution was broad; captured camera was obstructed. Not final proof."
+    },
+    {
+      "run": "spell-alert-encounter-windows-overview",
+      "cause": "Early warning attribution and phase assumptions superseded; obstructed captures are not used in the report."
+    },
+    {
+      "run": "spell-alert-encounter-complete",
+      "cause": "One assertion assumed exactly 26 wall-time ticks after creation. Native queue starts at 26, decrements per AI phase and fires below zero. Corrected to assert 27 queue updates and spell-specific attribution; no game timing change."
+    },
+    {
+      "run": "quest-objective-chains-before",
+      "cause": "Initial fixture path variable lacked a concrete type; parser rejected it before gameplay. Stopped and corrected."
+    },
+    {
+      "run": "quest-objective-chains-qualified-before",
+      "cause": "Native generator emits lowercase any; initial reference runner did not normalize it to the remake evaluator's Any spelling. Added a test-only alias and released reload VM cycles. These invalid reference results are excluded; qualified baseline is quest-chains-final-before."
+    },
+    {
+      "run": "quest-registration-before",
+      "cause": "An added save-boundary test found six failures in the first local empty-chain implementation. Persisted unfinished registration and explicit QFinish qualification correct them. This is a development guard, not six additional pre-existing game regressions."
+    },
+    {
+      "run": "lever-use-before-base",
+      "cause": "Initial fixture selected the remake campaign key rather than the reference key; stopped after script error. Qualified baseline uses the correct original key."
+    },
+    {
+      "run": "lever-use-before-astral",
+      "cause": "Direct dictionary equality treated reference JSON numbers differently from typed game values, falsely failing all cases. Qualified baseline compares numeric and boolean fields explicitly."
+    },
+    {
+      "run": "lever-use-fixed-base",
+      "cause": "First local production patch used inferred Variant for exact_use; parser rejected it. Corrected to explicit bool before gameplay validation."
+    },
+    {
+      "run": "lever-use-fixed-astral",
+      "cause": "Same local parse failure as base; excluded from game-regression counts."
+    },
+    {
+      "run": "lever-permission-transitions-base",
+      "cause": "One serialization assertion compared the complete motion dictionary before accounting for the new permission tag. The corrected assertion removes only use_v and still compares all existing motion fields exactly."
+    },
+    {
+      "run": "mine-astral-scene",
+      "cause": "Diagnostic script referenced nonexistent CampaignProfile.is_astral; corrected to the campaign constant comparison."
+    },
+    {
+      "run": "loaded-rate-astral-mine-01",
+      "cause": "Initial route search imposed a 30 m exclusion on neutral miners too; no suitable route. Qualified fixture keeps the combat margin for enemies and a body-clearance margin for neutral actors."
+    },
+    {
+      "run": "mine-astral-party-probe",
+      "cause": "Exploratory frozen-world probe had not initialized authored NPC navigation occupancy; its infinite blockage was a test-setup failure, not a production fix."
+    },
+    {
+      "run": "mine-astral-blocker-probe",
+      "cause": "Additional occupancy trace of the same uninitialized diagnostic. Correctly registering actors removed that artificial stall; arbitrary bridge endpoints are not a qualified gameplay comparison."
+    },
+    {
+      "run": "movement-speed-before-base",
+      "cause": "First GDScript fixture inferred a Variant source path; parser rejected it. The qualified before run uses an explicit String."
+    },
+    {
+      "run": "movement-speed-before-astral",
+      "cause": "Same initial fixture parse failure; excluded from gameplay mismatch counts."
+    },
+    {
+      "run": "loaded-rate-astral-mine-party",
+      "cause": "Initial party-start validation queried is_walkable after stamping each actor, treating its own occupied cell as blocked; one initial point also lacked the requested neutral-actor clearance. Qualified setup validates clear connected starts before stamping."
+    },
+    {
+      "run": "loaded-rate-astral-mine-party-windows",
+      "cause": "Saving large rendered PNGs blocked the frontend while its separate authority kept running. Queued snapshots then contaminated the next timing window and its baseline (27 repeated assertion failures). The qualified Windows run excludes image readback/encoding from measurement; these captures are visual evidence only."
+    },
+    {
+      "run": "future-query-console-base",
+      "cause": "Adjacent console checks caught the first patch reading a missing second argument. Restored the existing omitted-delay shorthand to zero and added two direct assertions; final loaded console runs pass in both campaigns."
+    },
+    {
+      "run": "future-query-traps-base",
+      "cause": "LiA-only trap fixture was invoked with base assets, which do not contain zonefinal.mob. Re-run with LiA assets passes 55 checks. Fixture now rejects the wrong campaign before making gameplay assertions; no production trap fix was made for this setup error."
+    },
+    {
+      "run": "script-clock-after-astral",
+      "cause": "A staging path typo left the old production source in the test project. Excluded; the qualified run stages absolute paths."
+    },
+    {
+      "run": "script-clock-qualified-astral",
+      "cause": "Core fix removed all 396 elapsed-time failures. Three remaining hour comparisons were 24 versus 0 at the same midnight due to native offset rounding; the final fixture compares hours circularly and preserves raw values."
+    },
+    {
+      "run": "script-clock-coop-before",
+      "cause": "Initial fixture accepted the previous client world as a completed reload and called a nonexistent cleanup method. Replaced with a world-identity/loading check and actual peer closure; excluded from qualified evidence."
+    },
+    {
+      "run": "script-clock-coop-qualified-before",
+      "cause": "Started while the first broken fixture still owned the port. Both owned processes were stopped; a fresh sequential baseline then reproduced three behavioral failures without runtime errors."
+    },
+    {
+      "run": "script-clock-adjacent",
+      "cause": "Eight headless programs passed; two rendered previews required an explicitly selected private X display. Both previews subsequently passed on a private Xephyr display, which was then closed."
+    },
+    {
+      "run": "campaign-clock-coop-before-base",
+      "cause": "Initial test cleared a nonexistent client VM. Excluded; guarded access and fresh baseline replaced it."
+    },
+    {
+      "run": "campaign-clock-coop-before-astral",
+      "cause": "Initial test selected a base-only town ID. Its owned process was stopped. Excluded."
+    },
+    {
+      "run": "campaign-clock-coop-before-base-v2",
+      "cause": "Map availability preflight rejected a LiA-only pair for base assets. Excluded; final base map pair uses gz1g/gz5g."
+    },
+    {
+      "run": "campaign-clock-catalog",
+      "cause": "Initial native GSSetVarMax fixture used opcode 0x81, which falls through. Corrected to observed 0x98 with function-entry assertions; both references and old/new production comparisons recaptured. Only the two clean map programs from this run are accepted."
+    },
+    {
+      "run": "campaign-clock-inventory-base-final",
+      "cause": "Inventory-only parse error from inferred Variant comparison; corrected explicit bool. No production change."
+    },
+    {
+      "run": "campaign-clock-inventory-astral-final",
+      "cause": "Same inventory-only type inference error; final qualified censuses pass in both campaigns."
+    }
+  ],
+  "qualified_run": "astral-eavesdrop-map-qualified",
+  "direct_qualified_run": "zako-topics-direct-fixed"
+}

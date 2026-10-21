@@ -1,0 +1,61 @@
+{
+  "scope": "Execute the original full-save loader's zone-type branch in both games.\n\nThe input is a supplied zone record returned by the preceding zone lookup.\nExecution stops at either mission.sav opening or common zone-entry setup.\nNo file I/O, world deserialization, script restoration or whole-scene replay\nis claimed by this bounded branch capture.\n",
+  "campaigns": {
+    "original": {
+      "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+      "locations": {
+        "start": "0x57b1a7",
+        "mission": "0x57b1ca",
+        "entry": "0x57b1b5"
+      },
+      "cases": [
+        {
+          "zone_type": 0,
+          "label": "field",
+          "endpoint": "0x57b1ca",
+          "route": "mission"
+        },
+        {
+          "zone_type": 1,
+          "label": "global_map",
+          "endpoint": "0x57b1b5",
+          "route": "zone_entry"
+        },
+        {
+          "zone_type": 2,
+          "label": "town",
+          "endpoint": "0x57b1ca",
+          "route": "mission"
+        }
+      ]
+    },
+    "lost_in_astral": {
+      "sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff",
+      "locations": {
+        "start": "0x4e3820",
+        "mission": "0x4e3844",
+        "entry": "0x4e382e"
+      },
+      "cases": [
+        {
+          "zone_type": 0,
+          "label": "field",
+          "endpoint": "0x4e3844",
+          "route": "mission"
+        },
+        {
+          "zone_type": 1,
+          "label": "global_map",
+          "endpoint": "0x4e382e",
+          "route": "zone_entry"
+        },
+        {
+          "zone_type": 2,
+          "label": "town",
+          "endpoint": "0x4e3844",
+          "route": "mission"
+        }
+      ]
+    }
+  }
+}

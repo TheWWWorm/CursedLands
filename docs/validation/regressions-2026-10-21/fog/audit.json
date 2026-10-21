@@ -1,0 +1,1801 @@
+{
+  "scope": "Read-only fog audit; no production fog settings changed.",
+  "current": {
+    "band_setting": 16,
+    "opaque_to": 4,
+    "clear_from": 17,
+    "half_opacity_distance": 7.8076118445748826
+  },
+  "original_reference": {
+    "band_setting": 32,
+    "opaque_to": 1,
+    "clear_from": 33,
+    "half_opacity_distance": 17
+  },
+  "history": {
+    "commit": "7aa520e9",
+    "date": "2026-10-06",
+    "description": "Introduced shared 16 m quadratic band before the recent formula-mod merge."
+  },
+  "limits": [
+    "All matched images are remake renders. No image in this report is represented as an original-executable capture.",
+    "The reference substitutes the original border equation and its colour mode. Lighting, map, camera and renderer remain the remake.",
+    "The no-border control retains distance fog. It is diagnostic only.",
+    "These captures cover three maps, four views in the opening and three in the other maps, at noon and night. They are not every map or every renderer.",
+    "The changing FPS overlay is excluded from visual conclusions; this is not a performance benchmark."
+  ],
+  "findings": [
+    "The current transition is much narrower. At 12 m from a straight edge it is about 15% opaque; the reference is about 66%.",
+    "At a point 12 m from two edges, opacity is about 30% current versus 93% reference.",
+    "The wider reference noticeably fogs the opening forest and road. A global revert to 32 m would change visibility of playable scenery.",
+    "Some raised border terrain remains visibly abrupt in the opening view. Wider fog alone does not establish a solution; coverage and sky colour must be assessed together."
+  ],
+  "receipts": [
+    {
+      "capture_set": "opening",
+      "campaign": "lost_in_astral",
+      "checks": 51,
+      "evidence": "Actual remake renders; original-equation profile is a controlled shader substitution, not an original-executable image.",
+      "failures": [],
+      "renderer": "gl_compatibility"
+    },
+    {
+      "capture_set": "astral",
+      "campaign": "lost_in_astral",
+      "checks": 39,
+      "evidence": "Actual remake renders; original-equation profile is a controlled shader substitution, not an original-executable image.",
+      "failures": [],
+      "renderer": "gl_compatibility"
+    },
+    {
+      "capture_set": "base",
+      "campaign": "cursed_lands",
+      "checks": 39,
+      "evidence": "Actual remake renders; original-equation profile is a controlled shader substitution, not an original-executable image.",
+      "failures": [],
+      "renderer": "gl_compatibility"
+    }
+  ],
+  "captures": [
+    {
+      "border": [
+        128.0,
+        224.0,
+        0.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/opening-gz1g-12-west-edge-no-border-control.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "west-edge",
+      "position": [
+        38.0,
+        27.3664016723633,
+        -112.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        0.0,
+        2.0,
+        -112.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        16.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/opening-gz1g-12-west-edge-current-16-quadratic.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "west-edge",
+      "position": [
+        38.0,
+        27.3664016723633,
+        -112.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        0.0,
+        2.0,
+        -112.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        32.0,
+        0.0
+      ],
+      "hour": 12.0,
+      "image": "images/opening-gz1g-12-west-edge-original-equation-32-linear.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "west-edge",
+      "position": [
+        38.0,
+        27.3664016723633,
+        -112.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        0.0,
+        2.0,
+        -112.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        0.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/opening-gz1g-12-northwest-corner-no-border-control.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "northwest-corner",
+      "position": [
+        35.0,
+        22.1922073364258,
+        -35.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        16.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/opening-gz1g-12-northwest-corner-current-16-quadratic.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "northwest-corner",
+      "position": [
+        35.0,
+        22.1922073364258,
+        -35.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        32.0,
+        0.0
+      ],
+      "hour": 12.0,
+      "image": "images/opening-gz1g-12-northwest-corner-original-equation-32-linear.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "northwest-corner",
+      "position": [
+        35.0,
+        22.1922073364258,
+        -35.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        0.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/opening-gz1g-12-west-low-no-border-control.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "west-low",
+      "position": [
+        26.0,
+        15.3624124526978,
+        -112.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        0.0,
+        2.0,
+        -112.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        16.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/opening-gz1g-12-west-low-current-16-quadratic.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "west-low",
+      "position": [
+        26.0,
+        15.3624124526978,
+        -112.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        0.0,
+        2.0,
+        -112.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        32.0,
+        0.0
+      ],
+      "hour": 12.0,
+      "image": "images/opening-gz1g-12-west-low-original-equation-32-linear.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "west-low",
+      "position": [
+        26.0,
+        15.3624124526978,
+        -112.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        0.0,
+        2.0,
+        -112.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        0.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/opening-gz1g-12-playable-border-no-border-control.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "playable-border",
+      "position": [
+        5.0,
+        42.3495597839355,
+        -76.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        23.0,
+        14.3570232391357,
+        -111.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        16.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/opening-gz1g-12-playable-border-current-16-quadratic.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "playable-border",
+      "position": [
+        5.0,
+        42.3495597839355,
+        -76.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        23.0,
+        14.3570232391357,
+        -111.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        32.0,
+        0.0
+      ],
+      "hour": 12.0,
+      "image": "images/opening-gz1g-12-playable-border-original-equation-32-linear.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "playable-border",
+      "position": [
+        5.0,
+        42.3495597839355,
+        -76.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        23.0,
+        14.3570232391357,
+        -111.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        0.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/opening-gz1g-01-west-edge-no-border-control.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "west-edge",
+      "position": [
+        38.0,
+        27.3664016723633,
+        -112.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        0.0,
+        2.0,
+        -112.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        16.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/opening-gz1g-01-west-edge-current-16-quadratic.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "west-edge",
+      "position": [
+        38.0,
+        27.3664016723633,
+        -112.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        0.0,
+        2.0,
+        -112.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        32.0,
+        0.0
+      ],
+      "hour": 1.0,
+      "image": "images/opening-gz1g-01-west-edge-original-equation-32-linear.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "west-edge",
+      "position": [
+        38.0,
+        27.3664016723633,
+        -112.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        0.0,
+        2.0,
+        -112.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        0.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/opening-gz1g-01-northwest-corner-no-border-control.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "northwest-corner",
+      "position": [
+        35.0,
+        22.1922073364258,
+        -35.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        16.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/opening-gz1g-01-northwest-corner-current-16-quadratic.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "northwest-corner",
+      "position": [
+        35.0,
+        22.1922073364258,
+        -35.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        32.0,
+        0.0
+      ],
+      "hour": 1.0,
+      "image": "images/opening-gz1g-01-northwest-corner-original-equation-32-linear.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "northwest-corner",
+      "position": [
+        35.0,
+        22.1922073364258,
+        -35.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        0.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/opening-gz1g-01-west-low-no-border-control.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "west-low",
+      "position": [
+        26.0,
+        15.3624124526978,
+        -112.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        0.0,
+        2.0,
+        -112.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        16.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/opening-gz1g-01-west-low-current-16-quadratic.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "west-low",
+      "position": [
+        26.0,
+        15.3624124526978,
+        -112.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        0.0,
+        2.0,
+        -112.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        32.0,
+        0.0
+      ],
+      "hour": 1.0,
+      "image": "images/opening-gz1g-01-west-low-original-equation-32-linear.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "west-low",
+      "position": [
+        26.0,
+        15.3624124526978,
+        -112.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        0.0,
+        2.0,
+        -112.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        0.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/opening-gz1g-01-playable-border-no-border-control.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "playable-border",
+      "position": [
+        5.0,
+        42.3495597839355,
+        -76.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        23.0,
+        14.3570232391357,
+        -111.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        16.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/opening-gz1g-01-playable-border-current-16-quadratic.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "playable-border",
+      "position": [
+        5.0,
+        42.3495597839355,
+        -76.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        23.0,
+        14.3570232391357,
+        -111.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        128.0,
+        224.0,
+        32.0,
+        0.0
+      ],
+      "hour": 1.0,
+      "image": "images/opening-gz1g-01-playable-border-original-equation-32-linear.webp",
+      "map_size": [
+        128.0,
+        224.0
+      ],
+      "pose": "playable-border",
+      "position": [
+        5.0,
+        42.3495597839355,
+        -76.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        23.0,
+        14.3570232391357,
+        -111.0
+      ],
+      "zone": "gz1g",
+      "set": "opening",
+      "title": "LiA opening / western forest"
+    },
+    {
+      "border": [
+        512.0,
+        512.0,
+        0.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/astral-gz1h-12-west-edge-no-border-control.webp",
+      "map_size": [
+        512.0,
+        512.0
+      ],
+      "pose": "west-edge",
+      "position": [
+        38.0,
+        23.8882389068604,
+        -256.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        0.0,
+        2.0,
+        -256.0
+      ],
+      "zone": "gz1h",
+      "set": "astral",
+      "title": "LiA Portal / outer border"
+    },
+    {
+      "border": [
+        512.0,
+        512.0,
+        16.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/astral-gz1h-12-west-edge-current-16-quadratic.webp",
+      "map_size": [
+        512.0,
+        512.0
+      ],
+      "pose": "west-edge",
+      "position": [
+        38.0,
+        23.8882389068604,
+        -256.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        0.0,
+        2.0,
+        -256.0
+      ],
+      "zone": "gz1h",
+      "set": "astral",
+      "title": "LiA Portal / outer border"
+    },
+    {
+      "border": [
+        512.0,
+        512.0,
+        32.0,
+        0.0
+      ],
+      "hour": 12.0,
+      "image": "images/astral-gz1h-12-west-edge-original-equation-32-linear.webp",
+      "map_size": [
+        512.0,
+        512.0
+      ],
+      "pose": "west-edge",
+      "position": [
+        38.0,
+        23.8882389068604,
+        -256.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        0.0,
+        2.0,
+        -256.0
+      ],
+      "zone": "gz1h",
+      "set": "astral",
+      "title": "LiA Portal / outer border"
+    },
+    {
+      "border": [
+        512.0,
+        512.0,
+        0.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/astral-gz1h-12-northwest-corner-no-border-control.webp",
+      "map_size": [
+        512.0,
+        512.0
+      ],
+      "pose": "northwest-corner",
+      "position": [
+        35.0,
+        26.9458503723145,
+        -35.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "zone": "gz1h",
+      "set": "astral",
+      "title": "LiA Portal / outer border"
+    },
+    {
+      "border": [
+        512.0,
+        512.0,
+        16.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/astral-gz1h-12-northwest-corner-current-16-quadratic.webp",
+      "map_size": [
+        512.0,
+        512.0
+      ],
+      "pose": "northwest-corner",
+      "position": [
+        35.0,
+        26.9458503723145,
+        -35.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "zone": "gz1h",
+      "set": "astral",
+      "title": "LiA Portal / outer border"
+    },
+    {
+      "border": [
+        512.0,
+        512.0,
+        32.0,
+        0.0
+      ],
+      "hour": 12.0,
+      "image": "images/astral-gz1h-12-northwest-corner-original-equation-32-linear.webp",
+      "map_size": [
+        512.0,
+        512.0
+      ],
+      "pose": "northwest-corner",
+      "position": [
+        35.0,
+        26.9458503723145,
+        -35.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "zone": "gz1h",
+      "set": "astral",
+      "title": "LiA Portal / outer border"
+    },
+    {
+      "border": [
+        512.0,
+        512.0,
+        0.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/astral-gz1h-12-west-low-no-border-control.webp",
+      "map_size": [
+        512.0,
+        512.0
+      ],
+      "pose": "west-low",
+      "position": [
+        26.0,
+        11.8827838897705,
+        -256.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        0.0,
+        2.0,
+        -256.0
+      ],
+      "zone": "gz1h",
+      "set": "astral",
+      "title": "LiA Portal / outer border"
+    },
+    {
+      "border": [
+        512.0,
+        512.0,
+        16.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/astral-gz1h-12-west-low-current-16-quadratic.webp",
+      "map_size": [
+        512.0,
+        512.0
+      ],
+      "pose": "west-low",
+      "position": [
+        26.0,
+        11.8827838897705,
+        -256.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        0.0,
+        2.0,
+        -256.0
+      ],
+      "zone": "gz1h",
+      "set": "astral",
+      "title": "LiA Portal / outer border"
+    },
+    {
+      "border": [
+        512.0,
+        512.0,
+        32.0,
+        0.0
+      ],
+      "hour": 12.0,
+      "image": "images/astral-gz1h-12-west-low-original-equation-32-linear.webp",
+      "map_size": [
+        512.0,
+        512.0
+      ],
+      "pose": "west-low",
+      "position": [
+        26.0,
+        11.8827838897705,
+        -256.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        0.0,
+        2.0,
+        -256.0
+      ],
+      "zone": "gz1h",
+      "set": "astral",
+      "title": "LiA Portal / outer border"
+    },
+    {
+      "border": [
+        512.0,
+        512.0,
+        0.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/astral-gz1h-01-west-edge-no-border-control.webp",
+      "map_size": [
+        512.0,
+        512.0
+      ],
+      "pose": "west-edge",
+      "position": [
+        38.0,
+        23.8882389068604,
+        -256.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        0.0,
+        2.0,
+        -256.0
+      ],
+      "zone": "gz1h",
+      "set": "astral",
+      "title": "LiA Portal / outer border"
+    },
+    {
+      "border": [
+        512.0,
+        512.0,
+        16.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/astral-gz1h-01-west-edge-current-16-quadratic.webp",
+      "map_size": [
+        512.0,
+        512.0
+      ],
+      "pose": "west-edge",
+      "position": [
+        38.0,
+        23.8882389068604,
+        -256.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        0.0,
+        2.0,
+        -256.0
+      ],
+      "zone": "gz1h",
+      "set": "astral",
+      "title": "LiA Portal / outer border"
+    },
+    {
+      "border": [
+        512.0,
+        512.0,
+        32.0,
+        0.0
+      ],
+      "hour": 1.0,
+      "image": "images/astral-gz1h-01-west-edge-original-equation-32-linear.webp",
+      "map_size": [
+        512.0,
+        512.0
+      ],
+      "pose": "west-edge",
+      "position": [
+        38.0,
+        23.8882389068604,
+        -256.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        0.0,
+        2.0,
+        -256.0
+      ],
+      "zone": "gz1h",
+      "set": "astral",
+      "title": "LiA Portal / outer border"
+    },
+    {
+      "border": [
+        512.0,
+        512.0,
+        0.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/astral-gz1h-01-northwest-corner-no-border-control.webp",
+      "map_size": [
+        512.0,
+        512.0
+      ],
+      "pose": "northwest-corner",
+      "position": [
+        35.0,
+        26.9458503723145,
+        -35.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "zone": "gz1h",
+      "set": "astral",
+      "title": "LiA Portal / outer border"
+    },
+    {
+      "border": [
+        512.0,
+        512.0,
+        16.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/astral-gz1h-01-northwest-corner-current-16-quadratic.webp",
+      "map_size": [
+        512.0,
+        512.0
+      ],
+      "pose": "northwest-corner",
+      "position": [
+        35.0,
+        26.9458503723145,
+        -35.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "zone": "gz1h",
+      "set": "astral",
+      "title": "LiA Portal / outer border"
+    },
+    {
+      "border": [
+        512.0,
+        512.0,
+        32.0,
+        0.0
+      ],
+      "hour": 1.0,
+      "image": "images/astral-gz1h-01-northwest-corner-original-equation-32-linear.webp",
+      "map_size": [
+        512.0,
+        512.0
+      ],
+      "pose": "northwest-corner",
+      "position": [
+        35.0,
+        26.9458503723145,
+        -35.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "zone": "gz1h",
+      "set": "astral",
+      "title": "LiA Portal / outer border"
+    },
+    {
+      "border": [
+        512.0,
+        512.0,
+        0.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/astral-gz1h-01-west-low-no-border-control.webp",
+      "map_size": [
+        512.0,
+        512.0
+      ],
+      "pose": "west-low",
+      "position": [
+        26.0,
+        11.8827838897705,
+        -256.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        0.0,
+        2.0,
+        -256.0
+      ],
+      "zone": "gz1h",
+      "set": "astral",
+      "title": "LiA Portal / outer border"
+    },
+    {
+      "border": [
+        512.0,
+        512.0,
+        16.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/astral-gz1h-01-west-low-current-16-quadratic.webp",
+      "map_size": [
+        512.0,
+        512.0
+      ],
+      "pose": "west-low",
+      "position": [
+        26.0,
+        11.8827838897705,
+        -256.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        0.0,
+        2.0,
+        -256.0
+      ],
+      "zone": "gz1h",
+      "set": "astral",
+      "title": "LiA Portal / outer border"
+    },
+    {
+      "border": [
+        512.0,
+        512.0,
+        32.0,
+        0.0
+      ],
+      "hour": 1.0,
+      "image": "images/astral-gz1h-01-west-low-original-equation-32-linear.webp",
+      "map_size": [
+        512.0,
+        512.0
+      ],
+      "pose": "west-low",
+      "position": [
+        26.0,
+        11.8827838897705,
+        -256.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        0.0,
+        2.0,
+        -256.0
+      ],
+      "zone": "gz1h",
+      "set": "astral",
+      "title": "LiA Portal / outer border"
+    },
+    {
+      "border": [
+        256.0,
+        192.0,
+        0.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/base-gz1g-12-west-edge-no-border-control.webp",
+      "map_size": [
+        256.0,
+        192.0
+      ],
+      "pose": "west-edge",
+      "position": [
+        38.0,
+        15.5188789367676,
+        -96.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        0.0,
+        2.0,
+        -96.0
+      ],
+      "zone": "gz1g",
+      "set": "base",
+      "title": "Base campaign / outer border"
+    },
+    {
+      "border": [
+        256.0,
+        192.0,
+        16.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/base-gz1g-12-west-edge-current-16-quadratic.webp",
+      "map_size": [
+        256.0,
+        192.0
+      ],
+      "pose": "west-edge",
+      "position": [
+        38.0,
+        15.5188789367676,
+        -96.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        0.0,
+        2.0,
+        -96.0
+      ],
+      "zone": "gz1g",
+      "set": "base",
+      "title": "Base campaign / outer border"
+    },
+    {
+      "border": [
+        256.0,
+        192.0,
+        32.0,
+        0.0
+      ],
+      "hour": 12.0,
+      "image": "images/base-gz1g-12-west-edge-original-equation-32-linear.webp",
+      "map_size": [
+        256.0,
+        192.0
+      ],
+      "pose": "west-edge",
+      "position": [
+        38.0,
+        15.5188789367676,
+        -96.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        0.0,
+        2.0,
+        -96.0
+      ],
+      "zone": "gz1g",
+      "set": "base",
+      "title": "Base campaign / outer border"
+    },
+    {
+      "border": [
+        256.0,
+        192.0,
+        0.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/base-gz1g-12-northwest-corner-no-border-control.webp",
+      "map_size": [
+        256.0,
+        192.0
+      ],
+      "pose": "northwest-corner",
+      "position": [
+        35.0,
+        20.1314659118652,
+        -35.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "zone": "gz1g",
+      "set": "base",
+      "title": "Base campaign / outer border"
+    },
+    {
+      "border": [
+        256.0,
+        192.0,
+        16.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/base-gz1g-12-northwest-corner-current-16-quadratic.webp",
+      "map_size": [
+        256.0,
+        192.0
+      ],
+      "pose": "northwest-corner",
+      "position": [
+        35.0,
+        20.1314659118652,
+        -35.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "zone": "gz1g",
+      "set": "base",
+      "title": "Base campaign / outer border"
+    },
+    {
+      "border": [
+        256.0,
+        192.0,
+        32.0,
+        0.0
+      ],
+      "hour": 12.0,
+      "image": "images/base-gz1g-12-northwest-corner-original-equation-32-linear.webp",
+      "map_size": [
+        256.0,
+        192.0
+      ],
+      "pose": "northwest-corner",
+      "position": [
+        35.0,
+        20.1314659118652,
+        -35.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "zone": "gz1g",
+      "set": "base",
+      "title": "Base campaign / outer border"
+    },
+    {
+      "border": [
+        256.0,
+        192.0,
+        0.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/base-gz1g-12-west-low-no-border-control.webp",
+      "map_size": [
+        256.0,
+        192.0
+      ],
+      "pose": "west-low",
+      "position": [
+        26.0,
+        3.11757683753967,
+        -96.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        0.0,
+        2.0,
+        -96.0
+      ],
+      "zone": "gz1g",
+      "set": "base",
+      "title": "Base campaign / outer border"
+    },
+    {
+      "border": [
+        256.0,
+        192.0,
+        16.0,
+        1.0
+      ],
+      "hour": 12.0,
+      "image": "images/base-gz1g-12-west-low-current-16-quadratic.webp",
+      "map_size": [
+        256.0,
+        192.0
+      ],
+      "pose": "west-low",
+      "position": [
+        26.0,
+        3.11757683753967,
+        -96.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        0.0,
+        2.0,
+        -96.0
+      ],
+      "zone": "gz1g",
+      "set": "base",
+      "title": "Base campaign / outer border"
+    },
+    {
+      "border": [
+        256.0,
+        192.0,
+        32.0,
+        0.0
+      ],
+      "hour": 12.0,
+      "image": "images/base-gz1g-12-west-low-original-equation-32-linear.webp",
+      "map_size": [
+        256.0,
+        192.0
+      ],
+      "pose": "west-low",
+      "position": [
+        26.0,
+        3.11757683753967,
+        -96.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        0.0,
+        2.0,
+        -96.0
+      ],
+      "zone": "gz1g",
+      "set": "base",
+      "title": "Base campaign / outer border"
+    },
+    {
+      "border": [
+        256.0,
+        192.0,
+        0.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/base-gz1g-01-west-edge-no-border-control.webp",
+      "map_size": [
+        256.0,
+        192.0
+      ],
+      "pose": "west-edge",
+      "position": [
+        38.0,
+        15.5188789367676,
+        -96.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        0.0,
+        2.0,
+        -96.0
+      ],
+      "zone": "gz1g",
+      "set": "base",
+      "title": "Base campaign / outer border"
+    },
+    {
+      "border": [
+        256.0,
+        192.0,
+        16.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/base-gz1g-01-west-edge-current-16-quadratic.webp",
+      "map_size": [
+        256.0,
+        192.0
+      ],
+      "pose": "west-edge",
+      "position": [
+        38.0,
+        15.5188789367676,
+        -96.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        0.0,
+        2.0,
+        -96.0
+      ],
+      "zone": "gz1g",
+      "set": "base",
+      "title": "Base campaign / outer border"
+    },
+    {
+      "border": [
+        256.0,
+        192.0,
+        32.0,
+        0.0
+      ],
+      "hour": 1.0,
+      "image": "images/base-gz1g-01-west-edge-original-equation-32-linear.webp",
+      "map_size": [
+        256.0,
+        192.0
+      ],
+      "pose": "west-edge",
+      "position": [
+        38.0,
+        15.5188789367676,
+        -96.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        0.0,
+        2.0,
+        -96.0
+      ],
+      "zone": "gz1g",
+      "set": "base",
+      "title": "Base campaign / outer border"
+    },
+    {
+      "border": [
+        256.0,
+        192.0,
+        0.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/base-gz1g-01-northwest-corner-no-border-control.webp",
+      "map_size": [
+        256.0,
+        192.0
+      ],
+      "pose": "northwest-corner",
+      "position": [
+        35.0,
+        20.1314659118652,
+        -35.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "zone": "gz1g",
+      "set": "base",
+      "title": "Base campaign / outer border"
+    },
+    {
+      "border": [
+        256.0,
+        192.0,
+        16.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/base-gz1g-01-northwest-corner-current-16-quadratic.webp",
+      "map_size": [
+        256.0,
+        192.0
+      ],
+      "pose": "northwest-corner",
+      "position": [
+        35.0,
+        20.1314659118652,
+        -35.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "zone": "gz1g",
+      "set": "base",
+      "title": "Base campaign / outer border"
+    },
+    {
+      "border": [
+        256.0,
+        192.0,
+        32.0,
+        0.0
+      ],
+      "hour": 1.0,
+      "image": "images/base-gz1g-01-northwest-corner-original-equation-32-linear.webp",
+      "map_size": [
+        256.0,
+        192.0
+      ],
+      "pose": "northwest-corner",
+      "position": [
+        35.0,
+        20.1314659118652,
+        -35.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "zone": "gz1g",
+      "set": "base",
+      "title": "Base campaign / outer border"
+    },
+    {
+      "border": [
+        256.0,
+        192.0,
+        0.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/base-gz1g-01-west-low-no-border-control.webp",
+      "map_size": [
+        256.0,
+        192.0
+      ],
+      "pose": "west-low",
+      "position": [
+        26.0,
+        3.11757683753967,
+        -96.0
+      ],
+      "profile": "no-border-control",
+      "target": [
+        0.0,
+        2.0,
+        -96.0
+      ],
+      "zone": "gz1g",
+      "set": "base",
+      "title": "Base campaign / outer border"
+    },
+    {
+      "border": [
+        256.0,
+        192.0,
+        16.0,
+        1.0
+      ],
+      "hour": 1.0,
+      "image": "images/base-gz1g-01-west-low-current-16-quadratic.webp",
+      "map_size": [
+        256.0,
+        192.0
+      ],
+      "pose": "west-low",
+      "position": [
+        26.0,
+        3.11757683753967,
+        -96.0
+      ],
+      "profile": "current-16-quadratic",
+      "target": [
+        0.0,
+        2.0,
+        -96.0
+      ],
+      "zone": "gz1g",
+      "set": "base",
+      "title": "Base campaign / outer border"
+    },
+    {
+      "border": [
+        256.0,
+        192.0,
+        32.0,
+        0.0
+      ],
+      "hour": 1.0,
+      "image": "images/base-gz1g-01-west-low-original-equation-32-linear.webp",
+      "map_size": [
+        256.0,
+        192.0
+      ],
+      "pose": "west-low",
+      "position": [
+        26.0,
+        3.11757683753967,
+        -96.0
+      ],
+      "profile": "original-equation-32-linear",
+      "target": [
+        0.0,
+        2.0,
+        -96.0
+      ],
+      "zone": "gz1g",
+      "set": "base",
+      "title": "Base campaign / outer border"
+    }
+  ]
+}

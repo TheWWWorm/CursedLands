@@ -1,0 +1,4898 @@
+{
+  "scope": "Capture QFinish's generated objective chains from the original x86 EXE.\n\nThe real generator chooses conditions, links, journal updates and completion.\nHooks replace only CString allocation/format/concatenation and observe the\nscript compiler input. The compiler and whole game do not execute here. Inputs\ncome from an installed-map census, plus empty/max-length boundary chains.\n",
+  "executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "generator": "0x4baab0",
+  "census_sha256": "d908c2eeed549d8faa8f32a87d04ca87bc24098fd9a30b915c128a2982493d19",
+  "rows": [
+    {
+      "id": "z12q1",
+      "objectives": [
+        [
+          "QObjArea",
+          1.0,
+          0.0
+        ],
+        [
+          "QObjSeeObject",
+          "GetObject(1000020)",
+          0.0
+        ],
+        [
+          "QObjUse",
+          "GetObject(1000020)",
+          1.0
+        ],
+        [
+          "QObjSeeObject",
+          "GetObject(5634)",
+          0.0
+        ],
+        [
+          "QObjUse",
+          "GetObject(5634)",
+          1.0
+        ],
+        [
+          "QObjKillGroup",
+          "AllMonsters",
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nDeclareScript Su3()\nDeclareScript Su4()\nDeclareScript Su5()\nDeclareScript Su6()\nScript Su0(if(\nany( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z12q1.z12q1.1\",2)\nGSSetVar(0,\"q.z12q1.z12q1.2\",1)\n)\n)\nScript Su1(if(\nany( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(1000020) ), 7 ) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z12q1.z12q1.2\",2)\nGSSetVar(0,\"q.z12q1.z12q1.3\",1)\n)\n)\nScript Su2(if(\nIsEqual( GetLeverState(GetObject(1000020)), 1.000000 )\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z12q1.z12q1.3\",2)\nGSSetVar(0,\"q.z12q1.z12q1.4\",1)\n)\n)\nScript Su3(if(\nany( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(5634) ), 7 ) )\n)then(\nKillScript()\nSu4()\nGSSetVar(0,\"q.z12q1.z12q1.4\",2)\nGSSetVar(0,\"q.z12q1.z12q1.5\",1)\n)\n)\nScript Su4(if(\nIsEqual( GetLeverState(GetObject(5634)), 1.000000 )\n)then(\nKillScript()\nSu5()\nGSSetVar(0,\"q.z12q1.z12q1.5\",2)\nGSSetVar(0,\"q.z12q1.z12q1.6\",1)\n)\n)\nScript Su5(if(\nNot( any( i, AllMonsters, IsAlive(i) ) )\n)then(\nKillScript()\nSu6()\nGSSetVar(0,\"q.z12q1.z12q1.6\",2)\n)\n)\nScript Su6(if()then(KillScript()\nQuestComplete(0,\"z12q1\")\nGSSetVar(0,\"q.z12q1.z12q1\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            3
+          ],
+          "text": "DeclareScript Su3()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            4
+          ],
+          "text": "DeclareScript Su4()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            5
+          ],
+          "text": "DeclareScript Su5()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            6
+          ],
+          "text": "DeclareScript Su6()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z12q1",
+            "z12q1",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z12q1.z12q1.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z12q1",
+            "z12q1",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z12q1.z12q1.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )",
+          "args": [
+            1.0
+          ],
+          "text": "any( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z12q1",
+            "z12q1",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z12q1.z12q1.2\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z12q1",
+            "z12q1",
+            3
+          ],
+          "text": "GSSetVar(0,\"q.z12q1.z12q1.3\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsLess( DistanceUnitUnit( i, %s ), 7 ) )",
+          "args": [
+            "GetObject(1000020)"
+          ],
+          "text": "any( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(1000020) ), 7 ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            2
+          ],
+          "text": "Script Su2(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            3,
+            "z12q1",
+            "z12q1",
+            3
+          ],
+          "text": "\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z12q1.z12q1.3\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z12q1",
+            "z12q1",
+            4
+          ],
+          "text": "GSSetVar(0,\"q.z12q1.z12q1.4\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(1000020)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(1000020)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            3
+          ],
+          "text": "Script Su3(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            4,
+            "z12q1",
+            "z12q1",
+            4
+          ],
+          "text": "\n)then(\nKillScript()\nSu4()\nGSSetVar(0,\"q.z12q1.z12q1.4\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z12q1",
+            "z12q1",
+            5
+          ],
+          "text": "GSSetVar(0,\"q.z12q1.z12q1.5\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsLess( DistanceUnitUnit( i, %s ), 7 ) )",
+          "args": [
+            "GetObject(5634)"
+          ],
+          "text": "any( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(5634) ), 7 ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            4
+          ],
+          "text": "Script Su4(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            5,
+            "z12q1",
+            "z12q1",
+            5
+          ],
+          "text": "\n)then(\nKillScript()\nSu5()\nGSSetVar(0,\"q.z12q1.z12q1.5\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z12q1",
+            "z12q1",
+            6
+          ],
+          "text": "GSSetVar(0,\"q.z12q1.z12q1.6\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(5634)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(5634)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            5
+          ],
+          "text": "Script Su5(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            6,
+            "z12q1",
+            "z12q1",
+            6
+          ],
+          "text": "\n)then(\nKillScript()\nSu6()\nGSSetVar(0,\"q.z12q1.z12q1.6\",2)\n"
+        },
+        {
+          "template": "Not( any( i, %s, IsAlive(i) ) )",
+          "args": [
+            "AllMonsters"
+          ],
+          "text": "Not( any( i, AllMonsters, IsAlive(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            6,
+            "z12q1",
+            "z12q1",
+            "z12q1"
+          ],
+          "text": "Script Su6(if()then(KillScript()\nQuestComplete(0,\"z12q1\")\nGSSetVar(0,\"q.z12q1.z12q1\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z12q2",
+      "objectives": [
+        [
+          "QObjSeeUnit",
+          "GetObject(1000110)",
+          0.0
+        ],
+        [
+          "QObjKillUnit",
+          "GetObject(1000110)",
+          0.0
+        ],
+        [
+          "QObjGetItem",
+          80.0,
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nDeclareScript Su3()\nScript Su0(if(\nIsUnitVisible( GetObject(1000110) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z12q2.z12q2.1\",2)\nGSSetVar(0,\"q.z12q2.z12q2.2\",1)\n)\n)\nScript Su1(if(\nNot( IsAlive( GetObject(1000110) ) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z12q2.z12q2.2\",2)\nGSSetVar(0,\"q.z12q2.z12q2.3\",1)\n)\n)\nScript Su2(if(\nHaveItem( 0, 80.000000 )\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z12q2.z12q2.3\",2)\n)\n)\nScript Su3(if()then(KillScript()\nQuestComplete(0,\"z12q2\")\nGSSetVar(0,\"q.z12q2.z12q2\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            3
+          ],
+          "text": "DeclareScript Su3()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z12q2",
+            "z12q2",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z12q2.z12q2.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z12q2",
+            "z12q2",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z12q2.z12q2.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsUnitVisible( %s )",
+          "args": [
+            "GetObject(1000110)"
+          ],
+          "text": "IsUnitVisible( GetObject(1000110) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z12q2",
+            "z12q2",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z12q2.z12q2.2\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z12q2",
+            "z12q2",
+            3
+          ],
+          "text": "GSSetVar(0,\"q.z12q2.z12q2.3\",1)\n)\n)\n"
+        },
+        {
+          "template": "Not( IsAlive( %s ) )",
+          "args": [
+            "GetObject(1000110)"
+          ],
+          "text": "Not( IsAlive( GetObject(1000110) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            2
+          ],
+          "text": "Script Su2(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            3,
+            "z12q2",
+            "z12q2",
+            3
+          ],
+          "text": "\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z12q2.z12q2.3\",2)\n"
+        },
+        {
+          "template": "HaveItem( 0, %f )",
+          "args": [
+            80.0
+          ],
+          "text": "HaveItem( 0, 80.000000 )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            3,
+            "z12q2",
+            "z12q2",
+            "z12q2"
+          ],
+          "text": "Script Su3(if()then(KillScript()\nQuestComplete(0,\"z12q2\")\nGSSetVar(0,\"q.z12q2.z12q2\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z12q3",
+      "objectives": [
+        [
+          "QObjSeeObject",
+          "GetObject(5636)",
+          0.0
+        ],
+        [
+          "QObjUse",
+          "GetObject(5636)",
+          1.0
+        ],
+        [
+          "QObjSeeUnit",
+          "GetObject(1000219)",
+          0.0
+        ],
+        [
+          "QObjKillGroup",
+          "AllMonsters1",
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nDeclareScript Su3()\nDeclareScript Su4()\nScript Su0(if(\nany( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(5636) ), 7 ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z12q3.z12q3.1\",2)\nGSSetVar(0,\"q.z12q3.z12q3.2\",1)\n)\n)\nScript Su1(if(\nIsEqual( GetLeverState(GetObject(5636)), 1.000000 )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z12q3.z12q3.2\",2)\nGSSetVar(0,\"q.z12q3.z12q3.3\",1)\n)\n)\nScript Su2(if(\nIsUnitVisible( GetObject(1000219) )\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z12q3.z12q3.3\",2)\nGSSetVar(0,\"q.z12q3.z12q3.4\",1)\n)\n)\nScript Su3(if(\nNot( any( i, AllMonsters1, IsAlive(i) ) )\n)then(\nKillScript()\nSu4()\nGSSetVar(0,\"q.z12q3.z12q3.4\",2)\n)\n)\nScript Su4(if()then(KillScript()\nQuestComplete(0,\"z12q3\")\nGSSetVar(0,\"q.z12q3.z12q3\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            3
+          ],
+          "text": "DeclareScript Su3()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            4
+          ],
+          "text": "DeclareScript Su4()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z12q3",
+            "z12q3",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z12q3.z12q3.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z12q3",
+            "z12q3",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z12q3.z12q3.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsLess( DistanceUnitUnit( i, %s ), 7 ) )",
+          "args": [
+            "GetObject(5636)"
+          ],
+          "text": "any( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(5636) ), 7 ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z12q3",
+            "z12q3",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z12q3.z12q3.2\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z12q3",
+            "z12q3",
+            3
+          ],
+          "text": "GSSetVar(0,\"q.z12q3.z12q3.3\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(5636)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(5636)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            2
+          ],
+          "text": "Script Su2(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            3,
+            "z12q3",
+            "z12q3",
+            3
+          ],
+          "text": "\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z12q3.z12q3.3\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z12q3",
+            "z12q3",
+            4
+          ],
+          "text": "GSSetVar(0,\"q.z12q3.z12q3.4\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsUnitVisible( %s )",
+          "args": [
+            "GetObject(1000219)"
+          ],
+          "text": "IsUnitVisible( GetObject(1000219) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            3
+          ],
+          "text": "Script Su3(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            4,
+            "z12q3",
+            "z12q3",
+            4
+          ],
+          "text": "\n)then(\nKillScript()\nSu4()\nGSSetVar(0,\"q.z12q3.z12q3.4\",2)\n"
+        },
+        {
+          "template": "Not( any( i, %s, IsAlive(i) ) )",
+          "args": [
+            "AllMonsters1"
+          ],
+          "text": "Not( any( i, AllMonsters1, IsAlive(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            4,
+            "z12q3",
+            "z12q3",
+            "z12q3"
+          ],
+          "text": "Script Su4(if()then(KillScript()\nQuestComplete(0,\"z12q3\")\nGSSetVar(0,\"q.z12q3.z12q3\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z13q1",
+      "objectives": [
+        [
+          "QObjArea",
+          1.0,
+          0.0
+        ],
+        [
+          "QObjKillGroup",
+          "MonstersK",
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nScript Su0(if(\nany( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z13q1.z13q1.1\",2)\nGSSetVar(0,\"q.z13q1.z13q1.2\",1)\n)\n)\nScript Su1(if(\nNot( any( i, MonstersK, IsAlive(i) ) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z13q1.z13q1.2\",2)\n)\n)\nScript Su2(if()then(KillScript()\nQuestComplete(0,\"z13q1\")\nGSSetVar(0,\"q.z13q1.z13q1\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z13q1",
+            "z13q1",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z13q1.z13q1.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z13q1",
+            "z13q1",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z13q1.z13q1.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )",
+          "args": [
+            1.0
+          ],
+          "text": "any( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z13q1",
+            "z13q1",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z13q1.z13q1.2\",2)\n"
+        },
+        {
+          "template": "Not( any( i, %s, IsAlive(i) ) )",
+          "args": [
+            "MonstersK"
+          ],
+          "text": "Not( any( i, MonstersK, IsAlive(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            2,
+            "z13q1",
+            "z13q1",
+            "z13q1"
+          ],
+          "text": "Script Su2(if()then(KillScript()\nQuestComplete(0,\"z13q1\")\nGSSetVar(0,\"q.z13q1.z13q1\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z13q2",
+      "objectives": [
+        [
+          "QObjKillGroup",
+          "BlackUni",
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nScript Su0(if(\nNot( any( i, BlackUni, IsAlive(i) ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z13q2.z13q2.1\",2)\n)\n)\nScript Su1(if()then(KillScript()\nQuestComplete(0,\"z13q2\")\nGSSetVar(0,\"q.z13q2.z13q2\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z13q2",
+            "z13q2",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z13q2.z13q2.1\",2)\n"
+        },
+        {
+          "template": "Not( any( i, %s, IsAlive(i) ) )",
+          "args": [
+            "BlackUni"
+          ],
+          "text": "Not( any( i, BlackUni, IsAlive(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            1,
+            "z13q2",
+            "z13q2",
+            "z13q2"
+          ],
+          "text": "Script Su1(if()then(KillScript()\nQuestComplete(0,\"z13q2\")\nGSSetVar(0,\"q.z13q2.z13q2\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z13q3",
+      "objectives": [
+        [
+          "QObjArea",
+          1.0,
+          0.0
+        ],
+        [
+          "QObjSeeUnit",
+          "GetObject(1000128)",
+          0.0
+        ],
+        [
+          "QObjKillUnit",
+          "GetObject(1000128)",
+          0.0
+        ],
+        [
+          "QObjGetItem",
+          86.0,
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nDeclareScript Su3()\nDeclareScript Su4()\nScript Su0(if(\nany( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z13q3.z13q3.1\",2)\nGSSetVar(0,\"q.z13q3.z13q3.2\",1)\n)\n)\nScript Su1(if(\nIsUnitVisible( GetObject(1000128) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z13q3.z13q3.2\",2)\nGSSetVar(0,\"q.z13q3.z13q3.3\",1)\n)\n)\nScript Su2(if(\nNot( IsAlive( GetObject(1000128) ) )\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z13q3.z13q3.3\",2)\nGSSetVar(0,\"q.z13q3.z13q3.4\",1)\n)\n)\nScript Su3(if(\nHaveItem( 0, 86.000000 )\n)then(\nKillScript()\nSu4()\nGSSetVar(0,\"q.z13q3.z13q3.4\",2)\n)\n)\nScript Su4(if()then(KillScript()\nQuestComplete(0,\"z13q3\")\nGSSetVar(0,\"q.z13q3.z13q3\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            3
+          ],
+          "text": "DeclareScript Su3()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            4
+          ],
+          "text": "DeclareScript Su4()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z13q3",
+            "z13q3",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z13q3.z13q3.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z13q3",
+            "z13q3",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z13q3.z13q3.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )",
+          "args": [
+            1.0
+          ],
+          "text": "any( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z13q3",
+            "z13q3",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z13q3.z13q3.2\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z13q3",
+            "z13q3",
+            3
+          ],
+          "text": "GSSetVar(0,\"q.z13q3.z13q3.3\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsUnitVisible( %s )",
+          "args": [
+            "GetObject(1000128)"
+          ],
+          "text": "IsUnitVisible( GetObject(1000128) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            2
+          ],
+          "text": "Script Su2(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            3,
+            "z13q3",
+            "z13q3",
+            3
+          ],
+          "text": "\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z13q3.z13q3.3\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z13q3",
+            "z13q3",
+            4
+          ],
+          "text": "GSSetVar(0,\"q.z13q3.z13q3.4\",1)\n)\n)\n"
+        },
+        {
+          "template": "Not( IsAlive( %s ) )",
+          "args": [
+            "GetObject(1000128)"
+          ],
+          "text": "Not( IsAlive( GetObject(1000128) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            3
+          ],
+          "text": "Script Su3(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            4,
+            "z13q3",
+            "z13q3",
+            4
+          ],
+          "text": "\n)then(\nKillScript()\nSu4()\nGSSetVar(0,\"q.z13q3.z13q3.4\",2)\n"
+        },
+        {
+          "template": "HaveItem( 0, %f )",
+          "args": [
+            86.0
+          ],
+          "text": "HaveItem( 0, 86.000000 )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            4,
+            "z13q3",
+            "z13q3",
+            "z13q3"
+          ],
+          "text": "Script Su4(if()then(KillScript()\nQuestComplete(0,\"z13q3\")\nGSSetVar(0,\"q.z13q3.z13q3\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z17q1",
+      "objectives": [
+        [
+          "QObjSeeUnit",
+          "GetObject(1000061)",
+          0.0
+        ],
+        [
+          "QObjGetItem",
+          82.0,
+          0.0
+        ],
+        [
+          "QObjArea",
+          1.0,
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nDeclareScript Su3()\nScript Su0(if(\nIsUnitVisible( GetObject(1000061) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z17q1.z17q1.1\",2)\nGSSetVar(0,\"q.z17q1.z17q1.2\",1)\n)\n)\nScript Su1(if(\nHaveItem( 0, 82.000000 )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z17q1.z17q1.2\",2)\nGSSetVar(0,\"q.z17q1.z17q1.3\",1)\n)\n)\nScript Su2(if(\nany( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z17q1.z17q1.3\",2)\n)\n)\nScript Su3(if()then(KillScript()\nQuestComplete(0,\"z17q1\")\nGSSetVar(0,\"q.z17q1.z17q1\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            3
+          ],
+          "text": "DeclareScript Su3()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z17q1",
+            "z17q1",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z17q1.z17q1.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z17q1",
+            "z17q1",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z17q1.z17q1.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsUnitVisible( %s )",
+          "args": [
+            "GetObject(1000061)"
+          ],
+          "text": "IsUnitVisible( GetObject(1000061) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z17q1",
+            "z17q1",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z17q1.z17q1.2\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z17q1",
+            "z17q1",
+            3
+          ],
+          "text": "GSSetVar(0,\"q.z17q1.z17q1.3\",1)\n)\n)\n"
+        },
+        {
+          "template": "HaveItem( 0, %f )",
+          "args": [
+            82.0
+          ],
+          "text": "HaveItem( 0, 82.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            2
+          ],
+          "text": "Script Su2(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            3,
+            "z17q1",
+            "z17q1",
+            3
+          ],
+          "text": "\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z17q1.z17q1.3\",2)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )",
+          "args": [
+            1.0
+          ],
+          "text": "any( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            3,
+            "z17q1",
+            "z17q1",
+            "z17q1"
+          ],
+          "text": "Script Su3(if()then(KillScript()\nQuestComplete(0,\"z17q1\")\nGSSetVar(0,\"q.z17q1.z17q1\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z17q2",
+      "objectives": [
+        [
+          "QObjSeeUnit",
+          "GetObject(1000181)",
+          0.0
+        ],
+        [
+          "QObjKillUnit",
+          "GetObject(1000181)",
+          0.0
+        ],
+        [
+          "QObjGetItem",
+          83.0,
+          0.0
+        ],
+        [
+          "QObjArea",
+          1.0,
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nDeclareScript Su3()\nDeclareScript Su4()\nScript Su0(if(\nIsUnitVisible( GetObject(1000181) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z17q2.z17q2.1\",2)\nGSSetVar(0,\"q.z17q2.z17q2.2\",1)\n)\n)\nScript Su1(if(\nNot( IsAlive( GetObject(1000181) ) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z17q2.z17q2.2\",2)\nGSSetVar(0,\"q.z17q2.z17q2.3\",1)\n)\n)\nScript Su2(if(\nHaveItem( 0, 83.000000 )\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z17q2.z17q2.3\",2)\nGSSetVar(0,\"q.z17q2.z17q2.4\",1)\n)\n)\nScript Su3(if(\nany( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )\n)then(\nKillScript()\nSu4()\nGSSetVar(0,\"q.z17q2.z17q2.4\",2)\n)\n)\nScript Su4(if()then(KillScript()\nQuestComplete(0,\"z17q2\")\nGSSetVar(0,\"q.z17q2.z17q2\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            3
+          ],
+          "text": "DeclareScript Su3()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            4
+          ],
+          "text": "DeclareScript Su4()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z17q2",
+            "z17q2",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z17q2.z17q2.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z17q2",
+            "z17q2",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z17q2.z17q2.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsUnitVisible( %s )",
+          "args": [
+            "GetObject(1000181)"
+          ],
+          "text": "IsUnitVisible( GetObject(1000181) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z17q2",
+            "z17q2",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z17q2.z17q2.2\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z17q2",
+            "z17q2",
+            3
+          ],
+          "text": "GSSetVar(0,\"q.z17q2.z17q2.3\",1)\n)\n)\n"
+        },
+        {
+          "template": "Not( IsAlive( %s ) )",
+          "args": [
+            "GetObject(1000181)"
+          ],
+          "text": "Not( IsAlive( GetObject(1000181) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            2
+          ],
+          "text": "Script Su2(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            3,
+            "z17q2",
+            "z17q2",
+            3
+          ],
+          "text": "\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z17q2.z17q2.3\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z17q2",
+            "z17q2",
+            4
+          ],
+          "text": "GSSetVar(0,\"q.z17q2.z17q2.4\",1)\n)\n)\n"
+        },
+        {
+          "template": "HaveItem( 0, %f )",
+          "args": [
+            83.0
+          ],
+          "text": "HaveItem( 0, 83.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            3
+          ],
+          "text": "Script Su3(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            4,
+            "z17q2",
+            "z17q2",
+            4
+          ],
+          "text": "\n)then(\nKillScript()\nSu4()\nGSSetVar(0,\"q.z17q2.z17q2.4\",2)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )",
+          "args": [
+            1.0
+          ],
+          "text": "any( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            4,
+            "z17q2",
+            "z17q2",
+            "z17q2"
+          ],
+          "text": "Script Su4(if()then(KillScript()\nQuestComplete(0,\"z17q2\")\nGSSetVar(0,\"q.z17q2.z17q2\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z17q3",
+      "objectives": [
+        [
+          "QObjKillGroup",
+          "Ciclopa3",
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nScript Su0(if(\nNot( any( i, Ciclopa3, IsAlive(i) ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z17q3.z17q3.1\",2)\n)\n)\nScript Su1(if()then(KillScript()\nQuestComplete(0,\"z17q3\")\nGSSetVar(0,\"q.z17q3.z17q3\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z17q3",
+            "z17q3",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z17q3.z17q3.1\",2)\n"
+        },
+        {
+          "template": "Not( any( i, %s, IsAlive(i) ) )",
+          "args": [
+            "Ciclopa3"
+          ],
+          "text": "Not( any( i, Ciclopa3, IsAlive(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            1,
+            "z17q3",
+            "z17q3",
+            "z17q3"
+          ],
+          "text": "Script Su1(if()then(KillScript()\nQuestComplete(0,\"z17q3\")\nGSSetVar(0,\"q.z17q3.z17q3\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z18q1",
+      "objectives": [
+        [
+          "QObjArea",
+          1.0,
+          0.0
+        ],
+        [
+          "QObjKillGroup",
+          "OhranaJunHouse",
+          0.0
+        ],
+        [
+          "QObjKillGroup",
+          "Police",
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nDeclareScript Su3()\nScript Su0(if(\nany( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z18q1.z18q1.1\",2)\nGSSetVar(0,\"q.z18q1.z18q1.2\",1)\n)\n)\nScript Su1(if(\nNot( any( i, OhranaJunHouse, IsAlive(i) ) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z18q1.z18q1.2\",2)\nGSSetVar(0,\"q.z18q1.z18q1.3\",1)\n)\n)\nScript Su2(if(\nNot( any( i, Police, IsAlive(i) ) )\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z18q1.z18q1.3\",2)\n)\n)\nScript Su3(if()then(KillScript()\nQuestComplete(0,\"z18q1\")\nGSSetVar(0,\"q.z18q1.z18q1\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            3
+          ],
+          "text": "DeclareScript Su3()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z18q1",
+            "z18q1",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z18q1.z18q1.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z18q1",
+            "z18q1",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z18q1.z18q1.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )",
+          "args": [
+            1.0
+          ],
+          "text": "any( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z18q1",
+            "z18q1",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z18q1.z18q1.2\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z18q1",
+            "z18q1",
+            3
+          ],
+          "text": "GSSetVar(0,\"q.z18q1.z18q1.3\",1)\n)\n)\n"
+        },
+        {
+          "template": "Not( any( i, %s, IsAlive(i) ) )",
+          "args": [
+            "OhranaJunHouse"
+          ],
+          "text": "Not( any( i, OhranaJunHouse, IsAlive(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            2
+          ],
+          "text": "Script Su2(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            3,
+            "z18q1",
+            "z18q1",
+            3
+          ],
+          "text": "\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z18q1.z18q1.3\",2)\n"
+        },
+        {
+          "template": "Not( any( i, %s, IsAlive(i) ) )",
+          "args": [
+            "Police"
+          ],
+          "text": "Not( any( i, Police, IsAlive(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            3,
+            "z18q1",
+            "z18q1",
+            "z18q1"
+          ],
+          "text": "Script Su3(if()then(KillScript()\nQuestComplete(0,\"z18q1\")\nGSSetVar(0,\"q.z18q1.z18q1\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z18q2",
+      "objectives": [
+        [
+          "QObjArea",
+          1.0,
+          0.0
+        ],
+        [
+          "QObjSeeObject",
+          "GetObject(46470)",
+          0.0
+        ],
+        [
+          "QObjUse",
+          "GetObject(46470)",
+          1.0
+        ],
+        [
+          "QObjSeeUnit",
+          "GetObject(1000183)",
+          0.0
+        ],
+        [
+          "QObjKillUnit",
+          "GetObject(1000183)",
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nDeclareScript Su3()\nDeclareScript Su4()\nDeclareScript Su5()\nScript Su0(if(\nany( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z18q2.z18q2.1\",2)\nGSSetVar(0,\"q.z18q2.z18q2.2\",1)\n)\n)\nScript Su1(if(\nany( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(46470) ), 7 ) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z18q2.z18q2.2\",2)\nGSSetVar(0,\"q.z18q2.z18q2.3\",1)\n)\n)\nScript Su2(if(\nIsEqual( GetLeverState(GetObject(46470)), 1.000000 )\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z18q2.z18q2.3\",2)\nGSSetVar(0,\"q.z18q2.z18q2.4\",1)\n)\n)\nScript Su3(if(\nIsUnitVisible( GetObject(1000183) )\n)then(\nKillScript()\nSu4()\nGSSetVar(0,\"q.z18q2.z18q2.4\",2)\nGSSetVar(0,\"q.z18q2.z18q2.5\",1)\n)\n)\nScript Su4(if(\nNot( IsAlive( GetObject(1000183) ) )\n)then(\nKillScript()\nSu5()\nGSSetVar(0,\"q.z18q2.z18q2.5\",2)\n)\n)\nScript Su5(if()then(KillScript()\nQuestComplete(0,\"z18q2\")\nGSSetVar(0,\"q.z18q2.z18q2\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            3
+          ],
+          "text": "DeclareScript Su3()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            4
+          ],
+          "text": "DeclareScript Su4()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            5
+          ],
+          "text": "DeclareScript Su5()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z18q2",
+            "z18q2",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z18q2.z18q2.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z18q2",
+            "z18q2",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z18q2.z18q2.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )",
+          "args": [
+            1.0
+          ],
+          "text": "any( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z18q2",
+            "z18q2",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z18q2.z18q2.2\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z18q2",
+            "z18q2",
+            3
+          ],
+          "text": "GSSetVar(0,\"q.z18q2.z18q2.3\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsLess( DistanceUnitUnit( i, %s ), 7 ) )",
+          "args": [
+            "GetObject(46470)"
+          ],
+          "text": "any( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(46470) ), 7 ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            2
+          ],
+          "text": "Script Su2(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            3,
+            "z18q2",
+            "z18q2",
+            3
+          ],
+          "text": "\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z18q2.z18q2.3\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z18q2",
+            "z18q2",
+            4
+          ],
+          "text": "GSSetVar(0,\"q.z18q2.z18q2.4\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(46470)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(46470)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            3
+          ],
+          "text": "Script Su3(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            4,
+            "z18q2",
+            "z18q2",
+            4
+          ],
+          "text": "\n)then(\nKillScript()\nSu4()\nGSSetVar(0,\"q.z18q2.z18q2.4\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z18q2",
+            "z18q2",
+            5
+          ],
+          "text": "GSSetVar(0,\"q.z18q2.z18q2.5\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsUnitVisible( %s )",
+          "args": [
+            "GetObject(1000183)"
+          ],
+          "text": "IsUnitVisible( GetObject(1000183) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            4
+          ],
+          "text": "Script Su4(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            5,
+            "z18q2",
+            "z18q2",
+            5
+          ],
+          "text": "\n)then(\nKillScript()\nSu5()\nGSSetVar(0,\"q.z18q2.z18q2.5\",2)\n"
+        },
+        {
+          "template": "Not( IsAlive( %s ) )",
+          "args": [
+            "GetObject(1000183)"
+          ],
+          "text": "Not( IsAlive( GetObject(1000183) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            5,
+            "z18q2",
+            "z18q2",
+            "z18q2"
+          ],
+          "text": "Script Su5(if()then(KillScript()\nQuestComplete(0,\"z18q2\")\nGSSetVar(0,\"q.z18q2.z18q2\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z18q3",
+      "objectives": [
+        [
+          "QObjArea",
+          1.0,
+          0.0
+        ],
+        [
+          "QObjSeeUnit",
+          "GetObject(1000284)",
+          0.0
+        ],
+        [
+          "QObjKillUnit",
+          "GetObject(1000284)",
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nDeclareScript Su3()\nScript Su0(if(\nany( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z18q3.z18q3.1\",2)\nGSSetVar(0,\"q.z18q3.z18q3.2\",1)\n)\n)\nScript Su1(if(\nIsUnitVisible( GetObject(1000284) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z18q3.z18q3.2\",2)\nGSSetVar(0,\"q.z18q3.z18q3.3\",1)\n)\n)\nScript Su2(if(\nNot( IsAlive( GetObject(1000284) ) )\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z18q3.z18q3.3\",2)\n)\n)\nScript Su3(if()then(KillScript()\nQuestComplete(0,\"z18q3\")\nGSSetVar(0,\"q.z18q3.z18q3\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            3
+          ],
+          "text": "DeclareScript Su3()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z18q3",
+            "z18q3",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z18q3.z18q3.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z18q3",
+            "z18q3",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z18q3.z18q3.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )",
+          "args": [
+            1.0
+          ],
+          "text": "any( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z18q3",
+            "z18q3",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z18q3.z18q3.2\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z18q3",
+            "z18q3",
+            3
+          ],
+          "text": "GSSetVar(0,\"q.z18q3.z18q3.3\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsUnitVisible( %s )",
+          "args": [
+            "GetObject(1000284)"
+          ],
+          "text": "IsUnitVisible( GetObject(1000284) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            2
+          ],
+          "text": "Script Su2(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            3,
+            "z18q3",
+            "z18q3",
+            3
+          ],
+          "text": "\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z18q3.z18q3.3\",2)\n"
+        },
+        {
+          "template": "Not( IsAlive( %s ) )",
+          "args": [
+            "GetObject(1000284)"
+          ],
+          "text": "Not( IsAlive( GetObject(1000284) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            3,
+            "z18q3",
+            "z18q3",
+            "z18q3"
+          ],
+          "text": "Script Su3(if()then(KillScript()\nQuestComplete(0,\"z18q3\")\nGSSetVar(0,\"q.z18q3.z18q3\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z18q4",
+      "objectives": [
+        [
+          "QObjArea",
+          1.0,
+          0.0
+        ],
+        [
+          "QObjKillGroup",
+          "JunScientifics",
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nScript Su0(if(\nany( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z18q4.z18q4.1\",2)\nGSSetVar(0,\"q.z18q4.z18q4.2\",1)\n)\n)\nScript Su1(if(\nNot( any( i, JunScientifics, IsAlive(i) ) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z18q4.z18q4.2\",2)\n)\n)\nScript Su2(if()then(KillScript()\nQuestComplete(0,\"z18q4\")\nGSSetVar(0,\"q.z18q4.z18q4\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z18q4",
+            "z18q4",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z18q4.z18q4.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z18q4",
+            "z18q4",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z18q4.z18q4.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )",
+          "args": [
+            1.0
+          ],
+          "text": "any( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z18q4",
+            "z18q4",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z18q4.z18q4.2\",2)\n"
+        },
+        {
+          "template": "Not( any( i, %s, IsAlive(i) ) )",
+          "args": [
+            "JunScientifics"
+          ],
+          "text": "Not( any( i, JunScientifics, IsAlive(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            2,
+            "z18q4",
+            "z18q4",
+            "z18q4"
+          ],
+          "text": "Script Su2(if()then(KillScript()\nQuestComplete(0,\"z18q4\")\nGSSetVar(0,\"q.z18q4.z18q4\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z19q1",
+      "objectives": [
+        [
+          "QObjArea",
+          1.0,
+          0.0
+        ],
+        [
+          "QObjSeeObject",
+          "GetObject(44456)",
+          0.0
+        ],
+        [
+          "QObjUse",
+          "GetObject(44456)",
+          1.0
+        ],
+        [
+          "QObjSeeUnit",
+          "GetObject(1000788)",
+          0.0
+        ],
+        [
+          "QObjKillUnit",
+          "GetObject(1000788)",
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nDeclareScript Su3()\nDeclareScript Su4()\nDeclareScript Su5()\nScript Su0(if(\nany( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z19q1.z19q1.1\",2)\nGSSetVar(0,\"q.z19q1.z19q1.2\",1)\n)\n)\nScript Su1(if(\nany( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(44456) ), 7 ) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z19q1.z19q1.2\",2)\nGSSetVar(0,\"q.z19q1.z19q1.3\",1)\n)\n)\nScript Su2(if(\nIsEqual( GetLeverState(GetObject(44456)), 1.000000 )\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z19q1.z19q1.3\",2)\nGSSetVar(0,\"q.z19q1.z19q1.4\",1)\n)\n)\nScript Su3(if(\nIsUnitVisible( GetObject(1000788) )\n)then(\nKillScript()\nSu4()\nGSSetVar(0,\"q.z19q1.z19q1.4\",2)\nGSSetVar(0,\"q.z19q1.z19q1.5\",1)\n)\n)\nScript Su4(if(\nNot( IsAlive( GetObject(1000788) ) )\n)then(\nKillScript()\nSu5()\nGSSetVar(0,\"q.z19q1.z19q1.5\",2)\n)\n)\nScript Su5(if()then(KillScript()\nQuestComplete(0,\"z19q1\")\nGSSetVar(0,\"q.z19q1.z19q1\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            3
+          ],
+          "text": "DeclareScript Su3()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            4
+          ],
+          "text": "DeclareScript Su4()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            5
+          ],
+          "text": "DeclareScript Su5()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z19q1",
+            "z19q1",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z19q1.z19q1.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z19q1",
+            "z19q1",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z19q1.z19q1.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )",
+          "args": [
+            1.0
+          ],
+          "text": "any( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z19q1",
+            "z19q1",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z19q1.z19q1.2\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z19q1",
+            "z19q1",
+            3
+          ],
+          "text": "GSSetVar(0,\"q.z19q1.z19q1.3\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsLess( DistanceUnitUnit( i, %s ), 7 ) )",
+          "args": [
+            "GetObject(44456)"
+          ],
+          "text": "any( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(44456) ), 7 ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            2
+          ],
+          "text": "Script Su2(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            3,
+            "z19q1",
+            "z19q1",
+            3
+          ],
+          "text": "\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z19q1.z19q1.3\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z19q1",
+            "z19q1",
+            4
+          ],
+          "text": "GSSetVar(0,\"q.z19q1.z19q1.4\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(44456)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(44456)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            3
+          ],
+          "text": "Script Su3(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            4,
+            "z19q1",
+            "z19q1",
+            4
+          ],
+          "text": "\n)then(\nKillScript()\nSu4()\nGSSetVar(0,\"q.z19q1.z19q1.4\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z19q1",
+            "z19q1",
+            5
+          ],
+          "text": "GSSetVar(0,\"q.z19q1.z19q1.5\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsUnitVisible( %s )",
+          "args": [
+            "GetObject(1000788)"
+          ],
+          "text": "IsUnitVisible( GetObject(1000788) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            4
+          ],
+          "text": "Script Su4(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            5,
+            "z19q1",
+            "z19q1",
+            5
+          ],
+          "text": "\n)then(\nKillScript()\nSu5()\nGSSetVar(0,\"q.z19q1.z19q1.5\",2)\n"
+        },
+        {
+          "template": "Not( IsAlive( %s ) )",
+          "args": [
+            "GetObject(1000788)"
+          ],
+          "text": "Not( IsAlive( GetObject(1000788) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            5,
+            "z19q1",
+            "z19q1",
+            "z19q1"
+          ],
+          "text": "Script Su5(if()then(KillScript()\nQuestComplete(0,\"z19q1\")\nGSSetVar(0,\"q.z19q1.z19q1\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z19q2",
+      "objectives": [
+        [
+          "QObjSeeUnit",
+          "GetObject(1001479)",
+          0.0
+        ],
+        [
+          "QObjKillUnit",
+          "GetObject(1001479)",
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nScript Su0(if(\nIsUnitVisible( GetObject(1001479) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z19q2.z19q2.1\",2)\nGSSetVar(0,\"q.z19q2.z19q2.2\",1)\n)\n)\nScript Su1(if(\nNot( IsAlive( GetObject(1001479) ) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z19q2.z19q2.2\",2)\n)\n)\nScript Su2(if()then(KillScript()\nQuestComplete(0,\"z19q2\")\nGSSetVar(0,\"q.z19q2.z19q2\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z19q2",
+            "z19q2",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z19q2.z19q2.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z19q2",
+            "z19q2",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z19q2.z19q2.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsUnitVisible( %s )",
+          "args": [
+            "GetObject(1001479)"
+          ],
+          "text": "IsUnitVisible( GetObject(1001479) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z19q2",
+            "z19q2",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z19q2.z19q2.2\",2)\n"
+        },
+        {
+          "template": "Not( IsAlive( %s ) )",
+          "args": [
+            "GetObject(1001479)"
+          ],
+          "text": "Not( IsAlive( GetObject(1001479) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            2,
+            "z19q2",
+            "z19q2",
+            "z19q2"
+          ],
+          "text": "Script Su2(if()then(KillScript()\nQuestComplete(0,\"z19q2\")\nGSSetVar(0,\"q.z19q2.z19q2\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z3q1",
+      "objectives": [
+        [
+          "QObjSeeObject",
+          "GetObject(1000086)",
+          0.0
+        ],
+        [
+          "QObjGetItem",
+          17.0,
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nScript Su0(if(\nany( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(1000086) ), 7 ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z3q1.z3q1.1\",2)\nGSSetVar(0,\"q.z3q1.z3q1.2\",1)\n)\n)\nScript Su1(if(\nHaveItem( 0, 17.000000 )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z3q1.z3q1.2\",2)\n)\n)\nScript Su2(if()then(KillScript()\nQuestComplete(0,\"z3q1\")\nGSSetVar(0,\"q.z3q1.z3q1\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z3q1",
+            "z3q1",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z3q1.z3q1.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z3q1",
+            "z3q1",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z3q1.z3q1.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsLess( DistanceUnitUnit( i, %s ), 7 ) )",
+          "args": [
+            "GetObject(1000086)"
+          ],
+          "text": "any( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(1000086) ), 7 ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z3q1",
+            "z3q1",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z3q1.z3q1.2\",2)\n"
+        },
+        {
+          "template": "HaveItem( 0, %f )",
+          "args": [
+            17.0
+          ],
+          "text": "HaveItem( 0, 17.000000 )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            2,
+            "z3q1",
+            "z3q1",
+            "z3q1"
+          ],
+          "text": "Script Su2(if()then(KillScript()\nQuestComplete(0,\"z3q1\")\nGSSetVar(0,\"q.z3q1.z3q1\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z3q2",
+      "objectives": [
+        [
+          "QObjSeeUnit",
+          "GetObject(1000324)",
+          0.0
+        ],
+        [
+          "QObjKillUnit",
+          "GetObject(1000324)",
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nScript Su0(if(\nIsUnitVisible( GetObject(1000324) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z3q2.z3q2.1\",2)\nGSSetVar(0,\"q.z3q2.z3q2.2\",1)\n)\n)\nScript Su1(if(\nNot( IsAlive( GetObject(1000324) ) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z3q2.z3q2.2\",2)\n)\n)\nScript Su2(if()then(KillScript()\nQuestComplete(0,\"z3q2\")\nGSSetVar(0,\"q.z3q2.z3q2\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z3q2",
+            "z3q2",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z3q2.z3q2.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z3q2",
+            "z3q2",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z3q2.z3q2.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsUnitVisible( %s )",
+          "args": [
+            "GetObject(1000324)"
+          ],
+          "text": "IsUnitVisible( GetObject(1000324) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z3q2",
+            "z3q2",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z3q2.z3q2.2\",2)\n"
+        },
+        {
+          "template": "Not( IsAlive( %s ) )",
+          "args": [
+            "GetObject(1000324)"
+          ],
+          "text": "Not( IsAlive( GetObject(1000324) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            2,
+            "z3q2",
+            "z3q2",
+            "z3q2"
+          ],
+          "text": "Script Su2(if()then(KillScript()\nQuestComplete(0,\"z3q2\")\nGSSetVar(0,\"q.z3q2.z3q2\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z3q3",
+      "objectives": [
+        [
+          "QObjArea",
+          1.0,
+          0.0
+        ],
+        [
+          "QObjKillGroup",
+          "BrodGuard",
+          0.0
+        ],
+        [
+          "QObjSeeUnit",
+          "GetObject(1000583)",
+          0.0
+        ],
+        [
+          "QObjKillUnit",
+          "GetObject(1000583)",
+          0.0
+        ],
+        [
+          "QObjGetItem",
+          84.0,
+          0.0
+        ],
+        [
+          "QObjSeeObject",
+          "GetObject(4636)",
+          0.0
+        ],
+        [
+          "QObjUse",
+          "GetObject(4636)",
+          1.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nDeclareScript Su3()\nDeclareScript Su4()\nDeclareScript Su5()\nDeclareScript Su6()\nDeclareScript Su7()\nScript Su0(if(\nany( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z3q3.z3q3.1\",2)\nGSSetVar(0,\"q.z3q3.z3q3.2\",1)\n)\n)\nScript Su1(if(\nNot( any( i, BrodGuard, IsAlive(i) ) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z3q3.z3q3.2\",2)\nGSSetVar(0,\"q.z3q3.z3q3.3\",1)\n)\n)\nScript Su2(if(\nIsUnitVisible( GetObject(1000583) )\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z3q3.z3q3.3\",2)\nGSSetVar(0,\"q.z3q3.z3q3.4\",1)\n)\n)\nScript Su3(if(\nNot( IsAlive( GetObject(1000583) ) )\n)then(\nKillScript()\nSu4()\nGSSetVar(0,\"q.z3q3.z3q3.4\",2)\nGSSetVar(0,\"q.z3q3.z3q3.5\",1)\n)\n)\nScript Su4(if(\nHaveItem( 0, 84.000000 )\n)then(\nKillScript()\nSu5()\nGSSetVar(0,\"q.z3q3.z3q3.5\",2)\nGSSetVar(0,\"q.z3q3.z3q3.6\",1)\n)\n)\nScript Su5(if(\nany( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(4636) ), 7 ) )\n)then(\nKillScript()\nSu6()\nGSSetVar(0,\"q.z3q3.z3q3.6\",2)\nGSSetVar(0,\"q.z3q3.z3q3.7\",1)\n)\n)\nScript Su6(if(\nIsEqual( GetLeverState(GetObject(4636)), 1.000000 )\n)then(\nKillScript()\nSu7()\nGSSetVar(0,\"q.z3q3.z3q3.7\",2)\n)\n)\nScript Su7(if()then(KillScript()\nQuestComplete(0,\"z3q3\")\nGSSetVar(0,\"q.z3q3.z3q3\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            3
+          ],
+          "text": "DeclareScript Su3()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            4
+          ],
+          "text": "DeclareScript Su4()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            5
+          ],
+          "text": "DeclareScript Su5()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            6
+          ],
+          "text": "DeclareScript Su6()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            7
+          ],
+          "text": "DeclareScript Su7()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z3q3",
+            "z3q3",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z3q3.z3q3.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z3q3",
+            "z3q3",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z3q3.z3q3.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )",
+          "args": [
+            1.0
+          ],
+          "text": "any( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z3q3",
+            "z3q3",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z3q3.z3q3.2\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z3q3",
+            "z3q3",
+            3
+          ],
+          "text": "GSSetVar(0,\"q.z3q3.z3q3.3\",1)\n)\n)\n"
+        },
+        {
+          "template": "Not( any( i, %s, IsAlive(i) ) )",
+          "args": [
+            "BrodGuard"
+          ],
+          "text": "Not( any( i, BrodGuard, IsAlive(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            2
+          ],
+          "text": "Script Su2(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            3,
+            "z3q3",
+            "z3q3",
+            3
+          ],
+          "text": "\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z3q3.z3q3.3\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z3q3",
+            "z3q3",
+            4
+          ],
+          "text": "GSSetVar(0,\"q.z3q3.z3q3.4\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsUnitVisible( %s )",
+          "args": [
+            "GetObject(1000583)"
+          ],
+          "text": "IsUnitVisible( GetObject(1000583) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            3
+          ],
+          "text": "Script Su3(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            4,
+            "z3q3",
+            "z3q3",
+            4
+          ],
+          "text": "\n)then(\nKillScript()\nSu4()\nGSSetVar(0,\"q.z3q3.z3q3.4\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z3q3",
+            "z3q3",
+            5
+          ],
+          "text": "GSSetVar(0,\"q.z3q3.z3q3.5\",1)\n)\n)\n"
+        },
+        {
+          "template": "Not( IsAlive( %s ) )",
+          "args": [
+            "GetObject(1000583)"
+          ],
+          "text": "Not( IsAlive( GetObject(1000583) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            4
+          ],
+          "text": "Script Su4(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            5,
+            "z3q3",
+            "z3q3",
+            5
+          ],
+          "text": "\n)then(\nKillScript()\nSu5()\nGSSetVar(0,\"q.z3q3.z3q3.5\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z3q3",
+            "z3q3",
+            6
+          ],
+          "text": "GSSetVar(0,\"q.z3q3.z3q3.6\",1)\n)\n)\n"
+        },
+        {
+          "template": "HaveItem( 0, %f )",
+          "args": [
+            84.0
+          ],
+          "text": "HaveItem( 0, 84.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            5
+          ],
+          "text": "Script Su5(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            6,
+            "z3q3",
+            "z3q3",
+            6
+          ],
+          "text": "\n)then(\nKillScript()\nSu6()\nGSSetVar(0,\"q.z3q3.z3q3.6\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z3q3",
+            "z3q3",
+            7
+          ],
+          "text": "GSSetVar(0,\"q.z3q3.z3q3.7\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsLess( DistanceUnitUnit( i, %s ), 7 ) )",
+          "args": [
+            "GetObject(4636)"
+          ],
+          "text": "any( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(4636) ), 7 ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            6
+          ],
+          "text": "Script Su6(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            7,
+            "z3q3",
+            "z3q3",
+            7
+          ],
+          "text": "\n)then(\nKillScript()\nSu7()\nGSSetVar(0,\"q.z3q3.z3q3.7\",2)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(4636)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(4636)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            7,
+            "z3q3",
+            "z3q3",
+            "z3q3"
+          ],
+          "text": "Script Su7(if()then(KillScript()\nQuestComplete(0,\"z3q3\")\nGSSetVar(0,\"q.z3q3.z3q3\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z6q1",
+      "objectives": [
+        [
+          "QObjArea",
+          1.0,
+          0.0
+        ],
+        [
+          "QObjSeeUnit",
+          "GetObject(1000059)",
+          0.0
+        ],
+        [
+          "QObjKillUnit",
+          "GetObject(1000059)",
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nDeclareScript Su3()\nScript Su0(if(\nany( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z6q1.z6q1.1\",2)\nGSSetVar(0,\"q.z6q1.z6q1.2\",1)\n)\n)\nScript Su1(if(\nIsUnitVisible( GetObject(1000059) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z6q1.z6q1.2\",2)\nGSSetVar(0,\"q.z6q1.z6q1.3\",1)\n)\n)\nScript Su2(if(\nNot( IsAlive( GetObject(1000059) ) )\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z6q1.z6q1.3\",2)\n)\n)\nScript Su3(if()then(KillScript()\nQuestComplete(0,\"z6q1\")\nGSSetVar(0,\"q.z6q1.z6q1\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            3
+          ],
+          "text": "DeclareScript Su3()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z6q1",
+            "z6q1",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z6q1.z6q1.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z6q1",
+            "z6q1",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z6q1.z6q1.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )",
+          "args": [
+            1.0
+          ],
+          "text": "any( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z6q1",
+            "z6q1",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z6q1.z6q1.2\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z6q1",
+            "z6q1",
+            3
+          ],
+          "text": "GSSetVar(0,\"q.z6q1.z6q1.3\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsUnitVisible( %s )",
+          "args": [
+            "GetObject(1000059)"
+          ],
+          "text": "IsUnitVisible( GetObject(1000059) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            2
+          ],
+          "text": "Script Su2(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            3,
+            "z6q1",
+            "z6q1",
+            3
+          ],
+          "text": "\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z6q1.z6q1.3\",2)\n"
+        },
+        {
+          "template": "Not( IsAlive( %s ) )",
+          "args": [
+            "GetObject(1000059)"
+          ],
+          "text": "Not( IsAlive( GetObject(1000059) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            3,
+            "z6q1",
+            "z6q1",
+            "z6q1"
+          ],
+          "text": "Script Su3(if()then(KillScript()\nQuestComplete(0,\"z6q1\")\nGSSetVar(0,\"q.z6q1.z6q1\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z6q2",
+      "objectives": [
+        [
+          "QObjArea",
+          1.0,
+          0.0
+        ],
+        [
+          "QObjSeeObject",
+          "GetObject(1000170)",
+          0.0
+        ],
+        [
+          "QObjGetItem",
+          81.0,
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nDeclareScript Su3()\nScript Su0(if(\nany( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z6q2.z6q2.1\",2)\nGSSetVar(0,\"q.z6q2.z6q2.2\",1)\n)\n)\nScript Su1(if(\nany( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(1000170) ), 7 ) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z6q2.z6q2.2\",2)\nGSSetVar(0,\"q.z6q2.z6q2.3\",1)\n)\n)\nScript Su2(if(\nHaveItem( 0, 81.000000 )\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z6q2.z6q2.3\",2)\n)\n)\nScript Su3(if()then(KillScript()\nQuestComplete(0,\"z6q2\")\nGSSetVar(0,\"q.z6q2.z6q2\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            3
+          ],
+          "text": "DeclareScript Su3()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z6q2",
+            "z6q2",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z6q2.z6q2.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z6q2",
+            "z6q2",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z6q2.z6q2.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )",
+          "args": [
+            1.0
+          ],
+          "text": "any( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z6q2",
+            "z6q2",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z6q2.z6q2.2\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z6q2",
+            "z6q2",
+            3
+          ],
+          "text": "GSSetVar(0,\"q.z6q2.z6q2.3\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsLess( DistanceUnitUnit( i, %s ), 7 ) )",
+          "args": [
+            "GetObject(1000170)"
+          ],
+          "text": "any( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(1000170) ), 7 ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            2
+          ],
+          "text": "Script Su2(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            3,
+            "z6q2",
+            "z6q2",
+            3
+          ],
+          "text": "\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z6q2.z6q2.3\",2)\n"
+        },
+        {
+          "template": "HaveItem( 0, %f )",
+          "args": [
+            81.0
+          ],
+          "text": "HaveItem( 0, 81.000000 )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            3,
+            "z6q2",
+            "z6q2",
+            "z6q2"
+          ],
+          "text": "Script Su3(if()then(KillScript()\nQuestComplete(0,\"z6q2\")\nGSSetVar(0,\"q.z6q2.z6q2\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z7q1",
+      "objectives": [
+        [
+          "QObjArea",
+          1.0,
+          0.0
+        ],
+        [
+          "QObjKillGroup",
+          "OrcG",
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nScript Su0(if(\nany( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z7q1.z7q1.1\",2)\nGSSetVar(0,\"q.z7q1.z7q1.2\",1)\n)\n)\nScript Su1(if(\nNot( any( i, OrcG, IsAlive(i) ) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z7q1.z7q1.2\",2)\n)\n)\nScript Su2(if()then(KillScript()\nQuestComplete(0,\"z7q1\")\nGSSetVar(0,\"q.z7q1.z7q1\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z7q1",
+            "z7q1",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z7q1.z7q1.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z7q1",
+            "z7q1",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z7q1.z7q1.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )",
+          "args": [
+            1.0
+          ],
+          "text": "any( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z7q1",
+            "z7q1",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z7q1.z7q1.2\",2)\n"
+        },
+        {
+          "template": "Not( any( i, %s, IsAlive(i) ) )",
+          "args": [
+            "OrcG"
+          ],
+          "text": "Not( any( i, OrcG, IsAlive(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            2,
+            "z7q1",
+            "z7q1",
+            "z7q1"
+          ],
+          "text": "Script Su2(if()then(KillScript()\nQuestComplete(0,\"z7q1\")\nGSSetVar(0,\"q.z7q1.z7q1\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z7q2",
+      "objectives": [
+        [
+          "QObjSeeUnit",
+          "GetObject(1000146)",
+          0.0
+        ],
+        [
+          "QObjGetItem",
+          48.0,
+          0.0
+        ],
+        [
+          "QObjSeeObject",
+          "GetObject(4955)",
+          0.0
+        ],
+        [
+          "QObjUse",
+          "GetObject(4955)",
+          1.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nDeclareScript Su3()\nDeclareScript Su4()\nScript Su0(if(\nIsUnitVisible( GetObject(1000146) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z7q2.z7q2.1\",2)\nGSSetVar(0,\"q.z7q2.z7q2.2\",1)\n)\n)\nScript Su1(if(\nHaveItem( 0, 48.000000 )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z7q2.z7q2.2\",2)\nGSSetVar(0,\"q.z7q2.z7q2.3\",1)\n)\n)\nScript Su2(if(\nany( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(4955) ), 7 ) )\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z7q2.z7q2.3\",2)\nGSSetVar(0,\"q.z7q2.z7q2.4\",1)\n)\n)\nScript Su3(if(\nIsEqual( GetLeverState(GetObject(4955)), 1.000000 )\n)then(\nKillScript()\nSu4()\nGSSetVar(0,\"q.z7q2.z7q2.4\",2)\n)\n)\nScript Su4(if()then(KillScript()\nQuestComplete(0,\"z7q2\")\nGSSetVar(0,\"q.z7q2.z7q2\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            3
+          ],
+          "text": "DeclareScript Su3()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            4
+          ],
+          "text": "DeclareScript Su4()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z7q2",
+            "z7q2",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z7q2.z7q2.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z7q2",
+            "z7q2",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z7q2.z7q2.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsUnitVisible( %s )",
+          "args": [
+            "GetObject(1000146)"
+          ],
+          "text": "IsUnitVisible( GetObject(1000146) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z7q2",
+            "z7q2",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z7q2.z7q2.2\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z7q2",
+            "z7q2",
+            3
+          ],
+          "text": "GSSetVar(0,\"q.z7q2.z7q2.3\",1)\n)\n)\n"
+        },
+        {
+          "template": "HaveItem( 0, %f )",
+          "args": [
+            48.0
+          ],
+          "text": "HaveItem( 0, 48.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            2
+          ],
+          "text": "Script Su2(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            3,
+            "z7q2",
+            "z7q2",
+            3
+          ],
+          "text": "\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z7q2.z7q2.3\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z7q2",
+            "z7q2",
+            4
+          ],
+          "text": "GSSetVar(0,\"q.z7q2.z7q2.4\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsLess( DistanceUnitUnit( i, %s ), 7 ) )",
+          "args": [
+            "GetObject(4955)"
+          ],
+          "text": "any( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(4955) ), 7 ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            3
+          ],
+          "text": "Script Su3(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            4,
+            "z7q2",
+            "z7q2",
+            4
+          ],
+          "text": "\n)then(\nKillScript()\nSu4()\nGSSetVar(0,\"q.z7q2.z7q2.4\",2)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(4955)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(4955)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            4,
+            "z7q2",
+            "z7q2",
+            "z7q2"
+          ],
+          "text": "Script Su4(if()then(KillScript()\nQuestComplete(0,\"z7q2\")\nGSSetVar(0,\"q.z7q2.z7q2\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z7q3",
+      "objectives": [
+        [
+          "QObjSeeObject",
+          "GetObject(1000279)",
+          0.0
+        ],
+        [
+          "QObjGetItem",
+          85.0,
+          0.0
+        ],
+        [
+          "QObjArea",
+          1.0,
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nDeclareScript Su3()\nScript Su0(if(\nany( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(1000279) ), 7 ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z7q3.z7q3.1\",2)\nGSSetVar(0,\"q.z7q3.z7q3.2\",1)\n)\n)\nScript Su1(if(\nHaveItem( 0, 85.000000 )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z7q3.z7q3.2\",2)\nGSSetVar(0,\"q.z7q3.z7q3.3\",1)\n)\n)\nScript Su2(if(\nany( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z7q3.z7q3.3\",2)\n)\n)\nScript Su3(if()then(KillScript()\nQuestComplete(0,\"z7q3\")\nGSSetVar(0,\"q.z7q3.z7q3\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            3
+          ],
+          "text": "DeclareScript Su3()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z7q3",
+            "z7q3",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z7q3.z7q3.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z7q3",
+            "z7q3",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z7q3.z7q3.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsLess( DistanceUnitUnit( i, %s ), 7 ) )",
+          "args": [
+            "GetObject(1000279)"
+          ],
+          "text": "any( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(1000279) ), 7 ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z7q3",
+            "z7q3",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z7q3.z7q3.2\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z7q3",
+            "z7q3",
+            3
+          ],
+          "text": "GSSetVar(0,\"q.z7q3.z7q3.3\",1)\n)\n)\n"
+        },
+        {
+          "template": "HaveItem( 0, %f )",
+          "args": [
+            85.0
+          ],
+          "text": "HaveItem( 0, 85.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            2
+          ],
+          "text": "Script Su2(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            3,
+            "z7q3",
+            "z7q3",
+            3
+          ],
+          "text": "\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z7q3.z7q3.3\",2)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )",
+          "args": [
+            1.0
+          ],
+          "text": "any( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            3,
+            "z7q3",
+            "z7q3",
+            "z7q3"
+          ],
+          "text": "Script Su3(if()then(KillScript()\nQuestComplete(0,\"z7q3\")\nGSSetVar(0,\"q.z7q3.z7q3\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z9q1",
+      "objectives": [
+        [
+          "QObjArea",
+          1.0,
+          0.0
+        ],
+        [
+          "QObjSeeObject",
+          "GetObject(1000064)",
+          0.0
+        ],
+        [
+          "QObjUse",
+          "GetObject(1000064)",
+          1.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nDeclareScript Su3()\nScript Su0(if(\nany( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z9q1.z9q1.1\",2)\nGSSetVar(0,\"q.z9q1.z9q1.2\",1)\n)\n)\nScript Su1(if(\nany( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(1000064) ), 7 ) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z9q1.z9q1.2\",2)\nGSSetVar(0,\"q.z9q1.z9q1.3\",1)\n)\n)\nScript Su2(if(\nIsEqual( GetLeverState(GetObject(1000064)), 1.000000 )\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z9q1.z9q1.3\",2)\n)\n)\nScript Su3(if()then(KillScript()\nQuestComplete(0,\"z9q1\")\nGSSetVar(0,\"q.z9q1.z9q1\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            3
+          ],
+          "text": "DeclareScript Su3()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z9q1",
+            "z9q1",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z9q1.z9q1.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z9q1",
+            "z9q1",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z9q1.z9q1.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )",
+          "args": [
+            1.0
+          ],
+          "text": "any( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z9q1",
+            "z9q1",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z9q1.z9q1.2\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z9q1",
+            "z9q1",
+            3
+          ],
+          "text": "GSSetVar(0,\"q.z9q1.z9q1.3\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsLess( DistanceUnitUnit( i, %s ), 7 ) )",
+          "args": [
+            "GetObject(1000064)"
+          ],
+          "text": "any( i, Heroes, IsLess( DistanceUnitUnit( i, GetObject(1000064) ), 7 ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            2
+          ],
+          "text": "Script Su2(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            3,
+            "z9q1",
+            "z9q1",
+            3
+          ],
+          "text": "\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z9q1.z9q1.3\",2)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(1000064)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(1000064)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            3,
+            "z9q1",
+            "z9q1",
+            "z9q1"
+          ],
+          "text": "Script Su3(if()then(KillScript()\nQuestComplete(0,\"z9q1\")\nGSSetVar(0,\"q.z9q1.z9q1\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z9q2",
+      "objectives": [
+        [
+          "QObjArea",
+          1.0,
+          0.0
+        ],
+        [
+          "QObjKillGroup",
+          "Hadagans",
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nScript Su0(if(\nany( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z9q2.z9q2.1\",2)\nGSSetVar(0,\"q.z9q2.z9q2.2\",1)\n)\n)\nScript Su1(if(\nNot( any( i, Hadagans, IsAlive(i) ) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z9q2.z9q2.2\",2)\n)\n)\nScript Su2(if()then(KillScript()\nQuestComplete(0,\"z9q2\")\nGSSetVar(0,\"q.z9q2.z9q2\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z9q2",
+            "z9q2",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z9q2.z9q2.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z9q2",
+            "z9q2",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z9q2.z9q2.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )",
+          "args": [
+            1.0
+          ],
+          "text": "any( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z9q2",
+            "z9q2",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z9q2.z9q2.2\",2)\n"
+        },
+        {
+          "template": "Not( any( i, %s, IsAlive(i) ) )",
+          "args": [
+            "Hadagans"
+          ],
+          "text": "Not( any( i, Hadagans, IsAlive(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            2,
+            "z9q2",
+            "z9q2",
+            "z9q2"
+          ],
+          "text": "Script Su2(if()then(KillScript()\nQuestComplete(0,\"z9q2\")\nGSSetVar(0,\"q.z9q2.z9q2\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "z9q3",
+      "objectives": [
+        [
+          "QObjArea",
+          1.0,
+          0.0
+        ],
+        [
+          "QObjSeeUnit",
+          "GetObject(1000277)",
+          0.0
+        ],
+        [
+          "QObjKillUnit",
+          "GetObject(1000277)",
+          0.0
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nDeclareScript Su3()\nScript Su0(if(\nany( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z9q3.z9q3.1\",2)\nGSSetVar(0,\"q.z9q3.z9q3.2\",1)\n)\n)\nScript Su1(if(\nIsUnitVisible( GetObject(1000277) )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z9q3.z9q3.2\",2)\nGSSetVar(0,\"q.z9q3.z9q3.3\",1)\n)\n)\nScript Su2(if(\nNot( IsAlive( GetObject(1000277) ) )\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z9q3.z9q3.3\",2)\n)\n)\nScript Su3(if()then(KillScript()\nQuestComplete(0,\"z9q3\")\nGSSetVar(0,\"q.z9q3.z9q3\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            3
+          ],
+          "text": "DeclareScript Su3()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "z9q3",
+            "z9q3",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.z9q3.z9q3.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z9q3",
+            "z9q3",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.z9q3.z9q3.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "any( i, Heroes, IsInArea( %f, GetX(i), GetY(i) ) )",
+          "args": [
+            1.0
+          ],
+          "text": "any( i, Heroes, IsInArea( 1.000000, GetX(i), GetY(i) ) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "z9q3",
+            "z9q3",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.z9q3.z9q3.2\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "z9q3",
+            "z9q3",
+            3
+          ],
+          "text": "GSSetVar(0,\"q.z9q3.z9q3.3\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsUnitVisible( %s )",
+          "args": [
+            "GetObject(1000277)"
+          ],
+          "text": "IsUnitVisible( GetObject(1000277) )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            2
+          ],
+          "text": "Script Su2(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            3,
+            "z9q3",
+            "z9q3",
+            3
+          ],
+          "text": "\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.z9q3.z9q3.3\",2)\n"
+        },
+        {
+          "template": "Not( IsAlive( %s ) )",
+          "args": [
+            "GetObject(1000277)"
+          ],
+          "text": "Not( IsAlive( GetObject(1000277) ) )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            3,
+            "z9q3",
+            "z9q3",
+            "z9q3"
+          ],
+          "text": "Script Su3(if()then(KillScript()\nQuestComplete(0,\"z9q3\")\nGSSetVar(0,\"q.z9q3.z9q3\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "empty",
+      "objectives": [],
+      "source": "DeclareScript Su0()\nScript Su0(if()then(KillScript()\nQuestComplete(0,\"empty\")\nGSSetVar(0,\"q.empty.empty\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            0,
+            "empty",
+            "empty",
+            "empty"
+          ],
+          "text": "Script Su0(if()then(KillScript()\nQuestComplete(0,\"empty\")\nGSSetVar(0,\"q.empty.empty\", 2)\n)\n)\n"
+        }
+      ]
+    },
+    {
+      "id": "sixteen",
+      "objectives": [
+        [
+          "QObjUse",
+          "GetObject(100)",
+          1
+        ],
+        [
+          "QObjUse",
+          "GetObject(100)",
+          1
+        ],
+        [
+          "QObjUse",
+          "GetObject(100)",
+          1
+        ],
+        [
+          "QObjUse",
+          "GetObject(100)",
+          1
+        ],
+        [
+          "QObjUse",
+          "GetObject(100)",
+          1
+        ],
+        [
+          "QObjUse",
+          "GetObject(100)",
+          1
+        ],
+        [
+          "QObjUse",
+          "GetObject(100)",
+          1
+        ],
+        [
+          "QObjUse",
+          "GetObject(100)",
+          1
+        ],
+        [
+          "QObjUse",
+          "GetObject(100)",
+          1
+        ],
+        [
+          "QObjUse",
+          "GetObject(100)",
+          1
+        ],
+        [
+          "QObjUse",
+          "GetObject(100)",
+          1
+        ],
+        [
+          "QObjUse",
+          "GetObject(100)",
+          1
+        ],
+        [
+          "QObjUse",
+          "GetObject(100)",
+          1
+        ],
+        [
+          "QObjUse",
+          "GetObject(100)",
+          1
+        ],
+        [
+          "QObjUse",
+          "GetObject(100)",
+          1
+        ],
+        [
+          "QObjUse",
+          "GetObject(100)",
+          1
+        ]
+      ],
+      "source": "DeclareScript Su0()\nDeclareScript Su1()\nDeclareScript Su2()\nDeclareScript Su3()\nDeclareScript Su4()\nDeclareScript Su5()\nDeclareScript Su6()\nDeclareScript Su7()\nDeclareScript Su8()\nDeclareScript Su9()\nDeclareScript Su10()\nDeclareScript Su11()\nDeclareScript Su12()\nDeclareScript Su13()\nDeclareScript Su14()\nDeclareScript Su15()\nDeclareScript Su16()\nScript Su0(if(\nIsEqual( GetLeverState(GetObject(100)), 1.000000 )\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.sixteen.sixteen.1\",2)\nGSSetVar(0,\"q.sixteen.sixteen.2\",1)\n)\n)\nScript Su1(if(\nIsEqual( GetLeverState(GetObject(100)), 1.000000 )\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.sixteen.sixteen.2\",2)\nGSSetVar(0,\"q.sixteen.sixteen.3\",1)\n)\n)\nScript Su2(if(\nIsEqual( GetLeverState(GetObject(100)), 1.000000 )\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.sixteen.sixteen.3\",2)\nGSSetVar(0,\"q.sixteen.sixteen.4\",1)\n)\n)\nScript Su3(if(\nIsEqual( GetLeverState(GetObject(100)), 1.000000 )\n)then(\nKillScript()\nSu4()\nGSSetVar(0,\"q.sixteen.sixteen.4\",2)\nGSSetVar(0,\"q.sixteen.sixteen.5\",1)\n)\n)\nScript Su4(if(\nIsEqual( GetLeverState(GetObject(100)), 1.000000 )\n)then(\nKillScript()\nSu5()\nGSSetVar(0,\"q.sixteen.sixteen.5\",2)\nGSSetVar(0,\"q.sixteen.sixteen.6\",1)\n)\n)\nScript Su5(if(\nIsEqual( GetLeverState(GetObject(100)), 1.000000 )\n)then(\nKillScript()\nSu6()\nGSSetVar(0,\"q.sixteen.sixteen.6\",2)\nGSSetVar(0,\"q.sixteen.sixteen.7\",1)\n)\n)\nScript Su6(if(\nIsEqual( GetLeverState(GetObject(100)), 1.000000 )\n)then(\nKillScript()\nSu7()\nGSSetVar(0,\"q.sixteen.sixteen.7\",2)\nGSSetVar(0,\"q.sixteen.sixteen.8\",1)\n)\n)\nScript Su7(if(\nIsEqual( GetLeverState(GetObject(100)), 1.000000 )\n)then(\nKillScript()\nSu8()\nGSSetVar(0,\"q.sixteen.sixteen.8\",2)\nGSSetVar(0,\"q.sixteen.sixteen.9\",1)\n)\n)\nScript Su8(if(\nIsEqual( GetLeverState(GetObject(100)), 1.000000 )\n)then(\nKillScript()\nSu9()\nGSSetVar(0,\"q.sixteen.sixteen.9\",2)\nGSSetVar(0,\"q.sixteen.sixteen.10\",1)\n)\n)\nScript Su9(if(\nIsEqual( GetLeverState(GetObject(100)), 1.000000 )\n)then(\nKillScript()\nSu10()\nGSSetVar(0,\"q.sixteen.sixteen.10\",2)\nGSSetVar(0,\"q.sixteen.sixteen.11\",1)\n)\n)\nScript Su10(if(\nIsEqual( GetLeverState(GetObject(100)), 1.000000 )\n)then(\nKillScript()\nSu11()\nGSSetVar(0,\"q.sixteen.sixteen.11\",2)\nGSSetVar(0,\"q.sixteen.sixteen.12\",1)\n)\n)\nScript Su11(if(\nIsEqual( GetLeverState(GetObject(100)), 1.000000 )\n)then(\nKillScript()\nSu12()\nGSSetVar(0,\"q.sixteen.sixteen.12\",2)\nGSSetVar(0,\"q.sixteen.sixteen.13\",1)\n)\n)\nScript Su12(if(\nIsEqual( GetLeverState(GetObject(100)), 1.000000 )\n)then(\nKillScript()\nSu13()\nGSSetVar(0,\"q.sixteen.sixteen.13\",2)\nGSSetVar(0,\"q.sixteen.sixteen.14\",1)\n)\n)\nScript Su13(if(\nIsEqual( GetLeverState(GetObject(100)), 1.000000 )\n)then(\nKillScript()\nSu14()\nGSSetVar(0,\"q.sixteen.sixteen.14\",2)\nGSSetVar(0,\"q.sixteen.sixteen.15\",1)\n)\n)\nScript Su14(if(\nIsEqual( GetLeverState(GetObject(100)), 1.000000 )\n)then(\nKillScript()\nSu15()\nGSSetVar(0,\"q.sixteen.sixteen.15\",2)\nGSSetVar(0,\"q.sixteen.sixteen.16\",1)\n)\n)\nScript Su15(if(\nIsEqual( GetLeverState(GetObject(100)), 1.000000 )\n)then(\nKillScript()\nSu16()\nGSSetVar(0,\"q.sixteen.sixteen.16\",2)\n)\n)\nScript Su16(if()then(KillScript()\nQuestComplete(0,\"sixteen\")\nGSSetVar(0,\"q.sixteen.sixteen\", 2)\n)\n)\nWorldScript( Su0() )\n",
+      "formats": [
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            0
+          ],
+          "text": "DeclareScript Su0()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            1
+          ],
+          "text": "DeclareScript Su1()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            2
+          ],
+          "text": "DeclareScript Su2()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            3
+          ],
+          "text": "DeclareScript Su3()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            4
+          ],
+          "text": "DeclareScript Su4()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            5
+          ],
+          "text": "DeclareScript Su5()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            6
+          ],
+          "text": "DeclareScript Su6()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            7
+          ],
+          "text": "DeclareScript Su7()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            8
+          ],
+          "text": "DeclareScript Su8()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            9
+          ],
+          "text": "DeclareScript Su9()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            10
+          ],
+          "text": "DeclareScript Su10()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            11
+          ],
+          "text": "DeclareScript Su11()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            12
+          ],
+          "text": "DeclareScript Su12()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            13
+          ],
+          "text": "DeclareScript Su13()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            14
+          ],
+          "text": "DeclareScript Su14()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            15
+          ],
+          "text": "DeclareScript Su15()\n"
+        },
+        {
+          "template": "DeclareScript Su%i()\n",
+          "args": [
+            16
+          ],
+          "text": "DeclareScript Su16()\n"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            0
+          ],
+          "text": "Script Su0(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            1,
+            "sixteen",
+            "sixteen",
+            1
+          ],
+          "text": "\n)then(\nKillScript()\nSu1()\nGSSetVar(0,\"q.sixteen.sixteen.1\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "sixteen",
+            "sixteen",
+            2
+          ],
+          "text": "GSSetVar(0,\"q.sixteen.sixteen.2\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(100)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(100)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            1
+          ],
+          "text": "Script Su1(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            2,
+            "sixteen",
+            "sixteen",
+            2
+          ],
+          "text": "\n)then(\nKillScript()\nSu2()\nGSSetVar(0,\"q.sixteen.sixteen.2\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "sixteen",
+            "sixteen",
+            3
+          ],
+          "text": "GSSetVar(0,\"q.sixteen.sixteen.3\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(100)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(100)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            2
+          ],
+          "text": "Script Su2(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            3,
+            "sixteen",
+            "sixteen",
+            3
+          ],
+          "text": "\n)then(\nKillScript()\nSu3()\nGSSetVar(0,\"q.sixteen.sixteen.3\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "sixteen",
+            "sixteen",
+            4
+          ],
+          "text": "GSSetVar(0,\"q.sixteen.sixteen.4\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(100)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(100)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            3
+          ],
+          "text": "Script Su3(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            4,
+            "sixteen",
+            "sixteen",
+            4
+          ],
+          "text": "\n)then(\nKillScript()\nSu4()\nGSSetVar(0,\"q.sixteen.sixteen.4\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "sixteen",
+            "sixteen",
+            5
+          ],
+          "text": "GSSetVar(0,\"q.sixteen.sixteen.5\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(100)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(100)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            4
+          ],
+          "text": "Script Su4(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            5,
+            "sixteen",
+            "sixteen",
+            5
+          ],
+          "text": "\n)then(\nKillScript()\nSu5()\nGSSetVar(0,\"q.sixteen.sixteen.5\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "sixteen",
+            "sixteen",
+            6
+          ],
+          "text": "GSSetVar(0,\"q.sixteen.sixteen.6\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(100)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(100)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            5
+          ],
+          "text": "Script Su5(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            6,
+            "sixteen",
+            "sixteen",
+            6
+          ],
+          "text": "\n)then(\nKillScript()\nSu6()\nGSSetVar(0,\"q.sixteen.sixteen.6\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "sixteen",
+            "sixteen",
+            7
+          ],
+          "text": "GSSetVar(0,\"q.sixteen.sixteen.7\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(100)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(100)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            6
+          ],
+          "text": "Script Su6(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            7,
+            "sixteen",
+            "sixteen",
+            7
+          ],
+          "text": "\n)then(\nKillScript()\nSu7()\nGSSetVar(0,\"q.sixteen.sixteen.7\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "sixteen",
+            "sixteen",
+            8
+          ],
+          "text": "GSSetVar(0,\"q.sixteen.sixteen.8\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(100)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(100)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            7
+          ],
+          "text": "Script Su7(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            8,
+            "sixteen",
+            "sixteen",
+            8
+          ],
+          "text": "\n)then(\nKillScript()\nSu8()\nGSSetVar(0,\"q.sixteen.sixteen.8\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "sixteen",
+            "sixteen",
+            9
+          ],
+          "text": "GSSetVar(0,\"q.sixteen.sixteen.9\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(100)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(100)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            8
+          ],
+          "text": "Script Su8(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            9,
+            "sixteen",
+            "sixteen",
+            9
+          ],
+          "text": "\n)then(\nKillScript()\nSu9()\nGSSetVar(0,\"q.sixteen.sixteen.9\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "sixteen",
+            "sixteen",
+            10
+          ],
+          "text": "GSSetVar(0,\"q.sixteen.sixteen.10\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(100)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(100)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            9
+          ],
+          "text": "Script Su9(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            10,
+            "sixteen",
+            "sixteen",
+            10
+          ],
+          "text": "\n)then(\nKillScript()\nSu10()\nGSSetVar(0,\"q.sixteen.sixteen.10\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "sixteen",
+            "sixteen",
+            11
+          ],
+          "text": "GSSetVar(0,\"q.sixteen.sixteen.11\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(100)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(100)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            10
+          ],
+          "text": "Script Su10(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            11,
+            "sixteen",
+            "sixteen",
+            11
+          ],
+          "text": "\n)then(\nKillScript()\nSu11()\nGSSetVar(0,\"q.sixteen.sixteen.11\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "sixteen",
+            "sixteen",
+            12
+          ],
+          "text": "GSSetVar(0,\"q.sixteen.sixteen.12\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(100)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(100)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            11
+          ],
+          "text": "Script Su11(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            12,
+            "sixteen",
+            "sixteen",
+            12
+          ],
+          "text": "\n)then(\nKillScript()\nSu12()\nGSSetVar(0,\"q.sixteen.sixteen.12\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "sixteen",
+            "sixteen",
+            13
+          ],
+          "text": "GSSetVar(0,\"q.sixteen.sixteen.13\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(100)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(100)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            12
+          ],
+          "text": "Script Su12(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            13,
+            "sixteen",
+            "sixteen",
+            13
+          ],
+          "text": "\n)then(\nKillScript()\nSu13()\nGSSetVar(0,\"q.sixteen.sixteen.13\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "sixteen",
+            "sixteen",
+            14
+          ],
+          "text": "GSSetVar(0,\"q.sixteen.sixteen.14\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(100)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(100)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            13
+          ],
+          "text": "Script Su13(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            14,
+            "sixteen",
+            "sixteen",
+            14
+          ],
+          "text": "\n)then(\nKillScript()\nSu14()\nGSSetVar(0,\"q.sixteen.sixteen.14\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "sixteen",
+            "sixteen",
+            15
+          ],
+          "text": "GSSetVar(0,\"q.sixteen.sixteen.15\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(100)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(100)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            14
+          ],
+          "text": "Script Su14(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            15,
+            "sixteen",
+            "sixteen",
+            15
+          ],
+          "text": "\n)then(\nKillScript()\nSu15()\nGSSetVar(0,\"q.sixteen.sixteen.15\",2)\n"
+        },
+        {
+          "template": "GSSetVar(0,\"q.%s.%s.%i\",1)\n)\n)\n",
+          "args": [
+            "sixteen",
+            "sixteen",
+            16
+          ],
+          "text": "GSSetVar(0,\"q.sixteen.sixteen.16\",1)\n)\n)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(100)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(100)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if(\n",
+          "args": [
+            15
+          ],
+          "text": "Script Su15(if(\n"
+        },
+        {
+          "template": "\n)then(\nKillScript()\nSu%i()\nGSSetVar(0,\"q.%s.%s.%i\",2)\n",
+          "args": [
+            16,
+            "sixteen",
+            "sixteen",
+            16
+          ],
+          "text": "\n)then(\nKillScript()\nSu16()\nGSSetVar(0,\"q.sixteen.sixteen.16\",2)\n"
+        },
+        {
+          "template": "IsEqual( GetLeverState(%s), %f )",
+          "args": [
+            "GetObject(100)",
+            1.0
+          ],
+          "text": "IsEqual( GetLeverState(GetObject(100)), 1.000000 )"
+        },
+        {
+          "template": "Script Su%i(if()then(KillScript()\nQuestComplete(0,\"%s\")\nGSSetVar(0,\"q.%s.%s\", 2)\n)\n)\n",
+          "args": [
+            16,
+            "sixteen",
+            "sixteen",
+            "sixteen"
+          ],
+          "text": "Script Su16(if()then(KillScript()\nQuestComplete(0,\"sixteen\")\nGSSetVar(0,\"q.sixteen.sixteen\", 2)\n)\n)\n"
+        }
+      ]
+    }
+  ]
+}

@@ -8,6 +8,20 @@
   "direct_command_gaps": [],
   "features": [
     {
+      "id": "console",
+      "title": "Use the developer console and original-style commands",
+      "commands": [
+        "console"
+      ],
+      "tests": [
+        "commands/console_commands",
+        "commands/console_god_mode",
+        "commands/console_god_mode_astral"
+      ],
+      "scope": "Authority and input ownership, expressions, variable files, command batches, EN/RU/DE help, saved state and bounded original GodMode comparisons.",
+      "remaining": "The entire original command set and every expression/scene combination are not covered."
+    },
+    {
       "id": "start",
       "title": "Start a campaign, select a profile and bring a saved hero",
       "commands": [],
@@ -344,7 +358,9 @@
         "persistence/save_cast",
         "persistence/save_taming",
         "persistence/load_spell_boundary",
-        "quests/script_parity_boundaries"
+        "quests/script_parity_boundaries",
+        "persistence/town_save_continuation",
+        "persistence/town_save_continuation_astral"
       ],
       "scope": "Authority, load generations, actor/effect references, spell consumption and menu choices.",
       "remaining": "Corrupt-file UI, disk-full handling and migration from all historical releases remain gaps."
@@ -354,13 +370,24 @@
       "title": "Trigger, revisit and complete story objectives",
       "commands": [],
       "tests": [
+        "quests/script_future_queries",
+        "quests/script_future_queries_astral",
         "quests/script_parity_boundaries",
         "quests/story_coop_predicates",
         "quests/story_coop_traps",
         "quests/story_coop_effects",
         "quests/lia_revenge_return",
         "quests/lia_slave_lists_return",
-        "quests/zone7_arrival"
+        "quests/zone7_arrival",
+        "quests/script_clock",
+        "quests/script_clock_astral",
+        "quests/script_clock_coop",
+        "quests/campaign_clock",
+        "quests/campaign_clock_coop",
+        "quests/campaign_clock_astral",
+        "quests/campaign_clock_coop_astral",
+        "persistence/town_save_continuation",
+        "persistence/town_save_continuation_astral"
       ],
       "scope": "Native scripts, prerequisites, quest items, traps, repeated visits, captivity and chapter transition fixtures.",
       "remaining": "No exhaustive quest graph or uninterrupted full campaign playthrough."
@@ -527,9 +554,14 @@
       "id": "mods",
       "title": "Install, enable, remove and exchange mods",
       "commands": [],
-      "tests": [],
-      "scope": "No configurations in this registered expansion.",
-      "remaining": "Mod download, cancellation, migration, dependency resolution and multiplayer mismatches need their own isolated server fixtures."
+      "tests": [
+        "settings/mod_redress",
+        "settings/mod_redress_astral",
+        "settings/mod_texture_packages",
+        "settings/mod_profiles"
+      ],
+      "scope": "Package import, profile switching, texture and clothing overlays, conflicts, save compatibility and cosmetic signatures. Rendering uses the real character material composer in both campaigns.",
+      "remaining": "Download/cancellation, every mod migration and live multiplayer admission with mixed cosmetic packages are outside these registered fixtures."
     },
     {
       "id": "platforms",

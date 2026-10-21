@@ -1,0 +1,54 @@
+{
+  "version": "1.21.0",
+  "date": "2026-10-21",
+  "status": "source validation complete; package verification will be added before publication",
+  "source_checks": [
+    {
+      "exit": 0,
+      "errors": [],
+      "seconds": 13.07,
+      "summary": [
+        "CONSOLE_COMMANDS 123 checks 0 failures"
+      ],
+      "run": "classic-final"
+    },
+    {
+      "exit": 0,
+      "errors": [],
+      "seconds": 35.68,
+      "summary": [
+        "CONSOLE_MODERN 68 checks 0 failures"
+      ],
+      "run": "modern-opengl-3"
+    },
+    {
+      "exit": 0,
+      "errors": [],
+      "seconds": 27.09,
+      "summary": [
+        "ZAKO_WORKER 25 checks 0 failures"
+      ],
+      "run": "worker-headless-2"
+    }
+  ],
+  "translations": {
+    "entries": 2999,
+    "missing_keys": 0,
+    "locales": [
+      "en",
+      "ru",
+      "de"
+    ]
+  },
+  "legacy_converter_tests": 20,
+  "prior_regressions": "regressions-2026-10-21/followup/checks.json",
+  "prior_regression_scope": "151 retained runs; 150 clean, plus the Linux mine control with two GL texture-leak diagnostics at shutdown. These are not all rerun merely for release.",
+  "limits": [
+    "The forwarded mine slowdown is unresolved; no mine gameplay fix is claimed.",
+    "Exact scene reports #61, #62 and #64 are not declared resolved by focused checks.",
+    "GodMode mode 2 is unsupported.",
+    "Windows runtime checks use Wine; native Windows/AMD FSR 4 coverage is limited.",
+    "No new native macOS or Android device qualification; macOS package is unsigned.",
+    "The existing OpenGL footprint surface limitation remains recorded in earlier release validation."
+  ]
+}

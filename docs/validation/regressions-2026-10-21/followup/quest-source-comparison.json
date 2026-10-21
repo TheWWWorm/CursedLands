@@ -1,0 +1,21 @@
+{
+  "scope": "Only the current pass VM change reverted; pre-pass hash matches the retained report fingerprint. Other local follow-up fixes retained.",
+  "before_sha256": "134323fe0ec5f0e1778131d752e7735fff01a298bcbe4d1ac5a8f6c7ac8da5bb",
+  "after_sha256": "b52fba0e87e67ae3abbbe24d975c6e39fda532fbf956a87a1142267614474dce",
+  "results": [
+    {
+      "suite": "quest_objective_chains",
+      "run": "quest-chains-final-before",
+      "exit": 1,
+      "output": "ixteen continuous tick 4: exact objective/journal/completion/restock parity\", \"FAIL sixteen continuous tick 5: exact objective/journal/completion/restock parity\", \"FAIL sixteen continuous tick 6: exact objective/journal/completion/restock parity\", \"FAIL sixteen continuous tick 7: exact objective/journal/completion/restock parity\", \"FAIL sixteen continuous tick 8: exact objective/journal/completion/restock parity\", \"FAIL sixteen continuous tick 9: exact objective/journal/completion/restock parity\", \"FAIL sixteen continuous tick 10: exact objective/journal/completion/restock parity\", \"FAIL sixteen continuous tick 11: exact objective/journal/completion/restock parity\", \"FAIL sixteen continuous tick 12: exact objective/journal/completion/restock parity\", \"FAIL sixteen continuous tick 13: exact objective/journal/completion/restock parity\", \"FAIL sixteen continuous tick 14: exact objective/journal/completion/restock parity\", \"FAIL sixteen continuous tick 15: exact objective/journal/completion/restock parity\", \"FAIL sixteen continuous tick 16: exact objective/journal/completion/restock parity\", \"FAIL sixteen continuous tick 17: exact objective/journal/completion/restock parity\", \"FAIL sixteen continuous tick 18: exact objective/journal/completion/restock parity\", \"FAIL sixteen continuous tick 19: exact objective/journal/completion/restock parity\", \"FAIL sixteen continuous tick 20: exact objective/journal/completion/restock parity\", \"FAIL sixteen continuous tick 21: exact objective/journal/completion/restock parity\", \"FAIL sixteen reload tick 19: exact objective/journal/completion/restock parity\", \"FAIL sixteen reload tick 20: exact objective/journal/completion/restock parity\", \"FAIL sixteen reload tick 21: exact objective/journal/completion/restock parity\", \"FAIL one-tick QObjArea contact is retained after leaving/hiding\", \"FAIL one-tick QObjSeeUnit contact is retained after leaving/hiding\"], \"seconds\": 13.29, \"summary\": [\"QUEST_OBJECTIVE_CHAINS 650 checks 272 failures\"]}\n"
+    },
+    {
+      "suite": "quest_objective_map",
+      "run": "quest-map-final-before",
+      "exit": 1,
+      "output": "{\"exit\": 1, \"errors\": [\"FAIL live sighting reaches the journal within the next VM tick\", \"FAIL death advances and completes the saved authored chain\"], \"seconds\": 17.09, \"summary\": [\"QUEST_OBJECTIVE_MAP 13 checks 2 failures\"]}\n"
+    }
+  ],
+  "final_sha256": "479a22dd27b4bb0c97133aae97fa512e66f705c1c5f3f32256a68def6eb5cbdc",
+  "final_guard": "The after_sha256 identifies the first fix used for the recorded ablation. final_sha256 additionally preserves unfinished QStart/QFinish registration across save/load and requires QFinish for empty-chain completion."
+}

@@ -25,10 +25,13 @@ func census() -> void:
 			if row.states==1:single.append([zone.id,o.nid,o.template])
 			if row.science.is_empty() or int(row.science[0])!=0:
 				row.state=row.states-1
-				if row.states>1 and int(row.cycled)!=0:
-					repeat+=1;check(w.lever_sys.usable(int(o.nid)),"native repeatable mechanism remains usable")
-				else:
-					once+=1;check(not w.lever_sys.usable(int(o.nid)),"native terminal mechanism is exhausted")
+				if row.states>1 and int(row.cycled)!=0: repeat+=1
+				else: once+=1
+				# Native eligibility is captured in original_lever_use.json.
+				# The earlier test incorrectly equated final pose with use.
+				check(w.lever_sys.usable(int(o.nid)),"authored permission is independent of terminal pose")
+				w.lever_sys.consume_use(int(o.nid))
+				check(not w.lever_sys.usable(int(o.nid)),"successful use consumes even a cycled mechanism")
 	print("INTERACTION_CENSUS ",JSON.stringify({"campaign":GameData.campaign_id,"levers":count,"one_time":once,"repeatable":repeat,"single_state":single,"lift_call":lift}))
 	w.free()
 func _ready() -> void:
@@ -52,14 +55,18 @@ func _ready() -> void:
 		g.rig.camera.global_position=at+Vector3(0,4,6);g.rig.camera.look_at(at);g.rig.release();await frames()
 		var point:=g.rig.camera.unproject_position(at);g._lever_pick_key=[]
 		check(g.pick_lever(point)==id,"unopened object offers the hand interaction")
-		w.lever_sys.set_state(id,int(l.states)-1,0);g._lever_pick_key=[]
+		w.vm._use_lever(u,id);g._lever_pick_key=[]
 		check(not w.lever_sys.usable(id) and g.pick_lever(point)!=id,"terminal object loses hand interaction immediately")
 		u.order={};u.orders.clear();u.remove_meta("interact")
 		s.apply_command({"t":"use_lever","target":id,"units":[u.uid]},0)
 		check(u.orders.is_empty() and not u.has_meta("interact"),"authority rejects a stale use command after exhaustion")
-		w.lever_sys.restore(id,0,0);check(w.lever_sys.usable(id),"resetting a mechanism restores interaction")
-		w.lever_sys.restore(id,int(l.states)-1,1);check(not w.lever_sys.usable(id),"loaded terminal state is exhausted without a new save field")
-		l.cycled=1;check(w.lever_sys.usable(id),"cyclic gate or switch remains available at its last state")
+		w.lever_sys.set_state(id,0,0);check(not w.lever_sys.usable(id),"script pose reset does not restore consumed permission")
+		w.lever_sys.restore_row(id,[int(l.states)-1,1.0,true]);check(not w.lever_sys.usable(id),"legacy terminal checkpoint keeps its exhausted behavior")
+		w.vm._call('EnableLever',[[ScriptParser.N_CALL,'GetObject',[[ScriptParser.N_NUM,id]]],[ScriptParser.N_NUM,1]],ScriptVM.Instance.new())
+		check(w.lever_sys.usable(id),"explicit EnableLever restores interaction even at the endpoint")
+		w.lever_sys.restore_row(id,bytes_to_var(var_to_bytes(w.lever_sys.export_row(id))))
+		check(w.lever_sys.usable(id),"new checkpoint retains explicit terminal permission")
+		l.cycled=1;check(w.lever_sys.usable(id),"enabled cyclic gate remains available at its last state")
 		w.lever_sys.set_state(id,-1,0);check(int(l.state)==0,"cyclic object can wrap back to its first state")
 	g.free();s.free();await frames(6);TexUpscale.shutdown()
 	print("EXHAUSTED_INTERACTIONS ",checks," checks ",failures," failures");get_tree().quit(1 if failures else 0)

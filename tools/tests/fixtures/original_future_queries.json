@@ -1,0 +1,8147 @@
+{
+  "scope": "Execute GetFutureX/Y in both qualified original x86 interpreters.\n\nThe only hook supplies the object's virtual future-position result at vtable\n+0xd0. The original dispatcher evaluates the command, converts now + delay to\nan absolute tick, invokes that method and returns the selected float32 axis.\nThis captures the script dispatch contract, not the original path predictor,\ncollision response or a complete running game.\n",
+  "campaigns": {
+    "original": {
+      "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+      "entry": "0x4b41e0",
+      "clock": "0x7affb4",
+      "rows": [
+        {
+          "input": {
+            "now": 0,
+            "delay": -2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": -2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": -2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": -2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": -1.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": -1,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": -1.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": -1,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 0.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 0.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 0.25,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 0.25,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 0.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 0.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 0.5000000596046448,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 0.5000000596046448,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 1.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 1.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 3.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 3,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 3.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 3,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 30.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 30,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 30.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 30,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 60.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 60,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 60.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 60,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 500.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 500,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 500.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 500,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": -2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": -2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": -2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": -2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": -1.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": -1.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 0.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 0.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 0.25,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 0.25,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 0.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 0.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 0.5000000596046448,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 0.5000000596046448,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 1.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 1.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 4,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 4,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 3.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 4,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 3.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 4,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 30.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 31,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 30.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 31,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 60.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 61,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 60.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 61,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 500.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 501,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 500.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 501,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": -2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": -2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": -1.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": -1.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 0.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 0.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 0.25,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 0.25,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 0.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 0.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 0.5000000596046448,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 0.5000000596046448,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 1.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 4,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 1.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 4,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 4,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 4,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 3.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 5,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 3.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 5,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 30.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 32,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 30.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 32,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 60.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 62,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 60.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 62,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 500.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 502,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 500.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 502,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": -2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 6,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": -2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 6,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": -1.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 8,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": -1.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 8,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 0.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 9,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 0.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 9,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 0.25,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 9,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 0.25,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 9,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 0.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 0.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 0.5000000596046448,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 0.5000000596046448,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 1.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 1.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 12,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 12,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 3.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 12,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 3.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 12,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 30.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 39,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 30.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 39,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 60.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 69,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 60.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 69,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 500.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 509,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 500.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 509,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": -2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 8,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": -2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 8,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": -1.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 9,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": -1.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 9,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 0.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 0.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 0.25,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 0.25,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 0.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 0.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 0.5000000596046448,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 0.5000000596046448,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 1.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 12,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 1.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 12,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 12,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 12,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 3.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 13,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 3.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 13,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 30.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 40,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 30.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 40,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 60.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 70,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 60.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 70,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 500.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 510,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 500.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 510,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": -2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 999998,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": -2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 999998,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": -1.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 999999,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": -1.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 999999,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 0.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000000,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 0.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000000,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 0.25,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000000,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 0.25,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000000,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 0.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000000,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 0.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000000,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 0.5000000596046448,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000000,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 0.5000000596046448,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000000,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 1.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000002,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 1.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000002,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000002,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000002,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 3.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000003,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 3.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000003,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 30.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000030,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 30.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000030,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 60.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000060,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 60.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000060,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 500.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000500,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 500.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000500,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": -2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777212,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": -2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777212,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": -1.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777214,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": -1.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777214,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 0.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777215,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 0.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777215,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 0.25,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777215,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 0.25,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777215,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 0.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 0.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 0.5000000596046448,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 0.5000000596046448,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 1.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 1.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777218,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777218,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 3.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777218,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 3.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777218,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 30.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777244,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 30.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777244,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 60.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777276,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 60.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777276,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 500.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777716,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 500.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777716,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": -2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777214,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": -2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777214,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": -1.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777215,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": -1.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777215,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 0.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 0.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 0.25,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 0.25,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 0.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 0.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 0.5000000596046448,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 0.5000000596046448,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 1.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777218,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 1.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777218,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777218,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777218,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 3.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777220,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 3.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777220,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 30.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777246,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 30.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777246,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 60.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777276,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 60.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777276,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 500.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777716,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 500.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777716,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 101,
+            "delay": 3,
+            "axis": 0,
+            "present": false,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [],
+          "value": 0.0,
+          "value_bits": 0
+        },
+        {
+          "input": {
+            "now": 101,
+            "delay": 3,
+            "axis": 1,
+            "present": false,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [],
+          "value": 0.0,
+          "value_bits": 0
+        }
+      ]
+    },
+    "lost_in_astral": {
+      "sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff",
+      "entry": "0x46cca0",
+      "clock": "0x6a343c",
+      "rows": [
+        {
+          "input": {
+            "now": 0,
+            "delay": -2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": -2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": -2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": -2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": -1.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": -1,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": -1.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": -1,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 0.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 0.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 0.25,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 0.25,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 0.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 0.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 0.5000000596046448,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 0.5000000596046448,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 1.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 1.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 3.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 3,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 3.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 3,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 30.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 30,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 30.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 30,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 60.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 60,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 60.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 60,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 500.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 500,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 0,
+            "delay": 500.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 500,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": -2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": -2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": -2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": -2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": -1.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": -1.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 0.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 0.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 0.25,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 0.25,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 0.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 0.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 0.5000000596046448,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 0.5000000596046448,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 1.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 1.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 4,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 4,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 3.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 4,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 3.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 4,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 30.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 31,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 30.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 31,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 60.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 61,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 60.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 61,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 500.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 501,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1,
+            "delay": 500.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 501,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": -2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": -2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 0,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": -1.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": -1.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 0.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 0.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 0.25,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 0.25,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 0.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 0.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 0.5000000596046448,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 0.5000000596046448,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 2,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 1.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 4,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 1.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 4,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 4,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 4,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 3.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 5,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 3.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 5,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 30.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 32,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 30.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 32,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 60.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 62,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 60.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 62,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 500.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 502,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 2,
+            "delay": 500.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 502,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": -2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 6,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": -2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 6,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": -1.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 8,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": -1.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 8,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 0.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 9,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 0.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 9,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 0.25,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 9,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 0.25,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 9,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 0.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 0.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 0.5000000596046448,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 0.5000000596046448,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 1.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 1.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 12,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 12,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 3.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 12,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 3.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 12,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 30.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 39,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 30.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 39,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 60.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 69,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 60.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 69,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 500.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 509,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 9,
+            "delay": 500.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 509,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": -2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 8,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": -2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 8,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": -1.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 9,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": -1.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 9,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 0.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 0.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 0.25,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 0.25,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 0.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 0.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 0.5000000596046448,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 0.5000000596046448,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 10,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 1.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 12,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 1.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 12,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 12,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 12,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 3.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 13,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 3.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 13,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 30.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 40,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 30.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 40,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 60.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 70,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 60.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 70,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 500.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 510,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 10,
+            "delay": 500.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 510,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": -2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 999998,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": -2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 999998,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": -1.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 999999,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": -1.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 999999,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 0.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000000,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 0.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000000,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 0.25,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000000,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 0.25,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000000,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 0.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000000,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 0.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000000,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 0.5000000596046448,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000000,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 0.5000000596046448,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000000,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 1.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000002,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 1.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000002,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000002,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000002,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 3.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000003,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 3.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000003,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 30.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000030,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 30.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000030,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 60.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000060,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 60.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000060,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 500.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000500,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 1000000,
+            "delay": 500.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 1000500,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": -2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777212,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": -2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777212,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": -1.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777214,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": -1.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777214,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 0.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777215,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 0.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777215,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 0.25,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777215,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 0.25,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777215,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 0.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 0.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 0.5000000596046448,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 0.5000000596046448,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 1.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 1.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777218,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777218,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 3.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777218,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 3.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777218,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 30.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777244,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 30.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777244,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 60.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777276,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 60.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777276,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 500.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777716,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777215,
+            "delay": 500.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777716,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": -2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777214,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": -2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777214,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": -1.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777215,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": -1.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777215,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 0.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 0.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 0.25,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 0.25,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 0.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 0.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 0.5000000596046448,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 0.5000000596046448,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777216,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 1.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777218,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 1.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777218,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 2.5,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777218,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 2.5,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777218,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 3.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777220,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 3.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777220,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 30.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777246,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 30.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777246,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 60.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777276,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 60.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777276,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 500.0,
+            "axis": 0,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777716,
+              "correct_object": true
+            }
+          ],
+          "value": 123.25,
+          "value_bits": 1123450880
+        },
+        {
+          "input": {
+            "now": 16777216,
+            "delay": 500.0,
+            "axis": 1,
+            "present": true,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [
+            {
+              "absolute_tick": 16777716,
+              "correct_object": true
+            }
+          ],
+          "value": -72.5,
+          "value_bits": 3264282624
+        },
+        {
+          "input": {
+            "now": 101,
+            "delay": 3,
+            "axis": 0,
+            "present": false,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [],
+          "value": 0.0,
+          "value_bits": 0
+        },
+        {
+          "input": {
+            "now": 101,
+            "delay": 3,
+            "axis": 1,
+            "present": false,
+            "point": [
+              123.25,
+              -72.5,
+              8
+            ]
+          },
+          "calls": [],
+          "value": 0.0,
+          "value_bits": 0
+        }
+      ]
+    }
+  }
+}

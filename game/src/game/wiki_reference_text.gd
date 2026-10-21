@@ -18860,8 +18860,8 @@ const TEXTS := {
 	],
 	"weapon spiked_mace bronze": [
 		"c0657c2c2d37203add69acbcf4755432c2e09d30d13f4f4d1b64af02fd4db2dc",
-		"Spiked mace · Bronze\nGood for splitting coconuts.",
-		"Streitkolben mit Stacheln · Bronze\nGut zum Spalten von Kokosnüssen."
+		"Extra-heavy club\nGood for splitting coconuts.",
+		"Überschwere Keule\nGut zum Spalten von Kokosnüssen."
 	],
 	"weapon spiked_mace iron": [
 		"2cdbd027075f627a5bb6d9ef202cc3eefe66367499c063fc6b785196b8e44331",

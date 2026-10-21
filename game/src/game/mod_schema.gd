@@ -10,7 +10,7 @@ const FORMULA_HOOKS := {
 	"revival_seconds": [1.0, 30.0],
 	"revival_health": [1.0, 1000000.0],
 }
-const RESOURCE_ARCHIVES := ["textures.res"]
+const RESOURCE_ARCHIVES := ["textures.res", "redress.res"]
 ## Rules added after API 1 saves shipped. Missing entries retain these defaults.
 const ADDED_DEFAULTS := {"free_run": 0, "stamina_regen": 0, "armor_formula": 0}
 const RULES := {
@@ -134,8 +134,8 @@ static func manifest_error(m: Variant) -> String:
 	if not m.get("overrides", []) is Array or m.get("overrides", []).size() > 4096: return "Invalid archive overrides."
 	for a in m.get("overrides", []):
 		if not a is Dictionary or not safe_path(a.get("file")) or not safe_path(a.get("entry")): return "Invalid override path."
-		if a.get("archive", "") not in ["textures.res", "sfx.res", "speech.res"]: return "Unsupported archive; API 1 supports texture and sound replacements."
-		if a.archive == "textures.res" and not a.entry.ends_with(".mmp"): return "Texture overrides must be MMP files."
+		if a.get("archive", "") not in RESOURCE_ARCHIVES + ["sfx.res", "speech.res"]: return RemakeText.t("Mods can replace textures.res, redress.res, sfx.res and speech.res.")
+		if a.archive in RESOURCE_ARCHIVES and not a.entry.ends_with(".mmp"): return RemakeText.t("Texture overrides must be MMP files.")
 		if m.api == 2 and not resource_entry(a.archive, a.entry): return "Package API 2 currently supports texture packs only."
 	if not m.get("attachments", []) is Array or m.get("attachments", []).size() > 64: return "Invalid mod documentation."
 	if m.api == 1 and not m.get("attachments", []).is_empty(): return "Mod documentation needs package API 2."
@@ -174,7 +174,7 @@ static func text(m: Dictionary, key: String, language := "") -> String:
 	return str(m.get("translations", {}).get(lang, {}).get(key, RemakeText.t(str(m.get(key, "")))))
 
 static func resource_entry(archive: String, entry: String) -> bool:
-	return archive == "textures.res" and entry.ends_with(".mmp")
+	return archive in RESOURCE_ARCHIVES and entry.ends_with(".mmp")
 
 static func asset_files(m: Dictionary) -> Array:
 	var out: Array = m.get("attachments", []).duplicate()
