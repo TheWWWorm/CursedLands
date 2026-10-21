@@ -17,7 +17,7 @@ class ControlledVM extends ScriptVM:
 		return super._call('Any' if name == 'any' else name,args,inst)
 	func heroes() -> Array: return party
 	func _refresh_heroes() -> void: globals.Heroes = party.duplicate()
-	func _player_visible() -> Array: return visible_units.duplicate()
+	func _player_visible(_corpses := false) -> Array: return visible_units.duplicate()
 
 var checks := 0
 var failures: Array = []
