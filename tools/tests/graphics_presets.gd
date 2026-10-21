@@ -75,7 +75,9 @@ func _ready() -> void:
 			last = values
 			if preset == GfxPresets.ULTRA:
 				for o in GameData.OPTIONS:
-					if String(o[0]).begins_with("gfx_"): check(values[o[0]] == int(o[2])-1, "Ultra maxes " + o[0] + " on " + method)
+					if String(o[0]).begins_with("gfx_"):
+						var expected := 2 if o[0] == "gfx_water_reflections" else int(o[2])-1
+						check(values[o[0]] == expected, "Ultra enables supported effects without opting into RT: " + o[0] + " on " + method)
 	check(panel._preset_picker is OptionButton, "graphics preset is an actual dropdown")
 	panel._set_value("graphics_preset", GfxPresets.ULTRA)
 	panel._sync_preset_picker()

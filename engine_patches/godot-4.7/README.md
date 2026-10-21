@@ -9,6 +9,10 @@ build instructions. Adding a patch here does not update installed templates.
 the sixteen common patches. Build with `use_fsr_sdk=yes` and the pinned AMD
 headers. See [FSR setup and build instructions](../../docs/integrations/fsr-experiment.md).
 
+`water-raytracing-uniform-stages.patch` is an optional Vulkan experiment applied
+after the common patches. It fixes RT uniform stage masks and adds a capability
+guard. See [the water experiment](../../docs/integrations/water-raytracing-experiment.md).
+
 1. `render-thread-shutdown.patch`
 2. `queued-image-snapshot.patch`
 3. `unobserved-pose.patch`

@@ -21,6 +21,8 @@ static func values(preset: int, method: String = RenderingServer.get_current_ren
 	var maximum := {}
 	for o in GameData.OPTIONS:
 		if String(o[0]).begins_with("gfx_"): maximum[o[0]] = int(o[2]) - 1
+	# The hardware RT prototype is an explicit opt-in, never a preset default.
+	maximum.gfx_water_reflections = 2
 	maximum.merge({"q_aa":3, "q_shadows":3, "q_aniso":4, "q_shadow_fit":1, "render_scale":4})
 	var result := GfxDetect.tier_values(TIERS[preset], maximum)
 	# Low already draws clouds; High and Very high increase their quality.

@@ -1255,7 +1255,7 @@ func apply_gfx() -> void:
 	_update_cloud_parameters()
 	if _water_mat == null:
 		return
-	if WaterReflection.supported() and Gfx.on("gfx_water") and GameData.option("gfx_water_reflections") == 2:
+	if WaterReflection.supported() and Gfx.on("gfx_water") and GameData.option("gfx_water_reflections") >= 2:
 		if not is_instance_valid(_reflection):
 			_reflection = WaterReflection.new()
 			_reflection.terrain = self
@@ -1390,7 +1390,7 @@ func apply_gfx() -> void:
 		_water_mat.set_shader_parameter("terrain_cells", _cell_tex)
 		_water_mat.set_shader_parameter("rain_cover", _rain_cover)
 		_water_mat.set_shader_parameter("reflections", Gfx.on("gfx_water_reflections"))
-		_water_mat.set_shader_parameter("mirror", 1.0 if GameData.option("gfx_water_reflections") == 2 else 0.0)
+		_water_mat.set_shader_parameter("mirror", 1.0 if GameData.option("gfx_water_reflections") >= 2 else 0.0)
 		_water_mat.set_shader_parameter("wave_a", Gfx.noise("wave_a", 256, 0.018, 4, true, 5.0))
 		_water_mat.set_shader_parameter("wave_b", Gfx.noise("wave_b", 256, 0.03, 3, true, 4.0))
 		_water_mat.set_shader_parameter("foam_tex", Gfx.noise("foam", 256, 0.03, 4))

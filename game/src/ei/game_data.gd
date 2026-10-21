@@ -110,7 +110,7 @@ const OPTIONS := [
 	# Shadow quality (not gfx_*; Gfx.apply_quality / fit_shadows).
 	["q_shadows", 1, 4, 14, 9, 2], ["q_shadow_fit", 1, 2, 14, 10, 1],
 	# Water (group 23): surface appearance and optional creature interaction.
-	["gfx_water", 1, 2, 23, 0, 1], ["gfx_water_reflections", 1, 3, 23, 1, 2],
+	["gfx_water", 1, 2, 23, 0, 1], ["gfx_water_reflections", 1, 4, 23, 1, 2],
 	["gfx_water_interaction", 1, 2, 23, 2, 0], ["gfx_water_caustics", 1, 2, 23, 3, 0],
 	["gfx_water_current", 1, 2, 23, 4, 0], ["gfx_water_waves", 1, 2, 23, 5, 0],
 	["gfx_waterfalls", 1, 2, 23, 6, 0],
@@ -268,7 +268,7 @@ const DISPLAY_CHOICES := {
 	"q_aa": ["Off", "SMAA", "MSAA 4×", "MSAA 4× + SMAA", "TAA", "FSR 2"],
 	"q_shadows": ["Low", "Medium", "High", "Ultra"],
 	"q_aniso": ["Off", "2×", "4×", "8×", "16×"],
-	"gfx_water_reflections": ["Off", "Natural", "Mirror"],
+	"gfx_water_reflections": ["Off", "Natural", "Mirror", "Ray traced (test)"],
 	"gfx_terrain": ["Original", "Detailed", "Natural transitions"],
 	"coop_scale": ["Off", "Light", "Normal", "Strong"],
 	"enemy_hp_bars": ["Off", "Auto", "Always"],
@@ -394,7 +394,7 @@ const REMAKE_OPTIONS := {
 	"gfx_torch_glow": ["Torch and fire glow", "Torches, camp fires and spell lights glow in the night mist (needs Volumetric fog)."],
 	"gfx_sky": ["Atmospheric sky", "Sun disc, moon and stars at night over the original sky dome, and the open top of the dome faded into the sky colour; lightning lights up the clouds and its flash on the ground rises and fades softly. Off: the original dome and the original hard lightning flash."],
 	"gfx_water": ["Water and lava effects", "The original water with soft shores, blended bog and river edges, ripples and rain rings catching the sky, sun glints and reflections; breaking surf on sea coasts; glowing, churning lava. Off: the original water."],
-	"gfx_water_reflections": ["Water reflections", "Natural: subtle, rippled screen-space reflections. Mirror: stronger, calmer reflections; Forward+ also renders nearby scenery outside the main view. Mirror costs more GPU time. Off keeps sky reflections. Needs Water and lava effects."],
+	"gfx_water_reflections": ["Water reflections", "Natural: subtle screen-space reflections. Mirror: calmer scene reflections. Ray traced (test): Vulkan hardware ray tracing of nearby static scenery; excludes creatures, moving foliage and shadow effects. Uses Mirror when unavailable or preparing. Higher GPU and memory cost. Off keeps the sky. Requires water effects."],
 	"gfx_water_interaction": ["Water contact and wakes", "Ripples and contact foam around visible creatures wading in water. Requires Water and lava effects. Off by default."],
 	"gfx_water_caustics": ["Underwater caustics", "Moving sunlight patterns on shallow water beds. Requires Water and lava effects. Off by default."],
 	"gfx_water_current": ["River currents", "Surface ripples follow sloping water downstream. Water contact and wakes adds foam behind wading creatures. Requires Water and lava effects. Off by default."],

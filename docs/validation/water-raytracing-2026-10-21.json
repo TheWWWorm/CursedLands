@@ -1,0 +1,498 @@
+{
+  "date": "2026-10-21",
+  "status": "local experiment; not published",
+  "branch": "experiment/water-raytracing-20261021",
+  "base_commit": "78ae3494affaad49b417b792a5e221a0ea1f2e94",
+  "scope": "One-bounce Vulkan hardware water reflections of bounded static scenery, opt-in mode 3.",
+  "source_sha256": {
+    "game/src/ei/game_data.gd": "cb28d1b2a3133fb9cca1f1d45eb37ec5b3e560524b217b26d37ebc92c0811bc2",
+    "game/src/ei/remake_text.gd": "5e00999905ee213aef68bdc077343719ace2cfa2c95be056b6881c1a21a585a5",
+    "game/src/ei/terrain.gd": "12cc7fa7677f0259bd7a1bb5045bdce56ff26c939ae8e3088aa7d12495c815cc",
+    "game/src/game/fx/water_reflection.gd": "28b3f5fe4bb1495173f4dbd0e37036d5e910f11ceddbef73ea8a336e8d2066fe",
+    "game/src/game/fx/water_raytrace_device.gd": "5773190b4e919d26070934fa4a2b2d4e163a7782ebe5eb1815ddbcc4cb396fb4",
+    "game/src/game/fx/water_raytrace_scene.gd": "1aa28c53de6de4677f57ae85c7601125997ab99c6d01122228d0fb6136999042",
+    "game/src/game/gfx_presets.gd": "144cbf6e4d417feaa0c2bd49065bc5bc286856db1e093fa2e407e0d575d195d9",
+    "engine_patches/godot-4.7/water-raytracing-uniform-stages.patch": "c72b0256283803d482e71aaf629401af1ab11b28d74c440f8ac0ae41e665558a",
+    "tools/tests/graphics_presets.gd": "e6a0e7b67865e010532ad05ca87609f22e8d0e4e01deab080b330719dc51b4d5",
+    "tools/tests/water_raytrace.gd": "f34836320b6f4e1aa3fe25e224bb13a7b02a58b3f79b059ff8d0e062db7aad2e",
+    "tools/tests/water_raytrace_device.gd": "01b9964a499fdee7207f3d50a57a8525919945eda61caf0e3e3a12b443dd3a8c",
+    "tools/experiments/launch_water_raytrace.py": "29884db28b70659d0a3a1975d0dff670272765c78b5d65a683ad50ba782c9825"
+  },
+  "engine": {
+    "seconds": 35.19912143901456,
+    "sha256": "5cd55e014b01f542e23e0591bdcd5481c676d29ad7cf283b87d6e329c1428815",
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/engine/godot-water-rt.x86_64",
+    "base": "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/tooltip-engine",
+    "changed_sources": [
+      "servers/rendering/rendering_shader_container.cpp",
+      "core/os/os.cpp"
+    ]
+  },
+  "pack": {
+    "path": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/engine/godot-water-rt.pck",
+    "sha256": "b05aa2fa0b603bac9ec4afeb987ba017b6342021196f5f59a7c470630c7cea82"
+  },
+  "build_recipe": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/build_engine.py",
+  "build_commands": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/engine/commands.json",
+  "test_harness": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/run_test.py",
+  "tests": {
+    "real_river_hardware_rt": {
+      "exit": 0,
+      "seconds": 60.174030182068236,
+      "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-verified",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-verified/run.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/engine/godot-water-rt.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=res://tools/tests/water_raytrace.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-verified"
+      ],
+      "result": {
+        "checks": 29,
+        "device": "NVIDIA GeForce RTX 3090",
+        "failures": [],
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "median_ms": 47.431,
+            "mode": 0,
+            "p95_ms": 54.135,
+            "stats": {}
+          },
+          {
+            "median_ms": 49.792,
+            "mode": 2,
+            "p95_ms": 55.375,
+            "stats": {}
+          },
+          {
+            "median_ms": 30.436,
+            "mode": 3,
+            "p95_ms": 34.006,
+            "stats": {
+              "active": true,
+              "radius": 80.0,
+              "size": [
+                640,
+                360
+              ],
+              "supported": true,
+              "textures": 18,
+              "triangles": 68013
+            }
+          }
+        ],
+        "supported": true
+      },
+      "script_or_engine_errors": [],
+      "passed_assertions": [
+        "hardware RT scene prepares successfully",
+        "RT replaces the planar draw pass",
+        "real map geometry is in the acceleration structure",
+        "hardware trace returns visible scenery hits",
+        "camera rotation retains the static acceleration structure",
+        "hidden terrain suspends hardware tracing",
+        "showing the terrain reuses its static snapshot",
+        "tree-bank comparison camera is above open water",
+        "moving to a new water view rebuilds the snapshot",
+        "backend failure releases hardware resources",
+        "backend failure restores the planar texture",
+        "Mirror releases ray tracing resources",
+        "Mirror restores the raster reflection",
+        "Off releases the reflection owner",
+        "all reflection choices exist in en",
+        "RT choice is translated in en",
+        "water reflection help is visible in en",
+        "localized help matches the selected option in en",
+        "water reflection help fits in en",
+        "all reflection choices exist in ru",
+        "RT choice is translated in ru",
+        "water reflection help is visible in ru",
+        "localized help matches the selected option in ru",
+        "water reflection help fits in ru",
+        "all reflection choices exist in de",
+        "RT choice is translated in de",
+        "water reflection help is visible in de",
+        "localized help matches the selected option in de",
+        "water reflection help fits in de"
+      ]
+    },
+    "gpu_readbacks": {
+      "exit": 0,
+      "seconds": 9.10271418991033,
+      "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/device-verified",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/device-verified/run.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/engine/godot-water-rt.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=res://tools/tests/water_raytrace_device.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/device-verified"
+      ],
+      "result": {
+        "checks": 19,
+        "failures": []
+      },
+      "script_or_engine_errors": [],
+      "passed_assertions": [
+        "qualified Vulkan RT runtime is available",
+        "build hardware acceleration structure, alpha=false",
+        "RT target dimensions (128, 128)",
+        "closest textured triangle reads red",
+        "miss leaves reflected sky visible",
+        "RT target dimensions (96, 64)",
+        "closest textured triangle reads red",
+        "miss leaves reflected sky visible",
+        "underwater geometry is excluded by the reflection plane",
+        "GPU output is detached after teardown",
+        "build hardware acceleration structure, alpha=true",
+        "RT target dimensions (128, 128)",
+        "alpha-tested front triangle reveals green rear hit",
+        "miss leaves reflected sky visible",
+        "RT target dimensions (96, 64)",
+        "alpha-tested front triangle reveals green rear hit",
+        "miss leaves reflected sky visible",
+        "underwater geometry is excluded by the reflection plane",
+        "GPU output is detached after teardown"
+      ]
+    },
+    "stock_engine_fallback": {
+      "exit": 0,
+      "seconds": 79.01275813393295,
+      "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/stock-fallback",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/stock-fallback/run.log",
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/runtime",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=res://tools/tests/water_raytrace.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/stock-fallback"
+      ],
+      "result": {
+        "checks": 10,
+        "device": "NVIDIA GeForce RTX 3090",
+        "failures": [],
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "median_ms": 49.792,
+            "mode": 0,
+            "p95_ms": 61.571,
+            "stats": {}
+          },
+          {
+            "median_ms": 51.851,
+            "mode": 2,
+            "p95_ms": 58.802,
+            "stats": {}
+          },
+          {
+            "median_ms": 53.102,
+            "mode": 3,
+            "p95_ms": 60.961,
+            "stats": {
+              "fallback": "planar",
+              "supported": false
+            }
+          }
+        ],
+        "supported": false
+      },
+      "script_or_engine_errors": [],
+      "passed_assertions": [
+        "unsupported renderer retains its established reflection path",
+        "Mirror releases ray tracing resources",
+        "Mirror restores the raster reflection",
+        "Off releases the reflection owner",
+        "all reflection choices exist in en",
+        "RT choice is translated in en",
+        "all reflection choices exist in ru",
+        "RT choice is translated in ru",
+        "all reflection choices exist in de",
+        "RT choice is translated in de"
+      ]
+    },
+    "compatibility_fallback": {
+      "exit": 0,
+      "seconds": 160.0007005049847,
+      "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/compatibility",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/compatibility/run.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/engine/godot-water-rt.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=res://tools/tests/water_raytrace.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/compatibility"
+      ],
+      "result": {
+        "checks": 17,
+        "device": "llvmpipe (LLVM 20.1.2, 256 bits)",
+        "failures": [],
+        "renderer": "gl_compatibility",
+        "rows": [
+          {
+            "median_ms": 159.711,
+            "mode": 0,
+            "p95_ms": 192.608,
+            "stats": {}
+          },
+          {
+            "median_ms": 157.913,
+            "mode": 2,
+            "p95_ms": 179.938,
+            "stats": {}
+          },
+          {
+            "median_ms": 158.891,
+            "mode": 3,
+            "p95_ms": 171.946,
+            "stats": {}
+          }
+        ],
+        "supported": false
+      },
+      "script_or_engine_errors": [],
+      "passed_assertions": [
+        "unsupported renderer retains its established reflection path",
+        "Off releases the reflection owner",
+        "all reflection choices exist in en",
+        "RT choice is translated in en",
+        "water reflection help is visible in en",
+        "localized help matches the selected option in en",
+        "water reflection help fits in en",
+        "all reflection choices exist in ru",
+        "RT choice is translated in ru",
+        "water reflection help is visible in ru",
+        "localized help matches the selected option in ru",
+        "water reflection help fits in ru",
+        "all reflection choices exist in de",
+        "RT choice is translated in de",
+        "water reflection help is visible in de",
+        "localized help matches the selected option in de",
+        "water reflection help fits in de"
+      ]
+    },
+    "graphics_presets": {
+      "exit": 0,
+      "seconds": 7.733358616940677,
+      "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/presets",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/presets/run.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/engine/godot-water-rt.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=res://tools/tests/graphics_presets.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/presets"
+      ],
+      "script_or_engine_errors": [],
+      "passed_assertions": [],
+      "result": {
+        "checks": 259,
+        "failures": 0
+      }
+    },
+    "reflection_geometry": {
+      "exit": 0,
+      "seconds": 5.73155026207678,
+      "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/geometry",
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/geometry/run.log",
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/engine/godot-water-rt.x86_64",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "forward_plus",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=res://tools/tests/water_reflection_geometry.gd",
+        "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/geometry"
+      ],
+      "script_or_engine_errors": [],
+      "passed_assertions": [
+        "water-plane projection aligns for angle (-0.04, 0.0, 0.0), level -3.0",
+        "reflected camera retains a right-handed orthonormal basis",
+        "geometry reflection matches a virtual mirrored object",
+        "water-plane projection aligns for angle (-0.04, 0.0, 0.0), level 4.176689",
+        "reflected camera retains a right-handed orthonormal basis",
+        "geometry reflection matches a virtual mirrored object",
+        "water-plane projection aligns for angle (-0.04, 0.0, 0.0), level 22.0",
+        "reflected camera retains a right-handed orthonormal basis",
+        "geometry reflection matches a virtual mirrored object",
+        "water-plane projection aligns for angle (-0.6, 0.7, 0.0), level -3.0",
+        "reflected camera retains a right-handed orthonormal basis",
+        "geometry reflection matches a virtual mirrored object",
+        "water-plane projection aligns for angle (-0.6, 0.7, 0.0), level 4.176689",
+        "reflected camera retains a right-handed orthonormal basis",
+        "geometry reflection matches a virtual mirrored object",
+        "water-plane projection aligns for angle (-0.6, 0.7, 0.0), level 22.0",
+        "reflected camera retains a right-handed orthonormal basis",
+        "geometry reflection matches a virtual mirrored object",
+        "water-plane projection aligns for angle (-1.3, -1.2, 0.25), level -3.0",
+        "reflected camera retains a right-handed orthonormal basis",
+        "geometry reflection matches a virtual mirrored object",
+        "water-plane projection aligns for angle (-1.3, -1.2, 0.25), level 4.176689",
+        "reflected camera retains a right-handed orthonormal basis",
+        "geometry reflection matches a virtual mirrored object",
+        "water-plane projection aligns for angle (-1.3, -1.2, 0.25), level 22.0",
+        "reflected camera retains a right-handed orthonormal basis",
+        "geometry reflection matches a virtual mirrored object",
+        "ordinary views use display resolution within the 2048-pixel cap",
+        "large displays obey the reflection pixel budget",
+        "portrait views keep their aspect ratio",
+        "ordinary cameras cannot trigger reflected-view clipping",
+        "water geometry and reflected camera marker are distinct"
+      ],
+      "result": {
+        "checks": 32,
+        "failures": 0
+      }
+    },
+    "launcher_menu_smoke": {
+      "exit": 0,
+      "seconds": 29.92503477993887,
+      "command": [
+        "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/engine/godot-water-rt.x86_64",
+        "--quit-after",
+        "240",
+        "--render-thread",
+        "safe",
+        "--rendering-method",
+        "forward_plus",
+        "--rendering-driver",
+        "vulkan",
+        "--audio-driver",
+        "Dummy",
+        "--windowed",
+        "--resolution",
+        "1280x720",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies"
+      ],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/launcher-smoke/run.log",
+      "script_or_engine_errors": [],
+      "profile_verified": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0,
+        "auto_graphics": 0,
+        "gfx_water_reflections": 3
+      }
+    }
+  },
+  "translations": {
+    "command": "python3 tools/check_translations.py",
+    "entries": 3001,
+    "errors": 0,
+    "rendered_languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "viewport": [
+      1280,
+      720
+    ],
+    "review": "All four water choices and localized help fit; original archive UI labels remain in the supplied game edition."
+  },
+  "captures": {
+    "tree-water-mode-2.png": {
+      "path": "docs/validation/water-raytracing-2026-10-21/tree-water-mode-2.png",
+      "sha256": "dd309571db241a8832e75dfc701f208216c6ef7fe6eec415a253153afeef241b"
+    },
+    "tree-water-mode-3.png": {
+      "path": "docs/validation/water-raytracing-2026-10-21/tree-water-mode-3.png",
+      "sha256": "af64aae442b07f8ec1d89165cfc1ced7ae659076b8e7511a9bacc0f4c6778566"
+    },
+    "water-help-en.png": {
+      "path": "docs/validation/water-raytracing-2026-10-21/water-help-en.png",
+      "sha256": "254540831056f8e736f605b1200e781c8f099affedd9283934220e7f801d7503"
+    },
+    "water-help-ru.png": {
+      "path": "docs/validation/water-raytracing-2026-10-21/water-help-ru.png",
+      "sha256": "da8b45cc046a7346f80f2e3fce25763f2aa17cefb2ad48c4e32cc8312cd86272"
+    },
+    "water-help-de.png": {
+      "path": "docs/validation/water-raytracing-2026-10-21/water-help-de.png",
+      "sha256": "715f3560f6b2ebd8d9a41cf061be62ef0065f13f992250d57e95c1bf7b7b5400"
+    }
+  },
+  "profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "timing_limits": "Whole-frame wall times on a shared development machine, not isolated GPU timings. RT uses half dimensions and simpler static shading than Mirror; values are not a quality-matched benchmark.",
+  "known_limits": [
+    "Static snapshots omit units, animated foliage, particles, dynamic shadows and local lights.",
+    "Static object changes are picked up on recenter/rebuild, not continuously.",
+    "Single selected water plane, perspective cameras, 80 m geometry radius, half dimensions capped at 960 pixels.",
+    "Scene extraction and GPU structure preparation can hitch; memory cost remains.",
+    "Windows, macOS, other vendors, long sessions and hardware RT under Mobile are unqualified."
+  ],
+  "engine_diagnostic": "SPIR-V reflection prints OpTypeAccelerationStructureKHR is not supported yet during shader compilation; GPU readbacks and scene dispatch pass despite this nonfatal diagnostic."
+}

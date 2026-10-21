@@ -1,5 +1,6 @@
 extends Node
-## One bounded reflected scene view for Mirror water. Natural retains SSR.
+## One bounded reflected scene view for Mirror water, optionally replaced by
+## the experimental hardware RT texture. Natural retains SSR.
 ## Water has its own draw layer so the viewport never samples itself.
 const WATER_LAYER := 1 << 16
 ## Camera masks have 32 bits; bit 20 is outside the default 20 scene layers.
@@ -15,6 +16,8 @@ const OMIT_SCREEN_EFFECT := """
 """
 const REACH := 64.0
 const MAX_SIZE := 2048.0
+const RayDevice = preload("res://src/game/fx/water_raytrace_device.gd")
+const RayScene = preload("res://src/game/fx/water_raytrace_scene.gd")
 const CLIP := """
 #if CURRENT_RENDERER == RENDERER_FORWARD_PLUS
  if (!IN_SHADOW_PASS && (CAMERA_VISIBLE_LAYERS & 1048576u) != 0u &&
@@ -28,6 +31,13 @@ var camera: Camera3D
 var plane := -INF
 var _poll := 0.0
 var _source: Camera3D
+var _rt: RayDevice
+var _rt_scene: RayScene
+var _rt_ready := false
+var _rt_failed := false
+var _rt_center := Vector3.INF
+var _rt_plane := INF
+var rt_stats := {}
 
 
 static func supported() -> bool:
@@ -70,7 +80,7 @@ func _active() -> bool:
 	if world == null: return false
 	var game := world.get_parent() as Game
 	return game != null and not game.simulation_only and game.world == world \
-		and Gfx.on("gfx_water") and GameData.option("gfx_water_reflections") == 2
+		and Gfx.on("gfx_water") and GameData.option("gfx_water_reflections") >= 2
 
 
 func _process(dt: float) -> void:
@@ -111,6 +121,88 @@ func _process(dt: float) -> void:
 	material.set_shader_parameter("planar_view", camera.global_transform.affine_inverse())
 	material.set_shader_parameter("planar_enabled", true)
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	if GameData.option("gfx_water_reflections") == 3:
+		_update_raytrace(source)
+	else:
+		if _rt != null or _rt_scene != null:
+			_release_raytrace()
+			material.set_shader_parameter("planar_texture",viewport.get_texture())
+		_rt_failed = false
+
+
+func _update_raytrace(source: Camera3D) -> void:
+	if _rt_failed: return
+	if source.projection != Camera3D.PROJECTION_PERSPECTIVE:
+		terrain._water_mat.set_shader_parameter("planar_texture",viewport.get_texture())
+		rt_stats["active"] = false
+		return
+	if not RayDevice.supported():
+		_rt_failed = true
+		rt_stats = {"supported":false,"fallback":"planar"}
+		return
+	# Recenter when travelling or changing pools. While gathering a new
+	# snapshot the normal planar view remains complete and current.
+	if source.global_position.distance_to(_rt_center) > 16.0 or absf(plane-_rt_plane) > 0.25:
+		_release_raytrace()
+		terrain._water_mat.set_shader_parameter("planar_texture",viewport.get_texture())
+		_rt_center = source.global_position
+		_rt_plane = plane
+		_rt_scene = RayScene.new()
+		_rt_scene.begin(terrain,_rt_center,plane)
+	if _rt_scene != null:
+		if not _rt_scene.step(): return
+		rt_stats = {"supported":true,"triangles":_rt_scene.triangles,"textures":_rt_scene.images.size(),"radius":RayScene.RADIUS}
+		if _rt_scene.failed or _rt_scene.triangles == 0:
+			_rt_failed = true
+			rt_stats["fallback"] = "snapshot_budget"
+			_rt_scene = null
+			return
+		_rt = RayDevice.new()
+		_rt.prepared.connect(_raytrace_prepared)
+		RenderingServer.call_on_render_thread(_rt.build.bind(_rt_scene.vertices.to_byte_array(),_rt_scene.images))
+		_rt_scene = null
+	if not _rt_ready: return
+	var size := source.get_viewport().get_visible_rect().size
+	var scale := minf(0.5,960.0/maxf(size.x,size.y))
+	var target := Vector2i(maxi(2,roundi(size.x*scale)),maxi(2,roundi(size.y*scale)))
+	var frame := PackedFloat32Array()
+	var inverse := camera.get_camera_projection().inverse()
+	var transform := Projection(camera.global_transform)
+	for matrix: Projection in [inverse,transform]:
+		for axis in 4:
+			var v: Vector4 = matrix[axis]
+			frame.append_array(PackedFloat32Array([v.x,v.y,v.z,v.w]))
+	var sun_direction := Gfx._cloud_sun_direction
+	frame.append_array(PackedFloat32Array([Gfx.ambient.r,Gfx.ambient.g,Gfx.ambient.b,0,
+		Gfx.sun.r,Gfx.sun.g,Gfx.sun.b,0,sun_direction.x,sun_direction.y,sun_direction.z,plane,
+		Gfx.fog_depth.x,Gfx.fog_depth.y,source.far,0,Gfx.fog_sky.r,Gfx.fog_sky.g,Gfx.fog_sky.b,0]))
+	RenderingServer.call_on_render_thread(_rt.render.bind(target,frame.to_byte_array()))
+	terrain._water_mat.set_shader_parameter("planar_texture",_rt.output)
+	viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
+	rt_stats["active"] = true
+	rt_stats["size"] = [target.x,target.y]
+
+
+func _raytrace_prepared(ok: bool) -> void:
+	_rt_ready = ok
+	_rt_failed = not ok
+	if not ok:
+		rt_stats["fallback"] = "pipeline_failed"
+		_release_raytrace()
+		if is_instance_valid(terrain) and terrain._water_mat and viewport:
+			terrain._water_mat.set_shader_parameter("planar_texture",viewport.get_texture())
+
+
+func _release_raytrace() -> void:
+	_rt_ready = false
+	rt_stats["active"] = false
+	_rt_scene = null
+	_rt_center = Vector3.INF
+	_rt_plane = INF
+	if _rt != null:
+		_rt.prepared.disconnect(_raytrace_prepared)
+		RenderingServer.call_on_render_thread(_rt.dispose)
+		_rt = null
 
 
 func _create_view() -> void:
@@ -140,6 +232,7 @@ func _create_view() -> void:
 
 
 func _disable() -> void:
+	rt_stats["active"] = false
 	if is_instance_valid(terrain) and terrain._water_mat:
 		terrain._water_mat.set_shader_parameter("planar_enabled", false)
 	if viewport:
@@ -150,6 +243,7 @@ func _exit_tree() -> void:
 	_disable()
 	if is_instance_valid(terrain) and terrain._water_mat:
 		terrain._water_mat.set_shader_parameter("planar_texture", null)
+	_release_raytrace()
 
 
 func _select_plane(source: Camera3D) -> float:

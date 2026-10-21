@@ -1,0 +1,31 @@
+--- a/servers/rendering/rendering_shader_container.cpp
++++ b/servers/rendering/rendering_shader_container.cpp
+@@ -292,11 +292,11 @@
+ 		// This makes no practical difference in current graphics drivers, since Vulkan is the outlier.
+ 		BitField<RDC::ShaderStage> uniform_stage_flags;
+ 		if (pipeline_type == RDC::PIPELINE_TYPE_RAYTRACING) {
+-			uniform_stage_flags = RDC::SHADER_STAGE_RAYGEN |
+-					RDC::SHADER_STAGE_ANY_HIT |
+-					RDC::SHADER_STAGE_CLOSEST_HIT |
+-					RDC::SHADER_STAGE_MISS |
+-					RDC::SHADER_STAGE_INTERSECTION;
++			uniform_stage_flags = RDC::SHADER_STAGE_RAYGEN_BIT |
++					RDC::SHADER_STAGE_ANY_HIT_BIT |
++					RDC::SHADER_STAGE_CLOSEST_HIT_BIT |
++					RDC::SHADER_STAGE_MISS_BIT |
++					RDC::SHADER_STAGE_INTERSECTION_BIT;
+ 		} else {
+ 			uniform_stage_flags = stage_flag;
+ 		}
+--- a/core/os/os.cpp
++++ b/core/os/os.cpp
+@@ -469,6 +469,9 @@
+ }
+ 
+ bool OS::has_feature(const String &p_feature) {
++	if (p_feature == "ei_raytracing_uniform_stages") {
++		return true;
++	}
+ 	// Sky subpass alpha is independent of exposure and Mobile RGB scaling.
+ 	if (p_feature == "ei_sky_subpass_alpha") {
+ 		return true;

@@ -51,6 +51,8 @@ static func tl(list: Array) -> Array:
 
 ## English → [Russian, German].
 const TEXTS := {
+	"Ray traced (test)": ["Трассировка (тест)", "Raytracing (Test)"],
+	"Natural: subtle screen-space reflections. Mirror: calmer scene reflections. Ray traced (test): Vulkan hardware ray tracing of nearby static scenery; excludes creatures, moving foliage and shadow effects. Uses Mirror when unavailable or preparing. Higher GPU and memory cost. Off keeps the sky. Requires water effects.": ["Естественные: мягкие отражения в пределах экрана. Зеркальные: спокойные отражения сцены. Трассировка (тест): аппаратная трассировка лучей Vulkan для ближайших неподвижных объектов; без персонажей, движения листвы и теней. При недоступности или подготовке используются зеркальные отражения. Повышенный расход видеопамяти и нагрузка на видеокарту. Выкл.: остаётся небо. Требуются эффекты воды.", "Natürlich: dezente Bildschirmraumreflexionen. Spiegelnd: ruhigere Szenenreflexionen. Raytracing (Test): Vulkan-Hardware-Raytracing für nahe statische Umgebung; ohne Kreaturen, bewegtes Laub und Schatteneffekte. Bei fehlender Unterstützung oder während der Vorbereitung wird Spiegelnd verwendet. Höhere GPU- und Speicherkosten. Aus behält den Himmel. Benötigt Wassereffekte."],
 	"Yes": ["Да", "Ja"],
 	"No": ["Нет", "Nein"],
 	"%s [id %d]  HP %.1f/%.1f  Energy %.1f/%.1f  Position %.2f, %.2f": ["%s [id %d]  Здоровье %.1f/%.1f  Энергия %.1f/%.1f  Позиция %.2f, %.2f", "%s [id %d]  LP %.1f/%.1f  Energie %.1f/%.1f  Position %.2f, %.2f"],
