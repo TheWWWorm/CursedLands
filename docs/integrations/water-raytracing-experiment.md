@@ -42,6 +42,8 @@ for the normal executable. No release version or published artifact is changed.
   its own acceleration structure. Hidden and invisible units are masked out.
 - Moving more than 16 m or changing pools rebuilds the snapshot. A once-per-second
   membership check detects spawned, removed and replaced meshes or materials.
+  It also detects edits to supported tint, emission and transparency properties
+  on an existing material resource.
   Deleted or hidden instances disappear immediately. Mirror remains visible
   during extraction and GPU preparation.
 - Direct sunlight and up to four nearby point lights cast traced hard shadows
@@ -53,8 +55,14 @@ for the normal executable. No release version or published artifact is changed.
   fog approximate the game's raster materials. This is one reflection bounce
   with direct-light shadows; it does not add global illumination or multiple
   reflection bounces. Mirror and RT are not equal-quality rendering paths.
+- Standard materials support opaque surfaces and alpha scissor with their
+  authored threshold. Opaque surfaces ignore texture/material alpha. Tint
+  affects ambient as well as direct light; solid-colour emission is independent
+  of albedo and retains HDR energy. Triangle ArrayMeshes and procedural
+  PrimitiveMeshes are supported; point meshes have no reflected surface.
 - Particles, shader-only wind, procedural ground effects, custom vertex-shader
-  deformations and blended transparency are omitted. Texture pixels are
+  deformations, blended/hashed transparency, textured emission, custom UV
+  transforms and normal maps are omitted. Texture pixels are
   snapshots: replacing a texture resource refreshes it, but in-place texture
   painting and mesh edits require a scene rebuild. Lighting and camera-specific
   body shaders are not reproduced exactly.
@@ -247,3 +255,55 @@ remain passing. The 49 native parity checks also pass with the extension
 translation unit instrumented by AddressSanitizer and UndefinedBehaviorSanitizer.
 That CPU check uses software OpenGL and a private loader adapter; it does not
 establish sanitizer coverage of the engine or Vulkan driver.
+
+## Material handling and opaque rays
+
+Each geometry now carries its material cutoff and shading type. Terrain and
+opaque materials ignore alpha, while alpha-scissor materials use their authored
+threshold for both reflection and shadow rays. Fully opaque geometry is marked
+opaque in its acceleration structure, avoiding unnecessary any-hit shader
+invocations. Foliage keeps alpha testing. The diagnostic command-line switch
+`--ei-water-rt-force-anyhit` disables only this optimization for comparison.
+
+Standard material tint now affects ambient light as well as direct light.
+Solid-colour emission is independent of the albedo texture and retains values
+above one in the HDR reflection. Blended, hashed and depth-prepass transparency
+are omitted instead of being treated as solid cutout surfaces. The reflection
+still approximates lighting and does not implement the full raster material.
+
+The scene poll detects changes to supported material values even when the
+resource ID stays the same, then rebuilds under the existing Mirror fallback.
+Procedural triangle meshes are also included. GPU teardown owns its copied
+geometry descriptors and no longer clears the CPU scene's array.
+
+`tools/tests/water_raytrace_materials.gd` checks colour, alpha, HDR emission,
+shadows, terrain and cleanup using actual GPU readbacks with the opaque flags
+enabled and disabled. It passes through both the native and script packing
+paths. `water_raytrace_material_live.gd` adds a procedural probe to the real
+river and verifies red-to-green emission, transparency and threshold edits on
+the same material resource, plus Mirror continuity while rebuilding.
+
+The full pass has 431 successful assertions, including existing animation,
+visibility, camera, fallback, cyan-wedge and EN/RU/DE regressions. Engine and
+native binaries are unchanged. Evidence and source/binary hashes are recorded
+in `docs/validation/water-raytracing-materials-2026-10-21.json`.
+
+Three interleaved moving-character rounds on the RTX 3090 produced these
+medians of round medians. Each variant uses the same scene and renderer; the
+last two use the exact same PCK with only the opaque flag switch changed.
+
+| Variant | RT GPU pass | RT controller CPU | RT / Mirror FPS |
+| --- | --- | --- | --- |
+| Previous build `4745d931` | 0.582 ms | 0.748 ms | 33.2 / 31.6 |
+| Material handling, opaque flags enabled | 0.582 ms | 0.754 ms | 31.8 / 30.6 |
+| Same build, opaque flags disabled | 0.580 ms | 0.761 ms | 32.3 / 31.7 |
+
+The material fixes retain essentially the same reflection-pass cost. Skipping
+opaque any-hit work does not produce a measurable timing benefit in this
+fixture, and whole-frame variation does not establish an FPS improvement.
+Mirror and RT still differ in resolution, antialiasing and material fidelity.
+The fixed river reflection matches the prior build exactly; disabling the
+opaque flags changes five of 230,400 RGB pixels by one 8-bit channel value.
+Preparation in the separate cost probe was 2.71 / 2.56 / 2.63 seconds respectively,
+with Mirror visible during each build. There are 751 opaque geometry descriptors
+among 1,303 total; that includes hidden geometry and is not an active BLAS count.

@@ -166,8 +166,12 @@ func _update_raytrace(source: Camera3D) -> void:
 		_rt = RayDevice.new()
 		_rt.prepared.connect(_raytrace_prepared)
 		var geometries := []; var placements := []
+		var opaque := 0
 		for geometry: Dictionary in _rt_scene.geometries:
-			geometries.append({"offset":geometry.offset,"count":geometry.count})
+			geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,
+				"cutoff":geometry.cutoff,"standard":geometry.standard})
+			if geometry.opaque: opaque += 1
+		rt_stats["opaque_geometries"] = opaque
 		for entry: Dictionary in _rt_scene.instances:
 			placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":0})
 		RenderingServer.call_on_render_thread(_rt.build.bind(_rt_scene.vertices.to_byte_array(),_rt_scene.images,geometries,placements))

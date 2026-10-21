@@ -1,0 +1,72 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+Vulkan 1.4.312 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090
+
+[trace 21:59:38 +3649ms] session baf4d619adf1: 1.21.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, forward_plus / vulkan
+PASS qualified Vulkan RT runtime is available
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS instanced geometry build, alpha=1.0
+PASS opaque blocker casts a sun shadow
+PASS hiding an instance removes its shadow immediately
+PASS moving an instance updates the shadow without rebuilding mesh data
+PASS instance custom index addresses its own green texture/vertices
+PASS restoring a moved instance restores its shadow
+PASS changed blend-shape vertices rebuild the relevant BLAS
+PASS restoring posed vertices restores their shadow
+PASS nearby red point light illuminates the reflected surface
+PASS point-light occlusion is traced
+PASS turning off a local light updates without a scene rebuild
+PASS instanced/shadow resources are released
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS instanced geometry build, alpha=0.0
+PASS transparent texels do not cast a solid shadow
+PASS orthographic primary rays reflect the same receiver
+PASS orthographic misses preserve the sky
+PASS instanced/shadow resources are released
+PASS blend mode 0: scene extracts live morph geometry
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS blend mode 0: extracted geometry builds
+PASS blend mode 0: base pose intersects camera ray
+PASS blend mode 0: deformed mesh moves out of camera ray
+PASS blend mode 0: restoring weight restores geometry
+PASS shadow-only meshes stay out of primary reflection rays
+PASS non-shadow-casting meshes remain visible in primary rays
+PASS unchanged blend weights avoid repeated geometry uploads
+PASS all-hidden scene builds an empty TLAS and returns sky
+PASS empty TLAS accepts a revealed instance without recreating the device
+PASS blend mode 1: scene extracts live morph geometry
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS blend mode 1: extracted geometry builds
+PASS blend mode 1: base pose intersects camera ray
+PASS blend mode 1: deformed mesh moves out of camera ray
+PASS blend mode 1: restoring weight restores geometry
+PASS shadow-only meshes stay out of primary reflection rays
+PASS non-shadow-casting meshes remain visible in primary rays
+PASS unchanged blend weights avoid repeated geometry uploads
+PASS all-hidden scene builds an empty TLAS and returns sky
+PASS empty TLAS accepts a revealed instance without recreating the device
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS an initially hidden scene prepares without geometry builds
+PASS hidden posed geometry stays unbuilt and invisible
+PASS first reveal builds the latest posed vertices
+PASS revealed geometry receives later pose changes
+PASS hide and reveal reuse the existing geometry structure
+PASS lazily allocated geometry releases all GPU resources
+WATER_RT_DEVICE 44 checks 0 failures
+[trace 21:59:44 +9049ms] clean exit

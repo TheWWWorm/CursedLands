@@ -1,0 +1,49 @@
+{
+	"prepare_ms": 2625.171,
+	"scene": {
+		"active": true,
+		"active_instances": 433,
+		"built_blas": 302,
+		"geometries": 1303,
+		"instances": 1438,
+		"lights": 1,
+		"native_scene": true,
+		"opaque_geometries": 751,
+		"radius": 96.0,
+		"size": [
+			640,
+			360
+		],
+		"supported": true,
+		"textures": 46,
+		"triangles": 114085,
+		"updated_instances": 0,
+		"updated_morphs": 0
+	},
+	"updates": {
+		"moving": {
+			"changed_instances": {
+				"median": 17,
+				"n": 150,
+				"p95": 17
+			},
+			"ms": {
+				"median": 0.114,
+				"n": 150,
+				"p95": 0.121
+			}
+		},
+		"static": {
+			"changed_instances": {
+				"median": 0,
+				"n": 150,
+				"p95": 0
+			},
+			"ms": {
+				"median": 0.094,
+				"n": 150,
+				"p95": 0.1
+			}
+		}
+	}
+}

@@ -1,0 +1,712 @@
+{
+  "date": "2026-10-21",
+  "recorded_at": "2026-10-21T20:06:02.570815+00:00",
+  "kind": "Local water RT material handling and opaque-ray optimization; no release publication",
+  "source_parent": "4745d9311b00495019644d5c40bc9ba76d8971b1",
+  "source_sha256": {
+    "game/src/game/fx/water_raytrace_scene.gd": "5bc88e9832f45329dcc4416aa6c6b21a569bc5ec111428891428cbf6c2c98ac2",
+    "game/src/game/fx/water_raytrace_device.gd": "b4475a6a69e31d63833585a1fa2a5626f6c7f32becfcc04cec4ff1cda637df55",
+    "game/src/game/fx/water_reflection.gd": "2deb9a12cc8bc14110c6eb3696acafee11eef7a11ecd5733e45ebad0a281853d",
+    "tools/tests/water_raytrace_materials.gd": "8722646b0065711520888ee41f0092fc675af443092c78cbe117043aa0fa5166",
+    "tools/tests/water_raytrace_material_live.gd": "7432290ca6ca249d1be88e55d50d079189ebcea9b68117f241d83aba7f95cbc3",
+    "tools/tests/water_raytrace_live.gd": "8962f2118a991032d463e095db19039ba190f364f562986d31a42601842b9533",
+    "tools/tests/water_raytrace_performance.gd": "fb0a4ccc42e1d5b029ecdfa69f1ff7c115666eb8fe6eef9289d28014aef5fe56",
+    "tools/tests/water_raytrace_dynamic_performance.gd": "0e8e398ad64e957115fa17d03d6480e8895d23c961551f291f64e8f968d443ed",
+    "tools/tests/water_raytrace_cost.gd": "88486b2a608fbcd02656874b7b4100fc6f24a3a555bd75e7bb21a5d3790b8496"
+  },
+  "baseline": {
+    "source_commit": "4745d9311b00495019644d5c40bc9ba76d8971b1",
+    "archive": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/baseline-4745d931",
+    "pack_sha256": "3b165d21d499c3f9269d4c040502c5b9d8fb27ad2133a6c56fd88bb2a7fdd616",
+    "same_engine_and_native_library": true
+  },
+  "engine_sha256": "5cd55e014b01f542e23e0591bdcd5481c676d29ad7cf283b87d6e329c1428815",
+  "pack_sha256": "ca314994ad69b3594564d3ef93154cba2b021a4e3e9a23d579c93ff01efc1595",
+  "native_sha256": "3db467d514bc0f1b749375733bc11ac14785c9d996965751222a4829d0c9a348",
+  "prior_native_sanitizer_qualification": "water-raytracing-optimization-2026-10-21.json",
+  "device": "NVIDIA GeForce RTX 3090",
+  "renderer": "Forward+ Vulkan",
+  "window": [
+    1280,
+    720
+  ],
+  "rt_target": [
+    640,
+    360
+  ],
+  "changes": [
+    "Opaque geometry skips any-hit shaders; textured cutouts retain per-material alpha thresholds for primary and shadow rays.",
+    "Standard material tint applies in ambient light; solid-colour emission is independent linear HDR radiance. Opaque materials and terrain ignore texture alpha.",
+    "Supported tint/emission/transparency changes on existing material resources trigger a Mirror-backed rebuild.",
+    "Procedural PrimitiveMesh triangle geometry enters the scene; PointMesh and unsupported mesh types are omitted.",
+    "GPU owner copies geometry descriptors so teardown cannot clear its caller scene array."
+  ],
+  "validation": {
+    "device": {
+      "result": {
+        "checks": 19,
+        "failures": []
+      },
+      "run": {
+        "exit": 0,
+        "seconds": 5.9669514880515635,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-material-final-device"
+      },
+      "raw": "water-raytracing-materials-2026-10-21/device.json",
+      "log": "water-raytracing-materials-2026-10-21/device.txt",
+      "command": "water-raytracing-materials-2026-10-21/device-command.json"
+    },
+    "lighting": {
+      "result": {
+        "checks": 44,
+        "failures": []
+      },
+      "run": {
+        "exit": 0,
+        "seconds": 9.504698344971985,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-material-final-lighting"
+      },
+      "raw": "water-raytracing-materials-2026-10-21/lighting.json",
+      "log": "water-raytracing-materials-2026-10-21/lighting.txt",
+      "command": "water-raytracing-materials-2026-10-21/lighting-command.json"
+    },
+    "native_parity": {
+      "result": {
+        "checks": 49,
+        "failures": []
+      },
+      "run": {
+        "exit": 0,
+        "seconds": 4.36616234399844,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-material-final-native"
+      },
+      "raw": "water-raytracing-materials-2026-10-21/native_parity.json",
+      "log": "water-raytracing-materials-2026-10-21/native_parity.txt",
+      "command": "water-raytracing-materials-2026-10-21/native_parity-command.json"
+    },
+    "materials_native": {
+      "result": {
+        "checks": 120,
+        "failures": []
+      },
+      "run": {
+        "exit": 0,
+        "seconds": 10.218638802063651,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-material-final-materials"
+      },
+      "raw": "water-raytracing-materials-2026-10-21/materials_native.json",
+      "log": "water-raytracing-materials-2026-10-21/materials_native.txt",
+      "command": "water-raytracing-materials-2026-10-21/materials_native-command.json"
+    },
+    "materials_script": {
+      "result": {
+        "checks": 120,
+        "failures": []
+      },
+      "run": {
+        "exit": 0,
+        "seconds": 10.419201445067301,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-material-final-materials-script"
+      },
+      "raw": "water-raytracing-materials-2026-10-21/materials_script.json",
+      "log": "water-raytracing-materials-2026-10-21/materials_script.txt",
+      "command": "water-raytracing-materials-2026-10-21/materials_script-command.json"
+    },
+    "live_character": {
+      "result": {
+        "animated_parts": 18,
+        "animation_pixels": 64,
+        "checks": 15,
+        "failures": [],
+        "movement_pixels": 143,
+        "stats": {
+          "active": true,
+          "geometries": 1737,
+          "instances": 1927,
+          "lights": 2,
+          "native_scene": true,
+          "opaque_geometries": 1059,
+          "radius": 96.0,
+          "size": [
+            640,
+            360
+          ],
+          "supported": true,
+          "textures": 47,
+          "triangles": 139046,
+          "updated_instances": 1927,
+          "updated_morphs": 0
+        },
+        "visibility_pixels": 143
+      },
+      "run": {
+        "exit": 0,
+        "seconds": 25.511608025990427,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-material-final-live"
+      },
+      "raw": "water-raytracing-materials-2026-10-21/live_character.json",
+      "log": "water-raytracing-materials-2026-10-21/live_character.txt",
+      "command": "water-raytracing-materials-2026-10-21/live_character-command.json"
+    },
+    "cyan_water_regression": {
+      "result": {
+        "cases": [
+          {
+            "case": "mode-0-turn-0.0",
+            "fixed_blue_mean": 0.340718504932935,
+            "front_error": 0.0,
+            "old_blue_mean": 0.610485902316417,
+            "wedge_pixels": 1567
+          },
+          {
+            "case": "mode-2-turn-0.0",
+            "fixed_blue_mean": 0.340718504932935,
+            "front_error": 0.0,
+            "old_blue_mean": 0.610485902316417,
+            "wedge_pixels": 1567
+          },
+          {
+            "case": "mode-3-turn-0.0",
+            "fixed_blue_mean": 0.340718504932935,
+            "front_error": 0.0,
+            "old_blue_mean": 0.610485902316417,
+            "wedge_pixels": 1567
+          },
+          {
+            "case": "mode-3-turn--0.025",
+            "fixed_blue_mean": 0.341190296502514,
+            "front_error": 0.0,
+            "old_blue_mean": 0.610562698076699,
+            "wedge_pixels": 1703
+          },
+          {
+            "case": "mode-3-turn-0.025",
+            "fixed_blue_mean": 0.339546462422923,
+            "front_error": 0.0,
+            "old_blue_mean": 0.610177049511357,
+            "wedge_pixels": 1482
+          }
+        ],
+        "checks": 19,
+        "failures": []
+      },
+      "run": {
+        "exit": 0,
+        "seconds": 28.176177831948735,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-material-final-artifact"
+      },
+      "raw": "water-raytracing-materials-2026-10-21/cyan_water_regression.json",
+      "log": "water-raytracing-materials-2026-10-21/cyan_water_regression.txt",
+      "command": "water-raytracing-materials-2026-10-21/cyan_water_regression-command.json"
+    },
+    "river_localization": {
+      "result": {
+        "checks": 29,
+        "device": "NVIDIA GeForce RTX 3090",
+        "failures": [],
+        "renderer": "forward_plus",
+        "rows": [
+          {
+            "median_ms": 27.174,
+            "mode": 0,
+            "p95_ms": 29.475,
+            "stats": {}
+          },
+          {
+            "median_ms": 30.726,
+            "mode": 2,
+            "p95_ms": 33.332,
+            "stats": {}
+          },
+          {
+            "median_ms": 29.082,
+            "mode": 3,
+            "p95_ms": 31.577,
+            "stats": {
+              "active": true,
+              "geometries": 2684,
+              "instances": 3008,
+              "lights": 4,
+              "native_scene": true,
+              "opaque_geometries": 1871,
+              "radius": 96.0,
+              "size": [
+                640,
+                360
+              ],
+              "supported": true,
+              "textures": 44,
+              "triangles": 189384,
+              "updated_instances": 0,
+              "updated_morphs": 0
+            }
+          }
+        ],
+        "supported": true
+      },
+      "run": {
+        "exit": 0,
+        "seconds": 43.283355916966684,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-material-final-scene"
+      },
+      "raw": "water-raytracing-materials-2026-10-21/river_localization.json",
+      "log": "water-raytracing-materials-2026-10-21/river_localization.txt",
+      "command": "water-raytracing-materials-2026-10-21/river_localization-command.json"
+    },
+    "live_materials": {
+      "result": {
+        "checks": 16,
+        "failures": [],
+        "stats": {
+          "active": true,
+          "geometries": 1286,
+          "instances": 1421,
+          "lights": 1,
+          "native_scene": true,
+          "opaque_geometries": 735,
+          "radius": 96.0,
+          "size": [
+            640,
+            360
+          ],
+          "supported": true,
+          "textures": 44,
+          "triangles": 112956,
+          "updated_instances": 0,
+          "updated_morphs": 0
+        }
+      },
+      "run": {
+        "exit": 0,
+        "seconds": 25.043045575963333,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-material-live7"
+      },
+      "raw": "water-raytracing-materials-2026-10-21/live_materials.json",
+      "log": "water-raytracing-materials-2026-10-21/live_materials.txt",
+      "command": "water-raytracing-materials-2026-10-21/live_materials-command.json"
+    }
+  },
+  "total_functional_checks": 431,
+  "cost_probe": {
+    "baseline": {
+      "result": {
+        "prepare_ms": 2705.515,
+        "scene": {
+          "active": true,
+          "active_instances": 433,
+          "built_blas": 302,
+          "geometries": 1303,
+          "instances": 1438,
+          "lights": 1,
+          "native_scene": true,
+          "radius": 96.0,
+          "size": [
+            640,
+            360
+          ],
+          "supported": true,
+          "textures": 46,
+          "triangles": 114085,
+          "updated_instances": 0,
+          "updated_morphs": 0
+        },
+        "updates": {
+          "moving": {
+            "changed_instances": {
+              "median": 17,
+              "n": 150,
+              "p95": 17
+            },
+            "ms": {
+              "median": 0.115,
+              "n": 150,
+              "p95": 0.142
+            }
+          },
+          "static": {
+            "changed_instances": {
+              "median": 0,
+              "n": 150,
+              "p95": 0
+            },
+            "ms": {
+              "median": 0.097,
+              "n": 150,
+              "p95": 0.129
+            }
+          }
+        }
+      },
+      "run": {
+        "exit": 0,
+        "seconds": 16.872196543961763,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-material-cost-baseline"
+      },
+      "raw": "water-raytracing-materials-2026-10-21/cost-baseline.json",
+      "log": "water-raytracing-materials-2026-10-21/cost-baseline.txt",
+      "command": "water-raytracing-materials-2026-10-21/cost-baseline-command.json"
+    },
+    "fast": {
+      "result": {
+        "prepare_ms": 2563.802,
+        "scene": {
+          "active": true,
+          "active_instances": 433,
+          "built_blas": 302,
+          "geometries": 1303,
+          "instances": 1438,
+          "lights": 1,
+          "native_scene": true,
+          "opaque_geometries": 751,
+          "radius": 96.0,
+          "size": [
+            640,
+            360
+          ],
+          "supported": true,
+          "textures": 46,
+          "triangles": 114085,
+          "updated_instances": 0,
+          "updated_morphs": 0
+        },
+        "updates": {
+          "moving": {
+            "changed_instances": {
+              "median": 17,
+              "n": 150,
+              "p95": 17
+            },
+            "ms": {
+              "median": 0.114,
+              "n": 150,
+              "p95": 0.121
+            }
+          },
+          "static": {
+            "changed_instances": {
+              "median": 0,
+              "n": 150,
+              "p95": 0
+            },
+            "ms": {
+              "median": 0.093,
+              "n": 150,
+              "p95": 0.1
+            }
+          }
+        }
+      },
+      "run": {
+        "exit": 0,
+        "seconds": 16.27136489690747,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-material-cost-fast"
+      },
+      "raw": "water-raytracing-materials-2026-10-21/cost-fast.json",
+      "log": "water-raytracing-materials-2026-10-21/cost-fast.txt",
+      "command": "water-raytracing-materials-2026-10-21/cost-fast-command.json"
+    },
+    "anyhit": {
+      "result": {
+        "prepare_ms": 2625.171,
+        "scene": {
+          "active": true,
+          "active_instances": 433,
+          "built_blas": 302,
+          "geometries": 1303,
+          "instances": 1438,
+          "lights": 1,
+          "native_scene": true,
+          "opaque_geometries": 751,
+          "radius": 96.0,
+          "size": [
+            640,
+            360
+          ],
+          "supported": true,
+          "textures": 46,
+          "triangles": 114085,
+          "updated_instances": 0,
+          "updated_morphs": 0
+        },
+        "updates": {
+          "moving": {
+            "changed_instances": {
+              "median": 17,
+              "n": 150,
+              "p95": 17
+            },
+            "ms": {
+              "median": 0.114,
+              "n": 150,
+              "p95": 0.121
+            }
+          },
+          "static": {
+            "changed_instances": {
+              "median": 0,
+              "n": 150,
+              "p95": 0
+            },
+            "ms": {
+              "median": 0.094,
+              "n": 150,
+              "p95": 0.1
+            }
+          }
+        }
+      },
+      "run": {
+        "exit": 0,
+        "seconds": 16.37139365891926,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-material-cost-anyhit"
+      },
+      "raw": "water-raytracing-materials-2026-10-21/cost-anyhit.json",
+      "log": "water-raytracing-materials-2026-10-21/cost-anyhit.txt",
+      "command": "water-raytracing-materials-2026-10-21/cost-anyhit-command.json"
+    }
+  },
+  "moving_benchmark": {
+    "baseline": {
+      "run": {
+        "exit": 0,
+        "seconds": 42.550738304969855,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-material-moving-baseline"
+      },
+      "raw": "water-raytracing-materials-2026-10-21/moving-baseline.json",
+      "log": "water-raytracing-materials-2026-10-21/moving-baseline.txt",
+      "command": "water-raytracing-materials-2026-10-21/moving-baseline-command.json",
+      "summary": {
+        "mirror_full": {
+          "frame_ms": [
+            29.05,
+            31.785,
+            31.602
+          ],
+          "reflection_gpu_ms": [
+            0.398000001907349,
+            0.88400000333786,
+            0.912000000476837
+          ],
+          "controller_cpu_ms": [
+            0.043,
+            0.042,
+            0.042
+          ],
+          "fps_from_median": 31.64356686285678,
+          "prepare_ms": [
+            217,
+            147,
+            137
+          ]
+        },
+        "rt_half": {
+          "frame_ms": [
+            29.932,
+            30.115,
+            31.344
+          ],
+          "reflection_gpu_ms": [
+            0.534272,
+            0.58224,
+            0.608032
+          ],
+          "controller_cpu_ms": [
+            0.749,
+            0.735,
+            0.748
+          ],
+          "fps_from_median": 33.20604349991699,
+          "prepare_ms": [
+            2902,
+            130,
+            3013
+          ]
+        }
+      }
+    },
+    "fast": {
+      "run": {
+        "exit": 0,
+        "seconds": 42.933186060981825,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-material-moving-fast"
+      },
+      "raw": "water-raytracing-materials-2026-10-21/moving-fast.json",
+      "log": "water-raytracing-materials-2026-10-21/moving-fast.txt",
+      "command": "water-raytracing-materials-2026-10-21/moving-fast-command.json",
+      "summary": {
+        "mirror_full": {
+          "frame_ms": [
+            28.935,
+            33.02,
+            32.686
+          ],
+          "reflection_gpu_ms": [
+            0.395999997854233,
+            0.943000018596649,
+            0.939000010490417
+          ],
+          "controller_cpu_ms": [
+            0.042,
+            0.045,
+            0.043
+          ],
+          "fps_from_median": 30.594138163127944,
+          "prepare_ms": [
+            213,
+            144,
+            143
+          ]
+        },
+        "rt_half": {
+          "frame_ms": [
+            30.031,
+            31.483,
+            31.92
+          ],
+          "reflection_gpu_ms": [
+            0.513216,
+            0.5816,
+            0.581952
+          ],
+          "controller_cpu_ms": [
+            0.742,
+            0.756,
+            0.754
+          ],
+          "fps_from_median": 31.76317377632373,
+          "prepare_ms": [
+            2896,
+            132,
+            3151
+          ]
+        }
+      }
+    },
+    "anyhit": {
+      "run": {
+        "exit": 0,
+        "seconds": 42.281868163030595,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-material-moving-anyhit"
+      },
+      "raw": "water-raytracing-materials-2026-10-21/moving-anyhit.json",
+      "log": "water-raytracing-materials-2026-10-21/moving-anyhit.txt",
+      "command": "water-raytracing-materials-2026-10-21/moving-anyhit-command.json",
+      "summary": {
+        "mirror_full": {
+          "frame_ms": [
+            28.646,
+            32.184,
+            31.509
+          ],
+          "reflection_gpu_ms": [
+            0.395999997854233,
+            0.921000003814697,
+            0.901000022888184
+          ],
+          "controller_cpu_ms": [
+            0.044,
+            0.045,
+            0.044
+          ],
+          "fps_from_median": 31.73696404201974,
+          "prepare_ms": [
+            210,
+            142,
+            134
+          ]
+        },
+        "rt_half": {
+          "frame_ms": [
+            29.396,
+            31.739,
+            30.941
+          ],
+          "reflection_gpu_ms": [
+            0.519712,
+            0.58032,
+            0.593056
+          ],
+          "controller_cpu_ms": [
+            0.727,
+            0.773,
+            0.761
+          ],
+          "fps_from_median": 32.31957596716331,
+          "prepare_ms": [
+            2738,
+            131,
+            3074
+          ]
+        }
+      }
+    }
+  },
+  "reflection_parity": [
+    {
+      "left": "fast",
+      "right": "baseline",
+      "size": [
+        640,
+        360
+      ],
+      "changed_pixels": 0,
+      "max_channel_error": 0,
+      "mean_channel_error": 0.0
+    },
+    {
+      "left": "fast",
+      "right": "anyhit",
+      "size": [
+        640,
+        360
+      ],
+      "changed_pixels": 5,
+      "max_channel_error": 1,
+      "mean_channel_error": 7.2337962962962966e-06
+    }
+  ],
+  "captures": {
+    "water-character.png": "water-raytracing-materials-2026-10-21/water-character.png",
+    "river-fixed.png": "water-raytracing-materials-2026-10-21/river-fixed.png",
+    "river-negative-control.png": "water-raytracing-materials-2026-10-21/river-negative-control.png",
+    "orthographic-water.png": "water-raytracing-materials-2026-10-21/orthographic-water.png",
+    "material-red.png": "water-raytracing-materials-2026-10-21/material-red.png",
+    "material-green.png": "water-raytracing-materials-2026-10-21/material-green.png",
+    "material-cutout.png": "water-raytracing-materials-2026-10-21/material-cutout.png",
+    "material-restored.png": "water-raytracing-materials-2026-10-21/material-restored.png",
+    "water-help-en.png": "water-raytracing-materials-2026-10-21/water-help-en.png",
+    "water-help-ru.png": "water-raytracing-materials-2026-10-21/water-help-ru.png",
+    "water-help-de.png": "water-raytracing-materials-2026-10-21/water-help-de.png"
+  },
+  "conclusions": [
+    "431 functional assertions pass. Existing river reflection matches the previous build exactly; new material behavior is exercised by independent synthetic and live-river GPU readbacks.",
+    "RT pass median-of-medians is 0.582240 ms baseline, 0.581600 ms current opaque flags enabled, and 0.580320 ms flags disabled. No measurable opaque-fast-path speedup is established in this fixture.",
+    "Current RT/Mirror frame rates are 31.8/30.6 FPS. Baseline and diagnostic-control differences vary with the shared machine; the added material coverage does not establish an overall FPS gain."
+  ],
+  "measurement_method": [
+    "All benchmarks run sequentially on the same GPU. Baseline is an archived executable/PCK/library at source_parent; the current fast and --ei-water-rt-force-anyhit variants share one exact PCK.",
+    "Three interleaved RT/Mirror rounds per variant, 35 settling frames then 90 measured frames per case. One original character moves and animates each frame. Vsync and frame cap disabled.",
+    "RT uses 640x360 and GPU timestamps bracketing queued reflection work; normal Mirror uses 1280x720, 2x MSAA and engine viewport GPU time. They differ in materials and scene coverage.",
+    "CPU bracket covers reflection controller callbacks, not the whole game or render thread. FPS is the reciprocal of the median of three round-median frame times.",
+    "Cost probes measure mode-selection preparation once per variant, after map load with shared asset/shader caches. CPU update probe uses 150 samples after 10 warm-ups.",
+    "Raw reflection PNG comparisons use all 230400 RGB pixels. Synthetic material GPU tests additionally compare float HDR readback with and without opaque acceleration flags.",
+    "opaque_geometries counts all scene descriptors, including hidden/unbuilt geometry; it is not the count of active opaque BLAS objects.",
+    "Copied text logs have trailing whitespace normalized. Failed exploratory tests are superseded by the accepted final runs recorded here."
+  ],
+  "limits": [
+    "Shared development machine; timings do not establish a general FPS advantage or qualify crowded combat, other GPUs or operating systems.",
+    "One reflection bounce and hard direct-light shadows. Particles, shader-only wind, blended/hashed transparency, GI, normal maps, textured emission and custom UV transforms remain unsupported.",
+    "Supported material values are polled once per second, then rebuilt. Texture pixel edits and in-place mesh geometry edits still require a separate snapshot rebuild.",
+    "Standard lighting approximates the existing reflection shader, not the full raster material BRDF. Emission supports solid colour and energy multiplier only.",
+    "Engine and native library are unchanged in this pass. Prior native ASan/UBSan qualification is referenced, not rerun or counted again.",
+    "Known engine SPIR-V OpTypeAccelerationStructureKHR diagnostic and private-Xvfb input-method warning remain; no script errors or failed assertions occur in accepted runs."
+  ],
+  "test_profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  }
+}

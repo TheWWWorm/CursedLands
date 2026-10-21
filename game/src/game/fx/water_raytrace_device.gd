@@ -9,9 +9,11 @@ const COMMON := """#version 460
 layout(set=0,binding=0) uniform accelerationStructureEXT scene;
 layout(set=0,binding=1,rgba16f) uniform image2D output_image;
 struct Vertex { vec4 position_u; vec4 normal_v; vec4 diffuse; vec4 emission_layer; };
-struct Surface { vec4 colour; vec3 point; vec3 normal; vec3 diffuse; vec3 emission; float visible; };
+struct Surface { vec4 colour; vec3 point; vec3 normal; vec3 diffuse; vec3 emission; float visible; float standard; };
 layout(set=0,binding=2,std430) readonly buffer Vertices { Vertex vertices[]; };
 layout(set=0,binding=3) uniform sampler2DArray colours;
+struct Geometry { uint first; uint flags; float cutoff; float pad; };
+layout(set=0,binding=5,std430) readonly buffer Materials { Geometry geometry[]; };
 layout(set=0,binding=4,std140) uniform Frame {
  mat4 inv_projection;
  mat4 camera_world;
@@ -63,6 +65,7 @@ void main() {
  vec4 colour=result.colour;
  if(colour.a>0.0) {
   vec3 point=result.point, n=result.normal, diffuse=result.diffuse, emission=result.emission;
+  float standard=result.standard;
   vec3 light=frame.ambient.rgb;
   vec3 spec=vec3(0.0), extra=vec3(0.0);
   float facing=max(dot(n,frame.sun_plane.xyz),0.0);
@@ -86,7 +89,10 @@ void main() {
     if(frame.point_colour[i].a>0.5) { spec=max(spec,contribution); }
    }
   }
-  vec3 shaded=linear_colour(clamp(colour.rgb*min(light+emission,vec3(1.0))+spec,0.0,1.0));
+  // Authored EI emissive terms multiply the texture; standard material
+  // emission is independent, linear radiance and may exceed one.
+  vec3 shaded=linear_colour(clamp(colour.rgb*min(light+(standard<0.5 ? emission : vec3(0.0)),vec3(1.0))+spec,0.0,1.0));
+  if(standard>0.5) { shaded+=emission; }
   shaded+=linear_colour(colour.rgb)*extra;
   float depth=dot(point-frame.camera_world[3].xyz,-frame.camera_world[2].xyz);
   float fog=clamp((depth-frame.fog.x)/max(frame.fog.y-frame.fog.x,0.001),0.0,1.0);
@@ -104,7 +110,7 @@ void main() { result.visible=1.0; }
 """
 const HIT_COMMON := COMMON + """
 hitAttributeEXT vec2 bary;
-uint first_vertex() { return uint(gl_InstanceCustomIndexEXT)+3u*uint(gl_PrimitiveID); }
+uint first_vertex() { return geometry[gl_InstanceCustomIndexEXT].first+3u*uint(gl_PrimitiveID); }
 vec2 hit_uv(uint i) {
  vec3 b=vec3(1.0-bary.x-bary.y,bary);
  return vec2(dot(b,vec3(vertices[i].position_u.w,vertices[i+1].position_u.w,vertices[i+2].position_u.w)),
@@ -114,7 +120,7 @@ vec2 hit_uv(uint i) {
 const ANY_HIT := HIT_COMMON + """
 void main() {
  uint i=first_vertex();
- if(textureLod(colours,vec3(hit_uv(i),vertices[i].emission_layer.w),0.0).a*vertices[i].diffuse.a<0.5) { ignoreIntersectionEXT; }
+ if(textureLod(colours,vec3(hit_uv(i),vertices[i].emission_layer.w),0.0).a*vertices[i].diffuse.a<geometry[gl_InstanceCustomIndexEXT].cutoff) { ignoreIntersectionEXT; }
 }
 """
 const CLOSEST_HIT := HIT_COMMON + """
@@ -127,6 +133,7 @@ void main() {
  result.point=gl_WorldRayOriginEXT+gl_WorldRayDirectionEXT*gl_HitTEXT;
  result.diffuse=vertices[i].diffuse.rgb;
  result.emission=vertices[i].emission_layer.rgb;
+ result.standard=float(geometry[gl_InstanceCustomIndexEXT].flags & 1u);
  vec3 a=gl_ObjectToWorldEXT*vec4(vertices[i].position_u.xyz,1.0);
  vec3 c=gl_ObjectToWorldEXT*vec4(vertices[i+1].position_u.xyz,1.0);
  vec3 d=gl_ObjectToWorldEXT*vec4(vertices[i+2].position_u.xyz,1.0);
@@ -138,6 +145,10 @@ void main() {
  float footprint=distance*frame.sky.w*density*float(textureSize(colours,0).x);
  float lod=max(log2(max(footprint,1.0)),0.0);
  result.colour=vec4(textureLod(colours,vec3(hit_uv(i),vertices[i].emission_layer.w),lod).rgb,1.0);
+ if(result.standard>0.5) {
+  result.colour.rgb*=result.diffuse;
+  result.diffuse=vec3(1.0);
+ }
 }
 """
 
@@ -149,6 +160,7 @@ var _pipeline := RID()
 var _tlas := RID()
 var _sbt := RID()
 var _vertices := RID()
+var _materials := RID()
 var _blases: Array[RID] = []
 var _geometry: Array = []
 var _instances: Array[RDAccelerationStructureInstance] = []
@@ -163,6 +175,7 @@ var _set := RID()
 var _size := Vector2i.ZERO
 var _ready := false
 var _closed := false
+var _opaque_fast_path := not OS.get_cmdline_user_args().has("--ei-water-rt-force-anyhit")
 
 static func supported() -> bool:
 	if not OS.has_feature("ei_raytracing_uniform_stages"): return false
@@ -217,7 +230,16 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 	if not _vertices.is_valid():
 		prepared.emit.call_deferred(false)
 		return
-	_geometry = geometry_data if not geometry_data.is_empty() else [{"offset":0,"count":data.size()/64}]
+	# Own the descriptors: teardown must not clear the caller's scene array.
+	_geometry = geometry_data.duplicate(true) if not geometry_data.is_empty() else [{"offset":0,"count":data.size()/64}]
+	var material_data := PackedByteArray(); material_data.resize(_geometry.size()*16)
+	for i in _geometry.size():
+		var description: Dictionary = _geometry[i]
+		material_data.encode_u32(i*16,description.offset)
+		material_data.encode_u32(i*16+4,1 if description.get("standard",false) else 0)
+		material_data.encode_float(i*16+8,description.get("cutoff",0.5))
+	_materials = _own(_rd.storage_buffer_create(material_data.size(),material_data))
+	if not _materials.is_valid(): prepared.emit.call_deferred(false); return
 	_blases.resize(_geometry.size())
 	if placements.is_empty(): placements = [{"geometry":0,"transform":Transform3D.IDENTITY,"mask":255}]
 	_tlas = _own(_rd.tlas_create(placements.size(),RenderingDevice.ACCELERATION_STRUCTURE_PREFER_FAST_BUILD_BIT))
@@ -232,7 +254,7 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 		if placement.get("mask",255) != 0:
 			instance.blas = _geometry_blas(placement.geometry)
 			if not instance.blas.is_valid(): prepared.emit.call_deferred(false); return
-		instance.id = _geometry[placement.geometry].offset
+		instance.id = placement.geometry
 		instance.transform = placement.transform
 		instance.mask = placement.get("mask",255)
 		instance.flags = RenderingDevice.ACCELERATION_STRUCTURE_INSTANCE_TRIANGLE_FACING_CULL_DISABLE_BIT
@@ -270,6 +292,8 @@ func _geometry_blas(index: int) -> RID:
 	if _blases[index].is_valid(): return _blases[index]
 	var description: Dictionary = _geometry[index]
 	var geometry := RDAccelerationStructureGeometry.new()
+	if _opaque_fast_path and description.get("opaque",false):
+		geometry.flags = RenderingDevice.ACCELERATION_STRUCTURE_GEOMETRY_OPAQUE_BIT
 	geometry.vertex_buffer = _vertices
 	geometry.vertex_offset = description.offset*64
 	geometry.vertex_count = description.count
@@ -327,7 +351,8 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}) ->
 			_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,1,[_target]),
 			_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,2,[_vertices]),
 			_uniform(RenderingDevice.UNIFORM_TYPE_SAMPLER_WITH_TEXTURE,3,[_sampler,_colours]),
-			_uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,4,[_frame])],_shader,0)
+			_uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,4,[_frame]),
+			_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,5,[_materials])],_shader,0)
 		if not _set.is_valid():
 			_ready = false
 			prepared.emit.call_deferred(false)

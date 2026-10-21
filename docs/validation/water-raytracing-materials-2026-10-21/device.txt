@@ -1,0 +1,35 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+Vulkan 1.4.312 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090
+
+[trace 21:59:32 +3636ms] session 4ed3efbc79b0: 1.21.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, forward_plus / vulkan
+PASS qualified Vulkan RT runtime is available
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS build hardware acceleration structure, alpha=false
+PASS RT target dimensions (128, 128)
+PASS closest textured triangle reads red
+PASS miss leaves reflected sky visible
+PASS RT target dimensions (96, 64)
+PASS closest textured triangle reads red
+PASS miss leaves reflected sky visible
+PASS underwater geometry is excluded by the reflection plane
+PASS GPU output is detached after teardown
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS build hardware acceleration structure, alpha=true
+PASS RT target dimensions (128, 128)
+PASS alpha-tested front triangle reveals green rear hit
+PASS miss leaves reflected sky visible
+PASS RT target dimensions (96, 64)
+PASS alpha-tested front triangle reveals green rear hit
+PASS miss leaves reflected sky visible
+PASS underwater geometry is excluded by the reflection plane
+PASS GPU output is detached after teardown
+WATER_RT_DEVICE 19 checks 0 failures
+[trace 21:59:34 +5488ms] clean exit

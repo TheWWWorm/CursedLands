@@ -1,0 +1,266 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+Vulkan 1.4.312 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090
+
+[trace 22:02:08 +3679ms] session 0ed0d2152408: 1.21.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, forward_plus / vulkan
+PASS qualified Vulkan RT runtime is available
+PASS opaque ignores texture/material alpha: conservative opacity classification
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=false
+MATERIAL_PIXEL opaque ignores texture/material alpha fast=false colour=(1.0, 0.0, 0.0, 1.0)
+PASS opaque ignores texture/material alpha: expected nearest surface/colour
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=true
+MATERIAL_PIXEL opaque ignores texture/material alpha fast=true colour=(1.0, 0.0, 0.0, 1.0)
+PASS opaque ignores texture/material alpha: expected nearest surface/colour
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+PASS opaque ignores texture/material alpha: fast and conservative GPU paths agree
+PASS low cutout accepts partial alpha: conservative opacity classification
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=false
+MATERIAL_PIXEL low cutout accepts partial alpha fast=false colour=(1.0, 0.0, 0.0, 1.0)
+PASS low cutout accepts partial alpha: expected nearest surface/colour
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=true
+MATERIAL_PIXEL low cutout accepts partial alpha fast=true colour=(1.0, 0.0, 0.0, 1.0)
+PASS low cutout accepts partial alpha: expected nearest surface/colour
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+PASS low cutout accepts partial alpha: fast and conservative GPU paths agree
+PASS high cutout reveals rear surface: conservative opacity classification
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=false
+MATERIAL_PIXEL high cutout reveals rear surface fast=false colour=(0.0, 1.0, 0.0, 1.0)
+PASS high cutout reveals rear surface: expected nearest surface/colour
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=true
+MATERIAL_PIXEL high cutout reveals rear surface fast=true colour=(0.0, 1.0, 0.0, 1.0)
+PASS high cutout reveals rear surface: expected nearest surface/colour
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+PASS high cutout reveals rear surface: fast and conservative GPU paths agree
+PASS cutout multiplies material alpha: conservative opacity classification
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=false
+MATERIAL_PIXEL cutout multiplies material alpha fast=false colour=(0.0, 1.0, 0.0, 1.0)
+PASS cutout multiplies material alpha: expected nearest surface/colour
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=true
+MATERIAL_PIXEL cutout multiplies material alpha fast=true colour=(0.0, 1.0, 0.0, 1.0)
+PASS cutout multiplies material alpha: expected nearest surface/colour
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+PASS cutout multiplies material alpha: fast and conservative GPU paths agree
+PASS zero cutoff accepts zero alpha: conservative opacity classification
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=false
+MATERIAL_PIXEL zero cutoff accepts zero alpha fast=false colour=(1.0, 0.0, 0.0, 1.0)
+PASS zero cutoff accepts zero alpha: expected nearest surface/colour
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=true
+MATERIAL_PIXEL zero cutoff accepts zero alpha fast=true colour=(1.0, 0.0, 0.0, 1.0)
+PASS zero cutoff accepts zero alpha: expected nearest surface/colour
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+PASS zero cutoff accepts zero alpha: fast and conservative GPU paths agree
+PASS opaque cutout texture can skip any-hit: conservative opacity classification
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=false
+MATERIAL_PIXEL opaque cutout texture can skip any-hit fast=false colour=(1.0, 0.0, 0.0, 1.0)
+PASS opaque cutout texture can skip any-hit: expected nearest surface/colour
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=true
+MATERIAL_PIXEL opaque cutout texture can skip any-hit fast=true colour=(1.0, 0.0, 0.0, 1.0)
+PASS opaque cutout texture can skip any-hit: expected nearest surface/colour
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+PASS opaque cutout texture can skip any-hit: fast and conservative GPU paths agree
+PASS standard tint applies in ambient light: conservative opacity classification
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=false
+MATERIAL_PIXEL standard tint applies in ambient light fast=false colour=(1.0, 0.0, 0.0, 1.0)
+PASS standard tint applies in ambient light: expected nearest surface/colour
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=true
+MATERIAL_PIXEL standard tint applies in ambient light fast=true colour=(1.0, 0.0, 0.0, 1.0)
+PASS standard tint applies in ambient light: expected nearest surface/colour
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+PASS standard tint applies in ambient light: fast and conservative GPU paths agree
+PASS standard emission survives a black albedo: conservative opacity classification
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=false
+MATERIAL_PIXEL standard emission survives a black albedo fast=false colour=(0.0, 0.0, 2.0, 1.0)
+PASS standard emission survives a black albedo: linear HDR emission
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=true
+MATERIAL_PIXEL standard emission survives a black albedo fast=true colour=(0.0, 0.0, 2.0, 1.0)
+PASS standard emission survives a black albedo: linear HDR emission
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+PASS standard emission survives a black albedo: fast and conservative GPU paths agree
+PASS opaque legacy texture can skip any-hit: conservative opacity classification
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=false
+MATERIAL_PIXEL opaque legacy texture can skip any-hit fast=false colour=(1.0, 0.0, 0.0, 1.0)
+PASS opaque legacy texture can skip any-hit: expected nearest surface/colour
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=true
+MATERIAL_PIXEL opaque legacy texture can skip any-hit fast=true colour=(1.0, 0.0, 0.0, 1.0)
+PASS opaque legacy texture can skip any-hit: expected nearest surface/colour
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+PASS opaque legacy texture can skip any-hit: fast and conservative GPU paths agree
+PASS faint legacy material remains cutout: conservative opacity classification
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=false
+MATERIAL_PIXEL faint legacy material remains cutout fast=false colour=(0.0, 1.0, 0.0, 1.0)
+PASS faint legacy material remains cutout: expected nearest surface/colour
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=true
+MATERIAL_PIXEL faint legacy material remains cutout fast=true colour=(0.0, 1.0, 0.0, 1.0)
+PASS faint legacy material remains cutout: expected nearest surface/colour
+PASS material buffer and acceleration structures released
+PASS GPU teardown preserves the caller's scene descriptors
+PASS faint legacy material remains cutout: fast and conservative GPU paths agree
+PASS unsupported blended/hashed material is omitted, mode=1
+PASS unsupported blended/hashed material is omitted, mode=3
+PASS unsupported blended/hashed material is omitted, mode=4
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=false
+MATERIAL_SHADOW fast=false expected=true colour=(0.0134, 0.0134, 0.0134, 1.0)
+PASS shadow ray obeys material opacity and cutoff; shadow=true
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=true
+MATERIAL_SHADOW fast=true expected=true colour=(0.0134, 0.0134, 0.0134, 1.0)
+PASS shadow ray obeys material opacity and cutoff; shadow=true
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=false
+MATERIAL_SHADOW fast=false expected=false colour=(0.458, 0.458, 0.458, 1.0)
+PASS shadow ray obeys material opacity and cutoff; shadow=false
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=true
+MATERIAL_SHADOW fast=true expected=false colour=(0.458, 0.458, 0.458, 1.0)
+PASS shadow ray obeys material opacity and cutoff; shadow=false
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=false
+MATERIAL_SHADOW fast=false expected=true colour=(0.0134, 0.0134, 0.0134, 1.0)
+PASS shadow ray obeys material opacity and cutoff; shadow=true
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=true
+MATERIAL_SHADOW fast=true expected=true colour=(0.0134, 0.0134, 0.0134, 1.0)
+PASS shadow ray obeys material opacity and cutoff; shadow=true
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=false
+PASS terrain ignores atlas alpha; fast=false
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS material scene prepares, opaque fast path=true
+PASS terrain ignores atlas alpha; fast=true
+WATER_RT_DEVICE 120 checks 0 failures
+[trace 22:02:15 +9896ms] clean exit

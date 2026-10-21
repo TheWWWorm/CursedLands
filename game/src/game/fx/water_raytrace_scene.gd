@@ -15,6 +15,7 @@ var triangles := 0
 var failed := false
 var pending: Array = []
 var _textures := {}
+var _opaque_textures: Array[bool] = []
 var _mesh_cache := {}
 var _nodes := {}
 var _mesh_roots := {}
@@ -35,9 +36,10 @@ func begin(terrain: EITerrain, position: Vector3, plane: float) -> void:
 	for child in terrain.get_children():
 		if child is EITerrainSector and _near(child.global_transform*child.get_aabb()):
 			pending.append({"node":weakref(child),"land":true})
+	var materials := {}
 	for mesh: MeshInstance3D in _scene_meshes():
 		pending.append({"node":weakref(mesh),"land":false})
-		_nodes[mesh.get_instance_id()] = _mesh_version(mesh)
+		_nodes[mesh.get_instance_id()] = _mesh_version(mesh,materials)
 
 func _scene_meshes() -> Array[MeshInstance3D]:
 	var found: Array[MeshInstance3D] = []
@@ -61,20 +63,30 @@ func _scene_meshes() -> Array[MeshInstance3D]:
 				_mesh_roots[mesh.get_instance_id()] = weakref(root)
 	return found
 
-func _mesh_version(mesh: MeshInstance3D) -> Array:
+func _material_version(material: Material) -> Array:
+	if material is ShaderMaterial:
+		var texture: Texture2D = material.get_shader_parameter("albedo_tex") as Texture2D
+		return [material.shader.get_instance_id() if material.shader else 0,texture.get_instance_id() if texture else 0,
+			material.get_shader_parameter("ei_material_diffuse"),material.get_shader_parameter("ei_material_emissive")]
+	if material is BaseMaterial3D:
+		return [material.albedo_texture.get_instance_id() if material.albedo_texture else 0,material.albedo_color,
+			material.transparency,material.alpha_scissor_threshold,material.emission_enabled,material.emission,
+			material.emission_energy_multiplier]
+	return []
+
+func _mesh_version(mesh: MeshInstance3D, materials: Dictionary) -> Array:
 	var version := [mesh.mesh.get_instance_id()]
 	for surface in mesh.mesh.get_surface_count():
 		var material := mesh.get_active_material(surface)
-		version.append(material.get_instance_id() if material else 0)
-		var texture: Texture2D
-		if material is ShaderMaterial: texture = material.get_shader_parameter("albedo_tex") as Texture2D
-		elif material is BaseMaterial3D: texture = material.albedo_texture
-		version.append(texture.get_instance_id() if texture else 0)
+		var key := material.get_instance_id() if material else 0
+		if not materials.has(key): materials[key] = _material_version(material)
+		version.append([key,materials[key]])
 	return version
 
 func topology_changed() -> bool:
 	var current := {}
-	for mesh: MeshInstance3D in _scene_meshes(): current[mesh.get_instance_id()] = _mesh_version(mesh)
+	var materials := {}
+	for mesh: MeshInstance3D in _scene_meshes(): current[mesh.get_instance_id()] = _mesh_version(mesh,materials)
 	return current != _nodes
 
 func _near(bounds: AABB, clip_plane := true) -> bool:
@@ -93,7 +105,11 @@ func step() -> bool:
 			else:
 				var mesh := node as MeshInstance3D
 				for surface in mesh.mesh.get_surface_count():
-					if mesh.mesh.surface_get_primitive_type(surface) != Mesh.PRIMITIVE_TRIANGLES: continue
+					# Only ArrayMesh exposes this query to scripts. PrimitiveMesh
+					# uses triangles except PointMesh, which has no ray surface.
+					if mesh.mesh is ArrayMesh:
+						if mesh.mesh.surface_get_primitive_type(surface) != Mesh.PRIMITIVE_TRIANGLES: continue
+					elif not mesh.mesh is PrimitiveMesh or mesh.mesh is PointMesh: continue
 					var material := mesh.get_active_material(surface)
 					var key := "%s:%s:%s"%[mesh.mesh.get_instance_id(),surface,material.get_instance_id() if material else 0]
 					var morph: bool = mesh.get_blend_shape_count() > 0
@@ -138,6 +154,7 @@ func _layer(texture: Texture2D, atlas := -1) -> int:
 	if image.is_compressed() and image.decompress() != OK: return -1
 	image.clear_mipmaps(); image.convert(Image.FORMAT_RGBA8)
 	image.resize(TEXTURE_SIZE,TEXTURE_SIZE,Image.INTERPOLATE_BILINEAR); image.generate_mipmaps()
+	_opaque_textures.append(image.detect_alpha() == Image.ALPHA_NONE)
 	var layer := images.size(); images.append(image); _textures[key] = layer
 	return layer
 
@@ -155,6 +172,8 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 	var texture: Texture2D
 	var diffuse := Vector4.ONE
 	var emission := Vector3.ZERO
+	var cutoff := 0.0 if land else 0.5
+	var standard := material is BaseMaterial3D
 	if not land:
 		if material is ShaderMaterial:
 			texture = material.get_shader_parameter("albedo_tex") as Texture2D
@@ -164,10 +183,18 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 			var e: Variant = material.get_shader_parameter("ei_material_emissive")
 			if e is Vector3: emission = e
 		elif material is BaseMaterial3D:
+			# Blended and hashed transparency need an ordered transmission path.
+			# They must not become solid cutout surfaces in this single-hit view.
+			if material.transparency not in [BaseMaterial3D.TRANSPARENCY_DISABLED,BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR]: return -1
 			texture = material.albedo_texture
 			var c: Color = material.albedo_color; diffuse = Vector4(c.r,c.g,c.b,c.a)
+			cutoff = 0.0 if material.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED else material.alpha_scissor_threshold
+			if material.emission_enabled:
+				var e: Color = material.emission.srgb_to_linear()*material.emission_energy_multiplier
+				emission = Vector3(e.r,e.g,e.b)
 		else: return -1
 	var base_layer := -1 if land else _layer(texture)
+	var opaque := cutoff <= 0.0 or (base_layer >= 0 and _opaque_textures[base_layer] and diffuse.w >= cutoff)
 	if _kernel != null:
 		var atlas := {}
 		if land and uv2.size() == positions.size():
@@ -177,7 +204,7 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 		if packed.failed: failed = true; return -1
 		var count: int = packed.vertices.size()/16
 		if count == 0: return -1
-		geometries.append({"offset":vertices.size()/16,"count":count,"indices":packed.indices})
+		geometries.append({"offset":vertices.size()/16,"count":count,"indices":packed.indices,"opaque":opaque,"cutoff":cutoff,"standard":standard})
 		vertices.append_array(packed.vertices); triangles += count/3
 		return geometries.size()-1
 	var start := vertices.size()/16
@@ -200,7 +227,7 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 		triangles += 1
 	var count := vertices.size()/16-start
 	if count == 0: return -1
-	geometries.append({"offset":start,"count":count,"indices":used})
+	geometries.append({"offset":start,"count":count,"indices":used,"opaque":opaque,"cutoff":cutoff,"standard":standard})
 	return geometries.size()-1
 
 ## Plain values only: the render thread never dereferences a scene node.

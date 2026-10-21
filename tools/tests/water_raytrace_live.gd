@@ -12,7 +12,9 @@ func difference(a: Image, b: Image) -> int:
 func reflected(name: String) -> Image:
 	await frames(6); await RenderingServer.frame_post_draw
 	var im: Image = t._reflection._rt.output.get_image()
-	im.save_png(out.path_join(name+".png")); return im
+	# The PNG exporter may convert its input to 8-bit RGB; preserve HDR/alpha
+	# readback for the assertions and export a separate image.
+	im.duplicate().save_png(out.path_join(name+".png")); return im
 
 func ready_rt() -> bool:
 	for i in 1200:
