@@ -1,0 +1,613 @@
+{
+  "version": "1.23.0",
+  "date": "2026-10-21",
+  "status": "Release candidates validated; public upload and hosted deployment verification pending.",
+  "source_commit": "32080129077e6261085b4757f36032a4d0b42dce",
+  "game_tree": "a9a5d86d9582cfd81d994b2fa96aac0368f87f47",
+  "merged_main": "bd88efdd",
+  "previous_stable": "v1.22.0",
+  "protocol": {
+    "campaign": 23,
+    "autochess": 1
+  },
+  "translations": "3001 entries; 141 dynamic wiki keys; 179 dynamic arena keys; 0 errors. Rendered water option choices and help checked in EN/RU/DE on both desktop packages.",
+  "integration": "RT excludes the camera-only closed torso and reflects the complete first-person figure, in both native and script instance updates.",
+  "packaged_checks": {
+    "linux": [
+      {
+        "suite": "first_person_reflections",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/linux-first_person_reflections",
+        "reports": {},
+        "summary": [
+          "FIRST_PERSON_REFLECTIONS {\"checks\":60,\"failures\":[],\"rows\":[{\"case\":\"idle smooth=false\",\"head_pixels\":340,\"wrong_pixels\":0},{\"case\":\"run smooth=false\",\"head_pixels\":377,\"wrong_pixels\":0},{\"case\":\"attack smooth=false\",\"head_pixels\":312,\"wrong_pixels\":0},{\"case\":\"cast smooth=false\",\"head_pixels\":297,\""
+        ]
+      },
+      {
+        "suite": "graphics_presets",
+        "renderer": "headless",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/linux-graphics_presets",
+        "reports": {
+          "graphics-presets.json": {
+            "checks": 279,
+            "failures": 0
+          }
+        },
+        "summary": [
+          "GRAPHICS_PRESETS {\"checks\":279,\"failures\":0}"
+        ]
+      },
+      {
+        "suite": "water_raytrace",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/linux-water_raytrace",
+        "reports": {
+          "results.json": {
+            "checks": 29,
+            "failures": [],
+            "supported": true,
+            "renderer": "forward_plus",
+            "device": "NVIDIA GeForce RTX 3090"
+          }
+        },
+        "summary": [
+          "WATER_RT 29 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_artifact",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/linux-water_raytrace_artifact",
+        "reports": {
+          "artifact.json": {
+            "checks": 19,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PASS mode-3-turn-0.025: front-facing reflections are preserved"
+        ]
+      },
+      {
+        "suite": "water_raytrace_device",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/linux-water_raytrace_device",
+        "reports": {
+          "device-results.json": {
+            "checks": 19,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 19 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_first_person",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/linux-water_raytrace_first_person",
+        "reports": {
+          "first-person.json": {
+            "checks": 9,
+            "failures": [],
+            "changed_pixels": 0
+          }
+        },
+        "summary": [
+          "PASS leaving first person restores the same reflection"
+        ]
+      },
+      {
+        "suite": "water_raytrace_first_person",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/linux-water_raytrace_first_person-script",
+        "reports": {
+          "first-person.json": {
+            "checks": 9,
+            "failures": [],
+            "changed_pixels": 0
+          }
+        },
+        "summary": [
+          "PASS leaving first person restores the same reflection"
+        ]
+      },
+      {
+        "suite": "water_raytrace_lighting",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/linux-water_raytrace_lighting",
+        "reports": {
+          "device-results.json": {
+            "checks": 48,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 48 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_lighting",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/linux-water_raytrace_lighting-script",
+        "reports": {
+          "device-results.json": {
+            "checks": 48,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 48 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_live",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/linux-water_raytrace_live",
+        "reports": {
+          "live.json": {
+            "checks": 15,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PASS changed equipment automatically rebuilds the hardware scene"
+        ]
+      },
+      {
+        "suite": "water_raytrace_material_live",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/linux-water_raytrace_material_live",
+        "reports": {
+          "materials-live.json": {
+            "checks": 16,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PASS unchanged material values do not cause repeated rebuilds"
+        ]
+      },
+      {
+        "suite": "water_raytrace_materials",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/linux-water_raytrace_materials",
+        "reports": {
+          "device-results.json": {
+            "checks": 120,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 120 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_native",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/linux-water_raytrace_native",
+        "reports": {
+          "native.json": {
+            "checks": 54,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PASS freed ancestor is safe and stays masked"
+        ]
+      },
+      {
+        "suite": "water_raytrace",
+        "renderer": "opengl3",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/linux-water-fallback-hardware",
+        "reports": {
+          "results.json": {
+            "checks": 17,
+            "failures": [],
+            "supported": false,
+            "renderer": "gl_compatibility",
+            "device": "NVIDIA GeForce RTX 3090"
+          }
+        },
+        "summary": [
+          "WATER_RT 17 checks 0 failures"
+        ]
+      }
+    ],
+    "windows": [
+      {
+        "suite": "first_person_reflections",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/windows-first_person_reflections",
+        "reports": {},
+        "summary": [
+          "FIRST_PERSON_REFLECTIONS {\"checks\":60,\"failures\":[],\"rows\":[{\"case\":\"idle smooth=false\",\"head_pixels\":340,\"wrong_pixels\":0},{\"case\":\"run smooth=false\",\"head_pixels\":377,\"wrong_pixels\":0},{\"case\":\"attack smooth=false\",\"head_pixels\":312,\"wrong_pixels\":0},{\"case\":\"cast smooth=false\",\"head_pixels\":297,\""
+        ]
+      },
+      {
+        "suite": "graphics_presets",
+        "renderer": "headless",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/windows-graphics_presets",
+        "reports": {
+          "graphics-presets.json": {
+            "checks": 279,
+            "failures": 0
+          }
+        },
+        "summary": [
+          "GRAPHICS_PRESETS {\"checks\":279,\"failures\":0}"
+        ]
+      },
+      {
+        "suite": "water_raytrace",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/windows-water_raytrace",
+        "reports": {
+          "results.json": {
+            "checks": 29,
+            "failures": [],
+            "supported": true,
+            "renderer": "forward_plus",
+            "device": "NVIDIA GeForce RTX 3090"
+          }
+        },
+        "summary": [
+          "WATER_RT 29 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_artifact",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/windows-water_raytrace_artifact-sized",
+        "reports": {
+          "artifact.json": {
+            "checks": 19,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PASS mode-3-turn-0.025: front-facing reflections are preserved"
+        ]
+      },
+      {
+        "suite": "water_raytrace_device",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/windows-water_raytrace_device",
+        "reports": {
+          "device-results.json": {
+            "checks": 19,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 19 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_first_person",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/windows-water_raytrace_first_person",
+        "reports": {
+          "first-person.json": {
+            "checks": 9,
+            "failures": [],
+            "changed_pixels": 0
+          }
+        },
+        "summary": [
+          "PASS leaving first person restores the same reflection"
+        ]
+      },
+      {
+        "suite": "water_raytrace_first_person",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/windows-water_raytrace_first_person-script",
+        "reports": {
+          "first-person.json": {
+            "checks": 9,
+            "failures": [],
+            "changed_pixels": 0
+          }
+        },
+        "summary": [
+          "PASS leaving first person restores the same reflection"
+        ]
+      },
+      {
+        "suite": "water_raytrace_lighting",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/windows-water_raytrace_lighting",
+        "reports": {
+          "device-results.json": {
+            "checks": 48,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 48 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_lighting",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/windows-water_raytrace_lighting-script",
+        "reports": {
+          "device-results.json": {
+            "checks": 48,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 48 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_live",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/windows-water_raytrace_live",
+        "reports": {
+          "live.json": {
+            "checks": 15,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PASS changed equipment automatically rebuilds the hardware scene"
+        ]
+      },
+      {
+        "suite": "water_raytrace_material_live",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/windows-water_raytrace_material_live",
+        "reports": {
+          "materials-live.json": {
+            "checks": 16,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PASS unchanged material values do not cause repeated rebuilds"
+        ]
+      },
+      {
+        "suite": "water_raytrace_materials",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/windows-water_raytrace_materials",
+        "reports": {
+          "device-results.json": {
+            "checks": 120,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 120 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_native",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/windows-water_raytrace_native",
+        "reports": {
+          "native.json": {
+            "checks": 54,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PASS freed ancestor is safe and stays masked"
+        ]
+      },
+      {
+        "suite": "water_raytrace",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/windows-water-fallback-profile",
+        "reports": {
+          "fsr-status.json": {},
+          "results.json": {
+            "checks": 19,
+            "failures": [],
+            "supported": false,
+            "renderer": "forward_plus",
+            "device": "NVIDIA GeForce RTX 3090"
+          }
+        },
+        "summary": [
+          "WATER_RT 19 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "fsr_render",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.23.0/checks/windows-fsr_render",
+        "reports": {
+          "fsr-render.json": {
+            "checks": 191,
+            "failures": [],
+            "blocked": false,
+            "renderer": "d3d12",
+            "frame_generation_tested": true
+          }
+        },
+        "summary": [
+          "FSR_RENDER {\"blocked\":false,\"checks\":191,\"facts\":{\"api\":true,\"engine\":true,\"fg3\":true,\"fg4\":false,\"sr3\":true,\"sr4\":false},\"failures\":[],\"frame_generation_tested\":true,\"gpu\":\"NVIDIA GeForce RTX 3090\",\"renderer\":\"d3d12\",\"rows\":[{\"elapsed_ms\":1253.331,\"generated_frames\":0,\"label\":\"off\",\"presented_frame"
+        ]
+      }
+    ]
+  },
+  "engines": {
+    "linux-x86_64": {
+      "version": "1.23.0",
+      "source_commit": "32080129077e6261085b4757f36032a4d0b42dce",
+      "game_tree": "a9a5d86d9582cfd81d994b2fa96aac0368f87f47",
+      "protocol": 23,
+      "platform": "linux-x86_64",
+      "engine_patch_count": 17,
+      "unchanged_qualified_engine": false,
+      "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88 plus common patches 1\u201316 and Vulkan RT uniform patch",
+      "compiled_scripts": 394,
+      "resource_count": 1224,
+      "formula_api": 1,
+      "package_api": 3,
+      "fsr_in_normal_settings": false,
+      "qualified_engine_template_sha256": "5cd55e014b01f542e23e0591bdcd5481c676d29ad7cf283b87d6e329c1428815"
+    },
+    "windows-x86_64": {
+      "version": "1.23.0",
+      "source_commit": "32080129077e6261085b4757f36032a4d0b42dce",
+      "game_tree": "a9a5d86d9582cfd81d994b2fa96aac0368f87f47",
+      "protocol": 23,
+      "platform": "windows-x86_64",
+      "engine_patch_count": 17,
+      "unchanged_qualified_engine": false,
+      "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88 plus common patches 1\u201316 and Vulkan RT uniform patch and standalone FSR patch",
+      "compiled_scripts": 394,
+      "resource_count": 1224,
+      "formula_api": 1,
+      "package_api": 3,
+      "fsr_in_normal_settings": true,
+      "qualified_engine_template_sha256": "6ef4134894110579be749f4ae7bdde60d13fc7f94a89ccec2f115e439b13f3c0"
+    },
+    "macos-universal": {
+      "version": "1.23.0",
+      "source_commit": "32080129077e6261085b4757f36032a4d0b42dce",
+      "game_tree": "a9a5d86d9582cfd81d994b2fa96aac0368f87f47",
+      "protocol": 23,
+      "platform": "macos-universal",
+      "unsigned": true,
+      "target_os_runtime_tested": false,
+      "compiled_scripts": 394
+    }
+  },
+  "native_helper_sha256": {
+    "libterrain_search.so": "33874eb258aaf608d94e87aebb21f97a27e0f58e86ef54998064413d6ab0c355",
+    "libterrain_search.dll": "8d132ab6e0e77b10e4cf70ad9933dcde405ce598a488fa4dd0deec2c64955f95"
+  },
+  "cross_platform": {
+    "version": "1.23.0",
+    "compiled_scripts": 394,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 57,
+    "debuggable": false,
+    "apk_sha256": "e9b6071fcb7af6d807da7313a190712f6ba6f079a010d77b86774c94e98a405a",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "db4560020be613f63e061defa86ac14555d0cd8ea8c7d0b7c72d306f306dff1a"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16
+  },
+  "branding": {
+    "windows_icon_sizes": [
+      16,
+      32,
+      48,
+      64,
+      128,
+      256
+    ],
+    "windows_icon_pixels_exact": true,
+    "windows_version": "1.23.0.0",
+    "macos_icon_exact": true,
+    "web_icons_exact": true,
+    "approved_master_sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18"
+  },
+  "browser": {
+    "version": "1.23.0",
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-a321b4c8762c71b9cd84",
+      "new_cache": "cursed-engine-2-895dd0cbef0e332d3385",
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "pck_sha256": "5b68007af52bf1929006bb1223245adc983d209fcdfe9e0e35d0d00f6e69d8c5",
+      "old_tab_wait_verified": true
+    },
+    "cache": {
+      "keys": [
+        "cursed-engine-2-895dd0cbef0e332d3385"
+      ],
+      "packs": {
+        "cursed-engine-2-895dd0cbef0e332d3385": "5b68007af52bf1929006bb1223245adc983d209fcdfe9e0e35d0d00f6e69d8c5"
+      },
+      "worker": "activated",
+      "waiting": null,
+      "isolated": true
+    },
+    "fresh_start": {
+      "passed": true,
+      "origin": "http://127.0.0.1:30931/",
+      "actual_wasm_started": true,
+      "reached": "Original game-data installation screen",
+      "error_logs": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "screenshot": "browser-fresh-start.png"
+    }
+  },
+  "historical_rt_evidence": "water-raytracing-materials-2026-10-21.json",
+  "benchmark_note": "Earlier material-pass timings remain historical. Release checks exercise correctness; they do not establish an overall FPS improvement.",
+  "test_harness_correction": {
+    "initial_windows_artifact_exit": 5,
+    "cause": "Wine window decorations reduced the capture to 1280x694; the fixed-coordinate regression read below the image. The test now sizes a borderless 1280x720 viewport and guards image dimensions.",
+    "game_code_changed_for_this_correction": false,
+    "accepted_rerun": "release-1.23.0/checks/windows-water_raytrace_artifact-sized"
+  },
+  "fallback_test_environment": {
+    "initial_linux_opengl_attempt": "Stopped after detecting llvmpipe on the virtual display; not accepted as a release result.",
+    "accepted_linux_opengl": "release-1.23.0/checks/linux-water-fallback-hardware",
+    "gpu": "NVIDIA GeForce RTX 3090 on the hardware-backed display",
+    "initial_windows_d3d12": "Reusing the virtual-display Wine prefix on the hardware display retained resolution index 0, which expanded the window to 4988x2742 and failed six tooltip hover checks. A separate display-specific prefix selects 1280x720 at index 3 and passes all 19 checks.",
+    "accepted_windows_d3d12": "release-1.23.0/checks/windows-water-fallback-profile"
+  },
+  "limits": [
+    "Linux Vulkan tested on an NVIDIA RTX 3090. Windows Vulkan and Direct3D 12 packages exercised under Wine on that host; a physical Windows system was not available.",
+    "macOS and Android exports passed source/archive/branding/signing checks; target-device runtime testing was not available for this release.",
+    "The experimental RT path is Windows/Linux Forward+ Vulkan only. macOS, Android, browser and other APIs retain existing reflection fallbacks.",
+    "RT uses one reflection bounce, a bounded scene, a reduced-resolution target and approximate shading; particles, shader-only wind, blended transparency and global illumination are not covered.",
+    "Campaign simulation changes already qualified in 1.22.0 were merged unchanged; the complete historical gameplay parity campaign was not repeated for this rendering release.",
+    "Browser validation covers actual WebAssembly startup to the installation screen and previous-version cache/data preservation; it does not import or redistribute original game data."
+  ]
+}

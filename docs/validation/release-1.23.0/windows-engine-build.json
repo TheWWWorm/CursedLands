@@ -1,0 +1,28 @@
+{
+  "command": [
+    "python3",
+    "-m",
+    "SCons",
+    "-j6",
+    "platform=windows",
+    "arch=x86_64",
+    "target=template_release",
+    "debug_symbols=no",
+    "lto=none",
+    "production=yes",
+    "optimize=speed",
+    "use_mingw=yes",
+    "use_static_cpp=yes",
+    "mingw_prefix=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/native-deps/mingw/root/usr",
+    "mesa_libs=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/windows-deps/mesa-x86_64-gcc",
+    "use_pix=no",
+    "module_mono_enabled=no",
+    "module_openxr_enabled=no",
+    "accesskit=no",
+    "use_fsr_sdk=yes"
+  ],
+  "exit": 0,
+  "seconds": 14.694449752103537,
+  "source": "/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020/engine",
+  "patch": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/repo/engine_patches/godot-4.7/water-raytracing-uniform-stages.patch"
+}

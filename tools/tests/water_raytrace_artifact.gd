@@ -51,6 +51,11 @@ func setup() -> Array:
 		camera.look_at(tree.global_position+Vector3.UP*1.8)
 		break
 	await frames(30)
+	# This image regression samples fixed 1280x720 coordinates. Windowed
+	# layout can shrink the client area to fit Wine's window decorations.
+	get_tree().root.borderless = true
+	get_tree().root.size = Vector2i(1280,720)
+	await frames(4)
 	g.set_process(false); t.set_process(false)
 	print("ARTIFACT_CAMERA ",camera.global_transform)
 	return [s,g]
@@ -71,6 +76,9 @@ func capture(name: String) -> Image:
 	return image
 
 func compare(fixed: Image, old: Image, label: String) -> void:
+	if fixed.get_size() != Vector2i(1280,720) or old.get_size() != Vector2i(1280,720):
+		check(false,label+": image regression requires a 1280x720 viewport")
+		return
 	# Only the reported foreground wedge, excluding the sky and distant river.
 	# A negative control restores the signed cosine so a blank/moved camera
 	# or a fixture which never draws the reverse face cannot pass.

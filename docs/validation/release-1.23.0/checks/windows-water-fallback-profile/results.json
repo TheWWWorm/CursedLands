@@ -1,0 +1,30 @@
+{
+	"checks": 19,
+	"device": "NVIDIA GeForce RTX 3090",
+	"failures": [],
+	"renderer": "forward_plus",
+	"rows": [
+		{
+			"median_ms": 3.439,
+			"mode": 0,
+			"p95_ms": 4.816,
+			"stats": {}
+		},
+		{
+			"median_ms": 5.197,
+			"mode": 2,
+			"p95_ms": 7.209,
+			"stats": {}
+		},
+		{
+			"median_ms": 5.294,
+			"mode": 3,
+			"p95_ms": 7.26,
+			"stats": {
+				"fallback": "planar",
+				"supported": false
+			}
+		}
+	],
+	"supported": false
+}

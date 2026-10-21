@@ -1,0 +1,36 @@
+[
+  {
+    "name": "CursedLands-1.23.0-linux-x86_64.tar.gz",
+    "bytes": 61019805,
+    "sha256": "b1499ed724704ce9dbfdc583498cccece2090bc8289e070125530bf756eddfad",
+    "all_members_verified": true
+  },
+  {
+    "name": "CursedLands-1.23.0-windows-x86_64.zip",
+    "bytes": 111423392,
+    "sha256": "e9f60d070aa822b4a1ccf5353d7719516b78ba4647c33b92b9b32d7d54831fea",
+    "all_members_verified": true
+  },
+  {
+    "name": "CursedLands-1.23.0-macos-universal.zip",
+    "bytes": 89392039,
+    "sha256": "70fbb82121f2f901c949f1fc854a13a2e0157469a30a80b4168b7b6e9469fc91",
+    "all_members_verified": true
+  },
+  {
+    "name": "CursedLands-1.23.0-android.apk",
+    "bytes": 46938732,
+    "sha256": "e9b6071fcb7af6d807da7313a190712f6ba6f079a010d77b86774c94e98a405a"
+  },
+  {
+    "name": "CursedLands-1.23.0-web.zip",
+    "bytes": 184186725,
+    "sha256": "5d33f808f10eb49a3c337844f499a2ec26e5d329bc6fd9056259f8048ac83312",
+    "all_members_verified": true
+  },
+  {
+    "name": "CursedLands-1.23.0-tools.zip",
+    "bytes": 70414,
+    "sha256": "07579c968ca610c81e227a7979e3b6589014cc81aa248ed1d41d779525ed0192"
+  }
+]

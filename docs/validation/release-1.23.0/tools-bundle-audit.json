@@ -1,0 +1,35 @@
+{
+  "files": [
+    "tools/convert_legacy_mod.py",
+    "tools/package_mod.py",
+    "tools/tests/test_legacy_mod_converter.py",
+    "game/src/ei/database.gd",
+    "game/src/game/mod_schema.gd",
+    "docs/mods.md",
+    "docs/versioning.md",
+    "docs/validation/hd-lands-1.5.0-2026-10-13.json",
+    "docs/validation/release-1.23.0-2026-10-21.json",
+    "docs/legacy-mod-converter.md",
+    "docs/legacy-mod-compatibility.md",
+    "docs/validation/legacy-mod-converter-2026-10-11.json",
+    "docs/validation/legacy-mod-real-mods-2026-10-11.json",
+    "LICENSE.md",
+    "docs/mod-formulas.md",
+    "examples/mods/field-medicine/mod.json",
+    "examples/mods/field-medicine/main.lua",
+    "examples/mods/quest-focus/mod.json",
+    "examples/mods/quest-focus/rewards.lua",
+    "examples/mods/quest-focus/main.lua",
+    "examples/mods/expedition-xp/mod.json",
+    "examples/mods/expedition-xp/main.lua",
+    "examples/mods/quick-recovery/mod.json"
+  ],
+  "exact_source_readback": true,
+  "standalone_tests": 20,
+  "example_byte_identical": true,
+  "artifact": {
+    "name": "CursedLands-1.23.0-tools.zip",
+    "bytes": 70414,
+    "sha256": "07579c968ca610c81e227a7979e3b6589014cc81aa248ed1d41d779525ed0192"
+  }
+}

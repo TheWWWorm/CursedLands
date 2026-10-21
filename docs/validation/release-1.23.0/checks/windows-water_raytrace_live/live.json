@@ -1,0 +1,26 @@
+{
+	"animated_parts": 18,
+	"animation_pixels": 73,
+	"checks": 15,
+	"failures": [],
+	"movement_pixels": 138,
+	"stats": {
+		"active": true,
+		"geometries": 1737,
+		"instances": 1927,
+		"lights": 2,
+		"native_scene": true,
+		"opaque_geometries": 1059,
+		"radius": 96.0,
+		"size": [
+			640,
+			347
+		],
+		"supported": true,
+		"textures": 47,
+		"triangles": 139046,
+		"updated_instances": 1927,
+		"updated_morphs": 0
+	},
+	"visibility_pixels": 138
+}
