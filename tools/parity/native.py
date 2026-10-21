@@ -319,6 +319,11 @@ from native_quest_programs import CAPTURES as PROGRAM_CAPTURES
 CAPTURES.update(PROGRAM_CAPTURES)
 from native_body import CAPTURES as BODY_CAPTURES
 CAPTURES.update(BODY_CAPTURES)
+from extensions import native_captures
+for _kind, _capture in native_captures().items():
+    if _kind in CAPTURES:
+        raise ValueError(f"Extension capture {_kind} replaces a core family")
+    CAPTURES[_kind] = _capture
 
 
 def capture(binary, inputs):

@@ -228,6 +228,47 @@ loot-query fixes, save compatibility checks, and the complete failure dispositio
    mismatch in an isolated copy. Keep the unmodified source as the reference
    remake under test.
 
+### Extension families
+
+A family can also live in its own files without editing the shared runner
+(`tools/parity/extensions.py` discovers them in sorted order):
+
+- `cases_ext_<name>.py`: `contracts(campaign)` (empty for an unqualified
+  executable), `scenarios(seed, fuzz)`, optional `STEP_COUNTS`,
+  `validate(case, steps, role)` and `authored(game_dir, limit)` for rows built
+  from the owned installation under `--authored-quests`.
+- `native_ext_<name>.py`: `CAPTURES = {kind: function}`.
+- `remake_ext_<name>.gd`: staged as `res://tools/parity_ext/<name>.gd`, with
+  `kinds()` and `capture(kind, data, trace)`; `trace` exposes the shared quest
+  fixtures of `remake_trace.gd`.
+- `test_ext_<name>.py` and `docs/original-parity-<name>.md`.
+
+A kind may be declared only once and may not replace a core family.
+
+Current families (seed 20261020, fuzz 12; counts are match / differ, base
+game first, then Lost in Astral where qualified):
+
+| Family | Kinds | Scenarios | Base | Astral | Details |
+|---|---|---|---|---|---|
+| Quest query builtins | `quest_query` | 123 | 71 / 52 | 71 / 52 | [quest-query](original-parity-quest-query.md) |
+| Quest commands | `quest_cmd_groups`, `_gsvar`, `_items`, `_journal`, `_levers` | 143 | 110 / 33 | not qualified | [quest-commands](original-parity-quest-commands.md) |
+| Quest trigger scheduling | `quest_scheduler` | 66 | 4 / 62 | not qualified | [quest-scheduler](original-parity-quest-scheduler.md) |
+| Dialogue triggers | `dialogue_topics`, `_zone`, `_merc`, `_complete` | 158 | 139 / 19 | not qualified | [dialogue](original-parity-dialogue.md) |
+| NPC script commands | `npc_motivation`, `npc_diplomacy`, `npc_alarm` | 213 | 137 / 76 | 137 / 76 | [npc-commands](original-parity-npc-commands.md) |
+| NPC AI decisions | `npc_ai_fear`, `_suspicion`, `_target_score`, `_motivation` | 182 | 98 / 84 | not qualified | [npc-ai](original-parity-npc-ai.md) |
+| Perception triggers | `perception_group`, `perception_ticks` | 452 | 393 / 59 | 384 / 32 (`perception_group` only, 416) | [perception-triggers](original-parity-perception-triggers.md) |
+
+Every family was shown to fail on a mutated scratch copy of the remake (see
+each page). Differences are findings about the remake, not harness errors.
+With `--authored-quests`, families that define `authored()` add rows built from
+the owned installation's MOB conditions (for example 316 perception rows in
+the base game; `--case perception_` then gives 670 / 98 of 768).
+
+Full runs on 2026-10-21, both sides repeatable: base game 3094 scenarios,
+2709 match, 385 differ; Lost in Astral 1567 scenarios, 1407 match, 160 differ.
+Every core family still matches completely; all differences are in the
+extension families above.
+
 For target ordering, the supplied terrain must have one ground height per XY
 coordinate. Ambiguous fixtures are rejected instead of producing misleading
 game differences.
