@@ -1,7 +1,7 @@
 {
   "version": "1.22.0",
   "date": "2026-10-21",
-  "status": "Packaged and validated; publication pending.",
+  "status": "Published stable release and hosted browser deployment verified; all public downloads match exported SHA-256 hashes.",
   "source_commit": "63b9c09d2eaec26a6ad6048705d3abf6da052416",
   "game_tree": "bb237b0fcca0a0b7bbc5849e52be38164c4dc457",
   "protocol": {
@@ -236,5 +236,6 @@
     "The forwarded mine slowdown and exact scene reports #61, #62 and #64 are not declared resolved."
   ],
   "publication_receipt": "release-1.22.0/publication.json",
-  "deployment_receipt": "release-1.22.0/deployment.json"
+  "deployment_receipt": "release-1.22.0/deployment.json",
+  "issue_review": "All 13 open issues reviewed after publication; none is resolved by 1.22.0, so none was closed."
 }
