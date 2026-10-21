@@ -96,6 +96,10 @@ func _ready() -> void:
 				if u.action == "anim:" + String(row.clip):
 					row.starts += 1
 					row.started = true
+				# WorldScript's loops fire in its own pass (0x4bf000), so the
+				# first pose may already be playing when the window opens; that
+				# observation is a join, and only the repeats are restarts.
+				if u.action == "anim:" + String(row.clip) and frame > 0:
 					if not u.model.player.is_playing() or u.model.player.current_animation_position > GameUnit.TICK + 0.00001:
 						row.bad_restart += 1
 					if not replica.model.player.is_playing() or replica.model.player.current_animation_position > 0.00001:

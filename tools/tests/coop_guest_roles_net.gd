@@ -30,6 +30,13 @@ func branch(guest: bool) -> Session:
 	var g := Game.new(); g.session = s; s.game = g; root.add_child(g)
 	return s
 
+## The original starts a briefing handler from a carrier thread, and the
+## next scheduler pass polls it. The host world is frozen here, so run that
+## pass's polls directly (ScriptVM._tick would also take the queued zone).
+func poll_handlers(vm: ScriptVM) -> bool:
+	for inst: ScriptVM.Instance in vm.instances.duplicate(): vm._run(inst)
+	return true
+
 func freeze(s: Session) -> void:
 	s.set_physics_process(false); s.world.set_process(false); s.world.set_physics_process(false)
 	s.game.rig.set_process(false); s.game.hud._tutorial.close(); s.game.hud._dialog.visible = false
@@ -85,7 +92,7 @@ func _ready() -> void:
 	client.submit({"t":"dialog_done","id":dialogue})
 	var party := "Shaina" if astral else "Pretty"
 	var prototype := "merc8" if astral else "Human Hadagan Pretty"
-	check(await until(func():return host.state.current_party==party),"guest completion selects authored temporary party")
+	check(await until(func():return poll_handlers(vm) and host.state.current_party==party),"guest completion selects authored temporary party")
 	var target: Array = vm._pending_zone.duplicate(); vm._pending_zone.clear()
 	check(target.size()==2,"original event queues destination")
 	if failures: await finish(); return
