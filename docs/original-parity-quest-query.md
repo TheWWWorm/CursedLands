@@ -22,13 +22,17 @@ It covers condition builtins that the core `quest_predicate` family does not:
 Object-returning builtins are read through `GetObjectID`, so the comparison
 sees the selected actor's ID (0 for none).
 
+Both executables are qualified: the base game (evaluator 0x4b41e0, object
+evaluator 0x4b56c0, `GetMercsNumber` 0x591740) and Lost in Astral (0x46cca0,
+0x46b8d0, 0x4e87d0). Astral uses the same opcode numbers and record offsets.
+
 ## Supplied boundaries
 
 Actor stat records (mana, max mana), actor player number and AI class; the
 world night value; player-zero lookup and single-player mode; party records
-(IDs only) and the ID-to-actor lookups 0x55fb00 / 0x593aa0; the actor death
+(IDs only) and the ID-to-actor lookups (base 0x55fb00 / 0x593aa0, Astral 0x4cd680 / 0x4ea290); the actor death
 accessor (vtable 0xdc); the temporary object-slot block allocator 0x6fe8af
-(stdcall, pooled on the script context); the player-zero loot counter; group
+(stdcall, pooled on the script context; base 0x6fe8af, Astral 0x5fed90); the player-zero loot counter; group
 membership. Everything else, including record indexing, rounding, death
 filtering and the `- 1` in `GetMercsNumber`, executes natively.
 
@@ -80,6 +84,11 @@ triggers in `z18q1.mob` (VCheck#1#25, #27, #31 and a `UMFollow` body) and
 conditions cannot become true. The family passes an extra literal (ignored
 natively) so the run can still compare leader selection. This is recorded as a
 finding; production is unchanged.
+
+Lost in Astral (`--campaign lost_in_astral`, `results/quest-query-astral-01`):
+the same 123 scenarios, **71 match, 52 differ**. The Astral executable produced
+observations identical to the base executable for every scenario, and the
+divergence set is the same.
 
 ## Can it fail?
 

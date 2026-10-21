@@ -8,11 +8,13 @@ QUERY_OPS = {"Mana": 0x51, "MaxMana": 0x52, "IsNight": 0xaa, "IsInSquare": 0xbb,
 # Builtins returning objects are evaluated by 0x4b56c0 (parameter type 3).
 OBJECT_CALLS = {"GetUnitOfPlayer", "GetLeader"}
 RECORD = 0x784          # party record stride; unit ID at +0x1c
-REGISTRY = 0x55fb00     # party-record ID -> living-or-dead unit lookup
-OBJECTS = 0x593aa0      # global object ID lookup used by GetLeader
-PLEX = 0x6fe8af         # CPlex-style block allocator for temporary slots
-NETWORK = 0x79b5cc
-
+# Per executable: party-record ID -> actor lookup, global object lookup used by
+# GetLeader, CPlex-style block allocator (stdcall) for temporary object slots,
+# and the network-session pointer that selects GetLeader's single-player path.
+SUPPLIED = {
+    "original": {"registry": 0x55fb00, "objects": 0x593aa0, "plex": 0x6fe8af, "network": 0x79b5cc},
+    "lost_in_astral": {"registry": 0x4cd680, "objects": 0x4ea290, "plex": 0x5fed90, "network": 0x673c48},
+}
 
 class QueryExpressions(Expressions):
     def compile(self, expression, at=None):
@@ -45,7 +47,8 @@ def query(o, case):
             o.write(unit + 0x250, row.get("player", 0))
             o.write(unit + 0x324, row.get("ai_class", 0))
     # The world's night intensity at 0x7affd4 is read directly by opcode 0xaa.
-    o.floats(ADDRESSES["original"]["world"] + 0x84, case.get("night", 0))
+    o.floats(ADDRESSES[o.campaign]["world"] + 0x84, case.get("night", 0))
+    supplied = SUPPLIED[o.campaign]
     # Party records live in player zero's record array (+0xa0, count +0xa4).
     party = case.get("party", [])
     by_id, dead = {}, {}
@@ -61,18 +64,19 @@ def query(o, case):
     if vt:
         o.write(vt + 0xdc, 0x1840)
     o.hook(0x1840, lambda: o.ret(dead.get(o.uc.reg_read(UC_X86_REG_ECX), 0)))
-    o.hook(REGISTRY, lambda: o.ret(by_id.get(o.args(1)[0], 0), cleanup=4))
-    o.hook(OBJECTS, lambda: o.ret(by_id.get(o.args(1)[0], 0), cleanup=4))
-    o.write(NETWORK, 0)
+    o.hook(supplied["registry"], lambda: o.ret(by_id.get(o.args(1)[0], 0), cleanup=4))
+    o.hook(supplied["objects"], lambda: o.ret(by_id.get(o.args(1)[0], 0), cleanup=4))
+    o.write(supplied["network"], 0)
 
     def plex():
         head, count, size = o.args(3)
-        block = o.alloc(4 + count * size)
+        # Reserve both header layouts (data at +4 or +8); slots are never freed.
+        block = o.alloc(8 + count * size)
         o.write(block, o.ints(head)[0])
         o.write(head, block)
         o.ret(block, cleanup=12)  # stdcall
 
-    o.hook(PLEX, plex)
+    o.hook(supplied["plex"], plex)
     o.write(fixture.context + 0x1e4, 16)
     o.write(fixture.player + 0xa0, records, len(party))
     o.write(fixture.player + 0xec, case.get("loot_items", 0))

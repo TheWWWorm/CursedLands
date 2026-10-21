@@ -9,15 +9,19 @@ def call(name, *args):
     return {"call": name, "args": list(args)}
 
 
+ENTRY = {"original": ["0x4b41e0", "0x4b4030", "0x4b56c0", "0x591740"],
+         "lost_in_astral": ["0x46cca0", "0x46ee90", "0x46b8d0", "0x4e87d0"]}
+
+
 def contracts(campaign):
-    if campaign != "original":
+    if campaign not in ENTRY:
         return {}
     return {"quest_query": {
-        "entry": ["0x4b41e0"],
-        "scope": "Native expression opcodes 0x51 Mana, 0x52 MaxMana, 0x65 GetPlayer, 0x6a Sum, 0x8f GetAIClass, 0xaa IsNight, 0xbb IsInSquare, 0xd1 GetMercsNumber, 0xe1 GetLootItemsCount and object opcodes 0xb4 GetUnitOfPlayer / 0xe4 GetLeader (through 0x4b56c0, read with GetObjectID) versus ScriptVM._eval.",
+        "entry": ENTRY[campaign],
+        "scope": "Native expression opcodes 0x51 Mana, 0x52 MaxMana, 0x65 GetPlayer, 0x6a Sum, 0x8f GetAIClass, 0xaa IsNight, 0xbb IsInSquare, 0xd1 GetMercsNumber, 0xe1 GetLootItemsCount and object opcodes 0xb4 GetUnitOfPlayer / 0xe4 GetLeader (through the native object evaluator, read with GetObjectID) versus ScriptVM._eval.",
         "stubs": ["supplied unit mana/max-mana stat records, player number and AI class", "supplied world night value",
-                  "player-zero lookup", "single-player mode", "supplied party records (ID only) and ID-to-actor lookups 0x55fb00/0x593aa0",
-                  "actor death accessor (vtable 0xdc)", "temporary object-slot block allocator 0x6fe8af",
+                  "player-zero lookup", "single-player mode", "supplied party records (ID only) and ID-to-actor lookups (base 0x55fb00/0x593aa0, Astral 0x4cd680/0x4ea290)",
+                  "actor death accessor (vtable 0xdc)", "temporary object-slot block allocator (base 0x6fe8af, Astral 0x5fed90)",
                   "supplied player-zero loot-item counter", "supplied group membership"],
         "limits": "Query results only; no mana regeneration, spellcasting, day/night simulation, party management or looting.",
         "tolerances": {},
