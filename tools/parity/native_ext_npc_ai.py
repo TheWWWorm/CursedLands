@@ -185,6 +185,12 @@ class Rig:
         return {"level": signed(level), "delta": signed(delta), "point_bits": [x, y],
                 "pending": self.o.ints(p + 0xa8 + 8)[0]}
 
+    def pending(self, index):
+        """Counters of the perception's delayed sounds (+0xa8 array, 0x18 bytes each)."""
+        p = self.ai(index) + PERCEPTION + 0xa8
+        base, count = self.o.ints(p + 4, 2)
+        return [signed(self.o.ints(base + i * 0x18 + 0xc)[0]) for i in range(count)]
+
     def suspect(self, index, point, level, delta):
         o = self.o
         at = o.alloc(12)
@@ -307,4 +313,48 @@ def fear(o, case):
     return states
 
 
-CAPTURES = {"npc_fear": fear}
+def suspicion(o, case):
+    """Suspicion records of several units over ticks: original suspicion
+    5cbbe0, call for help 5d5990 (unit-grid query, friend filter, delayed
+    sound 5cbba0/5ccd40), hit hook 5d7e90 and each unit's AI tick prologue
+    (perception tick 5cb700: delayed sounds 5cc9d0, level += delta)."""
+    rig = Rig(o, case)
+    install_scan_stub(o)
+    for row in case["units"]:
+        rig.add(row)
+    calm = rig.motivation(VT_SENTRY)
+    watched = [i for i, row in enumerate(case["units"]) if not row.get("party") and not row.get("dead")]
+    for i in watched:
+        o.write(rig.ai(i) + 0x8c, calm)
+
+    def apply(tick, when):
+        for event in tick.get("events", []):
+            if event.get("when", "after") != when:
+                continue
+            i = int(event.get("unit", 0))
+            if event["kind"] == "suspect":
+                rig.suspect(i, event["point"], event["level"], event["delta"])
+            elif event["kind"] == "help":
+                rig.help_call(i, event["point"])
+            elif event["kind"] == "hit":
+                rig.hit(i, event.get("by"))
+                o.write(rig.ai(i) + 0x30, 0)   # attacker held for one AI tick only
+
+    states = []
+    for tick in case["ticks"]:
+        for index, pos in tick.get("moves", {}).items():
+            rig.move(int(index), pos)
+        apply(tick, "before")
+        for i in watched:
+            rig.ai_prologue(i)
+        rows = []
+        for i in watched:
+            seen = rig.perception(i)
+            rows.append({"level": seen["level"], "delta": seen["delta"], "point_bits": seen["point_bits"],
+                         "pending": rig.pending(i)})
+        states.append({"units": rows})
+        apply(tick, "after")
+    return states
+
+
+CAPTURES = {"npc_fear": fear, "npc_suspicion": suspicion}

@@ -39,10 +39,30 @@ def contracts(campaign):
                       "current motivation and walk state are supplied per tick.",
             "tolerances": {},
         },
+        "npc_suspicion": {
+            "entry": ["0x5cbbe0", "0x5d5990", "0x5d7e90", "0x5d53b0..0x5d547d"],
+            "scope": "Suspicion records of several units: acceptance (5cbbe0, strictly above the current level), "
+                     "per-tick decay, call for help (5d5990: unit-grid query 5c0bd0 within the caller's help "
+                     "radius, diplomacy-friend filter, delayed sound 5cbba0/5ccd40 of 26 ticks replacing the "
+                     "unit's entries of 26 or more), hit-hook routing (5d7e90) and delayed-sound conversion to "
+                     "900/-3 below level 900 (5cc9d0 in the perception tick 5cb700 of each unit's AI tick "
+                     "prologue), versus UnitAI.suspect, call_for_help, hit_hook, tick and _susp_level.",
+            "stubs": ["perception scan 5caa00 adds nothing (no noticed-list maintenance)",
+                      "one unit-grid cell holding all fixture units for the help-call query 5c0bd0",
+                      "unit dead/type virtual getters, reference release no-op",
+                      "CRT allocation, CString and debug-log stream output",
+                      "help radius written to AI+0x38 directly (the descriptor mapping of "
+                      "CallForHelpRadiusDefault is not executed; shipped values make it the identity)",
+                      "remake world clock advanced by time += 55 ms per tick, as GameWorld._tick_body does"],
+            "limits": "Only living non-party units are observed; motivation priorities and bodies are not run "
+                      "(no Suspection/Fear reaction to the attacker); sounds other than help calls are not "
+                      "produced; party units and dead units are never diplomacy friends of a caller here.",
+            "tolerances": {},
+        },
     }
 
 
-STEP_COUNTS = {"npc_fear": "ticks"}
+STEP_COUNTS = {"npc_fear": "ticks", "npc_suspicion": "ticks"}
 
 
 def _unit(pos, side=1, **extra):
@@ -198,8 +218,135 @@ def fear_scenarios(seed, fuzz):
     return rows
 
 
+HELP_CONFIG = {"CallForHelpRadius": 7.0, "CallForHelpRadiusDefault": 7.0}
+
+
+def _susp(rows, name, units, ticks):
+    inputs = {"config": dict(HELP_CONFIG), "relations": RELATIONS, "units": units, "ticks": ticks}
+    rows.append({"id": "npc_suspicion/" + name, "kind": "npc_suspicion", "inputs": inputs})
+
+
+def _quiet(n):
+    return [{} for _ in range(n)]
+
+
+def suspicion_scenarios(seed, fuzz):
+    rows = []
+    caller = (8.0, 8.0, 0.0)
+    # Help radius boundary (2D distance; the friend stands above the caller
+    # in one case) for radius 7 and 10.
+    for radius, distances in ((7.0, (6.9, 7.0, 7.1)), (10.0, (9.99, 10.0))):
+        for d in distances:
+            _susp(rows, f"help_radius_{radius:g}_d{d:g}",
+                  [_unit(caller, help_radius=radius), _unit((8.0 + d, 8.0, 0.0))],
+                  [{"events": [{"kind": "help", "unit": 0, "point": [3.0, 4.0, 0.0]}]}] + _quiet(29))
+    _susp(rows, "help_radius_height",
+          [_unit(caller, help_radius=7.0), _unit((14.5, 8.0, 6.0))],
+          [{"events": [{"kind": "help", "unit": 0, "point": [3.0, 4.0, 0.0]}]}] + _quiet(29))
+    # Friend filter: own side, allied side, hostile side, neutral party.
+    _susp(rows, "help_friend_filter",
+          [_unit(caller), _unit((9.0, 8.0, 0.0)), _unit((8.0, 9.0, 0.0), 3), _unit((7.0, 8.0, 0.0), 2),
+           _unit((8.0, 7.0, 0.0), 0, party=True)],
+          [{"events": [{"kind": "help", "unit": 0, "point": [3.0, 4.0, 0.0]}]}] + _quiet(29))
+    # Event order within the tick.
+    for when in ("before", "after"):
+        _susp(rows, f"help_{when}_decision",
+              [_unit(caller), _unit((9.0, 8.0, 0.0))],
+              [{"events": [{"kind": "help", "unit": 0, "point": [3.0, 4.0, 0.0], "when": when}]}] + _quiet(30))
+    # Existing level against the 900 conversion (delta 0 holds the level).
+    for level in (899, 900, 950):
+        _susp(rows, f"help_over_level_{level}",
+              [_unit(caller), _unit((9.0, 8.0, 0.0))],
+              [{"events": [{"kind": "suspect", "unit": 1, "point": [12.0, 12.0, 0.0], "level": level, "delta": 0},
+                           {"kind": "help", "unit": 0, "point": [3.0, 4.0, 0.0]}]}] + _quiet(29))
+    # Repeated calls: the same tick replaces the entry, a tick later keeps
+    # both; the second conversion moves the point.
+    _susp(rows, "help_twice_same_tick",
+          [_unit(caller), _unit((9.0, 8.0, 0.0))],
+          [{"events": [{"kind": "help", "unit": 0, "point": [3.0, 4.0, 0.0]},
+                       {"kind": "help", "unit": 0, "point": [5.0, 6.0, 0.0]}]}] + _quiet(29))
+    _susp(rows, "help_twice_next_tick",
+          [_unit(caller), _unit((9.0, 8.0, 0.0))],
+          [{"events": [{"kind": "help", "unit": 0, "point": [3.0, 4.0, 0.0]}]},
+           {"events": [{"kind": "help", "unit": 0, "point": [5.0, 6.0, 0.0]}]}] + _quiet(30))
+    _susp(rows, "help_two_callers_one_friend",
+          [_unit(caller), _unit((9.0, 8.0, 0.0)), _unit((10.0, 9.0, 0.0))],
+          [{"events": [{"kind": "help", "unit": 0, "point": [3.0, 4.0, 0.0]},
+                       {"kind": "help", "unit": 2, "point": [5.0, 6.0, 0.0]}]}] + _quiet(29))
+    # The friend walks out of range before a second call.
+    _susp(rows, "help_friend_leaves",
+          [_unit(caller), _unit((9.0, 8.0, 0.0))],
+          [{"events": [{"kind": "help", "unit": 0, "point": [3.0, 4.0, 0.0]}]},
+           {"moves": {"1": [15.5, 15.5, 0.0]}, "events": [{"kind": "help", "unit": 0, "point": [5.0, 6.0, 0.0]}]}]
+          + _quiet(29))
+    # Hit-hook routing: hostile, party (neutral), allied attacker, none.
+    for name, side, party in (("hostile", 2, False), ("party", 0, True), ("ally", 3, False)):
+        _susp(rows, f"hit_by_{name}",
+              [_unit(caller), _unit((9.0, 8.0, 0.0)), _unit((6.5, 9.5, 1.0), side, party=party)],
+              [{"events": [{"kind": "hit", "unit": 0, "by": 2}]}] + _quiet(29))
+    _susp(rows, "hit_by_nothing",
+          [_unit(caller), _unit((9.0, 8.0, 0.0))],
+          [{"events": [{"kind": "hit", "unit": 0, "by": None}]}] + _quiet(29))
+    # Acceptance strictly above the current level, same tick and later.
+    _susp(rows, "suspect_equal_rejected",
+          [_unit(caller)],
+          [{"events": [{"kind": "suspect", "unit": 0, "point": [1.0, 1.0, 0.0], "level": 500, "delta": -1},
+                       {"kind": "suspect", "unit": 0, "point": [2.0, 2.0, 0.0], "level": 500, "delta": -3}]},
+           {"events": [{"kind": "suspect", "unit": 0, "point": [3.0, 3.0, 0.0], "level": 499, "delta": -2}]},
+           {"events": [{"kind": "suspect", "unit": 0, "point": [4.0, 4.0, 0.0], "level": 499, "delta": -2}]},
+           {}])
+    _susp(rows, "suspect_below_zero",
+          [_unit(caller)],
+          [{"events": [{"kind": "suspect", "unit": 0, "point": [1.0, 1.0, 0.0], "level": 10, "delta": -3}]}]
+          + _quiet(6) + [{"events": [{"kind": "suspect", "unit": 0, "point": [2.0, 2.0, 0.0], "level": -5,
+                                      "delta": -1}]}] + _quiet(3))
+    _susp(rows, "suspect_rising",
+          [_unit(caller)],
+          [{"events": [{"kind": "suspect", "unit": 0, "point": [1.0, 1.0, 0.0], "level": 100, "delta": 2}]}]
+          + _quiet(5))
+    _susp(rows, "decay_long",
+          [_unit(caller)],
+          [{"events": [{"kind": "suspect", "unit": 0, "point": [1.0, 1.0, 0.0], "level": 1000, "delta": -2}]}]
+          + _quiet(60))
+    rng = random.Random(seed ^ 0x5a17)
+    for trial in range(fuzz):
+        units = []
+        for i in range(rng.randint(2, 5)):
+            side = rng.choice([1, 1, 3, 2, 0]) if i else 1
+            units.append(_unit((rng.uniform(0.5, 15.5), rng.uniform(0.5, 15.5), rng.choice([0.0, 1.5, 3.0])), side,
+                               party=side == 0, help_radius=rng.choice([4.0, 7.0, 10.0, 16.0])))
+        npcs = [i for i, row in enumerate(units) if not row.get("party")]
+        ticks = []
+        for _ in range(rng.randint(30, 45)):
+            tick, events = {}, []
+            for _ in range(rng.choice([0, 0, 0, 1, 1, 2])):
+                kind = rng.choice(["suspect", "help", "help", "hit"])
+                unit = rng.choice(npcs)
+                when = rng.choice(["before", "after"])
+                if kind == "suspect":
+                    events.append({"kind": kind, "unit": unit, "when": "after",
+                                   "point": [rng.uniform(0, 16), rng.uniform(0, 16), 0.0],
+                                   "level": rng.choice([60, 300, 800, 899, 900, 950, 1000]),
+                                   "delta": rng.choice([0, -1, -2, -3])})
+                elif kind == "help":
+                    events.append({"kind": kind, "unit": unit, "when": when,
+                                   "point": [rng.uniform(0, 16), rng.uniform(0, 16), rng.choice([0.0, 2.0])]})
+                else:
+                    others = [i for i in range(len(units)) if i != unit]
+                    events.append({"kind": kind, "unit": unit, "when": when,
+                                   "by": rng.choice(others + [None])})
+            if events:
+                tick["events"] = events
+            if rng.random() < 0.1:
+                mover = rng.randrange(len(units))
+                tick["moves"] = {str(mover): [rng.uniform(0.5, 15.5), rng.uniform(0.5, 15.5), 0.0]}
+            ticks.append(tick)
+        _susp(rows, f"seeded_{trial:03}", units, ticks)
+    return rows
+
+
 def scenarios(seed=20261020, fuzz=12):
-    return fear_scenarios(seed, fuzz)
+    return fear_scenarios(seed, fuzz) + suspicion_scenarios(seed, fuzz)
 
 
 def validate(case, steps, role):
@@ -212,6 +359,14 @@ def validate(case, steps, role):
                   and all(type(state[k]) is int for k in ["j_bits", "r_bits", "level", "delta"])
                   and isinstance(state["point_bits"], list) and len(state["point_bits"]) == 2
                   and all(type(v) is int and 0 <= v <= 0xffffffff for v in state["point_bits"] + [state["j_bits"], state["r_bits"]]))
+        elif kind == "npc_suspicion":
+            ok = (set(state) == {"units"} and isinstance(state["units"], list)
+                  and all(isinstance(row, dict) and set(row) == {"level", "delta", "point_bits", "pending"}
+                          and type(row["level"]) is int and type(row["delta"]) is int
+                          and isinstance(row["point_bits"], list) and len(row["point_bits"]) == 2
+                          and all(type(v) is int and 0 <= v <= 0xffffffff for v in row["point_bits"])
+                          and isinstance(row["pending"], list) and all(type(v) is int for v in row["pending"])
+                          for row in state["units"]))
         else:
             ok = False
         if not ok:

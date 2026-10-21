@@ -38,13 +38,14 @@ class NpcUnit extends GameUnit:
 
 
 func kinds() -> Array:
-	return ["npc_fear"]
+	return ["npc_fear", "npc_suspicion"]
 
 
 func capture(kind: String, data: Dictionary, trace: Node) -> Array:
 	seed(20261021)
 	match kind:
 		"npc_fear": return capture_fear(data, trace)
+		"npc_suspicion": return capture_suspicion(data, trace)
 	push_error("Unsupported npc_ai kind " + kind)
 	return []
 
@@ -184,3 +185,55 @@ func fear_events(ai: UnitAI, u: GameUnit, units: Array, tick: Dictionary, when: 
 			ai.suspect(u, Vector2(f32(trace, p[0]), f32(trace, p[1])), float(event.level), float(event.delta))
 		elif event.kind == "hit":
 			ai.on_attacked(u, units[int(event.by)])
+
+
+## Suspicion records of the living non-party units. World tick order: the
+## clock advances, "before" events (earlier in the tick than the units'
+## decisions), the decision-time observation, "after" events (later in the
+## tick), then UnitAI.tick() (the delayed help sounds, after every unit).
+func capture_suspicion(data: Dictionary, trace: Node) -> Array:
+	var world := make_world(data)
+	var ai: NpcAI = world.ai
+	var units := make_units(data, world, trace)
+	var watched := []
+	for i in units.size():
+		if not data.units[i].get("party", false) and not data.units[i].get("dead", false):
+			watched.append(i)
+	var states := []
+	for k in data.ticks.size():
+		var tick: Dictionary = data.ticks[k]
+		world.time += GameUnit.TICK
+		for index in tick.get("moves", {}):
+			place(units[int(index)], tick.moves[index], world, trace)
+		suspicion_events(ai, units, tick, "before", trace)
+		var rows := []
+		for i: int in watched:
+			var u: GameUnit = units[i]
+			var row := perception_state(ai, u, trace)
+			var pending := []
+			for e: Array in ai._help:
+				if e[0] == u:
+					pending.append(int(e[2]))
+			row.pending = pending
+			rows.append(row)
+		states.append({"units": rows})
+		suspicion_events(ai, units, tick, "after", trace)
+		ai.tick()
+	free_all(units, world)
+	return states
+
+
+func suspicion_events(ai: UnitAI, units: Array, tick: Dictionary, when: String, trace: Node) -> void:
+	for event: Dictionary in tick.get("events", []):
+		if String(event.get("when", "after")) != when:
+			continue
+		var u: GameUnit = units[int(event.get("unit", 0))]
+		match String(event.kind):
+			"suspect":
+				var p: Array = event.point
+				ai.suspect(u, Vector2(f32(trace, p[0]), f32(trace, p[1])), float(event.level), float(event.delta))
+			"help":
+				var h: Array = event.point
+				ai.call_for_help(u, Vector2(f32(trace, h[0]), f32(trace, h[1])))
+			"hit":
+				ai.hit_hook(u, units[int(event.by)] if event.get("by") != null else null)
