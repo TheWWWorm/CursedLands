@@ -1,0 +1,78 @@
+{
+  "version": "1.21.0",
+  "url": "https://github.com/TheWWWorm/CursedLands/releases/tag/v1.21.0",
+  "isDraft": false,
+  "isPrerelease": false,
+  "publishedAt": "2026-10-21T09:16:25Z",
+  "tag_commit": "d060ac6a303d0fa3b457d2680c4508d0b1da6910",
+  "release_id": 419360127,
+  "assets": [
+    {
+      "name": "CursedLands-1.21.0-android.apk",
+      "bytes": 46901500,
+      "sha256": "sha256:20b911923f6ba7d7d53d4b0c3233b7583537a0ccfca2f2106e4d16f95c896082",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.21.0/CursedLands-1.21.0-android.apk"
+    },
+    {
+      "name": "CursedLands-1.21.0-linux-x86_64.tar.gz",
+      "bytes": 56979017,
+      "sha256": "sha256:d728cae4631f7dc92e9a53c93ca819e8d0f7137d70ca368260136eeec9a0064b",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.21.0/CursedLands-1.21.0-linux-x86_64.tar.gz"
+    },
+    {
+      "name": "CursedLands-1.21.0-macos-universal.zip",
+      "bytes": 85310036,
+      "sha256": "sha256:13b228154aa87cb959bc94c5fbc65c24ff21c53a63bb2070dae19e873731264e",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.21.0/CursedLands-1.21.0-macos-universal.zip"
+    },
+    {
+      "name": "CursedLands-1.21.0-tools.zip",
+      "bytes": 72680,
+      "sha256": "sha256:c4c4fb233eef55d9d3c0854ca2f3d912a9e8d3f8a2098aa83de33e821ebabc2f",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.21.0/CursedLands-1.21.0-tools.zip"
+    },
+    {
+      "name": "CursedLands-1.21.0-web.zip",
+      "bytes": 184154563,
+      "sha256": "sha256:0fc5add43827a14f47d3e678e2d316b42225e012183b92e6738a94bb81bda96a",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.21.0/CursedLands-1.21.0-web.zip"
+    },
+    {
+      "name": "CursedLands-1.21.0-windows-x86_64.zip",
+      "bytes": 107314460,
+      "sha256": "sha256:88cab5cfb0a85fd7472eb7285940eb62bb2b3c33344936b70eef06dd044fa610",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.21.0/CursedLands-1.21.0-windows-x86_64.zip"
+    },
+    {
+      "name": "expedition-xp-1.0.0.eimod",
+      "bytes": 1045,
+      "sha256": "sha256:2a8722d9902fe71afdd5a8ced85351626e3102f92c625f86a5d35fafdcf9dc31",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.21.0/expedition-xp-1.0.0.eimod"
+    },
+    {
+      "name": "field-medicine-1.0.0.eimod",
+      "bytes": 1293,
+      "sha256": "sha256:6d7f4726f3779294603ddd302ea8645b854de31c2efb65cd963c42ccd1f452ed",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.21.0/field-medicine-1.0.0.eimod"
+    },
+    {
+      "name": "quest-focus-1.0.0.eimod",
+      "bytes": 1417,
+      "sha256": "sha256:81f4a58fbe2b83d33f07a2f20dc38fa4985d074b20b4e11b4d065a2a32df928b",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.21.0/quest-focus-1.0.0.eimod"
+    },
+    {
+      "name": "quick-recovery-1.0.0.eimod",
+      "bytes": 546,
+      "sha256": "sha256:f1f32945f4a06d5e1f9b12dccc73b04dbc4ddbb30439683ad1e96892bfcb170b",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.21.0/quick-recovery-1.0.0.eimod"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "bytes": 967,
+      "sha256": "sha256:feb1187485f381cf2bdbaadff786b3d328758dac999d31feafa9346e9dfc0da8",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.21.0/SHA256SUMS.txt"
+    }
+  ],
+  "all_public_downloads_sha256_verified": true
+}

@@ -2,7 +2,7 @@
 
 The previous investigation stopped at the user's explicit request: “summarize remaining work, put it into handoff and chat and stop.” On 2026-10-21 the user explicitly reopened the deferred mine report with a new video and requested reuse of the branch worked on by chat `01a15913-b559-7803-b29d-d29650ddbed4`. That bounded follow-up is recorded below. The broad investigation is incomplete; unresolved reports must not be described as fixed. Other unreproduced reports remain low priority and require a specific request. A general request to resume engine work does not reopen them. This handoff supersedes older next-step notes, but preserves their evidence.
 
-## Workspace and delivery state
+## Workspace and delivery state before the console/release follow-up
 
 - Repository: `/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/repo` (abbreviated **R** below).
 - Runtime, packages and test outputs: `/home/llm2x/Documents/EI/local/scratchpad/original-parity-20261020/fsr-first-use-20261020` (**W**).
@@ -122,6 +122,10 @@ Retained original dossiers: `R/../issue64-analysis/original-base-evidence.json`,
 - At the end of the mine-video follow-up, its frontend/authority/test processes had exited. Video and source hashes, retained result counts, evidence links, catalog registration and whitespace checks were verified. Unrelated application processes were left alone.
 - The user's later request resumed the mine investigation in the existing branch. This follow-up preserves a reusable control and the new location evidence; the external slowdown report remains unresolved. Other deferred scenes are still outside scope. No release, push, issue comment or closure was performed.
 
-## Console and release follow-up — 2026-10-21
+## Console and release follow-up — completed 2026-10-21
 
 The user subsequently requested a modern testing console and explicitly authorized pushing and publishing the combined work from this branch and chat `01a15913-b559-7803-b29d-d29650ddbed4`. That request supersedes the earlier no-publication state above. The new console extends the existing host/VM path with completion, syntax highlighting, persistent history, localized help, output search and diagnostics, and bounded testing shorthands. See [console guide](console.md) and [1.21.0 validation](validation/release-1.21.0-2026-10-21.json). The unresolved mine finding and other deferred scenes remain qualified as above.
+
+Published [1.21.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.21.0) from immutable tag commit `d060ac6a303d0fa3b457d2680c4508d0b1da6910`, with game tree `69d17159b036ec9485a795c64243f3458c35532d`. The integrated branch and `main` were pushed. All 11 public asset downloads match the export hashes. The [hosted browser](https://cursedlands.wwworm.com/) serves the committed release; all 22 checked assets and isolation headers pass. Fresh startup, previous-cache upgrade with preserved IndexedDB data, and public wiki EN/RU/DE plus Back/reload were verified. Receipts: [publication](validation/release-1.21.0/publication.json), [deployment](validation/release-1.21.0/deployment.json), [browser update](validation/release-1.21.0/browser-cache-upgrade.json), [wiki](validation/release-1.21.0/wiki-browser.json).
+
+At the user’s explicit request, fully resolved issues #63 (menu exit), #65 (console/GodMode), and #66 (redress mods) were commented exactly `fixed in 1.21.0` and closed. [Closure receipts](validation/release-1.21.0/issues.json) include the verified comment URLs and states. Other deferred or partially resolved reports remain open. Later delivery-record commits do not change the published tag, game code, or artifacts.

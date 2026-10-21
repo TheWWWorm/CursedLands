@@ -4,6 +4,7 @@
 
 - Add a developer console with syntax colours, matching brackets, command and argument completion, searchable help and output, persistent history, adjustable text size, clipboard copying and local diagnostic exports. Add host testing commands for party inspection, healing, basic GodMode, teleporting, direct map travel and scene time. Retain supported original script expressions and authenticated host execution. Help and controls are available in English, Russian and German. ([#65](https://github.com/TheWWWorm/CursedLands/issues/65))
 - Support `redress.res` texture overrides in API 1/2/3 mod packages and the legacy converter, covering character skins, clothing and equipment. ([#66](https://github.com/TheWWWorm/CursedLands/issues/66))
+- Keep the campaign paused while returning to the main menu and shutting down its connection. ([#63](https://github.com/TheWWWorm/CursedLands/issues/63))
 - Prepare Windows FSR resources asynchronously, expose frame generation independently of upscaling, and distinguish presented from rendered frame rates. Keep capability guidance in Screen settings.
 - Share foliage height materials to reduce shader parameter-buffer exhaustion.
 - Preserve attackers after ranged hits, restore context-sensitive self-casting and Alt target selection, retain curse placement and presentation, and handle ending audio transitions. ([#48](https://github.com/TheWWWorm/CursedLands/issues/48))

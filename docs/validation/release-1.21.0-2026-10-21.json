@@ -1,7 +1,7 @@
 {
   "version": "1.21.0",
   "date": "2026-10-21",
-  "status": "Verified source and exported distributions; publication/deployment receipts are recorded separately.",
+  "status": "Published stable release and hosted browser deployment verified; all public downloads match exported SHA-256 hashes.",
   "source_checks": [
     {
       "exit": 0,
@@ -427,5 +427,16 @@
       "waiting": null,
       "isolated": true
     }
+  },
+  "publication_receipt": "release-1.21.0/publication.json",
+  "deployment_receipt": "release-1.21.0/deployment.json",
+  "wiki_browser_receipt": "release-1.21.0/wiki-browser.json",
+  "issue_closures": "release-1.21.0/issues.json",
+  "menu_exit_check": {
+    "retained_report": "regressions-2026-10-21/report.json",
+    "run": "exit-menu-paused",
+    "checks": 12,
+    "failures": 0,
+    "scope": "Actual HUD exit with eight delayed connection shutdown frames, from both initially paused and unpaused campaigns."
   }
 }

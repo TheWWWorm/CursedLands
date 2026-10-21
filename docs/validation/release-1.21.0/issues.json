@@ -1,0 +1,45 @@
+{
+  "version": "1.21.0",
+  "issues": [
+    {
+      "closedAt": "2026-10-21T09:22:23Z",
+      "number": 63,
+      "state": "CLOSED",
+      "stateReason": "COMPLETED",
+      "title": "BUG: Выход в главное меню - Проклятые земли - CursedLands-1.20.0-linux",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/63",
+      "comment": {
+        "body": "fixed in 1.21.0",
+        "url": "https://github.com/TheWWWorm/CursedLands/issues/63#issuecomment-6312545738",
+        "createdAt": "2026-10-21T09:22:22Z"
+      }
+    },
+    {
+      "closedAt": "2026-10-21T09:22:25Z",
+      "number": 65,
+      "state": "CLOSED",
+      "stateReason": "COMPLETED",
+      "title": "FEATURE REQUEST: god mode  - Проклятые земли - CursedLands-1.20.0-linux",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/65",
+      "comment": {
+        "body": "fixed in 1.21.0",
+        "url": "https://github.com/TheWWWorm/CursedLands/issues/65#issuecomment-6312546504",
+        "createdAt": "2026-10-21T09:22:24Z"
+      }
+    },
+    {
+      "closedAt": "2026-10-21T09:22:27Z",
+      "number": 66,
+      "state": "CLOSED",
+      "stateReason": "COMPLETED",
+      "title": "FEATURE REQUEST: redress для модов",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/66",
+      "comment": {
+        "body": "fixed in 1.21.0",
+        "url": "https://github.com/TheWWWorm/CursedLands/issues/66#issuecomment-6312547221",
+        "createdAt": "2026-10-21T09:22:27Z"
+      }
+    }
+  ],
+  "scope": "Only fully resolved reports closed. Mine slowdown and other deferred or partially resolved reports remain open."
+}

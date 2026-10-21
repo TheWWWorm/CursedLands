@@ -1,0 +1,15 @@
+{
+  "version": "1.21.0",
+  "site": "https://cursedlands.wwworm.com/wiki/",
+  "date": "2026-10-21",
+  "method": "In-app browser, observed rendered controls and accessibility state",
+  "checks": {
+    "english_loaded": true,
+    "russian_language_selection": true,
+    "german_language_selection": true,
+    "browser_back_restores_russian": true,
+    "reload_retains_russian": true
+  },
+  "article_version": "1.10.0",
+  "scope": "Published standalone wiki language controls and navigation; unchanged article export retained."
+}

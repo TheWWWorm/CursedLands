@@ -1,0 +1,120 @@
+{
+  "site": "https://cursedlands.wwworm.com/",
+  "commit": "d060ac6a303d0fa3b457d2680c4508d0b1da6910",
+  "version": "1.21.0",
+  "verified_at": "2026-10-21T09:17:47Z",
+  "live_files": {
+    "data-worker.js": {
+      "bytes": 1568,
+      "sha256": "23acf2e304952606e7e2a0bf850dc8e02b56dcae2913cc79e461c78afbd49d77",
+      "isolation_headers": true
+    },
+    "files.js": {
+      "bytes": 14821,
+      "sha256": "5b23e470c5dedc93d0c80ea0696eff36bad3afbb88eb4bc85ced567f472c5b2a",
+      "isolation_headers": true
+    },
+    "icon-192.png": {
+      "bytes": 50904,
+      "sha256": "0f2555619f403d73855f2d20beaf5cedd4a6ad3b92b0325f7f8da5f979dcceec",
+      "isolation_headers": true
+    },
+    "icon-512.png": {
+      "bytes": 324019,
+      "sha256": "280a543feabeb6da1ae8f17e1452fa7a27537f2e1d2d261d6da9ce826f58a90d",
+      "isolation_headers": true
+    },
+    "index.apple-touch-icon.png": {
+      "bytes": 45361,
+      "sha256": "1fa3fdee844f8a38b4a4d4c5908a53d857eaaf6950da1fa061fb5c1c2d46de41",
+      "isolation_headers": true
+    },
+    "index.audio.position.worklet.js": {
+      "bytes": 2973,
+      "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
+      "isolation_headers": true
+    },
+    "index.audio.worklet.js": {
+      "bytes": 7298,
+      "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+      "isolation_headers": true
+    },
+    "index.html": {
+      "bytes": 6220,
+      "sha256": "e44d8df87a1a4328e63d47044b8eae858d066aa663b107b70b375b79412be86b",
+      "isolation_headers": true
+    },
+    "index.icon.png": {
+      "bytes": 7516,
+      "sha256": "074eecd5dd87067e3f1b15c59c08fad1a700f431fe5c0b1cbc23f9a8b57aa8a4",
+      "isolation_headers": true
+    },
+    "index.js": {
+      "bytes": 279815,
+      "sha256": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c",
+      "isolation_headers": true
+    },
+    "index.pck": {
+      "bytes": 19454232,
+      "sha256": "be9473abfd0f1b4ff8581c4937d5ba28d3c51f09be23ddbc450f64cede1d9025",
+      "isolation_headers": true
+    },
+    "index.png": {
+      "bytes": 340337,
+      "sha256": "b9fe65d8c1b0bef09d7df97700ead5372582dc00851a24e53f4be3a839a48027",
+      "isolation_headers": true
+    },
+    "index.wasm": {
+      "bytes": 39509339,
+      "sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656",
+      "isolation_headers": true
+    },
+    "installer-worker.js": {
+      "bytes": 16243,
+      "sha256": "d6afa8f57a10faef5edb0f1ce10ef2ec52a9e7ed690771ba0b97b431e9e24708",
+      "isolation_headers": true
+    },
+    "manifest.webmanifest": {
+      "bytes": 483,
+      "sha256": "959d316f9bd45b8d4c6cfd621aced7f55336f459e9472c3f5ce53fb9c7990ab5",
+      "isolation_headers": true
+    },
+    "storage.js": {
+      "bytes": 5685,
+      "sha256": "9265725b43b6b4e897693fd3be62b175c3e0b07493b51ba7d18a6d1578bee581",
+      "isolation_headers": true
+    },
+    "service-worker.js": {
+      "bytes": 7282,
+      "sha256": "dada06a8342a058a80e3a22493a449479c983f2d466152cad75bdfd0780f6a69",
+      "isolation_headers": true
+    },
+    "BUILD-INFO.json": {
+      "bytes": 607,
+      "sha256": "3149ba4a0b15f98822c3295c47f6b29d1898a52dc38be8c14e868e25c8dc0ab5",
+      "isolation_headers": true
+    },
+    "THIRD_PARTY_NOTICES.md": {
+      "bytes": 5861,
+      "sha256": "753c4bd654b374f72d634ef867ff8cee91f68d18baaaf555630a64e6b30146d3",
+      "isolation_headers": true
+    },
+    "wiki/BUILD-INFO.json": {
+      "bytes": 2236140,
+      "sha256": "544455bd05a817172131fbd26870b940ed3c9d2bbc2b6d86540e1d3c910cbdcf",
+      "isolation_headers": true
+    },
+    "index.wasm.part0": {
+      "bytes": 20971520,
+      "sha256": "e225998ec9fbd2fb1aa80798d571dc381fdd9bfdb3478250832404d941db0426",
+      "isolation_headers": true
+    },
+    "index.wasm.part1": {
+      "bytes": 18537819,
+      "sha256": "79cae914fb3feb5b3ef307b0906fd111d1ee2ca48ff730ba21cca432c271467b",
+      "isolation_headers": true
+    }
+  },
+  "all_live_hashes_match": true,
+  "scope": "Every changed hosted asset, complete service-worker engine cache, build metadata and split WebAssembly parts"
+}
