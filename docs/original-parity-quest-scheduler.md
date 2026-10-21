@@ -198,3 +198,16 @@ Every scenario's first differing field (original versus remake) is in
 `report.md` of the result directory. Run `quest-scheduler-08` is diagnostic
 only (scratch copy, production code unchanged) and shows the differences that
 remain once mechanism E is removed.
+
+## Fix status
+
+Branch `fix/script-scheduler-20261021` models the native pass: body threads
+run first (newest first), then every trigger instance is polled; every true
+block starts its own body thread on a copy of the locals, a first-slice
+`KillScript` disposes the instance and skips its remaining blocks, and
+`fire_event` only starts the handler (polled in the next pass). QFinish's
+compact objective evaluator runs at the start of the trigger walk.
+Run `results/scheduler-fix-03` (replayed inputs): **64 match, 2 differ**;
+the two left are mechanism F, kept on purpose (the remake keeps playing
+instead of stopping with a fatal script error). In the full family run
+(`results/scheduler-fix-full-01`) only `quest_scheduler` changed.

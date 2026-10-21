@@ -238,6 +238,18 @@ All 13 `*/playersee_other_player` scenarios: original count 0 (no player
 record 1), remake returns player 0's visible set (the argument is ignored).
 Not used by authored base scripts.
 
+### Fix status
+
+Branch `fix/script-perception-20261021` makes `UnitSee`/`GroupSee`/`PlayerSee`
+read the AI's retained noticed lists (refreshed by `UnitAI.player_perceive`
+on demand; a dead watcher keeps its last list), `IsUnitVisible` and
+QObjSeeUnit add the player's corpse lists, and `PlayerSee(n != 0)` is empty
+in single player. Groups A, B, C and E match; the core family is
+**450 match, 2 differ**, the two being group D, kept on purpose. The full
+authored run changes only `perception_group` (+71) and `perception_ticks`
+(+25). The layer-1 harness supplies the retained lists as the AI's state
+for the tick (`noticed`, `seen_corpses`, `perceived`).
+
 ### F. Authored conditions (39 of 316 rows)
 
 All in the `dead_watchers_retain` snapshot (B; 20 rows: `GroupSee(g)` /

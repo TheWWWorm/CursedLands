@@ -5,7 +5,8 @@ extends RefCounted
 
 ## Layer 1: perception is supplied as exact (watcher, target) pairs. Every
 ## fixture actor stands within the watchers' sight radius, so the geometric
-## prefilter keeps all of them; can_notice_with answers from the pairs.
+## prefilter keeps all of them; can_notice_with answers from the pairs, and
+## the AI's retained lists hold them for a ScriptVM that reads those.
 class SuppliedAI extends UnitAI:
 	var pairs := {}
 	func can_notice_with(u: GameUnit, o: GameUnit, _k: PackedFloat64Array) -> bool:
@@ -97,6 +98,18 @@ func _group_case(data: Dictionary, trace: Node) -> Array:
 		var row: Dictionary = data.units[i]
 		for j in row.get("noticed", []) + row.get("corpses", []):
 			ai.pairs[Vector2i(units[i].uid, units[int(j)].uid)] = true
+		# The same lists as the AI's retained state for this tick (UnitAI
+		# player_perceive's "noticed" / "seen_corpses"), for a ScriptVM that
+		# reads them; "perceived" marks them current, so no scan replaces them.
+		var noticed := {}
+		var corpses := {}
+		for j in row.get("noticed", []):
+			noticed[units[int(j)].get_instance_id()] = units[int(j)]
+		for j in row.get("corpses", []):
+			corpses[units[int(j)].get_instance_id()] = units[int(j)]
+		if not noticed.is_empty(): units[i].set_meta("noticed", noticed)
+		if not corpses.is_empty(): units[i].set_meta("seen_corpses", corpses)
+		units[i].set_meta("perceived", world.time)
 	var made := _vm(world, trace)
 	var vm: ScriptVM = made[0]
 	var inst := ScriptVM.Instance.new()
