@@ -121,6 +121,10 @@ func _run() -> void:
 		XpRules.give(session, 100.0, "quest", 0)
 		check(ModFormula.invocations == calls + 1 and not session.mod_script_failed, "real campaign reward executes formula while FSR is active")
 	await sample("gameplay", true, true)
+	for display_mode: int in [2,1,0]:
+		GameData.set_option("display_mode",display_mode)
+		await settle(30)
+		await sample("display-mode-%d" % display_mode,true,true)
 	get_tree().paused = true
 	await sample("paused", false)
 	get_tree().paused = false

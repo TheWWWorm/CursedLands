@@ -45,6 +45,18 @@ func _ready() -> void:
 			pose.restore_pose();var previous:=pose.phase;pose.apply_pose(1.0/60)
 			check(pose.phase!=previous,"leg cycle advances after gait/readiness transition")
 			check(unit.pos==at and unit._move_speed==1.2,"pose composition leaves movement authority unchanged")
+	# A held run request remains set while exhausted. Use walking clips at
+	# the same walking speed, including attack/cast leg composition.
+	unit.set_meta("hero", {})
+	unit.max_mana = 100.0
+	for action: String in ["walk","attack","cast"]:
+		for stamina: float in [0.0,10.0,0.0]:
+			pose.restore_pose(); unit.running = true; unit.mana = stamina
+			unit.action = action; model.act(action,1,0.0); pose.weight = 1.0
+			pose.apply_pose(0.016)
+			var expected := "walk" if stamina <= 0.0 else "run"
+			var record: Dictionary = model._clip_records().get(pose.lower_clip,{})
+			check((int(record.get("code",-1)) & 0x3c0000) == (EIUnitModel.AC_WALK if stamina <= 0.0 else EIUnitModel.AC_RUN),"held run request uses %s legs with %s stamina during %s" % [expected,stamina,action])
 	pose.restore_pose();unit.free()
 	var result := {"checks":checks,"failures":failures.size(),"wrong_healthy_selections":wrong_healthy,"clips":selections}
 	FileAccess.open("user://direct-gait-continuity.json",FileAccess.WRITE).store_string(JSON.stringify(result,"\t"))

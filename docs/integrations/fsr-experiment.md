@@ -80,11 +80,21 @@ resets and long gaps discard stale samples. With FG off, the ordinary single FPS
 counter remains. Frame generation has a processing cost, so rendered FPS can
 fall while presented FPS increases.
 
+Windows borderless fullscreen uses a screen-sized undecorated window so the
+viewport and DXGI presentation surface have identical dimensions. Godot's
+nonexclusive fullscreen mode adds two pixels to the surface, which prevents
+this integration's exact-size frame-generation context from activating.
+
 `fsr-status.json` in the game profile reports actual SDK versions, successful upscale dispatches, generated
 frames, game presents, real DXGI presents and errors. `presented_frames`
 counts calls reaching the underlying swapchain; it does not measure how many
 frames a monitor physically scanned out. Screenshots taken through Godot
 capture rendered frames, not the interpolated frames.
+
+`frame_generation_blockers` records the active gameplay gate, including menus,
+loading, pause and lost focus. The status also retains whether generation has
+ever been active and the time since it was last allowed, so switching away to
+read the file does not hide the preceding activity.
 
 First activation prepares the engine's motion-vector shaders and pipelines on
 Godot's compiler workers, then creates the requested AMD context on a bounded

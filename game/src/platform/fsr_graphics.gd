@@ -32,6 +32,8 @@ var _previous_fg := 0
 var _upscaling_applied := false
 var _telemetry_time := 0.0
 var _preparing_label: Label
+var _last_allowed_usec := 0
+var _ever_active := false
 
 static func bridge() -> Object:
 	return Engine.get_singleton("FidelityFX") if Engine.has_singleton("FidelityFX") else null
@@ -119,26 +121,49 @@ func _ready() -> void:
 	_preparing_label.hide()
 	layer.add_child(_preparing_label)
 
+## Choose the view owning the current camera. A hidden/previous Game in
+## the same group must not suspend frame generation for the visible one.
+static func campaign_gate(tree: SceneTree, camera: Camera3D) -> Dictionary:
+	var game: Game
+	for candidate: Node in tree.get_nodes_in_group("fsr_campaign_view"):
+		if candidate is Game and candidate.rig != null and candidate.rig.camera == camera \
+				and candidate.is_visible_in_tree() and not candidate.is_queued_for_deletion():
+			game = candidate
+			break
+	var blockers: Array[String] = []
+	if game == null:
+		blockers.append("no_active_campaign_view")
+	else:
+		if game.simulation_only: blockers.append("simulation_only")
+		if game.world == null: blockers.append("no_world")
+		if game.session == null:
+			blockers.append("no_session")
+		else:
+			if game.session.loading_game: blockers.append("loading")
+			if game.session.movie_active(): blockers.append("movie")
+		if game.hud == null or game.hud.blocks_camera(): blockers.append("hud_panel")
+	return {"allowed":blockers.is_empty(),"blockers":blockers}
+
 func _process(dt: float) -> void:
 	var root := get_tree().root
 	var applied := sr_active()
 	if _upscaling_applied and not applied: GameData._apply_window()
 	_upscaling_applied = applied
-	var enable := GameData.option(FRAME_GENERATION) > 0 and reason(FRAME_GENERATION).is_empty()
-	enable = enable and not get_tree().paused and root.has_focus() and root.get_camera_3d() != null
-	var game := get_tree().get_first_node_in_group("fsr_campaign_view") as Game
-	enable = enable and game != null
-	if enable:
-		enable = not game.simulation_only and game.is_visible_in_tree() and game.world != null and game.session != null
-		enable = enable and not game.session.loading_game and not game.session.movie_active()
-		enable = enable and game.hud != null and not game.hud.blocks_camera()
-		enable = enable and game.rig != null and root.get_camera_3d() == game.rig.camera
+	var gate := campaign_gate(get_tree(),root.get_camera_3d())
+	if GameData.option(FRAME_GENERATION) <= 0: gate.blockers.append("option_off")
+	var unavailable := reason(FRAME_GENERATION)
+	if not unavailable.is_empty(): gate.blockers.append("unsupported")
+	if get_tree().paused: gate.blockers.append("paused")
+	if not root.has_focus(): gate.blockers.append("window_unfocused")
+	var enable: bool = gate.blockers.is_empty()
+	if enable: _last_allowed_usec = Time.get_ticks_usec()
 	var version := GameData.option(FRAME_GENERATION) + 2 if enable else 0
 	if version != _previous_fg:
 		root.set("frame_generation", enable)
 		bridge().call("set_frame_generation_version", version)
 		_previous_fg = version
 	var status: Dictionary = bridge().call("get_status")
+	_ever_active = _ever_active or bool(status.get("frame_generation_active",false))
 	_preparing_label.visible = (applied or enable) and (status.get("temporal_shaders_initializing", false) or status.get("upscaler_initializing", false) or status.get("frame_generation_initializing", false))
 	if _preparing_label.visible: _preparing_label.text = RemakeText.t("Preparing FSR…")
 	_telemetry_time += dt
@@ -148,6 +173,10 @@ func _process(dt: float) -> void:
 		status["requested_quality"] = GameData.option(QUALITY)
 		status["requested_frame_generation"] = GameData.option(FRAME_GENERATION)
 		status["gameplay_allows_frame_generation"] = enable
+		status["frame_generation_blockers"] = gate.blockers
+		status["frame_generation_unavailable_reason"] = unavailable
+		status["frame_generation_ever_active"] = _ever_active
+		status["frame_generation_last_allowed_ms_ago"] = (Time.get_ticks_usec()-_last_allowed_usec)/1000 if _last_allowed_usec > 0 else -1
 		status["rendered_fps"] = Engine.get_frames_per_second()
 		var out := FileAccess.open("user://fsr-status.json", FileAccess.WRITE)
 		if out: out.store_string(JSON.stringify(status, "\t") + "\n")

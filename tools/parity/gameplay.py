@@ -40,7 +40,8 @@ def catalog(selection=None):
         if (row["kind"] != "remake_regression" or type(row["min_checks"]) is not int
                 or row["min_checks"] < 1 or row["timeout"] < 1
                 or row["campaign"] not in ("cursed_lands", "lost_in_astral")
-                or row.get("display", "headless") not in ("headless", "rendered")):
+                or row.get("display", "headless") not in ("headless", "rendered")
+                or row.get("rendering_method", "gl_compatibility") not in ("gl_compatibility", "mobile", "forward_plus")):
             raise ValueError("Every entry must declare evidence type and nonzero minimum coverage")
         for name in row["required_files"]:
             if Path(name).is_absolute() or ".." in Path(name).parts:
@@ -48,13 +49,13 @@ def catalog(selection=None):
     return rows
 
 
-def engine_argv(godot, runtime, display="headless"):
+def engine_argv(godot, runtime, display="headless", rendering_method="gl_compatibility"):
     base = [str(godot), "--path", str(runtime), "--render-thread", "safe", "--audio-driver", "Dummy"]
     if display == "headless":
         return base + ["--headless"]
     # A real renderer on an explicitly selected, private X display. Pixel/UI
     # checks must never silently fall back to the headless dummy renderer.
-    return base + ["--display-driver", "x11", "--rendering-method", "gl_compatibility",
+    return base + ["--display-driver", "x11", "--rendering-method", rendering_method,
                    "--windowed", "--resolution", "1280x800", "--position", "0,0"]
 
 
@@ -127,6 +128,8 @@ def assess(text, spec, exit_code, error=None):
             raise ValueError("Wrong profile, campaign or test script")
         if start.get("display", "headless") != spec.get("display", "headless"):
             raise ValueError("Wrong display mode; rendered checks require a real renderer")
+        if "rendering_method" in spec and start.get("rendering_method") != spec["rendering_method"]:
+            raise ValueError("Wrong rendering method; this test requires its declared renderer")
         result["runtime"] = start
         result.update(parse_summary(text, spec["marker"], spec["min_checks"]))
         if diagnostics:
@@ -345,7 +348,7 @@ def main():
             if display == "rendered":
                 env["DISPLAY"] = args.render_display
                 env.pop("WAYLAND_DISPLAY", None)
-            argv = engine_argv(engine[0], runtime, display) + ["--", "--no-movies", "--ei-path=" + str(test_data),
+            argv = engine_argv(engine[0], runtime, display, spec.get("rendering_method", "gl_compatibility")) + ["--", "--no-movies", "--ei-path=" + str(test_data),
                              "--tool=res://tools/gameplay_bootstrap.gd", "--suite-script=res://" + spec["script"],
                              "--suite-seed=" + str(args.seed), "--suite-campaign=" + spec["campaign"],
                              "--suite-display=" + display, *spec["args"]]
