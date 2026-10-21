@@ -14,9 +14,12 @@ def contracts(campaign):
         return {}
     return {"quest_query": {
         "entry": ["0x4b41e0"],
-        "scope": "Native expression opcodes 0x51 Mana, 0x52 MaxMana, 0xaa IsNight and 0xbb IsInSquare versus ScriptVM._eval.",
-        "stubs": ["supplied unit mana/max-mana stat records", "supplied world night value", "player-zero lookup", "single-player mode"],
-        "limits": "Query results only; no mana regeneration, spellcasting or day/night simulation.",
+        "scope": "Native expression opcodes 0x51 Mana, 0x52 MaxMana, 0x65 GetPlayer, 0x6a Sum, 0x8f GetAIClass, 0xaa IsNight, 0xbb IsInSquare, 0xd1 GetMercsNumber, 0xe1 GetLootItemsCount and object opcodes 0xb4 GetUnitOfPlayer / 0xe4 GetLeader (through 0x4b56c0, read with GetObjectID) versus ScriptVM._eval.",
+        "stubs": ["supplied unit mana/max-mana stat records, player number and AI class", "supplied world night value",
+                  "player-zero lookup", "single-player mode", "supplied party records (ID only) and ID-to-actor lookups 0x55fb00/0x593aa0",
+                  "actor death accessor (vtable 0xdc)", "temporary object-slot block allocator 0x6fe8af",
+                  "supplied player-zero loot-item counter", "supplied group membership"],
+        "limits": "Query results only; no mana regeneration, spellcasting, day/night simulation, party management or looting.",
         "tolerances": {},
     }}
 
@@ -42,6 +45,47 @@ def scenarios(seed=20261020, fuzz=12):
     add("mana_half_gate", call("IsLess", call("Mana", {"unit": 0}), call("Div", call("MaxMana", {"unit": 0}), 2)))
     for night in [0, 0.25, 0.5, 1]:
         add(f"IsNight_{night}", call("IsNight"), [], night=night)
+    for player in [0, 1, 2, 5]:
+        add(f"GetPlayer_{player}", call("GetPlayer", {"unit": 0}), [dict(unit, player=player)])
+    add("GetPlayer_missing", call("GetPlayer", {"unit": -1}), [])
+    for ai_class in [0, 1, 3, 7]:
+        add(f"GetAIClass_{ai_class}", call("GetAIClass", {"unit": 0}), [dict(unit, ai_class=ai_class)])
+    add("GetAIClass_missing", call("GetAIClass", {"unit": -1}), [])
+    for count in [0, 1, 7]:
+        add(f"GetLootItemsCount_{count}", call("GetLootItemsCount", 0), [], loot_items=count)
+    add("GetLootItemsCount_other_player", call("GetLootItemsCount", 1), [], loot_items=3)
+    members = [dict(unit, uid=10 + i, hp=5 + 5 * i, dead=i == 1) for i in range(3)]
+    for indices in [[], [0], [0, 1, 2], [2, 0]]:
+        suffix = "_".join(map(str, indices)) or "empty"
+        groups = {"guards": indices}
+        group, iterator = {"group": "guards"}, {"iterator": "g"}
+        add(f"Sum_hp_{suffix}", call("Sum", iterator, group, call("HP", iterator)), members, groups=groups)
+        add(f"Sum_alive_{suffix}", call("Sum", iterator, group, call("IsAlive", iterator)), members, groups=groups)
+        add(f"Sum_literal_{suffix}", call("Sum", iterator, group, 2.5), members, groups=groups)
+    # Party slots: the protagonist first, then mercenaries in record order.
+    # "unit": -1 keeps a record whose actor is absent from the world.
+    hero = dict(unit, uid=100)
+    parties = {
+        "solo": ([dict(hero)], [0]),
+        "solo_dead": ([dict(hero, dead=True)], [0]),
+        "two_mercs": ([dict(hero), dict(hero, uid=101), dict(hero, uid=102)], [0, 1, 2]),
+        "dead_merc": ([dict(hero), dict(hero, uid=101, dead=True), dict(hero, uid=102)], [0, 1, 2]),
+        "dead_hero": ([dict(hero, dead=True), dict(hero, uid=101)], [0, 1]),
+        "all_dead": ([dict(hero, dead=True), dict(hero, uid=101, dead=True)], [0, 1]),
+        "absent_merc": ([dict(hero), dict(hero, uid=102)], [0, -1, 1]),
+    }
+    for name, (actors, slots) in parties.items():
+        party = [{"id": 500 + i, "unit": slot} for i, slot in enumerate(slots)]
+        add(f"GetMercsNumber_{name}", call("GetMercsNumber", 0), actors, party=party)
+        # The original builtin takes no parameters and ignores this extra
+        # literal. Authored z18q1/z7q3 triggers call GetLeader() with none;
+        # the remake indexes a missing argument there (see the family doc).
+        add(f"GetLeader_{name}", call("GetObjectID", call("GetLeader", 0)), actors, party=party)
+        for k in [-1, 0, 1, 2, 3, 1.4, 1.6]:
+            add(f"GetUnitOfPlayer_{name}_{k}", call("GetObjectID", call("GetUnitOfPlayer", 0, k)), actors, party=party)
+    add("GetMercsNumber_other_player", call("GetMercsNumber", 1), [dict(hero)], party=[{"id": 500, "unit": 0}])
+    add("GetUnitOfPlayer_other_player", call("GetObjectID", call("GetUnitOfPlayer", 1, 0)), [dict(hero)],
+        party=[{"id": 500, "unit": 0}])
     return rows
 
 
