@@ -23,7 +23,7 @@ class NpcAI extends UnitAI:
 		return []
 	func danger_at(p: Vector2) -> bool:
 		return danger.has(p)
-	## Declared boundaries for npc_motivation: the motivation bodies are
+	## Declared boundaries for npc_ai_motivation: the motivation bodies are
 	## recorders (Fear tick, Suspection walk, Sentry tick), as the original's
 	## tick/enter/leave entries are; the calm buff-cast check finds nothing.
 	var recording := false
@@ -65,16 +65,16 @@ class NpcUnit extends GameUnit:
 
 
 func kinds() -> Array:
-	return ["npc_fear", "npc_suspicion", "npc_target_score", "npc_motivation"]
+	return ["npc_ai_fear", "npc_ai_suspicion", "npc_ai_target_score", "npc_ai_motivation"]
 
 
 func capture(kind: String, data: Dictionary, trace: Node) -> Array:
 	seed(20261021)
 	match kind:
-		"npc_fear": return capture_fear(data, trace)
-		"npc_suspicion": return capture_suspicion(data, trace)
-		"npc_target_score": return capture_score(data, trace)
-		"npc_motivation": return capture_motivation(data, trace)
+		"npc_ai_fear": return capture_fear(data, trace)
+		"npc_ai_suspicion": return capture_suspicion(data, trace)
+		"npc_ai_target_score": return capture_score(data, trace)
+		"npc_ai_motivation": return capture_motivation(data, trace)
 	push_error("Unsupported npc_ai kind " + kind)
 	return []
 

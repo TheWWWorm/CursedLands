@@ -15,14 +15,14 @@ import extensions
 from cases import make_inputs
 from compare import compare, digest
 
-KINDS = ("npc_fear", "npc_suspicion", "npc_target_score", "npc_motivation")
+KINDS = ("npc_ai_fear", "npc_ai_suspicion", "npc_ai_target_score", "npc_ai_motivation")
 GOOD = {
-    "npc_fear": {"decision_priority": 166, "j_bits": 0x40400000, "kept_danger": False, "level": 998,
+    "npc_ai_fear": {"decision_priority": 166, "j_bits": 0x40400000, "kept_danger": False, "level": 998,
                  "delta": -2, "point_bits": [0x41400000, 0x41400000], "r_bits": 0x41200000},
-    "npc_suspicion": {"units": [{"level": 897, "delta": -3, "point_bits": [0x40400000, 0x40800000],
+    "npc_ai_suspicion": {"units": [{"level": 897, "delta": -3, "point_bits": [0x40400000, 0x40800000],
                                  "pending": [25]}]},
-    "npc_target_score": {"score_bits": 0xc1e8cccd},
-    "npc_motivation": {"motivation": "fear"},
+    "npc_ai_target_score": {"score_bits": 0xc1e8cccd},
+    "npc_ai_motivation": {"motivation": "fear"},
 }
 
 
@@ -86,7 +86,7 @@ class NpcAiInputTests(unittest.TestCase):
                             self.assertLess(event[key], n, row["id"])
                 for index in step.get("moves", {}):
                     self.assertLess(int(index), n, row["id"])
-                if kind == "npc_target_score":
+                if kind == "npc_ai_target_score":
                     for key in ("caster", "candidate"):
                         self.assertLess(step[key], n)
                     self.assertIn(step["candidate"], step["list"])
@@ -98,7 +98,7 @@ class NpcAiInputTests(unittest.TestCase):
         # The help-call query 5c0bd0 (hits and help events) sees one 16 m
         # unit-grid cell.
         for row in cases.scenarios(20261020, 12):
-            if row["kind"] == "npc_target_score":
+            if row["kind"] == "npc_ai_target_score":
                 continue
             events = [e for step in row["inputs"]["ticks"] for e in step.get("events", [])]
             if not any(e["kind"] in ("hit", "help") for e in events):
@@ -122,7 +122,7 @@ class NpcAiInputTests(unittest.TestCase):
     def test_motivation_sets_cover_the_aggression_modes(self):
         import native_ext_npc_ai as native
         for row in cases.scenarios(20261020, 12):
-            if row["kind"] == "npc_motivation":
+            if row["kind"] == "npc_ai_motivation":
                 self.assertIn(row["inputs"]["aggression"], native.MOTIVATION_SETS)
 
 
@@ -146,22 +146,22 @@ class NpcAiValidatorTests(unittest.TestCase):
                 for key in good:
                     missing = {k: v for k, v in good.items() if k != key}
                     self.assert_rejected(kind, missing)
-        self.assert_rejected("npc_fear", dict(GOOD["npc_fear"], kept_danger=0))
-        self.assert_rejected("npc_fear", dict(GOOD["npc_fear"], decision_priority=True))
-        self.assert_rejected("npc_fear", dict(GOOD["npc_fear"], level=998.0))
-        self.assert_rejected("npc_fear", dict(GOOD["npc_fear"], point_bits=[1]))
-        self.assert_rejected("npc_fear", dict(GOOD["npc_fear"], r_bits=-1))
-        self.assert_rejected("npc_fear", dict(GOOD["npc_fear"], j_bits=1 << 32))
-        unit = GOOD["npc_suspicion"]["units"][0]
-        self.assert_rejected("npc_suspicion", {"units": [dict(unit, pending=None)]})
-        self.assert_rejected("npc_suspicion", {"units": [dict(unit, pending=[25.0])]})
-        self.assert_rejected("npc_suspicion", {"units": [dict(unit, level=True)]})
-        self.assert_rejected("npc_suspicion", {"units": [{k: v for k, v in unit.items() if k != "delta"}]})
-        self.assert_rejected("npc_suspicion", {"units": "none"})
-        self.assert_rejected("npc_target_score", {"score_bits": -1.5})
-        self.assert_rejected("npc_target_score", {"score_bits": 1 << 32})
-        self.assert_rejected("npc_motivation", {"motivation": "Fear"})
-        self.assert_rejected("npc_motivation", {"motivation": 7})
+        self.assert_rejected("npc_ai_fear", dict(GOOD["npc_ai_fear"], kept_danger=0))
+        self.assert_rejected("npc_ai_fear", dict(GOOD["npc_ai_fear"], decision_priority=True))
+        self.assert_rejected("npc_ai_fear", dict(GOOD["npc_ai_fear"], level=998.0))
+        self.assert_rejected("npc_ai_fear", dict(GOOD["npc_ai_fear"], point_bits=[1]))
+        self.assert_rejected("npc_ai_fear", dict(GOOD["npc_ai_fear"], r_bits=-1))
+        self.assert_rejected("npc_ai_fear", dict(GOOD["npc_ai_fear"], j_bits=1 << 32))
+        unit = GOOD["npc_ai_suspicion"]["units"][0]
+        self.assert_rejected("npc_ai_suspicion", {"units": [dict(unit, pending=None)]})
+        self.assert_rejected("npc_ai_suspicion", {"units": [dict(unit, pending=[25.0])]})
+        self.assert_rejected("npc_ai_suspicion", {"units": [dict(unit, level=True)]})
+        self.assert_rejected("npc_ai_suspicion", {"units": [{k: v for k, v in unit.items() if k != "delta"}]})
+        self.assert_rejected("npc_ai_suspicion", {"units": "none"})
+        self.assert_rejected("npc_ai_target_score", {"score_bits": -1.5})
+        self.assert_rejected("npc_ai_target_score", {"score_bits": 1 << 32})
+        self.assert_rejected("npc_ai_motivation", {"motivation": "Fear"})
+        self.assert_rejected("npc_ai_motivation", {"motivation": 7})
 
     def test_unknown_kind_is_rejected(self):
         self.assert_rejected("npc_unknown", {"motivation": "fear"})
@@ -185,21 +185,21 @@ def traces(pattern, state_of):
 
 class NpcAiMismatchTests(unittest.TestCase):
     def test_identical_captures_match(self):
-        inputs, original, remake = traces("npc_", lambda kind, i: GOOD[kind])
+        inputs, original, remake = traces("npc_ai_", lambda kind, i: GOOD[kind])
         self.assertEqual(compare(inputs, original, remake)["counts"]["mismatches"], 0)
 
     def test_each_observed_field_mutation_is_detected(self):
         mutations = {
-            "npc_fear/flag1_party_noticed_d4.0": ("decision_priority", 165, "$.steps[1].state.decision_priority"),
-            "npc_suspicion/help_after_decision": (None, None, "$.steps[1].state.units[1].pending[0]"),
-            "npc_target_score/weapon_basic": ("score_bits", 0xc1e8ccce, "$.steps[1].state.score_bits"),
-            "npc_motivation/danger_mode3": ("motivation", "calm", "$.steps[1].state.motivation"),
+            "npc_ai_fear/flag1_party_noticed_d4.0": ("decision_priority", 165, "$.steps[1].state.decision_priority"),
+            "npc_ai_suspicion/help_after_decision": (None, None, "$.steps[1].state.units[1].pending[0]"),
+            "npc_ai_target_score/weapon_basic": ("score_bits", 0xc1e8ccce, "$.steps[1].state.score_bits"),
+            "npc_ai_motivation/danger_mode3": ("motivation", "calm", "$.steps[1].state.motivation"),
         }
         for name, (key, value, field) in mutations.items():
             with self.subTest(case=name):
                 def state(kind, i):
                     good = copy.deepcopy(GOOD[kind])
-                    if kind == "npc_suspicion":
+                    if kind == "npc_ai_suspicion":
                         good = {"units": [GOOD[kind]["units"][0]] * 2}
                     return good
                 inputs, original, remake = traces(name, state)
@@ -213,7 +213,7 @@ class NpcAiMismatchTests(unittest.TestCase):
                 self.assertEqual(report["scenarios"][0]["first_divergence"]["field"], field)
 
     def test_truncated_remake_capture_is_an_error(self):
-        inputs, original, remake = traces("npc_motivation/danger_mode3", lambda kind, i: GOOD[kind])
+        inputs, original, remake = traces("npc_ai_motivation/danger_mode3", lambda kind, i: GOOD[kind])
         remake["scenarios"][0]["steps"].pop()
         with self.assertRaises(ValueError):
             compare(inputs, original, remake)
@@ -235,8 +235,8 @@ class NpcAiNativeTests(unittest.TestCase):
         return out
 
     def test_native_captures_are_deterministic_and_valid(self):
-        ids = ["npc_fear/seeded_000", "npc_suspicion/help_twice_next_tick", "npc_target_score/heal",
-               "npc_motivation/fear_hold_mode3_level1000"]
+        ids = ["npc_ai_fear/seeded_000", "npc_ai_suspicion/help_twice_next_tick", "npc_ai_target_score/heal",
+               "npc_ai_motivation/fear_hold_mode3_level1000"]
         first, second = self.capture(ids), self.capture(ids)
         self.assertEqual(first, second)
         rows = {r["id"]: r for r in cases.scenarios(20261020, 2)}

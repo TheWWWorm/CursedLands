@@ -274,7 +274,7 @@ def fear(o, case):
     o.hook(0x5bbdb0, danger_cell)
 
     def out_of_contract():
-        raise RuntimeError("kiting spot search reached: outside the npc_fear contract")
+        raise RuntimeError("kiting spot search reached: outside the npc_ai_fear contract")
 
     o.hook(0x4667f0, out_of_contract)
     rig.set_list(ai + 0x114, [rig.units[i] for i, row in enumerate(case["units"]) if row.get("noticed")])
@@ -379,7 +379,7 @@ def motivation(o, case):
     o.hook(0x54b6c0, lambda: o.ret(0))
 
     def out_of_contract():
-        raise RuntimeError("kiting spot search reached: outside the npc_motivation contract")
+        raise RuntimeError("kiting spot search reached: outside the npc_ai_motivation contract")
 
     o.hook(0x4667f0, out_of_contract)
     danger = []
@@ -490,5 +490,5 @@ def target_score(o, case):
     return states
 
 
-CAPTURES = {"npc_fear": fear, "npc_suspicion": suspicion, "npc_target_score": target_score,
-            "npc_motivation": motivation}
+CAPTURES = {"npc_ai_fear": fear, "npc_ai_suspicion": suspicion, "npc_ai_target_score": target_score,
+            "npc_ai_motivation": motivation}

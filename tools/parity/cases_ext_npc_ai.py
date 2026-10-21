@@ -15,7 +15,7 @@ def contracts(campaign):
     if campaign != "original":
         return {}
     return {
-        "npc_fear": {
+        "npc_ai_fear": {
             "entry": ["0x5d53b0..0x5d547d", "0x5d2960", "0x5cbbe0", "0x5d7e90"],
             "scope": "Fear motivation priority (5d2960: kiting 15000, noticed hostile 3000, danger cell 350, "
                      "Fear(1) party suspicion, suspicion level / 6, flee radius and spread updates) after the "
@@ -39,7 +39,7 @@ def contracts(campaign):
                       "current motivation and walk state are supplied per tick.",
             "tolerances": {},
         },
-        "npc_suspicion": {
+        "npc_ai_suspicion": {
             "entry": ["0x5cbbe0", "0x5d5990", "0x5d7e90", "0x5d53b0..0x5d547d"],
             "scope": "Suspicion records of several units: acceptance (5cbbe0, strictly above the current level), "
                      "per-tick decay, call for help (5d5990: unit-grid query 5c0bd0 within the caller's help "
@@ -59,7 +59,7 @@ def contracts(campaign):
                       "produced; party units and dead units are never diplomacy friends of a caller here.",
             "tolerances": {},
         },
-        "npc_target_score": {
+        "npc_ai_target_score": {
             "entry": ["0x5cf9a0"],
             "scope": "AI option/target score (5cf9a0: weapon, bolt, area, lasting, effect and heal options; "
                      "current-target bonus, damage against armour 522ae0, area sums with the 5cfe20 distance, "
@@ -79,7 +79,7 @@ def contracts(campaign):
                       "reachability (5d0030) are not executed.",
             "tolerances": {},
         },
-        "npc_motivation": {
+        "npc_ai_motivation": {
             "entry": ["0x5d53b0..0x5d56de", "0x5cbbe0"],
             "scope": "Motivation arbitration of the AI tick (5d53b0: perception tick, the real priorities of the "
                      "logic-model-3 motivation set of aggression modes 0, 2 and 3 - Sentry 5d0a80, Aggression "
@@ -102,7 +102,7 @@ def contracts(campaign):
     }
 
 
-STEP_COUNTS = {"npc_fear": "ticks", "npc_suspicion": "ticks", "npc_target_score": "evals", "npc_motivation": "ticks"}
+STEP_COUNTS = {"npc_ai_fear": "ticks", "npc_ai_suspicion": "ticks", "npc_ai_target_score": "evals", "npc_ai_motivation": "ticks"}
 
 
 def _unit(pos, side=1, **extra):
@@ -115,7 +115,7 @@ def _fear(rows, name, units, ticks, flag=1, **extra):
     inputs = {"flag": flag, "aggression": 3 if flag else 2, "config": dict(SHIPPED),
               "relations": RELATIONS, "units": units, "ticks": ticks}
     inputs.update(extra)
-    rows.append({"id": "npc_fear/" + name, "kind": "npc_fear", "inputs": inputs})
+    rows.append({"id": "npc_ai_fear/" + name, "kind": "npc_ai_fear", "inputs": inputs})
 
 
 def fear_scenarios(seed, fuzz):
@@ -263,7 +263,7 @@ HELP_CONFIG = {"CallForHelpRadius": 7.0, "CallForHelpRadiusDefault": 7.0}
 
 def _susp(rows, name, units, ticks):
     inputs = {"config": dict(HELP_CONFIG), "relations": RELATIONS, "units": units, "ticks": ticks}
-    rows.append({"id": "npc_suspicion/" + name, "kind": "npc_suspicion", "inputs": inputs})
+    rows.append({"id": "npc_ai_suspicion/" + name, "kind": "npc_ai_suspicion", "inputs": inputs})
 
 
 def _quiet(n):
@@ -403,7 +403,7 @@ def _eval(option, candidate=1, members=(1,), caster=0, cur=None, threshold=-1e20
 
 
 def _score_case(rows, name, units, evals):
-    rows.append({"id": "npc_target_score/" + name, "kind": "npc_target_score",
+    rows.append({"id": "npc_ai_target_score/" + name, "kind": "npc_ai_target_score",
                  "inputs": {"relations": RELATIONS, "units": units, "evals": evals}})
 
 
@@ -514,7 +514,7 @@ def score_scenarios(seed, fuzz):
 def _mot(rows, name, aggression, units, ticks):
     inputs = {"aggression": aggression, "config": dict(SHIPPED), "relations": RELATIONS,
               "units": units, "ticks": ticks}
-    rows.append({"id": "npc_motivation/" + name, "kind": "npc_motivation", "inputs": inputs})
+    rows.append({"id": "npc_ai_motivation/" + name, "kind": "npc_ai_motivation", "inputs": inputs})
 
 
 def _suspect_at(point, level, delta):
@@ -589,13 +589,13 @@ def validate(case, steps, role):
     kind = case["kind"]
     for step in steps:
         state = step["state"]
-        if kind == "npc_fear":
+        if kind == "npc_ai_fear":
             ok = (set(state) == {"decision_priority", "j_bits", "kept_danger", "level", "delta", "point_bits", "r_bits"}
                   and type(state["decision_priority"]) is int and type(state["kept_danger"]) is bool
                   and all(type(state[k]) is int for k in ["j_bits", "r_bits", "level", "delta"])
                   and isinstance(state["point_bits"], list) and len(state["point_bits"]) == 2
                   and all(type(v) is int and 0 <= v <= 0xffffffff for v in state["point_bits"] + [state["j_bits"], state["r_bits"]]))
-        elif kind == "npc_suspicion":
+        elif kind == "npc_ai_suspicion":
             ok = (set(state) == {"units"} and isinstance(state["units"], list)
                   and all(isinstance(row, dict) and set(row) == {"level", "delta", "point_bits", "pending"}
                           and type(row["level"]) is int and type(row["delta"]) is int
@@ -603,10 +603,10 @@ def validate(case, steps, role):
                           and all(type(v) is int and 0 <= v <= 0xffffffff for v in row["point_bits"])
                           and isinstance(row["pending"], list) and all(type(v) is int for v in row["pending"])
                           for row in state["units"]))
-        elif kind == "npc_target_score":
+        elif kind == "npc_ai_target_score":
             ok = (set(state) == {"score_bits"} and type(state["score_bits"]) is int
                   and 0 <= state["score_bits"] <= 0xffffffff)
-        elif kind == "npc_motivation":
+        elif kind == "npc_ai_motivation":
             ok = set(state) == {"motivation"} and state["motivation"] in (
                 "none", "calm", "aggression", "suspection", "corpse", "fear")
         else:
