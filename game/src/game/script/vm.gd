@@ -63,6 +63,9 @@ class Instance:
 	var wait_unit: Object = null
 	var block_index := -1
 	var src := ""   # WorldScript: its body's source (ScriptVM.world_bodies)
+	## A body thread's trigger instance, which its KillScript disposes. Not
+	## saved: the original allows KillScript only in a body's first slice.
+	var owner: Instance = null
 
 
 static func create(w: GameWorld, s: Session) -> ScriptVM:
@@ -173,29 +176,41 @@ func _tick(dt: float) -> void:
 	preload("res://src/game/script/story_astral_eavesdrop.gd").recover(self)
 	preload("res://src/game/script/story_astral_fortunes.gd").recover(self)
 	_check_interactions()
-	# QFinish's native Su0..SuN threads poll on each 55 ms logic tick.
-	# A slower timer can miss a brief sighting or crossing altogether.
-	if not qobjs.is_empty():
-		_check_quest_objectives()
 	briefings.tick()
 	# Script threads keep running during a conversation: the world tick
 	#  calls the thread runner every tick, gated only
 	# by the pause byte (world), and the conversation path
 	# ("briefing" -> village screen slot 0x88
 	# ) never touches the VM.
-	# the original walks the thread list (VM) from its head
-	# taking each node's next before running it, and a script call adds the new
-	# thread at the head: newest first, and a
-	# thread started during the tick first runs in the next one. (Running new
-	# threads at once never ends in scripts that restart each other through an
-	# always-true block, bz8k VCheck#0#108 -> VTriger#0#138 -> VCheck#0#108 at
-	# night.) `instances` is kept oldest first.
+	# One 0x4bf000 pass: first every queued body thread runs a slice, then
+	# every trigger instance is polled. Both lists are walked from their
+	# head, newest first, taking each node's next before running it; new
+	# nodes go to the head. A script a running thread starts is therefore
+	# polled in this pass, and one a first slice starts (during the poll) in
+	# the next. (Polling those at once would never end in scripts that
+	# restart each other through an always-true block, bz8k VCheck#0#108 ->
+	# VTriger#0#138 -> VCheck#0#108 at night.) `instances` is kept oldest
+	# first; body threads are killed instances with frames.
 	_seen_memo.clear()   # the steps above may have changed what units notice
-	var cur := instances.duplicate()
-	cur.reverse()
-	for inst: Instance in cur:
+	var threads := instances.filter(func(x: Instance): return not x.frames.is_empty())
+	threads.reverse()
+	var presenting := false
+	for inst: Instance in threads:
 		_run(inst)
-		if session.movie_active(): break
+		presenting = session.movie_active()
+		if presenting: break
+	if not presenting:
+		# QFinish's native Su0..SuN are trigger instances, polled on each 55 ms
+		# logic tick (a slower timer can miss a brief sighting or crossing)
+		# after the thread walk: a chain a running thread finishes is polled
+		# in this pass, and each Su<i> starts Su<i+1> for the next one.
+		if not qobjs.is_empty():
+			_check_quest_objectives()
+		var triggers := instances.filter(func(x: Instance): return x.frames.is_empty() and not x.killed)
+		triggers.reverse()
+		for inst: Instance in triggers:
+			_run(inst)
+			if session.movie_active(): break
 	instances = instances.filter(func(x: Instance): return not (x.killed and x.frames.is_empty()))
 	if not _pending_zone.is_empty():
 		var z = _pending_zone
@@ -207,23 +222,55 @@ func _tick(dt: float) -> void:
 			session.call_deferred("leave_zone", z[0], z[1])
 
 
+## Polls a trigger instance (0x4bf000's trigger walk). Every block whose
+## conditions hold (0x4bb520, in order up to the first false one) starts a
+## body thread on a copy of the instance's locals and runs its first slice
+## at once (0x4bc420), even while an earlier body still runs. A KillScript
+## in that slice disposes the instance and skips its remaining blocks.
+func _poll(inst: Instance) -> void:
+	if inst.killed or time < inst.poll:
+		return
+	inst.poll = time + POLL
+	for bi in inst.blocks.size():
+		var b: Dictionary = inst.blocks[bi]
+		if not _party_conditions(b.conds, inst):
+			continue
+		inst.block_index = bi
+		if not _once_per_world(inst):
+			return
+		var thread := Instance.new()
+		thread.sname = inst.sname
+		thread.blocks = inst.blocks
+		thread.killed = true
+		thread.owner = inst
+		thread.block_index = bi
+		for k in inst.locals:
+			var v = inst.locals[k]
+			thread.locals[k] = v.duplicate() if v is Array else v
+		for m: StringName in inst.get_meta_list():
+			var v = inst.get_meta(m)
+			thread.set_meta(m, v.duplicate(true) if v is Dictionary or v is Array else v)
+		thread.frames = [{"body": b.body, "i": 0}]
+		_resume(thread)
+		if not thread.frames.is_empty():
+			instances.append(thread)
+		if inst.killed:
+			return
+
+
+## Runs a body thread's next slice (0x4bf000's thread walk) or polls a
+## trigger instance (its trigger walk). Saves from before body threads
+## resume a body on the trigger instance itself.
 func _run(inst: Instance) -> void:
 	if inst.has_meta(&"prison_actor_reference") or has_meta(&"prison_intruder_reference"):
 		if preload("res://src/game/script/story_coop_traps.gd").hold_registration(self,inst): return
 	if inst.frames.is_empty():
-		if inst.killed or time < inst.poll:
-			return
-		inst.poll = time + POLL
-		for bi in inst.blocks.size():
-			var b: Dictionary = inst.blocks[bi]
-			if _party_conditions(b.conds, inst):
-				inst.block_index = bi
-				inst.frames = [{"body": b.body, "i": 0}]
-				if not _once_per_world(inst):
-					return
-				break
-		if inst.frames.is_empty():
-			return
+		_poll(inst)
+	else:
+		_resume(inst)
+
+
+func _resume(inst: Instance) -> void:
 	# Waiting?
 	if not inst.sleep_cond.is_empty():
 		# Sleep's native counter advances once per thread run. Reevaluate
@@ -276,6 +323,14 @@ func _run(inst: Instance) -> void:
 					return   # resume at the next saved instruction after presentation
 
 
+## KillScript disposes the trigger instance of the body running it. The
+## original allows it only in a body's first slice and stops the game with a
+## fatal script error elsewhere; the remake keeps playing and disposes the
+## instance when it is still known (old saves run bodies on the instance).
+func _kill(inst: Instance) -> void:
+	(inst.owner if inst.owner else inst).killed = true
+
+
 func _all(conds: Array, inst: Instance) -> bool:
 	for c in conds:
 		if not _truthy(_eval(c, inst)):
@@ -324,11 +379,9 @@ func fire_event(name: String, args: Array) -> void:
 	for sn: String in ast.scripts.keys():
 		if sn != name and not sn.begins_with(name + "_"):
 			continue
+		# The original registers a carrier thread (0x592090 -> 0x4bcc60) that
+		# starts the handler in the next pass, where the trigger walk polls it.
 		spawn(sn, args)
-		# Event handlers run immediately so their effects are visible this frame.
-		var inst: Instance = instances[-1] if not instances.is_empty() and instances[-1].sname == sn else null
-		if inst:
-			_run(inst)
 
 
 func on_briefing_complete(player: int, id: String) -> void:
@@ -498,7 +551,7 @@ func _stmt_call(name: String, a: Array, inst: Instance) -> bool:
 				return true
 			return false
 		"KillScript":
-			inst.killed = true
+			_kill(inst)
 			return false
 	if ast.scripts.has(name):
 		spawn(name, _args(a, inst), inst.sname)
@@ -528,7 +581,7 @@ func _call(name: String, a: Array, inst: Instance):
 			return preload("res://src/game/script/story_coop_traps.gd").actor(self, String(_eval(a[0],inst)), int(_num(_eval(a[1],inst))))
 		"RemakeTrapJoin":
 			var values := _args(a,inst)
-			preload("res://src/game/script/story_coop_traps.gd").join(self,values[0],values.slice(1),inst)
+			preload("res://src/game/script/story_coop_traps.gd").join(self,values[0],values.slice(1),inst.owner if inst.owner else inst)
 			return null
 		"RemakePartyCast":
 			preload("res://src/game/script/story_coop_effects.gd").cast(self, a, inst)
@@ -557,7 +610,7 @@ func _call(name: String, a: Array, inst: Instance):
 					return 1.0
 			return 1.0 if want_all else 0.0
 		"KillScript":
-			inst.killed = true
+			_kill(inst)
 			return null
 		"GroupHas", "GroupCross":
 			# GroupHas(UnitSee / GroupSee(..), x), GroupCross(g, UnitSee /

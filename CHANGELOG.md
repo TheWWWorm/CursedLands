@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Accept the parameterless `GetLeader()` in authored quest triggers, so the Open Police squares, Junophile follow and totem placement conditions can complete.
+- Run script triggers in the original scheduler order. Every true block of a trigger fires in the same pass, a block can fire again while its earlier body sleeps, and new scripts, briefing handlers and side-quest objectives are checked on the original tick. The Zone 19 run point now shows its portal effect instead of recreating its light every tick.
 
 ## 1.21.0 — 2026-10-21
 
