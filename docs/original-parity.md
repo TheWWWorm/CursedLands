@@ -228,6 +228,25 @@ loot-query fixes, save compatibility checks, and the complete failure dispositio
    mismatch in an isolated copy. Keep the unmodified source as the reference
    remake under test.
 
+### Extension families
+
+A family can also live in its own files without editing the shared runner
+(`tools/parity/extensions.py` discovers them in sorted order):
+
+- `cases_ext_<name>.py`: `contracts(campaign)` (empty for an unqualified
+  executable), `scenarios(seed, fuzz)`, optional `STEP_COUNTS`,
+  `validate(case, steps, role)` and `authored(game_dir, limit)` for rows built
+  from the owned installation under `--authored-quests`.
+- `native_ext_<name>.py`: `CAPTURES = {kind: function}`.
+- `remake_ext_<name>.gd`: staged as `res://tools/parity_ext/<name>.gd`, with
+  `kinds()` and `capture(kind, data, trace)`; `trace` exposes the shared quest
+  fixtures of `remake_trace.gd`.
+- `test_ext_<name>.py` and `docs/original-parity-<name>.md`.
+
+A kind may be declared only once and may not replace a core family.
+
+<!-- extension-families-table -->
+
 For target ordering, the supplied terrain must have one ground height per XY
 coordinate. Ambiguous fixtures are rejected instead of producing misleading
 game differences.
