@@ -33,6 +33,9 @@ var _poll := 0.0
 var _source: Camera3D
 var _rt: RayDevice
 var _rt_scene: RayScene
+var _rt_live: RayScene
+var _rt_topology_poll := 0.0
+var _rt_lights: Array[WeakRef] = []
 var _rt_ready := false
 var _rt_failed := false
 var _rt_center := Vector3.INF
@@ -84,6 +87,7 @@ func _active() -> bool:
 
 
 func _process(dt: float) -> void:
+	_rt_topology_poll -= dt
 	if not _active():
 		_disable()
 		return
@@ -132,14 +136,16 @@ func _process(dt: float) -> void:
 
 func _update_raytrace(source: Camera3D) -> void:
 	if _rt_failed: return
-	if source.projection != Camera3D.PROJECTION_PERSPECTIVE:
-		terrain._water_mat.set_shader_parameter("planar_texture",viewport.get_texture())
-		rt_stats["active"] = false
-		return
 	if not RayDevice.supported():
 		_rt_failed = true
 		rt_stats = {"supported":false,"fallback":"planar"}
 		return
+	if _rt_ready and _rt_live != null and _rt_topology_poll <= 0.0:
+		_rt_topology_poll = 1.0
+		_collect_raytrace_lights(source.global_position)
+		if _rt_live.topology_changed():
+			_release_raytrace()
+			terrain._water_mat.set_shader_parameter("planar_texture",viewport.get_texture())
 	# Recenter when travelling or changing pools. While gathering a new
 	# snapshot the normal planar view remains complete and current.
 	if source.global_position.distance_to(_rt_center) > 16.0 or absf(plane-_rt_plane) > 0.25:
@@ -151,7 +157,7 @@ func _update_raytrace(source: Camera3D) -> void:
 		_rt_scene.begin(terrain,_rt_center,plane)
 	if _rt_scene != null:
 		if not _rt_scene.step(): return
-		rt_stats = {"supported":true,"triangles":_rt_scene.triangles,"textures":_rt_scene.images.size(),"radius":RayScene.RADIUS}
+		rt_stats = {"supported":true,"triangles":_rt_scene.triangles,"textures":_rt_scene.images.size(),"radius":RayScene.RADIUS,"geometries":_rt_scene.geometries.size(),"instances":_rt_scene.instances.size()}
 		if _rt_scene.failed or _rt_scene.triangles == 0:
 			_rt_failed = true
 			rt_stats["fallback"] = "snapshot_budget"
@@ -159,8 +165,15 @@ func _update_raytrace(source: Camera3D) -> void:
 			return
 		_rt = RayDevice.new()
 		_rt.prepared.connect(_raytrace_prepared)
-		RenderingServer.call_on_render_thread(_rt.build.bind(_rt_scene.vertices.to_byte_array(),_rt_scene.images))
+		var geometries := []; var placements := []
+		for geometry: Dictionary in _rt_scene.geometries:
+			geometries.append({"offset":geometry.offset,"count":geometry.count})
+		for entry: Dictionary in _rt_scene.instances:
+			placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":0})
+		RenderingServer.call_on_render_thread(_rt.build.bind(_rt_scene.vertices.to_byte_array(),_rt_scene.images,geometries,placements))
+		_rt_live = _rt_scene
 		_rt_scene = null
+		_collect_raytrace_lights(source.global_position)
 	if not _rt_ready: return
 	var size := source.get_viewport().get_visible_rect().size
 	var scale := minf(0.5,960.0/maxf(size.x,size.y))
@@ -174,13 +187,43 @@ func _update_raytrace(source: Camera3D) -> void:
 			frame.append_array(PackedFloat32Array([v.x,v.y,v.z,v.w]))
 	var sun_direction := Gfx._cloud_sun_direction
 	frame.append_array(PackedFloat32Array([Gfx.ambient.r,Gfx.ambient.g,Gfx.ambient.b,0,
-		Gfx.sun.r,Gfx.sun.g,Gfx.sun.b,0,sun_direction.x,sun_direction.y,sun_direction.z,plane,
-		Gfx.fog_depth.x,Gfx.fog_depth.y,source.far,0,Gfx.fog_sky.r,Gfx.fog_sky.g,Gfx.fog_sky.b,0]))
-	RenderingServer.call_on_render_thread(_rt.render.bind(target,frame.to_byte_array()))
+		Gfx.sun.r,Gfx.sun.g,Gfx.sun.b,1,sun_direction.x,sun_direction.y,sun_direction.z,plane,
+		Gfx.fog_depth.x,Gfx.fog_depth.y,source.far,1.0 if source.projection == Camera3D.PROJECTION_ORTHOGONAL else 0.0,Gfx.fog_sky.r,Gfx.fog_sky.g,Gfx.fog_sky.b,
+		2.0/absf(camera.get_camera_projection().y.y)/target.y,
+		_rt_center.x,_rt_center.y,_rt_center.z,RayScene.RADIUS]))
+	var colours := PackedFloat32Array()
+	for i in 4:
+		var light: OmniLight3D = _rt_lights[i].get_ref() if i < _rt_lights.size() else null
+		if light != null and light.is_visible_in_tree() and light.light_energy > 0.0:
+			var p := light.global_position
+			var c := (light.light_color.srgb_to_linear()*light.light_energy).linear_to_srgb()
+			var local := is_equal_approx(light.light_specular,Gfx.LOCAL_SPECULAR) or is_equal_approx(light.light_specular,Gfx.LOCAL_SPECULAR_PASS)
+			frame.append_array(PackedFloat32Array([p.x,p.y,p.z,light.omni_range]))
+			colours.append_array(PackedFloat32Array([c.r,c.g,c.b,2.0 if local else 1.0 if is_equal_approx(light.light_specular,Gfx.ADDITIVE_SPECULAR) else 0.0]))
+		else:
+			frame.append_array(PackedFloat32Array([0,0,0,0])); colours.append_array(PackedFloat32Array([0,0,0,0]))
+	frame.append_array(colours)
+	var changes := _rt_live.updates()
+	RenderingServer.call_on_render_thread(_rt.render.bind(target,frame.to_byte_array(),changes))
+	rt_stats["updated_instances"] = changes.instances.size()
+	rt_stats["updated_morphs"] = changes.poses.size()
+	rt_stats["lights"] = _rt_lights.size()
 	terrain._water_mat.set_shader_parameter("planar_texture",_rt.output)
 	viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
 	rt_stats["active"] = true
 	rt_stats["size"] = [target.x,target.y]
+
+
+func _collect_raytrace_lights(focus: Vector3) -> void:
+	var found := []
+	for node in get_tree().get_nodes_in_group(Gfx.POINT_LIGHT_GROUP):
+		var light := node as OmniLight3D
+		if light == null or not light.is_visible_in_tree() or light.light_energy <= 0.0: continue
+		var distance := maxf(light.global_position.distance_to(focus)-light.omni_range,0.0)
+		if distance < RayScene.RADIUS: found.append([distance,light])
+	found.sort_custom(func(a: Array,b: Array) -> bool: return a[0] < b[0])
+	_rt_lights.clear()
+	for i in mini(found.size(),4): _rt_lights.append(weakref(found[i][1]))
 
 
 func _raytrace_prepared(ok: bool) -> void:
@@ -197,6 +240,8 @@ func _release_raytrace() -> void:
 	_rt_ready = false
 	rt_stats["active"] = false
 	_rt_scene = null
+	_rt_live = null
+	_rt_lights.clear()
 	_rt_center = Vector3.INF
 	_rt_plane = INF
 	if _rt != null:

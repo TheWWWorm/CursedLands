@@ -1,0 +1,294 @@
+{
+  "date": "2026-10-21",
+  "kind": "Expanded local water RT experiment; no release publication",
+  "source_parent": "eaaa5886fb3cba815d36ed202b817559c8c2c32b",
+  "runtime_sources_sha256": {
+    "game/src/game/fx/water_raytrace_device.gd": "fa4d564557436d6cebbb846b502a4efa35b6a53171084a3e15c11097701a1eb5",
+    "game/src/game/fx/water_raytrace_scene.gd": "2777760b2031b92091bac5c426a0f6d13c16e4ca6584251e3b04e19b0906526f",
+    "game/src/game/fx/water_reflection.gd": "d6bba5b034ecb9b40dd52abc188db1fed928b750ce0a201b9fa4f166431f7706",
+    "game/src/ei/game_data.gd": "eae93a3779e123a6bbd2bef070b16c0b4b5c6477be775d6528571b232cab7a73",
+    "game/src/ei/remake_text.gd": "d15536909a2b72885d85dd8155251bdf13ab4c9447423c5ac66f1fe3dc603194"
+  },
+  "engine_sha256": "5cd55e014b01f542e23e0591bdcd5481c676d29ad7cf283b87d6e329c1428815",
+  "device": "NVIDIA GeForce RTX 3090",
+  "renderer": "Forward+ Vulkan",
+  "window": [
+    1280,
+    720
+  ],
+  "rt_target": [
+    640,
+    360
+  ],
+  "changes": [
+    "96 m bounded scene with shared rigid BLAS geometry and live TLAS instances.",
+    "Original articulated characters, hidden/invisible-unit masking and both MeshInstance blend-shape modes.",
+    "Direct sun and up to four point lights with alpha-aware shadow rays; no recursive hit shader.",
+    "Perspective and orthographic primary rays, mipmapped textures and an outer-radius alpha fade.",
+    "Automatic mesh/material/texture-resource replacement detection with Mirror during preparation.",
+    "English, Russian and German option help updated; presets and normal defaults preserved."
+  ],
+  "validation": {
+    "device": {
+      "checks": 19,
+      "failures": [],
+      "raw": "water-raytracing-comprehensive-2026-10-21/device.json",
+      "run": {
+        "exit": 0,
+        "seconds": 8.699826923082583,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-comprehensive-final-device"
+      },
+      "log": "water-raytracing-comprehensive-2026-10-21/device.log"
+    },
+    "lighting_and_morphs": {
+      "checks": 34,
+      "failures": [],
+      "raw": "water-raytracing-comprehensive-2026-10-21/lighting_and_morphs.json",
+      "run": {
+        "exit": 0,
+        "seconds": 10.917183989076875,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-comprehensive-lighting3"
+      },
+      "log": "water-raytracing-comprehensive-2026-10-21/lighting_and_morphs.log"
+    },
+    "live_character": {
+      "checks": 15,
+      "failures": [],
+      "raw": "water-raytracing-comprehensive-2026-10-21/live_character.json",
+      "run": {
+        "exit": 0,
+        "seconds": 43.36902385496069,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-comprehensive-final-live"
+      },
+      "log": "water-raytracing-comprehensive-2026-10-21/live_character.log"
+    },
+    "river_and_localization": {
+      "checks": 29,
+      "failures": [],
+      "raw": "water-raytracing-comprehensive-2026-10-21/river_and_localization.json",
+      "run": {
+        "exit": 0,
+        "seconds": 81.45831778098363,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-comprehensive-final-scene"
+      },
+      "log": "water-raytracing-comprehensive-2026-10-21/river_and_localization.log"
+    },
+    "cyan_water_regression": {
+      "checks": 19,
+      "failures": [],
+      "raw": "water-raytracing-comprehensive-2026-10-21/cyan_water_regression.json",
+      "run": {
+        "exit": 0,
+        "seconds": 46.878558239899576,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-comprehensive-artifact"
+      },
+      "log": "water-raytracing-comprehensive-2026-10-21/cyan_water_regression.log"
+    }
+  },
+  "total_checks": 116,
+  "captures": {
+    "tree-water-mode-2.png": "water-raytracing-comprehensive-2026-10-21/tree-water-mode-2.png",
+    "tree-water-mode-3.png": "water-raytracing-comprehensive-2026-10-21/tree-water-mode-3.png",
+    "water-help-en.png": "water-raytracing-comprehensive-2026-10-21/water-help-en.png",
+    "water-help-ru.png": "water-raytracing-comprehensive-2026-10-21/water-help-ru.png",
+    "water-help-de.png": "water-raytracing-comprehensive-2026-10-21/water-help-de.png",
+    "character-visible.png": "water-raytracing-comprehensive-2026-10-21/character-visible.png",
+    "character-hidden.png": "water-raytracing-comprehensive-2026-10-21/character-hidden.png",
+    "character-animated.png": "water-raytracing-comprehensive-2026-10-21/character-animated.png",
+    "water-character-visible.png": "water-raytracing-comprehensive-2026-10-21/water-character-visible.png",
+    "orthographic-water.png": "water-raytracing-comprehensive-2026-10-21/orthographic-water.png"
+  },
+  "performance": {
+    "static": {
+      "summary": {
+        "off": {
+          "frame_median_ms": 34.666,
+          "fps_from_median": 28.84670859054982,
+          "round_frame_medians_ms": [
+            32.57,
+            34.666,
+            37.318
+          ],
+          "round_reflection_gpu_medians_ms": [],
+          "round_controller_cpu_medians_ms": [
+            0.017,
+            0.017,
+            0.019
+          ],
+          "prepare_ms": [
+            230,
+            153,
+            162
+          ]
+        },
+        "mirror_full": {
+          "frame_median_ms": 38.875,
+          "fps_from_median": 25.723472668810288,
+          "round_frame_medians_ms": [
+            36.455,
+            38.875,
+            48.231
+          ],
+          "round_reflection_gpu_medians_ms": [
+            0.842000007629395,
+            1.07700002193451,
+            1.01600003242493
+          ],
+          "round_controller_cpu_medians_ms": [
+            0.057,
+            0.056,
+            0.078
+          ],
+          "prepare_ms": [
+            150,
+            175,
+            213
+          ]
+        },
+        "rt_half": {
+          "frame_median_ms": 36.67,
+          "fps_from_median": 27.270248159258248,
+          "round_frame_medians_ms": [
+            36.67,
+            38.052,
+            36.496
+          ],
+          "round_reflection_gpu_medians_ms": [
+            0.231968,
+            0.24112,
+            0.228352
+          ],
+          "round_controller_cpu_medians_ms": [
+            1.731,
+            1.693,
+            1.736
+          ],
+          "prepare_ms": [
+            6615,
+            6618,
+            6481
+          ]
+        },
+        "mirror_half": {
+          "frame_median_ms": 37.811,
+          "fps_from_median": 26.447330142022164,
+          "round_frame_medians_ms": [
+            37.806,
+            37.811,
+            46.579
+          ],
+          "round_reflection_gpu_medians_ms": [
+            0.646000027656555,
+            0.648000001907349,
+            0.685000002384186
+          ],
+          "round_controller_cpu_medians_ms": [
+            0.018,
+            0.018,
+            0.023
+          ],
+          "prepare_ms": [
+            190,
+            161,
+            203
+          ]
+        }
+      },
+      "raw": "water-raytracing-comprehensive-2026-10-21/performance-static.json",
+      "run": {
+        "exit": 0,
+        "seconds": 94.96402634202968,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-comprehensive-performance"
+      },
+      "note": "Repeated interleaved frozen-scene benchmark with sun/local shadow rays and live-scene polling enabled. Units are hidden; no moving-actor load. RT is quarter-pixel-count and has approximate materials. CPU bracket includes the reflection controller and other callbacks at priorities 99\u2013101, not total frame work.",
+      "log": "water-raytracing-comprehensive-2026-10-21/performance-static.log"
+    },
+    "moving_character": {
+      "summary": {
+        "mirror_full": {
+          "frame_median_ms": 47.079,
+          "fps_from_median": 21.24089296714034,
+          "round_frame_medians_ms": [
+            45.698,
+            47.079,
+            47.242
+          ],
+          "round_reflection_gpu_medians_ms": [
+            0.633000016212463,
+            1.56299996376038,
+            1.56200003623962
+          ],
+          "round_controller_cpu_medians_ms": [
+            0.08,
+            0.08,
+            0.075
+          ],
+          "prepare_ms": [
+            322,
+            220,
+            202
+          ]
+        },
+        "rt_half": {
+          "frame_median_ms": 50.639,
+          "fps_from_median": 19.747625348051894,
+          "round_frame_medians_ms": [
+            51.068,
+            50.639,
+            42.874
+          ],
+          "round_reflection_gpu_medians_ms": [
+            0.850848,
+            0.870912,
+            0.274304
+          ],
+          "round_controller_cpu_medians_ms": [
+            3.677,
+            3.567,
+            3.131
+          ],
+          "prepare_ms": [
+            11682,
+            221,
+            10391
+          ]
+        }
+      },
+      "raw": "water-raytracing-comprehensive-2026-10-21/performance-moving.json",
+      "run": {
+        "exit": 0,
+        "seconds": 78.6811034209095,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-comprehensive-dynamic-performance"
+      },
+      "note": "Frozen camera, one original character walking and moving every frame. Same motion in both modes; RT rebuilds live TLAS. Three interleaved rounds; not a crowded combat benchmark. RT uses quarter the pixels and approximate materials.",
+      "log": "water-raytracing-comprehensive-2026-10-21/performance-moving.log"
+    }
+  },
+  "measurement_method": [
+    "Three interleaved rounds; each case settles for 35 frames and samples 90 uncapped, vsync-disabled frames.",
+    "Normal Mirror is 1280x720 with 2x MSAA. RT is 640x360, with primary and sun/local shadow rays.",
+    "Mirror pass timing uses engine viewport measurements; RT GPU timestamps bracket queued reflection work.",
+    "CPU bracket at process priorities 99-101 measures reflection-controller work. It excludes ordinary game work and the later render-thread CPU work.",
+    "The matched half-size Mirror diagnostic freezes its controller after setting size once; only use its GPU pass for comparison.",
+    "The moving benchmark animates and translates one real character every frame in both modes; other units remain hidden.",
+    "Aggregate FPS is the reciprocal of the median of the three round-median wall times."
+  ],
+  "limits": [
+    "Shared development machine with concurrent work; frame rates are not isolated performance qualification.",
+    "RT has different pixels, AA, shaders and shadow coverage from Mirror. GPU cost does not establish an equal-quality or whole-frame speedup.",
+    "One selected water level, one reflection bounce and hard direct-light shadows; no global illumination, denoising or recursive reflections.",
+    "Particles, shader-only wind/procedural deformation, blended transparency and in-place texture/mesh edits are omitted.",
+    "Camera-specific body shaders are approximated; first-person body/crowded combat performance is not qualified by these fixtures.",
+    "Caps: 320000 unique triangles, 4096 instances, 192 mipmapped 512x512 texture layers; extra CPU/GPU memory and rebuild hitches remain.",
+    "Qualified on this Linux RTX 3090/custom Godot build; other vendors and operating systems were not exercised.",
+    "The existing SPIR-V reflection diagnostic OpTypeAccelerationStructureKHR is not supported yet is emitted by the engine; hardware readbacks and all checks pass."
+  ],
+  "test_profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  }
+}

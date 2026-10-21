@@ -12,8 +12,11 @@ var runs := []
 var _rd: RenderingDevice
 var _last_gpu_frame := -1
 var _stamp_label := ""
+var cpu_begin := 0
+var controller_cpu: Array[float] = []
 
 func begin_gpu() -> void:
+	cpu_begin = Time.get_ticks_usec()
 	RenderingServer.call_on_render_thread(_begin_on_render_thread.bind(selected,sampling))
 
 func _begin_on_render_thread(label: String, collect: bool) -> void:
@@ -39,6 +42,7 @@ func accept_gpu(label: String, ms: float) -> void:
 
 func _process(_dt: float) -> void:
 	if t == null: return
+	if sampling and cpu_begin > 0: controller_cpu.append((Time.get_ticks_usec()-cpu_begin)/1000.0)
 	RenderingServer.call_on_render_thread(_end_on_render_thread)
 
 func _end_on_render_thread() -> void:
@@ -49,6 +53,14 @@ func summary(values: Array) -> Dictionary:
 	values.sort()
 	return {"n":values.size(),"median":values[values.size()/2],"p95":values[int(values.size()*0.95)]}
 
+func benchmark_orders() -> Array:
+	return [["off","mirror_full","rt_half","mirror_half"],
+		["mirror_half","rt_half","mirror_full","off"],
+		["rt_half","off","mirror_half","mirror_full"]]
+
+func benchmark_note() -> String:
+	return "Frozen camera and units hidden; sun/local shadow rays and live-scene polling enabled. RT uses quarter the pixels and approximate materials. CPU bracket covers controller callbacks, not total frame work."
+
 func run() -> void:
 	var context := await setup()
 	process_priority = 101
@@ -56,9 +68,7 @@ func run() -> void:
 	RenderingServer.viewport_set_measure_render_time(get_viewport().get_viewport_rid(),true)
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	Engine.max_fps = 0
-	var orders := [["off","mirror_full","rt_half","mirror_half"],
-		["mirror_half","rt_half","mirror_full","off"],
-		["rt_half","off","mirror_half","mirror_full"]]
+	var orders := benchmark_orders()
 	for order in orders:
 		for name: String in order:
 			selected = name
@@ -85,7 +95,7 @@ func run() -> void:
 				t._reflection.viewport.msaa_3d = Viewport.MSAA_DISABLED
 			await frames(35)
 			var wall := []; var main_gpu := []; var reflection_gpu := []; var reflection_cpu := []
-			rt_gpu.clear(); sampling = true
+			rt_gpu.clear(); controller_cpu.clear(); sampling = true
 			var last := Time.get_ticks_usec()
 			for i in 90:
 				await frames(1)
@@ -99,12 +109,13 @@ func run() -> void:
 			var row := {"case":name,"prepare_ms":prepare_ms,"frame_ms":summary(wall),"main_gpu_ms":summary(main_gpu),
 				"reflection_gpu_ms":summary(rt_gpu.duplicate() if mode == 3 else reflection_gpu),
 				"reflection_cpu_ms":summary(reflection_cpu),
+				"controller_cpu_ms":summary(controller_cpu.duplicate()),
 				"controller_frozen":name == "mirror_half",
 				"reflection_size":str(t._reflection._rt._size) if mode == 3 else str(t._reflection.viewport.size) if mode == 2 else "none"}
 			runs.append(row); print("WATER_BENCH ",JSON.stringify(row))
 			FileAccess.open(out.path_join("performance.json"),FileAccess.WRITE).store_string(JSON.stringify({
 				"device":RenderingServer.get_video_adapter_name(),"resolution":[1280,720],"runs":runs,
-				"note":"Repeated interleaved static-scene benchmark; RT has simpler material shading and static geometry."},"\t"))
+				"note":benchmark_note()},"\t"))
 	set_process(false); before.queue_free()
 	context[1].queue_free(); context[0].queue_free(); await frames(12); TexUpscale.shutdown()
 	get_tree().quit()

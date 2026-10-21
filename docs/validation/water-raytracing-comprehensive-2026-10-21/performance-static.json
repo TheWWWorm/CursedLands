@@ -1,0 +1,346 @@
+{
+	"device": "NVIDIA GeForce RTX 3090",
+	"note": "Repeated interleaved frozen-scene benchmark with sun/local shadow rays and live-scene polling enabled. Units are hidden; no moving-actor load. RT is quarter-pixel-count and has approximate materials. CPU bracket includes the reflection controller and other callbacks at priorities 99–101, not total frame work.",
+	"resolution": [
+		1280,
+		720
+	],
+	"runs": [
+		{
+			"case": "off",
+			"controller_cpu_ms": {
+				"median": 0.017,
+				"n": 90,
+				"p95": 0.024
+			},
+			"controller_frozen": false,
+			"frame_ms": {
+				"median": 32.57,
+				"n": 90,
+				"p95": 34.942
+			},
+			"main_gpu_ms": {
+				"median": 0.662000000476837,
+				"n": 90,
+				"p95": 1.02499997615814
+			},
+			"prepare_ms": 230,
+			"reflection_cpu_ms": {},
+			"reflection_gpu_ms": {},
+			"reflection_size": "none"
+		},
+		{
+			"case": "mirror_full",
+			"controller_cpu_ms": {
+				"median": 0.057,
+				"n": 90,
+				"p95": 1.176
+			},
+			"controller_frozen": false,
+			"frame_ms": {
+				"median": 36.455,
+				"n": 90,
+				"p95": 40.861
+			},
+			"main_gpu_ms": {
+				"median": 1.80099999904633,
+				"n": 90,
+				"p95": 3.81299996376038
+			},
+			"prepare_ms": 150,
+			"reflection_cpu_ms": {
+				"median": 1.32700002193451,
+				"n": 90,
+				"p95": 1.86699998378754
+			},
+			"reflection_gpu_ms": {
+				"median": 0.842000007629395,
+				"n": 90,
+				"p95": 0.921999990940094
+			},
+			"reflection_size": "(1280, 720)"
+		},
+		{
+			"case": "rt_half",
+			"controller_cpu_ms": {
+				"median": 1.731,
+				"n": 90,
+				"p95": 3.083
+			},
+			"controller_frozen": false,
+			"frame_ms": {
+				"median": 36.67,
+				"n": 90,
+				"p95": 39.585
+			},
+			"main_gpu_ms": {
+				"median": 2.20099997520447,
+				"n": 90,
+				"p95": 3.63599991798401
+			},
+			"prepare_ms": 6615,
+			"reflection_cpu_ms": {},
+			"reflection_gpu_ms": {
+				"median": 0.231968,
+				"n": 88,
+				"p95": 0.24656
+			},
+			"reflection_size": "(640, 360)"
+		},
+		{
+			"case": "mirror_half",
+			"controller_cpu_ms": {
+				"median": 0.018,
+				"n": 90,
+				"p95": 0.028
+			},
+			"controller_frozen": true,
+			"frame_ms": {
+				"median": 37.806,
+				"n": 90,
+				"p95": 40.558
+			},
+			"main_gpu_ms": {
+				"median": 2.30100011825562,
+				"n": 90,
+				"p95": 4.51200008392334
+			},
+			"prepare_ms": 190,
+			"reflection_cpu_ms": {
+				"median": 1.44799995422363,
+				"n": 90,
+				"p95": 1.91799998283386
+			},
+			"reflection_gpu_ms": {
+				"median": 0.646000027656555,
+				"n": 90,
+				"p95": 0.662999987602234
+			},
+			"reflection_size": "(640, 360)"
+		},
+		{
+			"case": "mirror_half",
+			"controller_cpu_ms": {
+				"median": 0.018,
+				"n": 90,
+				"p95": 0.026
+			},
+			"controller_frozen": true,
+			"frame_ms": {
+				"median": 37.811,
+				"n": 90,
+				"p95": 41.694
+			},
+			"main_gpu_ms": {
+				"median": 2.81599998474121,
+				"n": 90,
+				"p95": 4.66800022125244
+			},
+			"prepare_ms": 161,
+			"reflection_cpu_ms": {
+				"median": 1.41700005531311,
+				"n": 90,
+				"p95": 1.73300004005432
+			},
+			"reflection_gpu_ms": {
+				"median": 0.648000001907349,
+				"n": 90,
+				"p95": 0.665000021457672
+			},
+			"reflection_size": "(640, 360)"
+		},
+		{
+			"case": "rt_half",
+			"controller_cpu_ms": {
+				"median": 1.693,
+				"n": 90,
+				"p95": 2.977
+			},
+			"controller_frozen": false,
+			"frame_ms": {
+				"median": 38.052,
+				"n": 90,
+				"p95": 46.943
+			},
+			"main_gpu_ms": {
+				"median": 2.42499995231628,
+				"n": 90,
+				"p95": 3.53399991989136
+			},
+			"prepare_ms": 6618,
+			"reflection_cpu_ms": {},
+			"reflection_gpu_ms": {
+				"median": 0.24112,
+				"n": 88,
+				"p95": 0.27392
+			},
+			"reflection_size": "(640, 360)"
+		},
+		{
+			"case": "mirror_full",
+			"controller_cpu_ms": {
+				"median": 0.056,
+				"n": 90,
+				"p95": 1.185
+			},
+			"controller_frozen": false,
+			"frame_ms": {
+				"median": 38.875,
+				"n": 90,
+				"p95": 41.837
+			},
+			"main_gpu_ms": {
+				"median": 2.24600005149841,
+				"n": 90,
+				"p95": 3.58100008964539
+			},
+			"prepare_ms": 175,
+			"reflection_cpu_ms": {
+				"median": 1.42599999904633,
+				"n": 90,
+				"p95": 1.81500005722046
+			},
+			"reflection_gpu_ms": {
+				"median": 1.07700002193451,
+				"n": 90,
+				"p95": 2.75099992752075
+			},
+			"reflection_size": "(1280, 720)"
+		},
+		{
+			"case": "off",
+			"controller_cpu_ms": {
+				"median": 0.017,
+				"n": 90,
+				"p95": 0.024
+			},
+			"controller_frozen": false,
+			"frame_ms": {
+				"median": 34.666,
+				"n": 90,
+				"p95": 37.667
+			},
+			"main_gpu_ms": {
+				"median": 1.84800004959106,
+				"n": 90,
+				"p95": 3.09100008010864
+			},
+			"prepare_ms": 153,
+			"reflection_cpu_ms": {},
+			"reflection_gpu_ms": {},
+			"reflection_size": "none"
+		},
+		{
+			"case": "rt_half",
+			"controller_cpu_ms": {
+				"median": 1.736,
+				"n": 90,
+				"p95": 3.087
+			},
+			"controller_frozen": false,
+			"frame_ms": {
+				"median": 36.496,
+				"n": 90,
+				"p95": 42.724
+			},
+			"main_gpu_ms": {
+				"median": 1.75399994850159,
+				"n": 90,
+				"p95": 3.20499992370605
+			},
+			"prepare_ms": 6481,
+			"reflection_cpu_ms": {},
+			"reflection_gpu_ms": {
+				"median": 0.228352,
+				"n": 88,
+				"p95": 0.244128
+			},
+			"reflection_size": "(640, 360)"
+		},
+		{
+			"case": "off",
+			"controller_cpu_ms": {
+				"median": 0.019,
+				"n": 90,
+				"p95": 0.031
+			},
+			"controller_frozen": false,
+			"frame_ms": {
+				"median": 37.318,
+				"n": 90,
+				"p95": 45.041
+			},
+			"main_gpu_ms": {
+				"median": 2.29399991035461,
+				"n": 90,
+				"p95": 4.20300006866455
+			},
+			"prepare_ms": 162,
+			"reflection_cpu_ms": {},
+			"reflection_gpu_ms": {},
+			"reflection_size": "none"
+		},
+		{
+			"case": "mirror_half",
+			"controller_cpu_ms": {
+				"median": 0.023,
+				"n": 90,
+				"p95": 0.032
+			},
+			"controller_frozen": true,
+			"frame_ms": {
+				"median": 46.579,
+				"n": 90,
+				"p95": 49.683
+			},
+			"main_gpu_ms": {
+				"median": 2.52600002288818,
+				"n": 90,
+				"p95": 4.78700017929077
+			},
+			"prepare_ms": 203,
+			"reflection_cpu_ms": {
+				"median": 1.87100005149841,
+				"n": 90,
+				"p95": 2.84100008010864
+			},
+			"reflection_gpu_ms": {
+				"median": 0.685000002384186,
+				"n": 90,
+				"p95": 0.707000017166138
+			},
+			"reflection_size": "(640, 360)"
+		},
+		{
+			"case": "mirror_full",
+			"controller_cpu_ms": {
+				"median": 0.078,
+				"n": 90,
+				"p95": 1.369
+			},
+			"controller_frozen": false,
+			"frame_ms": {
+				"median": 48.231,
+				"n": 90,
+				"p95": 53.439
+			},
+			"main_gpu_ms": {
+				"median": 2.76200008392334,
+				"n": 90,
+				"p95": 4.47700023651123
+			},
+			"prepare_ms": 213,
+			"reflection_cpu_ms": {
+				"median": 1.69599997997284,
+				"n": 90,
+				"p95": 2.36500000953674
+			},
+			"reflection_gpu_ms": {
+				"median": 1.01600003242493,
+				"n": 90,
+				"p95": 2.06900000572205
+			},
+			"reflection_size": "(1280, 720)"
+		}
+	]
+}

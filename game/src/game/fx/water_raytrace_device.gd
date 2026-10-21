@@ -3,81 +3,141 @@ extends RefCounted
 ## thread. Queued callables retain this owner even after its scene is freed.
 signal prepared(ok: bool)
 
+const FRAME_BYTES := 352
 const COMMON := """#version 460
 #extension GL_EXT_ray_tracing : require
 layout(set=0,binding=0) uniform accelerationStructureEXT scene;
 layout(set=0,binding=1,rgba16f) uniform image2D output_image;
 struct Vertex { vec4 position_u; vec4 normal_v; vec4 diffuse; vec4 emission_layer; };
+struct Surface { vec4 colour; vec3 point; vec3 normal; vec3 diffuse; vec3 emission; float visible; };
 layout(set=0,binding=2,std430) readonly buffer Vertices { Vertex vertices[]; };
 layout(set=0,binding=3) uniform sampler2DArray colours;
 layout(set=0,binding=4,std140) uniform Frame {
  mat4 inv_projection;
  mat4 camera_world;
  vec4 ambient;
- vec4 sun;
+ vec4 sun; // rgb, shadow rays enabled
  vec4 sun_plane;
- vec4 fog; // near, far, trace reach, unused
- vec4 sky;
+ vec4 fog; // near, far, trace reach, orthographic projection
+ vec4 sky; // rgb, ray cone width per pixel
+ vec4 center_radius;
+ vec4 point_position[4];
+ vec4 point_colour[4]; // rgb, original additive / enhanced local marker
 } frame;
 vec3 linear_colour(vec3 c) {
- c=clamp(c,0.0,1.0);
+ c=max(c,vec3(0.0));
  return mix(c/12.92,pow((c+0.055)/1.055,vec3(2.4)),step(vec3(0.04045),c));
 }
 """
 const RAYGEN := COMMON + """
-layout(location=0) rayPayloadEXT vec4 result;
+layout(location=0) rayPayloadEXT Surface result;
+float visibility(vec3 point, vec3 normal, vec3 direction, float reach) {
+ if(frame.sun.w<0.5) { return 1.0; }
+ // Trace from the raygen stage so shadow rays need no recursive hit stack.
+ // Any-hit remains enabled: leaves and fences cast their cutout silhouettes.
+ result.visible=0.0;
+ vec3 offset=normal*(dot(normal,direction)>=0.0 ? 0.015 : -0.015);
+ traceRayEXT(scene,gl_RayFlagsTerminateOnFirstHitEXT|gl_RayFlagsSkipClosestHitShaderEXT,
+     2,0,0,0,point+offset,0.002,direction,max(reach-0.02,0.003),0);
+ return result.visible;
+}
 void main() {
  ivec2 pixel=ivec2(gl_LaunchIDEXT.xy);
  vec2 uv=(vec2(pixel)+0.5)/vec2(gl_LaunchSizeEXT.xy);
- vec4 p=frame.inv_projection*vec4(uv.x*2.0-1.0,1.0-uv.y*2.0,1.0,1.0);
+ vec4 p=frame.inv_projection*vec4(uv.x*2.0-1.0,1.0-uv.y*2.0,-1.0,1.0);
  p/=p.w;
  vec3 origin=frame.camera_world[3].xyz;
  vec3 direction=normalize((frame.camera_world*vec4(p.xyz,0.0)).xyz);
- result=vec4(0.0);
- // The virtual camera is below water. Start at the water plane, so banks
- // below the surface cannot occlude the scenery being reflected.
+ if(frame.fog.w>0.5) {
+  origin=(frame.camera_world*vec4(p.xyz,1.0)).xyz;
+  direction=-frame.camera_world[2].xyz;
+ }
+ result.colour=vec4(0.0);
  if(direction.y>0.00001) {
   float entry=(frame.sun_plane.w-origin.y)/direction.y;
   if(entry>0.0 && entry<frame.fog.z) {
-   traceRayEXT(scene,gl_RayFlagsNoneEXT,255,0,0,0,
+   traceRayEXT(scene,gl_RayFlagsNoneEXT,1,0,0,0,
        origin+direction*(entry+0.025),0.001,direction,frame.fog.z-entry,0);
   }
  }
- imageStore(output_image,pixel,result);
+ vec4 colour=result.colour;
+ if(colour.a>0.0) {
+  vec3 point=result.point, n=result.normal, diffuse=result.diffuse, emission=result.emission;
+  vec3 light=frame.ambient.rgb;
+  vec3 spec=vec3(0.0), extra=vec3(0.0);
+  float facing=max(dot(n,frame.sun_plane.xyz),0.0);
+  if(facing>0.0) {
+   float lit=visibility(point,n,frame.sun_plane.xyz,frame.fog.z);
+   light=max(light,frame.sun.rgb*diffuse*facing*lit);
+  }
+  for(int i=0;i<4;i++) {
+   vec4 lamp=frame.point_position[i];
+   vec3 delta=lamp.xyz-point;
+   float distance=length(delta);
+   if(lamp.w<=0.0 || distance>=lamp.w || distance<0.001) { continue; }
+   vec3 l=delta/distance;
+   float facing=max(dot(n,l),0.0);
+   if(facing<=0.0) { continue; }
+   float attenuation=max(1.0-distance*distance/(lamp.w*lamp.w),0.0);
+   vec3 contribution=frame.point_colour[i].rgb*attenuation*facing*visibility(point,n,l,distance);
+   if(frame.point_colour[i].a>1.5) { extra+=linear_colour(contribution)*0.75; }
+   else {
+    light=max(light,contribution*diffuse);
+    if(frame.point_colour[i].a>0.5) { spec=max(spec,contribution); }
+   }
+  }
+  vec3 shaded=linear_colour(clamp(colour.rgb*min(light+emission,vec3(1.0))+spec,0.0,1.0));
+  shaded+=linear_colour(colour.rgb)*extra;
+  float depth=dot(point-frame.camera_world[3].xyz,-frame.camera_world[2].xyz);
+  float fog=clamp((depth-frame.fog.x)/max(frame.fog.y-frame.fog.x,0.001),0.0,1.0);
+  colour.rgb=mix(shaded,linear_colour(frame.sky.rgb),fog);
+  if(frame.center_radius.w>0.0) {
+   colour.a*=1.0-smoothstep(frame.center_radius.w-12.0,frame.center_radius.w,length(point-frame.center_radius.xyz));
+  }
+ }
+ imageStore(output_image,pixel,colour);
 }
 """
 const MISS := COMMON + """
-layout(location=0) rayPayloadInEXT vec4 result;
-void main() { result=vec4(0.0); }
+layout(location=0) rayPayloadInEXT Surface result;
+void main() { result.visible=1.0; }
 """
 const HIT_COMMON := COMMON + """
 hitAttributeEXT vec2 bary;
-vec4 albedo_at_hit() {
- uint i=3u*uint(gl_PrimitiveID);
+uint first_vertex() { return uint(gl_InstanceCustomIndexEXT)+3u*uint(gl_PrimitiveID); }
+vec2 hit_uv(uint i) {
  vec3 b=vec3(1.0-bary.x-bary.y,bary);
- vec2 uv=vec2(dot(b,vec3(vertices[i].position_u.w,vertices[i+1].position_u.w,vertices[i+2].position_u.w)),
+ return vec2(dot(b,vec3(vertices[i].position_u.w,vertices[i+1].position_u.w,vertices[i+2].position_u.w)),
               dot(b,vec3(vertices[i].normal_v.w,vertices[i+1].normal_v.w,vertices[i+2].normal_v.w)));
- return textureLod(colours,vec3(uv,vertices[i].emission_layer.w),0.0);
 }
 """
 const ANY_HIT := HIT_COMMON + """
 void main() {
- if(albedo_at_hit().a*vertices[3u*uint(gl_PrimitiveID)].diffuse.a<0.5) { ignoreIntersectionEXT; }
+ uint i=first_vertex();
+ if(textureLod(colours,vec3(hit_uv(i),vertices[i].emission_layer.w),0.0).a*vertices[i].diffuse.a<0.5) { ignoreIntersectionEXT; }
 }
 """
 const CLOSEST_HIT := HIT_COMMON + """
-layout(location=0) rayPayloadInEXT vec4 result;
+layout(location=0) rayPayloadInEXT Surface result;
 void main() {
- uint i=3u*uint(gl_PrimitiveID);
+ uint i=first_vertex();
  vec3 b=vec3(1.0-bary.x-bary.y,bary);
- vec3 n=normalize(vertices[i].normal_v.xyz*b.x+vertices[i+1].normal_v.xyz*b.y+vertices[i+2].normal_v.xyz*b.z);
- vec3 light=max(frame.ambient.rgb,min(vec3(1.0),vertices[i].emission_layer.rgb+
-     frame.sun.rgb*max(dot(n,frame.sun_plane.xyz),0.0)*vertices[i].diffuse.rgb));
- vec3 colour=linear_colour(albedo_at_hit().rgb*light);
- vec3 point=gl_WorldRayOriginEXT+gl_WorldRayDirectionEXT*gl_HitTEXT;
- float depth=dot(point-frame.camera_world[3].xyz,-frame.camera_world[2].xyz);
- float fog=clamp((depth-frame.fog.x)/max(frame.fog.y-frame.fog.x,0.001),0.0,1.0);
- result=vec4(mix(colour,linear_colour(frame.sky.rgb),fog),1.0);
+ vec3 n=vertices[i].normal_v.xyz*b.x+vertices[i+1].normal_v.xyz*b.y+vertices[i+2].normal_v.xyz*b.z;
+ result.normal=normalize(transpose(mat3(gl_WorldToObjectEXT))*n);
+ result.point=gl_WorldRayOriginEXT+gl_WorldRayDirectionEXT*gl_HitTEXT;
+ result.diffuse=vertices[i].diffuse.rgb;
+ result.emission=vertices[i].emission_layer.rgb;
+ vec3 a=gl_ObjectToWorldEXT*vec4(vertices[i].position_u.xyz,1.0);
+ vec3 c=gl_ObjectToWorldEXT*vec4(vertices[i+1].position_u.xyz,1.0);
+ vec3 d=gl_ObjectToWorldEXT*vec4(vertices[i+2].position_u.xyz,1.0);
+ vec2 ua=vec2(vertices[i].position_u.w,vertices[i].normal_v.w);
+ vec2 uc=vec2(vertices[i+1].position_u.w,vertices[i+1].normal_v.w);
+ vec2 ud=vec2(vertices[i+2].position_u.w,vertices[i+2].normal_v.w);
+ float density=max(length(uc-ua)/max(length(c-a),0.001),length(ud-ua)/max(length(d-a),0.001));
+ float distance=frame.fog.w>0.5 ? 1.0 : length(result.point-frame.camera_world[3].xyz);
+ float footprint=distance*frame.sky.w*density*float(textureSize(colours,0).x);
+ float lod=max(log2(max(footprint,1.0)),0.0);
+ result.colour=vec4(textureLod(colours,vec3(hit_uv(i),vertices[i].emission_layer.w),lod).rgb,1.0);
 }
 """
 
@@ -89,6 +149,9 @@ var _pipeline := RID()
 var _tlas := RID()
 var _sbt := RID()
 var _vertices := RID()
+var _blases: Array[RID] = []
+var _geometry: Array = []
+var _instances: Array[RDAccelerationStructureInstance] = []
 var _colours := RID()
 var _sampler := RID()
 var _frame := RID()
@@ -129,7 +192,7 @@ func _compile() -> RDPipelineShader:
 
 ## data contains a non-indexed triangle list, 64 bytes per vertex. Images are
 ## private CPU snapshots; the render thread never reads scene nodes.
-func build(data: PackedByteArray, images: Array[Image]) -> void:
+func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [], placements: Array = []) -> void:
 	if _closed: return
 	_rd = RenderingServer.get_rendering_device()
 	if _rd == null or not _rd.has_feature(RenderingDevice.SUPPORTS_RAYTRACING_PIPELINE) or data.is_empty() or images.is_empty():
@@ -151,34 +214,43 @@ func build(data: PackedByteArray, images: Array[Image]) -> void:
 	if not _vertices.is_valid():
 		prepared.emit.call_deferred(false)
 		return
-	var geometry := RDAccelerationStructureGeometry.new()
-	geometry.vertex_buffer = _vertices
-	geometry.vertex_count = data.size()/64
-	geometry.vertex_stride = 64
-	geometry.vertex_format = RenderingDevice.DATA_FORMAT_R32G32B32_SFLOAT
-	var blas := _own(_rd.blas_create([geometry],RenderingDevice.ACCELERATION_STRUCTURE_PREFER_FAST_TRACE_BIT))
-	_tlas = _own(_rd.tlas_create(1,0))
+	_geometry = geometry_data if not geometry_data.is_empty() else [{"offset":0,"count":data.size()/64}]
+	for description: Dictionary in _geometry:
+		var geometry := RDAccelerationStructureGeometry.new()
+		geometry.vertex_buffer = _vertices
+		geometry.vertex_offset = description.offset*64
+		geometry.vertex_count = description.count
+		geometry.vertex_stride = 64
+		geometry.vertex_format = RenderingDevice.DATA_FORMAT_R32G32B32_SFLOAT
+		var blas := _own(_rd.blas_create([geometry],RenderingDevice.ACCELERATION_STRUCTURE_PREFER_FAST_TRACE_BIT))
+		if not blas.is_valid() or _rd.blas_build(blas) != OK:
+			prepared.emit.call_deferred(false); return
+		_blases.append(blas)
+	if placements.is_empty(): placements = [{"geometry":0,"transform":Transform3D.IDENTITY,"mask":255}]
+	_tlas = _own(_rd.tlas_create(placements.size(),RenderingDevice.ACCELERATION_STRUCTURE_PREFER_FAST_BUILD_BIT))
 	_sbt = _own(_rd.hit_sbt_create(_pipeline,1))
-	if not blas.is_valid() or not _tlas.is_valid() or not _sbt.is_valid():
-		prepared.emit.call_deferred(false)
-		return
-	if _rd.blas_build(blas) != OK:
-		prepared.emit.call_deferred(false)
-		return
-	var instance := RDAccelerationStructureInstance.new()
-	instance.blas = blas
-	instance.flags = RenderingDevice.ACCELERATION_STRUCTURE_INSTANCE_TRIANGLE_FACING_CULL_DISABLE_BIT
-	instance.hit_sbt_range = _rd.hit_sbt_range_alloc(_sbt,1)
-	_rd.hit_sbt_range_update(_sbt,instance.hit_sbt_range,0,[0])
-	if _rd.tlas_build(_tlas,[instance]) != OK:
-		prepared.emit.call_deferred(false)
-		return
+	if not _tlas.is_valid() or not _sbt.is_valid():
+		prepared.emit.call_deferred(false); return
+	var hit_range := _rd.hit_sbt_range_alloc(_sbt,1)
+	_rd.hit_sbt_range_update(_sbt,hit_range,0,[0])
+	for placement: Dictionary in placements:
+		var instance := RDAccelerationStructureInstance.new()
+		instance.blas = _blases[placement.geometry]
+		instance.id = _geometry[placement.geometry].offset
+		instance.transform = placement.transform
+		instance.mask = placement.get("mask",255)
+		instance.flags = RenderingDevice.ACCELERATION_STRUCTURE_INSTANCE_TRIANGLE_FACING_CULL_DISABLE_BIT
+		instance.hit_sbt_range = hit_range
+		_instances.append(instance)
+	if _rd.tlas_build(_tlas,_instances) != OK:
+		prepared.emit.call_deferred(false); return
 	var format := RDTextureFormat.new()
 	format.texture_type = RenderingDevice.TEXTURE_TYPE_2D_ARRAY
 	format.format = RenderingDevice.DATA_FORMAT_R8G8B8A8_UNORM
 	format.width = images[0].get_width()
 	format.height = images[0].get_height()
 	format.array_layers = images.size()
+	format.mipmaps = images[0].get_mipmap_count()+1
 	format.usage_bits = RenderingDevice.TEXTURE_USAGE_SAMPLING_BIT
 	var layers: Array[PackedByteArray] = []
 	for im in images: layers.append(im.get_data())
@@ -186,10 +258,12 @@ func build(data: PackedByteArray, images: Array[Image]) -> void:
 	var sampler := RDSamplerState.new()
 	sampler.min_filter = RenderingDevice.SAMPLER_FILTER_LINEAR
 	sampler.mag_filter = RenderingDevice.SAMPLER_FILTER_LINEAR
+	sampler.mip_filter = RenderingDevice.SAMPLER_FILTER_LINEAR
+	sampler.max_lod = 20.0
 	sampler.repeat_u = RenderingDevice.SAMPLER_REPEAT_MODE_REPEAT
 	sampler.repeat_v = RenderingDevice.SAMPLER_REPEAT_MODE_REPEAT
 	_sampler = _own(_rd.sampler_create(sampler))
-	_frame = _own(_rd.uniform_buffer_create(208))
+	_frame = _own(_rd.uniform_buffer_create(FRAME_BYTES))
 	_ready = _colours.is_valid() and _sampler.is_valid() and _frame.is_valid()
 	prepared.emit.call_deferred(_ready)
 
@@ -200,8 +274,20 @@ func _uniform(kind: int, binding: int, ids: Array[RID]) -> RDUniform:
 	for rid in ids: uniform.add_id(rid)
 	return uniform
 
-func render(size: Vector2i, frame: PackedByteArray) -> void:
+func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}) -> void:
 	if _closed or not _ready: return
+	var changed := false
+	for pose: Dictionary in changes.get("poses",[]):
+		_rd.buffer_update(_vertices,_geometry[pose.geometry].offset*64,pose.data.size(),pose.data)
+		if _rd.blas_build(_blases[pose.geometry]) != OK:
+			_ready = false; prepared.emit.call_deferred(false); return
+		changed = true
+	for placement: Dictionary in changes.get("instances",[]):
+		_instances[placement.index].transform = placement.transform
+		_instances[placement.index].mask = placement.mask
+		changed = true
+	if changed and _rd.tlas_build(_tlas,_instances) != OK:
+		_ready = false; prepared.emit.call_deferred(false); return
 	if size != _size:
 		if _set.is_valid(): _rd.free_rid(_set)
 		_set = RID()
@@ -229,6 +315,7 @@ func render(size: Vector2i, frame: PackedByteArray) -> void:
 			return
 		_size = size
 		output.texture_rd_rid = _target
+	if frame.size() < FRAME_BYTES: frame.resize(FRAME_BYTES)
 	_rd.buffer_update(_frame,0,frame.size(),frame)
 	var list := _rd.raytracing_list_begin()
 	_rd.raytracing_list_bind_raytracing_pipeline(list,_pipeline)
@@ -247,5 +334,6 @@ func dispose() -> void:
 	_owned.reverse()
 	for rid in _owned: _rd.free_rid(rid)
 	_owned.clear()
+	_blases.clear(); _instances.clear(); _geometry.clear()
 	_set = RID()
 	_target = RID()

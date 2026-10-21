@@ -2,7 +2,7 @@
 
 This local prototype adds **Options → Graphics → Water → Water reflections →
 Ray traced (test)**. It traces actual Vulkan hardware rays into nearby terrain
-and static objects, then feeds the result into the existing water tint,
+objects and animated creatures, then feeds the result into the existing water tint,
 distortion and Fresnel shading. It is an optional fourth choice; defaults,
 automatic detection and all graphics presets continue to use existing modes.
 The label, choices and help are available in English, Russian and German.
@@ -14,7 +14,8 @@ the EI workspace. This opens the experiment with ray-traced water selected.
 The launcher creates a separate profile with a free cursor, FPS visible and all
 audio muted. Its saves and settings belong to the experiment. The normal game
 profile is not imported. Compare **Mirror** and **Ray traced (test)** in the
-water options while looking across a river in a perspective camera mode.
+water options while looking across a river. Perspective and orthographic cameras
+are supported.
 
 The generic launcher is `tools/experiments/launch_water_raytrace.py`:
 
@@ -31,31 +32,47 @@ for the normal executable. No release version or published artifact is changed.
 
 ## Scope and limits
 
-- One reflection bounce from one selected water level, using a perspective
-  camera. The existing water shader approximates waves through texture
+- One reflected view of one selected water level, in perspective or
+  orthographic cameras. The water shader approximates waves through texture
   distortion; rays do not intersect a fully displaced water surface.
-- An 80 m snapshot of nearby terrain and static object meshes. Camera motion
-  updates rays every frame; moving more than 16 m or changing pools rebuilds
-  the snapshot. Removed or moved static objects can remain in it until a rebuild.
-- Alpha-tested texture cutouts preserve foliage silhouettes. Animated units,
-  foliage motion, particles, procedural ground effects, local lights and
-  reflected shadows are not reproduced. Lighting uses material properties,
-  ambient light, sunlight and depth fog; it is an approximation of the raster
-  materials, not a full path-traced lighting system.
-- Half the display width and height, capped at 960 pixels on the longer edge.
-  Geometry is capped at 240,000 triangles and 192 texture layers at 512 × 512.
-  Extraction is staged across frames, although a single mesh or GPU build can
-  still cause a hitch. Texture and acceleration-structure memory is additional
-  to the ordinary scene.
-- Preparation, unsupported hardware, an unsupported engine, orthographic
-  cameras and backend failures retain the existing reflection path. Forward+
-  uses Mirror; other renderers retain their established fallback. Selecting
-  Mirror or Off releases the experiment's GPU resources.
+- A 96 m scene snapshot includes terrain, object meshes and creature parts.
+  Rigid meshes share geometry; each instance receives current transforms and
+  visibility. Original articulated animation and both absolute and relative
+  blend shapes update the reflection. Changed morph geometry rebuilds only
+  its own acceleration structure. Hidden and invisible units are masked out.
+- Moving more than 16 m or changing pools rebuilds the snapshot. A once-per-second
+  membership check detects spawned, removed and replaced meshes or materials.
+  Deleted or hidden instances disappear immediately. Mirror remains visible
+  during extraction and GPU preparation.
+- Direct sunlight and up to four nearby point lights cast traced hard shadows
+  in the reflection. Local-light position, colour and energy update each frame;
+  nearby-light membership refreshes once per second. Alpha-tested textures
+  preserve foliage silhouettes in both primary rays and shadow rays. Texture
+  mipmaps use an estimated ray footprint to reduce distant texture aliasing.
+- Ambient light, material diffuse/emissive properties, local lights and depth
+  fog approximate the game's raster materials. This is one reflection bounce
+  with direct-light shadows; it does not add global illumination or multiple
+  reflection bounces. Mirror and RT are not equal-quality rendering paths.
+- Particles, shader-only wind, procedural ground effects, custom vertex-shader
+  deformations and blended transparency are omitted. Texture pixels are
+  snapshots: replacing a texture resource refreshes it, but in-place texture
+  painting and mesh edits require a scene rebuild. Lighting and camera-specific
+  body shaders are not reproduced exactly.
+- The target is half the display width and height, capped at 960 pixels on the
+  longer edge. Budgets are 320,000 unique triangles, 4,096 instances and 192
+  texture layers at 512 × 512 with mipmaps. CPU extraction is staged, although
+  an individual mesh or GPU build can hitch. Texture and acceleration-structure
+  memory is additional to the ordinary scene; each moving instance also adds
+  CPU bookkeeping and can require a top-level acceleration-structure rebuild.
+- Unsupported hardware, an unqualified engine, exceeded budgets and backend
+  failures retain the established fallback. Forward+ uses Mirror; other
+  renderers retain their existing water fallback. Selecting Mirror or Off
+  releases the experiment's GPU resources. Presets and normal defaults are
+  unchanged.
 
-The implementation deliberately keeps the planar view available during
-preparation. It disables that extra scene draw once the ray-traced texture is
-ready. A planar water scene can already look very similar with Mirror; the
-purpose here is to establish a working hardware tracing path and evaluate it.
+The planar viewport stays available during preparation and stops drawing when
+hardware RT becomes active. The fallback avoids a blank river while a new
+snapshot is prepared; it can still cause a visible lighting transition.
 
 ## Engine requirement
 
@@ -102,9 +119,10 @@ checks pass; the sampled front-facing water has zero image difference. Before
 and after images and the pixel measurements are in
 `docs/validation/water-raytracing-followup-2026-10-21/`.
 
-## Measured reflection cost
+## Initial prototype reflection cost (historical)
 
-On the RTX 3090 at 1280 × 720, three interleaved rounds of 90 samples at the
+Before animated instances and traced shadows were added, on the RTX 3090 at
+1280 × 720, three interleaved rounds of 90 samples at the
 same frozen river camera produced these reflection-pass GPU median ranges:
 
 | Mode | Reflection target | GPU pass | Whole-frame FPS¹ |
@@ -132,3 +150,43 @@ from the steady-frame GPU timings. See
 `docs/validation/water-raytracing-followup-2026-10-21.json` for raw data, methods,
 limits and captures. The reproducible harness is
 `tools/tests/water_raytrace_performance.gd`.
+
+## Expanded scene validation
+
+`tools/tests/water_raytrace_lighting.gd` reads back GPU pixels for instanced
+transforms, alpha-aware sun and point-light shadows, light removal, orthographic
+rays, both MeshInstance blend-shape modes and shadow-only visibility.
+`water_raytrace_live.gd` exercises an original campaign character's movement,
+walk animation, hide/show transitions and equipment replacement in a real
+river scene. The existing device, river, localization and cyan-wedge regressions
+remain part of validation.
+
+The expanded implementation's measurements and captures are recorded separately
+in `docs/validation/water-raytracing-comprehensive-2026-10-21.json`. The earlier
+prototype's timings above do not describe the cost of this version. The static
+benchmark retains live-scene polling and all new shadow rays; a second benchmark
+animates and moves one original character every frame, forcing live instance
+updates. Both measure reflection GPU work and whole-frame wall time separately.
+The controller CPU bracket helps account for scene bookkeeping; it is not a
+measurement of the entire game's CPU frame.
+
+On the same RTX 3090, the expanded version produced these three-round results:
+
+| Scene | Mode | Reflection GPU median range | Whole-frame FPS |
+| --- | --- | --- | --- |
+| Frozen river | Mirror | 0.84–1.08 ms | 25.7 |
+| Frozen river | RT | 0.23–0.24 ms | 27.3 |
+| Moving character | Mirror | 0.63–1.56 ms | 21.2 |
+| Moving character | RT | 0.27–0.87 ms | 19.7 |
+
+These are different-quality paths on a shared machine. The results do not
+establish an overall speedup. The RT controller's CPU median was 1.69–1.74 ms
+in the frozen scene and 3.13–3.68 ms with the character, compared with
+0.06–0.08 ms for Mirror's controller. Mirror also has separate render-thread
+scene-submission work, so these controller figures are not complete CPU costs.
+The moving case includes top-level acceleration-structure rebuilds.
+
+Cold RT preparation took 6.5–6.6 seconds in the frozen scene and 10.4–11.7
+seconds with the moving character in these runs. Mirror remains visible during
+preparation. The validation report contains 116 passing checks, the raw
+per-round timings, and captures; the previous cyan-wedge fix remains covered.
