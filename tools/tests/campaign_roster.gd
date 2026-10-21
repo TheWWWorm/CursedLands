@@ -120,6 +120,8 @@ func _ready() -> void:
 		ps.coop.joiners.other = {"idx":2,"active":false,"purse":{"money":333,"items":["other-bag-sentinel"]}}
 		var pvm := vm_for(ps,"bz13h")
 		ps.coop.with_purse(1,func(): pvm.fire_event("#OnBriefingComplete",[0.0,"b.Nalo.Kr60"]))
+		# The handler is polled in the next scheduler pass.
+		for inst: ScriptVM.Instance in pvm.instances.duplicate(): pvm._run(inst)
 		check(st.current_party == "Pretty" and st.money == 0 and st.items.is_empty(),"original Nalo handoff selects Nalo's bag")
 		check(st.party_bags.HeroAlone == {"money":111,"items":["host-bag-sentinel"]},"waiting host bag retains its money and items")
 		check(ps.coop.joiners.guest.purse == {"money":0,"items":[]},"guest closing Nalo dialogue gets a separate empty temporary bag")
