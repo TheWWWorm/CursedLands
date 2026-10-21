@@ -1,0 +1,115 @@
+{
+  "site": "https://cursedlands.wwworm.com/",
+  "commit": "cb128e7b1ae5a3cc738a85c333c5fc6503f3baec",
+  "version": "1.23.0",
+  "verified_at": "2026-10-21T20:45:03Z",
+  "live_files": {
+    "data-worker.js": {
+      "bytes": 1568,
+      "sha256": "23acf2e304952606e7e2a0bf850dc8e02b56dcae2913cc79e461c78afbd49d77",
+      "isolation_headers": true
+    },
+    "files.js": {
+      "bytes": 14821,
+      "sha256": "5b23e470c5dedc93d0c80ea0696eff36bad3afbb88eb4bc85ced567f472c5b2a",
+      "isolation_headers": true
+    },
+    "icon-192.png": {
+      "bytes": 50904,
+      "sha256": "0f2555619f403d73855f2d20beaf5cedd4a6ad3b92b0325f7f8da5f979dcceec",
+      "isolation_headers": true
+    },
+    "icon-512.png": {
+      "bytes": 324019,
+      "sha256": "280a543feabeb6da1ae8f17e1452fa7a27537f2e1d2d261d6da9ce826f58a90d",
+      "isolation_headers": true
+    },
+    "index.apple-touch-icon.png": {
+      "bytes": 45361,
+      "sha256": "1fa3fdee844f8a38b4a4d4c5908a53d857eaaf6950da1fa061fb5c1c2d46de41",
+      "isolation_headers": true
+    },
+    "index.audio.position.worklet.js": {
+      "bytes": 2973,
+      "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
+      "isolation_headers": true
+    },
+    "index.audio.worklet.js": {
+      "bytes": 7298,
+      "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+      "isolation_headers": true
+    },
+    "index.html": {
+      "bytes": 6220,
+      "sha256": "d1830276e57b97e387d63cd83bf65626e06cd6bcee94ec459bcc79c9c54ed78d",
+      "isolation_headers": true
+    },
+    "index.icon.png": {
+      "bytes": 7516,
+      "sha256": "074eecd5dd87067e3f1b15c59c08fad1a700f431fe5c0b1cbc23f9a8b57aa8a4",
+      "isolation_headers": true
+    },
+    "index.js": {
+      "bytes": 279815,
+      "sha256": "68586d6daafc93c6e697b3fb258976874aa7459b8931165ebb1dc3c9614cc42c",
+      "isolation_headers": true
+    },
+    "index.pck": {
+      "bytes": 19489612,
+      "sha256": "5b68007af52bf1929006bb1223245adc983d209fcdfe9e0e35d0d00f6e69d8c5",
+      "isolation_headers": true
+    },
+    "index.png": {
+      "bytes": 340337,
+      "sha256": "b9fe65d8c1b0bef09d7df97700ead5372582dc00851a24e53f4be3a839a48027",
+      "isolation_headers": true
+    },
+    "index.wasm": {
+      "bytes": 39509339,
+      "sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656",
+      "isolation_headers": true
+    },
+    "installer-worker.js": {
+      "bytes": 16243,
+      "sha256": "d6afa8f57a10faef5edb0f1ce10ef2ec52a9e7ed690771ba0b97b431e9e24708",
+      "isolation_headers": true
+    },
+    "manifest.webmanifest": {
+      "bytes": 483,
+      "sha256": "959d316f9bd45b8d4c6cfd621aced7f55336f459e9472c3f5ce53fb9c7990ab5",
+      "isolation_headers": true
+    },
+    "storage.js": {
+      "bytes": 5685,
+      "sha256": "9265725b43b6b4e897693fd3be62b175c3e0b07493b51ba7d18a6d1578bee581",
+      "isolation_headers": true
+    },
+    "service-worker.js": {
+      "bytes": 7282,
+      "sha256": "7d1b53f881127f9b6a4250a99689767940d09c8693e1b79e9e2dae2f429fad6b",
+      "isolation_headers": true
+    },
+    "BUILD-INFO.json": {
+      "bytes": 607,
+      "sha256": "8e2a3ffe63c5208e3c682c32ad13628719c8c3f5bbd78c1c95372e23bde02f2b",
+      "isolation_headers": true
+    },
+    "wiki/BUILD-INFO.json": {
+      "bytes": 2236140,
+      "sha256": "3bf30bd3d751f4ab511c3f90445c6e2f2f69c819c972a7e4c1e3eefac67e84d0",
+      "isolation_headers": true
+    },
+    "index.wasm.part0": {
+      "bytes": 20971520,
+      "sha256": "e225998ec9fbd2fb1aa80798d571dc381fdd9bfdb3478250832404d941db0426",
+      "isolation_headers": true
+    },
+    "index.wasm.part1": {
+      "bytes": 18537819,
+      "sha256": "79cae914fb3feb5b3ef307b0906fd111d1ee2ca48ff730ba21cca432c271467b",
+      "isolation_headers": true
+    }
+  },
+  "all_live_hashes_match": true,
+  "scope": "Every changed hosted asset, complete service-worker engine cache, build metadata and split WebAssembly parts"
+}

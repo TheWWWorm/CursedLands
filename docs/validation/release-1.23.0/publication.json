@@ -1,0 +1,48 @@
+{
+  "version": "1.23.0",
+  "url": "https://github.com/TheWWWorm/CursedLands/releases/tag/v1.23.0",
+  "isDraft": false,
+  "isPrerelease": false,
+  "publishedAt": "2026-10-21T20:41:59Z",
+  "tag_commit": "cb128e7b1ae5a3cc738a85c333c5fc6503f3baec",
+  "release_id": 420035599,
+  "assets": [
+    {
+      "name": "CursedLands-1.23.0-android.apk",
+      "bytes": 46938732,
+      "sha256": "sha256:e9b6071fcb7af6d807da7313a190712f6ba6f079a010d77b86774c94e98a405a",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.23.0/CursedLands-1.23.0-android.apk"
+    },
+    {
+      "name": "CursedLands-1.23.0-linux-x86_64.tar.gz",
+      "bytes": 61019805,
+      "sha256": "sha256:b1499ed724704ce9dbfdc583498cccece2090bc8289e070125530bf756eddfad",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.23.0/CursedLands-1.23.0-linux-x86_64.tar.gz"
+    },
+    {
+      "name": "CursedLands-1.23.0-macos-universal.zip",
+      "bytes": 89392039,
+      "sha256": "sha256:70fbb82121f2f901c949f1fc854a13a2e0157469a30a80b4168b7b6e9469fc91",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.23.0/CursedLands-1.23.0-macos-universal.zip"
+    },
+    {
+      "name": "CursedLands-1.23.0-tools.zip",
+      "bytes": 70414,
+      "sha256": "sha256:07579c968ca610c81e227a7979e3b6589014cc81aa248ed1d41d779525ed0192",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.23.0/CursedLands-1.23.0-tools.zip"
+    },
+    {
+      "name": "CursedLands-1.23.0-web.zip",
+      "bytes": 184186725,
+      "sha256": "sha256:5d33f808f10eb49a3c337844f499a2ec26e5d329bc6fd9056259f8048ac83312",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.23.0/CursedLands-1.23.0-web.zip"
+    },
+    {
+      "name": "CursedLands-1.23.0-windows-x86_64.zip",
+      "bytes": 111423392,
+      "sha256": "sha256:e9f60d070aa822b4a1ccf5353d7719516b78ba4647c33b92b9b32d7d54831fea",
+      "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.23.0/CursedLands-1.23.0-windows-x86_64.zip"
+    }
+  ],
+  "all_public_downloads_sha256_verified": true
+}
