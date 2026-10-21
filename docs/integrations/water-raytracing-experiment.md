@@ -154,18 +154,33 @@ GPU time. RT and Mirror still differ in material fidelity.
 
 ## DX12 and reflection clarity (unreleased)
 
-DX12 is the primary Windows development target. The shared shader now uses
-four spatial samples and native target pixels up to 1920 on the longer edge
-(1920 × 1080 for a 16:9 display); the 1.23.0 target
-used one sample and half the width/height. Ray hits, cutout foliage, direct-light
-shadows, live poses/material edits, and the Mirror fallback remain supported.
+DX12 is the primary Windows development target. The shared shader uses four
+spatial samples per reflection pixel at every quality level. Graphics → Water →
+RT reflection quality (`q_water_rt_quality`) offers Low (50 %), Medium (75 %)
+and High (100 %, default), scaling both dimensions of the game viewport.
+High has no fixed 1920-pixel cap: a 3840 × 2160 viewport gets a 3840 × 2160
+reflection. The setting is separate from render scale/FSR and does not change
+Mirror. Graphics presets and automatic detection preserve the chosen RT quality.
+The control is disabled unless water effects and Ray traced (test) are selected.
+It applies on confirmation without a restart and persists in the player profile.
+The [quality-options validation](../validation/water-rt-quality-options-2026-10-22.json)
+records live tier switches and 4K GPU targets on DX12/Wine and Vulkan, saved
+settings, and EN/RU/DE layouts. `tools/tests/water_raytrace_options.gd` exercises
+the actual settings screen and controller; the GPU quality fixture covers
+standard, ultrawide, portrait and odd viewport sizes.
+
+The 1.23.0 target used one sample and half the width/height. Ray hits, cutout
+foliage, direct-light shadows, live poses/material edits, and the Mirror fallback
+remain supported.
 Premultiplied coverage also fixes the old mismatch at filtered/fading edges.
 Resizing replaces the backing GPU texture without invalidating the texture
 already bound by the water material, avoiding a blank reflection during handoff.
 
-On the RTX 3090 test host through Wine/VKD3D-Proton, comparing 4-sample RT with
-2x-MSAA Mirror at **1280 × 720**, with one original animated character, the
-final build's median of three interleaved round medians was:
+The following measurements predate the quality selector and use the equivalent
+High budget at 1280 × 720. On the RTX 3090 test host through Wine/VKD3D-Proton,
+comparing 4-sample RT with 2x-MSAA Mirror at **1280 × 720**, with one original
+animated character, the integration build's median of three interleaved round
+medians was:
 
 | Measurement | RT | Mirror |
 | --- | ---: | ---: |

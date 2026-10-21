@@ -24,8 +24,20 @@ func run() -> void:
 	if not Device.supported(): finish(); return
 	check(Reflection.raytrace_target_size(Vector2(1280,720)) == Vector2i(1280,720),"720p reflections retain native pixels")
 	check(Reflection.raytrace_target_size(Vector2(1920,1080)) == Vector2i(1920,1080),"1080p reflections retain native pixels")
-	check(Reflection.raytrace_target_size(Vector2(3840,2160)) == Vector2i(1920,1080),"4K reflection cost is bounded with aspect preserved")
+	check(Reflection.raytrace_target_size(Vector2(3840,2160)) == Vector2i(3840,2160),"High keeps 4K reflections native without a hidden cap")
 	check(Reflection.raytrace_target_size(Vector2(1080,1920)) == Vector2i(1080,1920),"portrait reflection aspect is preserved")
+	for row: Array in [
+		[Vector2(1920,1080),[Vector2i(960,540),Vector2i(1440,810),Vector2i(1920,1080)]],
+		[Vector2(2560,1440),[Vector2i(1280,720),Vector2i(1920,1080),Vector2i(2560,1440)]],
+		[Vector2(3840,2160),[Vector2i(1920,1080),Vector2i(2880,1620),Vector2i(3840,2160)]],
+		[Vector2(3440,1440),[Vector2i(1720,720),Vector2i(2580,1080),Vector2i(3440,1440)]],
+		[Vector2(900,1600),[Vector2i(450,800),Vector2i(675,1200),Vector2i(900,1600)]],
+		[Vector2(1365,767),[Vector2i(683,384),Vector2i(1024,575),Vector2i(1365,767)]]]:
+		for quality in 3:
+			check(Reflection.raytrace_target_size(row[0],quality) == row[1][quality],"RT quality %d scales viewport %s"%[quality,row[0]])
+	check(Reflection.raytrace_target_size(Vector2.ZERO,0) == Vector2i(2,2),"minimized viewport keeps a valid RT target")
+	check(Reflection.raytrace_target_size(Vector2(1920,1080),-1) == Vector2i(960,540),"invalid low setting is bounded")
+	check(Reflection.raytrace_target_size(Vector2(3840,2160),99) == Vector2i(3840,2160),"invalid high setting is bounded")
 	var camera := Camera3D.new(); add_child(camera)
 	camera.position = Vector3(0,-1,3); camera.look_at(Vector3(0,1.5,0)); camera.current = true
 	var data := PackedFloat32Array()

@@ -1,0 +1,358 @@
+{
+  "date": "2026-10-22",
+  "base_commit": "8ce5f5fd",
+  "status": "unreleased",
+  "gpu": "NVIDIA GeForce RTX 3090",
+  "budgets": {
+    "setting": "q_water_rt_quality",
+    "default": 2,
+    "linear_scales": [
+      0.5,
+      0.75,
+      1.0
+    ],
+    "samples_per_reflection_pixel": 4,
+    "high_fixed_resolution_cap": false
+  },
+  "source_sha256": {
+    "game/src/ei/game_data.gd": "418eb508d69b053fc9a78e74e90081451d8a27a590edc78043a986b8851fadda",
+    "game/src/ei/remake_text.gd": "20a5999e1e13dfbb3b9efae4350d2625d3043962ecbd51db7d4a506f98ef8349",
+    "game/src/game/fx/water_reflection.gd": "e478135bb7f2e6b375d0a0c00e0a3b7f07ef282e2cb8834e0d60fb39e1e1bc22",
+    "game/src/ui/options_panel.gd": "b5d40017d5533cee10e574ba7cea1272a55d68f8191535316fe7df4573d97d43",
+    "tools/tests/water_raytrace_quality.gd": "cbc9de98983d493aaa49a6e8701d8980771d197830794bfb6d3ec5e35cb2ec75",
+    "tools/tests/water_raytrace_options.gd": "4fd576d3dfcdc2721a9b5520c55a7c823ee6cab21b587a268e4b7e5d0f3680e9"
+  },
+  "results": [
+    {
+      "suite": "water_raytrace_options",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "seconds": 33.68,
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "report": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/rt-options-dx12-settled/run.json",
+      "summary": [
+        "RT_QUALITY_OPTIONS 134 checks 0 failures"
+      ],
+      "diagnostics": [],
+      "quality_targets": {
+        "checks": 134,
+        "failures": [],
+        "renderer": "d3d12",
+        "samples": [
+          {
+            "case": "applied-tier-0",
+            "geometry_samples": 119,
+            "quality": 0,
+            "samples_per_pixel": 4,
+            "size": [
+              640,
+              360
+            ]
+          },
+          {
+            "case": "applied-tier-1",
+            "geometry_samples": 260,
+            "quality": 1,
+            "samples_per_pixel": 4,
+            "size": [
+              960,
+              540
+            ]
+          },
+          {
+            "case": "applied-tier-2",
+            "geometry_samples": 478,
+            "quality": 2,
+            "samples_per_pixel": 4,
+            "size": [
+              1280,
+              720
+            ]
+          },
+          {
+            "case": "applied-tier-0",
+            "geometry_samples": 119,
+            "quality": 0,
+            "samples_per_pixel": 4,
+            "size": [
+              640,
+              360
+            ]
+          },
+          {
+            "case": "applied-tier-2",
+            "geometry_samples": 478,
+            "quality": 2,
+            "samples_per_pixel": 4,
+            "size": [
+              1280,
+              720
+            ]
+          },
+          {
+            "case": "4K-tier-0",
+            "geometry_samples": 1078,
+            "quality": 0,
+            "samples_per_pixel": 4,
+            "size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "case": "4K-tier-1",
+            "geometry_samples": 2452,
+            "quality": 1,
+            "samples_per_pixel": 4,
+            "size": [
+              2880,
+              1620
+            ]
+          },
+          {
+            "case": "4K-tier-2",
+            "geometry_samples": 4360,
+            "quality": 2,
+            "samples_per_pixel": 4,
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          {
+            "case": "return-to-window",
+            "geometry_samples": 478,
+            "quality": 2,
+            "samples_per_pixel": 4,
+            "size": [
+              1280,
+              720
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "suite": "water_raytrace_quality",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "seconds": 8.5,
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "report": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/rt-options-dx12-quality/run.json",
+      "summary": [
+        "WATER_RT_DEVICE 50 checks 0 failures"
+      ],
+      "diagnostics": [],
+      "edge_quality": {
+        "measurements": [
+          {
+            "case": "cutout-false-offset-0.0",
+            "four_sample_error": 0.000726699829101563,
+            "fractional_pixels": 101,
+            "single_error": 0.00209999084472656
+          },
+          {
+            "case": "cutout-false-offset-0.027",
+            "four_sample_error": 0.0006866455078125,
+            "fractional_pixels": 101,
+            "single_error": 0.00210952758789063
+          },
+          {
+            "case": "cutout-true-offset-0.0",
+            "four_sample_error": 0.00373268127441406,
+            "fractional_pixels": 354,
+            "single_error": 0.00881004333496094
+          },
+          {
+            "case": "cutout-true-offset-0.027",
+            "four_sample_error": 0.00373649597167969,
+            "fractional_pixels": 351,
+            "single_error": 0.00860595703125
+          }
+        ],
+        "renderer": "d3d12"
+      }
+    },
+    {
+      "suite": "water_raytrace_options",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "seconds": 27.88,
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "report": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/rt-options-vulkan-settled/run.json",
+      "summary": [
+        "RT_QUALITY_OPTIONS 78 checks 0 failures"
+      ],
+      "diagnostics": [],
+      "quality_targets": {
+        "checks": 78,
+        "failures": [],
+        "renderer": "vulkan",
+        "samples": [
+          {
+            "case": "applied-tier-0",
+            "geometry_samples": 119,
+            "quality": 0,
+            "samples_per_pixel": 4,
+            "size": [
+              640,
+              360
+            ]
+          },
+          {
+            "case": "applied-tier-1",
+            "geometry_samples": 260,
+            "quality": 1,
+            "samples_per_pixel": 4,
+            "size": [
+              960,
+              540
+            ]
+          },
+          {
+            "case": "applied-tier-2",
+            "geometry_samples": 478,
+            "quality": 2,
+            "samples_per_pixel": 4,
+            "size": [
+              1280,
+              720
+            ]
+          },
+          {
+            "case": "applied-tier-0",
+            "geometry_samples": 119,
+            "quality": 0,
+            "samples_per_pixel": 4,
+            "size": [
+              640,
+              360
+            ]
+          },
+          {
+            "case": "applied-tier-2",
+            "geometry_samples": 478,
+            "quality": 2,
+            "samples_per_pixel": 4,
+            "size": [
+              1280,
+              720
+            ]
+          },
+          {
+            "case": "4K-tier-0",
+            "geometry_samples": 1078,
+            "quality": 0,
+            "samples_per_pixel": 4,
+            "size": [
+              1920,
+              1080
+            ]
+          },
+          {
+            "case": "4K-tier-1",
+            "geometry_samples": 2452,
+            "quality": 1,
+            "samples_per_pixel": 4,
+            "size": [
+              2880,
+              1620
+            ]
+          },
+          {
+            "case": "4K-tier-2",
+            "geometry_samples": 4360,
+            "quality": 2,
+            "samples_per_pixel": 4,
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          {
+            "case": "return-to-window",
+            "geometry_samples": 478,
+            "quality": 2,
+            "samples_per_pixel": 4,
+            "size": [
+              1280,
+              720
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "suite": "option_localization_matrix",
+      "platform": "linux",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 2.87,
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "report": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/rt-options-localization/run.json",
+      "summary": [
+        "OPTION_LOCALIZATION_MATRIX {\"checks\":15510,\"choice_groups\":39,\"failures\":[],\"options\":165,\"translation_keys\":2638}"
+      ],
+      "diagnostics": []
+    }
+  ],
+  "visual_review": {
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "viewport_sizes": [
+      [
+        1280,
+        720
+      ],
+      [
+        800,
+        600
+      ]
+    ],
+    "directory": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/rt-options-dx12-settled",
+    "reviewed": "Labels, all three choices and wrapped help fit; mouse and keyboard dependency checks passed."
+  },
+  "qualification": [
+    "DX12 ran as the Windows export under Wine/VKD3D-Proton, not native Windows. Vulkan ran natively on Linux.",
+    "The 4K cases dispatch the real river through the production controller with an offscreen 3840x2160 source viewport; they verify actual GPU output allocation/readback, not full-screen 4K performance.",
+    "The first Vulkan run assumed a settled 1280x720 window but the X11 window was still 1280x794 after applying settings. The fixture now waits for reframing and asserts the capture dimensions. Its repeated GPU/settings run passes. EN/RU/DE hover/layout qualification uses DX12; initial Linux hover checks were unreliable on the shared desktop.",
+    "The first DX12 options run logged a Wine page fault after the game reported clean exit and all 126 checks passed. The identical address/diagnostic is present in earlier api-final-d3d12-water_raytrace_device and final-dx12-quality-scene logs before this change. This follow-up does not resolve the existing Wine shutdown issue or expand native Windows qualification.",
+    "No engine or shader changes. All eight shared shader binaries still pass tools/build_water_rt_shaders.py --check. Existing API-validation qualifications remain in water-dx12-2026-10-21/summary.json.",
+    "Translation checker: 3006 entries, 141 dynamic wiki keys and 179 dynamic arena keys, zero errors. The localization matrix count covers the whole catalog, not graphics assertions.",
+    "No new performance claim: prior 1280x720 four-sample measurements remain equivalent to High at that viewport size."
+  ]
+}

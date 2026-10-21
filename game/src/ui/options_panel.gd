@@ -377,6 +377,8 @@ func _show_group(g: int) -> void:
 		_rows[int(o[4])] = {"kind": "slider" if int(o[1]) == 0 else "switch", "name": name,
 			"max": choices.size() if not choices.is_empty() else int(o[2]), "label": label, "tip": tip,
 			"choices": choices}
+		if name == "q_water_rt_quality":
+			_rows[int(o[4])].disabled = int(_values.get("gfx_water", 0)) == 0 or int(_values.get("gfx_water_reflections", 0)) != 3
 		if name in ["resolution","render_scale"]: _rows[int(o[4])].kind = "dropdown"
 		if name == "q_aa":
 			_rows[int(o[4])].kind = "dropdown"
@@ -656,7 +658,7 @@ func _set_value(name: String, v: int) -> void:
 		_refresh_keys()
 	if name in LIVE:   # volumes, gamma ramp, stereo at once
 		GameData.set_option(name, v)
-	if name in FsrGraphics.OPTIONS:
+	if name in FsrGraphics.OPTIONS or (_group == WATER_GROUP and name in ["gfx_water", "gfx_water_reflections", "graphics_preset"]):
 		var selected := _sel
 		_show_group(_group)
 		_sel = selected
@@ -1115,6 +1117,7 @@ func _unhandled_key_input(e: InputEvent) -> void:
 			var i := TAB_ORDER.find(_tab()) + (-1 if e.keycode == KEY_PAGEUP else 1)
 			_show_group(TAB_ORDER[posmod(i, TAB_ORDER.size())])
 		KEY_LEFT, KEY_RIGHT:
+			if _rows.has(_sel) and _rows[_sel].get("disabled", false): return
 			if _rows.has(_sel) and _rows[_sel].kind == "dropdown":
 				_toggle(_sel)
 			elif _rows.has(_sel) and _rows[_sel].kind == "slider":
