@@ -263,6 +263,9 @@ func _instance_updates(force: bool) -> Array:
 				if node is MeshInstance3D:
 					if node.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY: mask = 2
 					elif node.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_OFF: mask = 1
+					# First-person reflections use the complete authored copies,
+					# not the sealed torso reserved for the close-view camera.
+					if (node.layers & ~EIUnitModel.CLOSE_VIEW_LAYER) == 0: mask = 0
 			if force or mask != entry.mask or transform != entry.transform:
 				transforms.append({"index":i,"transform":transform,"mask":mask})
 				entry.mask = mask; entry.transform = transform

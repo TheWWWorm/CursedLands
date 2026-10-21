@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.23.0 — 2026-10-21
+
+- Add optional **Ray traced (test)** water reflections on Windows/Linux with Forward+ Vulkan. Include nearby terrain, animated creatures, complete first-person figures, cutout foliage, material tint and emission, and traced sun/local-light shadows. Refresh changed scene membership and supported material properties; retain Mirror while preparing or when RT is unavailable. Keep existing presets and defaults. Labels and help are available in English, Russian and German.
+- Correct Fresnel shading on reverse-facing river triangles so overlapping water surfaces do not turn into full sky reflections.
+
 ## 1.22.0 — 2026-10-21
 
 - Accept the parameterless `GetLeader()` in authored quest triggers, so the Open Police squares, Junophile follow and totem placement conditions can complete.

@@ -159,6 +159,9 @@ public:
                         transform = node->get_global_transform();
                         mask = mesh->get_cast_shadows_setting() == GeometryInstance3D::SHADOW_CASTING_SETTING_SHADOWS_ONLY ? 2 :
                             mesh->get_cast_shadows_setting() == GeometryInstance3D::SHADOW_CASTING_SETTING_OFF ? 1 : 255;
+                        // EIUnitModel.CLOSE_VIEW_LAYER: the sealed local torso
+                        // has separate complete reflection/shadow copies.
+                        if ((mesh->get_layer_mask() & ~(uint32_t(1) << 14)) == 0) mask = 0;
                     }
                 }
                 if (force || mask != entry.mask || transform != entry.transform) {

@@ -75,6 +75,11 @@ func run() -> void:
 	for setting in [GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY,GeometryInstance3D.SHADOW_CASTING_SETTING_OFF]:
 		node.cast_shadow=setting
 		check(native._instance_updates(false)==script._instance_updates(false),"shadow visibility mask matches for setting %d"%setting)
+	for layer in [EIUnitModel.CLOSE_VIEW_LAYER,EIUnitModel.REFLECTION_LAYER,EIUnitModel.CLOSE_VIEW_LAYER|1,0,1]:
+		node.layers=layer
+		var expected := 0 if layer in [0,EIUnitModel.CLOSE_VIEW_LAYER] else 1
+		var a := native._instance_updates(true); var b := script._instance_updates(true)
+		check(a==b and a[0].mask==expected,"camera layer changes update native/script reflection masks: %d"%layer)
 	parent.hide()
 	check(native._instance_updates(false)==script._instance_updates(false),"hidden ancestor masks its descendants")
 	parent.show(); node.hide()

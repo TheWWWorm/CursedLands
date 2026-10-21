@@ -135,6 +135,12 @@ func morphs(camera: Camera3D) -> void:
 			node.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			base=await pixels(device,frame,scene.updates())
 			check(base.a>0.99,"non-shadow-casting meshes remain visible in primary rays")
+			node.layers=EIUnitModel.CLOSE_VIEW_LAYER
+			base=await pixels(device,frame,scene.updates())
+			check(base.a<0.01,"camera-adjusted first-person mesh is absent from RT")
+			node.layers=EIUnitModel.REFLECTION_LAYER
+			base=await pixels(device,frame,scene.updates())
+			check(base.a>0.99,"complete first-person reflection copy remains visible")
 			check(scene.updates().poses.is_empty(),"unchanged blend weights avoid repeated geometry uploads")
 			node.hide(); base=await pixels(device,frame,scene.updates())
 			check(base.a<0.01 and device._active_instances.is_empty(),"all-hidden scene builds an empty TLAS and returns sky")

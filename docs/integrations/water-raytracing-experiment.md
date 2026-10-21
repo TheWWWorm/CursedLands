@@ -1,13 +1,22 @@
 # Water ray-tracing experiment
 
-This local prototype adds **Options → Graphics → Water → Water reflections →
+This experimental feature adds **Options → Graphics → Water → Water reflections →
 Ray traced (test)**. It traces actual Vulkan hardware rays into nearby terrain
 objects and animated creatures, then feeds the result into the existing water tint,
 distortion and Fresnel shading. It is an optional fourth choice; defaults,
 automatic detection and all graphics presets continue to use existing modes.
 The label, choices and help are available in English, Russian and German.
 
-## Try the local build
+## Use the released experiment
+
+Starting with 1.23.0, the Windows and Linux release executables include the
+required Vulkan RT patch. Select **Forward+ (Vulkan)** under Screen settings,
+then **Graphics → Water → Water reflections → Ray traced (test)**. The feature
+needs an RT-capable GPU and Vulkan driver. Other APIs retain the fallback;
+Windows FSR uses Direct3D 12 and cannot run together with this Vulkan feature.
+macOS, Android and browser builds retain their existing reflection paths.
+
+## Local development build
 
 Run `local/scratchpad/water-raytracing-20261021/run-water-raytracing.sh` from
 the EI workspace. This opens the experiment with ray-traced water selected.
@@ -27,8 +36,8 @@ python3 tools/experiments/launch_water_raytrace.py \
 ```
 
 Keep the matching `godot-water-rt.pck` and `src/native/bin` beside the executable.
-This is a separate Linux experiment, not a published release or a replacement
-for the normal executable. No release version or published artifact is changed.
+This launcher retains the isolated Linux development profile. The historical
+measurements below describe the experiment before its integration into 1.23.0.
 
 ## Scope and limits
 
@@ -206,7 +215,8 @@ into the existing native extension. Its watchers retain object IDs, check them
 on the main thread and pass plain changed values to the render thread. The
 original script implementation remains available on older libraries and with
 `--ei-script-water-rt`. Blend-shape deformation still uses the existing script
-path. This experiment updates only the Linux x86-64 helper binary.
+path. The original optimization pass updated the Linux x86-64 helper binary;
+release 1.23.0 also includes the updated Windows x86-64 helper.
 
 The top-level acceleration structure now contains only visible instances.
 Hidden geometry receives its own acceleration structure on first reveal and
