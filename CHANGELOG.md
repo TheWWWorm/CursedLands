@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Keep first-person player shadows in step with running legs during attacks and spellcasting.
+- Keep extra self-cast key taps from reselecting the spell during the first half of its cast. Allow a fresh double-tap after the midpoint to queue another cast. Update shortcut help in English, Russian and German.
 
 ## 1.21.0 — 2026-10-21
 

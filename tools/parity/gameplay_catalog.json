@@ -2040,6 +2040,42 @@
       ]
     },
     {
+      "id": "commands/self_cast_bursts",
+      "category": "commands",
+      "script": "tools/tests/self_cast_bursts.gd",
+      "marker": "SELF_CAST_BURSTS",
+      "min_checks": 112,
+      "quick": false,
+      "description": "Opening self-cast bursts clear selection; intentional repeats unlock at the cast midpoint",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
+      "id": "commands/self_cast_bursts_astral",
+      "category": "commands",
+      "script": "tools/tests/self_cast_bursts.gd",
+      "marker": "SELF_CAST_BURSTS",
+      "min_checks": 112,
+      "quick": false,
+      "description": "Opening self-cast bursts clear selection; intentional repeats unlock at the cast midpoint",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob"
+      ]
+    },
+    {
       "id": "commands/direct_release_aim",
       "category": "commands",
       "script": "tools/tests/direct_release_aim.gd",

@@ -23,7 +23,7 @@ func click() -> void:
 func reset() -> void:
 	hero.order={};hero.orders.clear();hero.path=PackedVector2Array();hero._anim_lock=0;hero._pending_hit={};hero._attack_cd=0;hero.blocked=false
 	if hero.has_meta("interact"): hero.remove_meta("interact")
-	g.pending_spell="";g.hud.set_targeting("");g.direct._fire=false;g.direct._neutral=false;g.direct.pointer=false
+	g.pending_spell="";g._last_spell_key.clear();g._self_cast_key.clear();g.hud.set_targeting("");g.direct._fire=false;g.direct._neutral=false;g.direct.pointer=false
 func sky() -> void:
 	g.direct.tilt=0.7;g.direct.apply_camera();g._pick_key=[]
 func aim(u:GameUnit) -> void:

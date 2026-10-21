@@ -1,7 +1,7 @@
 # Gameplay regression suite
 
-`tools/parity/gameplay.py` runs 306 registered test configurations across 19
-areas, using 237 scripts. It combines existing regression programs with item,
+`tools/parity/gameplay.py` runs 308 registered test configurations across 19
+areas, using 238 scripts. It combines existing regression programs with item,
 effect, theft, crafting, side-quest, localization and travel boundary tests.
 A registration selects a script, campaign
 and arguments; some scripts are exercised in both campaigns or in several
@@ -17,7 +17,7 @@ The reports keep those two kinds of evidence separate.
 Requirements: Linux, Python 3.11+, Godot 4.7, and owned base-game and Lost in
 Astral installations. The regression runner itself uses only Python's standard
 library. The 46 rendered configurations also require an explicitly selected
-private X display, such as Xvfb; the other 260 run headlessly.
+private X display, such as Xvfb; the other 262 run headlessly.
 The optional original comparison additionally requires
 `tools/parity/requirements.txt` in the Python environment.
 
@@ -95,7 +95,7 @@ asset roots, and each process confirms the campaign it actually loaded.
 | Animation | 16 | Attack clips across both campaigns' creatures, gait continuity, moving attacks/casts, rendered first-person shadows, initial and loaded paused poses, original dialogue poses on peers and attack stance |
 | Effects | 14 | Model attachment points and projectile origins in both campaigns, delayed effects, pause/lifetime/teardown, repeated spells, healing, fire and tornado particle kernels, exact duration boundaries and overlapping status expiry |
 | Stealth | 8 | Invisibility, silence, pursuit, remembered targets, loopback peers, perception, partial visibility, theft completion/cancellation, quest pockets and personal hostility |
-| Commands | 20 | Combat inputs, priority/replacement, held actions, interactions, retries with packet loss/reordering, spell shortcuts, bow release, first-person selection, touch picking and travel confirmation/cancellation |
+| Commands | 22 | Combat inputs, priority/replacement, held actions, interactions, retries with packet loss/reordering, spell shortcuts, bow release, first-person selection, touch picking and travel confirmation/cancellation |
 | Pathing | 14 | Turn refinement, topology, ray boundaries, relocation, route previews, narrow passages, client placement, lift capacity, direct movement and campaign-map reveal |
 | Spells | 8 | Stamina waits and regeneration, single acknowledgements, training requirements on host/guest, execution-time revalidation, paused construction transactions, seeded shop generation in both campaigns |
 | Inventory | 26 | Repair, exchanges, duplicate copies, private purses, stale stock, equipment/runes, nine crafting recipes per campaign, belt/spell capacities, recruitment, network loot, real camp UI and persistence |
@@ -185,6 +185,16 @@ native attack/cast shadow cannot pass by matching only the node transforms.
 The [retained verification](validation/first-person-shadow-2026-10-21/results.json)
 includes the unchanged-source negative control, before/after captures, and
 separate baseline comparisons for the broader camera/coverage failures.
+
+`commands/self_cast_bursts` and `commands/self_cast_bursts_astral` inject spell
+key events in all three camera modes, step native casts/effects, and check
+selection, command counts, stamina costs and the halfway repeat boundary.
+They cover queued casts, stamina waits, simulated delayed delivery and the
+acknowledgement/snapshot gap, replica start timestamps, explicit modified
+shortcuts, and translated help wrapping in EN/RU/DE. The delayed-delivery
+fixture does not establish real network transport behavior.
+The [retained results](validation/self-cast-bursts-2026-10-21/results.json)
+include the seven passing regressions and the staged guard-bypass control.
 
 Tests requiring private saves, manual input or unbounded play sessions are not
 automatically included. Add a self-contained fixture with an explicit numeric
