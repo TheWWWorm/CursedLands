@@ -194,6 +194,21 @@ and nested transforms, same-frame edits, reparenting and freed weak references.
 
 ## Build
 
+`WaterRaytraceKernel` packs the experimental water reflection's immutable mesh
+arrays and checks live instance transforms/visibility on the main thread.
+Watchers retain object IDs rather than node pointers; freed nodes and replaced
+meshes become invisible until the scene snapshot refreshes. Scene traversal,
+material/texture capture and blend-shape deformation remain in GDScript, and
+all RenderingDevice work stays on the render thread. The helper changes no
+gameplay, navigation or save state. `-- --ei-script-water-rt` selects the retained
+script path, as do older libraries without this class. Only the isolated Linux
+water-RT experiment's library is rebuilt for this addition; other platform
+binaries retain the fallback. `tools/tests/water_raytrace_native.gd` compares
+packing, clipping, texture order, budgets, transforms and object lifetimes;
+the live-character and GPU fixtures validate the complete reflection path.
+See `docs/validation/water-raytracing-optimization-2026-10-21.json` in the
+repository root for measurements and qualification limits.
+
 `WaterWaveKernel` advances a separate optional visual wave/trail field. It uses
 the same 128², 25-cm, fixed-30-Hz scalar solver as `water_wave_field.gd`, with
 at most eight substeps and sixteen visible pressure sources. The caller owns

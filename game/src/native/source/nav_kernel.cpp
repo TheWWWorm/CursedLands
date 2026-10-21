@@ -28,6 +28,7 @@
 #include "water_current.h"
 #include "water_surface.h"
 #include "water_wave.h"
+#include "water_raytrace.h"
 #include "particle_draw.h"
 #include "lightning_geometry.h"
 #include "figure_geometry.h"
@@ -562,6 +563,7 @@ static void initialize_kernel(ModuleInitializationLevel level) {
         GDREGISTER_CLASS(WaterCurrentKernel);
         GDREGISTER_CLASS(WaterSurfaceKernel);
         GDREGISTER_CLASS(WaterWaveKernel);
+        GDREGISTER_CLASS(WaterRaytraceKernel);
         GDREGISTER_CLASS(ParticleDrawBuffer);
         GDREGISTER_CLASS(ScreenRectKernel);
         GDREGISTER_CLASS(NavigationBuildKernel); GDREGISTER_CLASS(AIActivityKernel);

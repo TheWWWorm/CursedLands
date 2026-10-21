@@ -1,0 +1,21 @@
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found Python3: /usr/bin/python3 (found suitable version "3.12.3", minimum required is "3.4") found components: Interpreter
+-- Auto-detected 32 CPU cores available for build parallelism.
+-- If not already cached, setting CMAKE_MSVC_RUNTIME_LIBRARY.
+	For more information please read godot-cpp/cmake/windows.cmake
+-- Using all cores. You can override this at configure time by using -j <n> or --parallel <n> in the build command.
+--   eg. cmake --build . -j 7  ...
+-- Using build profile to trim api file
+-- 	BUILD_PROFILE = '/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/repo/game/src/native/source/build_profile.json'
+-- 	API_SOURCE = 'gdextension/extension_api-4-7.json'
+-- GODOTCPP_GDEXTENSION_API_FILE = '/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/native-rt-build/godot-cpp/extension_api.json'
+-- GODOTCPP_GDEXTENSION_INTERFACE_FILE = 'gdextension/gdextension_interface.json'
+-- There are 111 Files to generate
+-- Configuring done (0.5s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/native-rt-build

@@ -1,0 +1,26 @@
+[
+  {
+    "left": "rt-cost-final2",
+    "right": "rt-cost-script2",
+    "size": [
+      640,
+      360
+    ],
+    "mode": "RGB",
+    "changed_pixels": 3,
+    "max_channel_error": 1,
+    "mean_channel_error": 4.340277777777778e-06
+  },
+  {
+    "left": "rt-cost-final2",
+    "right": "rt-cost-baseline3",
+    "size": [
+      640,
+      360
+    ],
+    "mode": "RGB",
+    "changed_pixels": 0,
+    "max_channel_error": 0,
+    "mean_channel_error": 0.0
+  }
+]

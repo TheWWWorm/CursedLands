@@ -1,0 +1,510 @@
+{
+  "date": "2026-10-21",
+  "recorded_at": "2026-10-21T19:24:05.824800+00:00",
+  "kind": "Local water RT scene-update optimization; no release publication",
+  "text_evidence": "Trailing whitespace normalized in copied text logs and CMake cache; original local files retained.",
+  "source_parent": "db47adb391610ca2dfd350aa13cbbda4f0e63989",
+  "source_sha256": {
+    "game/src/game/fx/water_raytrace_device.gd": "e8e388e0f5b68dcf1932f91b50d452f69c72875d4289221d7c4545e042885620",
+    "game/src/game/fx/water_raytrace_scene.gd": "522afafe310179dfc301dedb257437931d48bd8b4dbd6485fb807bdd6a9dabc4",
+    "game/src/game/fx/water_reflection.gd": "d75ee7b0ea7d61ba8ae643fb7dbd60ae8315265b6fb3f805ce497fa2a432ba3e",
+    "game/src/native/source/water_raytrace.h": "23449703a690dc24512244aa43f127832ab1a935b9900e21fcb551c03bf96a6d",
+    "game/src/native/source/nav_kernel.cpp": "f0aad0cdaf4863436ac6bcf55c432d8027d44df45b2fcc4221ab9170731f54c0",
+    "game/src/native/source/build_profile.json": "181ace45e0226c52e42494d8c8e7a0871fab0bfdad094486888e35af1c2ceb9c",
+    "game/src/native/source/CMakeLists.txt": "9c5568cb03de0f914df86cd034350672ed7071ce4fdd344e413a88b713127d07",
+    "tools/tests/water_raytrace_native.gd": "ea4eec97a0a5bd4fcbfe7e01b57697c05f4367366adac755e5d2c6a21643b480",
+    "tools/tests/water_raytrace_cost.gd": "88486b2a608fbcd02656874b7b4100fc6f24a3a555bd75e7bb21a5d3790b8496",
+    "tools/tests/water_raytrace_lighting.gd": "73d972555179606af622b52b236ffe4c4a41cfde561e91da4b959a96795f7562",
+    "tools/tests/water_raytrace_dynamic_performance.gd": "0e8e398ad64e957115fa17d03d6480e8895d23c961551f291f64e8f968d443ed",
+    "tools/tests/water_raytrace_performance.gd": "fb0a4ccc42e1d5b029ecdfa69f1ff7c115666eb8fe6eef9289d28014aef5fe56"
+  },
+  "baseline": {
+    "source_commit": "db47adb391610ca2dfd350aa13cbbda4f0e63989",
+    "pack_sha256": "43f5b5a63eeeabc5f4589ec78f94843952579d07acbaad22833fdc9e7e71787b",
+    "native_sha256": "8570e98507bdb0150144378b1a0dd0b9ddfd38fa58ababb106daacf3c05ef45a",
+    "same_engine": true,
+    "archive": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/baseline-db47adb3"
+  },
+  "engine_sha256": "5cd55e014b01f542e23e0591bdcd5481c676d29ad7cf283b87d6e329c1428815",
+  "pack_sha256": "3b165d21d499c3f9269d4c040502c5b9d8fb27ad2133a6c56fd88bb2a7fdd616",
+  "native": {
+    "sha256": "3db467d514bc0f1b749375733bc11ac14785c9d996965751222a4829d0c9a348",
+    "godot_cpp_revision": "507ed9d840c01a3c5b2a39af8bb4000bfac30bf5",
+    "platform": "Linux x86-64 only; other binaries unchanged and use the GDScript fallback",
+    "cmake_cache": "water-raytracing-optimization-2026-10-21/native-cmake-cache.txt",
+    "configure_log": "water-raytracing-optimization-2026-10-21/native-configure.txt",
+    "build_log": "water-raytracing-optimization-2026-10-21/native-build.txt"
+  },
+  "device": "NVIDIA GeForce RTX 3090",
+  "renderer": "Forward+ Vulkan",
+  "window": [
+    1280,
+    720
+  ],
+  "rt_target": [
+    640,
+    360
+  ],
+  "changes": [
+    "Native mesh packing and main-thread instance transform/visibility checks with ID-based lifetime tracking.",
+    "Compact TLAS containing nonzero-mask instances while preserving stable CPU scene indices.",
+    "BLAS construction on first visible use; current hidden pose is uploaded before first build; reuse on subsequent reveals.",
+    "Dependency-ordered cleanup for lazily allocated acceleration structures; existing script fallback retained."
+  ],
+  "validation": {
+    "native_parity": {
+      "checks": 49,
+      "failures": [],
+      "raw": "water-raytracing-optimization-2026-10-21/native_parity.json",
+      "log": "water-raytracing-optimization-2026-10-21/native_parity.txt",
+      "command": "water-raytracing-optimization-2026-10-21/native_parity-command.json",
+      "run": {
+        "exit": 0,
+        "seconds": 4.321358569082804,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-final-native"
+      }
+    },
+    "lighting_morphs_lazy_geometry": {
+      "checks": 44,
+      "failures": [],
+      "raw": "water-raytracing-optimization-2026-10-21/lighting_morphs_lazy_geometry.json",
+      "log": "water-raytracing-optimization-2026-10-21/lighting_morphs_lazy_geometry.txt",
+      "command": "water-raytracing-optimization-2026-10-21/lighting_morphs_lazy_geometry-command.json",
+      "run": {
+        "exit": 0,
+        "seconds": 9.681297522969544,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-final2-lighting"
+      }
+    },
+    "live_character": {
+      "checks": 15,
+      "failures": [],
+      "raw": "water-raytracing-optimization-2026-10-21/live_character.json",
+      "log": "water-raytracing-optimization-2026-10-21/live_character.txt",
+      "command": "water-raytracing-optimization-2026-10-21/live_character-command.json",
+      "run": {
+        "exit": 0,
+        "seconds": 26.76029483496677,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-final2-live"
+      }
+    },
+    "device": {
+      "checks": 19,
+      "failures": [],
+      "raw": "water-raytracing-optimization-2026-10-21/device.json",
+      "log": "water-raytracing-optimization-2026-10-21/device.txt",
+      "command": "water-raytracing-optimization-2026-10-21/device-command.json",
+      "run": {
+        "exit": 0,
+        "seconds": 6.124644038034603,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-final2-device"
+      }
+    },
+    "cyan_water_regression": {
+      "checks": 19,
+      "failures": [],
+      "raw": "water-raytracing-optimization-2026-10-21/cyan_water_regression.json",
+      "log": "water-raytracing-optimization-2026-10-21/cyan_water_regression.txt",
+      "command": "water-raytracing-optimization-2026-10-21/cyan_water_regression-command.json",
+      "run": {
+        "exit": 0,
+        "seconds": 27.961628669989295,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-final2-artifact"
+      }
+    },
+    "river_and_localization": {
+      "checks": 29,
+      "failures": [],
+      "raw": "water-raytracing-optimization-2026-10-21/river_and_localization.json",
+      "log": "water-raytracing-optimization-2026-10-21/river_and_localization.txt",
+      "command": "water-raytracing-optimization-2026-10-21/river_and_localization-command.json",
+      "run": {
+        "exit": 0,
+        "seconds": 43.28744841599837,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-final2-river"
+      }
+    }
+  },
+  "total_functional_checks": 175,
+  "cost_probe": {
+    "baseline": {
+      "result": {
+        "prepare_ms": 3923.825,
+        "scene": {
+          "active": true,
+          "built_blas": 1303,
+          "geometries": 1303,
+          "instances": 1438,
+          "lights": 1,
+          "radius": 96.0,
+          "size": [
+            640,
+            360
+          ],
+          "supported": true,
+          "textures": 46,
+          "triangles": 114085,
+          "updated_instances": 0,
+          "updated_morphs": 0
+        },
+        "updates": {
+          "moving": {
+            "changed_instances": {
+              "median": 17,
+              "n": 150,
+              "p95": 17
+            },
+            "ms": {
+              "median": 0.602,
+              "n": 150,
+              "p95": 0.684
+            }
+          },
+          "static": {
+            "changed_instances": {
+              "median": 0,
+              "n": 150,
+              "p95": 0
+            },
+            "ms": {
+              "median": 0.587,
+              "n": 150,
+              "p95": 0.609
+            }
+          }
+        }
+      },
+      "raw": "water-raytracing-optimization-2026-10-21/cost-baseline.json",
+      "log": "water-raytracing-optimization-2026-10-21/cost-baseline.txt",
+      "command": "water-raytracing-optimization-2026-10-21/cost-baseline-command.json",
+      "run": {
+        "exit": 0,
+        "seconds": 17.994431971921586,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-cost-baseline3"
+      }
+    },
+    "optimized": {
+      "result": {
+        "prepare_ms": 2504.2,
+        "scene": {
+          "active": true,
+          "active_instances": 433,
+          "built_blas": 302,
+          "geometries": 1303,
+          "instances": 1438,
+          "lights": 1,
+          "native_scene": true,
+          "radius": 96.0,
+          "size": [
+            640,
+            360
+          ],
+          "supported": true,
+          "textures": 46,
+          "triangles": 114085,
+          "updated_instances": 0,
+          "updated_morphs": 0
+        },
+        "updates": {
+          "moving": {
+            "changed_instances": {
+              "median": 17,
+              "n": 150,
+              "p95": 17
+            },
+            "ms": {
+              "median": 0.115,
+              "n": 150,
+              "p95": 0.132
+            }
+          },
+          "static": {
+            "changed_instances": {
+              "median": 0,
+              "n": 150,
+              "p95": 0
+            },
+            "ms": {
+              "median": 0.097,
+              "n": 150,
+              "p95": 0.115
+            }
+          }
+        }
+      },
+      "raw": "water-raytracing-optimization-2026-10-21/cost-optimized.json",
+      "log": "water-raytracing-optimization-2026-10-21/cost-optimized.txt",
+      "command": "water-raytracing-optimization-2026-10-21/cost-optimized-command.json",
+      "run": {
+        "exit": 0,
+        "seconds": 16.190713066025637,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-cost-final2"
+      }
+    },
+    "script_control": {
+      "result": {
+        "prepare_ms": 3915.744,
+        "scene": {
+          "active": true,
+          "active_instances": 433,
+          "built_blas": 302,
+          "geometries": 1303,
+          "instances": 1438,
+          "lights": 1,
+          "native_scene": false,
+          "radius": 96.0,
+          "size": [
+            640,
+            360
+          ],
+          "supported": true,
+          "textures": 46,
+          "triangles": 114085,
+          "updated_instances": 0,
+          "updated_morphs": 0
+        },
+        "updates": {
+          "moving": {
+            "changed_instances": {
+              "median": 17,
+              "n": 150,
+              "p95": 17
+            },
+            "ms": {
+              "median": 0.612,
+              "n": 150,
+              "p95": 0.623
+            }
+          },
+          "static": {
+            "changed_instances": {
+              "median": 0,
+              "n": 150,
+              "p95": 0
+            },
+            "ms": {
+              "median": 0.596,
+              "n": 150,
+              "p95": 0.617
+            }
+          }
+        }
+      },
+      "raw": "water-raytracing-optimization-2026-10-21/cost-script_control.json",
+      "log": "water-raytracing-optimization-2026-10-21/cost-script_control.txt",
+      "command": "water-raytracing-optimization-2026-10-21/cost-script_control-command.json",
+      "run": {
+        "exit": 0,
+        "seconds": 17.84492030797992,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-cost-script2"
+      }
+    }
+  },
+  "moving_benchmark": {
+    "baseline": {
+      "summary": {
+        "mirror_full": {
+          "frame_ms": [
+            28.635,
+            31.24,
+            31.175
+          ],
+          "reflection_gpu_ms": [
+            0.395000010728836,
+            0.921999990940094,
+            0.919000029563904
+          ],
+          "controller_cpu_ms": [
+            0.042,
+            0.042,
+            0.042
+          ],
+          "fps_from_median": 32.076984763432236,
+          "prepare_ms": [
+            210,
+            163,
+            131
+          ]
+        },
+        "rt_half": {
+          "frame_ms": [
+            32.387,
+            32.741,
+            33.376
+          ],
+          "reflection_gpu_ms": [
+            0.671456,
+            0.734496,
+            0.712544
+          ],
+          "controller_cpu_ms": [
+            2.035,
+            1.939,
+            2.044
+          ],
+          "fps_from_median": 30.542744571027153,
+          "prepare_ms": [
+            4088,
+            145,
+            4533
+          ]
+        }
+      },
+      "raw": "water-raytracing-optimization-2026-10-21/moving-baseline.json",
+      "log": "water-raytracing-optimization-2026-10-21/moving-baseline.txt",
+      "command": "water-raytracing-optimization-2026-10-21/moving-baseline-command.json",
+      "run": {
+        "exit": 0,
+        "seconds": 46.09173315099906,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-moving-baseline"
+      }
+    },
+    "optimized": {
+      "summary": {
+        "mirror_full": {
+          "frame_ms": [
+            28.986,
+            31.989,
+            31.038
+          ],
+          "reflection_gpu_ms": [
+            0.395999997854233,
+            0.924000024795532,
+            0.944000005722046
+          ],
+          "controller_cpu_ms": [
+            0.044,
+            0.044,
+            0.042
+          ],
+          "fps_from_median": 32.21857078420001,
+          "prepare_ms": [
+            213,
+            142,
+            138
+          ]
+        },
+        "rt_half": {
+          "frame_ms": [
+            29.666,
+            30.972,
+            31.292
+          ],
+          "reflection_gpu_ms": [
+            0.526304,
+            0.595584,
+            0.594272
+          ],
+          "controller_cpu_ms": [
+            0.741,
+            0.727,
+            0.756
+          ],
+          "fps_from_median": 32.287227172930386,
+          "prepare_ms": [
+            2864,
+            128,
+            3245
+          ]
+        }
+      },
+      "raw": "water-raytracing-optimization-2026-10-21/moving-optimized.json",
+      "log": "water-raytracing-optimization-2026-10-21/moving-optimized.txt",
+      "command": "water-raytracing-optimization-2026-10-21/moving-optimized-command.json",
+      "run": {
+        "exit": 0,
+        "seconds": 42.484250828041695,
+        "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-moving-final2"
+      }
+    }
+  },
+  "reflection_parity": {
+    "result": [
+      {
+        "left": "rt-cost-final2",
+        "right": "rt-cost-script2",
+        "size": [
+          640,
+          360
+        ],
+        "mode": "RGB",
+        "changed_pixels": 3,
+        "max_channel_error": 1,
+        "mean_channel_error": 4.340277777777778e-06
+      },
+      {
+        "left": "rt-cost-final2",
+        "right": "rt-cost-baseline3",
+        "size": [
+          640,
+          360
+        ],
+        "mode": "RGB",
+        "changed_pixels": 0,
+        "max_channel_error": 0,
+        "mean_channel_error": 0.0
+      }
+    ],
+    "raw": "water-raytracing-optimization-2026-10-21/reflection-parity.json",
+    "captures": {
+      "baseline": "water-raytracing-optimization-2026-10-21/reflection-baseline.png",
+      "optimized": "water-raytracing-optimization-2026-10-21/reflection-optimized.png",
+      "script_control": "water-raytracing-optimization-2026-10-21/reflection-script_control.png"
+    }
+  },
+  "captures": {
+    "water-character.png": "water-raytracing-optimization-2026-10-21/water-character.png",
+    "character-visible.png": "water-raytracing-optimization-2026-10-21/character-visible.png",
+    "character-hidden.png": "water-raytracing-optimization-2026-10-21/character-hidden.png",
+    "character-animated.png": "water-raytracing-optimization-2026-10-21/character-animated.png",
+    "orthographic-water.png": "water-raytracing-optimization-2026-10-21/orthographic-water.png",
+    "river-fixed.png": "water-raytracing-optimization-2026-10-21/river-fixed.png",
+    "river-negative-control.png": "water-raytracing-optimization-2026-10-21/river-negative-control.png",
+    "water-help-en.png": "water-raytracing-optimization-2026-10-21/water-help-en.png",
+    "water-help-ru.png": "water-raytracing-optimization-2026-10-21/water-help-ru.png",
+    "water-help-de.png": "water-raytracing-optimization-2026-10-21/water-help-de.png"
+  },
+  "measurement_method": [
+    "Cost fixture uses the same original campaign character and river camera in archived baseline and current builds. The current test script is loaded by absolute path for the baseline.",
+    "Preparation measures selection of RT through the first ready/active frame after the map has loaded. Same shared shader/asset cache; not cold game startup. One accepted run per variant.",
+    "CPU-only scene.updates probe: 160 iterations per static/moving case, discard ten warm-ups. Moving case manually advances original walk animation and position. No rendering or ordinary game work is timed inside this bracket.",
+    "Probe stops rendering before measuring, then disposes the scene; CPU-cached poses are not resumed on a mismatched GPU scene.",
+    "Interleaved moving benchmark: three rounds, 35 settling frames then 90 samples per case, vsync disabled and no FPS cap. Baseline and optimized benchmarks run sequentially.",
+    "Mirror uses 1280x720, 2x MSAA, engine viewport GPU measurements. RT uses 640x360 with approximate materials and GPU timestamps bracketing queued reflection work.",
+    "Controller CPU uses process-priority 99-101 timestamps; excludes ordinary game and render-thread CPU work. FPS is the reciprocal of the median of three round-median frame times.",
+    "Raw reflection readbacks compare all 230400 RGB pixels. Optimized and previous-build captures are identical; the current script control differs on three pixels by one 8-bit channel value."
+  ],
+  "limits": [
+    "Shared development machine; RT and Mirror have different resolution, AA, materials and scene coverage. Lower reflection overhead is not proof of a general FPS advantage.",
+    "CPU vertex data and the full GPU vertex buffer still include hidden geometry. Fewer BLAS objects does not imply an equivalent total-memory reduction. First reveal may hitch.",
+    "Morph deformation remains in GDScript and still rebuilds affected existing BLAS geometry. No acceleration-structure refit API is assumed.",
+    "One original moving character; this does not qualify crowded combat, new GPUs or other operating systems.",
+    "Existing water-only scope remains: one selected water plane, one reflection bounce, hard direct-light shadows; particles, shader-only wind, blended transparency, GI and in-place mesh/texture edits remain omitted.",
+    "Existing engine SPIR-V diagnostic OpTypeAccelerationStructureKHR is not supported yet and private-Xvfb input-method warning remain. No script errors or functional failures in accepted runs."
+  ],
+  "test_profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "sanitizers": {
+    "run": {
+      "exit": 0,
+      "seconds": 10.180178679060191,
+      "output": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/native-rt-sanitizers/run",
+      "instrumented": "complete terrain_search GDExtension translation unit; Godot and godot-cpp archive are uninstrumented",
+      "leak_detection": false,
+      "renderer": "Compatibility / OpenGL / llvmpipe; native CPU parity only. The NVIDIA Vulkan driver did not initialize with ASan preloaded.",
+      "loader_adapter": "Private extension dlopen calls omit RTLD_DEEPBIND so ASan can interpose; production runtime unchanged."
+    },
+    "checks": 49,
+    "raw": "water-raytracing-optimization-2026-10-21/native-sanitizers.json",
+    "log": "water-raytracing-optimization-2026-10-21/native-sanitizers.txt",
+    "build_commands": "water-raytracing-optimization-2026-10-21/sanitizer-build-commands.json",
+    "loader_adapter": "water-raytracing-optimization-2026-10-21/sanitizer-dlopen-adapter.c",
+    "runner": "water-raytracing-optimization-2026-10-21/sanitizer-runner.py"
+  }
+}

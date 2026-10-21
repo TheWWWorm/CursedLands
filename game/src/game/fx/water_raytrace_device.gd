@@ -152,6 +152,9 @@ var _vertices := RID()
 var _blases: Array[RID] = []
 var _geometry: Array = []
 var _instances: Array[RDAccelerationStructureInstance] = []
+# Keep stable scene indices while omitting masked instances from GPU builds.
+var _active_instances := {}
+var _placement_geometry := PackedInt32Array()
 var _colours := RID()
 var _sampler := RID()
 var _frame := RID()
@@ -215,17 +218,7 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 		prepared.emit.call_deferred(false)
 		return
 	_geometry = geometry_data if not geometry_data.is_empty() else [{"offset":0,"count":data.size()/64}]
-	for description: Dictionary in _geometry:
-		var geometry := RDAccelerationStructureGeometry.new()
-		geometry.vertex_buffer = _vertices
-		geometry.vertex_offset = description.offset*64
-		geometry.vertex_count = description.count
-		geometry.vertex_stride = 64
-		geometry.vertex_format = RenderingDevice.DATA_FORMAT_R32G32B32_SFLOAT
-		var blas := _own(_rd.blas_create([geometry],RenderingDevice.ACCELERATION_STRUCTURE_PREFER_FAST_TRACE_BIT))
-		if not blas.is_valid() or _rd.blas_build(blas) != OK:
-			prepared.emit.call_deferred(false); return
-		_blases.append(blas)
+	_blases.resize(_geometry.size())
 	if placements.is_empty(): placements = [{"geometry":0,"transform":Transform3D.IDENTITY,"mask":255}]
 	_tlas = _own(_rd.tlas_create(placements.size(),RenderingDevice.ACCELERATION_STRUCTURE_PREFER_FAST_BUILD_BIT))
 	_sbt = _own(_rd.hit_sbt_create(_pipeline,1))
@@ -235,14 +228,18 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 	_rd.hit_sbt_range_update(_sbt,hit_range,0,[0])
 	for placement: Dictionary in placements:
 		var instance := RDAccelerationStructureInstance.new()
-		instance.blas = _blases[placement.geometry]
+		_placement_geometry.append(placement.geometry)
+		if placement.get("mask",255) != 0:
+			instance.blas = _geometry_blas(placement.geometry)
+			if not instance.blas.is_valid(): prepared.emit.call_deferred(false); return
 		instance.id = _geometry[placement.geometry].offset
 		instance.transform = placement.transform
 		instance.mask = placement.get("mask",255)
 		instance.flags = RenderingDevice.ACCELERATION_STRUCTURE_INSTANCE_TRIANGLE_FACING_CULL_DISABLE_BIT
 		instance.hit_sbt_range = hit_range
+		if instance.mask != 0: _active_instances[_instances.size()] = instance
 		_instances.append(instance)
-	if _rd.tlas_build(_tlas,_instances) != OK:
+	if _rd.tlas_build(_tlas,_active_instances.values()) != OK:
 		prepared.emit.call_deferred(false); return
 	var format := RDTextureFormat.new()
 	format.texture_type = RenderingDevice.TEXTURE_TYPE_2D_ARRAY
@@ -267,6 +264,22 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 	_ready = _colours.is_valid() and _sampler.is_valid() and _frame.is_valid()
 	prepared.emit.call_deferred(_ready)
 
+## Hidden meshes keep CPU/vertex data, but acquire a BLAS only when first
+## revealed. Reuse it afterward; movement needs only a compact TLAS rebuild.
+func _geometry_blas(index: int) -> RID:
+	if _blases[index].is_valid(): return _blases[index]
+	var description: Dictionary = _geometry[index]
+	var geometry := RDAccelerationStructureGeometry.new()
+	geometry.vertex_buffer = _vertices
+	geometry.vertex_offset = description.offset*64
+	geometry.vertex_count = description.count
+	geometry.vertex_stride = 64
+	geometry.vertex_format = RenderingDevice.DATA_FORMAT_R32G32B32_SFLOAT
+	var blas := _own(_rd.blas_create([geometry],RenderingDevice.ACCELERATION_STRUCTURE_PREFER_FAST_TRACE_BIT))
+	if not blas.is_valid() or _rd.blas_build(blas) != OK: return RID()
+	_blases[index] = blas
+	return blas
+
 func _uniform(kind: int, binding: int, ids: Array[RID]) -> RDUniform:
 	var uniform := RDUniform.new()
 	uniform.uniform_type = kind
@@ -279,14 +292,20 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}) ->
 	var changed := false
 	for pose: Dictionary in changes.get("poses",[]):
 		_rd.buffer_update(_vertices,_geometry[pose.geometry].offset*64,pose.data.size(),pose.data)
-		if _rd.blas_build(_blases[pose.geometry]) != OK:
+		if _blases[pose.geometry].is_valid() and _rd.blas_build(_blases[pose.geometry]) != OK:
 			_ready = false; prepared.emit.call_deferred(false); return
 		changed = true
 	for placement: Dictionary in changes.get("instances",[]):
 		_instances[placement.index].transform = placement.transform
 		_instances[placement.index].mask = placement.mask
+		if placement.mask != 0:
+			var instance := _instances[placement.index]
+			instance.blas = _geometry_blas(_placement_geometry[placement.index])
+			if not instance.blas.is_valid(): _ready = false; prepared.emit.call_deferred(false); return
+			_active_instances[placement.index] = instance
+		else: _active_instances.erase(placement.index)
 		changed = true
-	if changed and _rd.tlas_build(_tlas,_instances) != OK:
+	if changed and _rd.tlas_build(_tlas,_active_instances.values()) != OK:
 		_ready = false; prepared.emit.call_deferred(false); return
 	if size != _size:
 		if _set.is_valid(): _rd.free_rid(_set)
@@ -330,10 +349,13 @@ func dispose() -> void:
 	if _rd == null: return
 	if _set.is_valid(): _rd.free_rid(_set)
 	if _target.is_valid(): _rd.free_rid(_target)
-	# Uniform sets and TLAS must go before their underlying resources.
+	# Lazily created BLAS objects can be newer than their TLAS. Release the
+	# TLAS explicitly before reversing the remaining dependency order.
+	if _tlas.is_valid():
+		_rd.free_rid(_tlas); _owned.erase(_tlas); _tlas = RID()
 	_owned.reverse()
 	for rid in _owned: _rd.free_rid(rid)
 	_owned.clear()
-	_blases.clear(); _instances.clear(); _geometry.clear()
+	_blases.clear(); _instances.clear(); _active_instances.clear(); _geometry.clear(); _placement_geometry.clear()
 	_set = RID()
 	_target = RID()

@@ -1,0 +1,20 @@
+[
+  "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/engine/godot-water-rt.x86_64",
+  "--gpu-index",
+  "0",
+  "--render-thread",
+  "safe",
+  "--audio-driver",
+  "Dummy",
+  "--rendering-method",
+  "forward_plus",
+  "--windowed",
+  "--resolution",
+  "1280x720",
+  "--",
+  "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+  "--no-movies",
+  "--tool=res://tools/tests/water_raytrace_cost.gd",
+  "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/rt-cost-script2",
+  "--ei-script-water-rt"
+]

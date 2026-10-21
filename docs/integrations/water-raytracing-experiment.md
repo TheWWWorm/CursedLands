@@ -190,3 +190,60 @@ Cold RT preparation took 6.5–6.6 seconds in the frozen scene and 10.4–11.7
 seconds with the moving character in these runs. Mirror remains visible during
 preparation. The validation report contains 116 passing checks, the raw
 per-round timings, and captures; the previous cyan-wedge fix remains covered.
+
+## Scene-update optimization
+
+The next pass moves vertex packing and live transform/visibility comparisons
+into the existing native extension. Its watchers retain object IDs, check them
+on the main thread and pass plain changed values to the render thread. The
+original script implementation remains available on older libraries and with
+`--ei-script-water-rt`. Blend-shape deformation still uses the existing script
+path. This experiment updates only the Linux x86-64 helper binary.
+
+The top-level acceleration structure now contains only visible instances.
+Hidden geometry receives its own acceleration structure on first reveal and
+reuses it afterward. Revealing a mesh builds its latest pose, including changes
+made while hidden. A completely hidden scene still returns sky. Structures are
+released in dependency order when the experiment is switched off or rebuilt.
+CPU mesh data and the full vertex buffer remain allocated; this is not a
+proportional reduction in total memory, and first reveal can still hitch.
+
+In the same river/character cost fixture, 433 of 1,438 instances are active and
+only 302 of 1,303 geometry structures are built. The previous build is commit
+`db47adb391610ca2dfd350aa13cbbda4f0e63989`, with its own archived PCK and native
+library. On the RTX 3090 at 1280 × 720:
+
+| Measurement | Previous build | Optimized build |
+| --- | --- | --- |
+| RT preparation from mode selection | 3.92 s | 2.50 s |
+| Scene update CPU, unchanged pose | 0.587 ms | 0.097 ms |
+| Scene update CPU, moving character | 0.602 ms | 0.115 ms |
+| Whole RT controller CPU, moving benchmark¹ | 2.035 ms | 0.741 ms |
+| RT GPU pass, moving benchmark¹ | 0.713 ms | 0.594 ms |
+
+The CPU-only scene probe samples 150 updates after warm-up. The moving probe
+changes the same 17 articulated instances per update. Preparation is a single
+mode-selection measurement after loading the map; it is not total game startup.
+The optimized 640 × 360 reflection image matches the previous build exactly
+in the final capture. Against the current script fallback, three pixels differ
+by one 8-bit colour level; mesh, triangle and texture counts match.
+
+¹ Median of three round medians, using the interleaved moving-character fixture
+with 90 frames per case. The full controller bracket includes more work than
+the isolated scene probe. These new baseline and optimized runs were collected
+together; do not compare their absolute FPS with the earlier, more heavily
+loaded session. Baseline RT/Mirror measured 30.5/32.1 FPS; optimized RT/Mirror
+measured 32.3/32.2 FPS. Shared-machine variation and different reflection quality
+remain: this establishes lower reflection overhead, not a reliable overall FPS
+advantage over Mirror. Normal Mirror still uses 1280 × 720 and 2× MSAA; RT uses
+640 × 360 with approximate materials and traced direct-light shadows.
+
+`docs/validation/water-raytracing-optimization-2026-10-21.json` records the
+175 passing functional checks, native/script and image comparisons, raw timing
+rounds, binary/source hashes and qualification limits. The GPU tests now also
+cover empty scenes and hidden-pose updates before a first reveal. The live
+character, equipment refresh, camera, fallback, cyan-wedge and EN/RU/DE checks
+remain passing. The 49 native parity checks also pass with the extension
+translation unit instrumented by AddressSanitizer and UndefinedBehaviorSanitizer.
+That CPU check uses software OpenGL and a private loader adapter; it does not
+establish sanitizer coverage of the engine or Vulkan driver.

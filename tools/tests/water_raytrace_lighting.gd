@@ -87,6 +87,7 @@ func run() -> void:
 		check(device._owned.is_empty(),"instanced/shadow resources are released")
 	camera.projection = Camera3D.PROJECTION_PERSPECTIVE
 	await morphs(camera)
+	await deferred_geometry(camera)
 	camera.queue_free(); await frames(4); finish()
 
 func morphs(camera: Camera3D) -> void:
@@ -135,5 +136,38 @@ func morphs(camera: Camera3D) -> void:
 			base=await pixels(device,frame,scene.updates())
 			check(base.a>0.99,"non-shadow-casting meshes remain visible in primary rays")
 			check(scene.updates().poses.is_empty(),"unchanged blend weights avoid repeated geometry uploads")
+			node.hide(); base=await pixels(device,frame,scene.updates())
+			check(base.a<0.01 and device._active_instances.is_empty(),"all-hidden scene builds an empty TLAS and returns sky")
+			node.show(); base=await pixels(device,frame,scene.updates())
+			check(base.a>0.99 and device._active_instances.size()==1,"empty TLAS accepts a revealed instance without recreating the device")
 		RenderingServer.call_on_render_thread(device.dispose); await frames(6)
 		node.queue_free(); await frames(2)
+
+func deferred_geometry(camera: Camera3D) -> void:
+	var frame := PackedFloat32Array()
+	for matrix: Projection in [camera.get_camera_projection().inverse(),Projection(camera.global_transform)]:
+		for axis in 4:
+			var v: Vector4=matrix[axis]; frame.append_array(PackedFloat32Array([v.x,v.y,v.z,v.w]))
+	frame.resize(88); frame[32]=1; frame[33]=1; frame[34]=1; frame[44]=90; frame[45]=100; frame[46]=100
+	var data := triangle([Vector3(-3,0.4,0),Vector3(3,0.4,0),Vector3(0,5,0)],0)
+	var white := Image.create(2,2,false,Image.FORMAT_RGBA8); white.fill(Color.WHITE)
+	var images: Array[Image]=[white]
+	var device := Device.new()
+	RenderingServer.call_on_render_thread(device.build.bind(data.to_byte_array(),images,[{"offset":0,"count":3}],
+		[{"geometry":0,"transform":Transform3D.IDENTITY,"mask":0}]))
+	var ok: bool=await device.prepared; check(ok,"an initially hidden scene prepares without geometry builds")
+	if ok:
+		var shifted := data.duplicate()
+		for i in 3: shifted[i*16] += 8
+		var pixel := await pixels(device,frame,{"poses":[{"geometry":0,"data":shifted.to_byte_array()}]})
+		check(pixel.a<0.01 and not device._blases[0].is_valid(),"hidden posed geometry stays unbuilt and invisible")
+		pixel=await pixels(device,frame,{"instances":[{"index":0,"transform":Transform3D.IDENTITY,"mask":255}]})
+		check(pixel.a<0.01 and device._blases[0].is_valid(),"first reveal builds the latest posed vertices")
+		var retained: RID=device._blases[0]
+		pixel=await pixels(device,frame,{"poses":[{"geometry":0,"data":data.to_byte_array()}]})
+		check(pixel.r>0.99 and pixel.a>0.99,"revealed geometry receives later pose changes")
+		await pixels(device,frame,{"instances":[{"index":0,"transform":Transform3D.IDENTITY,"mask":0}]})
+		pixel=await pixels(device,frame,{"instances":[{"index":0,"transform":Transform3D.IDENTITY,"mask":255}]})
+		check(pixel.a>0.99 and device._blases[0]==retained,"hide and reveal reuse the existing geometry structure")
+	RenderingServer.call_on_render_thread(device.dispose); await frames(6)
+	check(device._owned.is_empty(),"lazily allocated geometry releases all GPU resources")

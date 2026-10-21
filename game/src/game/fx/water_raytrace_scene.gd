@@ -23,6 +23,12 @@ var _morph_geometries: Array[int] = []
 var _terrain: EITerrain
 var _plane := 0.0
 var _cursor := 0
+var _kernel: Object
+var _watching := false
+
+func _init() -> void:
+	if ClassDB.class_exists("WaterRaytraceKernel") and not OS.get_cmdline_user_args().has("--ei-script-water-rt"):
+		_kernel = ClassDB.instantiate("WaterRaytraceKernel")
 
 func begin(terrain: EITerrain, position: Vector3, plane: float) -> void:
 	_terrain = terrain; center = position; _plane = plane
@@ -107,6 +113,7 @@ func step() -> bool:
 
 func _add_instance(node: Node3D, geometry: int, transform: Transform3D) -> void:
 	if geometry < 0: return
+	_watching = false
 	if instances.size() >= MAX_INSTANCES: failed = true; return
 	var root: Node3D = _mesh_roots[node.get_instance_id()].get_ref() if _mesh_roots.has(node.get_instance_id()) else node
 	var key := root.get_instance_id()
@@ -161,6 +168,18 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 			var c: Color = material.albedo_color; diffuse = Vector4(c.r,c.g,c.b,c.a)
 		else: return -1
 	var base_layer := -1 if land else _layer(texture)
+	if _kernel != null:
+		var atlas := {}
+		if land and uv2.size() == positions.size():
+			for layer: int in _kernel.atlas_layers(arrays,transform,center,RADIUS,_plane): atlas[layer] = _layer(null,layer)
+		var packed: Dictionary = _kernel.pack(arrays,transform,{"land":land,"center":center,"radius":RADIUS,
+			"plane":_plane,"limit":MAX_TRIANGLES-triangles,"layer":base_layer,"atlas":atlas,"diffuse":diffuse,"emission":emission})
+		if packed.failed: failed = true; return -1
+		var count: int = packed.vertices.size()/16
+		if count == 0: return -1
+		geometries.append({"offset":vertices.size()/16,"count":count,"indices":packed.indices})
+		vertices.append_array(packed.vertices); triangles += count/3
+		return geometries.size()-1
 	var start := vertices.size()/16
 	var used := PackedInt32Array()
 	var normal_transform := transform.basis.inverse().transposed()
@@ -185,8 +204,23 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 	return geometries.size()-1
 
 ## Plain values only: the render thread never dereferences a scene node.
-func updates(force := false) -> Dictionary:
-	var transforms := []; var poses := []
+func _instance_updates(force: bool) -> Array:
+	if _kernel != null:
+		if not _watching:
+			_kernel.clear_instances()
+			for group: Dictionary in _groups.values():
+				var root: Node3D = group.node.get_ref()
+				var at: int = _kernel.add_group(root,root is GameUnit)
+				for i: int in group.indices:
+					var entry: Dictionary = instances[i]
+					_kernel.add_instance(at,entry.node.get_ref(),entry.mesh,entry.terrain,i,entry.transform,entry.mask)
+			_watching = true
+		var changes: Array = _kernel.updates(force)
+		for change: Dictionary in changes:
+			instances[change.index].mask = change.mask
+			instances[change.index].transform = change.transform
+		return changes
+	var transforms := []
 	for group: Dictionary in _groups.values():
 		var root: Node3D = group.node.get_ref()
 		var visible := is_instance_valid(root) and root.is_visible_in_tree()
@@ -205,6 +239,10 @@ func updates(force := false) -> Dictionary:
 			if force or mask != entry.mask or transform != entry.transform:
 				transforms.append({"index":i,"transform":transform,"mask":mask})
 				entry.mask = mask; entry.transform = transform
+	return transforms
+
+func updates(force := false) -> Dictionary:
+	var transforms := _instance_updates(force); var poses := []
 	for i in _morph_geometries:
 		var geo: Dictionary = geometries[i]
 		var morph: Dictionary = geo.morph; var node: MeshInstance3D = morph.node.get_ref()

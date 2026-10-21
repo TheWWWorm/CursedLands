@@ -1,0 +1,56 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+Vulkan 1.4.312 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090
+
+[trace 21:18:41 +3573ms] session db7e8d70854c: 1.21.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, forward_plus / vulkan
+PASS native RT scene helper is loaded
+PASS land false indexed false transformed false: same geometry and texture budgets
+PASS land false indexed false transformed false: same vertex membership
+PASS land false indexed false transformed false: vertex attributes match (max error 0.00000000)
+PASS land false indexed false transformed false: texture layers match exactly
+PASS land false indexed false transformed true: same geometry and texture budgets
+PASS land false indexed false transformed true: same vertex membership
+PASS land false indexed false transformed true: vertex attributes match (max error 0.00000000)
+PASS land false indexed false transformed true: texture layers match exactly
+PASS land false indexed true transformed false: same geometry and texture budgets
+PASS land false indexed true transformed false: same vertex membership
+PASS land false indexed true transformed false: vertex attributes match (max error 0.00000000)
+PASS land false indexed true transformed false: texture layers match exactly
+PASS land false indexed true transformed true: same geometry and texture budgets
+PASS land false indexed true transformed true: same vertex membership
+PASS land false indexed true transformed true: vertex attributes match (max error 0.00000000)
+PASS land false indexed true transformed true: texture layers match exactly
+PASS land true indexed false transformed false: same geometry and texture budgets
+PASS land true indexed false transformed false: same vertex membership
+PASS land true indexed false transformed false: vertex attributes match (max error 0.00000000)
+PASS land true indexed false transformed false: texture layers match exactly
+PASS land true indexed false transformed true: same geometry and texture budgets
+PASS land true indexed false transformed true: same vertex membership
+PASS land true indexed false transformed true: vertex attributes match (max error 0.00000000)
+PASS land true indexed false transformed true: texture layers match exactly
+PASS land true indexed true transformed false: same geometry and texture budgets
+PASS land true indexed true transformed false: same vertex membership
+PASS land true indexed true transformed false: vertex attributes match (max error 0.00000000)
+PASS land true indexed true transformed false: texture layers match exactly
+PASS land true indexed true transformed true: same geometry and texture budgets
+PASS land true indexed true transformed true: same vertex membership
+PASS land true indexed true transformed true: vertex attributes match (max error 0.00000000)
+PASS land true indexed true transformed true: texture layers match exactly
+PASS negative terrain atlas uses the original white fallback: same geometry and texture budgets
+PASS negative terrain atlas uses the original white fallback: same vertex membership
+PASS negative terrain atlas uses the original white fallback: vertex attributes match (max error 0.00000000)
+PASS negative terrain atlas uses the original white fallback: texture layers match exactly
+PASS both paths reject the full snapshot when the triangle budget is exceeded
+PASS initial live instance masks match
+PASS unchanged instances emit no updates
+PASS parent movement propagates the same transforms
+PASS shadow visibility mask matches for setting 3
+PASS shadow visibility mask matches for setting 0
+PASS hidden ancestor masks its descendants
+PASS hidden part remains masked after its parent returns
+PASS revealed part returns without a new geometry snapshot
+PASS replaced mesh masks stale geometry
+PASS freed node is safe and stays masked
+PASS freed ancestor is safe and stays masked
+[trace 21:18:41 +3849ms] clean exit

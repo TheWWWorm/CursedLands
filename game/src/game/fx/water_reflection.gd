@@ -157,7 +157,7 @@ func _update_raytrace(source: Camera3D) -> void:
 		_rt_scene.begin(terrain,_rt_center,plane)
 	if _rt_scene != null:
 		if not _rt_scene.step(): return
-		rt_stats = {"supported":true,"triangles":_rt_scene.triangles,"textures":_rt_scene.images.size(),"radius":RayScene.RADIUS,"geometries":_rt_scene.geometries.size(),"instances":_rt_scene.instances.size()}
+		rt_stats = {"supported":true,"triangles":_rt_scene.triangles,"textures":_rt_scene.images.size(),"radius":RayScene.RADIUS,"geometries":_rt_scene.geometries.size(),"instances":_rt_scene.instances.size(),"native_scene":_rt_scene._kernel != null}
 		if _rt_scene.failed or _rt_scene.triangles == 0:
 			_rt_failed = true
 			rt_stats["fallback"] = "snapshot_budget"

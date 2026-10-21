@@ -1,0 +1,46 @@
+{
+	"prepare_ms": 3923.825,
+	"scene": {
+		"active": true,
+		"built_blas": 1303,
+		"geometries": 1303,
+		"instances": 1438,
+		"lights": 1,
+		"radius": 96.0,
+		"size": [
+			640,
+			360
+		],
+		"supported": true,
+		"textures": 46,
+		"triangles": 114085,
+		"updated_instances": 0,
+		"updated_morphs": 0
+	},
+	"updates": {
+		"moving": {
+			"changed_instances": {
+				"median": 17,
+				"n": 150,
+				"p95": 17
+			},
+			"ms": {
+				"median": 0.602,
+				"n": 150,
+				"p95": 0.684
+			}
+		},
+		"static": {
+			"changed_instances": {
+				"median": 0,
+				"n": 150,
+				"p95": 0
+			},
+			"ms": {
+				"median": 0.587,
+				"n": 150,
+				"p95": 0.609
+			}
+		}
+	}
+}
