@@ -59,10 +59,30 @@ def contracts(campaign):
                       "produced; party units and dead units are never diplomacy friends of a caller here.",
             "tolerances": {},
         },
+        "npc_target_score": {
+            "entry": ["0x5cf9a0"],
+            "scope": "AI option/target score (5cf9a0: weapon, bolt, area, lasting, effect and heal options; "
+                     "current-target bonus, damage against armour 522ae0, area sums with the 5cfe20 distance, "
+                     "has-effect 50f630, healing maximum 524020, threshold early return, distance/range "
+                     "penalty and the HP-per-damage term), stored as float32 as its caller 5d0030 does, versus "
+                     "UnitAI._score.",
+            "stubs": ["CRT allocation",
+                      "candidate/caster HP records (unit+0x17e/+0x180) supplied (remake _get_hp override, max_hp)",
+                      "option power controller+0xa4c supplied (remake UnitAI.options override)",
+                      "effect id n <-> remake buff key 'effect<n>'",
+                      "option damage shorts at option+0x1a and armour shorts at controller+0x8e6 <-> remake opt.v "
+                      "and stats.armor (types 0-6)",
+                      "caster position argument = the caster unit's position"],
+            "limits": "Type 3's NO_SCORE branch (candidate controller+0x164 == 0) is not compared: the field is "
+                      "a creature state whose mapping to the remake's 'walking a path' test is not established; "
+                      "all candidates have +0x164 = 1 and an empty remake path. Choice ordering, area safety and "
+                      "reachability (5d0030) are not executed.",
+            "tolerances": {},
+        },
     }
 
 
-STEP_COUNTS = {"npc_fear": "ticks", "npc_suspicion": "ticks"}
+STEP_COUNTS = {"npc_fear": "ticks", "npc_suspicion": "ticks", "npc_target_score": "evals"}
 
 
 def _unit(pos, side=1, **extra):
@@ -345,8 +365,134 @@ def suspicion_scenarios(seed, fuzz):
     return rows
 
 
+def _fighter(pos, hp=40, max_hp=40, armour=(0,) * 7, **extra):
+    row = {"pos": list(pos), "side": 1, "hp": hp, "max_hp": max_hp, "armour": list(armour)}
+    row.update(extra)
+    return row
+
+
+def _opt(kind, v=(0,) * 7, **extra):
+    row = {"type": kind, "v": list(v)}
+    row.update(extra)
+    return row
+
+
+def _eval(option, candidate=1, members=(1,), caster=0, cur=None, threshold=-1e20):
+    return {"caster": caster, "candidate": candidate, "list": list(members), "cur": cur,
+            "threshold": threshold, "option": option}
+
+
+def _score_case(rows, name, units, evals):
+    rows.append({"id": "npc_target_score/" + name, "kind": "npc_target_score",
+                 "inputs": {"relations": RELATIONS, "units": units, "evals": evals}})
+
+
+def score_scenarios(seed, fuzz):
+    rows = []
+    sword = (0, 0, 12, 0, 0, 0, 0)
+    base = [_fighter((2.0, 2.0, 0.0)), _fighter((2.0, 4.5, 0.0), hp=37, armour=(0, 0, 5, 0, 0, 0, 0)),
+            _fighter((5.0, 2.0, 0.0), hp=9), _fighter((2.0, 2.0, 0.0), hp=0)]
+    # Weapon: damage against armour, current-target bonus, threshold, HP/D.
+    _score_case(rows, "weapon_basic", base, [
+        _eval(_opt(0, sword)), _eval(_opt(0, sword), cur=1), _eval(_opt(0, sword), candidate=2, members=(1, 2)),
+        _eval(_opt(0, (3, 0, 4, 0, 0, 0, 0))), _eval(_opt(0, (0, 0, 5, 0, 0, 0, 0))),
+        _eval(_opt(0, sword), threshold=8.0), _eval(_opt(0, sword), threshold=7.0),
+        _eval(_opt(0, sword), threshold=-55.0), _eval(_opt(0, sword), candidate=3, members=(3,)),
+        _eval(_opt(0, (100, 200, 300, 400, 500, 600, 700)), candidate=2)])
+    # Bolt: 1.3 D + bonus + 3 + D min(n - 1, k), damage sweep.
+    evals = []
+    for damage in (1, 7, 13, 100, 777, 1567, 2047, 3134, 5000, 12345, 32767):
+        for k in (0, 2):
+            evals.append(_eval(_opt(1, (0, 0, 0, damage, 0, 0, 0), n1=k), candidate=2, members=(1, 2, 3)))
+    _score_case(rows, "bolt_damage_sweep", base, evals)
+    # Area: members within the radius of the candidate (f32 r squared
+    # against the exact squared distance), n = members, lasting duration.
+    ring = [_fighter((0.0, 0.0, 0.0))]
+    radii = (0.7, 1.1, 1.3, 2.7, 3.3, 4.1, 5.9)
+    for r in radii:
+        ring += [_fighter((0.0, 5.0, 0.0), armour=(0, 1, 0, 0, 0, 0, 0)), _fighter((r, 5.0, 0.0))]
+    evals = []
+    for i, r in enumerate(radii):
+        cand, edge = 1 + 2 * i, 2 + 2 * i
+        evals.append(_eval(_opt(2, (0, 9, 0, 0, 0, 0, 0), radius=r, n1=3), candidate=cand, members=(cand, edge)))
+    _score_case(rows, "area_radius_edge", ring, evals)
+    evals = []
+    for dur in (0, 7, 8, 15, 16, 33, 200):
+        evals.append(_eval(_opt(3, (0, 9, 0, 0, 0, 0, 0), radius=3.0, n1=1, dur=dur), candidate=1, members=(1, 2)))
+    for k in (0, 1, 5):
+        evals.append(_eval(_opt(2, (4, 4, 4, 4, 4, 4, 4), radius=10.0, n1=k), candidate=2, members=(1, 2, 3)))
+    _score_case(rows, "area_lasting", base, evals)
+    # Effects: candidate already has it, n and k, range penalty for 5/6.
+    fx = [_fighter((1.0, 1.0, 0.0)), _fighter((1.0, 3.0, 0.0), effects=[5, 17]), _fighter((9.0, 1.0, 0.0)),
+          _fighter((1.0, 1.0, 0.0))]
+    evals = []
+    for kind in (4, 5, 6):
+        for effect in (5, 9):
+            for rng in (0.0, 2.0, 7.9, 8.0, 8.1):
+                evals.append(_eval(_opt(kind, effect=effect, n1=2, range=rng), candidate=1, members=(1, 2, 3)))
+                evals.append(_eval(_opt(kind, effect=effect, n1=0, range=rng), candidate=2, members=(2,), cur=2))
+    _score_case(rows, "effects", fx, evals)
+    # Heal: HP against the effective maximum (severed parts), a third of it,
+    # caster unhurt or not, range penalty.
+    severed = [{"type": 1, "state": 0, "cur": 10.0, "max": 10.0, "size": 0.2, "lethal": 0.25},
+               {"type": 2, "state": 0, "cur": 10.0, "max": 10.0, "size": 0.4, "lethal": 1.0},
+               {"type": 3, "state": 1, "cur": 0.0, "max": 10.0, "size": 0.1, "lethal": 0.15},
+               {"type": 3, "state": 1, "cur": 0.0, "max": 10.0, "size": 0.1, "lethal": 0.15},
+               {"type": 4, "state": 0, "cur": 10.0, "max": 10.0, "size": 0.1, "lethal": 0.1},
+               {"type": 4, "state": 0, "cur": 10.0, "max": 10.0, "size": 0.1, "lethal": 0.1}]
+    heal_units = [_fighter((1.0, 1.0, 0.0), hp=50, max_hp=50), _fighter((1.0, 1.0, 0.0), hp=49, max_hp=50)]
+    for hp in (47, 48, 49, 16, 17, 33, 34, 23, 24, 25, 1):
+        heal_units.append(_fighter((4.0, 1.0, 0.0), hp=hp, max_hp=50, power=7.3))
+    heal_units.append(_fighter((4.0, 1.0, 0.0), hp=24, max_hp=50, power=7.3, parts=severed))
+    heal_units.append(_fighter((4.0, 1.0, 0.0), hp=33, max_hp=50, power=7.3, parts=severed))
+    heal_units.append(_fighter((4.0, 1.0, 0.0), hp=11, max_hp=50, power=7.3, parts=severed))
+    evals = []
+    for cand in range(2, len(heal_units)):
+        for caster in (0, 1):
+            evals.append(_eval(_opt(7, n1=1, range=2.5), caster=caster, candidate=cand, members=(cand, 0)))
+    evals.append(_eval(_opt(7, n1=1, range=3.5), candidate=5, members=(5,)))
+    evals.append(_eval(_opt(7, n1=1, range=3.0), candidate=5, members=(5,), cur=5))
+    _score_case(rows, "heal", heal_units, evals)
+    # Damage vector edges: 16-bit sums, armour above the damage.
+    edge = [_fighter((0.0, 0.0, 0.0)), _fighter((0.0, 1.0, 0.0), hp=32767, max_hp=32767),
+            _fighter((0.0, 2.0, 0.0), armour=(32767,) * 7), _fighter((0.0, 1.5, 0.0), armour=(-10, 0, 0, 0, 0, 0, 0))]
+    _score_case(rows, "damage_edges", edge, [
+        _eval(_opt(0, (32767,) * 7)), _eval(_opt(1, (32767,) * 7, n1=2), members=(1, 2, 3)),
+        _eval(_opt(2, (32767,) * 7, radius=5.0, n1=2), members=(1, 2, 3)),
+        _eval(_opt(0, (1,) * 7), candidate=2, members=(2,)), _eval(_opt(0, (32767, 0, 0, 0, 0, 0, 0)), candidate=3)])
+    rng = random.Random(seed ^ 0x5c0e)
+    for trial in range(fuzz):
+        units = []
+        for _ in range(rng.randint(2, 6)):
+            max_hp = rng.randint(5, 400)
+            row = _fighter((round(rng.uniform(0, 20), 3), round(rng.uniform(0, 20), 3), 0.0),
+                           hp=rng.randint(1, max_hp), max_hp=max_hp,
+                           armour=[rng.choice([0, 0, rng.randint(0, 40)]) for _ in range(7)],
+                           power=round(rng.uniform(0, 60), 2))
+            if rng.random() < 0.3:
+                row["effects"] = rng.sample(range(1, 40), rng.randint(1, 3))
+            units.append(row)
+        evals = []
+        for _ in range(rng.randint(8, 16)):
+            kind = rng.randrange(8)
+            option = _opt(kind, [rng.choice([0, 0, rng.randint(0, 120)]) for _ in range(7)],
+                          n1=rng.randint(0, 4), range=round(rng.uniform(0, 12), 2))
+            if kind in (2, 3):
+                option["radius"] = round(rng.uniform(0.5, 8), 2)
+            if kind == 3:
+                option["dur"] = rng.randint(0, 100)
+            if kind in (4, 5, 6):
+                option["effect"] = rng.randint(1, 40)
+            members = rng.sample(range(len(units)), rng.randint(1, len(units)))
+            evals.append(_eval(option, caster=rng.randrange(len(units)), candidate=rng.choice(members),
+                               members=members, cur=rng.choice([None, rng.randrange(len(units))]),
+                               threshold=rng.choice([-1e20, -1e20, round(rng.uniform(-300, 200), 1)])))
+        _score_case(rows, f"seeded_{trial:03}", units, evals)
+    return rows
+
+
 def scenarios(seed=20261020, fuzz=12):
-    return fear_scenarios(seed, fuzz) + suspicion_scenarios(seed, fuzz)
+    return fear_scenarios(seed, fuzz) + suspicion_scenarios(seed, fuzz) + score_scenarios(seed, fuzz)
 
 
 def validate(case, steps, role):
@@ -367,6 +513,9 @@ def validate(case, steps, role):
                           and all(type(v) is int and 0 <= v <= 0xffffffff for v in row["point_bits"])
                           and isinstance(row["pending"], list) and all(type(v) is int for v in row["pending"])
                           for row in state["units"]))
+        elif kind == "npc_target_score":
+            ok = (set(state) == {"score_bits"} and type(state["score_bits"]) is int
+                  and 0 <= state["score_bits"] <= 0xffffffff)
         else:
             ok = False
         if not ok:

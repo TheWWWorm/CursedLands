@@ -357,4 +357,55 @@ def suspicion(o, case):
     return states
 
 
-CAPTURES = {"npc_fear": fear, "npc_suspicion": suspicion}
+SCORE = 0x5cf9a0
+
+
+def target_score(o, case):
+    """AI option/target score 5cf9a0 (with its damage 522ae0, healing maximum
+    524020, has-effect 50f630 and distance 5cfe20 callees), per evaluation."""
+    rig = Rig(o, case)
+    for row in case["units"]:
+        rig.add(row)
+    for i, row in enumerate(case["units"]):
+        unit, controller = rig.units[i], rig.controller(i)
+        o.write(controller + 0x164, 1)   # creature state tested by type 3 (see limits)
+        o.uc.mem_write(unit + 0x17e, struct.pack("<hh", int(row["hp"]), int(row["max_hp"])))
+        o.uc.mem_write(controller + 0x8e6, struct.pack("<7h", *row.get("armour", [0] * 7)))
+        o.floats(controller + 0xa4c, float(row.get("power", 0.0)))
+        effects = row.get("effects", [])
+        table = o.alloc(max(4, 20 * len(effects)))
+        for k, effect in enumerate(effects):
+            o.write(table + 20 * k, int(effect))
+        o.write(unit + 0x198, table, len(effects))
+        for k, part in enumerate(row.get("parts", [])):
+            at = controller + 0x1e0 + 0x110 + k * 0xf4
+            o.write(at, part["type"])
+            o.write(at + 0xe0, part["state"])
+            o.floats(at + 0xe4, part["cur"], part["max"], part.get("size", 0.2), part.get("lethal", 0.0))
+    output = o.alloc(4)
+    wrapper = o.alloc(48)
+    code = b"\x8b\xc4" + b"".join(b"\xff\x70" + bytes([offset]) for offset in (0x1c, 0x18, 0x14, 0x10, 0x0c, 0x08, 0x04))
+    code += b"\xb8" + struct.pack("<I", SCORE) + b"\xff\xd0"
+    code += b"\xd9\x1d" + struct.pack("<I", output) + b"\xc2\x1c\x00"
+    o.uc.mem_write(wrapper, code)
+    states = []
+    for evaluation in case["evals"]:
+        option = evaluation["option"]
+        record = o.alloc(0x28)
+        o.write(record, int(option["type"]))
+        o.floats(record + 8, float(option.get("range", 0.0)))
+        o.write(record + 0xc, int(option.get("n1", 0)))
+        o.floats(record + 0x10, float(option.get("radius", 0.0)))
+        o.write(record + 0x14, int(option.get("dur", option.get("effect", 0))))
+        o.uc.mem_write(record + 0x1a, struct.pack("<7h", *option.get("v", [0] * 7)))
+        members = o.alloc(0x10)
+        rig.set_list(members + 4, [rig.units[i] for i in evaluation["list"]])
+        caster, candidate = rig.units[evaluation["caster"]], rig.units[evaluation["candidate"]]
+        current = rig.units[evaluation["cur"]] if evaluation.get("cur") is not None else 0
+        o.run(wrapper, 0, [caster + 0x1c, caster, members, current, candidate,
+                           bits(float(evaluation["threshold"])), record])
+        states.append({"score_bits": o.ints(output)[0]})
+    return states
+
+
+CAPTURES = {"npc_fear": fear, "npc_suspicion": suspicion, "npc_target_score": target_score}

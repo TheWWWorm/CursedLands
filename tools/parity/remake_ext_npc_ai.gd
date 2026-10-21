@@ -23,6 +23,11 @@ class NpcAI extends UnitAI:
 		return []
 	func danger_at(p: Vector2) -> bool:
 		return danger.has(p)
+	## Declared boundary: a candidate's option power (controller+0xa4c).
+	func options(u: GameUnit) -> Dictionary:
+		if u is NpcUnit and u.terms.has("power_f32"):
+			return {"a": [], "b": [], "power": float(u.terms.power_f32)}
+		return super(u)
 
 ## Declared boundaries: senses and the legs' wound factor are supplied.
 class NpcUnit extends GameUnit:
@@ -35,10 +40,13 @@ class NpcUnit extends GameUnit:
 		return float(terms.get("notice_life", 1.0)) if which == 2 else float(terms.get("sight", 8.5))
 	func wound_factor(type: int) -> float:
 		return float(terms.get("wound", 1.0)) if type == 3 else super(type)
+	## Declared boundary: the current HP record (unit+0x17e) is supplied.
+	func _get_hp() -> float:
+		return float(terms.hp) if terms.has("hp") else super()
 
 
 func kinds() -> Array:
-	return ["npc_fear", "npc_suspicion"]
+	return ["npc_fear", "npc_suspicion", "npc_target_score"]
 
 
 func capture(kind: String, data: Dictionary, trace: Node) -> Array:
@@ -46,6 +54,7 @@ func capture(kind: String, data: Dictionary, trace: Node) -> Array:
 	match kind:
 		"npc_fear": return capture_fear(data, trace)
 		"npc_suspicion": return capture_suspicion(data, trace)
+		"npc_target_score": return capture_score(data, trace)
 	push_error("Unsupported npc_ai kind " + kind)
 	return []
 
@@ -94,6 +103,7 @@ func make_units(data: Dictionary, world: NpcWorld, trace: Node) -> Array:
 		for p: Dictionary in row.get("parts", []):
 			parts.append({"type": int(p.type), "state": int(p.state), "cur": f32(trace, p.cur), "max": f32(trace, p.max),
 				"size": f32(trace, p.get("size", 0.2)), "lethal": f32(trace, p.get("lethal", 0.0))})
+		if row.has("max_hp"): u.max_hp = float(row.max_hp)
 		if not parts.is_empty(): u.parts = parts
 		u.info = {"aggression": int(data.get("aggression", 3)), "logic_model": 3,
 			"help_radius": f32(trace, row.get("help_radius", 10.0)), "alarm_cond": 0}
@@ -237,3 +247,38 @@ func suspicion_events(ai: UnitAI, units: Array, tick: Dictionary, when: String, 
 				ai.call_for_help(u, Vector2(f32(trace, h[0]), f32(trace, h[1])))
 			"hit":
 				ai.hit_hook(u, units[int(event.by)] if event.get("by") != null else null)
+
+
+## UnitAI._score per evaluation, f32-stored like the original's caller.
+func capture_score(data: Dictionary, trace: Node) -> Array:
+	var world := make_world(data)
+	var ai: NpcAI = world.ai
+	var units := make_units(data, world, trace)
+	for i in units.size():
+		var row: Dictionary = data.units[i]
+		var u: NpcUnit = units[i]
+		var armour := PackedFloat32Array()
+		for v in row.get("armour", [0, 0, 0, 0, 0, 0, 0]): armour.append(float(v))
+		var stats := u.stats.duplicate()
+		stats.armor = armour
+		u.stats = stats
+		u.terms.power_f32 = f32(trace, row.get("power", 0.0))
+		var buffs := {}
+		for effect in row.get("effects", []): buffs["effect%d" % int(effect)] = {}
+		u.buffs = buffs
+	var states := []
+	for evaluation: Dictionary in data.evals:
+		var o: Dictionary = evaluation.option
+		var v := PackedInt32Array()
+		for x in o.get("v", [0, 0, 0, 0, 0, 0, 0]): v.append(int(x))
+		var opt := {"type": int(o.type), "slot": "", "v": v, "n1": int(o.get("n1", 0)),
+			"range": f32(trace, o.get("range", 0.0)), "radius": f32(trace, o.get("radius", 0.0)),
+			"dur": int(o.get("dur", 0)), "key": "effect%d" % int(o.get("effect", 0))}
+		var members := []
+		for index in evaluation.list: members.append(units[int(index)])
+		var cur: Variant = units[int(evaluation.cur)] if evaluation.get("cur") != null else null
+		var score := ai._score(units[int(evaluation.caster)], units[int(evaluation.candidate)], opt, members, cur,
+			f32(trace, evaluation.threshold))
+		states.append({"score_bits": trace.bits(score)})
+	free_all(units, world)
+	return states
