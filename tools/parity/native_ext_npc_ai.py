@@ -357,6 +357,88 @@ def suspicion(o, case):
     return states
 
 
+# The motivation sets the AI constructor gives a logic-model-3 unit (calm
+# Sentry first) for each descriptor aggression mode.
+MOTIVATION_SETS = {0: ["calm", "aggression", "suspection", "corpse", "fear"],
+                   2: ["calm", "corpse", "fear"], 3: ["calm", "corpse", "fear"]}
+MOTIVATION_VTABLES = {"calm": VT_SENTRY, "aggression": VT_AGGRESSION, "suspection": VT_SUSPECTION,
+                      "corpse": VT_CORPSE, "fear": VT_FEAR}
+ARBITRATION_END = 0x5d56de         # 5d53b0 after the motivation tick and epilogue, before the AI-state switch
+
+
+def motivation(o, case):
+    """Full AI tick 5d53b0 up to the AI-state switch: perception tick, real
+    priorities of the unit's motivation set, the +100 current-motivation
+    arbitration, leave/enter/tick dispatch (bodies are recorders) and the
+    attacker reset."""
+    rig = Rig(o, case)
+    install_scan_stub(o)
+    for row in case["units"]:
+        rig.add(row)
+    ai = rig.ai(0)
+    o.hook(0x54b6c0, lambda: o.ret(0))
+
+    def out_of_contract():
+        raise RuntimeError("kiting spot search reached: outside the npc_motivation contract")
+
+    o.hook(0x4667f0, out_of_contract)
+    danger = []
+
+    def danger_cell():
+        x, y = struct.unpack("<ff", o.uc.mem_read(o.args(1)[0], 8))
+        o.ret(int(any(bits(x) == bits(px) and bits(y) == bits(py) for px, py in danger)), cleanup=4)
+
+    o.hook(0x5bbdb0, danger_cell)
+    calls = []
+    records, names = [], {}
+    for name in MOTIVATION_SETS[int(case["aggression"])]:
+        original = o.ints(MOTIVATION_VTABLES[name], 13)
+        table = o.alloc(13 * 4)
+        o.write(table, *original)
+        for slot, event in ((0x14, "tick"), (0x18, "enter"), (0x1c, "leave")):
+            stub = rig.stub(b"\xc2\x04\x00")
+            o.hook(stub, lambda e=event, n=name: (calls.append((e, n)), o.ret(cleanup=4)))
+            o.write(table + slot, stub)
+        record = o.alloc(0x60)
+        o.write(record, table, 100)   # reference count kept above zero: fixtures are never freed
+        if name == "fear":
+            o.floats(record + 8, 10.0, 3.0)
+            o.write(record + 0x10, DANGER_SENTINEL)
+            o.uc.mem_write(record + 0x28, bytes([1 if int(case["aggression"]) == 3 else 0]))
+        records.append(record)
+        names[record] = name
+    rig.set_list(ai + 0x74, records)
+    rig.set_list(ai + 0x114, [rig.units[i] for i, row in enumerate(case["units"]) if row.get("noticed")])
+    controller = rig.controller(0)
+
+    def apply(tick, when):
+        for event in tick.get("events", []):
+            if event.get("when", "after") != when:
+                continue
+            if event["kind"] == "suspect":
+                rig.suspect(0, event["point"], event["level"], event["delta"])
+            elif event["kind"] == "hit":
+                rig.hit(0, event.get("by"))
+
+    states = []
+    for tick in case["ticks"]:
+        for index, pos in tick.get("moves", {}).items():
+            rig.move(int(index), pos)
+        danger[:] = [tuple(p) for p in tick.get("danger", [])]
+        o.write(controller + 0x190, 0)
+        o.write(controller + 0x1b4, 0)
+        apply(tick, "before")
+        calls.clear()
+        _slice_to(o, 0x5d53b0, ai, ARBITRATION_END)
+        current = o.ints(ai + 0x8c)[0]
+        ran = [n for e, n in calls if e == "tick"]
+        if ran != ([names[current]] if current else []):
+            raise RuntimeError(f"motivation tick dispatch mismatch: {calls}")
+        states.append({"motivation": names.get(current, "none")})
+        apply(tick, "after")
+    return states
+
+
 SCORE = 0x5cf9a0
 
 
@@ -408,4 +490,5 @@ def target_score(o, case):
     return states
 
 
-CAPTURES = {"npc_fear": fear, "npc_suspicion": suspicion, "npc_target_score": target_score}
+CAPTURES = {"npc_fear": fear, "npc_suspicion": suspicion, "npc_target_score": target_score,
+            "npc_motivation": motivation}

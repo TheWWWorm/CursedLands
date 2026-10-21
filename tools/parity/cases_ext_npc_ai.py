@@ -79,10 +79,30 @@ def contracts(campaign):
                       "reachability (5d0030) are not executed.",
             "tolerances": {},
         },
+        "npc_motivation": {
+            "entry": ["0x5d53b0..0x5d56de", "0x5cbbe0"],
+            "scope": "Motivation arbitration of the AI tick (5d53b0: perception tick, the real priorities of the "
+                     "logic-model-3 motivation set of aggression modes 0, 2 and 3 - Sentry 5d0a80, Aggression "
+                     "5d2390, Suspection 5d1e90, CorpseWatcher 5d27d0, Fear 5d2960 - the current motivation's "
+                     "+100, strict-greater choice in list order, leave/enter/tick dispatch) without noticed "
+                     "hostiles, versus UnitAI.think.",
+            "stubs": ["motivation tick/enter/leave entries are recorders (remake _fear_tick, _susp_go and _sentry "
+                      "overrides record; calm_tick finds no buff)",
+                      "perception scan 5caa00 adds nothing (noticed list supplied; remake player_perceive cached)",
+                      "danger-cell test 5bbdb0 by exact point (remake danger_at override)",
+                      "ranged-weapon predicate 54b6c0 false",
+                      "unit dead/type virtual getters, reference release no-op",
+                      "CRT allocation, CString and debug-log stream output",
+                      "remake world clock advanced by time += 55 ms per tick, as GameWorld._tick_body does"],
+            "limits": "No living hostile is noticed (Aggression, kiting and the 3000 Fear branch need the option "
+                      "choice 5d0030 and path search); the corpse queue is empty; the AI-state switch after the "
+                      "motivation tick is not executed.",
+            "tolerances": {},
+        },
     }
 
 
-STEP_COUNTS = {"npc_fear": "ticks", "npc_suspicion": "ticks", "npc_target_score": "evals"}
+STEP_COUNTS = {"npc_fear": "ticks", "npc_suspicion": "ticks", "npc_target_score": "evals", "npc_motivation": "ticks"}
 
 
 def _unit(pos, side=1, **extra):
@@ -491,8 +511,78 @@ def score_scenarios(seed, fuzz):
     return rows
 
 
+def _mot(rows, name, aggression, units, ticks):
+    inputs = {"aggression": aggression, "config": dict(SHIPPED), "relations": RELATIONS,
+              "units": units, "ticks": ticks}
+    rows.append({"id": "npc_motivation/" + name, "kind": "npc_motivation", "inputs": inputs})
+
+
+def _suspect_at(point, level, delta):
+    return {"kind": "suspect", "point": list(point) + [0.0], "level": level, "delta": delta}
+
+
+def motivation_scenarios(seed, fuzz):
+    rows = []
+    me = _unit((8.0, 8.0, 0.0))
+    near, far = (11.0, 9.0), (8.0, 15.5)
+    spot = [[8.0, 8.0]]
+    # Fear by suspicion and how long it stays current (Fear(1) and Fear(0)).
+    for aggression in (2, 3):
+        for level in (600, 905, 906, 1000):
+            _mot(rows, f"fear_hold_mode{aggression}_level{level}", aggression, [me],
+                 [{"events": [_suspect_at(near, level, -25)]}] + [{}] * 44)
+    _mot(rows, "fear_hold_far_point", 3, [me], [{"events": [_suspect_at(far, 1000, -25)]}] + [{}] * 44)
+    _mot(rows, "fear1_party_noticed", 3, [me, _unit((10.0, 12.0, 0.0), 0, party=True, noticed=True)],
+         [{}] * 4 + [{"moves": {"1": [15.0, 15.5, 0.0]}}] + [{}] * 45)
+    # Danger cells: Fear 350, kept point, Sentry current.
+    _mot(rows, "danger_mode3", 3, [me], [{"danger": spot}] * 3 + [{}] * 3 + [{"danger": [[9.0, 9.0]]}] + [{}] * 3)
+    # Suspection activation and hold (mode 0 has Suspection).
+    for level in (150, 151, 240):
+        _mot(rows, f"suspection_start_level{level}", 0, [me], [{"events": [_suspect_at(near, level, 0)]}] + [{}] * 4)
+    _mot(rows, "suspection_decay_to_minus50", 0, [me], [{"events": [_suspect_at(near, 200, -10)]}] + [{}] * 30)
+    # Danger against a current Suspection with M around 250-350.
+    for level in (200, 249, 250, 251, 260, 300, 349, 351):
+        _mot(rows, f"danger_vs_suspection_m{level}", 0, [me],
+             [{"events": [_suspect_at(near, level, 0)]}, {}, {"danger": spot}, {"danger": spot}, {}, {}])
+    # Fear ends while a Suspection is low: the original picks the calm one
+    # unless M is above 50.
+    for level in (240, 300):
+        _mot(rows, f"fear_then_suspection_level{level}", 0, [me],
+             [{"events": [_suspect_at(near, level, -5)]}, {}] + [{"danger": spot}] * 36 + [{}] * 6)
+    # A new suspicion at the same point keeps the Suspection's minimum.
+    _mot(rows, "same_point_resuspect", 0, [me],
+         [{"events": [_suspect_at(near, 400, -10)]}] + [{}] * 18
+         + [{"events": [_suspect_at(near, 900, -10)]}, {}, {"danger": spot}, {"danger": spot}, {}])
+    _mot(rows, "new_point_resuspect", 0, [me],
+         [{"events": [_suspect_at(near, 400, -10)]}] + [{}] * 18
+         + [{"events": [_suspect_at((12.0, 8.0), 900, -10)]}, {}, {"danger": spot}, {"danger": spot}, {}])
+    rng = random.Random(seed ^ 0x3077)
+    for trial in range(fuzz):
+        aggression = rng.choice([0, 2, 3])
+        units = [_unit((round(rng.uniform(3, 13), 2), round(rng.uniform(3, 13), 2), 0.0))]
+        for _ in range(rng.randint(0, 2)):
+            units.append(_unit((round(rng.uniform(0.5, 15.5), 2), round(rng.uniform(0.5, 15.5), 2), 0.0), 0,
+                               party=True, noticed=rng.random() < 0.6))
+        ticks = []
+        for _ in range(rng.randint(20, 50)):
+            tick = {}
+            if rng.random() < 0.15:
+                tick["events"] = [_suspect_at((round(rng.uniform(0, 16), 2), round(rng.uniform(0, 16), 2)),
+                                              rng.choice([60, 151, 240, 300, 600, 900, 1000]),
+                                              rng.choice([0, -2, -5, -10, -25]))]
+            if rng.random() < 0.15:
+                tick["danger"] = [list(units[0]["pos"][:2])]
+            if len(units) > 1 and rng.random() < 0.05:
+                mover = rng.randrange(1, len(units))
+                tick["moves"] = {str(mover): [round(rng.uniform(0.5, 15.5), 2), round(rng.uniform(0.5, 15.5), 2), 0.0]}
+            ticks.append(tick)
+        _mot(rows, f"seeded_{trial:03}", aggression, units, ticks)
+    return rows
+
+
 def scenarios(seed=20261020, fuzz=12):
-    return fear_scenarios(seed, fuzz) + suspicion_scenarios(seed, fuzz) + score_scenarios(seed, fuzz)
+    return (fear_scenarios(seed, fuzz) + suspicion_scenarios(seed, fuzz) + score_scenarios(seed, fuzz)
+            + motivation_scenarios(seed, fuzz))
 
 
 def validate(case, steps, role):
@@ -516,6 +606,9 @@ def validate(case, steps, role):
         elif kind == "npc_target_score":
             ok = (set(state) == {"score_bits"} and type(state["score_bits"]) is int
                   and 0 <= state["score_bits"] <= 0xffffffff)
+        elif kind == "npc_motivation":
+            ok = set(state) == {"motivation"} and state["motivation"] in (
+                "none", "calm", "aggression", "suspection", "corpse", "fear")
         else:
             ok = False
         if not ok:

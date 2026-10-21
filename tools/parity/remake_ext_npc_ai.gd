@@ -23,6 +23,25 @@ class NpcAI extends UnitAI:
 		return []
 	func danger_at(p: Vector2) -> bool:
 		return danger.has(p)
+	## Declared boundaries for npc_motivation: the motivation bodies are
+	## recorders (Fear tick, Suspection walk, Sentry tick), as the original's
+	## tick/enter/leave entries are; the calm buff-cast check finds nothing.
+	var recording := false
+	var decided := ""
+	func _fear_tick(u: GameUnit, flag := 0) -> void:
+		if recording: decided = "fear"
+		else: super(u, flag)
+	func _susp_go(u: GameUnit, s: Dictionary, at: Vector2, p: float) -> void:
+		if not recording: super(u, s, at, p)
+	func _investigate(u: GameUnit) -> bool:
+		var r := super(u)
+		if recording and r: decided = "suspection"
+		return r
+	func _sentry(u: GameUnit, at: Vector2) -> void:
+		if recording: decided = "calm"
+		else: super(u, at)
+	func calm_tick(u: GameUnit, idle := false) -> bool:
+		return false if recording else super(u, idle)
 	## Declared boundary: a candidate's option power (controller+0xa4c).
 	func options(u: GameUnit) -> Dictionary:
 		if u is NpcUnit and u.terms.has("power_f32"):
@@ -46,7 +65,7 @@ class NpcUnit extends GameUnit:
 
 
 func kinds() -> Array:
-	return ["npc_fear", "npc_suspicion", "npc_target_score"]
+	return ["npc_fear", "npc_suspicion", "npc_target_score", "npc_motivation"]
 
 
 func capture(kind: String, data: Dictionary, trace: Node) -> Array:
@@ -55,6 +74,7 @@ func capture(kind: String, data: Dictionary, trace: Node) -> Array:
 		"npc_fear": return capture_fear(data, trace)
 		"npc_suspicion": return capture_suspicion(data, trace)
 		"npc_target_score": return capture_score(data, trace)
+		"npc_motivation": return capture_motivation(data, trace)
 	push_error("Unsupported npc_ai kind " + kind)
 	return []
 
@@ -280,5 +300,35 @@ func capture_score(data: Dictionary, trace: Node) -> Array:
 		var score := ai._score(units[int(evaluation.caster)], units[int(evaluation.candidate)], opt, members, cur,
 			f32(trace, evaluation.threshold))
 		states.append({"score_bits": trace.bits(score)})
+	free_all(units, world)
+	return states
+
+
+## UnitAI.think per tick with recorder bodies; the observation is the
+## motivation whose body ran.
+func capture_motivation(data: Dictionary, trace: Node) -> Array:
+	var world := make_world(data)
+	var ai: NpcAI = world.ai
+	ai.recording = true
+	var units := make_units(data, world, trace)
+	var u: NpcUnit = units[0]
+	var noticed := {}
+	for i in units.size():
+		if data.units[i].get("noticed", false): noticed[units[i].get_instance_id()] = units[i]
+	var states := []
+	for k in data.ticks.size():
+		var tick: Dictionary = data.ticks[k]
+		world.time += GameUnit.TICK
+		for index in tick.get("moves", {}):
+			place(units[int(index)], tick.moves[index], world, trace)
+		ai.danger = points(tick.get("danger", []), trace)
+		fear_events(ai, u, units, tick, "before", trace)
+		u.set_meta("noticed", noticed.duplicate())
+		u.set_meta("perceived", world.time)
+		ai.decided = "none"
+		ai.think(u)
+		states.append({"motivation": ai.decided})
+		fear_events(ai, u, units, tick, "after", trace)
+		ai.tick()
 	free_all(units, world)
 	return states
