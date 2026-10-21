@@ -4,6 +4,7 @@ No expected results or copies of game formulas belong here. Adding an input
 does not approve a behavioral difference. All floating inputs are finite.
 """
 import random
+import extensions
 from cases_extended import CONTRACTS as EXTRA_CONTRACTS, scenarios as extra_scenarios
 from cases_quests import ASTRAL_REFERENCE, contracts as quest_contracts, scenarios as quest_scenarios
 from cases_body import CONTRACTS as BODY_CONTRACTS, scenarios as body_scenarios
@@ -80,12 +81,17 @@ REFERENCES = {"original": REFERENCE, "lost_in_astral": ASTRAL_REFERENCE}
 
 def contracts_for(campaign):
     if campaign == "original":
-        return CONTRACTS
-    if campaign != "lost_in_astral":
+        result = dict(CONTRACTS)
+    elif campaign == "lost_in_astral":
+        result = quest_contracts(astral=True)
+        result.update(program_contracts(astral=True))
+        result["script_random"] = dict(CONTRACTS["script_random"], entry=["0x46cca0", "0x43ac30", "0x45e440"])
+    else:
         raise ValueError("Unsupported campaign reference")
-    result = quest_contracts(astral=True)
-    result.update(program_contracts(astral=True))
-    result["script_random"] = dict(CONTRACTS["script_random"], entry=["0x46cca0", "0x43ac30", "0x45e440"])
+    for kind, contract in extensions.contracts(campaign).items():
+        if kind in result:
+            raise ValueError(f"Extension contract {kind} replaces a core family")
+        result[kind] = contract
     return result
 
 
@@ -177,7 +183,7 @@ def scenarios(seed=20261020, fuzz=12):
                 {"attack": 40, "defence": 40 - (25 if aim == 0 else 10 if aim == 2 else 0),
                  "spread": 0, "aim": aim, "distance": distance, "radius": 0.5,
                  "attack_actions": 15.0, "defence_actions": 15.0})
-    return rows + extra_scenarios(seed, fuzz) + quest_scenarios(seed, fuzz) + body_scenarios(seed, fuzz) + progression_scenarios(seed, fuzz)
+    return rows + extra_scenarios(seed, fuzz) + quest_scenarios(seed, fuzz) + body_scenarios(seed, fuzz) + progression_scenarios(seed, fuzz) + extensions.scenarios(seed, fuzz)
 
 
 def make_inputs(seed=20261020, fuzz=12, pattern=None, campaign="original"):

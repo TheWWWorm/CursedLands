@@ -79,6 +79,11 @@ def stage_game(source, output):
     shutil.copytree(source, runtime, ignore=shutil.ignore_patterns(".godot", "*.log", "__pycache__"))
     (runtime / "tools").mkdir(exist_ok=True)
     shutil.copy2(HERE / "remake_trace.gd", runtime / "tools" / "parity_trace.gd")
+    from extensions import remake_scripts
+    if remake_scripts():
+        (runtime / "tools" / "parity_ext").mkdir()
+    for script in remake_scripts():
+        shutil.copy2(script, runtime / "tools" / "parity_ext" / script.name.removeprefix("remake_ext_"))
     manifest = {p.relative_to(runtime).as_posix(): file_hash(p) for p in sorted(runtime.rglob("*")) if p.is_file()}
     write_json(output / "runtime-source.json", manifest)
     return runtime, digest(manifest)

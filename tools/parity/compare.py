@@ -66,6 +66,8 @@ def validate_trace(trace, inputs, role):
                 raise ValueError(f"{role} {row['id']} has an invalid step {i}")
         counted_inputs = {"clock": "frames", "script_random": "words", "sight_factor": "postures",
                           "faction_relation": "values", "quest_trigger": "snapshots", "effect_lifetime": "ticks", "quest_program": "ticks"}
+        import extensions
+        counted_inputs.update(extensions.step_counts())
         expected_count = len(case["inputs"][counted_inputs[case["kind"]]]) if case["kind"] in counted_inputs else (
             None if case["kind"] == "cast_rank" else 1)
         if case["kind"] == "body_health":
@@ -74,6 +76,10 @@ def validate_trace(trace, inputs, role):
             raise ValueError(f"{role} {row['id']} captured {len(steps)} of {expected_count} requested steps")
         if case["kind"] in ("quest_predicate", "quest_trigger", "body_health", "effect_lifetime", "quest_program"):
             validate_expanded_states(case, steps, role)
+        else:
+            check = extensions.validator(case["kind"])
+            if check:
+                check(case, steps, role)
         if case["kind"] == "cast_rank":
             for i, step in enumerate(steps):
                 state = step["state"]
