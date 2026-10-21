@@ -51,8 +51,33 @@ CONTRACTS = {
 STEP_COUNTS = {"perception_ticks": "ticks"}
 
 
+ASTRAL_CONTRACTS = {
+    "perception_group": dict(
+        CONTRACTS["perception_group"],
+        entry=["0x46cca0", "0x46db40", "0x4688b0", "0x597590"],
+        scope="Lost in Astral group evaluator 0x46db40 (UnitSee 0x5d, GroupSee 0x5e, PlayerSee 0xa5, "
+              "GroupCross 0x5b) with sorted-set insertion 0x4688b0, list merge 0x4689b0, the player "
+              "visible-group update 0x597590 and the expression evaluator 0x46cca0 (GroupSize, GroupHas, Any, "
+              "Every, IsAlive, IsDead, IsUnitVisible 0xe5 via 0x466560) reading SUPPLIED AI noticed lists "
+              "(actor +0x240 -> +0xa94) and corpse lists (+0xab0), versus ScriptVM._eval with "
+              "UnitAI.can_notice_with answering exactly the same (watcher, target) pairs.",
+        stubs=["supplied noticed and corpse list contents per actor (remake: can_notice_with true exactly for "
+               "noticed+corpse pairs; every actor within the watchers' sight radius)",
+               "supplied script groups (built by native insertion, i.e. sorted sets)",
+               "player zero's unit map (+0x40, one hash bucket) = supplied player_units (remake: controller 0)",
+               "player zero lookup 0x4e6c40", "actor type/death/release accessors",
+               "CRT operator new/free 0x5ffa7b/0x5ecb7c (CPlex 0x5fed90 runs natively)",
+               "CRT thread-local single-byte locale",
+               "empty clairvoyance extra-visible group (+0x50f8)"]),
+}
+
+
 def contracts(campaign):
-    return dict(CONTRACTS) if campaign == "original" else {}
+    if campaign == "original":
+        return dict(CONTRACTS)
+    # Only layer 1 is address-qualified for Lost in Astral; its perception
+    # update 0x514d70 is identified but not qualified (see the docs).
+    return dict(ASTRAL_CONTRACTS) if campaign == "lost_in_astral" else {}
 
 
 def call(name, *args):
@@ -456,8 +481,9 @@ if __name__ == "__main__":
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--case", default="perception_")
+    parser.add_argument("--campaign", choices=["original", "lost_in_astral"], default="original")
     args = parser.parse_args()
-    inputs = make_inputs(pattern=args.case)
+    inputs = make_inputs(pattern=args.case, campaign=args.campaign)
     extra, summary = authored(args.game_dir, args.limit)
     inputs["scenarios"].extend(extra)
     inputs["authored_perception"] = summary

@@ -13,6 +13,7 @@ from cases import make_inputs
 from compare import digest, validate_trace
 
 GAME = Path(os.environ.get("EI_GAME_DIR", "/home/llm2x/Documents/EI/inspection/extracted/app"))
+ASTRAL = Path(os.environ.get("EI_ASTRAL_DIR", "/home/llm2x/Documents/EI/inspection/lost-in-astral/game"))
 
 
 class PerceptionInputsTest(unittest.TestCase):
@@ -54,6 +55,10 @@ class PerceptionInputsTest(unittest.TestCase):
         return {"schema": 1, "role": "remake", "input_sha256": digest(inputs),
                 "scenarios": [{"id": case["id"], "steps": [{"step": i, "state": copy.deepcopy(state)}
                                                            for i in range(len(case["inputs"].get("ticks", [0])))]}]}
+
+    def test_astral_contract_covers_layer_one_only(self):
+        self.assertEqual(set(family.contracts("lost_in_astral")), {"perception_group"})
+        self.assertEqual(family.contracts("other"), {})
 
     def test_validator_rejects_malformed_states(self):
         group = make_inputs(pattern="perception_group/empty/unitsee_missing")
@@ -99,6 +104,27 @@ class PerceptionNativeSensitivityTest(unittest.TestCase):
         data["observer"]["hostile_sides"] = []
         neutral = [s["fired"] for s in self.capture("perception_ticks", data)]
         self.assertNotEqual(hostile, neutral)
+
+
+@unittest.skipUnless((ASTRAL / "game.exe").exists(), "Lost in Astral executable not available")
+class PerceptionAstralSensitivityTest(unittest.TestCase):
+    def capture(self, data):
+        from native import Original
+        import native_ext_perception_triggers as native
+        o = Original((ASTRAL / "game.exe").read_bytes())
+        o.campaign = "lost_in_astral"
+        try:
+            return native.CAPTURES["perception_group"](o, data)
+        finally:
+            o.close()
+
+    def test_noticed_list_drives_unitsee_and_visibility(self):
+        data = copy.deepcopy(family.VARIANTS["heroes_see_npc_and_guard"])
+        data["expression"] = family.expressions()["visible_npc"]
+        self.assertTrue(self.capture(data)[0]["truth"])
+        for row in data["units"]:
+            row["noticed"] = []
+        self.assertFalse(self.capture(data)[0]["truth"])
 
 
 if __name__ == "__main__":

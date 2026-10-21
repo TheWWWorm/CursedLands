@@ -17,7 +17,7 @@ import math
 import struct
 
 from unicorn.x86_const import UC_X86_REG_ECX, UC_X86_REG_EIP, UC_X86_REG_ESI
-from native_quests import OPS, Expressions
+from native_quests import ADDRESSES, OPS, Expressions
 
 EVAL = 0x4b41e0          # expression evaluator (numeric results)
 GROUP_EVAL = 0x4b5b00    # group-returning builtins (parameter type 4)
@@ -31,6 +31,21 @@ MALLOC, FREE, PLEX = 0x70056f, 0x700598, 0x6fe8af
 # Debug log stream operators used by the perception routines: thiscall,
 # return the stream, pop their argument(s).
 LOG = {0x6fc2dd: 4, 0x6fc986: 4, 0x6fc070: 4, 0x434fe0: 4, 0x6fc7ba: 8}
+GROUP_VTABLE = 0x73d110
+# Layer 1 per qualified executable. Lost in Astral analogues were matched
+# by structure: group evaluator 0x46db40 (same opcodes, same temp pool at
+# context +0x1b0), insertion 0x4688b0, list merge 0x4689b0, visible-group
+# update 0x597590 (+0x50f8 / +0x510c, +0x24 == -1 branch, +0x1c player,
+# player +0x40 unit map) and IsUnitVisible 0xe5 in 0x46cca0 reading
+# player(0) +0x20 -> +0x510c via 0x466560. Its CPlex 0x5fed90 runs natively
+# over the supplied operator new 0x5ffa7b. Layer 2 is qualified only for the
+# base executable.
+CAMPAIGN = {
+    "original": {"group_eval": GROUP_EVAL, "insert": INSERT, "visible_update": VISIBLE_UPDATE,
+                 "group_vtable": GROUP_VTABLE, "malloc": MALLOC, "free": FREE, "plex": PLEX, "log": LOG},
+    "lost_in_astral": {"group_eval": 0x46db40, "insert": 0x4688b0, "visible_update": 0x597590,
+                       "group_vtable": 0x62789c, "malloc": 0x5ffa7b, "free": 0x5ecb7c, "plex": None, "log": {}},
+}
 GROUP_CALLS = {"UnitSee": 0x5d, "GroupSee": 0x5e, "PlayerSee": 0xa5, "GroupCross": 0x5b,
                "GroupAdd": 0x59, "GroupSub": 0x5a}
 CALLS = dict(OPS, IsUnitVisible=0xe5, **GROUP_CALLS)
@@ -52,8 +67,10 @@ class Perception(Expressions):
         self.index = {unit: i for i, unit in enumerate(self.units)}
         self.unit_dead = {unit: int(row["dead"]) for unit, row in zip(self.units, rows)}
         self.stats = [o.ints(unit + 0x170)[0] for unit in self.units]
-        o.hook(MALLOC, lambda: o.ret(o.alloc(max(4, o.args(1)[0]))))
-        o.hook(FREE, lambda: o.ret())
+        self.addresses = addresses = CAMPAIGN[o.campaign]
+        self.eval_address = ADDRESSES[o.campaign]["eval"]
+        o.hook(addresses["malloc"], lambda: o.ret(o.alloc(max(4, o.args(1)[0]))))
+        o.hook(addresses["free"], lambda: o.ret())
 
         def plex():
             head, count, size = o.args(3)
@@ -62,8 +79,9 @@ class Perception(Expressions):
             o.write(head, block)
             o.ret(block, cleanup=12)
 
-        o.hook(PLEX, plex)
-        for address, cleanup in LOG.items():
+        if addresses["plex"]:
+            o.hook(addresses["plex"], plex)
+        for address, cleanup in addresses["log"].items():
             o.hook(address, lambda cleanup=cleanup: o.ret(o.uc.reg_read(UC_X86_REG_ECX), cleanup))
         # CList / CPlex block sizes of the evaluator's temporary group and
         # object-slot pools (constructor state of the script context).
@@ -106,9 +124,9 @@ class Perception(Expressions):
         o.write(self.visibility + 0x1c, self.player)
         o.write(self.visibility + 0x24, 0xffffffff)
         for offset in (0x50f8, 0x510c):
-            o.write(self.visibility + offset, 0x73d110)
+            o.write(self.visibility + offset, addresses["group_vtable"])
         for i in case.get("extra_visible", []):
-            o.run(INSERT, self.visibility + 0x50f8, [self.units[i]])
+            o.run(addresses["insert"], self.visibility + 0x50f8, [self.units[i]])
         bucket, chain = o.alloc(4), 0
         for i in reversed(case.get("player_units", [])):
             node = o.alloc(12)
@@ -140,9 +158,9 @@ class Perception(Expressions):
     def sorted_group(self, members):
         """Script groups are sorted sets; build them with native insertion."""
         group = self.o.alloc(20)
-        self.o.write(group, 0x73d110, 0, 0, 0, 0)
+        self.o.write(group, self.addresses["group_vtable"], 0, 0, 0, 0)
         for i in members:
-            self.o.run(INSERT, group, [self.units[i]])
+            self.o.run(self.addresses["insert"], group, [self.units[i]])
         return group
 
     def read_group(self, group):
@@ -198,13 +216,13 @@ class Perception(Expressions):
         command = command or self.compile(expression)
         if expression["call"] in GROUP_CALLS:
             slot = o.alloc(4)
-            o.run(GROUP_EVAL, command, [self.context, self.instance, slot])
+            o.run(self.addresses["group_eval"], command, [self.context, self.instance, slot])
             members = self.read_group(o.ints(slot)[0])
             # Native order is pointer order (= fixture index order here);
             # the comparison uses membership, and count exposes duplicates.
             return {"count": len(members), "members": sorted(members)}
         output = o.alloc(4)
-        o.run(EVAL, command, [self.context, self.instance, output])
+        o.run(self.eval_address, command, [self.context, self.instance, output])
         return {"truth": o.number(output) != 0, "value_bits": o.ints(output)[0]}
 
 
@@ -212,7 +230,7 @@ def group_case(o, case):
     fixture = Perception(o, case)
     # Server player update before scripts: builds the +0x510c visible group
     # that IsUnitVisible reads (and merges the party's corpse lists).
-    o.run(VISIBLE_UPDATE, fixture.visibility)
+    o.run(fixture.addresses["visible_update"], fixture.visibility)
     return [fixture.evaluate(case["expression"])]
 
 
@@ -223,6 +241,8 @@ def facing_quaternion(angle):
 
 
 def ticks_case(o, case):
+    if o.campaign != "original":
+        raise ValueError("perception_ticks is qualified only for the base executable")
     fixture = Perception(o, case)
     units, logic = fixture.units, fixture.logic
     watcher = case["watcher"]

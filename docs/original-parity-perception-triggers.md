@@ -106,7 +106,8 @@ Authored conditions: `python cases_ext_perception_triggers.py --game-dir
 condition of the 79 authored condition lists (identifiers bound to fixture
 actors/groups; no game text), each evaluated under four supplied snapshots
 (nothing noticed, living mutual, corpses only, dead watchers retaining), and
-`run.py --replay-inputs inputs.json` runs them. The module also exposes
+`run.py --replay-inputs inputs.json` runs them (`--campaign lost_in_astral`
+writes Astral inputs for layer 1). The module also exposes
 `authored(game_dir, limit) -> (rows, summary)` for runners that support it.
 
 ### `perception_ticks` (layer 2: perception over time)
@@ -150,8 +151,10 @@ all comparisons execute natively.
 No suspicion/alarm/call-for-help outcomes, hearing, combat stance ("fighting
 the watcher") or Aggression target; one watcher per tick scenario; Clairvoyance
 (extra-visible group) is empty; whether a dead hero stays in the player's unit
-map is not established; Lost in Astral is not qualified (its group evaluator
-0x46db40 uses a different temporary-group pool and helper set).
+map is not established. For Lost in Astral only `perception_group` is
+qualified (see below); its perception update 0x514d70 (acquisition scan
+0x514a10, corpse transfer 0x514810) is identified but `perception_ticks` is
+not qualified there.
 
 ## Can it fail?
 
@@ -164,12 +167,17 @@ map is not established; Lost in Astral is not qualified (its group evaluator
   scenarios failed (e.g. `perception_group/npc_sees_hero/size_cross_unitsee_heroes`),
   and the per-tick noticed lists diverged (e.g.
   `approach_retreat_hostile0_cross` tick 4: native `[1]`, remake `[]`).
+* The same mutant against Lost in Astral (`results/perception-08-astral-mutant`)
+  turned 29 matching layer-1 scenarios into failures; an Astral sensitivity
+  test clears the noticed lists and asserts `IsUnitVisible` flips.
 
 ## Results (2026-10-21)
 
 `results/perception-03` (core family + 316 authored rows, replay inputs in
 that directory): **768 scenarios, 670 match, 98 differ**, 1084 original
-observations; both captures repeatable. Without authored rows: 452 scenarios,
+observations; both captures repeatable. After the per-campaign address
+refactor, `results/perception-09` reproduced all 768 original and remake
+trace hashes unchanged. Without authored rows: 452 scenarios,
 393 match, 59 differ. Every divergence (original → remake):
 
 ### A. Scripts ignore the AI's retained noticed list (perception_ticks)
@@ -240,6 +248,29 @@ zone12magess, zone16, zone17, zone19, zone3obr ×9, zone7letter, zone8) or the
 zone15night, zone16, zone17, zone18, zone3obr, zone4, zone6, zone7zasada),
 truth 1 → 0 and 0 → 1 respectively. Nothing-noticed and living-mutual
 snapshots matched for every authored condition.
+
+### Lost in Astral (`perception_group` only)
+
+Addresses were matched by structure in the Astral executable (sha256
+f04a305b…): expression evaluator 0x46cca0 (`IsUnitVisible` 0xe5 reads player
+zero +0x20 → +0x510c through the membership helper 0x466560), group
+evaluator 0x46db40 (same opcodes 0x59/0x5a/0x5b/0x5d/0x5e/0xa5, temporary
+groups from the context pool at +0x1b0 via 0x46b480), sorted insertion
+0x4688b0, list merge 0x4689b0, union/difference/intersection 0x4684e0 /
+0x468680 / 0x468790, group vtable 0x62789c, and the visible-group update
+0x597590 (extra-visible ∪ units ∪ noticed lists, then ∪ the party's merged
+corpse lists, which are written back to every member). Stubs: operator new /
+free 0x5ffa7b / 0x5ecb7c (CPlex 0x5fed90 runs natively), player lookup
+0x4e6c40 and the CRT locale, as in the Astral quest fixture.
+
+`results/perception-07-astral` (core layer 1 + 8 authored rows from 20
+Astral condition lists; replay inputs in `perception-07-astral-inputs`):
+**424 scenarios, 390 match, 34 differ**, repeatable. The Astral native traces
+of all 416 core layer-1 scenarios are byte-identical to the base executable's
+(`perception-03`), so its 32 core divergences are exactly groups B, C and E
+above. The two authored divergences are `dead_watchers_retain` rows (group B)
+in zone1 and zone22. (`perception-06-astral` is the earlier core-only run with
+the same 32 divergences; `perception-05-astral` is an aborted setup.)
 
 ### Matches worth noting
 
