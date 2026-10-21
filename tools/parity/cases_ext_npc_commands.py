@@ -28,49 +28,72 @@ TYPES = ["guard", "patrol", "sentry", "suspection", "aggression", "corpse_watche
          "fear", "tamed", "follow"]
 
 
+# Native entry points per executable (see docs/original-parity-npc-commands.md).
+ENTRIES = {
+    "original": {
+        "npc_motivation": ["0x4b6760", "0x545580", "0x5d5f60", "0x5d4df0", "0x5d6230", "0x5d64e0",
+                           "0x5d6140", "0x5d5e30", "0x5d12b0", "0x5d7790", "0x5d7e40", "0x5d7c30", "0x5d6630"],
+        "npc_diplomacy": ["0x4b6760", "0x545580", "0x4554e0", "0x455660", "0x455630", "0x52e970", "0x52e940",
+                          "0x530120", "0x4b41e0"],
+        "npc_alarm": ["0x4b6760", "0x545580", "0x593fc0", "0x5d53b0..0x5d5413", "0x4b41e0"],
+    },
+    "lost_in_astral": {
+        "npc_motivation": ["0x4712c0", "0x4c9a20", "0x51bd40", "0x51af80", "0x51be20", "0x464ea0", "0x466350",
+                           "0x463f20", "0x517990", "0x467720", "0x51b460", "0x5184d0", "0x466120", "0x463f80",
+                           "0x463fb0", "0x463ff0", "0x464030", "0x464060", "0x4640c0", "0x464f00", "0x51c980",
+                           "0x51c9e0", "0x516bd0", "0x516e60", "0x51cd80", "0x51ca30"],
+        "npc_diplomacy": ["0x4712c0", "0x4c9a20", "0x4274c0", "0x427440", "0x427410", "0x4273b0", "0x4ad950",
+                          "0x4ad990", "0x4ae3a0", "0x463e20", "0x46cca0"],
+        "npc_alarm": ["0x4712c0", "0x4c9a20", "0x4ee600", "0x51c4d0..0x51c532", "0x46cca0"],
+    },
+}
+STUB_ADDRESSES = {
+    "original": {"heap": "0x70056f/0x700598", "config": "0x7c53fc/0x7c53ec", "diplomacy": "0x7c2bb4",
+                 "cleanup": "0x4bec80", "options": "0x5ceed0"},
+    "lost_in_astral": {"heap": "0x5ffa7b/0x5ffaa6", "config": "0x6b878c/0x6b877c", "diplomacy": "0x6b603c",
+                       "cleanup": "0x46a610", "options": "0x518100"},
+}
+
+
 def contracts(campaign):
-    if campaign != "original":
+    entries = ENTRIES.get(campaign)
+    if not entries:
         return {}
-    common = ["CRT operator new (bump heap, zero-filled) and operator delete (no-op)",
-              "native temporary-expression cleanup", "fixture actor reference release (Expressions vtable +0x10)",
+    at = STUB_ADDRESSES[campaign]
+    common = [f"CRT operator new {at['heap']} (bump heap, zero-filled) and operator delete (no-op)",
+              f"native temporary-expression cleanup {at['cleanup']}",
+              "fixture actor reference release (Expressions vtable +0x10)",
               "unit type/dead accessors (Expressions vtable)", "unit<->logic<->AI attachment links",
               "unit constructor defaults for +0x244/+0x248/+0x250",
-              "supplied .mob diplomacy matrix", "supplied world unit container (world+0x40)",
+              f"supplied .mob diplomacy matrix at {at['diplomacy']}", "supplied world unit container (world+0x40)",
               "player-zero lookup", "single-player mode"]
-    return {
+    all_contracts = {
         "npc_motivation": {
-            "entry": ["0x4b6760", "0x545580", "0x5d5f60", "0x5d4df0", "0x5d6230", "0x5d64e0",
-                      "0x5d6140", "0x5d5e30", "0x5d12b0", "0x5d7790", "0x5d7e40", "0x5d7c30", "0x5d6630"],
             "scope": "AI motivation list, AI state, script target, blocked flag and side after quest "
                      "commands 0x24-0x34, 0x3b, 0x42, 0x94, 0xa4, 0xc7, 0xc8, 0xca and 0xe8, versus ScriptVM._run "
                      "with the remake record mapped to the native list.",
-            "stubs": common + ["supplied [Logic] GuardRadius/GuardStayTime sentinels at 0x7c53fc/0x7c53ec",
+            "stubs": common + [f"supplied [Logic] GuardRadius/GuardStayTime sentinels at {at['config']}",
                                "supplied .mob logic descriptor (ResetTarget)",
-                               "AI weapon/spell option rebuild 0x5ceed0 (unit inventory)"],
+                               f"AI weapon/spell option rebuild {at['options']} (unit inventory)"],
             "limits": "Motivation records only: no AI tick, priority selection, movement or combat. "
                       "List order is compared as type order (at most one motivation per type).",
-            "tolerances": {},
         },
         "npc_diplomacy": {
-            "entry": ["0x4b6760", "0x4554e0", "0x455660", "0x455630", "0x52e970", "0x52e940",
-                      "0x530120", "0x4b41e0"],
             "scope": "GetDiplomacy (0x60) pairs and IsEnemy (0x61) masks after SetDiplomacy, SetPlayer and "
                      "SetEnemy versus ScriptVM._call and GameWorld.diplomacy.",
             "stubs": common,
             "limits": "Diplomacy and unit hostility masks only; no hate lists, notifications or network sync.",
-            "tolerances": {},
         },
         "npc_alarm": {
-            "entry": ["0x4b6760", "0x593fc0", "0x5d53b0..0x5d5413", "0x4b41e0"],
             "scope": "World alarm table (IsAlarm 0x67, AlarmTime 0x8b, AlarmPosX/Y 0x8c/0x8d) after "
                      "InvokeAlarm and the AI tick's alarm countdown/raise versus UnitAI.invoke_alarm/tick.",
             "stubs": common + ["supplied world tick counter (world+0x64), advanced once per tick step",
                                "supplied descriptor alarm fields: alerted flag, raise index, countdown"],
             "limits": "Alarm table and countdown only; no descriptor switching of other units, "
                       "alert detection or the rest of the AI tick.",
-            "tolerances": {},
         },
     }
+    return {kind: dict(all_contracts[kind], entry=entry, tolerances={}) for kind, entry in entries.items()}
 
 
 def u(i):

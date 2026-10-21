@@ -4,14 +4,15 @@ Family `npc_commands` (`tools/parity/cases_ext_npc_commands.py`,
 `native_ext_npc_commands.py`, `remake_ext_npc_commands.gd`,
 `test_ext_npc_commands.py`) compares what quest-script commands do to an NPC's
 AI record, the diplomacy matrix and the world alarm table. It is part of the
-[original-engine comparison suite](original-parity.md) and runs only against
-the qualified base executable (`d0fc0bb2…`); Lost in Astral is not qualified
-for these kinds.
+[original-engine comparison suite](original-parity.md) and runs against
+the qualified base executable (`d0fc0bb2…`) and Lost in Astral (`f04a305b…`,
+`--campaign lost_in_astral`); all three kinds are qualified for both.
 
 ```sh
 V=/path/to/venv/bin/python
 $V tools/parity/run.py --game-dir /path/to/original --godot /path/to/godot \
   --out /tmp/parity-npc --case npc_
+# Lost in Astral: add --campaign lost_in_astral and its game directory.
 ```
 
 ## Kinds and observations
@@ -61,6 +62,8 @@ state 0; remake units start as mode `none` with `UnitAI.MOT_NONE`.
 
 ## Native code executed
 
+Base executable:
+
 - Command dispatcher `0x4b6760` (one single-command persistent body per step),
   expression evaluator `0x4b41e0` for every query.
 - Unit logic constructor `0x545580` (AI at logic +0x980, built by `0x545990`).
@@ -76,6 +79,29 @@ state 0; remake units start as mode `none` with `UnitAI.MOT_NONE`.
 - Alarms: `0x593fc0`; the AI tick `0x5d53b0` is executed from its entry up to
   `0x5d5413`, i.e. exactly its alarm countdown and raise.
 
+Lost in Astral (`native_ext_npc_commands.NATIVE`, `cases_ext_npc_commands.ENTRIES`):
+
+- Command dispatcher `0x4712c0`, evaluator `0x46cca0`, unit logic constructor
+  `0x4c9a20` (AI built by `0x4c9930`, same logic +0x980 layout).
+- Motivations: list add `0x51bd40`, clear `0x51af80`, remove by type
+  `0x51be20`, UMSentry `0x464ea0`, UMGuard/UMGuardEx `0x466350`, patrol
+  `0x463f20`/`0x517990`/`0x467720`/`0x51b460`/`0x5184d0`/`0x466120`,
+  UMStandard/UMAggression/UMRevenge/UMSuspection/UMCorpseWatcher/UMPlayer
+  `0x463fb0`/`0x463ff0`/`0x463f80`/`0x464030`/`0x4640c0`, UMFear `0x464060`,
+  UMFollow `0x464f00`, Guard `0x51c980`, Sentry `0x51c9e0`, Idle `0x516bd0`,
+  Follow `0x516e60`, ResetTarget `0x51cd80` -> descriptor rebuild `0x51ca30`.
+  Commands 0x42 and 0xa4 fall to the dispatcher's default case (no-op), and
+  UMAg rounds its mode through `0x43ca70`; both behave as in the base
+  executable for these inputs.
+- Diplomacy: table object `0x6b603c` (`0x4274c0` SetDiplomacy with unit
+  propagation through world +0x40, `0x427440`, `0x427410`), SetEnemy
+  `0x4273b0` -> `0x4ad950`, unit setters `0x4ad990`/`0x4ae3a0`, IsEnemy
+  `0x463e20`.
+- Alarms: world `0x6a33d8` (same table offsets), InvokeAlarm `0x4ee600`, AI
+  tick `0x51c4d0` executed up to `0x51c532` (alarm countdown and raise).
+- Motivation objects carry Astral vtables (e.g. Guard `0x627864`, Sentry
+  `0x627774`), confirming the records come from the Astral constructors.
+
 ## Supplied boundaries (stubs)
 
 CRT `operator new` `0x70056f` (zero-filled bump heap) and `operator delete`
@@ -90,6 +116,9 @@ advanced by one per tick step before the alarm prologue (the remake's
 `UnitAI.tick` also increments before counting down); the alerted flag, raise
 index and countdown (AI +0x34/+0x35/+0x40, normally written by `0x5d6630`);
 and `0x5ceed0` (ResetTarget's weapon/spell option rebuild from inventory).
+Lost in Astral supplies the same boundaries at its own addresses: heap
+`0x5ffa7b` / `0x5ffaa6`, cleanup `0x46a610`, diplomacy matrix `0x6b603c`,
+`[Logic]` sentinels `0x6b878c` / `0x6b877c`, option rebuild `0x518100`.
 
 ## Limits
 
@@ -104,7 +133,6 @@ and `0x5ceed0` (ResetTarget's weapon/spell option rebuild from inventory).
   the five-entry table are not compared.
 - Diplomacy cases with sides 32/33 exercise native out-of-range writes and bit
   shifts; such sides do not occur in authored scripts.
-- Lost in Astral addresses are not qualified for these kinds.
 
 ## Proof the family can fail
 
@@ -116,9 +144,12 @@ unit tests also check that the validator rejects malformed states.
 
 ## Latest results
 
-Run `results/npc-commands-05` (seed 20261020, fuzz 12): **213 scenarios, 137
+Base run `results/npc-commands-06` and Lost in Astral run
+`results/npc-commands-07` (seed 20261020, fuzz 12): **213 scenarios each, 137
 match, 76 differ** (134 motivation, 40 diplomacy, 39 alarm scenarios; both
-sides repeat identically).
+sides repeat identically). The two executables produced identical native
+observations for every scenario, so the same 76 scenarios differ in both
+runs.
 
 Divergences by cause (first differing field; expected native -> remake):
 

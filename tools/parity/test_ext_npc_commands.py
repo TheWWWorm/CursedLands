@@ -59,11 +59,17 @@ class NpcCommandInputsTest(unittest.TestCase):
                      "UMCorpseWatcher", "UMAg", "SetSpellAggression", "SetPlayerAggression", "SetEnemy"]:
             self.assertIn(name, used)
 
-    def test_contracts_are_base_only(self):
-        self.assertEqual(family.contracts("lost_in_astral"), {})
-        for contract in family.contracts("original").values():
-            self.assertTrue(contract["stubs"] and contract["entry"])
-            self.assertEqual(contract["tolerances"], {})
+    def test_contracts_cover_both_executables(self):
+        for campaign in ["original", "lost_in_astral"]:
+            contracts = family.contracts(campaign)
+            self.assertEqual(set(contracts), {"npc_motivation", "npc_diplomacy", "npc_alarm"})
+            for contract in contracts.values():
+                self.assertTrue(contract["stubs"] and contract["entry"])
+                self.assertEqual(contract["tolerances"], {})
+        self.assertEqual(family.contracts("unknown"), {})
+        astral = " ".join(" ".join(c["stubs"] + c["entry"]) for c in family.contracts("lost_in_astral").values())
+        self.assertNotIn("0x4b6760", astral)
+        self.assertNotIn("0x7c2bb4", astral)
 
     def test_config_sentinels_are_not_explicit_inputs(self):
         sentinels = set(family.CONFIG.values())

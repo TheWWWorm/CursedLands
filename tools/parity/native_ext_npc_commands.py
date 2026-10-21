@@ -1,7 +1,8 @@
-"""Native NPC behaviour commands: dispatcher 0x4b6760 against real AI records.
+"""Native NPC behaviour commands: quest dispatcher against real AI records.
 
-Every unit's logic object is built by the executable's own constructor
-(0x545580). Commands are compiled into native 0x94-byte records and executed
+Base addresses are given inline; NATIVE maps them to Lost in Astral. Every
+unit's logic object is built by the executable's own constructor (base
+0x545580, Astral 0x4c9a20). Commands are compiled into native 0x94-byte records and executed
 by the persistent-body dispatcher; motivation constructors, the motivation
 list, diplomacy tables and the world alarm table are all native. Hooks only
 supply the CRT heap, a no-op release for fixture actors (see Expressions) and
@@ -26,19 +27,32 @@ COMMANDS = {
 QUERIES = {"GetDiplomacy": 0x60, "IsEnemy": 0x61, "IsAlarm": 0x67,
            "AlarmTime": 0x8b, "AlarmPosX": 0x8c, "AlarmPosY": 0x8d}
 
-LOGIC_CONSTRUCTOR = 0x545580
-OPERATOR_NEW, OPERATOR_DELETE = 0x70056f, 0x700598
 AI = 0x980                      # motivation AI embedded in the unit logic
-LOGIC_CONFIG = 0x7c53e8          # [Logic] values read by 0x5ce0f0
 CONFIG_OFFSETS = {"GuardStayTime": 4, "SentryStayTime": 8, "FollowMinDist": 0xc,
                   "FollowMaxDist": 0x10, "GuardRadius": 0x14}
-DIPLOMACY = 0x7c2bb4             # 32 friend masks, then 32 enemy masks
-WORLD = ADDRESSES["original"]["world"]
-WORLD_TICK = WORLD + 0x64
-WORLD_UNITS = WORLD + 0x40       # container iterated by 0x404920/0x404960
-ALARM_PROLOGUE = (0x5d53b0, 0x5d5413)   # AI tick through its alarm countdown
+# Per-executable addresses (cases_ext_npc_commands.contracts lists the entry
+# points executed for each kind).
+NATIVE = {
+    "original": {
+        "logic": 0x545580,            # unit logic constructor (AI built by 0x545990)
+        "new": 0x70056f, "delete": 0x700598,
+        "config": 0x7c53e8,           # [Logic] values read by 0x5ce0f0
+        "diplomacy": 0x7c2bb4,        # 32 friend masks, then 32 enemy masks
+        "alarm_prologue": (0x5d53b0, 0x5d5413),   # AI tick through its alarm countdown
+        "option_rebuild": 0x5ceed0,   # AI weapon/spell option list from the unit inventory
+    },
+    "lost_in_astral": {
+        "logic": 0x4c9a20,            # AI built by 0x4c9930
+        "new": 0x5ffa7b, "delete": 0x5ffaa6,
+        "config": 0x6b8778,
+        "diplomacy": 0x6b603c,
+        "alarm_prologue": (0x51c4d0, 0x51c532),
+        "option_rebuild": 0x518100,
+    },
+}
+QUALIFIED = {"original": {"npc_motivation", "npc_diplomacy", "npc_alarm"},
+             "lost_in_astral": {"npc_motivation", "npc_diplomacy", "npc_alarm"}}
 
-OPTION_REBUILD = 0x5ceed0       # AI weapon/spell option list from the unit inventory
 DESCRIPTOR_SIZE = 0x4c
 
 TYPE_NAMES = {0: "guard", 1: "patrol", 2: "sentry", 3: "suspection", 4: "aggression",
@@ -54,9 +68,11 @@ class NpcFixture:
 
     def __init__(self, o, case):
         self.o = o
-        if o.campaign != "original":
-            raise ValueError("NPC command addresses are qualified for the base executable only")
-        self.heap_hooks(o)
+        if case.get("_kind") not in QUALIFIED.get(o.campaign, ()):
+            raise ValueError(f"{case.get('_kind')} addresses are not qualified for {o.campaign}")
+        self.native, self.quest = NATIVE[o.campaign], ADDRESSES[o.campaign]
+        self.world = self.quest["world"]
+        self.heap_hooks(o, self.native)
         rows = case.get("units", [])
         self.fixture = Expressions(o, rows, environment=case)
         self.fixture.opcodes = OPS | COMMANDS | QUERIES
@@ -70,7 +86,7 @@ class NpcFixture:
             o.write(unit + 0x244, 0, 0xffffffff, 0, 0)
             o.write(unit + 0x250, row.get("side", 0))
             logic = o.alloc(0x2000)
-            o.run(LOGIC_CONSTRUCTOR, logic)
+            o.run(self.native["logic"], logic)
             # Attachment links (unit <-> logic <-> AI) made at spawn time.
             o.write(unit + 0x240, logic)
             o.write(logic + 0x1c, unit)
@@ -79,7 +95,7 @@ class NpcFixture:
             o.write(logic + AI + 0x94, self.descriptor(row.get("descriptor", {})))
             self.logic.append(logic)
         for key, value in case.get("config", {}).items():
-            o.floats(LOGIC_CONFIG + CONFIG_OFFSETS[key], value)
+            o.floats(self.native["config"] + CONFIG_OFFSETS[key], value)
         for row in case.get("diplomacy", []):
             self.seed_relation(*row)
         # Spawn-time hostility mask: the unit's side row of the seeded matrix.
@@ -87,11 +103,12 @@ class NpcFixture:
             if unit:
                 o.write(unit + 0x244, self.diplomacy_enemy(rows[index].get("side", 0)))
         self.world_container()
-        o.write(WORLD_TICK, case.get("tick", 0))
-        o.hook(ADDRESSES["original"]["cleanup"], lambda: o.ret())
+        o.write(self.world + 0x64, case.get("tick", 0))   # world tick counter
+        o.hook(self.quest["cleanup"], lambda: o.ret())
         # ResetTarget's descriptor rebuild ends by rebuilding attack options
         # from the unit's inventory and stats, outside this contract.
-        o.hook(OPTION_REBUILD, lambda: o.ret(cleanup=4))
+        if self.native["option_rebuild"]:
+            o.hook(self.native["option_rebuild"], lambda: o.ret(cleanup=4))
 
     def descriptor(self, row):
         """One supplied .mob logic descriptor, laid out as 0x5d6630 reads it."""
@@ -105,27 +122,27 @@ class NpcFixture:
         return record
 
     @staticmethod
-    def heap_hooks(o):
+    def heap_hooks(o, native):
         def new():
             size = o.args(1)[0]
             block = o.alloc(max(size, 4))
             o.uc.mem_write(block, bytes(max(size, 4)))
             o.ret(block)
-        o.hook(OPERATOR_NEW, new)
+        o.hook(native["new"], new)
         # Fixture heap is a bump allocator; native destructors still run.
-        o.hook(OPERATOR_DELETE, lambda: o.ret())
+        o.hook(native["delete"], lambda: o.ret())
 
     def diplomacy_enemy(self, side):
-        return self.o.ints(DIPLOMACY + 0x80 + side * 4)[0] if 0 <= side < 32 else 0xffffffff
+        return self.o.ints(self.native["diplomacy"] + 0x80 + side * 4)[0] if 0 <= side < 32 else 0xffffffff
 
     def seed_relation(self, a, b, value):
         """Supplied .mob diplomacy matrix entry (0 friend, 1 neutral, 2 war)."""
-        o, bit = self.o, 1 << b
-        friend, enemy = o.ints(DIPLOMACY + a * 4)[0], o.ints(DIPLOMACY + 0x80 + a * 4)[0]
+        o, bit, table = self.o, 1 << b, self.native["diplomacy"]
+        friend, enemy = o.ints(table + a * 4)[0], o.ints(table + 0x80 + a * 4)[0]
         friend = friend | bit if value == 0 else friend & ~bit
         enemy = enemy | bit if value == 2 else enemy & ~bit
-        o.write(DIPLOMACY + a * 4, friend)
-        o.write(DIPLOMACY + 0x80 + a * 4, enemy)
+        o.write(table + a * 4, friend)
+        o.write(table + 0x80 + a * 4, enemy)
 
     def world_container(self):
         o = self.o
@@ -134,7 +151,7 @@ class NpcFixture:
         for i, node in enumerate(nodes):
             o.write(node, nodes[i + 1] if i + 1 < len(nodes) else 0, nodes[i - 1] if i else 0, present[i])
         o.write(container + 0x38, nodes[0] if nodes else 0)
-        o.write(WORLD_UNITS, container)
+        o.write(self.world + 0x40, container)   # iterated by 0x404920/0x404960
 
     def run(self, statement):
         o = self.o
@@ -142,12 +159,12 @@ class NpcFixture:
         vector, thread, killed = o.alloc(20), o.alloc(0xc0), o.alloc(4)
         o.write(vector + 4, record, 1)
         o.write(thread, vector, 0, 0, -1, killed)
-        o.run(ADDRESSES["original"]["program"], thread, [self.fixture.context])
+        o.run(self.quest["program"], thread, [self.fixture.context])
 
     def query(self, expression):
         o = self.o
         command, output = self.fixture.compile(expression), o.alloc(4)
-        o.run(ADDRESSES["original"]["eval"], command, [self.fixture.context, self.fixture.instance, output])
+        o.run(self.quest["eval"], command, [self.fixture.context, self.fixture.instance, output])
         return o.ints(output)[0]
 
     def index_of(self, pointer):
@@ -156,7 +173,7 @@ class NpcFixture:
         return self.units.index(pointer) if pointer in self.units else -2
 
     def config_or_bits(self, value, key):
-        configured = self.o.ints(LOGIC_CONFIG + CONFIG_OFFSETS[key])[0]
+        configured = self.o.ints(self.native["config"] + CONFIG_OFFSETS[key])[0]
         return key if value == configured else value
 
     def motivation(self, item):
@@ -215,7 +232,7 @@ class NpcFixture:
 
 
 def motivation(o, case):
-    fixture = NpcFixture(o, case)
+    fixture = NpcFixture(o, dict(case, _kind="npc_motivation"))
     states = []
     for statement in case["commands"]:
         fixture.run(statement)
@@ -224,7 +241,7 @@ def motivation(o, case):
 
 
 def diplomacy(o, case):
-    fixture = NpcFixture(o, case)
+    fixture = NpcFixture(o, dict(case, _kind="npc_diplomacy"))
     states = []
     for statement in case["commands"]:
         fixture.run(statement)
@@ -250,7 +267,7 @@ def alarm_table(fixture, indices):
 
 
 def alarm(o, case):
-    fixture = NpcFixture(o, case)
+    fixture = NpcFixture(o, dict(case, _kind="npc_alarm"))
     sentinels = []
     for index, row in enumerate(case.get("units", [])):
         logic = fixture.logic[index] if row is not None else 0
@@ -268,9 +285,11 @@ def alarm(o, case):
         else:
             # Supplied world tick advance, then each alerted AI runs only the
             # native alarm countdown/raise prologue of its AI tick.
-            o.write(WORLD_TICK, o.ints(WORLD_TICK)[0] + 1)
+            tick = fixture.world + 0x64
+            o.write(tick, o.ints(tick)[0] + 1)
+            start, end = fixture.native["alarm_prologue"]
             for index, ai in sentinels:
-                o.run(ALARM_PROLOGUE[0], ai, end=ALARM_PROLOGUE[1])
+                o.run(start, ai, end=end)
         states.append({"alarms": alarm_table(fixture, case["queries"]),
                        "countdowns": [struct.unpack("<i", struct.pack("<I", o.ints(ai + 0x40)[0]))[0]
                                       for _, ai in sentinels]})
