@@ -1,0 +1,240 @@
+{
+  "version": "1.22.0",
+  "date": "2026-10-21",
+  "status": "Packaged and validated; publication pending.",
+  "source_commit": "63b9c09d2eaec26a6ad6048705d3abf6da052416",
+  "game_tree": "bb237b0fcca0a0b7bbc5849e52be38164c4dc457",
+  "protocol": {
+    "campaign": 23,
+    "autochess": 1
+  },
+  "translations": "Translations: 2999 entries; 141 dynamic wiki keys; 179 dynamic arena keys; 0 errors",
+  "original_parity": {
+    "base": {
+      "before": {
+        "match": 2709,
+        "mismatch": 385
+      },
+      "after": {
+        "match": 2829,
+        "mismatch": 265
+      },
+      "changed_families": {
+        "perception_group": {
+          "before": {
+            "match": 384,
+            "mismatch": 32
+          },
+          "after": {
+            "match": 416,
+            "mismatch": 0
+          }
+        },
+        "perception_ticks": {
+          "before": {
+            "match": 9,
+            "mismatch": 27
+          },
+          "after": {
+            "match": 34,
+            "mismatch": 2
+          }
+        },
+        "quest_query": {
+          "before": {
+            "match": 71,
+            "mismatch": 52
+          },
+          "after": {
+            "match": 74,
+            "mismatch": 49
+          }
+        },
+        "quest_scheduler": {
+          "before": {
+            "match": 4,
+            "mismatch": 62
+          },
+          "after": {
+            "match": 64,
+            "mismatch": 2
+          }
+        }
+      },
+      "no_family_regressed": true
+    },
+    "lost_in_astral": {
+      "before": {
+        "match": 1407,
+        "mismatch": 160
+      },
+      "after": {
+        "match": 1442,
+        "mismatch": 125
+      },
+      "changed_families": {
+        "perception_group": {
+          "before": {
+            "match": 384,
+            "mismatch": 32
+          },
+          "after": {
+            "match": 416,
+            "mismatch": 0
+          }
+        },
+        "quest_query": {
+          "before": {
+            "match": 71,
+            "mismatch": 52
+          },
+          "after": {
+            "match": 74,
+            "mismatch": 49
+          }
+        }
+      },
+      "no_family_regressed": true
+    },
+    "deliberate_divergences": [
+      "quest_scheduler kill_after_sleep / world_kill: KillScript after a first slice is a fatal script error in the original; the remake keeps playing.",
+      "perception_ticks peripheral_blocked_ray_hostile{0,1}: remake peripheral sight requires a clear ray (no sight through walls or closed doors)."
+    ],
+    "runs": [
+      "results/integration-base-01",
+      "results/integration-astral-01",
+      "results/scheduler-fix-03"
+    ]
+  },
+  "script_vm_tests": {
+    "scope": "169 ScriptVM-related tool tests on the integrated source against the 1.21.0 source, network tests sequential.",
+    "result": "No regressions. Differences from 1.21.0 are fixes; ingos_interactions (2 checks) and shelter_departure (fixture setup) fail identically on 1.21.0.",
+    "new_tests": [
+      "script_scheduler.gd (15 checks)",
+      "script_perception.gd (7 checks)"
+    ]
+  },
+  "gameplay_programs": {
+    "runs": [
+      "results/integration-gameplay-02",
+      "results/integration-gameplay-03"
+    ],
+    "passed": 22,
+    "total": 25,
+    "notes": [
+      "direct_moving_attacks_first_person_run and direct_moving_casts_first_person_run fail only the camera-steadiness/coverage checks that also fail on unchanged source.",
+      "effects/water_reflection_combat errors before any check on unchanged source as well.",
+      "first_person_alignment passes 84/84 after excluding reflection copies, which share the source materials."
+    ]
+  },
+  "codex_validation": "docs/validation/first-person-screen-2026-10-21/results.json",
+  "packaged_checks": {
+    "linux": "release-1.22.0/linux-packaged.json",
+    "windows": "release-1.22.0/windows-packaged.json"
+  },
+  "cross_platform": {
+    "version": "1.22.0",
+    "compiled_scripts": 392,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 56,
+    "debuggable": false,
+    "apk_sha256": "5e8b26abbb6a8f41e60711b472a9845c36087b15bb0d5876ac179ba32603191c",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "db4560020be613f63e061defa86ac14555d0cd8ea8c7d0b7c72d306f306dff1a"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16
+  },
+  "branding": {
+    "windows_icon_sizes": [
+      16,
+      32,
+      48,
+      64,
+      128,
+      256
+    ],
+    "windows_icon_pixels_exact": true,
+    "windows_version": "1.22.0.0",
+    "macos_icon_exact": true,
+    "web_icons_exact": true,
+    "approved_master_sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18"
+  },
+  "wiki": {
+    "frontend_version": "1.22.0",
+    "indexes": {
+      "wiki/data/de/index.json": {
+        "entries": 1277,
+        "article_version": "1.10.0"
+      },
+      "wiki/data/en/index.json": {
+        "entries": 1277,
+        "article_version": "1.10.0"
+      },
+      "wiki/data/ru/index.json": {
+        "entries": 1277,
+        "article_version": "1.10.0"
+      },
+      "wiki/data/lost_in_astral/de/index.json": {
+        "entries": 1757,
+        "article_version": "1.10.0"
+      },
+      "wiki/data/lost_in_astral/en/index.json": {
+        "entries": 1757,
+        "article_version": "1.10.0"
+      },
+      "wiki/data/lost_in_astral/ru/index.json": {
+        "entries": 1757,
+        "article_version": "1.10.0"
+      }
+    },
+    "files": 13526,
+    "manifest_sha256": "067d6bbb581415a49375063c80332b9f32bb318d309168defdc174f926b7335e",
+    "content": "Current public wiki retained, including creature-to-map highlights; original article-export version preserved."
+  },
+  "browser_fresh_start": {
+    "passed": true,
+    "scope": "Isolated headless Chromium boots the exported WebAssembly game from Play to the original-data setup screen; muted settings seeded before engine launch; cross-origin isolated.",
+    "screenshot": "release-1.22.0/browser-fresh-start.png"
+  },
+  "browser_cache_upgrade": {
+    "version": "1.22.0",
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-f0f019ff20ad9baf206a",
+      "new_cache": "cursed-engine-2-a321b4c8762c71b9cd84",
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "pck_sha256": "fe8e1ec2bd11cb99720fd58381946b18636446443d86173bf5ff15766e0be11d",
+      "old_tab_wait_verified": true
+    },
+    "cache": {
+      "keys": [
+        "cursed-engine-2-a321b4c8762c71b9cd84"
+      ],
+      "packs": {
+        "cursed-engine-2-a321b4c8762c71b9cd84": "fe8e1ec2bd11cb99720fd58381946b18636446443d86173bf5ff15766e0be11d"
+      },
+      "worker": "activated",
+      "waiting": null,
+      "isolated": true
+    }
+  },
+  "limits": [
+    "mod_effects packaged check fails two revival-HP checks on both 1.22.0 and the published 1.21.0 Linux build; no fix is claimed.",
+    "Borderless FSR frame generation was verified on NVIDIA under Wine; native Radeon hardware still needs a retest.",
+    "Windows runtime checks use Wine; no new native macOS or Android device qualification; macOS package is unsigned.",
+    "The forwarded mine slowdown and exact scene reports #61, #62 and #64 are not declared resolved."
+  ],
+  "publication_receipt": "release-1.22.0/publication.json",
+  "deployment_receipt": "release-1.22.0/deployment.json"
+}
