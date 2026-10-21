@@ -1,0 +1,384 @@
+{
+  "schema": 1,
+  "captured_at_utc": "2026-10-21T09:56:57.739263+00:00",
+  "change": "Synchronize first-person shadow copies after DirectPose composes the final lower-body pose, before shadow rendering.",
+  "base_commit": "20ae68de6aec9842ea2ef8efee8aef4eb506d7f9",
+  "branch": "fix/first-person-shadow-20261021",
+  "source": {
+    "game/src/game/direct_pose.gd": "459a724f2fa592e9dff2eeb16b48affd0518ec261474fd2c7e7d20b686658baa",
+    "tools/tests/first_person_shadows.gd": "df73b5b408e91274055262b4339f20645b885dea3289f4a89d3716df74b52b3a"
+  },
+  "engine": {
+    "path": "/home/llm2x/.local/bin/godot-4",
+    "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+  },
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "shadow_regressions": [
+    {
+      "id": "animation/first_person_shadows",
+      "campaign": "cursed_lands",
+      "status": "passed",
+      "checks": 28,
+      "rendered_measurements": [
+        {
+          "case": "run phase 0.2",
+          "moving_pixels": 2566,
+          "wrong_pixels": 0
+        },
+        {
+          "case": "run phase 0.5",
+          "moving_pixels": 1964,
+          "wrong_pixels": 0
+        },
+        {
+          "case": "run phase 0.8",
+          "moving_pixels": 1634,
+          "wrong_pixels": 0
+        },
+        {
+          "case": "attack phase 0.2",
+          "moving_pixels": 3095,
+          "wrong_pixels": 0
+        },
+        {
+          "case": "attack phase 0.5",
+          "moving_pixels": 2491,
+          "wrong_pixels": 0
+        },
+        {
+          "case": "attack phase 0.8",
+          "moving_pixels": 2034,
+          "wrong_pixels": 0
+        },
+        {
+          "case": "cast phase 0.2",
+          "moving_pixels": 3518,
+          "wrong_pixels": 0
+        },
+        {
+          "case": "cast phase 0.5",
+          "moving_pixels": 2534,
+          "wrong_pixels": 0
+        },
+        {
+          "case": "cast phase 0.8",
+          "moving_pixels": 2161,
+          "wrong_pixels": 0
+        }
+      ]
+    },
+    {
+      "id": "animation/first_person_shadows_astral",
+      "campaign": "lost_in_astral",
+      "status": "passed",
+      "checks": 28,
+      "rendered_measurements": [
+        {
+          "case": "run phase 0.2",
+          "moving_pixels": 2557,
+          "wrong_pixels": 0
+        },
+        {
+          "case": "run phase 0.5",
+          "moving_pixels": 1968,
+          "wrong_pixels": 0
+        },
+        {
+          "case": "run phase 0.8",
+          "moving_pixels": 1658,
+          "wrong_pixels": 0
+        },
+        {
+          "case": "attack phase 0.2",
+          "moving_pixels": 3079,
+          "wrong_pixels": 0
+        },
+        {
+          "case": "attack phase 0.5",
+          "moving_pixels": 2464,
+          "wrong_pixels": 0
+        },
+        {
+          "case": "attack phase 0.8",
+          "moving_pixels": 2033,
+          "wrong_pixels": 0
+        },
+        {
+          "case": "cast phase 0.2",
+          "moving_pixels": 3438,
+          "wrong_pixels": 0
+        },
+        {
+          "case": "cast phase 0.5",
+          "moving_pixels": 2474,
+          "wrong_pixels": 0
+        },
+        {
+          "case": "cast phase 0.8",
+          "moving_pixels": 2102,
+          "wrong_pixels": 0
+        }
+      ]
+    }
+  ],
+  "negative_control": {
+    "status": "failed",
+    "checks": 28,
+    "failures": 9,
+    "diagnostics": [],
+    "failure_messages": [
+      "FAIL run phase 0.2 first-person shadow matches the final running pose",
+      "FAIL run phase 0.5 first-person shadow matches the final running pose",
+      "FAIL run phase 0.8 first-person shadow matches the final running pose",
+      "FAIL attack phase 0.2 first-person shadow matches the final running pose",
+      "FAIL attack phase 0.5 first-person shadow matches the final running pose",
+      "FAIL attack phase 0.8 first-person shadow matches the final running pose",
+      "FAIL cast phase 0.2 first-person shadow matches the final running pose",
+      "FAIL cast phase 0.5 first-person shadow matches the final running pose",
+      "FAIL cast phase 0.8 first-person shadow matches the final running pose"
+    ],
+    "runtime": {
+      "campaign": "cursed_lands",
+      "display": "rendered",
+      "display_driver": "X11",
+      "engine": {
+        "build": "official",
+        "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+        "hex": 263936,
+        "major": 4,
+        "minor": 7,
+        "patch": 0,
+        "status": "stable",
+        "string": "4.7-stable (official)",
+        "timestamp": 0
+      },
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "rendering_method": "gl_compatibility",
+      "script": "res://tools/tests/first_person_shadows.gd",
+      "seed": 20261020,
+      "user_dir": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/negative-control/data/godot/app_userdata/Cursed Lands"
+    },
+    "argv": [
+      "/home/llm2x/.local/bin/godot-4",
+      "--path",
+      "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/before/runtime",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--display-driver",
+      "x11",
+      "--rendering-method",
+      "gl_compatibility",
+      "--windowed",
+      "--resolution",
+      "1280x800",
+      "--position",
+      "0,0",
+      "--",
+      "--no-movies",
+      "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+      "--tool=res://tools/gameplay_bootstrap.gd",
+      "--suite-script=res://tools/tests/first_person_shadows.gd",
+      "--suite-campaign=cursed_lands",
+      "--suite-display=rendered"
+    ],
+    "exit_code": 1,
+    "baseline_commit": "20ae68de6aec9842ea2ef8efee8aef4eb506d7f9",
+    "direct_pose_sha256": "e5c75d4260ceb53cd4eec20f2ec6edcf039d0c9bec7cd349bbbbc74bfa361e03",
+    "fixture_sha256": "df73b5b408e91274055262b4339f20645b885dea3289f4a89d3716df74b52b3a"
+  },
+  "additional_passing_regressions": [
+    {
+      "id": "animation/direct_moving_attacks_third_person",
+      "checks": 15,
+      "status": "passed"
+    },
+    {
+      "id": "commands/first_person_actions",
+      "checks": 64,
+      "status": "passed"
+    },
+    {
+      "id": "animation/first_person_alignment",
+      "checks": 84,
+      "status": "passed"
+    },
+    {
+      "id": "animation/direct_moving_casts",
+      "checks": 48,
+      "status": "passed"
+    },
+    {
+      "id": "animation/direct_moving_casts_first_person_held_run_recheck",
+      "checks": 54,
+      "status": "passed"
+    }
+  ],
+  "harness_tests": {
+    "command": "python3 -m unittest discover -s tools/parity -p 'test_gameplay*.py' -q",
+    "tests": 29,
+    "status": "passed"
+  },
+  "initial_broader_run": {
+    "status": "failed",
+    "counts": {
+      "passed": 5,
+      "failed": 3,
+      "error": 0,
+      "programs": 8,
+      "checks": 342,
+      "failed_checks": 4
+    },
+    "report": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/verified/report.json"
+  },
+  "camera_and_coverage_comparisons": [
+    {
+      "id": "animation/direct_moving_attacks_first_person_run",
+      "initial_fixed_failures": [
+        "FAIL moving sword: first-person eye remains steady during moving attacks"
+      ],
+      "unchanged_baseline_failures": [
+        "FAIL moving sword: first-person eye remains steady during moving attacks"
+      ],
+      "initial_fixed_camera_motion": 0.42322364449501,
+      "baseline_camera_motion": 0.42322364449501,
+      "fixed_recheck": null
+    },
+    {
+      "id": "animation/direct_moving_casts_first_person_run",
+      "initial_fixed_failures": [
+        "FAIL moving sword: forward, backward and both strafe directions move during casts",
+        "FAIL moving sword: first-person eye remains steady during moving casts"
+      ],
+      "unchanged_baseline_failures": [
+        "FAIL moving sword: forward, backward and both strafe directions move during casts",
+        "FAIL moving sword: first-person eye remains steady during moving casts"
+      ],
+      "initial_fixed_camera_motion": 0.537781059741974,
+      "baseline_camera_motion": 0.568173587322235,
+      "fixed_recheck": null
+    },
+    {
+      "id": "animation/direct_moving_casts_first_person_held_run",
+      "initial_fixed_failures": [
+        "FAIL moving sword: first-person eye remains steady during moving casts"
+      ],
+      "unchanged_baseline_failures": [],
+      "initial_fixed_camera_motion": 0.0879921019077301,
+      "baseline_camera_motion": 7.62939453125e-06,
+      "fixed_recheck": {
+        "id": "animation/direct_moving_casts_first_person_held_run",
+        "category": "animation",
+        "script": "tools/tests/direct_moving_casts.gd",
+        "marker": "MOVING_CASTS",
+        "min_checks": 10,
+        "quick": false,
+        "description": "Cast/recovery timing during movement",
+        "kind": "remake_regression",
+        "timeout": 240,
+        "args": [
+          "--first-person",
+          "--run",
+          "--held"
+        ],
+        "campaign": "cursed_lands",
+        "required_files": [
+          "res/database.res",
+          "res/texts.res",
+          "maps/zone1.mob"
+        ],
+        "display": "rendered",
+        "status": "passed",
+        "checks": 54,
+        "failures": 0,
+        "diagnostics": [],
+        "failure_messages": [],
+        "runtime": {
+          "campaign": "cursed_lands",
+          "display": "rendered",
+          "display_driver": "X11",
+          "engine": {
+            "build": "official",
+            "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+            "hex": 263936,
+            "major": 4,
+            "minor": 7,
+            "patch": 0,
+            "status": "stable",
+            "string": "4.7-stable (official)",
+            "timestamp": 0
+          },
+          "profile": {
+            "confine_mouse": 0,
+            "show_fps": 1,
+            "volume_sfx": 0,
+            "volume_stream": 0,
+            "volume_voice": 0
+          },
+          "rendering_method": "gl_compatibility",
+          "script": "res://tools/tests/direct_moving_casts.gd",
+          "seed": 20261020,
+          "user_dir": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/held-cast-recheck/profile/data/godot/app_userdata/Cursed Lands"
+        },
+        "argv": [
+          "/home/llm2x/.local/bin/godot-4",
+          "--path",
+          "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/verified/runtime",
+          "--render-thread",
+          "safe",
+          "--audio-driver",
+          "Dummy",
+          "--display-driver",
+          "x11",
+          "--rendering-method",
+          "gl_compatibility",
+          "--windowed",
+          "--resolution",
+          "1280x800",
+          "--position",
+          "0,0",
+          "--",
+          "--no-movies",
+          "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+          "--tool=res://tools/gameplay_bootstrap.gd",
+          "--suite-script=res://tools/tests/direct_moving_casts.gd",
+          "--suite-campaign=cursed_lands",
+          "--suite-display=rendered",
+          "--first-person",
+          "--run",
+          "--held"
+        ],
+        "exit_code": 0,
+        "seconds": 53.618
+      }
+    }
+  ],
+  "interpretation": "The focused shadow comparisons pass with zero differing pixels in both campaigns. The unchanged source fails all nine comparisons. Full-map attack camera and cast camera/direction-coverage failures also occur on the unchanged baseline. The held-cast camera check initially failed on the fixed source, passed on unchanged source, and passed on a fixed-source recheck; it remains timing-sensitive. These results are retained rather than reporting the broader run as passing.",
+  "raw_evidence": {
+    "verified": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/verified",
+    "negative-control": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/negative-control",
+    "baseline-scene": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/baseline-scene",
+    "standard-moving-casts": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/standard-moving-casts",
+    "held-cast-recheck": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/held-cast-recheck"
+  },
+  "images": {
+    "after-attack.png": "2387dd4d2c0dad6ec3b7d8e64373404d79df99b549ce0e7fa043d95da3ab9292",
+    "after-cast.png": "8e8db0448b36d009609c39b7423077af42440c174c5a0c057b780342c751f5bb",
+    "before-attack.png": "1e73c95b0f16551ac82ca8dc9ad1f02afadce07c8d9c2b038acc0729af824300",
+    "before-cast.png": "1be8a05a55334ec6fc3980fe195fd5989f3dde2b7254d77c5c751a59525df55c"
+  },
+  "scope": "Linux OpenGL/Mesa rendered fixtures and isolated headless regressions; no new published build or target-OS qualification."
+}
