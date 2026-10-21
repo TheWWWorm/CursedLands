@@ -1,0 +1,55 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+Vulkan 1.4.312 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090
+
+[trace 20:11:28 +5249ms] session e804a1a816d4: 1.21.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, forward_plus / vulkan
+[trace 20:11:29 +5921ms] zone load gz3g (entrance 1)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":60,"interval_fps":null,"interval_s":0.671001,"msaa_3d":2,"nodes":754.0,"objects":4338.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":null,"pid":791509,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":501.0,"screen_space_aa":2,"static_bytes":null,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":5.921499,"video_allocated_bytes":null,"vsync":1,"window":[1280,720],"world_count":0,"worlds":[],"zone":"gz3g (loading)"}
+[trace 20:11:36 +13606ms] navigation prepared 6 classes in 560 ms
+[trace 20:11:37 +13952ms] shader warm-up: 24 of 24 materials, 16 ms (zone's first picture 100 ms), drawn with the first frame
+[trace 20:11:37 +13953ms] zone ready gz3g
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":3,"figure_meshes":1181,"figure_models":52,"object_textures":28,"unit_textures":32,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":60,"interval_fps":null,"interval_s":8.031746,"msaa_3d":2,"nodes":16064.0,"objects":34459.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":null,"pid":791509,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":501.0,"screen_space_aa":2,"static_bytes":null,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":13.953454,"video_allocated_bytes":null,"vsync":1,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":9,"lights":4,"magic_endings":0,"missiles":0},"instance":486354718962,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":214,"visible":true,"zone":"gz3g"}],"zone":"gz3g"}
+RT_CAPABILITY true
+PERFORMANCE {"buffer_bytes":56048222.0,"cache_entries":{"camera_materials":0,"figure_materials":3,"figure_meshes":1181,"figure_models":52,"object_textures":28,"unit_textures":32,"wound_jobs":0,"wound_layers":0},"draw_calls":3844.0,"drawn_frames":339,"focus":"in","frame_limit":0,"interval_fps":18.7998633100204,"interval_s":18.032046,"msaa_3d":0,"nodes":16021.0,"objects":34491.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":1.995,"pid":791509,"primitives":604286.0,"process_ms":48.993,"reason":"interval","recent_fps":20.0,"render_scale":1.0,"renderer":"forward_plus","resources":501.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":205273600.0,"time_scale":1.0,"uptime_s":31.985676,"video_allocated_bytes":286388992.0,"vsync":0,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":9,"lights":4,"magic_endings":0,"missiles":0},"instance":486354718962,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":214,"visible":true,"zone":"gz3g"}],"zone":"gz3g"}
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS hardware RT scene prepares successfully
+RT_STATS {"geometries":2684,"instances":3008,"radius":96.0,"supported":true,"textures":44,"triangles":189384}
+PASS RT replaces the planar draw pass
+PASS real map geometry is in the acceleration structure
+PASS hardware trace returns visible scenery hits
+PERFORMANCE {"buffer_bytes":100477214.0,"cache_entries":{"camera_materials":0,"figure_materials":3,"figure_meshes":1181,"figure_models":52,"object_textures":28,"unit_textures":32,"wound_jobs":0,"wound_layers":0},"draw_calls":1806.0,"drawn_frames":554,"focus":"in","frame_limit":60,"interval_fps":18.469652593836,"interval_s":29.99515,"msaa_3d":0,"nodes":16021.0,"objects":47132.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=3 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":2.056,"pid":791509,"primitives":298939.0,"process_ms":62.863,"reason":"interval","recent_fps":21.0,"render_scale":1.0,"renderer":"forward_plus","resources":501.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":268876288.0,"time_scale":1.0,"uptime_s":61.981037,"video_allocated_bytes":476794464.0,"vsync":0,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":9,"lights":4,"magic_endings":0,"missiles":0},"instance":486354718962,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":214,"visible":true,"zone":"gz3g"}],"zone":"gz3g"}
+PASS camera rotation retains the static acceleration structure
+PASS hidden terrain suspends hardware tracing
+PASS showing the terrain reuses its static snapshot
+PASS tree-bank comparison camera is above open water
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+PASS moving to a new water view rebuilds the snapshot
+PASS backend failure releases hardware resources
+PASS backend failure restores the planar texture
+PASS Mirror releases ray tracing resources
+PASS Mirror restores the raster reflection
+PASS Off releases the reflection owner
+PASS all reflection choices exist in en
+PASS RT choice is translated in en
+PASS water reflection help is visible in en
+PASS localized help matches the selected option in en
+PASS water reflection help fits in en
+PASS all reflection choices exist in ru
+PASS RT choice is translated in ru
+PASS water reflection help is visible in ru
+PASS localized help matches the selected option in ru
+PASS water reflection help fits in ru
+PASS all reflection choices exist in de
+PASS RT choice is translated in de
+PASS water reflection help is visible in de
+PASS localized help matches the selected option in de
+PASS water reflection help fits in de
+WATER_RT 29 checks 0 failures
+[trace 20:12:43 +80294ms] clean exit
