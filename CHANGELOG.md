@@ -6,6 +6,7 @@
 - Run script triggers in the original scheduler order. Every true block of a trigger fires in the same pass, a block can fire again while its earlier body sleeps, and new scripts, briefing handlers and side-quest objectives are checked on the original tick. The Zone 19 run point now shows its portal effect instead of recreating its light every tick.
 - Keep first-person player shadows in step with running legs during attacks and spellcasting.
 - Keep extra self-cast key taps from reselecting the spell during the first half of its cast. Allow a fresh double-tap after the midpoint to queue another cast. Update shortcut help in English, Russian and German.
+- Base script sight checks on what each character has actually noticed, as the original does. Guards keep seeing a hero they noticed until they lose track of them, the list of a fallen watcher stays readable, and corpses count only for unit visibility and sighting objectives.
 
 ## 1.21.0 — 2026-10-21
 
