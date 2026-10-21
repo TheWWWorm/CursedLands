@@ -35,17 +35,15 @@ static func values(preset: int, method: String = RenderingServer.get_current_ren
 		result.gfx_cloud_reflections = 0
 		result.gfx_ground_contact = 0
 		result.q_shadows = mini(result.q_shadows, 2)
-	if preset in [ORIGINAL, VERY_LOW]: result.q_aa = 0
-	elif preset in [LOW, MEDIUM]: result.q_aa = 1
-	elif preset == HIGH: result.q_aa = 2
 	# Ultra records every effect as enabled, also when the current renderer
 	# uses a fallback. Switching to Forward+ then realizes the full preset.
 	if preset != ULTRA and method != "forward_plus":
 		for key in ["gfx_volumetric", "gfx_ssao", "gfx_water_reflections", "gfx_depth_of_field"]:
 			result[key] = 0
-	if method == "gl_compatibility": result.q_aa = 0
-	result.fsr_upscaling = 0 # The preset's AA choice replaces the unified selector.
+	# AA/upscaling is an independent Screen choice. The detector's ladder
+	# still needs its AA seed internally, but a preset must not apply it.
+	result.erase("q_aa")
 	return result
 
 static func controls(key: String) -> bool:
-	return key.begins_with("gfx_") or key in ["q_aa", "fsr_upscaling", "fsr_quality", "q_shadows", "q_aniso", "q_shadow_fit", "render_scale"]
+	return key.begins_with("gfx_") or key in ["q_shadows", "q_aniso", "q_shadow_fit", "render_scale"]

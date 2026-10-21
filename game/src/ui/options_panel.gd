@@ -185,6 +185,7 @@ var _game_setup: DifficultyPanel
 var _preset_picker: OptionButton
 var _preset_scale := Vector2.ZERO
 var _screen_pickers: Dictionary = {}
+const SCREEN_PICKER_ROWS := {"resolution":1,"render_scale":2,"q_aa":3,FsrGraphics.QUALITY:4,FsrGraphics.FRAME_GENERATION:5}
 var _fsr_hint := ""
 
 
@@ -217,7 +218,7 @@ func _ready() -> void:
 	_preset_picker.get_popup().add_theme_color_override("font_color", TEXT)
 	_preset_picker.get_popup().add_theme_color_override("font_hover_color", TEXT)
 	_preset_picker.get_popup().add_theme_stylebox_override("hover", SettingsDialog.plate(BAR, Color.TRANSPARENT, 4))
-	for name: String in ["q_aa", FsrGraphics.QUALITY, FsrGraphics.FRAME_GENERATION]:
+	for name: String in SCREEN_PICKER_ROWS:
 		var picker := ScrollOptionButton.new()
 		picker.fit_to_longest_item = false
 		CampaignChoices.style_button(picker)
@@ -229,7 +230,7 @@ func _ready() -> void:
 		picker.item_selected.connect(func(index):
 			if name == "q_aa": _set_aa_value(picker.get_item_id(index))
 			else: _set_value(name, picker.get_item_id(index))
-			_sel = 3 if name == "q_aa" else (4 if name == FsrGraphics.QUALITY else 5))
+			_sel = SCREEN_PICKER_ROWS[name])
 		picker.get_popup().add_theme_font_override("font", font())
 		picker.get_popup().add_theme_stylebox_override("panel", SettingsDialog.plate(Color("24241c"), Color("8b7953"), 8))
 		picker.get_popup().add_theme_color_override("font_color", TEXT)
@@ -376,6 +377,7 @@ func _show_group(g: int) -> void:
 		_rows[int(o[4])] = {"kind": "slider" if int(o[1]) == 0 else "switch", "name": name,
 			"max": choices.size() if not choices.is_empty() else int(o[2]), "label": label, "tip": tip,
 			"choices": choices}
+		if name in ["resolution","render_scale"]: _rows[int(o[4])].kind = "dropdown"
 		if name == "q_aa":
 			_rows[int(o[4])].kind = "dropdown"
 			_rows[int(o[4])].choices = choices + RemakeText.tl(["FSR 3.1", "FSR 4"])
@@ -462,7 +464,7 @@ func _refresh_screen_pickers() -> void:
 		picker.get_popup().hide()
 		picker.clear()
 		if _group != SCREEN_GROUP: continue
-		var row: Dictionary = _rows[3 if name == "q_aa" else (4 if name == FsrGraphics.QUALITY else 5)]
+		var row: Dictionary = _rows[SCREEN_PICKER_ROWS[name]]
 		picker.disabled = row.get("disabled", false)
 		picker.tooltip_text = row.tip
 		for i in row.choices.size():
@@ -870,7 +872,7 @@ func _sync_screen_pickers() -> void:
 		if not picker.visible:
 			picker.get_popup().hide()
 			continue
-		var row := 3 if name == "q_aa" else (4 if name == FsrGraphics.QUALITY else 5)
+		var row: int = SCREEN_PICKER_ROWS[name]
 		var rect := r8(Rect2(530, _row_y(row), 160, 24))
 		picker.position = rect.position
 		if picker.get_meta("layout_scale", Vector2.ZERO) != kv():

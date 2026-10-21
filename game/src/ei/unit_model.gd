@@ -325,6 +325,10 @@ var _view_shift := Vector3.ZERO
 var _view_meshes: Array[MeshInstance3D] = []
 var _view_shadows: Array[Dictionary] = []
 var _view_active := false
+## The local body is camera-adjusted. Mirrors draw the complete authored
+## figure on a separate layer; the main camera excludes that layer.
+const CLOSE_VIEW_LAYER := 1 << 17
+const REFLECTION_LAYER := 1 << 18
 
 
 ## `unit` is a map object dictionary from EIMob (or a synthetic one with
@@ -1537,11 +1541,41 @@ func _set_first_person_shadows(on: bool) -> void:
 			add_child(shadow)
 			var skeleton := source.get_node_or_null(source.skeleton) if not source.skeleton.is_empty() else null
 			if skeleton is Skeleton3D: shadow.skeleton = shadow.get_path_to(skeleton)
-			_view_shadows.append({"source":source,"shadow":shadow,"cast":source.cast_shadow})
+			var reflection := MeshInstance3D.new()
+			reflection.name = "ViewReflection"
+			reflection.mesh = shadow.mesh
+			reflection.skin = source.skin
+			reflection.material_override = source.material_override
+			for i in source.mesh.get_surface_count(): reflection.set_surface_override_material(i,source.get_surface_override_material(i))
+			reflection.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			reflection.layers = REFLECTION_LAYER
+			add_child(reflection)
+			if skeleton is Skeleton3D: reflection.skeleton = reflection.get_path_to(skeleton)
+			if not Portability.compatibility(): reflection.set_instance_shader_parameter("unit_stealth",0.5 if _invisible else 0.0)
+			_view_shadows.append({"source":source,"shadow":shadow,"reflection":reflection,"cast":source.cast_shadow,"layers":source.layers})
 	for row: Dictionary in _view_shadows:
 		row.source.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if on else row.cast
+		row.source.layers = CLOSE_VIEW_LAYER if on else row.layers
 		row.shadow.visible = on
+		row.reflection.visible = on
 	if on: _update_first_person_shadows()
+
+
+## Keep view-specific layers when the unit enters/leaves the screen's
+## shadow reach. Presentation copies must never enter the main camera.
+func apply_view_layer_option(mesh: GeometryInstance3D, mask: int) -> bool:
+	for row: Dictionary in _view_shadows:
+		if row.source == mesh:
+			row.layers = mask
+			mesh.layers = CLOSE_VIEW_LAYER if _view_active else mask
+			return true
+		if row.shadow == mesh:
+			mesh.layers = row.layers
+			return true
+		if row.reflection == mesh:
+			mesh.layers = REFLECTION_LAYER
+			return true
+	return false
 
 
 ## Game applies shadow options to newly added geometry on a deferred call.
@@ -1556,6 +1590,10 @@ func apply_view_shadow_option(mesh: GeometryInstance3D, enabled: bool) -> bool:
 			mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY
 			mesh.visible = _view_active and enabled
 			return true
+		if row.reflection == mesh:
+			mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			mesh.visible = _view_active
+			return true
 	return false
 
 
@@ -1563,15 +1601,18 @@ func _update_first_person_shadows() -> void:
 	for row: Dictionary in _view_shadows:
 		var source: MeshInstance3D = row.source
 		var shadow: MeshInstance3D = row.shadow
-		var shown: bool = row.cast != GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		var shown := true
 		var n: Node3D = source
 		while n != null and n != self:
 			if not (_head_hidden and n == _head): shown = shown and n.visible
 			if n == _head: shown = shown and _head_visible
 			n = n.get_parent_node_3d()
-		shadow.visible = shown
-		shadow.layers = source.layers
+		shadow.visible = shown and row.cast != GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		shadow.layers = row.layers
 		shadow.global_transform = source.global_transform
+		var reflection: MeshInstance3D = row.reflection
+		reflection.visible = shown
+		reflection.global_transform = source.global_transform
 
 
 func _set_first_person_shift(shift: Vector3) -> void:

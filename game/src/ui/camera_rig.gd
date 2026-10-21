@@ -162,6 +162,7 @@ var _depth_of_field: CameraDepthOfField
 
 func _ready() -> void:
 	camera = Camera3D.new()
+	camera.cull_mask &= ~EIUnitModel.REFLECTION_LAYER
 	camera.far = 2000.0
 	camera.fov = MODERN_FOV if modern() else ORIGINAL_FOV
 	add_child(camera)

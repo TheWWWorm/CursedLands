@@ -59,6 +59,8 @@ func exercise(choice: OptionButton, label: String) -> void:
 	await frames()
 	var bounds := Rect2(Vector2.ZERO, get_viewport().get_visible_rect().size)
 	check(bounds.encloses(Rect2(popup.position, popup.size)), label + " popup fits screen")
+	check(popup.size.y > 360.0 * popup.content_scale_factor, label + " long list grows beyond the former short popup")
+	check(bar.page * choice.item_count / bar.max_value >= 8.0, label + " long popup exposes at least eight entries at once")
 	check(bar.visible and bar.max_value > bar.page, label + " overflow has visible scrollbar")
 	var parent_scroll := panel._scroll.scroll_vertical
 	var point := scroll.get_global_rect().get_center()

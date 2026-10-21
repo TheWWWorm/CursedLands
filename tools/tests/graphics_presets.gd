@@ -17,7 +17,9 @@ func _ready() -> void:
 	var panel := OptionsPanel.new(); add_child(panel); panel.open(image)
 	check(panel._rows[8].name=="graphics_preset","main Graphics page exposes the preset selector")
 	for preset in [GfxPresets.ORIGINAL, GfxPresets.VERY_LOW, GfxPresets.LOW, GfxPresets.MEDIUM, GfxPresets.HIGH, GfxPresets.VERY_HIGH, GfxPresets.ULTRA]:
+		panel._values.merge({"q_aa":5,"fsr_upscaling":2,"fsr_quality":3,"fsr_frame_generation":1},true)
 		panel._set_value("graphics_preset",preset)
+		check(panel._values.q_aa == 5 and panel._values.fsr_upscaling == 2 and panel._values.fsr_quality == 3 and panel._values.fsr_frame_generation == 1,"preset preserves independent AA/upscaling/FG selections " + str(preset))
 		check(panel._switch_text(panel._rows[8])==RemakeText.t(GfxPresets.NAMES[preset]),"explicit preset label "+str(preset))
 		check(panel._values.auto_graphics==0,"explicit preset disables detection "+str(preset))
 		if preset==1:
@@ -59,7 +61,11 @@ func _ready() -> void:
 			var values := GfxPresets.values(preset,method)
 			check(not values.has("renderer") and not values.has("resolution") and not values.has("control_mode"),"preset preserves renderer, display and controls "+method+str(preset))
 			if method!="forward_plus" and preset != GfxPresets.ULTRA: check(values.gfx_ssao==0 and values.gfx_volumetric==0 and values.gfx_water_reflections==0,"unsupported screen effects stay off "+method+str(preset))
-			if method=="gl_compatibility": check(values.q_aa==0,"Compatibility preset avoids unsupported SMAA "+str(preset))
+			check(not values.has("q_aa") and not values.has("fsr_upscaling") and not values.has("fsr_quality"),"preset leaves AA choices independent " + method + str(preset))
+	panel._set_value("graphics_preset",GfxPresets.HIGH)
+	panel._set_value("q_aa",2)
+	check(panel._values.graphics_preset == GfxPresets.HIGH,"changing AA does not turn a graphics preset into Custom")
+	check(not GfxPresets.controls("fsr_upscaling") and not GfxPresets.controls("fsr_quality"),"FSR version and quality do not change the graphics preset")
 	for method in ["gl_compatibility", "mobile", "forward_plus"]:
 		var last := {}
 		for preset in GfxPresets.ORDER:

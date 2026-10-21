@@ -56,6 +56,14 @@ class GameplayResults(unittest.TestCase):
         profile = dict(PROFILE, volume_voice=50)
         self.assertEqual(assess(capture(profile=profile), SPEC, 0)["status"], "error")
 
+    def test_declared_renderer_cannot_silently_fall_back(self):
+        spec = dict(SPEC, display="rendered", rendering_method="forward_plus")
+        for actual in (None, "gl_compatibility", "forward_plus"):
+            result = assess(capture(display="rendered", rendering_method=actual), spec, 0)
+            self.assertEqual(result["status"], "passed" if actual == "forward_plus" else "error")
+        argv = engine_argv("/godot", "/runtime", "rendered", "forward_plus")
+        self.assertEqual(argv[argv.index("--rendering-method") + 1], "forward_plus")
+
     def test_wrong_script_cannot_pass(self):
         self.assertEqual(assess(capture(script="res://tools/tests/other.gd"), SPEC, 0)["status"], "error")
 

@@ -1360,6 +1360,17 @@ func _place_window(mode: int, size: Vector2i, native: bool) -> void:
 	_window_gen += 1
 	var gen := _window_gen
 	var w := get_tree().root
+	if mode == 2 and OS.get_name() == "Windows":
+		# Godot's nonexclusive fullscreen mode expands the D3D12 surface by
+		# two pixels beyond the reported viewport. FSR frame generation needs
+		# an exact display/swapchain match. A screen-sized borderless window
+		# keeps both sizes identical without changing the display mode.
+		var scr := DisplayServer.window_get_current_screen()
+		w.mode = Window.MODE_WINDOWED
+		w.borderless = true
+		w.position = DisplayServer.screen_get_position(scr)
+		w.size = DisplayServer.screen_get_size(scr)
+		return
 	if mode == 0:
 		if DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_WINDOWED:
 			w.mode = Window.MODE_WINDOWED

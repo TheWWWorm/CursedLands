@@ -103,7 +103,7 @@ func _process(dt: float) -> void:
 	# surface search; geometry must use the main view's draw distance.
 	camera.far = source.far
 	camera.global_transform = reflected_transform(source.get_camera_transform(), plane)
-	camera.cull_mask = (source.cull_mask & ~WATER_LAYER) | CAMERA_MARKER
+	camera.cull_mask = reflection_mask(source.cull_mask)
 	RenderingServer.global_shader_parameter_set(&"ei_water_mirror", Vector3(plane, 0, 0))
 	var material := terrain._water_mat
 	material.set_shader_parameter("planar_height", plane)
@@ -111,6 +111,10 @@ func _process(dt: float) -> void:
 	material.set_shader_parameter("planar_view", camera.global_transform.affine_inverse())
 	material.set_shader_parameter("planar_enabled", true)
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+
+
+static func reflection_mask(source_mask: int) -> int:
+	return (source_mask & ~(WATER_LAYER | EIUnitModel.CLOSE_VIEW_LAYER)) | CAMERA_MARKER | EIUnitModel.REFLECTION_LAYER
 
 
 func _create_view() -> void:

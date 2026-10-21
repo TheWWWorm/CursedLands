@@ -1,0 +1,328 @@
+{
+  "schema": 1,
+  "captured_at_utc": "2026-10-21T16:39:58.039560+00:00",
+  "base_commit": "78ae3494affaad49b417b792a5e221a0ea1f2e94",
+  "behavior": [
+    "Water mirrors draw the complete authored first-person figure, including the face, independently of close-view geometry and shadow quality.",
+    "Depleted heroes retain walking speed and walking leg cycles while Shift is held, including combat/casting composition; recovery restores eligible running.",
+    "Windows borderless presentation dimensions match the root viewport so FSR 3 frame generation can initialize.",
+    "Resolution and Render scale use existing localized Screen dropdowns; popup height budget rises from 360 to 900 units and stays within the screen.",
+    "Graphics presets preserve AA, FSR version/quality and frame generation. AA changes do not select Custom."
+  ],
+  "source_sha256": {
+    "game/src/ei/game_data.gd": "41855b41de817d302a7bac6904de22d25829943385b82b396832cab952e0d5e8",
+    "game/src/ei/unit_model.gd": "6f9dd1c6a9c1f0440504bb14bda061dec8422472a8cc4cd6fb8dcf87c239f899",
+    "game/src/game/direct_pose.gd": "611ae0de8c709e79b75bea001bf6f401b91119bd1930da98e3986f52a28bbf45",
+    "game/src/game/fx/water_reflection.gd": "53d66bcb5b7cdee72dbe6e75f5318014ddc0038abd438cbec5aad901efe6e846",
+    "game/src/game/gfx_presets.gd": "5b734cee2fc6cae66ef25d1e8ee6fc798d06e769586099dcd9aca631990b55a3",
+    "game/src/game/unit.gd": "3daa23067ff21de29161fbf1664eff3655f3d2de4db100968d6b49d401414e88",
+    "game/src/platform/fsr_graphics.gd": "2f437da048f858c1291baa84480a1be1c4aa5cf9803ed6e070e253f0d1efea3c",
+    "game/src/ui/camera_rig.gd": "669c5747287fc84c0c071503dfe6871ff9936aa2e915449b8a622a56bf5c2f7c",
+    "game/src/ui/options_panel.gd": "bc90e68c29bec7445abc59b4c599e6f06761ac4b534868cafda8fea2197c38c7",
+    "game/src/ui/scroll_option_button.gd": "f94f745ed25a995edaa04185a5c087400e2896dc6fae12f847a62f5a6a4068bc",
+    "tools/tests/first_person_reflections.gd": "6467e68d04ba638d8958e379c45f14a482cf2e680a2258f1ad0afe95744629f2",
+    "tools/tests/direct_gait_continuity.gd": "1b9c1594266bdd5e76f72d8e251bff2365b5cc2b12c679b0537ca6af31a6219b",
+    "tools/tests/direct_movement.gd": "bab26efda4aac4af35590621c3ca7902b59d858f538e2a4318ff225edd804535",
+    "tools/tests/fsr_campaign.gd": "f3662c3ee23602fc20b56e049f97b12fa7837c9578416777a42e085ec5641e1b",
+    "tools/tests/fsr_screen.gd": "5deef0650d4e59e7582ce9dc415dced8fef6950afa2c4e1233fd1055cd6abce1",
+    "tools/tests/graphics_presets.gd": "d40db69c25adbdf7257c92b528ab1e35e7287f00ffeb899ad616d61367fa3501",
+    "tools/tests/long_dropdowns.gd": "ebf34c57730c9112970f4f8a5715f51a3a0d5ce91e3d11f806e6b43a0e20cc8a"
+  },
+  "linux": {
+    "programs": 13,
+    "checks": 5392,
+    "failed_checks": 0,
+    "tests": [
+      {
+        "id": "animation/direct_gait_continuity",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 1929,
+        "failures": 0,
+        "log": "tests/animation/direct_gait_continuity/run.log",
+        "log_sha256": "c74ddd6bf3dc20c6322e4f5c19969a25f57d6c227cf8e152206380d7b9bef2a8"
+      },
+      {
+        "id": "animation/first_person_shadows",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 28,
+        "failures": 0,
+        "log": "tests/animation/first_person_shadows/run.log",
+        "log_sha256": "c85d9264f116a15f00cff832205667d0bdc675f5daed1c7352d75fb6db3ea2f2"
+      },
+      {
+        "id": "animation/first_person_shadows_astral",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 28,
+        "failures": 0,
+        "log": "tests/animation/first_person_shadows_astral/run.log",
+        "log_sha256": "59dd316bb7951034788d6f8cb44e3ce6274f9a03224ec1b8bca9ac3f6ad08674"
+      },
+      {
+        "id": "pathing/direct_movement",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 41,
+        "failures": 0,
+        "log": "tests/pathing/direct_movement/run.log",
+        "log_sha256": "4c9e6b0d184b2fcb4fb7d5c21685f4198c00756adedf0dd593a75356c5d05fa6"
+      },
+      {
+        "id": "animation/first_person_reflections",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 59,
+        "failures": 0,
+        "log": "tests/animation/first_person_reflections/run.log",
+        "log_sha256": "595fe36063ef283b80be5935e2f6fac14b7bd801b7f7b0dcf0e540ccbed73dae"
+      },
+      {
+        "id": "animation/first_person_reflections_astral",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 59,
+        "failures": 0,
+        "log": "tests/animation/first_person_reflections_astral/run.log",
+        "log_sha256": "a6aa80adbc918bfbd79425b5bfca92b9e1d489f6ff5fde5282c09ac243a9a089"
+      },
+      {
+        "id": "animation/direct_gait_continuity_astral",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 1929,
+        "failures": 0,
+        "log": "tests/animation/direct_gait_continuity_astral/run.log",
+        "log_sha256": "74156ad7ce9c88e5ede308361d744581cfc116167e6fe7fb24e0bbb9da7a0c0e"
+      },
+      {
+        "id": "pathing/direct_movement_astral",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 41,
+        "failures": 0,
+        "log": "tests/pathing/direct_movement_astral/run.log",
+        "log_sha256": "b338ccb5159c1a6d693370268e23856c3fec10ef9fd1d398f1d3293842d8d374"
+      },
+      {
+        "id": "settings/graphics_presets",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 282,
+        "failures": 0,
+        "log": "tests/settings/graphics_presets/run.log",
+        "log_sha256": "eb7cd2e7afd5472f65a8c79598504bd00f431091768054f63ab67fef548c7aec"
+      },
+      {
+        "id": "settings/screen_dropdowns",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 561,
+        "failures": 0,
+        "log": "tests/settings/screen_dropdowns/run.log",
+        "log_sha256": "acde71f66f6a85d3193f927c62d6b8afd9ba316723530423db10848a254f0b03"
+      },
+      {
+        "id": "settings/long_dropdowns",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 103,
+        "failures": 0,
+        "log": "tests/settings/long_dropdowns/run.log",
+        "log_sha256": "40def5c4d3eabbf4d28af730d3dad974cae67ee95219fb439dafce658334ea5a"
+      },
+      {
+        "id": "commands/self_cast_bursts",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 166,
+        "failures": 0,
+        "log": "tests/commands/self_cast_bursts/run.log",
+        "log_sha256": "8db5f2e10a3758fb86536b1a61c47eb531f9c53c169077a6d8aef1d4f2bb77da"
+      },
+      {
+        "id": "commands/self_cast_bursts_astral",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 166,
+        "failures": 0,
+        "log": "tests/commands/self_cast_bursts_astral/run.log",
+        "log_sha256": "eea5e941cdc412d6ac896c92c0c87f13ff4c2a2a0b8637b523ba3b8bd32a050c"
+      }
+    ],
+    "raw_runs": [
+      "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/reflection-screen-final",
+      "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/dropdown-self-cast-final"
+    ],
+    "collection_note": "The first run retained ten clean programs; its old long-dropdown fixture completed 91 checks but was rejected by an incorrectly specified new 100-check selection minimum. The expanded fixture adds twelve acceptance assertions for the taller list and passes all 103 checks in the second run. No failing gameplay assertion is omitted.",
+    "scope": "Injected controls, native campaign data, manually stepped movement/casts, native animation records, Forward+ reflection pixels and OpenGL UI captures. Both campaigns for figures/movement/self-casting; EN/RU/DE at 800x600, 1280x720 and 2560x1600 for Screen. Long menus also cover portrait and 3840x2160."
+  },
+  "windows_d3d12": {
+    "checks": 97,
+    "failures": [],
+    "execution": {
+      "exit": 0,
+      "seconds": 117.42,
+      "diagnostics": [],
+      "scope": "Windows D3D12 through Wine/VKD3D on NVIDIA; no AMD or native-Windows claim"
+    },
+    "rows": [
+      {
+        "label": "gameplay",
+        "sampled_frames": 90,
+        "generated_frames": 90,
+        "presented_frames": 180,
+        "focused": true,
+        "hud_blocks_camera": false
+      },
+      {
+        "label": "display-mode-2",
+        "sampled_frames": 90,
+        "generated_frames": 90,
+        "presented_frames": 180,
+        "focused": true,
+        "hud_blocks_camera": false
+      },
+      {
+        "label": "display-mode-1",
+        "sampled_frames": 90,
+        "generated_frames": 90,
+        "presented_frames": 180,
+        "focused": true,
+        "hud_blocks_camera": false
+      },
+      {
+        "label": "display-mode-0",
+        "sampled_frames": 90,
+        "generated_frames": 90,
+        "presented_frames": 180,
+        "focused": true,
+        "hud_blocks_camera": false
+      },
+      {
+        "label": "paused",
+        "sampled_frames": 90,
+        "generated_frames": 0,
+        "presented_frames": 90,
+        "focused": true,
+        "hud_blocks_camera": false
+      },
+      {
+        "label": "resumed",
+        "sampled_frames": 90,
+        "generated_frames": 90,
+        "presented_frames": 180,
+        "focused": true,
+        "hud_blocks_camera": false
+      },
+      {
+        "label": "loading",
+        "sampled_frames": 90,
+        "generated_frames": 0,
+        "presented_frames": 90,
+        "focused": true,
+        "hud_blocks_camera": true
+      },
+      {
+        "label": "menu",
+        "sampled_frames": 90,
+        "generated_frames": 0,
+        "presented_frames": 90,
+        "focused": true,
+        "hud_blocks_camera": true
+      },
+      {
+        "label": "menu-closed",
+        "sampled_frames": 90,
+        "generated_frames": 90,
+        "presented_frames": 180,
+        "focused": true,
+        "hud_blocks_camera": false
+      },
+      {
+        "label": "upscaling-off",
+        "sampled_frames": 90,
+        "generated_frames": 90,
+        "presented_frames": 180,
+        "focused": true,
+        "hud_blocks_camera": false
+      },
+      {
+        "label": "native-gameplay",
+        "sampled_frames": 90,
+        "generated_frames": 90,
+        "presented_frames": 180,
+        "focused": true,
+        "hud_blocks_camera": false
+      },
+      {
+        "label": "native-menu",
+        "sampled_frames": 90,
+        "generated_frames": 0,
+        "presented_frames": 90,
+        "focused": true,
+        "hud_blocks_camera": true
+      },
+      {
+        "label": "native-menu-closed",
+        "sampled_frames": 90,
+        "generated_frames": 90,
+        "presented_frames": 180,
+        "focused": true,
+        "hud_blocks_camera": false
+      },
+      {
+        "label": "all-fsr-off",
+        "sampled_frames": 90,
+        "generated_frames": 0,
+        "presented_frames": 90,
+        "focused": true,
+        "hud_blocks_camera": false
+      }
+    ],
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "provider_sr": "3.1.5",
+    "provider_fg": "3.1.6",
+    "engine_sha256": "31c126d88e3048f279b7357dba8ffdaebcb7ea3bb6271bee92f8964bdb386296",
+    "pack_sha256": "d5ea52f24766d0d3b0dce4488fb0b6bc5e93ede8ea221803c0b5297c2d6763d5",
+    "raw": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/borderless-fsr-native/display-modes",
+    "scope": "Windows executable through Wine/VKD3D on a private Xorg dummy display with a valid refresh rate; not native Windows or Radeon hardware qualification."
+  },
+  "borderless_negative_control": {
+    "mutation": "Bypass only the custom Windows borderless window path; use the original Godot nonexclusive fullscreen path. Run the same native campaign setup with a bounded borderless probe.",
+    "checks": 10,
+    "expected_failures": [
+      "borderless-negative: automatic FG gate",
+      "borderless-negative: SDK generated-frame count",
+      "borderless-negative: real presentation count"
+    ],
+    "generated_frames": 0,
+    "presented_frames": 90,
+    "sdk_error": 0,
+    "raw": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/borderless-fsr-native/borderless-negative"
+  },
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0,
+    "audio_driver": "Dummy"
+  },
+  "localization": {
+    "entries": 2999,
+    "errors": 0,
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "note": "Existing translated option labels, help and dynamic resolution/native-size and percentage choices are reused."
+  },
+  "harness_unit_tests": {
+    "tests": 30,
+    "failures": 0
+  },
+  "release": "Local source only; no public push, tag, release or hosted build."
+}

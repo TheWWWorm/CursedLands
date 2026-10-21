@@ -6133,6 +6133,80 @@
         "res/redress.res",
         "res/figures.res"
       ]
+    },
+    {
+      "id": "animation/first_person_reflections",
+      "category": "animation",
+      "script": "tools/tests/first_person_reflections.gd",
+      "marker": "FIRST_PERSON_REFLECTIONS",
+      "min_checks": 59,
+      "quick": true,
+      "description": "First-person mirrors retain the complete face and authored figure independently of the local body and shadow settings",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered",
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "animation/first_person_reflections_astral",
+      "category": "animation",
+      "script": "tools/tests/first_person_reflections.gd",
+      "marker": "FIRST_PERSON_REFLECTIONS",
+      "min_checks": 59,
+      "quick": true,
+      "description": "First-person mirrors retain the complete face and authored figure independently of the local body and shadow settings",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered",
+      "rendering_method": "forward_plus"
+    },
+    {
+      "id": "settings/screen_dropdowns",
+      "category": "settings",
+      "script": "tools/tests/fsr_screen.gd",
+      "marker": "FSR_SCREEN",
+      "min_checks": 561,
+      "quick": true,
+      "description": "Resolution, render scale and FSR Screen dropdowns, localized layouts and screen-bounded popup heights",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "settings/long_dropdowns",
+      "category": "settings",
+      "script": "tools/tests/long_dropdowns.gd",
+      "marker": "LONG_DROPDOWNS",
+      "min_checks": 103,
+      "quick": true,
+      "description": "Taller dropdowns stay within the screen, scroll and support keyboard selection across desktop and portrait layouts",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered"
     }
   ]
 }

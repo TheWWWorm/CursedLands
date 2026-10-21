@@ -4029,7 +4029,8 @@ func _present_native_frame(dt: float) -> void:
 		_far = far
 		for g in _geoms:
 			if is_instance_valid(g):
-				g.layers = OFFSCREEN_LAYER if far else 1
+				var mask := OFFSCREEN_LAYER if far else 1
+				if model == null or not model.apply_view_layer_option(g, mask): g.layers = mask
 	var now := _game_clock
 	# Native Trials workers/research advance this pose at exact 55 ms ticks.
 	# The frontend's physics interpolation fraction must not change attack
