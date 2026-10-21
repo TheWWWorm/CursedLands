@@ -1,812 +1,1142 @@
 {
-	"ancientcursem25": {
-		"family": 18,
-		"file": "18-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"bansheedarkm12": {
-		"family": 6,
-		"file": "06-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"bansheelightf4": {
-		"family": 12,
-		"file": "12-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"batdarkm12": {
-		"family": 8,
-		"file": "08-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"batredm1": {
-		"family": 4,
-		"file": "04-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"boarredf1": {
-		"family": 0,
-		"file": "00-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"cyclopsa20": {
-		"family": 1,
-		"file": "01-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"doggreyf6": {
-		"family": 14,
-		"file": "14-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"dragonbluem14": {
-		"family": 6,
-		"file": "06-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"dragonbrownm16": {
-		"family": 4,
-		"file": "04-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"dragongreenm12": {
-		"family": 8,
-		"file": "08-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"dragonkinbeastmenf3": {
-		"family": 16,
-		"file": "16-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"driaddarka7": {
-		"family": 23,
-		"file": "23-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"driaddarkm9": {
-		"family": 24,
-		"file": "24-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"driadgreena7": {
-		"family": 13,
-		"file": "13-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"driadgreenm7": {
-		"family": 13,
-		"file": "13-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"driadsnowa7": {
-		"family": 7,
-		"file": "07-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"driadsnowqm9": {
-		"family": 7,
-		"file": "07-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"elementalearthf8": {
-		"family": 5,
-		"file": "05-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"elementalicef15": {
-		"family": 7,
-		"file": "07-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"elementallavaf12": {
-		"family": 21,
-		"file": "21-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"evileyegreenm17": {
-		"family": 18,
-		"file": "18-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"evileyeredm16": {
-		"family": 10,
-		"file": "10-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"goblina1": {
-		"family": 3,
-		"file": "03-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"goblinf1": {
-		"family": 1,
-		"file": "01-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"golemhorizontalf20": {
-		"family": 9,
-		"file": "09-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"golemverticalf20": {
-		"family": 0,
-		"file": "00-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human gipath brigand a1": {
-		"family": 17,
-		"file": "17-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human gipath brigand deputy f1": {
-		"family": 25,
-		"file": "25-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human gipath brigand f1": {
-		"family": 19,
-		"file": "19-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human gipath npc expeditor f15": {
-		"family": 27,
-		"file": "27-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human gipath npc wife m3": {
-		"family": 22,
-		"file": "22-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human gipath warlord f2": {
-		"family": 15,
-		"file": "15-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human hadagan guards a14": {
-		"family": 20,
-		"file": "20-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human hadagan guards m14": {
-		"family": 18,
-		"file": "18-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human hadagan necromancer m17": {
-		"family": 24,
-		"file": "24-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human hadagan npc lieutenant f15": {
-		"family": 29,
-		"file": "29-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human hadagan overseer f14": {
-		"family": 29,
-		"file": "29-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human hadagan overseerba f14": {
-		"family": 26,
-		"file": "26-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human hadagan peasants a1": {
-		"family": 22,
-		"file": "22-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human hadagan students f10": {
-		"family": 27,
-		"file": "27-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human kania citizen a7": {
-		"family": 23,
-		"file": "23-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human kania gang f11": {
-		"family": 28,
-		"file": "28-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human kania gang f9": {
-		"family": 19,
-		"file": "19-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human kania gang spear f10": {
-		"family": 28,
-		"file": "28-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human kania goldminer f7": {
-		"family": 27,
-		"file": "27-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human kania hunter f7": {
-		"family": 14,
-		"file": "14-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human kania npc captain f14": {
-		"family": 20,
-		"file": "20-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human kania npc sorceress m11": {
-		"family": 13,
-		"file": "13-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human kania police a8": {
-		"family": 29,
-		"file": "29-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human kania police f10": {
-		"family": 26,
-		"file": "26-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human kania police f8": {
-		"family": 20,
-		"file": "20-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human kania police karansul f8": {
-		"family": 25,
-		"file": "25-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human kania ranger f9": {
-		"family": 17,
-		"file": "17-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human kania sorceress bodyguard f9": {
-		"family": 15,
-		"file": "15-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human kania woodcutter f8": {
-		"family": 26,
-		"file": "26-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human mercenary bodyguard": {
-		"family": 14,
-		"file": "14-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human mercenary hadagan rogue": {
-		"family": 17,
-		"file": "17-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human mercenary hadagan thief": {
-		"family": 22,
-		"file": "22-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human mercenary hadagan warrior": {
-		"family": 19,
-		"file": "19-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human mercenary kania archer": {
-		"family": 3,
-		"file": "03-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human mercenary kania paladin": {
-		"family": 15,
-		"file": "15-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human mercenary kania thief": {
-		"family": 28,
-		"file": "28-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human mercenary shaivar": {
-		"family": 24,
-		"file": "24-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human mercenary thief": {
-		"family": 23,
-		"file": "23-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"human mercenary warrior": {
-		"family": 25,
-		"file": "25-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"hyenaf6": {
-		"family": 9,
-		"file": "09-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"octopushadaganm17": {
-		"family": 11,
-		"file": "11-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"ogregipatf9": {
-		"family": 16,
-		"file": "16-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"ogrehadaganf17": {
-		"family": 9,
-		"file": "09-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"orcfemalea5": {
-		"family": 3,
-		"file": "03-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"orcfemalem3": {
-		"family": 11,
-		"file": "11-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"orcmalef5": {
-		"family": 1,
-		"file": "01-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"ratsmallf1": {
-		"family": 10,
-		"file": "10-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"scrabmotherpoisonedf6": {
-		"family": 5,
-		"file": "05-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"shadowm20": {
-		"family": 12,
-		"file": "12-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"skeletonf2": {
-		"family": 12,
-		"file": "12-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"spiderf10": {
-		"family": 10,
-		"file": "10-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"succubbluem10": {
-		"family": 11,
-		"file": "11-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"succubgreym13": {
-		"family": 8,
-		"file": "08-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"succubredm9": {
-		"family": 4,
-		"file": "04-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"tigerwhitef10": {
-		"family": 2,
-		"file": "02-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"toadm2": {
-		"family": 5,
-		"file": "05-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"trollblackslowf16": {
-		"family": 16,
-		"file": "16-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"trollbluef9": {
-		"family": 0,
-		"file": "00-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"undeadf17": {
-		"family": 21,
-		"file": "21-1.png",
-		"rank": 1,
-		"size": [
-			64,
-			64
-		]
-	},
-	"unicornwhitem15": {
-		"family": 2,
-		"file": "02-2.png",
-		"rank": 2,
-		"size": [
-			64,
-			64
-		]
-	},
-	"willowispm1": {
-		"family": 6,
-		"file": "06-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"wolfgreyf1": {
-		"family": 2,
-		"file": "02-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	},
-	"zombiemalef10": {
-		"family": 21,
-		"file": "21-0.png",
-		"rank": 0,
-		"size": [
-			64,
-			64
-		]
-	}
+  "0:0": {
+    "appearance": {
+      "prototype": "boarredf1",
+      "texture": "boar00"
+    },
+    "family": 0,
+    "file": "00-0.png",
+    "prototype": "boarredf1",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "0:1": {
+    "appearance": {
+      "prototype": "boarredf2",
+      "texture": "boar00"
+    },
+    "family": 0,
+    "file": "00-1.png",
+    "prototype": "boarredf2",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "0:2": {
+    "appearance": {
+      "prototype": "boarredf3",
+      "texture": "boar01"
+    },
+    "family": 0,
+    "file": "00-2.png",
+    "prototype": "boarredf3",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "10:0": {
+    "appearance": {
+      "prototype": "dragonkinbeastmenf3",
+      "texture": "lizardman00"
+    },
+    "family": 10,
+    "file": "10-0.png",
+    "prototype": "dragonkinbeastmenf3",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "10:1": {
+    "appearance": {
+      "prototype": "dragonkingreenf7",
+      "texture": "lizardman01"
+    },
+    "family": 10,
+    "file": "10-1.png",
+    "prototype": "dragonkingreenf7",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "10:2": {
+    "appearance": {
+      "prototype": "dragonkinjunf11",
+      "texture": "lizardman02"
+    },
+    "family": 10,
+    "file": "10-2.png",
+    "prototype": "dragonkinjunf11",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "11:0": {
+    "appearance": {
+      "prototype": "driadgreena7",
+      "texture": "driad00"
+    },
+    "family": 11,
+    "file": "11-0.png",
+    "prototype": "driadgreena7",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "11:1": {
+    "appearance": {
+      "prototype": "driadgreena9",
+      "texture": "driad01"
+    },
+    "family": 11,
+    "file": "11-1.png",
+    "prototype": "driadgreena9",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "11:2": {
+    "appearance": {
+      "prototype": "driadgreena11",
+      "texture": "driad02"
+    },
+    "family": 11,
+    "file": "11-2.png",
+    "prototype": "driadgreena11",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "12:0": {
+    "appearance": {
+      "prototype": "zombiemalef10"
+    },
+    "family": 12,
+    "file": "12-0.png",
+    "prototype": "zombiemalef10",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "12:1": {
+    "appearance": {
+      "prototype": "zombiemalef12"
+    },
+    "family": 12,
+    "file": "12-1.png",
+    "prototype": "zombiemalef12",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "12:2": {
+    "appearance": {
+      "prototype": "zombiemalef16"
+    },
+    "family": 12,
+    "file": "12-2.png",
+    "prototype": "zombiemalef16",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "13:0": {
+    "appearance": {
+      "prototype": "orcfemalem3"
+    },
+    "family": 13,
+    "file": "13-0.png",
+    "prototype": "orcfemalem3",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "13:1": {
+    "appearance": {
+      "prototype": "orcfemalem5"
+    },
+    "family": 13,
+    "file": "13-1.png",
+    "prototype": "orcfemalem5",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "13:2": {
+    "appearance": {
+      "prototype": "orcfemalem7"
+    },
+    "family": 13,
+    "file": "13-2.png",
+    "prototype": "orcfemalem7",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "14:0": {
+    "appearance": {
+      "prototype": "trollbluef9",
+      "texture": "troll01"
+    },
+    "family": 14,
+    "file": "14-0.png",
+    "prototype": "trollbluef9",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "14:1": {
+    "appearance": {
+      "prototype": "trollbluef11",
+      "texture": "troll00"
+    },
+    "family": 14,
+    "file": "14-1.png",
+    "prototype": "trollbluef11",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "14:2": {
+    "appearance": {
+      "prototype": "trollbluef12",
+      "texture": "troll02"
+    },
+    "family": 14,
+    "file": "14-2.png",
+    "prototype": "trollbluef12",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "15:0": {
+    "appearance": {
+      "prototype": "ogregipatf5",
+      "texture": "ogre00"
+    },
+    "family": 15,
+    "file": "15-0.png",
+    "prototype": "ogregipatf5",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "15:1": {
+    "appearance": {
+      "prototype": "ogregipatf7",
+      "texture": "ogre00"
+    },
+    "family": 15,
+    "file": "15-1.png",
+    "prototype": "ogregipatf7",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "15:2": {
+    "appearance": {
+      "prototype": "ogregipatf9",
+      "texture": "ogre01"
+    },
+    "family": 15,
+    "file": "15-2.png",
+    "prototype": "ogregipatf9",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "16:0": {
+    "appearance": {
+      "prototype": "succubredm9",
+      "texture": "succubus00"
+    },
+    "family": 16,
+    "file": "16-0.png",
+    "prototype": "succubredm9",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "16:1": {
+    "appearance": {
+      "prototype": "succubredm10",
+      "texture": "succubus01"
+    },
+    "family": 16,
+    "file": "16-1.png",
+    "prototype": "succubredm10",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "16:2": {
+    "appearance": {
+      "prototype": "succubredm11",
+      "texture": "succubus02"
+    },
+    "family": 16,
+    "file": "16-2.png",
+    "prototype": "succubredm11",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "17:0": {
+    "appearance": {
+      "prototype": "hyenaf6"
+    },
+    "family": 17,
+    "file": "17-0.png",
+    "prototype": "hyenaf6",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "17:1": {
+    "appearance": {
+      "prototype": "hyenaf6"
+    },
+    "family": 17,
+    "file": "17-1.png",
+    "prototype": "hyenaf6",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "17:2": {
+    "appearance": {
+      "prototype": "hyenaf6"
+    },
+    "family": 17,
+    "file": "17-2.png",
+    "prototype": "hyenaf6",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "18:0": {
+    "appearance": {
+      "prototype": "evileyesimplem5",
+      "texture": "beholder02"
+    },
+    "family": 18,
+    "file": "18-0.png",
+    "prototype": "evileyesimplem5",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "18:1": {
+    "appearance": {
+      "prototype": "evileyesimplem6",
+      "texture": "beholder02"
+    },
+    "family": 18,
+    "file": "18-1.png",
+    "prototype": "evileyesimplem6",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "18:2": {
+    "appearance": {
+      "prototype": "evileyesimplem7",
+      "texture": "beholder01"
+    },
+    "family": 18,
+    "file": "18-2.png",
+    "prototype": "evileyesimplem7",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "19:0": {
+    "appearance": {
+      "prototype": "bansheedarkm12",
+      "texture": "banshee00"
+    },
+    "family": 19,
+    "file": "19-0.png",
+    "prototype": "bansheedarkm12",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "19:1": {
+    "appearance": {
+      "prototype": "bansheedarkm14",
+      "texture": "banshee00"
+    },
+    "family": 19,
+    "file": "19-1.png",
+    "prototype": "bansheedarkm14",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "19:2": {
+    "appearance": {
+      "prototype": "bansheedarkm16",
+      "texture": "banshee01"
+    },
+    "family": 19,
+    "file": "19-2.png",
+    "prototype": "bansheedarkm16",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "1:0": {
+    "appearance": {
+      "prototype": "wolfgreyf1",
+      "texture": "wolf00"
+    },
+    "family": 1,
+    "file": "01-0.png",
+    "prototype": "wolfgreyf1",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "1:1": {
+    "appearance": {
+      "prototype": "wolfgreyf2",
+      "texture": "wolf00"
+    },
+    "family": 1,
+    "file": "01-1.png",
+    "prototype": "wolfgreyf2",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "1:2": {
+    "appearance": {
+      "prototype": "wolfgreyf3",
+      "texture": "wolf01"
+    },
+    "family": 1,
+    "file": "01-2.png",
+    "prototype": "wolfgreyf3",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "20:0": {
+    "appearance": {
+      "prototype": "unicornwhitem15",
+      "texture": "unicorn00"
+    },
+    "family": 20,
+    "file": "20-0.png",
+    "prototype": "unicornwhitem15",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "20:1": {
+    "appearance": {
+      "prototype": "unicornwhitem15",
+      "texture": "unicorn00"
+    },
+    "family": 20,
+    "file": "20-1.png",
+    "prototype": "unicornwhitem15",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "20:2": {
+    "appearance": {
+      "prototype": "unicornwhitem15",
+      "texture": "unicorn01"
+    },
+    "family": 20,
+    "file": "20-2.png",
+    "prototype": "unicornwhitem15",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "21:0": {
+    "appearance": {
+      "prototype": "willowispm1"
+    },
+    "family": 21,
+    "file": "21-0.png",
+    "prototype": "willowispm1",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "21:1": {
+    "appearance": {
+      "prototype": "willowispm3"
+    },
+    "family": 21,
+    "file": "21-1.png",
+    "prototype": "willowispm3",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "21:2": {
+    "appearance": {
+      "prototype": "willowispm5"
+    },
+    "family": 21,
+    "file": "21-2.png",
+    "prototype": "willowispm5",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "22:0": {
+    "appearance": {
+      "prototype": "elementalicef9"
+    },
+    "family": 22,
+    "file": "22-0.png",
+    "prototype": "elementalicef9",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "22:1": {
+    "appearance": {
+      "prototype": "elementalicef11"
+    },
+    "family": 22,
+    "file": "22-1.png",
+    "prototype": "elementalicef11",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "22:2": {
+    "appearance": {
+      "prototype": "elementalicef15"
+    },
+    "family": 22,
+    "file": "22-2.png",
+    "prototype": "elementalicef15",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "23:0": {
+    "appearance": {
+      "prototype": "dragonbrownm16",
+      "texture": "dragon00"
+    },
+    "family": 23,
+    "file": "23-0.png",
+    "prototype": "dragonbrownm16",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "23:1": {
+    "appearance": {
+      "prototype": "dragonbrownm16",
+      "texture": "dragon01"
+    },
+    "family": 23,
+    "file": "23-1.png",
+    "prototype": "dragonbrownm16",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "23:2": {
+    "appearance": {
+      "prototype": "dragonbrownm16",
+      "texture": "dragon02"
+    },
+    "family": 23,
+    "file": "23-2.png",
+    "prototype": "dragonbrownm16",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "24:0": {
+    "appearance": {
+      "prototype": "golemverticalf20"
+    },
+    "family": 24,
+    "file": "24-0.png",
+    "prototype": "golemverticalf20",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "24:1": {
+    "appearance": {
+      "prototype": "golemverticalf20"
+    },
+    "family": 24,
+    "file": "24-1.png",
+    "prototype": "golemverticalf20",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "24:2": {
+    "appearance": {
+      "prototype": "golemverticalf20"
+    },
+    "family": 24,
+    "file": "24-2.png",
+    "prototype": "golemverticalf20",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "25:0": {
+    "appearance": {
+      "prototype": "ancientcursem25"
+    },
+    "family": 25,
+    "file": "25-0.png",
+    "prototype": "ancientcursem25",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "25:1": {
+    "appearance": {
+      "prototype": "ancientcursem25"
+    },
+    "family": 25,
+    "file": "25-1.png",
+    "prototype": "ancientcursem25",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "25:2": {
+    "appearance": {
+      "prototype": "ancientcursem25"
+    },
+    "family": 25,
+    "file": "25-2.png",
+    "prototype": "ancientcursem25",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "26:0": {
+    "appearance": {
+      "prototype": "octopuskaniam11"
+    },
+    "family": 26,
+    "file": "26-0.png",
+    "prototype": "octopuskaniam11",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "26:1": {
+    "appearance": {
+      "prototype": "octopuskaniam12"
+    },
+    "family": 26,
+    "file": "26-1.png",
+    "prototype": "octopuskaniam12",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "26:2": {
+    "appearance": {
+      "prototype": "octopuskaniam15"
+    },
+    "family": 26,
+    "file": "26-2.png",
+    "prototype": "octopuskaniam15",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "27:0": {
+    "appearance": {
+      "prototype": "cyclopsa16"
+    },
+    "family": 27,
+    "file": "27-0.png",
+    "prototype": "cyclopsa16",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "27:1": {
+    "appearance": {
+      "prototype": "cyclopsa18"
+    },
+    "family": 27,
+    "file": "27-1.png",
+    "prototype": "cyclopsa18",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "27:2": {
+    "appearance": {
+      "prototype": "cyclopsa20"
+    },
+    "family": 27,
+    "file": "27-2.png",
+    "prototype": "cyclopsa20",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "2:0": {
+    "appearance": {
+      "prototype": "ratsmallf1"
+    },
+    "family": 2,
+    "file": "02-0.png",
+    "prototype": "ratsmallf1",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "2:1": {
+    "appearance": {
+      "prototype": "ratgiantf9"
+    },
+    "family": 2,
+    "file": "02-1.png",
+    "prototype": "ratgiantf9",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "2:2": {
+    "appearance": {
+      "prototype": "ratgiantf11"
+    },
+    "family": 2,
+    "file": "02-2.png",
+    "prototype": "ratgiantf11",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "3:0": {
+    "appearance": {
+      "prototype": "batredm1",
+      "texture": "bat00"
+    },
+    "family": 3,
+    "file": "03-0.png",
+    "prototype": "batredm1",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "3:1": {
+    "appearance": {
+      "prototype": "batredm3",
+      "texture": "bat01"
+    },
+    "family": 3,
+    "file": "03-1.png",
+    "prototype": "batredm3",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "3:2": {
+    "appearance": {
+      "prototype": "batredm5",
+      "texture": "bat02"
+    },
+    "family": 3,
+    "file": "03-2.png",
+    "prototype": "batredm5",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "4:0": {
+    "appearance": {
+      "prototype": "goblina1",
+      "texture": "goblin00"
+    },
+    "family": 4,
+    "file": "04-0.png",
+    "prototype": "goblina1",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "4:1": {
+    "appearance": {
+      "prototype": "goblina2",
+      "texture": "goblin00"
+    },
+    "family": 4,
+    "file": "04-1.png",
+    "prototype": "goblina2",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "4:2": {
+    "appearance": {
+      "prototype": "goblina3",
+      "texture": "goblin00l"
+    },
+    "family": 4,
+    "file": "04-2.png",
+    "prototype": "goblina3",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "5:0": {
+    "appearance": {
+      "prototype": "toadm2"
+    },
+    "family": 5,
+    "file": "05-0.png",
+    "prototype": "toadm2",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "5:1": {
+    "appearance": {
+      "prototype": "toadm4"
+    },
+    "family": 5,
+    "file": "05-1.png",
+    "prototype": "toadm4",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "5:2": {
+    "appearance": {
+      "prototype": "toadm6"
+    },
+    "family": 5,
+    "file": "05-2.png",
+    "prototype": "toadm6",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "6:0": {
+    "appearance": {
+      "prototype": "skeletonf2",
+      "texture": "skeleton00"
+    },
+    "family": 6,
+    "file": "06-0.png",
+    "prototype": "skeletonf2",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "6:1": {
+    "appearance": {
+      "prototype": "skeletonf3",
+      "texture": "skeleton00"
+    },
+    "family": 6,
+    "file": "06-1.png",
+    "prototype": "skeletonf3",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "6:2": {
+    "appearance": {
+      "prototype": "skeletonwarriorf7",
+      "texture": "skeleton01"
+    },
+    "family": 6,
+    "file": "06-2.png",
+    "prototype": "skeletonwarriorf7",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "7:0": {
+    "appearance": {
+      "prototype": "tigerredf2",
+      "texture": "tiger00"
+    },
+    "family": 7,
+    "file": "07-0.png",
+    "prototype": "tigerredf2",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "7:1": {
+    "appearance": {
+      "prototype": "tigerredf4",
+      "texture": "tiger00"
+    },
+    "family": 7,
+    "file": "07-1.png",
+    "prototype": "tigerredf4",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "7:2": {
+    "appearance": {
+      "prototype": "tigerredf6",
+      "texture": "tiger01"
+    },
+    "family": 7,
+    "file": "07-2.png",
+    "prototype": "tigerredf6",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "8:0": {
+    "appearance": {
+      "prototype": "spiderf10"
+    },
+    "family": 8,
+    "file": "08-0.png",
+    "prototype": "spiderf10",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "8:1": {
+    "appearance": {
+      "prototype": "spiderf13"
+    },
+    "family": 8,
+    "file": "08-1.png",
+    "prototype": "spiderf13",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "8:2": {
+    "appearance": {
+      "prototype": "spiderf15"
+    },
+    "family": 8,
+    "file": "08-2.png",
+    "prototype": "spiderf15",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "9:0": {
+    "appearance": {
+      "prototype": "scrabbluef5",
+      "texture": "crab01"
+    },
+    "family": 9,
+    "file": "09-0.png",
+    "prototype": "scrabbluef5",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "9:1": {
+    "appearance": {
+      "prototype": "scrabgreyf5",
+      "texture": "crab00"
+    },
+    "family": 9,
+    "file": "09-1.png",
+    "prototype": "scrabgreyf5",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "9:2": {
+    "appearance": {
+      "prototype": "scrabmotherpoisonedf6",
+      "texture": "crab02"
+    },
+    "family": 9,
+    "file": "09-2.png",
+    "prototype": "scrabmotherpoisonedf6",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  }
 }

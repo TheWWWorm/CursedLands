@@ -98,10 +98,10 @@ func _figure(parent: Control, id: String, rank: int, upgraded := false) -> void:
 	preview.fit_slot = true
 	preview.custom_minimum_size = Vector2(100, 66)
 	box.add_child(preview)
-	preview.show_model(ArenaAppearance.preview(id))
+	preview.show_model(ArenaAppearance.preview(id, int(current.get("family", -1)), rank))
 	preview.turn_by(-0.35)
 	_previews.append(preview)
-	var label := _label(box, ArenaRules.title(id), 16, ArenaCreatureCard.GOLD if upgraded else ArenaCreatureCard.MUTED)
+	var label := _label(box, ArenaRules.title(id, int(current.get("family", -1)), rank), 16, ArenaCreatureCard.GOLD if upgraded else ArenaCreatureCard.MUTED)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.custom_minimum_size.y = 44
 

@@ -313,8 +313,8 @@ static func recruit_prototype(family: int, rank: int, proto: Dictionary) -> Dict
 	return tuned
 
 
-static func title(id: String) -> String:
-	return RemakeText.t(GameUnit.unit_title(id))
+static func title(id: String, family := -1, rank := 0) -> String:
+	return RemakeText.t(GameUnit.unit_title(ArenaAppearance.name_prototype(id, family, rank)))
 
 
 static func available() -> bool:

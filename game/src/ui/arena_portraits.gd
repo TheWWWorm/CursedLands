@@ -78,5 +78,39 @@ const IMAGES := {
 	"zombiemalef16": preload("res://assets/arena/portraits/12-2.png"),
 }
 
-static func texture(id: String) -> Texture2D:
+## Family/rank keys retain distinct portraits when ranks share a combat prototype.
+const RANK_IMAGES := [
+	[preload("res://assets/arena/portraits/00-0.png"), preload("res://assets/arena/portraits/00-1.png"), preload("res://assets/arena/portraits/00-2.png")],
+	[preload("res://assets/arena/portraits/01-0.png"), preload("res://assets/arena/portraits/01-1.png"), preload("res://assets/arena/portraits/01-2.png")],
+	[preload("res://assets/arena/portraits/02-0.png"), preload("res://assets/arena/portraits/02-1.png"), preload("res://assets/arena/portraits/02-2.png")],
+	[preload("res://assets/arena/portraits/03-0.png"), preload("res://assets/arena/portraits/03-1.png"), preload("res://assets/arena/portraits/03-2.png")],
+	[preload("res://assets/arena/portraits/04-0.png"), preload("res://assets/arena/portraits/04-1.png"), preload("res://assets/arena/portraits/04-2.png")],
+	[preload("res://assets/arena/portraits/05-0.png"), preload("res://assets/arena/portraits/05-1.png"), preload("res://assets/arena/portraits/05-2.png")],
+	[preload("res://assets/arena/portraits/06-0.png"), preload("res://assets/arena/portraits/06-1.png"), preload("res://assets/arena/portraits/06-2.png")],
+	[preload("res://assets/arena/portraits/07-0.png"), preload("res://assets/arena/portraits/07-1.png"), preload("res://assets/arena/portraits/07-2.png")],
+	[preload("res://assets/arena/portraits/08-0.png"), preload("res://assets/arena/portraits/08-1.png"), preload("res://assets/arena/portraits/08-2.png")],
+	[preload("res://assets/arena/portraits/09-0.png"), preload("res://assets/arena/portraits/09-1.png"), preload("res://assets/arena/portraits/09-2.png")],
+	[preload("res://assets/arena/portraits/10-0.png"), preload("res://assets/arena/portraits/10-1.png"), preload("res://assets/arena/portraits/10-2.png")],
+	[preload("res://assets/arena/portraits/11-0.png"), preload("res://assets/arena/portraits/11-1.png"), preload("res://assets/arena/portraits/11-2.png")],
+	[preload("res://assets/arena/portraits/12-0.png"), preload("res://assets/arena/portraits/12-1.png"), preload("res://assets/arena/portraits/12-2.png")],
+	[preload("res://assets/arena/portraits/13-0.png"), preload("res://assets/arena/portraits/13-1.png"), preload("res://assets/arena/portraits/13-2.png")],
+	[preload("res://assets/arena/portraits/14-0.png"), preload("res://assets/arena/portraits/14-1.png"), preload("res://assets/arena/portraits/14-2.png")],
+	[preload("res://assets/arena/portraits/15-0.png"), preload("res://assets/arena/portraits/15-1.png"), preload("res://assets/arena/portraits/15-2.png")],
+	[preload("res://assets/arena/portraits/16-0.png"), preload("res://assets/arena/portraits/16-1.png"), preload("res://assets/arena/portraits/16-2.png")],
+	[preload("res://assets/arena/portraits/17-0.png"), preload("res://assets/arena/portraits/17-1.png"), preload("res://assets/arena/portraits/17-2.png")],
+	[preload("res://assets/arena/portraits/18-0.png"), preload("res://assets/arena/portraits/18-1.png"), preload("res://assets/arena/portraits/18-2.png")],
+	[preload("res://assets/arena/portraits/19-0.png"), preload("res://assets/arena/portraits/19-1.png"), preload("res://assets/arena/portraits/19-2.png")],
+	[preload("res://assets/arena/portraits/20-0.png"), preload("res://assets/arena/portraits/20-1.png"), preload("res://assets/arena/portraits/20-2.png")],
+	[preload("res://assets/arena/portraits/21-0.png"), preload("res://assets/arena/portraits/21-1.png"), preload("res://assets/arena/portraits/21-2.png")],
+	[preload("res://assets/arena/portraits/22-0.png"), preload("res://assets/arena/portraits/22-1.png"), preload("res://assets/arena/portraits/22-2.png")],
+	[preload("res://assets/arena/portraits/23-0.png"), preload("res://assets/arena/portraits/23-1.png"), preload("res://assets/arena/portraits/23-2.png")],
+	[preload("res://assets/arena/portraits/24-0.png"), preload("res://assets/arena/portraits/24-1.png"), preload("res://assets/arena/portraits/24-2.png")],
+	[preload("res://assets/arena/portraits/25-0.png"), preload("res://assets/arena/portraits/25-1.png"), preload("res://assets/arena/portraits/25-2.png")],
+	[preload("res://assets/arena/portraits/26-0.png"), preload("res://assets/arena/portraits/26-1.png"), preload("res://assets/arena/portraits/26-2.png")],
+	[preload("res://assets/arena/portraits/27-0.png"), preload("res://assets/arena/portraits/27-1.png"), preload("res://assets/arena/portraits/27-2.png")],
+]
+
+static func texture(id: String, family := -1, rank := 0) -> Texture2D:
+	if family >= 0 and family < RANK_IMAGES.size() and rank >= 0 and rank < 3 and ArenaRules.prototype(family, rank) == id.to_lower():
+		return RANK_IMAGES[family][rank]
 	return IMAGES.get(id.to_lower())

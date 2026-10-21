@@ -55,6 +55,13 @@ reused at higher ranks; their stars and combat values identify the upgrade.
 There are no human recruits. Goblins, lizardmen, woodsfolk, orc shamans and undead
 retain distinct native silhouettes alongside animals, spirits and larger monsters.
 All figures and pixel portraits use the original models and clan palettes.
+Sixteen species use different native palettes as they gain stars. Species with
+two palettes reserve the contrasting appearance for three stars; species with
+three palettes use one per rank. Trolls progress from green to blue to black,
+banshees from light to dark, and dragons from green to blue to red. Original
+prototype tiers determine the order where the variants differ in strength;
+equal-tier variants are cosmetic choices. Palettes have no additional combat
+effects. Original localized names follow the visible colour or clan.
 
 | Cost | Species |
 | --- | --- |
@@ -83,7 +90,10 @@ Inspector accents and stars use the species' price-tier color.
 Reserves retain individual slot positions through purchases, swaps and saves.
 Selecting a field creature and then an empty reserve slot withdraws it there.
 Selecting an occupied reserve swaps the two creatures; either selection order
-works. Matching triples combine even when reserves are full. Rank appearances use the same species and native palette.
+works. Matching triples combine even when reserves are full. Rank appearances
+retain the species' rig, body proportions and combat prototype. Field models,
+reserves, placement ghosts, evolution notices, inspector previews and portraits
+share the same family/rank appearance, including online board snapshots.
 
 The default camera fits the playable clearing and tall figures between the side
 HUD and reserves, using a 34-degree tilt and a diagonal horizontal orbit. Its

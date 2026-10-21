@@ -164,14 +164,14 @@ func _box(at: Vector3, dimensions: Vector3, color: Color) -> void:
 	stage.add_child(node)
 
 
-func select_creature(id: String) -> void:
+func select_creature(id: String, family := -1, rank := 0) -> void:
 	ghost_id = id
 	if is_instance_valid(ghost):
 		stage.remove_child(ghost)
 		ghost.queue_free()
 	ghost = null
 	if id.is_empty(): return
-	ghost = EIUnitModel.create(ArenaAppearance.info(id) if match_state is ArenaPveMatch else {"prototype": id}, true)
+	ghost = EIUnitModel.create(ArenaAppearance.info(id, family, rank) if match_state is ArenaPveMatch else {"prototype": id}, true)
 	if ghost:
 		stage.add_child(ghost)
 		for mesh: MeshInstance3D in ghost.find_children("*", "MeshInstance3D", true, false):

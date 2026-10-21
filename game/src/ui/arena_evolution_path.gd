@@ -38,7 +38,7 @@ func update_path(value: int, army: Array[Dictionary]) -> void:
 			image.custom_minimum_size = Vector2.ONE * portrait_size
 			column.add_child(image)
 			var portrait := TextureRect.new()
-			portrait.texture = ArenaPortraits.texture(ArenaRules.prototype(family, rank))
+			portrait.texture = ArenaPortraits.texture(ArenaRules.prototype(family, rank), family, rank)
 			portrait.custom_minimum_size = Vector2.ONE * portrait_size
 			portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -67,12 +67,12 @@ func update_path(value: int, army: Array[Dictionary]) -> void:
 		_ownership[rank].text = "✓" + (str(count) if count > 1 else "")
 		_ownership[rank].set_meta("owned_count", count)
 		_counts[rank].add_theme_color_override("font_color", ArenaStars.for_family(family))
-		_steps[rank].set_meta("arena_help", "%s %s\n%s" % [ArenaRules.title(ArenaRules.prototype(family,rank)), "★".repeat(rank+1), RemakeText.t("Owned: %d") % count])
+		_steps[rank].set_meta("arena_help", "%s %s\n%s" % [ArenaRules.title(ArenaRules.prototype(family,rank), family, rank), "★".repeat(rank+1), RemakeText.t("Owned: %d") % count])
 	tooltip_text = description(family, owned)
 
 static func description(value: int, army: Array[Dictionary]) -> String:
 	var lines: Array[String] = []
 	for rank in 3:
 		var count := army.filter(func(entry): return int(entry.family) == value and int(entry.rank) == rank).size()
-		lines.append("%s %s — %s" % ["★".repeat(rank + 1), ArenaRules.title(ArenaRules.prototype(value, rank)), RemakeText.t("Owned: %d") % count])
+		lines.append("%s %s — %s" % ["★".repeat(rank + 1), ArenaRules.title(ArenaRules.prototype(value, rank), value, rank), RemakeText.t("Owned: %d") % count])
 	return "\n".join(lines)

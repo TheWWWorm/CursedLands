@@ -57,10 +57,10 @@ func update_damage(battle: ArenaPveMatch, army: Array, maximum_height: float) ->
 			list.add_child(row); rows[uid]={"row":row,"portrait":portrait,"title":title,"value":value,"stars":stars,"bar":bar}
 		var widgets: Dictionary=rows[uid]
 		var amount := float(amounts.get(uid,0.0))
-		widgets.title.text = ArenaRules.title(entry.prototype)
+		widgets.title.text = ArenaRules.title(entry.prototype, int(entry.family), int(entry.rank))
 		widgets.value.text = str(roundi(amount))
-		widgets.row.tooltip_text = "%s %s · %s: %d" % [ArenaRules.title(entry.prototype),"★".repeat(int(entry.rank)+1),RemakeText.t("Damage"),roundi(amount)]
-		widgets.portrait.texture = ArenaPortraits.texture(entry.prototype)
+		widgets.row.tooltip_text = "%s %s · %s: %d" % [ArenaRules.title(entry.prototype, int(entry.family), int(entry.rank)),"★".repeat(int(entry.rank)+1),RemakeText.t("Damage"),roundi(amount)]
+		widgets.portrait.texture = ArenaPortraits.texture(entry.prototype, int(entry.family), int(entry.rank))
 		widgets.stars.count = int(entry.rank)+1
 		widgets.stars.color = ArenaStars.for_family(int(entry.family))
 		widgets.stars.custom_minimum_size=Vector2(widgets.stars.count*14-2,12); widgets.stars.queue_redraw()

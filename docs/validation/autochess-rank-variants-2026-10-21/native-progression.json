@@ -1,0 +1,1135 @@
+{
+  "method": "Original units.udb base_level determines nondecreasing variant tiers; appearance compatibility is checked against textures of the same authored rig. Equal-tier variants remain cosmetic. Mob examples identify placed appearances, not a new combat definition.",
+  "original_archive_sha256": {
+    "res/database.res": "50e5899fd7d467e11ea152122148f6911319cf339bf7717f1e205d38c63b13b0",
+    "res/textures.res": "79548fbd94e797fe9edc3e990eb0231a350571b2cef575b009fa972f0002268c",
+    "res/texts.res": "7480721148bf443901bad59ea184606d7a09c97d565040560778ea4663cd5c41",
+    "ru/res/texts.res": "96d8e49a3472f93d92ec8b4ad4286fa7662d78fc4577fe2335832542014b3a5a",
+    "de/res/texts.res": "8b5560283fcdf2b63c706e370ca5f2bef99f333d4908be3497f1da7cc9ef2e6b"
+  },
+  "families": [
+    {
+      "family": 0,
+      "name": "Boars",
+      "ranks": [
+        {
+          "combat_prototype": "boarredf1",
+          "name_prototype": "boarredf1",
+          "names": {
+            "de": "Junges Wildschwein",
+            "en": "Young boar",
+            "ru": "Молодой кабан"
+          },
+          "native_appearances": {
+            "boar00": {
+              "count": 31,
+              "sample_map": "zone2.mob",
+              "sample_nid": 1315,
+              "template": "unanwibo"
+            }
+          },
+          "native_damage_max": 6.0,
+          "native_hp": 25.0,
+          "native_level": 1,
+          "rank": 1,
+          "texture": "boar00"
+        },
+        {
+          "combat_prototype": "boarredf2",
+          "name_prototype": "boarredf2",
+          "names": {
+            "de": "Ausgewachsenes Wildschwein",
+            "en": "Adult boar",
+            "ru": "Взрослый кабан"
+          },
+          "native_appearances": {
+            "boar00": {
+              "count": 14,
+              "sample_map": "zone3obr.mob",
+              "sample_nid": 4547,
+              "template": "unanwibo"
+            }
+          },
+          "native_damage_max": 8.0,
+          "native_hp": 31.0,
+          "native_level": 2,
+          "rank": 2,
+          "texture": "boar00"
+        },
+        {
+          "combat_prototype": "boarredf3",
+          "name_prototype": "boardarkf6",
+          "names": {
+            "de": "Schwarzes Wildschwein (Veteran)",
+            "en": "Veteran black boar",
+            "ru": "Матерый черный кабан"
+          },
+          "native_appearances": {
+            "boar01": {
+              "count": 17,
+              "sample_map": "bz4g.mob",
+              "sample_nid": 192418,
+              "template": "unanwibo"
+            }
+          },
+          "native_damage_max": 11.0,
+          "native_hp": 70.0,
+          "native_level": 6,
+          "rank": 3,
+          "texture": "boar01"
+        }
+      ]
+    },
+    {
+      "family": 1,
+      "name": "Wolves",
+      "ranks": [
+        {
+          "combat_prototype": "wolfgreyf1",
+          "name_prototype": "wolfgreyf1",
+          "names": {
+            "de": "Junger Wolf",
+            "en": "Young wolf",
+            "ru": "Молодой волк"
+          },
+          "native_appearances": {
+            "wolf00": {
+              "count": 13,
+              "sample_map": "zone3obr.mob",
+              "sample_nid": 4581,
+              "template": "unanwiwo"
+            }
+          },
+          "native_damage_max": 6.0,
+          "native_hp": 25.0,
+          "native_level": 1,
+          "rank": 1,
+          "texture": "wolf00"
+        },
+        {
+          "combat_prototype": "wolfgreyf2",
+          "name_prototype": "wolfgreyf2",
+          "names": {
+            "de": "Ausgewachsener Wolf",
+            "en": "Adult wolf",
+            "ru": "Взрослый волк"
+          },
+          "native_appearances": {
+            "wolf00": {
+              "count": 53,
+              "sample_map": "zone2.mob",
+              "sample_nid": 1340,
+              "template": "unanwiwo"
+            }
+          },
+          "native_damage_max": 8.0,
+          "native_hp": 31.0,
+          "native_level": 2,
+          "rank": 2,
+          "texture": "wolf00"
+        },
+        {
+          "combat_prototype": "wolfgreyf3",
+          "name_prototype": "wolfwhitef6",
+          "names": {
+            "de": "Weißer Wolf (Veteran)",
+            "en": "Veteran white wolf",
+            "ru": "Матерый белый волк"
+          },
+          "native_appearances": {
+            "wolf01": {
+              "count": 9,
+              "sample_map": "zone8.mob",
+              "sample_nid": 1663,
+              "template": "unanwiwo"
+            }
+          },
+          "native_damage_max": 11.0,
+          "native_hp": 70.0,
+          "native_level": 6,
+          "rank": 3,
+          "texture": "wolf01"
+        }
+      ]
+    },
+    {
+      "family": 3,
+      "name": "Bats",
+      "ranks": [
+        {
+          "combat_prototype": "batredm1",
+          "name_prototype": "batredm1",
+          "names": {
+            "de": "Fledermaus-Junges",
+            "en": "Bat cub",
+            "ru": "Детеныш летучей мыши"
+          },
+          "native_appearances": {
+            "bat00": {
+              "count": 11,
+              "sample_map": "zone3obr.mob",
+              "sample_nid": 4556,
+              "template": "unanwiba"
+            }
+          },
+          "native_damage_max": 6.0,
+          "native_hp": 13.0,
+          "native_level": 1,
+          "rank": 1,
+          "texture": "bat00"
+        },
+        {
+          "combat_prototype": "batredm3",
+          "name_prototype": "batlightm7",
+          "names": {
+            "de": "Wolfsfledermaus-Junges",
+            "en": "Foxbat cub",
+            "ru": "Детеныш нетопыря"
+          },
+          "native_appearances": {
+            "bat00": {
+              "count": 18,
+              "sample_map": "zone14.mob",
+              "sample_nid": 4408,
+              "template": "unanwiba"
+            }
+          },
+          "native_damage_max": 11.0,
+          "native_hp": 80.0,
+          "native_level": 7,
+          "rank": 2,
+          "texture": "bat01"
+        },
+        {
+          "combat_prototype": "batredm5",
+          "name_prototype": "batdarkm12",
+          "names": {
+            "de": "Junge schwarze Wolfsfledermaus",
+            "en": "Young black foxbat",
+            "ru": "Молодой черный нетопырь"
+          },
+          "native_appearances": {},
+          "native_damage_max": 19.0,
+          "native_hp": 160.0,
+          "native_level": 12,
+          "rank": 3,
+          "texture": "bat02"
+        }
+      ]
+    },
+    {
+      "family": 4,
+      "name": "Goblins",
+      "ranks": [
+        {
+          "combat_prototype": "goblina1",
+          "name_prototype": "goblina1",
+          "names": {
+            "de": "Goblin mit Schleuder",
+            "en": "Goblin with a sling",
+            "ru": "Гоблин с пращой"
+          },
+          "native_appearances": {
+            "goblin00": {
+              "count": 42,
+              "sample_map": "zone3obr.mob",
+              "sample_nid": 4566,
+              "template": "unmogo"
+            }
+          },
+          "native_damage_max": 6.0,
+          "native_hp": 25.0,
+          "native_level": 1,
+          "rank": 1,
+          "texture": "goblin00"
+        },
+        {
+          "combat_prototype": "goblina2",
+          "name_prototype": "goblina2",
+          "names": {
+            "de": "Ausgebildeter Goblin mit Schleuder",
+            "en": "Trained Goblin with a sling",
+            "ru": "Умелый гоблин с пращой"
+          },
+          "native_appearances": {
+            "goblin00": {
+              "count": 13,
+              "sample_map": "zone7.mob",
+              "sample_nid": 4919,
+              "template": "unmogo"
+            }
+          },
+          "native_damage_max": 8.0,
+          "native_hp": 31.0,
+          "native_level": 2,
+          "rank": 2,
+          "texture": "goblin00"
+        },
+        {
+          "combat_prototype": "goblina3",
+          "name_prototype": "goblina3",
+          "names": {
+            "de": "Goblin-Veteran mit Schleuder",
+            "en": "Veteran Goblin with a sling",
+            "ru": "Опытный гоблин с пращой"
+          },
+          "native_appearances": {
+            "goblin00": {
+              "count": 6,
+              "sample_map": "zone6.mob",
+              "sample_nid": 1446,
+              "template": "unmogo"
+            }
+          },
+          "native_damage_max": 8.0,
+          "native_hp": 40.0,
+          "native_level": 3,
+          "rank": 3,
+          "texture": "goblin00l"
+        }
+      ]
+    },
+    {
+      "family": 6,
+      "name": "Skeletons",
+      "ranks": [
+        {
+          "combat_prototype": "skeletonf2",
+          "name_prototype": "skeletonf2",
+          "names": {
+            "de": "Skelett-Bürger",
+            "en": "Commoner skeleton",
+            "ru": "Скелет простолюдина"
+          },
+          "native_appearances": {
+            "skeleton00": {
+              "count": 92,
+              "sample_map": "bz3g.mob",
+              "sample_nid": 1564,
+              "template": "unmosk"
+            }
+          },
+          "native_damage_max": 8.0,
+          "native_hp": 40.0,
+          "native_level": 3,
+          "rank": 1,
+          "texture": "skeleton00"
+        },
+        {
+          "combat_prototype": "skeletonf3",
+          "name_prototype": "skeletonf3",
+          "names": {
+            "de": "Skelett-Rekrut",
+            "en": "Recruit skeleton",
+            "ru": "Скелет новобранца"
+          },
+          "native_appearances": {
+            "skeleton00": {
+              "count": 38,
+              "sample_map": "bz3g.mob",
+              "sample_nid": 1572,
+              "template": "unmosk"
+            }
+          },
+          "native_damage_max": 9.0,
+          "native_hp": 50.0,
+          "native_level": 4,
+          "rank": 2,
+          "texture": "skeleton00"
+        },
+        {
+          "combat_prototype": "skeletonwarriorf7",
+          "name_prototype": "skeletonwarriorf7",
+          "names": {
+            "de": "Skelett-Veteran",
+            "en": "Veteran warrior skeleton",
+            "ru": "Скелет опытного воина"
+          },
+          "native_appearances": {
+            "skeleton01": {
+              "count": 49,
+              "sample_map": "bz3g.mob",
+              "sample_nid": 1567,
+              "template": "unmosk"
+            }
+          },
+          "native_damage_max": 13.0,
+          "native_hp": 90.0,
+          "native_level": 8,
+          "rank": 3,
+          "texture": "skeleton01"
+        }
+      ]
+    },
+    {
+      "family": 7,
+      "name": "Tigers",
+      "ranks": [
+        {
+          "combat_prototype": "tigerredf2",
+          "name_prototype": "tigerredf2",
+          "names": {
+            "de": "Junger Tiger",
+            "en": "Young tiger",
+            "ru": "Молодой тигр"
+          },
+          "native_appearances": {
+            "tiger00": {
+              "count": 5,
+              "sample_map": "zone9.mob",
+              "sample_nid": 2143,
+              "template": "unanwiti"
+            }
+          },
+          "native_damage_max": 8.0,
+          "native_hp": 31.0,
+          "native_level": 2,
+          "rank": 1,
+          "texture": "tiger00"
+        },
+        {
+          "combat_prototype": "tigerredf4",
+          "name_prototype": "tigerredf4",
+          "names": {
+            "de": "Ausgewachsener Tiger",
+            "en": "Adult tiger",
+            "ru": "Взрослый тигр"
+          },
+          "native_appearances": {
+            "tiger00": {
+              "count": 26,
+              "sample_map": "zone7.mob",
+              "sample_nid": 5230,
+              "template": "unanwiti"
+            }
+          },
+          "native_damage_max": 9.0,
+          "native_hp": 50.0,
+          "native_level": 4,
+          "rank": 2,
+          "texture": "tiger00"
+        },
+        {
+          "combat_prototype": "tigerredf6",
+          "name_prototype": "tigerwhitef10",
+          "names": {
+            "de": "Weißer Tiger (Veteran)",
+            "en": "Veteran white tiger",
+            "ru": "Матерый снежный тигр"
+          },
+          "native_appearances": {
+            "tiger01": {
+              "count": 44,
+              "sample_map": "zone11.mob",
+              "sample_nid": 3860,
+              "template": "unanwiti"
+            }
+          },
+          "native_damage_max": 16.0,
+          "native_hp": 120.0,
+          "native_level": 10,
+          "rank": 3,
+          "texture": "tiger01"
+        }
+      ]
+    },
+    {
+      "family": 9,
+      "name": "Armadillos",
+      "ranks": [
+        {
+          "combat_prototype": "scrabbluef5",
+          "name_prototype": "scrabbluef5",
+          "names": {
+            "de": "Blutreißer-Jungtier",
+            "en": "Baby armadillo",
+            "ru": "Панцирник-детеныш"
+          },
+          "native_appearances": {
+            "crab00": {
+              "count": 6,
+              "sample_map": "zone5_1.mob",
+              "sample_nid": 15,
+              "template": "unanwicr"
+            },
+            "crab01": {
+              "count": 12,
+              "sample_map": "zone4.mob",
+              "sample_nid": 996879,
+              "template": "unanwicr"
+            }
+          },
+          "native_damage_max": 10.0,
+          "native_hp": 60.0,
+          "native_level": 5,
+          "rank": 1,
+          "texture": "crab01"
+        },
+        {
+          "combat_prototype": "scrabgreyf5",
+          "name_prototype": "scrabgreyf5",
+          "names": {
+            "de": "Blutreißer-Jungtier",
+            "en": "Baby armadillo",
+            "ru": "Панцирник-детеныш"
+          },
+          "native_appearances": {
+            "crab00": {
+              "count": 5,
+              "sample_map": "zone5_1.mob",
+              "sample_nid": 19,
+              "template": "unanwicr"
+            }
+          },
+          "native_damage_max": 10.0,
+          "native_hp": 60.0,
+          "native_level": 5,
+          "rank": 2,
+          "texture": "crab00"
+        },
+        {
+          "combat_prototype": "scrabmotherpoisonedf6",
+          "name_prototype": "scrabmotherpoisonedf6",
+          "names": {
+            "de": "Blutreißer-Muttertier",
+            "en": "Armadillo mother",
+            "ru": "Матка панцирников"
+          },
+          "native_appearances": {
+            "crab02": {
+              "count": 1,
+              "sample_map": "zone5scrabpoison.mob",
+              "sample_nid": 1000027,
+              "template": "unanwicr"
+            }
+          },
+          "native_damage_max": 11.0,
+          "native_hp": 70.0,
+          "native_level": 6,
+          "rank": 3,
+          "texture": "crab02"
+        }
+      ]
+    },
+    {
+      "family": 10,
+      "name": "Lizardmen",
+      "ranks": [
+        {
+          "combat_prototype": "dragonkinbeastmenf3",
+          "name_prototype": "dragonkinbeastmenf3",
+          "names": {
+            "de": "Echsen-Bändiger",
+            "en": "Lizard-tamer",
+            "ru": "Ящер-дрессировщик"
+          },
+          "native_appearances": {
+            "lizardman00": {
+              "count": 1,
+              "sample_map": "zone6dkin.mob",
+              "sample_nid": 1000421,
+              "template": "unmoli"
+            }
+          },
+          "native_damage_max": 8.0,
+          "native_hp": 40.0,
+          "native_level": 3,
+          "rank": 1,
+          "texture": "lizardman00"
+        },
+        {
+          "combat_prototype": "dragonkingreenf7",
+          "name_prototype": "dragonkingreenf7",
+          "names": {
+            "de": "Waldechsen-Krieger",
+            "en": "Forest warrior lizard",
+            "ru": "Лесной ящер-вожак"
+          },
+          "native_appearances": {
+            "lizardman01": {
+              "count": 2,
+              "sample_map": "zone6.mob",
+              "sample_nid": 1434,
+              "template": "unmoli"
+            }
+          },
+          "native_damage_max": 11.0,
+          "native_hp": 80.0,
+          "native_level": 7,
+          "rank": 2,
+          "texture": "lizardman01"
+        },
+        {
+          "combat_prototype": "dragonkinjunf11",
+          "name_prototype": "dragonkinjunf11",
+          "names": {
+            "de": "See-Echsen-Krieger",
+            "en": "Lake warrior lizard",
+            "ru": "Озерный ящер-вожак"
+          },
+          "native_appearances": {},
+          "native_damage_max": 17.0,
+          "native_hp": 140.0,
+          "native_level": 11,
+          "rank": 3,
+          "texture": "lizardman02"
+        }
+      ]
+    },
+    {
+      "family": 11,
+      "name": "Woodsfolk",
+      "ranks": [
+        {
+          "combat_prototype": "driadgreena7",
+          "name_prototype": "driadgreena7",
+          "names": {
+            "de": "Schütze der Waldleute (Grüner Clan)",
+            "en": "Woodsfolk archer (Green Clan)",
+            "ru": "Стрелок-лесовик (Зеленый клан)"
+          },
+          "native_appearances": {
+            "driad00": {
+              "count": 22,
+              "sample_map": "bz9k.mob",
+              "sample_nid": 3598,
+              "template": "unmodr"
+            }
+          },
+          "native_damage_max": 11.0,
+          "native_hp": 80.0,
+          "native_level": 7,
+          "rank": 1,
+          "texture": "driad00"
+        },
+        {
+          "combat_prototype": "driadgreena9",
+          "name_prototype": "driadsnowa9",
+          "names": {
+            "de": "Ausgebildeter Schütze der Waldleute (Weißer Clan)",
+            "en": "Trained woodsfolk archer (White Clan)",
+            "ru": "Умелый стрелок-лесовик (Белый клан)"
+          },
+          "native_appearances": {},
+          "native_damage_max": 14.0,
+          "native_hp": 110.0,
+          "native_level": 9,
+          "rank": 2,
+          "texture": "driad01"
+        },
+        {
+          "combat_prototype": "driadgreena11",
+          "name_prototype": "driaddarka11",
+          "names": {
+            "de": "Meisterschütze der Waldleute (Schwarzer Clan)",
+            "en": "Woodsfolk marksman (Black Clan)",
+            "ru": "Меткий стрелок-лесовик (Черный клан)"
+          },
+          "native_appearances": {},
+          "native_damage_max": 17.0,
+          "native_hp": 140.0,
+          "native_level": 11,
+          "rank": 3,
+          "texture": "driad02"
+        }
+      ]
+    },
+    {
+      "family": 14,
+      "name": "Trolls",
+      "ranks": [
+        {
+          "combat_prototype": "trollbluef9",
+          "name_prototype": "trollgreenf10",
+          "names": {
+            "de": "Junger grüner Troll",
+            "en": "Young green troll",
+            "ru": "Молодой зеленый тролль"
+          },
+          "native_appearances": {
+            "troll01": {
+              "count": 6,
+              "sample_map": "bz2g.mob",
+              "sample_nid": 1338,
+              "template": "unmotr"
+            }
+          },
+          "native_damage_max": 16.0,
+          "native_hp": 120.0,
+          "native_level": 10,
+          "rank": 1,
+          "texture": "troll01"
+        },
+        {
+          "combat_prototype": "trollbluef11",
+          "name_prototype": "trollbluef11",
+          "names": {
+            "de": "Ausgewachsener blauer Troll",
+            "en": "Adult blue troll",
+            "ru": "Взрослый синий тролль"
+          },
+          "native_appearances": {
+            "troll00": {
+              "count": 4,
+              "sample_map": "zone12.mob",
+              "sample_nid": 6105,
+              "template": "unmotr"
+            }
+          },
+          "native_damage_max": 21.0,
+          "native_hp": 190.0,
+          "native_level": 13,
+          "rank": 2,
+          "texture": "troll00"
+        },
+        {
+          "combat_prototype": "trollbluef12",
+          "name_prototype": "trollblackslowf16",
+          "names": {
+            "de": "Langsamer schwarzer Troll",
+            "en": "Slow black troll",
+            "ru": "Неторопливый черный тролль"
+          },
+          "native_appearances": {
+            "troll02": {
+              "count": 3,
+              "sample_map": "zone18.mob",
+              "sample_nid": 150355,
+              "template": "unmotr"
+            }
+          },
+          "native_damage_max": 28.0,
+          "native_hp": 280.0,
+          "native_level": 16,
+          "rank": 3,
+          "texture": "troll02"
+        }
+      ]
+    },
+    {
+      "family": 15,
+      "name": "Ogres",
+      "ranks": [
+        {
+          "combat_prototype": "ogregipatf5",
+          "name_prototype": "ogregipatf5",
+          "names": {
+            "de": "Junger Oger",
+            "en": "Young Ogre",
+            "ru": "Молодой людоед"
+          },
+          "native_appearances": {},
+          "native_damage_max": 11.0,
+          "native_hp": 70.0,
+          "native_level": 6,
+          "rank": 1,
+          "texture": "ogre00"
+        },
+        {
+          "combat_prototype": "ogregipatf7",
+          "name_prototype": "ogregipatf7",
+          "names": {
+            "de": "Ausgewachsener Oger",
+            "en": "Adult Ogre",
+            "ru": "Взрослый людоед"
+          },
+          "native_appearances": {
+            "ogre00": {
+              "count": 8,
+              "sample_map": "zone3obr.mob",
+              "sample_nid": 4746,
+              "template": "unmoog1"
+            },
+            "ogre01": {
+              "count": 1,
+              "sample_map": "zone7.mob",
+              "sample_nid": 5024,
+              "template": "unmoog1"
+            }
+          },
+          "native_damage_max": 13.0,
+          "native_hp": 90.0,
+          "native_level": 8,
+          "rank": 2,
+          "texture": "ogre00"
+        },
+        {
+          "combat_prototype": "ogregipatf9",
+          "name_prototype": "ogregipatf9",
+          "names": {
+            "de": "Oger-Veteran",
+            "en": "Veteran Ogre",
+            "ru": "Матерый людоед"
+          },
+          "native_appearances": {
+            "ogre00": {
+              "count": 1,
+              "sample_map": "zonemainmenunew.mob",
+              "sample_nid": 187,
+              "template": "unmoog1"
+            }
+          },
+          "native_damage_max": 16.0,
+          "native_hp": 120.0,
+          "native_level": 10,
+          "rank": 3,
+          "texture": "ogre01"
+        }
+      ]
+    },
+    {
+      "family": 16,
+      "name": "Harpies",
+      "ranks": [
+        {
+          "combat_prototype": "succubredm9",
+          "name_prototype": "succubredm9",
+          "names": {
+            "de": "Junge rote Harpyie",
+            "en": "Young red harpy",
+            "ru": "Молодая красная гарпия"
+          },
+          "native_appearances": {
+            "succubus00": {
+              "count": 22,
+              "sample_map": "zone4.mob",
+              "sample_nid": 996780,
+              "template": "unmosu"
+            }
+          },
+          "native_damage_max": 14.0,
+          "native_hp": 60.0,
+          "native_level": 9,
+          "rank": 1,
+          "texture": "succubus00"
+        },
+        {
+          "combat_prototype": "succubredm10",
+          "name_prototype": "succubbluem10",
+          "names": {
+            "de": "Junge Steinharpyie",
+            "en": "Young stony harpy",
+            "ru": "Молодая скальная гарпия"
+          },
+          "native_appearances": {
+            "succubus01": {
+              "count": 2,
+              "sample_map": "zone14.mob",
+              "sample_nid": 4607,
+              "template": "unmosu"
+            }
+          },
+          "native_damage_max": 16.0,
+          "native_hp": 60.0,
+          "native_level": 10,
+          "rank": 2,
+          "texture": "succubus01"
+        },
+        {
+          "combat_prototype": "succubredm11",
+          "name_prototype": "succubgreym13",
+          "names": {
+            "de": "Junge graue Harpyie",
+            "en": "Young grey harpy",
+            "ru": "Молодая серая гарпия"
+          },
+          "native_appearances": {},
+          "native_damage_max": 21.0,
+          "native_hp": 100.0,
+          "native_level": 13,
+          "rank": 3,
+          "texture": "succubus02"
+        }
+      ]
+    },
+    {
+      "family": 18,
+      "name": "Evileyes",
+      "ranks": [
+        {
+          "combat_prototype": "evileyesimplem5",
+          "name_prototype": "evileyesimplem5",
+          "names": {
+            "de": "Bösaugen-Junges",
+            "en": "Evileye cub",
+            "ru": "Злобоглаз-детеныш"
+          },
+          "native_appearances": {},
+          "native_damage_max": 10.0,
+          "native_hp": 27.0,
+          "native_level": 5,
+          "rank": 1,
+          "texture": "beholder02"
+        },
+        {
+          "combat_prototype": "evileyesimplem6",
+          "name_prototype": "evileyesimplem6",
+          "names": {
+            "de": "Bösaugen-Junges",
+            "en": "Evileye cub",
+            "ru": "Злобоглаз-детеныш"
+          },
+          "native_appearances": {
+            "beholder02": {
+              "count": 13,
+              "sample_map": "zone5_1.mob",
+              "sample_nid": 2,
+              "template": "unmobe1"
+            }
+          },
+          "native_damage_max": 11.0,
+          "native_hp": 32.0,
+          "native_level": 6,
+          "rank": 2,
+          "texture": "beholder02"
+        },
+        {
+          "combat_prototype": "evileyesimplem7",
+          "name_prototype": "evileyegreenm17",
+          "names": {
+            "de": "Ausgewachsenes grünes Bösauge",
+            "en": "Adult green evileye",
+            "ru": "Взрослый зеленый злобоглаз"
+          },
+          "native_appearances": {},
+          "native_damage_max": 31.0,
+          "native_hp": 60.0,
+          "native_level": 17,
+          "rank": 3,
+          "texture": "beholder01"
+        }
+      ]
+    },
+    {
+      "family": 19,
+      "name": "Banshees",
+      "ranks": [
+        {
+          "combat_prototype": "bansheedarkm12",
+          "name_prototype": "bansheelightm5",
+          "names": {
+            "de": "Schwache Todesfee",
+            "en": "Weak banshee",
+            "ru": "Слабая баньши"
+          },
+          "native_appearances": {
+            "banshee00": {
+              "count": 1,
+              "sample_map": "zone9.mob",
+              "sample_nid": 2163,
+              "template": "unmoba1"
+            }
+          },
+          "native_damage_max": 10.0,
+          "native_hp": 60.0,
+          "native_level": 5,
+          "rank": 1,
+          "texture": "banshee00"
+        },
+        {
+          "combat_prototype": "bansheedarkm14",
+          "name_prototype": "bansheelightm7",
+          "names": {
+            "de": "Starke Todesfee",
+            "en": "Strong banshee",
+            "ru": "Сильная баньши"
+          },
+          "native_appearances": {},
+          "native_damage_max": 11.0,
+          "native_hp": 80.0,
+          "native_level": 7,
+          "rank": 2,
+          "texture": "banshee00"
+        },
+        {
+          "combat_prototype": "bansheedarkm16",
+          "name_prototype": "bansheedarkm16",
+          "names": {
+            "de": "Sehr starke schwarze Todesfee",
+            "en": "Very strong black banshee",
+            "ru": "Очень сильная черная баньши"
+          },
+          "native_appearances": {
+            "banshee01": {
+              "count": 2,
+              "sample_map": "zone18.mob",
+              "sample_nid": 150360,
+              "template": "unmoba1"
+            }
+          },
+          "native_damage_max": 28.0,
+          "native_hp": 280.0,
+          "native_level": 16,
+          "rank": 3,
+          "texture": "banshee01"
+        }
+      ]
+    },
+    {
+      "family": 20,
+      "name": "Unicorns",
+      "ranks": [
+        {
+          "combat_prototype": "unicornwhitem15",
+          "name_prototype": "unicornwhitem15",
+          "names": {
+            "de": "Weißes Einhorn",
+            "en": "White unicorn",
+            "ru": "Белый единорог"
+          },
+          "native_appearances": {
+            "unicorn00": {
+              "count": 26,
+              "sample_map": "bz9k.mob",
+              "sample_nid": 545521,
+              "template": "unmoun"
+            }
+          },
+          "native_damage_max": 25.0,
+          "native_hp": 130.0,
+          "native_level": 15,
+          "rank": 1,
+          "texture": "unicorn00"
+        },
+        {
+          "combat_prototype": "unicornwhitem15",
+          "name_prototype": "unicornwhitem15",
+          "names": {
+            "de": "Weißes Einhorn",
+            "en": "White unicorn",
+            "ru": "Белый единорог"
+          },
+          "native_appearances": {
+            "unicorn00": {
+              "count": 26,
+              "sample_map": "bz9k.mob",
+              "sample_nid": 545521,
+              "template": "unmoun"
+            }
+          },
+          "native_damage_max": 25.0,
+          "native_hp": 130.0,
+          "native_level": 15,
+          "rank": 2,
+          "texture": "unicorn00"
+        },
+        {
+          "combat_prototype": "unicornwhitem15",
+          "name_prototype": "unicornblackm15",
+          "names": {
+            "de": "Schwarzes Einhorn",
+            "en": "Black unicorn",
+            "ru": "Черный единорог"
+          },
+          "native_appearances": {},
+          "native_damage_max": 25.0,
+          "native_hp": 130.0,
+          "native_level": 15,
+          "rank": 3,
+          "texture": "unicorn01"
+        }
+      ]
+    },
+    {
+      "family": 23,
+      "name": "Dragons",
+      "ranks": [
+        {
+          "combat_prototype": "dragonbrownm16",
+          "name_prototype": "dragongreenm12",
+          "names": {
+            "de": "Grüner Drache",
+            "en": "Green dragon",
+            "ru": "Зеленый дракон"
+          },
+          "native_appearances": {
+            "dragon00": {
+              "count": 4,
+              "sample_map": "zone4.mob",
+              "sample_nid": 533090,
+              "template": "unmodg"
+            }
+          },
+          "native_damage_max": 19.0,
+          "native_hp": 160.0,
+          "native_level": 12,
+          "rank": 1,
+          "texture": "dragon00"
+        },
+        {
+          "combat_prototype": "dragonbrownm16",
+          "name_prototype": "dragonbluem14",
+          "names": {
+            "de": "Blauer Drache",
+            "en": "Blue dragon",
+            "ru": "Синий дракон"
+          },
+          "native_appearances": {
+            "dragon01": {
+              "count": 5,
+              "sample_map": "bz3g.mob",
+              "sample_nid": 1000002518,
+              "template": "unmodg"
+            }
+          },
+          "native_damage_max": 22.0,
+          "native_hp": 210.0,
+          "native_level": 14,
+          "rank": 2,
+          "texture": "dragon01"
+        },
+        {
+          "combat_prototype": "dragonbrownm16",
+          "name_prototype": "dragonbrownm16",
+          "names": {
+            "de": "Roter Drache",
+            "en": "Red dragon",
+            "ru": "Красный дракон"
+          },
+          "native_appearances": {
+            "dragon02": {
+              "count": 3,
+              "sample_map": "zone17.mob",
+              "sample_nid": 47859,
+              "template": "unmodg"
+            }
+          },
+          "native_damage_max": 28.0,
+          "native_hp": 280.0,
+          "native_level": 16,
+          "rank": 3,
+          "texture": "dragon02"
+        }
+      ]
+    }
+  ],
+  "equal_tier_notes": {
+    "Armadillos": "The two first forms have the same original level and combat values; their palette order is cosmetic.",
+    "Goblins": "The alternate palette is also used by the original chief, whose prototype has the same level as the final ranged goblin.",
+    "Ogres": "Ogre01 occurs on the same native Ogre rig and an adult Gipath ogre; selecting it for the veteran is cosmetic.",
+    "Woodsfolk": "Clans share combat values at the same age. The selected archer ages progress 7/9/11; clan colour itself does not imply power.",
+    "Unicorns": "White and black original unicorns share level 15 and combat values. Black at three stars is a cosmetic rank distinction."
+  },
+  "sample_map_sha256": {
+    "zone2.mob": "b6ad605534da2e0bd2418f2ebf3965d42ce0eaf00efbb476a8a5a6abb7d674b5",
+    "zone3obr.mob": "9006e9c34475c0e10288c7ef25e61ba1af085230dbdcea886577e5fd0b624292",
+    "bz4g.mob": "374ad316ea2c15a64c644ce3404abc6aa64fe3e1f1e8a1e0ef41d92fba29c632",
+    "zone8.mob": "d33309ea26b989807fed59e1c197334fe2da1850c1df73dd8a985849b4d2ebfc",
+    "zone14.mob": "30e9205f289ae537a7284ae6a8400a534035741e8d0034d02baa874e1dbe66d0",
+    "zone7.mob": "0108df01a28982ace30c20ffc8c0fdfc6b7fd5bad0f6ad9ee2b571a737c14619",
+    "zone6.mob": "c859fb0f36892107fee8dea4203bd4a04c7be8e184fc74864967843dfca7f9cf",
+    "bz3g.mob": "420340ac5fac7fa459c5147a9e57fdb101d493a6a942838ee75dccfd2110f060",
+    "zone9.mob": "abcc5abd6604f056ee4eb98b585dd3081e39604444b827d8c43a720941098673",
+    "zone11.mob": "c8bb948a464bee27a58feda99db5704653cb6acbf4a7b2a8bbc3ed12f82ff3b9",
+    "zone5_1.mob": "31ff36738cdced3922784469c79d7d59bf6b819573edcee00332d495035d90ca",
+    "zone4.mob": "6abb4708bb21756b8e8c35bad3c105c07eaa4c3c85f1810393ae29a88753dc14",
+    "zone5scrabpoison.mob": "f4c566c79154f436b46c981a0ea94549c07bd05be4d87fc376902305502b1010",
+    "zone6dkin.mob": "c940f43fae92dee37c5bb0d2c3748d37f98c72814da9ae6968af24bb927602fb",
+    "bz9k.mob": "bd055afbfa8da9bb2be48eacd27e05e0279746ff3d26dee8c9476454c1be0294",
+    "bz2g.mob": "821a49f154ae832e7c79a2df7e774ed07fa2ba8e69c3c9bf929f22140e6f9236",
+    "zone12.mob": "20b4c82f69c09f0a27088e7dc07b03208a4d9eea05ca3afe722f9d604b5a4f46",
+    "zone18.mob": "5e7ddab61618d7f53ca1a0e70e08d6aa85c8111913a93109aab485b518a38ccf",
+    "zonemainmenunew.mob": "b7462c845a3fbb4f171fbded60df8ba251717204eda80707e68337f2dde39ac6",
+    "zone17.mob": "5ece830de3c68bb9b12b1a579749921c8ceb86dedefd3806b3d768b0f16742b9"
+  }
+}

@@ -6207,6 +6207,95 @@
         "res/texts.res"
       ],
       "display": "rendered"
+    },
+    {
+      "id": "arena/arena_rank_appearance",
+      "category": "arena",
+      "script": "tools/tests/arena_rank_appearance.gd",
+      "marker": "ARENA_RANK_APPEARANCE",
+      "min_checks": 800,
+      "quick": true,
+      "description": "Original rank palettes, localized variant names, save compatibility and same-prototype promotion.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "arena/arena_rank_appearance_ui_en",
+      "category": "arena",
+      "script": "tools/tests/arena_rank_appearance_ui.gd",
+      "marker": "ARENA_RANK_APPEARANCE_UI",
+      "min_checks": 200,
+      "quick": true,
+      "description": "Rendered rank palettes, reused preview, field/reserve/ghost consistency and localized inspector layout (en).",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [
+        "--lang=en"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "res/figures.res",
+        "maps/zone11.mpr"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "arena/arena_rank_appearance_ui_ru",
+      "category": "arena",
+      "script": "tools/tests/arena_rank_appearance_ui.gd",
+      "marker": "ARENA_RANK_APPEARANCE_UI",
+      "min_checks": 200,
+      "quick": true,
+      "description": "Rendered rank palettes, reused preview, field/reserve/ghost consistency and localized inspector layout (ru).",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [
+        "--lang=ru"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "res/figures.res",
+        "maps/zone11.mpr"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "arena/arena_rank_appearance_ui_de",
+      "category": "arena",
+      "script": "tools/tests/arena_rank_appearance_ui.gd",
+      "marker": "ARENA_RANK_APPEARANCE_UI",
+      "min_checks": 200,
+      "quick": true,
+      "description": "Rendered rank palettes, reused preview, field/reserve/ghost consistency and localized inspector layout (de).",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [
+        "--lang=de"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "res/figures.res",
+        "maps/zone11.mpr"
+      ],
+      "display": "rendered"
     }
   ]
 }
