@@ -189,12 +189,16 @@ separate baseline comparisons for the broader camera/coverage failures.
 `commands/self_cast_bursts` and `commands/self_cast_bursts_astral` inject spell
 key events in all three camera modes, step native casts/effects, and check
 selection, command counts, stamina costs and the halfway repeat boundary.
-They cover queued casts, stamina waits, simulated delayed delivery and the
-acknowledgement/snapshot gap, replica start timestamps, explicit modified
+They cover spells already selected through a shortcut or HUD, distinct spell
+shortcuts and configured variants, queued casts, stamina waits, simulated
+delayed delivery and the acknowledgement/snapshot gap, replica start timestamps, explicit modified
 shortcuts, and translated help wrapping in EN/RU/DE. The delayed-delivery
 fixture does not establish real network transport behavior.
 The [retained results](validation/self-cast-bursts-2026-10-21/results.json)
 include the seven passing regressions and the staged guard-bypass control.
+The [preselected-spell results](validation/self-cast-bursts-2026-10-21/preselected-results.json)
+retain the expanded 166-check fixture passing in both campaigns with unchanged
+production code.
 
 Tests requiring private saves, manual input or unbounded play sessions are not
 automatically included. Add a self-contained fixture with an explicit numeric

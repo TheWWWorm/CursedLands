@@ -62,6 +62,27 @@ func settle() -> void:
 		tick()
 	check(false, "cast and its buffered follow-up finish")
 
+func preselected_cases() -> void:
+	for selection: String in ["recent shortcut", "older shortcut", "HUD slot"]:
+		clean()
+		if selection == "HUD slot":
+			g.hud._slots.use(0, false)
+		else:
+			press()
+			if selection == "older shortcut": g._last_spell_key.at -= 1000
+		check(g.pending_spell == "healing{}" and (s as ProbeSession).casts == 0, selection + " prepares healing before the burst")
+		if selection != "recent shortcut":
+			press()
+			check(g.pending_spell.is_empty() and (s as ProbeSession).casts == 0, selection + " retains ordinary first-press cancellation")
+		for i in 9: press()
+		check(g.pending_spell.is_empty() and (s as ProbeSession).casts == 1 and hero.orders.size() == 1, selection + " followed by a burst leaves one self-cast and no prepared repeat")
+		var mana := hero.mana
+		settle()
+		check(is_equal_approx(mana - hero.mana, hero._spell_cost(Spells.parse("healing{}"))), selection + " burst pays for one cast")
+	clean(); press(1)
+	for i in 9: press()
+	check(g.pending_spell.is_empty() and (s as ProbeSession).casts == 1 and hero.orders.size() == 1, "a different spell prepared before the burst does not affect self-cast suppression")
+
 func _ready() -> void:
 	GameData.options.merge({"autosave":0,"show_tutorial":0,"auto_graphics":0,"control_mode":3,
 		"pad_enabled":0,"net_upnp":0,"net_lan":0,"net_directory":0,"confine_mouse":0,"spell_double_tap_self":1},true)
@@ -81,6 +102,7 @@ func _ready() -> void:
 		GameData.options.control_mode = camera_mode
 		hero.direct_controlled = camera_mode != 1
 		mode = "camera %d" % camera_mode
+		preselected_cases()
 		for taps: int in [3,4,5,8,9]:
 			clean()
 			for i in taps: press()
@@ -116,6 +138,22 @@ func _ready() -> void:
 		check(g.pending_spell == "healing{}", "a completed cast does not swallow the next ordinary selection")
 		clean(); start(); press(1)
 		check(g.pending_spell == "arrow{}", "another spell remains selectable during the early cast")
+		press()
+		check(g.pending_spell == "arrow{}" and (s as ProbeSession).casts == 1, "a stray tap of the casting spell preserves the other prepared spell")
+		press(1)
+		check(g.pending_spell.is_empty() and (s as ProbeSession).casts == 1, "the other prepared spell retains ordinary selection cancellation")
+		clean(); start()
+		# The fixture's starting pool only accommodates unmodified healing.
+		# Give the distinct spell enough capacity without changing its rules.
+		var max_stamina := hero.max_mana
+		hero.max_mana = maxf(max_stamina, float(Spells.parse("healing{e1;e1}").mana))
+		hero.mana = hero.max_mana
+		check(Spells.known_usable(hero, "healing{e1;e1}"), "the distinct configured spell meets its native requirements")
+		press(2)
+		check(g.pending_spell == "healing{e1;e1}", "a differently configured healing spell remains selectable before halfway")
+		press(2)
+		check(g.pending_spell.is_empty() and (s as ProbeSession).casts == 2 and hero.orders.size() == 1, "a differently configured healing spell double-taps into one intentional cast before halfway")
+		hero.max_mana = max_stamina
 		clean(); start(); press(0,true)
 		check((s as ProbeSession).casts == 2, "explicit modified quick-cast remains intentional")
 		clean(); g.begin_cast(0); g.cast_portrait(hero)

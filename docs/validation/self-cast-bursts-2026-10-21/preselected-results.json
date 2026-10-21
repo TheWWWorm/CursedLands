@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "captured_at_utc": "2026-10-21T10:50:38Z",
+  "implementation_commit": "d4ac0959",
+  "production_sources_unchanged": true,
+  "coverage": [
+    "Healing selected through a recent shortcut, an expired shortcut, or the HUD before a burst.",
+    "An expired or HUD selection retains first-press cancellation, followed by a fresh double-tap self-cast.",
+    "Each preselected burst submits one self-cast, leaves targeting empty, and pays for one native cast.",
+    "Another spell selected before the healing burst does not affect suppression.",
+    "A stray healing tap during healing preserves an already-selected different spell.",
+    "A different spell retains its normal selection cancellation during the early cast.",
+    "A usable rune-modified healing spell can be selected and double-tapped into a cast before the original midpoint.",
+    "Existing midpoint, latency, stamina, replica, duplicate-slot and localization checks remain enabled."
+  ],
+  "counts": {
+    "passed": 2,
+    "failed": 0,
+    "error": 0,
+    "programs": 2,
+    "checks": 332,
+    "failed_checks": 0
+  },
+  "source_sha256": {
+    "game/src/game/game.gd": "0e403ce195bdaf4f3b2037a25a43ad7fb9e96328ecef7c17377788b447650609",
+    "game/src/game/unit.gd": "0b4413e33e0af3eb1f4a1619bed91085cda641953a307eeff817f8ba6056f340",
+    "game/src/ei/game_data.gd": "0deb0aa3e8c35c5b2b43316659914021864134117b7aa3b7798d92a2fcace7b4",
+    "game/src/ei/remake_text.gd": "ee703d97e1aafae418657038bb03d63b8c7607ff97231e5e80fb9dde8eb9a0be",
+    "tools/tests/self_cast_bursts.gd": "f02f175624f44da28c52bffd80d74a3dfc87b4586aed8ba87593c205d2351633"
+  },
+  "tests": [
+    {
+      "id": "commands/self_cast_bursts",
+      "campaign": "cursed_lands",
+      "status": "passed",
+      "checks": 166,
+      "failures": 0,
+      "diagnostics": [],
+      "seconds": 11.416,
+      "log": "tests/commands/self_cast_bursts/run.log",
+      "log_sha256": "0252d190f65f0fac6f4151d308e31ce0411eb8c4c074d8be11870fc7f320e628"
+    },
+    {
+      "id": "commands/self_cast_bursts_astral",
+      "campaign": "lost_in_astral",
+      "status": "passed",
+      "checks": 166,
+      "failures": 0,
+      "diagnostics": [],
+      "seconds": 10.724,
+      "log": "tests/commands/self_cast_bursts_astral/run.log",
+      "log_sha256": "3eb23795d98d6e16870f44ff66a01c5da006e77d77e68daf4ecb5b1506ee4189"
+    }
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "fixture_note": "The rune-modified healing case temporarily gives the fixture enough maximum stamina to satisfy its native eligibility check. The original starting pool cannot equip that spell. No production eligibility or cost rule is changed.",
+  "raw_evidence": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/self-cast-preselected-complete",
+  "reproduce": "/home/llm2x/Documents/EI/local/scratchpad/first-person-shadow-20261021/self-cast-preselected-complete/reproduce.sh NEW_OUTPUT_DIRECTORY",
+  "scope": "Native owned campaign data, injected shortcut and HUD actions, manually stepped casts/effects. All three camera modes in both campaigns. Headless Linux; no physical-input, live ENet or target-OS claim. No release."
+}
