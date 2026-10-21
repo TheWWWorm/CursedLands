@@ -62,7 +62,8 @@ measurements below describe the experiment before its integration into 1.23.0.
   in the reflection. Local-light position, colour and energy update each frame;
   nearby-light membership refreshes once per second. Alpha-tested textures
   preserve foliage silhouettes in both primary rays and shadow rays. Texture
-  mipmaps use an estimated ray footprint to reduce distant texture aliasing.
+  mipmaps use the projected subpixel footprint on each hit triangle. The
+  existing Texture filtering option also controls RT anisotropic filtering.
 - Ambient light, material diffuse/emissive properties, local lights and depth
   fog approximate the game's raster materials. This is one reflection bounce
   with direct-light shadows; it does not add global illumination or multiple
@@ -78,8 +79,9 @@ measurements below describe the experiment before its integration into 1.23.0.
   snapshots: replacing a texture resource refreshes it, but in-place texture
   painting and mesh edits require a scene rebuild. Lighting and camera-specific
   body shaders are not reproduced exactly.
-- The development target retains native display pixels up to a 1920-pixel
-  longer edge (1920 × 1080 at 16:9). Four fixed subpixel rays per output pixel
+- The development target scales both viewport dimensions by the selected
+  RT quality: Low 50%, Medium 75%, High 100% (default), with no fixed pixel cap.
+  Four fixed subpixel rays per output pixel
   smooth geometry and alpha-tested foliage edges without temporal history.
   The HDR output carries premultiplied coverage through bilinear filtering,
   matching the water compositor and avoiding bright edge halos. This costs
@@ -218,6 +220,47 @@ range diagnostics consistent with its oversized shared-buffer views. Those
 messages and the source-based attribution are retained in the evidence; this
 is not a clean native D3D12 debug-layer result. Native Windows and other GPU
 vendors remain unqualified.
+
+## Texture filtering follow-up (unreleased)
+
+The earlier RT shader estimated one mip level from triangle edge lengths.
+It could blur detail that should remain visible, especially with stretched
+UVs or angled surfaces, and equivalent triangle diagonals could choose different
+levels. The closest-hit shader now derives UV gradients from the projected
+subpixel footprint on the hit plane. It accounts for perspective/orthographic
+cameras, both texture axes, instance scale and the reflection's actual size.
+Each of the four spatial samples filters its own subpixel footprint.
+
+The existing **Graphics → World and textures → Texture filtering** setting
+now applies to RT: Off retains trilinear mip filtering, and 2×/4×/8×/16× select
+anisotropic filtering. Switching it updates the sampler without rebuilding
+the reflection scene or its output texture. RT resolution quality remains
+independent. This improves reflected texture detail; it does not add missing
+material effects or change the fixed four-sample silhouette antialiasing.
+
+`tools/tests/water_raytrace_filtering.gd` checks real GPU pixels on an anisotropic
+striped surface, including perspective and orthographic cameras, nonuniform
+instance scale, both triangulations and live filtering changes. The previous
+shader fails the eight resolvable-stripe contrast cases. The updated shader
+passes all 69 checks on DX12/Wine and Vulkan: wide stripes remain distinct
+while single-texel stripes remain filtered. The real-river fixture is
+`tools/tests/water_raytrace_filtering_scene.gd`.
+
+On the RTX 3090 through Wine/VKD3D, the same moving-character river benchmark
+at 1280 × 720, High and four samples per pixel measured approximately **0.66 ms**
+for the RT GPU pass both before and after this filtering change (0.655 and
+0.662 ms, medians of three round medians). Mirror measured 0.535 ms in both
+runs. Whole-frame timings varied between sessions and are retained in the
+evidence; they do not establish an FPS improvement from filtering. This one
+scene does not establish the cost on other GPUs or texture-heavy scenes.
+
+See the [filtering validation bundle](../validation/water-rt-filtering-2026-10-22/summary.json)
+for screenshots, measurements and the regression checks after merging
+`feature/autochess-rank-variants-20261021` through `c1f094ae`. These changes are
+unreleased; native Windows qualification remains outstanding. The DX12 river
+fixture passed its rendering assertions, then reproduced the previously
+recorded Wine shutdown page fault after the game's clean-exit message. This
+change does not resolve that existing shutdown issue.
 
 ## Cyan water triangle follow-up
 

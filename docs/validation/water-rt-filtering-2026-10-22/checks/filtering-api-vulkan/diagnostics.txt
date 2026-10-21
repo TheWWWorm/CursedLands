@@ -1,0 +1,91 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+Vulkan 1.4.312 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090
+
+[trace 01:01:59 +5644ms] session ccd455901af7: 1.23.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, forward_plus / vulkan
+PASS hardware RT is available for filtering readbacks
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS 0-(1.0, 1.0, 1.0): textured quad prepares
+PASS 0-(1.0, 1.0, 1.0): comparison region contains the textured surface
+PASS 0-(1.0, 1.0, 1.0): resolvable texture stripes retain contrast
+PASS 0-(1.0, 1.0, 1.0): subpixel stripes are filtered instead of shimmering
+PASS 0-(1.0, 1.0, 1.0): Texture filtering Off and 16x produce distinct expected detail
+PASS 0-(1.0, 1.0, 1.0): changing filtering back restores deterministic pixels
+PASS 0-(1.0, 1.0, 1.0): filtering changes reuse the target and scene resources
+PASS 0-(1.0, 1.0, 1.0): all filtering and scene resources released
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS 0-(1.0, 1.0, 1.0): textured quad prepares
+PASS 0-(1.0, 1.0, 1.0): comparison region contains the textured surface
+PASS 0-(1.0, 1.0, 1.0): resolvable texture stripes retain contrast
+PASS 0-(1.0, 1.0, 1.0): subpixel stripes are filtered instead of shimmering
+PASS 0-(1.0, 1.0, 1.0): Texture filtering Off and 16x produce distinct expected detail
+PASS 0-(1.0, 1.0, 1.0): changing filtering back restores deterministic pixels
+PASS 0-(1.0, 1.0, 1.0): filtering changes reuse the target and scene resources
+PASS 0-(1.0, 1.0, 1.0): all filtering and scene resources released
+PASS 0-(1.0, 1.0, 1.0): equivalent triangle diagonals do not create texture seams
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS 0-(1.3, 0.7, 1.0): textured quad prepares
+PASS 0-(1.3, 0.7, 1.0): comparison region contains the textured surface
+PASS 0-(1.3, 0.7, 1.0): resolvable texture stripes retain contrast
+PASS 0-(1.3, 0.7, 1.0): subpixel stripes are filtered instead of shimmering
+PASS 0-(1.3, 0.7, 1.0): Texture filtering Off and 16x produce distinct expected detail
+PASS 0-(1.3, 0.7, 1.0): changing filtering back restores deterministic pixels
+PASS 0-(1.3, 0.7, 1.0): filtering changes reuse the target and scene resources
+PASS 0-(1.3, 0.7, 1.0): all filtering and scene resources released
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS 0-(1.3, 0.7, 1.0): textured quad prepares
+PASS 0-(1.3, 0.7, 1.0): comparison region contains the textured surface
+PASS 0-(1.3, 0.7, 1.0): resolvable texture stripes retain contrast
+PASS 0-(1.3, 0.7, 1.0): subpixel stripes are filtered instead of shimmering
+PASS 0-(1.3, 0.7, 1.0): Texture filtering Off and 16x produce distinct expected detail
+PASS 0-(1.3, 0.7, 1.0): changing filtering back restores deterministic pixels
+PASS 0-(1.3, 0.7, 1.0): filtering changes reuse the target and scene resources
+PASS 0-(1.3, 0.7, 1.0): all filtering and scene resources released
+PASS 0-(1.3, 0.7, 1.0): equivalent triangle diagonals do not create texture seams
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS 1-(1.0, 1.0, 1.0): textured quad prepares
+PASS 1-(1.0, 1.0, 1.0): comparison region contains the textured surface
+PASS 1-(1.0, 1.0, 1.0): resolvable texture stripes retain contrast
+PASS 1-(1.0, 1.0, 1.0): subpixel stripes are filtered instead of shimmering
+PASS 1-(1.0, 1.0, 1.0): Texture filtering Off and 16x produce distinct expected detail
+PASS 1-(1.0, 1.0, 1.0): changing filtering back restores deterministic pixels
+PASS 1-(1.0, 1.0, 1.0): filtering changes reuse the target and scene resources
+PASS 1-(1.0, 1.0, 1.0): all filtering and scene resources released
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS 1-(1.0, 1.0, 1.0): textured quad prepares
+PASS 1-(1.0, 1.0, 1.0): comparison region contains the textured surface
+PASS 1-(1.0, 1.0, 1.0): resolvable texture stripes retain contrast
+PASS 1-(1.0, 1.0, 1.0): subpixel stripes are filtered instead of shimmering
+PASS 1-(1.0, 1.0, 1.0): Texture filtering Off and 16x produce distinct expected detail
+PASS 1-(1.0, 1.0, 1.0): changing filtering back restores deterministic pixels
+PASS 1-(1.0, 1.0, 1.0): filtering changes reuse the target and scene resources
+PASS 1-(1.0, 1.0, 1.0): all filtering and scene resources released
+PASS 1-(1.0, 1.0, 1.0): equivalent triangle diagonals do not create texture seams
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS 1-(1.3, 0.7, 1.0): textured quad prepares
+PASS 1-(1.3, 0.7, 1.0): comparison region contains the textured surface
+PASS 1-(1.3, 0.7, 1.0): resolvable texture stripes retain contrast
+PASS 1-(1.3, 0.7, 1.0): subpixel stripes are filtered instead of shimmering
+PASS 1-(1.3, 0.7, 1.0): Texture filtering Off and 16x produce distinct expected detail
+PASS 1-(1.3, 0.7, 1.0): changing filtering back restores deterministic pixels
+PASS 1-(1.3, 0.7, 1.0): filtering changes reuse the target and scene resources
+PASS 1-(1.3, 0.7, 1.0): all filtering and scene resources released
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS 1-(1.3, 0.7, 1.0): textured quad prepares
+PASS 1-(1.3, 0.7, 1.0): comparison region contains the textured surface
+PASS 1-(1.3, 0.7, 1.0): resolvable texture stripes retain contrast
+PASS 1-(1.3, 0.7, 1.0): subpixel stripes are filtered instead of shimmering
+PASS 1-(1.3, 0.7, 1.0): Texture filtering Off and 16x produce distinct expected detail
+PASS 1-(1.3, 0.7, 1.0): changing filtering back restores deterministic pixels
+PASS 1-(1.3, 0.7, 1.0): filtering changes reuse the target and scene resources
+PASS 1-(1.3, 0.7, 1.0): all filtering and scene resources released
+PASS 1-(1.3, 0.7, 1.0): equivalent triangle diagonals do not create texture seams
+WATER_RT_DEVICE 69 checks 0 failures
+[trace 01:02:02 +8003ms] clean exit

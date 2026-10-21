@@ -1,0 +1,104 @@
+{
+	"baseline": true,
+	"checks": 45,
+	"failures": [
+		"0-(1.0, 1.0, 1.0): resolvable texture stripes retain contrast",
+		"0-(1.0, 1.0, 1.0): resolvable texture stripes retain contrast",
+		"0-(1.3, 0.7, 1.0): resolvable texture stripes retain contrast",
+		"0-(1.3, 0.7, 1.0): resolvable texture stripes retain contrast",
+		"1-(1.0, 1.0, 1.0): resolvable texture stripes retain contrast",
+		"1-(1.0, 1.0, 1.0): resolvable texture stripes retain contrast",
+		"1-(1.3, 0.7, 1.0): resolvable texture stripes retain contrast",
+		"1-(1.3, 0.7, 1.0): resolvable texture stripes retain contrast"
+	],
+	"rows": [
+		{
+			"case": "0-(1.0, 1.0, 1.0)",
+			"flipped_diagonal": false,
+			"stats": {
+				"contrast": 0.0299072265625,
+				"green_error": 0.0000402182340621948,
+				"pixels": 2304
+			}
+		},
+		{
+			"case": "0-(1.0, 1.0, 1.0)",
+			"flipped_diagonal": true,
+			"stats": {
+				"contrast": 0.0,
+				"green_error": 0.0000402182340621948,
+				"pixels": 2304
+			}
+		},
+		{
+			"case": "0-(1.0, 1.0, 1.0)",
+			"triangulation_error": 0.0000417320816605179
+		},
+		{
+			"case": "0-(1.3, 0.7, 1.0)",
+			"flipped_diagonal": false,
+			"stats": {
+				"contrast": 0.074951171875,
+				"green_error": 0.0000402182340621948,
+				"pixels": 2304
+			}
+		},
+		{
+			"case": "0-(1.3, 0.7, 1.0)",
+			"flipped_diagonal": true,
+			"stats": {
+				"contrast": 0.0,
+				"green_error": 0.0000402182340621948,
+				"pixels": 2304
+			}
+		},
+		{
+			"case": "0-(1.3, 0.7, 1.0)",
+			"triangulation_error": 0.000361018710666233
+		},
+		{
+			"case": "1-(1.0, 1.0, 1.0)",
+			"flipped_diagonal": false,
+			"stats": {
+				"contrast": 0.0,
+				"green_error": 0.0000402182340621948,
+				"pixels": 2304
+			}
+		},
+		{
+			"case": "1-(1.0, 1.0, 1.0)",
+			"flipped_diagonal": true,
+			"stats": {
+				"contrast": 0.0,
+				"green_error": 0.0000402182340621948,
+				"pixels": 2304
+			}
+		},
+		{
+			"case": "1-(1.0, 1.0, 1.0)",
+			"triangulation_error": 0.0
+		},
+		{
+			"case": "1-(1.3, 0.7, 1.0)",
+			"flipped_diagonal": false,
+			"stats": {
+				"contrast": 0.0,
+				"green_error": 0.0000402182340621948,
+				"pixels": 2304
+			}
+		},
+		{
+			"case": "1-(1.3, 0.7, 1.0)",
+			"flipped_diagonal": true,
+			"stats": {
+				"contrast": 0.0,
+				"green_error": 0.0000402182340621948,
+				"pixels": 2304
+			}
+		},
+		{
+			"case": "1-(1.3, 0.7, 1.0)",
+			"triangulation_error": 0.0
+		}
+	]
+}

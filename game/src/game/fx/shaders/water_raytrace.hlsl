@@ -135,6 +135,38 @@ void main(inout Surface result, Attributes attributes) {
     if (colours.SampleLevel(colour_sampler, float3(hit_uv(a, c, d, b), a.emission_layer.w), 0.0).a * a.diffuse.a < asfloat(material.z)) { IgnoreHit(); }
 }
 #elif defined(WATER_CLOSEST_HIT)
+// Project each subpixel's screen footprint onto the actual hit triangle.
+// UV derivatives then follow its full basis, including grazing views, skewed
+// UVs and nonuniform instance scale. A single edge-density LOD loses detail
+// along the shorter footprint axis and can change across a triangulated face.
+void texture_gradients(float3 a, float3 c, float3 d, float2 ua, float2 uc, float2 ud,
+                       float3 hit, out float2 dx, out float2 dy) {
+    dx = 0.0; dy = 0.0;
+    float3 e1 = c - a, e2 = d - a;
+    float3 normal = cross(e1, e2);
+    float area_squared = dot(normal, normal);
+    if (area_squared < 1e-16) { return; }
+    float3 u_axis = cross(e2, normal) / area_squared;
+    float3 v_axis = cross(normal, e1) / area_squared;
+    normal = normalize(normal);
+    float3 eye = mul(frame.camera_world, float4(0, 0, 0, 1)).xyz;
+    float3 right = mul(frame.camera_world, float4(1, 0, 0, 0)).xyz;
+    float3 up = mul(frame.camera_world, float4(0, 1, 0, 0)).xyz;
+    float3 forward = -mul(frame.camera_world, float4(0, 0, 1, 0)).xyz;
+    float depth = frame.fog.w > 0.5 ? 1.0 : max(dot(hit - eye, forward), 0.0);
+    float grid = float(clamp(uint(frame.ambient.w), 1u, 8u));
+    float2 pixel = 2.0 * abs(float2(frame.inv_projection[0][0], frame.inv_projection[1][1]))
+                   * depth / (float2(DispatchRaysDimensions().xy) * grid);
+    float3 direction = WorldRayDirection();
+    float facing = dot(normal, direction);
+    // Bound the derivative at a tangent to avoid infinities/NaNs at silhouettes.
+    facing = (facing < 0.0 ? -1.0 : 1.0) * max(abs(facing), 1e-5);
+    float3 px = right * pixel.x, py = up * pixel.y;
+    px -= direction * (dot(normal, px) / facing);
+    py -= direction * (dot(normal, py) / facing);
+    dx = (uc - ua) * dot(u_axis, px) + (ud - ua) * dot(v_axis, px);
+    dy = (uc - ua) * dot(u_axis, py) + (ud - ua) * dot(v_axis, py);
+}
 [shader("closesthit")]
 void main(inout Surface result, Attributes attributes) {
     uint4 material = geometry.Load4(InstanceID() * 16);
@@ -151,14 +183,9 @@ void main(inout Surface result, Attributes attributes) {
     float3 c = mul(ObjectToWorld3x4(), float4(vc.position_u.xyz, 1.0));
     float3 d = mul(ObjectToWorld3x4(), float4(vd.position_u.xyz, 1.0));
     float2 ua = float2(va.position_u.w, va.normal_v.w), uc = float2(vc.position_u.w, vc.normal_v.w), ud = float2(vd.position_u.w, vd.normal_v.w);
-    float density = max(length(uc - ua) / max(length(c - a), 0.001), length(ud - ua) / max(length(d - a), 0.001));
-    float3 eye = mul(frame.camera_world, float4(0, 0, 0, 1)).xyz;
-    float distance = frame.fog.w > 0.5 ? 1.0 : length(result.hit_point - eye);
-    uint width, height, layers, levels;
-    colours.GetDimensions(0, width, height, layers, levels);
-    float footprint = distance * frame.sky.w * density * float(width);
-    float lod = max(log2(max(footprint, 1.0)), 0.0);
-    result.colour = float4(colours.SampleLevel(colour_sampler, float3(hit_uv(va, vc, vd, b), va.emission_layer.w), lod).rgb, 1.0);
+    float2 dx, dy;
+    texture_gradients(a, c, d, ua, uc, ud, result.hit_point, dx, dy);
+    result.colour = float4(colours.SampleGrad(colour_sampler, float3(hit_uv(va, vc, vd, b), va.emission_layer.w), dx, dy).rgb, 1.0);
     if (result.standard > 0.5) { result.colour.rgb *= result.diffuse; result.diffuse = 1.0; }
 }
 #endif

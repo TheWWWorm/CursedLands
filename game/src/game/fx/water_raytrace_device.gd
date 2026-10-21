@@ -25,6 +25,7 @@ var _active_instances := {}
 var _placement_geometry := PackedInt32Array()
 var _colours := RID()
 var _sampler := RID()
+var _samplers: Array[RID] = []
 var _frame := RID()
 var _target := RID()
 var _set := RID()
@@ -143,16 +144,21 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 	var layers: Array[PackedByteArray] = []
 	for im in images: layers.append(im.get_data())
 	_colours = _own(_rd.texture_create(format,RDTextureView.new(),layers))
-	var sampler := RDSamplerState.new()
-	sampler.min_filter = RenderingDevice.SAMPLER_FILTER_LINEAR
-	sampler.mag_filter = RenderingDevice.SAMPLER_FILTER_LINEAR
-	sampler.mip_filter = RenderingDevice.SAMPLER_FILTER_LINEAR
-	sampler.max_lod = 20.0
-	sampler.repeat_u = RenderingDevice.SAMPLER_REPEAT_MODE_REPEAT
-	sampler.repeat_v = RenderingDevice.SAMPLER_REPEAT_MODE_REPEAT
-	_sampler = _own(_rd.sampler_create(sampler))
+	# Small immutable samplers let the existing Texture filtering option
+	# change live without rebuilding the RT scene or reallocating its image.
+	for quality in 5:
+		var sampler := RDSamplerState.new()
+		sampler.min_filter = RenderingDevice.SAMPLER_FILTER_LINEAR
+		sampler.mag_filter = RenderingDevice.SAMPLER_FILTER_LINEAR
+		sampler.mip_filter = RenderingDevice.SAMPLER_FILTER_LINEAR
+		sampler.use_anisotropy = quality > 0
+		sampler.anisotropy_max = 1 << quality
+		sampler.max_lod = 20.0
+		sampler.repeat_u = RenderingDevice.SAMPLER_REPEAT_MODE_REPEAT
+		sampler.repeat_v = RenderingDevice.SAMPLER_REPEAT_MODE_REPEAT
+		_samplers.append(_own(_rd.sampler_create(sampler)))
 	_frame = _own(_rd.uniform_buffer_create(FRAME_BYTES))
-	_ready = _colours.is_valid() and _sampler.is_valid() and _frame.is_valid()
+	_ready = _colours.is_valid() and _frame.is_valid() and _samplers.all(func(rid: RID): return rid.is_valid())
 	prepared.emit.call_deferred(_ready)
 
 ## Hidden meshes keep CPU/vertex data, but acquire a BLAS only when first
@@ -180,7 +186,7 @@ func _uniform(kind: int, binding: int, ids: Array[RID]) -> RDUniform:
 	for rid in ids: uniform.add_id(rid)
 	return uniform
 
-func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}) -> void:
+func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, texture_filter := 4) -> void:
 	if _closed or not _ready: return
 	var changed := false
 	for pose: Dictionary in changes.get("poses",[]):
@@ -200,13 +206,17 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}) ->
 		changed = true
 	if changed and _rd.tlas_build(_tlas,_active_instances.values()) != OK:
 		_ready = false; prepared.emit.call_deferred(false); return
-	if size != _size:
-		var format := RDTextureFormat.new()
-		format.width = size.x
-		format.height = size.y
-		format.format = RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT
-		format.usage_bits = RenderingDevice.TEXTURE_USAGE_STORAGE_BIT | RenderingDevice.TEXTURE_USAGE_SAMPLING_BIT | RenderingDevice.TEXTURE_USAGE_CAN_COPY_FROM_BIT
-		var target := _rd.texture_create(format,RDTextureView.new())
+	var sampler := _samplers[clampi(texture_filter,0,_samplers.size()-1)]
+	if size != _size or sampler != _sampler:
+		var resized := size != _size
+		var target := _target
+		if resized:
+			var format := RDTextureFormat.new()
+			format.width = size.x
+			format.height = size.y
+			format.format = RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT
+			format.usage_bits = RenderingDevice.TEXTURE_USAGE_STORAGE_BIT | RenderingDevice.TEXTURE_USAGE_SAMPLING_BIT | RenderingDevice.TEXTURE_USAGE_CAN_COPY_FROM_BIT
+			target = _rd.texture_create(format,RDTextureView.new())
 		if not target.is_valid():
 			_ready = false
 			prepared.emit.call_deferred(false)
@@ -216,11 +226,11 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}) ->
 			_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,1,[target]),
 			_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,2,[_vertices]),
 			_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,3,[_colours]),
-			_uniform(RenderingDevice.UNIFORM_TYPE_SAMPLER,6,[_sampler]),
+			_uniform(RenderingDevice.UNIFORM_TYPE_SAMPLER,6,[sampler]),
 			_uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,4,[_frame]),
 			_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,5,[_materials])],_shader,0)
 		if not uniforms.is_valid():
-			_rd.free_rid(target)
+			if resized: _rd.free_rid(target)
 			_ready = false
 			prepared.emit.call_deferred(false)
 			return
@@ -230,10 +240,11 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}) ->
 		var old_set := _set
 		_target = target
 		_set = uniforms
+		_sampler = sampler
 		_size = size
-		output.texture_rd_rid = target
+		if resized: output.texture_rd_rid = target
 		if old_set.is_valid(): _rd.free_rid(old_set)
-		if old_target.is_valid(): _rd.free_rid(old_target)
+		if resized and old_target.is_valid(): _rd.free_rid(old_target)
 	if frame.size() < FRAME_BYTES: frame.resize(FRAME_BYTES)
 	_rd.buffer_update(_frame,0,frame.size(),frame)
 	var list := _rd.raytracing_list_begin()
@@ -246,6 +257,7 @@ func dispose() -> void:
 	_closed = true
 	_ready = false
 	output.texture_rd_rid = RID()
+	_samplers.clear()
 	if _rd == null: return
 	if _set.is_valid(): _rd.free_rid(_set)
 	if _target.is_valid(): _rd.free_rid(_target)

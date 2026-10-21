@@ -217,7 +217,8 @@ func _update_raytrace(source: Camera3D) -> void:
 			frame.append_array(PackedFloat32Array([0,0,0,0])); colours.append_array(PackedFloat32Array([0,0,0,0]))
 	frame.append_array(colours)
 	var changes := _rt_live.updates()
-	RenderingServer.call_on_render_thread(_rt.render.bind(target,frame.to_byte_array(),changes))
+	var filtering := clampi(GameData.option("q_aniso"),0,4)
+	RenderingServer.call_on_render_thread(_rt.render.bind(target,frame.to_byte_array(),changes,filtering))
 	rt_stats["updated_instances"] = changes.instances.size()
 	rt_stats["updated_morphs"] = changes.poses.size()
 	rt_stats["lights"] = _rt_lights.size()
@@ -227,6 +228,7 @@ func _update_raytrace(source: Camera3D) -> void:
 	rt_stats["size"] = [target.x,target.y]
 	rt_stats["quality"] = quality
 	rt_stats["samples_per_pixel"] = RT_SAMPLE_GRID * RT_SAMPLE_GRID
+	rt_stats["texture_anisotropy"] = 1 << filtering
 
 
 func _collect_raytrace_lights(focus: Vector3) -> void:

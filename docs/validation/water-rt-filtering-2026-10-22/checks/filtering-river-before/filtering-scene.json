@@ -1,0 +1,26 @@
+{
+	"baseline": true,
+	"changed_pixels": 0,
+	"checks": 2,
+	"failures": [],
+	"stats": {
+		"active": true,
+		"geometries": 1285,
+		"instances": 1420,
+		"lights": 1,
+		"native_scene": true,
+		"opaque_geometries": 734,
+		"quality": 2,
+		"radius": 96.0,
+		"samples_per_pixel": 4,
+		"size": [
+			1280,
+			720
+		],
+		"supported": true,
+		"textures": 43,
+		"triangles": 112954,
+		"updated_instances": 0,
+		"updated_morphs": 0
+	}
+}

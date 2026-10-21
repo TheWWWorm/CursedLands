@@ -1,0 +1,683 @@
+{
+  "date": "2026-10-22",
+  "status": "unreleased",
+  "branch": "work/dx12-water-rt",
+  "base_commit": "c634c817158d0bb94318e3d36c12c6a02be0202d",
+  "merge": {
+    "commit": "60ef00d0bad3b88367762cb8bccaed5cc5fa1889",
+    "source_chat": "01a1604d-e3d1-7b71-b122-5c57f422cf31",
+    "source_title": "Add autochess creature variety",
+    "source_branch": "feature/autochess-rank-variants-20261021",
+    "source_tip": "c1f094ae2d047ee75d6efa6608ccdc9b63c049f2",
+    "parents": [
+      "c634c817158d0bb94318e3d36c12c6a02be0202d",
+      "c1f094ae2d047ee75d6efa6608ccdc9b63c049f2"
+    ],
+    "conflicts": 0,
+    "method": "Normal merge, retaining all three source commits and ancestry."
+  },
+  "changes": [
+    "Projected subpixel UV gradients replace the longest-edge mip estimate.",
+    "Existing Texture filtering Off/2x/4x/8x/16x now applies to RT and can change without recreating geometry or the output image.",
+    "Low/Medium/High retain 50/75/100 percent of both viewport dimensions, no fixed cap, and four spatial samples per pixel."
+  ],
+  "gpu": "NVIDIA GeForce RTX 3090",
+  "platforms": [
+    "Native Linux Vulkan",
+    "Windows executable via Wine/VKD3D-Proton 3.0.1"
+  ],
+  "source_sha256": {
+    "game/src/game/fx/shaders/water_raytrace.hlsl": "e614f39cbba69d39e9251d56b81c3ea863a763bda5c4187eee8af0185590464d",
+    "game/src/game/fx/shaders/water_raytrace_build.json": "8985e0e70e286aa74a3da221b0a846303fca1de1eed7f3d0ca84552cb755a0f8",
+    "game/src/game/fx/water_raytrace_device.gd": "bdebb89cee768716773bbd212eebeedda3ac6e14934b7507076c1a51d1e117e7",
+    "game/src/game/fx/water_reflection.gd": "0eefc9e9417cf7795c7d4a9916af24b01459b51de4b86c653c5a2096facbbbe1",
+    "game/src/ei/unit_model.gd": "bc872f119c16fcaa99a973ab57b9522a32a4fd79a4b104237ae7f81cf8f3839e",
+    "tools/tests/water_raytrace_filtering.gd": "bc4d0cc6d00c928932f166e675addd5e523f40f078307e43dd3ef526ec54d415",
+    "tools/tests/water_raytrace_filtering_scene.gd": "56cacc52b911244d3ee086eb818323e5f0fb85fe0b9fb00ecbfd01bdbb9a5bd9"
+  },
+  "shader_build": {
+    "reproduction": "python3 tools/build_water_rt_shaders.py --check --dxc ../dx12-quality/dxc/bin/dxc",
+    "result": "All eight DXIL/SPIR-V binaries reproduced byte-for-byte without changes.",
+    "manifest": {
+      "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
+      "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
+      "builder_sha256": "5e6accdeed52b27d85a748d1d512c98fe9fb57efbe5240c24d825859b528e407",
+      "source_sha256": "e614f39cbba69d39e9251d56b81c3ea863a763bda5c4187eee8af0185590464d",
+      "files": {
+        "water_raytrace_raygen.dxil": "980a8a714d2d45a1bf7532ce46cc5667a2ff5d530da55b8f09463877bf2c2e66",
+        "water_raytrace_raygen.spv": "78fb1bab276689600860227d396ae7146e14d0ca70e2bb0a91a288ee6ca0035e",
+        "water_raytrace_miss.dxil": "3a5ca9747f2f641eb80ce644c2468732fb86668b6f9903cb21085a565cc0c923",
+        "water_raytrace_miss.spv": "d33b8787b79acdae030b0b3542391e0f182ba8c834689d2042b4558f93f77824",
+        "water_raytrace_closest_hit.dxil": "168c8f4f1598132c3c91edfcbbc772dae647e95f807539758ad1fde0ca67c902",
+        "water_raytrace_closest_hit.spv": "f65571855f3a2bd2116927ae68a8893eab6c00f32ed8b91dfd5076d3cdadb443",
+        "water_raytrace_any_hit.dxil": "092e9a86765826c238cdce364c099faba1c99b5897cba1f4511f634fb848142f",
+        "water_raytrace_any_hit.spv": "167158b71b98d65ec749447881b7aa3a80b479d0807aa14d8d47e908a8568fa0"
+      }
+    }
+  },
+  "package_sha256": {
+    "preview-windows/CursedLands.exe": "e920a09af7c019d29a96d229a1a9ff7f727598b804d5d7c0c1e3db24ef5ada3b",
+    "preview-windows/CursedLands.pck": "56063ecfaf92ae64c381ef1cf39d53d4ab1417beae9de514cce9863e640d438e",
+    "preview-linux/CursedLands.x86_64": "5cd55e014b01f542e23e0591bdcd5481c676d29ad7cf283b87d6e329c1428815",
+    "preview-linux/CursedLands.pck": "56063ecfaf92ae64c381ef1cf39d53d4ab1417beae9de514cce9863e640d438e",
+    "rt-filter-baseline-windows/CursedLands.pck": "9e981c8b295ed408f88ed6bfecccb15471b412779ef1d09ce95c0d3a3d06516c",
+    "rt-filter-baseline-linux/CursedLands.pck": "9e981c8b295ed408f88ed6bfecccb15471b412779ef1d09ce95c0d3a3d06516c"
+  },
+  "production_sources_match_export_input": true,
+  "filtering_pixels": {
+    "baseline_package_commit": "c634c817",
+    "baseline_expected_contrast_failures": 8,
+    "new_checks_per_api": 69,
+    "wide_stripe_contrast_before_perspective_identity_diagonals": [
+      0.0299072265625,
+      0.0
+    ],
+    "wide_stripe_contrast_after": 0.868316650390625,
+    "minified_stripe_mean_absolute_error_after": 4.02182e-05,
+    "equivalent_triangulations_mean_absolute_error_after": 0.0
+  },
+  "performance": {
+    "setting": "1280x720 High, RT four spatial samples per pixel, 16x anisotropy (only honored by new shader), Mirror 2x MSAA. One moving original character and frozen river camera.",
+    "protocol": "Three interleaved rounds per session, 35 settling frames then 90 samples per mode. Summaries are medians of the three round medians.",
+    "sessions": {
+      "before": {
+        "rt_full": {
+          "reflection_gpu_ms": 0.65536,
+          "frame_ms": 4.963,
+          "controller_cpu_ms": 0.646,
+          "rendered_fps": 201.49103364900262
+        },
+        "mirror_full": {
+          "reflection_gpu_ms": 0.535000026226044,
+          "frame_ms": 5.41,
+          "controller_cpu_ms": 0.029,
+          "rendered_fps": 184.84288354898337
+        }
+      },
+      "after": {
+        "rt_full": {
+          "reflection_gpu_ms": 0.661504,
+          "frame_ms": 4.57,
+          "controller_cpu_ms": 0.576,
+          "rendered_fps": 218.8183807439825
+        },
+        "mirror_full": {
+          "reflection_gpu_ms": 0.535000026226044,
+          "frame_ms": 5.608,
+          "controller_cpu_ms": 0.033,
+          "rendered_fps": 178.3166904422254
+        }
+      }
+    },
+    "interpretation": "RT GPU cost is approximately 0.66 ms before and after in this scene. Whole-frame wall times fluctuate on the shared development host; this does not establish an FPS gain from filtering or general performance on other GPUs/scenes."
+  },
+  "localization": {
+    "command": "python3 tools/check_translations.py",
+    "entries": 3025,
+    "dynamic_wiki_keys": 141,
+    "dynamic_arena_keys": 179,
+    "errors": 0,
+    "new_player_strings": 0,
+    "note": "Uses the existing localized Texture filtering choices; merged strings also pass the EN/RU/DE option localization matrix."
+  },
+  "results": [
+    {
+      "suite": "water_raytrace_filtering",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "seconds": 8.5,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "filtering-api-vulkan",
+      "report": "checks/filtering-api-vulkan/run.json",
+      "domain_reports": {
+        "filtering.json": "checks/filtering-api-vulkan/filtering.json"
+      },
+      "summary": [
+        "WATER_RT_DEVICE 69 checks 0 failures"
+      ],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/filtering-api-vulkan/run.log",
+      "api_validation": {
+        "layer": "VK_LAYER_KHRONOS_validation",
+        "version": "1.4.363.0",
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/validation-tools/current-layers",
+        "errors": 0,
+        "warnings": 0
+      },
+      "captured_log": "checks/filtering-api-vulkan/diagnostics.txt"
+    },
+    {
+      "suite": "water_raytrace_filtering",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 1,
+      "seconds": 10.98,
+      "errors": [
+        "FAIL 0-(1.0, 1.0, 1.0): resolvable texture stripes retain contrast",
+        "FAIL 0-(1.0, 1.0, 1.0): resolvable texture stripes retain contrast",
+        "FAIL 0-(1.3, 0.7, 1.0): resolvable texture stripes retain contrast",
+        "FAIL 0-(1.3, 0.7, 1.0): resolvable texture stripes retain contrast",
+        "FAIL 1-(1.0, 1.0, 1.0): resolvable texture stripes retain contrast",
+        "FAIL 1-(1.0, 1.0, 1.0): resolvable texture stripes retain contrast",
+        "FAIL 1-(1.3, 0.7, 1.0): resolvable texture stripes retain contrast",
+        "FAIL 1-(1.3, 0.7, 1.0): resolvable texture stripes retain contrast"
+      ],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "filtering-before",
+      "report": "checks/filtering-before/run.json",
+      "domain_reports": {
+        "filtering.json": "checks/filtering-before/filtering.json"
+      },
+      "summary": [
+        "WATER_RT_DEVICE 45 checks 8 failures"
+      ],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/filtering-before/run.log",
+      "expected_negative_control": "Prior shader fails exactly eight resolvable-stripe contrast assertions; the remaining 37 checks pass."
+    },
+    {
+      "suite": "water_raytrace_filtering",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "seconds": 14.98,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "filtering-dx12",
+      "report": "checks/filtering-dx12/run.json",
+      "domain_reports": {
+        "filtering.json": "checks/filtering-dx12/filtering.json"
+      },
+      "summary": [
+        "WATER_RT_DEVICE 69 checks 0 failures"
+      ],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/filtering-dx12/run.log"
+    },
+    {
+      "suite": "water_raytrace_dynamic_performance",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "seconds": 28.51,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "filtering-performance-after",
+      "report": "checks/filtering-performance-after/run.json",
+      "domain_reports": {
+        "performance.json": "checks/filtering-performance-after/performance.json"
+      },
+      "summary": [],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/filtering-performance-after/run.log"
+    },
+    {
+      "suite": "water_raytrace_dynamic_performance",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "seconds": 29.43,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "filtering-performance-before",
+      "report": "checks/filtering-performance-before/run.json",
+      "domain_reports": {
+        "performance.json": "checks/filtering-performance-before/performance.json"
+      },
+      "summary": [],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/filtering-performance-before/run.log"
+    },
+    {
+      "suite": "water_raytrace_filtering_scene",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "seconds": 24.04,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "filtering-river-after",
+      "report": "checks/filtering-river-after/run.json",
+      "domain_reports": {
+        "filtering-scene.json": "checks/filtering-river-after/filtering-scene.json"
+      },
+      "summary": [],
+      "diagnostics": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 00d4), starting debugger..."
+      ],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/filtering-river-after/run.log",
+      "captured_log": "checks/filtering-river-after/diagnostics.txt"
+    },
+    {
+      "suite": "water_raytrace_filtering_scene",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "seconds": 20.42,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "filtering-river-before",
+      "report": "checks/filtering-river-before/run.json",
+      "domain_reports": {
+        "filtering-scene.json": "checks/filtering-river-before/filtering-scene.json"
+      },
+      "summary": [],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/filtering-river-before/run.log"
+    },
+    {
+      "suite": "water_raytrace_filtering_scene",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "seconds": 24.92,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "filtering-river-dx12-settled",
+      "report": "checks/filtering-river-dx12-settled/run.json",
+      "domain_reports": {
+        "filtering-scene.json": "checks/filtering-river-dx12-settled/filtering-scene.json"
+      },
+      "summary": [],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/filtering-river-dx12-settled/run.log"
+    },
+    {
+      "suite": "water_raytrace_filtering_scene",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 1,
+      "seconds": 22.04,
+      "errors": [
+        "FAIL High uses the full river viewport",
+        "FAIL filtering retains the reflection resolution",
+        "FAIL Texture filtering changes visible river reflection detail",
+        "FAIL restoring 16x reproduces the frozen river reflection",
+        "FAIL filtering changes retain the GPU image"
+      ],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "filtering-river-vulkan",
+      "report": "checks/filtering-river-vulkan/run.json",
+      "domain_reports": {
+        "filtering-scene.json": "checks/filtering-river-vulkan/filtering-scene.json"
+      },
+      "summary": [],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/filtering-river-vulkan/run.log",
+      "fixture_failure": "Initial screenshot was 1280x794 after asynchronous X11 reframing, later screenshots 1280x720. Corrected the fixture to settle the window before each capture; final Vulkan and DX12 scene runs pass at 1280x720.",
+      "captured_log": "checks/filtering-river-vulkan/diagnostics.txt"
+    },
+    {
+      "suite": "water_raytrace_filtering_scene",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "seconds": 23.47,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "filtering-river-vulkan-settled",
+      "report": "checks/filtering-river-vulkan-settled/run.json",
+      "domain_reports": {
+        "filtering-scene.json": "checks/filtering-river-vulkan-settled/filtering-scene.json"
+      },
+      "summary": [],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/filtering-river-vulkan-settled/run.log"
+    },
+    {
+      "suite": "water_raytrace_filtering",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "seconds": 10.63,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "filtering-vulkan",
+      "report": "checks/filtering-vulkan/run.json",
+      "domain_reports": {
+        "filtering.json": "checks/filtering-vulkan/filtering.json"
+      },
+      "summary": [
+        "WATER_RT_DEVICE 69 checks 0 failures"
+      ],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/filtering-vulkan/run.log"
+    },
+    {
+      "suite": "water_raytrace_first_person",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "seconds": 23.97,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "filtering-water_raytrace_first_person",
+      "report": "checks/filtering-water_raytrace_first_person/run.json",
+      "domain_reports": {
+        "first-person.json": "checks/filtering-water_raytrace_first_person/first-person.json"
+      },
+      "summary": [],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/filtering-water_raytrace_first_person/run.log"
+    },
+    {
+      "suite": "water_raytrace_material_live",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "seconds": 25.12,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "filtering-water_raytrace_material_live",
+      "report": "checks/filtering-water_raytrace_material_live/run.json",
+      "domain_reports": {
+        "materials-live.json": "checks/filtering-water_raytrace_material_live/materials-live.json"
+      },
+      "summary": [],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/filtering-water_raytrace_material_live/run.log"
+    },
+    {
+      "suite": "water_raytrace_quality",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "seconds": 8.32,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "filtering-water_raytrace_quality",
+      "report": "checks/filtering-water_raytrace_quality/run.json",
+      "domain_reports": {
+        "quality-results.json": "checks/filtering-water_raytrace_quality/quality-results.json"
+      },
+      "summary": [
+        "WATER_RT_DEVICE 50 checks 0 failures"
+      ],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/filtering-water_raytrace_quality/run.log"
+    },
+    {
+      "suite": "arena_deployment_motion",
+      "platform": "linux",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 6.92,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "rt-merge-arena_deployment_motion",
+      "report": "checks/rt-merge-arena_deployment_motion/run.json",
+      "domain_reports": {},
+      "summary": [
+        "ARENA_DEPLOYMENT_MOTION {\"checks\":91,\"failures\":[]}"
+      ],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/rt-merge-arena_deployment_motion/run.log"
+    },
+    {
+      "suite": "arena_rank_appearance",
+      "platform": "linux",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 4.72,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "rt-merge-arena_rank_appearance",
+      "report": "checks/rt-merge-arena_rank_appearance/run.json",
+      "domain_reports": {},
+      "summary": [
+        "ARENA_RANK_APPEARANCE {\"checks\":1265,\"failures\":[]}"
+      ],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/rt-merge-arena_rank_appearance/run.log"
+    },
+    {
+      "suite": "arena_scale_preservation",
+      "platform": "linux",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 4.07,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "rt-merge-arena_scale_preservation",
+      "report": "checks/rt-merge-arena_scale_preservation/run.json",
+      "domain_reports": {},
+      "summary": [
+        "ARENA_SCALE_PRESERVATION {\"checks\":36,\"failures\":[]}"
+      ],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/rt-merge-arena_scale_preservation/run.log"
+    },
+    {
+      "suite": "console_cursor",
+      "platform": "linux",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 4.17,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "rt-merge-console_cursor",
+      "report": "checks/rt-merge-console_cursor/run.json",
+      "domain_reports": {},
+      "summary": [
+        "CONSOLE_CURSOR {\"checks\":27,\"failures\":[]}"
+      ],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/rt-merge-console_cursor/run.log"
+    },
+    {
+      "suite": "coop_loot_network",
+      "platform": "linux",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 15.17,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "rt-merge-coop_loot_network",
+      "report": "checks/rt-merge-coop_loot_network/run.json",
+      "domain_reports": {},
+      "summary": [
+        "COOP_LOOT_NETWORK {\"checks\":51,\"failures\":0}"
+      ],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/rt-merge-coop_loot_network/run.log"
+    },
+    {
+      "suite": "option_localization_matrix",
+      "platform": "linux",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 3.03,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "rt-merge-option_localization_matrix",
+      "report": "checks/rt-merge-option_localization_matrix/run.json",
+      "domain_reports": {},
+      "summary": [
+        "OPTION_LOCALIZATION_MATRIX {\"checks\":15605,\"choice_groups\":39,\"failures\":[],\"options\":165,\"translation_keys\":2657}"
+      ],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/rt-merge-option_localization_matrix/run.log"
+    },
+    {
+      "suite": "pickup_messages",
+      "platform": "linux",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 9.54,
+      "errors": [],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "tag": "rt-merge-pickup_messages",
+      "report": "checks/rt-merge-pickup_messages/run.json",
+      "domain_reports": {},
+      "summary": [
+        "PICKUP_MESSAGES {\"checks\":13,\"failures\":0,\"scenario\":\"cast\"}"
+      ],
+      "diagnostics": [],
+      "full_local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/rt-merge-pickup_messages/run.log"
+    }
+  ],
+  "screenshots": {
+    "water_before": "water-before.png",
+    "reflection_before": "reflection-before.png",
+    "water_after": "water-after.png",
+    "reflection_after": "reflection-after.png",
+    "stripes_before": "stripes-before.png",
+    "stripes_after": "stripes-after.png"
+  },
+  "qualification": [
+    "Functional DX12 readbacks and real-river filtering checks pass through Wine; this is not native Windows debug-layer qualification.",
+    "The first new DX12 river run again logged a Wine read page fault at 0000000241BB6030 after the game reported clean exit. The same diagnostic predates these changes; see water-rt-quality-options-2026-10-22.json. The final settled run is recorded separately.",
+    "Only the dedicated native Vulkan filtering run has API validation layers enabled in this follow-up; it has no validation warnings/errors. Previously documented translated DX12 startup/AS-range diagnostics are not resolved here.",
+    "No native Windows, AMD/Intel GPU, crowded-combat or texture-heavy-scene performance qualification. Existing RT material/particle/wind limitations remain.",
+    "The initial native river fixture resized asynchronously and failed comparison assumptions; both final scene tests use the same corrected fixture and actual 1280x720 GPU targets."
+  ]
+}

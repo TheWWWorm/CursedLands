@@ -1,0 +1,36 @@
+{
+  "suite": "arena_deployment_motion",
+  "platform": "linux",
+  "renderer": "headless",
+  "exit": 0,
+  "seconds": 6.92,
+  "errors": [],
+  "summary": [
+    "ARENA_DEPLOYMENT_MOTION {\"checks\":91,\"failures\":[]}"
+  ],
+  "command": [
+    "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/preview-linux/CursedLands.x86_64",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--gpu-index",
+    "0",
+    "--headless",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/fixtures-linux/arena_deployment_motion.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/rt-merge-arena_deployment_motion",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/preview-linux/mods"
+  ],
+  "profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  }
+}
