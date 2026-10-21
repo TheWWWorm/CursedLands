@@ -1,0 +1,13 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+[trace 00:30:19 +5689ms] session e93354c6ccb1: 1.22.0, Linux 24.04 (Ubuntu 24.04.5 LTS), Mesa llvmpipe (LLVM 20.1.2, 256 bits), gl_compatibility / opengl3
+CAPTURE shared-loot-de
+COOP_LOOT_MESSAGES_UI {"checks":5,"failures":[]}
+[trace 00:30:19 +6334ms] clean exit

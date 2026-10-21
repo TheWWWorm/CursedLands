@@ -55,6 +55,13 @@ reused at higher ranks; their stars and combat values identify the upgrade.
 There are no human recruits. Goblins, lizardmen, woodsfolk, orc shamans and undead
 retain distinct native silhouettes alongside animals, spirits and larger monsters.
 All figures and pixel portraits use the original models and clan palettes.
+Sixteen species use different native palettes as they gain stars. Species with
+two palettes reserve the contrasting appearance for three stars; species with
+three palettes use one per rank. Trolls progress from green to blue to black,
+banshees from light to dark, and dragons from green to blue to red. Original
+prototype tiers determine the order where the variants differ in strength;
+equal-tier variants are cosmetic choices. Palettes have no additional combat
+effects. Original localized names follow the visible colour or clan.
 
 | Cost | Species |
 | --- | --- |
@@ -83,7 +90,23 @@ Inspector accents and stars use the species' price-tier color.
 Reserves retain individual slot positions through purchases, swaps and saves.
 Selecting a field creature and then an empty reserve slot withdraws it there.
 Selecting an occupied reserve swaps the two creatures; either selection order
-works. Matching triples combine even when reserves are full. Rank appearances use the same species and native palette.
+works. Matching triples combine even when reserves are full. Rank appearances
+retain the species' rig, body proportions and combat prototype. Field models,
+reserves, placement ghosts, evolution notices, inspector previews and portraits
+share the same family/rank appearance, including online board snapshots.
+
+Preparation travel uses native paths and locomotion at a faster presentation
+pace. Blocked creatures retry around all current bodies after a quarter second
+without progress. Routes and clear entrance positions may extend outside the
+field into the navigable courtyard, then return to the exact deployment point.
+Slow creatures receive a minimum travel speed; fast ones have a presentation
+cap. This movement does not advance combat or apply damage. Pausing freezes it,
+and a replacement command takes effect immediately.
+
+Large native figures retain their fitted arena size through model replacements,
+body effects and full enemy records. The authoritative fit travels with each
+actor's appearance data, and is applied once to its collision body and to each
+new model, including its locomotion height factor.
 
 The default camera fits the playable clearing and tall figures between the side
 HUD and reserves, using a 34-degree tilt and a diagonal horizontal orbit. Its

@@ -37,6 +37,7 @@ var _title: Label
 var _traits: HBoxContainer
 var _stars: ArenaStars
 var _shown_prototype := ""
+var _shown_appearance := {}
 var _shown_family := -2
 var _preview_pending := false
 const HOVER_TITLE_HEIGHT := 42.0
@@ -57,7 +58,7 @@ func _ready() -> void:
 	custom_minimum_size = Vector2(112, 144)
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	tooltip_text = ArenaRules.title(prototype) + "\n" + caption + "\n" + footer
+	tooltip_text = ArenaRules.title(prototype, family, quality) + "\n" + caption + "\n" + footer
 	add_theme_stylebox_override("normal", StyleBoxEmpty.new())
 	add_theme_stylebox_override("hover", StyleBoxEmpty.new())
 	add_theme_stylebox_override("pressed", StyleBoxEmpty.new())
@@ -119,7 +120,7 @@ func _ready() -> void:
 	_upgrade_marker.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	_upgrade_marker.offset_left = -30; _upgrade_marker.offset_right = -5
 	_upgrade_marker.offset_top = 48; _upgrade_marker.offset_bottom = 75
-	var title := _label(self, heading if not heading.is_empty() else ArenaRules.title(prototype), 14, PAPER)
+	var title := _label(self, heading if not heading.is_empty() else ArenaRules.title(prototype, family, quality), 14, PAPER)
 	_title = title
 	title.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	title.offset_top = 4; title.offset_bottom = HOVER_TITLE_HEIGHT
@@ -145,11 +146,13 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	# A reroll swaps six figures. Retain their render targets and admit one
 	# model per frame, so first-use meshes cannot stall the whole shop update.
-	if _shown_prototype != prototype:
+	var appearance := ArenaAppearance.info(prototype, family, quality)
+	if _shown_appearance != appearance:
 		if not ArenaAnimationWarmup.ready_for(prototype): return
 		if not ArenaAnimationWarmup.claim_model_frame(): return
 		_shown_prototype = prototype
-		preview.show_model(ArenaAppearance.preview(prototype), true)
+		_shown_appearance = appearance
+		preview.show_model(ArenaAppearance.preview(prototype, family, quality), true)
 		preview.turn_by(-0.4)
 		for child: Control in preview.find_children("*", "Control", true, false): child.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		if is_instance_valid(preview.creature): preview.creature.material = _glow if upgrade_ready or tier >= 4 else null
@@ -162,6 +165,7 @@ func _process(_delta: float) -> void:
 
 func update_offer() -> void:
 	if not is_instance_valid(_price): return
+	tooltip_text = ArenaRules.title(prototype, family, quality) + "\n" + caption + "\n" + footer
 	if _shown_family != family:
 		_shown_family = family
 		for icon: TextureRect in _traits.get_children():
@@ -175,9 +179,9 @@ func update_offer() -> void:
 			emblem.custom_minimum_size = Vector2(18, 18)
 			emblem.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			_traits.add_child(emblem); _offer_icons.append(emblem)
-	if _shown_prototype != prototype:
+	if _shown_appearance != ArenaAppearance.info(prototype, family, quality):
 		_preview_pending = true
-		_title.text = (heading if not heading.is_empty() else ArenaRules.title(prototype)).replace("-", "-\u200b")
+		_title.text = (heading if not heading.is_empty() else ArenaRules.title(prototype, family, quality)).replace("-", "-\u200b")
 		_title.modulate.a = 1
 		set_process(true)
 	_stars.count = clampi(quality + 1, 1, 3)

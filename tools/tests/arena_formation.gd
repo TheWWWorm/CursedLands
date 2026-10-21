@@ -16,7 +16,7 @@ func _ready()->void:
 		targets[unit]=unit.pos
 		motion.enter(unit,unit.pos)
 		if not motion.movers.has(unit):print("NO_ENTRANCE ",unit.info.prototype," ",unit.pos," radius=",unit.body_radius())
-	check(motion.movers.size()==targets.size(),"all fifteen late-game creatures run into formation")
+	check(motion.movers.size()==targets.size(),"all late-game creatures run into formation")
 	for frame in 600:
 		motion.advance(1.0/60.0,battle.world)
 		if motion.movers.is_empty():break
@@ -24,10 +24,11 @@ func _ready()->void:
 	for unit:GameUnit in targets:check(unit.pos.distance_to(targets[unit])<0.05,"native arrival preserves exact formation")
 	var unit:GameUnit=battle.world.unit_rows()[0]
 	var before:=unit.pos
-	motion.move(unit,Vector2(29,39))
+	var first_target:=Vector2(29,25)
+	motion.move(unit,first_target)
 	for frame in 12:motion.advance(1.0/60.0,battle.world)
-	check(unit.pos!=before and unit.pos.distance_to(Vector2(29,39))>0.1,"retargeted movement is continuous")
-	var redirected:=Vector2(29,25)
+	check(unit.pos!=before and unit.pos.distance_to(first_target)>0.1,"retargeted movement is continuous")
+	var redirected:=Vector2(29,39)
 	motion.move(unit,redirected)
 	for frame in 600:
 		motion.advance(1.0/60.0,battle.world)

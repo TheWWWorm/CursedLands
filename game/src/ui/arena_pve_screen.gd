@@ -639,7 +639,9 @@ func _refresh() -> void:
 		_army_title.remove_meta("arena_help")
 	_army_title.mouse_filter = Control.MOUSE_FILTER_IGNORE if _army_title.disabled else Control.MOUSE_FILTER_STOP
 	if run.stage != "prepare" or landing or field.match_state != battle: field.select_creature("")
-	elif selected_uid > 0 and not run.unit(selected_uid).is_empty(): field.select_creature(run.unit(selected_uid).prototype)
+	elif selected_uid > 0 and not run.unit(selected_uid).is_empty():
+		var entry := run.unit(selected_uid)
+		field.select_creature(entry.prototype, int(entry.family), int(entry.rank))
 	if selected_uid > 0 and run.unit(selected_uid).is_empty(): _clear_selection()
 	_update_sell_target()
 	# A network roster refresh must not reset a stable world hover.
@@ -697,7 +699,7 @@ func _build_army() -> void:
 				button.add_child(preview)
 				preview.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 				preview.offset_top = 14; preview.offset_bottom = -20
-				preview.show_model(ArenaAppearance.preview(entry.prototype))
+				preview.show_model(ArenaAppearance.preview(entry.prototype, int(entry.family), int(entry.rank)))
 				preview.turn_by(-0.35)
 				preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 				for child: Control in preview.find_children("*", "Control", true, false): child.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -1106,12 +1108,12 @@ func _update_result_countdown() -> void:
 	if run.stage == "result": _clock.text = _result_countdown()
 
 
-func _creature_preview(parent: Node, id: String, height: float) -> WikiPreview:
+func _creature_preview(parent: Node, id: String, height: float, family := -1, rank := 0) -> WikiPreview:
 	var preview := WikiPreview.new()
 	preview.fit_slot = true
 	preview.custom_minimum_size = Vector2(80, height)
 	parent.add_child(preview)
-	preview.show_model(ArenaAppearance.preview(id))
+	preview.show_model(ArenaAppearance.preview(id, family, rank))
 	preview.turn_by(-0.35)
 	return preview
 
@@ -1130,7 +1132,7 @@ func _select(uid: int) -> void:
 	field.highlighted_run_uid = uid
 	var entry := run.unit(uid)
 	if entry.is_empty(): return
-	if run.stage == "prepare" and not landing: field.select_creature(entry.prototype)
+	if run.stage == "prepare" and not landing: field.select_creature(entry.prototype, int(entry.family), int(entry.rank))
 	_build_army()
 	_tooltips.capture(_hud)
 	_update_sell_target()
@@ -1163,13 +1165,13 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 	var family := int(entry.get("family", -1))
 	var accent := ArenaStars.for_family(family)
 	_rail.accented = true; _rail.edge = accent; _rail.queue_redraw()
-	var title := _wrap(_inspect_box, ArenaRules.title(id), 21, accent)
-	title.add_theme_font_override("font", _heading_font)
 	var rank := int(_inspected_unit.get_meta("arena_placement", {}).get("rank", ArenaUnitInfo.rank_of(id))) if is_instance_valid(_inspected_unit) else int(entry.get("rank", ArenaUnitInfo.rank_of(id)))
+	var title := _wrap(_inspect_box, ArenaRules.title(id, family, rank), 21, accent)
+	title.add_theme_font_override("font", _heading_font)
 	var header := HBoxContainer.new()
 	header.add_theme_constant_override("separation", 10)
 	_inspect_box.add_child(header)
-	var preview := _creature_preview(header, id, 56)
+	var preview := _creature_preview(header, id, 56, family, rank)
 	preview.custom_minimum_size.x = 64
 	var details := VBoxContainer.new()
 	details.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -1205,7 +1207,7 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 		if entry.has("offer") and run.shop_completes_upgrade(int(entry.offer)):
 			_wrap(_inspect_box, RemakeText.t("The highlighted shop copies complete an evolution."), 12, Color("9bfff0"))
 	if is_instance_valid(_inspected_unit) and (entry.get("prototype", id) != id or int(entry.get("rank", rank)) != rank):
-		_wrap(_inspect_box, RemakeText.t("Next round: %s") % (ArenaRules.title(entry.prototype) + " " + "★".repeat(int(entry.rank) + 1)), 13, GOLD)
+		_wrap(_inspect_box, RemakeText.t("Next round: %s") % (ArenaRules.title(entry.prototype, int(entry.family), int(entry.rank)) + " " + "★".repeat(int(entry.rank) + 1)), 13, GOLD)
 	if entry.has("offer"):
 		var error := run.purchase_error(int(entry.offer))
 		if not error.is_empty(): _wrap(_inspect_box, error, 12, MUTED)
@@ -1863,7 +1865,7 @@ func _update_sell_target() -> void:
 	_sell_target.visible = not landing and run.can_shop() and not entry.is_empty() and (run.stage == "prepare" or not entry.deployed)
 	if _sell_target.visible:
 		_sell_target.text = RemakeText.t("Sell · +%d gold") % run.sale_value(entry)
-		_sell_target.tooltip_text = ArenaRules.title(entry.prototype)
+		_sell_target.tooltip_text = ArenaRules.title(entry.prototype, int(entry.family), int(entry.rank))
 		if _tooltips: _tooltips.capture(_sell_target)
 
 

@@ -750,14 +750,7 @@ func _got_items(e: Dictionary) -> void:
 			or _journal.visible or _side_quests.visible or _travel.visible:
 		return
 	var label := GameData.text("string " + ("combat_crippled" if e.get("broken", false) else "combat_picked_up")).strip_edges()
-	var counts := {}
-	for it in e.get("items", []):
-		var stack := Items.parse_stack(String(it))
-		var id := String(stack[0])
-		counts[id] = int(counts.get(id,0)) + int(stack[1])
-	for id: String in counts:
-		var description := Items.log_text(id)
-		if counts[id] > 1: description = RemakeText.t("%s x%d") % [description,counts[id]]
+	for description: String in Items.log_stacks(e.get("items", [])):
 		log_msg("%s %s" % [label, description])
 	var money := int(e.get("money", 0))
 	if money > 0:

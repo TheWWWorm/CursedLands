@@ -1,0 +1,78 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:30:05 +5229ms] session 72848bebcbc1: 1.22.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+WARNING: SubViewport is not a child of a SubViewportContainer. get_screen_transform doesn't return the actual screen position.
+     at: get_screen_transform_internal (scene/main/viewport.cpp:5723)
+     GDScript backtrace (most recent call first):
+         [0] _update_font_sampling (res://src/ui/scroll_option_button.gd:28)
+         [1] _ready (res://src/ui/scroll_option_button.gd:16)
+         [2] _ready (res://src/ui/wiki_panel.gd:137)
+         [3] _add_ui (res://src/ui/game_hud.gd:1263)
+         [4] _ready (res://src/ui/game_hud.gd:167)
+         [5] _ready (res://src/game/game.gd:97)
+         [6] peer (/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/repo/tools/tests/coop_loot_network.gd:42)
+         [7] _ready (/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/repo/tools/tests/coop_loot_network.gd:59)
+         [8] _start (res://src/main.gd:90)
+         [9] _ready (res://src/main.gd:40)
+PASS authority opens isolated ENet port
+PASS guest connects over ENet
+PASS distinct host and guest identities
+[trace 00:30:06 +6103ms] zone load bz1g (entrance 1)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":0,"interval_fps":null,"interval_s":0.874058,"msaa_3d":0,"nodes":1520.0,"objects":7117.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=1 wind=1 grass=1 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=0 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":0.038,"pid":1322855,"primitives":0.0,"process_ms":1.282,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":509.0,"screen_space_aa":2,"static_bytes":441621899.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":6.104339,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":0,"worlds":[],"zone":"bz1g (loading)"}
+[trace 00:30:13 +12552ms] navigation prepared 2 classes in 6 ms
+[trace 00:30:13 +12557ms] zone ready bz1g
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":841,"figure_models":49,"object_textures":16,"unit_textures":39,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":0,"interval_fps":null,"interval_s":6.452858,"msaa_3d":0,"nodes":4046.0,"objects":15867.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=1 wind=1 grass=1 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=0 vsync=1 auto_graphics=0","orphan_nodes":76.0,"paused":false,"physics_ms":0.038,"pid":1322855,"primitives":0.0,"process_ms":1.282,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":509.0,"screen_space_aa":2,"static_bytes":1085406054.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":12.557394,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":2,"lights":1,"magic_endings":0,"missiles":0},"instance":579149498810,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":30,"visible":true,"zone":"bz1g"}],"zone":"bz1g"}
+[trace 00:30:13 +12993ms] zone load bz1g (from host)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":4,"figure_meshes":843,"figure_models":50,"object_textures":16,"unit_textures":39,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":0,"interval_fps":null,"interval_s":0.43662,"msaa_3d":0,"nodes":4165.0,"objects":16021.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=1 wind=1 grass=1 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=0 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":2.364,"pid":1322855,"primitives":0.0,"process_ms":6634.22,"reason":"scene","recent_fps":3.0,"render_scale":1.0,"renderer":"forward_plus","resources":509.0,"screen_space_aa":2,"static_bytes":1100418076.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":12.994152,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":2,"lights":1,"magic_endings":0,"missiles":0},"instance":579149498810,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.055,"units":30,"visible":true,"zone":"bz1g"}],"zone":"bz1g (loading)"}
+[trace 00:30:15 +14392ms] zone ready bz1g (from host)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":4,"figure_meshes":843,"figure_models":50,"object_textures":16,"unit_textures":39,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":0,"interval_fps":null,"interval_s":1.3989,"msaa_3d":0,"nodes":6697.0,"objects":20090.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=1 wind=1 grass=1 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=0 vsync=1 auto_graphics=0","orphan_nodes":2.0,"paused":false,"physics_ms":2.364,"pid":1322855,"primitives":0.0,"process_ms":6634.22,"reason":"scene","recent_fps":3.0,"render_scale":1.0,"renderer":"forward_plus","resources":509.0,"screen_space_aa":2,"static_bytes":1160068363.0,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":14.393238,"video_allocated_bytes":null,"vsync":null,"window":[64,64],"world_count":2,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":2,"lights":1,"magic_endings":0,"missiles":0},"instance":579149498810,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.055,"units":30,"visible":true,"zone":"bz1g"},{"authority":false,"effects":{"bolts":0,"delayed":0,"emitters":2,"lights":1,"magic_endings":0,"missiles":0},"instance":782271266453,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":30,"visible":true,"zone":"bz1g"}],"zone":"bz1g"}
+PASS guest loads original camp with private bag
+PASS imported guest has a distinct purse
+PASS empty private inventory reaches guest
+PASS eight-item pickup reaches both peers with finder 0
+PASS shared recipient displays one localized x8 material with finder 0
+PASS eight-item quantity reaches the private guest with finder 0
+PASS message grouping preserves both bags with finder 0
+PASS eight-item pickup reaches both peers with finder 1
+PASS shared recipient displays one localized x8 material with finder 1
+PASS eight-item quantity reaches the private guest with finder 1
+PASS message grouping preserves both bags with finder 1
+PASS grouped-message fixture inventory settles before corpse tests
+PASS fixture uses an original camp actor
+PASS death retains one carried bag behind both metadata views
+PASS script grant to a corpse with rolled pockets adds one item
+PASS two intentional grants retain both identical resources
+PASS separate restored bag views each receive the scripted item
+PASS looting three scripted grants transfers exactly three resources to each bag
+PASS scripted-corpse pickup notice reaches both peers before retry tests
+PASS scripted-corpse fixture inventory settles before retry tests
+PASS pickup enters retry transport at 1.0x race=false
+PASS real use animation consumes corpse at 1.0x race=false
+PASS one stack and money reach guest at 1.0x race=false
+PASS simultaneous clicks and late packets cannot duplicate either purse at 1.0x race=false
+PASS each player receives one corpse pickup notice at 1.0x race=false
+PASS pickup enters retry transport at 1.0x race=true
+PASS real use animation consumes corpse at 1.0x race=true
+PASS one stack and money reach guest at 1.0x race=true
+PASS simultaneous clicks and late packets cannot duplicate either purse at 1.0x race=true
+PASS each player receives one corpse pickup notice at 1.0x race=true
+PASS pickup enters retry transport at 2.0x race=false
+PASS real use animation consumes corpse at 2.0x race=false
+PASS one stack and money reach guest at 2.0x race=false
+PASS simultaneous clicks and late packets cannot duplicate either purse at 2.0x race=false
+PASS each player receives one corpse pickup notice at 2.0x race=false
+PASS pickup enters retry transport at 2.0x race=true
+PASS real use animation consumes corpse at 2.0x race=true
+PASS one stack and money reach guest at 2.0x race=true
+PASS simultaneous clicks and late packets cannot duplicate either purse at 2.0x race=true
+PASS each player receives one corpse pickup notice at 2.0x race=true
+PASS script resource stack replicates once to private guest
+PASS one script reward produces one notice per recipient over ENet
+PASS authority accepts disabling shared loot
+PASS changed sharing rule reaches guest
+PASS disabled sharing gives private guest neither a resource nor a misleading notice
+PASS network pickup state saves
+PASS host resource and money totals survive save/load
+PASS private guest totals survive save/load
+COOP_LOOT_NETWORK {"checks":51,"failures":0}
+[trace 00:30:20 +19473ms] clean exit

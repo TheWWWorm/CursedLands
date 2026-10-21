@@ -57,7 +57,7 @@ func _spawn(placement: Dictionary) -> GameUnit:
 	var unit := super._spawn(placement)
 	if unit:
 		_fit_figure(unit)
-		unit.display_name = ArenaRules.title(placement.id)
+		unit.display_name = ArenaRules.title(placement.id, int(placement.get("family", -1)), int(placement.get("rank", 0)))
 		if rendered: _entrants[unit] = Vector2.INF
 		else:
 			unit.set_process(false);unit.set_physics_process(false)
@@ -69,19 +69,19 @@ func _spawn(placement: Dictionary) -> GameUnit:
 ## sockets while fitting them to a formation slot, in Trials only. This is also
 ## applied on the authority so reach and picking agree with the visible body.
 static func _fit_figure(unit: GameUnit) -> void:
-	if unit.has_meta("arena_figure_scale"): return
-	var geometry := EIFigureGeometry.of(unit.model)
-	if geometry.is_empty(): return
-	var span: Vector3 = geometry.max - geometry.min
-	var top: float = geometry.centre.z + geometry.max.z
-	var factor := minf(1.0,minf(5.5/maxf(0.1,maxf(span.x,span.y)),3.6/maxf(0.1,top)))
-	unit.set_meta("arena_figure_scale",factor)
-	unit.model.scale=Vector3.ONE*factor
-	unit.model.height_k*=factor
-	unit.figure_radius*=factor; unit._radius_base*=factor; unit.figure_half_z*=factor
-	if unit.move_class()!=0:
-		unit._classes.clear()
-		for k in [0.2,0.6,1.0]: unit._classes.append(GameUnit._class_of(unit.figure_radius,unit.figure_half_z*2.0*k))
+	if not unit.has_meta("arena_figure_scale"):
+		var geometry := EIFigureGeometry.of(unit.model)
+		if geometry.is_empty(): return
+		var span: Vector3 = geometry.max - geometry.min
+		var top: float = geometry.centre.z + geometry.max.z
+		var factor := float(unit.info.get("arena_figure_scale", minf(1.0,minf(5.5/maxf(0.1,maxf(span.x,span.y)),3.6/maxf(0.1,top)))))
+		unit.set_meta("arena_figure_scale",factor)
+		unit.info["arena_figure_scale"] = factor
+		unit.figure_radius*=factor; unit._radius_base*=factor; unit.figure_half_z*=factor
+		if unit.move_class()!=0:
+			unit._classes.clear()
+			for k in [0.2,0.6,1.0]: unit._classes.append(GameUnit._class_of(unit.figure_radius,unit.figure_half_z*2.0*k))
+	unit.model.fit_arena(float(unit.get_meta("arena_figure_scale")))
 
 
 ## Warm copied models while the UI can still draw. They are absent from the
@@ -103,7 +103,7 @@ func prepare_opponent_models(limit := 0) -> bool:
 		unit.hide(); unit.process_mode = Node.PROCESS_MODE_DISABLED
 		world.add_child(unit)
 		var point: Vector2 = placement.point
-		var info := ArenaAppearance.info(placement.id)
+		var info := ArenaAppearance.placement_info(placement)
 		info.merge({"nid":world.new_uid(), "player":TEAMS[placement.team], "position":Vector3(point.x,point.y,0)})
 		if not unit.setup(world, info):
 			unit.free(); continue
@@ -144,7 +144,7 @@ func _create_unit(placement: Dictionary) -> GameUnit:
 	var key := str(lookup)
 	var unit: GameUnit = _prepared_enemies.get(key)
 	if not is_instance_valid(unit):
-		var info := ArenaAppearance.info(placement.id)
+		var info := ArenaAppearance.placement_info(placement)
 		var point: Vector2 = placement.point
 		info.merge({"player":TEAMS[placement.team], "position":Vector3(point.x,point.y,0)})
 		return world.spawn_unit(info)
@@ -263,7 +263,7 @@ func prepare() -> void:
 	for entry: Dictionary in run.army:
 		if entry.deployed:
 			formation.append({"id": entry.prototype, "team": 0,
-				"point": Vector2(entry.point[0], entry.point[1]), "run_uid": int(entry.uid), "rank": int(entry.rank)})
+				"point": Vector2(entry.point[0], entry.point[1]), "run_uid": int(entry.uid), "rank": int(entry.rank), "family": int(entry.family)})
 	var enemies: Array[Dictionary] = []
 	if not run.arrivals_at_start(): enemies = run.enemy_formation()
 	for index in enemies.size():
@@ -299,6 +299,11 @@ func _placement_key(placement: Dictionary) -> String:
 	return "enemy:%d" % int(placement.get("enemy_slot", -1))
 
 
+static func _same_appearance(unit: GameUnit, placement: Dictionary) -> bool:
+	var appearance := ArenaAppearance.placement_info(placement)
+	return unit.info.prototype == appearance.prototype and unit.info.get("texture", "") == appearance.get("texture", "")
+
+
 ## Moving one creature must not recreate the others or restart their clips.
 ## Keep native IDs, figures and navigation registrations until a form changes.
 func _reconcile_formation() -> void:
@@ -312,9 +317,9 @@ func _reconcile_formation() -> void:
 		var unit: GameUnit = existing.get(key)
 		existing.erase(key)
 		var origin := Vector2.INF
-		if is_instance_valid(unit) and unit.info.prototype != placement.id:
+		if is_instance_valid(unit) and not _same_appearance(unit, placement):
 			origin = unit.pos
-			formation_motion.movers.erase(unit)
+			formation_motion.forget(unit)
 			world.remove_unit(unit)
 			unit = null
 		if not is_instance_valid(unit):
@@ -330,14 +335,14 @@ func _reconcile_formation() -> void:
 		if rendered and world.is_visible_in_tree():
 			if previous.get("point") != placement.point: formation_motion.move(unit, placement.point)
 		elif unit.pos != placement.point:
-			formation_motion.movers.erase(unit)
+			formation_motion.forget(unit)
 			unit.order = {}; unit.orders.clear(); unit.path.clear(); unit._set_action("idle")
 			unit.pos = placement.point
 			unit._sync_transform(0.0)
 			unit.reset_physics_interpolation()
 			world.nav.track_unit(unit)
 	for unit: GameUnit in existing.values():
-		formation_motion.movers.erase(unit)
+		formation_motion.forget(unit)
 		world.remove_unit(unit)
 
 
@@ -624,8 +629,8 @@ func apply_board(data: Dictionary) -> void:
 			var unit: GameUnit = world.units.get(uid)
 			var previous_point: Vector2 = unit.get_meta("arena_placement", {}).get("point", Vector2.INF) if unit else Vector2.INF
 			var origin := unit.pos if unit and same_board else Vector2.INF
-			if unit and unit.info.prototype != record.prototype:
-				formation_motion.movers.erase(unit)
+			if unit and (unit.info.prototype != record.prototype or unit.info.get("texture", "") != record.get("texture", "")):
+				formation_motion.forget(unit)
 				world.remove_unit(unit); unit = null
 			var created := unit == null
 			if created: unit = _spawn_record(record)
@@ -634,7 +639,7 @@ func apply_board(data: Dictionary) -> void:
 				_fit_figure(unit)
 				restore_body(unit, record.online_body)
 				unit.set_meta("arena_placement", record.placement)
-				unit.display_name = ArenaRules.title(record.prototype)
+				unit.display_name = ArenaRules.title(record.prototype, int(record.placement.get("family", -1)), int(record.placement.get("rank", 0)))
 				unit.stats = record.runtime_stats.duplicate(true)
 				keep[uid] = true
 				if deploying and rendered:
@@ -643,7 +648,7 @@ func apply_board(data: Dictionary) -> void:
 					elif previous_point != target: formation_motion.move(unit, target)
 		for unit: GameUnit in world.unit_rows():
 			if not keep.has(unit.uid):
-				formation_motion.movers.erase(unit)
+				formation_motion.forget(unit)
 				world.remove_unit(unit)
 		round_army.assign(data.army.duplicate(true))
 	elif not deploying:
@@ -719,4 +724,4 @@ func adopt_replica_formation(data: Dictionary) -> void:
 
 
 static func _replica_key(placement: Dictionary) -> String:
-	return str([placement.get("team",0),placement.get("id",""),placement.get("point",Vector2.ZERO)])
+	return str([placement.get("team",0),placement.get("id",""),placement.get("point",Vector2.ZERO),placement.get("family",-1),placement.get("rank",0)])

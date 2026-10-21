@@ -6,15 +6,24 @@ func _ready() -> void:
 		if arg.begins_with("--out="): output=arg.trim_prefix("--out=")
 	DirAccess.make_dir_recursive_absolute(output)
 	var manifest := {}
+	var selected: Array[int] = []
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--families="):
+			for value in arg.trim_prefix("--families=").split(","): selected.append(int(value))
+	var manifest_path := output.path_join("manifest.json")
+	if not selected.is_empty() and FileAccess.file_exists(manifest_path):
+		var previous: Variant = JSON.parse_string(FileAccess.get_file_as_string(manifest_path))
+		if previous is Dictionary: manifest = previous
 	for family in ArenaRules.ACTIVE_FAMILIES:
+		if not selected.is_empty() and family not in selected: continue
 		for rank in 3:
 			var id := ArenaRules.prototype(family,rank)
 			var preview := WikiPreview.new(); preview.fit_slot=true; preview.size=Vector2(384,384)
-			add_child(preview); preview.show_model(ArenaAppearance.preview(id)); preview.turn_by(-0.4)
+			add_child(preview); preview.show_model(ArenaAppearance.preview(id, family, rank)); preview.turn_by(-0.4)
 			for frame in 12: await get_tree().process_frame
 			await RenderingServer.frame_post_draw
 			var doll := preview.creature
-			doll._vp.get_texture().get_image().save_png(output.path_join(id.validate_filename()+"-native.png"))
+			doll._vp.get_texture().get_image().save_png(output.path_join("%02d-%d-native.png" % [family,rank]))
 			preview.set_process(false); doll.set_process(false); doll._model.set_process(false)
 			doll._model.player.pause()
 			var head := doll._model.find_child("hd",true,false) as Node3D
@@ -45,8 +54,8 @@ func _ready() -> void:
 			var image := doll._vp.get_texture().get_image()
 			var file := "%02d-%d.png" % [family,rank]
 			image.save_png(output.path_join(file))
-			manifest[id]={"file":file,"family":family,"rank":rank,"size":[image.get_width(),image.get_height()]}
+			manifest["%d:%d" % [family,rank]]={"prototype":id,"file":file,"family":family,"rank":rank,"appearance":ArenaAppearance.info(id,family,rank),"size":[image.get_width(),image.get_height()]}
 			preview.queue_free(); await get_tree().process_frame
 			print("NATIVE_PORTRAIT ",id," ",image.get_size())
-	FileAccess.open(output.path_join("manifest.json"),FileAccess.WRITE).store_string(JSON.stringify(manifest,"\t"))
+	FileAccess.open(manifest_path,FileAccess.WRITE).store_string(JSON.stringify(manifest,"\t"))
 	get_tree().quit()

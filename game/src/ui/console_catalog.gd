@@ -25,6 +25,7 @@ const ROWS := [
 	["copy","Copy console output.","copy"],
 	["clear","Clear console output.","clear"],
 	["lastfps","Print rendered frames per second.","lastfps"],
+	["cursor [on [0.05..10]|off]","Show cursor pixels from the top-left of the game viewport. Use on to log continuously, even with the console closed; off stops. Default interval: 0.1 s (0.05-10 s).","cursor on 0.1"],
 	["console t|b|c|l|r|f","Place the console at the top, bottom, centre, left, right or fullscreen.","console f"],
 	["history N","Set the number of retained output lines.","history 500"],
 	["quit","Exit the game.","quit"],
@@ -100,6 +101,7 @@ static func candidates(text: String, caret: int, s: Session = null) -> Array[Dic
 				if tokens.is_empty() and (ConsoleCommands.READS.has(row.name) or ConsoleCommands.WRITES.has(row.name)):continue
 				rows.append({"text":row.name,"insert":row.name+(" " if tokens.is_empty() and String(row.syntax).contains(" ") else ""),"help":row.syntax+"  ·  "+row.description})
 		elif cmd=="god":_choices(rows,["on","off"])
+		elif cmd=="cursor" and index==0:_choices(rows,["on","off"])
 		elif cmd=="console":_choices(rows,["t","b","c","l","r","f"])
 		elif cmd=="time" and index==1:_choices(rows,["run","freeze"])
 		elif cmd in ["give","getvar","setvar","listvar","loadvar"] and index==0:_choices(rows,["0"])

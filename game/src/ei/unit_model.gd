@@ -350,7 +350,17 @@ static func create(unit: Dictionary, ui_preview := false, initial_action := true
 	m.name = tmpl
 	m.set_meta("peaceful_gear", bool(unit.get("peaceful_gear", false)) and not ui_preview)
 	m._build(model, unit, proto, race, ui_preview, initial_action)
+	if unit.has("arena_figure_scale"): m.fit_arena(float(unit.arena_figure_scale))
 	return m
+
+
+## The authoritative arena fit follows figure replacements and full records.
+## Height controls locomotion playback; applying the same fit is idempotent.
+func fit_arena(factor: float) -> void:
+	var previous := float(get_meta("arena_figure_scale", 1.0))
+	scale = Vector3.ONE * factor
+	height_k *= factor / previous
+	set_meta("arena_figure_scale", factor)
 
 
 func play(anim: String, blend := 0.15, restart := false) -> void:

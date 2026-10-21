@@ -2344,7 +2344,7 @@
       "category": "inventory",
       "script": "tools/tests/coop_loot_network.gd",
       "marker": "COOP_LOOT_NETWORK",
-      "min_checks": 41,
+      "min_checks": 51,
       "quick": false,
       "description": "Real ENet commands, animation completion, inventory replication and pickup notices. Deliberately resend reliable/fast packets and race both players.",
       "kind": "remake_regression",
@@ -2409,9 +2409,9 @@
       "category": "inventory",
       "script": "tools/tests/pickup_messages.gd",
       "marker": "PICKUP_MESSAGES",
-      "min_checks": 5,
+      "min_checks": 13,
       "quick": false,
-      "description": "Localized pickup stacks, money, broken-item notices and actual corpse loot",
+      "description": "Localized pickup and shared-copy stack parity, mixed rewards, recipient routing, broken items and actual corpse loot.",
       "kind": "remake_regression",
       "timeout": 360,
       "args": [],
@@ -6201,6 +6201,255 @@
       "kind": "remake_regression",
       "timeout": 180,
       "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "arena/arena_rank_appearance",
+      "category": "arena",
+      "script": "tools/tests/arena_rank_appearance.gd",
+      "marker": "ARENA_RANK_APPEARANCE",
+      "min_checks": 800,
+      "quick": true,
+      "description": "Original rank palettes, localized variant names, save compatibility and same-prototype promotion.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "arena/arena_rank_appearance_ui_en",
+      "category": "arena",
+      "script": "tools/tests/arena_rank_appearance_ui.gd",
+      "marker": "ARENA_RANK_APPEARANCE_UI",
+      "min_checks": 200,
+      "quick": true,
+      "description": "Rendered rank palettes, reused preview, field/reserve/ghost consistency and localized inspector layout (en).",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [
+        "--lang=en"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "res/figures.res",
+        "maps/zone11.mpr"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "arena/arena_rank_appearance_ui_ru",
+      "category": "arena",
+      "script": "tools/tests/arena_rank_appearance_ui.gd",
+      "marker": "ARENA_RANK_APPEARANCE_UI",
+      "min_checks": 200,
+      "quick": true,
+      "description": "Rendered rank palettes, reused preview, field/reserve/ghost consistency and localized inspector layout (ru).",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [
+        "--lang=ru"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "res/figures.res",
+        "maps/zone11.mpr"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "arena/arena_rank_appearance_ui_de",
+      "category": "arena",
+      "script": "tools/tests/arena_rank_appearance_ui.gd",
+      "marker": "ARENA_RANK_APPEARANCE_UI",
+      "min_checks": 200,
+      "quick": true,
+      "description": "Rendered rank palettes, reused preview, field/reserve/ghost consistency and localized inspector layout (de).",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [
+        "--lang=de"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "res/figures.res",
+        "maps/zone11.mpr"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "arena/arena_deployment_motion",
+      "category": "arena",
+      "script": "tools/tests/arena_deployment_motion.gd",
+      "marker": "ARENA_DEPLOYMENT_MOTION",
+      "min_checks": 80,
+      "quick": true,
+      "description": "Overlap escape, giant crossings, wider courtyard detours, quick arrival, pause and replacement commands.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "res/figures.res",
+        "maps/zone11.mpr"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "arena/arena_scale_preservation",
+      "category": "arena",
+      "script": "tools/tests/arena_scale_preservation.gd",
+      "marker": "ARENA_SCALE_PRESERVATION",
+      "min_checks": 36,
+      "quick": true,
+      "description": "Authoritative arena fit survives forced models, body buffs and full enemy records on both sides.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "arena/arena_scale_preservation_ui",
+      "category": "arena",
+      "script": "tools/tests/arena_scale_preservation_ui.gd",
+      "marker": "ARENA_SCALE_PRESERVATION_UI",
+      "min_checks": 18,
+      "quick": true,
+      "description": "Rendered friendly/enemy dragons and cyclopes retain fitted size through figure and snapshot replacements.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [
+        "--ei-inline-host"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "res/figures.res",
+        "maps/zone11.mpr"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "commands/console_cursor",
+      "category": "commands",
+      "script": "tools/tests/console_cursor.gd",
+      "marker": "CONSOLE_CURSOR",
+      "min_checks": 27,
+      "quick": true,
+      "description": "Local cursor sampling, pause/closed-console operation, stopping, bounds, exports and EN/RU/DE discovery.",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "commands/console_cursor_ui",
+      "category": "commands",
+      "script": "tools/tests/console_cursor.gd",
+      "marker": "CONSOLE_CURSOR",
+      "min_checks": 30,
+      "quick": true,
+      "description": "Actual pointer screen coordinates and rendered cursor help/status in EN/RU/DE, including a narrow viewport.",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "inventory/coop_loot_messages_ui_en",
+      "category": "inventory",
+      "script": "tools/tests/coop_loot_messages_ui.gd",
+      "marker": "COOP_LOOT_MESSAGES_UI",
+      "min_checks": 5,
+      "quick": true,
+      "description": "Native localized pickup/shared-copy message window with one grouped eight-item stack (en).",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [
+        "--lang=en"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "inventory/coop_loot_messages_ui_ru",
+      "category": "inventory",
+      "script": "tools/tests/coop_loot_messages_ui.gd",
+      "marker": "COOP_LOOT_MESSAGES_UI",
+      "min_checks": 5,
+      "quick": true,
+      "description": "Native localized pickup/shared-copy message window with one grouped eight-item stack (ru).",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [
+        "--lang=ru"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "display": "rendered"
+    },
+    {
+      "id": "inventory/coop_loot_messages_ui_de",
+      "category": "inventory",
+      "script": "tools/tests/coop_loot_messages_ui.gd",
+      "marker": "COOP_LOOT_MESSAGES_UI",
+      "min_checks": 5,
+      "quick": true,
+      "description": "Native localized pickup/shared-copy message window with one grouped eight-item stack (de).",
+      "kind": "remake_regression",
+      "timeout": 180,
+      "args": [
+        "--lang=de"
+      ],
       "campaign": "cursed_lands",
       "required_files": [
         "res/database.res",
