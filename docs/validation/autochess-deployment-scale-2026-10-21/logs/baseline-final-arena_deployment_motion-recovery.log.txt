@@ -1,0 +1,6 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:01:22 +7047ms] session 2c02f1cc8615: 1.22.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+FAIL slow native creature reaches twelve-metre move promptly
+ARENA_DEPLOYMENT_MOTION {"checks":91,"failures":["slow native creature reaches twelve-metre move promptly"]}
+[trace 00:01:26 +10547ms] clean exit

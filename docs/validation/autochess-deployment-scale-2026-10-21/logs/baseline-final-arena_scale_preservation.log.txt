@@ -1,0 +1,29 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 23:56:31 +5160ms] session cc410450ba35: 1.22.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+FAIL forced replacement retains fit and gait dragonbrownm16:1
+FAIL body effect retains arena fit dragonbrownm16:1
+FAIL snapshot body effect retains fit and gait dragonbrownm16:1
+FAIL repeated fits do not compound collision or scale dragonbrownm16
+FAIL late enemy record uses authoritative fit rather than posed bounds dragonbrownm16
+FAIL enemy effect expiry retains fit and gait dragonbrownm16
+FAIL forced replacement retains fit and gait dragonbrownm16:2
+FAIL body effect retains arena fit dragonbrownm16:2
+FAIL snapshot body effect retains fit and gait dragonbrownm16:2
+FAIL repeated fits do not compound collision or scale dragonbrownm16
+FAIL late enemy record uses authoritative fit rather than posed bounds dragonbrownm16
+FAIL enemy effect expiry retains fit and gait dragonbrownm16
+FAIL forced replacement retains fit and gait cyclopsa20:1
+FAIL body effect retains arena fit cyclopsa20:1
+FAIL snapshot body effect retains fit and gait cyclopsa20:1
+FAIL repeated fits do not compound collision or scale cyclopsa20
+FAIL late enemy record uses authoritative fit rather than posed bounds cyclopsa20
+FAIL enemy effect expiry retains fit and gait cyclopsa20
+FAIL forced replacement retains fit and gait cyclopsa20:2
+FAIL body effect retains arena fit cyclopsa20:2
+FAIL snapshot body effect retains fit and gait cyclopsa20:2
+FAIL repeated fits do not compound collision or scale cyclopsa20
+FAIL late enemy record uses authoritative fit rather than posed bounds cyclopsa20
+FAIL enemy effect expiry retains fit and gait cyclopsa20
+ARENA_SCALE_PRESERVATION {"checks":36,"failures":["forced replacement retains fit and gait dragonbrownm16:1","body effect retains arena fit dragonbrownm16:1","snapshot body effect retains fit and gait dragonbrownm16:1","repeated fits do not compound collision or scale dragonbrownm16","late enemy record uses authoritative fit rather than posed bounds dragonbrownm16","enemy effect expiry retains fit and gait dragonbrownm16","forced replacement retains fit and gait dragonbrownm16:2","body effect retains arena fit dragonbrownm16:2","snapshot body effect retains fit and gait dragonbrownm16:2","repeated fits do not compound collision or scale dragonbrownm16","late enemy record uses authoritative fit rather than posed bounds dragonbrownm16","enemy effect expiry retains fit and gait dragonbrownm16","forced replacement retains fit and gait cyclopsa20:1","body effect retains arena fit cyclopsa20:1","snapshot body effect retains fit and gait cyclopsa20:1","repeated fits do not compound collision or scale cyclopsa20","late enemy record uses authoritative fit rather than posed bounds cyclopsa20","enemy effect expiry retains fit and gait cyclopsa20","forced replacement retains fit and gait cyclopsa20:2","body effect retains arena fit cyclopsa20:2","snapshot body effect retains fit and gait cyclopsa20:2","repeated fits do not compound collision or scale cyclopsa20","late enemy record uses authoritative fit rather than posed bounds cyclopsa20","enemy effect expiry retains fit and gait cyclopsa20"]}
+[trace 23:56:31 +5773ms] clean exit

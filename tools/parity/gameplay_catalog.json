@@ -6296,6 +6296,70 @@
         "maps/zone11.mpr"
       ],
       "display": "rendered"
+    },
+    {
+      "id": "arena/arena_deployment_motion",
+      "category": "arena",
+      "script": "tools/tests/arena_deployment_motion.gd",
+      "marker": "ARENA_DEPLOYMENT_MOTION",
+      "min_checks": 80,
+      "quick": true,
+      "description": "Overlap escape, giant crossings, wider courtyard detours, quick arrival, pause and replacement commands.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "res/figures.res",
+        "maps/zone11.mpr"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "arena/arena_scale_preservation",
+      "category": "arena",
+      "script": "tools/tests/arena_scale_preservation.gd",
+      "marker": "ARENA_SCALE_PRESERVATION",
+      "min_checks": 36,
+      "quick": true,
+      "description": "Authoritative arena fit survives forced models, body buffs and full enemy records on both sides.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "res/figures.res"
+      ],
+      "display": "headless"
+    },
+    {
+      "id": "arena/arena_scale_preservation_ui",
+      "category": "arena",
+      "script": "tools/tests/arena_scale_preservation_ui.gd",
+      "marker": "ARENA_SCALE_PRESERVATION_UI",
+      "min_checks": 18,
+      "quick": true,
+      "description": "Rendered friendly/enemy dragons and cyclopes retain fitted size through figure and snapshot replacements.",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [
+        "--ei-inline-host"
+      ],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "res/textures.res",
+        "res/figures.res",
+        "maps/zone11.mpr"
+      ],
+      "display": "rendered"
     }
   ]
 }

@@ -1,0 +1,15 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+[trace 00:02:30 +8669ms] session 4a0567d8434d: 1.22.0, Linux 24.04 (Ubuntu 24.04.5 LTS), Mesa llvmpipe (LLVM 20.1.2, 256 bits), gl_compatibility / opengl3
+CAPTURE formation-en-1280-landing (1280.0, 800.0)
+PERFORMANCE {"buffer_bytes":14479328.0,"cache_entries":{"camera_materials":0,"figure_materials":0,"figure_meshes":161,"figure_models":45,"object_textures":7,"unit_textures":5,"wound_jobs":0,"wound_layers":0},"draw_calls":512.0,"drawn_frames":100,"focus":"in","frame_limit":0,"interval_fps":4.48805819718921,"interval_s":22.281351,"msaa_3d":0,"nodes":700.0,"objects":6085.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=0 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=0 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=1 render_scale=4 display_mode=0 resolution=0 fps_limit=0 vsync=1 auto_graphics=0","orphan_nodes":0.0,"paused":false,"physics_ms":0.179,"pid":1266443,"primitives":42266.0,"process_ms":61.602,"reason":"interval","recent_fps":20.0,"render_scale":1.0,"renderer":"gl_compatibility","resources":514.0,"screen_space_aa":0,"static_bytes":541877556.0,"taa":false,"texture_bytes":79933930.0,"time_scale":1.0,"uptime_s":30.951409,"video_allocated_bytes":94413258.0,"vsync":0,"window":[1280,800],"world_count":1,"worlds":[{"authority":true,"instance":584400769866,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":0,"time":0.0,"units":4,"visible":true,"zone":""}],"zone":"(menu)"}
+CAPTURE formation-en-1280-moving (1280.0, 800.0)
+ARENA_FORMATION_UI 33 checks; failures=[] errors=[]
+[trace 00:03:04 +43097ms] clean exit

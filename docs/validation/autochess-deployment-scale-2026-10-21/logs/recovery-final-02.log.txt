@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 00:01:54 +6959ms] session 76bdbb452fed: 1.22.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_DEPLOYMENT_MOTION {"checks":91,"failures":[]}
+[trace 00:01:58 +10905ms] clean exit

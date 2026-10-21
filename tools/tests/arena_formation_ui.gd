@@ -11,6 +11,8 @@ func _ready() -> void:
 	OS.add_logger(errors)
 	await frames(24)
 	GameData._window_gen += 1
+	GameData.options.merge(GfxPresets.values(GfxPresets.ORIGINAL),true)
+	GameData.options.merge({"gfx_hd_textures":0,"gfx_sharp_units":0,"gfx_materials":0,"q_aa":0,"q_shadows":0},true)
 	GameData.options.merge({"gfx_soft_ground":1,"footprints":1,"marks":1,"auto_graphics":0,"confine_mouse":0},true)
 	get_tree().root.mode = Window.MODE_WINDOWED
 	var lang := "en"; var dimensions := Vector2i(1280,800)
@@ -49,15 +51,19 @@ func _ready() -> void:
 	var commanded := {}
 	var capture := func(): commanded.position = unit.pos
 	screen.run.changed.connect(capture, CONNECT_ONE_SHOT)
-	await click(screen.field.screen_point(Vector2(29,39)))
+	# Fixed presentation time keeps this assertion meaningful on slow renderers:
+	# the faster walk may finish during the input helper's awaited draw frames.
+	screen.battle.set_physics_process(false)
+	await click(screen.field.screen_point(Vector2(29,24)))
 	if screen.run.changed.is_connected(capture): screen.run.changed.disconnect(capture)
 	var target:=Vector2(screen.run.unit(uid).point[0],screen.run.unit(uid).point[1])
 	check(screen.selected_uid==0,"move command releases selection")
 	check(commanded.get("position",Vector2.INF).distance_to(origin)<0.01 and unit.pos.distance_to(target)>0.1,"click starts travel instead of teleporting")
-	await get_tree().create_timer(0.25).timeout
+	screen.battle._physics_process(0.1)
 	check(unit.pos.distance_to(origin)>0.1 and unit.pos.distance_to(target)>0.1,"native movement advances across intermediate positions")
 	check(unit.action in ["run","walk"],"travel plays native locomotion")
 	await shot(tag+"-moving")
+	screen.battle.set_physics_process(true)
 	screen._show_menu();var paused:=unit.pos
 	await get_tree().create_timer(0.25).timeout
 	check(unit.pos==paused,"menu pauses formation travel")

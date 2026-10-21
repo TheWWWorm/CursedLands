@@ -1,0 +1,487 @@
+{
+  "date": "2026-10-22",
+  "base_release": "1.22.0",
+  "base_commit": "bd88efddadcf17aa99227f8de664814a4d704932",
+  "preceding_appearance_commit": "e35a8971",
+  "branch": "feature/autochess-rank-variants-20261021",
+  "scope": "Local implementation and validation; no release, push, tag or deployment.",
+  "environment": "Linux; official Godot 4.7; private Xvfb :92; OpenGL Compatibility/Mesa llvmpipe for rendered fixtures. Software-rendered frames are not performance measurements.",
+  "baseline_source_verification": "All 944 files under baseline-runtime/src exactly match git archive bd88efdd:game/src. Current fixtures run against that baseline without production changes.",
+  "passed_checks": 1586,
+  "runs": [
+    {
+      "exit": 0,
+      "seconds": 11.39,
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/checks-01/runtime",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "120",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/repo/tools/tests/arena_deployment_motion.gd"
+      ],
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "diagnostics": [],
+      "summary": [
+        "ARENA_DEPLOYMENT_MOTION {\"checks\":91,\"failures\":[]}"
+      ],
+      "tag": "recovery-final-02",
+      "checks": 91,
+      "log": "logs/recovery-final-02.log.txt",
+      "log_sha256": "91fb1f3cff916081dc01922dcd9ab52f13e68679e69e84e186a759ebfb39c94d",
+      "production_sha256": {
+        "game/src/ei/unit_model.gd": "bc872f119c16fcaa99a973ab57b9522a32a4fd79a4b104237ae7f81cf8f3839e",
+        "game/src/game/arena_formation_motion.gd": "bb454e90096deaaaaf15867a6c0f235992a9da4549c4309c2d9ad8085e0f2093",
+        "game/src/game/arena_pve_match.gd": "e5ecd3b7fa2f869de3839f63804d6246e711779960298671f940532f4acfe584"
+      },
+      "fixture_sha256": "83474fe8c18ce518047a4e7611ea4e1f0610a5356c7b5b4ec58283f04856df21"
+    },
+    {
+      "exit": 0,
+      "seconds": 6.53,
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/checks-01/runtime",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "120",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/repo/tools/tests/arena_scale_preservation.gd"
+      ],
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "diagnostics": [],
+      "summary": [
+        "ARENA_SCALE_PRESERVATION {\"checks\":36,\"failures\":[]}"
+      ],
+      "tag": "followup-final-arena_scale_preservation",
+      "checks": 36,
+      "log": "logs/followup-final-arena_scale_preservation.log.txt",
+      "log_sha256": "b3febd40124009ff2f6148c51d1acaf34afe338d6284a8a7e88ee09fdb472b09",
+      "production_sha256": {
+        "game/src/ei/unit_model.gd": "bc872f119c16fcaa99a973ab57b9522a32a4fd79a4b104237ae7f81cf8f3839e",
+        "game/src/game/arena_formation_motion.gd": "9c631406b5ce7042946267619957f1d6b09c48d2fb363e704db9c750d12624c9",
+        "game/src/game/arena_pve_match.gd": "e5ecd3b7fa2f869de3839f63804d6246e711779960298671f940532f4acfe584"
+      },
+      "fixture_sha256": "9a21b03b528d1394614623ebb0f64e9f459b8030fbc283a36c88f012af6c2d4f"
+    },
+    {
+      "exit": 0,
+      "seconds": 10.55,
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/checks-01/runtime",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "120",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/repo/tools/tests/arena_formation.gd"
+      ],
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "diagnostics": [],
+      "summary": [
+        "ARENA_FORMATION {\"checks\":22,\"failures\":[]}"
+      ],
+      "tag": "recovery-final-formation",
+      "checks": 22,
+      "log": "logs/recovery-final-formation.log.txt",
+      "log_sha256": "5377e11d472220d84de05c7f0024236248e9ffe2d4c2c2d51fadd82d14cba608",
+      "production_sha256": {
+        "game/src/ei/unit_model.gd": "bc872f119c16fcaa99a973ab57b9522a32a4fd79a4b104237ae7f81cf8f3839e",
+        "game/src/game/arena_formation_motion.gd": "bb454e90096deaaaaf15867a6c0f235992a9da4549c4309c2d9ad8085e0f2093",
+        "game/src/game/arena_pve_match.gd": "e5ecd3b7fa2f869de3839f63804d6246e711779960298671f940532f4acfe584"
+      },
+      "fixture_sha256": "b1acc9db92303e6c40f28c3400fd0f783ee18c2b09d49ad5a9e3602e05e7d9e6"
+    },
+    {
+      "exit": 0,
+      "seconds": 7.08,
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/checks-01/runtime",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "120",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/repo/tools/tests/arena_rank_appearance.gd"
+      ],
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "diagnostics": [],
+      "summary": [
+        "ARENA_RANK_APPEARANCE {\"checks\":1265,\"failures\":[]}"
+      ],
+      "tag": "followup-final-arena_rank_appearance",
+      "checks": 1265,
+      "log": "logs/followup-final-arena_rank_appearance.log.txt",
+      "log_sha256": "077c2a8c18fd3ddd04b9bd0f42a28a2667e16ad4e4817f19795b9bf206e4e6a0",
+      "production_sha256": {
+        "game/src/ei/unit_model.gd": "bc872f119c16fcaa99a973ab57b9522a32a4fd79a4b104237ae7f81cf8f3839e",
+        "game/src/game/arena_formation_motion.gd": "9c631406b5ce7042946267619957f1d6b09c48d2fb363e704db9c750d12624c9",
+        "game/src/game/arena_pve_match.gd": "e5ecd3b7fa2f869de3839f63804d6246e711779960298671f940532f4acfe584"
+      },
+      "fixture_sha256": "73d98676ccd4ba076f703e140797d732789df0d1cc8d621405c10319d6605e85"
+    },
+    {
+      "exit": 0,
+      "seconds": 19.1,
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/checks-01/runtime",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "120",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/repo/tools/tests/arena_creature_feedback.gd"
+      ],
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "diagnostics": [],
+      "summary": [
+        "ARENA_CREATURE_FEEDBACK 65 checks; failures=[]"
+      ],
+      "tag": "followup-final-arena_creature_feedback",
+      "checks": 65,
+      "log": "logs/followup-final-arena_creature_feedback.log.txt",
+      "log_sha256": "71c771493e522c701bcaf6b3b44264d03939eae695593f0d1e771d6bdb5bc750",
+      "production_sha256": {
+        "game/src/ei/unit_model.gd": "bc872f119c16fcaa99a973ab57b9522a32a4fd79a4b104237ae7f81cf8f3839e",
+        "game/src/game/arena_formation_motion.gd": "9c631406b5ce7042946267619957f1d6b09c48d2fb363e704db9c750d12624c9",
+        "game/src/game/arena_pve_match.gd": "e5ecd3b7fa2f869de3839f63804d6246e711779960298671f940532f4acfe584"
+      },
+      "fixture_sha256": "8cce86a5d8994b240eecac77dc0115e0bb726d8d2406dc3c526649047a896b7e"
+    },
+    {
+      "exit": 0,
+      "seconds": 7.94,
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/checks-01/runtime",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "120",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/repo/tools/tests/equipment_animation_continuity.gd"
+      ],
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "diagnostics": [],
+      "summary": [],
+      "tag": "followup-final-equipment_animation_continuity",
+      "checks": 56,
+      "log": "logs/followup-final-equipment_animation_continuity.log.txt",
+      "log_sha256": "431bae002450558c06b8df4bd56723eef5e52f67dc7a2eed3355fcf4192498b8",
+      "production_sha256": {
+        "game/src/ei/unit_model.gd": "bc872f119c16fcaa99a973ab57b9522a32a4fd79a4b104237ae7f81cf8f3839e",
+        "game/src/game/arena_formation_motion.gd": "9c631406b5ce7042946267619957f1d6b09c48d2fb363e704db9c750d12624c9",
+        "game/src/game/arena_pve_match.gd": "e5ecd3b7fa2f869de3839f63804d6246e711779960298671f940532f4acfe584"
+      },
+      "fixture_sha256": "97fb7e686bcb97b0a3f615939c887aa2823d4907cc22675655747e9711732f21"
+    },
+    {
+      "exit": 0,
+      "seconds": 22.17,
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/checks-01/runtime",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--rendering-driver",
+        "opengl3",
+        "--windowed",
+        "--resolution",
+        "1280x800",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/repo/tools/tests/arena_scale_preservation_ui.gd",
+        "--ei-inline-host"
+      ],
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "diagnostics": [],
+      "summary": [
+        "CAPTURE scale-before-refresh (1280.0, 800.0)",
+        "CAPTURE scale-after-refresh (1280.0, 800.0)",
+        "ARENA_SCALE_PRESERVATION_UI {\"checks\":18,\"failures\":[]}"
+      ],
+      "tag": "scale-ui-02",
+      "checks": 18,
+      "log": "logs/scale-ui-02.log.txt",
+      "log_sha256": "d13195670b6f6b36a470c4451a5090897f39766bcca98e33f4bae49da199dced",
+      "production_sha256": {
+        "game/src/ei/unit_model.gd": "bc872f119c16fcaa99a973ab57b9522a32a4fd79a4b104237ae7f81cf8f3839e",
+        "game/src/game/arena_formation_motion.gd": "9c631406b5ce7042946267619957f1d6b09c48d2fb363e704db9c750d12624c9",
+        "game/src/game/arena_pve_match.gd": "e5ecd3b7fa2f869de3839f63804d6246e711779960298671f940532f4acfe584"
+      },
+      "fixture_sha256": "8e47636244ce87300a90b88b6f905cf36a55ca71394a09e35c4831cb5b89536d"
+    },
+    {
+      "exit": 0,
+      "seconds": 44.0,
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/checks-01/runtime",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "120",
+        "--rendering-method",
+        "gl_compatibility",
+        "--rendering-driver",
+        "opengl3",
+        "--windowed",
+        "--resolution",
+        "1280x800",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/repo/tools/tests/arena_formation_ui.gd",
+        "--ei-inline-host"
+      ],
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "diagnostics": [],
+      "summary": [
+        "CAPTURE formation-en-1280-landing (1280.0, 800.0)",
+        "CAPTURE formation-en-1280-moving (1280.0, 800.0)",
+        "ARENA_FORMATION_UI 33 checks; failures=[] errors=[]"
+      ],
+      "tag": "recovery-final-formation-ui",
+      "checks": 33,
+      "log": "logs/recovery-final-formation-ui.log.txt",
+      "log_sha256": "b2d14d01016e4f7a204d3fdf7c7b6875a04cc9c9b24f6aab33b4c689ab0a6602",
+      "production_sha256": {
+        "game/src/ei/unit_model.gd": "bc872f119c16fcaa99a973ab57b9522a32a4fd79a4b104237ae7f81cf8f3839e",
+        "game/src/game/arena_formation_motion.gd": "bb454e90096deaaaaf15867a6c0f235992a9da4549c4309c2d9ad8085e0f2093",
+        "game/src/game/arena_pve_match.gd": "e5ecd3b7fa2f869de3839f63804d6246e711779960298671f940532f4acfe584"
+      },
+      "fixture_sha256": "008c0ce1aa382ae902050fbc55508bb534b9381f2057f21115854a1229b315a5"
+    }
+  ],
+  "baseline_runs": [
+    {
+      "exit": 1,
+      "seconds": 10.95,
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/baseline-runtime",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "120",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/repo/tools/tests/arena_deployment_motion.gd"
+      ],
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "diagnostics": [
+        "FAIL slow native creature reaches twelve-metre move promptly"
+      ],
+      "summary": [
+        "ARENA_DEPLOYMENT_MOTION {\"checks\":91,\"failures\":[\"slow native creature reaches twelve-metre move promptly\"]}"
+      ],
+      "tag": "baseline-final-arena_deployment_motion-recovery",
+      "checks": 91,
+      "log": "logs/baseline-final-arena_deployment_motion-recovery.log.txt",
+      "log_sha256": "379537c978a1d4e89ed4495bfd0f5d8ec66c8b1c64cefae0a2e020327147fd89",
+      "production_sha256": {
+        "game/src/ei/unit_model.gd": "2ed5a84458b3df0fb9a31896788ae839cd489be40500f94a04027ed87444fa86",
+        "game/src/game/arena_formation_motion.gd": "481d20e674d9dfb77482fc05875a2ae55adf427035156369207d9916eb923d69",
+        "game/src/game/arena_pve_match.gd": "8e28a82c187c253e34f407158c3eb98b34162bc10ccddaaf104db8e5f735abb5"
+      }
+    },
+    {
+      "exit": 1,
+      "seconds": 6.13,
+      "argv": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/baseline-runtime",
+        "--render-thread",
+        "safe",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "120",
+        "--headless",
+        "--",
+        "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+        "--no-movies",
+        "--tool=/home/llm2x/Documents/EI/local/scratchpad/autochess-rank-variants-20261021/repo/tools/tests/arena_scale_preservation.gd"
+      ],
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "diagnostics": [
+        "FAIL forced replacement retains fit and gait dragonbrownm16:1",
+        "FAIL body effect retains arena fit dragonbrownm16:1",
+        "FAIL snapshot body effect retains fit and gait dragonbrownm16:1",
+        "FAIL repeated fits do not compound collision or scale dragonbrownm16",
+        "FAIL late enemy record uses authoritative fit rather than posed bounds dragonbrownm16",
+        "FAIL enemy effect expiry retains fit and gait dragonbrownm16",
+        "FAIL forced replacement retains fit and gait dragonbrownm16:2",
+        "FAIL body effect retains arena fit dragonbrownm16:2",
+        "FAIL snapshot body effect retains fit and gait dragonbrownm16:2",
+        "FAIL repeated fits do not compound collision or scale dragonbrownm16",
+        "FAIL late enemy record uses authoritative fit rather than posed bounds dragonbrownm16",
+        "FAIL enemy effect expiry retains fit and gait dragonbrownm16",
+        "FAIL forced replacement retains fit and gait cyclopsa20:1",
+        "FAIL body effect retains arena fit cyclopsa20:1",
+        "FAIL snapshot body effect retains fit and gait cyclopsa20:1",
+        "FAIL repeated fits do not compound collision or scale cyclopsa20",
+        "FAIL late enemy record uses authoritative fit rather than posed bounds cyclopsa20",
+        "FAIL enemy effect expiry retains fit and gait cyclopsa20",
+        "FAIL forced replacement retains fit and gait cyclopsa20:2",
+        "FAIL body effect retains arena fit cyclopsa20:2",
+        "FAIL snapshot body effect retains fit and gait cyclopsa20:2",
+        "FAIL repeated fits do not compound collision or scale cyclopsa20",
+        "FAIL late enemy record uses authoritative fit rather than posed bounds cyclopsa20",
+        "FAIL enemy effect expiry retains fit and gait cyclopsa20"
+      ],
+      "summary": [
+        "ARENA_SCALE_PRESERVATION {\"checks\":36,\"failures\":[\"forced replacement retains fit and gait dragonbrownm16:1\",\"body effect retains arena fit dragonbrownm16:1\",\"snapshot body effect retains fit and gait dragonbrownm16:1\",\"repeated fits do not compound collision or scale dragonbrownm16\",\"late enemy record uses authoritative fit rather than posed bounds dragonbrownm16\",\"enemy effect expiry retains fit and gait dragonbrownm16\",\"forced replacement retains fit and gait dragonbrownm16:2\",\"body effect retains arena fit dragonbrownm16:2\",\"snapshot body effect retains fit and gait dragonbrownm16:2\",\"repeated fits do not compound collision or scale dragonbrownm16\",\"late enemy record uses authoritative fit rather than posed bounds dragonbrownm16\",\"enemy effect expiry retains fit and gait dragonbrownm16\",\"forced replacement retains fit and gait cyclopsa20:1\",\"body effect retains arena fit cyclopsa20:1\",\"snapshot body effect retains fit and gait cyclopsa20:1\",\"repeated fits do not compound collision or scale cyclopsa20\",\"late enemy record uses authoritative fit rather than posed bounds cyclopsa20\",\"enemy effect expiry retains fit and gait cyclopsa20\",\"forced replacement retains fit and gait cyclopsa20:2\",\"body effect retains arena fit cyclopsa20:2\",\"snapshot body effect retains fit and gait cyclopsa20:2\",\"repeated fits do not compound collision or scale cyclopsa20\",\"late enemy record uses authoritative fit rather than posed bounds cyclopsa20\",\"enemy effect expiry retains fit and gait cyclopsa20\"]}"
+      ],
+      "tag": "baseline-final-arena_scale_preservation",
+      "checks": 36,
+      "log": "logs/baseline-final-arena_scale_preservation.log.txt",
+      "log_sha256": "ed29e2a86513bc6fe75d5f5996f837b0cae71717afa12adeb575a60ae8559573",
+      "production_sha256": {
+        "game/src/ei/unit_model.gd": "2ed5a84458b3df0fb9a31896788ae839cd489be40500f94a04027ed87444fa86",
+        "game/src/game/arena_formation_motion.gd": "481d20e674d9dfb77482fc05875a2ae55adf427035156369207d9916eb923d69",
+        "game/src/game/arena_pve_match.gd": "8e28a82c187c253e34f407158c3eb98b34162bc10ccddaaf104db8e5f735abb5"
+      }
+    }
+  ],
+  "baseline_interpretation": "Original source fails 24/36 scale checks and the slow-creature arrival deadline. Constructed overlaps, swaps and courtyard detours also pass the baseline; they provide regression coverage, not a deterministic reproduction of every reported intermittent jam.",
+  "source_sha256": {
+    "game/src/ei/unit_model.gd": "bc872f119c16fcaa99a973ab57b9522a32a4fd79a4b104237ae7f81cf8f3839e",
+    "game/src/game/arena_formation_motion.gd": "bb454e90096deaaaaf15867a6c0f235992a9da4549c4309c2d9ad8085e0f2093",
+    "game/src/game/arena_pve_match.gd": "e5ecd3b7fa2f869de3839f63804d6246e711779960298671f940532f4acfe584",
+    "tools/parity/gameplay_catalog.json": "04f40d4b8e283a56fefa79e301707f2c2319717e7b814c8fa82e8c465b83b4fe",
+    "tools/tests/arena_deployment_motion.gd": "83474fe8c18ce518047a4e7611ea4e1f0610a5356c7b5b4ec58283f04856df21",
+    "tools/tests/arena_formation.gd": "b1acc9db92303e6c40f28c3400fd0f783ee18c2b09d49ad5a9e3602e05e7d9e6",
+    "tools/tests/arena_formation_ui.gd": "008c0ce1aa382ae902050fbc55508bb534b9381f2057f21115854a1229b315a5",
+    "tools/tests/arena_scale_preservation.gd": "9a21b03b528d1394614623ebb0f64e9f459b8030fbc283a36c88f012af6c2d4f",
+    "tools/tests/arena_scale_preservation_ui.gd": "8e47636244ce87300a90b88b6f905cf36a55ca71394a09e35c4831cb5b89536d"
+  },
+  "runtime_production_matches_source": true,
+  "translation_check": "tools/check_translations.py: 3014 entries; 141 dynamic wiki keys; 179 dynamic arena keys; 0 errors. No new player-visible strings in the deployment/scale change.",
+  "diff_check": "git diff --check: pass",
+  "screenshots_sha256": {
+    "scale-after-refresh.png": "a1273a24b7f0cb2f2fa10cea3f02e59a239fd8913a5cfbaf4d39bac8f9da71f5",
+    "scale-before-refresh.png": "08061de96027b3be94ea160206cac9f66453c6f47527abb0ec3460e0ec55fda1",
+    "formation-moving.png": "56d6770cee6bf72b1616de6044302585e3a1a847f4fff2f7fa5d6f6a1729d36f"
+  },
+  "source_note": "Each successful run records its production hashes. The final occupied-destination command restoration changes only arena_formation_motion.gd; deployment and both formation fixtures were rerun after it. Scale, appearance, feedback and equipment source paths remain unchanged."
+}
