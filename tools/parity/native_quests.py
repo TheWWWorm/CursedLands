@@ -49,7 +49,7 @@ class Expressions:
         self.area_records = o.alloc(128 * 24)
         o.write(self.context + 0x198, self.area_records, 0)
         self.instance = o.alloc(0xc0)
-        vt = o.alloc(0x50)
+        vt = o.alloc(0x100)
         o.write(vt + 0x44, 0x1800)
         o.write(vt + 0x30, 0x1810)
         o.write(vt + 0x10, 0x1820)
@@ -113,6 +113,7 @@ class Expressions:
                 # capacity is supplied so allocator behavior is out of scope.
                 o.run(addresses[kind], record, words)
         player, bucket = o.alloc(0x140), o.alloc(4)
+        self.player = player
         o.write(player + 0xc0, environment.get("money", 0))
         # HaveItem scans original bag nodes. The owned-unit table is empty;
         # carried quest items and multiplayer ownership are separate contracts.

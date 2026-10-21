@@ -61,6 +61,27 @@ class FixtureGrid extends NavGrid:
 				out[y*rect.size.x+x] = stamps[(rect.position.y+y)*size.x+rect.position.x+x]
 		return out
 
+## Independently maintained families staged from remake_ext_*.gd.
+var _extensions := {}
+
+func load_extensions() -> bool:
+	var directory := "res://tools/parity_ext"
+	if not DirAccess.dir_exists_absolute(directory): return true
+	var names := Array(DirAccess.get_files_at(directory)).filter(func(n: String): return n.ends_with(".gd"))
+	names.sort()
+	for file_name: String in names:
+		var script: GDScript = load(directory + "/" + file_name)
+		var extension: Object = script.new() if script else null
+		if extension == null or not extension.has_method("kinds") or not extension.has_method("capture"):
+			push_error("Invalid parity extension: " + file_name)
+			return false
+		for kind: String in extension.kinds():
+			if _extensions.has(kind):
+				push_error("Parity extension kind declared twice: " + kind)
+				return false
+			_extensions[kind] = extension
+	return true
+
 func f32(value: float) -> float:
 	return PackedFloat32Array([value])[0]
 
@@ -88,6 +109,9 @@ func _ready() -> void:
 		profile[key] = GameData.option(key)
 	if profile != {"confine_mouse": 0, "show_fps": 1, "volume_sfx": 0, "volume_stream": 0, "volume_voice": 0}:
 		push_error("Parity must run in an isolated, muted development profile")
+		get_tree().quit(2)
+		return
+	if not load_extensions():
 		get_tree().quit(2)
 		return
 	GameData.difficulty = 0
@@ -142,6 +166,7 @@ func capture(kind: String, data: Dictionary) -> Array:
 		"quest_program": return capture_quest_program(data)
 		"body_health": return capture_body_health(data)
 		"effect_lifetime": return capture_effect_lifetime(data)
+	if _extensions.has(kind): return _extensions[kind].capture(kind, data, self)
 	push_error("Unsupported parity adapter: " + kind)
 	return []
 

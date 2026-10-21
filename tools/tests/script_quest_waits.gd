@@ -8,11 +8,11 @@ GlobalVars ( phase : float delay : float ready : float )
 DeclareScript Waiter ()
 Script Waiter (
     if () then (
+        KillScript()
         phase = 1
         Sleep(Add(delay, 0))
         phase = Add(phase, 1)
         SleepUntil(ready)
-        KillScript()
         phase = Add(phase, 1)
     )
 )
@@ -38,9 +38,13 @@ func release(vm: ScriptVM) -> void:
 	vm.session.free()
 	vm.world.free()
 
+## One scheduler pass over the instances present at its start: the trigger
+## starts its body thread (whose first slice disposes it), later passes run
+## that thread. Disposed instances leave, as in ScriptVM.tick.
 func step(vm: ScriptVM) -> void:
 	vm.time += ScriptVM.SLEEP_UNIT
-	for inst: ScriptVM.Instance in vm.instances: vm._run(inst)
+	for inst: ScriptVM.Instance in vm.instances.duplicate(): vm._run(inst)
+	vm.instances = vm.instances.filter(func(x: ScriptVM.Instance): return not (x.killed and x.frames.is_empty()))
 
 func restore(saved: Dictionary) -> ScriptVM:
 	var result := make_vm()
@@ -66,8 +70,8 @@ func _ready() -> void:
 				step(vm)
 				step(loaded)
 				check(vm.globals.phase == loaded.globals.phase, "reload preserves exact resume tick")
-			check(loaded.globals.phase == 3 and loaded.instances[0].killed, "body continues after KillScript")
-			check(loaded.instances[0].frames.is_empty(), "completed body leaves no waiting frame")
+			check(loaded.globals.phase == 3, "body continues after KillScript")
+			check(loaded.instances.all(func(i: ScriptVM.Instance): return i.killed and i.frames.is_empty()), "completed body leaves no waiting frame")
 			release(loaded)
 		release(vm)
 

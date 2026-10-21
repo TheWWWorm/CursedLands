@@ -1,0 +1,223 @@
+[
+  {
+    "suite": "console_modern",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "seconds": 32.59,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "641358.079:0020:0120:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\release-1.22.0-20261021\\release\\checks\\windows-console_modern\\vkd3d-proton.CursedLands.exe.cache.",
+      "CONSOLE_MODERN 68 checks 0 failures"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "mod_formulas",
+    "platform": "windows",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 12.56,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "MOD_FORMULAS 106 checks 0 failures"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "issue_ui_controls",
+    "platform": "windows",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 11.82,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "ISSUE_UI_CONTROLS {\"checks\":198,\"failures\":[]}"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "equipment_animation_continuity",
+    "platform": "windows",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 13.11,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "EQUIPMENT_ANIMATION_CONTINUITY {\"checks\":56,\"failures\":[]}"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "mod_worker",
+    "platform": "windows",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 43.95,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "MOD_WORKER {\"checks\":25,\"failures\":0}"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "fsr_render",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "seconds": 107.46,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "FSR_RENDER {\"blocked\":false,\"checks\":190,\"facts\":{\"api\":true,\"engine\":true,\"fg3\":true,\"fg4\":false,\"sr3\":true,\"sr4\":false},\"failures\":[],\"frame_generation_tested\":true,\"gpu\":\"NVIDIA GeForce RTX 3090\",\"renderer\":\"d3d12\",\"rows\":[{\"elapsed_ms\":1332.263,\"generated_frames\":0,\"label\":\"off\",\"presented_frames\":120,\"sampled_frames\":120,\"scale\":1.0,\"selection\":-1,\"size\":[1280,720],\"status\":{\"compiled\":true,\"\u2026",
+      "FSR_RENDER {\"blocked\":false,\"checks\":191,\"facts\":{\"api\":true,\"engine\":true,\"fg3\":true,\"fg4\":false,\"sr3\":true,\"sr4\":false},\"failures\":[],\"frame_generation_tested\":true,\"gpu\":\"NVIDIA GeForce RTX 3090\",\"renderer\":\"d3d12\",\"rows\":[{\"elapsed_ms\":1332.263,\"generated_frames\":0,\"label\":\"off\",\"presented_frames\":120,\"sampled_frames\":120,\"scale\":1.0,\"selection\":-1,\"size\":[1280,720],\"status\":{\"compiled\":true,\"\u2026"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "fsr_campaign",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "seconds": 178.28,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "FSR_CAMPAIGN {\"blocked\":false,\"checks\":97,\"facts\":{\"api\":true,\"engine\":true,\"fg3\":true,\"fg4\":false,\"sr3\":true,\"sr4\":false},\"failures\":[],\"rows\":[{\"focused\":true,\"generated_frames\":90,\"hud_blocks_camera\":false,\"label\":\"gameplay\",\"presented_frames\":181,\"sampled_frames\":90,\"status\":{\"compiled\":true,\"fg3_supported\":true,\"fg4_supported\":false,\"frame_generation_active\":true,\"frame_generation_context_cre\u2026",
+      "FSR_CAMPAIGN {\"blocked\":false,\"checks\":97,\"facts\":{\"api\":true,\"engine\":true,\"fg3\":true,\"fg4\":false,\"sr3\":true,\"sr4\":false},\"failures\":[],\"rows\":[{\"focused\":true,\"generated_frames\":90,\"hud_blocks_camera\":false,\"label\":\"gameplay\",\"presented_frames\":181,\"sampled_frames\":90,\"status\":{\"compiled\":true,\"fg3_supported\":true,\"fg4_supported\":false,\"frame_generation_active\":true,\"frame_generation_context_cre\u2026"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "fsr_attribution",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "seconds": 21.59,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "641765.001:0020:0124:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\\home\\llm2x\\Documents\\EI\\local\\scratchpad\\release-1.22.0-20261021\\release\\checks\\windows-fsr_attribution\\vkd3d-proton.CursedLands.exe.cache.",
+      "ATTRIBUTION {\"checks\":226,\"failures\":[],\"languages\":[\"en\",\"ru\",\"de\"],\"resolutions\":[[800,600],[1280,720]]}"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "fsr_campaign",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "seconds": 174.18,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "FSR_CAMPAIGN {\"blocked\":false,\"checks\":102,\"facts\":{\"api\":true,\"engine\":true,\"fg3\":true,\"fg4\":false,\"sr3\":true,\"sr4\":false},\"failures\":[],\"rows\":[{\"focused\":true,\"generated_frames\":90,\"hud_blocks_camera\":false,\"label\":\"gameplay\",\"presented_frames\":181,\"sampled_frames\":90,\"status\":{\"compiled\":true,\"fg3_supported\":true,\"fg4_supported\":false,\"frame_generation_active\":true,\"frame_generation_context_cr\u2026",
+      "FSR_CAMPAIGN {\"blocked\":false,\"checks\":102,\"facts\":{\"api\":true,\"engine\":true,\"fg3\":true,\"fg4\":false,\"sr3\":true,\"sr4\":false},\"failures\":[],\"rows\":[{\"focused\":true,\"generated_frames\":90,\"hud_blocks_camera\":false,\"label\":\"gameplay\",\"presented_frames\":181,\"sampled_frames\":90,\"status\":{\"compiled\":true,\"fg3_supported\":true,\"fg4_supported\":false,\"frame_generation_active\":true,\"frame_generation_context_cr\u2026"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "scaled_menu_arena_text",
+    "platform": "windows",
+    "renderer": "opengl3",
+    "exit": 0,
+    "seconds": 36.41,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "SCALED_TEXT {\"checks\":32,\"failures\":[],\"language\":\"en\"}"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "scaled_menu_arena_text",
+    "platform": "windows",
+    "renderer": "opengl3",
+    "exit": 0,
+    "seconds": 32.44,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "SCALED_TEXT {\"checks\":32,\"failures\":[],\"language\":\"ru\"}"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "scaled_menu_arena_text",
+    "platform": "windows",
+    "renderer": "opengl3",
+    "exit": 0,
+    "seconds": 32.16,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "SCALED_TEXT {\"checks\":32,\"failures\":[],\"language\":\"de\"}"
+    ],
+    "errors": []
+  }
+]

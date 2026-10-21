@@ -63,6 +63,9 @@ class Instance:
 	var wait_unit: Object = null
 	var block_index := -1
 	var src := ""   # WorldScript: its body's source (ScriptVM.world_bodies)
+	## A body thread's trigger instance, which its KillScript disposes. Not
+	## saved: the original allows KillScript only in a body's first slice.
+	var owner: Instance = null
 
 
 static func create(w: GameWorld, s: Session) -> ScriptVM:
@@ -173,29 +176,41 @@ func _tick(dt: float) -> void:
 	preload("res://src/game/script/story_astral_eavesdrop.gd").recover(self)
 	preload("res://src/game/script/story_astral_fortunes.gd").recover(self)
 	_check_interactions()
-	# QFinish's native Su0..SuN threads poll on each 55 ms logic tick.
-	# A slower timer can miss a brief sighting or crossing altogether.
-	if not qobjs.is_empty():
-		_check_quest_objectives()
 	briefings.tick()
 	# Script threads keep running during a conversation: the world tick
 	#  calls the thread runner every tick, gated only
 	# by the pause byte (world), and the conversation path
 	# ("briefing" -> village screen slot 0x88
 	# ) never touches the VM.
-	# the original walks the thread list (VM) from its head
-	# taking each node's next before running it, and a script call adds the new
-	# thread at the head: newest first, and a
-	# thread started during the tick first runs in the next one. (Running new
-	# threads at once never ends in scripts that restart each other through an
-	# always-true block, bz8k VCheck#0#108 -> VTriger#0#138 -> VCheck#0#108 at
-	# night.) `instances` is kept oldest first.
+	# One 0x4bf000 pass: first every queued body thread runs a slice, then
+	# every trigger instance is polled. Both lists are walked from their
+	# head, newest first, taking each node's next before running it; new
+	# nodes go to the head. A script a running thread starts is therefore
+	# polled in this pass, and one a first slice starts (during the poll) in
+	# the next. (Polling those at once would never end in scripts that
+	# restart each other through an always-true block, bz8k VCheck#0#108 ->
+	# VTriger#0#138 -> VCheck#0#108 at night.) `instances` is kept oldest
+	# first; body threads are killed instances with frames.
 	_seen_memo.clear()   # the steps above may have changed what units notice
-	var cur := instances.duplicate()
-	cur.reverse()
-	for inst: Instance in cur:
+	var threads := instances.filter(func(x: Instance): return not x.frames.is_empty())
+	threads.reverse()
+	var presenting := false
+	for inst: Instance in threads:
 		_run(inst)
-		if session.movie_active(): break
+		presenting = session.movie_active()
+		if presenting: break
+	if not presenting:
+		# QFinish's native Su0..SuN are trigger instances, polled on each 55 ms
+		# logic tick (a slower timer can miss a brief sighting or crossing)
+		# after the thread walk: a chain a running thread finishes is polled
+		# in this pass, and each Su<i> starts Su<i+1> for the next one.
+		if not qobjs.is_empty():
+			_check_quest_objectives()
+		var triggers := instances.filter(func(x: Instance): return x.frames.is_empty() and not x.killed)
+		triggers.reverse()
+		for inst: Instance in triggers:
+			_run(inst)
+			if session.movie_active(): break
 	instances = instances.filter(func(x: Instance): return not (x.killed and x.frames.is_empty()))
 	if not _pending_zone.is_empty():
 		var z = _pending_zone
@@ -207,23 +222,55 @@ func _tick(dt: float) -> void:
 			session.call_deferred("leave_zone", z[0], z[1])
 
 
+## Polls a trigger instance (0x4bf000's trigger walk). Every block whose
+## conditions hold (0x4bb520, in order up to the first false one) starts a
+## body thread on a copy of the instance's locals and runs its first slice
+## at once (0x4bc420), even while an earlier body still runs. A KillScript
+## in that slice disposes the instance and skips its remaining blocks.
+func _poll(inst: Instance) -> void:
+	if inst.killed or time < inst.poll:
+		return
+	inst.poll = time + POLL
+	for bi in inst.blocks.size():
+		var b: Dictionary = inst.blocks[bi]
+		if not _party_conditions(b.conds, inst):
+			continue
+		inst.block_index = bi
+		if not _once_per_world(inst):
+			return
+		var thread := Instance.new()
+		thread.sname = inst.sname
+		thread.blocks = inst.blocks
+		thread.killed = true
+		thread.owner = inst
+		thread.block_index = bi
+		for k in inst.locals:
+			var v = inst.locals[k]
+			thread.locals[k] = v.duplicate() if v is Array else v
+		for m: StringName in inst.get_meta_list():
+			var v = inst.get_meta(m)
+			thread.set_meta(m, v.duplicate(true) if v is Dictionary or v is Array else v)
+		thread.frames = [{"body": b.body, "i": 0}]
+		_resume(thread)
+		if not thread.frames.is_empty():
+			instances.append(thread)
+		if inst.killed:
+			return
+
+
+## Runs a body thread's next slice (0x4bf000's thread walk) or polls a
+## trigger instance (its trigger walk). Saves from before body threads
+## resume a body on the trigger instance itself.
 func _run(inst: Instance) -> void:
 	if inst.has_meta(&"prison_actor_reference") or has_meta(&"prison_intruder_reference"):
 		if preload("res://src/game/script/story_coop_traps.gd").hold_registration(self,inst): return
 	if inst.frames.is_empty():
-		if inst.killed or time < inst.poll:
-			return
-		inst.poll = time + POLL
-		for bi in inst.blocks.size():
-			var b: Dictionary = inst.blocks[bi]
-			if _party_conditions(b.conds, inst):
-				inst.block_index = bi
-				inst.frames = [{"body": b.body, "i": 0}]
-				if not _once_per_world(inst):
-					return
-				break
-		if inst.frames.is_empty():
-			return
+		_poll(inst)
+	else:
+		_resume(inst)
+
+
+func _resume(inst: Instance) -> void:
 	# Waiting?
 	if not inst.sleep_cond.is_empty():
 		# Sleep's native counter advances once per thread run. Reevaluate
@@ -276,6 +323,14 @@ func _run(inst: Instance) -> void:
 					return   # resume at the next saved instruction after presentation
 
 
+## KillScript disposes the trigger instance of the body running it. The
+## original allows it only in a body's first slice and stops the game with a
+## fatal script error elsewhere; the remake keeps playing and disposes the
+## instance when it is still known (old saves run bodies on the instance).
+func _kill(inst: Instance) -> void:
+	(inst.owner if inst.owner else inst).killed = true
+
+
 func _all(conds: Array, inst: Instance) -> bool:
 	for c in conds:
 		if not _truthy(_eval(c, inst)):
@@ -324,11 +379,9 @@ func fire_event(name: String, args: Array) -> void:
 	for sn: String in ast.scripts.keys():
 		if sn != name and not sn.begins_with(name + "_"):
 			continue
+		# The original registers a carrier thread (0x592090 -> 0x4bcc60) that
+		# starts the handler in the next pass, where the trigger walk polls it.
 		spawn(sn, args)
-		# Event handlers run immediately so their effects are visible this frame.
-		var inst: Instance = instances[-1] if not instances.is_empty() and instances[-1].sname == sn else null
-		if inst:
-			_run(inst)
 
 
 func on_briefing_complete(player: int, id: String) -> void:
@@ -498,7 +551,7 @@ func _stmt_call(name: String, a: Array, inst: Instance) -> bool:
 				return true
 			return false
 		"KillScript":
-			inst.killed = true
+			_kill(inst)
 			return false
 	if ast.scripts.has(name):
 		spawn(name, _args(a, inst), inst.sname)
@@ -528,7 +581,7 @@ func _call(name: String, a: Array, inst: Instance):
 			return preload("res://src/game/script/story_coop_traps.gd").actor(self, String(_eval(a[0],inst)), int(_num(_eval(a[1],inst))))
 		"RemakeTrapJoin":
 			var values := _args(a,inst)
-			preload("res://src/game/script/story_coop_traps.gd").join(self,values[0],values.slice(1),inst)
+			preload("res://src/game/script/story_coop_traps.gd").join(self,values[0],values.slice(1),inst.owner if inst.owner else inst)
 			return null
 		"RemakePartyCast":
 			preload("res://src/game/script/story_coop_effects.gd").cast(self, a, inst)
@@ -557,7 +610,7 @@ func _call(name: String, a: Array, inst: Instance):
 					return 1.0
 			return 1.0 if want_all else 0.0
 		"KillScript":
-			inst.killed = true
+			_kill(inst)
 			return null
 		"GroupHas", "GroupCross":
 			# GroupHas(UnitSee / GroupSee(..), x), GroupCross(g, UnitSee /
@@ -627,7 +680,12 @@ func _call(name: String, a: Array, inst: Instance):
 		# and what each one notices, AI) plus the player's units
 		# and their noticed lists again. UnitSee / GroupSee (0x5d / 0x5e): the
 		# unit's noticed list (AI; UnitAI.can_notice).
-		"PlayerSee": return _player_visible()
+		"PlayerSee":
+			# Single player has no other player: its lookup fails (an empty group).
+			if session and not session.multiplayer_game and session.lmp.is_empty() \
+					and not v.is_empty() and int(_num(v[0])) != 0:
+				return []
+			return _player_visible()
 		# Builtin 0xb4 GetUnitOfPlayer(player, k): the unit
 		# the player's k-th party record (0x784 bytes each: the hero
 		# first, then the mercenaries), dead or hidden alike; none past the end.
@@ -635,8 +693,16 @@ func _call(name: String, a: Array, inst: Instance):
 			var hs := _story_records(int(_num(v[0])))
 			var k := int(_num(v[1]))
 			return hs[k] if k >= 0 and k < hs.size() else null
+		# Builtin 0xe4 GetLeader() takes no parameters (signature "O");
+		# authored z18q1/z7q3 triggers call GetLeader( ). Outside LMP the
+		# object evaluator returns party record 0's unit, dead or
+		# hidden alike, as GetUnitOfPlayer(0, 0) does. LMP keeps the first
+		# living, shown member of the player an optional argument names.
 		"GetLeader":
-			var hs := _story_records(int(_num(v[0]))).filter(func(u: GameUnit): return not u.dead and not u.hidden)
+			if session.lmp.is_empty():
+				var records := _story_records()
+				return records[0] if not records.is_empty() else null
+			var hs := _story_records(int(_num(v[0])) if not v.is_empty() else 0).filter(func(u: GameUnit): return not u.dead and not u.hidden)
 			return hs[0] if not hs.is_empty() else null
 		# Builtin 0xd1 GetMercsNumber(player) ->: the party records
 		# whose unit exists and lives, excluding the protagonist. Guest heroes
@@ -709,7 +775,7 @@ func _call(name: String, a: Array, inst: Instance):
 		# (player == 2,; UnitAI._player_in_combat).
 		"IsPlayerInDanger": return 1.0 if _in_danger() else 0.0
 		# Builtin 0xe5 IsUnitVisible(unit): in player 0's visible list.
-		"IsUnitVisible": return 1.0 if v[0] != null and _player_visible().has(v[0]) else 0.0
+		"IsUnitVisible": return 1.0 if v[0] != null and _player_visible(true).has(v[0]) else 0.0
 		"WasLooted":   # builtin 0xe3: absent object or its looted flag
 			var u = v[0]
 			# Native object references become null after removal. This is
@@ -1364,7 +1430,7 @@ func _sees(watchers: Array) -> Array:
 	var out := []
 	var have := {}
 	for w in watchers:
-		if w == null or not is_instance_valid(w) or w.dead:
+		if w == null or not is_instance_valid(w) or not w is GameUnit:
 			continue
 		for u in _noticed(w):
 			if not have.has(u):
@@ -1373,53 +1439,46 @@ func _sees(watchers: Array) -> Array:
 	return out
 
 
-## Whether `x` is in `_sees(watchers)` (tested per watcher as _noticed lists).
+## Whether `x` is in `_sees(watchers)`.
 func _sees_has(watchers: Array, x) -> bool:
 	if not is_instance_valid(x) or not x is GameUnit or (x as GameUnit)._seq == 0:
 		return false
-	var xu: GameUnit = x
 	for w in watchers:
-		if w == null or not is_instance_valid(w) or w.dead or w == xu:
+		if w == null or not is_instance_valid(w) or not w is GameUnit or w == x:
 			continue
-		if _in_tick and _seen_memo.has(w):
-			if (_seen_memo[w] as Array).has(xu):
-				return true
-			continue
-		var r := float(w.stats.get("sight", 15.0))
-		if xu.pos.distance_squared_to(w.pos) <= r * r and world.ai.can_notice(w, xu, r):
+		if _noticed(w).has(x):
 			return true
 	return false
 
 
 ## Remake speed (UnitSee / GroupSee / PlayerSee are polled by many script
-## conditions every tick): one watcher's noticed units, in GameWorld.units
-## order, remembered while nothing can have changed them — only during
-## ScriptVM.tick and until a builtin that is not a pure query runs
-## (_call, PURE_CALLS); cleared at the start and end of every tick.
+## conditions every tick): one watcher's noticed units, remembered while
+## nothing can have changed them — only during ScriptVM.tick and until a
+## builtin that is not a pure query runs (_call, PURE_CALLS); cleared at the
+## start and end of every tick.
 var _seen_memo := {}
 var _in_tick := false
 
 
+## UnitSee / GroupSee (group evaluator 0x4b5b00) and PlayerSee read each
+## watcher's retained AI noticed list (logic +0xa94), which 0x5caa00 keeps on
+## every AI tick: a hostile stays noticed at any distance, another unit until
+## it is beyond 1.05 x both notice distances, life sense reaches past sight,
+## and a unit that dies moves to the corpse list. There is no death test: a
+## dead watcher keeps the list it had when it died. The remake's AI does not
+## perceive on every tick, so a living watcher's list is brought up to date
+## here (UnitAI.player_perceive, at most once per tick).
 func _noticed(w: GameUnit) -> Array:
 	if _in_tick and _seen_memo.has(w):
 		return _seen_memo[w]
-	var r := float(w.stats.get("sight", 15.0))
+	var keep: Dictionary = w.get_meta("noticed", {}) if w.dead else world.ai.player_perceive(w)
 	var out := []
-	var terms := world.ai.notice_terms(w, r)
-	for u in _units_within(w.pos, r):
-		if u != w and world.ai.can_notice_with(w, u, terms):
+	for u in keep.values():
+		if u != w and is_instance_valid(u) and u is GameUnit and not u.hidden:
 			out.append(u)
 	if _in_tick:
 		_seen_memo[w] = out
 	return out
-
-
-## GameWorld.units_near(p, r) (every unit within r, dead ones too, in
-## GameWorld.units order) from the host's unit buckets.
-func _units_within(p: Vector2, r: float) -> Array:
-	if not (world.authority and world.nav and world.nav.size.x > 0):
-		return world.units_near(p, r)
-	return world.nav.units_all_around(p, r)
 
 
 ## Builtins that only read (no world, unit, group or campaign change).
@@ -1453,9 +1512,13 @@ func _own_units() -> Array:
 	return out
 
 
-func _player_visible() -> Array:
-	if _in_tick and _seen_memo.has(&"player"):
-		return (_seen_memo[&"player"] as Array).duplicate()
+## PlayerSee (0xa5): the player's units and what each one notices. With
+## `corpses`, the player's visible group IsUnitVisible (0xe5) reads, which
+## 0x66e0f0 rebuilds from the same lists and the units' corpse lists.
+func _player_visible(corpses := false) -> Array:
+	var key := &"player_corpses" if corpses else &"player"
+	if _in_tick and _seen_memo.has(key):
+		return (_seen_memo[key] as Array).duplicate()
 	var own := _own_units()
 	var out := own.duplicate()
 	var have := {}
@@ -1465,8 +1528,14 @@ func _player_visible() -> Array:
 		if not have.has(x):
 			have[x] = true
 			out.append(x)
+	if corpses:
+		for w: GameUnit in own:
+			for x in (w.get_meta("seen_corpses", {}) as Dictionary).values():
+				if is_instance_valid(x) and not have.has(x):
+					have[x] = true
+					out.append(x)
 	if _in_tick:
-		_seen_memo[&"player"] = out.duplicate()
+		_seen_memo[key] = out.duplicate()
 	return out
 
 
@@ -2409,7 +2478,7 @@ func _objective_met(o: Array, d: Dictionary) -> bool:
 					return true
 			return false
 		"QObjSeeUnit":
-			return target != null and _player_visible().has(target)
+			return target != null and _player_visible(true).has(target)
 		"QObjKillUnit":
 			return target == null or (target is GameUnit and target.dead)
 		"QObjKillGroup":

@@ -1,0 +1,346 @@
+[
+  {
+    "suite": "mod_formulas",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 5.91,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "MOD_FORMULAS 106 checks 0 failures"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "mod_profiles",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 5.08,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "MOD_PROFILES {\"checks\":87,\"details\":[],\"failures\":0}"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "mod_texture_packages",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 4.9,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "MOD_TEXTURE_PACKAGES {\"checks\":42,\"failures\":0}"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "mod_effects",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 1,
+    "seconds": 14.21,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "FAIL configured revival HP reaches the actual unit",
+      "MOD_EFFECTS {\"checks\":11,\"failures\":2}"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "xp_distribution",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 4.6,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "XP_DISTRIBUTION 96 checks 0 failures"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "equipment_animation_continuity",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 6.42,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "EQUIPMENT_ANIMATION_CONTINUITY {\"checks\":56,\"failures\":[]}"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "issue_ui_controls",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 4.8,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "ISSUE_UI_CONTROLS {\"checks\":198,\"failures\":[]}"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "local_host_permissions",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 47.32,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "LOCAL_HOST_PERMISSIONS 20 checks 0 failures"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "zone_speed_retention",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 52.09,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "ZONE_SPEED_RETENTION 65 checks 0 failures"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "coop_permissions",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 28.45,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "COOP_PERMISSIONS {\"checks\":31,\"failures\":0}"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "mod_worker",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 28.44,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "MOD_WORKER {\"checks\":25,\"failures\":0}"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "mod_formula_ui",
+    "platform": "linux",
+    "renderer": "opengl3",
+    "exit": 0,
+    "seconds": 8.79,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "MOD_FORMULA_UI 41 checks 0 failures"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "fsr_experiment",
+    "platform": "linux",
+    "renderer": "opengl3",
+    "exit": 0,
+    "seconds": 6.91,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "FSR_EXPERIMENT 50 checks 0 failures"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "fsr_attribution",
+    "platform": "linux",
+    "renderer": "opengl3",
+    "exit": 0,
+    "seconds": 9.49,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "ATTRIBUTION {\"checks\":224,\"failures\":[],\"languages\":[\"en\",\"ru\",\"de\"],\"resolutions\":[[800,600],[1280,720]]}"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "console_commands",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 11.42,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "CONSOLE_COMMANDS 123 checks 0 failures"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "console_god_mode",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 12.75,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "CONSOLE_GOD_MODE 98 checks 0 failures"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "console_modern",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 13.53,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "CONSOLE_MODERN 67 checks 0 failures"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "mod_redress",
+    "platform": "linux",
+    "renderer": "headless",
+    "exit": 0,
+    "seconds": 7.52,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "MOD_REDRESS 42 checks 0 failures"
+    ],
+    "errors": []
+  },
+  {
+    "suite": "mod_effects",
+    "platform": "linux-1.21.0-baseline",
+    "renderer": "headless",
+    "exit": 1,
+    "seconds": 14.93,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "summary": [
+      "FAIL configured revival HP reaches the actual unit",
+      "MOD_EFFECTS {\"checks\":11,\"failures\":2}"
+    ],
+    "errors": []
+  }
+]

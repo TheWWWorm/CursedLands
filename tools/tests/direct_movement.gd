@@ -56,6 +56,19 @@ func _ready() -> void:
 	var stamina:=hero.mana;tick(12)
 	check(hero.pos.distance_to(start)>full*1.2 and hero.mana<stamina,"run input increases speed and consumes normal stamina")
 	hero.set_gait(2)
+	GameData.options.free_run = 0
+	if not s.mod_config.is_empty(): s.mod_config.rules.free_run = 0
+	for camera_mode: int in [2,3]:
+		GameData.options.control_mode = camera_mode
+		place(); hero.mana = 0.0
+		s.apply_command({"t":"direct_move","units":[hero.uid],"direction":Vector2.RIGHT,"run":true},0)
+		tick(12)
+		check(hero.action == "walk" and is_equal_approx(hero.mana,0.0),"camera %d: held Shift at zero stamina walks without spending stamina" % camera_mode)
+		check(absf(hero.pos.distance_to(start)-full)<0.1,"camera %d: exhausted Shift uses normal walking displacement" % camera_mode)
+		hero.mana = hero.max_mana; tick()
+		check(hero.action == "run", "camera %d: stamina recovery permits the held run request again" % camera_mode)
+		hero.mana = hero.max_mana / 300.0; tick()
+		check(hero.mana == 0.0 and hero.action == "walk", "camera %d: depletion switches to walking on the same authority tick" % camera_mode)
 	place()
 	for v:Variant in [Vector2(NAN,0),Vector2(INF,0),Vector2(1e30,0),Vector3.RIGHT,"right"]:
 		s.apply_command({"t":"direct_move","units":[hero.uid],"direction":v},0)

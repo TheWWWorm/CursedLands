@@ -1,7 +1,7 @@
 # Gameplay regression suite
 
-`tools/parity/gameplay.py` runs 308 registered test configurations across 19
-areas, using 238 scripts. It combines existing regression programs with item,
+`tools/parity/gameplay.py` runs 312 registered test configurations across 19
+areas, using 241 scripts. It combines existing regression programs with item,
 effect, theft, crafting, side-quest, localization and travel boundary tests.
 A registration selects a script, campaign
 and arguments; some scripts are exercised in both campaigns or in several
@@ -16,7 +16,7 @@ The reports keep those two kinds of evidence separate.
 
 Requirements: Linux, Python 3.11+, Godot 4.7, and owned base-game and Lost in
 Astral installations. The regression runner itself uses only Python's standard
-library. The 46 rendered configurations also require an explicitly selected
+library. The 50 rendered configurations also require an explicitly selected
 private X display, such as Xvfb; the other 262 run headlessly.
 The optional original comparison additionally requires
 `tools/parity/requirements.txt` in the Python environment.
@@ -79,7 +79,9 @@ test scripts; both are copied and hashed.
 `--render-display` never defaults to the user's desktop. Without it, selected
 rendered configurations produce explicit errors, not headless passes. An Xvfb
 server can be started with `Xvfb :91 -screen 0 1920x1200x24 -nolisten tcp`.
-The runner uses OpenGL compatibility on that display. It does not install
+The runner defaults to OpenGL compatibility on that display. A fixture can
+declare `rendering_method` to require Forward+ or Mobile; a renderer fallback
+is then an error. It does not install
 Xvfb or change the machine's display configuration.
 
 Missing expansion data produces explicit errors for expansion programs.
@@ -92,7 +94,7 @@ asset roots, and each process confirms the campaign it actually loaded.
 |---|---:|---|
 | Quests | 39 | Predicates, triggers, traps, numeric precision, wait timing and old/new save continuity in both campaigns, area save compatibility, quest items, rewards, actor removal, group levers, chapter transitions, captivity and escape, Catacombs, dragon timers and all 28 installed base side-quest archives |
 | Creatures | 12 | AI sleep/wake eligibility, senses, reaction recipients, witnessed attacks, hostility snapshots, authored creature spell damage, actor lifetime, peasant help and registry queries |
-| Animation | 16 | Attack clips across both campaigns' creatures, gait continuity, moving attacks/casts, rendered first-person shadows, initial and loaded paused poses, original dialogue poses on peers and attack stance |
+| Animation | 18 | Attack clips across both campaigns' creatures, gait continuity, moving attacks/casts, rendered first-person shadows, initial and loaded paused poses, original dialogue poses on peers and attack stance |
 | Effects | 14 | Model attachment points and projectile origins in both campaigns, delayed effects, pause/lifetime/teardown, repeated spells, healing, fire and tornado particle kernels, exact duration boundaries and overlapping status expiry |
 | Stealth | 8 | Invisibility, silence, pursuit, remembered targets, loopback peers, perception, partial visibility, theft completion/cancellation, quest pockets and personal hostility |
 | Commands | 22 | Combat inputs, priority/replacement, held actions, interactions, retries with packet loss/reordering, spell shortcuts, bow release, first-person selection, touch picking and travel confirmation/cancellation |
@@ -106,7 +108,7 @@ asset roots, and each process confirms the campaign it actually loaded.
 | Network | 5 | Seeded snapshot codec, packet loss and reordering, stale generations, perception lists, generated large campaign documents and acknowledgement batching |
 | Dialogue | 11 | Authored topics, walking/staging, cues, captive/elder/guard routes, Nalo rescue and Shaina disguise |
 | Co-op | 48 | Fresh heroes, malformed origins, classes/roles, ownership, renaming/reconnect, personal/shared checkpoints, chapter state, solo return and network world transfers |
-| Settings | 18 | Profiles, controls, camera, graphics presets, audio routing/echo, EN/RU/DE choices and every remake translation's format arguments |
+| Settings | 20 | Profiles, controls, camera, graphics presets, audio routing/echo, EN/RU/DE choices and every remake translation's format arguments |
 | Interface | 19 | Buff icons, loading progress/cover, tooltip lifetime, side-quest scrolling and localized quest/wiki text |
 | Arena | 22 | Recruitment, economy, alliances, deployment, shop, round settlement, saves, health/damage, species, standings, tournament and bot planning |
 
@@ -173,7 +175,8 @@ than silently adopting later catalog changes.
 
 Headless animation/effect checks inspect state, clips, transforms, attachment
 points and simulation values. Rendered configurations execute their specific
-UI interactions, geometry/pixel assertions and captures under real OpenGL.
+UI interactions, geometry/pixel assertions and captures under real OpenGL or
+their explicitly required Forward+ renderer.
 Neither establishes overall visual quality, audible fidelity, external
 Internet reliability or a complete ordinary campaign playthrough.
 
@@ -185,6 +188,17 @@ native attack/cast shadow cannot pass by matching only the node transforms.
 The [retained verification](validation/first-person-shadow-2026-10-21/results.json)
 includes the unchanged-source negative control, before/after captures, and
 separate baseline comparisons for the broader camera/coverage failures.
+
+`animation/first_person_reflections` and its expansion configuration compare
+the native figure through the production mirror camera transform and cull
+mask. They check the visible face, rigid/skinned poses, severed heads, shadow
+quality independence and restoration of ordinary camera layers. The retained
+[first-person and Screen results](validation/first-person-screen-2026-10-21/results.json)
+also cover exhausted walking with held sprint input, preset/AA independence,
+localized Screen dropdowns and larger bounded popups. Separate Windows
+D3D12/Wine checks verify generated presentations in all three display modes;
+bypassing the new borderless path reproduces zero generated frames. Those
+checks used NVIDIA hardware and do not qualify native Windows or a Radeon.
 
 `commands/self_cast_bursts` and `commands/self_cast_bursts_astral` inject spell
 key events in all three camera modes, step native casts/effects, and check

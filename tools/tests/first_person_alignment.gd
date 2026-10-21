@@ -14,7 +14,8 @@ func parts(model: EIUnitModel) -> Dictionary:
 func materials(model: EIUnitModel) -> Dictionary:
 	var result := {}
 	for mesh: MeshInstance3D in model.find_children("*","MeshInstance3D",true,false):
-		if model._view_shadows.any(func(row):return row.shadow == mesh): continue
+		# Shadow and reflection copies share the source meshes' materials.
+		if model._view_shadows.any(func(row):return row.shadow == mesh or row.get("reflection") == mesh): continue
 		for surface in mesh.mesh.get_surface_count():
 			var material := mesh.get_active_material(surface) as ShaderMaterial
 			if material: result[[mesh,surface]] = material

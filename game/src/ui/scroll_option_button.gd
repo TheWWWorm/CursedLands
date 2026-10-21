@@ -2,7 +2,7 @@ class_name ScrollOptionButton
 extends OptionButton
 ## Keep long lists scrollable instead of letting their minimum height push
 ## entries off-screen. PopupMenu handles wheel, touch and keyboard navigation.
-const MAX_HEIGHT := 360.0
+const MAX_HEIGHT := 900.0
 
 var _display_font: Font
 var _popup_font: Font

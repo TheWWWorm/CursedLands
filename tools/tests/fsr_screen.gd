@@ -13,7 +13,7 @@ func _run() -> void:
 	GameData._window_gen += 1
 	get_window().mode = Window.MODE_WINDOWED
 	var facts := FsrGraphics.facts()
-	for size: Vector2i in [Vector2i(800, 600), Vector2i(1280, 720)]:
+	for size: Vector2i in [Vector2i(800, 600), Vector2i(1280, 720),Vector2i(2560,1600)]:
 		get_window().size = size
 		await settle()
 		for language: String in ["en", "ru", "de"]:
@@ -26,6 +26,11 @@ func _run() -> void:
 			var aa: OptionButton = panel._screen_pickers["q_aa"]
 			var quality: OptionButton = panel._screen_pickers[FsrGraphics.QUALITY]
 			var fg: OptionButton = panel._screen_pickers[FsrGraphics.FRAME_GENERATION]
+			for name: String in ["resolution","render_scale"]:
+				var picker: OptionButton = panel._screen_pickers[name]
+				check(picker.visible and panel._rows[OptionsPanel.SCREEN_PICKER_ROWS[name]].kind == "dropdown",name + " uses a Screen dropdown")
+				var choices := GameData.option_choices(name)
+				check(picker.item_count == choices.size() and picker.get_item_text(0) == choices[0],language + " translated choices retained for " + name)
 			check(aa.visible and quality.visible and fg.visible, "all three controls are directly in Screen")
 			check(aa.item_count == 8 and aa.get_item_text(6) == "FSR 3.1" and aa.get_item_text(7) == "FSR 4", "AA includes ordinary modes and explicit FSR versions")
 			check(panel._rows[10].name == "brightness" and panel._rows[12].name == "gamma", "original screen controls retained")
@@ -65,7 +70,7 @@ func _run() -> void:
 			check(panel.text_width(panel._fsr_hint, 1) <= 592, language + " renderer hint fits")
 			await settle()
 			get_viewport().get_texture().get_image().save_png("user://fsr-screen-" + language + "-" + str(size.x) + ".png")
-			for row_id in [3, 4, 5]:
+			for row_id in [1, 2, 3, 4, 5]:
 				var row: Dictionary = panel._rows[row_id]
 				var picker: OptionButton = panel._screen_pickers[row.name]
 				check(panel.text_width(row.label, 2) <= 260, language + " label fits: " + row.label)
@@ -89,6 +94,9 @@ func _run() -> void:
 			aa.show_popup()
 			await settle()
 			check(aa.get_popup().visible, "AA dropdown opens")
+			var popup := aa.get_popup()
+			check(aa._popup_bounds().encloses(Rect2(popup.position,popup.size)),language + " taller dropdown remains within the screen")
+			check(popup.max_size.y > 360 if size.y > 600 else popup.max_size.y <= size.y,language + " dropdown uses the enlarged screen-bounded height budget")
 			get_viewport().get_texture().get_image().save_png("user://fsr-aa-" + language + "-" + str(size.x) + ".png")
 			aa.get_popup().hide()
 			panel.queue_free()

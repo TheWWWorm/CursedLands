@@ -106,7 +106,7 @@ func _compose_pose(dt: float) -> void:
 	if weight <= 0.0 or model._current.is_empty(): return
 	# Keep one gait across swings. Re-picking a weighted animation every
 	# frame or toggling combat readiness changes stride beneath planted feet.
-	var gait := "run" if unit.running else "walk"
+	var gait := "run" if unit.running and not unit.cannot_run() else "walk"
 	var code := (model.code_for(gait) & ~0x38000) | (EIUnitModel.ST_NEUTRAL if model.has_neutral() else EIUnitModel.ST_ATTACK)
 	if lower_clip.is_empty() or _lower_code != code:
 		var cycle_fraction := phase / maxf(model.player.get_animation("ei/"+lower_clip).length,0.01) if not lower_clip.is_empty() else 0.0
