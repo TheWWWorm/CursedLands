@@ -35,7 +35,10 @@ var _closed := false
 var _opaque_fast_path := not OS.get_cmdline_user_args().has("--ei-water-rt-force-anyhit")
 
 func shader_prefix() -> String: return SHADERS
+func shader_stage_path(stage: int) -> String: return shader_prefix()+STAGES[stage]
 func frame_bytes() -> int: return FRAME_BYTES
+func instance_id(geometry_index: int, _placement_index: int) -> int: return geometry_index
+func build_extra(_data: PackedByteArray, _placements: Array) -> bool: return true
 
 static func supported() -> bool:
 	if DisplayServer.get_name() == "headless" or RenderingServer.get_current_rendering_method() != "forward_plus": return false
@@ -57,7 +60,7 @@ func _compile() -> RDPipelineShader:
 	var dxil := {}
 	var directx := RenderingServer.get_current_rendering_driver_name() == "d3d12"
 	for stage in STAGES:
-		var path: String = shader_prefix() + STAGES[stage]
+		var path: String = shader_stage_path(stage)
 		var bytes := FileAccess.get_file_as_bytes(path + ".spv")
 		if bytes.is_empty():
 			push_error("Water RT shader is missing: " + path)
@@ -132,7 +135,7 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 		if placement.get("mask",255) != 0:
 			instance.blas = _geometry_blas(placement.geometry)
 			if not instance.blas.is_valid(): prepared.emit.call_deferred(false); return
-		instance.id = placement.geometry
+		instance.id = instance_id(placement.geometry,_instances.size())
 		instance.transform = placement.transform
 		instance.mask = placement.get("mask",255)
 		instance.flags = RenderingDevice.ACCELERATION_STRUCTURE_INSTANCE_TRIANGLE_FACING_CULL_DISABLE_BIT
@@ -167,6 +170,7 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 		_samplers.append(_own(_rd.sampler_create(sampler)))
 	_frame = _own(_rd.uniform_buffer_create(frame_bytes()))
 	_ready = _colours.is_valid() and _frame.is_valid() and _samplers.all(func(rid: RID): return rid.is_valid())
+	if _ready: _ready = build_extra(data,placements)
 	prepared.emit.call_deferred(_ready)
 
 ## Hidden meshes keep CPU/vertex data, but acquire a BLAS only when first
@@ -277,6 +281,10 @@ func dispose() -> void:
 	# TLAS explicitly before reversing the remaining dependency order.
 	if _tlas.is_valid():
 		_rd.free_rid(_tlas); _owned.erase(_tlas); _tlas = RID()
+	# A derived device may lazily switch the SBT to a newer pipeline. Release
+	# it before either pipeline, regardless of their allocation order.
+	if _sbt.is_valid():
+		_rd.free_rid(_sbt); _owned.erase(_sbt); _sbt = RID()
 	_owned.reverse()
 	for rid in _owned: _rd.free_rid(rid)
 	_owned.clear()

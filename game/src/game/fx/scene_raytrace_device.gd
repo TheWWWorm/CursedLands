@@ -15,6 +15,7 @@ var _history_valid := false
 func shader_prefix() -> String: return "res://src/game/fx/shaders/scene_raytrace_"
 func frame_bytes() -> int: return 576
 func filter_spirv() -> RDShaderSPIRV: return FILTER.get_spirv()
+func extra_ray_uniforms() -> Array[RDUniform]: return []
 
 func _lighting_texture(size: Vector2i) -> RID:
 	var format := RDTextureFormat.new()
@@ -62,7 +63,7 @@ func _targets(size: Vector2i, sampler: RID) -> bool:
 		_size = size; _history_valid = false
 	if not _set.is_valid() or sampler != _sampler:
 		if _set.is_valid(): _rd.free_rid(_set)
-		_set = _rd.uniform_set_create([
+		var bindings: Array[RDUniform] = [
 			_uniform(RenderingDevice.UNIFORM_TYPE_ACCELERATION_STRUCTURE,0,[_tlas]),
 			_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,1,[_raw[0]]),
 			_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,2,[_vertices]),
@@ -72,7 +73,9 @@ func _targets(size: Vector2i, sampler: RID) -> bool:
 			_uniform(RenderingDevice.UNIFORM_TYPE_SAMPLER,6,[sampler]),
 			_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,7,[_raw[1]]),
 			_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,8,[_raw[2]]),
-			_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,9,[_raw[3]])],_shader,0)
+			_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,9,[_raw[3]])]
+		bindings.append_array(extra_ray_uniforms())
+		_set = _rd.uniform_set_create(bindings,_shader,0)
 		_sampler = sampler
 	return _set.is_valid() and _filter_sets.all(func(rid: RID): return rid.is_valid())
 

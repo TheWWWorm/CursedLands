@@ -79,11 +79,12 @@ func _process(dt: float) -> void:
 			_failed = true; stats["fallback"]="snapshot_budget"; _gather=null; return
 		var geometries := []; var placements := []
 		for geometry: Dictionary in _gather.geometries:
-			geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,"cutoff":geometry.cutoff,"standard":geometry.standard,"surface":geometry.surface})
+			geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,"cutoff":geometry.cutoff,"standard":geometry.standard,"surface":geometry.surface,"emissive":geometry.emissive})
 		for entry: Dictionary in _gather.instances:
 			placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":0})
 		device = PathDevice.new() if _path_mode else Device.new()
 		device.prepared.connect(_prepared)
+		if _path_mode: device.emitter_stats.connect(_emitter_stats)
 		RenderingServer.call_on_render_thread(device.build.bind(_gather.vertices.to_byte_array(),_gather.images,geometries,placements))
 		_scene = _gather; _gather = null
 		_collect_lights(camera.global_position)
@@ -194,6 +195,9 @@ func _prepared(ok: bool) -> void:
 	if not ok:
 		_release();_failed=true;stats["fallback"]="pipeline_failed"
 
+func _emitter_stats(count: int, candidates: int) -> void:
+	stats["emissive_triangles"]=count;stats["emissive_candidates"]=candidates
+
 func _release() -> void:
 	_set_gi_active(false)
 	RenderingServer.global_shader_parameter_set(&"ei_rt_state",Vector4.ZERO)
@@ -205,7 +209,9 @@ func _release() -> void:
 		for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1"]:
 			RenderingServer.global_shader_parameter_set(key,null)
 		device.prepared.disconnect(_prepared)
+		if device is PathDevice: device.emitter_stats.disconnect(_emitter_stats)
 		RenderingServer.call_on_render_thread(device.dispose);device=null
+	stats.erase("emissive_triangles");stats.erase("emissive_candidates")
 
 func _set_gi_active(active: bool) -> void:
 	if Gfx.scene_rt_gi_active==active: return

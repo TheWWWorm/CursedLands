@@ -57,6 +57,34 @@ bounce count bounds work; there is no
 Russian roulette or light reservoir sampling. Geometric normals offset rays
 outside the actual triangles, while interpolated normals shade the surfaces.
 
+Emissive triangles also receive direct area sampling at each vertex that has
+a remaining continuation segment. An area-times-emission proposal selects
+one triangle and one point on it, then traces visibility with the same geometry
+mask as continuation rays. The light and BSDF proposals are combined with the
+[power heuristic](https://pbr-book.org/4ed/Light_Transport_I_Surface_Reflection/A_Better_Path_Tracer),
+including the probability of selecting the light. This reduces noise from
+small glowing surfaces without counting their light twice or extending the
+selected bounce limit. Narrow glossy reflections retain BSDF sampling as well.
+Alpha-cutout samples contribute zero without resampling; shader emission keeps
+its existing texture modulation and colour conversion. StandardMaterial
+emission uses its supported constant colour and energy.
+
+The proposal keeps up to 4,096 emitting triangles, ranked by world-space area
+times estimated emission power. Textured brightness affects the sampled
+radiance; the selection estimate assumes a white texture. Omitted emitters
+still contribute through BSDF hits with full weight. The GPU proposal and
+sparse hit lookup use 384 KiB plus a 16-byte header and four bytes per instance;
+no additional screen-sized images are allocated. A path can cast at most one
+additional emissive visibility ray per continuation bounce and sample. Scenes
+without eligible emitters use a smaller ray-generation variant with no emitter
+sampling or MIS code. It switches automatically, retaining the acceleration
+structures, SBT ranges and image bindings; a previously used variant is cached.
+Stable placement IDs distinguish copies
+of a shared mesh, including after hiding or revealing instances. Emissive
+movement, deformation and visibility changes update the proposal and reset
+lighting history. Non-emissive transforms do not rebuild the proposal; known
+non-emissive terrain and morph data skip emission scanning.
+
 Primary diffuse illumination and glossy radiance are stored separately. The
 diffuse signal excludes the primary albedo so the main material retains its
 original texture detail after reconstruction. Subsequent hits include their
@@ -98,12 +126,13 @@ Characters' supported articulated and morph animation updates live.
   rooms have no physical light source and can become very dark. Relighting
   and better material data are needed for consistent campaign presentation.
 - Water retains its separate reflection renderer. Water refraction, glass,
-  volumetric paths, particles, shader-only vegetation motion, full textured
-  emission and normal/roughness maps are not part of the path integrator.
-- There are no object motion vectors, spatial light cache, emissive-light
-  importance sampling or production denoiser. Small emissive sources and
-  glossy paths can be noisy. Still scene is useful for comparisons, not for
-  hiding noise during active gameplay.
+  volumetric paths, particles, shader-only vegetation motion, separate emission
+  textures and normal/roughness maps are not part of the path integrator.
+- There are no object motion vectors, spatial light cache, light reservoirs or
+  production denoiser. Many occluded lights, cutout emitters, indirect paths
+  and glossy motion can remain noisy. The emitter proposal is global to the
+  bounded scene, without per-receiver visibility or distance importance.
+  Still scene is useful for comparisons, not for hiding noise during gameplay.
 - Primary ray samples use pixel centres. The raster view supplies silhouette
   antialiasing; the prototype does not provide supersampled path-traced
   geometry edges. Thin geometry, normals and receiver mismatches can expose
@@ -120,10 +149,14 @@ native Windows and other GPU vendors still require qualification.
 The [sampling and reconstruction follow-up](../validation/path-tracing-smoothing-2026-10-22/README.md)
 records variance, subpixel history, steep-receiver coverage and before/after
 GPU timings for the subsequent smoothing changes.
+The [emissive sampling follow-up](../validation/path-tracing-emitters-2026-10-22/README.md)
+records unfiltered small-light variance and energy, dynamic/cutout emission,
+shared-mesh placement checks, API regression coverage and GPU timings.
 
 ## Rebuild and checks
 
-All four stages are checked in as matching DXIL and SPIR-V binaries. Manifests
+All four stages and the additional ray-generation variant are checked in as
+ten matching DXIL and SPIR-V binaries. Manifests
 pin source, builder and binary hashes. Rebuild or reproduce with DXC 1.9.2609:
 
 ```sh
@@ -140,6 +173,8 @@ Fixtures run through the existing `--tool` interface:
 | --- | --- |
 | `path_trace_device.gd` | Additional bounce energy, emissive transport, glossy metal, accumulation, emitter removal, stable bindings, resize and teardown |
 | `path_trace_alpha.gd` | Cutout alpha in primary, direct visibility and continuation rays |
+| `path_trace_emitters.gd` | Raw small-light and glossy variance, area-integral energy reference, cutout/textured emission, movement/deformation, duplicate placements, visibility masks and proposal-budget fallback |
+| `path_trace_emitter_live.gd` | Production scene collection, emissive terrain illumination, movement/hiding and material changes in the actual campaign |
 | `path_trace_quality.gd` | Native grazing-metal variance and energy against numerical quadrature; subpixel and sloped reprojection; rejection of unrelated depth layers |
 | `path_trace_receivers.gd` | Rendered steep-surface coverage and depth-edge rejection at 50/75/100% tracing resolution |
 | `path_trace_live.gd` | Outdoor material integration, responsive reprojection, still accumulation, camera reset, quality resizing and conventional restoration |

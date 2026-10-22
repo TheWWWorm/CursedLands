@@ -218,7 +218,7 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 		if packed.failed: failed = true; return -1
 		var count: int = packed.vertices.size()/16
 		if count == 0: return -1
-		geometries.append({"offset":vertices.size()/16,"count":count,"indices":packed.indices,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material)})
+		geometries.append({"offset":vertices.size()/16,"count":count,"indices":packed.indices,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material),"emissive":emission!=Vector3.ZERO})
 		vertices.append_array(packed.vertices); triangles += count/3
 		return geometries.size()-1
 	var start := vertices.size()/16
@@ -241,7 +241,7 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 		triangles += 1
 	var count := vertices.size()/16-start
 	if count == 0: return -1
-	geometries.append({"offset":start,"count":count,"indices":used,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material)})
+	geometries.append({"offset":start,"count":count,"indices":used,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material),"emissive":emission!=Vector3.ZERO})
 	return geometries.size()-1
 
 ## Plain values only: the render thread never dereferences a scene node.

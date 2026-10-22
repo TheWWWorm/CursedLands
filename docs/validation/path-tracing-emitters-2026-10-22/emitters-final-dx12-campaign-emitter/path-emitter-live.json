@@ -1,0 +1,34 @@
+{
+	"checks": 10,
+	"failures": [],
+	"observations": [
+		{
+			"lit_red": 0.770489146548825,
+			"original_red": 0.75677245221916,
+			"restored_red": 0.757164338809029,
+			"stats": {
+				"accumulation_frames": 8,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1640,
+				"gi_samples": 0,
+				"instances": 1825,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"triangles": 137476,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		}
+	]
+}

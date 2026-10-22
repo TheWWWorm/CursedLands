@@ -10,6 +10,9 @@
 [[vk::binding(7,0),vk::image_format("rgba16f")]] RWTexture2D<float4> guide_image : register(u700000);
 [[vk::binding(8,0),vk::image_format("rgba16f")]] RWTexture2D<float4> shadow_image0 : register(u800000);
 [[vk::binding(9,0),vk::image_format("rgba16f")]] RWTexture2D<float4> shadow_image1 : register(u900000);
+[[vk::binding(10,0)]] ByteAddressBuffer instance_geometry : register(t1000000);
+[[vk::binding(11,0)]] ByteAddressBuffer emitters : register(t1100000);
+[[vk::binding(12,0)]] ByteAddressBuffer emitter_lookup : register(t1200000);
 struct Frame {
     column_major float4x4 inv_projection;
     column_major float4x4 camera_world;
@@ -28,7 +31,7 @@ struct Frame {
 };
 [[vk::binding(4,0)]] ConstantBuffer<Frame> frame : register(b400000);
 struct Vertex { float4 position_u; float4 normal_v; float4 diffuse; float4 emission_layer; };
-struct Surface { float3 position; float distance; float3 normal; float hit; float3 albedo; float visible; float3 emission; float cone; float roughness; float metalness; float specular; float reserved; float3 geometric_normal; float padding; };
+struct Surface { float3 position; float distance; float3 normal; float hit; float3 albedo; float visible; float3 emission; float cone; float roughness; float metalness; float specular; uint instance_id; float3 geometric_normal; uint primitive_id; };
 struct Attributes { float2 bary; };
 Vertex vertex_at(uint i) {
     Vertex v;
@@ -51,7 +54,9 @@ static const float PI=3.14159265359;
 float random(inout uint seed) {
     seed=seed*747796405u+2891336453u;
     uint x=((seed>>((seed>>28u)+4u))^seed)*277803737u;
-    return float((x>>22u)^x)*(1.0/4294967296.0);
+    // The upper 24 bits are exactly representable; converting a full uint
+    // to float can round to 1, outside the CDF and lobe samplers' [0,1) range.
+    return float(((x>>22u)^x)>>8u)*(1.0/16777216.0);
 }
 void basis(float3 n,out float3 t,out float3 b) {
     t=normalize(cross(abs(n.z)<0.99?float3(0,0,1):float3(0,1,0),n)); b=cross(n,t);
@@ -150,12 +155,89 @@ void direct_light(Surface s,float3 v,inout uint seed,out float3 diffuse,out floa
         diffuse+=d*incoming;specular+=sp*incoming;
     }
 }
+#ifndef PATH_NO_EMITTERS
+// One light sample and one BSDF sample use the power heuristic. Selection
+// probability is part of the light PDF, including when the bounded proposal
+// omits an emitter (zero light PDF => full weight for the BSDF hit).
+// https://pbr-book.org/4ed/Light_Transport_I_Surface_Reflection/A_Better_Path_Tracer
+float mis_weight(float p,float q) {
+    float scale=max(max(p,q),1e-30);p/=scale;q/=scale;
+    return p*p/max(p*p+q*q,1e-30);
+}
+float triangle_pdf(uint index,float3 origin,float3 light_position) {
+    uint offset=16u+index*64u;
+    float4 a=asfloat(emitters.Load4(offset)),b=asfloat(emitters.Load4(offset+16u));
+    float3 c=asfloat(emitters.Load3(offset+32u));
+    float3 delta=light_position-origin;float distance2=dot(delta,delta);
+    float cosine=abs(dot(normalize(cross(b.xyz-a.xyz,c-a.xyz)),normalize(delta)));
+    // Emission is two-sided, matching closest-hit's face-forward surfaces.
+    return cosine>1e-8?b.w*distance2/(a.w*cosine):0.0;
+}
+float emitter_hit_pdf(Surface hit,float3 origin) {
+    if(emitters.Load(0)==0u||!any(hit.emission>0.0))return 0.0;
+    uint mask=emitters.Load(4),h=(hit.instance_id+1u)*0x9e3779b9u ^ hit.primitive_id*0x85ebca6bu;
+    uint slot=(h^(h>>16u))&mask;
+    for(uint probe=0;probe<=mask;probe++) {
+        uint3 entry=emitter_lookup.Load3(slot*16u);
+        if(entry.x==0u)return 0.0;
+        if(entry.x==hit.instance_id+1u&&entry.y==hit.primitive_id)return triangle_pdf(entry.z,origin,hit.position);
+        slot=(slot+1u)&mask;
+    }
+    return 0.0;
+}
+void emissive_light(Surface s,float3 v,inout uint seed,out float3 diffuse,out float3 specular) {
+    diffuse=0.0;specular=0.0;
+    uint count=emitters.Load(0);if(count==0u)return;
+    float choice=random(seed);uint low=0u,high=count;
+    while(low<high) {
+        uint mid=low+(high-low)/2u;
+        if(choice<asfloat(emitters.Load(16u+mid*64u+44u)))high=mid;else low=mid+1u;
+    }
+    uint offset=16u+min(low,count-1u)*64u;
+    float3 pa=asfloat(emitters.Load3(offset)),pb=asfloat(emitters.Load3(offset+16u)),pc=asfloat(emitters.Load3(offset+32u));
+    uint4 light=emitters.Load4(offset+48u);
+    float r=sqrt(random(seed)),u=random(seed);float3 w=float3(1.0-r,r*(1.0-u),r*u);
+    float3 light_position=pa*w.x+pb*w.y+pc*w.z;
+    // Use the same offset origin as BSDF continuations for both proposals.
+    float3 origin=s.position+s.geometric_normal*0.015,delta=light_position-origin;
+    float distance=length(delta);if(distance<=0.004||distance>frame.camera.w)return;
+    float3 direction=delta/distance,d,sp;float bsdf_pdf;bsdf(s,v,direction,d,sp,bsdf_pdf);
+    if(bsdf_pdf<=0.0)return;
+    float pdf=triangle_pdf(min(low,count-1u),origin,light_position);if(pdf<=0.0||!isfinite(pdf))return;
+    uint4 material=geometry.Load4(light.z*16u);uint i=material.x+light.y*3u;
+    Vertex a=vertex_at(i),b=vertex_at(i+1),c=vertex_at(i+2);
+    float3 uv=float3(hit_uv(a,b,c,w),a.emission_layer.w);
+    // Alpha testing uses mip zero just like any-hit. Rejected samples remain
+    // zero contributions; resampling them would bias cutout emitters brighter.
+    if(light.w==0u&&colours.SampleLevel(colour_sampler,uv,0.0).a*a.diffuse.a<asfloat(material.z))return;
+    float density=max(length(float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w))/max(length(pb-pa),0.001),
+                      length(float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w))/max(length(pc-pa),0.001));
+    uint width,height,layers,levels;colours.GetDimensions(0,width,height,layers,levels);
+    float lod=max(log2(max(max(0.002,s.roughness*0.02)*distance*density*float(width),1.0)),0.0);
+    float3 emission=(material.y&1u)!=0u?a.emission_layer.rgb:linear_colour(colours.SampleLevel(colour_sampler,uv,lod).rgb*a.emission_layer.rgb);
+    if(!any(emission>0.0))return;
+    Surface visible=(Surface)0;
+    RayDesc ray={origin,0.002,direction,distance-0.002};
+    // Match indirect geometry visibility, including non-shadow-casting walls.
+    TraceRay(scene,RAY_FLAG_ACCEPT_FIRST_HIT_AND_END_SEARCH|RAY_FLAG_SKIP_CLOSEST_HIT_SHADER,4,0,0,0,ray,visible);
+    float3 incoming=emission*(max(dot(s.normal,direction),0.0)*visible.visible*mis_weight(pdf,bsdf_pdf)/pdf);
+    diffuse=d*incoming;specular=sp*incoming;
+}
+#endif
 void path_sample(Surface primary,float3 view,inout uint seed,out float3 diffuse,out float3 specular) {
     direct_light(primary,view,seed,diffuse,specular);
     Surface current=primary;
     float3 v=view,weight_d=1.0,weight_s=1.0;
     uint bounces=clamp(uint(frame.path.x),1u,4u);
     for(uint depth=0;depth<bounces;depth++) {
+#ifndef PATH_NO_EMITTERS
+        float3 emitter_d,emitter_s;emissive_light(current,v,seed,emitter_d,emitter_s);
+        if(depth==0) {diffuse+=emitter_d;specular+=emitter_s;}
+        else {
+            float3 incoming=emitter_d*current.albedo+emitter_s;
+            diffuse+=weight_d*incoming;specular+=weight_s*incoming;
+        }
+#endif
         float3 direction=sample_bsdf(current,v,seed),d,sp;float pdf;
         bsdf(current,v,direction,d,sp,pdf);
         float cosine=max(dot(current.normal,direction),0.0);
@@ -175,7 +257,11 @@ void path_sample(Surface primary,float3 view,inout uint seed,out float3 diffuse,
         }
         float3 direct_d,direct_s;
         direct_light(hit,-direction,seed,direct_d,direct_s);
-        float3 incoming=hit.emission+hit.albedo*direct_d+direct_s;
+        float emission_weight=1.0;
+#ifndef PATH_NO_EMITTERS
+        emission_weight=mis_weight(pdf,emitter_hit_pdf(hit,ray.Origin));
+#endif
+        float3 incoming=hit.emission*emission_weight+hit.albedo*direct_d+direct_s;
         diffuse+=weight_d*incoming;specular+=weight_s*incoming;
         current=hit;v=-direction;
     }
@@ -211,7 +297,7 @@ void main(inout Surface result) {result.visible=1.0;}
 #elif defined(PATH_ANY_HIT)
 [shader("anyhit")]
 void main(inout Surface result,Attributes attributes) {
-    uint4 material=geometry.Load4(InstanceID()*16); uint i=material.x+3*PrimitiveIndex();
+    uint4 material=geometry.Load4(instance_geometry.Load(InstanceID()*4u)*16u); uint i=material.x+3*PrimitiveIndex();
     Vertex a=vertex_at(i),b=vertex_at(i+1),c=vertex_at(i+2);
     float3 w=float3(1.0-attributes.bary.x-attributes.bary.y,attributes.bary);
     if(colours.SampleLevel(colour_sampler,float3(hit_uv(a,b,c,w),a.emission_layer.w),0.0).a*a.diffuse.a<asfloat(material.z))IgnoreHit();
@@ -219,13 +305,14 @@ void main(inout Surface result,Attributes attributes) {
 #elif defined(PATH_CLOSEST_HIT)
 [shader("closesthit")]
 void main(inout Surface result,Attributes attributes) {
-    uint4 material=geometry.Load4(InstanceID()*16); uint i=material.x+3*PrimitiveIndex();
+    uint4 material=geometry.Load4(instance_geometry.Load(InstanceID()*4u)*16u); uint i=material.x+3*PrimitiveIndex();
     Vertex a=vertex_at(i),b=vertex_at(i+1),c=vertex_at(i+2);
     float3 w=float3(1.0-attributes.bary.x-attributes.bary.y,attributes.bary);
     float3 n=a.normal_v.xyz*w.x+b.normal_v.xyz*w.y+c.normal_v.xyz*w.z;
     result.normal=normalize(mul(n,(float3x3)WorldToObject3x4()));
     result.position=WorldRayOrigin()+WorldRayDirection()*RayTCurrent();
     result.distance=RayTCurrent(); result.hit=1.0;
+    result.instance_id=InstanceID();result.primitive_id=PrimitiveIndex();
     float3 pa=mul(ObjectToWorld3x4(),float4(a.position_u.xyz,1)).xyz;
     float3 pb=mul(ObjectToWorld3x4(),float4(b.position_u.xyz,1)).xyz;
     float3 pc=mul(ObjectToWorld3x4(),float4(c.position_u.xyz,1)).xyz;

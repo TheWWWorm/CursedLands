@@ -1,0 +1,144 @@
+{
+  "baseline_commit": "4f701ae0",
+  "qualified": [
+    {
+      "run": "emitters-qualified-dx12-sampling",
+      "checks": 38,
+      "seconds": 16.28,
+      "post_exit_wine_fault": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 00d4), starting debugger..."
+      ]
+    },
+    {
+      "run": "emitters-qualified-vulkan-sampling",
+      "checks": 38,
+      "seconds": 14.32,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "emitters-final-vulkan-device",
+      "checks": 17,
+      "seconds": 11.62,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "emitters-final-dx12-performance",
+      "checks": 14,
+      "seconds": 58.15,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "emitters-final-dx12-campaign-emitter",
+      "checks": 10,
+      "seconds": 45.26,
+      "post_exit_wine_fault": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 00dc), starting debugger..."
+      ]
+    },
+    {
+      "run": "emitters-final-dx12-path_trace_device",
+      "checks": 17,
+      "seconds": 16.33,
+      "post_exit_wine_fault": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 00d8), starting debugger..."
+      ]
+    },
+    {
+      "run": "emitters-final-dx12-path_trace_alpha",
+      "checks": 9,
+      "seconds": 11.12,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "emitters-final-dx12-path_trace_quality",
+      "checks": 13,
+      "seconds": 11.04,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "emitters-final-dx12-water_raytrace_device",
+      "checks": 25,
+      "seconds": 10.72,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "emitters-final-dx12-scene_raytrace_device",
+      "checks": 17,
+      "seconds": 10.67,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "emitters-final-dx12-path_trace_live",
+      "checks": 14,
+      "seconds": 35.64,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "emitters-final-dx12-path_trace_cave",
+      "checks": 12,
+      "seconds": 32.89,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "emitters-final-dx12-path_trace_fsr",
+      "checks": 62,
+      "seconds": 122.49,
+      "post_exit_wine_fault": []
+    }
+  ],
+  "baseline_comparisons": [
+    {
+      "run": "emitters-qualified-baseline-sampling",
+      "checks": 11,
+      "seconds": 11.77,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "emission-baseline-dx12-performance",
+      "checks": 14,
+      "seconds": 56.96,
+      "post_exit_wine_fault": []
+    }
+  ],
+  "qualified_checks": 286,
+  "fixtures_sha256": {
+    "tools/tests/path_trace_alpha.gd": "8847d1fc4a3a9e999e3f350e7726d3aec499531bb5474fed0551915d5c025e58",
+    "tools/tests/path_trace_quality.gd": "d4b962079b244e5eceea6a4b58cb3bebdefd34818581166ace57c36d76b8e97a",
+    "tools/tests/scene_raytrace_options.gd": "91bc13e05d092212a1c715aad9eb168dad593ab8d453223a00a5e4575f26dd1f",
+    "tools/tests/water_raytrace.gd": "f34836320b6f4e1aa3fe25e224bb13a7b02a58b3f79b059ff8d0e062db7aad2e",
+    "tools/tests/path_trace_cave.gd": "1a248728fd7bbeb4932e5b9626a1817fdade72a4deefcd3b45f51148f003d066",
+    "tools/tests/water_raytrace_fsr.gd": "7add3f5301235c0b2e7ac367b28fad27a4d9a7b5670d207f2dcc82bfcfc569f9",
+    "tools/tests/water_raytrace_native.gd": "267ef8f1d2c039482310a3eb2996da8a9145ec2747cc34c3e77c436b186f4f6a",
+    "tools/tests/path_trace_performance.gd": "ddfa8abf3bde09b1339df8f256c3391d779e9e7957d71678ecdc52b61781a13f",
+    "tools/tests/scene_raytrace_fsr.gd": "0172db17e8bc5271f720cac64d406ca41989d9be5766470319b010286806e4c4",
+    "tools/tests/water_raytrace_quality_scene.gd": "3848c3ac2f72aea16e96641530d6faa605018484081400badef342257c2b93e0",
+    "tools/tests/water_raytrace_options.gd": "4fd576d3dfcdc2721a9b5520c55a7c823ee6cab21b587a268e4b7e5d0f3680e9",
+    "tools/tests/path_trace_live.gd": "f0185262093c8d7886d6ded720e830298531cf0d150260c6abf86640e7ba97b8",
+    "tools/tests/scene_raytrace_performance.gd": "746ac1e249eda08ed0fe267a4e2aa38b269d067694e879b0c7f80d9a029dfce5",
+    "tools/tests/scene_raytrace_live.gd": "824c8a463502a83b59635cdf75bc158e1a2f63f0cff52d86d1b7dfe80495685d",
+    "tools/tests/scene_raytrace_materials.gd": "3665ac18b75adac8508827ded126d10155de6cbf9a917e38c1d4ba30f79ed0c8",
+    "tools/tests/water_raytrace_material_live.gd": "9dd35f78a6184df656675c9cbcc8e2123e7b942bdae4c13bd5c9136801cc52a1",
+    "tools/tests/scene_raytrace_fallback.gd": "c79cee8506b40fe43bbe720728256c000b89c23be3b7e341fa36fe9109900b58",
+    "tools/tests/path_trace_emitter_live.gd": "8e1a23201ebb08ec1313cb0cd8a6b8198c729ab5ab3a4061146bb58cdda9197d",
+    "tools/tests/water_raytrace_performance.gd": "aaae1181d9a74b2d33099a5b02efcc57294d18a28bb06b60d29101f2d49c921f",
+    "tools/tests/scene_raytrace_cave.gd": "393bfd1d230b4c9f4f7fcbcf400be1b5218a785465da905c8b91c0ed58696bb2",
+    "tools/tests/path_trace_device.gd": "d629cbff50703a266f22ad74608fc4c8abae90b18cb51b1a593e50736e0cc147",
+    "tools/tests/water_raytrace_cost.gd": "88486b2a608fbcd02656874b7b4100fc6f24a3a555bd75e7bb21a5d3790b8496",
+    "tools/tests/path_trace_receivers.gd": "2ff1d657daf258ae0b3e0e45c3414365ef20dbdb32ae74abbab3e85d2b75cc8a",
+    "tools/tests/water_raytrace_lighting.gd": "72b9969c8551a3d663763a6241ef1b23227cc2b8568e4506c24d2b12424f6acc",
+    "tools/tests/path_trace_emitters.gd": "7fc935672ef00eeb9d28715215e1e96886ea0f9935a9abcf0c7e6217b2d8d124",
+    "tools/tests/water_raytrace_artifact.gd": "b2b94fe6ab75ee6e00a360efee9ad7a9a3a03a5bf28ad799466caf1aacf5227b",
+    "tools/tests/water_raytrace_materials.gd": "8722646b0065711520888ee41f0092fc675af443092c78cbe117043aa0fa5166",
+    "tools/tests/water_raytrace_filtering.gd": "bc4d0cc6d00c928932f166e675addd5e523f40f078307e43dd3ef526ec54d415",
+    "tools/tests/path_trace_materials.gd": "e8d2ccb42ccd904a8384f8003298cfad877b0696b1759120a43727c780cf27cb",
+    "tools/tests/water_raytrace_filtering_scene.gd": "56cacc52b911244d3ee086eb818323e5f0fb85fe0b9fb00ecbfd01bdbb9a5bd9",
+    "tools/tests/water_raytrace_dynamic_performance.gd": "3ec9dfbf8fe5fa448b79c5739180bcb0c2ace628f6a0dee76f38896d004c8786",
+    "tools/tests/water_raytrace_device.gd": "0581a480b1a26556987c0cba4bb11d2e6f90d59f81291cf175db57ba53e7d1a9",
+    "tools/tests/scene_raytrace_device.gd": "212ddcaa7da21442b4b5206a84dcdbc49ea516462f196cc5122d40da10c0df47",
+    "tools/tests/path_trace_fsr.gd": "fcad5eebf356f04ac72bbc987f30f3db117903bc385f0ad1f11c80f7f7c141c3",
+    "tools/tests/water_raytrace_quality.gd": "cbc9de98983d493aaa49a6e8701d8980771d197830794bfb6d3ec5e35cb2ec75",
+    "tools/tests/water_raytrace_first_person.gd": "e78a87337b920146c5907dd78cc59da5554ba9233870689ac0b56782e977817f",
+    "tools/tests/scene_raytrace_alpha.gd": "551155d80594ebafd56fc67fdd4c9b0ddd4a9839929ec12b744b7013ac40ee54",
+    "tools/tests/water_raytrace_live.gd": "8962f2118a991032d463e095db19039ba190f364f562986d31a42601842b9533"
+  }
+}

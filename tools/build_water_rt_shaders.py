@@ -22,12 +22,17 @@ def main():
     parser.add_argument('--check', action='store_true', help='Verify source/binary hashes; also reproduce outputs if --dxc is supplied')
     parser.add_argument('--shader', choices=['water_raytrace', 'scene_raytrace', 'path_trace'], default='water_raytrace')
     args = parser.parse_args()
+    stages = [(stage, stage, []) for stage in STAGES]
+    if args.shader == 'path_trace':
+        # Keep scenes without emitters out of the larger raygen's register /
+        # instruction footprint. Hit stages and payload layouts are shared.
+        stages.append(('raygen_no_emitters', 'raygen', ['PATH_NO_EMITTERS']))
     prefix = args.shader + '_'
     source = SHADERS / (args.shader + '.hlsl')
     manifest_path = SHADERS / (args.shader + '_build.json')
     if args.check:
         manifest = json.loads(manifest_path.read_text())
-        expected = {prefix + stage + '.' + backend for stage in STAGES for backend in ['dxil', 'spv']}
+        expected = {prefix + name + '.' + backend for name, _, _ in stages for backend in ['dxil', 'spv']}
         if (set(manifest['files']) != expected or manifest['source_sha256'] != sha(source)
                 or manifest.get('builder_sha256') != sha(Path(__file__))):
             parser.error('Shader source, builder or stage list differs from the build manifest. Rebuild both backends.')
@@ -35,7 +40,7 @@ def main():
             if not (SHADERS / name).is_file() or sha(SHADERS / name) != digest:
                 parser.error('Shader binary differs from the build manifest: ' + name)
         if args.dxc is None:
-            print('Verified shared source and all 8 shader binaries')
+            print('Verified shared source and all', len(expected), 'shader binaries')
             return
     elif args.dxc is None:
         parser.error('--dxc is required when rebuilding')
@@ -44,11 +49,13 @@ def main():
     outputs = {}
     # Complete both backends before replacing any checked-in shader binaries.
     with tempfile.TemporaryDirectory() as work:
-        for stage in STAGES:
+        for filename, stage, definitions in stages:
             common = [str(compiler), '-T', 'lib_6_3', '-HV', '2021', '-O3',
                       '-D', args.shader.split('_')[0].upper() + '_' + stage.upper(), str(source)]
+            for definition in definitions:
+                common += ['-D', definition]
             for backend in ['dxil', 'spv']:
-                name = prefix + stage + '.' + backend
+                name = prefix + filename + '.' + backend
                 target = Path(work) / name
                 # DXC otherwise adds RayQueryKHR for an acceleration-structure
                 # declaration even though these shaders only use RT pipelines.
@@ -61,7 +68,7 @@ def main():
         if args.check:
             if outputs != manifest['files']:
                 parser.error('Compiler output differs from the checked-in shaders')
-            print('Reproduced all 8 shader binaries without modifying them')
+            print('Reproduced all', len(outputs), 'shader binaries without modifying them')
             return
         for name in outputs:
             (SHADERS / name).write_bytes((Path(work) / name).read_bytes())

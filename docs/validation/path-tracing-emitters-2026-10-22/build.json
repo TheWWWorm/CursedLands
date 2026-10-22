@@ -1,0 +1,101 @@
+{
+  "baseline_commit": "4f701ae0",
+  "unreleased": true,
+  "source_matches_runtime": true,
+  "source_sha256": {
+    "game/src/game/fx/path_trace_device.gd": "72a1f8a784298d18b46742470cce2d0a556be4e7100b6343521a65bd1fe94995",
+    "game/src/game/fx/path_trace_emitters.gd": "e8ba3a4c437a195a03899e5ca97450b2d565ba8de87c0e9c8d957f22fce0a574",
+    "game/src/game/fx/scene_raytrace.gd": "9c9da62b161872cea03a0ec9e61ab220f8b6749c63badeb662c0b68cd5b00ba4",
+    "game/src/game/fx/scene_raytrace_device.gd": "209eab8b889f72abe53a08f8900592644618b38ce0ccc19c8dcec3c33ecba94b",
+    "game/src/game/fx/shaders/path_trace.hlsl": "f9fc874e17ac63e06596cc25bd0c7bdeefce2905ae51331f44e28707f53a0377",
+    "game/src/game/fx/shaders/path_trace_any_hit.dxil": "fc8ae7e7102d5f9b7ade1f1fe4cd3f1124e0a2e511494cb2a86ef8b7a5ef77f2",
+    "game/src/game/fx/shaders/path_trace_any_hit.spv": "398ae38fc85b426e7ce0bd561623bddadf495c52c369f765c443e7651f2aed88",
+    "game/src/game/fx/shaders/path_trace_build.json": "3dd234f5ee20ff83ba1ddd234021de7f4ca3a09319fd644ec85dce88a191e3fe",
+    "game/src/game/fx/shaders/path_trace_closest_hit.dxil": "d721bd50c4844ecb2f633321b10578a48f61bec9d6013ef8a2e3ba187fd4f0ea",
+    "game/src/game/fx/shaders/path_trace_closest_hit.spv": "cb3df1624c20219526163a94bffb6f21b229aa62f9158a05fba018c1857fa85c",
+    "game/src/game/fx/shaders/path_trace_filter.glsl": "f10e3ba82403801787837a98751206dbe1e8a88f98268b9c14f036ae682c8d8d",
+    "game/src/game/fx/shaders/path_trace_miss.dxil": "eb396d7117e4f6f05b08e0092aa40e53752525c202904f8ff5db2e581b98590e",
+    "game/src/game/fx/shaders/path_trace_miss.spv": "1246e0f27a3bcc27ff47d9b3a4c312c6bea23efe94c436644f15391d98ebf4fe",
+    "game/src/game/fx/shaders/path_trace_raygen.dxil": "078f252a252cfd2a33a6b9f8c1bb6329b9088c5d4cc7592b1f68a63571a356b3",
+    "game/src/game/fx/shaders/path_trace_raygen.spv": "0df6882935c3dd4eee8951c283da04249eab7a56fc462b331f009bf900c102aa",
+    "game/src/game/fx/shaders/path_trace_raygen_no_emitters.dxil": "f183f44d82df6d36a09d689e9abac4e3dac5d30393229f97f5a8719329f738e0",
+    "game/src/game/fx/shaders/path_trace_raygen_no_emitters.spv": "9b1653d9b3e3129ac06043ee57e9c4ab790a44ce8c3c794965bb1c048535f716",
+    "game/src/game/fx/water_raytrace_device.gd": "99e057497424a15827368906dbf375bd66f743716e94c5634b2c8390b8bf48ea",
+    "game/src/game/fx/water_raytrace_scene.gd": "4e98211e304d49f6c830e6d9c1d217418e57de6f354b037383d852b16c4ef44d"
+  },
+  "packages": {
+    "preview-windows": {
+      "CursedLands.pck": "29dd42e6d3accd5765afa8e995517196203022d8d8fd4292776f20f1c945f6be",
+      "CursedLands.exe": "e920a09af7c019d29a96d229a1a9ff7f727598b804d5d7c0c1e3db24ef5ada3b"
+    },
+    "preview-linux": {
+      "CursedLands.x86_64": "5cd55e014b01f542e23e0591bdcd5481c676d29ad7cf283b87d6e329c1428815",
+      "CursedLands.pck": "29dd42e6d3accd5765afa8e995517196203022d8d8fd4292776f20f1c945f6be"
+    },
+    "preview-windows-smoothing-baseline": {
+      "CursedLands.pck": "f9fc75f509877ffb01b6a1893454407b5f5ae24ada7d8262aa34b4495fb503cb",
+      "CursedLands.exe": "e920a09af7c019d29a96d229a1a9ff7f727598b804d5d7c0c1e3db24ef5ada3b"
+    },
+    "preview-linux-smoothing-baseline": {
+      "CursedLands.x86_64": "5cd55e014b01f542e23e0591bdcd5481c676d29ad7cf283b87d6e329c1428815",
+      "CursedLands.pck": "f9fc75f509877ffb01b6a1893454407b5f5ae24ada7d8262aa34b4495fb503cb"
+    }
+  },
+  "qualified_template_and_approved_icon_exe_sha256": "e920a09af7c019d29a96d229a1a9ff7f727598b804d5d7c0c1e3db24ef5ada3b",
+  "shader_manifests": {
+    "water_raytrace_build.json": {
+      "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
+      "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
+      "builder_sha256": "9e8206c3069e67195e3d592b14205f55a1c27368e1d67109f8841aa05f571b8d",
+      "source_sha256": "e614f39cbba69d39e9251d56b81c3ea863a763bda5c4187eee8af0185590464d",
+      "files": {
+        "water_raytrace_raygen.dxil": "980a8a714d2d45a1bf7532ce46cc5667a2ff5d530da55b8f09463877bf2c2e66",
+        "water_raytrace_raygen.spv": "78fb1bab276689600860227d396ae7146e14d0ca70e2bb0a91a288ee6ca0035e",
+        "water_raytrace_miss.dxil": "3a5ca9747f2f641eb80ce644c2468732fb86668b6f9903cb21085a565cc0c923",
+        "water_raytrace_miss.spv": "d33b8787b79acdae030b0b3542391e0f182ba8c834689d2042b4558f93f77824",
+        "water_raytrace_closest_hit.dxil": "168c8f4f1598132c3c91edfcbbc772dae647e95f807539758ad1fde0ca67c902",
+        "water_raytrace_closest_hit.spv": "f65571855f3a2bd2116927ae68a8893eab6c00f32ed8b91dfd5076d3cdadb443",
+        "water_raytrace_any_hit.dxil": "092e9a86765826c238cdce364c099faba1c99b5897cba1f4511f634fb848142f",
+        "water_raytrace_any_hit.spv": "167158b71b98d65ec749447881b7aa3a80b479d0807aa14d8d47e908a8568fa0"
+      }
+    },
+    "scene_raytrace_build.json": {
+      "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
+      "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
+      "builder_sha256": "9e8206c3069e67195e3d592b14205f55a1c27368e1d67109f8841aa05f571b8d",
+      "source_sha256": "d4102a570843b3da3e9c3daa30ce9ce7ce23e20e3cc8bb539b4b8ab179af8ade",
+      "files": {
+        "scene_raytrace_raygen.dxil": "6735fd55ccd741382e7c7b9429a3700f71cdd409810922f6700e9609816735d7",
+        "scene_raytrace_raygen.spv": "69a4f7dd42850bba52272ec0da0c9f3645282583ccad7ec91350da58ab3c8365",
+        "scene_raytrace_miss.dxil": "dc112cac8a37024bb4421ec92c4fdb55e424ac0dbf4870d700893db935958d38",
+        "scene_raytrace_miss.spv": "e4bc6e1a838c2c2b3287ac81aa90bd1d5053894aeb92824b33d7adf13763dc83",
+        "scene_raytrace_closest_hit.dxil": "fd72234ad8d6a8b703cbedc0af0fa76bc83e71d8db3819899e8f123f1d225206",
+        "scene_raytrace_closest_hit.spv": "c1bc895968ad16e321263b63102e3b1c6664f635716f1ea6790b25a9ed5561a8",
+        "scene_raytrace_any_hit.dxil": "3c5054e12a665431136b7f25f781b1d58087899991f3840f86477aaa85218ecd",
+        "scene_raytrace_any_hit.spv": "120b1ce56ec797a942efc25eafba26ff194207b6a8a02ce75a902804fe46384b"
+      }
+    },
+    "path_trace_build.json": {
+      "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
+      "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
+      "builder_sha256": "9e8206c3069e67195e3d592b14205f55a1c27368e1d67109f8841aa05f571b8d",
+      "source_sha256": "f9fc874e17ac63e06596cc25bd0c7bdeefce2905ae51331f44e28707f53a0377",
+      "files": {
+        "path_trace_raygen.dxil": "078f252a252cfd2a33a6b9f8c1bb6329b9088c5d4cc7592b1f68a63571a356b3",
+        "path_trace_raygen.spv": "0df6882935c3dd4eee8951c283da04249eab7a56fc462b331f009bf900c102aa",
+        "path_trace_miss.dxil": "eb396d7117e4f6f05b08e0092aa40e53752525c202904f8ff5db2e581b98590e",
+        "path_trace_miss.spv": "1246e0f27a3bcc27ff47d9b3a4c312c6bea23efe94c436644f15391d98ebf4fe",
+        "path_trace_closest_hit.dxil": "d721bd50c4844ecb2f633321b10578a48f61bec9d6013ef8a2e3ba187fd4f0ea",
+        "path_trace_closest_hit.spv": "cb3df1624c20219526163a94bffb6f21b229aa62f9158a05fba018c1857fa85c",
+        "path_trace_any_hit.dxil": "fc8ae7e7102d5f9b7ade1f1fe4cd3f1124e0a2e511494cb2a86ef8b7a5ef77f2",
+        "path_trace_any_hit.spv": "398ae38fc85b426e7ce0bd561623bddadf495c52c369f765c443e7651f2aed88",
+        "path_trace_raygen_no_emitters.dxil": "f183f44d82df6d36a09d689e9abac4e3dac5d30393229f97f5a8719329f738e0",
+        "path_trace_raygen_no_emitters.spv": "9b1653d9b3e3129ac06043ee57e9c4ab790a44ce8c3c794965bb1c048535f716"
+      }
+    }
+  },
+  "host_gpu": [
+    "NVIDIA GeForce RTX 3090, 580.178.04",
+    "NVIDIA GeForce RTX 3090 Ti, 580.178.04"
+  ]
+}

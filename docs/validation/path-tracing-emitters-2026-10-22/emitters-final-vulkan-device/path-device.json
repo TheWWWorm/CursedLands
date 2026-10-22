@@ -1,0 +1,33 @@
+{
+	"checks": 17,
+	"failures": [],
+	"observations": [
+		{
+			"bounces": 1,
+			"diffuse": [
+				1.09759187698364,
+				0.0,
+				0.0
+			],
+			"history": 64.0
+		},
+		{
+			"bounces": 2,
+			"diffuse": [
+				1.27189469337463,
+				0.0,
+				0.0
+			],
+			"history": 64.0
+		},
+		{
+			"bounces": 4,
+			"diffuse": [
+				1.59191560745239,
+				0.0,
+				0.0
+			],
+			"history": 64.0
+		}
+	]
+}
