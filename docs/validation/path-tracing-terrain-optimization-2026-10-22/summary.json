@@ -1,0 +1,194 @@
+{
+  "baseline_commit": "cc0b4670",
+  "unreleased": true,
+  "gpu": "NVIDIA GeForce RTX 3090",
+  "dx12_environment": "Windows export through Wine/VKD3D, GPU 0; not native Windows qualification",
+  "vulkan_environment": "native Linux, NVIDIA 580.178.04",
+  "suites": [
+    {
+      "tag": "terrain-opt-before-performance",
+      "suite": "path_trace_performance",
+      "renderer": "d3d12",
+      "exit": 0,
+      "passed_assertions": 15,
+      "fault_diagnostics": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 0378), starting debugger..."
+      ],
+      "seconds": 86.13
+    },
+    {
+      "tag": "terrain-opt-before-live",
+      "suite": "path_trace_terrain_live",
+      "renderer": "d3d12",
+      "exit": 0,
+      "passed_assertions": 18,
+      "fault_diagnostics": [],
+      "seconds": 64.11
+    },
+    {
+      "tag": "terrain-opt-after-d3d12-performance",
+      "suite": "path_trace_performance",
+      "renderer": "d3d12",
+      "exit": 0,
+      "passed_assertions": 15,
+      "fault_diagnostics": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 0300), starting debugger..."
+      ],
+      "seconds": 79.94
+    },
+    {
+      "tag": "terrain-opt-after-d3d12-live",
+      "suite": "path_trace_terrain_live",
+      "renderer": "d3d12",
+      "exit": 0,
+      "passed_assertions": 18,
+      "fault_diagnostics": [],
+      "seconds": 60.21
+    },
+    {
+      "tag": "terrain-opt-after-vulkan-live",
+      "suite": "path_trace_terrain_live",
+      "renderer": "vulkan",
+      "exit": 0,
+      "passed_assertions": 18,
+      "fault_diagnostics": [],
+      "seconds": 71.51
+    },
+    {
+      "tag": "terrain-opt-after-d3d12-fg",
+      "suite": "path_trace_fsr",
+      "renderer": "d3d12",
+      "exit": 0,
+      "passed_assertions": 62,
+      "fault_diagnostics": [],
+      "seconds": 148.59
+    },
+    {
+      "tag": "terrain-opt-final-d3d12-reference",
+      "suite": "path_trace_terrain",
+      "renderer": "d3d12",
+      "exit": 0,
+      "passed_assertions": 60,
+      "fault_diagnostics": [],
+      "seconds": 13.78
+    },
+    {
+      "tag": "terrain-opt-final-vulkan-reference",
+      "suite": "path_trace_terrain",
+      "renderer": "vulkan",
+      "exit": 0,
+      "passed_assertions": 60,
+      "fault_diagnostics": [],
+      "seconds": 11.62
+    }
+  ],
+  "passing_functional_assertions_after": 218,
+  "median_of_two_round_medians_ms": {
+    "before": {
+      "path-2-low": 0.89856,
+      "path-2-medium": 6.40512,
+      "path-2-high": 24.603136,
+      "path-4-low": 1.4593280000000002,
+      "path-4-medium": 8.649728,
+      "path-4-high": 31.011456
+    },
+    "after": {
+      "path-2-low": 0.745216,
+      "path-2-medium": 5.036288,
+      "path-2-high": 18.809856,
+      "path-4-low": 1.035136,
+      "path-4-medium": 6.766592,
+      "path-4-high": 22.755456
+    }
+  },
+  "wall_frame_median_of_two_round_medians_ms": {
+    "before": {
+      "path-2-low": 8.5145,
+      "path-2-medium": 9.343499999999999,
+      "path-2-high": 26.8975,
+      "path-4-low": 9.8565,
+      "path-4-medium": 11.192499999999999,
+      "path-4-high": 33.3945
+    },
+    "after": {
+      "path-2-low": 8.9905,
+      "path-2-medium": 9.2445,
+      "path-2-high": 21.17,
+      "path-4-low": 8.786999999999999,
+      "path-4-medium": 9.343,
+      "path-4-high": 25.177
+    }
+  },
+  "source_sha256": {
+    "game/src/game/fx/shaders/path_trace.hlsl": "33ff99fe242009599b35ba4c3e270e0a88680f800aa9d4dbdcc5413b4b50d86b",
+    "game/src/game/fx/shaders/path_trace_build.json": "dfb419f828004c09f5ad4ecfefdf29a2e041b8acecdb0a5b3aaf0e4d43e7e975",
+    "game/src/game/fx/shaders/path_trace_closest_hit_terrain.dxil": "775651ea67f90cb50dc5fd022f71518b4d778a1b27f2b86589107fb673fa2d38",
+    "game/src/game/fx/shaders/path_trace_closest_hit_terrain.spv": "915f420fb62d586c44f0e8bc86e811cde5dc2093765a404d0619c05f3cf95167",
+    "game/src/game/fx/shaders/path_trace_closest_hit_transitions.dxil": "545db93b7d426534891c840e386df40707330544bb786e3e88cc5c9d680f10c2",
+    "game/src/game/fx/shaders/path_trace_closest_hit_transitions.spv": "7fdd51fabc6f9a185c06f8a1846605aa61a818b98a3d4b6e7ab282ace8f4e0ac",
+    "tools/tests/path_trace_performance.gd": "90a36ae15b9fbd9224a7c002b2c87b139a22f00b2c68520c4aace64da8d77f4b",
+    "tools/tests/path_trace_terrain.gd": "6cc9439bfd14b44be1045bbb33e7015fee7377622109e7e49977945a95ddc9a8"
+  },
+  "package_sha256": {
+    "preview-windows/CursedLands.exe": "3fdf36babfcbae0b3584aed85e1d52e4e537d3033c9128689cc0593a9ef80fd4",
+    "preview-windows/CursedLands.pck": "37d5ec49e018abfce6a46211da948a820cc13d8d3c45f008df98794e86405589",
+    "preview-linux/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "preview-linux/CursedLands.pck": "37d5ec49e018abfce6a46211da948a820cc13d8d3c45f008df98794e86405589",
+    "preview-windows-terrain-cost-baseline/CursedLands.pck": "74169599c5dfb6ae2354f521ad27f7c9939a81ccafeabad28cfc2726b53cacde"
+  },
+  "branding": {
+    "matches_previously_verified_exe": true,
+    "six_source_icon_payloads": [
+      {
+        "size": [
+          16,
+          16
+        ],
+        "exact_source_payload_present": true
+      },
+      {
+        "size": [
+          32,
+          32
+        ],
+        "exact_source_payload_present": true
+      },
+      {
+        "size": [
+          48,
+          48
+        ],
+        "exact_source_payload_present": true
+      },
+      {
+        "size": [
+          64,
+          64
+        ],
+        "exact_source_payload_present": true
+      },
+      {
+        "size": [
+          128,
+          128
+        ],
+        "exact_source_payload_present": true
+      },
+      {
+        "size": [
+          256,
+          256
+        ],
+        "exact_source_payload_present": true
+      }
+    ]
+  },
+  "profiles": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  }
+}

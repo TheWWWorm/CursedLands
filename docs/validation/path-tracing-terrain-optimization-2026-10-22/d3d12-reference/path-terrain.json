@@ -1,0 +1,75 @@
+{
+	"checks": 60,
+	"failures": [],
+	"results": {
+		"atlas-2-tile-3": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"atlas-3-tile-8": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"atlas-8-tile-63": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"cliff": {
+			"mean_error": 0.0000889808126965409,
+			"peak_error": 0.000244140625
+		},
+		"cliff-coarse-mip": {
+			"mean_error": 0.000133220966045673,
+			"peak_error": 0.000244140625
+		},
+		"cliff-relief": {
+			"samples": 1590,
+			"tilted": 1590,
+			"valid": true
+		},
+		"coarse-padded-mip": {
+			"mean_error": 0.000152587890625,
+			"peak_error": 0.000244140625
+		},
+		"coarse-unpadded-mip": {
+			"mean_error": 0.0000789348895733173,
+			"peak_error": 0.000244140625
+		},
+		"junction": {
+			"mean_error": 0.000000105563949488994,
+			"peak_error": 0.00006103515625
+		},
+		"junction-coarse-mip": {
+			"mean_error": 0.0000754136305588942,
+			"peak_error": 0.000244140625
+		},
+		"pair": {
+			"mean_error": 0.00253163943500639,
+			"peak_error": 0.017578125
+		},
+		"pair-coarse-mip": {
+			"mean_error": 0.0023192625779372,
+			"peak_error": 0.01702880859375
+		},
+		"rotation-0": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"rotation-1": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"rotation-2": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"rotation-3": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"shifted-authored-tile": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		}
+	}
+}

@@ -11,6 +11,9 @@ var normal_texture: Image
 var reference_image: Image
 var mode := 0 # detailed, pair, junction, cliff
 var rotation := 0
+var tile_index := 0
+var atlas_axis := 2
+var atlas_padding := 0.125
 var ground_type := 2
 var use_normal := false
 var offset := Vector3.ZERO
@@ -50,6 +53,9 @@ void main() {
  vec4 traits;vec3 colour=ground_sample(ivec2(0),p,vec2(params.projection.z/4.0,0),vec2(0,-params.projection.w/4.0),traits);
 """
 	if mode==3:result+="vec3 world=vec3(point,0)+params.origin.xyz;vec3 planes=cliff_weights(ivec2(0),clamp(p,vec2(0),vec2(1)),vec3(0,0,1),72.0);colour=cliff_albedo(colour,ivec2(0),clamp(p,vec2(0),vec2(1)),world,planes);\n"
+	result=result.replace("const float tiles_per_axis=2.0;","const float tiles_per_axis=%s;"%float(atlas_axis))
+	result=result.replace("const float atlas_padding=0.125;","const float atlas_padding=%s;"%atlas_padding)
+	result=result.replace("const float source_texel=1.0/128.0;","const float source_texel=1.0/%s;"%float(atlas_axis*64))
 	return result+"imageStore(result_image,at,vec4(colour,1));}\n"
 
 func reference_render(source: String,params: PackedByteArray) -> void:
@@ -79,22 +85,24 @@ func build_land() -> bool:
 	for i in 6:
 		var local:=(Vector2(mesh_data[i*16],mesh_data[i*16+1])+Vector2(2,2))/4.0
 		var p:=(local-Vector2(0.5,0.5)).rotated(rotation*PI/2)+Vector2(0.5,0.5)
-		mesh_data[i*16+3]=0.0625+p.x*0.375;mesh_data[i*16+7]=0.9375-p.y*0.375
+		mesh_data[i*16+3]=(tile_index%atlas_axis+0.125+p.x*0.75)/atlas_axis
+		mesh_data[i*16+7]=(atlas_axis-1-tile_index/atlas_axis+0.875-p.y*0.75)/atlas_axis
 		mesh_data[i*16]+=offset.x;mesh_data[i*16+1]+=offset.y;mesh_data[i*16+2]+=offset.z
-	var pixels:=Image.create(160,160,true,Image.FORMAT_RGBA8)
-	for y in 160:
-		for x in 160:
-			var tile:=x/80+(1-y/80)*2
-			var local_x:=(x%80+0.5)/80.0;var local_y:=(y%80+0.5)/80.0
-			pixels.set_pixel(x,y,[Color(0.2+0.5*local_x,0.15+0.2*local_y,0.15),Color(0.1,0.65,0.15),Color(0.15,0.2,0.7),Color(0.7,0.7,0.2)][tile])
+	var tile_pixels:=roundi(64*(1+2*atlas_padding));var atlas_pixels:=tile_pixels*atlas_axis
+	var pixels:=Image.create(atlas_pixels,atlas_pixels,true,Image.FORMAT_RGBA8)
+	for y in atlas_pixels:
+		for x in atlas_pixels:
+			var tile:=x/tile_pixels+(atlas_axis-1-y/tile_pixels)*atlas_axis
+			var local_x:=(x%tile_pixels+0.5)/tile_pixels;var local_y:=(y%tile_pixels+0.5)/tile_pixels
+			pixels.set_pixel(x,y,[Color(0.2+0.5*local_x,0.15+0.2*local_y,0.15),Color(0.1,0.65,0.15),Color(0.15,0.2,0.7),Color(0.7,0.7,0.2)][tile%4])
 	pixels.generate_mipmaps();atlas=Texture2DArray.new();atlas.create_from_images([pixels])
 	var white:=Image.create(64,64,true,Image.FORMAT_RGBA8);white.fill(Color.WHITE);white.generate_mipmaps()
 	normal_texture=white.duplicate();normal_texture.fill(Color(0.75,0.5,1));normal_texture.generate_mipmaps()
 	var images: Array[Image]=[white,normal_texture]
 	var data:=PackedByteArray();data.resize(64)
 	data.encode_u32(0,1);data.encode_u32(4,1);data.encode_u32(8,64);data.encode_u32(12,68)
-	var code:=rotation<<14;data.append_array(PackedInt32Array([code|(ground_type<<16)|((1<<24) if mode==3 else 0),1,1]).to_byte_array())
-	data.encode_float(16,2.0);data.encode_float(20,0.125);data.encode_float(24,1.0/128);data.encode_float(28,1)
+	var code:=tile_index|(rotation<<14);data.append_array(PackedInt32Array([code|(ground_type<<16)|((1<<24) if mode==3 else 0),1,1]).to_byte_array())
+	data.encode_float(16,float(atlas_axis));data.encode_float(20,atlas_padding);data.encode_float(24,1.0/(atlas_axis*64));data.encode_float(28,1)
 	data.encode_u32(32,2 if use_normal else 0);data.encode_u32(44,1)
 	var tiles:=Image.create(1,1,false,Image.FORMAT_RGBAF);tiles.set_pixel(0,0,Color(code,ground_type,0,0));tile_texture=ImageTexture.create_from_image(tiles)
 	if mode in [1,2]:
@@ -142,7 +150,18 @@ func run() -> void:
 	size=fixture_size;camera.position=Vector3(0,0,72);sun_energy=1;sky_energy=0;bounces=1
 	for turn in 4:rotation=turn;await comparison("rotation-"+str(turn))
 	rotation=0
-	for selected in [1,2,3]:mode=selected;await comparison(["detailed","pair","junction","cliff"][mode])
+	# Exercise tile row decoding beyond tile zero, including a non-power-of-two
+	# atlas, against the unchanged raster GLSL rather than a second HLSL formula.
+	for row in [[2,3],[3,8],[8,63]]:
+		atlas_axis=row[0];tile_index=row[1];await comparison("atlas-%s-tile-%s"%[atlas_axis,tile_index])
+	atlas_axis=2;tile_index=0;size=Vector2i(40,24)
+	await comparison("coarse-padded-mip")
+	atlas_padding=0.0;await comparison("coarse-unpadded-mip")
+	atlas_padding=0.125;size=fixture_size
+	for selected in [1,2,3]:
+		mode=selected;var label: String=["detailed","pair","junction","cliff"][mode]
+		await comparison(label)
+		size=Vector2i(40,24);await comparison(label+"-coarse-mip");size=fixture_size
 	offset=Vector3(17,5,0);camera.position=offset+Vector3(0,0,72);mode=0;await comparison("shifted-authored-tile")
 	# Constant normals isolate real normal-texture response from colour relief.
 	camera.position=offset+Vector3(0,0,3)

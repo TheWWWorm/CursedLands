@@ -1,0 +1,117 @@
+{
+  "note": "Exploratory runs, not final gain calculation. Initial GPU 0 runs experienced variable desktop contention. GPU 1 DX12 could not present through Wine and was terminated; no timing accepted. Sparse normal-weight skipping was not retained. Final comparison uses complete exported packages and two opposite-order sweeps each.",
+  "runs": {
+    "terrain-cost-full": {
+      "rt_gpu_medians_ms": [
+        11.996928,
+        12.251136
+      ],
+      "pack_sha256": "7c3d136834a27e9355a8de0a189f47be044272179afded1870cac93a45c5f45b"
+    },
+    "terrain-cost-no-cliff": {
+      "rt_gpu_medians_ms": [
+        4.96384,
+        5.392896
+      ],
+      "pack_sha256": "47554b196387cb184ca39c8ad0af88570c805a8fae01914ddaa9b5e3ac84b440"
+    },
+    "terrain-cost-no-new-colour": {
+      "rt_gpu_medians_ms": [
+        8.146432,
+        8.568576
+      ],
+      "pack_sha256": "7d1a64add1ba07f957d3fc417c566e169d57cd5cf15212edfa044a22f9bfd543"
+    },
+    "terrain-cost-no-new-normals": {
+      "rt_gpu_medians_ms": [
+        8.7616,
+        8.813312
+      ],
+      "pack_sha256": "7254079bd618228a1b164eeb4a296e1141855a373910eed0c58bb78e552c13e2"
+    },
+    "terrain-cost-no-noise-normal": {
+      "rt_gpu_medians_ms": [
+        8.336896,
+        8.169472
+      ],
+      "pack_sha256": "46d728f91bb87bd2ca5945a2116d8e3cade3601fe434a810e92170c560720596"
+    },
+    "terrain-cost-original-hit": {
+      "rt_gpu_medians_ms": [
+        4.190464,
+        4.44288
+      ],
+      "pack_sha256": "bf1a83c0c44db857863d1056df4088a39ad2c5a0962f03128174c7ac3c46b051"
+    },
+    "terrain-opt-a-combined": {
+      "rt_gpu_medians_ms": [
+        7.773696,
+        7.651072
+      ],
+      "pack_sha256": "2cb16890ac5fefd100c015cbf1ba8425345ceb1856f7edb1e266d715ab442880"
+    },
+    "terrain-opt-a-divide-free": {
+      "rt_gpu_medians_ms": [
+        7.65056,
+        7.57504
+      ],
+      "pack_sha256": "90005e1d827492cfb6f6ed16cff42747eb2686015c09e063849689d7b10587c6"
+    },
+    "terrain-opt-a-early-relief": {
+      "rt_gpu_medians_ms": [
+        8.466688,
+        8.596224
+      ],
+      "pack_sha256": "564a1824fd12607b92e71043e0e252275fedc512e2fdc1687a52e71f167cc159"
+    },
+    "terrain-opt-a-full": {
+      "rt_gpu_medians_ms": [
+        8.86912,
+        8.530176
+      ],
+      "pack_sha256": "7c3d136834a27e9355a8de0a189f47be044272179afded1870cac93a45c5f45b"
+    },
+    "terrain-opt-b-compact": {
+      "rt_gpu_medians_ms": [
+        6.69568,
+        7.014656
+      ],
+      "pack_sha256": "e18a17f3eba81f23fa763c4a7709d8d5c2ea002baf57561b9eeed9a03d6143a9"
+    },
+    "terrain-opt-b-full": {
+      "rt_gpu_medians_ms": [
+        8.766976,
+        8.772352
+      ],
+      "pack_sha256": "7c3d136834a27e9355a8de0a189f47be044272179afded1870cac93a45c5f45b"
+    },
+    "terrain-opt-b-sparse": {
+      "rt_gpu_medians_ms": [
+        7.10016,
+        7.094528
+      ],
+      "pack_sha256": "1c8c1253196caff2df6b0aae3f8762068a48396caff31aa83ba206c47110150e"
+    },
+    "terrain-opt-c-compact": {
+      "rt_gpu_medians_ms": [
+        6.815488,
+        6.988288
+      ],
+      "pack_sha256": "e18a17f3eba81f23fa763c4a7709d8d5c2ea002baf57561b9eeed9a03d6143a9"
+    },
+    "terrain-opt-c-full": {
+      "rt_gpu_medians_ms": [
+        8.609536,
+        8.948224
+      ],
+      "pack_sha256": "7c3d136834a27e9355a8de0a189f47be044272179afded1870cac93a45c5f45b"
+    },
+    "terrain-opt-c-shared-lod": {
+      "rt_gpu_medians_ms": [
+        6.806528,
+        6.661888
+      ],
+      "pack_sha256": "4ed1d1675a02776493ec12f68793a7415795815ff0c16474e00ce41532c97977"
+    }
+  }
+}

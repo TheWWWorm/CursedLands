@@ -1,0 +1,97 @@
+{
+  "river-noon": {
+    "display_rgb_error": {
+      "mean": 1.4589168095824334e-08,
+      "p95": 0.0,
+      "maximum": 0.003921568393707275
+    },
+    "normal_error": {
+      "mean_rgb": 1.185807452230847e-09,
+      "maximum_rgb": 0.00048828125,
+      "changed_rgb_fraction": 3.08641975308642e-05,
+      "maximum_alpha": 0.0
+    },
+    "material_error": {
+      "mean_rgb": 1.0964370176225202e-06,
+      "maximum_rgb": 0.0029296875,
+      "changed_rgb_fraction": 0.0071084104938271605,
+      "maximum_alpha": 0.0
+    }
+  },
+  "cliff-noon": {
+    "display_rgb_error": {
+      "mean": 2.1314774585334817e-06,
+      "p95": 0.0,
+      "maximum": 0.10196079313755035
+    },
+    "normal_error": {
+      "mean_rgb": 2.381809638407617e-09,
+      "maximum_rgb": 0.00048828125,
+      "changed_rgb_fraction": 7.908950617283951e-05,
+      "maximum_alpha": 0.0
+    },
+    "material_error": {
+      "mean_rgb": 5.034449941376806e-07,
+      "maximum_rgb": 0.0029296875,
+      "changed_rgb_fraction": 0.0033738425925925928,
+      "maximum_alpha": 1.0
+    }
+  },
+  "cliff-evening": {
+    "display_rgb_error": {
+      "mean": 8.753501035130284e-09,
+      "p95": 0.0,
+      "maximum": 0.003921568393707275
+    },
+    "normal_error": {
+      "mean_rgb": 2.381809638407617e-09,
+      "maximum_rgb": 0.00048828125,
+      "changed_rgb_fraction": 7.908950617283951e-05,
+      "maximum_alpha": 0.0
+    },
+    "material_error": {
+      "mean_rgb": 5.034449941376806e-07,
+      "maximum_rgb": 0.0029296875,
+      "changed_rgb_fraction": 0.0033738425925925928,
+      "maximum_alpha": 1.0
+    }
+  },
+  "cliff-night": {
+    "display_rgb_error": {
+      "mean": 5.10620907334669e-07,
+      "p95": 0.0,
+      "maximum": 0.08627450466156006
+    },
+    "normal_error": {
+      "mean_rgb": 2.381809638407617e-09,
+      "maximum_rgb": 0.00048828125,
+      "changed_rgb_fraction": 7.908950617283951e-05,
+      "maximum_alpha": 0.0
+    },
+    "material_error": {
+      "mean_rgb": 5.034449941376806e-07,
+      "maximum_rgb": 0.0029296875,
+      "changed_rgb_fraction": 0.0033738425925925928,
+      "maximum_alpha": 1.0
+    }
+  },
+  "cliff-transitions": {
+    "display_rgb_error": {
+      "mean": 0.0001732449309201911,
+      "p95": 0.0,
+      "maximum": 0.07058824598789215
+    },
+    "normal_error": {
+      "mean_rgb": 3.127595737950628e-09,
+      "maximum_rgb": 0.00048828125,
+      "changed_rgb_fraction": 0.00015432098765432098,
+      "maximum_alpha": 0.0
+    },
+    "material_error": {
+      "mean_rgb": 5.387352075558738e-07,
+      "maximum_rgb": 0.0029296875,
+      "changed_rgb_fraction": 0.004141589506172839,
+      "maximum_alpha": 1.0
+    }
+  }
+}

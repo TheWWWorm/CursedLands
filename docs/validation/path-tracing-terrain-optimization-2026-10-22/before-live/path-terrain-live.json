@@ -1,0 +1,126 @@
+{
+	"checks": 18,
+	"failures": [],
+	"views": [
+		{
+			"camera": "[X: (-0.923879, 0.0, 0.382684), Y: (0.089418, 0.972318, 0.215874), Z: (-0.372091, 0.233661, -0.898305), O: (157.8552, 9.927353, -239.7018)]",
+			"stats": {
+				"accumulation_frames": 211,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 22019,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			},
+			"view": "river-noon"
+		},
+		{
+			"camera": "[X: (0.485825, 0.0, -0.874056), Y: (-0.251158, 0.957826, -0.139601), Z: (0.837194, 0.287348, 0.465336), O: (155.7406, 17.46197, -242.1418)]",
+			"stats": {
+				"accumulation_frames": 180,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 22019,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			},
+			"view": "cliff-noon"
+		},
+		{
+			"camera": "[X: (0.485825, 0.0, -0.874056), Y: (-0.251158, 0.957826, -0.139601), Z: (0.837194, 0.287348, 0.465336), O: (155.7406, 17.46197, -242.1418)]",
+			"stats": {
+				"accumulation_frames": 180,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 22019,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			},
+			"view": "cliff-evening"
+		},
+		{
+			"camera": "[X: (0.485825, 0.0, -0.874056), Y: (-0.251158, 0.957826, -0.139601), Z: (0.837194, 0.287348, 0.465336), O: (155.7406, 17.46197, -242.1418)]",
+			"stats": {
+				"accumulation_frames": 180,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 22019,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			},
+			"view": "cliff-night"
+		}
+	]
+}
