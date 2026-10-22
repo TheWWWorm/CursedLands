@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Ship the DirectX Agility runtime (`x86_64/D3D12Core.dll`, 1.618.5) with the Windows package again. 1.24.0 omitted it, so Direct3D 12 fell back to the system runtime, which on Windows 10 and older Windows 11 builds lacks enhanced barriers and can lower frame rates. The Windows package check now rejects a build without the verified runtime.
+
 ## 1.24.0 — 2026-10-22
 
 - Support **Ray traced (test)** water reflections with **Forward+ (Direct3D 12)** on Windows as well as Vulkan. The Windows executable includes the DXR engine patch, and FSR frame generation can run together with RT water in DX12. Add **RT reflection quality** (Low 50 %, Medium 75 %, High 100 % of the viewport, default High) and apply the existing **Texture filtering** setting to RT reflections for sharper reflected textures.
