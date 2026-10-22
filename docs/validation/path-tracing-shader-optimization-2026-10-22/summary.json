@@ -1,0 +1,214 @@
+{
+  "baseline_commit": "1b2c241e",
+  "gpu": "NVIDIA GeForce RTX 3090",
+  "viewport": [
+    1280,
+    720
+  ],
+  "windows_runtime": "Qualified Windows DX12 export through Wine/VKD3D; not native Windows measurements",
+  "native_vulkan_driver": "580.178.04",
+  "checks": {
+    "hit-performance.json": 65,
+    "combined-performance.json": 97,
+    "filter-performance.json": 25,
+    "terrain-dx12.json": 69,
+    "terrain-vulkan.json": 69,
+    "raster-dx12.json": 15,
+    "raster-vulkan.json": 15,
+    "variance-dx12.json": 38,
+    "variance-vulkan.json": 38,
+    "glossy-dx12.json": 31,
+    "glossy-vulkan.json": 31,
+    "quality-dx12.json": 13,
+    "campaign-before.json": 18,
+    "campaign-dx12.json": 18,
+    "campaign-vulkan.json": 18,
+    "emitters.json": 10,
+    "frame-generation.json": 62
+  },
+  "runs": {
+    "opt3-performance-before": {
+      "exit": 0,
+      "seconds": 67.61,
+      "faults": [],
+      "clean_process": true
+    },
+    "opt3-performance-after": {
+      "exit": 0,
+      "seconds": 71.36,
+      "faults": [],
+      "clean_process": true
+    },
+    "opt3-qualified-hit-dx12": {
+      "exit": 0,
+      "seconds": 113.57,
+      "faults": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 0724), starting debugger..."
+      ],
+      "clean_process": false
+    },
+    "opt3-bytecode-combined": {
+      "exit": 0,
+      "seconds": 107.44,
+      "faults": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 06ec), starting debugger..."
+      ],
+      "clean_process": false
+    },
+    "opt3-bytecode-filter": {
+      "exit": 0,
+      "seconds": 46.35,
+      "faults": [],
+      "clean_process": true
+    },
+    "opt3-terrain-dx12": {
+      "exit": 0,
+      "seconds": 12.07,
+      "faults": [],
+      "clean_process": true
+    },
+    "opt3-terrain-vulkan": {
+      "exit": 0,
+      "seconds": 12.51,
+      "faults": [],
+      "clean_process": true
+    },
+    "opt3-raster-fixed-dx12": {
+      "exit": 0,
+      "seconds": 15.22,
+      "faults": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 0460), starting debugger..."
+      ],
+      "clean_process": false
+    },
+    "opt3-raster-vulkan": {
+      "exit": 0,
+      "seconds": 14.32,
+      "faults": [],
+      "clean_process": true
+    },
+    "opt3-variance-dx12": {
+      "exit": 0,
+      "seconds": 11.07,
+      "faults": [],
+      "clean_process": true
+    },
+    "opt3-variance-vulkan": {
+      "exit": 0,
+      "seconds": 10.37,
+      "faults": [],
+      "clean_process": true
+    },
+    "opt3-glossy-dx12": {
+      "exit": 0,
+      "seconds": 10.82,
+      "faults": [],
+      "clean_process": true
+    },
+    "opt3-glossy-vulkan": {
+      "exit": 0,
+      "seconds": 10.37,
+      "faults": [],
+      "clean_process": true
+    },
+    "opt3-quality-dx12": {
+      "exit": 0,
+      "seconds": 9.62,
+      "faults": [],
+      "clean_process": true
+    },
+    "opt3-live-before": {
+      "exit": 0,
+      "seconds": 51.1,
+      "faults": [],
+      "clean_process": true
+    },
+    "opt3-live-dx12": {
+      "exit": 0,
+      "seconds": 65.01,
+      "faults": [],
+      "clean_process": true
+    },
+    "opt3-live-vulkan": {
+      "exit": 0,
+      "seconds": 72.91,
+      "faults": [],
+      "clean_process": true
+    },
+    "opt3-emitter-dx12": {
+      "exit": 0,
+      "seconds": 34.54,
+      "faults": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 04c0), starting debugger..."
+      ],
+      "clean_process": false
+    },
+    "opt3-fsr": {
+      "exit": 0,
+      "seconds": 95.03,
+      "faults": [],
+      "clean_process": true
+    }
+  },
+  "filter_reference": {
+    "package": "preview-windows-opt2-baseline/CursedLands.pck",
+    "resource": ".godot/imported/path_trace_filter.glsl-6675b2df9359ecbcaaf29bb62a4935ff.res",
+    "resource_md5_verified": true,
+    "spirv_bytes": 39080,
+    "spirv_sha256": "e79da46ba636d444edc88c41c6a67ac1dd3c0be09c287f3138f83384e29ff7a0",
+    "spirv_version": "0x10400"
+  },
+  "profiles": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "unchanged_raygen_miss_anyhit": {
+    "path_trace_raygen.spv": true,
+    "path_trace_raygen.dxil": true,
+    "path_trace_raygen_no_emitters.spv": true,
+    "path_trace_raygen_no_emitters.dxil": true,
+    "path_trace_raygen_deep.spv": true,
+    "path_trace_raygen_deep.dxil": true,
+    "path_trace_raygen_deep_no_emitters.spv": true,
+    "path_trace_raygen_deep_no_emitters.dxil": true,
+    "path_trace_miss.spv": true,
+    "path_trace_miss.dxil": true,
+    "path_trace_any_hit.spv": true,
+    "path_trace_any_hit.dxil": true
+  },
+  "source_hashes": {
+    "game/src/game/fx/scene_raytrace_shader.gd": "cb59c737c6bd8126ef37f208ba560aecb5d97bb811e392ca93f74e097d40a45a",
+    "game/src/game/fx/shaders/path_trace.hlsl": "aa6bac3560e3d7517c396f90057edbb245186b291ed9a23835bdd21a77cc77cc",
+    "game/src/game/fx/shaders/path_trace_build.json": "265e5a1352af2892130d2234b0d9adef528c930cf786e76554713164dc9a53e7",
+    "game/src/game/fx/shaders/path_trace_closest_hit.dxil": "8db778a47910d3715a7abf1a498990aace9894a5cd04cca13a544154c0019638",
+    "game/src/game/fx/shaders/path_trace_closest_hit.spv": "74896b0d502793f37af944b53ada3805cfd2ed7f9be9405e141390f6cea686c3",
+    "game/src/game/fx/shaders/path_trace_closest_hit_terrain.dxil": "bb9d2d7af9d330a634890156a9feb7936a9266dd8870c431a780a303d929a0d0",
+    "game/src/game/fx/shaders/path_trace_closest_hit_terrain.spv": "6178b36d208d20fc83b90e64cfe52b6073f2c7be41e4703cb07f34017d5d9a47",
+    "game/src/game/fx/shaders/path_trace_closest_hit_transitions.dxil": "1a0e4f846700cd23d7b5605d1aab5d62bc32d8c1e662ac7c6227a0d83ebff4da",
+    "game/src/game/fx/shaders/path_trace_closest_hit_transitions.spv": "52fde5ec56eef2e7cfa251b7886599269d5de573e6ca1fa018d1e2bbc27c0311",
+    "game/src/game/fx/shaders/path_trace_filter.glsl": "4c82e9b4be3117c04fd43f45fe8b917d301dc20832278d0b435026592a840e60",
+    "tools/tests/path_trace_material_performance.gd": "1a289ae511aa0e4286c4dc50e4f891692344e481efa539e54f174caa17e24a0c",
+    "tools/tests/path_trace_raster_lighting.gd": "bcf6b0dda3a489040494b26e2e65c29e11b0745a132c2990ed2b5d24e75264c7",
+    "tools/tests/path_trace_terrain.gd": "a7608f01f9d9534cf045547627e8a368137d554e065c5997c5379d419b0c6113"
+  },
+  "packages": {
+    "preview-windows/CursedLands.exe": "3fdf36babfcbae0b3584aed85e1d52e4e537d3033c9128689cc0593a9ef80fd4",
+    "preview-windows/CursedLands.pck": "ae8c242ed46cd48048a84492ec86017cacb7e0179557d1dcb3110af6f229e499",
+    "preview-linux/CursedLands.pck": "ae8c242ed46cd48048a84492ec86017cacb7e0179557d1dcb3110af6f229e499",
+    "preview-windows-opt2-baseline/CursedLands.pck": "351bd339b40b1fdf14bd6b072837c3d5ae449671e47cdd47b3224be97d22a524"
+  },
+  "validation": {
+    "native_shader_outputs_reproduced": 18,
+    "spirv_stages_validated": 9,
+    "translation_errors": 0,
+    "windows_exe_identical_to_previously_verified_dragon_icon_export": true
+  },
+  "qualification_notes": [
+    "DX12 variance/glossy/quality fixtures exercised the final filter and hit shaders while the separate compute-copy experiment was present. That copy experiment was reverted; final-package campaign, performance, Vulkan, and frame-generation checks use the original copy path.",
+    "Final combined/filter benchmarks use the exact exported baseline SPIR-V. Early diagnostic filter comparisons used runtime compilation (SPIR-V 1.5) instead of the importer target (1.4); those timings are superseded."
+  ]
+}

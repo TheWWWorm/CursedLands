@@ -16,6 +16,8 @@ var atlas_axis := 2
 var atlas_padding := 0.125
 var ground_type := 2
 var use_normal := false
+var land_size := Vector2i.ONE
+var land_cell := Vector2i.ZERO
 var offset := Vector3.ZERO
 var fixture_size := Vector2i(160,90)
 
@@ -100,8 +102,14 @@ func build_land() -> bool:
 	normal_texture=white.duplicate();normal_texture.fill(Color(0.75,0.5,1));normal_texture.generate_mipmaps()
 	var images: Array[Image]=[white,normal_texture]
 	var data:=PackedByteArray();data.resize(64)
-	data.encode_u32(0,1);data.encode_u32(4,1);data.encode_u32(8,64);data.encode_u32(12,68)
-	var code:=tile_index|(rotation<<14);data.append_array(PackedInt32Array([code|(ground_type<<16)|((1<<24) if mode==3 else 0),1,1]).to_byte_array())
+	data.encode_u32(0,land_size.x);data.encode_u32(4,land_size.y);data.encode_u32(8,64)
+	var code:=tile_index|(rotation<<14)
+	var tiles_data:=PackedInt32Array();tiles_data.resize(land_size.x*land_size.y)
+	tiles_data.fill(((tile_index+1)%(atlas_axis*atlas_axis))|(ground_type<<16))
+	var tile_id:=land_cell.y*land_size.x+land_cell.x
+	tiles_data[tile_id]=code|(ground_type<<16)|((1<<24) if mode==3 else 0)
+	data.append_array(tiles_data.to_byte_array());data.encode_u32(12,data.size())
+	data.append_array(PackedInt32Array([tile_id+1,tile_id+1]).to_byte_array())
 	data.encode_float(16,float(atlas_axis));data.encode_float(20,atlas_padding);data.encode_float(24,1.0/(atlas_axis*64));data.encode_float(28,1)
 	data.encode_u32(32,2 if use_normal else 0);data.encode_u32(44,1)
 	var tiles:=Image.create(1,1,false,Image.FORMAT_RGBAF);tiles.set_pixel(0,0,Color(code,ground_type,0,0));tile_texture=ImageTexture.create_from_image(tiles)
@@ -154,6 +162,13 @@ func run() -> void:
 	# atlas, against the unchanged raster GLSL rather than a second HLSL formula.
 	for row in [[2,3],[3,8],[8,63]]:
 		atlas_axis=row[0];tile_index=row[1];await comparison("atlas-%s-tile-%s"%[atlas_axis,tile_index])
+	# Distinct surrounding tiles catch a wrong row/column rather than merely
+	# validating an address formula. Include the integer-division fallback.
+	atlas_axis=2;tile_index=0
+	for grid: Vector2i in [Vector2i(16,3),Vector2i(17,3),Vector2i(256,256)]:
+		land_size=grid;land_cell=grid-Vector2i.ONE
+		await comparison("land-grid-%s-last-cell"%grid)
+	land_size=Vector2i.ONE;land_cell=Vector2i.ZERO
 	atlas_axis=2;tile_index=0;size=Vector2i(40,24)
 	await comparison("coarse-padded-mip")
 	atlas_padding=0.0;await comparison("coarse-unpadded-mip")

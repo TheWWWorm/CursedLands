@@ -2,14 +2,14 @@
   "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
   "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
   "builder_sha256": "b8c5c42715bc4a4c517ae3809a924a72af88d649ae88771c81e8271d65cfbe61",
-  "source_sha256": "e794ee0ed4de410ab71fda47a0c290277f8f760f115672f5b367c074dc53a306",
+  "source_sha256": "aa6bac3560e3d7517c396f90057edbb245186b291ed9a23835bdd21a77cc77cc",
   "files": {
     "path_trace_raygen.dxil": "d45912d3306e84f1d5f1f2ec3bab96f9f8b97f87bd1687ca15261d6f0758cd64",
     "path_trace_raygen.spv": "2e850b279f1eb5195d1a93b77e25795a7ce0165c921f8ef32e461489d53991f0",
     "path_trace_miss.dxil": "9d181346415e526c5942efaf17c0f941a47df05b313a0e2e72f7d3c491f2ea51",
     "path_trace_miss.spv": "1376ff37c61cc9a09124d61df678d92ba069fce9aafef4e08cb23e98aa8f0179",
-    "path_trace_closest_hit.dxil": "9ca87bdd5b9e6e52de488c68dbb7b6a1924754418bbb60daeb1392d992c4112b",
-    "path_trace_closest_hit.spv": "fdac1ed469f385af0f32404f5477557469d68b7b853d7680e6e5490c4c9427ce",
+    "path_trace_closest_hit.dxil": "8db778a47910d3715a7abf1a498990aace9894a5cd04cca13a544154c0019638",
+    "path_trace_closest_hit.spv": "74896b0d502793f37af944b53ada3805cfd2ed7f9be9405e141390f6cea686c3",
     "path_trace_any_hit.dxil": "fc8ae7e7102d5f9b7ade1f1fe4cd3f1124e0a2e511494cb2a86ef8b7a5ef77f2",
     "path_trace_any_hit.spv": "9520e13148ceca6edfc9d620dd2e546e6f9c40d812380f2a798c2bebbf7e4c35",
     "path_trace_raygen_no_emitters.dxil": "29da589284b177ea5b69d765df47b203cc935797cb08b88490bb364a4b269d66",
@@ -18,9 +18,9 @@
     "path_trace_raygen_deep.spv": "466479e82415fc62b1580b8775850b2439ef3b52ca5527e26e783464dec913ee",
     "path_trace_raygen_deep_no_emitters.dxil": "d6880c25699973224a5c5b5cfc6604fdcb4756c5e5a9f78e04fa5253d0331eb9",
     "path_trace_raygen_deep_no_emitters.spv": "61756779a19057c45883427b9932aaa204e6566694b087a2073b087c377fe53e",
-    "path_trace_closest_hit_terrain.dxil": "775651ea67f90cb50dc5fd022f71518b4d778a1b27f2b86589107fb673fa2d38",
-    "path_trace_closest_hit_terrain.spv": "915f420fb62d586c44f0e8bc86e811cde5dc2093765a404d0619c05f3cf95167",
-    "path_trace_closest_hit_transitions.dxil": "545db93b7d426534891c840e386df40707330544bb786e3e88cc5c9d680f10c2",
-    "path_trace_closest_hit_transitions.spv": "7fdd51fabc6f9a185c06f8a1846605aa61a818b98a3d4b6e7ab282ace8f4e0ac"
+    "path_trace_closest_hit_terrain.dxil": "bb9d2d7af9d330a634890156a9feb7936a9266dd8870c431a780a303d929a0d0",
+    "path_trace_closest_hit_terrain.spv": "6178b36d208d20fc83b90e64cfe52b6073f2c7be41e4703cb07f34017d5d9a47",
+    "path_trace_closest_hit_transitions.dxil": "1a0e4f846700cd23d7b5605d1aab5d62bc32d8c1e662ac7c6227a0d83ebff4da",
+    "path_trace_closest_hit_transitions.spv": "52fde5ec56eef2e7cfa251b7886599269d5de573e6ca1fa018d1e2bbc27c0311"
   }
 }

@@ -1,0 +1,901 @@
+{
+  "opt3-reuse-density-ready": {
+    "checks": 9,
+    "device": "NVIDIA GeForce RTX 3090",
+    "driver": "d3d12",
+    "failures": [],
+    "note": "Frozen river, detailed materials, identical raygen, controller, scene and images. Alternating saved/current hit libraries, 120 samples after 40 warmup frames.",
+    "reference_dxil_sha256": "545db93b7d426534891c840e386df40707330544bb786e3e88cc5c9d680f10c2",
+    "reference_spirv_sha256": "7fdd51fabc6f9a185c06f8a1846605aa61a818b98a3d4b6e7ab282ace8f4e0ac",
+    "runs": [
+      {
+        "controller_cpu_ms": {
+          "median": 0.577,
+          "n": 120,
+          "p95": 0.782
+        },
+        "frame_ms": {
+          "median": 8.003,
+          "n": 120,
+          "p95": 10.583
+        },
+        "gpu_stages_ms": {},
+        "mode": 2,
+        "quality": 1,
+        "reference": true,
+        "round": 0,
+        "rt_gpu_ms": {
+          "median": 5.707008,
+          "n": 120,
+          "p95": 7.74784
+        },
+        "stats": {
+          "accumulation_frames": 8,
+          "active": true,
+          "emissive_candidates": 0,
+          "emissive_triangles": 0,
+          "geometries": 1285,
+          "gi_samples": 0,
+          "instances": 1420,
+          "lights": 1,
+          "path_bounces": 4,
+          "path_samples": 2,
+          "path_tracing": true,
+          "quality": 1,
+          "shadow_samples": 0,
+          "size": [
+            960,
+            540
+          ],
+          "supported": true,
+          "terrain_material_build_us": 19270,
+          "terrain_material_bytes": 649028,
+          "terrain_material_triangles": 56145,
+          "triangles": 116008,
+          "updated_instances": 0,
+          "updated_poses": 0
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.601,
+          "n": 120,
+          "p95": 0.808
+        },
+        "frame_ms": {
+          "median": 7.873,
+          "n": 120,
+          "p95": 9.983
+        },
+        "gpu_stages_ms": {},
+        "mode": 2,
+        "quality": 1,
+        "reference": false,
+        "round": 0,
+        "rt_gpu_ms": {
+          "median": 5.386496,
+          "n": 120,
+          "p95": 6.731264
+        },
+        "stats": {
+          "accumulation_frames": 8,
+          "active": true,
+          "emissive_candidates": 0,
+          "emissive_triangles": 0,
+          "geometries": 1285,
+          "gi_samples": 0,
+          "instances": 1420,
+          "lights": 1,
+          "path_bounces": 4,
+          "path_samples": 2,
+          "path_tracing": true,
+          "quality": 1,
+          "shadow_samples": 0,
+          "size": [
+            960,
+            540
+          ],
+          "supported": true,
+          "terrain_material_build_us": 19270,
+          "terrain_material_bytes": 649028,
+          "terrain_material_triangles": 56145,
+          "triangles": 116008,
+          "updated_instances": 0,
+          "updated_poses": 0
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.609,
+          "n": 120,
+          "p95": 0.822
+        },
+        "frame_ms": {
+          "median": 7.94,
+          "n": 120,
+          "p95": 10.214
+        },
+        "gpu_stages_ms": {},
+        "mode": 2,
+        "quality": 1,
+        "reference": false,
+        "round": 1,
+        "rt_gpu_ms": {
+          "median": 5.523968,
+          "n": 120,
+          "p95": 7.115008
+        },
+        "stats": {
+          "accumulation_frames": 8,
+          "active": true,
+          "emissive_candidates": 0,
+          "emissive_triangles": 0,
+          "geometries": 1285,
+          "gi_samples": 0,
+          "instances": 1420,
+          "lights": 1,
+          "path_bounces": 4,
+          "path_samples": 2,
+          "path_tracing": true,
+          "quality": 1,
+          "shadow_samples": 0,
+          "size": [
+            960,
+            540
+          ],
+          "supported": true,
+          "terrain_material_build_us": 19270,
+          "terrain_material_bytes": 649028,
+          "terrain_material_triangles": 56145,
+          "triangles": 116008,
+          "updated_instances": 0,
+          "updated_poses": 0
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.571,
+          "n": 120,
+          "p95": 0.814
+        },
+        "frame_ms": {
+          "median": 8.191,
+          "n": 120,
+          "p95": 10.074
+        },
+        "gpu_stages_ms": {},
+        "mode": 2,
+        "quality": 1,
+        "reference": true,
+        "round": 1,
+        "rt_gpu_ms": {
+          "median": 5.693696,
+          "n": 120,
+          "p95": 7.580672
+        },
+        "stats": {
+          "accumulation_frames": 8,
+          "active": true,
+          "emissive_candidates": 0,
+          "emissive_triangles": 0,
+          "geometries": 1285,
+          "gi_samples": 0,
+          "instances": 1420,
+          "lights": 1,
+          "path_bounces": 4,
+          "path_samples": 2,
+          "path_tracing": true,
+          "quality": 1,
+          "shadow_samples": 0,
+          "size": [
+            960,
+            540
+          ],
+          "supported": true,
+          "terrain_material_build_us": 19270,
+          "terrain_material_bytes": 649028,
+          "terrain_material_triangles": 56145,
+          "triangles": 116008,
+          "updated_instances": 0,
+          "updated_poses": 0
+        }
+      }
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  "opt3-world-space": {
+    "checks": 9,
+    "device": "NVIDIA GeForce RTX 3090",
+    "driver": "d3d12",
+    "failures": [],
+    "note": "Frozen river, detailed materials, identical raygen, controller, scene and images. Alternating saved/current hit libraries, 120 samples after 40 warmup frames.",
+    "reference_dxil_sha256": "545db93b7d426534891c840e386df40707330544bb786e3e88cc5c9d680f10c2",
+    "reference_spirv_sha256": "7fdd51fabc6f9a185c06f8a1846605aa61a818b98a3d4b6e7ab282ace8f4e0ac",
+    "runs": [
+      {
+        "controller_cpu_ms": {
+          "median": 0.584,
+          "n": 120,
+          "p95": 0.807
+        },
+        "frame_ms": {
+          "median": 8.216,
+          "n": 120,
+          "p95": 10.354
+        },
+        "gpu_stages_ms": {},
+        "mode": 2,
+        "quality": 1,
+        "reference": true,
+        "round": 0,
+        "rt_gpu_ms": {
+          "median": 5.695232,
+          "n": 120,
+          "p95": 7.127296
+        },
+        "stats": {
+          "accumulation_frames": 8,
+          "active": true,
+          "emissive_candidates": 0,
+          "emissive_triangles": 0,
+          "geometries": 1285,
+          "gi_samples": 0,
+          "instances": 1420,
+          "lights": 1,
+          "path_bounces": 4,
+          "path_samples": 2,
+          "path_tracing": true,
+          "quality": 1,
+          "shadow_samples": 0,
+          "size": [
+            960,
+            540
+          ],
+          "supported": true,
+          "terrain_material_build_us": 20254,
+          "terrain_material_bytes": 649028,
+          "terrain_material_triangles": 56145,
+          "triangles": 116008,
+          "updated_instances": 0,
+          "updated_poses": 0
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.569,
+          "n": 120,
+          "p95": 0.802
+        },
+        "frame_ms": {
+          "median": 7.929,
+          "n": 120,
+          "p95": 10.943
+        },
+        "gpu_stages_ms": {},
+        "mode": 2,
+        "quality": 1,
+        "reference": false,
+        "round": 0,
+        "rt_gpu_ms": {
+          "median": 5.506048,
+          "n": 120,
+          "p95": 7.345408
+        },
+        "stats": {
+          "accumulation_frames": 8,
+          "active": true,
+          "emissive_candidates": 0,
+          "emissive_triangles": 0,
+          "geometries": 1285,
+          "gi_samples": 0,
+          "instances": 1420,
+          "lights": 1,
+          "path_bounces": 4,
+          "path_samples": 2,
+          "path_tracing": true,
+          "quality": 1,
+          "shadow_samples": 0,
+          "size": [
+            960,
+            540
+          ],
+          "supported": true,
+          "terrain_material_build_us": 20254,
+          "terrain_material_bytes": 649028,
+          "terrain_material_triangles": 56145,
+          "triangles": 116008,
+          "updated_instances": 0,
+          "updated_poses": 0
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.578,
+          "n": 120,
+          "p95": 0.773
+        },
+        "frame_ms": {
+          "median": 7.915,
+          "n": 120,
+          "p95": 10.206
+        },
+        "gpu_stages_ms": {},
+        "mode": 2,
+        "quality": 1,
+        "reference": false,
+        "round": 1,
+        "rt_gpu_ms": {
+          "median": 5.462272,
+          "n": 120,
+          "p95": 6.938368
+        },
+        "stats": {
+          "accumulation_frames": 8,
+          "active": true,
+          "emissive_candidates": 0,
+          "emissive_triangles": 0,
+          "geometries": 1285,
+          "gi_samples": 0,
+          "instances": 1420,
+          "lights": 1,
+          "path_bounces": 4,
+          "path_samples": 2,
+          "path_tracing": true,
+          "quality": 1,
+          "shadow_samples": 0,
+          "size": [
+            960,
+            540
+          ],
+          "supported": true,
+          "terrain_material_build_us": 20254,
+          "terrain_material_bytes": 649028,
+          "terrain_material_triangles": 56145,
+          "triangles": 116008,
+          "updated_instances": 0,
+          "updated_poses": 0
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.576,
+          "n": 120,
+          "p95": 0.796
+        },
+        "frame_ms": {
+          "median": 8.157,
+          "n": 120,
+          "p95": 10.542
+        },
+        "gpu_stages_ms": {},
+        "mode": 2,
+        "quality": 1,
+        "reference": true,
+        "round": 1,
+        "rt_gpu_ms": {
+          "median": 5.688832,
+          "n": 120,
+          "p95": 7.239424
+        },
+        "stats": {
+          "accumulation_frames": 8,
+          "active": true,
+          "emissive_candidates": 0,
+          "emissive_triangles": 0,
+          "geometries": 1285,
+          "gi_samples": 0,
+          "instances": 1420,
+          "lights": 1,
+          "path_bounces": 4,
+          "path_samples": 2,
+          "path_tracing": true,
+          "quality": 1,
+          "shadow_samples": 0,
+          "size": [
+            960,
+            540
+          ],
+          "supported": true,
+          "terrain_material_build_us": 20254,
+          "terrain_material_bytes": 649028,
+          "terrain_material_triangles": 56145,
+          "triangles": 116008,
+          "updated_instances": 0,
+          "updated_poses": 0
+        }
+      }
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  "opt3-cached-density": {
+    "checks": 9,
+    "device": "NVIDIA GeForce RTX 3090",
+    "driver": "d3d12",
+    "failures": [],
+    "note": "Frozen river, detailed materials, identical raygen, controller, scene and images. Alternating saved/current hit libraries, 120 samples after 40 warmup frames.",
+    "reference_dxil_sha256": "545db93b7d426534891c840e386df40707330544bb786e3e88cc5c9d680f10c2",
+    "reference_spirv_sha256": "7fdd51fabc6f9a185c06f8a1846605aa61a818b98a3d4b6e7ab282ace8f4e0ac",
+    "runs": [
+      {
+        "controller_cpu_ms": {
+          "median": 0.66,
+          "n": 120,
+          "p95": 0.946
+        },
+        "frame_ms": {
+          "median": 8.754,
+          "n": 120,
+          "p95": 12.141
+        },
+        "gpu_stages_ms": {},
+        "mode": 2,
+        "quality": 1,
+        "reference": true,
+        "round": 0,
+        "rt_gpu_ms": {
+          "median": 6.06464,
+          "n": 120,
+          "p95": 8.582144
+        },
+        "stats": {
+          "accumulation_frames": 8,
+          "active": true,
+          "emissive_candidates": 0,
+          "emissive_triangles": 0,
+          "geometries": 1285,
+          "gi_samples": 0,
+          "instances": 1420,
+          "lights": 1,
+          "path_bounces": 4,
+          "path_samples": 2,
+          "path_tracing": true,
+          "quality": 1,
+          "shadow_samples": 0,
+          "size": [
+            960,
+            540
+          ],
+          "supported": true,
+          "terrain_material_build_us": 50775,
+          "terrain_material_bytes": 1113076,
+          "terrain_material_triangles": 56145,
+          "triangles": 116008,
+          "updated_instances": 0,
+          "updated_poses": 0
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.68,
+          "n": 120,
+          "p95": 0.828
+        },
+        "frame_ms": {
+          "median": 9.179,
+          "n": 120,
+          "p95": 11.72
+        },
+        "gpu_stages_ms": {},
+        "mode": 2,
+        "quality": 1,
+        "reference": false,
+        "round": 0,
+        "rt_gpu_ms": {
+          "median": 6.228992,
+          "n": 120,
+          "p95": 7.665408
+        },
+        "stats": {
+          "accumulation_frames": 8,
+          "active": true,
+          "emissive_candidates": 0,
+          "emissive_triangles": 0,
+          "geometries": 1285,
+          "gi_samples": 0,
+          "instances": 1420,
+          "lights": 1,
+          "path_bounces": 4,
+          "path_samples": 2,
+          "path_tracing": true,
+          "quality": 1,
+          "shadow_samples": 0,
+          "size": [
+            960,
+            540
+          ],
+          "supported": true,
+          "terrain_material_build_us": 50775,
+          "terrain_material_bytes": 1113076,
+          "terrain_material_triangles": 56145,
+          "triangles": 116008,
+          "updated_instances": 0,
+          "updated_poses": 0
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.671,
+          "n": 120,
+          "p95": 0.881
+        },
+        "frame_ms": {
+          "median": 8.953,
+          "n": 120,
+          "p95": 11.976
+        },
+        "gpu_stages_ms": {},
+        "mode": 2,
+        "quality": 1,
+        "reference": false,
+        "round": 1,
+        "rt_gpu_ms": {
+          "median": 6.104064,
+          "n": 120,
+          "p95": 8.433664
+        },
+        "stats": {
+          "accumulation_frames": 8,
+          "active": true,
+          "emissive_candidates": 0,
+          "emissive_triangles": 0,
+          "geometries": 1285,
+          "gi_samples": 0,
+          "instances": 1420,
+          "lights": 1,
+          "path_bounces": 4,
+          "path_samples": 2,
+          "path_tracing": true,
+          "quality": 1,
+          "shadow_samples": 0,
+          "size": [
+            960,
+            540
+          ],
+          "supported": true,
+          "terrain_material_build_us": 50775,
+          "terrain_material_bytes": 1113076,
+          "terrain_material_triangles": 56145,
+          "triangles": 116008,
+          "updated_instances": 0,
+          "updated_poses": 0
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.64,
+          "n": 120,
+          "p95": 0.903
+        },
+        "frame_ms": {
+          "median": 8.61,
+          "n": 120,
+          "p95": 10.838
+        },
+        "gpu_stages_ms": {},
+        "mode": 2,
+        "quality": 1,
+        "reference": true,
+        "round": 1,
+        "rt_gpu_ms": {
+          "median": 6.118656,
+          "n": 120,
+          "p95": 7.674112
+        },
+        "stats": {
+          "accumulation_frames": 8,
+          "active": true,
+          "emissive_candidates": 0,
+          "emissive_triangles": 0,
+          "geometries": 1285,
+          "gi_samples": 0,
+          "instances": 1420,
+          "lights": 1,
+          "path_bounces": 4,
+          "path_samples": 2,
+          "path_tracing": true,
+          "quality": 1,
+          "shadow_samples": 0,
+          "size": [
+            960,
+            540
+          ],
+          "supported": true,
+          "terrain_material_build_us": 50775,
+          "terrain_material_bytes": 1113076,
+          "terrain_material_triangles": 56145,
+          "triangles": 116008,
+          "updated_instances": 0,
+          "updated_poses": 0
+        }
+      }
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  "opt3-copy-cost": {
+    "checks": 9,
+    "device": "NVIDIA GeForce RTX 3090",
+    "driver": "d3d12",
+    "failures": [],
+    "note": "Frozen river, detailed materials, identical raygen, controller, scene and images. Alternating saved/current hit libraries, 120 samples after 40 warmup frames.",
+    "reference_files": {
+      "copy": "original texture-copy commands"
+    },
+    "runs": [
+      {
+        "controller_cpu_ms": {
+          "median": 0.653,
+          "n": 120,
+          "p95": 0.907
+        },
+        "frame_ms": {
+          "median": 8.584,
+          "n": 120,
+          "p95": 11.018
+        },
+        "gpu_stages_ms": {
+          "copies": {
+            "median": 0.01024,
+            "n": 120,
+            "p95": 1.014784
+          },
+          "rays": {
+            "median": 5.38752,
+            "n": 120,
+            "p95": 8.465408
+          },
+          "reconstruction": {
+            "median": 0.181248,
+            "n": 120,
+            "p95": 0.57856
+          }
+        },
+        "mode": 2,
+        "quality": 1,
+        "reference": true,
+        "round": 0,
+        "rt_gpu_ms": {
+          "median": 5.806592,
+          "n": 120,
+          "p95": 8.819968
+        },
+        "stats": {
+          "accumulation_frames": 8,
+          "active": true,
+          "emissive_candidates": 0,
+          "emissive_triangles": 0,
+          "geometries": 1285,
+          "gi_samples": 0,
+          "instances": 1420,
+          "lights": 1,
+          "path_bounces": 4,
+          "path_samples": 2,
+          "path_tracing": true,
+          "quality": 1,
+          "shadow_samples": 0,
+          "size": [
+            960,
+            540
+          ],
+          "supported": true,
+          "terrain_material_build_us": 20894,
+          "terrain_material_bytes": 649028,
+          "terrain_material_triangles": 56145,
+          "triangles": 116008,
+          "updated_instances": 0,
+          "updated_poses": 0
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.634,
+          "n": 120,
+          "p95": 0.934
+        },
+        "frame_ms": {
+          "median": 8.53,
+          "n": 120,
+          "p95": 11.284
+        },
+        "gpu_stages_ms": {
+          "copies": {
+            "median": 0.044032,
+            "n": 120,
+            "p95": 0.766976
+          },
+          "rays": {
+            "median": 5.794048,
+            "n": 120,
+            "p95": 7.137792
+          },
+          "reconstruction": {
+            "median": 0.181248,
+            "n": 120,
+            "p95": 0.344064
+          }
+        },
+        "mode": 2,
+        "quality": 1,
+        "reference": false,
+        "round": 0,
+        "rt_gpu_ms": {
+          "median": 6.213888,
+          "n": 120,
+          "p95": 7.501568
+        },
+        "stats": {
+          "accumulation_frames": 8,
+          "active": true,
+          "emissive_candidates": 0,
+          "emissive_triangles": 0,
+          "geometries": 1285,
+          "gi_samples": 0,
+          "instances": 1420,
+          "lights": 1,
+          "path_bounces": 4,
+          "path_samples": 2,
+          "path_tracing": true,
+          "quality": 1,
+          "shadow_samples": 0,
+          "size": [
+            960,
+            540
+          ],
+          "supported": true,
+          "terrain_material_build_us": 20894,
+          "terrain_material_bytes": 649028,
+          "terrain_material_triangles": 56145,
+          "triangles": 116008,
+          "updated_instances": 0,
+          "updated_poses": 0
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.636,
+          "n": 120,
+          "p95": 0.912
+        },
+        "frame_ms": {
+          "median": 8.92,
+          "n": 120,
+          "p95": 13.759
+        },
+        "gpu_stages_ms": {
+          "copies": {
+            "median": 0.205824,
+            "n": 120,
+            "p95": 1.260544
+          },
+          "rays": {
+            "median": 5.534464,
+            "n": 120,
+            "p95": 7.962624
+          },
+          "reconstruction": {
+            "median": 0.183296,
+            "n": 120,
+            "p95": 2.717696
+          }
+        },
+        "mode": 2,
+        "quality": 1,
+        "reference": false,
+        "round": 1,
+        "rt_gpu_ms": {
+          "median": 6.310656,
+          "n": 120,
+          "p95": 10.211584
+        },
+        "stats": {
+          "accumulation_frames": 8,
+          "active": true,
+          "emissive_candidates": 0,
+          "emissive_triangles": 0,
+          "geometries": 1285,
+          "gi_samples": 0,
+          "instances": 1420,
+          "lights": 1,
+          "path_bounces": 4,
+          "path_samples": 2,
+          "path_tracing": true,
+          "quality": 1,
+          "shadow_samples": 0,
+          "size": [
+            960,
+            540
+          ],
+          "supported": true,
+          "terrain_material_build_us": 20894,
+          "terrain_material_bytes": 649028,
+          "terrain_material_triangles": 56145,
+          "triangles": 116008,
+          "updated_instances": 0,
+          "updated_poses": 0
+        }
+      },
+      {
+        "controller_cpu_ms": {
+          "median": 0.652,
+          "n": 120,
+          "p95": 0.873
+        },
+        "frame_ms": {
+          "median": 8.368,
+          "n": 120,
+          "p95": 11.352
+        },
+        "gpu_stages_ms": {
+          "copies": {
+            "median": 0.01536,
+            "n": 120,
+            "p95": 0.912384
+          },
+          "rays": {
+            "median": 5.448704,
+            "n": 120,
+            "p95": 7.38304
+          },
+          "reconstruction": {
+            "median": 0.183296,
+            "n": 120,
+            "p95": 0.212992
+          }
+        },
+        "mode": 2,
+        "quality": 1,
+        "reference": true,
+        "round": 1,
+        "rt_gpu_ms": {
+          "median": 5.911808,
+          "n": 120,
+          "p95": 8.018944
+        },
+        "stats": {
+          "accumulation_frames": 8,
+          "active": true,
+          "emissive_candidates": 0,
+          "emissive_triangles": 0,
+          "geometries": 1285,
+          "gi_samples": 0,
+          "instances": 1420,
+          "lights": 1,
+          "path_bounces": 4,
+          "path_samples": 2,
+          "path_tracing": true,
+          "quality": 1,
+          "shadow_samples": 0,
+          "size": [
+            960,
+            540
+          ],
+          "supported": true,
+          "terrain_material_build_us": 20894,
+          "terrain_material_bytes": 649028,
+          "terrain_material_triangles": 56145,
+          "triangles": 116008,
+          "updated_instances": 0,
+          "updated_poses": 0
+        }
+      }
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  "disposition": {
+    "world-space": "Reverted: no additional repeatable gain beyond UV-density reuse.",
+    "cached-density": "Reverted: GPU reads cost more than saved arithmetic; also increased snapshot bytes/build time.",
+    "compute-copy": "Reverted: slower than the existing texture-copy commands.",
+    "invalid-runs": "An initial run overlapped export; one raster candidate used a forbidden light() return; the synthetic receiver initially omitted the injector-required function spacing. Those runs are excluded. All issues were corrected before qualified runs."
+  }
+}

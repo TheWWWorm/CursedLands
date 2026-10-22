@@ -760,23 +760,24 @@ float3 ground_sample(int2 cell,float2 p,float atlas_lod,out float4 traits) {
 #endif
 // Returns linear albedo and evaluates the same detail normal/material fields
 // for primary and secondary rays. Vertex-to-tile identity survives XY jitter.
-bool terrain_material(uint vertex,Vertex a,Vertex b,Vertex c,float3 w,inout Surface s,float footprint,float distance,out float3 albedo,out float painted_scale) {
+bool terrain_material(uint vertex,float2 uv,float uv_density,inout Surface s,float footprint,float distance,out float3 albedo,out float painted_scale) {
     albedo=0.0;painted_scale=1.0;uint4 layout=land_layout();
     if(layout.x==0u)return false;
     uint id=terrain_data.Load(layout.w+(vertex/3u)*4u);
     if(id==0u||id>layout.x*layout.y)return false;
-    int2 cell=int2((id-1u)%layout.x,(id-1u)/layout.x);
+    uint tile=id-1u;
+    int2 cell;
+    if((layout.x&(layout.x-1u))==0u)cell=int2(tile&(layout.x-1u),tile>>firstbithigh(layout.x));
+    else cell=int2(tile%layout.x,tile/layout.x);
     uint code=land_tile(cell)&65535u;float4 sampling=land_sampling();
     float per_row=sampling.x,border=8.0*sampling.z*per_row,interior=1.0-2.0*border;
     float2 origin=tile_origin(code&63u,per_row);
-    float2 local=(hit_uv(a,b,c,w)*per_row-origin-border)/interior;
+    float2 local=(uv*per_row-origin-border)/interior;
     int rotation=(4-int(code>>14u))%4;
     local=0.5+tile_turn(float2(local.x,1.0-local.y)-0.5,rotation);
-    float2 uv1=tile_turn(float2(b.position_u.w-a.position_u.w,a.normal_v.w-b.normal_v.w)*per_row/interior,rotation);
-    float2 uv2=tile_turn(float2(c.position_u.w-a.position_u.w,a.normal_v.w-c.normal_v.w)*per_row/interior,rotation);
-    float3x3 transform=(float3x3)ObjectToWorld3x4();
-    float3 edge1=mul(transform,b.position_u.xyz-a.position_u.xyz),edge2=mul(transform,c.position_u.xyz-a.position_u.xyz);
-    float density=max(length(uv1)/max(length(edge1),0.001),length(uv2)/max(length(edge2),0.001));
+    // Quarter turns and V inversion preserve length. Reuse the world-space
+    // UV density already needed by the base material and painted relief.
+    float density=uv_density*per_row/interior;
     float grazing=max(abs(dot(s.normal,WorldRayDirection())),0.1);
     float span=footprint*density/grazing;
     float ground_lod=tile_lod(span);
@@ -816,7 +817,7 @@ bool terrain_material(uint vertex,Vertex a,Vertex b,Vertex c,float3 w,inout Surf
             uint width,height,layers,levels;colours.GetDimensions(0,width,height,layers,levels);
             float lod=max(log2(max(footprint*0.45*float(width)/grazing,1.0)),0.0);
             float fine_lod=max(log2(max(footprint*1.7*float(width)/grazing,1.0)),0.0);
-            float3 weights=pow(abs(n),4.0);weights/=max(dot(weights,float3(1,1,1)),1e-8);
+            float3 weights=n*n;weights*=weights;weights/=max(dot(weights,float3(1,1,1)),1e-8);
             float2 x=0.0,y=0.0,z=0.0,fine=0.0;
             [branch] if(weights.x>0.0)x=colours.SampleLevel(colour_sampler,float3(s.position.zy*0.45,normal_layer-1u),lod).rg*2.0-1.0;
             [branch] if(weights.y>0.0) {
@@ -923,7 +924,8 @@ void main(inout Surface result,Attributes attributes) {
     float density=max(length(float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w))/max(length(mul((float3x3)to_world,edge1)),0.001),
                       length(float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w))/max(length(mul((float3x3)to_world,edge2)),0.001));
     uint width,height,layers,levels; colours.GetDimensions(0,width,height,layers,levels);
-    float lod=max(log2(max(result.cone*RayTCurrent()*density*float(width),1.0)),0.0);
+    float base_texels=max(result.cone*RayTCurrent()*density*float(width),1.0);
+    float lod=log2(base_texels);
     float3 texel=float3(hit_uv(a,b,c,w),a.emission_layer.w);
     float3 colour=0.0;
     bool terrain=(material.y&2u)!=0u;
@@ -946,7 +948,7 @@ void main(inout Surface result,Attributes attributes) {
         float footprint=2.0*abs(frame.inv_projection[0][0])/float(DispatchRaysDimensions().x);
         if(frame.camera.x<0.5)footprint*=distance;
         footprint=max(footprint,result.cone*RayTCurrent());
-        detailed_terrain=terrain_material(i,a,b,c,w,result,footprint,distance,terrain_albedo,painted_scale);
+        detailed_terrain=terrain_material(i,texel.xy,density,result,footprint,distance,terrain_albedo,painted_scale);
         strength*=painted_scale;
     }
     #endif
@@ -957,11 +959,12 @@ void main(inout Surface result,Attributes attributes) {
         if(frame.camera.x<0.5)footprint*=distance;
         footprint=max(footprint,result.cone*RayTCurrent());
         float texels=footprint*density*float(width)/max(abs(dot(result.normal,WorldRayDirection())),0.1);
-        float relief_lod=max(lod,log2(max(texels,1.0)));
+        float relief_texels=max(base_texels,texels);
+        float relief_lod=log2(relief_texels);
         // Land has broad painted ridges as well as texel detail. Widen the
         // finite difference with the mip footprint, then fade it before the
         // receiver range ends. Object relief keeps its tighter bounds.
-        float step_scale=terrain?1.5*exp2(relief_lod):1.0;
+        float step_scale=terrain?1.5*relief_texels:1.0;
         strength*=terrain?1.5*(1.0-smoothstep(25.0,65.0,distance))*(1.0-smoothstep(2.0,8.0,texels)):
             (1.0-smoothstep(14.0,40.0,distance))*(1.0-smoothstep(1.2,4.0,texels));
         [branch] if(strength>0.0)result.normal=relief_normal(result.normal,result.geometric_normal,
@@ -973,6 +976,8 @@ void main(inout Surface result,Attributes attributes) {
     // Detailed terrain already sampled its colour from the shared raster atlas.
     [branch] if(!detailed_terrain||any(a.emission_layer.rgb>0.0))colour=colours.SampleLevel(colour_sampler,texel,lod).rgb;
     result.albedo=saturate((detailed_terrain?terrain_albedo:linear_colour(colour))*saturate(a.diffuse.rgb));
-    result.emission=(material.y&1u)!=0u?a.emission_layer.rgb:linear_colour(colour*a.emission_layer.rgb);
+    result.emission=0.0;
+    [branch] if(any(a.emission_layer.rgb!=0.0))
+        result.emission=(material.y&1u)!=0u?a.emission_layer.rgb:linear_colour(colour*a.emission_layer.rgb);
 }
 #endif

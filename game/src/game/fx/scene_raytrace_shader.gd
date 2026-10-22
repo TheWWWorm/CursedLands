@@ -77,7 +77,11 @@ bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out ve
         if(abs(dot(delta,plane))>max(0.025,depth*0.0005)||length(delta)>max(0.1,footprint*2.5))continue;
         float w=(x==0?1.0-blend.x:blend.x)*(y==0?1.0-blend.y:blend.y);
         gi+=texelFetch(ei_rt_gi,p,0).rgb*w;
-        a+=texelFetch(ei_rt_shadow0,p,0)*w;b+=texelFetch(ei_rt_shadow1,p,0)*w;total+=w;
+        a+=texelFetch(ei_rt_shadow0,p,0)*w;
+        // PT's second shadow channel is the reconstruction material guide;
+        // the raster receiver only consumes diffuse and glossy radiance.
+        if(ei_pt_active<=0.5)b+=texelFetch(ei_rt_shadow1,p,0)*w;
+        total+=w;
     }
     if(total<0.01)return false;
     float fade=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,distance);
@@ -131,6 +135,9 @@ const CAPTURE := """
 """
 
 const LIGHT := """
+    // A fully traced receiver already supplied all lighting in fragment().
+    // The fade band and unmatched/distant receivers still need raster light.
+    if(ei_pt_blend<1.0) {
     vec3 ei_pt_previous_diffuse=DIFFUSE_LIGHT,ei_pt_previous_specular=SPECULAR_LIGHT;
     if(ei_rt_valid>0.5) {
         vec3 direction=LIGHT;
@@ -177,7 +184,7 @@ static func inject(code: String,clouds: bool) -> String:
 	var at := code.find("\nvoid ")
 	code = code.insert(at+1,COMMON)
 	code = Gfx._function_tail(code,"fragment",CAPTURE)
-	code = Gfx._function_tail(code,"light","\n    }\n    DIFFUSE_LIGHT=mix(DIFFUSE_LIGHT,ei_pt_previous_diffuse,ei_pt_blend);\n    SPECULAR_LIGHT=mix(SPECULAR_LIGHT,ei_pt_previous_specular,ei_pt_blend);\n")
+	code = Gfx._function_tail(code,"light","\n    }\n    DIFFUSE_LIGHT=mix(DIFFUSE_LIGHT,ei_pt_previous_diffuse,ei_pt_blend);\n    SPECULAR_LIGHT=mix(SPECULAR_LIGHT,ei_pt_previous_specular,ei_pt_blend);\n    }\n")
 	return code.replace("void light() {","void light() {"+LIGHT.replace("EI_RT_CLOUD","ei_cloud_sun(world)" if clouds else "1.0"))
 
 static func globals() -> void:

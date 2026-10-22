@@ -24,6 +24,15 @@ layout(std140,set=0,binding=12) uniform Frame {
     mat4 previous_inverse_view_projection;
 } frame;
 
+// An 8x8 group shares its 2-pixel spatial halo. Keep the same 25-tap filter
+// while fetching each input and reconstructing each position once per tile.
+// Progressive accumulation has no spatial kernel and bypasses this cache.
+shared vec4 tile_guide[144];
+shared vec4 tile_material[144];
+shared vec3 tile_diffuse[144];
+shared vec3 tile_specular[144];
+shared vec3 tile_world[144];
+
 vec3 position_at(ivec2 pixel,float depth,ivec2 size) {
     vec2 uv=(vec2(pixel)+0.5)/vec2(size);
     vec4 near=frame.inv_projection*vec4(uv.x*2.0-1.0,1.0-uv.y*2.0,-1.0,1.0);near/=near.w;
@@ -72,38 +81,58 @@ vec3 previous_position(ivec2 p,float depth,ivec2 size) {
 }
 void main() {
     ivec2 p=ivec2(gl_GlobalInvocationID.xy),size=imageSize(raw_diffuse);
+    bool progressive=frame.path.y>8.0;
+    if(!progressive) {
+        ivec2 origin=ivec2(gl_WorkGroupID.xy)*8-2;
+        for(uint i=gl_LocalInvocationIndex;i<144u;i+=64u) {
+            ivec2 q=origin+ivec2(i%12u,i/12u);
+            vec4 g=vec4(0),m=vec4(0);vec3 d=vec3(0),s=vec3(0),w=vec3(0);
+            if(all(greaterThanEqual(q,ivec2(0)))&&all(lessThan(q,size))) {
+                g=imageLoad(raw_guide,q);m=imageLoad(raw_material,q);
+                d=finite_signal(imageLoad(raw_diffuse,q).rgb);s=finite_signal(imageLoad(raw_specular,q).rgb);
+                if(g.w>0.0)w=position_at(q,g.w,size);
+            }
+            tile_guide[i]=g;tile_material[i]=m;tile_diffuse[i]=d;tile_specular[i]=s;tile_world[i]=w;
+        }
+        // Out-of-bounds lanes still populate the halo and reach this barrier.
+        barrier();
+    }
     if(any(greaterThanEqual(p,size)))return;
-    vec4 guide=imageLoad(raw_guide,p),material=imageLoad(raw_material,p);
+    int centre=(int(gl_LocalInvocationID.y)+2)*12+int(gl_LocalInvocationID.x)+2;
+    vec4 guide=progressive?imageLoad(raw_guide,p):tile_guide[centre];
+    vec4 material=progressive?imageLoad(raw_material,p):tile_material[centre];
     imageStore(result_guide,p,guide);imageStore(result_material,p,material);
     if(guide.w<=0.0) {
         imageStore(result_diffuse,p,vec4(0.0));imageStore(result_specular,p,vec4(0.0));
         imageStore(result_noise,p,vec4(0.0));return;
     }
-    vec3 world=position_at(p,guide.w,size);
+    vec3 world=progressive?position_at(p,guide.w,size):tile_world[centre];
     vec2 surface=surface_at(material.w);
     vec3 eye=frame.camera_world[3].xyz,parallel_view=frame.camera_world[2].xyz;
     vec3 reflection=reflection_at(world,guide.xyz,eye,parallel_view);
     float footprint=frame.camera.x>0.5?abs(frame.inv_projection[1][1])*2.0/float(size.y):
         abs(frame.inv_projection[1][1])*2.0*guide.w/float(size.y);
     float plane_tolerance=max(0.025,footprint*0.5);
-    bool progressive=frame.path.y>8.0;
     int radius=progressive?0:2;
     vec3 dlo=vec3(1e20),dhi=vec3(0.0),slo=vec3(1e20),shi=vec3(0.0);
-    vec3 centre_d=finite_signal(imageLoad(raw_diffuse,p).rgb),centre_s=finite_signal(imageLoad(raw_specular,p).rgb);
+    vec3 centre_d=progressive?finite_signal(imageLoad(raw_diffuse,p).rgb):tile_diffuse[centre];
+    vec3 centre_s=progressive?finite_signal(imageLoad(raw_specular,p).rgb):tile_specular[centre];
     vec3 dsum=vec3(0.0),ssum=vec3(0.0),dsquares=vec3(0.0),ssquares=vec3(0.0);
     float dw=0.0,sw=0.0,dw2=0.0,sw2=0.0;
     int dcount=0,scount=0;float dpeak=0.0,speak=0.0;
     for(int y=-radius;y<=radius;y++)for(int x=-radius;x<=radius;x++) {
         ivec2 q=p+ivec2(x,y);
         if(any(lessThan(q,ivec2(0)))||any(greaterThanEqual(q,size)))continue;
-        vec4 g=imageLoad(raw_guide,q),m=imageLoad(raw_material,q);
+        int at=centre+y*12+x;
+        vec4 g=progressive?imageLoad(raw_guide,q):tile_guide[at],m=progressive?imageLoad(raw_material,q):tile_material[at];
         vec2 other_surface=surface_at(m.w);
         if(g.w<=0.0||dot(guide.xyz,g.xyz)<0.94||any(greaterThan(abs(other_surface-surface),vec2(0.15))))continue;
-        vec3 other_world=position_at(q,g.w,size),delta=other_world-world;
+        vec3 other_world=progressive?position_at(q,g.w,size):tile_world[at],delta=other_world-world;
         float plane=abs(dot(delta,guide.xyz));
         if(plane>plane_tolerance||length(delta)>max(0.15,footprint*5.0))continue;
         float weight=exp(-float(x*x+y*y)*0.5)*exp(-plane/max(plane_tolerance,0.001));
-        vec3 d=finite_signal(imageLoad(raw_diffuse,q).rgb),s=finite_signal(imageLoad(raw_specular,q).rgb);
+        vec3 d=progressive?finite_signal(imageLoad(raw_diffuse,q).rgb):tile_diffuse[at];
+        vec3 s=progressive?finite_signal(imageLoad(raw_specular,q).rgb):tile_specular[at];
         dcount++;dpeak=max(dpeak,max(d.x,max(d.y,d.z)));
         if(length(m.rgb-material.rgb)<0.25) {scount++;speak=max(speak,max(s.x,max(s.y,s.z)));}
         dw+=weight;dlo=min(dlo,d);dhi=max(dhi,d);

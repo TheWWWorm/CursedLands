@@ -1,0 +1,186 @@
+{
+  "before": {
+    "conventional": {
+      "rt_gpu_ms": 0.0,
+      "controller_cpu_ms": 0.02,
+      "frame_ms": 6.311999999999999,
+      "main_gpu_ms": 0.9039999842643736
+    },
+    "path-2-high": {
+      "rt_gpu_ms": 21.294848,
+      "controller_cpu_ms": 0.7084999999999999,
+      "frame_ms": 23.4865,
+      "main_gpu_ms": 1.17150002717972
+    },
+    "path-2-low": {
+      "rt_gpu_ms": 0.995968,
+      "controller_cpu_ms": 0.6639999999999999,
+      "frame_ms": 7.5625,
+      "main_gpu_ms": 1.0044999718666099
+    },
+    "path-2-medium": {
+      "rt_gpu_ms": 5.877248,
+      "controller_cpu_ms": 0.6915,
+      "frame_ms": 8.760000000000002,
+      "main_gpu_ms": 1.016000032424925
+    },
+    "path-4-high": {
+      "rt_gpu_ms": 22.974848,
+      "controller_cpu_ms": 0.729,
+      "frame_ms": 24.933,
+      "main_gpu_ms": 1.21050000190735
+    },
+    "path-4-low": {
+      "rt_gpu_ms": 1.189632,
+      "controller_cpu_ms": 0.6245,
+      "frame_ms": 7.3075,
+      "main_gpu_ms": 1.006500005722045
+    },
+    "path-4-medium": {
+      "rt_gpu_ms": 6.538752000000001,
+      "controller_cpu_ms": 0.6925,
+      "frame_ms": 9.1885,
+      "main_gpu_ms": 1.01899999380112
+    },
+    "scene-rt-medium": {
+      "rt_gpu_ms": 0.70848,
+      "controller_cpu_ms": 0.6275,
+      "frame_ms": 7.1845,
+      "main_gpu_ms": 0.9899999797344206
+    }
+  },
+  "after": {
+    "conventional": {
+      "rt_gpu_ms": 0.0,
+      "controller_cpu_ms": 0.0195,
+      "frame_ms": 6.5344999999999995,
+      "main_gpu_ms": 0.9014999866485596
+    },
+    "path-2-high": {
+      "rt_gpu_ms": 20.954112000000002,
+      "controller_cpu_ms": 0.703,
+      "frame_ms": 23.130499999999998,
+      "main_gpu_ms": 1.1424999833107
+    },
+    "path-2-low": {
+      "rt_gpu_ms": 0.89664,
+      "controller_cpu_ms": 0.687,
+      "frame_ms": 7.577999999999999,
+      "main_gpu_ms": 0.985499978065491
+    },
+    "path-2-medium": {
+      "rt_gpu_ms": 5.74272,
+      "controller_cpu_ms": 0.6545000000000001,
+      "frame_ms": 8.3315,
+      "main_gpu_ms": 0.99099999666214
+    },
+    "path-4-high": {
+      "rt_gpu_ms": 23.136,
+      "controller_cpu_ms": 0.6799999999999999,
+      "frame_ms": 25.402,
+      "main_gpu_ms": 1.08550000190735
+    },
+    "path-4-low": {
+      "rt_gpu_ms": 1.208192,
+      "controller_cpu_ms": 0.7295,
+      "frame_ms": 8.3825,
+      "main_gpu_ms": 0.988999992609024
+    },
+    "path-4-medium": {
+      "rt_gpu_ms": 6.68096,
+      "controller_cpu_ms": 0.7215,
+      "frame_ms": 9.697500000000002,
+      "main_gpu_ms": 1.001500010490415
+    },
+    "scene-rt-medium": {
+      "rt_gpu_ms": 0.782592,
+      "controller_cpu_ms": 0.7170000000000001,
+      "frame_ms": 8.6085,
+      "main_gpu_ms": 0.9959999918937685
+    }
+  },
+  "hit_shader": {
+    "2-bounces-quality-1": {
+      "before_ms": 5.441408,
+      "after_ms": 5.387648,
+      "saving_percent": 0.987979581755305
+    },
+    "2-bounces-quality-2": {
+      "before_ms": 21.370112,
+      "after_ms": 20.322816,
+      "saving_percent": 4.900751105094814
+    },
+    "4-bounces-quality-1": {
+      "before_ms": 5.992704,
+      "after_ms": 5.777536,
+      "saving_percent": 3.5904993805801255
+    },
+    "4-bounces-quality-2": {
+      "before_ms": 22.870656,
+      "after_ms": 22.009088,
+      "saving_percent": 3.767132871046641
+    }
+  },
+  "filter": {
+    "1": {
+      "before_ms": 0.23910399999999998,
+      "after_ms": 0.184832,
+      "saving_percent": 22.69807280513918
+    },
+    "2": {
+      "before_ms": 0.417152,
+      "after_ms": 0.313856,
+      "saving_percent": 24.76219699294262
+    }
+  },
+  "combined": {
+    "2-bounces-quality-1": {
+      "rt_gpu_ms": {
+        "before_ms": 5.082496,
+        "after_ms": 4.818048,
+        "saving_percent": 5.2031128012692935
+      },
+      "frame_ms": {
+        "before_ms": 7.471,
+        "after_ms": 7.4350000000000005,
+        "saving_percent": 0.48186320439029817
+      }
+    },
+    "2-bounces-quality-2": {
+      "rt_gpu_ms": {
+        "before_ms": 20.166912,
+        "after_ms": 18.849536,
+        "saving_percent": 6.532363507115013
+      },
+      "frame_ms": {
+        "before_ms": 22.2485,
+        "after_ms": 20.950000000000003,
+        "saving_percent": 5.836348517877599
+      }
+    },
+    "4-bounces-quality-1": {
+      "rt_gpu_ms": {
+        "before_ms": 5.775232,
+        "after_ms": 5.4790399999999995,
+        "saving_percent": 5.128659766395538
+      },
+      "frame_ms": {
+        "before_ms": 8.318,
+        "after_ms": 8.075,
+        "saving_percent": 2.9213753306083223
+      }
+    },
+    "4-bounces-quality-2": {
+      "rt_gpu_ms": {
+        "before_ms": 21.560576,
+        "after_ms": 20.971519999999998,
+        "saving_percent": 2.732097695349156
+      },
+      "frame_ms": {
+        "before_ms": 23.6445,
+        "after_ms": 23.2225,
+        "saving_percent": 1.7847702425511258
+      }
+    }
+  }
+}
