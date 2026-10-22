@@ -136,9 +136,23 @@ Primary diffuse illumination and glossy radiance are stored separately. The
 diffuse signal excludes the primary albedo so the main material retains its
 original texture detail after reconstruction. Subsequent hits include their
 albedo. Existing remake surface profiles and StandardMaterial roughness,
-metallic and specular values supply a compact material description; original
-assets without a profile default to rough dielectric surfaces. This does not
-reproduce full PBR texture sets or procedurally modified materials.
+metallic and specular values supply a compact material description. Equipped
+figures also retain their composed surface maps: metal, leather, cloth and skin
+regions use the original redress masks and layer order at primary and secondary
+ray hits. These maps contain linear highlight/roughness/metalness data. PT reads
+roughness and metalness while retaining its calibrated dielectric reflectance;
+the legacy highlight channel is not treated as AO or physical reflectance.
+
+Mapped figures use one additional filtered texture lookup in the existing
+array, with no additional rays, bindings or ray payload fields. Ordinary
+surfaces keep the scalar path. Material-effects settings control collection,
+and replacing a surface texture invalidates the scene snapshot. The render-thread
+descriptor preserves the map index alongside the existing independent foliage
+mask. Original assets without a profile or map remain rough dielectrics.
+This does not yet reproduce full PBR normal/emission texture sets, wounds on
+secondary hits, or every procedurally modified material.
+The [equipment-map qualification](../validation/path-tracing-equipment-materials-2026-10-22/README.md)
+contains matched campaign captures, GPU timings and backend checks.
 
 Enhanced terrain and identified stone/wood object profiles also supply
 texture-derived relief to traced shading. The existing terrain/material options

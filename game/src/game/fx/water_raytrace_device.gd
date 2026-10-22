@@ -117,6 +117,10 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 		var flags := int(description.get("standard",false)) | (int(description.get("terrain",false))<<1)
 		if description.get("foliage_layer",-1)>=0:
 			flags |= ((description.foliage_layer+1)<<8) | (int(description.get("leaf_light",false))<<2) | (int(description.get("bark_relief",false))<<3)
+		# Bits 16..23 identify an optional linear surface map in the same
+		# array. Zero keeps the scalar profile and the old shader fast path.
+		if description.get("surface_layer",-1)>=0:
+			flags |= (description.surface_layer+1)<<16
 		material_data.encode_u32(i*16+4,flags)
 		material_data.encode_float(i*16+8,description.get("cutoff",0.5))
 		# The final word was reserved. Water/one-bounce shaders ignore it;

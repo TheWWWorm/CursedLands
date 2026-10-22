@@ -940,6 +940,15 @@ void main(inout Surface result,Attributes attributes) {
     result.roughness=max(float(material.w&255u)/255.0,0.08);
     result.metalness=float((material.w>>8u)&255u)/255.0;
     result.specular=float((material.w>>16u)&255u)/255.0;
+    uint surface_layer=(material.y>>16u)&255u;
+    [branch] if(surface_layer>0u) {
+        // Legacy redress map: R highlight, G perceptual roughness, B metalness.
+        // It is linear data, not albedo or ORM. Keep the calibrated dielectric
+        // F0; legacy highlight gain is not a physical specular parameter.
+        float2 surface=colours.SampleLevel(colour_sampler,float3(texel.xy,float(surface_layer-1u)),lod).gb;
+        result.roughness=clamp(surface.x,0.08,1.0);
+        result.metalness=saturate(surface.y);
+    }
     float3 terrain_albedo=0.0;float painted_scale=1.0;bool detailed_terrain=false;
     #if defined(PATH_TERRAIN_MATERIALS)
     [branch] if(terrain&&land_layout().x>0u) {

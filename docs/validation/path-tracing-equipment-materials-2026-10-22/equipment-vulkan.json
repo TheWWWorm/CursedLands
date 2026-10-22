@@ -1,0 +1,183 @@
+{
+	"camera": "[X: (0.957827, 0.0, -0.287347), Y: (-0.032811, 0.993459, -0.109372), Z: (0.285467, 0.114188, 0.951562), O: (150.2565, 12.96997, -198.6576)]",
+	"checks": 16,
+	"failures": [],
+	"image_difference": 0.00340455777215265,
+	"mapped_geometries": 1667,
+	"metal_pixels": {
+		"false": 4151,
+		"true": 0
+	},
+	"outfit": [
+		"kania high plate.bronze",
+		"kania high leggins.bronze",
+		"kania high helm.bronze"
+	],
+	"runs": [
+		{
+			"controller_cpu_ms": {
+				"median": 0.829,
+				"n": 119,
+				"p95": 1.209
+			},
+			"gpu_stages_ms": {},
+			"reference": true,
+			"rt_gpu_ms": {
+				"median": 3.924384,
+				"n": 119,
+				"p95": 5.592864
+			},
+			"stats": {
+				"accumulation_frames": 8,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2040,
+				"gi_samples": 0,
+				"instances": 2286,
+				"lights": 4,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 18760,
+				"terrain_material_bytes": 823556,
+				"terrain_material_triangles": 58432,
+				"triangles": 159640,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.742,
+				"n": 119,
+				"p95": 1.086
+			},
+			"gpu_stages_ms": {},
+			"reference": false,
+			"rt_gpu_ms": {
+				"median": 3.731488,
+				"n": 119,
+				"p95": 5.452384
+			},
+			"stats": {
+				"accumulation_frames": 8,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2040,
+				"gi_samples": 0,
+				"instances": 2286,
+				"lights": 4,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 18760,
+				"terrain_material_bytes": 823556,
+				"terrain_material_triangles": 58432,
+				"triangles": 159640,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.687,
+				"n": 119,
+				"p95": 1.014
+			},
+			"gpu_stages_ms": {},
+			"reference": false,
+			"rt_gpu_ms": {
+				"median": 3.747936,
+				"n": 119,
+				"p95": 5.428512
+			},
+			"stats": {
+				"accumulation_frames": 8,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2040,
+				"gi_samples": 0,
+				"instances": 2286,
+				"lights": 4,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 18760,
+				"terrain_material_bytes": 823556,
+				"terrain_material_triangles": 58432,
+				"triangles": 159640,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.667,
+				"n": 119,
+				"p95": 1.005
+			},
+			"gpu_stages_ms": {},
+			"reference": true,
+			"rt_gpu_ms": {
+				"median": 3.918016,
+				"n": 119,
+				"p95": 5.33648
+			},
+			"stats": {
+				"accumulation_frames": 8,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2040,
+				"gi_samples": 0,
+				"instances": 2286,
+				"lights": 4,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 18760,
+				"terrain_material_bytes": 823556,
+				"terrain_material_triangles": 58432,
+				"triangles": 159640,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		}
+	],
+	"texture_bytes": 113246100,
+	"texture_layers": 81,
+	"unique_masks": 4,
+	"viewport": "(1280.0, 720.0)",
+	"weapon": "long sword.bronze"
+}
