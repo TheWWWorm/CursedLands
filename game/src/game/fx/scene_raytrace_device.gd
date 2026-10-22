@@ -14,6 +14,7 @@ var _history_valid := false
 
 func shader_prefix() -> String: return "res://src/game/fx/shaders/scene_raytrace_"
 func frame_bytes() -> int: return 576
+func filter_spirv() -> RDShaderSPIRV: return FILTER.get_spirv()
 
 func _lighting_texture(size: Vector2i) -> RID:
 	var format := RDTextureFormat.new()
@@ -34,7 +35,7 @@ func _release_targets() -> void:
 
 func _targets(size: Vector2i, sampler: RID) -> bool:
 	if not _filter_shader.is_valid():
-		_filter_shader = _own(_rd.shader_create_from_spirv(FILTER.get_spirv(),"Scene RT reconstruction"))
+		_filter_shader = _own(_rd.shader_create_from_spirv(filter_spirv(),"Scene RT reconstruction"))
 		if not _filter_shader.is_valid(): return false
 		_filter_pipeline = _own(_rd.compute_pipeline_create(_filter_shader))
 		if not _filter_pipeline.is_valid(): return false

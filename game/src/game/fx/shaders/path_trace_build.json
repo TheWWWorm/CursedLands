@@ -1,0 +1,16 @@
+{
+  "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
+  "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
+  "builder_sha256": "ff85fd620768c0f5656ecd9e78b77dce38fe9fd086e8b2f5b2cf3393ecc5838c",
+  "source_sha256": "eaebf25e9bcf1175394abaac886964bd4252a86fc31eca85e036c2d471beea08",
+  "files": {
+    "path_trace_raygen.dxil": "90439332d4fe8ca0e54b19ee74cc109baf17ed257fe85c79f9d8afb7d80efb56",
+    "path_trace_raygen.spv": "2a709a5e21afb53ec4c0ac819d78c5aaadce531966819a57b94d935674192fb3",
+    "path_trace_miss.dxil": "ddc856fc301921d164fa2bec5096c01d2b233442d3a1e811e012580cea586ad2",
+    "path_trace_miss.spv": "17b91094a83579a2cb1fde7b6b7758a8e0a9f026da6ad323b5efaa90277a7367",
+    "path_trace_closest_hit.dxil": "66a974dd56adc217f18bbef1d6d0bf1b81403bd48df4dfe097c3fed2ba1af785",
+    "path_trace_closest_hit.spv": "55b7652d7483febdd1cbbe6a066325da10e06e045315df4d4bed6c9a5cfb93a8",
+    "path_trace_any_hit.dxil": "cb5e21b3aa6c53df3d70122cf763ca3411b72be31a72a8e40e2a8ddbc0cb3ca5",
+    "path_trace_any_hit.spv": "dcae82c28fae271ef76dffbd6a4b73479a8a5721be41f54d7a4949901e5f2b03"
+  }
+}

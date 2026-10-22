@@ -1,0 +1,4 @@
+err:   wsi: parseColorimetryInfo: Failed to get parse edid.
+err:   DXGI: Failed to parse display metadata + colorimetry info, using blank.
+WARNING: Failed to get SDR white level for adapterId: 0x00000000000003F3, id: 0
+[trace 09:43:49 +23679ms] clean exit

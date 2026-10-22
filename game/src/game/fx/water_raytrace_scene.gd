@@ -70,12 +70,23 @@ func _material_version(material: Material) -> Array:
 	if material is ShaderMaterial:
 		var texture: Texture2D = material.get_shader_parameter("albedo_tex") as Texture2D
 		return [material.shader.get_instance_id() if material.shader else 0,texture.get_instance_id() if texture else 0,
-			material.get_shader_parameter("ei_material_diffuse"),material.get_shader_parameter("ei_material_emissive")]
+			material.get_shader_parameter("ei_material_diffuse"),material.get_shader_parameter("ei_material_emissive"),
+			material.get_shader_parameter("surface_profile")]
 	if material is BaseMaterial3D:
 		return [material.albedo_texture.get_instance_id() if material.albedo_texture else 0,material.albedo_color,
 			material.transparency,material.alpha_scissor_threshold,material.emission_enabled,material.emission,
-			material.emission_energy_multiplier]
+			material.emission_energy_multiplier,material.roughness,material.metallic,material.metallic_specular]
 	return []
+
+static func surface_profile(material: Material) -> Vector3:
+	if material is BaseMaterial3D:
+		return Vector3(material.roughness,material.metallic,material.metallic_specular)
+	if material is ShaderMaterial:
+		var profile: Variant = material.get_shader_parameter("surface_profile")
+		if profile is Vector4 and profile.x>0.0:
+			return Vector3(clampf(profile.y,0.08,1.0),clampf(profile.z,0.0,1.0),0.5)
+	# Original assets without a remake profile are rough dielectrics.
+	return Vector3(1.0,0.0,0.5)
 
 func _mesh_version(mesh: MeshInstance3D, materials: Dictionary) -> Array:
 	var version := [mesh.mesh.get_instance_id()]
@@ -207,7 +218,7 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 		if packed.failed: failed = true; return -1
 		var count: int = packed.vertices.size()/16
 		if count == 0: return -1
-		geometries.append({"offset":vertices.size()/16,"count":count,"indices":packed.indices,"opaque":opaque,"cutoff":cutoff,"standard":standard})
+		geometries.append({"offset":vertices.size()/16,"count":count,"indices":packed.indices,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material)})
 		vertices.append_array(packed.vertices); triangles += count/3
 		return geometries.size()-1
 	var start := vertices.size()/16
@@ -230,7 +241,7 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 		triangles += 1
 	var count := vertices.size()/16-start
 	if count == 0: return -1
-	geometries.append({"offset":start,"count":count,"indices":used,"opaque":opaque,"cutoff":cutoff,"standard":standard})
+	geometries.append({"offset":start,"count":count,"indices":used,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material)})
 	return geometries.size()-1
 
 ## Plain values only: the render thread never dereferences a scene node.

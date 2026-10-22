@@ -111,6 +111,11 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 		material_data.encode_u32(i*16,description.offset)
 		material_data.encode_u32(i*16+4,1 if description.get("standard",false) else 0)
 		material_data.encode_float(i*16+8,description.get("cutoff",0.5))
+		# The final word was reserved. Water/one-bounce shaders ignore it;
+		# path tracing uses a compact roughness/metalness/specular profile.
+		var surface: Vector3 = description.get("surface",Vector3(1.0,0.0,0.5))
+		material_data.encode_u32(i*16+12,0x80000000 | roundi(clampf(surface.x,0.0,1.0)*255.0) \
+			| (roundi(clampf(surface.y,0.0,1.0)*255.0)<<8) | (roundi(clampf(surface.z,0.0,1.0)*255.0)<<16))
 	_materials = _own(_rd.storage_buffer_create(material_data.size(),material_data))
 	if not _materials.is_valid(): prepared.emit.call_deferred(false); return
 	_blases.resize(_geometry.size())

@@ -1,6 +1,9 @@
 extends "res://tools/tests/water_raytrace_artifact.gd"
 ## Main campaign integration, not just isolated GPU buffers.
 func ready_scene(rt: Node) -> bool:
+	# Apply is observed by the controller on its next process tick. An old
+	# active pipeline must not satisfy a wait for a replacement PT/RT mode.
+	await frames(2)
 	for i in 1200:
 		if rt.stats.get("active",false) or rt._failed: break
 		await frames(1)

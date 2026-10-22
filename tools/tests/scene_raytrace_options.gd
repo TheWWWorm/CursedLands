@@ -17,6 +17,7 @@ func run() -> void:
 	DirAccess.make_dir_recursive_absolute(out)
 	check(GameData.option("rt_shadows")==0 and GameData.option("rt_gi")==0,"fresh profiles keep scene RT opt in")
 	check(GameData.option("q_rt_lighting")==1,"fresh profiles default RT lighting to Medium")
+	check(GameData.option("pt_mode")==0 and GameData.option("pt_accumulation")==0,"path tracing is opt in with responsive history")
 	var panel:=OptionsPanel.new();add_child(panel);panel.open();panel._show_group(OptionsPanel.SCENE_RT_GROUP)
 	check(panel._rows[2].disabled,"quality disabled while both lighting effects are off")
 	panel._sel=2;key(panel,KEY_LEFT)
@@ -32,14 +33,29 @@ func run() -> void:
 		check(panel._values.rt_shadows==1 and panel._values.rt_gi==1 and panel._values.q_rt_lighting==2,"reopening restores saved RT choices")
 		panel._set_value("q_rt_lighting",0);panel._restore();panel._close();panel.open();panel._show_group(OptionsPanel.SCENE_RT_GROUP)
 		check(panel._values.q_rt_lighting==2,"Cancel restores saved RT quality")
+		panel._set_value("pt_mode",1);panel._set_value("pt_accumulation",1)
+		check(panel._rows[0].disabled and panel._rows[1].disabled and not panel._rows[2].disabled and not panel._rows[4].disabled,"pending path mode replaces RT controls and enables shared quality and accumulation")
+		check(GameData.option("pt_mode")==0,"path selection is pending until Apply")
+		panel._accept();settings.load(GameData.CONFIG_PATH)
+		check(settings.get_value("options","pt_mode",-1)==1 and settings.get_value("options","pt_accumulation",-1)==1 and settings.get_value("options","rt_shadows",-1)==1 and settings.get_value("options","rt_gi",-1)==1,"Apply persists path options and preserves RT preferences")
+		panel.open();panel._show_group(OptionsPanel.SCENE_RT_GROUP)
+		check(panel._values.pt_mode==1 and panel._values.pt_accumulation==1,"reopening restores path options")
+		panel._set_value("pt_mode",2);panel._restore();panel._close();panel.open();panel._show_group(OptionsPanel.SCENE_RT_GROUP)
+		check(panel._values.pt_mode==1,"Cancel restores the saved bounce count")
+		panel._set_value("pt_mode",0)
+		check(not panel._rows[0].disabled and not panel._rows[1].disabled and panel._rows[4].disabled,"turning path mode off restores RT controls")
 	else:
-		for row in 3:check(panel._rows[row].disabled,"unsupported renderer disables RT control "+str(row))
+		for row in 5:check(panel._rows[row].disabled,"unsupported renderer disables RT control "+str(row))
 		panel._sel=0;key(panel,KEY_RIGHT)
 		check(panel._values.rt_shadows==0,"unsupported renderer cannot enable RT")
 		panel._values.rt_shadows=1;panel._show_group(OptionsPanel.SCENE_RT_GROUP)
 		check(not panel._rows[0].disabled,"unsupported renderer still permits disabling a saved RT choice")
 		panel._sel=0;key(panel,KEY_LEFT)
 		check(panel._values.rt_shadows==0,"saved unsupported RT choice can be turned off")
+		panel._values.pt_mode=1;panel._show_group(OptionsPanel.SCENE_RT_GROUP)
+		check(not panel._rows[3].disabled,"unsupported renderer permits disabling saved path mode")
+		panel._sel=3;key(panel,KEY_LEFT)
+		check(panel._values.pt_mode==0,"saved unsupported path mode can be turned off")
 	panel._close();panel.queue_free();await frames()
 	for size: Vector2i in [Vector2i(1280,720),Vector2i(800,600)]:
 		get_window().borderless=true;get_window().size=size
@@ -47,7 +63,7 @@ func run() -> void:
 		for language: String in ["en","ru","de"]:
 			RemakeText.lang=language
 			panel=OptionsPanel.new();add_child(panel);panel.open();panel._show_group(OptionsPanel.SCENE_RT_GROUP)
-			for row in 3:
+			for row in 5:
 				var option: Dictionary=panel._rows[row]
 				check(panel.text_width(option.label)<=260.0,"translated label fits "+language+str(row)+str(size))
 				for choice in option.choices.size():

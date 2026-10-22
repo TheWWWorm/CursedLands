@@ -7,6 +7,7 @@ global uniform vec4 ei_rt_center;
 global uniform mat4 ei_rt_view_projection;
 global uniform mat4 ei_rt_view;
 global uniform vec3 ei_rt_eye;
+global uniform float ei_pt_active;
 global uniform sampler2D ei_rt_gi : filter_nearest, repeat_disable;
 global uniform sampler2D ei_rt_guide : filter_nearest, repeat_disable;
 global uniform sampler2D ei_rt_shadow0 : filter_nearest, repeat_disable;
@@ -18,7 +19,11 @@ global uniform vec4 ei_rt_point3;
 global uniform vec4 ei_rt_point4;
 global uniform vec4 ei_rt_point5;
 global uniform vec4 ei_rt_point6;
-varying float ei_rt_valid;
+// Ground-contact variants already use all 32 varying declarations. Keep
+// both fragment-to-light flags in the existing declaration budget.
+varying vec2 ei_rt_flags;
+#define ei_rt_valid ei_rt_flags.x
+#define ei_pt_blend ei_rt_flags.y
 varying vec4 ei_rt_visibility0;
 varying vec4 ei_rt_visibility1;
 
@@ -47,8 +52,12 @@ bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out ve
     }
     if(total<0.01)return false;
     float fade=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,distance);
-    gi=mix(ei_lin(ei_ambient),gi/total,fade);
-    visibility0=mix(vec4(1.0),a/total,fade);visibility1=mix(vec4(1.0),b/total,fade);
+    if(ei_pt_active>0.5) {
+        gi/=total;visibility0=a/total;visibility1=b/total;
+    } else {
+        gi=mix(ei_lin(ei_ambient),gi/total,fade);
+        visibility0=mix(vec4(1.0),a/total,fade);visibility1=mix(vec4(1.0),b/total,fade);
+    }
     return true;
 }
 
@@ -69,21 +78,27 @@ float ei_rt_point_visibility(vec3 world,vec3 direction,mat4 view,out float range
 """
 
 const CAPTURE := """
-    ei_rt_valid=0.0;ei_rt_visibility0=vec4(1.0);ei_rt_visibility1=vec4(1.0);
+    ei_rt_valid=0.0;ei_pt_blend=0.0;ei_rt_visibility0=vec4(1.0);ei_rt_visibility1=vec4(1.0);
     if(!IN_SHADOW_PASS && (CAMERA_VISIBLE_LAYERS&1048576u)==0u &&
         distance(INV_VIEW_MATRIX[3].xyz,ei_rt_eye)<0.025) {
         vec3 indirect;vec4 a,b;
         vec3 world=(INV_VIEW_MATRIX*vec4(VERTEX,1.0)).xyz;
         vec3 normal=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
         if(ei_rt_sample(world,normal,indirect,a,b)) {
-            ei_rt_valid=1.0;ei_rt_visibility0=a;ei_rt_visibility1=b;
-            vec3 ambient=mix(ei_lin(ei_ambient),indirect,ei_rt_state.z);
-            EMISSION+=ALBEDO*ei_material_diffuse.rgb*ambient*max(1.0-ei_k,0.0)+ei_lin(ei_srgb(ALBEDO)*ei_e);
+            if(ei_pt_active>0.5) {
+                ei_pt_blend=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,length(world-ei_rt_center.xyz));
+                EMISSION+=(ALBEDO*ei_material_diffuse.rgb*indirect+a.rgb+ei_lin(ei_srgb(ALBEDO)*ei_e))*ei_pt_blend;
+            } else {
+                ei_rt_valid=1.0;ei_rt_visibility0=a;ei_rt_visibility1=b;
+                vec3 ambient=mix(ei_lin(ei_ambient),indirect,ei_rt_state.z);
+                EMISSION+=ALBEDO*ei_material_diffuse.rgb*ambient*max(1.0-ei_k,0.0)+ei_lin(ei_srgb(ALBEDO)*ei_e);
+            }
         }
     }
 """
 
 const LIGHT := """
+    vec3 ei_pt_previous_diffuse=DIFFUSE_LIGHT,ei_pt_previous_specular=SPECULAR_LIGHT;
     if(ei_rt_valid>0.5) {
         vec3 direction=LIGHT;
         vec3 colour=LIGHT_COLOR/PI;
@@ -118,7 +133,7 @@ const LIGHT := """
 """
 
 static func requested() -> bool:
-	return GameData.option("rt_shadows")>0 or GameData.option("rt_gi")>0
+	return GameData.option("rt_shadows")>0 or GameData.option("rt_gi")>0 or GameData.option("pt_mode")>0
 
 static func applicable(code: String,lit: bool) -> bool:
 	return lit and requested() and RenderingServer.get_current_rendering_method()=="forward_plus" \
@@ -129,7 +144,7 @@ static func inject(code: String,clouds: bool) -> String:
 	var at := code.find("\nvoid ")
 	code = code.insert(at+1,COMMON)
 	code = Gfx._function_tail(code,"fragment",CAPTURE)
-	code = Gfx._function_tail(code,"light","\n    }\n")
+	code = Gfx._function_tail(code,"light","\n    }\n    DIFFUSE_LIGHT=mix(DIFFUSE_LIGHT,ei_pt_previous_diffuse,ei_pt_blend);\n    SPECULAR_LIGHT=mix(SPECULAR_LIGHT,ei_pt_previous_specular,ei_pt_blend);\n")
 	return code.replace("void light() {","void light() {"+LIGHT.replace("EI_RT_CLOUD","ei_cloud_sun(world)" if clouds else "1.0"))
 
 static func globals() -> void:
@@ -138,6 +153,7 @@ static func globals() -> void:
 	for key in [&"ei_rt_view_projection",&"ei_rt_view"]:
 		RenderingServer.global_shader_parameter_add(key,RenderingServer.GLOBAL_VAR_TYPE_MAT4,Projection())
 	RenderingServer.global_shader_parameter_add(&"ei_rt_eye",RenderingServer.GLOBAL_VAR_TYPE_VEC3,Vector3.ZERO)
+	RenderingServer.global_shader_parameter_add(&"ei_pt_active",RenderingServer.GLOBAL_VAR_TYPE_FLOAT,0.0)
 	for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1"]:
 		RenderingServer.global_shader_parameter_add(key,RenderingServer.GLOBAL_VAR_TYPE_SAMPLER2D,null)
 	for i in 7:

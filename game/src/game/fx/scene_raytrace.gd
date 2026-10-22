@@ -2,6 +2,7 @@ extends Node
 ## Optional scene lighting. The conventional path remains live while scene
 ## snapshots build, outside the bounded RT region, or on unsupported devices.
 const Device = preload("res://src/game/fx/scene_raytrace_device.gd")
+const PathDevice = preload("res://src/game/fx/path_trace_device.gd")
 const Scene = preload("res://src/game/fx/water_raytrace_scene.gd")
 const SCALES := [0.5,0.75,1.0]
 const GI_SAMPLES := [1,2,4]
@@ -27,6 +28,9 @@ var _previous_view_projection := Projection()
 var _previous_camera := Transform3D.IDENTITY
 var _history_key := ""
 var _mode := ""
+var _path_mode := false
+var _path_signature := PackedByteArray()
+var _accumulation_frames := 0
 
 func _init(owner_game: Game) -> void:
 	game = owner_game; name = "SceneRaytrace"
@@ -43,9 +47,11 @@ static func target_size(viewport: Vector2,quality: int) -> Vector2i:
 func _process(dt: float) -> void:
 	var wanted := Gfx.SceneRaytraceShader.requested()
 	var terrain: EITerrain = game.world.terrain if game.world != null else null
-	var mode := "%s:%s:%s"%[GameData.option("rt_shadows"),GameData.option("rt_gi"),GameData.option("q_rt_lighting")]
+	var path_mode := GameData.option("pt_mode")>0
+	var mode := "%s:%s:%s:%s:%s"%[GameData.option("rt_shadows"),GameData.option("rt_gi"),GameData.option("q_rt_lighting"),GameData.option("pt_mode"),GameData.option("pt_accumulation")]
 	if mode != _mode or terrain != _terrain:
-		if terrain != _terrain: _release()
+		if terrain != _terrain or path_mode!=_path_mode: _release()
+		_path_mode=path_mode
 		_mode = mode; _terrain = terrain; _failed = false; _history_key=""
 	if not wanted or not is_instance_valid(terrain) or not terrain.is_visible_in_tree() or game.simulation_only:
 		if device != null or _gather != null: _release()
@@ -73,10 +79,11 @@ func _process(dt: float) -> void:
 			_failed = true; stats["fallback"]="snapshot_budget"; _gather=null; return
 		var geometries := []; var placements := []
 		for geometry: Dictionary in _gather.geometries:
-			geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,"cutoff":geometry.cutoff,"standard":geometry.standard})
+			geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,"cutoff":geometry.cutoff,"standard":geometry.standard,"surface":geometry.surface})
 		for entry: Dictionary in _gather.instances:
 			placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":0})
-		device = Device.new(); device.prepared.connect(_prepared)
+		device = PathDevice.new() if _path_mode else Device.new()
+		device.prepared.connect(_prepared)
 		RenderingServer.call_on_render_thread(device.build.bind(_gather.vertices.to_byte_array(),_gather.images,geometries,placements))
 		_scene = _gather; _gather = null
 		_collect_lights(camera.global_position)
@@ -85,10 +92,10 @@ func _process(dt: float) -> void:
 	var quality := clampi(GameData.option("q_rt_lighting"),0,2)
 	var size := target_size(camera.get_viewport().get_visible_rect().size,quality)
 	var changes := _scene.updates()
-	var frame := _frame(camera,size,quality)
+	var frame := _frame(camera,size,quality,not changes.instances.is_empty() or not changes.poses.is_empty())
 	RenderingServer.call_on_render_thread(device.render.bind(size,frame,changes,GameData.option("q_aniso")))
 	if device.output.get_width()>0:
-		_set_gi_active(GameData.option("rt_gi")>0)
+		_set_gi_active(_path_mode or GameData.option("rt_gi")>0)
 		if not _bound:
 			RenderingServer.global_shader_parameter_set(&"ei_rt_gi",device.output)
 			RenderingServer.global_shader_parameter_set(&"ei_rt_guide",device.guide)
@@ -100,13 +107,17 @@ func _process(dt: float) -> void:
 		RenderingServer.global_shader_parameter_set(&"ei_rt_eye",camera.get_camera_transform().origin)
 		RenderingServer.global_shader_parameter_set(&"ei_rt_center",Vector4(_center.x,_center.y,_center.z,0))
 		RenderingServer.global_shader_parameter_set(&"ei_rt_state",Vector4(1,GameData.option("rt_shadows"),GameData.option("rt_gi"),RECEIVER_RADIUS))
+		RenderingServer.global_shader_parameter_set(&"ei_pt_active",float(_path_mode))
 		stats["active"]=true
 	stats["size"]=[size.x,size.y]; stats["quality"]=quality
 	stats["gi_samples"]=GI_SAMPLES[quality] if GameData.option("rt_gi")>0 else 0
 	stats["shadow_samples"]=SHADOW_SAMPLES[quality] if GameData.option("rt_shadows")>0 else 0
 	stats["lights"]=_lights.size();stats["updated_instances"]=changes.instances.size();stats["updated_poses"]=changes.poses.size()
+	stats["path_tracing"]=_path_mode;stats["path_bounces"]=GameData.option("pt_mode")*2 if _path_mode else 0
+	stats["path_samples"]=GI_SAMPLES[quality] if _path_mode else 0
+	stats["accumulation_frames"]=_accumulation_frames if _path_mode else 0
 
-func _frame(camera: Camera3D,size: Vector2i,quality: int) -> PackedByteArray:
+func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false) -> PackedByteArray:
 	var transform := camera.get_camera_transform()
 	var view := Projection(transform.affine_inverse())
 	var projection := camera.get_camera_projection()
@@ -138,6 +149,22 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int) -> PackedByteArray:
 		colours.append_array(PackedFloat32Array([colour.r,colour.g,colour.b,colour.a]))
 		RenderingServer.global_shader_parameter_set(StringName("ei_rt_point%d"%i),position)
 	data.append_array(colours)
+	if _path_mode:
+		# Progressive accumulation is valid only for an exactly unchanged
+		# camera, projection, lighting and scene. Never retain moving shadows.
+		var signature := data.slice(0,32)
+		signature.append_array(data.slice(64,76));signature.append_array(data.slice(84,144))
+		var bytes := signature.to_byte_array()
+		var stationary := history and not scene_changed and bytes==_path_signature
+		var limit := 256 if GameData.option("pt_accumulation")>0 else 8
+		_accumulation_frames=mini(_accumulation_frames+1,limit) if stationary else 1
+		# Responsive history reprojects through ordinary camera motion. Light
+		# changes invalidate both modes; still-scene history also requires an
+		# identical camera and geometry on every contributing frame.
+		var same_lighting := bytes.slice(32*4)==_path_signature.slice(32*4)
+		if not same_lighting or (limit>8 and not stationary): data[82]=0.0
+		_path_signature=bytes
+		data.append_array(PackedFloat32Array([GameData.option("pt_mode")*2,limit,float(stationary),0]))
 	_previous_view=view;_previous_view_projection=projection*view;_previous_camera=transform;_history_key=key
 	_frame_number=(_frame_number+1)%1000000
 	return data.to_byte_array()
@@ -164,8 +191,10 @@ func _prepared(ok: bool) -> void:
 func _release() -> void:
 	_set_gi_active(false)
 	RenderingServer.global_shader_parameter_set(&"ei_rt_state",Vector4.ZERO)
+	RenderingServer.global_shader_parameter_set(&"ei_pt_active",0.0)
 	stats["active"]=false;_bound=false;_ready_gpu=false;_center=Vector3.INF;_history_key=""
 	_gather=null;_scene=null;_lights.clear()
+	_path_signature=PackedByteArray();_accumulation_frames=0
 	if device!=null:
 		for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1"]:
 			RenderingServer.global_shader_parameter_set(key,null)

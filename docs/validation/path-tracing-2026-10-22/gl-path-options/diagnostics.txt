@@ -1,0 +1,3 @@
+WARNING: The Compatibility renderer does not support overriding the GPU with the --gpu-index command line argument. Falling back to the default GPU for OpenGL applications.
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+[trace 10:06:40 +19815ms] clean exit

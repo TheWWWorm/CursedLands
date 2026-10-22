@@ -1,0 +1,3 @@
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+[trace 10:06:20 +33653ms] clean exit

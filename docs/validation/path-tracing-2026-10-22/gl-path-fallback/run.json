@@ -1,0 +1,48 @@
+{
+  "suite": "scene_raytrace_fallback",
+  "platform": "linux",
+  "renderer": "opengl3",
+  "exit": 0,
+  "seconds": 26.78,
+  "errors": [],
+  "summary": [
+    "PASS conventional baseline has no scene RT resources",
+    "PASS unsupported renderer stays on conventional lighting",
+    "PASS unavailable RT does not suppress ordinary ambient effects",
+    "PASS unsupported renderer keeps conventional lighting with path mode saved",
+    "PASS unavailable path tracing preserves ordinary ambient effects",
+    "SCENE_RT_FALLBACK 5 checks 0 failures"
+  ],
+  "command": [
+    "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/preview-linux/CursedLands.x86_64",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--gpu-index",
+    "0",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--windowed",
+    "--borderless",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/fixtures-linux/scene_raytrace_fallback.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/gl-path-fallback",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/preview-linux/mods"
+  ],
+  "profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  }
+}

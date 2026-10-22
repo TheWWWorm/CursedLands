@@ -11,6 +11,10 @@ are under **Options → Graphics → Lighting and shadows → Ray-traced lightin
   lights and emissive surfaces, plus occluded outdoor sky illumination.
 - **RT lighting quality:** an independent budget for both effects.
 
+The same page also offers a separate
+[multi-bounce path-tracing prototype](path-tracing-experiment.md), which
+replaces these two effects while active and preserves their saved settings.
+
 Both effects default to Off. Quality defaults to Medium. Presets and automatic
 detection preserve these choices. Apply changes without a restart; Cancel
 discards pending changes. Labels, choices, help and availability explanations
@@ -82,7 +86,7 @@ existing shadow rendering.
 
 ## Limits and cost
 
-This is an experimental one-bounce GI implementation. It does not provide
+This mode is an experimental one-bounce GI implementation. It does not provide
 multi-bounce path tracing, a world-space irradiance cache, ray-traced specular
 lighting or production-quality denoising. Moving lighting can be noisy or lag
 briefly; reprojection has no per-object motion vectors. Geometry and material

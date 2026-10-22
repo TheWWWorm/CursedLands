@@ -20,7 +20,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dxc', type=Path, help='DXC 1.9.2609 executable; required when rebuilding')
     parser.add_argument('--check', action='store_true', help='Verify source/binary hashes; also reproduce outputs if --dxc is supplied')
-    parser.add_argument('--shader', choices=['water_raytrace', 'scene_raytrace'], default='water_raytrace')
+    parser.add_argument('--shader', choices=['water_raytrace', 'scene_raytrace', 'path_trace'], default='water_raytrace')
     args = parser.parse_args()
     prefix = args.shader + '_'
     source = SHADERS / (args.shader + '.hlsl')
