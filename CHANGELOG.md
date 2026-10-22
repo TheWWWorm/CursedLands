@@ -1,7 +1,12 @@
 # Changelog
 
-## Unreleased
+## 1.24.0 — 2026-10-22
 
+- Support **Ray traced (test)** water reflections with **Forward+ (Direct3D 12)** on Windows as well as Vulkan. The Windows executable includes the DXR engine patch, and FSR frame generation can run together with RT water in DX12. Add **RT reflection quality** (Low 50 %, Medium 75 %, High 100 % of the viewport, default High) and apply the existing **Texture filtering** setting to RT reflections for sharper reflected textures.
+- Add optional experimental ray-traced lighting under **Options → Graphics → Lighting and shadows → Ray-traced lighting** for Forward+ Direct3D 12 and Vulkan on RT-capable GPUs: **RT shadows (test)**, **RT indirect light (test)**, a multi-bounce **Path tracing (test)** prototype with 2 or 4 bounces, **RT lighting quality** and **Path accumulation**. All start off; presets and automatic detection keep the choices. Labels, choices and help are available in English, Russian and German.
+- Give sixteen Autochess creature families their original alternate palettes as they gain stars, for example trolls from green to blue to black. Field models, reserves, previews, portraits and online boards share the rank appearance; palettes do not change combat. Creatures in preparation route around each other and reach their places faster, and large figures keep their fitted size when their models change.
+- Group identical items in pickup and shared-loot messages, so eight thin leathers read as one "x8" entry for both the finder and the other players.
+- Add the console `cursor` command: print the cursor position once, or log it continuously with `cursor on [interval]` until `cursor off`.
 - Make Evil Islands side quests work on their campaign maps. Load the multiplayer creature prototypes they use, and bind the orc camp and bridge names that only the multiplayer zone script declared, so objectives such as "kill the orcs" no longer complete on arrival. ([#67](https://github.com/TheWWWorm/CursedLands/issues/67))
 - Start the z19q3 side quest with the teleport panels switched on, as on its multiplayer map, so objectives 5–7 are met by switching them off instead of being complete on arrival. The campaign's own teleport quest still counts only panels the player switches on.
 - Open a village NPC's topic list at once, as the original does, instead of walking the hero to the NPC first. The hero walks over after a topic is picked; Space, the gamepad's pause button or a tap on touch screens skips that walk and starts the conversation.

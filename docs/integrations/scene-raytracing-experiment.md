@@ -1,6 +1,6 @@
-# Ray-traced scene lighting (unreleased)
+# Ray-traced scene lighting (experimental)
 
-The development build adds optional hardware ray-traced shadows and one-bounce
+Since 1.24.0, the Windows and Linux builds add optional hardware ray-traced shadows and one-bounce
 diffuse global illumination to the main campaign view. Terrain, objects and
 characters using the game's lit materials receive the lighting. The controls
 are under **Options → Graphics → Lighting and shadows → Ray-traced lighting**:
@@ -41,7 +41,7 @@ Use the qualified Godot 4.7 engine and native extensions documented in the
 The same engine supports the new shaders without an additional engine patch.
 DX12 is the primary Windows development path; Vulkan Forward+ also works on
 qualified hardware. Compatibility/OpenGL, unqualified engines and non-RT GPUs
-keep conventional lighting. These changes are not in published 1.23.0.
+keep conventional lighting. These changes first shipped in 1.24.0.
 
 `scene_raytrace.gd` gathers a 96 m scene around the active camera, including
 ceilings and underground geometry. It shares the water experiment's material,
