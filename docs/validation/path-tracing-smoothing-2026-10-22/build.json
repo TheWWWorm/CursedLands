@@ -1,0 +1,70 @@
+{
+  "baseline_commit": "69056f92",
+  "source_hashes": {
+    "src/game/fx/path_trace_device.gd": "43b01d135f92dc71b6b0ae9b740f714888b18c7f609aaa64e89070ab89343b18",
+    "src/game/fx/scene_raytrace.gd": "5dd2e15d0f3f1f579cea2f7e4c0f644b1eea8dbffd75107ebbd1818734c80c30",
+    "src/game/fx/scene_raytrace_shader.gd": "1ab58cca9d30bd3fbf147174733e1cb6a03dba9e4975187803266dbda776e2c5",
+    "src/game/fx/shaders/path_trace.hlsl": "fe64a695ca7cbc15c07956ca5f8cfb4605e2323c9fe6b1cc9f809145cd0b36bb",
+    "src/game/fx/shaders/path_trace_filter.glsl": "f10e3ba82403801787837a98751206dbe1e8a88f98268b9c14f036ae682c8d8d",
+    "src/game/fx/shaders/path_trace_raygen.dxil": "1b4aaa7658830cad960d937979bdeb0e10072d32faee20ce047ddd370278c3b8",
+    "src/game/fx/shaders/path_trace_raygen.spv": "35c54a58335ec7aef4f3a8bd7f2675b0093a00341dc7bc5f75ee194bd55f374b"
+  },
+  "packages": {
+    "preview-windows/CursedLands.exe": "e920a09af7c019d29a96d229a1a9ff7f727598b804d5d7c0c1e3db24ef5ada3b",
+    "preview-windows/CursedLands.pck": "f9fc75f509877ffb01b6a1893454407b5f5ae24ada7d8262aa34b4495fb503cb",
+    "preview-linux/CursedLands.x86_64": "5cd55e014b01f542e23e0591bdcd5481c676d29ad7cf283b87d6e329c1428815",
+    "preview-linux/CursedLands.pck": "f9fc75f509877ffb01b6a1893454407b5f5ae24ada7d8262aa34b4495fb503cb",
+    "preview-windows-path-baseline/CursedLands.pck": "25fc6a5ff173df0698be25c039268fa944b6e88a6164678b8c2215bd7d4a4ead"
+  },
+  "branding": {
+    "exe_matches_previous_icon_qualified_export": true,
+    "previous_icon_check": {
+      "resource_icon_count": 6,
+      "images": [
+        {
+          "size": [
+            16,
+            16
+          ],
+          "pixels_equal": true
+        },
+        {
+          "size": [
+            32,
+            32
+          ],
+          "pixels_equal": true
+        },
+        {
+          "size": [
+            48,
+            48
+          ],
+          "pixels_equal": true
+        },
+        {
+          "size": [
+            64,
+            64
+          ],
+          "pixels_equal": true
+        },
+        {
+          "size": [
+            128,
+            128
+          ],
+          "pixels_equal": true
+        },
+        {
+          "size": [
+            256,
+            256
+          ],
+          "pixels_equal": true
+        }
+      ],
+      "note": "Godot exports six native icon sizes; the source also has 24px, which the exporter omits."
+    }
+  }
+}

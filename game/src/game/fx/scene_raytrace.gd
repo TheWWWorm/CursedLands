@@ -102,7 +102,9 @@ func _process(dt: float) -> void:
 			RenderingServer.global_shader_parameter_set(&"ei_rt_shadow0",device.shadow0)
 			RenderingServer.global_shader_parameter_set(&"ei_rt_shadow1",device.shadow1)
 			_bound = true
-		RenderingServer.global_shader_parameter_set(&"ei_rt_view_projection",camera.get_camera_projection()*Projection(camera.get_camera_transform().affine_inverse()))
+		var view_projection := camera.get_camera_projection()*Projection(camera.get_camera_transform().affine_inverse())
+		RenderingServer.global_shader_parameter_set(&"ei_rt_view_projection",view_projection)
+		RenderingServer.global_shader_parameter_set(&"ei_rt_inverse_view_projection",view_projection.inverse())
 		RenderingServer.global_shader_parameter_set(&"ei_rt_view",Projection(camera.get_camera_transform().affine_inverse()))
 		RenderingServer.global_shader_parameter_set(&"ei_rt_eye",camera.get_camera_transform().origin)
 		RenderingServer.global_shader_parameter_set(&"ei_rt_center",Vector4(_center.x,_center.y,_center.z,0))
@@ -162,9 +164,13 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false)
 		# changes invalidate both modes; still-scene history also requires an
 		# identical camera and geometry on every contributing frame.
 		var same_lighting := bytes.slice(32*4)==_path_signature.slice(32*4)
-		if not same_lighting or (limit>8 and not stationary): data[82]=0.0
+		var same_projection := bytes.slice(0,16*4)==_path_signature.slice(0,16*4)
+		if not same_lighting or not same_projection or (limit>8 and not stationary): data[82]=0.0
 		_path_signature=bytes
 		data.append_array(PackedFloat32Array([GameData.option("pt_mode")*2,limit,float(stationary),0]))
+		var inverse_previous := _previous_view_projection.inverse()
+		for axis in 4:
+			var v: Vector4=inverse_previous[axis];data.append_array(PackedFloat32Array([v.x,v.y,v.z,v.w]))
 	_previous_view=view;_previous_view_projection=projection*view;_previous_camera=transform;_history_key=key
 	_frame_number=(_frame_number+1)%1000000
 	return data.to_byte_array()

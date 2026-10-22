@@ -5,6 +5,7 @@ const COMMON := """
 global uniform vec4 ei_rt_state; // enabled, shadows, GI, receiver radius
 global uniform vec4 ei_rt_center;
 global uniform mat4 ei_rt_view_projection;
+global uniform mat4 ei_rt_inverse_view_projection;
 global uniform mat4 ei_rt_view;
 global uniform vec3 ei_rt_eye;
 global uniform float ei_pt_active;
@@ -27,16 +28,32 @@ varying vec2 ei_rt_flags;
 varying vec4 ei_rt_visibility0;
 varying vec4 ei_rt_visibility1;
 
+vec3 ei_rt_position(ivec2 p,float depth,ivec2 size) {
+    vec2 uv=(vec2(p)+0.5)/vec2(size);
+    vec4 near=ei_rt_inverse_view_projection*vec4(uv.x*2.0-1.0,1.0-uv.y*2.0,-1.0,1.0);near/=near.w;
+    vec3 forward=-vec3(ei_rt_view[0][2],ei_rt_view[1][2],ei_rt_view[2][2]);
+    float near_depth=dot(near.xyz-ei_rt_eye,forward);
+    // Perspective clip.w changes with world position; orthographic does not.
+    bool orthographic=abs(ei_rt_view_projection[0][3])+abs(ei_rt_view_projection[1][3])+abs(ei_rt_view_projection[2][3])<0.001;
+    return orthographic?near.xyz+forward*(depth-near_depth):ei_rt_eye+(near.xyz-ei_rt_eye)*(depth/near_depth);
+}
+
 bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out vec4 visibility1) {
     gi=vec3(0.0);visibility0=vec4(1.0);visibility1=vec4(1.0);
     if(ei_rt_state.x<0.5)return false;
     vec4 clip=ei_rt_view_projection*vec4(world,1.0);
     vec2 uv=vec2(clip.x,-clip.y)/clip.w*0.5+0.5;
+    ivec2 size=textureSize(ei_rt_guide,0);
+    // Evaluate derivatives before receiver-dependent branches so each quad
+    // has a valid tangent plane even at the snapshot/viewport boundaries.
+    vec3 dx=dFdx(world),dy=dFdy(world),plane=cross(dx,dy);
+    plane=length(plane)>0.0000001?normalize(plane):normal;
+    float footprint=max(length(dx)/max(length(dFdx(uv)*vec2(size)),0.001),
+                        length(dy)/max(length(dFdy(uv)*vec2(size)),0.001));
     if(clip.w<=0.0||any(lessThan(uv,vec2(0.0)))||any(greaterThanEqual(uv,vec2(1.0))))return false;
     float distance=length(world-ei_rt_center.xyz);
     if(distance>=ei_rt_state.w)return false;
     float depth=-(ei_rt_view*vec4(world,1.0)).z;
-    ivec2 size=textureSize(ei_rt_guide,0);
     vec2 pixel=uv*vec2(size)-0.5,blend=fract(pixel);
     ivec2 base=ivec2(floor(pixel));
     float total=0.0;vec4 a=vec4(0.0),b=vec4(0.0);
@@ -45,7 +62,9 @@ bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out ve
     for(int y=0;y<2;y++)for(int x=0;x<2;x++) {
         ivec2 p=clamp(base+ivec2(x,y),ivec2(0),size-1);
         vec4 guide=texelFetch(ei_rt_guide,p,0);
-        if(guide.w<=0.0||abs(depth-guide.w)>max(0.06,depth*0.008)||dot(normal,guide.xyz)<0.45)continue;
+        if(guide.w<=0.0||dot(normal,guide.xyz)<0.45)continue;
+        vec3 delta=ei_rt_position(p,guide.w,size)-world;
+        if(abs(dot(delta,plane))>max(0.025,depth*0.0005)||length(delta)>max(0.1,footprint*2.5))continue;
         float w=(x==0?1.0-blend.x:blend.x)*(y==0?1.0-blend.y:blend.y);
         gi+=texelFetch(ei_rt_gi,p,0).rgb*w;
         a+=texelFetch(ei_rt_shadow0,p,0)*w;b+=texelFetch(ei_rt_shadow1,p,0)*w;total+=w;
@@ -150,7 +169,7 @@ static func inject(code: String,clouds: bool) -> String:
 static func globals() -> void:
 	for key in [&"ei_rt_state",&"ei_rt_center"]:
 		RenderingServer.global_shader_parameter_add(key,RenderingServer.GLOBAL_VAR_TYPE_VEC4,Vector4.ZERO)
-	for key in [&"ei_rt_view_projection",&"ei_rt_view"]:
+	for key in [&"ei_rt_view_projection",&"ei_rt_inverse_view_projection",&"ei_rt_view"]:
 		RenderingServer.global_shader_parameter_add(key,RenderingServer.GLOBAL_VAR_TYPE_MAT4,Projection())
 	RenderingServer.global_shader_parameter_add(&"ei_rt_eye",RenderingServer.GLOBAL_VAR_TYPE_VEC3,Vector3.ZERO)
 	RenderingServer.global_shader_parameter_add(&"ei_pt_active",RenderingServer.GLOBAL_VAR_TYPE_FLOAT,0.0)

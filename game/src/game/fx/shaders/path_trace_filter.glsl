@@ -17,6 +17,7 @@ layout(std140,set=0,binding=12) uniform Frame {
     mat4 inv_projection;mat4 camera_world;mat4 previous_view_projection;mat4 previous_view;
     vec4 sun;vec4 sun_direction;vec4 sky;vec4 settings;vec4 camera;vec4 center_radius;
     vec4 point_position[7];vec4 point_colour[7];vec4 path;
+    mat4 previous_inverse_view_projection;
 } frame;
 
 vec3 position_at(ivec2 pixel,float depth,ivec2 size) {
@@ -27,6 +28,15 @@ vec3 position_at(ivec2 pixel,float depth,ivec2 size) {
 }
 vec3 finite_signal(vec3 c) {
     return any(isnan(c))||any(isinf(c))?vec3(0.0):clamp(c,0.0,60000.0);
+}
+vec3 previous_position(ivec2 p,float depth,ivec2 size) {
+    vec2 uv=(vec2(p)+0.5)/vec2(size);
+    vec4 near=frame.previous_inverse_view_projection*vec4(uv.x*2.0-1.0,1.0-uv.y*2.0,-1.0,1.0);
+    near/=near.w;
+    vec3 eye=-(transpose(mat3(frame.previous_view))*frame.previous_view[3].xyz);
+    vec3 forward=-vec3(frame.previous_view[0][2],frame.previous_view[1][2],frame.previous_view[2][2]);
+    float near_depth=dot(near.xyz-eye,forward);
+    return frame.camera.x>0.5?near.xyz+forward*(depth-near_depth):eye+(near.xyz-eye)*(depth/near_depth);
 }
 void main() {
     ivec2 p=ivec2(gl_GlobalInvocationID.xy),size=imageSize(raw_diffuse);
@@ -66,14 +76,33 @@ void main() {
     vec2 uv=vec2(previous.x,-previous.y)/previous.w*0.5+0.5;
     if(frame.camera.z>0.5&&(!progressive||frame.path.z>0.5)&&previous.w>0.0&&
         all(greaterThanEqual(uv,vec2(0.0)))&&all(lessThan(uv,vec2(1.0)))) {
-        ivec2 q=ivec2(uv*vec2(size));
-        vec4 g=imageLoad(previous_guide,q),m=imageLoad(previous_material,q);
-        float expected=-(frame.previous_view*vec4(world,1.0)).z;
-        if(g.w>0.0&&abs(g.w-expected)<max(0.035,footprint*0.75)&&dot(g.xyz,guide.xyz)>0.96&&
-            abs(m.w-material.w)<0.05&&length(m.rgb-material.rgb)<0.15) {
-            vec4 old=imageLoad(previous_diffuse,q);
-            vec3 old_specular=imageLoad(previous_specular,q).rgb;
-            age=min(old.a+1.0,frame.path.y);
+        // An unchanged progressive camera uses the identical pixel exactly;
+        // repeated subpixel interpolation would blur a converging still image.
+        vec2 pixel=progressive?vec2(p):uv*vec2(size)-0.5;
+        ivec2 base=ivec2(floor(pixel));vec2 blend=fract(pixel);
+        vec4 old=vec4(0.0);vec3 old_specular=vec3(0.0);float total=0.0;
+        vec3 view_normal=(mat3(frame.previous_view)*guide.xyz);
+        float reach=max(0.1,footprint*2.5/max(abs(view_normal.z),0.1));
+        for(int y=0;y<2;y++)for(int x=0;x<2;x++) {
+            ivec2 q=base+ivec2(x,y);
+            if(any(lessThan(q,ivec2(0)))||any(greaterThanEqual(q,size)))continue;
+            float w=(x==0?1.0-blend.x:blend.x)*(y==0?1.0-blend.y:blend.y);
+            if(w<=0.0)continue;
+            vec4 g=imageLoad(previous_guide,q),m=imageLoad(previous_material,q);
+            if(g.w<=0.0||dot(g.xyz,guide.xyz)<=0.96||abs(m.w-material.w)>=0.05||length(m.rgb-material.rgb)>=0.15)continue;
+            vec3 delta=previous_position(q,g.w,size)-world;
+            // Compare surfaces in world space. Adjacent pixels on a slope
+            // legitimately have different depths; unrelated layers still fail.
+            if(abs(dot(delta,guide.xyz))>plane_tolerance||length(delta)>reach)continue;
+            vec4 history=imageLoad(previous_diffuse,q);
+            if(history.a<1.0)continue;
+            old+=vec4(finite_signal(history.rgb),history.a)*w;
+            old_specular+=finite_signal(imageLoad(previous_specular,q).rgb)*w;total+=w;
+        }
+        if(total>0.01) {
+            // Partially disoccluded pixels get less historical confidence.
+            age=min(1.0+old.a,frame.path.y);
+            old.rgb/=total;old_specular/=total;
             if(!progressive) {
                 old.rgb=clamp(old.rgb,dlo-(dhi-dlo)*0.15-0.01,dhi+(dhi-dlo)*0.15+0.01);
                 old_specular=clamp(old_specular,slo-(shi-slo)*0.1-0.01,shi+(shi-slo)*0.1+0.01);

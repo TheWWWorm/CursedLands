@@ -11,6 +11,11 @@ func frame(history:=true,gi:=true,shadows:=true) -> PackedByteArray:
 	var bytes:=super.frame(history,gi,shadows)
 	for i in 3:bytes.encode_float((72+i)*4,sky_energy)
 	bytes.append_array(PackedFloat32Array([bounces,256,1,0]).to_byte_array())
+	# The size check also permits comparison with saved 592-byte prototypes.
+	if device.frame_bytes()>592:
+		var inverse:=(camera.get_camera_projection()*Projection(camera.global_transform.affine_inverse())).inverse()
+		for axis in 4:
+			var v: Vector4=inverse[axis];bytes.append_array(PackedFloat32Array([v.x,v.y,v.z,v.w]).to_byte_array())
 	return bytes
 
 func mean(texture: Texture2DRD) -> Color:

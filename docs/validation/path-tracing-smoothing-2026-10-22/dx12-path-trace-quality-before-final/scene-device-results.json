@@ -1,0 +1,8 @@
+{
+	"checks": 13,
+	"failures": [
+		"flat history interpolates a quarter-pixel camera translation",
+		"sloped history retains matching surface samples",
+		"perspective slope retains bilinear history"
+	]
+}

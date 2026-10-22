@@ -1,0 +1,41 @@
+{
+	"checks": 6,
+	"failures": [
+		"steep receiver at 640 pixels, depth discontinuity false: 0.4247",
+		"steep receiver at 640 pixels, depth discontinuity true: 0.4932",
+		"steep receiver at 960 pixels, depth discontinuity false: 0.7260",
+		"steep receiver at 960 pixels, depth discontinuity true: 0.7534"
+	],
+	"results": [
+		{
+			"correct_fraction": 0.424657534246575,
+			"depth_edge": false,
+			"width": 640
+		},
+		{
+			"correct_fraction": 0.493150684931507,
+			"depth_edge": true,
+			"width": 640
+		},
+		{
+			"correct_fraction": 0.726027397260274,
+			"depth_edge": false,
+			"width": 960
+		},
+		{
+			"correct_fraction": 0.753424657534247,
+			"depth_edge": true,
+			"width": 960
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": false,
+			"width": 1280
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": true,
+			"width": 1280
+		}
+	]
+}

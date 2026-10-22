@@ -24,6 +24,7 @@ struct Frame {
     float4 point_position[7];
     float4 point_colour[7];  // Linear illumination, W emitter radius.
     float4 path;             // Continuation bounces, history limit, stationary, reserved.
+    column_major float4x4 previous_inverse_view_projection;
 };
 [[vk::binding(4,0)]] ConstantBuffer<Frame> frame : register(b400000);
 struct Vertex { float4 position_u; float4 normal_v; float4 diffuse; float4 emission_layer; };
@@ -80,6 +81,14 @@ float ggx_d(float nh,float alpha2) {
 float smith_g1(float nv,float alpha2) {
     return 2.0*nv/max(nv+sqrt(alpha2+(1.0-alpha2)*nv*nv),1e-6);
 }
+float specular_chance(Surface s,float nv) {
+    // Pure metals have no diffuse lobe. For dielectrics, include the grazing
+    // Fresnel increase while keeping support for both demodulated signals.
+    if(s.metalness>=1.0)return 1.0;
+    float3 reflectance=f0(s);
+    float f=max(reflectance.x,max(reflectance.y,reflectance.z));
+    return clamp(f+(1.0-f)*pow(1.0-saturate(nv),5.0),0.05,0.95);
+}
 void bsdf(Surface s,float3 v,float3 l,out float3 diffuse,out float3 specular,out float pdf) {
     diffuse=0.0;specular=0.0;pdf=0.0;
     float nv=dot(s.normal,v),nl=dot(s.normal,l);
@@ -91,18 +100,29 @@ void bsdf(Surface s,float3 v,float3 l,out float3 diffuse,out float3 specular,out
     float d=ggx_d(nh,a2);
     diffuse=(1.0-s.metalness)*(1.0-f)/PI;
     specular=f*d*smith_g1(nv,a2)*smith_g1(nl,a2)/max(4.0*nv*nl,1e-6);
-    float chance=clamp(max(reflectance.x,max(reflectance.y,reflectance.z)),0.1,0.9);
-    pdf=(1.0-chance)*nl/PI+chance*d*nh/max(4.0*vh,1e-6);
+    float chance=specular_chance(s,nv);
+    // Visible-normal GGX density, transformed from half vectors to outgoing
+    // directions. This must match sample_bsdf, including its mixture weight.
+    pdf=(1.0-chance)*nl/PI+chance*d*smith_g1(nv,a2)/max(4.0*nv,1e-6);
 }
 float3 sample_bsdf(Surface s,float3 v,inout uint seed) {
-    float3 reflectance=f0(s);
-    float chance=clamp(max(reflectance.x,max(reflectance.y,reflectance.z)),0.1,0.9);
+    float chance=specular_chance(s,dot(s.normal,v));
     if(random(seed)>=chance)return cosine_ray(s.normal,seed);
-    float a=s.roughness*s.roughness,u=random(seed),phi=random(seed)*2.0*PI;
-    float c=sqrt((1.0-u)/max(1.0+(a*a-1.0)*u,1e-6));
-    float r=sqrt(max(1.0-c*c,0.0));
     float3 t,b;basis(s.normal,t,b);
-    float3 h=normalize(t*(r*cos(phi))+b*(r*sin(phi))+s.normal*c);
+    float a=s.roughness*s.roughness;
+    // Heitz 2018, GGX visible-normal sampling: stretch the view, sample its
+    // projected hemisphere, then transform the normal back to world space.
+    // https://jcgt.org/published/0007/04/01/
+    float3 view=normalize(float3(a*dot(v,t),a*dot(v,b),dot(v,s.normal)));
+    float length2=dot(view.xy,view.xy);
+    float3 tangent=length2>0.0?float3(-view.y,view.x,0)*rsqrt(length2):float3(1,0,0);
+    float3 bitangent=cross(view,tangent);
+    float radius=sqrt(random(seed)),phi=2.0*PI*random(seed);
+    float x=radius*cos(phi),y=radius*sin(phi),blend=0.5*(1.0+view.z);
+    y=lerp(sqrt(max(0.0,1.0-x*x)),y,blend);
+    float3 hemisphere=tangent*x+bitangent*y+view*sqrt(max(0.0,1.0-x*x-y*y));
+    float3 local=normalize(float3(a*hemisphere.xy,max(hemisphere.z,0.0)));
+    float3 h=t*local.x+b*local.y+s.normal*local.z;
     return reflect(-v,h);
 }
 void direct_light(Surface s,float3 v,inout uint seed,out float3 diffuse,out float3 specular) {

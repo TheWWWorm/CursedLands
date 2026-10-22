@@ -1,0 +1,7 @@
+err:   DXGI: Failed to parse display metadata + colorimetry info, using blank.
+WARNING: Failed to get SDR white level for adapterId: 0x00000000000003F3, id: 0
+FAIL steep receiver at 640 pixels, depth discontinuity false: 0.4247
+FAIL steep receiver at 640 pixels, depth discontinuity true: 0.4932
+FAIL steep receiver at 960 pixels, depth discontinuity false: 0.7260
+FAIL steep receiver at 960 pixels, depth discontinuity true: 0.7534
+wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 00d8), starting debugger...

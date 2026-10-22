@@ -19,6 +19,10 @@ func run() -> void:
 		var responsive_pose:=camera.global_transform;camera.rotate_y(0.01);await frames(2)
 		var moving_frame: PackedByteArray=rt._frame(camera,Vector2i(960,540),1)
 		check(moving_frame.decode_float(82*4)>0.5,"responsive mode retains reprojection through small camera motion")
+		var original_fov:=camera.fov;camera.fov+=1.0
+		var zoom_frame: PackedByteArray=rt._frame(camera,Vector2i(960,540),1)
+		check(zoom_frame.decode_float(82*4)<0.5,"projection changes invalidate responsive history")
+		camera.fov=original_fov
 		camera.global_transform=responsive_pose;await frames(12)
 		var device: Object=rt.device
 		GameData.options.pt_mode=2;GameData.options.pt_accumulation=1;await frames(80)

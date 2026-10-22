@@ -49,7 +49,11 @@ continuation segments. At every hit, direct lighting is evaluated from the
 sun and up to seven nearby point lights with traced visibility. A continuation
 hit contributes emission and direct illumination; a miss contributes outdoor
 sky radiance, or zero sky radiance in caves. Diffuse and GGX glossy lobes are
-sampled with a shared mixture PDF. The bounce count bounds work; there is no
+sampled with a shared mixture PDF. Glossy continuations use
+[visible-normal GGX sampling](https://jcgt.org/published/0007/04/01/), with
+Fresnel-aware lobe selection and no diffuse samples for pure metals. This
+reduces grazing-angle variance without increasing the sample budget. The
+bounce count bounds work; there is no
 Russian roulette or light reservoir sampling. Geometric normals offset rays
 outside the actual triangles, while interpolated normals shade the surfaces.
 
@@ -63,11 +67,24 @@ reproduce full PBR texture sets or procedurally modified materials.
 
 `path_trace_filter.glsl` uses normal/depth/plane/material rejection, a 5×5
 diffuse filter and a smaller 3×3 glossy filter. Responsive mode reprojects up
-to eight history frames with neighbourhood clamping. Still scene skips the
+to eight history frames with neighbourhood clamping. Four bilinear history
+taps are independently checked against the receiver's world-space plane,
+normal and material, with reduced history confidence on partial disocclusion.
+This avoids snapping to a single pixel or unnecessarily rejecting a matching
+sloped surface during camera movement. Projection changes reset history.
+Still scene uses the identical pixel without interpolation, skips the
 spatial blur and progressively averages matching pixels, up to 256 frames.
 It is a custom prototype filter, not NRD, DLSS Ray Reconstruction or another
-production denoiser. History is reset on mode, resolution and scene changes;
-light changes invalidate both accumulation modes.
+production denoiser. Mode, resolution, projection and light changes invalidate
+history in both modes. Geometry updates reset Still scene; Responsive rejects
+changed surfaces through the guides and neighbourhood clamp.
+
+The material lookup also compares reconstructed positions against the raster
+triangle's tangent plane, rather than comparing adjacent pixels' raw depths.
+Low/Medium tracing resolutions can therefore cover steep surfaces without
+borrowing lighting from a different depth layer. The additional inverse
+view-projection matrices are computed on the CPU once per frame; target
+allocation and texture memory are unchanged.
 
 The material integration replaces supported nearby lighting and fades back to
 conventional illumination between 60 and 72 m from the scene snapshot centre.
@@ -100,6 +117,9 @@ See the [validation report](../validation/path-tracing-2026-10-22/README.md)
 for actual outdoor/cave captures, timings, frame-generation checks and known
 API diagnostics. DX12 tests here use the Windows build through Wine/VKD3D;
 native Windows and other GPU vendors still require qualification.
+The [sampling and reconstruction follow-up](../validation/path-tracing-smoothing-2026-10-22/README.md)
+records variance, subpixel history, steep-receiver coverage and before/after
+GPU timings for the subsequent smoothing changes.
 
 ## Rebuild and checks
 
@@ -120,6 +140,8 @@ Fixtures run through the existing `--tool` interface:
 | --- | --- |
 | `path_trace_device.gd` | Additional bounce energy, emissive transport, glossy metal, accumulation, emitter removal, stable bindings, resize and teardown |
 | `path_trace_alpha.gd` | Cutout alpha in primary, direct visibility and continuation rays |
+| `path_trace_quality.gd` | Native grazing-metal variance and energy against numerical quadrature; subpixel and sloped reprojection; rejection of unrelated depth layers |
+| `path_trace_receivers.gd` | Rendered steep-surface coverage and depth-edge rejection at 50/75/100% tracing resolution |
 | `path_trace_live.gd` | Outdoor material integration, responsive reprojection, still accumulation, camera reset, quality resizing and conventional restoration |
 | `path_trace_cave.gd` | Cave sky exclusion, two/four bounces, changing light colour, animated actor and history invalidation |
 | `path_trace_materials.gd` | Actual compilation/draw of 144 world material variants |

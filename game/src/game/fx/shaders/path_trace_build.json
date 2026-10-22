@@ -2,10 +2,10 @@
   "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
   "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
   "builder_sha256": "ff85fd620768c0f5656ecd9e78b77dce38fe9fd086e8b2f5b2cf3393ecc5838c",
-  "source_sha256": "eaebf25e9bcf1175394abaac886964bd4252a86fc31eca85e036c2d471beea08",
+  "source_sha256": "fe64a695ca7cbc15c07956ca5f8cfb4605e2323c9fe6b1cc9f809145cd0b36bb",
   "files": {
-    "path_trace_raygen.dxil": "90439332d4fe8ca0e54b19ee74cc109baf17ed257fe85c79f9d8afb7d80efb56",
-    "path_trace_raygen.spv": "2a709a5e21afb53ec4c0ac819d78c5aaadce531966819a57b94d935674192fb3",
+    "path_trace_raygen.dxil": "1b4aaa7658830cad960d937979bdeb0e10072d32faee20ce047ddd370278c3b8",
+    "path_trace_raygen.spv": "35c54a58335ec7aef4f3a8bd7f2675b0093a00341dc7bc5f75ee194bd55f374b",
     "path_trace_miss.dxil": "ddc856fc301921d164fa2bec5096c01d2b233442d3a1e811e012580cea586ad2",
     "path_trace_miss.spv": "17b91094a83579a2cb1fde7b6b7758a8e0a9f026da6ad323b5efaa90277a7367",
     "path_trace_closest_hit.dxil": "66a974dd56adc217f18bbef1d6d0bf1b81403bd48df4dfe097c3fed2ba1af785",

@@ -1,0 +1,119 @@
+{
+  "baseline_commit": "69056f92",
+  "qualified": [
+    {
+      "run": "dx12-path-quality-smooth-validated",
+      "checks": 13,
+      "expected_baseline_failures": 0,
+      "seconds": 13.72,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "dx12-path-receivers-steep-final",
+      "checks": 6,
+      "expected_baseline_failures": 0,
+      "seconds": 12.12,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "dx12-path-trace-device-smooth-final",
+      "checks": 17,
+      "expected_baseline_failures": 0,
+      "seconds": 13.89,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "dx12-path-trace-live-smooth-final",
+      "checks": 14,
+      "expected_baseline_failures": 0,
+      "seconds": 37.24,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "dx12-path-trace-cave-smooth-final",
+      "checks": 12,
+      "expected_baseline_failures": 0,
+      "seconds": 34.64,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "dx12-path-trace-materials-smooth-final",
+      "checks": 470,
+      "expected_baseline_failures": 0,
+      "seconds": 192.22,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "dx12-path-performance-smooth-final",
+      "checks": 14,
+      "expected_baseline_failures": 0,
+      "seconds": 57.91,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "linux-path-quality-smooth-validated",
+      "checks": 13,
+      "expected_baseline_failures": 0,
+      "seconds": 10.07,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "linux-path-device-smooth-validated",
+      "checks": 17,
+      "expected_baseline_failures": 0,
+      "seconds": 10.07,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "linux-path-receivers-smooth-validated",
+      "checks": 6,
+      "expected_baseline_failures": 0,
+      "seconds": 10.37,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "dx12-path-fsr-smooth-final",
+      "checks": 62,
+      "expected_baseline_failures": 0,
+      "seconds": 131.62,
+      "post_exit_wine_fault": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 00dc), starting debugger..."
+      ]
+    },
+    {
+      "run": "dx12-scene-live-smooth-regression",
+      "checks": 32,
+      "expected_baseline_failures": 0,
+      "seconds": 37.09,
+      "post_exit_wine_fault": []
+    }
+  ],
+  "baseline_comparisons": [
+    {
+      "run": "dx12-path-trace-quality-before-final",
+      "checks": 13,
+      "expected_baseline_failures": 3,
+      "seconds": 13.52,
+      "post_exit_wine_fault": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 00d4), starting debugger..."
+      ]
+    },
+    {
+      "run": "dx12-path-receivers-steep-before",
+      "checks": 6,
+      "expected_baseline_failures": 4,
+      "seconds": 15.02,
+      "post_exit_wine_fault": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 00d8), starting debugger..."
+      ]
+    },
+    {
+      "run": "dx12-path-performance-smooth-before",
+      "checks": 14,
+      "expected_baseline_failures": 0,
+      "seconds": 60.46,
+      "post_exit_wine_fault": []
+    }
+  ],
+  "qualified_checks": 676
+}
