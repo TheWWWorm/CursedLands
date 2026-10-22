@@ -1,0 +1,216 @@
+{
+  "baseline_commit": "fddeff26",
+  "unreleased": true,
+  "gpu": "NVIDIA GeForce RTX 3090",
+  "dx12_environment": "Windows export through Wine/VKD3D, GPU 0; not native Windows qualification",
+  "vulkan_environment": "native Linux, NVIDIA 580.178.04",
+  "suites": [
+    {
+      "tag": "materials-final-d3d12-reference",
+      "suite": "path_trace_terrain",
+      "renderer": "d3d12",
+      "exit": 0,
+      "passed_assertions": 36,
+      "fault_diagnostics": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 06d4), starting debugger..."
+      ],
+      "seconds": 13.92
+    },
+    {
+      "tag": "materials-final-d3d12-performance",
+      "suite": "path_trace_performance",
+      "renderer": "d3d12",
+      "exit": 0,
+      "passed_assertions": 14,
+      "fault_diagnostics": [],
+      "seconds": 63.81
+    },
+    {
+      "tag": "materials-final-vulkan-reference",
+      "suite": "path_trace_terrain",
+      "renderer": "vulkan",
+      "exit": 0,
+      "passed_assertions": 36,
+      "fault_diagnostics": [],
+      "seconds": 10.42
+    },
+    {
+      "tag": "materials-final-d3d12-live-stable",
+      "suite": "path_trace_terrain_live",
+      "renderer": "d3d12",
+      "exit": 0,
+      "passed_assertions": 18,
+      "fault_diagnostics": [],
+      "seconds": 54.0
+    },
+    {
+      "tag": "materials-final-vulkan-live-stable",
+      "suite": "path_trace_terrain_live",
+      "renderer": "vulkan",
+      "exit": 0,
+      "passed_assertions": 18,
+      "fault_diagnostics": [],
+      "seconds": 63.3
+    },
+    {
+      "tag": "materials-final-d3d12-daylight",
+      "suite": "path_trace_daylight",
+      "renderer": "d3d12",
+      "exit": 0,
+      "passed_assertions": 33,
+      "fault_diagnostics": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 07ac), starting debugger..."
+      ],
+      "seconds": 12.04
+    },
+    {
+      "tag": "materials-final-d3d12-foliage",
+      "suite": "path_trace_foliage",
+      "renderer": "d3d12",
+      "exit": 0,
+      "passed_assertions": 13,
+      "fault_diagnostics": [],
+      "seconds": 11.32
+    },
+    {
+      "tag": "materials-final-vulkan-daylight",
+      "suite": "path_trace_daylight",
+      "renderer": "vulkan",
+      "exit": 0,
+      "passed_assertions": 33,
+      "fault_diagnostics": [],
+      "seconds": 8.62
+    },
+    {
+      "tag": "materials-final-d3d12-device",
+      "suite": "path_trace_device",
+      "renderer": "d3d12",
+      "exit": 0,
+      "passed_assertions": 17,
+      "fault_diagnostics": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 03e8), starting debugger..."
+      ],
+      "seconds": 12.67
+    },
+    {
+      "tag": "materials-final-d3d12-cave",
+      "suite": "path_trace_cave",
+      "renderer": "d3d12",
+      "exit": 0,
+      "passed_assertions": 12,
+      "fault_diagnostics": [],
+      "seconds": 31.02
+    },
+    {
+      "tag": "materials-final-d3d12-fg",
+      "suite": "path_trace_fsr",
+      "renderer": "d3d12",
+      "exit": 0,
+      "passed_assertions": 62,
+      "fault_diagnostics": [],
+      "seconds": 132.99
+    }
+  ],
+  "passed_assertions": 292,
+  "median_of_two_round_medians_ms": {
+    "before": {
+      "path-2-low": 0.561536,
+      "path-2-medium": 2.956416,
+      "path-2-high": 11.890176,
+      "path-4-low": 0.737024,
+      "path-4-medium": 3.631488,
+      "path-4-high": 14.926079999999999
+    },
+    "after": {
+      "path-2-low": 0.88832,
+      "path-2-medium": 6.050304000000001,
+      "path-2-high": 22.376576,
+      "path-4-low": 1.490688,
+      "path-4-medium": 8.012544,
+      "path-4-high": 27.778688000000002
+    }
+  },
+  "source_sha256": {
+    "game/src/game/fx/path_trace_device.gd": "51fbd9d4cc27d212ed284ecc1a837e3f743ac400e9d287c4cde2417237de26df",
+    "game/src/game/fx/path_trace_terrain.gd": "f63ab0446d331c664a1b7fc7553c225e3525cbee7666983efcc27c6163c2c0ff",
+    "game/src/game/fx/scene_raytrace.gd": "879c2ec3271f1f06d1dc333c5c0a74c510b8d3fd0b6d24cb977819f22d6ac9f3",
+    "game/src/game/fx/shaders/path_trace.hlsl": "2de569b479f7be24fb32d27e359007eda691d68981f34d533921c69ee34f4cd3",
+    "game/src/game/fx/shaders/path_trace_build.json": "44d09aaa063a66d9e2229fedec31f3d940291f3a377941f2a2e276cee8b58abb",
+    "game/src/game/fx/shaders/path_trace_closest_hit.dxil": "9ca87bdd5b9e6e52de488c68dbb7b6a1924754418bbb60daeb1392d992c4112b",
+    "game/src/game/fx/shaders/path_trace_closest_hit.spv": "fdac1ed469f385af0f32404f5477557469d68b7b853d7680e6e5490c4c9427ce",
+    "game/src/game/fx/shaders/path_trace_closest_hit_terrain.dxil": "04ccaac3d7d6c819c3b1ab98ce188f82534bbb2dd93c43171eb9c9c67ca3c75d",
+    "game/src/game/fx/shaders/path_trace_closest_hit_terrain.spv": "d91acc913ed6c6a8d16db4c222800652d7eeadd580b4b26e3cc2b77d0d5c65d9",
+    "game/src/game/fx/shaders/path_trace_closest_hit_transitions.dxil": "2debcb3614fdc48afce51249129efa55400d786e020d9d525368c86023704087",
+    "game/src/game/fx/shaders/path_trace_closest_hit_transitions.spv": "91b968cb6208ef795d25225147c483fcbb57bfc0e168c1a90cf1c9601d218e1b",
+    "game/src/game/fx/shaders/scene_raytrace_build.json": "e470b6123afa81d483477f56e874874455105cc8af01c56f45b994eadb3a3427",
+    "game/src/game/fx/shaders/water_raytrace_build.json": "bd6fb135d7c8fba833104af9ab22afa71e08365f1ce2636a59c5b54529898aea",
+    "game/src/game/fx/water_raytrace_scene.gd": "86528af167b823fc6fecaedd044d1be4fb7d945c6ac220fad57cde3728332c84",
+    "tools/build_water_rt_shaders.py": "920b75dafe9d92c16a7f088ac69a73513189bd1e72f3157772b67d6341c6e89e",
+    "tools/tests/path_trace_fsr.gd": "1a64f349f7fe825b6ec90e7c817bef476900c957ee25c966d3412f3005421fe4",
+    "tools/tests/path_trace_performance.gd": "b188d86ea18e0ea6aeb84b2660257e14848b8038af11ded7b43f425bc8f962e1",
+    "tools/tests/path_trace_terrain.gd": "0abda0195d715d17832a5a49ba142487d706ab55e263fe61d8c857b9f4a7edcb",
+    "tools/tests/path_trace_terrain_live.gd": "d31b0e8b2a22ace68dbc666fe79d3652b502b0c774acfb4760c0ac98e9608594"
+  },
+  "package_sha256": {
+    "preview-windows/CursedLands.exe": "3fdf36babfcbae0b3584aed85e1d52e4e537d3033c9128689cc0593a9ef80fd4",
+    "preview-windows/CursedLands.pck": "74169599c5dfb6ae2354f521ad27f7c9939a81ccafeabad28cfc2726b53cacde",
+    "preview-linux/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "preview-linux/CursedLands.pck": "74169599c5dfb6ae2354f521ad27f7c9939a81ccafeabad28cfc2726b53cacde",
+    "preview-windows-materials-baseline/CursedLands.pck": "c113427df71129628089d223a2f670b5276c713321d6c036603976c780b027d9"
+  },
+  "branding": {
+    "matches_previously_icon_verified_baseline_exe": true,
+    "six_source_icon_payloads": [
+      {
+        "size": [
+          16,
+          16
+        ],
+        "exact_source_payload_present": true
+      },
+      {
+        "size": [
+          32,
+          32
+        ],
+        "exact_source_payload_present": true
+      },
+      {
+        "size": [
+          48,
+          48
+        ],
+        "exact_source_payload_present": true
+      },
+      {
+        "size": [
+          64,
+          64
+        ],
+        "exact_source_payload_present": true
+      },
+      {
+        "size": [
+          128,
+          128
+        ],
+        "exact_source_payload_present": true
+      },
+      {
+        "size": [
+          256,
+          256
+        ],
+        "exact_source_payload_present": true
+      }
+    ]
+  },
+  "profiles": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  }
+}

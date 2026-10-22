@@ -153,9 +153,26 @@ normal. Terrain has a separate, stronger bounded slope response: its sample
 spacing follows the mip footprint, and detail fades over 25–65 m and 2–8 texels
 per tracing pixel. Object relief retains the narrower range above. Perturbations
 are limited continuously near the geometric and viewing hemispheres to avoid
-popping at grazing angles. This is an approximation using the 512×512 trace
-atlas, not the terrain shader's complete semantic detail and procedural normal
-model or authored PBR normal maps.
+popping at grazing angles. Painted relief remains a bounded approximation,
+not geometric displacement or an authored PBR normal map.
+
+Detailed terrain also retains the raster renderer's padded sRGB atlas and its
+exact authored tile identities. The hit shader applies tile rotations, edge
+blends, natural pair/junction transitions, semantic roughness, macro colour and
+the existing procedural detail-normal texture. Cliff eligibility, crest guards
+and vertical projections follow the raster terrain shader. Cliff painted relief
+uses that vertical projection; ordinary terrain keeps its compact four-tap
+relief approximation. This does not reproduce every raster sharpening or relief
+operation, and explicit ray-cone mip footprints approximate raster derivatives.
+
+Tile identities come from retained terrain triangles, not world XZ: original
+maps can shift their vertices. The immutable snapshot retains the atlas owner
+and copies tile/transition/guard metadata, while normal and macro data join the
+existing raw texture array. Terrain detail, cliff or material setting changes,
+and completion of asynchronous procedural textures, rebuild the snapshot.
+Separate original/detailed/transition hit variants avoid loading transition
+code into scenes that do not use it. The existing sample and bounce budgets,
+96-byte ray payload and screen-sized buffers stay unchanged.
 
 The existing Leaf backlighting option now also controls thin diffuse leaf
 transmission in PT. The authored foliage mask identifies leaves and bark;
@@ -254,7 +271,9 @@ formula. It does not simulate water-volume transport on secondary paths.
   and better material data are needed for consistent campaign presentation.
 - Water retains its separate reflection renderer. Water refraction, glass,
   volumetric paths, particles, shader-only vegetation motion, separate emission
-  textures and normal/roughness maps are not part of the path integrator.
+  textures and arbitrary object normal/roughness maps are not part of the path
+  integrator. Terrain uses its existing procedural detail-normal texture and
+  semantic roughness.
 - There are no object motion vectors, spatial light cache, light reservoirs or
   production denoiser. Many occluded lights, cutout emitters, indirect paths
   and glossy motion can remain noisy. The emitter proposal is global to the
@@ -308,10 +327,14 @@ The [contact-lighting follow-up](../validation/path-tracing-contacts-2026-10-22/
 records thin shadows, indirect occlusion, nearby reflections, point-light
 segments, transformed-surface precision and GPU/FG regression checks.
 
+The [terrain material follow-up](../validation/path-tracing-terrain-materials-2026-10-22/README.md)
+records raster-sampler comparisons, cliff/normal integration, matched campaign
+views, Vulkan compiler compatibility and the increased GPU cost.
+
 ## Rebuild and checks
 
-All four stages and the additional ray-generation variant are checked in as
-ten matching DXIL and SPIR-V binaries. Manifests
+All four stages, the additional ray-generation variant and two terrain hit
+variants are checked in as fourteen matching DXIL and SPIR-V binaries. Manifests
 pin source, builder and binary hashes. Rebuild or reproduce with DXC 1.9.2609:
 
 ```sh
@@ -338,6 +361,8 @@ Fixtures run through the existing `--tool` interface:
 | `path_trace_daylight.gd` | Analytic directional-sky irradiance, isotropic fallback, bounded relief, UV/instance mirroring, degenerate UVs, distance and minification fades |
 | `path_trace_daylight_live.gd` | Matched noon/evening/night river views, sky-only history reset, enhanced surface collection and conventional restoration |
 | `path_trace_foliage.gd` | Leaf/bark separation, reflected/transmitted energy, uniform environment, disabled transmission, back-side blockers and emissive MIS |
+| `path_trace_terrain.gd` | Traced tile rotation, pair/junction/cliff colours against the actual raster sampler; shifted tile identities, procedural normals, projected relief, semantic roughness and atlas ownership |
+| `path_trace_terrain_live.gd` | Matched campaign river/cliff views, raw/filtered buffers, terrain/cliff/transition rebuilds and conventional restoration |
 | `path_trace_outdoor.gd` | Matched river/grove views across noon/evening/night, authored foliage collection, leaf-only setting rebuild and conventional restoration |
 | `path_trace_underwater.gd` | Production receiver composition with controlled reflected/emitted radiance and underwater depth coefficients |
 | `path_trace_receivers.gd` | Rendered front/back-face steep-surface coverage and depth-edge rejection at 50/75/100% tracing resolution |

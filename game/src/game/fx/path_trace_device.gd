@@ -3,6 +3,10 @@ extends "res://src/game/fx/scene_raytrace_device.gd"
 ## diffuse illumination, normal/depth, glossy radiance and albedo/roughness.
 const PATH_FILTER = preload("res://src/game/fx/shaders/path_trace_filter.glsl")
 const Emitters = preload("res://src/game/fx/path_trace_emitters.gd")
+const Terrain = preload("res://src/game/fx/path_trace_terrain.gd")
+var terrain := Terrain.new()
+var _terrain_data := RID()
+var _terrain_atlas := RID()
 signal emitter_stats(count: int, candidates: int)
 var emitters := Emitters.new()
 var _instance_geometry := RID()
@@ -12,6 +16,8 @@ var _uses_emitters := false
 var _variants := {}
 func shader_prefix() -> String: return "res://src/game/fx/shaders/path_trace_"
 func shader_stage_path(stage: int) -> String:
+	if stage==RenderingDevice.SHADER_STAGE_CLOSEST_HIT and terrain.data.size()>=Terrain.HEADER and terrain.data.decode_u32(0)>0:
+		return shader_prefix()+("closest_hit_transitions" if terrain.data.decode_u32(56)>0 else "closest_hit_terrain")
 	if stage==RenderingDevice.SHADER_STAGE_RAYGEN and not _uses_emitters: return shader_prefix()+"raygen_no_emitters"
 	return super.shader_stage_path(stage)
 func frame_bytes() -> int: return 704
@@ -24,6 +30,12 @@ func filter_auxiliary_formats() -> Array[int]:
 func instance_id(_geometry_index: int, placement_index: int) -> int: return placement_index
 
 func build_extra(data: PackedByteArray, placements: Array) -> bool:
+	if terrain.data.is_empty(): terrain.data.resize(Terrain.HEADER)
+	_terrain_data = _own(_rd.storage_buffer_create(terrain.data.size(),terrain.data))
+	# Borrow the immutable raster atlas, with a retained TextureLayered owner.
+	# Synthetic/non-terrain scenes bind the existing array as an unused dummy.
+	_terrain_atlas = RenderingServer.texture_get_rd_texture(terrain.atlas.get_rid(),true) if terrain.atlas else _colours
+	if not _terrain_data.is_valid() or not _terrain_atlas.is_valid(): return false
 	_variants[false] = {"shader":_shader,"pipeline":_pipeline}
 	var mapping := _placement_geometry.to_byte_array()
 	_instance_geometry = _own(_rd.storage_buffer_create(mapping.size(),mapping))
@@ -58,7 +70,9 @@ func _upload_emitters() -> bool:
 	return true
 
 func extra_ray_uniforms() -> Array[RDUniform]:
-	var uniforms: Array[RDUniform] = [_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,10,[_instance_geometry])]
+	var uniforms: Array[RDUniform] = [_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,10,[_instance_geometry]),
+		_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,13,[_terrain_data]),
+		_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,14,[_terrain_atlas])]
 	if _uses_emitters:
 		uniforms.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,11,[_emitters]))
 		uniforms.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,12,[_emitter_lookup]))
@@ -75,4 +89,5 @@ func update_scene(changes: Dictionary) -> bool:
 func dispose() -> void:
 	super.dispose()
 	emitters = Emitters.new()
+	terrain = Terrain.new();_terrain_atlas=RID()
 	_variants.clear()

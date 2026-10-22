@@ -1,18 +1,22 @@
 {
   "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
   "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
-  "builder_sha256": "9e8206c3069e67195e3d592b14205f55a1c27368e1d67109f8841aa05f571b8d",
-  "source_sha256": "6c24681fff53cefc491420307a925735713dc4293fbbe19a8928ab1b5edb9386",
+  "builder_sha256": "920b75dafe9d92c16a7f088ac69a73513189bd1e72f3157772b67d6341c6e89e",
+  "source_sha256": "2de569b479f7be24fb32d27e359007eda691d68981f34d533921c69ee34f4cd3",
   "files": {
     "path_trace_raygen.dxil": "d45912d3306e84f1d5f1f2ec3bab96f9f8b97f87bd1687ca15261d6f0758cd64",
     "path_trace_raygen.spv": "2e850b279f1eb5195d1a93b77e25795a7ce0165c921f8ef32e461489d53991f0",
     "path_trace_miss.dxil": "9d181346415e526c5942efaf17c0f941a47df05b313a0e2e72f7d3c491f2ea51",
     "path_trace_miss.spv": "1376ff37c61cc9a09124d61df678d92ba069fce9aafef4e08cb23e98aa8f0179",
-    "path_trace_closest_hit.dxil": "085a2790ad98463a3dd51300e90d8ee6cc2686eb0653b9d1527639a0cb9cb742",
-    "path_trace_closest_hit.spv": "3f6f542b43d02d27e96fe154d78012bae581676e05d854d94eb72dc223e7c538",
+    "path_trace_closest_hit.dxil": "9ca87bdd5b9e6e52de488c68dbb7b6a1924754418bbb60daeb1392d992c4112b",
+    "path_trace_closest_hit.spv": "fdac1ed469f385af0f32404f5477557469d68b7b853d7680e6e5490c4c9427ce",
     "path_trace_any_hit.dxil": "fc8ae7e7102d5f9b7ade1f1fe4cd3f1124e0a2e511494cb2a86ef8b7a5ef77f2",
     "path_trace_any_hit.spv": "9520e13148ceca6edfc9d620dd2e546e6f9c40d812380f2a798c2bebbf7e4c35",
     "path_trace_raygen_no_emitters.dxil": "29da589284b177ea5b69d765df47b203cc935797cb08b88490bb364a4b269d66",
-    "path_trace_raygen_no_emitters.spv": "0a9bd1b5097a45ea4bbcebee9b86272f175a74477debccc4b9636e9464a1fa00"
+    "path_trace_raygen_no_emitters.spv": "0a9bd1b5097a45ea4bbcebee9b86272f175a74477debccc4b9636e9464a1fa00",
+    "path_trace_closest_hit_terrain.dxil": "04ccaac3d7d6c819c3b1ab98ce188f82534bbb2dd93c43171eb9c9c67ca3c75d",
+    "path_trace_closest_hit_terrain.spv": "d91acc913ed6c6a8d16db4c222800652d7eeadd580b4b26e3cc2b77d0d5c65d9",
+    "path_trace_closest_hit_transitions.dxil": "2debcb3614fdc48afce51249129efa55400d786e020d9d525368c86023704087",
+    "path_trace_closest_hit_transitions.spv": "91b968cb6208ef795d25225147c483fcbb57bfc0e168c1a90cf1c9601d218e1b"
   }
 }

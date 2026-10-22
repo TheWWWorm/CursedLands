@@ -1,0 +1,28 @@
+{
+	"checks": 12,
+	"failures": [],
+	"stats": {
+		"accumulation_frames": 2,
+		"active": false,
+		"geometries": 371,
+		"gi_samples": 0,
+		"instances": 378,
+		"lights": 2,
+		"path_bounces": 4,
+		"path_samples": 2,
+		"path_tracing": true,
+		"quality": 1,
+		"shadow_samples": 0,
+		"size": [
+			960,
+			540
+		],
+		"supported": true,
+		"terrain_material_build_us": 0,
+		"terrain_material_bytes": 64,
+		"terrain_material_triangles": 0,
+		"triangles": 47831,
+		"updated_instances": 0,
+		"updated_poses": 0
+	}
+}

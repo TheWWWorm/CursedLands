@@ -70,6 +70,7 @@ func _process(dt: float) -> void:
 	if camera.global_position.distance_to(_center)>16.0:
 		_release(); _center = camera.global_position
 		_gather = Scene.new(); _gather.lighting_camera_mask = camera.cull_mask
+		_gather.path_materials = _path_mode
 		# No water-plane clipping: ceilings, underground rooms and banks all
 		# participate in the lighting acceleration structure.
 		_gather.begin(terrain,_center,-1.0e20)
@@ -85,6 +86,13 @@ func _process(dt: float) -> void:
 		for entry: Dictionary in _gather.instances:
 			placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":0})
 		device = PathDevice.new() if _path_mode else Device.new()
+		if _path_mode:
+			device.terrain.collect(_gather,terrain)
+			if _gather.failed:
+				_failed=true;stats["fallback"]="snapshot_budget";device=null;_gather=null;return
+			stats["terrain_material_bytes"]=device.terrain.data.size()
+			stats["terrain_material_build_us"]=device.terrain.build_us
+			stats["terrain_material_triangles"]=device.terrain.terrain_triangles
 		device.prepared.connect(_prepared)
 		if _path_mode: device.emitter_stats.connect(_emitter_stats)
 		RenderingServer.call_on_render_thread(device.build.bind(_gather.vertices.to_byte_array(),_gather.images,geometries,placements))

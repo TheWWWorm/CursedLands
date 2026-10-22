@@ -1,0 +1,43 @@
+{
+	"checks": 36,
+	"failures": [],
+	"results": {
+		"cliff": {
+			"mean_error": 0.0000889808126965409,
+			"peak_error": 0.000244140625
+		},
+		"cliff-relief": {
+			"samples": 1590,
+			"tilted": 1590,
+			"valid": true
+		},
+		"junction": {
+			"mean_error": 0.000000134354117531447,
+			"peak_error": 0.00006103515625
+		},
+		"pair": {
+			"mean_error": 0.0000000767737814465409,
+			"peak_error": 0.0001220703125
+		},
+		"rotation-0": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"rotation-1": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"rotation-2": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"rotation-3": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"shifted-authored-tile": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		}
+	}
+}

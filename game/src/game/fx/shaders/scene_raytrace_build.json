@@ -1,7 +1,7 @@
 {
   "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
   "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
-  "builder_sha256": "9e8206c3069e67195e3d592b14205f55a1c27368e1d67109f8841aa05f571b8d",
+  "builder_sha256": "920b75dafe9d92c16a7f088ac69a73513189bd1e72f3157772b67d6341c6e89e",
   "source_sha256": "d4102a570843b3da3e9c3daa30ce9ce7ce23e20e3cc8bb539b4b8ab179af8ade",
   "files": {
     "scene_raytrace_raygen.dxil": "6735fd55ccd741382e7c7b9429a3700f71cdd409810922f6700e9609816735d7",

@@ -1,0 +1,45 @@
+{
+	"checks": 36,
+	"failures": [
+		"vertical rock projection contributes visible relief without the noise normal texture"
+	],
+	"results": {
+		"cliff": {
+			"mean_error": 0.0000889808126965409,
+			"peak_error": 0.000244140625
+		},
+		"cliff-relief": {
+			"samples": 1590,
+			"tilted": 180,
+			"valid": true
+		},
+		"junction": {
+			"mean_error": 0.000000105563949488994,
+			"peak_error": 0.00006103515625
+		},
+		"pair": {
+			"mean_error": 0.00253163943500639,
+			"peak_error": 0.017578125
+		},
+		"rotation-0": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"rotation-1": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"rotation-2": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"rotation-3": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		},
+		"shifted-authored-tile": {
+			"mean_error": 0.0,
+			"peak_error": 0.0
+		}
+	}
+}

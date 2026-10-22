@@ -27,6 +27,8 @@ def main():
         # Keep scenes without emitters out of the larger raygen's register /
         # instruction footprint. Hit stages and payload layouts are shared.
         stages.append(('raygen_no_emitters', 'raygen', ['PATH_NO_EMITTERS']))
+        stages.append(('closest_hit_terrain', 'closest_hit', ['PATH_TERRAIN_MATERIALS']))
+        stages.append(('closest_hit_transitions', 'closest_hit', ['PATH_TERRAIN_MATERIALS', 'PATH_TERRAIN_TRANSITIONS']))
     prefix = args.shader + '_'
     source = SHADERS / (args.shader + '.hlsl')
     manifest_path = SHADERS / (args.shader + '_build.json')

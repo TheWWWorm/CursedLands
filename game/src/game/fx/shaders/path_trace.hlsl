@@ -13,6 +13,8 @@
 [[vk::binding(10,0)]] ByteAddressBuffer instance_geometry : register(t1000000);
 [[vk::binding(11,0)]] ByteAddressBuffer emitters : register(t1100000);
 [[vk::binding(12,0)]] ByteAddressBuffer emitter_lookup : register(t1200000);
+[[vk::binding(13,0)]] ByteAddressBuffer terrain_data : register(t1300000);
+[[vk::binding(14,0)]] Texture2DArray<float4> terrain_colours : register(t1400000);
 struct Frame {
     column_major float4x4 inv_projection;
     column_major float4x4 camera_world;
@@ -391,6 +393,425 @@ void main(inout Surface result,Attributes attributes) {
     if(colours.SampleLevel(colour_sampler,float3(hit_uv(a,b,c,w),a.emission_layer.w),0.0).a*a.diffuse.a<asfloat(material.z))IgnoreHit();
 }
 #elif defined(PATH_CLOSEST_HIT)
+// Static terrain material evaluation mirrors GroundSurfaceShader and
+// TerrainCliffShader. The padded sRGB atlas is shared with raster rendering.
+uint4 land_layout() { return terrain_data.Load4(0); }
+float4 land_sampling() { return asfloat(terrain_data.Load4(16)); }
+uint4 land_detail() { return terrain_data.Load4(32); }
+uint4 land_extra() { return terrain_data.Load4(48); }
+uint land_tile(int2 cell) {
+    uint4 layout=land_layout();
+    cell=clamp(cell,int2(0,0),int2(layout.xy)-1);
+    return terrain_data.Load(layout.z+4u*(uint(cell.y)*layout.x+uint(cell.x)));
+}
+float4 tile_info(int2 cell) { uint tile=land_tile(cell);return float4(float(tile&65535u),float((tile>>16u)&255u),0,0); }
+float2 tile_turn(float2 p,int rotation) {
+    if(rotation==1)return float2(-p.y,p.x);
+    if(rotation==2)return -p;
+    if(rotation==3)return float2(p.y,-p.x);
+    return p;
+}
+float4 tile_traits(float type) {
+    int g=int(type+0.5);
+    return float4(g==2||g==4||g==15,g==3||g==9||g==12,g==0||g==5||g==11,g==10);
+}
+float3 tile_sample(float packed,float2 p,float2 dx,float2 dy) {
+    int code=int(packed+0.5),tile=code&63,rotation=(code>>14)&3;
+    float4 sampling=land_sampling();float per_row=sampling.x;
+    float border=8.0*sampling.z*per_row,interior=1.0-2.0*border,padding=sampling.y,span=1.0+2.0*padding;
+    float2 local=border+(0.5+tile_turn(p-0.5,rotation))*interior;
+    local=saturate(float2(local.x,1.0-local.y));
+    float2 uv=(float2(tile%int(per_row),int(per_row)-1-tile/int(per_row))+(local+padding)/span)/per_row;
+    uint width,height,layers,levels;terrain_colours.GetDimensions(0,width,height,layers,levels);
+    float2 gx=tile_turn(dx,rotation)*interior/(per_row*span),gy=tile_turn(dy,rotation)*interior/(per_row*span);
+    float2 margin=(min(local,1.0-local)+padding)/(per_row*span);
+    float gutter=(padding>0.0?padding:border)/(per_row*span);
+    float safe_span=max(min(gutter,min(margin.x,margin.y)),0.5/float(width));
+    float footprint=min(max(length(gx),length(gy)),safe_span)*float(width);
+    float lod=max(log2(max(footprint,1.0)),0.0);
+    return terrain_colours.SampleLevel(colour_sampler,float3(uv,float((code>>6)&255)),lod).rgb;
+}
+float3 transition_original_sample(int2 cell,float2 p,float2 dx,float2 dy,out float4 traits) {
+    int2 shift=int2(floor(p));cell+=shift;p-=float2(shift);
+    float4 info=tile_info(cell);float3 colour=tile_sample(info.r,p,dx,dy);traits=tile_traits(info.g);
+    if(land_sampling().w<0.5)return colour;
+    float2 weight=0.5*(1.0-smoothstep(0.0,0.12,min(p,1.0-p)));
+    int2 step_cell=int2(p.x<0.5?-1:1,p.y<0.5?-1:1);
+    if(weight.x>0.0) {
+        info=tile_info(cell+int2(step_cell.x,0));
+        colour=lerp(colour,tile_sample(info.r,p-float2(step_cell.x,0),dx,dy),weight.x);
+        traits=lerp(traits,tile_traits(info.g),weight.x);
+    }
+    if(weight.y>0.0) {
+        info=tile_info(cell+int2(0,step_cell.y));
+        float3 other=tile_sample(info.r,p-float2(0,step_cell.y),dx,dy);float4 other_traits=tile_traits(info.g);
+        if(weight.x>0.0) {
+            info=tile_info(cell+step_cell);
+            other=lerp(other,tile_sample(info.r,p-float2(step_cell),dx,dy),weight.x);
+            other_traits=lerp(other_traits,tile_traits(info.g),weight.x);
+        }
+        colour=lerp(colour,other,weight.y);traits=lerp(traits,other_traits,weight.y);
+    }
+    return colour;
+}
+float4 transition_row(int2 cell) {
+    uint4 layout=land_layout();uint offset=land_extra().z;
+    if(offset==0u||any(cell<0)||any(cell>=int2(layout.xy)))return 0.0;
+    return asfloat(terrain_data.Load4(offset+16u*(uint(cell.y)*layout.x+uint(cell.x))));
+}
+float4 transition_junction_row(int2 cell) {
+    uint4 layout=land_layout();uint offset=land_extra().w;
+    if(offset==0u||any(cell<0)||any(cell>=int2(layout.xy)))return 0.0;
+    return asfloat(terrain_data.Load4(offset+16u*(uint(cell.y)*layout.x+uint(cell.x))));
+}
+float cliff_eligible(int2 cell) {
+    uint4 layout=land_layout();
+    if(land_detail().z==0u||any(cell<0)||any(cell>=int2(layout.xy)))return 0.0;
+    return float((land_tile(cell)>>24u)&1u);
+}
+float cliff_vertex(int2 p) {
+    uint at=uint(p.y)*land_extra().x+uint(p.x);
+    return float((terrain_data.Load(land_detail().z+(at&~3u))>>((at&3u)*8u))&255u)/255.0;
+}
+float cliff_guard(float2 grid) {
+    int2 a=clamp(int2(floor(grid)),int2(0,0),int2(land_extra().xy)-2);float2 p=saturate(grid-float2(a));
+    float ne=cliff_vertex(a+int2(1,0)),sw=cliff_vertex(a+int2(0,1));
+    return p.x+p.y>1.0?ne*(1.0-p.y)+sw*(1.0-p.x)+cliff_vertex(a+int2(1,1))*(p.x+p.y-1.0):
+        cliff_vertex(a)*(1.0-p.x-p.y)+ne*p.x+sw*p.y;
+}
+float3 cliff_weights(int2 cell,float2 p,float3 normal,float distance_to_eye) {
+    if(cliff_eligible(cell)<0.5)return 0.0;
+    float3 n=abs(normalize(normal));float side=(1.0-smoothstep(0.57357644,0.76604444,n.y))*(1.0-smoothstep(80.0,140.0,distance_to_eye));
+    if(side<=0.0)return 0.0;
+    side*=1.0-smoothstep(0.72,0.95,cliff_guard((float2(cell)+p)*2.0));
+    float2 weight=0.5*(1.0-smoothstep(0.0,0.15,min(p,1.0-p)));
+    int2 step_cell=int2(p.x<0.5?-1:1,p.y<0.5?-1:1);
+    if(cliff_eligible(cell+int2(step_cell.x,0))<0.5)side*=1.0-2.0*weight.x;
+    if(cliff_eligible(cell+int2(0,step_cell.y))<0.5)side*=1.0-2.0*weight.y;
+    if(cliff_eligible(cell+step_cell)<0.5)side*=1.0-4.0*weight.x*weight.y;
+    float2 axes=n.xz*n.xz;axes/=max(axes.x+axes.y,1e-8);axes=max(axes-0.02,0.0);axes/=max(axes.x+axes.y,1e-8);
+    return float3(axes.x*side,side,axes.y*side);
+}
+float3 cliff_tile(float code,float3 world,float3 planes,float footprint) {
+    float3 colour=0.0;float2 dx=float2(footprint*0.5,0),dy=float2(0,footprint*0.5);
+    [branch] if(planes.x>0.0)colour+=tile_sample(code,frac(float2(-world.z,world.y)*0.5),dx,dy)*planes.x;
+    [branch] if(planes.z>0.0)colour+=tile_sample(code,frac(world.xy*0.5),dx,dy)*planes.z;
+    return colour;
+}
+float3 cliff_albedo(float3 original,int2 cell,float2 p,float3 world,float3 planes,float footprint) {
+    if(planes.y<=0.0)return original;
+    float3 own=cliff_tile(tile_info(cell).r,world,planes,footprint),colour=own;
+    float2 weight=0.5*(1.0-smoothstep(0.0,0.15,min(p,1.0-p)));
+    int2 step_cell=int2(p.x<0.5?-1:1,p.y<0.5?-1:1);
+    if(weight.x>0.0&&cliff_eligible(cell+int2(step_cell.x,0))>0.5)colour=lerp(colour,cliff_tile(tile_info(cell+int2(step_cell.x,0)).r,world,planes,footprint),weight.x);
+    if(weight.y>0.0) {
+        float3 other=cliff_eligible(cell+int2(0,step_cell.y))>0.5?cliff_tile(tile_info(cell+int2(0,step_cell.y)).r,world,planes,footprint):own;
+        if(weight.x>0.0&&cliff_eligible(cell+step_cell)>0.5)other=lerp(other,cliff_tile(tile_info(cell+step_cell).r,world,planes,footprint),weight.x);
+        colour=lerp(colour,other,weight.y);
+    }
+    return original*(1.0-planes.y)+colour;
+}
+// Keep a perturbed shading normal continuously inside both valid hemispheres.
+float3 land_normal(float3 n,float3 perturbation,float3 geometric) {
+    float limit=1.0;float projected=-dot(perturbation,geometric);
+    if(projected>0.0)limit=min(limit,0.8*max(dot(n,geometric),0.0)/projected);
+    projected=dot(perturbation,WorldRayDirection());
+    if(projected>0.0)limit=min(limit,0.8*max(dot(n,-WorldRayDirection()),0.0)/projected);
+    float3 detailed=normalize(n+perturbation*limit);
+    return dot(detailed,geometric)>0.05&&dot(detailed,WorldRayDirection())<0.0?detailed:n;
+}
+
+#if defined(PATH_TERRAIN_TRANSITIONS)
+// Natural-transition donor selection, guards and junction weights match
+// TerrainTransitionShader.FUNCTIONS and JUNCTION_FUNCTIONS.
+float transition_noise(float2 p) {
+	float2 cell=floor(p); float2 f=frac(p); f=f*f*(3.0-2.0*f);
+	float4 q=float4(dot(cell,float2(127.1,311.7)),dot(cell+float2(1.0,0.0),float2(127.1,311.7)),
+		dot(cell+float2(0.0,1.0),float2(127.1,311.7)),dot(cell+(float2)1.0,float2(127.1,311.7)));
+	float4 h=frac(sin(q)*43758.5453);
+	return lerp(lerp(h.x,h.y,f.x),lerp(h.z,h.w,f.x),f.y);
+}
+float transition_weight(float4 row,float2 p,int family_b) {
+	int pair=int(row.a+0.5); int a=pair&63; int b=pair>>6;
+	if (a==b) { return b==family_b ? 1.0 : 0.0; }
+	int bits=int(row.b)&15;
+	float4 w=float4(float(bits&1),float((bits>>1)&1),float((bits>>2)&1),float((bits>>3)&1));
+	float weight=lerp(lerp(w.x,w.y,p.x),lerp(w.z,w.w,p.x),p.y);
+	return b==family_b ? weight : 1.0-weight;
+}
+bool transition_pair(float4 row,int pair) {
+	int other=int(row.a+0.5); int family=other&63;
+	return other==pair || (family>0 && family==(other>>6) && (family==(pair&63) || family==(pair>>6)));
+}
+float3 transition_fill(float slot,float2 grid,float2 dx,float2 dy) {
+	// Mirror at each whole-tile boundary: continuous original donor texels,
+	// with analytic gradients so wrapping cannot select the wrong mip level.
+	float2 phase=frac(grid*0.5); float2 p=1.0-abs(phase*2.0-1.0);
+	float2 direction=float2(phase.x<0.5 ? 1.0:-1.0,phase.y<0.5 ? 1.0:-1.0);
+	return tile_sample(slot-1.0,p,dx*direction,dy*direction);
+}
+float3 transition_pair_sample(int2 cell,float2 p,float2 dx,float2 dy,out float4 traits) {
+	float3 original=transition_original_sample(cell,p,dx,dy,traits);
+	int2 shift=int2(floor(p)); cell+=shift; p-=float2(shift);
+	float4 row=transition_row(cell);
+	if (row.a<0.5 || row.r==row.g) { return original; }
+	int packed=int(row.b); int pair=int(row.a+0.5);
+	float amount=1.0;
+	// A 30 cm untouched strip is wider than all painted-relief gradient
+	// taps. Thus paths and unsupported art keep both colour AND lighting.
+	if ((packed&16)!=0) { amount*=smoothstep(0.15,0.40,p.x); }
+	if ((packed&32)!=0) { amount*=smoothstep(0.15,0.40,1.0-p.x); }
+	if ((packed&64)!=0) { amount*=smoothstep(0.15,0.40,p.y); }
+	if ((packed&128)!=0) { amount*=smoothstep(0.15,0.40,1.0-p.y); }
+	if ((packed&256)!=0) { amount*=smoothstep(0.15,0.40,max(p.x,p.y)); }
+	if ((packed&512)!=0) { amount*=smoothstep(0.15,0.40,max(1.0-p.x,p.y)); }
+	if ((packed&1024)!=0) { amount*=smoothstep(0.15,0.40,max(p.x,1.0-p.y)); }
+	if ((packed&2048)!=0) { amount*=smoothstep(0.15,0.40,max(1.0-p.x,1.0-p.y)); }
+	if (amount<=0.0) { return original; }
+	float2 grid=float2(cell)+p;
+	float2 q=grid+0.28*(float2(transition_noise(grid*0.72+float2(3.1,-1.7)),transition_noise(grid*0.72+float2(-9.2,7.3)))*2.0-1.0);
+	float4 other=transition_row(int2(floor(q)));
+	float weight=transition_weight(row,p,pair>>6);
+	amount*=1.0-smoothstep(0.82,1.0,max(weight,1.0-weight));
+	if (transition_pair(other,pair)) { weight=transition_weight(other,frac(q),pair>>6); }
+	// Keep authored material endpoints, including tiny isolated corner paint.
+	amount*=1.0-smoothstep(0.82,1.0,max(weight,1.0-weight));
+	float3 a=transition_fill(row.r,grid,dx,dy); float3 b=transition_fill(row.g,grid,dx,dy);
+	float noise=transition_noise(grid*2.6+float2(17.7,4.3))-0.5;
+	float height=clamp(dot(b-a,float3(0.2126,0.7152,0.0722)),-0.25,0.25);
+	int type_a=(packed>>12)&15; int type_b=(packed>>16)&15;
+	bool soft=type_a==9 || type_a==12 || type_b==9 || type_b==12 || type_a==3 || type_b==3;
+	float width=soft ? 0.42 : 0.28;
+	float score=weight+0.16*noise+0.22*height;
+	float blend=smoothstep(0.5-width,0.5+width,score);
+	traits=lerp(traits,lerp(tile_traits(float(type_a)),tile_traits(float(type_b)),blend),amount);
+	return lerp(original,lerp(a,b,blend),amount);
+}
+
+float transition_junction_lattice(int2 cell) {
+	// Integer coordinates must give the same shared corner from either cell.
+	// Floating sin/dot hashes can be reassociated differently at that boundary.
+	uint h=uint(cell.x)*73856093u ^ uint(cell.y)*19349663u;
+	h^=h>>16u; h*=0x7feb352du; h^=h>>15u; h*=0x846ca68bu; h^=h>>16u;
+	return float(h&16777215u)/16777215.0;
+}
+float transition_junction_noise(float2 p) {
+	int2 cell=int2(floor(p)); float2 f=frac(p); f=f*f*(3.0-2.0*f);
+	return lerp(lerp(transition_junction_lattice(cell),transition_junction_lattice(cell+int2(1,0)),f.x),
+		lerp(transition_junction_lattice(cell+int2(0,1)),transition_junction_lattice(cell+int2(1,1)),f.x),f.y);
+}
+float4 transition_junction_weights(float4 metadata,float2 p) {
+	// Metadata contains exact integer-valued float32 channels. Adding 0.5
+	// would corrupt odd 24-bit integers above 2^23 before conversion to int.
+	uint packed=uint(metadata.g);
+	uint4 corners=(packed>>uint4(0,2,4,6))&3u;
+	float4 kernel=float4((1.0-p.x)*(1.0-p.y),p.x*(1.0-p.y),(1.0-p.x)*p.y,p.x*p.y);
+	// Fixed component reductions avoid dynamic vector scatter in the native
+	// Vulkan compiler while preserving the four authored corner weights.
+	return float4(dot(kernel,float4(corners==0u)),dot(kernel,float4(corners==1u)),
+	              dot(kernel,float4(corners==2u)),dot(kernel,float4(corners==3u)));
+}
+float transition_junction_dominance(float4 weights) {
+	return 1.0-smoothstep(0.82,1.0,max(max(weights.x,weights.y),max(weights.z,weights.w)));
+}
+float transition_junction_guard(int packed,float2 p) {
+	float amount=1.0;
+	if ((packed&1)!=0) { amount*=smoothstep(0.15,0.40,p.x); }
+	if ((packed&2)!=0) { amount*=smoothstep(0.15,0.40,1.0-p.x); }
+	if ((packed&4)!=0) { amount*=smoothstep(0.15,0.40,p.y); }
+	if ((packed&8)!=0) { amount*=smoothstep(0.15,0.40,1.0-p.y); }
+	if ((packed&16)!=0) { amount*=smoothstep(0.15,0.40,max(p.x,p.y)); }
+	if ((packed&32)!=0) { amount*=smoothstep(0.15,0.40,max(1.0-p.x,p.y)); }
+	if ((packed&64)!=0) { amount*=smoothstep(0.15,0.40,max(p.x,1.0-p.y)); }
+	if ((packed&128)!=0) { amount*=smoothstep(0.15,0.40,max(1.0-p.x,1.0-p.y)); }
+	return amount;
+}
+float3 transition_junction_sample(int2 cell,float2 p,float2 dx,float2 dy,float4 row,float4 metadata,
+		float3 original,float4 original_traits,out float4 traits) {
+	traits=original_traits;
+	float4 weights=transition_junction_weights(metadata,p);
+	float guard=transition_junction_guard((int(metadata.g)>>8)&255,p);
+	float amount=guard*transition_junction_dominance(weights);
+	if (amount<=0.0) { return original; }
+	float2 grid=float2(cell)+p;
+	// The shared guard also damps the warp before an unsupported tile. Its
+	// maximum displacement stays below the distance to that tile, avoiding
+	// a discontinuous valid-field -> unwarped fallback inside the art fade.
+	float2 q=grid+0.28*guard*(float2(transition_junction_noise(grid*0.72+float2(3.1,-1.7)),transition_junction_noise(grid*0.72+float2(-9.2,7.3)))*2.0-1.0);
+	float4 other=transition_junction_row(int2(floor(q)));
+	// Both sides of a shared edge consume the entire same warped field,
+	// including its additional families. Never project it onto a local pair.
+	if (other.r>0.0) {
+		metadata=other; row=transition_row(int2(floor(q)));
+		weights=transition_junction_weights(metadata,frac(q));
+	}
+	amount*=transition_junction_dominance(weights);
+	if (amount<=0.0) { return original; }
+	int families=int(metadata.r); int packed=int(row.b);
+	int4 ids=int4(families&63,(families>>6)&63,(families>>12)&63,(families>>18)&63);
+	float4 slots=float4(row.r,row.g,float(int(metadata.b)&32767),float(int(metadata.a)&32767));
+	int4 types=int4((packed>>12)&15,(packed>>16)&15,(int(metadata.b)>>15)&15,(int(metadata.a)>>15)&15);
+	float3 colors[4]; float4 scores=(float4)-9.0; float mean=0.0;
+	float3 luma=float3(0.2126,0.7152,0.0722);
+	const int material_count=4;
+	[unroll] for (int i=0;i<material_count;i++) {
+		colors[i]=(float3)0.0;
+		if (weights[i]>0.0) {
+			colors[i]=transition_fill(slots[i],grid,dx,dy);
+			mean+=weights[i]*dot(colors[i],luma);
+		}
+	}
+	float strongest=max(max(weights.x,weights.y),max(weights.z,weights.w));
+	float contested=min(3.0*(1.0-strongest),1.0);
+	[unroll] for (int i=0;i<material_count;i++) {
+		if (weights[i]>0.0) {
+			float2 seed=float2(float(ids[i])*17.31,float(ids[i])*29.17);
+			float noise=transition_junction_noise(grid*2.6+seed)-0.5;
+			float height=clamp(dot(colors[i],luma)-mean,-0.25,0.25);
+			scores[i]=weights[i]+contested*min(3.0*weights[i],1.0)*(0.16*noise+0.22*height);
+		}
+	}
+	float best_score=max(max(scores.x,scores.y),max(scores.z,scores.w));
+	// A hard/soft runner-up tie must not switch the width discontinuously.
+	// Weight the softness field continuously; absent materials contribute zero.
+	float soft=0.0;
+	[unroll] for (int i=0;i<material_count;i++) {
+		if (types[i]==3 || types[i]==9 || types[i]==12) { soft+=weights[i]; }
+	}
+	float depth=lerp(0.28,0.42,smoothstep(0.0,0.5,soft));
+	// Every active material competes. No pair reduction drops a third/fourth
+	// family at the centre. An absent family has score -9 and exactly no share.
+	float4 shares=max(scores-(float4)(best_score-depth),(float4)0.0); shares*=shares;
+	shares/=dot(shares,(float4)1.0);
+	float3 color=(float3)0.0; float4 surface=(float4)0.0;
+	[unroll] for (int i=0;i<material_count;i++) {
+		color+=colors[i]*shares[i];
+		surface+=tile_traits(float(types[i]))*shares[i];
+	}
+	traits=lerp(original_traits,surface,amount);
+	return lerp(original,color,amount);
+}
+float3 ground_sample(int2 cell,float2 p,float2 dx,float2 dy,out float4 traits) {
+	int2 shift=int2(floor(p)); cell+=shift; p-=float2(shift);
+	float4 row=transition_row(cell);
+	// All pure tiles remain authored, even inside the junction halo.
+	int influence=(int(row.b)>>20)&15;
+	float blend=0.0; float4 metadata=(float4)0.0;
+	if (row.a!=0.0 && !(row.a>0.0 && row.r==row.g) && influence!=0) {
+		float4 flags=float4(float(influence&1),float((influence>>1)&1),float((influence>>2)&1),float((influence>>3)&1));
+		blend=smoothstep(0.0,1.0,lerp(lerp(flags.x,flags.y,p.x),lerp(flags.z,flags.w,p.x),p.y));
+		if (blend>0.0) {
+			metadata=transition_junction_row(cell);
+			if (metadata.r<=0.0) { blend=0.0; }
+		}
+	}
+	// One call site avoids expanding the entire legacy program for each
+	// mutually exclusive fallback. Zero influence returns it exactly.
+	float4 legacy_traits=(float4)0.0; float3 legacy=(float3)0.0;
+	if (blend<1.0) {
+		legacy=transition_pair_sample(cell,p,dx,dy,legacy_traits);
+		if (blend<=0.0) { traits=legacy_traits; return legacy; }
+	}
+	float4 original_traits;
+	float3 original=transition_original_sample(cell,p,dx,dy,original_traits);
+	float3 junction=transition_junction_sample(cell,p,dx,dy,row,metadata,original,original_traits,traits);
+	if (blend>=1.0) { return junction; }
+	traits=lerp(legacy_traits,traits,blend);
+	return lerp(legacy,junction,blend);
+}
+
+#else
+float3 ground_sample(int2 cell,float2 p,float2 dx,float2 dy,out float4 traits) {
+    return transition_original_sample(cell,p,dx,dy,traits);
+}
+#endif
+// Returns linear albedo and evaluates the same detail normal/material fields
+// for primary and secondary rays. Vertex-to-tile identity survives XY jitter.
+bool terrain_material(uint vertex,Vertex a,Vertex b,Vertex c,float3 w,inout Surface s,float footprint,float distance,out float3 albedo,out float painted_scale) {
+    albedo=0.0;painted_scale=1.0;uint4 layout=land_layout();
+    if(layout.x==0u)return false;
+    uint id=terrain_data.Load(layout.w+(vertex/3u)*4u);
+    if(id==0u||id>layout.x*layout.y)return false;
+    int2 cell=int2((id-1u)%layout.x,(id-1u)/layout.x);
+    uint code=land_tile(cell)&65535u;float4 sampling=land_sampling();
+    float per_row=sampling.x,border=8.0*sampling.z*per_row,interior=1.0-2.0*border;
+    float2 origin=float2((code&63u)%uint(per_row),uint(per_row)-1u-(code&63u)/uint(per_row));
+    float2 local=(hit_uv(a,b,c,w)*per_row-origin-border)/interior;
+    int rotation=(4-int(code>>14u))%4;
+    local=0.5+tile_turn(float2(local.x,1.0-local.y)-0.5,rotation);
+    float2 uv1=tile_turn(float2(b.position_u.w-a.position_u.w,a.normal_v.w-b.normal_v.w)*per_row/interior,rotation);
+    float2 uv2=tile_turn(float2(c.position_u.w-a.position_u.w,a.normal_v.w-c.normal_v.w)*per_row/interior,rotation);
+    float3x3 transform=(float3x3)ObjectToWorld3x4();
+    float3 edge1=mul(transform,b.position_u.xyz-a.position_u.xyz),edge2=mul(transform,c.position_u.xyz-a.position_u.xyz);
+    float density=max(length(uv1)/max(length(edge1),0.001),length(uv2)/max(length(edge2),0.001));
+    float grazing=max(abs(dot(s.normal,WorldRayDirection())),0.1);
+    float span=footprint*density/grazing;
+    float2 dx=float2(span,0),dy=float2(0,span);
+    float4 traits;float3 colour=ground_sample(cell,clamp(local,0.0,0.99999),dx,dy,traits);
+    float3 planes=cliff_weights(cell,saturate(local),s.normal,distance);
+    float fade=1.0-smoothstep(25.0,70.0,distance);
+    float3 n=s.normal;
+    // Preserve the established bounded painted relief on ordinary terrain.
+    // Its four compact atlas taps run below, once, instead of evaluating the
+    // complete neighbouring transition field four additional times per hit.
+    painted_scale=(1.0-planes.y)*lerp(lerp(1.0,1.15,traits.x),0.45,traits.y)*(1.0-0.8*traits.w);
+    [branch] if(fade>0.0&&planes.y>0.001) {
+        // Cliff detail must follow the vertical projection, not the stretched
+        // land UVs. Use its dominant projection axes with the same atlas mips.
+        float3 tangent=planes.x>planes.z?float3(0,0,-1):float3(1,0,0);
+        float3 bitangent=float3(0,1,0);
+        tangent-=n*dot(n,tangent);bitangent-=n*dot(n,bitangent);
+        float step_world=max(0.0625,footprint/grazing);
+        float3 projection=planes/max(planes.y,1e-6);
+        const float3 lum=float3(0.2126,0.7152,0.0722);
+        float left=sqrt(max(dot(cliff_tile(float(code),s.position-tangent*step_world,projection,footprint/grazing),lum),0.0));
+        float right=sqrt(max(dot(cliff_tile(float(code),s.position+tangent*step_world,projection,footprint/grazing),lum),0.0));
+        float down=sqrt(max(dot(cliff_tile(float(code),s.position-bitangent*step_world,projection,footprint/grazing),lum),0.0));
+        float up=sqrt(max(dot(cliff_tile(float(code),s.position+bitangent*step_world,projection,footprint/grazing),lum),0.0));
+        float2 slope=clamp(float2(right-left,up-down)*2.0,-0.30,0.30);
+        // Fade the extra relief at tile joins where donor projections blend.
+        float edge=smoothstep(0.0,0.15,min(min(local.x,local.y),min(1.0-local.x,1.0-local.y)));
+        float resolved=1.0-smoothstep(0.18,0.65,footprint/grazing);
+        n=land_normal(n,-(tangent*slope.x+bitangent*slope.y)*1.5*planes.y*fade*edge*resolved,s.geometric_normal);
+    }
+    [branch] if(fade>0.0) {
+        uint normal_layer=land_detail().x;
+        [branch] if(normal_layer>0u) {
+            uint width,height,layers,levels;colours.GetDimensions(0,width,height,layers,levels);
+            float lod=max(log2(max(footprint*0.45*float(width)/grazing,1.0)),0.0);
+            float fine_lod=max(log2(max(footprint*1.7*float(width)/grazing,1.0)),0.0);
+            float3 weights=pow(abs(n),4.0);weights/=max(dot(weights,float3(1,1,1)),1e-8);
+            float2 x=0.0,y=0.0,z=0.0,fine=0.0;
+            [branch] if(weights.x>0.0)x=colours.SampleLevel(colour_sampler,float3(s.position.zy*0.45,normal_layer-1u),lod).rg*2.0-1.0;
+            [branch] if(weights.y>0.0) {
+                y=colours.SampleLevel(colour_sampler,float3(s.position.xz*0.45,normal_layer-1u),lod).rg*2.0-1.0;
+                fine=(colours.SampleLevel(colour_sampler,float3(s.position.xz*1.7+0.37,normal_layer-1u),fine_lod).rg*2.0-1.0)*lerp(0.25,0.85,traits.z);
+            }
+            [branch] if(weights.z>0.0)z=colours.SampleLevel(colour_sampler,float3(s.position.xy*0.45,normal_layer-1u),lod).rg*2.0-1.0;
+            float3 perturbation=float3(0,x.y,x.x)*weights.x+float3(y.x+fine.x,0,y.y+fine.y)*weights.y+float3(z.x,z.y,0)*weights.z;
+            perturbation-=n*dot(n,perturbation);
+            float relief=lerp(lerp(lerp(0.13,0.10,traits.x),0.055,traits.y),0.025,traits.w);
+            n=land_normal(n,perturbation*relief*fade,s.geometric_normal);
+        }
+    }
+    colour=cliff_albedo(colour,cell,saturate(local),s.position,planes,footprint/grazing);
+    uint macro_layer=land_detail().y;
+    [branch] if(macro_layer>0u) {
+        uint width,height,layers,levels;colours.GetDimensions(0,width,height,layers,levels);
+        float lod=max(log2(max(footprint*0.012*float(width)/grazing,1.0)),0.0);
+        float macro=colours.SampleLevel(colour_sampler,float3(s.position.xz*0.012,macro_layer-1u),lod).r;
+        colour*=lerp(1.0,0.92+0.16*macro,1.0-traits.y*0.6);
+    }
+    s.normal=n;albedo=saturate(colour);
+    // Terrain types supply a restrained dielectric response. Colour brightness
+    // never classifies a surface as metal, ice or polished stone.
+    if((land_detail().w&1u)!=0u) {
+        s.roughness=lerp(lerp(lerp(lerp(0.94,0.84,traits.x),0.98,traits.y),0.96,traits.z),0.25,traits.w);
+        s.metalness=0.0;s.specular=0.5;
+    }
+    return true;
+}
+
 float3 relief_normal(float3 n,float3 geometric,float3 edge1,float3 edge2,float2 uv1,float2 uv2,
                      float3 texel,float2 step_uv,float lod,float strength,bool terrain) {
     float3 r1=cross(edge2,n),r2=cross(n,edge1);
@@ -468,7 +889,7 @@ void main(inout Surface result,Attributes attributes) {
     uint width,height,layers,levels; colours.GetDimensions(0,width,height,layers,levels);
     float lod=max(log2(max(result.cone*RayTCurrent()*density*float(width),1.0)),0.0);
     float3 texel=float3(hit_uv(a,b,c,w),a.emission_layer.w);
-    float3 colour=colours.SampleLevel(colour_sampler,texel,lod).rgb;
+    float3 colour=0.0;
     bool terrain=(material.y&2u)!=0u;
     float strength=float((material.w>>24u)&127u)/127.0;
     uint plant_layer=(material.y>>8u)&255u;
@@ -478,7 +899,22 @@ void main(inout Surface result,Attributes attributes) {
         if((material.y&4u)!=0u)result.visible=saturate(plant.r)*0.40;
         if((material.y&8u)!=0u)strength=max(strength,saturate(plant.g)*0.45);
     }
-    if(strength>0.0) {
+    result.roughness=max(float(material.w&255u)/255.0,0.08);
+    result.metalness=float((material.w>>8u)&255u)/255.0;
+    result.specular=float((material.w>>16u)&255u)/255.0;
+    float3 terrain_albedo=0.0;float painted_scale=1.0;bool detailed_terrain=false;
+    #if defined(PATH_TERRAIN_MATERIALS)
+    [branch] if(terrain&&land_layout().x>0u) {
+        float3 eye=mul(frame.camera_world,float4(0,0,0,1)).xyz;
+        float distance=length(position-eye);
+        float footprint=2.0*abs(frame.inv_projection[0][0])/float(DispatchRaysDimensions().x);
+        if(frame.camera.x<0.5)footprint*=distance;
+        footprint=max(footprint,result.cone*RayTCurrent());
+        detailed_terrain=terrain_material(i,a,b,c,w,result,footprint,distance,terrain_albedo,painted_scale);
+        strength*=painted_scale;
+    }
+    #endif
+    [branch] if(strength>0.0) {
         float3 eye=mul(frame.camera_world,float4(0,0,0,1)).xyz;
         float distance=length(position-eye);
         float footprint=2.0*abs(frame.inv_projection[0][0])/float(DispatchRaysDimensions().x);
@@ -492,16 +928,15 @@ void main(inout Surface result,Attributes attributes) {
         float step_scale=terrain?1.5*exp2(relief_lod):1.0;
         strength*=terrain?1.5*(1.0-smoothstep(25.0,65.0,distance))*(1.0-smoothstep(2.0,8.0,texels)):
             (1.0-smoothstep(14.0,40.0,distance))*(1.0-smoothstep(1.2,4.0,texels));
-        if(strength>0.0)result.normal=relief_normal(result.normal,result.geometric_normal,
+        [branch] if(strength>0.0)result.normal=relief_normal(result.normal,result.geometric_normal,
             mul((float3x3)to_world,edge1),mul((float3x3)to_world,edge2),
             float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w),
             float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w),
             texel,step_scale/float2(width,height),relief_lod,strength,terrain);
     }
-    result.albedo=saturate(linear_colour(colour)*saturate(a.diffuse.rgb));
-    result.roughness=max(float(material.w&255u)/255.0,0.08);
-    result.metalness=float((material.w>>8u)&255u)/255.0;
-    result.specular=float((material.w>>16u)&255u)/255.0;
+    // Detailed terrain already sampled its colour from the shared raster atlas.
+    [branch] if(!detailed_terrain||any(a.emission_layer.rgb>0.0))colour=colours.SampleLevel(colour_sampler,texel,lod).rgb;
+    result.albedo=saturate((detailed_terrain?terrain_albedo:linear_colour(colour))*saturate(a.diffuse.rgb));
     result.emission=(material.y&1u)!=0u?a.emission_layer.rgb:linear_colour(colour*a.emission_layer.rgb);
 }
 #endif

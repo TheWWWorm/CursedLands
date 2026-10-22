@@ -1,7 +1,7 @@
 {
   "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
   "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
-  "builder_sha256": "9e8206c3069e67195e3d592b14205f55a1c27368e1d67109f8841aa05f571b8d",
+  "builder_sha256": "920b75dafe9d92c16a7f088ac69a73513189bd1e72f3157772b67d6341c6e89e",
   "source_sha256": "e614f39cbba69d39e9251d56b81c3ea863a763bda5c4187eee8af0185590464d",
   "files": {
     "water_raytrace_raygen.dxil": "980a8a714d2d45a1bf7532ce46cc5667a2ff5d530da55b8f09463877bf2c2e66",

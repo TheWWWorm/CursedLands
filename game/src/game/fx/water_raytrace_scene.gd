@@ -26,7 +26,10 @@ var _plane := 0.0
 var _cursor := 0
 var _kernel: Object
 var _watching := false
-var _detail_options := Vector3i.ZERO
+var _detail_options := Vector4i.ZERO
+var path_materials := false
+var _terrain_version := []
+const PathTerrain = preload("res://src/game/fx/path_trace_terrain.gd")
 # Negative keeps the original water masks. Scene lighting distinguishes
 # camera-visible receivers (1), shadow casters (2), and GI surfaces (4).
 var lighting_camera_mask := -1
@@ -37,7 +40,8 @@ func _init() -> void:
 
 func begin(terrain: EITerrain, position: Vector3, plane: float) -> void:
 	_terrain = terrain; center = position; _plane = plane
-	_detail_options = Vector3i(GameData.option("gfx_terrain"),GameData.option("gfx_materials"),GameData.option("gfx_foliage_light"))
+	_detail_options = Vector4i(GameData.option("gfx_terrain"),GameData.option("gfx_materials"),GameData.option("gfx_foliage_light"),GameData.option("gfx_terrain_cliffs"))
+	if path_materials: _terrain_version=PathTerrain.version(terrain)
 	for child in terrain.get_children():
 		if child is EITerrainSector and _near(child.global_transform*child.get_aabb()):
 			pending.append({"node":weakref(child),"land":true})
@@ -109,7 +113,8 @@ func _mesh_version(mesh: MeshInstance3D, materials: Dictionary) -> Array:
 	return version
 
 func topology_changed() -> bool:
-	if lighting_camera_mask>=0 and _detail_options!=Vector3i(GameData.option("gfx_terrain"),GameData.option("gfx_materials"),GameData.option("gfx_foliage_light")): return true
+	if lighting_camera_mask>=0 and _detail_options!=Vector4i(GameData.option("gfx_terrain"),GameData.option("gfx_materials"),GameData.option("gfx_foliage_light"),GameData.option("gfx_terrain_cliffs")): return true
+	if path_materials and _terrain_version!=PathTerrain.version(_terrain): return true
 	var current := {}
 	var materials := {}
 	for mesh: MeshInstance3D in _scene_meshes(): current[mesh.get_instance_id()] = _mesh_version(mesh,materials)
@@ -126,7 +131,16 @@ func step() -> bool:
 		var node: Node3D = entry.node.get_ref()
 		if is_instance_valid(node):
 			if entry.land:
-				var geometry := _append(node.deformation_arrays(),node.global_transform,null,true)
+				var arrays: Array = node.deformation_arrays()
+				var geometry := _append(arrays,node.global_transform,null,true)
+				if path_materials and geometry>=0:
+					# Follow the actual retained triangles, including shifted MPR
+					# vertices. World XZ cannot identify their authored tile.
+					var uv2: PackedVector2Array = arrays[Mesh.ARRAY_TEX_UV2]
+					var used: PackedInt32Array = geometries[geometry].indices
+					var ids := PackedInt32Array(); ids.resize(used.size()/3)
+					for i in ids.size(): ids[i]=roundi(uv2[used[i*3]].y)+1
+					geometries[geometry]["land_tiles"]=ids
 				_add_instance(node,geometry,Transform3D.IDENTITY)
 			else:
 				var mesh := node as MeshInstance3D
