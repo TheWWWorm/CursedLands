@@ -57,6 +57,20 @@ bounce count bounds work; there is no
 Russian roulette or light reservoir sampling. Geometric normals offset rays
 outside the actual triangles, while interpolated normals shade the surfaces.
 
+Outdoor misses now evaluate a continuous zenith/horizon/ground environment
+instead of returning the same ambient colour in every direction. The palette
+uses the original ambient, sunlight and visible sky colours, with restrained
+sky tint and reduced daytime fill: the original renderer used ambient as a
+minimum, while PT adds its transported energy to sunlight. Night retains a
+stronger sky contribution. The below-horizon environment is faint because
+traced terrain already supplies nearby ground bounce. Direct sunlight remains
+separate; no second sun disk or extra ray is added. This is an authored
+low-frequency approximation, not atmospheric scattering or a captured HDR sky.
+The PT frame is 704 bytes, including three environment colours after the
+previous inverse view-projection. Environment changes invalidate both temporal
+modes. Caves still have a black environment; uniform-sky numerical fixtures
+use the explicitly disabled directional mode.
+
 Continuation and shadow origins use a surface-specific floating-point error
 bound instead of a fixed 15 mm displacement and 2 mm minimum ray distance.
 Hit positions are reconstructed from triangle barycentrics, adding the base
@@ -126,6 +140,19 @@ metallic and specular values supply a compact material description; original
 assets without a profile default to rough dielectric surfaces. This does not
 reproduce full PBR texture sets or procedurally modified materials.
 
+Enhanced terrain and identified stone/wood object profiles also supply shallow
+texture-derived relief to traced shading. The existing terrain/material options
+control it; changing either rebuilds the lighting snapshot. Seven previously
+unused material bits store its strength without enlarging geometry or the ray
+payload. Four texture taps estimate bounded perceptual brightness slopes in a
+world-space cotangent frame. UV mirroring, nonuniform instance transforms and
+back faces retain their orientation. Relief fades over 14–40 m and 1.2–4 texels
+per tracing pixel; secondary ray cones contribute to minification. Degenerate
+UVs and normals that would face into the geometric surface keep the original
+normal. Leaf cutout alpha is not treated as height. This is an approximation
+using the 512×512 trace atlas, not the terrain shader's complete semantic detail
+and procedural normal model or authored PBR normal maps.
+
 The material guide stores albedo and an exactly representable half-float
 integer containing six roughness bits and five metalness bits. This guide
 quantization only controls reconstruction; the integrator retains its existing
@@ -187,6 +214,12 @@ conventional illumination between 60 and 72 m from the scene snapshot centre.
 World geometry is gathered within 96 m, with the existing budgets of 320,000
 unique triangles, 4,096 instances and 192 texture layers of 512×512.
 Characters' supported articulated and morph animation updates live.
+
+PT receiver composition retains the terrain's authored underwater depth factor
+on reflected diffuse and glossy light, while preserving emission. Since the
+combined lighting buffers do not retain each incident light direction, this
+uses the original ambient attenuation factor, not the directional underwater
+formula. It does not simulate water-volume transport on secondary paths.
 
 ## Limits and qualification
 
@@ -276,6 +309,9 @@ Fixtures run through the existing `--tool` interface:
 | `path_trace_variance.gd` | Analytical stochastic means, dark/bright outliers, colour ratios, HDR variance range, coherent/persistent dark changes, reset/depth rejection and variance-resource resize/teardown |
 | `path_trace_sampling.gd` | Native unfiltered grazing-metal, disk-sun penumbra and small-emitter convergence at 1/2/4 samples; late sequence starts, repeatability, frame wrap, purpose independence, spatial error correlation and packaged attribution |
 | `path_trace_contacts.gd` | Raw thin-contact shadows, sky/emissive occlusion, nearby glossy reflection, point-light endpoints and self-intersection under translation, scale, rotation, shear, mirrored instances and large local coordinates |
+| `path_trace_daylight.gd` | Analytic directional-sky irradiance, isotropic fallback, bounded relief, UV/instance mirroring, degenerate UVs, distance and minification fades |
+| `path_trace_daylight_live.gd` | Matched noon/evening/night river views, sky-only history reset, enhanced surface collection and conventional restoration |
+| `path_trace_underwater.gd` | Production receiver composition with controlled reflected/emitted radiance and underwater depth coefficients |
 | `path_trace_receivers.gd` | Rendered steep-surface coverage and depth-edge rejection at 50/75/100% tracing resolution |
 | `path_trace_live.gd` | Outdoor material integration, responsive reprojection, still accumulation, camera reset, quality resizing and conventional restoration |
 | `path_trace_cave.gd` | Cave sky exclusion, two/four bounces, changing light colour, animated actor and history invalidation |

@@ -1,0 +1,50 @@
+[
+  {
+    "resource": 1,
+    "size": [
+      16,
+      16
+    ],
+    "pixels_equal": true
+  },
+  {
+    "resource": 2,
+    "size": [
+      32,
+      32
+    ],
+    "pixels_equal": true
+  },
+  {
+    "resource": 3,
+    "size": [
+      48,
+      48
+    ],
+    "pixels_equal": true
+  },
+  {
+    "resource": 4,
+    "size": [
+      64,
+      64
+    ],
+    "pixels_equal": true
+  },
+  {
+    "resource": 5,
+    "size": [
+      128,
+      128
+    ],
+    "pixels_equal": true
+  },
+  {
+    "resource": 6,
+    "size": [
+      256,
+      256
+    ],
+    "pixels_equal": true
+  }
+]

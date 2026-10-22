@@ -16,6 +16,8 @@ func frame(history:=true,gi:=true,shadows:=true) -> PackedByteArray:
 		var inverse:=(camera.get_camera_projection()*Projection(camera.global_transform.affine_inverse())).inverse()
 		for axis in 4:
 			var v: Vector4=inverse[axis];bytes.append_array(PackedFloat32Array([v.x,v.y,v.z,v.w]).to_byte_array())
+	# Optional directional environment stays disabled in uniform-sky fixtures.
+	bytes.resize(device.frame_bytes())
 	return bytes
 
 func mean(texture: Texture2DRD) -> Color:

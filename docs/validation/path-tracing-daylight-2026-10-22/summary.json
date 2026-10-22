@@ -1,0 +1,215 @@
+{
+  "baseline_commit": "08acf98d",
+  "unreleased": true,
+  "qualified": [
+    {
+      "run": "daylight-v2-vulkan-path_trace_daylight",
+      "checks": 29,
+      "seconds": 10.62,
+      "post_exit_faults": []
+    },
+    {
+      "run": "daylight-v2-vulkan-path_trace_underwater",
+      "checks": 4,
+      "seconds": 10.48,
+      "post_exit_faults": []
+    },
+    {
+      "run": "daylight-final-vulkan-path_trace_contacts",
+      "checks": 59,
+      "seconds": 12.48,
+      "post_exit_faults": []
+    },
+    {
+      "run": "daylight-final-vulkan-path_trace_quality",
+      "checks": 13,
+      "seconds": 10.19,
+      "post_exit_faults": []
+    },
+    {
+      "run": "daylight-final-vulkan-path_trace_glossy",
+      "checks": 31,
+      "seconds": 12.23,
+      "post_exit_faults": []
+    },
+    {
+      "run": "daylight-final-vulkan-path_trace_cave",
+      "checks": 12,
+      "seconds": 40.53,
+      "post_exit_faults": []
+    },
+    {
+      "run": "daylight-repeat-dx12-daylight",
+      "checks": 29,
+      "seconds": 13.47,
+      "post_exit_faults": []
+    },
+    {
+      "run": "daylight-tested-dx12-path_trace_underwater",
+      "checks": 4,
+      "seconds": 11.72,
+      "post_exit_faults": []
+    },
+    {
+      "run": "daylight-tested-dx12-path_trace_daylight_live",
+      "checks": 12,
+      "seconds": 56.05,
+      "post_exit_faults": []
+    },
+    {
+      "run": "daylight-final-dx12-fsr",
+      "checks": 62,
+      "seconds": 134.01,
+      "post_exit_faults": []
+    },
+    {
+      "run": "daylight-final-dx12-contacts",
+      "checks": 59,
+      "seconds": 12.77,
+      "post_exit_faults": []
+    },
+    {
+      "run": "daylight-final-dx12-materials",
+      "checks": 470,
+      "seconds": 198.26,
+      "post_exit_faults": []
+    },
+    {
+      "run": "daylight-final-dx12-performance",
+      "checks": 14,
+      "seconds": 72.24,
+      "post_exit_faults": []
+    },
+    {
+      "run": "daylight-final-vulkan-outdoor",
+      "checks": 12,
+      "seconds": 51.1,
+      "post_exit_faults": []
+    },
+    {
+      "run": "daylight-repeat-vulkan-materials",
+      "checks": 470,
+      "seconds": 24.55,
+      "post_exit_faults": []
+    }
+  ],
+  "baselines": [
+    {
+      "run": "daylight-baseline-vulkan-outdoor",
+      "checks": 8,
+      "seconds": 56.41,
+      "post_exit_faults": []
+    },
+    {
+      "run": "daylight-baseline-dx12-outdoor",
+      "checks": 8,
+      "seconds": 52.55,
+      "post_exit_faults": []
+    },
+    {
+      "run": "daylight-baseline-dx12-fsr",
+      "checks": 62,
+      "seconds": 146.46,
+      "post_exit_faults": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 0408), starting debugger..."
+      ]
+    },
+    {
+      "run": "daylight-baseline-dx12-performance",
+      "checks": 14,
+      "seconds": 89.49,
+      "post_exit_faults": []
+    }
+  ],
+  "qualified_checks": 1280,
+  "performance": {
+    "daylight-baseline-dx12-performance": {
+      "path-2-low": [
+        0.531456,
+        0.537344
+      ],
+      "path-2-medium": [
+        2.676992,
+        2.806016
+      ],
+      "path-2-high": [
+        10.152448,
+        10.370048
+      ],
+      "path-4-low": [
+        0.6784,
+        0.682496
+      ],
+      "path-4-medium": [
+        3.398656,
+        3.444736
+      ],
+      "path-4-high": [
+        12.3392,
+        12.632576
+      ]
+    },
+    "daylight-final-dx12-performance": {
+      "path-2-low": [
+        0.528896,
+        0.530432
+      ],
+      "path-2-medium": [
+        2.746624,
+        2.78016
+      ],
+      "path-2-high": [
+        10.463488,
+        10.731264
+      ],
+      "path-4-low": [
+        0.678144,
+        0.681472
+      ],
+      "path-4-medium": [
+        3.37792,
+        3.402752
+      ],
+      "path-4-high": [
+        12.358656,
+        12.567296
+      ]
+    }
+  },
+  "diagnostic_runs": [
+    {
+      "run": "daylight-tested-dx12-path_trace_daylight",
+      "exit": 0,
+      "errors": [],
+      "clean_exit_logged": true,
+      "faults": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 01e4), starting debugger..."
+      ]
+    },
+    {
+      "run": "daylight-final-vulkan-path_trace_materials",
+      "exit": -11,
+      "errors": [],
+      "clean_exit_logged": true,
+      "faults": []
+    },
+    {
+      "run": "daylight-baseline-vulkan-materials",
+      "exit": 0,
+      "errors": [],
+      "clean_exit_logged": true,
+      "faults": []
+    },
+    {
+      "run": "daylight-tested-dx12-path_trace_fsr",
+      "exit": 1,
+      "errors": [
+        "FAIL rt-and-fg: normal FG gate",
+        "FAIL rt-and-fg: measured generated-frame count",
+        "FAIL rt-and-fg: measured presentation count"
+      ],
+      "clean_exit_logged": true,
+      "faults": []
+    }
+  ]
+}

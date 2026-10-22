@@ -1,0 +1,107 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+Failed to enable screen_keep_on.
+warn:  CreateDXGIFactory2: Ignoring flags
+warn:  Skipping CPU adapter: llvmpipe (LLVM 20.1.2, 256 bits)
+warn:  DxgiAdapter::QueryInterface: Unknown interface query
+warn:  f0db4c7f-fe5a-42a2-bd62-f2a6cf6fc83e
+714351.742:01d8:01dc:warn:vkd3d-proton:openvr_instance_extensions: Failed to open VR registry key, status 2.
+714351.742:01d8:01dc:warn:vkd3d-proton:openxr_vulkan_extensions: wineopenxr.dll is missing required symbols.
+714351.742:01d8:01dc:info:vkd3d-proton:vkd3d_instance_apply_application_workarounds: Program name: "CursedLands.exe" (hash: 33c38cdfc18b2417)
+714351.742:01d8:01dc:info:vkd3d-proton:vkd3d_instance_deduce_config_flags_from_environment: shader_cache is used, global_pipeline_cache is enforced.
+714351.742:01d8:01dc:info:vkd3d-proton:vkd3d_config_flags_init_once: VKD3D_CONFIG=''.
+714351.746:01d8:01dc:warn:vkd3d-proton:vkd3d_check_extensions: Optional user instance extension "VK_KHR_surface_maintenance1" is not supported.
+714351.746:01d8:01dc:info:vkd3d-proton:vkd3d_get_vk_version: vkd3d-proton - applicationVersion: 3.0.1.
+714351.746:01d8:01dc:info:vkd3d-proton:vkd3d_instance_init: vkd3d-proton - build: 3b10bd7a7ec6a73.
+714351.780:01d8:01dc:warn:vkd3d-proton:openvr_device_extensions: Failed to open VR registry key, status 2.
+714351.780:01d8:01dc:warn:vkd3d-proton:openxr_vulkan_extensions: wineopenxr.dll is missing required symbols.
+714351.780:01d8:01dc:info:vkd3d-proton:d3d12_device_create: Forcing singleton device due to RenderDoc being enabled.
+714351.821:01d8:01dc:warn:vkd3d-proton:vkd3d_check_extensions: Optional user device extension "VK_KHR_swapchain_maintenance1" is not supported.
+714351.824:01d8:01dc:warn:vkd3d-proton:vkd3d_physical_device_info_apply_workarounds: Disabling present_id2, wait2 and timing on pre-595 NV drivers.
+714351.824:01d8:01dc:info:vkd3d-proton:vkd3d_init_device_caps: Not all relevant pipeline stages are supported by EXT_dgc. Skipping.
+714351.824:01d8:01dc:warn:vkd3d-proton:vkd3d_supports_minimum_coopmat_caps: Missing sufficient features to expose WMMA.
+714352.462:01d8:01dc:warn:vkd3d-proton:d3d12_device_create_vkd3d_queues: Could not allocate an out of band queue for queue family 2. All out of band work will happen on the in band queue.
+714352.462:01d8:01dc:warn:vkd3d-proton:d3d12_device_create_vkd3d_queues: Could not allocate an out of band queue for queue family 3. All out of band work will happen on the in band queue.
+714352.469:01d8:01dc:info:vkd3d-proton:vkd3d_memory_info_decide_hvv_usage: Topology: Device heaps are split. Assuming small BAR situation.
+714352.469:01d8:01dc:info:vkd3d-proton:vkd3d_memory_info_upload_hvv_memory_properties: Topology: HVV usage is not allowed, using HOST_COHERENT for UPLOAD.
+714352.469:01d8:01dc:info:vkd3d-proton:vkd3d_bindless_state_get_bindless_flags: Device supports VK_EXT_mutable_descriptor_type.
+714352.469:01d8:01dc:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+714352.469:01d8:01dc:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+714352.469:01d8:01dc:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+714352.473:01d8:01dc:info:vkd3d-proton:d3d12_device_caps_init_shader_model: Enabling support for SM 6.6.
+714352.473:01d8:01dc:fixme:vkd3d-proton:d3d12_device_caps_init_feature_options1: TotalLaneCount = 7872, may be inaccurate.
+714352.473:01d8:01dc:info:vkd3d-proton:d3d12_device_determine_ray_tracing_tier: DXR support enabled.
+714352.473:01d8:01dc:info:vkd3d-proton:d3d12_device_determine_ray_tracing_tier: DXR 1.1 support enabled.
+714352.473:01d8:01dc:info:vkd3d-proton:d3d12_device_caps_init_feature_level: DX Ultimate supported!
+714352.473:01d8:01dc:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\home\llm2x\Documents\EI\local\scratchpad\water-raytracing-20261021\dx12-quality\checks\daylight-tested-dx12-path_trace_daylight\vkd3d-proton.CursedLands.exe.cache.
+714352.473:01d8:01dc:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\home\llm2x\Documents\EI\local\scratchpad\water-raytracing-20261021\dx12-quality\checks\daylight-tested-dx12-path_trace_daylight\vkd3d-proton.CursedLands.exe.cache.
+714352.474:01d8:0210:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Performing async setup of stream archive ...
+714352.474:01d8:0210:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_merge: No write cache exists. No need to merge any disk caches.
+714352.474:01d8:0210:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Merging pipeline libraries took 0.321 ms.
+714352.474:01d8:0210:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\home\llm2x\Documents\EI\local\scratchpad\water-raytracing-20261021\dx12-quality\checks\daylight-tested-dx12-path_trace_daylight\vkd3d-proton.CursedLands.exe.cache.
+714352.474:01d8:0210:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Done performing async setup of stream archive.
+FidelityFX provider: 3.1.5
+FidelityFX provider: 2.3.4
+FidelityFX provider: 3.1.6
+714352.826:01d8:01dc:warn:vkd3d-proton:d3d12_device_CheckFeatureSupport: Assuming device does not support tile based rendering.
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090
+714353.007:01d8:0210:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+714353.680:01d8:01dc:fixme:vkd3d-proton:vkd3d_texture_view_desc_fixup: Remapping 2D to 2D_ARRAY. Needs Vulkan spec tightening to match D3D12 properly.
+
+714354.696:01d8:01dc:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+714354.696:01d8:01dc:info:vkd3d-proton:dxgi_vk_swap_chain_init: Creating swapchain (1280 x 720), BufferCount = 3.
+714354.728:01d8:01dc:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Enabling frame latency handles.
+714354.728:01d8:01dc:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Ensure maximum latency of 3 frames with KHR_present_wait.
+714354.730:01d8:01dc:info:vkd3d-proton:dxgi_vk_swap_chain_init_sleep_state: Timer interval is 1.0 ms.
+err:   wsi: parseColorimetryInfo: Failed to get parse edid.
+err:   DXGI: Failed to parse display metadata + colorimetry info, using blank.
+714354.739:01d8:01dc:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+warn:  DXGI: MakeWindowAssociation: Ignoring flags
+WARNING: Failed to get SDR white level for adapterId: 0x00000000000003F3, id: 0
+   at: _get_sdr_white_level_for_hmonitor (platform/windows/display_server_windows.cpp:1708)
+714354.914:01d8:0238:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+714355.751:01d8:0210:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 183). It seems like application has stopped creating new PSOs for the time being.
+[trace 15:37:03 +8816ms] session 070b60ff7919: 1.23.0, Windows 10.0.19043, NVIDIA NVIDIA GeForce RTX 3090, forward_plus / d3d12
+PASS qualified path tracing
+PASS day/evening/night palette stays finite and directional: (1.0, 1.0, 1.0, 1.0)
+PASS day/evening/night palette stays finite and directional: (0.8, 0.4, 0.1, 1.0)
+PASS day/evening/night palette stays finite and directional: (0.1, 0.15, 0.3, 1.0)
+PASS cave has no sky environment
+PASS build diffuse receiver: (0.0, 1.0, 0.0)
+714361.037:01d8:0210:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+714361.290:01d8:0238:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+714361.348:01d8:01dc:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+714361.349:01d8:01dc:info:vkd3d-proton:dxgi_vk_swap_chain_init: Creating swapchain (1280 x 720), BufferCount = 3.
+714361.350:01d8:01dc:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Enabling frame latency handles.
+714361.350:01d8:01dc:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Ensure maximum latency of 3 frames with KHR_present_wait.
+714361.351:01d8:01dc:info:vkd3d-proton:dxgi_vk_swap_chain_init_sleep_state: Timer interval is 1.0 ms.
+714361.356:01d8:01dc:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+warn:  DXGI: MakeWindowAssociation: Ignoring flags
+714361.540:01d8:0254:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+714361.665:01d8:0254:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+PASS upward irradiance matches analytic hemisphere integral: (0.3298, 0.0, 0.6604, 48.0)
+PASS isotropic fixtures retain their energy
+PASS build diffuse receiver: (1.0, 0.0, 0.0)
+PASS vertical receiver sees both hemispheres: (0.3638, 0.4178, 0.2108, 48.0)
+PASS isotropic fixtures retain their energy
+PASS build diffuse receiver: (0.0, -1.0, 0.0)
+PASS downward irradiance matches piecewise analytic integral: (0.0209, 0.9724, 0.0, 48.0)
+PASS isotropic fixtures retain their energy
+PASS build relief 0.0
+PASS relief normals stay outside the geometric surface
+PASS surface relief changes shading only when requested
+PASS build relief 1.0
+PASS relief normals stay outside the geometric surface
+PASS surface relief changes shading only when requested
+PASS build mirrored UVs
+PASS mirrored UVs reverse the relief slope
+PASS build degenerate UVs
+PASS degenerate UVs keep the geometric normal
+PASS build minified texture
+PASS subpixel surface detail fades before it can shimmer
+PASS build nonuniform mirrored placement
+PASS transformed relief remains finite and outward
+PASS distant relief fades out
+SCENE_RT_DEVICE 29 checks 0 failures
+[trace 15:37:05 +11083ms] clean exit
+714362.555:01d8:0210:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 12). It seems like application has stopped creating new PSOs for the time being.
+wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 01e4), starting debugger...

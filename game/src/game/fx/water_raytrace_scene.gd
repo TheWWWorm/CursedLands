@@ -26,6 +26,7 @@ var _plane := 0.0
 var _cursor := 0
 var _kernel: Object
 var _watching := false
+var _detail_options := Vector2i.ZERO
 # Negative keeps the original water masks. Scene lighting distinguishes
 # camera-visible receivers (1), shadow casters (2), and GI surfaces (4).
 var lighting_camera_mask := -1
@@ -36,6 +37,7 @@ func _init() -> void:
 
 func begin(terrain: EITerrain, position: Vector3, plane: float) -> void:
 	_terrain = terrain; center = position; _plane = plane
+	_detail_options = Vector2i(GameData.option("gfx_terrain"),GameData.option("gfx_materials"))
 	for child in terrain.get_children():
 		if child is EITerrainSector and _near(child.global_transform*child.get_aabb()):
 			pending.append({"node":weakref(child),"land":true})
@@ -88,6 +90,15 @@ static func surface_profile(material: Material) -> Vector3:
 	# Original assets without a remake profile are rough dielectrics.
 	return Vector3(1.0,0.0,0.5)
 
+static func surface_relief(material: Material, land: bool) -> float:
+	# Terrain is packed from sector arrays without an object material.
+	if land: return 0.45 if GameData.option("gfx_terrain")>0 else 0.0
+	if not material is ShaderMaterial: return 0.0
+	# Only explicitly identified stone/wood profiles have relief. In
+	# particular, leaf cutout alpha and painted shadows are not height maps.
+	var profile: Variant = material.get_shader_parameter("surface_profile")
+	return clampf(profile.w,0.0,1.0) if profile is Vector4 and GameData.option("gfx_materials")>0 else 0.0
+
 func _mesh_version(mesh: MeshInstance3D, materials: Dictionary) -> Array:
 	var version := [mesh.mesh.get_instance_id()]
 	for surface in mesh.mesh.get_surface_count():
@@ -98,6 +109,7 @@ func _mesh_version(mesh: MeshInstance3D, materials: Dictionary) -> Array:
 	return version
 
 func topology_changed() -> bool:
+	if lighting_camera_mask>=0 and _detail_options!=Vector2i(GameData.option("gfx_terrain"),GameData.option("gfx_materials")): return true
 	var current := {}
 	var materials := {}
 	for mesh: MeshInstance3D in _scene_meshes(): current[mesh.get_instance_id()] = _mesh_version(mesh,materials)
@@ -218,7 +230,7 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 		if packed.failed: failed = true; return -1
 		var count: int = packed.vertices.size()/16
 		if count == 0: return -1
-		geometries.append({"offset":vertices.size()/16,"count":count,"indices":packed.indices,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material),"emissive":emission!=Vector3.ZERO})
+		geometries.append({"offset":vertices.size()/16,"count":count,"indices":packed.indices,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material),"relief":surface_relief(material,land),"emissive":emission!=Vector3.ZERO})
 		vertices.append_array(packed.vertices); triangles += count/3
 		return geometries.size()-1
 	var start := vertices.size()/16
@@ -241,7 +253,7 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 		triangles += 1
 	var count := vertices.size()/16-start
 	if count == 0: return -1
-	geometries.append({"offset":start,"count":count,"indices":used,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material),"emissive":emission!=Vector3.ZERO})
+	geometries.append({"offset":start,"count":count,"indices":used,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material),"relief":surface_relief(material,land),"emissive":emission!=Vector3.ZERO})
 	return geometries.size()-1
 
 ## Plain values only: the render thread never dereferences a scene node.

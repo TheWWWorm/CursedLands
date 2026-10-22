@@ -1,0 +1,3 @@
+err:   DXGI: Failed to parse display metadata + colorimetry info, using blank.
+WARNING: Failed to get SDR white level for adapterId: 0x00000000000003F3, id: 0
+wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 0408), starting debugger...

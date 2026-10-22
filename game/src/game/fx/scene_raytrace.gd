@@ -3,6 +3,7 @@ extends Node
 ## snapshots build, outside the bounded RT region, or on unsupported devices.
 const Device = preload("res://src/game/fx/scene_raytrace_device.gd")
 const PathDevice = preload("res://src/game/fx/path_trace_device.gd")
+const PathSky = preload("res://src/game/fx/path_trace_sky.gd")
 const Scene = preload("res://src/game/fx/water_raytrace_scene.gd")
 const SCALES := [0.5,0.75,1.0]
 const GI_SAMPLES := [1,2,4]
@@ -79,7 +80,7 @@ func _process(dt: float) -> void:
 			_failed = true; stats["fallback"]="snapshot_budget"; _gather=null; return
 		var geometries := []; var placements := []
 		for geometry: Dictionary in _gather.geometries:
-			geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,"cutoff":geometry.cutoff,"standard":geometry.standard,"surface":geometry.surface,"emissive":geometry.emissive})
+			geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,"cutoff":geometry.cutoff,"standard":geometry.standard,"surface":geometry.surface,"relief":geometry.relief,"emissive":geometry.emissive})
 		for entry: Dictionary in _gather.instances:
 			placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":0})
 		device = PathDevice.new() if _path_mode else Device.new()
@@ -153,10 +154,12 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false)
 		RenderingServer.global_shader_parameter_set(StringName("ei_rt_point%d"%i),position)
 	data.append_array(colours)
 	if _path_mode:
+		var environment := PathSky.palette(Gfx.ambient,Gfx.sun,Gfx.fog_sky,game._sky_cave)
 		# Progressive accumulation is valid only for an exactly unchanged
 		# camera, projection, lighting and scene. Never retain moving shadows.
 		var signature := data.slice(0,32)
 		signature.append_array(data.slice(64,76));signature.append_array(data.slice(84,144))
+		signature.append_array(environment)
 		var bytes := signature.to_byte_array()
 		var stationary := history and not scene_changed and bytes==_path_signature
 		var limit := 256 if GameData.option("pt_accumulation")>0 else 8
@@ -168,10 +171,11 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false)
 		var same_projection := bytes.slice(0,16*4)==_path_signature.slice(0,16*4)
 		if not same_lighting or not same_projection or (limit>8 and not stationary): data[82]=0.0
 		_path_signature=bytes
-		data.append_array(PackedFloat32Array([GameData.option("pt_mode")*2,limit,float(stationary),0]))
+		data.append_array(PackedFloat32Array([GameData.option("pt_mode")*2,limit,float(stationary),1]))
 		var inverse_previous := _previous_view_projection.inverse()
 		for axis in 4:
 			var v: Vector4=inverse_previous[axis];data.append_array(PackedFloat32Array([v.x,v.y,v.z,v.w]))
+		data.append_array(environment)
 	_previous_view=view;_previous_view_projection=projection*view;_previous_camera=transform;_history_key=key
 	_frame_number=(_frame_number+1)%1000000
 	return data.to_byte_array()

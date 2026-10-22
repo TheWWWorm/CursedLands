@@ -1,0 +1,51 @@
+{
+  "suite": "path_trace_daylight_live",
+  "platform": "linux",
+  "renderer": "vulkan",
+  "exit": 0,
+  "seconds": 56.41,
+  "errors": [],
+  "summary": [
+    "PASS outdoor path lighting prepares",
+    "PASS lighting accumulates at noon",
+    "PASS time change resets still-scene history: 18.0",
+    "PASS lighting accumulates at evening",
+    "PASS time change resets still-scene history: 0.0",
+    "PASS lighting accumulates at night",
+    "PASS enhanced terrain and materials keep PT active",
+    "PASS disabling PT restores conventional materials",
+    "PATH_DAYLIGHT_LIVE 8 checks 0 failures"
+  ],
+  "command": [
+    "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/preview-linux-daylight-baseline/CursedLands.x86_64",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--gpu-index",
+    "0",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--borderless",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/fixtures-linux/path_trace_daylight_live.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/daylight-baseline-vulkan-outdoor",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/preview-linux-daylight-baseline/mods"
+  ],
+  "profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  }
+}

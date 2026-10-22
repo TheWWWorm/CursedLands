@@ -1,0 +1,44 @@
+{
+  "suite": "path_trace_materials",
+  "platform": "linux",
+  "renderer": "vulkan",
+  "exit": 0,
+  "seconds": 166.62,
+  "errors": [],
+  "summary": [
+    "MATERIAL_SHADER_OPTIONS checks=470 failures=0"
+  ],
+  "command": [
+    "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/preview-linux-daylight-baseline/CursedLands.x86_64",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--gpu-index",
+    "0",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--borderless",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/fixtures-linux/path_trace_materials.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/daylight-baseline-vulkan-materials",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/preview-linux-daylight-baseline/mods"
+  ],
+  "profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "shader_cache_seed": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/daylight-final-vulkan-path_trace_materials/profile/data/godot/app_userdata/Cursed Lands"
+}

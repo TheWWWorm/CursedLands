@@ -106,7 +106,11 @@ const CAPTURE := """
         if(ei_rt_sample(world,normal,indirect,a,b)) {
             if(ei_pt_active>0.5) {
                 ei_pt_blend=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,length(world-ei_rt_center.xyz));
-                EMISSION+=(ALBEDO*ei_material_diffuse.rgb*indirect+a.rgb+ei_lin(ei_srgb(ALBEDO)*ei_e))*ei_pt_blend;
+                // Retain the terrain's authored underwater attenuation. The
+                // combined PT signal has no individual light direction, so
+                // use the same diffuse-depth factor as the ambient path.
+                vec3 reflected=(ALBEDO*ei_material_diffuse.rgb*indirect+a.rgb)*max(1.0-ei_k,0.0);
+                EMISSION+=(reflected+ei_lin(ei_srgb(ALBEDO)*ei_e))*ei_pt_blend;
             } else {
                 ei_rt_valid=1.0;ei_rt_visibility0=a;ei_rt_visibility1=b;
                 vec3 ambient=mix(ei_lin(ei_ambient),indirect,ei_rt_state.z);

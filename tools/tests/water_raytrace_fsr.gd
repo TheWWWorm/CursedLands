@@ -6,7 +6,10 @@ func status() -> Dictionary:
 	return FsrGraphics.bridge().call("get_status")
 
 func sample(label: String, expect_fg: bool, expect_rt: bool) -> void:
-	var deadline := Time.get_ticks_msec()+90_000
+	# A rebuilt engine with an empty shader cache can still be compiling the
+	# temporal variants at 90 seconds. Keep a finite cold-start allowance;
+	# functional assertions below still require actual generated presents.
+	var deadline := Time.get_ticks_msec()+180_000
 	while Time.get_ticks_msec() < deadline:
 		get_tree().root.grab_focus()
 		await frames(1)

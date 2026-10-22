@@ -14,7 +14,7 @@ func shader_prefix() -> String: return "res://src/game/fx/shaders/path_trace_"
 func shader_stage_path(stage: int) -> String:
 	if stage==RenderingDevice.SHADER_STAGE_RAYGEN and not _uses_emitters: return shader_prefix()+"raygen_no_emitters"
 	return super.shader_stage_path(stage)
-func frame_bytes() -> int: return 656
+func frame_bytes() -> int: return 704
 func filter_spirv() -> RDShaderSPIRV: return PATH_FILTER.get_spirv()
 func filter_auxiliary_formats() -> Array[int]:
 	return [RenderingDevice.DATA_FORMAT_R16G16_SFLOAT,RenderingDevice.DATA_FORMAT_R16G16_SFLOAT]

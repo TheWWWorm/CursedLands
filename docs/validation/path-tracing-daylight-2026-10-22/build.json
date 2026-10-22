@@ -1,0 +1,130 @@
+{
+  "baseline_commit": "08acf98d",
+  "source_matches_runtime": true,
+  "source_sha256": {
+    "game/src/game/fx/path_trace_sky.gd": "d973d2d1a60e94fac759b0f63c71601c0b269d005efd324c57fd674fbae5dc1a",
+    "game/src/game/fx/scene_raytrace.gd": "6ad893af29fb1609f3749fd5a8294f1e0a050d7bca98a408ef6060f9c14ec3e3",
+    "game/src/game/fx/path_trace_device.gd": "35252aee987722084109454392477bdc8ad79fb241e369f5fa5c2bdfca3d6d3b",
+    "game/src/game/fx/path_trace_emitters.gd": "e8ba3a4c437a195a03899e5ca97450b2d565ba8de87c0e9c8d957f22fce0a574",
+    "game/src/game/fx/scene_raytrace_shader.gd": "f36037ad7c02563e5a630a61b8e95db18fff7ef0827c28cca1a21b446930c703",
+    "game/src/game/fx/water_raytrace_device.gd": "659b77c45c41a3eab528621c37a0ccbbf717be84bcb81ef76dd2d3c70c1c3b3e",
+    "game/src/game/fx/scene_raytrace_device.gd": "e1c3a218f3704c529d4aac6986fbf0ec8a2598e2b4c48b9604fd69bad212daa1",
+    "game/src/game/fx/water_raytrace_scene.gd": "7509846243c1be1155f654fef10299684d202b047d4cc4191fdf5c089239a45d",
+    "game/src/game/fx/shaders/path_trace.hlsl": "94687f195071d9bddf29e1b7f27f119a34d3dcaf31abd5c6785b50bf59261acc",
+    "game/src/game/fx/shaders/path_trace_any_hit.dxil": "fc8ae7e7102d5f9b7ade1f1fe4cd3f1124e0a2e511494cb2a86ef8b7a5ef77f2",
+    "game/src/game/fx/shaders/path_trace_closest_hit.spv": "903883bf54b604589fd31eaf3e762aeb8cc86d90aabc774a147b17f702156f8a",
+    "game/src/game/fx/shaders/path_trace_raygen.spv": "38d04367f985668de14c5a230af16c53d0b80cd00e83570ac9d3ec60095522b5",
+    "game/src/game/fx/shaders/path_trace_any_hit.spv": "9520e13148ceca6edfc9d620dd2e546e6f9c40d812380f2a798c2bebbf7e4c35",
+    "game/src/game/fx/shaders/path_trace_raygen.dxil": "32971c672ef9f6e9bf14a61ab89b02325390c6202b16b61d9096d26c3e32f4b1",
+    "game/src/game/fx/shaders/path_trace_miss.spv": "1376ff37c61cc9a09124d61df678d92ba069fce9aafef4e08cb23e98aa8f0179",
+    "game/src/game/fx/shaders/path_trace_raygen_no_emitters.spv": "ad0af210d38de98eff2e77dbbd85bbd84a09c989f97674d825899449ef9ba1f8",
+    "game/src/game/fx/shaders/path_trace_raygen_no_emitters.dxil": "f3f6d665d51335715ede9bb4f78801dd97a864a653dbad63c0876ad258a774c7",
+    "game/src/game/fx/shaders/path_trace_closest_hit.dxil": "467f84042a716066351b989408e50d6c4ee8b12dba239594cfb1dc8087803275",
+    "game/src/game/fx/shaders/path_trace_miss.dxil": "9d181346415e526c5942efaf17c0f941a47df05b313a0e2e72f7d3c491f2ea51",
+    "game/src/game/fx/shaders/path_trace_filter.glsl": "d265e3d36665fafc51004892351612f4761094a8b6e27738db61a3fabf240fe5",
+    "game/src/game/fx/shaders/path_trace_build.json": "49f1492d29a08b067e10be8888d5cc7126c7fa72e6c20f195b050a7c59498e4e"
+  },
+  "fixtures_sha256": {
+    "tools/tests/scene_raytrace_options.gd": "91bc13e05d092212a1c715aad9eb168dad593ab8d453223a00a5e4575f26dd1f",
+    "tools/tests/water_raytrace.gd": "f34836320b6f4e1aa3fe25e224bb13a7b02a58b3f79b059ff8d0e062db7aad2e",
+    "tools/tests/water_raytrace_fsr.gd": "a651c0dd28f09a44b4974bd314a17d887e6c6fd04aecd4f787c64d8f848954c5",
+    "tools/tests/water_raytrace_native.gd": "267ef8f1d2c039482310a3eb2996da8a9145ec2747cc34c3e77c436b186f4f6a",
+    "tools/tests/scene_raytrace_fsr.gd": "0172db17e8bc5271f720cac64d406ca41989d9be5766470319b010286806e4c4",
+    "tools/tests/water_raytrace_quality_scene.gd": "3848c3ac2f72aea16e96641530d6faa605018484081400badef342257c2b93e0",
+    "tools/tests/water_raytrace_options.gd": "4fd576d3dfcdc2721a9b5520c55a7c823ee6cab21b587a268e4b7e5d0f3680e9",
+    "tools/tests/scene_raytrace_performance.gd": "746ac1e249eda08ed0fe267a4e2aa38b269d067694e879b0c7f80d9a029dfce5",
+    "tools/tests/scene_raytrace_live.gd": "824c8a463502a83b59635cdf75bc158e1a2f63f0cff52d86d1b7dfe80495685d",
+    "tools/tests/scene_raytrace_materials.gd": "3665ac18b75adac8508827ded126d10155de6cbf9a917e38c1d4ba30f79ed0c8",
+    "tools/tests/water_raytrace_material_live.gd": "9dd35f78a6184df656675c9cbcc8e2123e7b942bdae4c13bd5c9136801cc52a1",
+    "tools/tests/scene_raytrace_fallback.gd": "c79cee8506b40fe43bbe720728256c000b89c23be3b7e341fa36fe9109900b58",
+    "tools/tests/water_raytrace_performance.gd": "aaae1181d9a74b2d33099a5b02efcc57294d18a28bb06b60d29101f2d49c921f",
+    "tools/tests/scene_raytrace_cave.gd": "393bfd1d230b4c9f4f7fcbcf400be1b5218a785465da905c8b91c0ed58696bb2",
+    "tools/tests/water_raytrace_cost.gd": "88486b2a608fbcd02656874b7b4100fc6f24a3a555bd75e7bb21a5d3790b8496",
+    "tools/tests/water_raytrace_lighting.gd": "72b9969c8551a3d663763a6241ef1b23227cc2b8568e4506c24d2b12424f6acc",
+    "tools/tests/water_raytrace_artifact.gd": "b2b94fe6ab75ee6e00a360efee9ad7a9a3a03a5bf28ad799466caf1aacf5227b",
+    "tools/tests/water_raytrace_materials.gd": "8722646b0065711520888ee41f0092fc675af443092c78cbe117043aa0fa5166",
+    "tools/tests/water_raytrace_filtering.gd": "bc4d0cc6d00c928932f166e675addd5e523f40f078307e43dd3ef526ec54d415",
+    "tools/tests/water_raytrace_filtering_scene.gd": "56cacc52b911244d3ee086eb818323e5f0fb85fe0b9fb00ecbfd01bdbb9a5bd9",
+    "tools/tests/water_raytrace_dynamic_performance.gd": "3ec9dfbf8fe5fa448b79c5739180bcb0c2ace628f6a0dee76f38896d004c8786",
+    "tools/tests/water_raytrace_device.gd": "0581a480b1a26556987c0cba4bb11d2e6f90d59f81291cf175db57ba53e7d1a9",
+    "tools/tests/scene_raytrace_device.gd": "212ddcaa7da21442b4b5206a84dcdbc49ea516462f196cc5122d40da10c0df47",
+    "tools/tests/water_raytrace_quality.gd": "cbc9de98983d493aaa49a6e8701d8980771d197830794bfb6d3ec5e35cb2ec75",
+    "tools/tests/water_raytrace_first_person.gd": "e78a87337b920146c5907dd78cc59da5554ba9233870689ac0b56782e977817f",
+    "tools/tests/scene_raytrace_alpha.gd": "551155d80594ebafd56fc67fdd4c9b0ddd4a9839929ec12b744b7013ac40ee54",
+    "tools/tests/water_raytrace_live.gd": "8962f2118a991032d463e095db19039ba190f364f562986d31a42601842b9533"
+  },
+  "path_fixtures_sha256": {
+    "tools/tests/path_trace_alpha.gd": "8847d1fc4a3a9e999e3f350e7726d3aec499531bb5474fed0551915d5c025e58",
+    "tools/tests/path_trace_quality.gd": "223c4443174390dd52c0d8d880fe4feee27dc9fb366fa7220cbde4aec0feab85",
+    "tools/tests/path_trace_cave.gd": "1a248728fd7bbeb4932e5b9626a1817fdade72a4deefcd3b45f51148f003d066",
+    "tools/tests/path_trace_performance.gd": "6dfd589ab9b40775e549ee39dae95d96105a1209e0c2f020a209e98d5afb2e84",
+    "tools/tests/path_trace_live.gd": "f0185262093c8d7886d6ded720e830298531cf0d150260c6abf86640e7ba97b8",
+    "tools/tests/path_trace_sampling.gd": "87d7f6d63a2180bc657a70eb8fbd3ee8ce2e8c23bb0b7e35c8d8f1f143b51953",
+    "tools/tests/path_trace_daylight_live.gd": "b847d0e4b923c3ee2e44bb41ab357c82e2f4e203531e3b7d4533685deb7032ff",
+    "tools/tests/path_trace_emitter_live.gd": "8e1a23201ebb08ec1313cb0cd8a6b8198c729ab5ab3a4061146bb58cdda9197d",
+    "tools/tests/path_trace_variance.gd": "1513338ee6a89b134ace3d2bb00ad4ad2d4591b122cf5d39d51890b1ed974721",
+    "tools/tests/path_trace_device.gd": "c9f7f8232de2a24485506bcbc82eedf169b2744ee2161893bae8e0f4e1454534",
+    "tools/tests/path_trace_underwater.gd": "d946398acf8801edd6d9b6bb706ee106e5fdd9c994efe2cf875f58f59cfcb25a",
+    "tools/tests/path_trace_receivers.gd": "2ff1d657daf258ae0b3e0e45c3414365ef20dbdb32ae74abbab3e85d2b75cc8a",
+    "tools/tests/path_trace_emitters.gd": "846451b56fbf74b154f971c29c506f602c86a52fcc04e5e034384690cee2022a",
+    "tools/tests/path_trace_materials.gd": "e8d2ccb42ccd904a8384f8003298cfad877b0696b1759120a43727c780cf27cb",
+    "tools/tests/path_trace_daylight.gd": "9ec3d65534bdc80545e54370939f80df19f3972756415a79db434a264d29889b",
+    "tools/tests/path_trace_glossy.gd": "9151aa941a7574297b063e44917627c3cd0961aa0458e9b79a6656c28e311476",
+    "tools/tests/path_trace_fsr.gd": "fcad5eebf356f04ac72bbc987f30f3db117903bc385f0ad1f11c80f7f7c141c3",
+    "tools/tests/path_trace_contacts.gd": "6239ae992c69a104a13bcde345dcc32930325b6caaad049dd8257816fd8159ae"
+  },
+  "packages": {
+    "preview-windows": {
+      "CursedLands.pck": "f482e8080ea5c35259e3367165ee81fa62b6db4580a584921eb756cde090daee",
+      "CursedLands.exe": "3fdf36babfcbae0b3584aed85e1d52e4e537d3033c9128689cc0593a9ef80fd4"
+    },
+    "preview-linux": {
+      "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "CursedLands.pck": "f482e8080ea5c35259e3367165ee81fa62b6db4580a584921eb756cde090daee"
+    },
+    "preview-windows-daylight-baseline": {
+      "CursedLands.pck": "4450621d33e343c66a17e0a1556cde16ed9456807843831ea436850b11cc2958",
+      "CursedLands.exe": "3fdf36babfcbae0b3584aed85e1d52e4e537d3033c9128689cc0593a9ef80fd4"
+    },
+    "preview-linux-daylight-baseline": {
+      "CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+      "CursedLands.pck": "4450621d33e343c66a17e0a1556cde16ed9456807843831ea436850b11cc2958"
+    }
+  },
+  "engine_build_command": [
+    "python3",
+    "-m",
+    "SCons",
+    "-j6",
+    "platform=windows",
+    "arch=x86_64",
+    "target=template_release",
+    "debug_symbols=no",
+    "lto=none",
+    "production=yes",
+    "optimize=speed",
+    "use_mingw=yes",
+    "use_static_cpp=yes",
+    "mingw_prefix=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/native-deps/mingw/root/usr",
+    "mesa_libs=/home/llm2x/Documents/EI/local/scratchpad/coop-performance-20261005/engine-profile/windows-deps/mesa-x86_64-gcc",
+    "use_pix=no",
+    "module_mono_enabled=no",
+    "module_openxr_enabled=no",
+    "accesskit=no",
+    "use_fsr_sdk=yes"
+  ],
+  "engine_driver_sha256": {
+    "drivers/d3d12/ei_raytracing_d3d12.cpp": "0f3b484e77fb8ab10baadd86b6975b5ca9b6edb08e9e73f4b8179e7ba24803db",
+    "drivers/d3d12/rendering_device_driver_d3d12.cpp": "ebbfb6f09d1cd235c3dd15d2ba4846a9918b6fcfaaa0ce391e8dcfc329e24486"
+  },
+  "runtime_restoration": "Removed development binaries were restored from published 1.23.0 dependencies and a rebuild of the existing qualified Windows engine source. Both comparison packages use the same rebuilt Windows EXE; native Linux uses the 1.23.0 qualified Vulkan binary. This is a fresh paired benchmark, not a comparison of FPS across historical engine builds.",
+  "host_gpu": [
+    "NVIDIA GeForce RTX 3090, 580.178.04",
+    "NVIDIA GeForce RTX 3090 Ti, 580.178.04"
+  ],
+  "wine_adapters_sha256": {
+    "dxgi.dll": "074616e1af172edf175f3fc6ed7ca30f6c685a70875eed3af10797a10840ed39",
+    "d3d12.dll": "aed51497c0efa76c9ffc30386ff0957197824cd4734ce64b4e962d3551fba43c",
+    "d3d12core.dll": "68b8bc7b32f9b1b1b0526e9e2e769731dd8da9af0f2b40f76012385b9d5721df"
+  }
+}

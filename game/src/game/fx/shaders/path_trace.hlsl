@@ -26,8 +26,11 @@ struct Frame {
     float4 center_radius;
     float4 point_position[7];
     float4 point_colour[7];  // Linear illumination, W emitter radius.
-    float4 path;             // Continuation bounces, history limit, stationary, reserved.
+    float4 path;             // Continuation bounces, history limit, stationary, directional sky.
     column_major float4x4 previous_inverse_view_projection;
+    float4 sky_zenith;
+    float4 sky_horizon;
+    float4 sky_ground;
 };
 [[vk::binding(4,0)]] ConstantBuffer<Frame> frame : register(b400000);
 struct Vertex { float4 position_u; float4 normal_v; float4 diffuse; float4 emission_layer; };
@@ -51,6 +54,13 @@ float2 hit_uv(Vertex a,Vertex b,Vertex c,float3 weights) {
 }
 #if defined(PATH_RAYGEN)
 static const float PI=3.14159265359;
+float3 sky_radiance(float3 direction) {
+    if(frame.path.w<0.5)return frame.sky.rgb;
+    // Continuous at the horizon. The directional sun is sampled separately;
+    // adding its disk here would count its energy twice.
+    return direction.y>=0.0?lerp(frame.sky_horizon.rgb,frame.sky_zenith.rgb,direction.y):
+        lerp(frame.sky_horizon.rgb,frame.sky_ground.rgb,saturate(-direction.y*4.0));
+}
 uint sample_hash(uint seed) {
     seed=seed*747796405u+2891336453u;
     uint x=((seed>>((seed>>28u)+4u))^seed)*277803737u;
@@ -306,7 +316,8 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
         RayDesc ray={surface_origin(current),0.0,direction,frame.camera.w};
         TraceRay(scene,RAY_FLAG_NONE,4,0,0,0,ray,hit);
         if(hit.hit<0.5) {
-            diffuse+=weight_d*frame.sky.rgb;specular+=weight_s*frame.sky.rgb;break;
+            float3 environment=sky_radiance(direction);
+            diffuse+=weight_d*environment;specular+=weight_s*environment;break;
         }
         float3 direct_d,direct_s;
         sampler.vertex=depth+1u;
@@ -361,6 +372,25 @@ void main(inout Surface result,Attributes attributes) {
     if(colours.SampleLevel(colour_sampler,float3(hit_uv(a,b,c,w),a.emission_layer.w),0.0).a*a.diffuse.a<asfloat(material.z))IgnoreHit();
 }
 #elif defined(PATH_CLOSEST_HIT)
+float3 relief_normal(float3 n,float3 geometric,float3 edge1,float3 edge2,float2 uv1,float2 uv2,
+                     float3 texel,float2 step_uv,float lod,float strength) {
+    float3 r1=cross(edge2,n),r2=cross(n,edge1);
+    float3 u=r1*uv1.x+r2*uv2.x,v=r1*uv1.y+r2*uv2.y;
+    // The oriented triangle area can reverse under mirrored placement or
+    // a back-face hit. UV reflection itself must retain its handedness.
+    float area=dot(cross(edge1,edge2),n);
+    if(abs(area)<1e-10||abs(uv1.x*uv2.y-uv1.y*uv2.x)<1e-10)return n;
+    float scale=sign(area)*rsqrt(max(max(dot(u,u),dot(v,v)),1e-12));
+    const float3 lum=float3(0.2126,0.7152,0.0722);
+    float left=dot(colours.SampleLevel(colour_sampler,texel-float3(step_uv.x,0,0),lod).rgb,lum);
+    float right=dot(colours.SampleLevel(colour_sampler,texel+float3(step_uv.x,0,0),lod).rgb,lum);
+    float above=dot(colours.SampleLevel(colour_sampler,texel-float3(0,step_uv.y,0),lod).rgb,lum);
+    float below=dot(colours.SampleLevel(colour_sampler,texel+float3(0,step_uv.y,0),lod).rgb,lum);
+    float2 slope=clamp(float2(right-left,below-above)*2.0,-0.12,0.12);
+    float3 detailed=normalize(n-(u*slope.x+v*slope.y)*scale*strength);
+    // Relief changes shading only; never point a ray into the actual facet.
+    return dot(detailed,geometric)>0.05&&dot(detailed,WorldRayDirection())<0.0?detailed:n;
+}
 [shader("closesthit")]
 void main(inout Surface result,Attributes attributes) {
     uint4 material=geometry.Load4(instance_geometry.Load(InstanceID()*4u)*16u); uint i=material.x+3*PrimitiveIndex();
@@ -409,7 +439,23 @@ void main(inout Surface result,Attributes attributes) {
                       length(float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w))/max(length(mul((float3x3)to_world,edge2)),0.001));
     uint width,height,layers,levels; colours.GetDimensions(0,width,height,layers,levels);
     float lod=max(log2(max(result.cone*RayTCurrent()*density*float(width),1.0)),0.0);
-    float3 colour=colours.SampleLevel(colour_sampler,float3(hit_uv(a,b,c,w),a.emission_layer.w),lod).rgb;
+    float3 texel=float3(hit_uv(a,b,c,w),a.emission_layer.w);
+    float3 colour=colours.SampleLevel(colour_sampler,texel,lod).rgb;
+    float strength=float((material.w>>24u)&127u)/127.0;
+    if(strength>0.0) {
+        float3 eye=mul(frame.camera_world,float4(0,0,0,1)).xyz;
+        float distance=length(position-eye);
+        float footprint=2.0*abs(frame.inv_projection[0][0])/float(DispatchRaysDimensions().x);
+        if(frame.camera.x<0.5)footprint*=distance;
+        footprint=max(footprint,result.cone*RayTCurrent());
+        float texels=footprint*density*float(width)/max(abs(dot(result.normal,WorldRayDirection())),0.1);
+        strength*=(1.0-smoothstep(14.0,40.0,distance))*(1.0-smoothstep(1.2,4.0,texels));
+        if(strength>0.0)result.normal=relief_normal(result.normal,result.geometric_normal,
+            mul((float3x3)to_world,edge1),mul((float3x3)to_world,edge2),
+            float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w),
+            float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w),
+            texel,1.0/float2(width,height),max(lod,log2(max(texels,1.0))),strength);
+    }
     result.albedo=saturate(linear_colour(colour)*saturate(a.diffuse.rgb));
     result.roughness=max(float(material.w&255u)/255.0,0.08);
     result.metalness=float((material.w>>8u)&255u)/255.0;

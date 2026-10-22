@@ -2,6 +2,8 @@ extends "res://tools/tests/scene_raytrace_performance.gd"
 ## Same frozen river and GPU/CPU brackets as the scene RT comparison.
 func run() -> void:
 	var context:=await setup();var game: Game=context[1]
+	var detailed:=OS.get_cmdline_user_args().has("--pt-detail")
+	if detailed:GameData.options.gfx_terrain=1;GameData.options.gfx_materials=1
 	GameData.options.gfx_water_reflections=0;t.apply_gfx()
 	await get_tree().create_timer(0.3,true,false,true).timeout
 	get_window().borderless=true;get_window().size=Vector2i(1280,720)
@@ -36,6 +38,7 @@ func run() -> void:
 			runs.append(row);print("PATH_TRACE_BENCH ",JSON.stringify(row))
 			FileAccess.open(out.path_join("path-performance.json"),FileAccess.WRITE).store_string(JSON.stringify({"runs":runs,
 				"device":RenderingServer.get_video_adapter_name(),"driver":RenderingServer.get_current_rendering_driver_name(),"viewport":[1280,720],
+				"detailed_materials":detailed,
 				"note":"Frozen river, hidden units, water reflections and frame generation off, responsive history. Loading/builds excluded. RT GPU includes ray dispatch, reconstruction and copies; excludes AS updates. Main viewport GPU excludes RT dispatch."},"\t"))
 	set_process(false);before.queue_free()
 	context[1].queue_free();context[0].queue_free();await frames(16);TexUpscale.shutdown()
