@@ -1,0 +1,5 @@
+PASS qualified scene RT device
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build main-view scene and native RT pipeline
+PASS sun rays distinguish occluded and unoccluded floor: (0.0, 1.0, 1.0, 1.0) / (1.0, 1.0, 1.0, 1.0)

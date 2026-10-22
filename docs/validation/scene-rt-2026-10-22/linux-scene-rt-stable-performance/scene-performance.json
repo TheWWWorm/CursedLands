@@ -1,0 +1,481 @@
+{
+	"device": "NVIDIA GeForce RTX 3090",
+	"driver": "vulkan",
+	"note": "Frozen river view, hidden units, water reflections off; steady-state samples exclude loading/builds. RT GPU includes primary/shadow/GI rays and reconstruction, not AS updates. Main viewport GPU excludes separate RT dispatch.",
+	"runs": [
+		{
+			"case": "conventional",
+			"controller_cpu_ms": {
+				"median": 0.007,
+				"n": 90,
+				"p95": 0.011
+			},
+			"frame_ms": {
+				"median": 2.122,
+				"n": 90,
+				"p95": 3.217
+			},
+			"main_gpu_ms": {
+				"median": 0.744000017642975,
+				"n": 90,
+				"p95": 0.754999995231628
+			},
+			"round": 0,
+			"rt_gpu_ms": {},
+			"stats": {
+				"active": false
+			}
+		},
+		{
+			"case": "shadows-low",
+			"controller_cpu_ms": {
+				"median": 0.726,
+				"n": 90,
+				"p95": 0.93
+			},
+			"frame_ms": {
+				"median": 2.486,
+				"n": 90,
+				"p95": 4.181
+			},
+			"main_gpu_ms": {
+				"median": 0.652999997138977,
+				"n": 90,
+				"p95": 0.949000000953674
+			},
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 0.157632,
+				"n": 90,
+				"p95": 0.198816
+			},
+			"stats": {
+				"active": true,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"quality": 0,
+				"shadow_samples": 1,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "gi-low",
+			"controller_cpu_ms": {
+				"median": 0.74,
+				"n": 90,
+				"p95": 0.93
+			},
+			"frame_ms": {
+				"median": 2.602,
+				"n": 90,
+				"p95": 4.067
+			},
+			"main_gpu_ms": {
+				"median": 0.646000027656555,
+				"n": 90,
+				"p95": 0.663999974727631
+			},
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 0.185248,
+				"n": 90,
+				"p95": 0.1912
+			},
+			"stats": {
+				"active": true,
+				"geometries": 1285,
+				"gi_samples": 1,
+				"instances": 1420,
+				"lights": 1,
+				"quality": 0,
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "both-low",
+			"controller_cpu_ms": {
+				"median": 0.725,
+				"n": 90,
+				"p95": 0.915
+			},
+			"frame_ms": {
+				"median": 2.501,
+				"n": 90,
+				"p95": 4.153
+			},
+			"main_gpu_ms": {
+				"median": 0.647000014781952,
+				"n": 90,
+				"p95": 0.671000003814697
+			},
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 0.2024,
+				"n": 90,
+				"p95": 0.210432
+			},
+			"stats": {
+				"active": true,
+				"geometries": 1285,
+				"gi_samples": 1,
+				"instances": 1420,
+				"lights": 1,
+				"quality": 0,
+				"shadow_samples": 1,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "both-medium",
+			"controller_cpu_ms": {
+				"median": 0.736,
+				"n": 90,
+				"p95": 0.92
+			},
+			"frame_ms": {
+				"median": 2.562,
+				"n": 90,
+				"p95": 3.954
+			},
+			"main_gpu_ms": {
+				"median": 0.662000000476837,
+				"n": 90,
+				"p95": 1.47200000286102
+			},
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 0.532928,
+				"n": 90,
+				"p95": 0.558912
+			},
+			"stats": {
+				"active": true,
+				"geometries": 1285,
+				"gi_samples": 2,
+				"instances": 1420,
+				"lights": 1,
+				"quality": 1,
+				"shadow_samples": 2,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "both-high",
+			"controller_cpu_ms": {
+				"median": 0.81,
+				"n": 90,
+				"p95": 1.481
+			},
+			"frame_ms": {
+				"median": 2.99,
+				"n": 90,
+				"p95": 5.126
+			},
+			"main_gpu_ms": {
+				"median": 0.663999974727631,
+				"n": 90,
+				"p95": 0.71399998664856
+			},
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 1.763744,
+				"n": 90,
+				"p95": 2.303136
+			},
+			"stats": {
+				"active": true,
+				"geometries": 1285,
+				"gi_samples": 4,
+				"instances": 1420,
+				"lights": 1,
+				"quality": 2,
+				"shadow_samples": 4,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "both-high",
+			"controller_cpu_ms": {
+				"median": 0.783,
+				"n": 90,
+				"p95": 1.006
+			},
+			"frame_ms": {
+				"median": 2.955,
+				"n": 90,
+				"p95": 4.332
+			},
+			"main_gpu_ms": {
+				"median": 0.666000008583069,
+				"n": 90,
+				"p95": 0.704999983310699
+			},
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 1.769056,
+				"n": 90,
+				"p95": 2.152704
+			},
+			"stats": {
+				"active": true,
+				"geometries": 1285,
+				"gi_samples": 4,
+				"instances": 1420,
+				"lights": 1,
+				"quality": 2,
+				"shadow_samples": 4,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "both-medium",
+			"controller_cpu_ms": {
+				"median": 0.777,
+				"n": 90,
+				"p95": 1.27
+			},
+			"frame_ms": {
+				"median": 2.755,
+				"n": 90,
+				"p95": 4.38
+			},
+			"main_gpu_ms": {
+				"median": 0.660000026226044,
+				"n": 90,
+				"p95": 1.29499995708466
+			},
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 0.533664,
+				"n": 90,
+				"p95": 0.558656
+			},
+			"stats": {
+				"active": true,
+				"geometries": 1285,
+				"gi_samples": 2,
+				"instances": 1420,
+				"lights": 1,
+				"quality": 1,
+				"shadow_samples": 2,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "both-low",
+			"controller_cpu_ms": {
+				"median": 0.729,
+				"n": 90,
+				"p95": 0.843
+			},
+			"frame_ms": {
+				"median": 2.535,
+				"n": 90,
+				"p95": 4.035
+			},
+			"main_gpu_ms": {
+				"median": 0.651000022888184,
+				"n": 90,
+				"p95": 0.681999981403351
+			},
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 0.20432,
+				"n": 90,
+				"p95": 0.20976
+			},
+			"stats": {
+				"active": true,
+				"geometries": 1285,
+				"gi_samples": 1,
+				"instances": 1420,
+				"lights": 1,
+				"quality": 0,
+				"shadow_samples": 1,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "gi-low",
+			"controller_cpu_ms": {
+				"median": 0.725,
+				"n": 90,
+				"p95": 0.915
+			},
+			"frame_ms": {
+				"median": 2.506,
+				"n": 90,
+				"p95": 4.125
+			},
+			"main_gpu_ms": {
+				"median": 0.648999989032745,
+				"n": 90,
+				"p95": 0.680999994277954
+			},
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 0.186208,
+				"n": 90,
+				"p95": 0.19072
+			},
+			"stats": {
+				"active": true,
+				"geometries": 1285,
+				"gi_samples": 1,
+				"instances": 1420,
+				"lights": 1,
+				"quality": 0,
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "shadows-low",
+			"controller_cpu_ms": {
+				"median": 0.793,
+				"n": 90,
+				"p95": 1.065
+			},
+			"frame_ms": {
+				"median": 2.804,
+				"n": 90,
+				"p95": 4.521
+			},
+			"main_gpu_ms": {
+				"median": 0.651000022888184,
+				"n": 90,
+				"p95": 0.680999994277954
+			},
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 0.155712,
+				"n": 90,
+				"p95": 0.158112
+			},
+			"stats": {
+				"active": true,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"quality": 0,
+				"shadow_samples": 1,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "conventional",
+			"controller_cpu_ms": {
+				"median": 0.007,
+				"n": 90,
+				"p95": 0.009
+			},
+			"frame_ms": {
+				"median": 1.751,
+				"n": 90,
+				"p95": 2.76
+			},
+			"main_gpu_ms": {
+				"median": 0.59799998998642,
+				"n": 90,
+				"p95": 0.606000006198883
+			},
+			"round": 1,
+			"rt_gpu_ms": {},
+			"stats": {
+				"active": false,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"quality": 0,
+				"shadow_samples": 1,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		}
+	],
+	"viewport": [
+		1280,
+		720
+	]
+}

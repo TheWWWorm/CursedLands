@@ -1,0 +1,5 @@
+PASS fixture uses the actual cave lighting configuration
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS cave scene prepares traced shadows and GI
+PASS cave misses do not import outdoor sky radiance

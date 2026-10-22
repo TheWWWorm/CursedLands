@@ -1,0 +1,528 @@
+{
+  "date": "2026-10-22",
+  "base_commit": "96c0f5c1134e0824c91b26aa4e87b157349a7ba0",
+  "feature": "Unreleased RT shadows and one-bounce diffuse GI",
+  "hardware": {
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "driver": "580.178.04",
+    "os": "Ubuntu 24.04.5 LTS",
+    "dx12_runtime": "Wine / VKD3D-Proton 3.0.1; not native Windows",
+    "vulkan_validation": "Khronos Validation Layers 1.4.363.0"
+  },
+  "runs": {
+    "linux-scene-rt-stable-device": {
+      "suite": "scene_raytrace_device",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "seconds": 7.17,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 0
+      },
+      "result_files": [
+        "scene-device-results.json"
+      ],
+      "full_log_sha256": "01b24fdc79f8242ac9cce7873911672ce15810b9b7b39bf3d12f94cd6e1e5e04"
+    },
+    "dx12-scene-rt-stable-device": {
+      "suite": "scene_raytrace_device",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "seconds": 10.87,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 1,
+        "backend_error_lines": 2
+      },
+      "result_files": [
+        "scene-device-results.json"
+      ],
+      "full_log_sha256": "0d6fecd496f04889e4b0909f92bbeffd6ac35ae3d1e113a0f6c9045931dcc170"
+    },
+    "linux-scene-rt-alpha": {
+      "suite": "scene_raytrace_alpha",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "seconds": 6.67,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 0
+      },
+      "result_files": [
+        "scene-device-results.json"
+      ],
+      "full_log_sha256": "e2a96997c70e612e5dbc8dcb704db9adf66a57047948c808e2043e948b99b676"
+    },
+    "dx12-scene-rt-alpha": {
+      "suite": "scene_raytrace_alpha",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "seconds": 8.22,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 2
+      },
+      "result_files": [
+        "scene-device-results.json"
+      ],
+      "full_log_sha256": "4d2d3d99ce03580d37e44bd29b439da77b5f7d7d5f090f5bc70369a5bfdfb093"
+    },
+    "linux-scene-rt-live-02": {
+      "suite": "scene_raytrace_live",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "seconds": 28.38,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 0
+      },
+      "result_files": [
+        "scene-live.json"
+      ],
+      "full_log_sha256": "1362b5930bea3db0b1930b382c966266d0280d3cf0b41ea8ef524a76bafaad03"
+    },
+    "dx12-scene-rt-stable-live": {
+      "suite": "scene_raytrace_live",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "seconds": 31.48,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 2
+      },
+      "result_files": [
+        "scene-live.json"
+      ],
+      "full_log_sha256": "1110be3e30b817cbcff9009d7bf9d3eab72c75376db403b1360eef045c19f395"
+    },
+    "linux-scene-rt-validation-live": {
+      "suite": "scene_raytrace_live",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "seconds": 35.01,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 10,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 0
+      },
+      "result_files": [
+        "scene-live.json"
+      ],
+      "full_log_sha256": "902b75b829e00ef4c9d7c800e6ecd6b7ce0fa0de74fd4a840ae7a46407966207"
+    },
+    "linux-scene-rt-validation-baseline": {
+      "suite": "scene_raytrace_fallback",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "seconds": 22.77,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 10,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 0
+      },
+      "result_files": [
+        "scene-fallback.json"
+      ],
+      "full_log_sha256": "dfe58182d02c515d46efa69a7e94739c2f58a5623f3f84530ebdd520712d6296"
+    },
+    "linux-scene-rt-cave-02": {
+      "suite": "scene_raytrace_cave",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "seconds": 25.62,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 0
+      },
+      "result_files": [
+        "scene-cave.json"
+      ],
+      "full_log_sha256": "af574a819cb64b678d34aff699dd9f5a1ea2a7f9464f6f6a536ea3f6501d4214"
+    },
+    "dx12-scene-rt-cave": {
+      "suite": "scene_raytrace_cave",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "seconds": 26.23,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 2
+      },
+      "result_files": [
+        "scene-cave.json"
+      ],
+      "full_log_sha256": "d1fe20d1de67548c661c6f8c8e59842a371ffdccc6d4280486fa6506a0f81625"
+    },
+    "linux-scene-rt-materials": {
+      "suite": "scene_raytrace_materials",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "seconds": 121.06,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 0
+      },
+      "result_files": [],
+      "full_log_sha256": "35a9270b67d838022db1ac3bbc20f92da6531fe96e96097a408319fa84a67710"
+    },
+    "dx12-scene-rt-materials": {
+      "suite": "scene_raytrace_materials",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "seconds": 136.84,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 1,
+        "backend_error_lines": 2
+      },
+      "result_files": [],
+      "full_log_sha256": "4077603f5b123d3f326f4b6e0816572c7c46c8b313b792e50a598d06790c1150"
+    },
+    "linux-scene-rt-options-final": {
+      "suite": "scene_raytrace_options",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "seconds": 15.02,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 0
+      },
+      "result_files": [
+        "scene-options.json"
+      ],
+      "full_log_sha256": "fd091e89b07c643ee7ea0e83c6d02e1c909f76ad28b04b53c43a46c65257b250"
+    },
+    "gl-scene-rt-options": {
+      "suite": "scene_raytrace_options",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "exit": 0,
+      "seconds": 13.37,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 0
+      },
+      "result_files": [
+        "scene-options.json"
+      ],
+      "full_log_sha256": "13010bfbb955c7d812329ff0b76139fbf8dd87942463e80c80292afcf58724e8"
+    },
+    "gl-scene-rt-fallback": {
+      "suite": "scene_raytrace_fallback",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "exit": 0,
+      "seconds": 21.32,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 0
+      },
+      "result_files": [
+        "scene-fallback.json"
+      ],
+      "full_log_sha256": "f22911c5025a2a9e7bf9f8e021ef7d31420069c6dac626291343a761a3205cf5"
+    },
+    "dx12-scene-rt-stable-fsr": {
+      "suite": "scene_raytrace_fsr",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "seconds": 88.2,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 2
+      },
+      "result_files": [
+        "rt-fsr.json"
+      ],
+      "full_log_sha256": "4acc23d802c3fd8399da639ef2fa4ee2dd54dd54f9a2ed60da38eba934339393"
+    },
+    "dx12-scene-rt-stable-performance": {
+      "suite": "scene_raytrace_performance",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "exit": 0,
+      "seconds": 30.93,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 2
+      },
+      "result_files": [
+        "scene-performance.json"
+      ],
+      "full_log_sha256": "e284d573b8fcf5084b1ea943ca63039afa88b4080117eb19296a5f7a1a896e67"
+    },
+    "linux-scene-rt-stable-performance": {
+      "suite": "scene_raytrace_performance",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "seconds": 27.67,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 0
+      },
+      "result_files": [
+        "scene-performance.json"
+      ],
+      "full_log_sha256": "99e821204d1ffe9659f9d44a27f4605739e998facbf94fa77b634b454a0a18d5"
+    },
+    "linux-scene-rt-water-device": {
+      "suite": "water_raytrace_device",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "seconds": 6.67,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 0
+      },
+      "result_files": [
+        "device-results.json"
+      ],
+      "full_log_sha256": "b0a3ad9ee4d3d430b40df5553c946f7eed512b51f47175f72ff90c034b54a10d"
+    },
+    "linux-scene-rt-water-filtering": {
+      "suite": "water_raytrace_filtering",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "seconds": 8.0,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 0
+      },
+      "result_files": [
+        "device-results.json"
+      ],
+      "full_log_sha256": "8b0b3e0ea365af781cbfa49a2832a27cebf460dc4e9f184902262075f3e3e9b8"
+    },
+    "linux-scene-rt-water-first-person": {
+      "suite": "water_raytrace_first_person",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "exit": 0,
+      "seconds": 23.67,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 0
+      },
+      "result_files": [
+        "first-person.json"
+      ],
+      "full_log_sha256": "88f35244bc61d24bb7fe7e9c6dcc60cd40fc5493129cebca7f1a1684b6d224aa"
+    },
+    "scene-rt-localization": {
+      "suite": "option_localization_matrix",
+      "platform": "linux",
+      "renderer": "headless",
+      "exit": 0,
+      "seconds": 2.77,
+      "functional_failures": [],
+      "diagnostics": {
+        "script_errors": 0,
+        "engine_errors": 0,
+        "validation_errors": 0,
+        "validation_warnings": 0,
+        "VUID": 0,
+        "wine_shutdown_fault": 0,
+        "backend_error_lines": 0
+      },
+      "result_files": [],
+      "full_log_sha256": "2e8d51c79b6424482263ab9a4601869e605e8dcc4262a099de6f484baf0a5b66"
+    }
+  },
+  "sha256": {
+    "preview-linux/CursedLands.x86_64": "5cd55e014b01f542e23e0591bdcd5481c676d29ad7cf283b87d6e329c1428815",
+    "preview-linux/CursedLands.pck": "448f13a0c847aa2d0b846931fa66064b40fc580ffb1632e93bc364b21880e276",
+    "preview-windows/CursedLands.exe": "e920a09af7c019d29a96d229a1a9ff7f727598b804d5d7c0c1e3db24ef5ada3b",
+    "preview-windows/CursedLands.pck": "448f13a0c847aa2d0b846931fa66064b40fc580ffb1632e93bc364b21880e276",
+    "game/src/ei/game_data.gd": "adbbb04c277cab7b1d5a3456e62d5da423d45999ef519b3df22faec8069f9b2b",
+    "game/src/ei/remake_text.gd": "eb261415067aa20a50c4e4a9a60cd6ee9da365eb11ec89ae8f38efddae7aad29",
+    "game/src/game/fx/contact_shadows.gd": "7e7441818e2f8bd666f116bca6745b65e915b2827e73ed9a7c022d3d481f4b22",
+    "game/src/game/fx/scene_raytrace.gd": "9e4d291293599cb059da8b7dcafc0b55ca45fd97bea7b05d378885093a18eedc",
+    "game/src/game/fx/scene_raytrace.gd.uid": "e3e56270ac3c3f22e14447358e530ecf69612bd96561b9623ef5de508dc26045",
+    "game/src/game/fx/scene_raytrace_device.gd": "c0f9b3c140a0a3d3bd55e7d56b55a7765408c2fdd518cd18e77327a659984d39",
+    "game/src/game/fx/scene_raytrace_device.gd.uid": "c4256029e5af352c41a1ae8d72dc408fed84fcb3a7217d4eede1b0f7871fa0d8",
+    "game/src/game/fx/scene_raytrace_shader.gd": "261ac5532dabef1a2758b7844e187ed6ad4890ef869f284290878b8c6ad86b82",
+    "game/src/game/fx/scene_raytrace_shader.gd.uid": "bffc3da60ee49a53749e0fc3ec55969d52d2dae3c49f3aeeea2a3341378fc3c3",
+    "game/src/game/fx/shaders/scene_raytrace.hlsl": "d4102a570843b3da3e9c3daa30ce9ce7ce23e20e3cc8bb539b4b8ab179af8ade",
+    "game/src/game/fx/shaders/scene_raytrace_any_hit.dxil": "3c5054e12a665431136b7f25f781b1d58087899991f3840f86477aaa85218ecd",
+    "game/src/game/fx/shaders/scene_raytrace_any_hit.spv": "120b1ce56ec797a942efc25eafba26ff194207b6a8a02ce75a902804fe46384b",
+    "game/src/game/fx/shaders/scene_raytrace_build.json": "ab3a216dd49896e2444cc10b7edc6e1492ad8cc30b2811ad8f913f2495ca839e",
+    "game/src/game/fx/shaders/scene_raytrace_closest_hit.dxil": "fd72234ad8d6a8b703cbedc0af0fa76bc83e71d8db3819899e8f123f1d225206",
+    "game/src/game/fx/shaders/scene_raytrace_closest_hit.spv": "c1bc895968ad16e321263b63102e3b1c6664f635716f1ea6790b25a9ed5561a8",
+    "game/src/game/fx/shaders/scene_raytrace_filter.glsl": "3c945490eaae98e28c026c5f279f60261f41dbf989e2e56d22c210627508ea2d",
+    "game/src/game/fx/shaders/scene_raytrace_miss.dxil": "dc112cac8a37024bb4421ec92c4fdb55e424ac0dbf4870d700893db935958d38",
+    "game/src/game/fx/shaders/scene_raytrace_miss.spv": "e4bc6e1a838c2c2b3287ac81aa90bd1d5053894aeb92824b33d7adf13763dc83",
+    "game/src/game/fx/shaders/scene_raytrace_raygen.dxil": "6735fd55ccd741382e7c7b9429a3700f71cdd409810922f6700e9609816735d7",
+    "game/src/game/fx/shaders/scene_raytrace_raygen.spv": "69a4f7dd42850bba52272ec0da0c9f3645282583ccad7ec91350da58ab3c8365",
+    "game/src/game/fx/shaders/water_raytrace_build.json": "144e94e974a11471b6c9d72cff8f494bed7bc9fc8d986911912f529a78da0082",
+    "game/src/game/fx/water_raytrace_device.gd": "d7f0079afdaeb5236e0f92d8ae9669a7647f0a8055fa1d6d211de3cfe7047f10",
+    "game/src/game/fx/water_raytrace_scene.gd": "12f3c14108f83071c71c21413e15c4a34340ee3a2a1a03729dea4d8aeecdff29",
+    "game/src/game/game.gd": "e0cc7228074def59a1033ee5ef4e100109225288e2cd4edbaa340d84523a3ca3",
+    "game/src/game/gfx.gd": "ca3db2cfc9746fc38808cd18b7e5e9a25a24381377b18c60019591dc30168d87",
+    "game/src/ui/options_panel.gd": "42ebfd39bf8d3ee57a54cac4d46eb64d579b40f28bc7b5eade02ff8acace1f1a",
+    "tools/build_water_rt_shaders.py": "262fc065edb90b52546a29170b4ab225acfb930fafa72f3fbe954a848fe37ba8",
+    "tools/check_translations.py": "2ea9903769db62908190537e95191f4f40be7f7058ee73cf2d663fd271ff8258",
+    "tools/tests/scene_raytrace_alpha.gd": "551155d80594ebafd56fc67fdd4c9b0ddd4a9839929ec12b744b7013ac40ee54",
+    "tools/tests/scene_raytrace_cave.gd": "393bfd1d230b4c9f4f7fcbcf400be1b5218a785465da905c8b91c0ed58696bb2",
+    "tools/tests/scene_raytrace_device.gd": "212ddcaa7da21442b4b5206a84dcdbc49ea516462f196cc5122d40da10c0df47",
+    "tools/tests/scene_raytrace_fallback.gd": "7293295bce568eb97aad050ef7184c42588e7762329a9a99e474e34ad62af587",
+    "tools/tests/scene_raytrace_fsr.gd": "0172db17e8bc5271f720cac64d406ca41989d9be5766470319b010286806e4c4",
+    "tools/tests/scene_raytrace_live.gd": "10ead652f1767f05edffb5d5b72944caf971794801bab6c20457e334543467a7",
+    "tools/tests/scene_raytrace_materials.gd": "3665ac18b75adac8508827ded126d10155de6cbf9a917e38c1d4ba30f79ed0c8",
+    "tools/tests/scene_raytrace_options.gd": "95fce7fbd4ea71ae11bd26e98d2cd02caaf38dacb76ed7172f5bb969cf60d059",
+    "tools/tests/scene_raytrace_performance.gd": "746ac1e249eda08ed0fe267a4e2aa38b269d067694e879b0c7f80d9a029dfce5",
+    "preview-linux-export.log": "5c1eb509ffdc870b03c9cd6e3462418afdb88ef9f220209c0e723545e6a196a4",
+    "preview-export.log": "5c1eb509ffdc870b03c9cd6e3462418afdb88ef9f220209c0e723545e6a196a4",
+    "preview-import.log": "ac1b8e4307308a390d6855c4256abad7caff2be37922f82abd54a9704c24f8a3"
+  },
+  "static_checks": {
+    "translations": {
+      "entries": 3034,
+      "errors": 0
+    },
+    "scene_shader_manifest": "all 8 hashes pass; reproduced with DXC 1.9.2609",
+    "water_shader_manifest": "all 8 hashes pass; reproduced with DXC 1.9.2609",
+    "editor_import": "no errors",
+    "windows_export": "no errors",
+    "linux_pack_export": "no errors",
+    "runtime_sources": "match current game code"
+  }
+}

@@ -105,6 +105,7 @@ func _ready() -> void:
 	add_child(FxRainSnow.new(self))   # precipitation shown by sound.weather's state
 	add_child(ContactShadows.new(self))   # option gfx_contact_shadows
 	add_child(LocalLighting.new(self))   # firelight and lava lighting, bounded shadow budget
+	add_child(preload("res://src/game/fx/scene_raytrace.gd").new(self))
 	add_child(SurfaceWeather.new(self))   # rain wetness, roof cover and water ripples
 	add_child(WaterInteraction.new(self)) # optional contacts/wakes on the existing water pass
 	add_child(AmbientLife.new(self)) # optional local animals and regional particles

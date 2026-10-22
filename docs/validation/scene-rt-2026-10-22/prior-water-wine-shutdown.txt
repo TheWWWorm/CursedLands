@@ -1,0 +1,3 @@
+WATER_RT_DEVICE 25 checks 0 failures
+[trace 00:15:40 +12054ms] clean exit
+wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 00dc), starting debugger...

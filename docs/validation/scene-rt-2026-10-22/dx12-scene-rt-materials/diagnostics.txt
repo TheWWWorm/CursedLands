@@ -1,0 +1,6 @@
+[trace 01:59:33 +133514ms] clean exit
+wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 00d4), starting debugger...
+
+Backend error-level lines:
+err:   wsi: parseColorimetryInfo: Failed to get parse edid.
+err:   DXGI: Failed to parse display metadata + colorimetry info, using blank.

@@ -29,7 +29,7 @@ func _process(dt: float) -> void:
 	_t = SCAN
 	if game == null or game.world == null:
 		return
-	var on := Gfx.on("gfx_contact_shadows")
+	var on := Gfx.on("gfx_contact_shadows") and not Gfx.scene_rt_gi_active
 	for u: GameUnit in game.world.units.values():
 		if not is_instance_valid(u) or u.has_meta("contact_shadow"):
 			continue

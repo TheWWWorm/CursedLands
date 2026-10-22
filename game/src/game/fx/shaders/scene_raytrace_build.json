@@ -1,0 +1,16 @@
+{
+  "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
+  "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
+  "builder_sha256": "262fc065edb90b52546a29170b4ab225acfb930fafa72f3fbe954a848fe37ba8",
+  "source_sha256": "d4102a570843b3da3e9c3daa30ce9ce7ce23e20e3cc8bb539b4b8ab179af8ade",
+  "files": {
+    "scene_raytrace_raygen.dxil": "6735fd55ccd741382e7c7b9429a3700f71cdd409810922f6700e9609816735d7",
+    "scene_raytrace_raygen.spv": "69a4f7dd42850bba52272ec0da0c9f3645282583ccad7ec91350da58ab3c8365",
+    "scene_raytrace_miss.dxil": "dc112cac8a37024bb4421ec92c4fdb55e424ac0dbf4870d700893db935958d38",
+    "scene_raytrace_miss.spv": "e4bc6e1a838c2c2b3287ac81aa90bd1d5053894aeb92824b33d7adf13763dc83",
+    "scene_raytrace_closest_hit.dxil": "fd72234ad8d6a8b703cbedc0af0fa76bc83e71d8db3819899e8f123f1d225206",
+    "scene_raytrace_closest_hit.spv": "c1bc895968ad16e321263b63102e3b1c6664f635716f1ea6790b25a9ed5561a8",
+    "scene_raytrace_any_hit.dxil": "3c5054e12a665431136b7f25f781b1d58087899991f3840f86477aaa85218ecd",
+    "scene_raytrace_any_hit.spv": "120b1ce56ec797a942efc25eafba26ff194207b6a8a02ce75a902804fe46384b"
+  }
+}

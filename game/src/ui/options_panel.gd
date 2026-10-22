@@ -89,6 +89,7 @@ const REMAKE_GROUP := 11   # GameData.OPTION_GROUPS index of the Remake tab (its
 const SCREEN_GROUP := 12   # the remake's Screen tab
 const WORLD_GROUP := 13    # Remake › World and textures (also Graphics › …)
 const LIGHT_GROUP := 14    # Remake › Lighting and shadows (also Graphics › …)
+const SCENE_RT_GROUP := 28
 const EFFECTS_GROUP := 15  # Remake › Weather and effects (also Graphics › …)
 const DIRECT_GROUP := 24
 const DIRECT_KEYS_GROUP := 25
@@ -111,7 +112,7 @@ const SECTIONS := [WORLD_GROUP, TERRAIN_GROUP, LIGHT_GROUP, WATER_GROUP, EFFECTS
 ## The remake pages and the page their « row (and Esc / B) leads back to; the
 ## parent's button is lit while one is up. The graphics sections also hang
 ## under Graphics (GRAPHICS_LINKS) when opened from there (`_came_from`).
-const PARENT := {DIRECT_GROUP: CAMERA_GROUP, DIRECT_KEYS_GROUP: DIRECT_GROUP, DIRECT_PAD_GROUP: DIRECT_GROUP, WORLD_GROUP: REMAKE_GROUP, LIGHT_GROUP: REMAKE_GROUP,
+const PARENT := {SCENE_RT_GROUP: LIGHT_GROUP, DIRECT_GROUP: CAMERA_GROUP, DIRECT_KEYS_GROUP: DIRECT_GROUP, DIRECT_PAD_GROUP: DIRECT_GROUP, WORLD_GROUP: REMAKE_GROUP, LIGHT_GROUP: REMAKE_GROUP,
 	EFFECTS_GROUP: REMAKE_GROUP, CAMERA_GROUP: REMAKE_GROUP, INTERFACE_GROUP: REMAKE_GROUP,
 	GAMEPLAY_GROUP: REMAKE_GROUP, COOP_GROUP: REMAKE_GROUP, PAD_GROUP: REMAKE_GROUP,
 	PAD_BUTTONS_GROUP: PAD_GROUP, TERRAIN_GROUP: REMAKE_GROUP, WATER_GROUP: REMAKE_GROUP}
@@ -379,6 +380,11 @@ func _show_group(g: int) -> void:
 			"choices": choices}
 		if name == "q_water_rt_quality":
 			_rows[int(o[4])].disabled = int(_values.get("gfx_water", 0)) == 0 or int(_values.get("gfx_water_reflections", 0)) != 3
+		if name in ["rt_shadows","rt_gi","q_rt_lighting"]:
+			var available := preload("res://src/game/fx/scene_raytrace_device.gd").supported()
+			_rows[int(o[4])].disabled = (not available and (name=="q_rt_lighting" or int(_values.get(name,0))==0)) \
+				or (name=="q_rt_lighting" and int(_values.get("rt_shadows",0))==0 and int(_values.get("rt_gi",0))==0)
+			if not available: _rows[int(o[4])].tip += "\n\n"+RemakeText.t(preload("res://src/game/fx/scene_raytrace.gd").REASON)
 		if name in ["resolution","render_scale"]: _rows[int(o[4])].kind = "dropdown"
 		if name == "q_aa":
 			_rows[int(o[4])].kind = "dropdown"
@@ -431,6 +437,8 @@ func _show_group(g: int) -> void:
 			_rows[4] = {"kind":"link","name":"","profile":true,"label":RemakeText.t("Player name…"),"tip":RemakeText.t(PlayerProfileDialog.HELP)}
 		if _group == CAMERA_GROUP:
 			_rows[12] = _section_link(DIRECT_GROUP)
+		elif _group == LIGHT_GROUP:
+			_rows[11] = _section_link(SCENE_RT_GROUP)
 		elif _group == DIRECT_GROUP:
 			_rows[11] = _section_link(DIRECT_PAD_GROUP)
 			_rows[12] = _section_link(DIRECT_KEYS_GROUP)
@@ -658,7 +666,8 @@ func _set_value(name: String, v: int) -> void:
 		_refresh_keys()
 	if name in LIVE:   # volumes, gamma ramp, stereo at once
 		GameData.set_option(name, v)
-	if name in FsrGraphics.OPTIONS or (_group == WATER_GROUP and name in ["gfx_water", "gfx_water_reflections", "graphics_preset"]):
+	if name in FsrGraphics.OPTIONS or (_group == WATER_GROUP and name in ["gfx_water", "gfx_water_reflections", "graphics_preset"]) \
+			or (_group == SCENE_RT_GROUP and name in ["rt_shadows","rt_gi"]):
 		var selected := _sel
 		_show_group(_group)
 		_sel = selected

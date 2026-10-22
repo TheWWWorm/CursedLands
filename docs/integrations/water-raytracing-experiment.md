@@ -7,6 +7,10 @@ distortion and Fresnel shading. It is an optional fourth choice; defaults,
 automatic detection and all graphics presets continue to use existing modes.
 The label, choices and help are available in English, Russian and German.
 
+The unreleased [scene lighting experiment](scene-raytracing-experiment.md) adds
+separate main-view RT shadows and one-bounce diffuse GI using this backend.
+Its controls, quality budget and output textures are independent of water RT.
+
 ## API support
 
 The published **1.23.0** Windows and Linux executables support this experiment

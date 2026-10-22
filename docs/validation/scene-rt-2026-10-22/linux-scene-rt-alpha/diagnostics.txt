@@ -1,0 +1,8 @@
+PASS qualified alpha-test RT device
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build alpha fixture false
+PASS primary rays respect material alpha cutoff false
+PASS secondary rays respect the same alpha cutoff false
+PASS build alpha fixture true
+PASS primary rays respect material alpha cutoff true

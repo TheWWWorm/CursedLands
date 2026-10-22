@@ -1,0 +1,21 @@
+{
+	"checks": 8,
+	"failures": [],
+	"stats": {
+		"active": true,
+		"geometries": 371,
+		"gi_samples": 0,
+		"instances": 378,
+		"lights": 2,
+		"quality": 1,
+		"shadow_samples": 2,
+		"size": [
+			960,
+			540
+		],
+		"supported": true,
+		"triangles": 47831,
+		"updated_instances": 0,
+		"updated_poses": 0
+	}
+}

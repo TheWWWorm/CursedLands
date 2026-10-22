@@ -11,6 +11,7 @@ static var _noise_cache := {}
 const Clouds = preload("res://src/game/fx/clouds.gd")
 const WaterReflection = preload("res://src/game/fx/water_reflection.gd")
 const WaterTextureData = preload("res://src/game/fx/water_texture_data.gd")
+const SceneRaytraceShader = preload("res://src/game/fx/scene_raytrace_shader.gd")
 static var _cloud_owner := 0
 static var _cloud_frame := {"state":Vector4.ZERO,"phases":Vector4.ZERO,"twinkle":Vector2.ZERO}
 static var _cloud_volume_noise: Clouds.VolumeNoise
@@ -19,6 +20,8 @@ static var _cloud_volume_tried := false
 static var _cloud_shadow_field: Clouds.ShadowField
 static var _cloud_sun_direction := Vector3.ZERO
 static var _sky_flash := 0.0
+## Runtime state only; never rewrites the player's SSAO/contact preferences.
+static var scene_rt_gi_active := false
 
 
 ## ---------------------------------------------------------------- original lighting
@@ -378,6 +381,8 @@ float ei_cloud_sun_cached(vec3 p,inout vec4 sample_) {
 				code = code.replace("uniform bool soft_tracks = false;", "const bool soft_tracks = false;")
 			if not on("gfx_weather_surfaces"):
 				code = code.replace("ei_surface_fx.z", "0.0")
+	if SceneRaytraceShader.applicable(code,lit):
+		code = SceneRaytraceShader.inject(code,cloud_shadows)
 	if _vol_fog:
 		code = _blend_fog(code, lit)
 	if lit and LocalLightShader.enabled():
@@ -432,6 +437,7 @@ static var _terrain_mode := -1
 static var _cloud_mode := 0
 static var _figure_mode := -1
 static var _water_reflection_mode := -1
+static var _scene_rt_mode := false
 ## Restrict the compatibility change to Android GLES. Tests can exercise the
 ## same source on another GPU without changing the shipped desktop defaults.
 static var _compact_figures := OS.has_feature("android") and Portability.compatibility()
@@ -480,8 +486,9 @@ static func _set_vol_fog(v: bool) -> void:
 		if _compact_figures and _specialize_materials else 0
 	var water_reflections := int(on("gfx_water_reflections")) if _specialize_mobile_water \
 		and _specialize_materials and RenderingServer.get_current_rendering_method() == "mobile" else -2
+	var scene_rt := SceneRaytraceShader.requested()
 	if v == _vol_fog and mode == _material_mode and terrain_mode == _terrain_mode and clouds == _cloud_mode \
-			and figures == _figure_mode and water_reflections == _water_reflection_mode:
+			and figures == _figure_mode and water_reflections == _water_reflection_mode and scene_rt == _scene_rt_mode:
 		return
 	_vol_fog = v
 	_material_mode = mode
@@ -489,6 +496,7 @@ static func _set_vol_fog(v: bool) -> void:
 	_cloud_mode = clouds
 	_figure_mode = figures
 	_water_reflection_mode = water_reflections
+	_scene_rt_mode = scene_rt
 	var keep: Array = []
 	for r: Array in _made:
 		var sh := (r[0] as WeakRef).get_ref() as Shader
@@ -888,6 +896,7 @@ static func ensure_globals() -> void:
 	if _globals:
 		return
 	_globals = true
+	SceneRaytraceShader.globals()
 	for k: StringName in GLOBALS:
 		var c: Color = GLOBALS[k]
 		RenderingServer.global_shader_parameter_add(k, RenderingServer.GLOBAL_VAR_TYPE_VEC3, Vector3(c.r, c.g, c.b))
@@ -1346,7 +1355,7 @@ static func apply_env(env: Environment) -> void:
 	# shaders disable ambient light and radiance. Volumetric fog also samples
 	# sky radiance independently of this switch.
 	env.reflected_light_source = Environment.REFLECTION_SOURCE_SKY if on("gfx_water") else Environment.REFLECTION_SOURCE_DISABLED
-	env.ssao_enabled = on("gfx_ssao")
+	env.ssao_enabled = on("gfx_ssao") and not scene_rt_gi_active
 	env.glow_enabled = on("gfx_bloom")
 	# No pixel feeds the bloom with more than this (Godot's default is 12):
 	# the brightest wanted sources (fire × GLOW_BOOST, lava, bolts) stay
@@ -1362,7 +1371,7 @@ static func apply_env(env: Environment) -> void:
 		for v: Node in tree.get_nodes_in_group(&"gfx_torch_fog"):
 			(v as Node3D).visible = on("gfx_torch_glow")
 		for d: Node in tree.get_nodes_in_group(&"gfx_contact_shadows"):
-			(d as Node3D).visible = on("gfx_contact_shadows")
+			(d as Node3D).visible = on("gfx_contact_shadows") and not scene_rt_gi_active
 		for u: Node in tree.get_nodes_in_group(&"severed_units"):   # option gfx_severed_limbs
 			u.call(&"refresh_severed")
 		for m: Node in tree.get_nodes_in_group(&"detailed_heads"):   # option gfx_detailed_heads

@@ -1,0 +1,5 @@
+SCENE_RT_BENCH {"case":"conventional","controller_cpu_ms":{"median":0.007,"n":90,"p95":0.011},"frame_ms":{"median":2.122,"n":90,"p95":3.217},"main_gpu_ms":{"median":0.744000017642975,"n":90,"p95":0.754999995231628},"round":0,"rt_gpu_ms":{},"stats":{"active":false}}
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS benchmark prepares shadows-low
+SCENE_RT_BENCH {"case":"shadows-low","controller_cpu_ms":{"median":0.726,"n":90,"p95":0.93},"frame_ms":{"median":2.486,"n":90,"p95":4.181},"main_gpu_ms":{"median":0.652999997138977,"n":90,"p95":0.949000000953674},"round":0,"rt_gpu_ms":{"median":0.157632,"n":90,"p95":0.198816},"stats":{"active":true,"geometries":1285,"gi_samples":0,"instances":1420,"lights":1,"quality":0,"shadow_samples":1,"size":[640,360],"supported":true,"triangles":116008,"updated_instances":0,"updated_poses":0}}

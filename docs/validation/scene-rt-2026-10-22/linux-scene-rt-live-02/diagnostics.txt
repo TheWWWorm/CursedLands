@@ -1,0 +1,5 @@
+ARTIFACT_CAMERA [X: (-0.923879, 0.0, 0.382684), Y: (0.089418, 0.972318, 0.215874), Z: (-0.372091, 0.233661, -0.898305), O: (157.8552, 9.927353, -239.7018)]
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS main river prepares scene RT
+SCENE_STATS { "active": true, "supported": true, "triangles": 116008, "geometries": 1285, "instances": 1420, "size": [640, 360], "quality": 0, "gi_samples": 0, "shadow_samples": 1, "lights": 1, "updated_instances": 0, "updated_poses": 0 }

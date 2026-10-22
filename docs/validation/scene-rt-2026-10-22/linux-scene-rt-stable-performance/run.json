@@ -1,0 +1,52 @@
+{
+  "suite": "scene_raytrace_performance",
+  "platform": "linux",
+  "renderer": "vulkan",
+  "exit": 0,
+  "seconds": 27.67,
+  "errors": [],
+  "summary": [
+    "PASS benchmark prepares shadows-low",
+    "PASS benchmark prepares gi-low",
+    "PASS benchmark prepares both-low",
+    "PASS benchmark prepares both-medium",
+    "PASS benchmark prepares both-high",
+    "PASS benchmark prepares both-high",
+    "PASS benchmark prepares both-medium",
+    "PASS benchmark prepares both-low",
+    "PASS benchmark prepares gi-low",
+    "PASS benchmark prepares shadows-low"
+  ],
+  "command": [
+    "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/preview-linux/CursedLands.x86_64",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--gpu-index",
+    "0",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--borderless",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/fixtures-linux/scene_raytrace_performance.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/checks/linux-scene-rt-stable-performance",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/preview-linux/mods"
+  ],
+  "profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  }
+}

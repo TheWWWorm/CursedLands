@@ -20,12 +20,14 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dxc', type=Path, help='DXC 1.9.2609 executable; required when rebuilding')
     parser.add_argument('--check', action='store_true', help='Verify source/binary hashes; also reproduce outputs if --dxc is supplied')
+    parser.add_argument('--shader', choices=['water_raytrace', 'scene_raytrace'], default='water_raytrace')
     args = parser.parse_args()
-    source = SHADERS / 'water_raytrace.hlsl'
-    manifest_path = SHADERS / 'water_raytrace_build.json'
+    prefix = args.shader + '_'
+    source = SHADERS / (args.shader + '.hlsl')
+    manifest_path = SHADERS / (args.shader + '_build.json')
     if args.check:
         manifest = json.loads(manifest_path.read_text())
-        expected = {'water_raytrace_' + stage + '.' + backend for stage in STAGES for backend in ['dxil', 'spv']}
+        expected = {prefix + stage + '.' + backend for stage in STAGES for backend in ['dxil', 'spv']}
         if (set(manifest['files']) != expected or manifest['source_sha256'] != sha(source)
                 or manifest.get('builder_sha256') != sha(Path(__file__))):
             parser.error('Shader source, builder or stage list differs from the build manifest. Rebuild both backends.')
@@ -44,9 +46,9 @@ def main():
     with tempfile.TemporaryDirectory() as work:
         for stage in STAGES:
             common = [str(compiler), '-T', 'lib_6_3', '-HV', '2021', '-O3',
-                      '-D', 'WATER_' + stage.upper(), str(source)]
+                      '-D', args.shader.split('_')[0].upper() + '_' + stage.upper(), str(source)]
             for backend in ['dxil', 'spv']:
-                name = 'water_raytrace_' + stage + '.' + backend
+                name = prefix + stage + '.' + backend
                 target = Path(work) / name
                 # DXC otherwise adds RayQueryKHR for an acceleration-structure
                 # declaration even though these shaders only use RT pipelines.

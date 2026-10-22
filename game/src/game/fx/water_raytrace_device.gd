@@ -34,6 +34,9 @@ var _ready := false
 var _closed := false
 var _opaque_fast_path := not OS.get_cmdline_user_args().has("--ei-water-rt-force-anyhit")
 
+func shader_prefix() -> String: return SHADERS
+func frame_bytes() -> int: return FRAME_BYTES
+
 static func supported() -> bool:
 	if DisplayServer.get_name() == "headless" or RenderingServer.get_current_rendering_method() != "forward_plus": return false
 	var driver := RenderingServer.get_current_rendering_driver_name()
@@ -54,7 +57,7 @@ func _compile() -> RDPipelineShader:
 	var dxil := {}
 	var directx := RenderingServer.get_current_rendering_driver_name() == "d3d12"
 	for stage in STAGES:
-		var path: String = SHADERS + STAGES[stage]
+		var path: String = shader_prefix() + STAGES[stage]
 		var bytes := FileAccess.get_file_as_bytes(path + ".spv")
 		if bytes.is_empty():
 			push_error("Water RT shader is missing: " + path)
@@ -157,7 +160,7 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 		sampler.repeat_u = RenderingDevice.SAMPLER_REPEAT_MODE_REPEAT
 		sampler.repeat_v = RenderingDevice.SAMPLER_REPEAT_MODE_REPEAT
 		_samplers.append(_own(_rd.sampler_create(sampler)))
-	_frame = _own(_rd.uniform_buffer_create(FRAME_BYTES))
+	_frame = _own(_rd.uniform_buffer_create(frame_bytes()))
 	_ready = _colours.is_valid() and _frame.is_valid() and _samplers.all(func(rid: RID): return rid.is_valid())
 	prepared.emit.call_deferred(_ready)
 
@@ -186,13 +189,13 @@ func _uniform(kind: int, binding: int, ids: Array[RID]) -> RDUniform:
 	for rid in ids: uniform.add_id(rid)
 	return uniform
 
-func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, texture_filter := 4) -> void:
-	if _closed or not _ready: return
+func update_scene(changes: Dictionary) -> bool:
+	if _closed or not _ready: return false
 	var changed := false
 	for pose: Dictionary in changes.get("poses",[]):
 		_rd.buffer_update(_vertices,_geometry[pose.geometry].offset*64,pose.data.size(),pose.data)
 		if _blases[pose.geometry].is_valid() and _rd.blas_build(_blases[pose.geometry]) != OK:
-			_ready = false; prepared.emit.call_deferred(false); return
+			_ready = false; prepared.emit.call_deferred(false); return false
 		changed = true
 	for placement: Dictionary in changes.get("instances",[]):
 		_instances[placement.index].transform = placement.transform
@@ -200,12 +203,16 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 		if placement.mask != 0:
 			var instance := _instances[placement.index]
 			instance.blas = _geometry_blas(_placement_geometry[placement.index])
-			if not instance.blas.is_valid(): _ready = false; prepared.emit.call_deferred(false); return
+			if not instance.blas.is_valid(): _ready = false; prepared.emit.call_deferred(false); return false
 			_active_instances[placement.index] = instance
 		else: _active_instances.erase(placement.index)
 		changed = true
 	if changed and _rd.tlas_build(_tlas,_active_instances.values()) != OK:
-		_ready = false; prepared.emit.call_deferred(false); return
+		_ready = false; prepared.emit.call_deferred(false); return false
+	return true
+
+func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, texture_filter := 4) -> void:
+	if not update_scene(changes): return
 	var sampler := _samplers[clampi(texture_filter,0,_samplers.size()-1)]
 	if size != _size or sampler != _sampler:
 		var resized := size != _size

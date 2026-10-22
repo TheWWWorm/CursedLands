@@ -26,6 +26,9 @@ var _plane := 0.0
 var _cursor := 0
 var _kernel: Object
 var _watching := false
+# Negative keeps the original water masks. Scene lighting distinguishes
+# camera-visible receivers (1), shadow casters (2), and GI surfaces (4).
+var lighting_camera_mask := -1
 
 func _init() -> void:
 	if ClassDB.class_exists("WaterRaytraceKernel") and not OS.get_cmdline_user_args().has("--ei-script-water-rt"):
@@ -232,7 +235,7 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 
 ## Plain values only: the render thread never dereferences a scene node.
 func _instance_updates(force: bool) -> Array:
-	if _kernel != null:
+	if _kernel != null and lighting_camera_mask < 0:
 		if not _watching:
 			_kernel.clear_instances()
 			for group: Dictionary in _groups.values():
@@ -261,11 +264,17 @@ func _instance_updates(force: bool) -> Array:
 				mask = 255
 				if not entry.terrain: transform = node.global_transform
 				if node is MeshInstance3D:
-					if node.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY: mask = 2
-					elif node.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_OFF: mask = 1
-					# First-person reflections use the complete authored copies,
-					# not the sealed torso reserved for the close-view camera.
-					if (node.layers & ~EIUnitModel.CLOSE_VIEW_LAYER) == 0: mask = 0
+					if lighting_camera_mask >= 0:
+						mask = 1 if (node.layers & lighting_camera_mask) != 0 else 0
+						if (node.layers & ~EIUnitModel.CLOSE_VIEW_LAYER) != 0: mask |= 4
+						if node.cast_shadow != GeometryInstance3D.SHADOW_CASTING_SETTING_OFF: mask |= 2
+						if node.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY: mask &= ~1
+					else:
+						if node.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY: mask = 2
+						elif node.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_OFF: mask = 1
+						# First-person reflections use the complete authored copies,
+						# not the sealed torso reserved for the close-view camera.
+						if (node.layers & ~EIUnitModel.CLOSE_VIEW_LAYER) == 0: mask = 0
 			if force or mask != entry.mask or transform != entry.transform:
 				transforms.append({"index":i,"transform":transform,"mask":mask})
 				entry.mask = mask; entry.transform = transform

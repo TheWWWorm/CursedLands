@@ -1,0 +1,9 @@
+PASS real campaign character is available
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS hardware reflection prepares the complete character
+PASS first-person copies enter the hardware snapshot
+PASS RT first-person figure matches the complete authored figure
+PASS hidden first-person character leaves no reflected copies
+PASS leaving first person refreshes the changed torso
+PASS leaving first person restores the same reflection

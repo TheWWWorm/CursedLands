@@ -1,0 +1,9 @@
+{
+	"checks": 3,
+	"failures": [],
+	"stats": {
+		"active": false,
+		"fallback": "unsupported",
+		"supported": false
+	}
+}

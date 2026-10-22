@@ -1,0 +1,7 @@
+PASS qualified hardware RT runtime is available
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build hardware acceleration structure, alpha=false
+PASS RT target dimensions (128, 128)
+PASS GPU output is detached after teardown
+PASS build hardware acceleration structure, alpha=true
