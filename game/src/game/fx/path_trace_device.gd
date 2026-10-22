@@ -16,6 +16,8 @@ func shader_stage_path(stage: int) -> String:
 	return super.shader_stage_path(stage)
 func frame_bytes() -> int: return 656
 func filter_spirv() -> RDShaderSPIRV: return PATH_FILTER.get_spirv()
+func filter_auxiliary_formats() -> Array[int]:
+	return [RenderingDevice.DATA_FORMAT_R16G16_SFLOAT,RenderingDevice.DATA_FORMAT_R16G16_SFLOAT]
 
 # Geometry is shared by several placements. Lights need their unique, stable
 # placement ID, including when hidden instances are removed from the TLAS.

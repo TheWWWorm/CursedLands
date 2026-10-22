@@ -6,6 +6,7 @@ signal filtered
 var raw_result: Image
 var filtered_result: Image
 var filtered_specular: Image
+var filtered_noise: Image
 
 func frame(history:=true,gi:=true,shadows:=true) -> PackedByteArray:
 	var bytes:=super.frame(history,gi,shadows)
@@ -55,6 +56,16 @@ func reconstruct(bytes: PackedByteArray,inputs: Array[Image]) -> void:
 		var target: RID=device._raw[i] if i<4 else device._history[i]
 		rd.texture_copy(source,target,Vector3.ZERO,Vector3.ZERO,Vector3(size.x,size.y,1),0,0,0,0)
 		rd.free_rid(source)
+	if device.has_method("filter_auxiliary_formats") and not device._filter_auxiliary.is_empty():
+		# Synthetic inputs must not inherit uninitialised or unrelated variance.
+		if inputs.size()>8:
+			var format:=RDTextureFormat.new();format.width=size.x;format.height=size.y
+			format.format=RenderingDevice.DATA_FORMAT_R16G16_SFLOAT
+			format.usage_bits=RenderingDevice.TEXTURE_USAGE_CAN_COPY_FROM_BIT | RenderingDevice.TEXTURE_USAGE_SAMPLING_BIT
+			var source:=rd.texture_create(format,RDTextureView.new(),[inputs[8].get_data()])
+			rd.texture_copy(source,device._filter_auxiliary[0],Vector3.ZERO,Vector3.ZERO,Vector3(size.x,size.y,1),0,0,0,0)
+			rd.free_rid(source)
+		else:rd.texture_clear(device._filter_auxiliary[0],Color(0,0,0,0),0,1,0,1)
 	rd.buffer_update(device._frame,0,bytes.size(),bytes)
 	var compute:=rd.compute_list_begin()
 	rd.compute_list_bind_compute_pipeline(compute,device._filter_pipeline)
@@ -63,6 +74,8 @@ func reconstruct(bytes: PackedByteArray,inputs: Array[Image]) -> void:
 	rd.compute_list_end()
 	filtered_result=Image.create_from_data(size.x,size.y,false,Image.FORMAT_RGBAH,rd.texture_get_data(device._history[0],0))
 	filtered_specular=Image.create_from_data(size.x,size.y,false,Image.FORMAT_RGBAH,rd.texture_get_data(device._history[2],0))
+	if device.has_method("filter_auxiliary_formats") and not device._filter_auxiliary.is_empty():
+		filtered_noise=Image.create_from_data(size.x,size.y,false,Image.FORMAT_RGH,rd.texture_get_data(device._filter_auxiliary[1],0))
 	filtered.emit.call_deferred()
 
 func plane_point(x: int,y: int,normal: Vector3,pose: Transform3D) -> Vector3:

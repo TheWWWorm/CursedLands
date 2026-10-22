@@ -13,6 +13,10 @@ layout(rgba16f,set=0,binding=8) uniform writeonly image2D result_diffuse;
 layout(rgba16f,set=0,binding=9) uniform writeonly image2D result_guide;
 layout(rgba16f,set=0,binding=10) uniform writeonly image2D result_specular;
 layout(rgba16f,set=0,binding=11) uniform writeonly image2D result_material;
+// Standard deviations, not squared moments: HDR variance can exceed FP16.
+// A negative sign records a fully dark, well-supported current neighbourhood.
+layout(rg16f,set=0,binding=13) uniform readonly image2D previous_noise;
+layout(rg16f,set=0,binding=14) uniform writeonly image2D result_noise;
 layout(std140,set=0,binding=12) uniform Frame {
     mat4 inv_projection;mat4 camera_world;mat4 previous_view_projection;mat4 previous_view;
     vec4 sun;vec4 sun_direction;vec4 sky;vec4 settings;vec4 camera;vec4 center_radius;
@@ -46,6 +50,17 @@ float glossy_compatibility(vec3 current,vec3 other,float roughness) {
     float overlap=1.0/(1.0+dot(delta,delta)/(4.0*alpha*alpha));
     return overlap*overlap;
 }
+float spatial_variance(vec3 sum,vec3 squares,float weight,float weight_squared) {
+    // Centred moments avoid cancellation on a constant, bright HDR surface.
+    // Correct for unequal weights; an isolated sample has no spatial estimate.
+    float divisor=weight-weight_squared/max(weight,0.0001);
+    if(divisor<0.0001)return 0.0;
+    vec3 variance=max((squares-sum*sum/max(weight,0.0001))/divisor,vec3(0.0));
+    return max(variance.x,max(variance.y,variance.z));
+}
+float finite_sigma(float sigma) {
+    return isnan(sigma)||isinf(sigma)?0.0:clamp(abs(sigma),0.0,60000.0);
+}
 vec3 previous_position(ivec2 p,float depth,ivec2 size) {
     vec2 uv=(vec2(p)+0.5)/vec2(size);
     vec4 near=frame.previous_inverse_view_projection*vec4(uv.x*2.0-1.0,1.0-uv.y*2.0,-1.0,1.0);
@@ -61,7 +76,8 @@ void main() {
     vec4 guide=imageLoad(raw_guide,p),material=imageLoad(raw_material,p);
     imageStore(result_guide,p,guide);imageStore(result_material,p,material);
     if(guide.w<=0.0) {
-        imageStore(result_diffuse,p,vec4(0.0));imageStore(result_specular,p,vec4(0.0));return;
+        imageStore(result_diffuse,p,vec4(0.0));imageStore(result_specular,p,vec4(0.0));
+        imageStore(result_noise,p,vec4(0.0));return;
     }
     vec3 world=position_at(p,guide.w,size);
     vec2 surface=surface_at(material.w);
@@ -72,8 +88,11 @@ void main() {
     float plane_tolerance=max(0.025,footprint*0.5);
     bool progressive=frame.path.y>8.0;
     int radius=progressive?0:2;
-    vec3 diffuse=vec3(0.0),specular=vec3(0.0),dlo=vec3(1e20),dhi=vec3(0.0),slo=vec3(1e20),shi=vec3(0.0);
-    float dw=0.0,sw=0.0;
+    vec3 dlo=vec3(1e20),dhi=vec3(0.0),slo=vec3(1e20),shi=vec3(0.0);
+    vec3 centre_d=finite_signal(imageLoad(raw_diffuse,p).rgb),centre_s=finite_signal(imageLoad(raw_specular,p).rgb);
+    vec3 dsum=vec3(0.0),ssum=vec3(0.0),dsquares=vec3(0.0),ssquares=vec3(0.0);
+    float dw=0.0,sw=0.0,dw2=0.0,sw2=0.0;
+    int dcount=0,scount=0;float dpeak=0.0,speak=0.0;
     for(int y=-radius;y<=radius;y++)for(int x=-radius;x<=radius;x++) {
         ivec2 q=p+ivec2(x,y);
         if(any(lessThan(q,ivec2(0)))||any(greaterThanEqual(q,size)))continue;
@@ -85,15 +104,27 @@ void main() {
         if(plane>plane_tolerance||length(delta)>max(0.15,footprint*5.0))continue;
         float weight=exp(-float(x*x+y*y)*0.5)*exp(-plane/max(plane_tolerance,0.001));
         vec3 d=finite_signal(imageLoad(raw_diffuse,q).rgb),s=finite_signal(imageLoad(raw_specular,q).rgb);
-        diffuse+=d*weight;dw+=weight;dlo=min(dlo,d);dhi=max(dhi,d);
+        dcount++;dpeak=max(dpeak,max(d.x,max(d.y,d.z)));
+        if(length(m.rgb-material.rgb)<0.25) {scount++;speak=max(speak,max(s.x,max(s.y,s.z)));}
+        dw+=weight;dlo=min(dlo,d);dhi=max(dhi,d);
+        vec3 dd=d-centre_d;dsum+=dd*weight;dsquares+=dd*dd*weight;dw2+=weight*weight;
         // Glossy radiance must not smear across different material colours.
         if(abs(x)<=1&&abs(y)<=1&&length(m.rgb-material.rgb)<0.25) {
             float glossy_weight=weight*glossy_compatibility(reflection,
                 reflection_at(other_world,g.xyz,eye,parallel_view),min(surface.x,other_surface.x));
-            specular+=s*glossy_weight;sw+=glossy_weight;slo=min(slo,s);shi=max(shi,s);
+            sw+=glossy_weight;slo=min(slo,s);shi=max(shi,s);
+            vec3 sd=s-centre_s;ssum+=sd*glossy_weight;ssquares+=sd*sd*glossy_weight;sw2+=glossy_weight*glossy_weight;
         }
     }
-    diffuse/=max(dw,0.0001);specular/=max(sw,0.0001);
+    // Reuse the centred first moments for the estimate too: a constant HDR
+    // field stays exact instead of accumulating weighted-sum roundoff.
+    vec3 diffuse=dw>0.0001?centre_d+dsum/dw:vec3(0.0);
+    vec3 specular=sw>0.0001?centre_s+ssum/sw:vec3(0.0);
+    float dvariance=spatial_variance(dsum,dsquares,dw,dw2),svariance=spatial_variance(ssum,ssquares,sw,sw2);
+    // Two consecutive dark neighbourhoods provide stronger evidence of a
+    // lighting change than one missing Monte Carlo sample. Small/edge kernels
+    // cannot trigger this, and the previous sign travels through guide checks.
+    bool ddark=dcount>=20&&dpeak<0.00001,sdark=scount>=20&&speak<0.00001;
     float age=1.0,specular_age=1.0;
     vec4 previous=frame.previous_view_projection*vec4(world,1.0);
     vec2 uv=vec2(previous.x,-previous.y)/previous.w*0.5+0.5;
@@ -105,6 +136,8 @@ void main() {
         ivec2 base=ivec2(floor(pixel));vec2 blend=fract(pixel);
         vec4 old=vec4(0.0);vec3 old_specular=vec3(0.0);float total=0.0,specular_weight=0.0;
         float specular_confidence=0.0,specular_new_weight=0.0;
+        float old_dvariance=0.0,old_svariance=0.0;
+        float old_ddark=0.0,old_sdark=0.0;
         vec3 view_normal=(mat3(frame.previous_view)*guide.xyz);
         vec3 old_eye=-(transpose(mat3(frame.previous_view))*frame.previous_view[3].xyz);
         vec3 old_parallel_view=vec3(frame.previous_view[0][2],frame.previous_view[1][2],frame.previous_view[2][2]);
@@ -121,32 +154,51 @@ void main() {
             // Compare surfaces in world space. Adjacent pixels on a slope
             // legitimately have different depths; unrelated layers still fail.
             if(abs(dot(delta,guide.xyz))>plane_tolerance||length(delta)>reach)continue;
+            vec2 sigma=imageLoad(previous_noise,q).rg;
+            bvec2 was_dark=lessThan(sigma,vec2(0.0));
+            sigma=vec2(finite_sigma(sigma.x),finite_sigma(sigma.y));
             vec4 history=imageLoad(previous_diffuse,q);
             if(history.a>=1.0) {
                 old+=vec4(finite_signal(history.rgb),history.a)*w;total+=w;
+                old_dvariance+=sigma.x*sigma.x*w;
+                if(was_dark.x)old_ddark+=w;
             }
             vec4 glossy_history=imageLoad(previous_specular,q);
             if(glossy_history.a>=1.0) {
                 float confidence=progressive?1.0:glossy_compatibility(reflection,
                     reflection_at(old_world,g.xyz,old_eye,old_parallel_view),min(surface.x,old_surface.x));
+                // Variance-aware colour bounds are deliberately less aggressive.
+                // Use a narrower temporal lobe to retain moving highlight detail
+                // without clamping away legitimate Monte Carlo fluctuations.
+                confidence=confidence*confidence*confidence;
                 float new_weight=w*confidence/min(1.0+glossy_history.a,frame.path.y);
                 float history_weight=w*confidence-new_weight;
                 specular_confidence+=w*confidence;specular_new_weight+=new_weight;
                 old_specular+=finite_signal(glossy_history.rgb)*history_weight;specular_weight+=history_weight;
+                old_svariance+=sigma.y*sigma.y*history_weight;
+                if(was_dark.y)old_sdark+=history_weight;
             }
         }
         if(total>0.01) {
             // Partially disoccluded pixels get less historical confidence.
             age=min(1.0+old.a,frame.path.y);
+            if(ddark&&old_ddark>total*0.9)age=min(age,2.0);
             old.rgb/=total;
+            old_dvariance/=total;
             if(!progressive) {
-                old.rgb=clamp(old.rgb,dlo-(dhi-dlo)*0.15-0.01,dhi+(dhi-dlo)*0.15+0.01);
+                float margin=3.0*sqrt(max(dvariance,old_dvariance)*dw2/max(dw*dw,0.0001));
+                old.rgb=clamp(old.rgb,dlo-(dhi-dlo)*0.15-0.01-margin,dhi+(dhi-dlo)*0.15+0.01+margin);
             }
             diffuse=mix(diffuse,old.rgb,1.0-1.0/age);
+            dvariance=mix(dvariance,old_dvariance,1.0-1.0/age);
         }
         if(specular_weight>0.0) {
             old_specular/=specular_weight;
-            if(!progressive)old_specular=clamp(old_specular,slo-(shi-slo)*0.1-0.01,shi+(shi-slo)*0.1+0.01);
+            old_svariance/=specular_weight;
+            if(!progressive) {
+                float margin=3.0*sqrt(max(svariance,old_svariance)*sw2/max(sw*sw,0.0001));
+                old_specular=clamp(old_specular,slo-(shi-slo)*0.1-0.01-margin,shi+(shi-slo)*0.1+0.01+margin);
+            }
             // Store effective confidence independently. Multiplying the blend
             // itself prevents an eight-frame diffuse age from restoring stale
             // glossy history immediately after a view-dependent rejection.
@@ -155,9 +207,13 @@ void main() {
             // long progressive accumulation on the DX12 compute path.
             float current_weight=max(1.0-specular_confidence,0.0)+specular_new_weight;
             specular_age=min(1.0/current_weight,frame.path.y);
+            if(sdark&&old_sdark>specular_weight*0.9)specular_age=min(specular_age,2.0);
             specular=mix(specular,old_specular,1.0-1.0/specular_age);
+            svariance=mix(svariance,old_svariance,1.0-1.0/specular_age);
         }
     }
     imageStore(result_diffuse,p,vec4(finite_signal(diffuse),age));
     imageStore(result_specular,p,vec4(finite_signal(specular),specular_age));
+    vec2 sigma=vec2(finite_sigma(sqrt(max(dvariance,0.0))),finite_sigma(sqrt(max(svariance,0.0))));
+    imageStore(result_noise,p,vec4(ddark?-sigma.x:sigma.x,sdark?-sigma.y:sigma.y,0.0,0.0));
 }

@@ -7,6 +7,7 @@ var shadow0 := Texture2DRD.new()
 var shadow1 := Texture2DRD.new()
 var _raw: Array[RID] = []
 var _history: Array[RID] = []
+var _filter_auxiliary: Array[RID] = []
 var _filter_sets: Array[RID] = []
 var _filter_shader := RID()
 var _filter_pipeline := RID()
@@ -16,11 +17,14 @@ func shader_prefix() -> String: return "res://src/game/fx/shaders/scene_raytrace
 func frame_bytes() -> int: return 576
 func filter_spirv() -> RDShaderSPIRV: return FILTER.get_spirv()
 func extra_ray_uniforms() -> Array[RDUniform]: return []
+## Optional reconstruction-only textures, in previous/result pairs. They use
+## bindings 13 onward and are copied together with the stable lighting outputs.
+func filter_auxiliary_formats() -> Array[int]: return []
 
-func _lighting_texture(size: Vector2i) -> RID:
+func _lighting_texture(size: Vector2i, data_format:=RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT) -> RID:
 	var format := RDTextureFormat.new()
 	format.width = size.x; format.height = size.y
-	format.format = RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT
+	format.format = data_format
 	format.usage_bits = RenderingDevice.TEXTURE_USAGE_STORAGE_BIT | RenderingDevice.TEXTURE_USAGE_SAMPLING_BIT | RenderingDevice.TEXTURE_USAGE_CAN_COPY_FROM_BIT | RenderingDevice.TEXTURE_USAGE_CAN_COPY_TO_BIT
 	return _rd.texture_create(format,RDTextureView.new())
 
@@ -29,9 +33,9 @@ func _release_targets() -> void:
 		if rid.is_valid(): _rd.free_rid(rid)
 	_filter_sets.clear()
 	if _set.is_valid(): _rd.free_rid(_set); _set = RID()
-	for rid in _raw+_history:
+	for rid in _raw+_history+_filter_auxiliary:
 		if rid.is_valid(): _rd.free_rid(rid)
-	_raw.clear(); _history.clear()
+	_raw.clear(); _history.clear(); _filter_auxiliary.clear()
 	_history_valid = false
 
 func _targets(size: Vector2i, sampler: RID) -> bool:
@@ -43,22 +47,26 @@ func _targets(size: Vector2i, sampler: RID) -> bool:
 	if size != _size:
 		# Keep the RS handles alive while replacing their backing RD textures.
 		var old_raw := _raw; var old_history := _history; var old_sets := _filter_sets
-		_raw = []; _history = []; _filter_sets = []
+		var old_auxiliary := _filter_auxiliary
+		_raw = []; _history = []; _filter_sets = []; _filter_auxiliary = []
 		for i in 4: _raw.append(_lighting_texture(size))
 		for i in 8: _history.append(_lighting_texture(size))
-		if not (_raw+_history).all(func(rid: RID): return rid.is_valid()):
+		for format: int in filter_auxiliary_formats(): _filter_auxiliary.append(_lighting_texture(size,format))
+		if not (_raw+_history+_filter_auxiliary).all(func(rid: RID): return rid.is_valid()):
 			_raw.append_array(old_raw); _history.append_array(old_history); _filter_sets = old_sets
+			_filter_auxiliary.append_array(old_auxiliary)
 			return false
 		var bindings: Array[RDUniform] = []
 		for i in 4: bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,i,[_raw[i]]))
 		for i in 4: bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,i+4,[_history[i+4]]))
 		for i in 4: bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,i+8,[_history[i]]))
 		bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,12,[_frame]))
+		for i in _filter_auxiliary.size(): bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,13+i,[_filter_auxiliary[i]]))
 		_filter_sets.append(_rd.uniform_set_create(bindings,_filter_shader,0))
 		output.texture_rd_rid = _history[0]; guide.texture_rd_rid = _history[1]
 		shadow0.texture_rd_rid = _history[2]; shadow1.texture_rd_rid = _history[3]
 		if _set.is_valid(): _rd.free_rid(_set); _set = RID()
-		for rid in old_sets+old_raw+old_history:
+		for rid in old_sets+old_raw+old_history+old_auxiliary:
 			if rid.is_valid(): _rd.free_rid(rid)
 		_size = size; _history_valid = false
 	if not _set.is_valid() or sampler != _sampler:
@@ -102,6 +110,8 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 	# a small GPU copy supplies next frame's history without descriptor churn.
 	for i in 4:
 		_rd.texture_copy(_history[i],_history[i+4],Vector3.ZERO,Vector3.ZERO,Vector3(size.x,size.y,1),0,0,0,0)
+	for i in range(0,_filter_auxiliary.size(),2):
+		_rd.texture_copy(_filter_auxiliary[i+1],_filter_auxiliary[i],Vector3.ZERO,Vector3.ZERO,Vector3(size.x,size.y,1),0,0,0,0)
 	_rd.capture_timestamp("Scene RT end")
 	_history_valid = true
 

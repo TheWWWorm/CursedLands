@@ -113,8 +113,28 @@ Smooth surfaces therefore reuse less radiance after the reflection direction
 changes; diffuse history and broad rough lobes can continue accumulating.
 Perspective views use the current/previous camera positions, while orthographic
 views use their parallel directions. The new-sample weight is accumulated
-explicitly to preserve precision during long glossy accumulation. No additional
-ray dispatches, image targets or per-pixel memory are required.
+explicitly to preserve precision during long glossy accumulation.
+
+Responsive reconstruction also tracks the largest channel variance for each
+lighting signal. Centred spatial moments avoid HDR cancellation, and unequal
+filter weights determine the effective sample count. Reprojected variance
+widens the colour-clamping envelope when a small current neighbourhood cannot
+represent the expected noise distribution. Its temporal blend follows the
+same surface checks and independent diffuse/glossy confidence as radiance.
+A narrower temporal glossy lobe limits highlight lag under these wider bounds.
+Two consecutive fully dark neighbourhoods with at least twenty valid taps
+limit history to two effective frames, accelerating a disappearing noisy
+signal without rejecting an isolated missing sample. Edges with insufficient
+support retain the normal bounded history.
+
+The variance history is two RG16F images, storing standard deviations so HDR
+values do not overflow when their square exceeds the half-float range. A
+negative sign records a fully dark current neighbourhood; the magnitude is
+the standard deviation. These images resize and release with the lighting
+targets. They add one small history copy, without additional rays or compute
+dispatches. This is a custom variance-aware clamp, not an implementation of
+the full [SVGF pipeline](https://research.nvidia.com/labs/rtr/publication/schied2017spatiotemporal/)
+or NRD.
 Still scene uses the identical pixel without interpolation, skips the
 spatial blur and progressively averages matching pixels, up to 256 frames.
 It is a custom prototype filter, not NRD, DLSS Ray Reconstruction or another
@@ -151,18 +171,20 @@ Characters' supported articulated and morph animation updates live.
   motion or hit-distance guides. Angular rejection reduces stale highlights
   but trades some temporal noise suppression for responsiveness; it cannot
   correctly track every moving reflected object or recover missing samples.
-  Neighbourhood clamping is also biased: the glossy validation fixture records
-  about 6% excess energy in a uniform grazing reflection, unchanged from the
-  preceding build. Lower variance is not proof of energy conservation.
+  The variance estimate includes spatial signal variation and can still be
+  inaccurate at thin surfaces, disocclusions and very sparse samples. Clamping
+  remains a biased estimator; lower variance is not proof of energy conservation.
   Still scene is useful for comparisons, not for hiding noise during gameplay.
 - Primary ray samples use pixel centres. The raster view supplies silhouette
   antialiasing; the prototype does not provide supersampled path-traced
   geometry edges. Thin geometry, normals and receiver mismatches can expose
   conventional-lighting seams. Missing geometry outside the bounded scene
   can produce light leaks or different distant reflections.
-- The twelve RGBA16F images use about 96 bytes per tracing pixel: approximately
-  84 MiB at 1280×720 High and 759 MiB at 3840×2160 High, before scene textures
-  and acceleration structures. Water tracing has separate resources.
+- Twelve RGBA16F lighting/guide images plus two RG16F variance images use
+  104 bytes per tracing pixel: approximately 91 MiB at 1280×720 High and
+  823 MiB at 3840×2160 High, before scene textures and acceleration structures.
+  Variance history accounts for 7 MiB and 63 MiB respectively. Water tracing
+  has separate resources.
 
 See the [validation report](../validation/path-tracing-2026-10-22/README.md)
 for actual outdoor/cave captures, timings, frame-generation checks and known
@@ -177,6 +199,9 @@ shared-mesh placement checks, API regression coverage and GPU timings.
 The [glossy reconstruction follow-up](../validation/path-tracing-glossy-2026-10-22/README.md)
 records moving-highlight error, independent history confidence, fractional
 metalness guides, stationary variance and GPU/FG regression checks.
+The [variance-clamping follow-up](../validation/path-tracing-variance-2026-10-22/README.md)
+records brightness bias against analytical references, sparse coloured/HDR
+signals, disappearing noisy lighting, memory cost and GPU/FG regression checks.
 
 ## Rebuild and checks
 
@@ -202,6 +227,7 @@ Fixtures run through the existing `--tool` interface:
 | `path_trace_emitter_live.gd` | Production scene collection, emissive terrain illumination, movement/hiding and material changes in the actual campaign |
 | `path_trace_quality.gd` | Native grazing-metal variance and energy against numerical quadrature; subpixel and sloped reprojection; rejection of unrelated depth layers |
 | `path_trace_glossy.gd` | Native moving highlights against their deterministic raw reference, stationary variance/energy, separate diffuse/glossy confidence, perspective/orthographic motion, material-guide aliases and progressive precision |
+| `path_trace_variance.gd` | Analytical stochastic means, dark/bright outliers, colour ratios, HDR variance range, coherent/persistent dark changes, reset/depth rejection and variance-resource resize/teardown |
 | `path_trace_receivers.gd` | Rendered steep-surface coverage and depth-edge rejection at 50/75/100% tracing resolution |
 | `path_trace_live.gd` | Outdoor material integration, responsive reprojection, still accumulation, camera reset, quality resizing and conventional restoration |
 | `path_trace_cave.gd` | Cave sky exclusion, two/four bounces, changing light colour, animated actor and history invalidation |
