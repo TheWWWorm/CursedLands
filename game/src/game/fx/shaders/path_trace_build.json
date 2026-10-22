@@ -2,17 +2,17 @@
   "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
   "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
   "builder_sha256": "9e8206c3069e67195e3d592b14205f55a1c27368e1d67109f8841aa05f571b8d",
-  "source_sha256": "f9fc874e17ac63e06596cc25bd0c7bdeefce2905ae51331f44e28707f53a0377",
+  "source_sha256": "f14e48e4e868b208f605d2f6bdca5961d4ba4a3d619aa79e5933d9975863e652",
   "files": {
-    "path_trace_raygen.dxil": "078f252a252cfd2a33a6b9f8c1bb6329b9088c5d4cc7592b1f68a63571a356b3",
-    "path_trace_raygen.spv": "0df6882935c3dd4eee8951c283da04249eab7a56fc462b331f009bf900c102aa",
+    "path_trace_raygen.dxil": "479e2e958771c86249caca00fce46d60e594f6bacd461f523991ab51216c8a56",
+    "path_trace_raygen.spv": "7e411b2ec2cb93e15ade00d567bc2050cb83b3d98557f01fc091d1ac7d7b47a5",
     "path_trace_miss.dxil": "eb396d7117e4f6f05b08e0092aa40e53752525c202904f8ff5db2e581b98590e",
     "path_trace_miss.spv": "1246e0f27a3bcc27ff47d9b3a4c312c6bea23efe94c436644f15391d98ebf4fe",
     "path_trace_closest_hit.dxil": "d721bd50c4844ecb2f633321b10578a48f61bec9d6013ef8a2e3ba187fd4f0ea",
     "path_trace_closest_hit.spv": "cb3df1624c20219526163a94bffb6f21b229aa62f9158a05fba018c1857fa85c",
     "path_trace_any_hit.dxil": "fc8ae7e7102d5f9b7ade1f1fe4cd3f1124e0a2e511494cb2a86ef8b7a5ef77f2",
     "path_trace_any_hit.spv": "398ae38fc85b426e7ce0bd561623bddadf495c52c369f765c443e7651f2aed88",
-    "path_trace_raygen_no_emitters.dxil": "f183f44d82df6d36a09d689e9abac4e3dac5d30393229f97f5a8719329f738e0",
-    "path_trace_raygen_no_emitters.spv": "9b1653d9b3e3129ac06043ee57e9c4ab790a44ce8c3c794965bb1c048535f716"
+    "path_trace_raygen_no_emitters.dxil": "27485695437ce1e2eca294ce06f81062e13ec21e2e7006e54e5369b2dc38c516",
+    "path_trace_raygen_no_emitters.spv": "7b13d0ba8d3cacf9639aa35966af8103082c7e240012406621544be41cb4afe8"
   }
 }

@@ -1,0 +1,729 @@
+{
+	"device": "NVIDIA GeForce RTX 3090",
+	"driver": "d3d12",
+	"note": "Frozen river, hidden units, water reflections and frame generation off, responsive history. Loading/builds excluded. RT GPU includes ray dispatch, reconstruction and copies; excludes AS updates. Main viewport GPU excludes RT dispatch.",
+	"runs": [
+		{
+			"case": "conventional",
+			"controller_cpu_ms": {
+				"median": 0.018,
+				"n": 90,
+				"p95": 0.025
+			},
+			"frame_ms": {
+				"median": 5.639,
+				"n": 90,
+				"p95": 9.217
+			},
+			"main_gpu_ms": {
+				"median": 0.759999990463257,
+				"n": 90,
+				"p95": 1.39499998092651
+			},
+			"round": 0,
+			"rt_gpu_ms": {},
+			"stats": {
+				"active": false
+			}
+		},
+		{
+			"case": "scene-rt-medium",
+			"controller_cpu_ms": {
+				"median": 1.811,
+				"n": 90,
+				"p95": 2.227
+			},
+			"frame_ms": {
+				"median": 7.911,
+				"n": 90,
+				"p95": 11.056
+			},
+			"main_gpu_ms": {
+				"median": 0.83899998664856,
+				"n": 90,
+				"p95": 1.49100005626678
+			},
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 0.547072,
+				"n": 90,
+				"p95": 1.157376
+			},
+			"stats": {
+				"accumulation_frames": 0,
+				"active": true,
+				"geometries": 1285,
+				"gi_samples": 2,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 0,
+				"path_samples": 0,
+				"path_tracing": false,
+				"quality": 1,
+				"shadow_samples": 2,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "path-2-low",
+			"controller_cpu_ms": {
+				"median": 1.86,
+				"n": 90,
+				"p95": 2.285
+			},
+			"frame_ms": {
+				"median": 8.281,
+				"n": 90,
+				"p95": 12.389
+			},
+			"main_gpu_ms": {
+				"median": 0.832000017166138,
+				"n": 90,
+				"p95": 1.39199995994568
+			},
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 0.47616,
+				"n": 90,
+				"p95": 0.8768
+			},
+			"stats": {
+				"accumulation_frames": 8,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "path-2-medium",
+			"controller_cpu_ms": {
+				"median": 1.854,
+				"n": 90,
+				"p95": 2.261
+			},
+			"frame_ms": {
+				"median": 8.183,
+				"n": 90,
+				"p95": 10.864
+			},
+			"main_gpu_ms": {
+				"median": 0.843999981880188,
+				"n": 90,
+				"p95": 1.81700003147125
+			},
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 2.357248,
+				"n": 90,
+				"p95": 3.27936
+			},
+			"stats": {
+				"accumulation_frames": 8,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "path-2-high",
+			"controller_cpu_ms": {
+				"median": 1.846,
+				"n": 90,
+				"p95": 2.493
+			},
+			"frame_ms": {
+				"median": 12.315,
+				"n": 90,
+				"p95": 14.709
+			},
+			"main_gpu_ms": {
+				"median": 0.879999995231628,
+				"n": 90,
+				"p95": 1.48000001907349
+			},
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 10.039808,
+				"n": 90,
+				"p95": 11.77088
+			},
+			"stats": {
+				"accumulation_frames": 8,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "path-4-low",
+			"controller_cpu_ms": {
+				"median": 1.98,
+				"n": 90,
+				"p95": 2.393
+			},
+			"frame_ms": {
+				"median": 8.513,
+				"n": 90,
+				"p95": 11.467
+			},
+			"main_gpu_ms": {
+				"median": 0.83899998664856,
+				"n": 90,
+				"p95": 1.55499994754791
+			},
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 0.619264,
+				"n": 90,
+				"p95": 1.257984
+			},
+			"stats": {
+				"accumulation_frames": 8,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "path-4-medium",
+			"controller_cpu_ms": {
+				"median": 1.787,
+				"n": 90,
+				"p95": 2.267
+			},
+			"frame_ms": {
+				"median": 8.163,
+				"n": 90,
+				"p95": 10.865
+			},
+			"main_gpu_ms": {
+				"median": 0.841000020503998,
+				"n": 90,
+				"p95": 1.42400002479553
+			},
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 3.191296,
+				"n": 90,
+				"p95": 4.411648
+			},
+			"stats": {
+				"accumulation_frames": 8,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "path-4-high",
+			"controller_cpu_ms": {
+				"median": 1.957,
+				"n": 90,
+				"p95": 2.805
+			},
+			"frame_ms": {
+				"median": 14.302,
+				"n": 90,
+				"p95": 17.404
+			},
+			"main_gpu_ms": {
+				"median": 0.898000001907349,
+				"n": 90,
+				"p95": 1.57000005245209
+			},
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 12.064512,
+				"n": 90,
+				"p95": 14.063872
+			},
+			"stats": {
+				"accumulation_frames": 8,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "path-4-high",
+			"controller_cpu_ms": {
+				"median": 1.876,
+				"n": 90,
+				"p95": 2.349
+			},
+			"frame_ms": {
+				"median": 14.217,
+				"n": 90,
+				"p95": 17.005
+			},
+			"main_gpu_ms": {
+				"median": 0.907000005245209,
+				"n": 90,
+				"p95": 1.34599995613098
+			},
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 12.080896,
+				"n": 90,
+				"p95": 14.34368
+			},
+			"stats": {
+				"accumulation_frames": 8,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "path-4-medium",
+			"controller_cpu_ms": {
+				"median": 1.822,
+				"n": 90,
+				"p95": 2.284
+			},
+			"frame_ms": {
+				"median": 7.91,
+				"n": 90,
+				"p95": 10.458
+			},
+			"main_gpu_ms": {
+				"median": 0.841000020503998,
+				"n": 90,
+				"p95": 1.16700005531311
+			},
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 3.163904,
+				"n": 90,
+				"p95": 4.286976
+			},
+			"stats": {
+				"accumulation_frames": 8,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "path-4-low",
+			"controller_cpu_ms": {
+				"median": 1.852,
+				"n": 90,
+				"p95": 2.265
+			},
+			"frame_ms": {
+				"median": 8.244,
+				"n": 90,
+				"p95": 11.189
+			},
+			"main_gpu_ms": {
+				"median": 0.837999999523163,
+				"n": 90,
+				"p95": 1.52400004863739
+			},
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 0.622848,
+				"n": 90,
+				"p95": 1.350144
+			},
+			"stats": {
+				"accumulation_frames": 8,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "path-2-high",
+			"controller_cpu_ms": {
+				"median": 1.91,
+				"n": 90,
+				"p95": 2.531
+			},
+			"frame_ms": {
+				"median": 12.553,
+				"n": 90,
+				"p95": 15.213
+			},
+			"main_gpu_ms": {
+				"median": 0.870000004768372,
+				"n": 90,
+				"p95": 1.5789999961853
+			},
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 10.212608,
+				"n": 90,
+				"p95": 11.72992
+			},
+			"stats": {
+				"accumulation_frames": 8,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "path-2-medium",
+			"controller_cpu_ms": {
+				"median": 1.842,
+				"n": 90,
+				"p95": 2.289
+			},
+			"frame_ms": {
+				"median": 7.843,
+				"n": 90,
+				"p95": 10.893
+			},
+			"main_gpu_ms": {
+				"median": 0.841000020503998,
+				"n": 90,
+				"p95": 1.54700005054474
+			},
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 2.508544,
+				"n": 90,
+				"p95": 3.244032
+			},
+			"stats": {
+				"accumulation_frames": 8,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "path-2-low",
+			"controller_cpu_ms": {
+				"median": 1.783,
+				"n": 90,
+				"p95": 2.295
+			},
+			"frame_ms": {
+				"median": 8.343,
+				"n": 90,
+				"p95": 11.433
+			},
+			"main_gpu_ms": {
+				"median": 0.83899998664856,
+				"n": 90,
+				"p95": 1.37100005149841
+			},
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 0.479232,
+				"n": 90,
+				"p95": 0.849408
+			},
+			"stats": {
+				"accumulation_frames": 8,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "scene-rt-medium",
+			"controller_cpu_ms": {
+				"median": 1.731,
+				"n": 90,
+				"p95": 2.241
+			},
+			"frame_ms": {
+				"median": 8.038,
+				"n": 90,
+				"p95": 10.57
+			},
+			"main_gpu_ms": {
+				"median": 0.841000020503998,
+				"n": 90,
+				"p95": 1.53100001811981
+			},
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 0.525824,
+				"n": 90,
+				"p95": 1.097728
+			},
+			"stats": {
+				"accumulation_frames": 0,
+				"active": true,
+				"geometries": 1285,
+				"gi_samples": 2,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 0,
+				"path_samples": 0,
+				"path_tracing": false,
+				"quality": 1,
+				"shadow_samples": 2,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "conventional",
+			"controller_cpu_ms": {
+				"median": 0.018,
+				"n": 90,
+				"p95": 0.03
+			},
+			"frame_ms": {
+				"median": 5.991,
+				"n": 90,
+				"p95": 8.79
+			},
+			"main_gpu_ms": {
+				"median": 0.759999990463257,
+				"n": 90,
+				"p95": 1.14300000667572
+			},
+			"round": 1,
+			"rt_gpu_ms": {},
+			"stats": {
+				"accumulation_frames": 0,
+				"active": false,
+				"geometries": 1285,
+				"gi_samples": 2,
+				"instances": 1420,
+				"lights": 1,
+				"path_bounces": 0,
+				"path_samples": 0,
+				"path_tracing": false,
+				"quality": 1,
+				"shadow_samples": 2,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		}
+	],
+	"viewport": [
+		1280,
+		720
+	]
+}

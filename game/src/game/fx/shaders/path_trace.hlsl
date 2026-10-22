@@ -289,7 +289,11 @@ void main() {
     }
     indirect_image[pixel]=float4(diffuse/float(samples),1.0);
     shadow_image0[pixel]=float4(specular/float(samples),1.0);
-    shadow_image1[pixel]=float4(primary.albedo,primary.roughness+2.0*primary.metalness);
+    // Every integer up to 2047 is exact in the RGBA16F guide. Separate 6/5-bit
+    // fields avoid aliases such as (roughness .2, metalness .4) and (.6, .2).
+    uint surface=uint(round(saturate(primary.roughness)*63.0))|
+        (uint(round(saturate(primary.metalness)*31.0))<<6u);
+    shadow_image1[pixel]=float4(primary.albedo,float(surface));
 }
 #elif defined(PATH_MISS)
 [shader("miss")]

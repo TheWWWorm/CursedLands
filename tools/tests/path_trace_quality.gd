@@ -5,6 +5,7 @@ var report := {}
 signal filtered
 var raw_result: Image
 var filtered_result: Image
+var filtered_specular: Image
 
 func frame(history:=true,gi:=true,shadows:=true) -> PackedByteArray:
 	var bytes:=super.frame(history,gi,shadows)
@@ -61,6 +62,7 @@ func reconstruct(bytes: PackedByteArray,inputs: Array[Image]) -> void:
 	rd.compute_list_dispatch(compute,ceili(size.x/8.0),ceili(size.y/8.0),1)
 	rd.compute_list_end()
 	filtered_result=Image.create_from_data(size.x,size.y,false,Image.FORMAT_RGBAH,rd.texture_get_data(device._history[0],0))
+	filtered_specular=Image.create_from_data(size.x,size.y,false,Image.FORMAT_RGBAH,rd.texture_get_data(device._history[2],0))
 	filtered.emit.call_deferred()
 
 func plane_point(x: int,y: int,normal: Vector3,pose: Transform3D) -> Vector3:

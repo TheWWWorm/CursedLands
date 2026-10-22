@@ -93,6 +93,12 @@ metallic and specular values supply a compact material description; original
 assets without a profile default to rough dielectric surfaces. This does not
 reproduce full PBR texture sets or procedurally modified materials.
 
+The material guide stores albedo and an exactly representable half-float
+integer containing six roughness bits and five metalness bits. This guide
+quantization only controls reconstruction; the integrator retains its existing
+eight-bit material values. Separate fields prevent different combinations of
+roughness and fractional metalness from sharing an ambiguous summed value.
+
 `path_trace_filter.glsl` uses normal/depth/plane/material rejection, a 5×5
 diffuse filter and a smaller 3×3 glossy filter. Responsive mode reprojects up
 to eight history frames with neighbourhood clamping. Four bilinear history
@@ -100,6 +106,15 @@ taps are independently checked against the receiver's world-space plane,
 normal and material, with reduced history confidence on partial disocclusion.
 This avoids snapping to a single pixel or unnecessarily rejecting a matching
 sloped surface during camera movement. Projection changes reset history.
+Glossy history has its own confidence in the existing specular alpha channel.
+A roughness-dependent angular weight compares reflected viewing directions,
+including normal changes, for both spatial neighbours and historical taps.
+Smooth surfaces therefore reuse less radiance after the reflection direction
+changes; diffuse history and broad rough lobes can continue accumulating.
+Perspective views use the current/previous camera positions, while orthographic
+views use their parallel directions. The new-sample weight is accumulated
+explicitly to preserve precision during long glossy accumulation. No additional
+ray dispatches, image targets or per-pixel memory are required.
 Still scene uses the identical pixel without interpolation, skips the
 spatial blur and progressively averages matching pixels, up to 256 frames.
 It is a custom prototype filter, not NRD, DLSS Ray Reconstruction or another
@@ -132,6 +147,13 @@ Characters' supported articulated and morph animation updates live.
   production denoiser. Many occluded lights, cutout emitters, indirect paths
   and glossy motion can remain noisy. The emitter proposal is global to the
   bounded scene, without per-receiver visibility or distance importance.
+  Glossy history still reprojects the primary surface, without reflected-hit
+  motion or hit-distance guides. Angular rejection reduces stale highlights
+  but trades some temporal noise suppression for responsiveness; it cannot
+  correctly track every moving reflected object or recover missing samples.
+  Neighbourhood clamping is also biased: the glossy validation fixture records
+  about 6% excess energy in a uniform grazing reflection, unchanged from the
+  preceding build. Lower variance is not proof of energy conservation.
   Still scene is useful for comparisons, not for hiding noise during gameplay.
 - Primary ray samples use pixel centres. The raster view supplies silhouette
   antialiasing; the prototype does not provide supersampled path-traced
@@ -152,6 +174,9 @@ GPU timings for the subsequent smoothing changes.
 The [emissive sampling follow-up](../validation/path-tracing-emitters-2026-10-22/README.md)
 records unfiltered small-light variance and energy, dynamic/cutout emission,
 shared-mesh placement checks, API regression coverage and GPU timings.
+The [glossy reconstruction follow-up](../validation/path-tracing-glossy-2026-10-22/README.md)
+records moving-highlight error, independent history confidence, fractional
+metalness guides, stationary variance and GPU/FG regression checks.
 
 ## Rebuild and checks
 
@@ -176,6 +201,7 @@ Fixtures run through the existing `--tool` interface:
 | `path_trace_emitters.gd` | Raw small-light and glossy variance, area-integral energy reference, cutout/textured emission, movement/deformation, duplicate placements, visibility masks and proposal-budget fallback |
 | `path_trace_emitter_live.gd` | Production scene collection, emissive terrain illumination, movement/hiding and material changes in the actual campaign |
 | `path_trace_quality.gd` | Native grazing-metal variance and energy against numerical quadrature; subpixel and sloped reprojection; rejection of unrelated depth layers |
+| `path_trace_glossy.gd` | Native moving highlights against their deterministic raw reference, stationary variance/energy, separate diffuse/glossy confidence, perspective/orthographic motion, material-guide aliases and progressive precision |
 | `path_trace_receivers.gd` | Rendered steep-surface coverage and depth-edge rejection at 50/75/100% tracing resolution |
 | `path_trace_live.gd` | Outdoor material integration, responsive reprojection, still accumulation, camera reset, quality resizing and conventional restoration |
 | `path_trace_cave.gd` | Cave sky exclusion, two/four bounces, changing light colour, animated actor and history invalidation |

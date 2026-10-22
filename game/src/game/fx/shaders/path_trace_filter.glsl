@@ -29,6 +29,23 @@ vec3 position_at(ivec2 pixel,float depth,ivec2 size) {
 vec3 finite_signal(vec3 c) {
     return any(isnan(c))||any(isinf(c))?vec3(0.0):clamp(c,0.0,60000.0);
 }
+vec2 surface_at(float packed) {
+    uint bits=uint(round(packed));
+    return vec2(float(bits&63u)/63.0,float(bits>>6u)/31.0);
+}
+vec3 reflection_at(vec3 position,vec3 normal,vec3 eye,vec3 parallel_view) {
+    vec3 view=frame.camera.x>0.5?parallel_view:normalize(eye-position);
+    return reflect(-view,normalize(normal));
+}
+float glossy_compatibility(vec3 current,vec3 other,float roughness) {
+    // A GGX-shaped angular confidence, not a second BRDF evaluation. The
+    // reflection lobe scales with 2*alpha, where alpha=roughness^2. Narrow lobes
+    // cannot reuse the same surface's radiance after its viewing angle changes.
+    float alpha=max(roughness,0.08);alpha*=alpha;
+    vec3 delta=current-other;
+    float overlap=1.0/(1.0+dot(delta,delta)/(4.0*alpha*alpha));
+    return overlap*overlap;
+}
 vec3 previous_position(ivec2 p,float depth,ivec2 size) {
     vec2 uv=(vec2(p)+0.5)/vec2(size);
     vec4 near=frame.previous_inverse_view_projection*vec4(uv.x*2.0-1.0,1.0-uv.y*2.0,-1.0,1.0);
@@ -47,6 +64,9 @@ void main() {
         imageStore(result_diffuse,p,vec4(0.0));imageStore(result_specular,p,vec4(0.0));return;
     }
     vec3 world=position_at(p,guide.w,size);
+    vec2 surface=surface_at(material.w);
+    vec3 eye=frame.camera_world[3].xyz,parallel_view=frame.camera_world[2].xyz;
+    vec3 reflection=reflection_at(world,guide.xyz,eye,parallel_view);
     float footprint=frame.camera.x>0.5?abs(frame.inv_projection[1][1])*2.0/float(size.y):
         abs(frame.inv_projection[1][1])*2.0*guide.w/float(size.y);
     float plane_tolerance=max(0.025,footprint*0.5);
@@ -58,8 +78,9 @@ void main() {
         ivec2 q=p+ivec2(x,y);
         if(any(lessThan(q,ivec2(0)))||any(greaterThanEqual(q,size)))continue;
         vec4 g=imageLoad(raw_guide,q),m=imageLoad(raw_material,q);
-        if(g.w<=0.0||dot(guide.xyz,g.xyz)<0.94||abs(m.w-material.w)>0.15)continue;
-        vec3 delta=position_at(q,g.w,size)-world;
+        vec2 other_surface=surface_at(m.w);
+        if(g.w<=0.0||dot(guide.xyz,g.xyz)<0.94||any(greaterThan(abs(other_surface-surface),vec2(0.15))))continue;
+        vec3 other_world=position_at(q,g.w,size),delta=other_world-world;
         float plane=abs(dot(delta,guide.xyz));
         if(plane>plane_tolerance||length(delta)>max(0.15,footprint*5.0))continue;
         float weight=exp(-float(x*x+y*y)*0.5)*exp(-plane/max(plane_tolerance,0.001));
@@ -67,11 +88,13 @@ void main() {
         diffuse+=d*weight;dw+=weight;dlo=min(dlo,d);dhi=max(dhi,d);
         // Glossy radiance must not smear across different material colours.
         if(abs(x)<=1&&abs(y)<=1&&length(m.rgb-material.rgb)<0.25) {
-            specular+=s*weight;sw+=weight;slo=min(slo,s);shi=max(shi,s);
+            float glossy_weight=weight*glossy_compatibility(reflection,
+                reflection_at(other_world,g.xyz,eye,parallel_view),min(surface.x,other_surface.x));
+            specular+=s*glossy_weight;sw+=glossy_weight;slo=min(slo,s);shi=max(shi,s);
         }
     }
     diffuse/=max(dw,0.0001);specular/=max(sw,0.0001);
-    float age=1.0;
+    float age=1.0,specular_age=1.0;
     vec4 previous=frame.previous_view_projection*vec4(world,1.0);
     vec2 uv=vec2(previous.x,-previous.y)/previous.w*0.5+0.5;
     if(frame.camera.z>0.5&&(!progressive||frame.path.z>0.5)&&previous.w>0.0&&
@@ -80,8 +103,11 @@ void main() {
         // repeated subpixel interpolation would blur a converging still image.
         vec2 pixel=progressive?vec2(p):uv*vec2(size)-0.5;
         ivec2 base=ivec2(floor(pixel));vec2 blend=fract(pixel);
-        vec4 old=vec4(0.0);vec3 old_specular=vec3(0.0);float total=0.0;
+        vec4 old=vec4(0.0);vec3 old_specular=vec3(0.0);float total=0.0,specular_weight=0.0;
+        float specular_confidence=0.0,specular_new_weight=0.0;
         vec3 view_normal=(mat3(frame.previous_view)*guide.xyz);
+        vec3 old_eye=-(transpose(mat3(frame.previous_view))*frame.previous_view[3].xyz);
+        vec3 old_parallel_view=vec3(frame.previous_view[0][2],frame.previous_view[1][2],frame.previous_view[2][2]);
         float reach=max(0.1,footprint*2.5/max(abs(view_normal.z),0.1));
         for(int y=0;y<2;y++)for(int x=0;x<2;x++) {
             ivec2 q=base+ivec2(x,y);
@@ -89,28 +115,49 @@ void main() {
             float w=(x==0?1.0-blend.x:blend.x)*(y==0?1.0-blend.y:blend.y);
             if(w<=0.0)continue;
             vec4 g=imageLoad(previous_guide,q),m=imageLoad(previous_material,q);
-            if(g.w<=0.0||dot(g.xyz,guide.xyz)<=0.96||abs(m.w-material.w)>=0.05||length(m.rgb-material.rgb)>=0.15)continue;
-            vec3 delta=previous_position(q,g.w,size)-world;
+            vec2 old_surface=surface_at(m.w);
+            if(g.w<=0.0||dot(g.xyz,guide.xyz)<=0.96||any(greaterThanEqual(abs(old_surface-surface),vec2(0.05)))||length(m.rgb-material.rgb)>=0.15)continue;
+            vec3 old_world=previous_position(q,g.w,size),delta=old_world-world;
             // Compare surfaces in world space. Adjacent pixels on a slope
             // legitimately have different depths; unrelated layers still fail.
             if(abs(dot(delta,guide.xyz))>plane_tolerance||length(delta)>reach)continue;
             vec4 history=imageLoad(previous_diffuse,q);
-            if(history.a<1.0)continue;
-            old+=vec4(finite_signal(history.rgb),history.a)*w;
-            old_specular+=finite_signal(imageLoad(previous_specular,q).rgb)*w;total+=w;
+            if(history.a>=1.0) {
+                old+=vec4(finite_signal(history.rgb),history.a)*w;total+=w;
+            }
+            vec4 glossy_history=imageLoad(previous_specular,q);
+            if(glossy_history.a>=1.0) {
+                float confidence=progressive?1.0:glossy_compatibility(reflection,
+                    reflection_at(old_world,g.xyz,old_eye,old_parallel_view),min(surface.x,old_surface.x));
+                float new_weight=w*confidence/min(1.0+glossy_history.a,frame.path.y);
+                float history_weight=w*confidence-new_weight;
+                specular_confidence+=w*confidence;specular_new_weight+=new_weight;
+                old_specular+=finite_signal(glossy_history.rgb)*history_weight;specular_weight+=history_weight;
+            }
         }
         if(total>0.01) {
             // Partially disoccluded pixels get less historical confidence.
             age=min(1.0+old.a,frame.path.y);
-            old.rgb/=total;old_specular/=total;
+            old.rgb/=total;
             if(!progressive) {
                 old.rgb=clamp(old.rgb,dlo-(dhi-dlo)*0.15-0.01,dhi+(dhi-dlo)*0.15+0.01);
-                old_specular=clamp(old_specular,slo-(shi-slo)*0.1-0.01,shi+(shi-slo)*0.1+0.01);
             }
             diffuse=mix(diffuse,old.rgb,1.0-1.0/age);
-            specular=mix(specular,old_specular,1.0-1.0/age);
+        }
+        if(specular_weight>0.0) {
+            old_specular/=specular_weight;
+            if(!progressive)old_specular=clamp(old_specular,slo-(shi-slo)*0.1-0.01,shi+(shi-slo)*0.1+0.01);
+            // Store effective confidence independently. Multiplying the blend
+            // itself prevents an eight-frame diffuse age from restoring stale
+            // glossy history immediately after a view-dependent rejection.
+            // Keep the small new-sample weight explicit. Recovering it by
+            // subtracting a nearly-one history weight loses precision during
+            // long progressive accumulation on the DX12 compute path.
+            float current_weight=max(1.0-specular_confidence,0.0)+specular_new_weight;
+            specular_age=min(1.0/current_weight,frame.path.y);
+            specular=mix(specular,old_specular,1.0-1.0/specular_age);
         }
     }
     imageStore(result_diffuse,p,vec4(finite_signal(diffuse),age));
-    imageStore(result_specular,p,vec4(finite_signal(specular),age));
+    imageStore(result_specular,p,vec4(finite_signal(specular),specular_age));
 }
