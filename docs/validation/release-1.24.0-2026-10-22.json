@@ -1,7 +1,7 @@
 {
   "version": "1.24.0",
   "date": "2026-10-22",
-  "status": "Release candidates validated; public upload and hosted deployment verification pending.",
+  "status": "Published stable release and hosted browser deployment verified; all six public downloads match exported SHA-256 hashes.",
   "source_commit": "490a77ed2ada148b7b7dc4a89a0ef793cad5ad4d",
   "game_tree": "0977708f29cab56274156bc184d6a0fa4a5fe7af",
   "merged": {
@@ -1355,5 +1355,62 @@
     "Ray-traced lighting and path tracing are experimental and off by default; they cost GPU time and moving scenes can remain noisy.",
     "Pre-existing source-tree test failures that also fail without this release (listed under source_tests.preexisting_failures) were not addressed here.",
     "Browser validation covers WebAssembly startup to the installation screen and the 1.23.0 to 1.24.0 cache upgrade with stored data preserved; it does not import original game data."
-  ]
+  ],
+  "publication": {
+    "version": "1.24.0",
+    "url": "https://github.com/TheWWWorm/CursedLands/releases/tag/v1.24.0",
+    "isDraft": false,
+    "isPrerelease": false,
+    "publishedAt": "2026-10-22T20:40:27Z",
+    "tag_commit": "f9ba9dd1a3a1813a194fd89da82b10bb953fb494",
+    "release_id": 421179960,
+    "assets": [
+      {
+        "name": "CursedLands-1.24.0-android.apk",
+        "bytes": 47063964,
+        "sha256": "sha256:382654eae55f049a485409476eb0ac13b60ca6d07bc48d63507656f26f4349e8",
+        "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.24.0/CursedLands-1.24.0-android.apk"
+      },
+      {
+        "name": "CursedLands-1.24.0-linux-x86_64.tar.gz",
+        "bytes": 62375062,
+        "sha256": "sha256:9aa87a00993ce1f6332059042d742b480f775755c481ed59d2671921077d2313",
+        "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.24.0/CursedLands-1.24.0-linux-x86_64.tar.gz"
+      },
+      {
+        "name": "CursedLands-1.24.0-macos-universal.zip",
+        "bytes": 90796475,
+        "sha256": "sha256:f72bc5df14c8f5333b0097418675dcebebad827e50cd086154cb71b37b42b7d5",
+        "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.24.0/CursedLands-1.24.0-macos-universal.zip"
+      },
+      {
+        "name": "CursedLands-1.24.0-tools.zip",
+        "bytes": 73183,
+        "sha256": "sha256:239fb2d23bdee4cfffcd3f563f05f42ebf44a2a2790b63242b78d2d574696b0c",
+        "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.24.0/CursedLands-1.24.0-tools.zip"
+      },
+      {
+        "name": "CursedLands-1.24.0-web.zip",
+        "bytes": 184277751,
+        "sha256": "sha256:f98c3cca00c1344dbfcb3d7e8b6d151016a09fa72e93546d95478e2de5a1376d",
+        "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.24.0/CursedLands-1.24.0-web.zip"
+      },
+      {
+        "name": "CursedLands-1.24.0-windows-x86_64.zip",
+        "bytes": 111049409,
+        "sha256": "sha256:faac6461a5094a748833ced420fb1f305c7d3cf1a9395a2dd982b0a111121ce5",
+        "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.24.0/CursedLands-1.24.0-windows-x86_64.zip"
+      }
+    ],
+    "all_public_downloads_sha256_verified": true
+  },
+  "deployment": {
+    "site": "https://cursedlands.wwworm.com/",
+    "commit": "f9ba9dd1a3a1813a194fd89da82b10bb953fb494",
+    "version": "1.24.0",
+    "verified_at": "2026-10-22T20:43:30Z",
+    "all_live_hashes_match": true,
+    "scope": "Every changed hosted asset, complete service-worker engine cache, build metadata and split WebAssembly parts",
+    "live_file_count": 22
+  }
 }
