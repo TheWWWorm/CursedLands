@@ -218,13 +218,13 @@ Saves and settings are kept in the engine's user folder:
 
 Open the `game` folder in [Godot 4.7](https://godotengine.org/) and export with the included presets. The Windows and Linux release packages use the [patched desktop templates](engine_patches/godot-4.7/README.md).
 
-For a source run with an unmodified Godot binary, launch with
-`godot --path game --render-thread safe` (substitute your Godot executable).
-The project enables a separate render thread for the patched Linux template;
-Windows uses Safe by default. Stock Godot 4.7.2 can abort during shutdown with that mode. In an editor-launched
-run, set the active platform's **Thread Model** override to **Safe** in your local
-project settings. The source checkout keeps GDScript and shader files at LF line
-endings through `.gitattributes`, including on Windows.
+Source and editor runs use the Safe render thread model, so an unmodified
+Godot binary needs no extra options. Only Linux exports enable the separate
+render thread, through the preset's `render_thread_patched` feature, because
+the patched Linux template has the fixes that mode needs. Exporting Linux with
+stock templates therefore needs that feature removed from the preset. The
+source checkout keeps GDScript and shader files at LF line endings through
+`.gitattributes`, including on Windows.
 
 The [original-engine comparison suite](docs/original-parity.md) runs bounded
 scenarios against the original executable and the remake independently, records

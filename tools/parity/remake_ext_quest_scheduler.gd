@@ -13,6 +13,9 @@ class SchedulerVM extends ScriptVM:
 	var cond_roots: Array = []   # [[condition AST, label]]
 	var body_labels: Array = []  # [[body AST, label]]
 	var trace: Array = []
+	## Record every copy's evaluation, as the native walk performs it.
+	func _init() -> void:
+		condition_memo = false
 	func label(body: Array) -> String:
 		for row in body_labels:
 			if is_same(row[0], body): return row[1]

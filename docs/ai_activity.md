@@ -25,9 +25,21 @@ injury, healing and removing scaling.
 
 Membership operations and diplomacy commands invalidate the current batch immediately. Changes to dead/hidden/controller/faction fields use the existing notice revision. Positional writes compare against the tick snapshot; displacement exceeding 1 m invalidates the remainder of the batch. The sensing envelope includes 2 m of movement margin, shared between observer and target. The former 16 m envelope kept many distant actors active unnecessarily. The smaller envelope uses the same immediate overflow fallback, including fast moves and teleports; it does not impose a movement limit. Dialogue, clients and nonstandard diagnostic timesteps use ordinary decisions. Queries outside the unit-update phase also use ordinary decisions.
 
-Sleeping invalidates the old neighbour-refresh deadline. Waking therefore queries current neighbours instead of waiting as long as the previous 8–11-tick cache interval. Movement and patrol timing are not slowed because a unit is far from the player. The earlier `Distant AI (experimental)` setting is a separate approximation experiment and remains off by default.
+Sleeping invalidates the old neighbour-refresh deadline. Waking therefore queries current neighbours instead of waiting as long as the previous 8–11-tick cache interval. This scheduler does not slow movement or patrol timing because a unit is far from the player; the original's own active-object set does, see below. The earlier `Distant AI (experimental)` setting is a separate approximation experiment and remains off by default.
 
 The scheduler is enabled by default. `-- --ei-legacy-ai` disables it for comparison. `-- --ei-script-activity` exercises its script implementation. These are diagnostic switches; there is no additional gameplay quality setting. Derived activity data is rebuilt, never written into saves or sent over the network. The server schedules all co-op participants using the same world snapshot.
+
+## The original's active objects
+
+In zones of type `game` (map.txt; not `brief`, `edge` or the arena) the original server updates only the objects in its active set, and `ObjectActivity` (`game/src/game/object_activity.gd`) reproduces it on the authority. Every server tick, before the objects update, each unit of every player wakes all objects in the 32 m cells around it: the cells at offset (dx, dy), at most 10 cells either way, with sqrt(max(|dx|-1, 0)² + max(|dy|-1, 0)²) < r / 32, where r = 2 × max(sight × sight factor, life sense) + 20. Waking sets a counter of 128–143 ticks (about 7–8 s). A unit whose counter runs out stays awake while it is in its attack stance, its MOB logic is always-active, or it has noticed a living enemy; otherwise it is frozen until it is woken again. A woken magic trap stays awake.
+
+An attacked unit wakes, so a trap or a long shot reaches a frozen unit. Every tick of fireworks and clairvoyance wakes the objects within the spell's radius + 5 m of its point.
+
+A zone's units start frozen unless always-active; levers, which the original also arms at load, always update in the remake. Units created during play start awake. A saved zone (a loaded game or a revisited zone) also starts with its magic traps awake. Frozen units do not move, decide, chatter, make step noise or regenerate, so a patrol far from the party waits at its post as in the original. Party units, corpses and conversation actors always update. The set is not saved; loading re-arms it as the original does.
+
+A revisited zone first catches up on the party's absence, before the party is placed: 100 object steps per campaign hour since it was left (at most 1000, about 55 s of play), each waking the objects within 70 m of the centre of the entrance's deploy area. No scripts run and the campaign clock stands still meanwhile. Loading a saved game does not run it.
+
+`tools/tests/object_activity.gd` covers the freeze, the wakes, the expiry and runtime spawns in gz3g, where the original keeps goblin 3379 at its spawn while the party stays at the entrance. `tools/tests/object_activity_absence.gd` covers the absence simulation.
 
 ## Data, threading and compatibility
 

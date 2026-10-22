@@ -29,6 +29,8 @@ and [attribution](docs/branding/graphics-sdk-attribution.md).
 
 `game/src/ei/lzma.gd` is a GDScript port of Igor Pavlov's reference LZMA decoder (`LzmaSpec.cpp`, public domain), with LZMA2 framing as in XZ Utils (public domain / 0BSD).
 
+Windows and Linux x86-64 and Android ARM64 packages also include a compiled copy of the same decoder for installer import (`game/src/native/installer/installer_lzma.c`, Apache-2.0, from the Demiurges engine by TheWWWorm), loaded through `game/src/native/installer_lzma.gdextension`. `game/src/native/installer/include/gdextension_interface.h` is part of Godot and is distributed under Godot's MIT license. The desktop libraries are built with Zig and the Android library with the Android NDK (`game/src/native/installer/build.py`); the Windows library contains MinGW-w64 runtime startup code (ZPL-2.1; its notices are in `game/src/native/NATIVE_NAVIGATION_NOTICES.txt`), and the Android NDK notices are in `game/src/native/NATIVE_ANDROID_NOTICES.txt`. Other platforms use the GDScript decoder.
+
 ## GOG installer reader
 
 `game/src/ei/inno_setup.gd` reads Inno Setup installers following the file format as documented by the innoextract project. No innoextract code is included.

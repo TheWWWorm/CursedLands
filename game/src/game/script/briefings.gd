@@ -315,6 +315,47 @@ func staging_tick() -> void:
 	vm.session.broadcast(event)
 
 
+## Space while the actors walk to their marks (the original's village
+## dialog, checked under Wine in bz2g): the conversation starts at once with
+## everyone placed at their marks. Only the talking player may skip; return
+## walks after a conversation are not part of it.
+func skip_staging(player: int) -> void:
+	if _pending_dialog.is_empty() or active.is_empty() or (active_player >= 0 and player != active_player):
+		return
+	for u in vm.world.dialog_movers.keys():
+		var m: Dictionary = vm.world.dialog_movers[u]
+		if not is_instance_valid(u) or bool(m.get("restore", false)) or not bool(m.get("wait", true)):
+			continue
+		vm.world.dialog_place(u, _walk_end(u, m.to), float(m.angle))
+		vm.world.dialog_movers.erase(u)
+	var c: Dictionary = _pending_dialog.cast
+	var a: GameUnit = vm.world.units.get(int(c.get("a", -1)))
+	var b: GameUnit = vm.world.units.get(int(c.get("b", -1)))
+	if a and b and not _pending_dialog.get("faced", false):
+		# Frame and face the actual places at once, as staging_tick does
+		# after a walk, without waiting for the turn.
+		_face_in_place(c, a, b)
+		for key in ["a", "b", "c"]:
+			var u: GameUnit = vm.world.units.get(int(c.get(key, -1)))
+			if u and vm.world.dialog_movers.has(u) and not bool(vm.world.dialog_movers[u].get("restore", false)):
+				vm.world.dialog_place(u, u.pos, float(vm.world.dialog_movers[u].angle))
+				vm.world.dialog_movers.erase(u)
+		_pending_dialog.faced = true
+	staging_tick()
+
+
+## Where the skipped walk would have ended: its mark, or, when the mark is not
+## standable (a wall or slope in front of the partner), the end of the route
+## the pathfinder planned toward it.
+func _walk_end(u: GameUnit, mark: Vector2) -> Vector2:
+	if vm.world.nav == null or vm.world.nav.cell_open(mark, u.move_class()):
+		return mark
+	var route: PackedVector2Array = u.path
+	if route.is_empty():
+		route = vm.world.nav.find_path(u.pos, mark, [u], [], 0.0, u.move_class(), true)
+	return route[-1] if not route.is_empty() else mark
+
+
 ## LiA: closing a script-started briefing scans the temporary
 ## b.* GS table in hash order and matches its third component with _stricmp.
 ## There is no value==1 filter. Retain the key's exact case for GSSetVar and

@@ -7,7 +7,9 @@ extends RefCounted
 ## dictionary-size byte, then LZMA2 chunks). The whole output stays in memory
 ## and serves as the dictionary.
 ##
-## GDScript is slow at this, so the hot paths (literals, the range decoder's
+## Where the compiled copy of this decoder (src/native/installer) is available,
+## the file chunks use it instead; this one remains for the setup header and
+## for platforms without it. GDScript is slow at this, so the hot paths (literals, the range decoder's
 ## bit) are written out inline instead of calling helpers.
 
 const TOP := 1 << 24
@@ -37,6 +39,15 @@ static func decode(src: PackedByteArray, pos: int, size: int, out_size: int) -> 
 ## LZMA2 stream (after Inno's dictionary-size byte) of known output size.
 static func decode2(src: PackedByteArray, pos: int, size: int, out_size: int) -> PackedByteArray:
 	return EILzma.new().run2(src, pos, size, out_size)
+
+
+## The compiled decoder (src/native/installer_lzma.gdextension: Linux and
+## Windows x86-64, Android ARM64), loaded at startup where its library exists.
+## Output bytes the compiled decoder produces between progress updates.
+const NATIVE_STEP := 4 << 20
+
+static func native() -> bool:
+	return ClassDB.class_exists(&"InstallerLzmaKernel")
 
 
 var _lc := 0
@@ -92,6 +103,18 @@ func run(src: PackedByteArray, pos: int, size: int, out_size: int) -> PackedByte
 
 
 func run2(src: PackedByteArray, pos: int, size: int, out_size: int) -> PackedByteArray:
+	if pos == 0 and size == src.size() and native():
+		var handle: int = ClassDB.class_call_static(&"InstallerLzmaKernel", &"open", src, out_size)
+		if handle >= 0:
+			while not abort:
+				var n: int = ClassDB.class_call_static(&"InstallerLzmaKernel", &"step", handle, NATIVE_STEP)
+				# Damaged data stops here; the caller's checksum reports it.
+				if n < 0:
+					break
+				done = n
+				if n >= out_size:
+					break
+			return ClassDB.class_call_static(&"InstallerLzmaKernel", &"take", handle)
 	_src = src
 	_pos = pos + 1   # Inno's LZMA2 dictionary-size byte
 	_end = pos + size

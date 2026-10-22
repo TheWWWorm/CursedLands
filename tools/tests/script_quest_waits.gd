@@ -43,7 +43,9 @@ func release(vm: ScriptVM) -> void:
 ## that thread. Disposed instances leave, as in ScriptVM.tick.
 func step(vm: ScriptVM) -> void:
 	vm.time += ScriptVM.SLEEP_UNIT
+	vm._forget_conditions()   # as ScriptVM._tick does before its trigger pass
 	for inst: ScriptVM.Instance in vm.instances.duplicate(): vm._run(inst)
+	vm._forget_conditions()   # as ScriptVM._tick ends each pass
 	vm.instances = vm.instances.filter(func(x: ScriptVM.Instance): return not (x.killed and x.frames.is_empty()))
 
 func restore(saved: Dictionary) -> ScriptVM:

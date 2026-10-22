@@ -48,7 +48,11 @@ func talks() -> void:
 			var hint:=g.direct.interaction_hint()
 			check(hint.is_empty() if u==worker else hint.get("verb")==RemakeText.t("Talk"),"only NPC with a current topic gets Talk in view "+str(camera_mode))
 			reset();await aim(u);g.direct.interact()
-			check(not hero.has_meta("interact") if u==worker else hero.has_meta("interact"),"E uses the same topic eligibility")
+			# Villages open the topic list at once (no approach); fields approach first.
+			var talking:bool=hero.has_meta("interact") or s.world.vm.briefings._original_village_topics.has(s.my_index)
+			check(not talking if u==worker else talking,"E uses the same topic eligibility (view %d, %s)"%[camera_mode,u.info.name])
+			s.world.vm.briefings.clear_original_topics(s.my_index)
+			g.hud._dialog._topics={};g.hud._dialog.visible=false   # Goodbye
 		reset();trapper._talk_command=1
 		check(not g.can_talk_to(trapper),"busy NPC has no talk action")
 		trapper._talk_command=0
