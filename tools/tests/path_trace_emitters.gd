@@ -80,7 +80,9 @@ func reference(transform:=Transform3D.IDENTITY,half:=false) -> float:
 		for x in 192:
 			if half and x>=96:continue
 			var p: Vector3=transform*Vector3(0.2+0.3*(x+0.5)/192.0,2.0,-0.15+0.3*(z+0.5)/192.0)
-			var delta:=p-Vector3(0,0.015,0);var distance2:=delta.length_squared();var l:=delta.normalized()
+			# Integrate at the physical receiver. A numerical ray-origin offset
+			# should converge to this surface, not redefine the reference plane.
+			var delta:=p;var distance2:=delta.length_squared();var l:=delta.normalized()
 			var fresnel: float=pow(1.0-Vector3.UP.dot((Vector3.UP+l).normalized()),5)
 			sum+=(1.0-fresnel)*maxf(l.y,0.0)*absf(normal.dot(l))/distance2
 	return sum*area/(PI*192.0*192.0)

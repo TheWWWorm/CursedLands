@@ -41,7 +41,7 @@ func shadow_reference() -> PackedFloat64Array:
 	for x in size.x:
 		var screen:=Vector2(x+0.5,size.y*0.5)/Vector2(size)*get_viewport().get_visible_rect().size
 		var position:=camera.project_position(screen,6.0)
-		var lower:=clampf(-position.x/(sun_radius*(1.0-0.015)),-1,1)
+		var lower:=clampf(-position.x/sun_radius,-1,1)
 		var value:=0.0
 		for i in 2048:
 			var u:=lower+(1.0-lower)*(i+0.5)/2048.0

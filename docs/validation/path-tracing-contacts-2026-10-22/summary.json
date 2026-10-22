@@ -1,0 +1,1399 @@
+{
+  "baseline_commit": "172a8780",
+  "qualified": [
+    {
+      "run": "contacts-final-dx12",
+      "checks": 59,
+      "seconds": 17.51,
+      "post_exit_wine_fault": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 00d0), starting debugger..."
+      ]
+    },
+    {
+      "run": "contacts-final-performance",
+      "checks": 14,
+      "seconds": 59.8,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "contacts-final-vulkan",
+      "checks": 59,
+      "seconds": 11.68,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "contacts-final-dx12-path_trace_quality",
+      "checks": 13,
+      "seconds": 14.51,
+      "post_exit_wine_fault": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 00d4), starting debugger..."
+      ]
+    },
+    {
+      "run": "contacts-final-dx12-path_trace_emitters",
+      "checks": 38,
+      "seconds": 13.47,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "contacts-final-dx12-path_trace_device",
+      "checks": 17,
+      "seconds": 13.17,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "contacts-final-dx12-path_trace_alpha",
+      "checks": 9,
+      "seconds": 11.67,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "contacts-final-dx12-path_trace_receivers",
+      "checks": 6,
+      "seconds": 12.57,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "contacts-final-dx12-path_trace_sampling",
+      "checks": 67,
+      "seconds": 14.42,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "contacts-final-dx12-path_trace_glossy",
+      "checks": 31,
+      "seconds": 12.57,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "contacts-final-dx12-path_trace_live",
+      "checks": 14,
+      "seconds": 36.03,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "contacts-final-dx12-path_trace_cave",
+      "checks": 12,
+      "seconds": 34.74,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "contacts-final-dx12-path_trace_fsr",
+      "checks": 62,
+      "seconds": 128.3,
+      "post_exit_wine_fault": []
+    },
+    {
+      "run": "contacts-final-vulkan-glossy",
+      "checks": 31,
+      "seconds": 10.87,
+      "post_exit_wine_fault": []
+    }
+  ],
+  "baseline_comparisons": [
+    {
+      "run": "contacts-reference-dx12",
+      "checks": 49,
+      "seconds": 14.78,
+      "post_exit_wine_fault": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 00d4), starting debugger..."
+      ]
+    },
+    {
+      "run": "contacts-baseline-performance",
+      "checks": 14,
+      "seconds": 57.54,
+      "post_exit_wine_fault": []
+    }
+  ],
+  "qualified_checks": 432,
+  "fixtures_sha256": {
+    "tools/tests/path_trace_alpha.gd": "8847d1fc4a3a9e999e3f350e7726d3aec499531bb5474fed0551915d5c025e58",
+    "tools/tests/path_trace_quality.gd": "223c4443174390dd52c0d8d880fe4feee27dc9fb366fa7220cbde4aec0feab85",
+    "tools/tests/scene_raytrace_options.gd": "91bc13e05d092212a1c715aad9eb168dad593ab8d453223a00a5e4575f26dd1f",
+    "tools/tests/water_raytrace.gd": "f34836320b6f4e1aa3fe25e224bb13a7b02a58b3f79b059ff8d0e062db7aad2e",
+    "tools/tests/path_trace_cave.gd": "1a248728fd7bbeb4932e5b9626a1817fdade72a4deefcd3b45f51148f003d066",
+    "tools/tests/water_raytrace_fsr.gd": "7add3f5301235c0b2e7ac367b28fad27a4d9a7b5670d207f2dcc82bfcfc569f9",
+    "tools/tests/water_raytrace_native.gd": "267ef8f1d2c039482310a3eb2996da8a9145ec2747cc34c3e77c436b186f4f6a",
+    "tools/tests/path_trace_performance.gd": "ddfa8abf3bde09b1339df8f256c3391d779e9e7957d71678ecdc52b61781a13f",
+    "tools/tests/scene_raytrace_fsr.gd": "0172db17e8bc5271f720cac64d406ca41989d9be5766470319b010286806e4c4",
+    "tools/tests/water_raytrace_quality_scene.gd": "3848c3ac2f72aea16e96641530d6faa605018484081400badef342257c2b93e0",
+    "tools/tests/water_raytrace_options.gd": "4fd576d3dfcdc2721a9b5520c55a7c823ee6cab21b587a268e4b7e5d0f3680e9",
+    "tools/tests/path_trace_live.gd": "f0185262093c8d7886d6ded720e830298531cf0d150260c6abf86640e7ba97b8",
+    "tools/tests/path_trace_sampling.gd": "87d7f6d63a2180bc657a70eb8fbd3ee8ce2e8c23bb0b7e35c8d8f1f143b51953",
+    "tools/tests/scene_raytrace_performance.gd": "746ac1e249eda08ed0fe267a4e2aa38b269d067694e879b0c7f80d9a029dfce5",
+    "tools/tests/scene_raytrace_live.gd": "824c8a463502a83b59635cdf75bc158e1a2f63f0cff52d86d1b7dfe80495685d",
+    "tools/tests/scene_raytrace_materials.gd": "3665ac18b75adac8508827ded126d10155de6cbf9a917e38c1d4ba30f79ed0c8",
+    "tools/tests/water_raytrace_material_live.gd": "9dd35f78a6184df656675c9cbcc8e2123e7b942bdae4c13bd5c9136801cc52a1",
+    "tools/tests/scene_raytrace_fallback.gd": "c79cee8506b40fe43bbe720728256c000b89c23be3b7e341fa36fe9109900b58",
+    "tools/tests/path_trace_emitter_live.gd": "8e1a23201ebb08ec1313cb0cd8a6b8198c729ab5ab3a4061146bb58cdda9197d",
+    "tools/tests/water_raytrace_performance.gd": "aaae1181d9a74b2d33099a5b02efcc57294d18a28bb06b60d29101f2d49c921f",
+    "tools/tests/scene_raytrace_cave.gd": "393bfd1d230b4c9f4f7fcbcf400be1b5218a785465da905c8b91c0ed58696bb2",
+    "tools/tests/path_trace_variance.gd": "1513338ee6a89b134ace3d2bb00ad4ad2d4591b122cf5d39d51890b1ed974721",
+    "tools/tests/path_trace_device.gd": "d629cbff50703a266f22ad74608fc4c8abae90b18cb51b1a593e50736e0cc147",
+    "tools/tests/water_raytrace_cost.gd": "88486b2a608fbcd02656874b7b4100fc6f24a3a555bd75e7bb21a5d3790b8496",
+    "tools/tests/path_trace_receivers.gd": "2ff1d657daf258ae0b3e0e45c3414365ef20dbdb32ae74abbab3e85d2b75cc8a",
+    "tools/tests/water_raytrace_lighting.gd": "72b9969c8551a3d663763a6241ef1b23227cc2b8568e4506c24d2b12424f6acc",
+    "tools/tests/path_trace_emitters.gd": "846451b56fbf74b154f971c29c506f602c86a52fcc04e5e034384690cee2022a",
+    "tools/tests/water_raytrace_artifact.gd": "b2b94fe6ab75ee6e00a360efee9ad7a9a3a03a5bf28ad799466caf1aacf5227b",
+    "tools/tests/water_raytrace_materials.gd": "8722646b0065711520888ee41f0092fc675af443092c78cbe117043aa0fa5166",
+    "tools/tests/water_raytrace_filtering.gd": "bc4d0cc6d00c928932f166e675addd5e523f40f078307e43dd3ef526ec54d415",
+    "tools/tests/path_trace_materials.gd": "e8d2ccb42ccd904a8384f8003298cfad877b0696b1759120a43727c780cf27cb",
+    "tools/tests/path_trace_glossy.gd": "9151aa941a7574297b063e44917627c3cd0961aa0458e9b79a6656c28e311476",
+    "tools/tests/water_raytrace_filtering_scene.gd": "56cacc52b911244d3ee086eb818323e5f0fb85fe0b9fb00ecbfd01bdbb9a5bd9",
+    "tools/tests/water_raytrace_dynamic_performance.gd": "3ec9dfbf8fe5fa448b79c5739180bcb0c2ace628f6a0dee76f38896d004c8786",
+    "tools/tests/water_raytrace_device.gd": "0581a480b1a26556987c0cba4bb11d2e6f90d59f81291cf175db57ba53e7d1a9",
+    "tools/tests/scene_raytrace_device.gd": "212ddcaa7da21442b4b5206a84dcdbc49ea516462f196cc5122d40da10c0df47",
+    "tools/tests/path_trace_fsr.gd": "fcad5eebf356f04ac72bbc987f30f3db117903bc385f0ad1f11c80f7f7c141c3",
+    "tools/tests/water_raytrace_quality.gd": "cbc9de98983d493aaa49a6e8701d8980771d197830794bfb6d3ec5e35cb2ec75",
+    "tools/tests/water_raytrace_first_person.gd": "e78a87337b920146c5907dd78cc59da5554ba9233870689ac0b56782e977817f",
+    "tools/tests/path_trace_contacts.gd": "6239ae992c69a104a13bcde345dcc32930325b6caaad049dd8257816fd8159ae",
+    "tools/tests/scene_raytrace_alpha.gd": "551155d80594ebafd56fc67fdd4c9b0ddd4a9839929ec12b744b7013ac40ee54",
+    "tools/tests/water_raytrace_live.gd": "8962f2118a991032d463e095db19039ba190f364f562986d31a42601842b9533"
+  },
+  "contact_comparisons": {
+    "emitter-contact": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.884856084982554,
+          0.884856084982554,
+          0.884856084982554
+        ],
+        "peak": 1.185546875,
+        "pixels": 36864,
+        "variance": [
+          0.00901594440803866,
+          0.00901594440803866,
+          0.00901594440803866
+        ]
+      },
+      "updated": {
+        "dark_fraction": 1.0,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "peak": 0.0,
+        "pixels": 36864,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 1.0,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "peak": 0.0,
+        "pixels": 36864,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "glossy-contact": {
+      "previous": {
+        "dark_fraction": 1.0,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "peak": 0.0,
+        "pixels": 36864,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.999935944875081,
+          0.999935944875081,
+          0.999935944875081
+        ],
+        "peak": 1.1201171875,
+        "pixels": 36864,
+        "variance": [
+          1.84411027122078e-05,
+          1.84411027122078e-05,
+          1.84411027122078e-05
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.999936196539137,
+          0.999936196539137,
+          0.999936196539137
+        ],
+        "peak": 1.1201171875,
+        "pixels": 36864,
+        "variance": [
+          1.84410120067646e-05,
+          1.84410120067646e-05,
+          1.84410120067646e-05
+        ]
+      }
+    },
+    "mirrored-contact": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "halves": [
+          1.0,
+          1.0
+        ],
+        "mean": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.504177517361111,
+        "halves": [
+          0.0,
+          1.0
+        ],
+        "mean": [
+          0.495822482638889,
+          0.495822482638889,
+          0.495822482638889
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "variance": [
+          0.249982548348698,
+          0.249982548348698,
+          0.249982548348698
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.504177517361111,
+        "halves": [
+          0.0,
+          1.0
+        ],
+        "mean": [
+          0.495822482638889,
+          0.495822482638889,
+          0.495822482638889
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "variance": [
+          0.249982548348698,
+          0.249982548348698,
+          0.249982548348698
+        ]
+      }
+    },
+    "mirrored-grazing": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.049896240234375,
+          0.049896240234375,
+          0.049896240234375
+        ],
+        "peak": 0.049896240234375,
+        "pixels": 36864,
+        "reference": 0.0499207703707624,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.049896240234375,
+          0.049896240234375,
+          0.049896240234375
+        ],
+        "peak": 0.049896240234375,
+        "pixels": 36864,
+        "reference": 0.0499207703707624,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.049896240234375,
+          0.049896240234375,
+          0.049896240234375
+        ],
+        "peak": 0.049896240234375,
+        "pixels": 36864,
+        "reference": 0.0499207703707624,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "mirrored-normal": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "mean": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "reference": 1.00000011920929,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.0,
+        "mean": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "reference": 1.00000011920929,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.0,
+        "mean": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "reference": 1.00000011920929,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "origin-grazing": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.049896240234375,
+          0.049896240234375,
+          0.049896240234375
+        ],
+        "peak": 0.049896240234375,
+        "pixels": 36864,
+        "reference": 0.0499207477971784,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.049896240234375,
+          0.049896240234375,
+          0.049896240234375
+        ],
+        "peak": 0.049896240234375,
+        "pixels": 36864,
+        "reference": 0.0499207477971784,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.049896240234375,
+          0.049896240234375,
+          0.049896240234375
+        ],
+        "peak": 0.049896240234375,
+        "pixels": 36864,
+        "reference": 0.0499207477971784,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "origin-normal": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.999966078334384,
+          0.999966078334384,
+          0.999966078334384
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "reference": 1.0,
+        "variance": [
+          1.54126339468874e-08,
+          1.54126339468874e-08,
+          1.54126339468874e-08
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.999966078334384,
+          0.999966078334384,
+          0.999966078334384
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "reference": 1.0,
+        "variance": [
+          1.54126339468874e-08,
+          1.54126339468874e-08,
+          1.54126339468874e-08
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.999966078334384,
+          0.999966078334384,
+          0.999966078334384
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "reference": 1.0,
+        "variance": [
+          1.54126339468874e-08,
+          1.54126339468874e-08,
+          1.54126339468874e-08
+        ]
+      }
+    },
+    "point-endpoint-0.995": {
+      "previous": {
+        "dark_fraction": 0.0194227430555556,
+        "mean": [
+          0.883727669715881,
+          0.883727669715881,
+          0.883727669715881
+        ],
+        "peak": 0.98974609375,
+        "pixels": 36864,
+        "variance": [
+          0.0184869489828527,
+          0.0184869489828527,
+          0.0184869489828527
+        ]
+      },
+      "updated": {
+        "dark_fraction": 1.0,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "peak": 0.0,
+        "pixels": 36864,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 1.0,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "peak": 0.0,
+        "pixels": 36864,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "point-endpoint-1.005": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.898859262466431,
+          0.898859262466431,
+          0.898859262466431
+        ],
+        "peak": 0.98974609375,
+        "pixels": 36864,
+        "variance": [
+          0.00330334522716513,
+          0.00330334522716513,
+          0.00330334522716513
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.898859262466431,
+          0.898859262466431,
+          0.898859262466431
+        ],
+        "peak": 0.98974609375,
+        "pixels": 36864,
+        "variance": [
+          0.00330334412768707,
+          0.00330334412768707,
+          0.00330334412768707
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.898859249220954,
+          0.898859249220954,
+          0.898859249220954
+        ],
+        "peak": 0.98974609375,
+        "pixels": 36864,
+        "variance": [
+          0.00330334400304189,
+          0.00330334400304189,
+          0.00330334400304189
+        ]
+      }
+    },
+    "remote-vertices-grazing": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.049896240234375,
+          0.049896240234375,
+          0.049896240234375
+        ],
+        "peak": 0.049896240234375,
+        "pixels": 36864,
+        "reference": 0.0499207477971784,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.049896240234375,
+          0.049896240234375,
+          0.049896240234375
+        ],
+        "peak": 0.049896240234375,
+        "pixels": 36864,
+        "reference": 0.0499207477971784,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.049896240234375,
+          0.049896240234375,
+          0.049896240234375
+        ],
+        "peak": 0.049896240234375,
+        "pixels": 36864,
+        "reference": 0.0499207477971784,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "remote-vertices-normal": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.999967959192064,
+          0.999967959192064,
+          0.999967959192064
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "reference": 1.0,
+        "variance": [
+          1.46183124494215e-08,
+          1.46183124494215e-08,
+          1.46183124494215e-08
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.999967959192064,
+          0.999967959192064,
+          0.999967959192064
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "reference": 1.0,
+        "variance": [
+          1.46183124494215e-08,
+          1.46183124494215e-08,
+          1.46183124494215e-08
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.999967959192064,
+          0.999967959192064,
+          0.999967959192064
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "reference": 1.0,
+        "variance": [
+          1.46183124494215e-08,
+          1.46183124494215e-08,
+          1.46183124494215e-08
+        ]
+      }
+    },
+    "scaled-rotated-contact": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "halves": [
+          1.0,
+          1.0
+        ],
+        "mean": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.504014756944444,
+        "halves": [
+          0.0,
+          1.0
+        ],
+        "mean": [
+          0.495985243055556,
+          0.495985243055556,
+          0.495985243055556
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "variance": [
+          0.249983881726677,
+          0.249983881726677,
+          0.249983881726677
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.504014756944444,
+        "halves": [
+          0.0,
+          1.0
+        ],
+        "mean": [
+          0.495985243055556,
+          0.495985243055556,
+          0.495985243055556
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "variance": [
+          0.249983881726677,
+          0.249983881726677,
+          0.249983881726677
+        ]
+      }
+    },
+    "scaled-rotated-grazing": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.049896240234375,
+          0.049896240234375,
+          0.049896240234375
+        ],
+        "peak": 0.049896240234375,
+        "pixels": 36864,
+        "reference": 0.0499207703707624,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.049896240234375,
+          0.049896240234375,
+          0.049896240234375
+        ],
+        "peak": 0.049896240234375,
+        "pixels": 36864,
+        "reference": 0.0499207703707624,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.049896240234375,
+          0.049896240234375,
+          0.049896240234375
+        ],
+        "peak": 0.049896240234375,
+        "pixels": 36864,
+        "reference": 0.0499207703707624,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "scaled-rotated-normal": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "mean": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "reference": 1.00000011920929,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.0,
+        "mean": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "reference": 1.00000011920929,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.0,
+        "mean": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "reference": 1.00000011920929,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "sheared-contact": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "halves": [
+          1.0,
+          1.0
+        ],
+        "mean": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.503472222222222,
+        "halves": [
+          0.0,
+          1.0
+        ],
+        "mean": [
+          0.496527777777778,
+          0.496527777777778,
+          0.496527777777778
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "variance": [
+          0.249987943672839,
+          0.249987943672839,
+          0.249987943672839
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.503472222222222,
+        "halves": [
+          0.0,
+          1.0
+        ],
+        "mean": [
+          0.496527777777778,
+          0.496527777777778,
+          0.496527777777778
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "variance": [
+          0.249987943672839,
+          0.249987943672839,
+          0.249987943672839
+        ]
+      }
+    },
+    "sheared-grazing": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.049896240234375,
+          0.049896240234375,
+          0.049896240234375
+        ],
+        "peak": 0.049896240234375,
+        "pixels": 36864,
+        "reference": 0.0499207255666246,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.049896240234375,
+          0.049896240234375,
+          0.049896240234375
+        ],
+        "peak": 0.049896240234375,
+        "pixels": 36864,
+        "reference": 0.0499207255666246,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.049896240234375,
+          0.049896240234375,
+          0.049896240234375
+        ],
+        "peak": 0.049896240234375,
+        "pixels": 36864,
+        "reference": 0.0499207255666246,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "sheared-normal": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "mean": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "reference": 1.0,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.0,
+        "mean": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "reference": 1.0,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.0,
+        "mean": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "reference": 1.0,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "sky-contact": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.999065438906352,
+          0.999065438906352,
+          0.999065438906352
+        ],
+        "peak": 1.033203125,
+        "pixels": 36864,
+        "variance": [
+          0.00599598979159721,
+          0.00599598979159721,
+          0.00599598979159721
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.999945746527778,
+        "mean": [
+          6.90420468648275e-07,
+          6.90420468648275e-07,
+          6.90420468648275e-07
+        ],
+        "peak": 0.0183258056640625,
+        "pixels": 36864,
+        "variance": [
+          1.04870709400413e-08,
+          1.04870709400413e-08,
+          1.04870709400413e-08
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.999945746527778,
+        "mean": [
+          6.90420468648275e-07,
+          6.90420468648275e-07,
+          6.90420468648275e-07
+        ],
+        "peak": 0.0183258056640625,
+        "pixels": 36864,
+        "variance": [
+          1.04870709400413e-08,
+          1.04870709400413e-08,
+          1.04870709400413e-08
+        ]
+      }
+    },
+    "sun-contact-0.0005": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "halves": [
+          0.999927905482105,
+          0.999998622470432
+        ],
+        "mean": [
+          0.999966078334384,
+          0.999966078334384,
+          0.999966078334384
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "variance": [
+          1.54126339468874e-08,
+          1.54126339468874e-08,
+          1.54126339468874e-08
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.5,
+        "halves": [
+          0.0,
+          0.999998622470432
+        ],
+        "mean": [
+          0.49999905957116,
+          0.49999905957116,
+          0.49999905957116
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "variance": [
+          0.24999906002947,
+          0.24999906002947,
+          0.24999906002947
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.5,
+        "halves": [
+          0.0,
+          0.999998622470432
+        ],
+        "mean": [
+          0.49999905957116,
+          0.49999905957116,
+          0.49999905957116
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "variance": [
+          0.24999906002947,
+          0.24999906002947,
+          0.24999906002947
+        ]
+      }
+    },
+    "sun-contact-0.005": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "halves": [
+          0.999927905482105,
+          0.999998622470432
+        ],
+        "mean": [
+          0.999966078334384,
+          0.999966078334384,
+          0.999966078334384
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "variance": [
+          1.54126339468874e-08,
+          1.54126339468874e-08,
+          1.54126339468874e-08
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.5,
+        "halves": [
+          0.0,
+          0.999998622470432
+        ],
+        "mean": [
+          0.49999905957116,
+          0.49999905957116,
+          0.49999905957116
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "variance": [
+          0.24999906002947,
+          0.24999906002947,
+          0.24999906002947
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.5,
+        "halves": [
+          0.0,
+          0.999998622470432
+        ],
+        "mean": [
+          0.49999905957116,
+          0.49999905957116,
+          0.49999905957116
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "variance": [
+          0.24999906002947,
+          0.24999906002947,
+          0.24999906002947
+        ]
+      }
+    },
+    "translated-contact": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "halves": [
+          0.999931974492521,
+          1.0
+        ],
+        "mean": [
+          0.999969018830193,
+          0.999969018830193,
+          0.999969018830193
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "variance": [
+          1.41676914644506e-08,
+          1.41676914644506e-08,
+          1.41676914644506e-08
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.5,
+        "halves": [
+          0.0,
+          1.0
+        ],
+        "mean": [
+          0.499999867545234,
+          0.499999867545234,
+          0.499999867545234
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "variance": [
+          0.249999867609891,
+          0.249999867609891,
+          0.249999867609891
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.5,
+        "halves": [
+          0.0,
+          1.0
+        ],
+        "mean": [
+          0.499999867545234,
+          0.499999867545234,
+          0.499999867545234
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "variance": [
+          0.249999867609891,
+          0.249999867609891,
+          0.249999867609891
+        ]
+      }
+    },
+    "translated-grazing": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.049896240234375,
+          0.049896240234375,
+          0.049896240234375
+        ],
+        "peak": 0.049896240234375,
+        "pixels": 36864,
+        "reference": 0.0499207477971784,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.049896240234375,
+          0.049896240234375,
+          0.049896240234375
+        ],
+        "peak": 0.049896240234375,
+        "pixels": 36864,
+        "reference": 0.0499207477971784,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.049896240234375,
+          0.049896240234375,
+          0.049896240234375
+        ],
+        "peak": 0.049896240234375,
+        "pixels": 36864,
+        "reference": 0.0499207477971784,
+        "variance": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "translated-normal": {
+      "previous": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.999969018830193,
+          0.999969018830193,
+          0.999969018830193
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "reference": 1.0,
+        "variance": [
+          1.41676914644506e-08,
+          1.41676914644506e-08,
+          1.41676914644506e-08
+        ]
+      },
+      "updated": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.999969018830193,
+          0.999969018830193,
+          0.999969018830193
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "reference": 1.0,
+        "variance": [
+          1.41676914644506e-08,
+          1.41676914644506e-08,
+          1.41676914644506e-08
+        ]
+      },
+      "vulkan": {
+        "dark_fraction": 0.0,
+        "mean": [
+          0.999969018830193,
+          0.999969018830193,
+          0.999969018830193
+        ],
+        "peak": 1.0,
+        "pixels": 36864,
+        "reference": 1.0,
+        "variance": [
+          1.41676914644506e-08,
+          1.41676914644506e-08,
+          1.41676914644506e-08
+        ]
+      }
+    }
+  },
+  "rt_gpu_ms_ranges": {
+    "contacts-baseline-performance": {
+      "path-2-low": [
+        0.512256,
+        0.512256
+      ],
+      "path-2-medium": [
+        2.334464,
+        2.507776
+      ],
+      "path-2-high": [
+        9.670656,
+        9.844992
+      ],
+      "path-4-low": [
+        0.6592,
+        0.659456
+      ],
+      "path-4-medium": [
+        3.138816,
+        3.143936
+      ],
+      "path-4-high": [
+        11.762688,
+        12.069376
+      ]
+    },
+    "contacts-final-performance": {
+      "path-2-low": [
+        0.52224,
+        0.526848
+      ],
+      "path-2-medium": [
+        2.710272,
+        2.768896
+      ],
+      "path-2-high": [
+        10.42432,
+        10.537472
+      ],
+      "path-4-low": [
+        0.674304,
+        0.67584
+      ],
+      "path-4-medium": [
+        3.360768,
+        3.450112
+      ],
+      "path-4-high": [
+        12.593664,
+        12.716288
+      ]
+    }
+  }
+}

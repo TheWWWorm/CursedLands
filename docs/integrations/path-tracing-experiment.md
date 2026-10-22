@@ -57,6 +57,20 @@ bounce count bounds work; there is no
 Russian roulette or light reservoir sampling. Geometric normals offset rays
 outside the actual triangles, while interpolated normals shade the surfaces.
 
+Continuation and shadow origins use a surface-specific floating-point error
+bound instead of a fixed 15 mm displacement and 2 mm minimum ray distance.
+Hit positions are reconstructed from triangle barycentrics, adding the base
+vertex and instance translation last. Bounds include triangle extent, object
+coordinates and both instance transforms, following the
+[DXR error analysis](https://developer.nvidia.com/blog/solving-self-intersection-artifacts-in-directx-raytracing/).
+The displacement follows the inverse-transpose geometric normal, including
+nonuniform scale and shear. Texture footprint edge lengths are transformed
+without subtracting translated world vertices. The unused payload distance
+field stores the bound, retaining the 96-byte payload and existing image/ray
+budgets. Point-light visibility reconnects from this origin to the sampled
+light and excludes only the last representable segment distance, preserving
+blockers close to a lamp without shadowing geometry beyond it.
+
 Ray decisions use per-pixel, shuffled and Owen-scrambled two-dimensional Sobol
 sequences, following the [progressive padding approach](https://jcgt.org/published/0009/04/01/).
 The index combines the frame number and sample within that frame. Each path
@@ -199,6 +213,13 @@ Characters' supported articulated and morph animation updates live.
   geometry edges. Thin geometry, normals and receiver mismatches can expose
   conventional-lighting seams. Missing geometry outside the bounded scene
   can produce light leaks or different distant reflections.
+- Emissive visibility still excludes the last 2 mm before its sampled target
+  and does not directly sample connections shorter than 4 mm. Receiver-side
+  origin bounds improve contacts, but do not remove this endpoint limitation.
+  Error bounds are conservative and depend on coordinate/transform conditioning;
+  very large local coordinates can still require a noticeable displacement.
+  Intersection constants have been tested on RTX hardware; other vendors
+  require qualification before claiming equivalent self-intersection protection.
 - Twelve RGBA16F lighting/guide images plus two RG16F variance images use
   104 bytes per tracing pixel: approximately 91 MiB at 1280×720 High and
   823 MiB at 3840×2160 High, before scene textures and acceleration structures.
@@ -224,6 +245,9 @@ signals, disappearing noisy lighting, memory cost and GPU/FG regression checks.
 The [sample-distribution follow-up](../validation/path-tracing-sampling-2026-10-22/README.md)
 records unfiltered convergence against independent lighting references,
 per-frame quality, temporal noise, correlation checks and GPU/FG regressions.
+The [contact-lighting follow-up](../validation/path-tracing-contacts-2026-10-22/README.md)
+records thin shadows, indirect occlusion, nearby reflections, point-light
+segments, transformed-surface precision and GPU/FG regression checks.
 
 ## Rebuild and checks
 
@@ -251,6 +275,7 @@ Fixtures run through the existing `--tool` interface:
 | `path_trace_glossy.gd` | Native moving highlights against their deterministic raw reference, stationary variance/energy, separate diffuse/glossy confidence, perspective/orthographic motion, material-guide aliases and progressive precision |
 | `path_trace_variance.gd` | Analytical stochastic means, dark/bright outliers, colour ratios, HDR variance range, coherent/persistent dark changes, reset/depth rejection and variance-resource resize/teardown |
 | `path_trace_sampling.gd` | Native unfiltered grazing-metal, disk-sun penumbra and small-emitter convergence at 1/2/4 samples; late sequence starts, repeatability, frame wrap, purpose independence, spatial error correlation and packaged attribution |
+| `path_trace_contacts.gd` | Raw thin-contact shadows, sky/emissive occlusion, nearby glossy reflection, point-light endpoints and self-intersection under translation, scale, rotation, shear, mirrored instances and large local coordinates |
 | `path_trace_receivers.gd` | Rendered steep-surface coverage and depth-edge rejection at 50/75/100% tracing resolution |
 | `path_trace_live.gd` | Outdoor material integration, responsive reprojection, still accumulation, camera reset, quality resizing and conventional restoration |
 | `path_trace_cave.gd` | Cave sky exclusion, two/four bounces, changing light colour, animated actor and history invalidation |

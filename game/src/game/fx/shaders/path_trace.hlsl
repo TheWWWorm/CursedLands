@@ -31,7 +31,7 @@ struct Frame {
 };
 [[vk::binding(4,0)]] ConstantBuffer<Frame> frame : register(b400000);
 struct Vertex { float4 position_u; float4 normal_v; float4 diffuse; float4 emission_layer; };
-struct Surface { float3 position; float distance; float3 normal; float hit; float3 albedo; float visible; float3 emission; float cone; float roughness; float metalness; float specular; uint instance_id; float3 geometric_normal; uint primitive_id; };
+struct Surface { float3 position; float offset; float3 normal; float hit; float3 albedo; float visible; float3 emission; float cone; float roughness; float metalness; float specular; uint instance_id; float3 geometric_normal; uint primitive_id; };
 struct Attributes { float2 bary; };
 Vertex vertex_at(uint i) {
     Vertex v;
@@ -104,9 +104,25 @@ float3 area_ray(float3 direction,float angular_radius,float2 u) {
     float r=sqrt(u.x)*angular_radius,phi=u.y*2.0*PI;
     return normalize(direction+t*(r*cos(phi))+b*(r*sin(phi)));
 }
-float visibility(float3 p,float3 n,float3 direction,float reach) {
+float3 surface_origin(Surface s) {
+    // closest-hit bounds reconstruction, intersection and instance transforms.
+    // Preserve the final FMA so rounding cannot erase the small normal offset.
+    precise float3 origin=mad(s.geometric_normal,s.offset,s.position);
+    return origin;
+}
+float visibility(Surface s,float3 direction,float reach,bool directional) {
     Surface result=(Surface)0;
-    RayDesc ray={p+n*0.015,0.002,direction,max(reach-0.025,0.003)};
+    float3 origin=surface_origin(s);
+    // Reconnect to the sampled light from the displaced origin. A fixed
+    // endpoint gap misses blockers near a lamp; extending it shadows objects
+    // behind the lamp. Exclude only the last representable distance instead.
+    RayDesc ray={origin,0.0,direction,reach};
+    // Sun rays stay parallel and have no finite endpoint to reconnect to.
+    if(!directional) {
+        float3 delta=direction*reach+(s.position-origin);
+        float distance=length(delta);
+        ray.Direction=delta/distance;ray.TMax=asfloat(asuint(distance)-1u);
+    }
     TraceRay(scene,RAY_FLAG_ACCEPT_FIRST_HIT_AND_END_SEARCH|RAY_FLAG_SKIP_CLOSEST_HIT_SHADER,2,0,0,0,ray,result);
     return result.visible;
 }
@@ -184,7 +200,7 @@ void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out 
         float3 d,sp;float pdf;bsdf(s,v,direction,d,sp,pdf);
         // Authored game light values are diffuse irradiance / pi. Convert
         // them to the radiance scale used by the normalized BRDF.
-        float3 incoming=colour*(PI*cosine*visibility(s.position,s.geometric_normal,direction,reach));
+        float3 incoming=colour*(PI*cosine*visibility(s,direction,reach,i==0));
         diffuse+=d*incoming;specular+=sp*incoming;
     }
 }
@@ -233,7 +249,7 @@ void emissive_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,ou
     float r=sqrt(uv_light.x),u=uv_light.y;float3 w=float3(1.0-r,r*(1.0-u),r*u);
     float3 light_position=pa*w.x+pb*w.y+pc*w.z;
     // Use the same offset origin as BSDF continuations for both proposals.
-    float3 origin=s.position+s.geometric_normal*0.015,delta=light_position-origin;
+    float3 origin=surface_origin(s),delta=light_position-origin;
     float distance=length(delta);if(distance<=0.004||distance>frame.camera.w)return;
     float3 direction=delta/distance,d,sp;float bsdf_pdf;bsdf(s,v,direction,d,sp,bsdf_pdf);
     if(bsdf_pdf<=0.0)return;
@@ -251,7 +267,9 @@ void emissive_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,ou
     float3 emission=(material.y&1u)!=0u?a.emission_layer.rgb:linear_colour(colours.SampleLevel(colour_sampler,uv,lod).rgb*a.emission_layer.rgb);
     if(!any(emission>0.0))return;
     Surface visible=(Surface)0;
-    RayDesc ray={origin,0.002,direction,distance-0.002};
+    // Emissive target exclusion still uses the existing endpoint margin;
+    // the receiver no longer discards nearby blockers through a fixed TMin.
+    RayDesc ray={origin,0.0,direction,distance-0.002};
     // Match indirect geometry visibility, including non-shadow-casting walls.
     TraceRay(scene,RAY_FLAG_ACCEPT_FIRST_HIT_AND_END_SEARCH|RAY_FLAG_SKIP_CLOSEST_HIT_SHADER,4,0,0,0,ray,visible);
     float3 incoming=emission*(max(dot(s.normal,direction),0.0)*visible.visible*mis_weight(pdf,bsdf_pdf)/pdf);
@@ -285,7 +303,7 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
         }
         if(max(max(weight_d.r,max(weight_d.g,weight_d.b)),max(weight_s.r,max(weight_s.g,weight_s.b)))<1e-6)break;
         Surface hit=(Surface)0;hit.cone=max(0.002,current.roughness*0.02);
-        RayDesc ray={current.position+current.geometric_normal*0.015,0.002,direction,frame.camera.w};
+        RayDesc ray={surface_origin(current),0.0,direction,frame.camera.w};
         TraceRay(scene,RAY_FLAG_NONE,4,0,0,0,ray,hit);
         if(hit.hit<0.5) {
             diffuse+=weight_d*frame.sky.rgb;specular+=weight_s*frame.sky.rgb;break;
@@ -350,23 +368,47 @@ void main(inout Surface result,Attributes attributes) {
     float3 w=float3(1.0-attributes.bary.x-attributes.bary.y,attributes.bary);
     float3 n=a.normal_v.xyz*w.x+b.normal_v.xyz*w.y+c.normal_v.xyz*w.z;
     result.normal=normalize(mul(n,(float3x3)WorldToObject3x4()));
-    result.position=WorldRayOrigin()+WorldRayDirection()*RayTCurrent();
-    result.distance=RayTCurrent(); result.hit=1.0;
+    // Reconstruct on the triangle, not along the incoming ray. Base vertex
+    // and instance translation are added last, limiting cancellation error.
+    precise float3 edge1=b.position_u.xyz-a.position_u.xyz;
+    precise float3 edge2=c.position_u.xyz-a.position_u.xyz;
+    precise float3 object_position=a.position_u.xyz+mad(attributes.bary.x,edge1,attributes.bary.y*edge2);
+    float3x4 to_world=ObjectToWorld3x4(),to_object=WorldToObject3x4();
+    precise float3 position;
+    position.x=to_world._m03+mad(to_world._m00,object_position.x,mad(to_world._m01,object_position.y,to_world._m02*object_position.z));
+    position.y=to_world._m13+mad(to_world._m10,object_position.x,mad(to_world._m11,object_position.y,to_world._m12*object_position.z));
+    position.z=to_world._m23+mad(to_world._m20,object_position.x,mad(to_world._m21,object_position.y,to_world._m22*object_position.z));
+    result.position=position;result.hit=1.0;
     result.instance_id=InstanceID();result.primitive_id=PrimitiveIndex();
-    float3 pa=mul(ObjectToWorld3x4(),float4(a.position_u.xyz,1)).xyz;
-    float3 pb=mul(ObjectToWorld3x4(),float4(b.position_u.xyz,1)).xyz;
-    float3 pc=mul(ObjectToWorld3x4(),float4(c.position_u.xyz,1)).xyz;
-    result.geometric_normal=normalize(cross(pb-pa,pc-pa));
+    // Transform the object-space triangle normal with the inverse transpose.
+    // Subtracting translated world vertices loses small facets far from zero.
+    float3 object_normal=cross(edge1,edge2);
+    float3 world_normal=mul(object_normal,(float3x3)to_object);
+    float normal_scale=rsqrt(dot(world_normal,world_normal));
+    result.geometric_normal=world_normal*normal_scale;
     if(dot(result.geometric_normal,WorldRayDirection())>0.0)result.geometric_normal=-result.geometric_normal;
+    // Floating-point error bounds following NVIDIA's DXR analysis:
+    // https://developer.nvidia.com/blog/solving-self-intersection-artifacts-in-directx-raytracing/
+    // Constants cover float reconstruction/intersection and both transforms.
+    // Project the uncertainty onto the actual face normal, including scale
+    // and shear. Keep the payload at 96 bytes by replacing its unused distance.
+    const float roundoff=5.9604644775390625e-8;
+    const float intersection_error=1.7881398e-7,transform_error=1.1920932e-7;
+    float3 extent=max(abs(edge1),abs(edge2))*2.0;
+    float3 object_error=roundoff*abs(a.position_u.xyz)+intersection_error*max(extent.x,max(extent.y,extent.z));
+    object_error+=transform_error*mul(abs(to_object),float4(abs(position),1.0));
+    float3 world_error=intersection_error*mul(abs((float3x3)to_world),abs(object_position))+
+        transform_error*abs(float3(to_world._m03,to_world._m13,to_world._m23));
+    result.offset=dot(object_error,abs(object_normal))*normal_scale+dot(world_error,abs(result.geometric_normal));
     // Interpolated normals can point through a steep terrain facet. Offset
     // rays along the actual triangle and keep the shading hemisphere outside
     // it, rather than flipping the smooth normal beneath the triangle.
     if(dot(result.normal,result.geometric_normal)<0.0)result.normal=-result.normal;
     if(dot(result.normal,WorldRayDirection())>=0.0)result.normal=result.geometric_normal;
-    float density=max(length(float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w))/max(length(pb-pa),0.001),
-                      length(float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w))/max(length(pc-pa),0.001));
+    float density=max(length(float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w))/max(length(mul((float3x3)to_world,edge1)),0.001),
+                      length(float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w))/max(length(mul((float3x3)to_world,edge2)),0.001));
     uint width,height,layers,levels; colours.GetDimensions(0,width,height,layers,levels);
-    float lod=max(log2(max(result.cone*result.distance*density*float(width),1.0)),0.0);
+    float lod=max(log2(max(result.cone*RayTCurrent()*density*float(width),1.0)),0.0);
     float3 colour=colours.SampleLevel(colour_sampler,float3(hit_uv(a,b,c,w),a.emission_layer.w),lod).rgb;
     result.albedo=saturate(linear_colour(colour)*saturate(a.diffuse.rgb));
     result.roughness=max(float(material.w&255u)/255.0,0.08);

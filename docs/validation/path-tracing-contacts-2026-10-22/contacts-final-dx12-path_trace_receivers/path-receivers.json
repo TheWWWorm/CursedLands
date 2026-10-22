@@ -1,0 +1,36 @@
+{
+	"checks": 6,
+	"failures": [],
+	"results": [
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": false,
+			"width": 640
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": true,
+			"width": 640
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": false,
+			"width": 960
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": true,
+			"width": 960
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": false,
+			"width": 1280
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": true,
+			"width": 1280
+		}
+	]
+}

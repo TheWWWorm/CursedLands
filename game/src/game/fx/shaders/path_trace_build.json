@@ -2,17 +2,17 @@
   "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
   "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
   "builder_sha256": "9e8206c3069e67195e3d592b14205f55a1c27368e1d67109f8841aa05f571b8d",
-  "source_sha256": "d55cb0d3acf90f39767fcb989bd98977fafb224a1f07f6e74031fa08c7aafbd8",
+  "source_sha256": "e75197074d7be601ecddbf3fd99ab1164920f5b8b41b18575d6709d0bfdd28fa",
   "files": {
-    "path_trace_raygen.dxil": "5d856073b0ccb3671bb3b787d0dc23ce8311c1a1ef81f9a3b44f9f01da426b70",
-    "path_trace_raygen.spv": "05473c65a6140cf9884c7459b270fcb8eae0645ac9bc677cdf498430c2a28005",
-    "path_trace_miss.dxil": "eb396d7117e4f6f05b08e0092aa40e53752525c202904f8ff5db2e581b98590e",
-    "path_trace_miss.spv": "1246e0f27a3bcc27ff47d9b3a4c312c6bea23efe94c436644f15391d98ebf4fe",
-    "path_trace_closest_hit.dxil": "d721bd50c4844ecb2f633321b10578a48f61bec9d6013ef8a2e3ba187fd4f0ea",
-    "path_trace_closest_hit.spv": "cb3df1624c20219526163a94bffb6f21b229aa62f9158a05fba018c1857fa85c",
+    "path_trace_raygen.dxil": "a3eb9a4aaa0e1f26a17369b5f409e43f2acfbcabdf8c38d7f95f12b3c1f67e7f",
+    "path_trace_raygen.spv": "c7cb214fe3b5b738ad8272db1169f8292330c88e24d4d02516e7837391f6e4c3",
+    "path_trace_miss.dxil": "9d181346415e526c5942efaf17c0f941a47df05b313a0e2e72f7d3c491f2ea51",
+    "path_trace_miss.spv": "1376ff37c61cc9a09124d61df678d92ba069fce9aafef4e08cb23e98aa8f0179",
+    "path_trace_closest_hit.dxil": "c218a3917b874d32fa6cbcfdb66c54cd61d05832bb21a0cef704817ca8c9487d",
+    "path_trace_closest_hit.spv": "d1cb9e8b3b4816dd368b354472e1304a4d82442815af45b8d0703dd25a31664a",
     "path_trace_any_hit.dxil": "fc8ae7e7102d5f9b7ade1f1fe4cd3f1124e0a2e511494cb2a86ef8b7a5ef77f2",
-    "path_trace_any_hit.spv": "398ae38fc85b426e7ce0bd561623bddadf495c52c369f765c443e7651f2aed88",
-    "path_trace_raygen_no_emitters.dxil": "64665d881a9188cb1deb5294567836627a659e94301bc57c3e6f84b0eacf9674",
-    "path_trace_raygen_no_emitters.spv": "1e41544c3eda9b0d953bebef124f219b89b6fb647340196ab8a8f3c4577ce51c"
+    "path_trace_any_hit.spv": "9520e13148ceca6edfc9d620dd2e546e6f9c40d812380f2a798c2bebbf7e4c35",
+    "path_trace_raygen_no_emitters.dxil": "9cc425f2b70002216dd36ebb87c98f0077bc1e2b06103357d12a7fbb96a8d3b3",
+    "path_trace_raygen_no_emitters.spv": "3524c2d94f375735ac7dd4eea1bb74d75f6d401d52697feb9bc5bf86bb78b874"
   }
 }
