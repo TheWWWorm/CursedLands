@@ -92,6 +92,7 @@ func _ready() -> void:
 	# carried across a map change before the original market watcher polled.
 	host.state.set_var(0,"b.skelet.skelet_fq2",2)
 	Fortunes.recover(host.world.vm)
+	host.world.vm._forget_conditions()   # a new pass, as ScriptVM._tick starts one
 	for inst:ScriptVM.Instance in host.world.vm.instances:
 		inst.poll=0;host.world.vm._run(inst)
 	await frames()

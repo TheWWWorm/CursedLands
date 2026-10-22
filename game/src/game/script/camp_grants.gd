@@ -39,13 +39,18 @@ static func sanitize(value: Variant) -> Dictionary:
 	for effect: Variant in value.effects:
 		if effect is String and plan.has(effect) and not effects.has(effect):
 			effects.append(effect)
-	return {"branch": value.branch, "role": value.role, "effects": effects}
+	var out := {"branch": value.branch, "role": value.role, "effects": effects}
+	# Skill effects whose price reached total experience; receipts without
+	# the list predate it (repair_xp).
+	if value.get("xp") is Array:
+		out.xp = effects.filter(func(e: String): return e not in ["str", "dex", "int"] and value.xp.has(e))
+	return out
 
 static func grant(h: Dictionary, branch: String, role: String, effect: String, unit: GameUnit = null) -> bool:
 	var receipt := sanitize(h.get(KEY))
 	if not receipt.is_empty() and (receipt.branch != branch or receipt.role != role or receipt.effects.has(effect)):
 		return false
-	if receipt.is_empty(): receipt = {"branch": branch, "role": role, "effects": []}
+	if receipt.is_empty(): receipt = {"branch": branch, "role": role, "effects": [], "xp": []}
 	var amount := int((HERO if role == "hero" else KEL)[branch][effect])
 	if effect in ["str", "dex", "int"]:
 		h[effect] = float(h.get(effect, 25.0)) + amount
@@ -56,10 +61,34 @@ static func grant(h: Dictionary, branch: String, role: String, effect: String, u
 			if unit: Combat.set_complexion(unit, h, c)
 			else: h.complexion = c
 	else:
-		h.get_or_add("skills", {})[effect] = Skills.level(h, effect) + amount
+		Skills.script_train(h, effect, amount)
+		receipt.get_or_add("xp", []).append(effect)
 	receipt.effects.append(effect)
 	h[KEY] = receipt
 	return true
+
+## Saves from builds that raised the clerk's skills without their price:
+## add it once, from the character's starting level as the clerk found it.
+static func repair_xp(h: Dictionary) -> bool:
+	var receipt := sanitize(h.get(KEY))
+	if receipt.is_empty() or receipt.has("xp"): return false
+	var plan: Dictionary = (HERO if receipt.role == "hero" else KEL)[receipt.branch]
+	var start := Skills.from_npc(GameData.db.find("npcs", String(h.get("prototype", ""))))
+	receipt.xp = []
+	for effect: String in receipt.effects:
+		if effect in ["str", "dex", "int"]: continue
+		var from := int(start.get(effect, 0))
+		h.exp_total = PackedFloat32Array([float(h.get("exp_total", h.get("exp", 0.0))) + Skills.span_cost(from, from + int(plan[effect]))])[0]
+		receipt.xp.append(effect)
+	h[KEY] = receipt
+	return true
+
+static func repair_state(st: CampaignState) -> void:
+	for roster: Array in st.heroes.values() + st.parties.values():
+		for h: Variant in roster:
+			if h is Dictionary: repair_xp(h)
+	for h: Variant in st.mercs.values() + st.dismissed_mercs.values():
+		if h is Dictionary: repair_xp(h)
 
 ## Only intercept the six proven initialization scripts and their exact
 ## authored deltas. Other script grants keep their single-target semantics.

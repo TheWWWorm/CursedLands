@@ -321,7 +321,127 @@ static func spawn_units(w: GameWorld, id: String) -> void:
 			w.spawn_unit(o)
 	w.add_mob_objects("%s.mob" % id)
 	w.set_meta("quest_mob", id)
-	w.set_meta("quest_script", mob.script_text)
+	w.set_meta("quest_script", _lmp_bindings(w, mob.script_text))
+
+
+## The multiplayer zone's levers marked for a quest (quest_info) start as the
+## quest needs them: z19q3's teleport panels TCP-A / TCP-B are on there, and
+## the quest is to switch them off; the campaign map has them off for q72h, so
+## its objectives 5..7 were done on arrival. Applied when the quest's script
+## starts in the zone (ScriptVM.create), after any saved lever rows, and
+## never to a zone already built from the LMP map. A campaign check already
+## waiting for a lever the quest turns on is re-armed (_rearm_lever_checks),
+## so the quest's start does not switch q72h's teleports on for the player.
+static func prepare_levers(w: GameWorld, vm: ScriptVM, id: String) -> void:
+	var mpr := String(w.zone.get("mpr", ""))
+	if mpr.is_empty() or w.lever_sys == null or bool(w.zone.get("lmp", false)) \
+			or String(w.zone.get("mob", mpr)).to_lower().ends_with("-lmp"):
+		return
+	var base := EIMob.load_bytes(GameData.read_file("maps/%s-LMP.mob" % mpr))
+	if base == null:
+		return
+	for o: Dictionary in base.objects:
+		var nid := int(o.get("nid", -1))
+		if o.kind != "LEVER" or String(o.get("quest_info", "")).to_lower() != id.to_lower() or not w.levers.has(nid):
+			continue
+		var l: Dictionary = w.levers[nid]
+		var states := maxi(1, int(l.get("states", 2)))
+		var state := clampi(int(o.get("lever_state", 0)), 0, states - 1)
+		l.cycled = int(o.get("lever_cycled", l.get("cycled", 0)))
+		l.enabled = true
+		if state > int(l.get("state", 0)):
+			_rearm_lever_checks(vm, nid, state)
+		w.lever_sys.restore(nid, state, float(state) / float(states - 1) if states >= 2 else 0.0)
+
+
+## Running zone checks that wait for lever `nid` to reach `state` (zone19's
+## VCheck#0#1: IsEqual(GetLeverState(TCP-A), 1)) go back to the check that
+## armed them once the lever was below it (VCheck#0#447: IsLess(..., 1)).
+static func _rearm_lever_checks(vm: ScriptVM, nid: int, state: int) -> void:
+	var cond := func(c: Variant, fn: String) -> bool:
+		if not (c is Array and c.size() == 3 and c[1] == fn and c[2].size() == 2):
+			return false
+		var a: Variant = c[2][0]
+		var b: Variant = c[2][1]
+		return a is Array and a.size() == 3 and a[1] == "GetLeverState" and a[2].size() == 1 \
+			and a[2][0] is Array and a[2][0][0] == 2 and vm._obj_id(vm.globals.get(a[2][0][1])) == nid \
+			and b is Array and b[0] == 0 and is_equal_approx(float(b[1]), float(state))
+	for inst: ScriptVM.Instance in vm.instances.duplicate():
+		if inst.killed or inst.blocks.is_empty() or not vm.ast.scripts.has(inst.sname):
+			continue
+		var waits := false
+		for blk: Dictionary in inst.blocks:
+			for c in blk.get("conds", []):
+				waits = waits or cond.call(c, "IsEqual")
+		if not waits:
+			continue
+		for pname: String in vm.ast.scripts:
+			var armer: Dictionary = vm.ast.scripts[pname]
+			var found := false
+			for blk: Dictionary in armer.get("blocks", []):
+				var below := false
+				for c in blk.get("conds", []):
+					below = below or cond.call(c, "IsLess")
+				for st in blk.get("body", []):
+					found = found or below and st is Array and st.size() == 3 and st[1] == inst.sname
+			if not found:
+				continue
+			var params: Array = armer.get("params", [])
+			vm.instances.erase(inst)
+			vm.spawn(pname, params.map(func(p): return inst.locals.get(p)))
+			break
+
+
+## The quest maps were made for the multiplayer zone (<map>-LMP.mob), whose
+## script declares and binds some names they use: z7q1's OrcG (the orc camp)
+## and FBoard / BBoard (the bridge it repairs). A campaign zone's script lacks
+## them, so there OrcG stayed empty ("kill the orcs" done on arrival) and the
+## bridge was never bound. Declare those names and run the LMP WorldScript's
+## lines binding them first. The campaign zone keeps its own units (the same
+## ids stand at the same places); objects only the LMP map has (BBoard) are
+## added. A zone already built from the LMP map declares everything.
+static func _lmp_bindings(w: GameWorld, text: String) -> String:
+	var mpr := String(w.zone.get("mpr", ""))
+	var base := EIMob.load_bytes(GameData.read_file("maps/%s-LMP.mob" % mpr)) if mpr else null
+	if base == null:
+		return text
+	var lmp := ScriptParser.parse(base.script_text)
+	var quest := ScriptParser.parse(text)
+	var zone := ScriptParser.parse(w.mob.script_text if w.mob else "")
+	var world := base.script_text.substr(maxi(base.script_text.find("WorldScript"), 0))
+	var decl := PackedStringArray()
+	var lines := PackedStringArray()
+	var ids := {}
+	for g: String in lmp.globals:
+		if quest.globals.has(g) or zone.globals.has(g):
+			continue
+		var name := ScriptVM._regex_escape(g)
+		if not RegEx.create_from_string("(?<![0-9A-Za-z_#])%s(?![0-9A-Za-z_#])" % name).search(text):
+			continue
+		decl.append("  %s : %s" % [g, lmp.globals[g]])
+		var bind := RegEx.create_from_string("(?m)^[ \\t]*(?:%s[ \\t]*=|AddObject\\([ \\t]*%s[ \\t]*,).*$" % [name, name])
+		for m in bind.search_all(world):
+			lines.append(m.get_string())
+			for n in RegEx.create_from_string("GetObject(?:ByID)?\\([ \\t]*\"?([0-9]+)").search_all(m.get_string()):
+				ids[int(n.get_string(1))] = true
+	if decl.is_empty():
+		return text
+	var only := {}
+	for o: Dictionary in base.objects:
+		var id := int(o.get("nid", -1))
+		if o.kind != "UNIT" and ids.has(id) and not w.objects.has(id):
+			only[id] = true
+	ids = only
+	if not ids.is_empty():
+		var spec := "%s-LMP.mob|%s" % [mpr, ",".join(PackedStringArray(ids.keys().map(str)))]
+		w.set_meta("quest_lmp_objects", spec)   # Session._extra_mobs: the clients too
+		w.add_mob_objects(spec)
+	var g0 := text.find("(", text.find("GlobalVars"))
+	var w0 := text.find("(", text.find("WorldScript"))
+	if g0 < 0 or w0 < g0:
+		return text
+	return text.substr(0, g0 + 1) + "\n" + ",\n".join(decl) + "," + text.substr(g0 + 1, w0 - g0) \
+		+ "\n" + "\n".join(lines) + text.substr(w0 + 1)
 
 
 static func _list(v) -> PackedStringArray:

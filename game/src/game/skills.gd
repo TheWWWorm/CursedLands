@@ -62,6 +62,15 @@ static func cost(h: Dictionary, skill: String) -> int:
 	return 0 if n >= 100 else maxi(1, span_cost(n, n + 1))
 
 
+## The original GiveSkill (case 0xcd) trains `n` levels at their price: total
+## experience, and with it HP and stamina, grows by the span's truncated cost;
+## spendable experience does not. LiA's clerk leaves Kel at 22 HP, not 11.
+static func script_train(h: Dictionary, skill: String, n: int) -> void:
+	var before := level(h, skill)
+	h.get_or_add("skills", {})[skill] = before + n
+	h.exp_total = PackedFloat32Array([float(h.get("exp_total", h.get("exp", 0.0))) + span_cost(before, before + n)])[0]
+
+
 static func raise(h: Dictionary, skill: String) -> bool:
 	if not skill in LIST:
 		return false

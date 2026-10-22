@@ -59,6 +59,12 @@ const SCHEMA := {
 
 ## table name -> Array[Dictionary]
 var tables := {}
+## Rows find() returns for names this database lacks; table() never lists
+## them. The campaign's database gets databaseLMP.res here: the side quests'
+## maps (z*q*.mob) are built from its prototypes ("LMP Unique Goblin Gogo",
+## "LMP Orc Fighter 6", their race models), which only the original's
+## multiplayer game loads.
+var fallback: EIDatabase
 
 
 static func load_from(archive: EIResArchive, quiet := false) -> EIDatabase:
@@ -81,7 +87,10 @@ func table(name: String) -> Array:
 func find(table_name: String, row_name: String) -> Dictionary:
 	var key := row_name.to_lower()
 	var idx: Dictionary = tables.get(table_name + "#index", {})
-	return idx.get(key, {})
+	var row: Dictionary = idx.get(key, {})
+	if row.is_empty() and fallback:
+		return fallback.find(table_name, row_name)
+	return row
 
 
 ## Appends `other`'s rows of `table_name` whose name this one lacks.

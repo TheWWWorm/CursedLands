@@ -289,6 +289,13 @@ func _show(quick := false) -> void:
 			_voiced = hud.game.sound.speech(_brief, int(p.get("n", _i + 1)))
 
 
+## Space while the actors walk to their marks: the original village
+## dialog starts the conversation at once (the host places them).
+func _skip_staging() -> void:
+	if _mode == STAGING:
+		hud.game.issue({"t": "dialog_skip"})
+
+
 func _next() -> void:
 	if _mode != PLAYING and _mode != LAST:
 		return   # topics and staging have no phrase-advance control
@@ -610,6 +617,8 @@ func _gui_input(e: InputEvent) -> void:
 			elif _mode == PLAYING or _mode == LAST:   #  case 3 / 4
 				_click_sound()
 				_next()
+			elif _mode == STAGING and TouchInput.enabled:
+				_skip_staging()   # remake: touch screens have no Space
 			accept_event()
 		elif e.pressed and e.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
 			# 20 units a notch, over the phrase box only.
@@ -628,6 +637,7 @@ func _gui_input(e: InputEvent) -> void:
 ## Remake, the gamepad (PadUI): in the topic list the D-pad moves the lit
 ## row (scrolling the five shown) and A picks it; during the talk A is the
 ## click / Space (next phrase) and Y Enter's skip; B is Esc (the key bridge).
+## The pause button skips the walk to the conversation marks, as Space does.
 func pad_press(action: String, phase: String) -> bool:
 	if _mode == TOPICS and _topic_list and _topic_list.visible:
 		if action in ["up", "down"] and phase in ["down", "repeat"]:
@@ -657,7 +667,9 @@ func pad_press(action: String, phase: String) -> bool:
 			_next()
 		return true
 	if action == "pause" and phase == "down":
-		if _mode == PLAYING:
+		if _mode == STAGING:
+			_skip_staging()
+		elif _mode == PLAYING:
 			_click_sound()
 			_skip()
 		elif _mode == LAST:
@@ -701,6 +713,8 @@ func _unhandled_input(e: InputEvent) -> void:
 			if _mode == PLAYING or _mode == LAST:
 				_click_sound()
 				_next()
+			elif _mode == STAGING:
+				_skip_staging()
 		KEY_ENTER, KEY_KP_ENTER, KEY_ESCAPE:
 			if e.keycode != KEY_ESCAPE and hud.game.session.multiplayer_game:
 				hud.chat_line.open()   # Enter opens the chat in a network game

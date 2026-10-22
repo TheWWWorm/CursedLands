@@ -66,6 +66,8 @@ var levers := {}         # nid -> {state, states, cycled, door}
 var lever_sys: LeverSystem
 ## .mob MAGIC_TRAP objects (the original CMagicTrapObject), run by the host.
 var traps: MagicTraps
+## The original's active objects in campaign zones (ObjectActivity).
+var active_set: ObjectActivity
 ## "#weather tornado" zones' tornadoes (host, made on the first tick).
 var tornadoes: Tornadoes
 var _trap_t := 0.0
@@ -155,6 +157,7 @@ func _init() -> void:
 	ai = UnitAI.new(self)
 	corpse_pools = CorpsePools.new(self)
 	traps = MagicTraps.new(self)
+	active_set = ObjectActivity.new(self)
 
 
 func _ready() -> void:
@@ -293,7 +296,14 @@ func object_radius(node: Node3D) -> float:
 
 ## Places the non-unit objects of an extra .mob (quest maps, AddMob) into the
 ## running zone. Runs on every peer; units are replicated separately.
+## "<file>|<id>,<id>" places only those objects (SideQuests._lmp_bindings).
 func add_mob_objects(file: String) -> void:
+	var only := {}
+	var cut := file.find("|")
+	if cut >= 0:
+		for id in file.substr(cut + 1).split(",", false):
+			only[int(id)] = true
+		file = file.substr(0, cut)
 	var extra := EIMob.load_bytes(GameData.read_file("maps/" + file))
 	if extra == null or map == null:
 		return
@@ -301,6 +311,8 @@ func add_mob_objects(file: String) -> void:
 	for o: Dictionary in extra.objects:
 		var nid := int(o.get("nid", 0))
 		if o.kind == "UNIT" or String(o.get("template", "")).is_empty() or objects.has(nid):
+			continue
+		if not only.is_empty() and not only.has(nid):
 			continue
 		var node := map.place_object(o, root if root else map)
 		if node == null:
@@ -924,13 +936,20 @@ func _tick_body(dt: float) -> void:
 	# world clock straddles a rounding boundary. Fractional diagnostic _tick
 	# calls retain their existing elapsed-boundary semantics.
 	var chat := dt == TICK or floorf(time / TICK) > floorf((time - dt) / TICK)
+	# The original's wake pass precedes its object updates (ObjectActivity).
+	if chat:
+		active_set.wake()
 	started = Time.get_ticks_usec() if profile_simulation else 0
 	for u: GameUnit in unit_rows():
+		if not active_set.is_awake(u):
+			continue
 		u.tick(dt)
 		if chat:
 			ai.chatter(u, dt)
 	profile_record("units",started)
 	ai.activity.end_tick()
+	if chat:
+		active_set.expire()
 	# Magic traps update on the 55 ms server tick.
 	_trap_t += dt
 	while _trap_t >= GameUnit.TICK:
@@ -958,6 +977,17 @@ func _tick_body(dt: float) -> void:
 	if timers:
 		timers._tick(dt, true)
 	corpse_pools.refresh()
+
+
+## The original's absence simulation of a revisited zone (Session.
+## _simulate_absence): each step wakes the objects around `at` and runs one
+## object update.
+func simulate_absence(at: Vector2, steps: int) -> void:
+	for i in steps:
+		active_set.wake_at(at, 70.0)
+		_tick(TICK)
+		if i % 50 == 0:
+			NetStatus.keep_alive()
 
 
 ## an ordinary walk, then facing, with a 30-second staging

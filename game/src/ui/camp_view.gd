@@ -3111,8 +3111,10 @@ func _hero_rows() -> Array:
 	var weapons: Array = h.get("weapons", [])
 	if not weapons.is_empty():
 		out.append([_str("infounit_14"), "", Interface800.TEXT, []])
-		out.append(["     " + _str("infounit_3"), "%d" % int(st.get("to_hit", 0)), Interface800.TEXT, []])
-		out.append(["     " + _str("infounit_4"), "%d" % int(st.get("parry", 0)), Interface800.TEXT, []])
+		# The original's help (hit test 624c70; types 4-7 all show "string
+		# <key>" over "string <key>_desc", 5f16df) covers these rows too.
+		out.append(["     " + _str("infounit_3"), "%d" % int(st.get("to_hit", 0)), Interface800.TEXT, [_str("attack"), _str("attack_desc")]])
+		out.append(["     " + _str("infounit_4"), "%d" % int(st.get("parry", 0)), Interface800.TEXT, [_str("defense"), _str("defense_desc")]])
 		var ty := ""
 		var f: PackedFloat32Array = st.get("dmg_types", PackedFloat32Array())
 		for t in mini(7, f.size()):
@@ -3120,7 +3122,7 @@ func _hero_rows() -> Array:
 				ty = _str("damage_%d" % t)
 				break
 		out.append(["     %s %s" % [_str("infounit_9"), ty],
-			"%d-%d" % [int(st.get("dmg_min", 0)), int(st.get("dmg_max", 0))], Interface800.TEXT, []])
+			"%d-%d" % [int(st.get("dmg_min", 0)), int(st.get("dmg_max", 0))], Interface800.TEXT, [_str("camp_damage"), _str("camp_damage_desc")]])
 		out.append(["", "", Interface800.TEXT, []])
 	else:
 		for i in 4:

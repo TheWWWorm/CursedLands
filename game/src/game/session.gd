@@ -978,6 +978,8 @@ func _enter_zone(id: String, entrance: int, autosave := true, island_resume: Dic
 	# LoadSave): its loading screen also shows frames 1 and 5.
 	LoadingScreen.begin(get_tree(), z, LoadingScreen.SAVED_ZONE if state.zones.has(id) else LoadingScreen.NEW_ZONE)
 	_build_world(z, true)
+	if not _restoring:
+		_simulate_absence(id, z, entrance)
 	# Belt items come into a zone full. Weapons and armour carry their
 	# current charge across the transfer and continue recharging in the world.
 	for k in state.heroes:
@@ -1061,6 +1063,22 @@ func _start_pose(z: Dictionary, entrance: int) -> void:
 		if u.controller == 0 and u.has_meta("hero") and not u.get_meta("hero").has("merc"):
 			u.command({"type": "anim", "name": "uspecial25"})
 			return
+
+
+## A revisited zone first catches up on the time the party was away (base
+## 57a48a, before the party is placed): 100 object steps per campaign hour
+## since it was left, at most 1000, each waking the objects within 70 m of
+## the centre of the entrance's deploy area (ObjectActivity). No scripts run
+## and the clock stands still meanwhile.
+func _simulate_absence(id: String, z: Dictionary, entrance: int) -> void:
+	var rec: Dictionary = state.zones.get(id, {})
+	var exit: Dictionary = z.get("exits", {}).get(entrance, {})
+	if not rec.has("left") or not exit.has("deploy") or not world.active_set.applies():
+		return
+	var steps := mini(int((state.get_var(0, "gtime") - float(rec.left)) * 100.0), 1000)
+	if steps > 0:
+		GameData.trace("zone %s absence %d steps" % [id, steps])
+		world.simulate_absence((exit.deploy as Rect2).get_center(), steps)
 
 
 func _build_world(z: Dictionary, authority: bool, attach := true) -> void:
@@ -1696,6 +1714,8 @@ func _extra_mobs() -> Array:
 	var out: Array = world.get_meta("added_mobs", []).duplicate()
 	if world.has_meta("quest_mob"):
 		out.append("%s.mob" % world.get_meta("quest_mob"))
+	if world.has_meta("quest_lmp_objects"):
+		out.append(String(world.get_meta("quest_lmp_objects")))
 	return out
 
 
@@ -2647,16 +2667,19 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 						u.command({"type": "follow", "target": target, "village_limit":village_move_limit()})
 		"interact":
 			if shop_available():
-				# Keep the host's idle/ownership gate, then approach the NPC
-				# through the ordinary cancellable order before opening topics.
+				# The original opens a village NPC's topics at once, with the
+				# hero still where he stands (checked under Wine in bz2g). He
+				# walks over only once a topic is picked (Briefings staging,
+				# which Space skips). Keep the host's idle/ownership gate.
 				if not (target and not target.dead and not mine.is_empty() and target.village_talk_ready() \
 						and not Briefings.pending_for(state, target, player).is_empty() and world.vm):
 					return
-				if mine[0].blocked:
-					# The first village story deliberately blocks Zak until he
-					# talks to the elder. Do not require walking to unlock it.
-					world.vm.briefings.interact(mine[0], target, player)
-					return
+				# The first village story deliberately blocks Zak until he
+				# talks to the elder; he is still the one who talks.
+				var speaker: GameUnit = mine[0] if mine[0].blocked else _interaction_unit(mine, target)
+				speaker.remove_meta("interact")   # a field approach still pending
+				world.vm.briefings.interact(speaker, target, player, true)
+				return
 			if target and not mine.is_empty():
 				var talker := _interaction_unit(mine, target)
 				if preload("res://src/game/script/authored_village_talk.gd").original_stage(self,talker,target,player):
@@ -2787,6 +2810,9 @@ func apply_command(cmd: Dictionary, player: int) -> void:
 		"topic":   # a conversation picked from an NPC's topic list (Briefings.interact)
 			if world.vm:
 				world.vm.briefings.topic(player, String(cmd.get("var", "")), int(cmd.get("uid", 0)))
+		"dialog_skip":   # Space while the actors walk to their conversation marks
+			if world.vm:
+				world.vm.briefings.skip_staging(player)
 
 
 # ------------------------------------------------------------------ mercenaries
@@ -2800,6 +2826,8 @@ func _spawn_merc(m: Dictionary, p: Vector2, facing := 0.0, deployed := false) ->
 	# Co-op (remake): a joiner's mercenary whose player is away (a save loaded
 	# before it rejoined) is held by a present player until it comes back
 	# (_spawn_late_joiner); the record keeps its owner, so saves keep it too.
+	if _story_companion(int(m.get("merc", -1))):
+		m.controller = 0   # saves made while a guest held Kel
 	var owner_idx := int(m.get("controller", 0))
 	var lent := -1
 	if not players_include(owner_idx):
@@ -2835,6 +2863,14 @@ func _spawn_merc(m: Dictionary, p: Vector2, facing := 0.0, deployed := false) ->
 
 
 ## Co-op: a new mercenary goes to the player controlling the fewest units.
+## LiA's Kel (merc2) is Kir's companion throughout the story: its scripts
+## address her beside GetUnitOfPlayer(0, 0) and end the game when she dies
+## (zone1 HellManAlive). In co-op she stays with the host, whoever finished
+## her conversation or however few units the guests have.
+func _story_companion(n: int) -> bool:
+	return n == 2 and state.campaign_id == CampaignProfile.ASTRAL and lmp.is_empty()
+
+
 func _merc_owner() -> int:
 	var best := 0
 	var best_n := 1 << 30
@@ -2932,7 +2968,7 @@ func merc_changed(n: int, hired: bool, player := -1, leave_npc := true, script_r
 		if state.dismissed_mercs.has(n) and int(character.get("merc", -1)) != n:
 			character = {}
 		var m := state.make_merc(n, rec, character)
-		m.controller = player if player >= 0 and players_include(player) else _merc_owner()
+		m.controller = 0 if _story_companion(n) else player if player >= 0 and players_include(player) else _merc_owner()
 		if npc:
 			#  adds a roster entry, not a new server unit. Keep its
 			# live equipment, body, magic, stamina and pending script commands.

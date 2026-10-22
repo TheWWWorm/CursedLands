@@ -287,6 +287,8 @@ static func apply(world: GameWorld, caster: GameUnit, spell: String, target: Gam
 		# trunc(counter / duration x 250 + 50), -1 a tick, replacing only a
 		# lower level.
 		_fireworks_tick(world, at, maxf(radius, 0.0), int(p.duration), int(p.duration) - 1)
+	if p.code == "clairvoyence" and caster:
+		_clairvoyance_tick(world, caster, at, maxf(radius, 0.0), int(p.duration))
 	# Lasting spells show a magic effect on each unit (visual only).
 	# Every lasting effect is sent, also those with no particles (their
 	# start / end sounds, SpellSounds.EFFECT_DIRS).
@@ -766,6 +768,10 @@ static func restore_lasting(world: GameWorld, list: Array, shown := {}) -> void:
 				var duration := int(rec.duration)
 				_after(world, GameUnit.TICK, func():
 					_fireworks_tick(world, at, radius, duration, counter, id))
+			"clairvoyance":
+				var radius := float(rec.radius)
+				_after(world, GameUnit.TICK, func():
+					_clairvoyance_tick(world, _deref(cw), at, radius, counter, id))
 			"missile":   # a magic arrow / acid ray in flight: on from where it was
 				var p := parse(String(rec.spell))
 				var tw = _ref(_caster_of(world, rec.get("target", [])))
@@ -1191,6 +1197,9 @@ static func _fireworks_tick(world: GameWorld, at: Vector2, radius: float, durati
 	if counter < 0 or duration <= 0 or world.ai == null:
 		_lasting(world).erase(id)
 		return
+	# Its light wakes the objects 5 m beyond the radius first (6830d3,
+	# ObjectActivity), so far units see it too.
+	world.active_set.wake_at(at, radius + 5.0)
 	var level := floorf(float(counter) / float(duration) * 250.0 + 50.0)
 	for u: GameUnit in world.units_near(at, radius):
 		world.ai.suspect(u, at, level, -1.0)
@@ -1198,6 +1207,25 @@ static func _fireworks_tick(world: GameWorld, at: Vector2, radius: float, durati
 		"duration": duration, "counter": counter - 1})
 	_after(world, GameUnit.TICK, func():
 		_fireworks_tick(world, at, radius, duration, counter - 1, id))
+
+
+## Clairvoyance (case 0x14) on the host: every tick while its caster
+## exists, the objects within its radius + 5 m of the point are woken
+## (6832d2, ObjectActivity) as the party's surroundings are; the
+## counter runs down from the duration. Its light and view are presentation
+## (SpellFx).
+static func _clairvoyance_tick(world: GameWorld, caster: GameUnit, at: Vector2, radius: float, counter: int, id := -1) -> void:
+	if not is_instance_valid(world):
+		return
+	if counter < 0 or not is_instance_valid(caster):
+		_lasting(world).erase(id)
+		return
+	world.active_set.wake_at(at, radius + 5.0)
+	id = _keep_lasting(world, id, {"k": "clairvoyance", "caster": _caster_ref(caster), "at": [at.x, at.y],
+		"radius": radius, "counter": counter - 1})
+	var cw = _ref(caster)
+	_after(world, GameUnit.TICK, func():
+		_clairvoyance_tick(world, _deref(cw), at, radius, counter - 1, id))
 
 
 static func _buff(u: GameUnit, name: String, ticks: int, data: Dictionary) -> void:

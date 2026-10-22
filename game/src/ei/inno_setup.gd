@@ -290,7 +290,10 @@ func _unpack(f: FileAccess, c: int) -> String:
 		_mutex.lock()
 		_written += int(ch.size)
 		_mutex.unlock()
-	out = out.slice(int(ch.sub), size)
+	packed = PackedByteArray()
+	# Most files are a whole chunk; copying them again would double the memory.
+	if int(ch.sub) != 0 or out.size() != size:
+		out = out.slice(int(ch.sub), size)
 	var sha := HashingContext.new()
 	sha.start(HashingContext.HASH_SHA1)
 	sha.update(out)

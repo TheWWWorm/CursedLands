@@ -1,5 +1,19 @@
 # Changelog
 
+## Unreleased
+
+- Make Evil Islands side quests work on their campaign maps. Load the multiplayer creature prototypes they use, and bind the orc camp and bridge names that only the multiplayer zone script declared, so objectives such as "kill the orcs" no longer complete on arrival. ([#67](https://github.com/TheWWWorm/CursedLands/issues/67))
+- Start the z19q3 side quest with the teleport panels switched on, as on its multiplayer map, so objectives 5–7 are met by switching them off instead of being complete on arrival. The campaign's own teleport quest still counts only panels the player switches on.
+- Open a village NPC's topic list at once, as the original does, instead of walking the hero to the NPC first. The hero walks over after a topic is picked; Space, the gamepad's pause button or a tap on touch screens skips that walk and starts the conversation.
+- Share one condition evaluation between identical script trigger copies until one of them runs, removing the slowdown in long Lost in Astral mine sessions. Conditions that draw random numbers are still evaluated separately. ([#47](https://github.com/TheWWWorm/CursedLands/issues/47))
+- Train script-granted skills at their experience price as the original does, so the Lost in Astral clerk leaves Kel at 22 HP instead of 11. Existing saves are repaired once on load. In co-op, Kel always stays with the host as Kir's story companion.
+- Choose dropdown entries by tapping on touch screens, scroll long lists with a one-finger drag, and close a list with a tap outside it. This fixes the Resolution and Render scale dropdowns on phones and handhelds.
+- Use the compiled installer decoder on Android ARM64 as on Windows and Linux. Importing from the original installer is about 44 times faster on a Retroid Pocket 5.
+- Use the separate render thread only in Linux exports built with the patched engine templates. Runs from source on stock Godot use Safe threading, which avoids a FATAL "Index p_index = 0 is out of bounds" abort when text is drawn at new sizes.
+- Update only the units and magic traps near the party in campaign zones, as the original does. Far creatures wait where they are until the party comes near, instead of patrolling into traps or fights the player never sees, and a zone's state on arrival now matches the original's. Units in combat, always-active units and units that know of a living enemy keep moving. An attack, fireworks or clairvoyance wakes the units it reaches. A zone you return to first catches up on the hours you were away near its entrance, as the original does.
+- Show the original help for the Attack, Defense and Damage rows of the camp hero panel, as for the armor rows.
+- Hide the previous opening's settled Options, Load and Save board until the slide's first pose has rendered, so the board no longer flashes before sliding in from the Esc menu. ([#20](https://github.com/TheWWWorm/CursedLands/issues/20))
+
 ## 1.23.0 — 2026-10-21
 
 - Add optional **Ray traced (test)** water reflections on Windows/Linux with Forward+ Vulkan. Include nearby terrain, animated creatures, complete first-person figures, cutout foliage, material tint and emission, and traced sun/local-light shadows. Refresh changed scene membership and supported material properties; retain Mirror while preparing or when RT is unavailable. Keep existing presets and defaults. Labels and help are available in English, Russian and German.

@@ -1,0 +1,8 @@
+[configuration]
+entry_symbol = "installer_lzma_init"
+compatibility_minimum = "4.7"
+reloadable = false
+[libraries]
+linux.x86_64 = "res://src/native/bin/libinstaller_lzma.so"
+windows.x86_64 = "res://src/native/bin/libinstaller_lzma.dll"
+android.arm64 = "res://src/native/bin/libinstaller_lzma_android.so"

@@ -186,6 +186,13 @@ def scenarios(seed=20261020, fuzz=12):
         [run("VCheck#0#8", None), run("VCheck#0#8", None), run("VCheck#0#8", None)], 5, {2: {"gate": 1}}, globals_=G("gate", "n"))
     add("per_unit_copies_world", [script("VCheck#0#8", [([call("IsEqual", g("gate"), 1)], [KILL, inc("n")])])],
         [run("VCheck#0#8", None), run("VCheck#0#8", None), run("VCheck#0#8", None)], 5, {2: {"gate": 1}}, globals_=G("gate", "n"), boot="world")
+    # gz24k Digger shape (issue #47): a sleeping loop restarts a per-unit
+    # trigger whose condition can never hold again (dead digger).
+    add("restart_never_true_trigger", [
+        script("Loop0", [([], [KILL, run("Check", None), run("Check", None), run("Loop2", None)])]),
+        script("Loop2", [([], [KILL, sleep(3), run("Loop0", None)])]),
+        script("Check", [([call("IsEqual", g("alive"), 1)], [KILL, inc("n")])])],
+        [run("Loop0", None)], 24, globals_=G("alive", "n"), boot="world")
     add("declared_never_started", [script("Unused", [([], [KILL, setv("p", 1)])])], [], 3, globals_=G("p"))
     add("kill_after_assignments", [script("DaughterBrief", [([], [setv("p", 1), setv("q", 2), KILL])])],
         [], 4, globals_=G("p", "q"), boot="handler")

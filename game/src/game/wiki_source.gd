@@ -103,7 +103,9 @@ func load_installed(id: String) -> String:
 	GameData.db = EIDatabase.load_from(database)
 	error = ModStore.patch_database(GameData.db,false)
 	var lmp := _archive(path,"databaselmp.res")
-	if lmp: GameData.db.merge_missing(EIDatabase.load_from(lmp,true),"quest_items")
+	if lmp:
+		GameData.db.fallback = EIDatabase.load_from(lmp,true)
+		GameData.db.merge_missing(GameData.db.fallback,"quest_items")
 	GameData._db_main = GameData.db
 	GameData.lmp_db = false
 	GameData.ai_reg = EIRegFile.parse(GameFiles.read(path.path_join("config/ai.reg")))
