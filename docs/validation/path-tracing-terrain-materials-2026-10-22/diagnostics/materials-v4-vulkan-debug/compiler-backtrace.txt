@@ -1,0 +1,231 @@
+
+This GDB supports auto-downloading debuginfo from the following URLs:
+  <https://debuginfod.ubuntu.com>
+Enable debuginfod for this session? (y or [n]) [answered N; input not from terminal]
+Debuginfod has been disabled.
+To make this setting permanent, add 'set debuginfod enabled off' to .gdbinit.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[Detaching after vfork from child process 2953658]
+[New Thread 0x7ffff73346c0 (LWP 2953660)]
+[New Thread 0x7ffff6b336c0 (LWP 2953661)]
+[New Thread 0x7fffee1ff6c0 (LWP 2953662)]
+[New Thread 0x7ffff63326c0 (LWP 2953663)]
+[New Thread 0x7ffff5b316c0 (LWP 2953664)]
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+[New Thread 0x7fffb63bd6c0 (LWP 2953672)]
+[New Thread 0x7fffb5bbc6c0 (LWP 2953674)]
+[New Thread 0x7fffb53bb6c0 (LWP 2953675)]
+[New Thread 0x7fffb4bba6c0 (LWP 2953677)]
+[New Thread 0x7fffa7fff6c0 (LWP 2953678)]
+[New Thread 0x7fffa77fe6c0 (LWP 2953693)]
+[New Thread 0x7fff97fff6c0 (LWP 2953696)]
+Vulkan 1.4.312 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090
+[New Thread 0x7fff957fe6c0 (LWP 2953697)]
+[New Thread 0x7fff94ffd6c0 (LWP 2953698)]
+[New Thread 0x7fff8dfff6c0 (LWP 2953699)]
+[New Thread 0x7fff8c9f36c0 (LWP 2953755)]
+
+[New Thread 0x7fff87fff6c0 (LWP 2953773)]
+[trace 17:40:19 +7017ms] session 25bf04d30ffc: 1.23.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, forward_plus / vulkan
+PASS qualified terrain material device
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: rotation-0
+PASS compile independent raster sampler: rotation-0
+PASS traced colour matches raster sampler: rotation-0 { "mean_error": 0.0, "peak_error": 0.0 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: rotation-1
+PASS compile independent raster sampler: rotation-1
+PASS traced colour matches raster sampler: rotation-1 { "mean_error": 0.0, "peak_error": 0.0 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: rotation-2
+PASS compile independent raster sampler: rotation-2
+PASS traced colour matches raster sampler: rotation-2 { "mean_error": 0.0, "peak_error": 0.0 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: rotation-3
+PASS compile independent raster sampler: rotation-3
+PASS traced colour matches raster sampler: rotation-3 { "mean_error": 0.0, "peak_error": 0.0 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+
+Thread 1 "CursedLands.x86" received signal SIGSEGV, Segmentation fault.
+0x00007fffcad75f64 in ?? () from /lib/x86_64-linux-gnu/libnvidia-glvkspirv.so.580.178.04
+
+Thread 18 (Thread 0x7fff87fff6c0 (LWP 2953773) "CursedLands.x86"):
+#0  0x00007ffff7c98e51 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x555561cef3c0) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x555561cef3c0) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x555561cef3c0, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x00007ffff7c9b8cd in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x555561cef370, cond=0x555561cef398) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x555561cef398, mutex=0x555561cef370) at ./nptl/pthread_cond_wait.c:627
+#5  0x0000555555a44c05 in ?? ()
+#6  0x000055555933e924 in ?? ()
+#7  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+
+Thread 17 (Thread 0x7fff8c9f36c0 (LWP 2953755) "CursedLands.x86"):
+#0  0x00007ffff7cecbdf in __GI___clock_nanosleep (clock_id=clock_id@entry=0, flags=flags@entry=0, req=0x7fff8c9f1bd0, rem=0x7fff8c9f1be0) at ../sysdeps/unix/sysv/linux/clock_nanosleep.c:78
+#1  0x00007ffff7cf9b27 in __GI___nanosleep (req=<optimized out>, rem=<optimized out>) at ../sysdeps/unix/sysv/linux/nanosleep.c:25
+#2  0x000055555691a418 in ?? ()
+#3  0x0000555557e18f52 in ?? ()
+#4  0x0000555558803295 in ?? ()
+#5  0x000055555933e924 in ?? ()
+#6  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 16 (Thread 0x7fff8dfff6c0 (LWP 2953699) "CursedLands.x86"):
+#0  0x00007ffff7cecbdf in __GI___clock_nanosleep (clock_id=clock_id@entry=0, flags=flags@entry=0, req=req@entry=0x7fff8dffdab0, rem=rem@entry=0x0) at ../sysdeps/unix/sysv/linux/clock_nanosleep.c:78
+#1  0x00007ffff7cf9b27 in __GI___nanosleep (req=req@entry=0x7fff8dffdab0, rem=rem@entry=0x0) at ../sysdeps/unix/sysv/linux/nanosleep.c:25
+#2  0x00007ffff7d299bc in usleep (useconds=<optimized out>) at ../sysdeps/posix/usleep.c:31
+#3  0x0000555555901155 in ?? ()
+#4  0x0000555558803295 in ?? ()
+#5  0x000055555933e924 in ?? ()
+#6  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 15 (Thread 0x7fff94ffd6c0 (LWP 2953698) "CursedLands.x86"):
+#0  0x00007ffff7cecbdf in __GI___clock_nanosleep (clock_id=clock_id@entry=0, flags=flags@entry=0, req=0x7fff94ffba20, rem=0x7fff94ffba30) at ../sysdeps/unix/sysv/linux/clock_nanosleep.c:78
+#1  0x00007ffff7cf9b27 in __GI___nanosleep (req=<optimized out>, rem=<optimized out>) at ../sysdeps/unix/sysv/linux/nanosleep.c:25
+#2  0x000055555691a418 in ?? ()
+#3  0x00005555558fcc95 in ?? ()
+#4  0x0000555558803295 in ?? ()
+#5  0x000055555933e924 in ?? ()
+#6  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#7  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 14 (Thread 0x7fff957fe6c0 (LWP 2953697) "CursedLands.x86"):
+#0  0x00007ffff7d26fa7 in __GI___select (nfds=10, readfds=0x7fff957fcb70, writefds=0x0, exceptfds=0x0, timeout=0x7fff957fcb60) at ../sysdeps/unix/sysv/linux/select.c:69
+#1  0x00005555559131ce in ?? ()
+#2  0x000055555591b40f in ?? ()
+#3  0x0000555558803295 in ?? ()
+#4  0x000055555933e924 in ?? ()
+#5  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#6  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 13 (Thread 0x7fff97fff6c0 (LWP 2953696) "CursedLands.x86"):
+#0  0x00007ffff7c98e51 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x7fff97ffdae0, op=393, expected=0, futex_word=0x7fff90000d48) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x7fff97ffdae0, clockid=0, expected=0, futex_word=0x7fff90000d48) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x7fff90000d48, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x7fff97ffdae0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x00007ffff7c9bd6e in __pthread_cond_wait_common (abstime=0x7fff97ffdae0, clockid=0, mutex=0x55555b3be460, cond=0x7fff90000d20) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_timedwait64 (cond=0x7fff90000d20, mutex=0x55555b3be460, abstime=0x7fff97ffdae0) at ./nptl/pthread_cond_wait.c:652
+#5  0x00007fffd06104ac in ?? () from /lib/x86_64-linux-gnu/libnvidia-glcore.so.580.178.04
+#6  0x00007fffd0b8dc79 in ?? () from /lib/x86_64-linux-gnu/libnvidia-glcore.so.580.178.04
+#7  0x00007fffd0b77b66 in ?? () from /lib/x86_64-linux-gnu/libnvidia-glcore.so.580.178.04
+
+Thread 12 (Thread 0x7fffa77fe6c0 (LWP 2953693) "cuda-EvtHandlr"):
+#0  0x00007ffff7d1b79d in __GI___poll (fds=0x55555bc90a00, nfds=2, timeout=100) at ../sysdeps/unix/sysv/linux/poll.c:29
+#1  0x00007fffbeb19fa7 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#2  0x00007fffbec069e7 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#3  0x00007fffbeb06de3 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#4  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#5  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 11 (Thread 0x7fffa7fff6c0 (LWP 2953678) "[vkps] Update"):
+#0  0x00007ffff7c98e51 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x7fffa7ffdbc0, op=393, expected=0, futex_word=0x7fff98000d4c) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x7fffa7ffdbc0, clockid=0, expected=0, futex_word=0x7fff98000d4c) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x7fff98000d4c, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x7fffa7ffdbc0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x00007ffff7c9bd6e in __pthread_cond_wait_common (abstime=0x7fffa7ffdbc0, clockid=0, mutex=0x55555b3f7c90, cond=0x7fff98000d20) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_timedwait64 (cond=0x7fff98000d20, mutex=0x55555b3f7c90, abstime=0x7fffa7ffdbc0) at ./nptl/pthread_cond_wait.c:652
+#5  0x00007fffd06104ac in ?? () from /lib/x86_64-linux-gnu/libnvidia-glcore.so.580.178.04
+#6  0x00007fffd0a4d50d in ?? () from /lib/x86_64-linux-gnu/libnvidia-glcore.so.580.178.04
+#7  0x00007fffd0610664 in ?? () from /lib/x86_64-linux-gnu/libnvidia-glcore.so.580.178.04
+
+Thread 10 (Thread 0x7fffb4bba6c0 (LWP 2953677) "[vkrt] Analysis"):
+#0  0x00007ffff7c98e51 in __futex_abstimed_wait_common64 (private=32767, cancel=true, abstime=0x7fffb4bb8bd0, op=393, expected=0, futex_word=0x7fffa0000d48) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=32767, abstime=0x7fffb4bb8bd0, clockid=926365235, expected=0, futex_word=0x7fffa0000d48) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x7fffa0000d48, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x7fffb4bb8bd0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x00007ffff7c9bd6e in __pthread_cond_wait_common (abstime=0x7fffb4bb8bd0, clockid=0, mutex=0x55555b3f78b0, cond=0x7fffa0000d20) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_timedwait64 (cond=0x7fffa0000d20, mutex=0x55555b3f78b0, abstime=0x7fffb4bb8bd0) at ./nptl/pthread_cond_wait.c:652
+#5  0x00007fffd06104ac in ?? () from /lib/x86_64-linux-gnu/libnvidia-glcore.so.580.178.04
+#6  0x00007fffd0a7e0c2 in ?? () from /lib/x86_64-linux-gnu/libnvidia-glcore.so.580.178.04
+#7  0x00007fffd0610664 in ?? () from /lib/x86_64-linux-gnu/libnvidia-glcore.so.580.178.04
+
+Thread 9 (Thread 0x7fffb53bb6c0 (LWP 2953675) "[vkcf] Analysis"):
+#0  0x00007ffff7c98e51 in __futex_abstimed_wait_common64 (private=-1, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x7fffac000d48) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=-1, abstime=0x0, clockid=0, expected=0, futex_word=0x7fffac000d48) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x7fffac000d48, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x00007ffff7c9b8cd in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x55555b0a07f0, cond=0x7fffac000d20) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x7fffac000d20, mutex=0x55555b0a07f0) at ./nptl/pthread_cond_wait.c:627
+#5  0x00007fffd061044c in ?? () from /lib/x86_64-linux-gnu/libnvidia-glcore.so.580.178.04
+#6  0x00007fffd0a6664e in ?? () from /lib/x86_64-linux-gnu/libnvidia-glcore.so.580.178.04
+#7  0x00007fffd0610664 in ?? () from /lib/x86_64-linux-gnu/libnvidia-glcore.so.580.178.04
+
+Thread 8 (Thread 0x7fffb5bbc6c0 (LWP 2953674) "CursedLands.x86"):
+#0  0x00007ffff7c98e51 in __futex_abstimed_wait_common64 (private=32767, cancel=true, abstime=0x7fffb5bbaba0, op=393, expected=0, futex_word=0x7fffa8000d48) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=32767, abstime=0x7fffb5bbaba0, clockid=32767, expected=0, futex_word=0x7fffa8000d48) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x7fffa8000d48, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x7fffb5bbaba0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x00007ffff7c9bd6e in __pthread_cond_wait_common (abstime=0x7fffb5bbaba0, clockid=0, mutex=0x55555b0a0780, cond=0x7fffa8000d20) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_timedwait64 (cond=0x7fffa8000d20, mutex=0x55555b0a0780, abstime=0x7fffb5bbaba0) at ./nptl/pthread_cond_wait.c:652
+#5  0x00007fffd06104ac in ?? () from /lib/x86_64-linux-gnu/libnvidia-glcore.so.580.178.04
+#6  0x00007fffd0a5ece1 in ?? () from /lib/x86_64-linux-gnu/libnvidia-glcore.so.580.178.04
+#7  0x00007fffd0610664 in ?? () from /lib/x86_64-linux-gnu/libnvidia-glcore.so.580.178.04
+
+Thread 7 (Thread 0x7fffb63bd6c0 (LWP 2953672) "CursedLands.x86"):
+#0  0x00007ffff7d1b79d in __GI___poll (fds=0x55555b400130, nfds=2, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:29
+#1  0x00007fffbeb19fa7 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#2  0x00007fffbec069e7 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#3  0x00007fffbeb06de3 in ?? () from /lib/x86_64-linux-gnu/libcuda.so.1
+#4  0x00007ffff7c9cb84 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#5  0x00007ffff7d29ecc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 6 (Thread 0x7ffff5b316c0 (LWP 2953664) "WorkerThread 3"):
+#0  0x00007ffff7c98e51 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x55555a916834) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x55555a916834) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x55555a916834, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x00007ffff7c9b8cd in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x55555a8006b0, cond=0x55555a916808) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x55555a916808, mutex=0x55555a8006b0) at ./nptl/pthread_cond_wait.c:627
+#5  0x0000555558e0ba0b in ?? ()
+#6  0x0000555558803295 in ?? ()
+#7  0x000055555933e924 in ?? ()
+
+Thread 5 (Thread 0x7ffff63326c0 (LWP 2953663) "WorkerThread 2"):
+#0  0x00007ffff7c98e51 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x55555a9167cc) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x55555a9167cc) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x55555a9167cc, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x00007ffff7c9b8cd in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x55555a8006b0, cond=0x55555a9167a0) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x55555a9167a0, mutex=0x55555a8006b0) at ./nptl/pthread_cond_wait.c:627
+#5  0x0000555558e0ba0b in ?? ()
+#6  0x0000555558803295 in ?? ()
+#7  0x000055555933e924 in ?? ()
+
+Thread 4 (Thread 0x7fffee1ff6c0 (LWP 2953662) "WorkerThread 1"):
+#0  0x00007ffff7c98e51 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x55555a916764) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x55555a916764) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x55555a916764, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x00007ffff7c9b8cd in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x55555a8006b0, cond=0x55555a916738) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x55555a916738, mutex=0x55555a8006b0) at ./nptl/pthread_cond_wait.c:627
+#5  0x0000555558e0ba0b in ?? ()
+#6  0x0000555558803295 in ?? ()
+#7  0x000055555933e924 in ?? ()
+
+Thread 3 (Thread 0x7ffff6b336c0 (LWP 2953661) "WorkerThread 0"):
+#0  0x00007ffff7c98e51 in __futex_abstimed_wait_common64 (private=-1, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x55555a9166f8) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=-1, abstime=0x0, clockid=0, expected=0, futex_word=0x55555a9166f8) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x55555a9166f8, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x00007ffff7c9b8cd in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x55555a8006b0, cond=0x55555a9166d0) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x55555a9166d0, mutex=0x55555a8006b0) at ./nptl/pthread_cond_wait.c:627
+#5  0x0000555558e0ba0b in ?? ()
+#6  0x0000555558803295 in ?? ()
+#7  0x000055555933e924 in ?? ()
+
+Thread 2 (Thread 0x7ffff73346c0 (LWP 2953660) "CursedLands.x86"):
+#0  0x00007ffff7c98e51 in __futex_abstimed_wait_common64 (private=0, cancel=true, abstime=0x0, op=393, expected=0, futex_word=0x55555a7fef78) at ./nptl/futex-internal.c:57
+#1  __futex_abstimed_wait_common (cancel=true, private=0, abstime=0x0, clockid=0, expected=0, futex_word=0x55555a7fef78) at ./nptl/futex-internal.c:87
+#2  __GI___futex_abstimed_wait_cancelable64 (futex_word=futex_word@entry=0x55555a7fef78, expected=expected@entry=0, clockid=clockid@entry=0, abstime=abstime@entry=0x0, private=private@entry=0) at ./nptl/futex-internal.c:139
+#3  0x00007ffff7c9b8cd in __pthread_cond_wait_common (abstime=0x0, clockid=0, mutex=0x55555a7fef28, cond=0x55555a7fef50) at ./nptl/pthread_cond_wait.c:503
+#4  ___pthread_cond_wait (cond=0x55555a7fef50, mutex=0x55555a7fef28) at ./nptl/pthread_cond_wait.c:627
+#5  0x0000555558968feb in ?? ()
+#6  0x0000555558803295 in ?? ()
+#7  0x000055555933e924 in ?? ()
+
+Thread 1 (Thread 0x7ffff7ebb980 (LWP 2953655) "CursedLands.x86"):
+#0  0x00007fffcad75f64 in ?? () from /lib/x86_64-linux-gnu/libnvidia-glvkspirv.so.580.178.04
+#1  0x00007fffcad08ab2 in ?? () from /lib/x86_64-linux-gnu/libnvidia-glvkspirv.so.580.178.04
+#2  0x00007fffcafcd88f in ?? () from /lib/x86_64-linux-gnu/libnvidia-glvkspirv.so.580.178.04
+#3  0x00007fffcad5e32c in ?? () from /lib/x86_64-linux-gnu/libnvidia-glvkspirv.so.580.178.04
+#4  0x00007fffcaca086c in _nv014nvvm () from /lib/x86_64-linux-gnu/libnvidia-glvkspirv.so.580.178.04
+#5  0x00007fffd0bac952 in ?? () from /lib/x86_64-linux-gnu/libnvidia-glcore.so.580.178.04
+#6  0x00007fffd0bae184 in ?? () from /lib/x86_64-linux-gnu/libnvidia-glcore.so.580.178.04
+#7  0x00007fffd09677a1 in ?? () from /lib/x86_64-linux-gnu/libnvidia-glcore.so.580.178.04
