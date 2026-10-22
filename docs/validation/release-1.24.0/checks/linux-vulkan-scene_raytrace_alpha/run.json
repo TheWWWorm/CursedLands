@@ -1,0 +1,52 @@
+{
+  "suite": "scene_raytrace_alpha",
+  "platform": "linux",
+  "renderer": "vulkan",
+  "exit": 0,
+  "seconds": 10.47,
+  "errors": [],
+  "summary": [
+    "PASS qualified alpha-test RT device",
+    "PASS build alpha fixture false",
+    "PASS primary rays respect material alpha cutoff false",
+    "PASS sun rays respect the same alpha cutoff false",
+    "PASS secondary rays respect the same alpha cutoff false",
+    "PASS build alpha fixture true",
+    "PASS primary rays respect material alpha cutoff true",
+    "PASS sun rays respect the same alpha cutoff true",
+    "PASS secondary rays respect the same alpha cutoff true",
+    "SCENE_RT_DEVICE 9 checks 0 failures"
+  ],
+  "command": [
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.24.0-20261022/release/CursedLands-1.24.0-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--gpu-index",
+    "0",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--borderless",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.24.0-20261022/release/fixtures-linux/scene_raytrace_alpha.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.24.0-20261022/release/checks/linux-vulkan-scene_raytrace_alpha",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/release-1.24.0-20261022/release/CursedLands-1.24.0-linux-x86_64/mods"
+  ],
+  "profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  }
+}

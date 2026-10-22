@@ -1,0 +1,26 @@
+[
+  {
+    "level": "error",
+    "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "timestamp": "2026-10-22T20:11:11.660Z",
+    "url": "http://127.0.0.1:30931/favicon.ico"
+  },
+  {
+    "level": "log",
+    "message": "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+    "timestamp": "2026-10-22T20:11:15.287Z",
+    "url": "http://127.0.0.1:30931/index.js"
+  },
+  {
+    "level": "log",
+    "message": "OpenGL API OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium)) - Compatibility - Using Device: WebKit - WebKit WebGL",
+    "timestamp": "2026-10-22T20:11:15.536Z",
+    "url": "http://127.0.0.1:30931/index.js"
+  },
+  {
+    "level": "log",
+    "message": "Build configuration: Emscripten 4.0.20, single-threaded, no GDExtension support.",
+    "timestamp": "2026-10-22T20:11:15.860Z",
+    "url": "http://127.0.0.1:30931/index.js"
+  }
+]

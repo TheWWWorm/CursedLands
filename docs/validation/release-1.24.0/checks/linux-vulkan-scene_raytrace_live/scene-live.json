@@ -1,0 +1,25 @@
+{
+	"checks": 32,
+	"failures": [],
+	"stats": {
+		"accumulation_frames": 0,
+		"active": false,
+		"geometries": 1285,
+		"gi_samples": 1,
+		"instances": 1420,
+		"lights": 1,
+		"path_bounces": 0,
+		"path_samples": 0,
+		"path_tracing": false,
+		"quality": 0,
+		"shadow_samples": 1,
+		"size": [
+			640,
+			360
+		],
+		"supported": true,
+		"triangles": 116008,
+		"updated_instances": 0,
+		"updated_poses": 0
+	}
+}
