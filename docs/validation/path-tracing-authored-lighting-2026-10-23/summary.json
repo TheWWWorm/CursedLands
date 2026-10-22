@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-23",
+  "timezone": "Europe/Warsaw",
+  "baseline_commit": "ee43f787",
+  "checks": 297,
+  "runs": 15,
+  "timings_file": "performance.json",
+  "observations_file": "gpu-observations.json",
+  "backend_scope": "RTX 3090 native Vulkan and Windows DX12 through Wine/VKD3D; not native Windows performance.",
+  "pending_qualification": [
+    "Repeat the unmapped-surface shader comparison while no other game/Godot renderer uses GPU 0. Mapped-prop and lighting timing windows precede the observed competing renderer."
+  ],
+  "source_sha256": {
+    "game/src/game/gfx.gd": "22bb42a4ed740fc246d8a9eeb808b6b0595ae17cb9fe18e5d78b7ac4c6301258",
+    "game/src/game/fx/local_lighting.gd": "d276bb68ff79e5d2eef74d94e1f845717c66bb3e1e772b2e1989df9375bfe231",
+    "game/src/game/fx/scene_raytrace.gd": "b54b793037bcc20c9c097dcabcb5f41e1ab631244efb1545b931cab67b64d112",
+    "tools/tests/path_trace_lighting.gd": "964875b31711fad189c0ea41ed0f624a7ae91b48bf76356457fbe0ace6d8d9ce",
+    "tools/tests/path_trace_lighting_live.gd": "7581bf4760be018595f879a068ba532fa9a1a4559fee5b59c71d0427bc350dc4",
+    "tools/tests/path_trace_live.gd": "1f1da181624c0a4e2a9a450214080e98870190f4850bba20c76d4b65cf011128",
+    "tools/tests/path_trace_material_performance.gd": "28119e1c1f769c9b8f84798b4936862407a6649b4185c1afe69453053e7c99aa"
+  },
+  "exports_sha256": {
+    "preview-linux/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "preview-linux/CursedLands.pck": "84609aaac67d885284372370e84da3aa9b569f16b097b5a9d06194b0a48c1f21",
+    "preview-windows/CursedLands.pck": "84609aaac67d885284372370e84da3aa9b569f16b097b5a9d06194b0a48c1f21",
+    "preview-windows/CursedLands.exe": "3fdf36babfcbae0b3584aed85e1d52e4e537d3033c9128689cc0593a9ef80fd4"
+  },
+  "image_sha256": {
+    "vulkan-river-12-previous.png": "143bf229ae6e0e691597bcabe5aac112e98a327f5f758e3a07e8791ba6bde15e",
+    "vulkan-river-12-current.png": "0836e5bf4b96244f41bc12669f052b1b719f9facdadab3bcb3a34b75877d227b",
+    "vulkan-river-18-previous.png": "3cc7bf7d5d8d35852c10b295747c14c253e6ecb7b85da647e6ad496334b54c97",
+    "vulkan-river-18-current.png": "4679d24696210082e9b9d8c577d8055eff51c7b36014d14e4b4c6eeffa667f97",
+    "vulkan-river-0-previous.png": "b931da7ceb77bc3dbc669710a456d4bb67237d2df284e75b2cd14b6ccd204eff",
+    "vulkan-river-0-current.png": "56f54035a6833af69ed49292c0eef0e7c0eb74119788bb96fc17fc92eb410f88",
+    "vulkan-grove-previous.png": "f3a7646428a3ae17e5c34626eae78515643df31377f9114034d5f1a4b1dcb84d",
+    "vulkan-grove-current.png": "8a2ae61d0ae218332fe025656ee9f2a69fca7a15a3bbad094d025e23adc2a673",
+    "vulkan-brazier-previous.png": "0efd5ff6594142fa1c641f5beab730f2be2dfe61a93459b88f0208a1cc0f7733",
+    "vulkan-brazier-current.png": "f7960689d5d16014aea5bd07048daa9969410d0309b64563d378059ff53c8ee9",
+    "dx12-brazier-previous.png": "6dea827b4cad3d70751574ddf180a3691677012846de56975d25b1ac673872cf",
+    "dx12-brazier-current.png": "c5a3f5caa2c126e915d1d51090bc2d0fdeffd302c83ef0d2bd333d43209a00cb",
+    "hdr-ramp-previous.png": "1833fb20104b7b4f996b817abe096b5502d091c41edc872176847a1788289152",
+    "hdr-ramp-current.png": "9bc24acdab99c4c79c2f729992bca94d5e7a3b61ac767adaf20a2f3e10f94430"
+  },
+  "excluded_trials": [
+    "The first HDR fixture wrote EMISSION in an unshaded material, which Godot ignores. It rendered black and was corrected to raw HDR ALBEDO.",
+    "The next fixture used a 0.035 display-value threshold; the 8-bit grey change was 0.03529. The final criterion explicitly requires middle grey within ten percent of its original brightness.",
+    "The initial unmapped control found original props using pilot atlases. The final control explicitly disables only these maps and verifies zero mapped geometries.",
+    "The unmapped controls overlapped separate Godot graphics processes, including the later reruns. Their timings are excluded from performance.json. Another attempt was refused by the renderer-presence guard before launch."
+  ],
+  "remaining_content_work": [
+    "Per-zone authored source placement before removing legacy cave fill",
+    "Selective removal of painted lighting from original color art",
+    "Additional mixed-material and emission masks",
+    "Mesh and UV improvement"
+  ]
+}

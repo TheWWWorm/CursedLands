@@ -95,6 +95,11 @@ spare RTX 3090 Ti could not present a window through the current desktop setup.
 FPS overlays in the captures are not benchmark results. A quiet-machine
 comparison, including an unmapped-scene control, remains required.
 
+Later follow-through: the [authored-lighting qualification](../path-tracing-authored-lighting-2026-10-23/README.md)
+contains fresh measurements without the competing game benchmark. In the
+representative prop scene the maps cost about +0.20 ms PT time on Vulkan and
++0.65 ms on DX12/Wine. The original contended measurements above remain excluded.
+
 ## Validation
 
 The final data-map GPU fixture passes 47 checks on native Vulkan and 47 on the
@@ -121,5 +126,7 @@ pixels. Every game run uses an isolated test profile with a free cursor, FPS
 visible and all three audio volumes zero. DX12 results qualify the exported
 backend through Wine/VKD3D, not native Windows performance.
 
-Authored lighting, stable temporal treatment of flickering lights, color-art
-cleanup and a broader material library remain separate follow-through work.
+The later [torch-history](../path-tracing-torch-history-2026-10-23/README.md) and
+[authored-lighting](../path-tracing-authored-lighting-2026-10-23/README.md) checkpoints
+address flame stability, finite source size and exposure. Color-art cleanup,
+broader material coverage and per-zone source placement remain content work.

@@ -22,6 +22,7 @@ static var _cloud_sun_direction := Vector3.ZERO
 static var _sky_flash := 0.0
 ## Runtime state only; never rewrites the player's SSAO/contact preferences.
 static var scene_rt_gi_active := false
+static var path_trace_active := false
 
 
 ## ---------------------------------------------------------------- original lighting
@@ -1350,6 +1351,15 @@ static func apply_effect_quality() -> void:
 static func apply_env(env: Environment) -> void:
 	apply_surface_options()
 	refresh_border()
+	# PT adds HDR transport to the original palette. Keep flame/highlight
+	# detail with a gentle shoulder, without automatic exposure changing
+	# night or cave brightness as the camera moves. Only an active PT output
+	# selects this profile; loading, conventional and unsupported views keep
+	# the original display transform. Canvas UI is composed afterwards.
+	env.tonemap_mode = Environment.TONE_MAPPER_AGX if path_trace_active else Environment.TONE_MAPPER_LINEAR
+	env.tonemap_exposure = 1.2 if path_trace_active else 1.0
+	env.tonemap_agx_contrast = 1.15
+	env.tonemap_agx_white = 16.29
 	# Preserve environment reflections for ordinary materials. Enhanced water
 	# supplies its own analytic cloud reflection; EI terrain/figure/unit
 	# shaders disable ambient light and radiance. Volumetric fog also samples

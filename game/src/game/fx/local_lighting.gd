@@ -20,6 +20,9 @@ const LAVA_SPACING := 7.0
 const LAVA_RADIUS := 6.0
 const FIRE_COLOR := Color(1.0, 0.70, 0.42)
 const FIRE_ENERGY := 1.7
+# PT's existing angular light sampler can represent the visible flame's
+# extent without changing Godot's runtime soft-shadow pairing state.
+const PATH_SOURCE_RADIUS := &"ei_pt_source_radius"
 # Let the flame and the light landing on nearby surfaces carry the effect.
 # A full-strength coloured billboard turns the fire into a yellow fog ball.
 const FIRE_HALO := 0.24
@@ -108,6 +111,8 @@ static func apply_particle(d: Dictionary, enabled: bool) -> void:
 	var l: OmniLight3D = d.light
 	d.enhanced = enabled
 	if not enabled:
+		if d.kind == "fire":
+			l.remove_meta(PATH_SOURCE_RADIUS)
 		for property: StringName in d.original:
 			# SpellFx owns a live fade even while gameplay is paused; an
 			# option change must not reset it to its creation-time energy.
@@ -125,6 +130,9 @@ static func apply_particle(d: Dictionary, enabled: bool) -> void:
 	if d.kind == "fire":
 		l.light_color = FIRE_COLOR
 		l.light_energy = float(d.energy) * FIRE_ENERGY
+		# Small torch to brazier, in world metres. This changes source size,
+		# not emitted energy, range or the number of shadow rays.
+		l.set_meta(PATH_SOURCE_RADIUS,clampf(l.omni_range*0.04,0.08,0.24))
 		# The original offset is near the bowl rim. Emit from within the
 		# existing flame so that rim does not cast an oversized dark polygon.
 		l.position = d.original_position + Vector3.UP * minf(l.omni_range * 0.1, 0.45)

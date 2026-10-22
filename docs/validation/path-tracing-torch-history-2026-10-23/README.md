@@ -72,6 +72,12 @@ independent game benchmark was using the same GPU, and these capture sequences
 perform synchronous readbacks. An uncontended end-to-end comparison remains
 required, including the earlier authored-material changes.
 
+Later follow-through: the [authored-lighting qualification](../path-tracing-authored-lighting-2026-10-23/README.md)
+includes a readback-free strict/bounded comparison with the new finite flame
+radius held fixed. Bounded history costs about +0.34 ms PT time and +0.47 ms
+frame time at Medium on native Vulkan in that scene. The capture sequences in
+this original checkpoint remain excluded from performance claims.
+
 The internal `--ei-strict-light-history` diagnostic restores the previous
 reset behavior for comparisons. It does not change light animation. No
 player-visible option or string was added.

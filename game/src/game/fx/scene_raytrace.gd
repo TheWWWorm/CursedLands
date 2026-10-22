@@ -160,6 +160,8 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 			var p := light.global_position; position = Vector4(p.x,p.y,p.z,light.omni_range)
 			colour = light.light_color.srgb_to_linear()*light.light_energy
 			colour.a = maxf(light.light_size,0.04)
+			if _path_mode:
+				colour.a = maxf(colour.a,float(light.get_meta(LocalLighting.PATH_SOURCE_RADIUS,0.0)))
 		data.append_array(PackedFloat32Array([position.x,position.y,position.z,position.w]))
 		colours.append_array(PackedFloat32Array([colour.r,colour.g,colour.b,colour.a]))
 		RenderingServer.global_shader_parameter_set(StringName("ei_rt_point%d"%i),position)
@@ -264,8 +266,10 @@ func _release() -> void:
 	stats.erase("emissive_triangles");stats.erase("emissive_candidates")
 
 func _set_gi_active(active: bool) -> void:
-	if Gfx.scene_rt_gi_active==active: return
+	var path_active := active and _path_mode
+	if Gfx.scene_rt_gi_active==active and Gfx.path_trace_active==path_active: return
 	Gfx.scene_rt_gi_active=active
+	Gfx.path_trace_active=path_active
 	if is_instance_valid(game) and game._env!=null: Gfx.apply_env(game._env)
 
 func _exit_tree() -> void: _release()

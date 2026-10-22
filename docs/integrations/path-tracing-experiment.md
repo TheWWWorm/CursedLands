@@ -71,6 +71,18 @@ previous inverse view-projection. Environment changes invalidate both temporal
 modes. Caves still have a black environment; uniform-sky numerical fixtures
 use the explicitly disabled directional mode.
 
+Active PT uses a fixed AgX display profile (exposure 1.2, contrast 1.15,
+white 16.29) to retain HDR flame and reflection detail. Actual output readiness
+gates the profile; conventional rendering, scene RT GI and released/unsupported
+PT use the original linear display at exposure 1. Canvas UI remains unchanged.
+Enhanced stationary fire records also supply a finite source radius, from
+0.08 to 0.24 metres according to their original light range. The existing
+angular sampler uses this radius at primary and secondary hits, without extra
+rays or changes to light energy/range. Disabling enhanced fire removes the
+radius; spells and scene RT retain their previous source sizes. See the
+[authored-lighting qualification](../validation/path-tracing-authored-lighting-2026-10-23/README.md)
+for matched campaign views, display calibration and performance measurements.
+
 Continuation and shadow origins use a surface-specific floating-point error
 bound instead of a fixed 15 mm displacement and 2 mm minimum ray distance.
 Hit positions are reconstructed from triangle barycentrics, adding the base
@@ -432,6 +444,8 @@ Fixtures run through the existing `--tool` interface:
 | `path_trace_light_history.gd` | Controller light classification, all seven slots, frame-rate-dependent history, real GPU diffuse/glossy weighting and immediate extinction |
 | `path_trace_torch_history_live.gd` | Original cave torch, paired strict/bounded histories, normalized temporal noise, brightness response and extinction at fixed update rates |
 | `path_trace_light_inventory.gd` | Read-only original campaign torch locations, identifiers, strengths and cave classification |
+| `path_trace_lighting.gd` | Actual-output display gating, rendered HDR ramp, unchanged Canvas UI, flame-radius handoff and option restoration; `--fallback-only` for conventional backends |
+| `path_trace_lighting_live.gd` | Matched noon/dusk/night/grove/cave captures; `--pt-lighting-bench` alternates display/source profiles, `--pt-history-bench` isolates strict/bounded flutter cost |
 | `path_trace_cave.gd` | Cave sky exclusion, two/four bounces, changing light colour, animated actor and history invalidation |
 | `path_trace_materials.gd` | Actual compilation/draw of 144 world material variants |
 | `path_trace_fsr.gd` | Production frame generation and measured FPS HUD alongside water and path tracing, resize and pause/resume |

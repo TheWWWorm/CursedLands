@@ -12,6 +12,10 @@ The [torch-history follow-through](../validation/path-tracing-torch-history-2026
 also verifies and addresses continuous resets from gentle flame flutter. Its
 original-source inventory identifies which campaign caves already have torches
 and which require authored source placement before removing legacy fill.
+The [authored-lighting follow-through](../validation/path-tracing-authored-lighting-2026-10-23/README.md)
+adds flame-sized PT sources, a calibrated fixed HDR display profile and matched
+day/night/cave qualification. Per-zone source placement and broader color-art
+cleanup remain content-authoring work.
 
 The recommended first step is to carry the existing equipment material masks
 into PT. Then establish one material format shared by raster and ray hits,
