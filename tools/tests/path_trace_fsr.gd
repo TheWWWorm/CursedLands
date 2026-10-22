@@ -2,7 +2,7 @@ extends "res://tools/tests/water_raytrace_fsr.gd"
 ## Production frame generation and its FPS HUD with both ray pipelines active.
 func setup() -> Array:
 	var context:=await super.setup()
-	GameData.options.pt_mode=1;GameData.options.q_rt_lighting=0
+	GameData.options.pt_mode=2 if OS.get_cmdline_user_args().has("--pt-deep") else 1;GameData.options.q_rt_lighting=0
 	if OS.get_cmdline_user_args().has("--pt-detail"):
 		GameData.options.gfx_terrain=1;GameData.options.gfx_materials=1;GameData.options.gfx_foliage_light=1;GameData.options.gfx_terrain_cliffs=1
 		t.apply_gfx()

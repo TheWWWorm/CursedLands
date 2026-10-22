@@ -1,0 +1,96 @@
+{
+  "paired_before": {
+    "conventional": {
+      "rt_gpu_ms": 0.0,
+      "controller_cpu_ms": 0.016,
+      "frame_ms": 5.156000000000001
+    },
+    "path-2-high": {
+      "rt_gpu_ms": 17.904128,
+      "controller_cpu_ms": 1.955,
+      "frame_ms": 19.880499999999998
+    },
+    "path-2-low": {
+      "rt_gpu_ms": 0.740864,
+      "controller_cpu_ms": 1.7605,
+      "frame_ms": 7.538
+    },
+    "path-2-medium": {
+      "rt_gpu_ms": 5.118976,
+      "controller_cpu_ms": 1.8475000000000001,
+      "frame_ms": 8.131
+    },
+    "path-4-high": {
+      "rt_gpu_ms": 22.569216,
+      "controller_cpu_ms": 1.986,
+      "frame_ms": 24.607
+    },
+    "path-4-low": {
+      "rt_gpu_ms": 1.0220799999999999,
+      "controller_cpu_ms": 1.7195,
+      "frame_ms": 7.4605
+    },
+    "path-4-medium": {
+      "rt_gpu_ms": 6.637312,
+      "controller_cpu_ms": 1.7785,
+      "frame_ms": 9.085999999999999
+    },
+    "scene-rt-medium": {
+      "rt_gpu_ms": 0.565248,
+      "controller_cpu_ms": 1.805,
+      "frame_ms": 7.6899999999999995
+    }
+  },
+  "paired_after": {
+    "conventional": {
+      "rt_gpu_ms": 0.0,
+      "controller_cpu_ms": 0.0175,
+      "frame_ms": 5.550000000000001
+    },
+    "path-2-high": {
+      "rt_gpu_ms": 19.075072,
+      "controller_cpu_ms": 0.7045,
+      "frame_ms": 21.2265
+    },
+    "path-2-low": {
+      "rt_gpu_ms": 0.74112,
+      "controller_cpu_ms": 0.5395,
+      "frame_ms": 6.167
+    },
+    "path-2-medium": {
+      "rt_gpu_ms": 4.903936,
+      "controller_cpu_ms": 0.582,
+      "frame_ms": 7.5365
+    },
+    "path-4-high": {
+      "rt_gpu_ms": 21.621119999999998,
+      "controller_cpu_ms": 0.7225,
+      "frame_ms": 23.982
+    },
+    "path-4-low": {
+      "rt_gpu_ms": 0.8930560000000001,
+      "controller_cpu_ms": 0.6425,
+      "frame_ms": 6.9125
+    },
+    "path-4-medium": {
+      "rt_gpu_ms": 5.662592,
+      "controller_cpu_ms": 0.625,
+      "frame_ms": 8.536999999999999
+    },
+    "scene-rt-medium": {
+      "rt_gpu_ms": 0.5291520000000001,
+      "controller_cpu_ms": 0.5335000000000001,
+      "frame_ms": 6.4350000000000005
+    }
+  },
+  "alternating_gpu": {
+    "1": {
+      "true": 6.555136,
+      "false": 5.498752
+    },
+    "2": {
+      "true": 23.18656,
+      "false": 20.416384
+    }
+  }
+}

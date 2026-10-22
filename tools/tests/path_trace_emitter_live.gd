@@ -18,7 +18,7 @@ func run() -> void:
 	var focus:=host.global_position+Vector3(2,0,1);focus.y=t.height_at(focus.x,-focus.z)
 	glow.global_position=focus+Vector3.UP*1.3;glow.hide()
 	camera.global_position=focus+Vector3(4,3,6);camera.look_at(focus+Vector3.UP*0.5)
-	GameData.options.pt_mode=1;GameData.options.pt_accumulation=0;GameData.options.q_rt_lighting=0;Gfx.apply_env(game._env)
+	GameData.options.pt_mode=2 if OS.get_cmdline_user_args().has("--pt-deep") else 1;GameData.options.pt_accumulation=0;GameData.options.q_rt_lighting=0;Gfx.apply_env(game._env)
 	var rt: Node=game.get_node("SceneRaytrace")
 	check(await ready_scene(rt),"campaign snapshot includes the hidden emissive mesh")
 	if rt.stats.get("active",false):

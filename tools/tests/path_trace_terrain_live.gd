@@ -48,8 +48,9 @@ func buffers(owner: Node,label: String) -> void:
 
 func run() -> void:
 	var context:=await setup();var session: Session=context[0];var game: Game=context[1]
+	var responsive:=OS.get_cmdline_user_args().has("--pt-responsive")
 	GameData.options.merge({"gfx_water_reflections":0,"gfx_terrain":1,"gfx_terrain_cliffs":1,"gfx_materials":1,"gfx_foliage_light":1,
-		"pt_mode":2,"pt_accumulation":1,"q_rt_lighting":1},true)
+		"pt_mode":2,"pt_accumulation":0 if responsive else 1,"q_rt_lighting":1},true)
 	t.apply_gfx();Gfx.apply_env(game._env)
 	var rt: Node=game.get_node("SceneRaytrace")
 	check(await ready_materials(rt),"terrain materials prepare in campaign")
@@ -64,7 +65,7 @@ func run() -> void:
 		check(await ready_materials(rt),"terrain view prepares: "+view)
 		await frames(150);await shot(view);await buffers(rt,view)
 		rows.append({"view":view,"camera":str(camera.global_transform),"stats":rt.stats.duplicate()})
-		check(rt.stats.accumulation_frames>=100,"terrain history settles: "+view)
+		check(rt.stats.accumulation_frames>=(8 if responsive else 100),"terrain history settles: "+view)
 	# The new controller reports exact retained terrain identities and bytes.
 	if rt.stats.has("terrain_material_triangles"):
 		check(rt.stats.terrain_material_triangles>100 and rt.stats.terrain_material_bytes>64,"terrain snapshot contains tile identities and material data")

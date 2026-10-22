@@ -1,8 +1,8 @@
 {
   "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
   "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
-  "builder_sha256": "920b75dafe9d92c16a7f088ac69a73513189bd1e72f3157772b67d6341c6e89e",
-  "source_sha256": "33ff99fe242009599b35ba4c3e270e0a88680f800aa9d4dbdcc5413b4b50d86b",
+  "builder_sha256": "b8c5c42715bc4a4c517ae3809a924a72af88d649ae88771c81e8271d65cfbe61",
+  "source_sha256": "e794ee0ed4de410ab71fda47a0c290277f8f760f115672f5b367c074dc53a306",
   "files": {
     "path_trace_raygen.dxil": "d45912d3306e84f1d5f1f2ec3bab96f9f8b97f87bd1687ca15261d6f0758cd64",
     "path_trace_raygen.spv": "2e850b279f1eb5195d1a93b77e25795a7ce0165c921f8ef32e461489d53991f0",
@@ -14,6 +14,10 @@
     "path_trace_any_hit.spv": "9520e13148ceca6edfc9d620dd2e546e6f9c40d812380f2a798c2bebbf7e4c35",
     "path_trace_raygen_no_emitters.dxil": "29da589284b177ea5b69d765df47b203cc935797cb08b88490bb364a4b269d66",
     "path_trace_raygen_no_emitters.spv": "0a9bd1b5097a45ea4bbcebee9b86272f175a74477debccc4b9636e9464a1fa00",
+    "path_trace_raygen_deep.dxil": "aede820056d85364a5d75c4806d1b27b0c8d5ee3e2c0d124b33ae49292573329",
+    "path_trace_raygen_deep.spv": "466479e82415fc62b1580b8775850b2439ef3b52ca5527e26e783464dec913ee",
+    "path_trace_raygen_deep_no_emitters.dxil": "d6880c25699973224a5c5b5cfc6604fdcb4756c5e5a9f78e04fa5253d0331eb9",
+    "path_trace_raygen_deep_no_emitters.spv": "61756779a19057c45883427b9932aaa204e6566694b087a2073b087c377fe53e",
     "path_trace_closest_hit_terrain.dxil": "775651ea67f90cb50dc5fd022f71518b4d778a1b27f2b86589107fb673fa2d38",
     "path_trace_closest_hit_terrain.spv": "915f420fb62d586c44f0e8bc86e811cde5dc2093765a404d0619c05f3cf95167",
     "path_trace_closest_hit_transitions.dxil": "545db93b7d426534891c840e386df40707330544bb786e3e88cc5c9d680f10c2",

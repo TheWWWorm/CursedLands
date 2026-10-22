@@ -13,12 +13,16 @@ var _instance_geometry := RID()
 var _emitters := RID()
 var _emitter_lookup := RID()
 var _uses_emitters := false
+var _deep_paths := false
+# Diagnostic full-path reference; normal play uses the compensated deep tail.
+var _full_paths_reference := OS.get_cmdline_user_args().has("--ei-full-paths")
 var _variants := {}
 func shader_prefix() -> String: return "res://src/game/fx/shaders/path_trace_"
 func shader_stage_path(stage: int) -> String:
 	if stage==RenderingDevice.SHADER_STAGE_CLOSEST_HIT and terrain.data.size()>=Terrain.HEADER and terrain.data.decode_u32(0)>0:
 		return shader_prefix()+("closest_hit_transitions" if terrain.data.decode_u32(56)>0 else "closest_hit_terrain")
-	if stage==RenderingDevice.SHADER_STAGE_RAYGEN and not _uses_emitters: return shader_prefix()+"raygen_no_emitters"
+	if stage==RenderingDevice.SHADER_STAGE_RAYGEN:
+		return shader_prefix()+"raygen"+("_deep" if _deep_paths else "")+("_no_emitters" if not _uses_emitters else "")
 	return super.shader_stage_path(stage)
 func frame_bytes() -> int: return 704
 func filter_spirv() -> RDShaderSPIRV: return PATH_FILTER.get_spirv()
@@ -36,28 +40,29 @@ func build_extra(data: PackedByteArray, placements: Array) -> bool:
 	# Synthetic/non-terrain scenes bind the existing array as an unused dummy.
 	_terrain_atlas = RenderingServer.texture_get_rd_texture(terrain.atlas.get_rid(),true) if terrain.atlas else _colours
 	if not _terrain_data.is_valid() or not _terrain_atlas.is_valid(): return false
-	_variants[false] = {"shader":_shader,"pipeline":_pipeline}
+	_variants[0] = {"shader":_shader,"pipeline":_pipeline}
 	var mapping := _placement_geometry.to_byte_array()
 	_instance_geometry = _own(_rd.storage_buffer_create(mapping.size(),mapping))
 	emitters.setup(data,_geometry,placements,_opaque_fast_path)
 	_emitters = _own(_rd.storage_buffer_create(Emitters.HEADER+Emitters.LIMIT*Emitters.STRIDE))
 	_emitter_lookup = _own(_rd.storage_buffer_create(Emitters.HASH_SLOTS*16))
 	return _instance_geometry.is_valid() and _emitters.is_valid() and _emitter_lookup.is_valid() \
-		and _upload_emitters() and _select_pipeline(emitters.count>0)
+		and _upload_emitters() and _select_pipeline(emitters.count>0,_deep_paths)
 
-## Compile the larger raygen only for scenes with eligible emissive surfaces.
-## Both variants share the same hit stages, TLAS, SBT ranges and stable images.
-func _select_pipeline(enabled: bool) -> bool:
-	if enabled==_uses_emitters: return true
-	_uses_emitters = enabled
-	if not _variants.has(enabled):
+## Compile only the needed emitter/deep-path combinations. Every variant
+## shares hit stages, TLAS, SBT ranges and stable output images.
+func _select_pipeline(enabled: bool,deep: bool) -> bool:
+	if enabled==_uses_emitters and deep==_deep_paths: return true
+	_uses_emitters = enabled;_deep_paths = deep
+	var key := int(enabled)|(int(deep)<<1)
+	if not _variants.has(key):
 		var program := _compile()
 		if program==null: return false
 		var group := RDHitGroup.new();group.closest_hit_shader=program;group.any_hit_shader=program
 		var pipeline := _own(_rd.raytracing_pipeline_create([program],[program],[group],1))
 		if not pipeline.is_valid(): return false
-		_variants[enabled] = {"shader":_shader,"pipeline":pipeline}
-	_shader = _variants[enabled].shader;_pipeline = _variants[enabled].pipeline
+		_variants[key] = {"shader":_shader,"pipeline":pipeline}
+	_shader = _variants[key].shader;_pipeline = _variants[key].pipeline
 	if _rd.hit_sbt_set_pipeline(_sbt,_pipeline)!=OK: return false
 	if _set.is_valid(): _rd.free_rid(_set);_set=RID()
 	_history_valid = false
@@ -82,9 +87,15 @@ func update_scene(changes: Dictionary) -> bool:
 	if not super.update_scene(changes): return false
 	if emitters.update(changes):
 		_history_valid = false
-		if not _upload_emitters() or not _select_pipeline(emitters.count>0):
+		if not _upload_emitters() or not _select_pipeline(emitters.count>0,_deep_paths):
 			_ready = false; prepared.emit.call_deferred(false); return false
 	return true
+
+func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, texture_filter := 4) -> void:
+	if _closed or not _ready or frame.size()!=frame_bytes(): return
+	if not _select_pipeline(_uses_emitters,frame.decode_float(144*4)>2.0 and not _full_paths_reference):
+		_ready=false;prepared.emit.call_deferred(false);return
+	super.render(size,frame,changes,texture_filter)
 
 func dispose() -> void:
 	super.dispose()

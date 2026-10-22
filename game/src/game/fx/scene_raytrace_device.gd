@@ -2,6 +2,10 @@ extends "res://src/game/fx/water_raytrace_device.gd"
 ## Main-view lighting uses the same native scene/AS backend as reflections.
 ## All GPU allocation, reconstruction and destruction stay on the render thread.
 const FILTER = preload("res://src/game/fx/shaders/scene_raytrace_filter.glsl")
+# Extra timestamp boundaries are diagnostic only; normal frames retain the
+# existing whole-pass bracket without intermediate query overhead.
+var _profile_stages := OS.get_cmdline_user_args().has("--ei-profile-rt")
+
 var guide := Texture2DRD.new()
 var shadow0 := Texture2DRD.new()
 var shadow1 := Texture2DRD.new()
@@ -100,11 +104,13 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 	_rd.raytracing_list_bind_uniform_set(rays,_set,0)
 	_rd.raytracing_list_trace_rays(rays,0,_sbt,size.x,size.y,1)
 	_rd.raytracing_list_end()
+	if _profile_stages: _rd.capture_timestamp("Scene RT rays")
 	var filter := _rd.compute_list_begin()
 	_rd.compute_list_bind_compute_pipeline(filter,_filter_pipeline)
 	_rd.compute_list_bind_uniform_set(filter,_filter_sets[0],0)
 	_rd.compute_list_dispatch(filter,ceili(size.x/8.0),ceili(size.y/8.0),1)
 	_rd.compute_list_end()
+	if _profile_stages: _rd.capture_timestamp("Scene RT reconstruct")
 	# Texture2DRD replacement invalidates every material sampling that RS
 	# texture. Keep four stable outputs instead of swapping them every frame;
 	# a small GPU copy supplies next frame's history without descriptor churn.

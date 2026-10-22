@@ -27,6 +27,9 @@ def main():
         # Keep scenes without emitters out of the larger raygen's register /
         # instruction footprint. Hit stages and payload layouts are shared.
         stages.append(('raygen_no_emitters', 'raygen', ['PATH_NO_EMITTERS']))
+        # Two-bounce mode avoids the deep-tail shader's register footprint.
+        stages.append(('raygen_deep', 'raygen', ['PATH_ROULETTE']))
+        stages.append(('raygen_deep_no_emitters', 'raygen', ['PATH_ROULETTE', 'PATH_NO_EMITTERS']))
         stages.append(('closest_hit_terrain', 'closest_hit', ['PATH_TERRAIN_MATERIALS']))
         stages.append(('closest_hit_transitions', 'closest_hit', ['PATH_TERRAIN_MATERIALS', 'PATH_TERRAIN_TRANSITIONS']))
     prefix = args.shader + '_'

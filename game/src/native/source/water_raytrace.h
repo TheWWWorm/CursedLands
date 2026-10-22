@@ -44,6 +44,7 @@ protected:
         ClassDB::bind_method(D_METHOD("add_group", "node", "unit"), &WaterRaytraceKernel::add_group);
         ClassDB::bind_method(D_METHOD("add_instance", "group", "node", "mesh", "terrain", "index", "transform", "mask"), &WaterRaytraceKernel::add_instance);
         ClassDB::bind_method(D_METHOD("updates", "force"), &WaterRaytraceKernel::updates);
+        ClassDB::bind_method(D_METHOD("lighting_updates", "force", "camera_mask"), &WaterRaytraceKernel::lighting_updates);
     }
 public:
     PackedInt32Array atlas_layers(const Array &arrays, const Transform3D &transform, Vector3 center, double radius, double plane) const {
@@ -140,7 +141,10 @@ public:
         entry.terrain = terrain; entry.index = index; entry.transform = transform; entry.mask = mask;
         groups[group].instances.push_back(entry);
     }
-    Array updates(bool force) {
+    Array updates(bool force) { return instance_updates(force, -1); }
+    Array lighting_updates(bool force, int64_t camera_mask) { return instance_updates(force, camera_mask); }
+private:
+    Array instance_updates(bool force, int64_t camera_mask) {
         Array changes;
         for (Group &group : groups) {
             auto *root = Object::cast_to<Node3D>(ObjectDB::get_instance(group.node));
@@ -154,14 +158,27 @@ public:
                 Transform3D transform = entry.transform;
                 if (visible && node && node->is_visible_in_tree()) {
                     auto *mesh = Object::cast_to<MeshInstance3D>(node);
-                    if (entry.terrain) mask = 255;
-                    else if (mesh && mesh->get_mesh().is_valid() && mesh->get_mesh()->get_instance_id() == entry.mesh) {
-                        transform = node->get_global_transform();
-                        mask = mesh->get_cast_shadows_setting() == GeometryInstance3D::SHADOW_CASTING_SETTING_SHADOWS_ONLY ? 2 :
-                            mesh->get_cast_shadows_setting() == GeometryInstance3D::SHADOW_CASTING_SETTING_OFF ? 1 : 255;
-                        // EIUnitModel.CLOSE_VIEW_LAYER: the sealed local torso
-                        // has separate complete reflection/shadow copies.
-                        if ((mesh->get_layer_mask() & ~(uint32_t(1) << 14)) == 0) mask = 0;
+                    if (entry.terrain || (mesh && mesh->get_mesh().is_valid() && mesh->get_mesh()->get_instance_id() == entry.mesh)) {
+                        mask = 255;
+                        if (!entry.terrain) transform = node->get_global_transform();
+                        if (mesh) {
+                            const auto shadows = mesh->get_cast_shadows_setting();
+                            const uint32_t layers = mesh->get_layer_mask();
+                            // EIUnitModel.CLOSE_VIEW_LAYER has separate complete
+                            // reflection/shadow copies. Keep camera, indirect and
+                            // shadow eligibility independent, including layer 0.
+                            const bool indirect = (layers & ~(uint32_t(1) << 14)) != 0;
+                            if (camera_mask >= 0) {
+                                mask = (layers & uint32_t(camera_mask)) != 0 ? 1 : 0;
+                                if (indirect) mask |= 4;
+                                if (shadows != GeometryInstance3D::SHADOW_CASTING_SETTING_OFF) mask |= 2;
+                                if (shadows == GeometryInstance3D::SHADOW_CASTING_SETTING_SHADOWS_ONLY) mask &= ~1;
+                            } else {
+                                if (shadows == GeometryInstance3D::SHADOW_CASTING_SETTING_SHADOWS_ONLY) mask = 2;
+                                else if (shadows == GeometryInstance3D::SHADOW_CASTING_SETTING_OFF) mask = 1;
+                                if (!indirect) mask = 0;
+                            }
+                        }
                     }
                 }
                 if (force || mask != entry.mask || transform != entry.transform) {

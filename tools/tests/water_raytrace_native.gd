@@ -1,5 +1,9 @@
 extends Node
 ## Native/script parity for packing, budgets, visibility and scene lifetime.
+class VisibilityUnit extends GameUnit:
+	var audit_invisible := false
+	func is_invisible() -> bool: return audit_invisible
+
 const Scene = preload("res://src/game/fx/water_raytrace_scene.gd")
 var checks := 0
 var failures := []
@@ -92,7 +96,66 @@ func run() -> void:
 	check(native._instance_updates(true)==script._instance_updates(true),"freed node is safe and stays masked")
 	parent.free()
 	check(native._instance_updates(true)==script._instance_updates(true),"freed ancestor is safe and stays masked")
+	lighting_tracking()
+	unit_visibility()
 	terrain.free(); finish()
+
+
+func lighting_tracking() -> void:
+	for land in [false,true]:
+		var parent := Node3D.new(); add_child(parent)
+		var node := MeshInstance3D.new(); node.mesh=BoxMesh.new(); parent.add_child(node)
+		var native := Scene.new(); var script := Scene.new(); script._kernel=null
+		check(native._kernel.has_method("lighting_updates"),"native lighting tracker is available")
+		for scene in [native,script]:
+			scene._mesh_roots[node.get_instance_id()]=weakref(parent)
+			scene._add_instance(node,0,node.global_transform)
+			scene.instances[0].terrain=land
+		for camera_mask in [1,1|EIUnitModel.CLOSE_VIEW_LAYER,EIUnitModel.REFLECTION_LAYER,0]:
+			for scene in [native,script]:scene.lighting_camera_mask=camera_mask
+			for setting in [GeometryInstance3D.SHADOW_CASTING_SETTING_OFF,GeometryInstance3D.SHADOW_CASTING_SETTING_ON,
+					GeometryInstance3D.SHADOW_CASTING_SETTING_DOUBLE_SIDED,GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY]:
+				node.cast_shadow=setting
+				for layer in [0,1,1<<19,EIUnitModel.CLOSE_VIEW_LAYER,EIUnitModel.REFLECTION_LAYER,EIUnitModel.CLOSE_VIEW_LAYER|1]:
+					node.layers=layer
+					var expected := 1 if (layer&camera_mask)!=0 else 0
+					if (layer&~EIUnitModel.CLOSE_VIEW_LAYER)!=0:expected|=4
+					if setting!=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF:expected|=2
+					if setting==GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY:expected&=~1
+					var a := native._instance_updates(false); var b := script._instance_updates(false)
+					check(a==b and native.instances[0].mask==expected,"lighting masks land=%s camera=%d shadow=%d layers=%d"%[land,camera_mask,setting,layer])
+		parent.position=Vector3(3,-2,7)
+		check(native._instance_updates(false)==script._instance_updates(false),"lighting movement preserves baked terrain transforms: "+str(land))
+		check(native._instance_updates(false).is_empty() and script._instance_updates(false).is_empty(),"stationary lighting instances emit no updates")
+		parent.hide()
+		check(native._instance_updates(false)==script._instance_updates(false),"lighting hidden ancestor parity")
+		check(native._instance_updates(false).is_empty() and script._instance_updates(false).is_empty(),"hidden lighting group stays quiet")
+		parent.show();node.hide()
+		check(native._instance_updates(false)==script._instance_updates(false),"lighting hidden part parity")
+		node.show();node.mesh=SphereMesh.new()
+		check(native._instance_updates(false)==script._instance_updates(false),"lighting replaced mesh parity")
+		# Switching back to reflection rules must also change native cached masks.
+		for scene in [native,script]:scene.lighting_camera_mask=-1
+		check(native._instance_updates(true)==script._instance_updates(true),"lighting to water mask parity")
+		node.free()
+		check(native._instance_updates(true)==script._instance_updates(true),"lighting freed node parity")
+		parent.free()
+		check(native._instance_updates(true)==script._instance_updates(true),"lighting freed ancestor parity")
+
+func unit_visibility() -> void:
+	var parent := VisibilityUnit.new(); add_child(parent)
+	var node := MeshInstance3D.new(); node.mesh=BoxMesh.new(); parent.add_child(node)
+	var native := Scene.new(); var script := Scene.new(); script._kernel=null
+	for scene in [native,script]:
+		scene.lighting_camera_mask=1
+		scene._mesh_roots[node.get_instance_id()]=weakref(parent)
+		scene._add_instance(node,0,node.global_transform)
+	for hidden in [false,true,true,false]:
+		parent.audit_invisible=hidden
+		var a := native._instance_updates(false);var b := script._instance_updates(false)
+		check(a==b and native.instances[0].mask==(0 if hidden else 7),"invisible unit masks match without a scene rebuild: "+str(hidden))
+	parent.free()
+	check(native._instance_updates(true)==script._instance_updates(true),"freed unit masks its retained parts safely")
 
 func finish() -> void:
 	FileAccess.open(out.path_join("native.json"),FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures},"\t"))

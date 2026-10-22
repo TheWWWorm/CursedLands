@@ -278,7 +278,7 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 
 ## Plain values only: the render thread never dereferences a scene node.
 func _instance_updates(force: bool) -> Array:
-	if _kernel != null and lighting_camera_mask < 0:
+	if _kernel != null and (lighting_camera_mask < 0 or _kernel.has_method("lighting_updates")):
 		if not _watching:
 			_kernel.clear_instances()
 			for group: Dictionary in _groups.values():
@@ -288,7 +288,7 @@ func _instance_updates(force: bool) -> Array:
 					var entry: Dictionary = instances[i]
 					_kernel.add_instance(at,entry.node.get_ref(),entry.mesh,entry.terrain,i,entry.transform,entry.mask)
 			_watching = true
-		var changes: Array = _kernel.updates(force)
+		var changes: Array = _kernel.lighting_updates(force,lighting_camera_mask) if lighting_camera_mask >= 0 else _kernel.updates(force)
 		for change: Dictionary in changes:
 			instances[change.index].mask = change.mask
 			instances[change.index].transform = change.transform

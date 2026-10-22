@@ -9,6 +9,7 @@ var cpu_begin := 0
 var sampling := false
 var cpu_samples := []
 var gpu_samples := []
+var gpu_stage_samples := {}
 var last_gpu_frame := -1
 var runs := []
 
@@ -23,14 +24,30 @@ func _gpu() -> void:
 	if frame==last_gpu_frame:return
 	last_gpu_frame=frame
 	var start: int=-1
+	var previous: int=-1
+	var stages:={}
 	for i in rd.get_captured_timestamps_count():
 		var label:=rd.get_captured_timestamp_name(i)
-		if label=="Scene RT begin":start=rd.get_captured_timestamp_gpu_time(i)
+		var at:=rd.get_captured_timestamp_gpu_time(i)
+		if label=="Scene RT begin":start=at;previous=at
+		elif label in ["Scene RT rays","Scene RT reconstruct"] and previous>=0:
+			stages["rays" if label=="Scene RT rays" else "reconstruction"]=(at-previous)/1000000.0
+			previous=at
 		elif label=="Scene RT end" and start>=0:
-			_accept.call_deferred((rd.get_captured_timestamp_gpu_time(i)-start)/1000000.0)
+			if stages.has("reconstruction"):stages["copies"]=(at-previous)/1000000.0
+			_accept.call_deferred((at-start)/1000000.0,stages)
 
-func _accept(ms: float) -> void:
-	if sampling:gpu_samples.append(ms)
+func _accept(ms: float,stages: Dictionary) -> void:
+	if not sampling:return
+	gpu_samples.append(ms)
+	for stage in stages:
+		if not gpu_stage_samples.has(stage):gpu_stage_samples[stage]=[]
+		gpu_stage_samples[stage].append(stages[stage])
+
+func stage_summary() -> Dictionary:
+	var result:={}
+	for stage in gpu_stage_samples:result[stage]=summary(gpu_stage_samples[stage].duplicate())
+	return result
 
 func summary(values: Array) -> Dictionary:
 	if values.is_empty(): return {}
@@ -58,14 +75,14 @@ func run() -> void:
 				check(await ready_scene(rt),"benchmark prepares "+str(choice[0]))
 				if not rt.stats.get("active",false):get_tree().quit(1);return
 			await frames(40)
-			gpu_samples.clear();cpu_samples.clear();sampling=true
+			gpu_samples.clear();gpu_stage_samples.clear();cpu_samples.clear();sampling=true
 			var wall:=[];var main_gpu:=[];var previous:=Time.get_ticks_usec()
 			for i in 90:
 				await frames(1);var now:=Time.get_ticks_usec();wall.append((now-previous)/1000.0);previous=now
 				main_gpu.append(RenderingServer.viewport_get_measured_render_time_gpu(get_viewport().get_viewport_rid()))
 			sampling=false
 			var row:={"case":choice[0],"round":round_index,"frame_ms":summary(wall),"main_gpu_ms":summary(main_gpu),
-				"rt_gpu_ms":summary(gpu_samples.duplicate()),"controller_cpu_ms":summary(cpu_samples.duplicate()),"stats":rt.stats.duplicate()}
+				"rt_gpu_ms":summary(gpu_samples.duplicate()),"gpu_stages_ms":stage_summary(),"controller_cpu_ms":summary(cpu_samples.duplicate()),"stats":rt.stats.duplicate()}
 			runs.append(row);print("SCENE_RT_BENCH ",JSON.stringify(row))
 			FileAccess.open(out.path_join("scene-performance.json"),FileAccess.WRITE).store_string(JSON.stringify({"runs":runs,
 				"device":RenderingServer.get_video_adapter_name(),"driver":RenderingServer.get_current_rendering_driver_name(),"viewport":[1280,720],

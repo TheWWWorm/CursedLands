@@ -201,10 +201,12 @@ meshes become invisible until the scene snapshot refreshes. Scene traversal,
 material/texture capture and blend-shape deformation remain in GDScript, and
 all RenderingDevice work stays on the render thread. The helper changes no
 gameplay, navigation or save state. `-- --ei-script-water-rt` selects the retained
-script path, as do older libraries without this class. Only the isolated Linux
-water-RT experiment's library is rebuilt for this addition; other platform
-binaries retain the fallback. `tools/tests/water_raytrace_native.gd` compares
-packing, clipping, texture order, budgets, transforms and object lifetimes;
+script path, as do older libraries without this class. Windows x86-64 and Linux
+x86-64 also provide `lighting_updates` for RT lighting and path tracing. Camera,
+indirect and shadow masks remain independent, and camera-mask changes are checked
+every frame. Older libraries without this method retain script lighting tracking.
+`tools/tests/water_raytrace_native.gd` compares packing, clipping, texture order,
+budgets, transforms, camera/shadow layers, baked terrain and object lifetimes;
 the live-character and GPU fixtures validate the complete reflection path.
 See `docs/validation/water-raytracing-optimization-2026-10-21.json` in the
 repository root for measurements and qualification limits.

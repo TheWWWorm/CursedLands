@@ -310,6 +310,11 @@ void emissive_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,ou
 void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diffuse,out float3 specular) {
     direct_light(primary,view,sampler,diffuse,specular);
     Surface current=primary;
+#ifdef PATH_ROULETTE
+    // Smooth metals expose deep-path noise directly in reflections. Retain
+    // more of their tail while allowing diffuse receivers the larger saving.
+    float roulette_floor=lerp(0.25,0.75,primary.metalness*(1.0-primary.roughness));
+#endif
     float3 v=view,weight_d=1.0,weight_s=1.0;
     uint bounces=clamp(uint(frame.path.x),1u,4u);
     for(uint depth=0;depth<bounces;depth++) {
@@ -333,6 +338,18 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
             weight_d*=weight;weight_s*=weight;
         }
         if(max(max(weight_d.r,max(weight_d.g,weight_d.b)),max(weight_s.r,max(weight_s.g,weight_s.b)))<1e-6)break;
+#ifdef PATH_ROULETTE
+        // Keep roulette out of the first two continuation bounces. For the
+        // optional deeper tail, compensate surviving paths rather than
+        // dropping dim energy. A 25% floor bounds the added sample variance;
+        // both demodulated signals use the same independent purpose slot.
+        if(depth>=2u) {
+            float survival=clamp(max(max(weight_d.r,max(weight_d.g,weight_d.b)),
+                max(weight_s.r,max(weight_s.g,weight_s.b))),roulette_floor,1.0);
+            if(path_random(sampler,12u).x>=survival)break;
+            weight_d/=survival;weight_s/=survival;
+        }
+#endif
         Surface hit=(Surface)0;hit.cone=max(0.002,current.roughness*0.02);
         RayDesc ray={surface_origin(current,direction),0.0,direction,frame.camera.w};
         TraceRay(scene,RAY_FLAG_NONE,4,0,0,0,ray,hit);

@@ -1,0 +1,240 @@
+{
+  "baseline_commit": "5a066d20",
+  "earlier_material_baseline": "fddeff26",
+  "gpu": "NVIDIA GeForce RTX 3090",
+  "windows_runtime": "Wine/VKD3D, qualified Godot 4.7 DX12 template",
+  "native_vulkan_driver": "580.178.04",
+  "runs": {
+    "opt2-delivery-fsr": {
+      "exit": 0,
+      "seconds": 39.39,
+      "assertion_errors": [],
+      "fault_diagnostics": [],
+      "clean_process": true
+    },
+    "opt2-delivery-tail": {
+      "exit": 0,
+      "seconds": 72.08,
+      "assertion_errors": [],
+      "fault_diagnostics": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 05bc), starting debugger..."
+      ],
+      "clean_process": false
+    },
+    "opt2-final-before-live": {
+      "exit": 0,
+      "seconds": 69.23,
+      "assertion_errors": [],
+      "fault_diagnostics": [],
+      "clean_process": true
+    },
+    "opt2-final-native-dx12": {
+      "exit": 0,
+      "seconds": 11.37,
+      "assertion_errors": [],
+      "fault_diagnostics": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 00e4), starting debugger..."
+      ],
+      "clean_process": false
+    },
+    "opt2-final-native-linux": {
+      "exit": 0,
+      "seconds": 4.12,
+      "assertion_errors": [],
+      "fault_diagnostics": [],
+      "clean_process": true
+    },
+    "opt2-final-reference": {
+      "exit": 0,
+      "seconds": 13.32,
+      "assertion_errors": [],
+      "fault_diagnostics": [],
+      "clean_process": true
+    },
+    "opt2-performance-early": {
+      "exit": 0,
+      "seconds": 69.21,
+      "assertion_errors": [],
+      "fault_diagnostics": [],
+      "clean_process": true
+    },
+    "opt2-qualified-before": {
+      "exit": 0,
+      "seconds": 70.91,
+      "assertion_errors": [],
+      "fault_diagnostics": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 026c), starting debugger..."
+      ],
+      "clean_process": false
+    },
+    "opt2-qualified-emitter-live": {
+      "exit": 0,
+      "seconds": 32.03,
+      "assertion_errors": [],
+      "fault_diagnostics": [],
+      "clean_process": true
+    },
+    "opt2-qualified-estimator-dx12": {
+      "exit": 0,
+      "seconds": 15.37,
+      "assertion_errors": [],
+      "fault_diagnostics": [],
+      "clean_process": true
+    },
+    "opt2-qualified-estimator-vulkan": {
+      "exit": 0,
+      "seconds": 13.17,
+      "assertion_errors": [],
+      "fault_diagnostics": [],
+      "clean_process": true
+    },
+    "opt2-qualified-live-dx12": {
+      "exit": 0,
+      "seconds": 55.54,
+      "assertion_errors": [],
+      "fault_diagnostics": [],
+      "clean_process": true
+    },
+    "opt2-qualified-live-vulkan": {
+      "exit": 0,
+      "seconds": 67.15,
+      "assertion_errors": [],
+      "fault_diagnostics": [],
+      "clean_process": true
+    },
+    "opt2-qualified-motion": {
+      "exit": 0,
+      "seconds": 35.19,
+      "assertion_errors": [],
+      "fault_diagnostics": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 05fc), starting debugger..."
+      ],
+      "clean_process": false
+    },
+    "opt2-qualified-performance": {
+      "exit": 0,
+      "seconds": 69.71,
+      "assertion_errors": [],
+      "fault_diagnostics": [],
+      "clean_process": true
+    }
+  },
+  "checks": {
+    "performance-alternating.json": 33,
+    "estimator-reference.json": 21,
+    "estimator-dx12.json": 61,
+    "estimator-vulkan.json": 61,
+    "native-linux.json": 271,
+    "native-windows.json": 271,
+    "campaign-before.json": 18,
+    "campaign-dx12.json": 18,
+    "campaign-vulkan.json": 18,
+    "campaign-emitter.json": 10,
+    "campaign-camera.json": 14,
+    "frame-generation.json": 62
+  },
+  "two_bounce_bytecode_unchanged": {
+    "path_trace_raygen.dxil": true,
+    "path_trace_raygen.spv": true,
+    "path_trace_raygen_no_emitters.dxil": true,
+    "path_trace_raygen_no_emitters.spv": true
+  },
+  "source_hashes": {
+    "game/src/game/fx/path_trace_device.gd": "d5cf62da6d58db886475507bb393806ff519fddae82d31baaed4f05fd1d99af6",
+    "game/src/game/fx/scene_raytrace_device.gd": "2ad7ae3eb7311e98b5ffd39e4ac4c8279da8d6e49da220bd8b5bd23176a6feda",
+    "game/src/game/fx/shaders/path_trace.hlsl": "e794ee0ed4de410ab71fda47a0c290277f8f760f115672f5b367c074dc53a306",
+    "game/src/game/fx/shaders/path_trace_build.json": "2973985b48bf00216a26912c540b0a2cce51dbf3676225ddce06f844d64dbfee",
+    "game/src/game/fx/shaders/path_trace_raygen_deep.dxil": "aede820056d85364a5d75c4806d1b27b0c8d5ee3e2c0d124b33ae49292573329",
+    "game/src/game/fx/shaders/path_trace_raygen_deep.spv": "466479e82415fc62b1580b8775850b2439ef3b52ca5527e26e783464dec913ee",
+    "game/src/game/fx/shaders/path_trace_raygen_deep_no_emitters.dxil": "d6880c25699973224a5c5b5cfc6604fdcb4756c5e5a9f78e04fa5253d0331eb9",
+    "game/src/game/fx/shaders/path_trace_raygen_deep_no_emitters.spv": "61756779a19057c45883427b9932aaa204e6566694b087a2073b087c377fe53e",
+    "game/src/game/fx/shaders/scene_raytrace_build.json": "fe7734826580dc86b404870f6f14794aa63658625830b8f1c65b7d47a8fc20dc",
+    "game/src/game/fx/shaders/water_raytrace_build.json": "5df942a598e6ded650375100a9ef916512b2b8d67cea29848fde2da40cebba5c",
+    "game/src/game/fx/water_raytrace_scene.gd": "582cef3a3fddd7667363016e15b7e745e2889c0b5bfa14e8610519ffe26edf45",
+    "game/src/native/bin/libterrain_search.dll": "195615273fcdce04331d3631c62d3da75bd79c689e261c7c1fc73ae98236e63d",
+    "game/src/native/bin/libterrain_search.so": "3b547a0da133029f9c4948dccc641cbdc1b9e5e275c6b01c4a7589d1006eaea5",
+    "game/src/native/source/README.md": "d6871e68389fd4ccbf0ce4b858ac2544683616b860a59f709f3b18a2b86f0d83",
+    "game/src/native/source/water_raytrace.h": "49b0f10b0d43cd8ae8acce9174a89113d720c77dd6c2057256e762bcc6073e54",
+    "tools/build_water_rt_shaders.py": "b8c5c42715bc4a4c517ae3809a924a72af88d649ae88771c81e8271d65cfbe61",
+    "tools/tests/path_trace_emitter_live.gd": "8fdaaa782c067b325db040f4fbdc29269e920294e1154b629fe4eab91dd94711",
+    "tools/tests/path_trace_fsr.gd": "7be7503ac737875458345d8453d913c3506b4af1b1b20f55e5b3ed3cdbe11071",
+    "tools/tests/path_trace_optimization.gd": "04fbe171b25d543a5face5c268f0061a294bdeb1f52d17cf7b4c7c4a43b7fc07",
+    "tools/tests/path_trace_performance.gd": "85323ffd4da577fd51527a1c2d4c9a3727c6289385e0dd0e41ba5e95eaf0d4c6",
+    "tools/tests/path_trace_tail_performance.gd": "2084027bb2e6304a937126a88501897154484007508a38f9101a84b2853c9fce",
+    "tools/tests/path_trace_terrain_live.gd": "45f0373ccf19aa6a656cf20d8bf9054fbafb9231d16e2074f63b769f5e12fa2a",
+    "tools/tests/scene_raytrace_performance.gd": "61284cfc82108dd9c42ea3fa418fc37d2983cd931c105fb3533bd8962978b13f",
+    "tools/tests/water_raytrace_native.gd": "529d77f99de16a46004ce90b93ec216a1dce3be376907eddada5eea524f79258"
+  },
+  "package_hashes": {
+    "preview-windows/CursedLands.exe": "3fdf36babfcbae0b3584aed85e1d52e4e537d3033c9128689cc0593a9ef80fd4",
+    "preview-windows/CursedLands.pck": "351bd339b40b1fdf14bd6b072837c3d5ae449671e47cdd47b3224be97d22a524",
+    "preview-windows/libterrain_search.dll": "195615273fcdce04331d3631c62d3da75bd79c689e261c7c1fc73ae98236e63d",
+    "preview-linux/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "preview-linux/CursedLands.pck": "351bd339b40b1fdf14bd6b072837c3d5ae449671e47cdd47b3224be97d22a524",
+    "preview-linux/src/native/bin/libterrain_search.so": "3b547a0da133029f9c4948dccc641cbdc1b9e5e275c6b01c4a7589d1006eaea5",
+    "preview-windows-opt1-baseline/CursedLands.pck": "37d5ec49e018abfce6a46211da948a820cc13d8d3c45f008df98794e86405589"
+  },
+  "branding": {
+    "required_export_sizes": [
+      {
+        "size": [
+          16,
+          16
+        ],
+        "exact_source_payload_present": true
+      },
+      {
+        "size": [
+          32,
+          32
+        ],
+        "exact_source_payload_present": true
+      },
+      {
+        "size": [
+          48,
+          48
+        ],
+        "exact_source_payload_present": true
+      },
+      {
+        "size": [
+          64,
+          64
+        ],
+        "exact_source_payload_present": true
+      },
+      {
+        "size": [
+          128,
+          128
+        ],
+        "exact_source_payload_present": true
+      },
+      {
+        "size": [
+          256,
+          256
+        ],
+        "exact_source_payload_present": true
+      }
+    ],
+    "source_24px_omitted_by_exporter": true
+  },
+  "profiles": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "validation": {
+    "shader_outputs_reproduced": 18,
+    "spirv_validated": 9,
+    "translation_errors": 0,
+    "windows_import_errors": 0,
+    "windows_export_errors": 0,
+    "godot_cpp_revision": "507ed9d840c01a3c5b2a39af8bb4000bfac30bf5"
+  }
+}

@@ -51,14 +51,14 @@ func run() -> void:
 				check(ready,"benchmark prepares "+str(choice[0]))
 				if not ready:get_tree().quit(1);return
 			await frames(40)
-			gpu_samples.clear();cpu_samples.clear();sampling=true
+			gpu_samples.clear();gpu_stage_samples.clear();cpu_samples.clear();sampling=true
 			var wall:=[];var main_gpu:=[];var previous:=Time.get_ticks_usec()
 			for i in 90:
 				await frames(1);var now:=Time.get_ticks_usec();wall.append((now-previous)/1000.0);previous=now
 				main_gpu.append(RenderingServer.viewport_get_measured_render_time_gpu(get_viewport().get_viewport_rid()))
 			sampling=false
 			var row:={"case":choice[0],"round":round_index,"frame_ms":summary(wall),"main_gpu_ms":summary(main_gpu),
-				"rt_gpu_ms":summary(gpu_samples.duplicate()),"controller_cpu_ms":summary(cpu_samples.duplicate()),"stats":rt.stats.duplicate()}
+				"rt_gpu_ms":summary(gpu_samples.duplicate()),"gpu_stages_ms":stage_summary(),"controller_cpu_ms":summary(cpu_samples.duplicate()),"stats":rt.stats.duplicate()}
 			runs.append(row);print("PATH_TRACE_BENCH ",JSON.stringify(row))
 			FileAccess.open(out.path_join("path-performance.json"),FileAccess.WRITE).store_string(JSON.stringify({"runs":runs,
 				"device":RenderingServer.get_video_adapter_name(),"driver":RenderingServer.get_current_rendering_driver_name(),"viewport":[1280,720],
