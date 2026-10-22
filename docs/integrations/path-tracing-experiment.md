@@ -57,6 +57,25 @@ bounce count bounds work; there is no
 Russian roulette or light reservoir sampling. Geometric normals offset rays
 outside the actual triangles, while interpolated normals shade the surfaces.
 
+Ray decisions use per-pixel, shuffled and Owen-scrambled two-dimensional Sobol
+sequences, following the [progressive padding approach](https://jcgt.org/published/0009/04/01/).
+The index combines the frame number and sample within that frame. Each path
+vertex gives the eight direct lights, emissive-light selection, emitter point,
+BSDF lobe and BSDF direction separate fixed purpose slots. Both index shuffling
+and coordinate scrambling are required: coordinate scrambling alone can leave
+correlated selection/position decisions that stop converging on small emitters.
+Skipped lights and terminated earlier samples do not advance another purpose's
+sequence. Two-dimensional Sobol values are computed with bit operations, using
+the binary Pascal transform for the second dimension. No lookup table, image
+target, sample-count change or extra ray is required. The fast Owen permutation
+is adapted from pbrt-v4; its attribution and Apache-2.0 license ship in
+`PATH_SAMPLING_NOTICES.txt` through every export preset.
+
+This primarily improves convergence over multiple samples and stationary
+frames. A single sample still has Monte Carlo noise. The sampler does not
+track a surface through camera/object motion or impose spatial blue noise;
+the existing reconstruction guides remain responsible for history validation.
+
 Emissive triangles also receive direct area sampling at each vertex that has
 a remaining continuation segment. An area-times-emission proposal selects
 one triangle and one point on it, then traces visibility with the same geometry
@@ -202,6 +221,9 @@ metalness guides, stationary variance and GPU/FG regression checks.
 The [variance-clamping follow-up](../validation/path-tracing-variance-2026-10-22/README.md)
 records brightness bias against analytical references, sparse coloured/HDR
 signals, disappearing noisy lighting, memory cost and GPU/FG regression checks.
+The [sample-distribution follow-up](../validation/path-tracing-sampling-2026-10-22/README.md)
+records unfiltered convergence against independent lighting references,
+per-frame quality, temporal noise, correlation checks and GPU/FG regressions.
 
 ## Rebuild and checks
 
@@ -228,6 +250,7 @@ Fixtures run through the existing `--tool` interface:
 | `path_trace_quality.gd` | Native grazing-metal variance and energy against numerical quadrature; subpixel and sloped reprojection; rejection of unrelated depth layers |
 | `path_trace_glossy.gd` | Native moving highlights against their deterministic raw reference, stationary variance/energy, separate diffuse/glossy confidence, perspective/orthographic motion, material-guide aliases and progressive precision |
 | `path_trace_variance.gd` | Analytical stochastic means, dark/bright outliers, colour ratios, HDR variance range, coherent/persistent dark changes, reset/depth rejection and variance-resource resize/teardown |
+| `path_trace_sampling.gd` | Native unfiltered grazing-metal, disk-sun penumbra and small-emitter convergence at 1/2/4 samples; late sequence starts, repeatability, frame wrap, purpose independence, spatial error correlation and packaged attribution |
 | `path_trace_receivers.gd` | Rendered steep-surface coverage and depth-edge rejection at 50/75/100% tracing resolution |
 | `path_trace_live.gd` | Outdoor material integration, responsive reprojection, still accumulation, camera reset, quality resizing and conventional restoration |
 | `path_trace_cave.gd` | Cave sky exclusion, two/four bounces, changing light colour, animated actor and history invalidation |

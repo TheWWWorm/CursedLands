@@ -51,25 +51,57 @@ float2 hit_uv(Vertex a,Vertex b,Vertex c,float3 weights) {
 }
 #if defined(PATH_RAYGEN)
 static const float PI=3.14159265359;
-float random(inout uint seed) {
+uint sample_hash(uint seed) {
     seed=seed*747796405u+2891336453u;
     uint x=((seed>>((seed>>28u)+4u))^seed)*277803737u;
-    // The upper 24 bits are exactly representable; converting a full uint
-    // to float can round to 1, outside the CDF and lobe samplers' [0,1) range.
-    return float(((x>>22u)^x)>>8u)*(1.0/16777216.0);
+    return (x>>22u)^x;
+}
+// Adapted from pbrt-v4's FastOwenScrambler (Apache-2.0).
+// Copyright(c) 1998-2020 Matt Pharr, Wenzel Jakob, and Greg Humphreys.
+// See PATH_SAMPLING_NOTICES.txt for attribution and the license.
+uint scramble_owen(uint value,uint seed) {
+    value=reversebits(value);
+    value^=value*0x3d20adeau;value+=seed;value*=(seed>>16u)|1u;
+    value^=value*0x05526c56u;value^=value*0x53a22864u;
+    return reversebits(value);
+}
+struct PathSampler { uint index; uint pixel; uint vertex; };
+PathSampler path_sampler(uint index,uint pixel) {
+    PathSampler sampler;sampler.index=index;sampler.pixel=sample_hash(pixel+1u);sampler.vertex=0u;
+    return sampler;
+}
+float2 path_random(PathSampler sampler,uint purpose) {
+    // Fixed purpose slots keep a lobe/light's sequence unchanged when an
+    // unrelated light is skipped or a preceding path terminates early.
+    uint key=sample_hash(sampler.pixel^((sampler.vertex*16u+purpose)*0x9e3779b9u));
+    // Shuffle the index as well as scrambling coordinates: independent output
+    // scrambles alone leave correlations between emitter selection, its sampled
+    // position and BSDF decisions. Nested index shuffling preserves dyadic nets.
+    // Burley 2020: https://jcgt.org/published/0009/04/01/
+    uint index=scramble_owen(sampler.index,sample_hash(key^0x967a889bu));
+    // The first two Sobol generators are bit reversal and the binary Pascal
+    // transform. These five XOR stages multiply the second generator without
+    // a direction-number table or a 32-iteration per-sample loop.
+    uint y=index;
+    y^=(y>>1u)&0x55555555u;y^=(y>>2u)&0x33333333u;
+    y^=(y>>4u)&0x0f0f0f0fu;y^=(y>>8u)&0x00ff00ffu;y^=y>>16u;
+    uint2 value=uint2(scramble_owen(reversebits(index),key),
+                     scramble_owen(reversebits(y),sample_hash(key^0x68bc21ebu)));
+    // Upper 24 bits stay in [0,1), including near the frame-counter wrap.
+    return float2(value>>8u)*(1.0/16777216.0);
 }
 void basis(float3 n,out float3 t,out float3 b) {
     t=normalize(cross(abs(n.z)<0.99?float3(0,0,1):float3(0,1,0),n)); b=cross(n,t);
 }
-float3 cosine_ray(float3 n,inout uint seed) {
-    float r=sqrt(random(seed)),phi=2.0*PI*random(seed);
+float3 cosine_ray(float3 n,float2 u) {
+    float r=sqrt(u.x),phi=2.0*PI*u.y;
     float3 t,b; basis(n,t,b);
     return normalize(t*(r*cos(phi))+b*(r*sin(phi))+n*sqrt(max(1.0-r*r,0.0)));
 }
-float3 area_ray(float3 direction,float angular_radius,inout uint seed) {
+float3 area_ray(float3 direction,float angular_radius,float2 u) {
     if(angular_radius<=0.0)return direction;
     float3 t,b; basis(direction,t,b);
-    float r=sqrt(random(seed))*angular_radius,phi=random(seed)*2.0*PI;
+    float r=sqrt(u.x)*angular_radius,phi=u.y*2.0*PI;
     return normalize(direction+t*(r*cos(phi))+b*(r*sin(phi)));
 }
 float visibility(float3 p,float3 n,float3 direction,float reach) {
@@ -110,9 +142,10 @@ void bsdf(Surface s,float3 v,float3 l,out float3 diffuse,out float3 specular,out
     // directions. This must match sample_bsdf, including its mixture weight.
     pdf=(1.0-chance)*nl/PI+chance*d*smith_g1(nv,a2)/max(4.0*nv,1e-6);
 }
-float3 sample_bsdf(Surface s,float3 v,inout uint seed) {
+float3 sample_bsdf(Surface s,float3 v,PathSampler sampler) {
     float chance=specular_chance(s,dot(s.normal,v));
-    if(random(seed)>=chance)return cosine_ray(s.normal,seed);
+    float2 u=path_random(sampler,11u);
+    if(path_random(sampler,10u).x>=chance)return cosine_ray(s.normal,u);
     float3 t,b;basis(s.normal,t,b);
     float a=s.roughness*s.roughness;
     // Heitz 2018, GGX visible-normal sampling: stretch the view, sample its
@@ -122,7 +155,7 @@ float3 sample_bsdf(Surface s,float3 v,inout uint seed) {
     float length2=dot(view.xy,view.xy);
     float3 tangent=length2>0.0?float3(-view.y,view.x,0)*rsqrt(length2):float3(1,0,0);
     float3 bitangent=cross(view,tangent);
-    float radius=sqrt(random(seed)),phi=2.0*PI*random(seed);
+    float radius=sqrt(u.x),phi=2.0*PI*u.y;
     float x=radius*cos(phi),y=radius*sin(phi),blend=0.5*(1.0+view.z);
     y=lerp(sqrt(max(0.0,1.0-x*x)),y,blend);
     float3 hemisphere=tangent*x+bitangent*y+view*sqrt(max(0.0,1.0-x*x-y*y));
@@ -130,19 +163,19 @@ float3 sample_bsdf(Surface s,float3 v,inout uint seed) {
     float3 h=t*local.x+b*local.y+s.normal*local.z;
     return reflect(-v,h);
 }
-void direct_light(Surface s,float3 v,inout uint seed,out float3 diffuse,out float3 specular) {
+void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular) {
     diffuse=0.0;specular=0.0;
     for(uint i=0;i<8;i++) {
         float3 direction,colour;float reach;
         if(i==0) {
             if(!any(frame.sun.rgb>0.0))continue;
-            direction=area_ray(frame.sun_direction.xyz,frame.sun_direction.w,seed);
+            direction=area_ray(frame.sun_direction.xyz,frame.sun_direction.w,path_random(sampler,i));
             colour=frame.sun.rgb;reach=frame.camera.w;
         } else {
             float4 lamp=frame.point_position[i-1];
             float3 delta=lamp.xyz-s.position;float distance=length(delta);
             if(lamp.w<=0.0||distance>=lamp.w||distance<0.005)continue;
-            direction=area_ray(delta/distance,frame.point_colour[i-1].w/distance,seed);
+            direction=area_ray(delta/distance,frame.point_colour[i-1].w/distance,path_random(sampler,i));
             colour=frame.point_colour[i-1].rgb*max(1.0-distance*distance/(lamp.w*lamp.w),0.0);
             reach=distance;
         }
@@ -185,10 +218,10 @@ float emitter_hit_pdf(Surface hit,float3 origin) {
     }
     return 0.0;
 }
-void emissive_light(Surface s,float3 v,inout uint seed,out float3 diffuse,out float3 specular) {
+void emissive_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular) {
     diffuse=0.0;specular=0.0;
     uint count=emitters.Load(0);if(count==0u)return;
-    float choice=random(seed);uint low=0u,high=count;
+    float choice=path_random(sampler,8u).x;uint low=0u,high=count;
     while(low<high) {
         uint mid=low+(high-low)/2u;
         if(choice<asfloat(emitters.Load(16u+mid*64u+44u)))high=mid;else low=mid+1u;
@@ -196,7 +229,8 @@ void emissive_light(Surface s,float3 v,inout uint seed,out float3 diffuse,out fl
     uint offset=16u+min(low,count-1u)*64u;
     float3 pa=asfloat(emitters.Load3(offset)),pb=asfloat(emitters.Load3(offset+16u)),pc=asfloat(emitters.Load3(offset+32u));
     uint4 light=emitters.Load4(offset+48u);
-    float r=sqrt(random(seed)),u=random(seed);float3 w=float3(1.0-r,r*(1.0-u),r*u);
+    float2 uv_light=path_random(sampler,9u);
+    float r=sqrt(uv_light.x),u=uv_light.y;float3 w=float3(1.0-r,r*(1.0-u),r*u);
     float3 light_position=pa*w.x+pb*w.y+pc*w.z;
     // Use the same offset origin as BSDF continuations for both proposals.
     float3 origin=s.position+s.geometric_normal*0.015,delta=light_position-origin;
@@ -224,21 +258,22 @@ void emissive_light(Surface s,float3 v,inout uint seed,out float3 diffuse,out fl
     diffuse=d*incoming;specular=sp*incoming;
 }
 #endif
-void path_sample(Surface primary,float3 view,inout uint seed,out float3 diffuse,out float3 specular) {
-    direct_light(primary,view,seed,diffuse,specular);
+void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diffuse,out float3 specular) {
+    direct_light(primary,view,sampler,diffuse,specular);
     Surface current=primary;
     float3 v=view,weight_d=1.0,weight_s=1.0;
     uint bounces=clamp(uint(frame.path.x),1u,4u);
     for(uint depth=0;depth<bounces;depth++) {
+        sampler.vertex=depth;
 #ifndef PATH_NO_EMITTERS
-        float3 emitter_d,emitter_s;emissive_light(current,v,seed,emitter_d,emitter_s);
+        float3 emitter_d,emitter_s;emissive_light(current,v,sampler,emitter_d,emitter_s);
         if(depth==0) {diffuse+=emitter_d;specular+=emitter_s;}
         else {
             float3 incoming=emitter_d*current.albedo+emitter_s;
             diffuse+=weight_d*incoming;specular+=weight_s*incoming;
         }
 #endif
-        float3 direction=sample_bsdf(current,v,seed),d,sp;float pdf;
+        float3 direction=sample_bsdf(current,v,sampler),d,sp;float pdf;
         bsdf(current,v,direction,d,sp,pdf);
         float cosine=max(dot(current.normal,direction),0.0);
         if(pdf<=1e-8||cosine<=0.0)break;
@@ -256,7 +291,8 @@ void path_sample(Surface primary,float3 view,inout uint seed,out float3 diffuse,
             diffuse+=weight_d*frame.sky.rgb;specular+=weight_s*frame.sky.rgb;break;
         }
         float3 direct_d,direct_s;
-        direct_light(hit,-direction,seed,direct_d,direct_s);
+        sampler.vertex=depth+1u;
+        direct_light(hit,-direction,sampler,direct_d,direct_s);
         float emission_weight=1.0;
 #ifndef PATH_NO_EMITTERS
         emission_weight=mis_weight(pdf,emitter_hit_pdf(hit,ray.Origin));
@@ -281,11 +317,11 @@ void main() {
     guide_image[pixel]=float4(primary.normal,primary.hit>0.5?dot(primary.position-eye,forward):0.0);
     indirect_image[pixel]=0.0;shadow_image0[pixel]=0.0;shadow_image1[pixel]=0.0;
     if(primary.hit<0.5)return;
-    uint seed=pixel.x+pixel.y*uint(size.x)+uint(frame.settings.x)*1442695041u+1u;
     float3 diffuse=0.0,specular=0.0;
     uint samples=clamp(uint(frame.settings.y),1u,16u);
     for(uint i=0;i<samples;i++) {
-        float3 d,s;path_sample(primary,-direction,seed,d,s);diffuse+=d;specular+=s;
+        PathSampler sampler=path_sampler(uint(frame.settings.x)*samples+i,pixel.x+pixel.y*uint(size.x));
+        float3 d,s;path_sample(primary,-direction,sampler,d,s);diffuse+=d;specular+=s;
     }
     indirect_image[pixel]=float4(diffuse/float(samples),1.0);
     shadow_image0[pixel]=float4(specular/float(samples),1.0);
