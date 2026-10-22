@@ -284,9 +284,26 @@ or NRD.
 Still scene uses the identical pixel without interpolation, skips the
 spatial blur and progressively averages matching pixels, up to 256 frames.
 It is a custom prototype filter, not NRD, DLSS Ray Reconstruction or another
-production denoiser. Mode, resolution, projection and light changes invalidate
-history in both modes. Geometry updates reset Still scene; Responsive rejects
+production denoiser. Mode, resolution, projection and substantial light changes
+invalidate history in both modes. Geometry updates reset Still scene; Responsive rejects
 changed surfaces through the guides and neighbourhood clamp.
+
+Gentle local-light flutter now retains a short responsive history instead of
+resetting every frame. The light list, positions, ranges, source sizes, hues,
+sun and environment must remain unchanged; each changed light's linear peak
+intensity must stay within 10% of its previous value. The history-age cap is
+three at 60 Hz, 1.8 at 30 Hz and approximately 1.42 at 20 Hz. Slower frames
+therefore give current illumination more weight, preserving a bounded response
+time. At 60 Hz at least one third of the estimate is current, with the older
+contribution decaying exponentially; this is not a literal three-frame window.
+The usual guide checks still apply to both diffuse and glossy history.
+Extinguished, newly lit, moved, resized, recoloured or replaced sources reset
+immediately. Still scene continues to require exact lighting. The diagnostic
+`--ei-strict-light-history` restores the previous reset policy without changing
+the source animation. No shader, ray budget, binding or buffer was added.
+The [torch-history qualification](../validation/path-tracing-torch-history-2026-10-23/README.md)
+contains controlled original-torch sequences, noise/response measurements and
+the performance qualification limit.
 
 The material lookup also compares reconstructed positions against the raster
 triangle's tangent plane, rather than comparing adjacent pixels' raw depths.
@@ -412,6 +429,9 @@ Fixtures run through the existing `--tool` interface:
 | `path_trace_underwater.gd` | Production receiver composition with controlled reflected/emitted radiance and underwater depth coefficients |
 | `path_trace_receivers.gd` | Rendered front/back-face steep-surface coverage and depth-edge rejection at 50/75/100% tracing resolution |
 | `path_trace_live.gd` | Outdoor material integration, responsive reprojection, still accumulation, camera reset, quality resizing and conventional restoration |
+| `path_trace_light_history.gd` | Controller light classification, all seven slots, frame-rate-dependent history, real GPU diffuse/glossy weighting and immediate extinction |
+| `path_trace_torch_history_live.gd` | Original cave torch, paired strict/bounded histories, normalized temporal noise, brightness response and extinction at fixed update rates |
+| `path_trace_light_inventory.gd` | Read-only original campaign torch locations, identifiers, strengths and cave classification |
 | `path_trace_cave.gd` | Cave sky exclusion, two/four bounces, changing light colour, animated actor and history invalidation |
 | `path_trace_materials.gd` | Actual compilation/draw of 144 world material variants |
 | `path_trace_fsr.gd` | Production frame generation and measured FPS HUD alongside water and path tracing, resize and pause/resume |

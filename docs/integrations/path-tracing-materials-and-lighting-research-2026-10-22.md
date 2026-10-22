@@ -8,6 +8,10 @@ Implementation follow-through, 23 October: [equipment material maps](../validati
 and a [three-atlas authored surface pilot](../validation/path-tracing-authored-surfaces-2026-10-23/README.md)
 now have separate implementation and validation records. This audit describes
 the source baseline above; broader lighting work remains outstanding.
+The [torch-history follow-through](../validation/path-tracing-torch-history-2026-10-23/README.md)
+also verifies and addresses continuous resets from gentle flame flutter. Its
+original-source inventory identifies which campaign caves already have torches
+and which require authored source placement before removing legacy fill.
 
 The recommended first step is to carry the existing equipment material masks
 into PT. Then establish one material format shared by raster and ray hits,

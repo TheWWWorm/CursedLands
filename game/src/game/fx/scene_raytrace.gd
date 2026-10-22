@@ -31,7 +31,9 @@ var _history_key := ""
 var _mode := ""
 var _path_mode := false
 var _path_signature := PackedByteArray()
-var _accumulation_frames := 0
+var _accumulation_frames := 0.0
+# Diagnostic control for matched flicker comparisons; never freezes a light.
+var _strict_light_history := OS.get_cmdline_user_args().has("--ei-strict-light-history")
 
 func _init(owner_game: Game) -> void:
 	game = owner_game; name = "SceneRaytrace"
@@ -103,7 +105,7 @@ func _process(dt: float) -> void:
 	var quality := clampi(GameData.option("q_rt_lighting"),0,2)
 	var size := target_size(camera.get_viewport().get_visible_rect().size,quality)
 	var changes := _scene.updates()
-	var frame := _frame(camera,size,quality,not changes.instances.is_empty() or not changes.poses.is_empty())
+	var frame := _frame(camera,size,quality,not changes.instances.is_empty() or not changes.poses.is_empty(),dt)
 	RenderingServer.call_on_render_thread(device.render.bind(size,frame,changes,GameData.option("q_aniso")))
 	if device.output.get_width()>0:
 		_set_gi_active(_path_mode or GameData.option("rt_gi")>0)
@@ -130,7 +132,7 @@ func _process(dt: float) -> void:
 	stats["path_samples"]=GI_SAMPLES[quality] if _path_mode else 0
 	stats["accumulation_frames"]=_accumulation_frames if _path_mode else 0
 
-func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false) -> PackedByteArray:
+func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,delta_seconds := 1.0/60.0) -> PackedByteArray:
 	var transform := camera.get_camera_transform()
 	var view := Projection(transform.affine_inverse())
 	var projection := camera.get_camera_projection()
@@ -171,14 +173,26 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false)
 		signature.append_array(environment)
 		var bytes := signature.to_byte_array()
 		var stationary := history and not scene_changed and bytes==_path_signature
-		var limit := 256 if GameData.option("pt_accumulation")>0 else 8
-		_accumulation_frames=mini(_accumulation_frames+1,limit) if stationary else 1
-		# Responsive history reprojects through ordinary camera motion. Light
-		# changes invalidate both modes; still-scene history also requires an
-		# identical camera and geometry on every contributing frame.
+		var progressive := GameData.option("pt_accumulation")>0
+		var limit := 256.0 if progressive else 8.0
+		# Fire/lava flutter changes intensity every frame. Keep a short
+		# responsive history for small intensity-only changes, while moving,
+		# recoloured, resized, switched or extinguished lights still reset.
+		# Still-scene accumulation always requires exact lighting and geometry.
 		var same_lighting := bytes.slice(32*4)==_path_signature.slice(32*4)
 		var same_projection := bytes.slice(0,16*4)==_path_signature.slice(0,16*4)
-		if not same_lighting or not same_projection or (limit>8 and not stationary): data[82]=0.0
+		var flutter := not progressive and not _strict_light_history and not same_lighting \
+			and _small_local_intensity_change(bytes,_path_signature)
+		if flutter:
+			# At 60 Hz retain at most 2/3 of the previous estimate. Shorten
+			# the history in slower frames so torch response does not acquire
+			# a longer time constant when the game is under GPU pressure.
+			limit=minf(3.0,1.0/(1.0-pow(2.0/3.0,maxf(delta_seconds,0.001)*60.0)))
+		var reuse := history and same_projection and (stationary if progressive else same_lighting or flutter)
+		if not reuse: data[82]=0.0
+		_accumulation_frames=minf(_accumulation_frames+1,limit) if reuse else 1.0
+		stats["history_reused"]=reuse;stats["history_limit"]=limit
+		stats["light_history_limited"]=flutter and reuse
 		_path_signature=bytes
 		data.append_array(PackedFloat32Array([GameData.option("pt_mode")*2,limit,float(stationary),1]))
 		var inverse_previous := _previous_view_projection.inverse()
@@ -188,6 +202,29 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false)
 	_previous_view=view;_previous_view_projection=projection*view;_previous_camera=transform;_history_key=key
 	_frame_number=(_frame_number+1)%1000000
 	return data.to_byte_array()
+
+static func _small_local_intensity_change(current: PackedByteArray, previous: PackedByteArray) -> bool:
+	# Signature floats 76..103 are the seven linear RGB/source-size records.
+	# Projection is checked by the caller; ordinary camera motion reprojects.
+	# Everything else (sun, sky, region, light positions/ranges) stays exact.
+	if current.size()!=previous.size() or current.size()<104*4: return false
+	if current.slice(32*4,76*4)!=previous.slice(32*4,76*4) \
+		or current.slice(104*4)!=previous.slice(104*4): return false
+	for i in 7:
+		var offset := (76+i*4)*4
+		if current.slice(offset,offset+16)==previous.slice(offset,offset+16): continue
+		if current.decode_float(offset+12)!=previous.decode_float(offset+12): return false
+		var old := Vector3(previous.decode_float(offset),previous.decode_float(offset+4),previous.decode_float(offset+8))
+		var now := Vector3(current.decode_float(offset),current.decode_float(offset+4),current.decode_float(offset+8))
+		if not old.is_finite() or not now.is_finite(): return false
+		var old_peak := maxf(old.x,maxf(old.y,old.z));var new_peak := maxf(now.x,maxf(now.y,now.z))
+		if minf(old_peak,new_peak)<=0.0: return false
+		var ratio := new_peak/old_peak
+		if ratio<0.9 or ratio>1.1: return false
+		# Energy changes scale all three channels. A changed hue, even when
+		# equally bright, is a new source and must not leave a colour trail.
+		if (old/old_peak-now/new_peak).length_squared()>1.0e-10: return false
+	return true
 
 func _collect_lights(focus: Vector3) -> void:
 	var found := []

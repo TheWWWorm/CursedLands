@@ -1,0 +1,149 @@
+{
+  "date": "2026-10-23",
+  "timezone": "Europe/Warsaw",
+  "baseline_commit": "bc188da6bb57d4947f20ae03a1e2d72666ff3f39",
+  "scope": "Bounded responsive temporal reuse for gentle intensity-only changes in selected local lights.",
+  "source_sha256": {
+    "game/src/game/fx/scene_raytrace.gd": "602653d02ec1dc18ab34993371b19b96637d3ec2791b65d91a6e40eb010affe4",
+    "game/src/game/fx/local_lighting.gd": "84b98d94aa2427fc43c92db3e5c7c3abac340f70a3919b3aa19875e68500966f",
+    "game/src/game/fx/shaders/path_trace_filter.glsl": "4c82e9b4be3117c04fd43f45fe8b917d301dc20832278d0b435026592a840e60",
+    "game/src/game/fx/shaders/path_trace.hlsl": "c678a5b6c348e40ef3acc333897002de4ac3c5d6694be6f0b1bd675ee3410437",
+    "tools/tests/path_trace_light_history.gd": "4835ef8a4c7b8bdf41889b19480332a4faddab1a1d360edcf203b8330e2ef27d",
+    "tools/tests/path_trace_torch_history_live.gd": "f40323b3f1d8baac9af22ecfa8aa839a91237d908b65030c18846887433f927f",
+    "tools/tests/path_trace_light_inventory.gd": "4efd105bc74e3f2f801675708be8737224ebba48b7dceef90e412ef7b8f80f96"
+  },
+  "original_zone14_mob_sha256": "30e9205f289ae537a7284ae6a8400a534035741e8d0034d02baa874e1dbe66d0",
+  "exports_sha256": {
+    "preview-linux/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "preview-linux/CursedLands.pck": "786902308b026b97becf1efbc1f8f28c33058926e2d58955a4704d52c0a2d708",
+    "preview-windows/CursedLands.exe": "3fdf36babfcbae0b3584aed85e1d52e4e537d3033c9128689cc0593a9ef80fd4",
+    "preview-windows/CursedLands.pck": "786902308b026b97becf1efbc1f8f28c33058926e2d58955a4704d52c0a2d708"
+  },
+  "checks": 138,
+  "runs_file": "runs.json",
+  "torch_metrics": [
+    {
+      "case": "vulkan-60hz",
+      "sample_pixels": 4888,
+      "frames_per_policy": 96,
+      "variance_strict": 5.81518032958014e-05,
+      "variance_bounded": 1.828379539256e-05,
+      "variance_reduction": 0.6855850660459208,
+      "relative_rmse_strict": 0.0383262530915816,
+      "relative_rmse_bounded": 0.0311498814557644,
+      "brightness_gain_strict": 1.00092278383234,
+      "brightness_gain_bounded": 0.895269385239918,
+      "effective_history_age": 3.0,
+      "extinguished_peak": 0.0
+    },
+    {
+      "case": "dx12-60hz",
+      "sample_pixels": 4888,
+      "frames_per_policy": 96,
+      "variance_strict": 5.80587340154175e-05,
+      "variance_bounded": 1.82744696186052e-05,
+      "variance_reduction": 0.6852416793354051,
+      "relative_rmse_strict": 0.0383314260601935,
+      "relative_rmse_bounded": 0.0311564615484805,
+      "brightness_gain_strict": 1.0008761218053,
+      "brightness_gain_bounded": 0.895233784158483,
+      "effective_history_age": 3.0,
+      "extinguished_peak": 0.0
+    },
+    {
+      "case": "vulkan-30hz",
+      "sample_pixels": 4888,
+      "frames_per_policy": 96,
+      "variance_strict": 5.81542261024941e-05,
+      "variance_bounded": 2.38266395758232e-05,
+      "variance_reduction": 0.5902853296709707,
+      "relative_rmse_strict": 0.0383264290624925,
+      "relative_rmse_bounded": 0.0326083025621189,
+      "brightness_gain_strict": 0.999630604282188,
+      "brightness_gain_bounded": 0.917683308633314,
+      "effective_history_age": 1.7998046875,
+      "extinguished_peak": 0.0
+    },
+    {
+      "case": "vulkan-20hz",
+      "sample_pixels": 4888,
+      "frames_per_policy": 96,
+      "variance_strict": 5.81542093210643e-05,
+      "variance_bounded": 3.13712845431062e-05,
+      "variance_reduction": 0.4605500631964905,
+      "relative_rmse_strict": 0.0383265978732421,
+      "relative_rmse_bounded": 0.0339152986568604,
+      "brightness_gain_strict": 1.00021415790962,
+      "brightness_gain_bounded": 0.932070018368626,
+      "effective_history_age": 1.4208984375,
+      "extinguished_peak": 0.0
+    }
+  ],
+  "fixture": {
+    "zone": "gz14k",
+    "map": "zone14",
+    "torch_nid": 4420,
+    "template": "stto11",
+    "base_energy": 1.7,
+    "range": 5,
+    "viewport": [
+      1280,
+      720
+    ],
+    "trace_size": [
+      960,
+      540
+    ],
+    "samples_per_pixel": 2,
+    "continuation_bounces": 4,
+    "progressive_reference_frames": 192,
+    "sampled_pixels": 4888,
+    "frames_per_policy": 96,
+    "scope": "One original source isolated; other lights, legacy cave fill, particle motion, rain and gameplay are disabled only in the fixture. LocalLighting drives actual torch energy at fixed time steps. Strict and bounded cases use the same ray sequence.",
+    "measurement": "Linear HDR diffuse illumination, normalized by current source energy. Temporal variance is computed per pixel across time; relative RMSE uses the 192-frame progressive transport reference. Brightness gain is the normalized regression slope of image-mean diffuse response against source energy.",
+    "video": "Vulkan 60 Hz source, 96 frames at 60 fps, H.264 CRF 12 yuv420p. Compression is for viewing only; measurements precede video encoding."
+  },
+  "performance": {
+    "qualified": false,
+    "reason": "Another independent game benchmark was observed using GPU 0 at full utilization. Capture/readback sequences are unsuitable for FPS comparisons regardless of overlap.",
+    "structural_cost": "No extra traced rays, shader stages, bindings or buffers. Retaining history executes existing reprojection work that strict resets skipped; do not infer a free GPU improvement.",
+    "required_followup": "Uncontended end-to-end GPU/frame measurement; the authored-material performance gate remains open as well."
+  },
+  "limits": [
+    "Diffuse temporal noise is measured in this isolated source fixture, not every campaign view or glossy reflection.",
+    "The current policy is a global responsive-history limit, not per-pixel light-change detection.",
+    "Sun, sky, moving lights, large intensity changes and still-scene lighting changes retain strict resets.",
+    "No campaign light placement, intensity profile or exposure change is part of this checkpoint.",
+    "Original caves gz5g, gz10g and gz20g contain no TORCH records. This does not exclude scripted or emissive sources."
+  ],
+  "artifacts": {
+    "torch-reference.png": {
+      "sha256": "972f8011dea6ef2fb2df4dbefff095b608f16601daebd9ef3cabad986f85043a",
+      "bytes": 640924
+    },
+    "bounded-064.png": {
+      "sha256": "40d8e1205937a68c1207470e07cc4830477081401a5755909fc90221c8a7f7b8",
+      "bytes": 652735
+    },
+    "dx12-bounded.png": {
+      "sha256": "6d82481eb14606d9dbd5d85677fafbb0e17819733ffe083752d37b4929ba7899",
+      "bytes": 656535
+    },
+    "strict-064.png": {
+      "sha256": "d6fb68bd491a53cd6c1d2df587722844dcb2e70d72cfec5dc0c86701404fe77b",
+      "bytes": 658349
+    },
+    "bounded.mp4": {
+      "sha256": "5c57b756cd29f559803d1f9233d4044315fcca3962edee596d85547d27c86789",
+      "bytes": 579434
+    },
+    "torch-extinguished.png": {
+      "sha256": "b78136b2d16d9ac43f5b11076c16bca85a3608a69c0dfc529cfc891bd59dec30",
+      "bytes": 48364
+    },
+    "strict.mp4": {
+      "sha256": "ce0e0df9ed95f1e09adcf14205210f99a212384aababc6c139f3136f46d0011b",
+      "bytes": 1358046
+    }
+  }
+}
