@@ -35,6 +35,8 @@ struct Frame {
 [[vk::binding(4,0)]] ConstantBuffer<Frame> frame : register(b400000);
 struct Vertex { float4 position_u; float4 normal_v; float4 diffuse; float4 emission_layer; };
 struct Surface { float3 position; float offset; float3 normal; float hit; float3 albedo; float visible; float3 emission; float cone; float roughness; float metalness; float specular; uint instance_id; float3 geometric_normal; uint primitive_id; };
+// Visibility rays skip closest-hit. Their miss flag shares the word used by
+// closest-hit for leaf transmission, keeping the payload at 96 bytes.
 struct Attributes { float2 bary; };
 Vertex vertex_at(uint i) {
     Vertex v;
@@ -114,15 +116,15 @@ float3 area_ray(float3 direction,float angular_radius,float2 u) {
     float r=sqrt(u.x)*angular_radius,phi=u.y*2.0*PI;
     return normalize(direction+t*(r*cos(phi))+b*(r*sin(phi)));
 }
-float3 surface_origin(Surface s) {
+float3 surface_origin(Surface s,float3 direction) {
     // closest-hit bounds reconstruction, intersection and instance transforms.
     // Preserve the final FMA so rounding cannot erase the small normal offset.
-    precise float3 origin=mad(s.geometric_normal,s.offset,s.position);
+    precise float3 origin=mad(s.geometric_normal,dot(direction,s.geometric_normal)>=0.0?s.offset:-s.offset,s.position);
     return origin;
 }
 float visibility(Surface s,float3 direction,float reach,bool directional) {
     Surface result=(Surface)0;
-    float3 origin=surface_origin(s);
+    float3 origin=surface_origin(s,direction);
     // Reconnect to the sampled light from the displaced origin. A fixed
     // endpoint gap misses blockers near a lamp; extending it shadows objects
     // behind the lamp. Exclude only the last representable distance instead.
@@ -155,23 +157,36 @@ float specular_chance(Surface s,float nv) {
 void bsdf(Surface s,float3 v,float3 l,out float3 diffuse,out float3 specular,out float pdf) {
     diffuse=0.0;specular=0.0;pdf=0.0;
     float nv=dot(s.normal,v),nl=dot(s.normal,l);
-    if(nv<=0.0||nl<=0.0||dot(s.geometric_normal,l)<=0.0)return;
+    if(nv<=0.0||abs(nl)<1e-7)return;
+    float transmission=s.visible;
+    if(nl<0.0) {
+        if(transmission<=0.0||dot(s.geometric_normal,l)>=0.0)return;
+        // Thin diffuse leaves divide their existing diffuse energy between
+        // hemispheres. Trunks have a zero authored mask and remain opaque.
+        float vh=saturate(dot(v,normalize(v-l)));
+        float3 reflectance=f0(s),f=reflectance+(1.0-reflectance)*pow(1.0-vh,5.0);
+        diffuse=(1.0-s.metalness)*(1.0-f)*transmission/PI;
+        pdf=(1.0-specular_chance(s,nv))*transmission*(-nl)/PI;
+        return;
+    }
+    if(dot(s.geometric_normal,l)<=0.0)return;
     float3 h=normalize(v+l);
     float nh=saturate(dot(s.normal,h)),vh=saturate(dot(v,h));
     float a=s.roughness*s.roughness,a2=a*a;
     float3 reflectance=f0(s),f=reflectance+(1.0-reflectance)*pow(1.0-vh,5.0);
     float d=ggx_d(nh,a2);
-    diffuse=(1.0-s.metalness)*(1.0-f)/PI;
+    diffuse=(1.0-s.metalness)*(1.0-f)*(1.0-transmission)/PI;
     specular=f*d*smith_g1(nv,a2)*smith_g1(nl,a2)/max(4.0*nv*nl,1e-6);
     float chance=specular_chance(s,nv);
     // Visible-normal GGX density, transformed from half vectors to outgoing
     // directions. This must match sample_bsdf, including its mixture weight.
-    pdf=(1.0-chance)*nl/PI+chance*d*smith_g1(nv,a2)/max(4.0*nv,1e-6);
+    pdf=(1.0-chance)*(1.0-transmission)*nl/PI+chance*d*smith_g1(nv,a2)/max(4.0*nv,1e-6);
 }
 float3 sample_bsdf(Surface s,float3 v,PathSampler sampler) {
     float chance=specular_chance(s,dot(s.normal,v));
     float2 u=path_random(sampler,11u);
-    if(path_random(sampler,10u).x>=chance)return cosine_ray(s.normal,u);
+    float2 lobe=path_random(sampler,10u);
+    if(lobe.x>=chance)return cosine_ray(lobe.y<s.visible?-s.normal:s.normal,u);
     float3 t,b;basis(s.normal,t,b);
     float a=s.roughness*s.roughness;
     // Heitz 2018, GGX visible-normal sampling: stretch the view, sample its
@@ -187,7 +202,10 @@ float3 sample_bsdf(Surface s,float3 v,PathSampler sampler) {
     float3 hemisphere=tangent*x+bitangent*y+view*sqrt(max(0.0,1.0-x*x-y*y));
     float3 local=normalize(float3(a*hemisphere.xy,max(hemisphere.z,0.0)));
     float3 h=t*local.x+b*local.y+s.normal*local.z;
-    return reflect(-v,h);
+    float3 reflected=reflect(-v,h);
+    // A rough GGX reflection can fall below the shading hemisphere. It is
+    // a rejected specular sample, never an extra diffuse-transmission sample.
+    return dot(reflected,s.normal)>0.0?reflected:float3(0,0,0);
 }
 void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular) {
     diffuse=0.0;specular=0.0;
@@ -205,9 +223,10 @@ void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out 
             colour=frame.point_colour[i-1].rgb*max(1.0-distance*distance/(lamp.w*lamp.w),0.0);
             reach=distance;
         }
-        float cosine=dot(s.normal,direction);
+        float cosine=abs(dot(s.normal,direction));
         if(cosine<=0.0)continue;
         float3 d,sp;float pdf;bsdf(s,v,direction,d,sp,pdf);
+        if(!any(d+sp>0.0))continue;
         // Authored game light values are diffuse irradiance / pi. Convert
         // them to the radiance scale used by the normalized BRDF.
         float3 incoming=colour*(PI*cosine*visibility(s,direction,reach,i==0));
@@ -259,7 +278,7 @@ void emissive_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,ou
     float r=sqrt(uv_light.x),u=uv_light.y;float3 w=float3(1.0-r,r*(1.0-u),r*u);
     float3 light_position=pa*w.x+pb*w.y+pc*w.z;
     // Use the same offset origin as BSDF continuations for both proposals.
-    float3 origin=surface_origin(s),delta=light_position-origin;
+    float3 origin=surface_origin(s,light_position-s.position),delta=light_position-origin;
     float distance=length(delta);if(distance<=0.004||distance>frame.camera.w)return;
     float3 direction=delta/distance,d,sp;float bsdf_pdf;bsdf(s,v,direction,d,sp,bsdf_pdf);
     if(bsdf_pdf<=0.0)return;
@@ -282,7 +301,7 @@ void emissive_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,ou
     RayDesc ray={origin,0.0,direction,distance-0.002};
     // Match indirect geometry visibility, including non-shadow-casting walls.
     TraceRay(scene,RAY_FLAG_ACCEPT_FIRST_HIT_AND_END_SEARCH|RAY_FLAG_SKIP_CLOSEST_HIT_SHADER,4,0,0,0,ray,visible);
-    float3 incoming=emission*(max(dot(s.normal,direction),0.0)*visible.visible*mis_weight(pdf,bsdf_pdf)/pdf);
+    float3 incoming=emission*(abs(dot(s.normal,direction))*visible.visible*mis_weight(pdf,bsdf_pdf)/pdf);
     diffuse=d*incoming;specular=sp*incoming;
 }
 #endif
@@ -303,7 +322,7 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
 #endif
         float3 direction=sample_bsdf(current,v,sampler),d,sp;float pdf;
         bsdf(current,v,direction,d,sp,pdf);
-        float cosine=max(dot(current.normal,direction),0.0);
+        float cosine=abs(dot(current.normal,direction));
         if(pdf<=1e-8||cosine<=0.0)break;
         if(depth==0) {
             weight_d=d*(cosine/pdf);weight_s=sp*(cosine/pdf);
@@ -313,7 +332,7 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
         }
         if(max(max(weight_d.r,max(weight_d.g,weight_d.b)),max(weight_s.r,max(weight_s.g,weight_s.b)))<1e-6)break;
         Surface hit=(Surface)0;hit.cone=max(0.002,current.roughness*0.02);
-        RayDesc ray={surface_origin(current),0.0,direction,frame.camera.w};
+        RayDesc ray={surface_origin(current,direction),0.0,direction,frame.camera.w};
         TraceRay(scene,RAY_FLAG_NONE,4,0,0,0,ray,hit);
         if(hit.hit<0.5) {
             float3 environment=sky_radiance(direction);
@@ -373,7 +392,7 @@ void main(inout Surface result,Attributes attributes) {
 }
 #elif defined(PATH_CLOSEST_HIT)
 float3 relief_normal(float3 n,float3 geometric,float3 edge1,float3 edge2,float2 uv1,float2 uv2,
-                     float3 texel,float2 step_uv,float lod,float strength) {
+                     float3 texel,float2 step_uv,float lod,float strength,bool terrain) {
     float3 r1=cross(edge2,n),r2=cross(n,edge1);
     float3 u=r1*uv1.x+r2*uv2.x,v=r1*uv1.y+r2*uv2.y;
     // The oriented triangle area can reverse under mirrored placement or
@@ -386,8 +405,17 @@ float3 relief_normal(float3 n,float3 geometric,float3 edge1,float3 edge2,float2 
     float right=dot(colours.SampleLevel(colour_sampler,texel+float3(step_uv.x,0,0),lod).rgb,lum);
     float above=dot(colours.SampleLevel(colour_sampler,texel-float3(0,step_uv.y,0),lod).rgb,lum);
     float below=dot(colours.SampleLevel(colour_sampler,texel+float3(0,step_uv.y,0),lod).rgb,lum);
-    float2 slope=clamp(float2(right-left,below-above)*2.0,-0.12,0.12);
-    float3 detailed=normalize(n-(u*slope.x+v*slope.y)*scale*strength);
+    float bound=terrain?0.30:0.12;
+    float2 slope=clamp(float2(right-left,below-above)*2.0,-bound,bound);
+    float3 perturbation=(u*slope.x+v*slope.y)*scale*strength;
+    // Limit the displacement continuously as either valid hemisphere is
+    // approached. A hard return to n makes relief pop at grazing angles.
+    float limit=1.0;
+    float projected=dot(perturbation,geometric);
+    if(projected>0.0)limit=min(limit,0.8*max(dot(n,geometric),0.0)/projected);
+    projected=dot(perturbation,-WorldRayDirection());
+    if(projected>0.0)limit=min(limit,0.8*max(dot(n,-WorldRayDirection()),0.0)/projected);
+    float3 detailed=normalize(n-perturbation*limit);
     // Relief changes shading only; never point a ray into the actual facet.
     return dot(detailed,geometric)>0.05&&dot(detailed,WorldRayDirection())<0.0?detailed:n;
 }
@@ -441,7 +469,15 @@ void main(inout Surface result,Attributes attributes) {
     float lod=max(log2(max(result.cone*RayTCurrent()*density*float(width),1.0)),0.0);
     float3 texel=float3(hit_uv(a,b,c,w),a.emission_layer.w);
     float3 colour=colours.SampleLevel(colour_sampler,texel,lod).rgb;
+    bool terrain=(material.y&2u)!=0u;
     float strength=float((material.w>>24u)&127u)/127.0;
+    uint plant_layer=(material.y>>8u)&255u;
+    result.visible=0.0;
+    if(plant_layer>0u) {
+        float2 plant=colours.SampleLevel(colour_sampler,float3(texel.xy,float(plant_layer-1u)),lod).rg;
+        if((material.y&4u)!=0u)result.visible=saturate(plant.r)*0.40;
+        if((material.y&8u)!=0u)strength=max(strength,saturate(plant.g)*0.45);
+    }
     if(strength>0.0) {
         float3 eye=mul(frame.camera_world,float4(0,0,0,1)).xyz;
         float distance=length(position-eye);
@@ -449,12 +485,18 @@ void main(inout Surface result,Attributes attributes) {
         if(frame.camera.x<0.5)footprint*=distance;
         footprint=max(footprint,result.cone*RayTCurrent());
         float texels=footprint*density*float(width)/max(abs(dot(result.normal,WorldRayDirection())),0.1);
-        strength*=(1.0-smoothstep(14.0,40.0,distance))*(1.0-smoothstep(1.2,4.0,texels));
+        float relief_lod=max(lod,log2(max(texels,1.0)));
+        // Land has broad painted ridges as well as texel detail. Widen the
+        // finite difference with the mip footprint, then fade it before the
+        // receiver range ends. Object relief keeps its tighter bounds.
+        float step_scale=terrain?1.5*exp2(relief_lod):1.0;
+        strength*=terrain?1.5*(1.0-smoothstep(25.0,65.0,distance))*(1.0-smoothstep(2.0,8.0,texels)):
+            (1.0-smoothstep(14.0,40.0,distance))*(1.0-smoothstep(1.2,4.0,texels));
         if(strength>0.0)result.normal=relief_normal(result.normal,result.geometric_normal,
             mul((float3x3)to_world,edge1),mul((float3x3)to_world,edge2),
             float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w),
             float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w),
-            texel,1.0/float2(width,height),max(lod,log2(max(texels,1.0))),strength);
+            texel,step_scale/float2(width,height),relief_lod,strength,terrain);
     }
     result.albedo=saturate(linear_colour(colour)*saturate(a.diffuse.rgb));
     result.roughness=max(float(material.w&255u)/255.0,0.08);

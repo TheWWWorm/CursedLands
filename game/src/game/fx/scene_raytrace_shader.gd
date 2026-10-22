@@ -48,6 +48,16 @@ bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out ve
     // has a valid tangent plane even at the snapshot/viewport boundaries.
     vec3 dx=dFdx(world),dy=dFdy(world),plane=cross(dx,dy);
     plane=length(plane)>0.0000001?normalize(plane):normal;
+    if(ei_pt_active>0.5) {
+        // The tracer faces both sides of cutout leaves toward the camera.
+        // The raster material retains authored normals on its back faces;
+        // align the same way before rejecting an otherwise matching hit.
+        bool parallel=abs(ei_rt_view_projection[0][3])+abs(ei_rt_view_projection[1][3])+abs(ei_rt_view_projection[2][3])<0.001;
+        vec3 view=parallel?vec3(ei_rt_view[0][2],ei_rt_view[1][2],ei_rt_view[2][2]):normalize(ei_rt_eye-world);
+        if(dot(plane,view)<0.0)plane=-plane;
+        if(dot(normal,plane)<0.0)normal=-normal;
+        if(dot(normal,view)<=0.0)normal=plane;
+    }
     float footprint=max(length(dx)/max(length(dFdx(uv)*vec2(size)),0.001),
                         length(dy)/max(length(dFdy(uv)*vec2(size)),0.001));
     if(clip.w<=0.0||any(lessThan(uv,vec2(0.0)))||any(greaterThanEqual(uv,vec2(1.0))))return false;

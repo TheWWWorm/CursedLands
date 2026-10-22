@@ -1,0 +1,7 @@
+FAIL steep receiver at 640 pixels, normal sign -1.0, depth discontinuity false: 0.0000
+FAIL steep receiver at 640 pixels, normal sign -1.0, depth discontinuity true: 0.4932
+FAIL steep receiver at 960 pixels, normal sign -1.0, depth discontinuity false: 0.0000
+FAIL steep receiver at 960 pixels, normal sign -1.0, depth discontinuity true: 0.4932
+FAIL steep receiver at 1280 pixels, normal sign -1.0, depth discontinuity false: 0.0000
+FAIL steep receiver at 1280 pixels, normal sign -1.0, depth discontinuity true: 0.4932
+wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 0568), starting debugger...

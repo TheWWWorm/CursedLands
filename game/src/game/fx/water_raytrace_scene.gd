@@ -26,7 +26,7 @@ var _plane := 0.0
 var _cursor := 0
 var _kernel: Object
 var _watching := false
-var _detail_options := Vector2i.ZERO
+var _detail_options := Vector3i.ZERO
 # Negative keeps the original water masks. Scene lighting distinguishes
 # camera-visible receivers (1), shadow casters (2), and GI surfaces (4).
 var lighting_camera_mask := -1
@@ -37,7 +37,7 @@ func _init() -> void:
 
 func begin(terrain: EITerrain, position: Vector3, plane: float) -> void:
 	_terrain = terrain; center = position; _plane = plane
-	_detail_options = Vector2i(GameData.option("gfx_terrain"),GameData.option("gfx_materials"))
+	_detail_options = Vector3i(GameData.option("gfx_terrain"),GameData.option("gfx_materials"),GameData.option("gfx_foliage_light"))
 	for child in terrain.get_children():
 		if child is EITerrainSector and _near(child.global_transform*child.get_aabb()):
 			pending.append({"node":weakref(child),"land":true})
@@ -73,7 +73,7 @@ func _material_version(material: Material) -> Array:
 		var texture: Texture2D = material.get_shader_parameter("albedo_tex") as Texture2D
 		return [material.shader.get_instance_id() if material.shader else 0,texture.get_instance_id() if texture else 0,
 			material.get_shader_parameter("ei_material_diffuse"),material.get_shader_parameter("ei_material_emissive"),
-			material.get_shader_parameter("surface_profile")]
+			material.get_shader_parameter("surface_profile"),material.get_shader_parameter("foliage_mask")]
 	if material is BaseMaterial3D:
 		return [material.albedo_texture.get_instance_id() if material.albedo_texture else 0,material.albedo_color,
 			material.transparency,material.alpha_scissor_threshold,material.emission_enabled,material.emission,
@@ -92,7 +92,7 @@ static func surface_profile(material: Material) -> Vector3:
 
 static func surface_relief(material: Material, land: bool) -> float:
 	# Terrain is packed from sector arrays without an object material.
-	if land: return 0.45 if GameData.option("gfx_terrain")>0 else 0.0
+	if land: return 0.85 if GameData.option("gfx_terrain")>0 else 0.0
 	if not material is ShaderMaterial: return 0.0
 	# Only explicitly identified stone/wood profiles have relief. In
 	# particular, leaf cutout alpha and painted shadows are not height maps.
@@ -109,7 +109,7 @@ func _mesh_version(mesh: MeshInstance3D, materials: Dictionary) -> Array:
 	return version
 
 func topology_changed() -> bool:
-	if lighting_camera_mask>=0 and _detail_options!=Vector2i(GameData.option("gfx_terrain"),GameData.option("gfx_materials")): return true
+	if lighting_camera_mask>=0 and _detail_options!=Vector3i(GameData.option("gfx_terrain"),GameData.option("gfx_materials"),GameData.option("gfx_foliage_light")): return true
 	var current := {}
 	var materials := {}
 	for mesh: MeshInstance3D in _scene_meshes(): current[mesh.get_instance_id()] = _mesh_version(mesh,materials)
@@ -219,6 +219,10 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 				var e: Color = material.emission.srgb_to_linear()*material.emission_energy_multiplier
 				emission = Vector3(e.r,e.g,e.b)
 		else: return -1
+	var foliage_layer := -1
+	if lighting_camera_mask>=0 and material is ShaderMaterial and (Gfx.on("gfx_foliage_light") or Gfx.on("gfx_materials")):
+		var mask: Texture2D = material.get_shader_parameter("foliage_mask") as Texture2D
+		if mask != null: foliage_layer = _layer(mask)
 	var base_layer := -1 if land else _layer(texture)
 	var opaque := cutoff <= 0.0 or (base_layer >= 0 and _opaque_textures[base_layer] and diffuse.w >= cutoff)
 	if _kernel != null:
@@ -230,7 +234,8 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 		if packed.failed: failed = true; return -1
 		var count: int = packed.vertices.size()/16
 		if count == 0: return -1
-		geometries.append({"offset":vertices.size()/16,"count":count,"indices":packed.indices,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material),"relief":surface_relief(material,land),"emissive":emission!=Vector3.ZERO})
+		geometries.append({"offset":vertices.size()/16,"count":count,"indices":packed.indices,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material),"relief":surface_relief(material,land),"terrain":land,"foliage_layer":foliage_layer,
+			"leaf_light":Gfx.on("gfx_foliage_light"),"bark_relief":Gfx.on("gfx_materials"),"emissive":emission!=Vector3.ZERO})
 		vertices.append_array(packed.vertices); triangles += count/3
 		return geometries.size()-1
 	var start := vertices.size()/16
@@ -253,7 +258,8 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 		triangles += 1
 	var count := vertices.size()/16-start
 	if count == 0: return -1
-	geometries.append({"offset":start,"count":count,"indices":used,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material),"relief":surface_relief(material,land),"emissive":emission!=Vector3.ZERO})
+	geometries.append({"offset":start,"count":count,"indices":used,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material),"relief":surface_relief(material,land),"terrain":land,"foliage_layer":foliage_layer,
+			"leaf_light":Gfx.on("gfx_foliage_light"),"bark_relief":Gfx.on("gfx_materials"),"emissive":emission!=Vector3.ZERO})
 	return geometries.size()-1
 
 ## Plain values only: the render thread never dereferences a scene node.

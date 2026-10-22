@@ -140,18 +140,44 @@ metallic and specular values supply a compact material description; original
 assets without a profile default to rough dielectric surfaces. This does not
 reproduce full PBR texture sets or procedurally modified materials.
 
-Enhanced terrain and identified stone/wood object profiles also supply shallow
+Enhanced terrain and identified stone/wood object profiles also supply
 texture-derived relief to traced shading. The existing terrain/material options
 control it; changing either rebuilds the lighting snapshot. Seven previously
 unused material bits store its strength without enlarging geometry or the ray
 payload. Four texture taps estimate bounded perceptual brightness slopes in a
 world-space cotangent frame. UV mirroring, nonuniform instance transforms and
-back faces retain their orientation. Relief fades over 14–40 m and 1.2–4 texels
+back faces retain their orientation. Object relief fades over 14–40 m and 1.2–4 texels
 per tracing pixel; secondary ray cones contribute to minification. Degenerate
 UVs and normals that would face into the geometric surface keep the original
-normal. Leaf cutout alpha is not treated as height. This is an approximation
-using the 512×512 trace atlas, not the terrain shader's complete semantic detail
-and procedural normal model or authored PBR normal maps.
+normal. Terrain has a separate, stronger bounded slope response: its sample
+spacing follows the mip footprint, and detail fades over 25–65 m and 2–8 texels
+per tracing pixel. Object relief retains the narrower range above. Perturbations
+are limited continuously near the geometric and viewing hemispheres to avoid
+popping at grazing angles. This is an approximation using the 512×512 trace
+atlas, not the terrain shader's complete semantic detail and procedural normal
+model or authored PBR normal maps.
+
+The existing Leaf backlighting option now also controls thin diffuse leaf
+transmission in PT. The authored foliage mask identifies leaves and bark;
+texture alpha is only used for cutouts. Up to 40% of a leaf's diffuse share
+crosses to the opposite hemisphere, with the reflected share reduced by the
+same amount. Direct sun, point lights, emissive proposals and continuation
+paths use the same BSDF and side-aware ray origins. Both hemisphere PDFs and
+emissive MIS include the transmission probability. Rejected below-surface GGX
+reflection samples remain rejected rather than becoming unaccounted transmission.
+The model follows the cosine-weighted reflection/transmission construction in
+[pbrt's diffuse transmission model](https://github.com/mmp/pbrt-v4/blob/master/src/pbrt/bxdfs.h).
+It is a thin surface approximation, not volumetric subsurface scattering.
+Trunks remain opaque; the mask's bark channel supplies the existing shallow
+object relief when Surface materials is enabled. The shared colour array
+stores mask layers as data; material flags identify them. The 96-byte payload,
+frame size and sample/bounce budgets remain unchanged. Leaf setting changes
+rebuild the lighting snapshot.
+
+Raster receiver normals are aligned to the visible geometric face, matching
+the ray tracer, before guide validation. This keeps back faces of two-sided
+foliage and terrain on PT instead of spuriously falling back to conventional
+lighting. The world-space plane/depth checks still reject unrelated surfaces.
 
 The material guide stores albedo and an exactly representable half-float
 integer containing six roughness bits and five metalness bits. This guide
@@ -311,8 +337,10 @@ Fixtures run through the existing `--tool` interface:
 | `path_trace_contacts.gd` | Raw thin-contact shadows, sky/emissive occlusion, nearby glossy reflection, point-light endpoints and self-intersection under translation, scale, rotation, shear, mirrored instances and large local coordinates |
 | `path_trace_daylight.gd` | Analytic directional-sky irradiance, isotropic fallback, bounded relief, UV/instance mirroring, degenerate UVs, distance and minification fades |
 | `path_trace_daylight_live.gd` | Matched noon/evening/night river views, sky-only history reset, enhanced surface collection and conventional restoration |
+| `path_trace_foliage.gd` | Leaf/bark separation, reflected/transmitted energy, uniform environment, disabled transmission, back-side blockers and emissive MIS |
+| `path_trace_outdoor.gd` | Matched river/grove views across noon/evening/night, authored foliage collection, leaf-only setting rebuild and conventional restoration |
 | `path_trace_underwater.gd` | Production receiver composition with controlled reflected/emitted radiance and underwater depth coefficients |
-| `path_trace_receivers.gd` | Rendered steep-surface coverage and depth-edge rejection at 50/75/100% tracing resolution |
+| `path_trace_receivers.gd` | Rendered front/back-face steep-surface coverage and depth-edge rejection at 50/75/100% tracing resolution |
 | `path_trace_live.gd` | Outdoor material integration, responsive reprojection, still accumulation, camera reset, quality resizing and conventional restoration |
 | `path_trace_cave.gd` | Cave sky exclusion, two/four bounces, changing light colour, animated actor and history invalidation |
 | `path_trace_materials.gd` | Actual compilation/draw of 144 world material variants |

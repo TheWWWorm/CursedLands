@@ -1,0 +1,222 @@
+{
+  "baseline_commit": "9e9d034c",
+  "unreleased": true,
+  "qualified": [
+    {
+      "run": "depth-v3-dx12-path_trace_receivers",
+      "checks": 12,
+      "exit": 0,
+      "seconds": 14.82
+    },
+    {
+      "run": "depth-v3-dx12-path_trace_outdoor",
+      "checks": 13,
+      "exit": 0,
+      "seconds": 53.97
+    },
+    {
+      "run": "depth-v3-dx12-path_trace_foliage",
+      "checks": 13,
+      "exit": 0,
+      "seconds": 13.57
+    },
+    {
+      "run": "depth-v3-dx12-path_trace_daylight",
+      "checks": 33,
+      "exit": 0,
+      "seconds": 11.92
+    },
+    {
+      "run": "depth-final-dx12-path_trace_contacts",
+      "checks": 59,
+      "exit": 0,
+      "seconds": 12.47
+    },
+    {
+      "run": "depth-final-dx12-path_trace_glossy",
+      "checks": 31,
+      "exit": 0,
+      "seconds": 13.33
+    },
+    {
+      "run": "depth-final-dx12-path_trace_emitters",
+      "checks": 38,
+      "exit": 0,
+      "seconds": 14.43
+    },
+    {
+      "run": "depth-final-dx12-path_trace_materials",
+      "checks": 470,
+      "exit": 0,
+      "seconds": 217.45
+    },
+    {
+      "run": "depth-final-dx12-performance",
+      "checks": 14,
+      "exit": 0,
+      "seconds": 66.88
+    },
+    {
+      "run": "depth-final-dx12-fsr",
+      "checks": 55,
+      "exit": 0,
+      "seconds": 121.37
+    },
+    {
+      "run": "depth-final-dx12-cave",
+      "checks": 12,
+      "exit": 0,
+      "seconds": 36.3
+    },
+    {
+      "run": "depth-repeat-dx12-quality",
+      "checks": 13,
+      "exit": 0,
+      "seconds": 11.62
+    },
+    {
+      "run": "depth-final-vulkan-path_trace_foliage",
+      "checks": 13,
+      "exit": 0,
+      "seconds": 9.82
+    },
+    {
+      "run": "depth-final-vulkan-path_trace_daylight",
+      "checks": 33,
+      "exit": 0,
+      "seconds": 9.37
+    },
+    {
+      "run": "depth-final-vulkan-path_trace_receivers",
+      "checks": 12,
+      "exit": 0,
+      "seconds": 12.23
+    },
+    {
+      "run": "depth-final-vulkan-path_trace_outdoor",
+      "checks": 13,
+      "exit": 0,
+      "seconds": 49.1
+    }
+  ],
+  "baselines": [
+    {
+      "run": "depth-baseline-dx12-outdoor",
+      "checks": 10,
+      "exit": 0,
+      "seconds": 49.32
+    },
+    {
+      "run": "depth-baseline-dx12-performance",
+      "checks": 14,
+      "exit": 0,
+      "seconds": 69.92
+    }
+  ],
+  "diagnostics": [
+    {
+      "run": "depth-baseline-dx12-backfaces",
+      "exit": 1,
+      "errors": [
+        "FAIL steep receiver at 640 pixels, normal sign -1.0, depth discontinuity false: 0.0000",
+        "FAIL steep receiver at 640 pixels, normal sign -1.0, depth discontinuity true: 0.4932",
+        "FAIL steep receiver at 960 pixels, normal sign -1.0, depth discontinuity false: 0.0000",
+        "FAIL steep receiver at 960 pixels, normal sign -1.0, depth discontinuity true: 0.4932",
+        "FAIL steep receiver at 1280 pixels, normal sign -1.0, depth discontinuity false: 0.0000",
+        "FAIL steep receiver at 1280 pixels, normal sign -1.0, depth discontinuity true: 0.4932"
+      ],
+      "faults": [
+        "FAIL steep receiver at 640 pixels, normal sign -1.0, depth discontinuity false: 0.0000",
+        "FAIL steep receiver at 640 pixels, normal sign -1.0, depth discontinuity true: 0.4932",
+        "FAIL steep receiver at 960 pixels, normal sign -1.0, depth discontinuity false: 0.0000",
+        "FAIL steep receiver at 960 pixels, normal sign -1.0, depth discontinuity true: 0.4932",
+        "FAIL steep receiver at 1280 pixels, normal sign -1.0, depth discontinuity false: 0.0000",
+        "FAIL steep receiver at 1280 pixels, normal sign -1.0, depth discontinuity true: 0.4932",
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 0568), starting debugger..."
+      ]
+    },
+    {
+      "run": "depth-trial-dx12-path_trace_foliage",
+      "exit": 1,
+      "errors": [
+        "FAIL both hemisphere sampling PDFs conserve uniform-environment energy: [(1.0102, 1.0102, 1.0102, 64.0), (0.9889, 0.9889, 0.9889, 64.0)]",
+        "FAIL emissive MIS and BSDF paths cross the leaf without self-intersection or duplicate energy: [(0.8285, 0.0, 0.0, 64.0), (0.0, 0.0, 0.0, 64.0)]"
+      ],
+      "faults": [
+        "FAIL both hemisphere sampling PDFs conserve uniform-environment energy: [(1.0102, 1.0102, 1.0102, 64.0), (0.9889, 0.9889, 0.9889, 64.0)]",
+        "FAIL emissive MIS and BSDF paths cross the leaf without self-intersection or duplicate energy: [(0.8285, 0.0, 0.0, 64.0), (0.0, 0.0, 0.0, 64.0)]"
+      ]
+    },
+    {
+      "run": "depth-final-dx12-path_trace_quality",
+      "exit": 0,
+      "errors": [],
+      "faults": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 07d4), starting debugger..."
+      ]
+    },
+    {
+      "run": "depth-final-dx12-path-fsr",
+      "exit": 0,
+      "errors": [],
+      "faults": [
+        "wine: Unhandled page fault on read access to 0000000241BB6030 at address 00006FFFFFC81448 (thread 0544), starting debugger..."
+      ]
+    }
+  ],
+  "qualified_checks": 834,
+  "performance": {
+    "depth-baseline-dx12-performance": {
+      "path-2-low": [
+        0.532736,
+        0.53504
+      ],
+      "path-2-medium": [
+        2.852352,
+        2.84416
+      ],
+      "path-2-high": [
+        10.693376,
+        10.722816
+      ],
+      "path-4-low": [
+        0.690688,
+        0.686592
+      ],
+      "path-4-medium": [
+        3.456,
+        3.71456
+      ],
+      "path-4-high": [
+        12.956416,
+        12.70016
+      ]
+    },
+    "depth-final-dx12-performance": {
+      "path-2-low": [
+        0.562944,
+        0.55936
+      ],
+      "path-2-medium": [
+        3.020288,
+        3.136512
+      ],
+      "path-2-high": [
+        11.781888,
+        11.85536
+      ],
+      "path-4-low": [
+        0.72576,
+        0.727296
+      ],
+      "path-4-medium": [
+        3.976448,
+        3.841024
+      ],
+      "path-4-high": [
+        15.027712,
+        14.930944
+      ]
+    }
+  }
+}

@@ -80,7 +80,8 @@ func _process(dt: float) -> void:
 			_failed = true; stats["fallback"]="snapshot_budget"; _gather=null; return
 		var geometries := []; var placements := []
 		for geometry: Dictionary in _gather.geometries:
-			geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,"cutoff":geometry.cutoff,"standard":geometry.standard,"surface":geometry.surface,"relief":geometry.relief,"emissive":geometry.emissive})
+			geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,"cutoff":geometry.cutoff,"standard":geometry.standard,"surface":geometry.surface,"relief":geometry.relief,"terrain":geometry.terrain,"foliage_layer":geometry.foliage_layer,
+				"leaf_light":geometry.leaf_light,"bark_relief":geometry.bark_relief,"emissive":geometry.emissive})
 		for entry: Dictionary in _gather.instances:
 			placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":0})
 		device = PathDevice.new() if _path_mode else Device.new()

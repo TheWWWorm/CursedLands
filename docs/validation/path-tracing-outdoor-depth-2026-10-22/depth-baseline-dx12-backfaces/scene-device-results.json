@@ -1,0 +1,11 @@
+{
+	"checks": 12,
+	"failures": [
+		"steep receiver at 640 pixels, normal sign -1.0, depth discontinuity false: 0.0000",
+		"steep receiver at 640 pixels, normal sign -1.0, depth discontinuity true: 0.4932",
+		"steep receiver at 960 pixels, normal sign -1.0, depth discontinuity false: 0.0000",
+		"steep receiver at 960 pixels, normal sign -1.0, depth discontinuity true: 0.4932",
+		"steep receiver at 1280 pixels, normal sign -1.0, depth discontinuity false: 0.0000",
+		"steep receiver at 1280 pixels, normal sign -1.0, depth discontinuity true: 0.4932"
+	]
+}

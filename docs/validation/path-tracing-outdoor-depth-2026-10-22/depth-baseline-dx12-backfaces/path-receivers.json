@@ -1,0 +1,85 @@
+{
+	"checks": 12,
+	"failures": [
+		"steep receiver at 640 pixels, normal sign -1.0, depth discontinuity false: 0.0000",
+		"steep receiver at 640 pixels, normal sign -1.0, depth discontinuity true: 0.4932",
+		"steep receiver at 960 pixels, normal sign -1.0, depth discontinuity false: 0.0000",
+		"steep receiver at 960 pixels, normal sign -1.0, depth discontinuity true: 0.4932",
+		"steep receiver at 1280 pixels, normal sign -1.0, depth discontinuity false: 0.0000",
+		"steep receiver at 1280 pixels, normal sign -1.0, depth discontinuity true: 0.4932"
+	],
+	"results": [
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": false,
+			"normal_sign": 1.0,
+			"width": 640
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": true,
+			"normal_sign": 1.0,
+			"width": 640
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": false,
+			"normal_sign": 1.0,
+			"width": 960
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": true,
+			"normal_sign": 1.0,
+			"width": 960
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": false,
+			"normal_sign": 1.0,
+			"width": 1280
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": true,
+			"normal_sign": 1.0,
+			"width": 1280
+		},
+		{
+			"correct_fraction": 0.0,
+			"depth_edge": false,
+			"normal_sign": -1.0,
+			"width": 640
+		},
+		{
+			"correct_fraction": 0.493150684931507,
+			"depth_edge": true,
+			"normal_sign": -1.0,
+			"width": 640
+		},
+		{
+			"correct_fraction": 0.0,
+			"depth_edge": false,
+			"normal_sign": -1.0,
+			"width": 960
+		},
+		{
+			"correct_fraction": 0.493150684931507,
+			"depth_edge": true,
+			"normal_sign": -1.0,
+			"width": 960
+		},
+		{
+			"correct_fraction": 0.0,
+			"depth_edge": false,
+			"normal_sign": -1.0,
+			"width": 1280
+		},
+		{
+			"correct_fraction": 0.493150684931507,
+			"depth_edge": true,
+			"normal_sign": -1.0,
+			"width": 1280
+		}
+	]
+}

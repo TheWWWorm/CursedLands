@@ -3,6 +3,7 @@ const SkyPalette = preload("res://src/game/fx/path_trace_sky.gd")
 var directional := true
 var textured := false
 var relief := 0.0
+var terrain := false
 var uv_mirror := false
 var degenerate_uv := false
 var uv_scale := 1.0
@@ -37,7 +38,7 @@ func build_plane() -> bool:
 				texture.set_pixel(x,y,Color(v,v,v,1))
 	texture.generate_mipmaps()
 	var images: Array[Image]=[texture]
-	var geometry: Array=[{"offset":0,"count":6,"opaque":true,"standard":true,"surface":Vector3(1,0,0),"relief":relief}]
+	var geometry: Array=[{"offset":0,"count":6,"opaque":true,"standard":true,"surface":Vector3(1,0,0),"relief":relief,"terrain":terrain}]
 	var placement: Array=[{"geometry":0,"transform":transform,"mask":7}]
 	RenderingServer.call_on_render_thread(device.build.bind(mesh_data.to_byte_array(),images,geometry,placement))
 	return await device.prepared
@@ -102,6 +103,15 @@ func run() -> void:
 	check(normals().finite and normals().minimum_up>0.98 and normals().tilt>0.02,"transformed relief remains finite and outward")
 	camera.position=Vector3(0,42,0.001);camera.look_at(Vector3.ZERO);await render_many(4)
 	check(normals().tilt<0.0001,"distant relief fades out")
+	transform=Transform3D.IDENTITY;terrain=true;relief=0.85
+	camera.position=Vector3(0,2,0.001);camera.look_at(Vector3.ZERO)
+	check(await build_plane(),"build enhanced terrain relief");await render_many(4)
+	var land:=normals();report["terrain_relief"]=land
+	check(land.finite and land.minimum_up>0.85 and land.tilt>0.10,"terrain ridges have stronger bounded relief than object textures")
+	camera.position=Vector3(0,42,0.001);camera.look_at(Vector3.ZERO);await render_many(4)
+	check(normals().tilt>0.01,"terrain relief remains resolved beyond the object-detail range")
+	camera.position=Vector3(0,70,0.001);camera.look_at(Vector3.ZERO);await render_many(4)
+	check(normals().tilt<0.0001,"terrain relief fades before the trace boundary")
 	RenderingServer.call_on_render_thread(device.dispose);await frames(4);camera.queue_free()
 	FileAccess.open(out.path_join("path-daylight.json"),FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures,"results":report},"\t"))
 	finish()

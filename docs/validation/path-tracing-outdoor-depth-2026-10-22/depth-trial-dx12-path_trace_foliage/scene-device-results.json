@@ -1,0 +1,7 @@
+{
+	"checks": 13,
+	"failures": [
+		"both hemisphere sampling PDFs conserve uniform-environment energy: [(1.0102, 1.0102, 1.0102, 64.0), (0.9889, 0.9889, 0.9889, 64.0)]",
+		"emissive MIS and BSDF paths cross the leaf without self-intersection or duplicate energy: [(0.8285, 0.0, 0.0, 64.0), (0.0, 0.0, 0.0, 64.0)]"
+	]
+}

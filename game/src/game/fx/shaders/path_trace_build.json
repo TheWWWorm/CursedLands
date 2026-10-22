@@ -2,17 +2,17 @@
   "compiler": "libdxcompiler.so: 1.9(5512-01b62ad4)(1.9.2609.5)",
   "compiler_sha256": "3dfc856b76291ffc7e45e21fd37ab80e85b34101de76a03253df6608785c92a0",
   "builder_sha256": "9e8206c3069e67195e3d592b14205f55a1c27368e1d67109f8841aa05f571b8d",
-  "source_sha256": "94687f195071d9bddf29e1b7f27f119a34d3dcaf31abd5c6785b50bf59261acc",
+  "source_sha256": "6c24681fff53cefc491420307a925735713dc4293fbbe19a8928ab1b5edb9386",
   "files": {
-    "path_trace_raygen.dxil": "32971c672ef9f6e9bf14a61ab89b02325390c6202b16b61d9096d26c3e32f4b1",
-    "path_trace_raygen.spv": "38d04367f985668de14c5a230af16c53d0b80cd00e83570ac9d3ec60095522b5",
+    "path_trace_raygen.dxil": "d45912d3306e84f1d5f1f2ec3bab96f9f8b97f87bd1687ca15261d6f0758cd64",
+    "path_trace_raygen.spv": "2e850b279f1eb5195d1a93b77e25795a7ce0165c921f8ef32e461489d53991f0",
     "path_trace_miss.dxil": "9d181346415e526c5942efaf17c0f941a47df05b313a0e2e72f7d3c491f2ea51",
     "path_trace_miss.spv": "1376ff37c61cc9a09124d61df678d92ba069fce9aafef4e08cb23e98aa8f0179",
-    "path_trace_closest_hit.dxil": "467f84042a716066351b989408e50d6c4ee8b12dba239594cfb1dc8087803275",
-    "path_trace_closest_hit.spv": "903883bf54b604589fd31eaf3e762aeb8cc86d90aabc774a147b17f702156f8a",
+    "path_trace_closest_hit.dxil": "085a2790ad98463a3dd51300e90d8ee6cc2686eb0653b9d1527639a0cb9cb742",
+    "path_trace_closest_hit.spv": "3f6f542b43d02d27e96fe154d78012bae581676e05d854d94eb72dc223e7c538",
     "path_trace_any_hit.dxil": "fc8ae7e7102d5f9b7ade1f1fe4cd3f1124e0a2e511494cb2a86ef8b7a5ef77f2",
     "path_trace_any_hit.spv": "9520e13148ceca6edfc9d620dd2e546e6f9c40d812380f2a798c2bebbf7e4c35",
-    "path_trace_raygen_no_emitters.dxil": "f3f6d665d51335715ede9bb4f78801dd97a864a653dbad63c0876ad258a774c7",
-    "path_trace_raygen_no_emitters.spv": "ad0af210d38de98eff2e77dbbd85bbd84a09c989f97674d825899449ef9ba1f8"
+    "path_trace_raygen_no_emitters.dxil": "29da589284b177ea5b69d765df47b203cc935797cb08b88490bb364a4b269d66",
+    "path_trace_raygen_no_emitters.spv": "0a9bd1b5097a45ea4bbcebee9b86272f175a74477debccc4b9636e9464a1fa00"
   }
 }

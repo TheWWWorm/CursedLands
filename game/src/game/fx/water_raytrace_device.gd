@@ -112,7 +112,12 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 	for i in _geometry.size():
 		var description: Dictionary = _geometry[i]
 		material_data.encode_u32(i*16,description.offset)
-		material_data.encode_u32(i*16+4,1 if description.get("standard",false) else 0)
+		# Independent flags preserve the legacy standard-emission bit. Mask
+		# layers are raw data in the existing array; zero means no plant mask.
+		var flags := int(description.get("standard",false)) | (int(description.get("terrain",false))<<1)
+		if description.get("foliage_layer",-1)>=0:
+			flags |= ((description.foliage_layer+1)<<8) | (int(description.get("leaf_light",false))<<2) | (int(description.get("bark_relief",false))<<3)
+		material_data.encode_u32(i*16+4,flags)
 		material_data.encode_float(i*16+8,description.get("cutoff",0.5))
 		# The final word was reserved. Water/one-bounce shaders ignore it;
 		# path tracing uses a compact roughness/metalness/specular profile.
