@@ -154,8 +154,37 @@ secondary hits, or every procedurally modified material.
 The [equipment-map qualification](../validation/path-tracing-equipment-materials-2026-10-22/README.md)
 contains matched campaign captures, GPU timings and backend checks.
 
+The first authored prop maps cover `bridge00`, `stone03` and `columnruins01`.
+They pack tangent normal XY, perceptual roughness and metalness into one linear
+RGBA8 texture. Both the object raster shader and PT consume the same map;
+the original color atlas stays intact. A source MMP fingerprint prevents a
+changed mod atlas from receiving masks authored for different UV regions.
+These maps replace the four-tap brightness relief on matching props with one
+filtered lookup. They do not add rays, bindings or payload fields. The bridge
+grain follows its diagonal beams and other board regions; its bone ornament
+stays smooth. Carved stone uses authored joints and rock uses bounded fissures.
+
+The UV tangent frame supports mirrored UVs, nonuniform/reflected instances
+and back faces. Detail fades over 24–60 m and 2–8 texels per pixel, including
+secondary-ray footprints; unresolved glossy detail broadens to at least 0.65
+roughness. This is a conservative fade, not a variance-prefiltered microfacet
+normal distribution. The source recipes and import settings are reproducible
+with `tools/build_surface_detail_maps.py` (`--check` verifies decoded pixels).
+The bake uses the runtime decoder's D3D row order, row zero at V zero; flipping
+an inspection preview is not a valid substitute. Height is converted to that
+order before deriving normal XY. `surface_detail_inventory.gd` exports local
+runtime-order previews and original mesh/UV bounds for authoring. Bone and snow
+regions are checked against the original decoded color atlas as well as the
+generated map.
+Alpha stores metalness, so alpha-border repair, premultiplication, sRGB data
+sampling and automatic normal-map compression are disabled. Do not treat these
+maps as color images, ORM, or the separate equipment `surface_tex` format.
+The [authored-surface qualification](../validation/path-tracing-authored-surfaces-2026-10-23/README.md)
+contains matched captures, source/import checks and the outstanding performance
+qualification limit.
+
 Enhanced terrain and identified stone/wood object profiles also supply
-texture-derived relief to traced shading. The existing terrain/material options
+texture-derived relief to traced shading when no authored map is present. The existing terrain/material options
 control it; changing either rebuilds the lighting snapshot. Seven previously
 unused material bits store its strength without enlarging geometry or the ray
 payload. Four texture taps estimate bounded perceptual brightness slopes in a
@@ -373,6 +402,8 @@ Fixtures run through the existing `--tool` interface:
 | `path_trace_sampling.gd` | Native unfiltered grazing-metal, disk-sun penumbra and small-emitter convergence at 1/2/4 samples; late sequence starts, repeatability, frame wrap, purpose independence, spatial error correlation and packaged attribution |
 | `path_trace_contacts.gd` | Raw thin-contact shadows, sky/emissive occlusion, nearby glossy reflection, point-light endpoints and self-intersection under translation, scale, rotation, shear, mirrored instances and large local coordinates |
 | `path_trace_daylight.gd` | Analytic directional-sky irradiance, isotropic fallback, bounded relief, UV/instance mirroring, degenerate UVs, distance and minification fades |
+| `path_trace_surface_detail.gd` | Authored data import/export, source fingerprint guards, linear channels, raster/ray normal parity, mirrored UVs and instances, back faces, fallback and detail fades |
+| `path_trace_surface_detail_live.gd` | Original campaign props, live map toggles through the controller, matched captures and interleaved GPU timings |
 | `path_trace_daylight_live.gd` | Matched noon/evening/night river views, sky-only history reset, enhanced surface collection and conventional restoration |
 | `path_trace_foliage.gd` | Leaf/bark separation, reflected/transmitted energy, uniform environment, disabled transmission, back-side blockers and emissive MIS |
 | `path_trace_terrain.gd` | Traced tile rotation, pair/junction/cliff colours against the actual raster sampler; shifted tile identities, procedural normals, projected relief, semantic roughness and atlas ownership |

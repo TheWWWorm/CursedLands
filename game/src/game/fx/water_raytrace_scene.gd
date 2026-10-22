@@ -78,7 +78,9 @@ func _material_version(material: Material) -> Array:
 		return [material.shader.get_instance_id() if material.shader else 0,texture.get_instance_id() if texture else 0,
 			material.get_shader_parameter("ei_material_diffuse"),material.get_shader_parameter("ei_material_emissive"),
 			material.get_shader_parameter("surface_profile"),material.get_shader_parameter("foliage_mask"),
-			material.get_shader_parameter("surface_tex") if path_materials else null]
+			material.get_shader_parameter("surface_tex") if path_materials else null,
+			material.get_shader_parameter("surface_detail_tex") if path_materials else null,
+			material.get_shader_parameter("surface_detail_enabled") if path_materials else null]
 	if material is BaseMaterial3D:
 		return [material.albedo_texture.get_instance_id() if material.albedo_texture else 0,material.albedo_color,
 			material.transparency,material.alpha_scissor_threshold,material.emission_enabled,material.emission,
@@ -243,9 +245,12 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 	# Keep the authored regions and mip footprint at every path hit. Reuse the
 	# raw array only for materials with a map; ordinary surfaces add no fetch.
 	var surface_layer := -1
+	var detail_layer := -1
 	if path_materials and Gfx.on("gfx_materials") and material is ShaderMaterial:
 		var mask: Texture2D = material.get_shader_parameter("surface_tex") as Texture2D
 		if mask != null: surface_layer = _layer(mask)
+		var detail: Texture2D = material.get_shader_parameter("surface_detail_tex") as Texture2D
+		if detail!=null and material.get_shader_parameter("surface_detail_enabled")==true:detail_layer=_layer(detail)
 	var opaque := cutoff <= 0.0 or (base_layer >= 0 and _opaque_textures[base_layer] and diffuse.w >= cutoff)
 	if _kernel != null:
 		var atlas := {}
@@ -257,7 +262,7 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 		var count: int = packed.vertices.size()/16
 		if count == 0: return -1
 		geometries.append({"offset":vertices.size()/16,"count":count,"indices":packed.indices,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material),"relief":surface_relief(material,land),"terrain":land,"foliage_layer":foliage_layer,
-			"leaf_light":Gfx.on("gfx_foliage_light"),"bark_relief":Gfx.on("gfx_materials"),"emissive":emission!=Vector3.ZERO,"surface_layer":surface_layer})
+			"leaf_light":Gfx.on("gfx_foliage_light"),"bark_relief":Gfx.on("gfx_materials"),"emissive":emission!=Vector3.ZERO,"surface_layer":surface_layer,"detail_layer":detail_layer})
 		vertices.append_array(packed.vertices); triangles += count/3
 		return geometries.size()-1
 	var start := vertices.size()/16
@@ -281,7 +286,7 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 	var count := vertices.size()/16-start
 	if count == 0: return -1
 	geometries.append({"offset":start,"count":count,"indices":used,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material),"relief":surface_relief(material,land),"terrain":land,"foliage_layer":foliage_layer,
-		"leaf_light":Gfx.on("gfx_foliage_light"),"bark_relief":Gfx.on("gfx_materials"),"emissive":emission!=Vector3.ZERO,"surface_layer":surface_layer})
+		"leaf_light":Gfx.on("gfx_foliage_light"),"bark_relief":Gfx.on("gfx_materials"),"emissive":emission!=Vector3.ZERO,"surface_layer":surface_layer,"detail_layer":detail_layer})
 	return geometries.size()-1
 
 ## Plain values only: the render thread never dereferences a scene node.

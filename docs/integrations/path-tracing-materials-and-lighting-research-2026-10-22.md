@@ -4,6 +4,11 @@ Research date: 22 October 2026. Source baseline: `a56d4484`, in the water/PT
 experimental checkout. This expands the material and lighting recommendation in
 the [graphics roadmap](path-tracing-roadmap-2026-10-22.md).
 
+Implementation follow-through, 23 October: [equipment material maps](../validation/path-tracing-equipment-materials-2026-10-22/README.md)
+and a [three-atlas authored surface pilot](../validation/path-tracing-authored-surfaces-2026-10-23/README.md)
+now have separate implementation and validation records. This audit describes
+the source baseline above; broader lighting work remains outstanding.
+
 The recommended first step is to carry the existing equipment material masks
 into PT. Then establish one material format shared by raster and ray hits,
 author a small representative material library, and light an outdoor area and

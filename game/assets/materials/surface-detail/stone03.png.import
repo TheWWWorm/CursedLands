@@ -1,0 +1,21 @@
+[remap]
+importer="texture"
+type="CompressedTexture2D"
+path="res://.godot/imported/stone03.png-5c92a2e77870dbefc6b51218aec696e1.ctex"
+metadata={"vram_texture": false}
+
+[deps]
+source_file="res://assets/materials/surface-detail/stone03.png"
+dest_files=["res://.godot/imported/stone03.png-5c92a2e77870dbefc6b51218aec696e1.ctex"]
+
+[params]
+compress/mode=0
+compress/normal_map=2
+compress/channel_pack=0
+mipmaps/generate=true
+roughness/mode=0
+process/fix_alpha_border=false
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+detect_3d/compress_to=0

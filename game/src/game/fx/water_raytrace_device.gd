@@ -121,6 +121,8 @@ func build(data: PackedByteArray, images: Array[Image], geometry_data: Array = [
 		# array. Zero keeps the scalar profile and the old shader fast path.
 		if description.get("surface_layer",-1)>=0:
 			flags |= (description.surface_layer+1)<<16
+		if description.get("detail_layer",-1)>=0:
+			flags |= (description.detail_layer+1)<<24
 		material_data.encode_u32(i*16+4,flags)
 		material_data.encode_float(i*16+8,description.get("cutoff",0.5))
 		# The final word was reserved. Water/one-bounce shaders ignore it;

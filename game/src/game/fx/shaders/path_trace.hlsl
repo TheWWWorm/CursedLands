@@ -877,6 +877,28 @@ float3 relief_normal(float3 n,float3 geometric,float3 edge1,float3 edge2,float2 
     // Relief changes shading only; never point a ray into the actual facet.
     return dot(detailed,geometric)>0.05&&dot(detailed,WorldRayDirection())<0.0?detailed:n;
 }
+// Match SurfaceDetail's raster UV basis, including mirrored UVs, transformed
+// geometry and back faces. Authored tangent normals never move the ray origin.
+float3 surface_detail_normal(float2 encoded,float3 n,float3 geometric,float3 view,
+                            float3 edge1,float3 edge2,float2 uv1,float2 uv2,float strength) {
+    float det=uv1.x*uv2.y-uv1.y*uv2.x;
+    if(abs(det)<1e-10)return n;
+    float3 t=(edge1*uv2.y-edge2*uv1.y)/det;
+    float3 b=(edge2*uv1.x-edge1*uv2.x)/det;
+    t-=n*dot(n,t);
+    if(dot(t,t)<1e-12)return n;
+    t=normalize(t);
+    b=cross(n,t)*(dot(cross(n,t),b)<0.0?-1.0:1.0);
+    float2 xy=clamp(encoded*2.0-1.0,-1.0,1.0)*strength;
+    float z=sqrt(max(1.0-dot(xy,xy),0.0));
+    float3 delta=t*xy.x+b*xy.y+n*(z-1.0);
+    float bound=1.0;
+    float facing=dot(delta,geometric);
+    if(facing<0.0)bound=min(bound,0.8*max(dot(n,geometric),0.0)/-facing);
+    facing=dot(delta,view);
+    if(facing<0.0)bound=min(bound,0.8*max(dot(n,view),0.0)/-facing);
+    return normalize(n+delta*bound);
+}
 [shader("closesthit")]
 void main(inout Surface result,Attributes attributes) {
     uint4 material=geometry.Load4(instance_geometry.Load(InstanceID()*4u)*16u); uint i=material.x+3*PrimitiveIndex();
@@ -948,6 +970,27 @@ void main(inout Surface result,Attributes attributes) {
         float2 surface=colours.SampleLevel(colour_sampler,float3(texel.xy,float(surface_layer-1u)),lod).gb;
         result.roughness=clamp(surface.x,0.08,1.0);
         result.metalness=saturate(surface.y);
+    }
+    uint detail_layer=(material.y>>24u)&255u;
+    [branch] if(detail_layer>0u) {
+        float3 eye=mul(frame.camera_world,float4(0,0,0,1)).xyz;
+        float distance=length(position-eye);
+        float footprint=2.0*abs(frame.inv_projection[0][0])/float(DispatchRaysDimensions().x);
+        if(frame.camera.x<0.5)footprint*=distance;
+        footprint=max(footprint,result.cone*RayTCurrent());
+        float texels=footprint*density*float(width)/max(abs(dot(result.normal,WorldRayDirection())),0.1);
+        float detail_lod=log2(max(max(base_texels,texels),1.0));
+        float4 detail=colours.SampleLevel(colour_sampler,float3(texel.xy,float(detail_layer-1u)),detail_lod);
+        float visible_detail=(1.0-smoothstep(2.0,8.0,texels))*(1.0-smoothstep(24.0,60.0,distance));
+        result.roughness=clamp(lerp(max(detail.b,0.65),detail.b,visible_detail),0.08,1.0);
+        result.metalness=saturate(detail.a);
+        result.normal=surface_detail_normal(detail.rg,result.normal,result.geometric_normal,-WorldRayDirection(),
+            mul((float3x3)to_world,edge1),mul((float3x3)to_world,edge2),
+            float2(b.position_u.w-a.position_u.w,b.normal_v.w-a.normal_v.w),
+            float2(c.position_u.w-a.position_u.w,c.normal_v.w-a.normal_v.w),visible_detail);
+        // This authored map replaces brightness-derived relief, avoiding
+        // double normals and four extra colour fetches on mapped props.
+        strength=0.0;
     }
     float3 terrain_albedo=0.0;float painted_scale=1.0;bool detailed_terrain=false;
     #if defined(PATH_TERRAIN_MATERIALS)
