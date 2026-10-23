@@ -31,7 +31,7 @@ func _process(_dt: float) -> void:
 	if game and game.session and game.world and Revive.enabled(game.session):
 		var p := get_viewport().get_mouse_position()
 		if not game.hud.blocks_input() and get_viewport().gui_get_hovered_control() == null:
-			var t := game.revive_target(game.pick_unit(p))
+			var t := game.revive_target(game.pick_hover(p))
 			if t:
 				s = RemakeText.t(HOVER) % t.display_name
 				at = (p - global_position) / kv()

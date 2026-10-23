@@ -305,7 +305,7 @@ func _update_cursor() -> void:
 	if forced:
 		cursor.set_kind(forced)
 		return
-	var u := pick_unit(p)
+	var u := pick_hover(p)
 	#  modes 7 (Follow) / 8 (Science): no fit target shows
 	# cursor 13 "cancel", not the spell's 23 "spellcancel". Follow over a
 	# living unit: 15 "move"; Science over a unit: 24 "steal", or cancel on a
@@ -1700,6 +1700,31 @@ func pick_lever(p: Vector2) -> int:
 ## clipped triangles; picking and floating hit numbers share those bounds.
 var _pick_key := []
 var _pick_hit: GameUnit
+const HOVER_MS := 40
+var _hover := []   # [pointer, camera transform, projection, msec, unit]
+
+
+## The unit under a hovering pointer, for what is only shown (cursor shape,
+## unit panel, village name and revive labels). Exact part rectangles cost
+## ~1-2 ms a frame with the party under the pointer; while the pointer and
+## camera stay still the result is reused for up to HOVER_MS, so a unit
+## walking under it is noticed a frame or two later. Clicks and orders use
+## pick_unit, which is always exact.
+func pick_hover(p: Vector2) -> GameUnit:
+	var cam := rig.camera if rig else null
+	if cam == null:
+		return pick_unit(p)
+	var view := cam.global_transform
+	var projection := cam.get_camera_projection()
+	var now := Time.get_ticks_msec()
+	if not _hover.is_empty() and _hover[0] == p and _hover[1] == view and _hover[2] == projection \
+			and now - int(_hover[3]) < HOVER_MS:
+		var held: GameUnit = _hover[4]
+		if held == null or (is_instance_valid(held) and held.is_inside_tree() and held.visible and not held.hidden):
+			return held
+	var u := pick_unit(p)
+	_hover = [p, view, projection, now, u]
+	return u
 
 
 func pick_unit(p: Vector2, exclude: GameUnit = null) -> GameUnit:

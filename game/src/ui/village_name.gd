@@ -48,7 +48,7 @@ func _process(_dt: float) -> void:
 	if game and game.session and game.world and game.session.shop_available() and not game.hud.blocks_input() \
 			and get_viewport().gui_get_hovered_control() == null:
 		var p := get_viewport().get_mouse_position()
-		var u := game.pick_unit(p)
+		var u := game.pick_hover(p)
 		if u and not u.dead and u.village_talk_ready():
 			s = title_of(u)
 			at = (p - global_position) / kv()

@@ -9,6 +9,7 @@
 - After a company is eliminated online, follow a company that is still playing, and don't place the eliminated company's old formation on its board.
 - Give Autochess elementals and ogres original looks as they gain stars. Elementals go from earth to lava to ice, and ogres gain a vest at two stars and become Hadagan sand ogres at three. These rigs share every animation, clip length, speed and reach, so combat is unchanged. Names, portraits and previews follow, and the earth and lava elemental names come from the original Russian and German texts.
 - Show wiki creatures in the colours they wear on the campaign maps, for example the black boar and the black unicorn, instead of their base models.
+- Reuse the unit under a still pointer for up to 40 ms when choosing the cursor and the hover labels, instead of measuring every unit part under it each frame. With the party under the pointer this cuts that work from about 2 ms to 0.3 ms per frame on average. Clicks and orders still pick exactly.
 
 ## 1.24.0 — 2026-10-22
 

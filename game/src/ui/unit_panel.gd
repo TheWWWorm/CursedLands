@@ -183,7 +183,7 @@ func _pick() -> GameUnit:
 	var u: GameUnit = null
 	var vp := get_viewport()
 	if vp.gui_get_hovered_control() == null and not ignore_hover:
-		u = game.pick_unit(vp.get_mouse_position())
+		u = game.pick_hover(vp.get_mouse_position())
 		#  hands the panel living objects only.
 		if u != null and u.dead:
 			u = null
