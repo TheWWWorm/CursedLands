@@ -89,7 +89,7 @@ The final game package is candidate06, exported from
 `7e54e5d6e853563dcecbf58ad32bea1dc20fd3a0`; subsequent changes are fixtures,
 qualification tooling and documentation. Vulkan core used candidate05 at
 `62853f16`, before the arena and graphics-detection fixes, which were exercised by
-the final preparation runs. Source hashes and export logs are under
+the final preparation runs. Source hashes and export-log references are under
 `build-and-review/`. The prior [PT qualification and performance evidence](../path-tracing-recovery-2026-10-23/README.md)
 remains applicable to the unchanged PT implementation.
 
