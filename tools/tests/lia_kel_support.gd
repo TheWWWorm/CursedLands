@@ -108,9 +108,13 @@ func complete(id: String) -> void:
 		if not check(npc != null,"authored conversation actor exists: "+owner): return
 		# Authored Start may still have a rotate/stance order queued when the
 		# surrounding simulation is frozen. Finish that actor's normal order.
-		for i in 240:
+		for i in 1200:
 			if npc.village_talk_ready(): break
 			npc.tick(GameUnit.TICK)
+			if i%40 == 0: await frames(1)
+		if not npc.village_talk_ready():
+			check(false,"authored conversation actor finishes its ordinary staging orders: "+owner)
+			return
 		vm().briefings.interact(hero(),npc,0)
 		var options: Array = game.hud._dialog._topics.get("options",[])
 		var choice := -1

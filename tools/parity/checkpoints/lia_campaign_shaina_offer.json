@@ -1,0 +1,204 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz2h",
+ "fixture": {
+  "active_party": "FSusel",
+  "money": 0,
+  "parties": {
+   "FSusel": [
+    {
+     "name": "Hero2",
+     "prototype": "Hero2"
+    },
+    {
+     "name": "merc2",
+     "prototype": "merc2"
+    }
+   ]
+  },
+  "setup": [
+   "GodMode(0,1)",
+   "RecalcMercBriefings()"
+  ]
+ },
+ "from_zone": "bz5h",
+ "note": "Prepared q01/q02/q7 completion and available brief23; actual original Shaina dialogue plays through, creates Shaina party and enters q8 mission. No q8 acceptance or outcome flags assigned. Clean FSusel Hero2+Kel prepared. Console waited for actual level load before applying post-transition GodMode/Recalc.",
+ "observations_after": {
+  "cp_key7": 0,
+  "cp_mercs": 0,
+  "cp_note8": 0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_key7": 0,
+  "cp_mercs": 1.0,
+  "cp_note8": 0,
+  "money": 0
+ },
+ "probes": {
+  "cp_key7": "HaveItem(0,7)",
+  "cp_mercs": "GetMercsNumber(0)",
+  "cp_note8": "HaveItem(0,8)"
+ },
+ "provenance": {
+  "after": {
+   "bz1h.sav": "0da26d10ed6d7c2a2845e10a62e36996252a44390a6f505a8e8929d9a6ff5e92",
+   "bz5h.sav": "64872a11ec735e786eccf60223680d63736e690bd54dd8b8b98a99b31bc4d6df",
+   "info.sav": "249e61b47a84f0223dbebd79d2e347ec89b796a75d9f96fa6dd2a7fd19fc380d",
+   "mission.sav": "d218a0640abeba0454470a38504365b56b29e645c6f68149e518aadb58e34ffb",
+   "scenario.sav": "d45df98aa401908c9f6c96c03b5579ae3090d70106f1638b14f721542c9c1ca9",
+   "shot.sav": "683108ca42ab5941a757d3d131a26b1a6f4a013d46a14d8455691175bc456425"
+  },
+  "before": {
+   "bz1h.sav": "0da26d10ed6d7c2a2845e10a62e36996252a44390a6f505a8e8929d9a6ff5e92",
+   "info.sav": "0beb8d967b0e19e96af555a5bc02f572e59456389552ea2b3777b440cef400de",
+   "mission.sav": "b0f2c2a1d2cc3787d289c5973fb280046dac22a0a6b6bb3c5c63d0b2a12601bc",
+   "scenario.sav": "7f9d7bbdd1e9cc830e5a86c246148fa4de0b8cbdeff5183092a804dcace6ddba",
+   "shot.sav": "b22df89d5645f5e145c752bd63f66feb19b876b1955628fd44188bb58b8687ca"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "talk": "merc8",
+   "topic": "b.merc8.brief_23"
+  },
+  {
+   "wait": "3"
+  },
+  {
+   "script": "GodMode(0,1)"
+  },
+  {
+   "script": "RecalcMercBriefings()"
+  }
+ ],
+ "vars_after": {
+  "b.NSheriff.buy_1": 1.0,
+  "b.NSheriff.buy_ax_01": 3.0,
+  "b.NSheriff.buy_ax_01f": 3.0,
+  "b.NSheriff.buy_ax_02": 3.0,
+  "b.NSheriff.buy_ax_02f": 3.0,
+  "b.NSheriff.buy_ax_03": 3.0,
+  "b.NSheriff.buy_ax_03f": 3.0,
+  "b.NSheriff.buy_bw_01": 3.0,
+  "b.NSheriff.buy_bw_01f": 3.0,
+  "b.NSheriff.buy_bw_02": 3.0,
+  "b.NSheriff.buy_bw_02f": 3.0,
+  "b.NSheriff.buy_bw_03": 3.0,
+  "b.NSheriff.buy_bw_03f": 3.0,
+  "b.NSheriff.buy_cb_01": 3.0,
+  "b.NSheriff.buy_cb_01f": 3.0,
+  "b.NSheriff.buy_cb_02": 3.0,
+  "b.NSheriff.buy_cb_02f": 3.0,
+  "b.NSheriff.buy_cb_03": 3.0,
+  "b.NSheriff.buy_cb_03f": 3.0,
+  "b.NSheriff.buy_dg_01": 3.0,
+  "b.NSheriff.buy_dg_01f": 3.0,
+  "b.NSheriff.buy_dg_02": 3.0,
+  "b.NSheriff.buy_dg_02f": 3.0,
+  "b.NSheriff.buy_dg_03": 3.0,
+  "b.NSheriff.buy_dg_03f": 3.0,
+  "b.NSheriff.buy_hm_01": 3.0,
+  "b.NSheriff.buy_hm_01f": 3.0,
+  "b.NSheriff.buy_hm_02": 3.0,
+  "b.NSheriff.buy_hm_02f": 3.0,
+  "b.NSheriff.buy_hm_03": 3.0,
+  "b.NSheriff.buy_hm_03f": 3.0,
+  "b.NSheriff.buy_sp_01": 3.0,
+  "b.NSheriff.buy_sp_01f": 3.0,
+  "b.NSheriff.buy_sp_02": 3.0,
+  "b.NSheriff.buy_sp_02f": 3.0,
+  "b.NSheriff.buy_sp_03": 3.0,
+  "b.NSheriff.buy_sp_03f": 3.0,
+  "b.NSheriff.buy_sw_01": 3.0,
+  "b.NSheriff.buy_sw_01f": 3.0,
+  "b.NSheriff.buy_sw_02": 3.0,
+  "b.NSheriff.buy_sw_02f": 3.0,
+  "b.NSheriff.buy_sw_03": 3.0,
+  "b.NSheriff.buy_sw_03f": 3.0,
+  "b.Sheriff.brief_22": 3.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.brief_23": 2.0,
+  "b.merc9.n11_9": 1.0,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz2h.q7h": 2.0,
+  "q.gz2h.q8h": 1.0,
+  "q.gz2h.q8h.1": 1.0,
+  "z.bz5h": 1.0,
+  "z.gz1h_gz2h": 1.0
+ },
+ "vars_before": {
+  "b.NSheriff.buy_1": 1.0,
+  "b.NSheriff.buy_ax_01": 3.0,
+  "b.NSheriff.buy_ax_01f": 3.0,
+  "b.NSheriff.buy_ax_02": 3.0,
+  "b.NSheriff.buy_ax_02f": 3.0,
+  "b.NSheriff.buy_ax_03": 3.0,
+  "b.NSheriff.buy_ax_03f": 3.0,
+  "b.NSheriff.buy_bw_01": 3.0,
+  "b.NSheriff.buy_bw_01f": 3.0,
+  "b.NSheriff.buy_bw_02": 3.0,
+  "b.NSheriff.buy_bw_02f": 3.0,
+  "b.NSheriff.buy_bw_03": 3.0,
+  "b.NSheriff.buy_bw_03f": 3.0,
+  "b.NSheriff.buy_cb_01": 3.0,
+  "b.NSheriff.buy_cb_01f": 3.0,
+  "b.NSheriff.buy_cb_02": 3.0,
+  "b.NSheriff.buy_cb_02f": 3.0,
+  "b.NSheriff.buy_cb_03": 3.0,
+  "b.NSheriff.buy_cb_03f": 3.0,
+  "b.NSheriff.buy_dg_01": 3.0,
+  "b.NSheriff.buy_dg_01f": 3.0,
+  "b.NSheriff.buy_dg_02": 3.0,
+  "b.NSheriff.buy_dg_02f": 3.0,
+  "b.NSheriff.buy_dg_03": 3.0,
+  "b.NSheriff.buy_dg_03f": 3.0,
+  "b.NSheriff.buy_hm_01": 3.0,
+  "b.NSheriff.buy_hm_01f": 3.0,
+  "b.NSheriff.buy_hm_02": 3.0,
+  "b.NSheriff.buy_hm_02f": 3.0,
+  "b.NSheriff.buy_hm_03": 3.0,
+  "b.NSheriff.buy_hm_03f": 3.0,
+  "b.NSheriff.buy_sp_01": 3.0,
+  "b.NSheriff.buy_sp_01f": 3.0,
+  "b.NSheriff.buy_sp_02": 3.0,
+  "b.NSheriff.buy_sp_02f": 3.0,
+  "b.NSheriff.buy_sp_03": 3.0,
+  "b.NSheriff.buy_sp_03f": 3.0,
+  "b.NSheriff.buy_sw_01": 3.0,
+  "b.NSheriff.buy_sw_01f": 3.0,
+  "b.NSheriff.buy_sw_02": 3.0,
+  "b.NSheriff.buy_sw_02f": 3.0,
+  "b.NSheriff.buy_sw_03": 3.0,
+  "b.NSheriff.buy_sw_03f": 3.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.brief_23": 1.0,
+  "b.merc8.n11_8": 2.0,
+  "b.merc9.n11_9": 1.0,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz2h.q7h": 2.0,
+  "z.bz5h": 2.0
+ },
+ "zone": "bz5h"
+}

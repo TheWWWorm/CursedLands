@@ -95,12 +95,13 @@ static func create(w: GameWorld, s: Session) -> ScriptVM:
 		for file: String in w.get_meta("added_mobs", []):
 			var extra := EIMob.load_bytes(GameData.read_file("maps/" + file))
 			if extra and not extra.script_text.is_empty():
-				vm.world_bodies["m:" + file.to_lower()] = vm._merge_script(extra.script_text, file.get_basename().to_lower())
+				vm.world_bodies["m:" + file.to_lower()] = vm._merge_script(extra.script_text, file.get_basename().to_lower(), true)
 	if restored.is_empty():
 		preload("res://src/game/script/story_astral_patch_saves.gd").prepare(vm)
 		vm._start_world(vm.ast.world)
 	else:
 		vm._restore(restored)
+		preload("res://src/game/script/story_astral_battle_saves.gd").recover(vm)
 		preload("res://src/game/script/story_compat.gd").restore_tunnel_guard(vm)
 		preload("res://src/game/script/story_compat.gd").recover(vm)
 	if not quest_world.is_empty() and String(restored.get("quest", "")) != String(w.get_meta("quest_mob", "")):
@@ -136,14 +137,14 @@ func _merge_quest_script(w: GameWorld) -> Array:
 
 ## Adds another .mob's script (side quest map, AddMob) to this zone's;
 ## returns its WorldScript body.
-func _merge_script(text: String, q: String) -> Array:
+func _merge_script(text: String, q: String, shared_globals := false) -> Array:
 	var extra := ScriptParser.parse(text)
 	for name: String in extra.scripts:
 		if ast.scripts.has(name):
 			var re := RegEx.create_from_string(_regex_escape(name) + "(?![0-9A-Za-z_#])")
 			text = re.sub(text, name + "_" + q, true)
 	for name: String in extra.globals:
-		if ast.globals.has(name):
+		if not shared_globals and ast.globals.has(name):
 			var re := RegEx.create_from_string("(?<![0-9A-Za-z_#])" + _regex_escape(name) + "(?![0-9A-Za-z_#])")
 			text = re.sub(text, name + "_" + q, true)
 	extra = ScriptParser.parse(text)
@@ -152,7 +153,12 @@ func _merge_script(text: String, q: String) -> Array:
 	ast.scripts.merge(extra.scripts)
 	for g in extra.globals:
 		ast.globals[g] = extra.globals[g]
-		globals[g] = [] if extra.globals[g] == "group" else null
+		# AddMob loads into the zone's global symbol table. In particular,
+		# zone35battle populates ArEvil/Kanians for zone35's waiting battle
+		# script. Side-quest overlays keep their separate renamed symbols.
+		# Redeclaring a shared symbol must also preserve its existing value.
+		if not globals.has(g):
+			globals[g] = [] if extra.globals[g] == "group" else null
 	return extra.world
 
 
@@ -1915,7 +1921,7 @@ func _add_mob(file: String) -> void:
 	# q13g, Zone6Flower q24g, Zone8Demon q41g.
 	if not extra.script_text.is_empty():
 		var src := "m:" + file.to_lower()
-		world_bodies[src] = _merge_script(extra.script_text, file.get_basename().to_lower())
+		world_bodies[src] = _merge_script(extra.script_text, file.get_basename().to_lower(), true)
 		_start_world(world_bodies[src], src)
 
 

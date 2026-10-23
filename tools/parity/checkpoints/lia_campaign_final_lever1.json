@@ -1,0 +1,128 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz36j",
+ "fixture": {
+  "active_party": "FinalProof",
+  "money": 0,
+  "parties": {
+   "FinalProof": [
+    {
+     "name": "Hero",
+     "prototype": "Hero3"
+    },
+    {
+     "name": "merc2",
+     "prototype": "merc2"
+    }
+   ]
+  },
+  "setup": [
+   "GodMode(0,1)",
+   "RecalcMercBriefings()",
+   "SetCPFast(GetUnitOfPlayer(0,0),34,32,0)",
+   "SetCPFast(GetUnitOfPlayer(0,1),35,33,0)"
+  ]
+ },
+ "from_zone": "gz36j",
+ "note": "Actual native left-click first control obelisk with hero teleported beside it; q22 accepted by actual Firez349 before this save. Subsequent control elements initially disabled by map script. No quest outcome or lever state assigned.",
+ "observations_after": {
+  "cp_final1": 1.0,
+  "cp_final2": 0,
+  "cp_final3": 0,
+  "cp_final4": 0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_final1": 0,
+  "cp_final2": 0,
+  "cp_final3": 0,
+  "cp_final4": 0,
+  "money": 0
+ },
+ "probes": {
+  "cp_final1": "GetLeverState(GetObject(1022101))",
+  "cp_final2": "GetLeverState(GetObject(1022102))",
+  "cp_final3": "GetLeverState(GetObject(1022103))",
+  "cp_final4": "GetLeverState(GetObject(1022104))"
+ },
+ "provenance": {
+  "after": {
+   "cz4j.sav": "c48b34923f40a7a959f16ffc44901d65801145f96a262e48b0f4110fac84dd18",
+   "info.sav": "a18fbaa0b1d987012ddb49ccaf47d10142271b039ca6317248ec3a4c5ddb8a7f",
+   "mission.sav": "5b122647a87211ffbeaf5fecbd0913efa4a62678116c37151988f5fb4976bdcb",
+   "scenario.sav": "a48979d9d460f43f6b2f42f30701affd0e0997d2847c83885763e46b13b1cfcf",
+   "shot.sav": "306cd0dd6b9a7c00a2e9ef1cd5497c7eee4da853b980c61978441faa6ccf05ef"
+  },
+  "before": {
+   "cz4j.sav": "c48b34923f40a7a959f16ffc44901d65801145f96a262e48b0f4110fac84dd18",
+   "info.sav": "4f91609b8ca100c4a1a57ddc7378b135c37131924a0b48cd939f9c659693d610",
+   "mission.sav": "c98860755bce5722bc65c7417196c03d553f95a69cb4f6166d6ea8190c2c33ba",
+   "scenario.sav": "67d147edf2460182f3860c58675192915a2defaf09a90c05e9b9b77f805c6a4e",
+   "shot.sav": "655867cdff4ff9e8d56f9750195d409b67f8d172f161d7647a02793f0441f425"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "use": "1022101"
+  },
+  {
+   "wait": "3"
+  }
+ ],
+ "vars_after": {
+  "b.Firez.brief_349": 2.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_mercs": 1.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz36j.q22j": 1.0,
+  "q.gz36j.q22j.1": 2.0,
+  "q.gz36j.q22j.2": 1.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z1d1": 1.0
+ },
+ "vars_before": {
+  "b.Firez.brief_349": 2.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_mercs": 1.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz36j.q22j": 1.0,
+  "q.gz36j.q22j.1": 1.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z1d1": 1.0
+ },
+ "zone": "gz36j"
+}

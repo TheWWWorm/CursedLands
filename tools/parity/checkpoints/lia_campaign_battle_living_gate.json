@@ -1,0 +1,147 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz35j",
+ "fixture": {
+  "active_party": "BattleProof",
+  "money": 0,
+  "parties": {
+   "BattleProof": [
+    {
+     "name": "Hero",
+     "prototype": "Hero3"
+    },
+    {
+     "name": "merc2",
+     "prototype": "merc2"
+    }
+   ]
+  },
+  "setup": [
+   "GodMode(0,1)",
+   "RecalcMercBriefings()"
+  ],
+  "setup_steps": [
+   {
+    "wait": 5
+   },
+   {
+    "script": "SetCPFast(GetUnitOfPlayer(0,0),200,280,0)"
+   },
+   {
+    "script": "SetCPFast(GetUnitOfPlayer(0,1),201,281,0)"
+   },
+   {
+    "script": "SetCPFast(GetObject(1021139),350,350,0)"
+   },
+   {
+    "script": "UMSentry(GetObject(1021139),350,350)"
+   }
+  ]
+ },
+ "from_zone": "gz35j",
+ "note": "Prepared accepted q21 (and q17=2 to suppress unrelated escort sequence); actual zone35 loads battle addon. Last enemy is moved away and given sentry order to keep the living-enemy gate stable. Measured wait must not complete combat objective while the last enemy lives.",
+ "observations_after": {
+  "cp_first_enemy": 1.0,
+  "cp_last_enemy": 1.0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_first_enemy": 1.0,
+  "cp_last_enemy": 1.0,
+  "money": 0
+ },
+ "probes": {
+  "cp_first_enemy": "IsAlive(GetObject(1021101))",
+  "cp_last_enemy": "IsAlive(GetObject(1021139))"
+ },
+ "provenance": {
+  "after": {
+   "cz4j.sav": "c48b34923f40a7a959f16ffc44901d65801145f96a262e48b0f4110fac84dd18",
+   "gz36j.sav": "d92b4db49e4796ed66c6c19c7e80a09c0fbd018bb60432d5c5df295cefc675d5",
+   "info.sav": "1a574b15d19336572888c33c58d74e16fc288cdcb1eb0fb3226d6dfe0f939723",
+   "mission.sav": "37b6477f3b03b5045e0a8b0a285ba2991d12aa75128cf446d690f20425a6443b",
+   "scenario.sav": "6fc9355bdb52c2e86f9ef6c4e288f3c1ae87bda51d6c15b7eebbf45152a336d2",
+   "shot.sav": "b9b5650c05572888fc607caf255c8b15ff5d8f0806cec1787c776db46a15698f"
+  },
+  "before": {
+   "cz4j.sav": "c48b34923f40a7a959f16ffc44901d65801145f96a262e48b0f4110fac84dd18",
+   "gz36j.sav": "d92b4db49e4796ed66c6c19c7e80a09c0fbd018bb60432d5c5df295cefc675d5",
+   "info.sav": "25737631055098a122735921cc4c84bac8f7fcc57d352df1621f955a671b5789",
+   "mission.sav": "9835e0329a2f2e2323577328849837070674be4ed4e9e65e99456dcacd5e9f9a",
+   "scenario.sav": "562296e3065688b848db1ee6108e2906302b8384e6ee0ae6e06dcd83b1aa3224",
+   "shot.sav": "d4673b01d0d53b8fe76447cbed4e007131ff15a1577aa3f7dfd6635a6d8ea633"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "wait": "3"
+  }
+ ],
+ "vars_after": {
+  "b.Firez.brief_349": 2.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_final1": 1.0,
+  "cp_mercs": 1.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz35j.q17j": 2.0,
+  "q.gz35j.q21j": 1.0,
+  "q.gz35j.q21j.1": 1.0,
+  "q.gz36j.q22j": 1.0,
+  "q.gz36j.q22j.1": 2.0,
+  "q.gz36j.q22j.2": 1.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z.gz34j_gz35j": 1.0,
+  "z1d1": 1.0
+ },
+ "vars_before": {
+  "b.Firez.brief_349": 2.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_final1": 1.0,
+  "cp_mercs": 1.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz35j.q17j": 2.0,
+  "q.gz35j.q21j": 1.0,
+  "q.gz35j.q21j.1": 1.0,
+  "q.gz36j.q22j": 1.0,
+  "q.gz36j.q22j.1": 2.0,
+  "q.gz36j.q22j.2": 1.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z.gz34j_gz35j": 1.0,
+  "z1d1": 1.0
+ },
+ "zone": "gz35j"
+}

@@ -1,0 +1,202 @@
+{
+  "schema": 1,
+  "evidence": "Quest-marker keys read from official-patched LiA map scripts; UI inventory, not trigger-completion proof.",
+  "zones": {
+    "gz10g": [
+      "q12g",
+      "q13g",
+      "q15g",
+      "q25g"
+    ],
+    "gz11d1": [
+      "fq13",
+      "q16ag"
+    ],
+    "gz11g": [
+      "fq9",
+      "q10g",
+      "q11g",
+      "q16g",
+      "q2g",
+      "q4g",
+      "q6g"
+    ],
+    "gz12g": [
+      "q18g",
+      "q27g"
+    ],
+    "gz13g": [
+      "q17g"
+    ],
+    "gz14g": [
+      "q28g"
+    ],
+    "gz15g": [
+      "q14g",
+      "q23g"
+    ],
+    "gz16g": [
+      "fq10",
+      "fq12",
+      "q20g",
+      "q22g",
+      "q24g"
+    ],
+    "gz1d2": [
+      "q03h"
+    ],
+    "gz1g": [
+      "q1r"
+    ],
+    "gz1h": [
+      "fq2",
+      "fq4",
+      "q01h",
+      "q02h",
+      "q11h",
+      "q12h",
+      "q1h",
+      "q2h",
+      "q3h",
+      "q4h",
+      "q6h"
+    ],
+    "gz21k": [
+      "fq16",
+      "q16k",
+      "q17k",
+      "q19k",
+      "q1k",
+      "q2k",
+      "q3k",
+      "q5k",
+      "q9k"
+    ],
+    "gz22k": [
+      "fq17",
+      "q11k",
+      "q12k",
+      "q13k",
+      "q14k",
+      "q8k"
+    ],
+    "gz23k": [
+      "fq15",
+      "fq18",
+      "q10k",
+      "q18k",
+      "q4k",
+      "q6k",
+      "q7k"
+    ],
+    "gz24k": [
+      "fq19",
+      "q15k"
+    ],
+    "gz25k": [
+      "q20k"
+    ],
+    "gz26k": [
+      "q21k"
+    ],
+    "gz2h": [
+      "fq3",
+      "fq5",
+      "q14h",
+      "q21h",
+      "q23h",
+      "q24h",
+      "q5h",
+      "q6h",
+      "q7h",
+      "q8h",
+      "q9h"
+    ],
+    "gz31j": [
+      "q16j",
+      "q1j",
+      "q2j",
+      "q6j",
+      "q8j"
+    ],
+    "gz32j": [
+      "q4j",
+      "q5j",
+      "q7j"
+    ],
+    "gz33j": [
+      "q10j",
+      "q11j",
+      "q12j",
+      "q3j",
+      "q9j"
+    ],
+    "gz34d1": [
+      "q18j"
+    ],
+    "gz34j": [
+      "q13j",
+      "q14j",
+      "q15j",
+      "q20j"
+    ],
+    "gz35j": [
+      "q17j",
+      "q19j",
+      "q21j"
+    ],
+    "gz36j": [
+      "q22j"
+    ],
+    "gz3d1": [
+      "q13oh"
+    ],
+    "gz3h": [
+      "q13h",
+      "q15h",
+      "q16h",
+      "q17h",
+      "q17oh",
+      "q18h",
+      "q21oh",
+      "q22h",
+      "q22oh"
+    ],
+    "gz3hd1": [
+      "q13oh"
+    ],
+    "gz4h": [
+      "fq6",
+      "q19h",
+      "q20h"
+    ],
+    "gz5h": [
+      "q23h",
+      "q24h"
+    ],
+    "gz7d1": [
+      "q3ag"
+    ],
+    "gz7g": [
+      "fq11",
+      "q19g",
+      "q1g",
+      "q21g",
+      "q3g",
+      "q5g"
+    ],
+    "gz8g": [
+      "q3g",
+      "q4g",
+      "q8g",
+      "q9g"
+    ],
+    "gz9g": [
+      "fq8",
+      "q26g",
+      "q7g",
+      "q8g",
+      "q9g"
+    ]
+  }
+}

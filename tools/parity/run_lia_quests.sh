@@ -12,7 +12,9 @@ mkdir "$output" || exit 2
 status=0
 if "$python" "$suite/gameplay.py" --game-dir "$BASE_GAME" --astral-dir "$ASTRAL_GAME" \
     --godot "$GODOT" --out "$output/gameplay" --display headless \
-    --case lia_kel_ --case use_callback_orders; then
+    --case lia_kel_ --case lia_campaign_ --case use_callback_orders \
+    --case lia_revenge_return --case lia_slave_lists_return \
+    --case lia_tomb_exit --case zone7_arrival; then
     :
 else
     status=$?

@@ -1,0 +1,2020 @@
+{
+  "schema": 1,
+  "date": "2026-10-23",
+  "base_commit": "987a2a865db63ad8169924541a22a5c34825d248",
+  "branch": "test/lia-campaign-checkpoints-20261023",
+  "local_evidence_root": "/home/llm2x/Documents/EI/local/scratchpad/lia-campaign-checkpoints-20261023",
+  "scope": "LiA numbered campaign route through its ending, fortune fragments/rescue, quest/map gates, normal selected travel and saved-state continuation. Bounded chapters with explicit prepared seams and selected original threads, not an uninterrupted playthrough or exhaustive audiovisual/combat/co-op/platform qualification.",
+  "coverage_inventory": "coverage.json",
+  "gameplay": {
+    "new_programs": 20,
+    "new_checks": 6600,
+    "total_selected_programs": 34,
+    "total_selected_checks": 7761,
+    "failures": 0,
+    "programs": [
+      {
+        "id": "quests/lia_campaign_late_arrival",
+        "script": "tools/tests/lia_campaign_late_arrival.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 198,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_late_arrival/run.log",
+        "log_sha256": "bb1e6476140226645b043887c41e1c08e0bef1d703e50824a90b4e2ee37d1722",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-1"
+      },
+      {
+        "id": "quests/lia_campaign_late_convoy",
+        "script": "tools/tests/lia_campaign_late_convoy.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 166,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_late_convoy/run.log",
+        "log_sha256": "2011f9d88833534ea761e6f8e181358840f9c5965f21454917b37eeaf7042156",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-1"
+      },
+      {
+        "id": "quests/lia_campaign_mid_gipat",
+        "script": "tools/tests/lia_campaign_mid_gipat.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 169,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_mid_gipat/run.log",
+        "log_sha256": "4577732b5b3e002e0ce07c3ff9191c53a66b03d852af5354ec9553451a155739",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-1"
+      },
+      {
+        "id": "quests/lia_campaign_gipat_settlements",
+        "script": "tools/tests/lia_campaign_gipat_settlements.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 177,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_gipat_settlements/run.log",
+        "log_sha256": "cca99934c10088c9df17b18387b8693e6afc01a86b2dd16725e336a7d5bbce77",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-1"
+      },
+      {
+        "id": "quests/lia_campaign_map_points",
+        "script": "tools/tests/lia_campaign_map_points.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 3054,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_map_points/run.log",
+        "log_sha256": "258e1ee9e006e2559c8981592b907cf0e267bc9e85b18c2d32408ed773cce8e3",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-1"
+      },
+      {
+        "id": "quests/lia_campaign_late_addmob",
+        "script": "tools/tests/lia_campaign_late_addmob.gd",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 10,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_late_addmob/run.log",
+        "log_sha256": "7ef8c242a74a5f610bf1b15b51e28aa269c6ebb8b5212555766b34c8bfd1d76d",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-1"
+      },
+      {
+        "id": "quests/lia_campaign_gipat_palantir",
+        "script": "tools/tests/lia_campaign_gipat_palantir.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 201,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_gipat_palantir/run.log",
+        "log_sha256": "1571928b86d875c385694b27c2fcea4fd800138359f03d7d414b50d0cbb30b44",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-1"
+      },
+      {
+        "id": "quests/lia_campaign_suslanger_departure",
+        "script": "tools/tests/lia_campaign_suslanger_departure.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 215,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_suslanger_departure/run.log",
+        "log_sha256": "9d11eb25b87e9b29b2286e28449f7a104fc31e6bc0d39df142821d158879acbf",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-1"
+      },
+      {
+        "id": "quests/lia_campaign_ingos_portal",
+        "script": "tools/tests/lia_campaign_ingos_portal.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 219,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_ingos_portal/run.log",
+        "log_sha256": "e32eaaffea3733fdb745ee051b0bf3198a1820f00abbf030510c9b026934a83e",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-1"
+      },
+      {
+        "id": "quests/lia_campaign_late_supplies",
+        "script": "tools/tests/lia_campaign_late_supplies.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 162,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_late_supplies/run.log",
+        "log_sha256": "0e81c519eb3775f738bf498d59a804735402477e2abb6895e287205db3740804",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-2"
+      },
+      {
+        "id": "quests/lia_campaign_late_ending",
+        "script": "tools/tests/lia_campaign_late_ending.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 214,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_late_ending/run.log",
+        "log_sha256": "ee9e172225b67a484042e2ab0e6dd42ac769d49689fbf3f6bcaed45f5c0a1ef3",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-2"
+      },
+      {
+        "id": "quests/lia_campaign_gipat_arrival",
+        "script": "tools/tests/lia_campaign_gipat_arrival.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 158,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_gipat_arrival/run.log",
+        "log_sha256": "d83554a3f7b41ba467874221fe5c332ab9542baf16f3009f6e0137c08e7e7939",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-2"
+      },
+      {
+        "id": "quests/lia_campaign_gipat_healer",
+        "script": "tools/tests/lia_campaign_gipat_healer.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 205,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_gipat_healer/run.log",
+        "log_sha256": "9f452f324ae32dfa711d12de37bdbb6cb721514ba31a1d8c36b0a8db5a4dae51",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-2"
+      },
+      {
+        "id": "quests/lia_campaign_travel_routes",
+        "script": "tools/tests/lia_campaign_travel_routes.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 51,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_travel_routes/run.log",
+        "log_sha256": "f343b4600c552e4f89624a6337fb8d1ca0e77043d1be427e1fef35cfa1e69e9d",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-2"
+      },
+      {
+        "id": "quests/lia_campaign_shaina",
+        "script": "tools/tests/lia_campaign_shaina.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 171,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_shaina/run.log",
+        "log_sha256": "78714e6dcc663f48123a3eaad0e42ddf5c61d2760fe730796472d2a87e9f49aa",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-2"
+      },
+      {
+        "id": "quests/lia_campaign_gipat_departure",
+        "script": "tools/tests/lia_campaign_gipat_departure.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 194,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_gipat_departure/run.log",
+        "log_sha256": "1edf86d7a757dcfbac7ffe850456868d6a66d184798137b53253959e71443600",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-2"
+      },
+      {
+        "id": "quests/lia_campaign_early_suslanger",
+        "script": "tools/tests/lia_campaign_early_suslanger.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 395,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_early_suslanger/run.log",
+        "log_sha256": "d55aac94d95bf0fb0c6cfc22497baab4202b2cf9c0231d1ac22ca970ee2723d6",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-2"
+      },
+      {
+        "id": "quests/lia_campaign_ingos_investigation",
+        "script": "tools/tests/lia_campaign_ingos_investigation.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 323,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_ingos_investigation/run.log",
+        "log_sha256": "4080df6b7ed3b98e8ef19188f9adee685e3537891c6abcdf9f18051c16246533",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-2"
+      },
+      {
+        "id": "quests/lia_campaign_late_legacy_battle",
+        "script": "tools/tests/lia_campaign_late_legacy_battle.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 78,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_late_legacy_battle/run.log",
+        "log_sha256": "c1be160917f9b0b9c260d29d18b46bc04ab81258ab661e4c6d31e59a63707385",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "campaign-final-2"
+      },
+      {
+        "id": "quests/zone7_arrival",
+        "script": "tools/tests/zone7_arrival.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 29,
+        "failures": 0,
+        "log": "tests/quests/zone7_arrival/run.log",
+        "log_sha256": "4857d842d51546674fdb24adc355491c563570123e1bd916074979d732a59cd4",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "gameplay-existing-final"
+      },
+      {
+        "id": "quests/lia_revenge_return",
+        "script": "tools/tests/lia_revenge_return.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 13,
+        "failures": 0,
+        "log": "tests/quests/lia_revenge_return/run.log",
+        "log_sha256": "3fc15f98a65570f6df5ad251d6ae5c4925b4a85ec3635a99d0beffb00c619873",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "gameplay-existing-final"
+      },
+      {
+        "id": "quests/lia_slave_lists_return",
+        "script": "tools/tests/lia_slave_lists_return.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 21,
+        "failures": 0,
+        "log": "tests/quests/lia_slave_lists_return/run.log",
+        "log_sha256": "6a6b31e84f03496dc4f3ffade89a6e14fd05419aaf6761d5da69796a507549cc",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "gameplay-existing-final"
+      },
+      {
+        "id": "quests/lia_tomb_exit",
+        "script": "tools/tests/lia_tomb_exit.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 36,
+        "failures": 0,
+        "log": "tests/quests/lia_tomb_exit/run.log",
+        "log_sha256": "e0dabf77f0ee692147acd7d90c7a5e66f9c370457fde854955ba871973d10ecd",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "gameplay-existing-final"
+      },
+      {
+        "id": "quests/lia_kel_early_story",
+        "script": "tools/tests/lia_kel_early_story.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 122,
+        "failures": 0,
+        "log": "tests/quests/lia_kel_early_story/run.log",
+        "log_sha256": "318eb9f505275d3a5aaa2c65cd2ab618c2de486b2344357e4cfe384a5e43e520",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "gameplay-existing-final"
+      },
+      {
+        "id": "quests/lia_kel_torch_cellar",
+        "script": "tools/tests/lia_kel_torch_cellar.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 71,
+        "failures": 0,
+        "log": "tests/quests/lia_kel_torch_cellar/run.log",
+        "log_sha256": "d3b3410bd0038961dfc2d2464439cb615ec7cfd9a9f93a13abad8d126a5ac464",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "gameplay-existing-final"
+      },
+      {
+        "id": "quests/lia_kel_suslanger",
+        "script": "tools/tests/lia_kel_suslanger.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 106,
+        "failures": 0,
+        "log": "tests/quests/lia_kel_suslanger/run.log",
+        "log_sha256": "680cc37c8a9759783c79d3464ef18fee58a04eb958f4a67c82e1d4e4f64828a7",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "gameplay-existing-final"
+      },
+      {
+        "id": "quests/lia_kel_gipat",
+        "script": "tools/tests/lia_kel_gipat.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 114,
+        "failures": 0,
+        "log": "tests/quests/lia_kel_gipat/run.log",
+        "log_sha256": "3261977f074276d3c6e409a4c26ef10e74ff9a246ec7351007f2d07bb8eda684",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "gameplay-existing-final"
+      },
+      {
+        "id": "quests/lia_kel_ingos",
+        "script": "tools/tests/lia_kel_ingos.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 149,
+        "failures": 0,
+        "log": "tests/quests/lia_kel_ingos/run.log",
+        "log_sha256": "9f5c88ba990da60d632ac7f1bc0fc7c10bd37fc4392833aaf486adc009520896",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "gameplay-existing-final"
+      },
+      {
+        "id": "quests/lia_kel_rescue",
+        "script": "tools/tests/lia_kel_rescue.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 142,
+        "failures": 0,
+        "log": "tests/quests/lia_kel_rescue/run.log",
+        "log_sha256": "533e81d9c1d829e97f73741d984bdba5c0957cecb5fd69651747c6e26fbe2813",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "gameplay-existing-final"
+      },
+      {
+        "id": "commands/use_callback_orders",
+        "script": "tools/tests/use_callback_orders.gd",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 27,
+        "failures": 0,
+        "log": "tests/commands/use_callback_orders/run.log",
+        "log_sha256": "e8bffc3fe420c2248b02b7d65a0cfca71a48d097d7a35318a431c2b7bda93044",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "gameplay-existing-final"
+      },
+      {
+        "id": "quests/lia_kel_prologue",
+        "script": "tools/tests/lia_kel_prologue.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 152,
+        "failures": 0,
+        "log": "tests/quests/lia_kel_prologue/run.log",
+        "log_sha256": "f75bd9c01be6acdf02d615e98f710f92b781a52e5b69898ac0028f22f813963c",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "gameplay-existing-final"
+      },
+      {
+        "id": "quests/lia_kel_departures",
+        "script": "tools/tests/lia_kel_departures.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 84,
+        "failures": 0,
+        "log": "tests/quests/lia_kel_departures/run.log",
+        "log_sha256": "b0adbd0f2e932e76a9ddc43e063676da52c95e892f85411c6d569fb88b73a386",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "gameplay-existing-final"
+      },
+      {
+        "id": "quests/lia_kel_handoffs",
+        "script": "tools/tests/lia_kel_handoffs.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 95,
+        "failures": 0,
+        "log": "tests/quests/lia_kel_handoffs/run.log",
+        "log_sha256": "b1fe42b980ec2eec2332a56d1944cfa36c13c59a77eba4533835654cad8c311b",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "gameplay-existing-final"
+      },
+      {
+        "id": "quests/lia_campaign_mid_ingos",
+        "script": "tools/tests/lia_campaign_mid_ingos.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 240,
+        "failures": 0,
+        "log": "tests/quests/lia_campaign_mid_ingos/run.log",
+        "log_sha256": "cbd1f3c03cfc4cc0bafcbd3f002449203eaf4d1db5a8a5348bda763cb6586146",
+        "exit_code": 0,
+        "failure_messages": [],
+        "evidence_directory": "remake-ingos-return-02"
+      }
+    ],
+    "runs": [
+      {
+        "evidence_directory": "campaign-final-1",
+        "report_sha256": "8873fa65ac4ac21ec51677c063dfda6d993760445483e71701a7abb7cc839eda",
+        "source_snapshot_sha256": "2af7b1d4e38905b2e189110ef20faa2c7ff56c2365892a26b543c1b88274f802",
+        "status": "error",
+        "counts": {
+          "passed": 9,
+          "failed": 0,
+          "error": 1,
+          "programs": 10,
+          "checks": 4409,
+          "failed_checks": 0
+        },
+        "programs": [
+          {
+            "id": "quests/lia_campaign_late_arrival",
+            "script": "tools/tests/lia_campaign_late_arrival.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 198,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_late_arrival/run.log",
+            "log_sha256": "bb1e6476140226645b043887c41e1c08e0bef1d703e50824a90b4e2ee37d1722",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_campaign_late_convoy",
+            "script": "tools/tests/lia_campaign_late_convoy.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 166,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_late_convoy/run.log",
+            "log_sha256": "2011f9d88833534ea761e6f8e181358840f9c5965f21454917b37eeaf7042156",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_campaign_mid_gipat",
+            "script": "tools/tests/lia_campaign_mid_gipat.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 169,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_mid_gipat/run.log",
+            "log_sha256": "4577732b5b3e002e0ce07c3ff9191c53a66b03d852af5354ec9553451a155739",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_campaign_gipat_settlements",
+            "script": "tools/tests/lia_campaign_gipat_settlements.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 177,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_gipat_settlements/run.log",
+            "log_sha256": "cca99934c10088c9df17b18387b8693e6afc01a86b2dd16725e336a7d5bbce77",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_campaign_map_points",
+            "script": "tools/tests/lia_campaign_map_points.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 3054,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_map_points/run.log",
+            "log_sha256": "258e1ee9e006e2559c8981592b907cf0e267bc9e85b18c2d32408ed773cce8e3",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_campaign_late_addmob",
+            "script": "tools/tests/lia_campaign_late_addmob.gd",
+            "campaign": "cursed_lands",
+            "status": "passed",
+            "checks": 10,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_late_addmob/run.log",
+            "log_sha256": "7ef8c242a74a5f610bf1b15b51e28aa269c6ebb8b5212555766b34c8bfd1d76d",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_campaign_gipat_palantir",
+            "script": "tools/tests/lia_campaign_gipat_palantir.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 201,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_gipat_palantir/run.log",
+            "log_sha256": "1571928b86d875c385694b27c2fcea4fd800138359f03d7d414b50d0cbb30b44",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_campaign_suslanger_departure",
+            "script": "tools/tests/lia_campaign_suslanger_departure.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 215,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_suslanger_departure/run.log",
+            "log_sha256": "9d11eb25b87e9b29b2286e28449f7a104fc31e6bc0d39df142821d158879acbf",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_campaign_mid_ingos",
+            "script": "tools/tests/lia_campaign_mid_ingos.gd",
+            "campaign": "lost_in_astral",
+            "status": "error",
+            "checks": 0,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_mid_ingos/run.log",
+            "log_sha256": "bd7febfb8d07c78670bf818be8addca52cd001e64a810a36c3f28106d93c26a0",
+            "exit_code": 1,
+            "failure_messages": [
+              "FAIL authored conversation actor finishes its ordinary staging orders: merc2",
+              "FAIL actual Kel offer starts the laboratory quest",
+              "FAIL normal use activates 1002001",
+              "FAIL last laboratory guardian prevents its combat objective",
+              "FAIL defeating all guardians still requires the whole-party return",
+              "FAIL authored transfer reaches cz1k"
+            ]
+          },
+          {
+            "id": "quests/lia_campaign_ingos_portal",
+            "script": "tools/tests/lia_campaign_ingos_portal.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 219,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_ingos_portal/run.log",
+            "log_sha256": "e32eaaffea3733fdb745ee051b0bf3198a1820f00abbf030510c9b026934a83e",
+            "exit_code": 0,
+            "failure_messages": []
+          }
+        ]
+      },
+      {
+        "evidence_directory": "campaign-final-2",
+        "report_sha256": "9f76237879bab34309bbca5ad1ecedf02fdfc8e599d836d5dc96b363ee46f190",
+        "source_snapshot_sha256": "2af7b1d4e38905b2e189110ef20faa2c7ff56c2365892a26b543c1b88274f802",
+        "status": "passed",
+        "counts": {
+          "passed": 10,
+          "failed": 0,
+          "error": 0,
+          "programs": 10,
+          "checks": 1951,
+          "failed_checks": 0
+        },
+        "programs": [
+          {
+            "id": "quests/lia_campaign_late_supplies",
+            "script": "tools/tests/lia_campaign_late_supplies.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 162,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_late_supplies/run.log",
+            "log_sha256": "0e81c519eb3775f738bf498d59a804735402477e2abb6895e287205db3740804",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_campaign_late_ending",
+            "script": "tools/tests/lia_campaign_late_ending.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 214,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_late_ending/run.log",
+            "log_sha256": "ee9e172225b67a484042e2ab0e6dd42ac769d49689fbf3f6bcaed45f5c0a1ef3",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_campaign_gipat_arrival",
+            "script": "tools/tests/lia_campaign_gipat_arrival.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 158,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_gipat_arrival/run.log",
+            "log_sha256": "d83554a3f7b41ba467874221fe5c332ab9542baf16f3009f6e0137c08e7e7939",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_campaign_gipat_healer",
+            "script": "tools/tests/lia_campaign_gipat_healer.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 205,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_gipat_healer/run.log",
+            "log_sha256": "9f452f324ae32dfa711d12de37bdbb6cb721514ba31a1d8c36b0a8db5a4dae51",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_campaign_travel_routes",
+            "script": "tools/tests/lia_campaign_travel_routes.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 51,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_travel_routes/run.log",
+            "log_sha256": "f343b4600c552e4f89624a6337fb8d1ca0e77043d1be427e1fef35cfa1e69e9d",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_campaign_shaina",
+            "script": "tools/tests/lia_campaign_shaina.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 171,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_shaina/run.log",
+            "log_sha256": "78714e6dcc663f48123a3eaad0e42ddf5c61d2760fe730796472d2a87e9f49aa",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_campaign_gipat_departure",
+            "script": "tools/tests/lia_campaign_gipat_departure.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 194,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_gipat_departure/run.log",
+            "log_sha256": "1edf86d7a757dcfbac7ffe850456868d6a66d184798137b53253959e71443600",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_campaign_early_suslanger",
+            "script": "tools/tests/lia_campaign_early_suslanger.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 395,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_early_suslanger/run.log",
+            "log_sha256": "d55aac94d95bf0fb0c6cfc22497baab4202b2cf9c0231d1ac22ca970ee2723d6",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_campaign_ingos_investigation",
+            "script": "tools/tests/lia_campaign_ingos_investigation.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 323,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_ingos_investigation/run.log",
+            "log_sha256": "4080df6b7ed3b98e8ef19188f9adee685e3537891c6abcdf9f18051c16246533",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_campaign_late_legacy_battle",
+            "script": "tools/tests/lia_campaign_late_legacy_battle.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 78,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_late_legacy_battle/run.log",
+            "log_sha256": "c1be160917f9b0b9c260d29d18b46bc04ab81258ab661e4c6d31e59a63707385",
+            "exit_code": 0,
+            "failure_messages": []
+          }
+        ]
+      },
+      {
+        "evidence_directory": "gameplay-existing-final",
+        "report_sha256": "6d9cf94758d3c705605c940cbf94e731aeccbce7f95c253f8cb7e70658dcc587",
+        "source_snapshot_sha256": "4a1872c250099f003cdcef4167002ab18e96989ef08f65e6882dec9a3a7d8f17",
+        "status": "passed",
+        "counts": {
+          "passed": 14,
+          "failed": 0,
+          "error": 0,
+          "programs": 14,
+          "checks": 1161,
+          "failed_checks": 0
+        },
+        "programs": [
+          {
+            "id": "quests/zone7_arrival",
+            "script": "tools/tests/zone7_arrival.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 29,
+            "failures": 0,
+            "log": "tests/quests/zone7_arrival/run.log",
+            "log_sha256": "4857d842d51546674fdb24adc355491c563570123e1bd916074979d732a59cd4",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_revenge_return",
+            "script": "tools/tests/lia_revenge_return.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 13,
+            "failures": 0,
+            "log": "tests/quests/lia_revenge_return/run.log",
+            "log_sha256": "3fc15f98a65570f6df5ad251d6ae5c4925b4a85ec3635a99d0beffb00c619873",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_slave_lists_return",
+            "script": "tools/tests/lia_slave_lists_return.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 21,
+            "failures": 0,
+            "log": "tests/quests/lia_slave_lists_return/run.log",
+            "log_sha256": "6a6b31e84f03496dc4f3ffade89a6e14fd05419aaf6761d5da69796a507549cc",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_tomb_exit",
+            "script": "tools/tests/lia_tomb_exit.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 36,
+            "failures": 0,
+            "log": "tests/quests/lia_tomb_exit/run.log",
+            "log_sha256": "e0dabf77f0ee692147acd7d90c7a5e66f9c370457fde854955ba871973d10ecd",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_kel_early_story",
+            "script": "tools/tests/lia_kel_early_story.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 122,
+            "failures": 0,
+            "log": "tests/quests/lia_kel_early_story/run.log",
+            "log_sha256": "318eb9f505275d3a5aaa2c65cd2ab618c2de486b2344357e4cfe384a5e43e520",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_kel_torch_cellar",
+            "script": "tools/tests/lia_kel_torch_cellar.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 71,
+            "failures": 0,
+            "log": "tests/quests/lia_kel_torch_cellar/run.log",
+            "log_sha256": "d3b3410bd0038961dfc2d2464439cb615ec7cfd9a9f93a13abad8d126a5ac464",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_kel_suslanger",
+            "script": "tools/tests/lia_kel_suslanger.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 106,
+            "failures": 0,
+            "log": "tests/quests/lia_kel_suslanger/run.log",
+            "log_sha256": "680cc37c8a9759783c79d3464ef18fee58a04eb958f4a67c82e1d4e4f64828a7",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_kel_gipat",
+            "script": "tools/tests/lia_kel_gipat.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 114,
+            "failures": 0,
+            "log": "tests/quests/lia_kel_gipat/run.log",
+            "log_sha256": "3261977f074276d3c6e409a4c26ef10e74ff9a246ec7351007f2d07bb8eda684",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_kel_ingos",
+            "script": "tools/tests/lia_kel_ingos.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 149,
+            "failures": 0,
+            "log": "tests/quests/lia_kel_ingos/run.log",
+            "log_sha256": "9f5c88ba990da60d632ac7f1bc0fc7c10bd37fc4392833aaf486adc009520896",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_kel_rescue",
+            "script": "tools/tests/lia_kel_rescue.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 142,
+            "failures": 0,
+            "log": "tests/quests/lia_kel_rescue/run.log",
+            "log_sha256": "533e81d9c1d829e97f73741d984bdba5c0957cecb5fd69651747c6e26fbe2813",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "commands/use_callback_orders",
+            "script": "tools/tests/use_callback_orders.gd",
+            "campaign": "cursed_lands",
+            "status": "passed",
+            "checks": 27,
+            "failures": 0,
+            "log": "tests/commands/use_callback_orders/run.log",
+            "log_sha256": "e8bffc3fe420c2248b02b7d65a0cfca71a48d097d7a35318a431c2b7bda93044",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_kel_prologue",
+            "script": "tools/tests/lia_kel_prologue.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 152,
+            "failures": 0,
+            "log": "tests/quests/lia_kel_prologue/run.log",
+            "log_sha256": "f75bd9c01be6acdf02d615e98f710f92b781a52e5b69898ac0028f22f813963c",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_kel_departures",
+            "script": "tools/tests/lia_kel_departures.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 84,
+            "failures": 0,
+            "log": "tests/quests/lia_kel_departures/run.log",
+            "log_sha256": "b0adbd0f2e932e76a9ddc43e063676da52c95e892f85411c6d569fb88b73a386",
+            "exit_code": 0,
+            "failure_messages": []
+          },
+          {
+            "id": "quests/lia_kel_handoffs",
+            "script": "tools/tests/lia_kel_handoffs.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 95,
+            "failures": 0,
+            "log": "tests/quests/lia_kel_handoffs/run.log",
+            "log_sha256": "b1fe42b980ec2eec2332a56d1944cfa36c13c59a77eba4533835654cad8c311b",
+            "exit_code": 0,
+            "failure_messages": []
+          }
+        ]
+      },
+      {
+        "evidence_directory": "remake-ingos-return-01",
+        "report_sha256": "a558df61f2aa0f9765f8d401f4edb663ff079fb099d0b8101819252e7a160ca3",
+        "source_snapshot_sha256": "9740df6282dbd7d64c5f8d92df97cd0afc58ff18f855ee67400b78c5f4801dd0",
+        "status": "passed",
+        "counts": {
+          "passed": 1,
+          "failed": 0,
+          "error": 0,
+          "programs": 1,
+          "checks": 240,
+          "failed_checks": 0
+        },
+        "programs": [
+          {
+            "id": "quests/lia_campaign_mid_ingos",
+            "script": "tools/tests/lia_campaign_mid_ingos.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 240,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_mid_ingos/run.log",
+            "log_sha256": "686e98584cdf4cf2e8e827b496d83b1d96241b6fe7f90e380943295abc31ea2c",
+            "exit_code": 0,
+            "failure_messages": []
+          }
+        ]
+      },
+      {
+        "evidence_directory": "remake-ingos-return-02",
+        "report_sha256": "6728e3d0c0fbc058e208d95260448ffc9b7f1ac2ec18554890c9141fdc399d84",
+        "source_snapshot_sha256": "9740df6282dbd7d64c5f8d92df97cd0afc58ff18f855ee67400b78c5f4801dd0",
+        "status": "passed",
+        "counts": {
+          "passed": 1,
+          "failed": 0,
+          "error": 0,
+          "programs": 1,
+          "checks": 240,
+          "failed_checks": 0
+        },
+        "programs": [
+          {
+            "id": "quests/lia_campaign_mid_ingos",
+            "script": "tools/tests/lia_campaign_mid_ingos.gd",
+            "campaign": "lost_in_astral",
+            "status": "passed",
+            "checks": 240,
+            "failures": 0,
+            "log": "tests/quests/lia_campaign_mid_ingos/run.log",
+            "log_sha256": "cbd1f3c03cfc4cc0bafcbd3f002449203eaf4d1db5a8a5348bda763cb6586146",
+            "exit_code": 0,
+            "failure_messages": []
+          }
+        ]
+      }
+    ],
+    "initial_failed_run": "campaign-final-1: mid_ingos NPC staging fixture failed; retained explicitly and replaced only after repair and two independent passing repeats.",
+    "snapshot_note": "New campaign batches use final production and test helpers. Existing14 batch predates only the added narrow legacy migration and the test helper NPC readiness wait extension; its exact source snapshot is retained. Both changes are separately exercised by final campaign batches."
+  },
+  "surrounding_regressions": {
+    "evidence_directory": "shared-regressions-01",
+    "report_sha256": "fc7681e2c20aeb82faba4884443bccb8897dddb699f6c56b243d7aa640b975a1",
+    "source_snapshot_sha256": "24c5f41689cd55620b7f3814a13e7986db67cdcc0369e8075c70beb5794bed74",
+    "status": "passed",
+    "counts": {
+      "passed": 5,
+      "failed": 0,
+      "error": 0,
+      "programs": 5,
+      "checks": 650,
+      "failed_checks": 0
+    },
+    "programs": [
+      {
+        "id": "pathing/travel_reveal",
+        "script": "tools/tests/travel_reveal.gd",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 9,
+        "failures": 0,
+        "log": "tests/pathing/travel_reveal/run.log",
+        "log_sha256": "355c8f89a8eecc0837e297c86bac0b78376683a9dbe98fa8eae8940fedb5c4c0",
+        "exit_code": 0,
+        "failure_messages": []
+      },
+      {
+        "id": "pathing/travel_reveal_astral",
+        "script": "tools/tests/travel_reveal.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 9,
+        "failures": 0,
+        "log": "tests/pathing/travel_reveal_astral/run.log",
+        "log_sha256": "1e47bbbc5c31e2a173de97e751d4e1007b166e968ca80121e313acc0057e3f44",
+        "exit_code": 0,
+        "failure_messages": []
+      },
+      {
+        "id": "quests/side_quest_lifecycle",
+        "script": "tools/tests/side_quest_lifecycle.gd",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 590,
+        "failures": 0,
+        "log": "tests/quests/side_quest_lifecycle/run.log",
+        "log_sha256": "abd8a7dabdba68fdd7ed8e1e08d27aeabc7b7dc29dce4fd53726f8393d102a3f",
+        "exit_code": 0,
+        "failure_messages": []
+      },
+      {
+        "id": "commands/travel_command_lifecycle",
+        "script": "tools/tests/travel_command_lifecycle.gd",
+        "campaign": "cursed_lands",
+        "status": "passed",
+        "checks": 21,
+        "failures": 0,
+        "log": "tests/commands/travel_command_lifecycle/run.log",
+        "log_sha256": "54378c4ff1403b09e4a1539a4d39da4f6d5eaf0c27e402c4ed226e0717934b5a",
+        "exit_code": 0,
+        "failure_messages": []
+      },
+      {
+        "id": "commands/travel_command_lifecycle_astral",
+        "script": "tools/tests/travel_command_lifecycle.gd",
+        "campaign": "lost_in_astral",
+        "status": "passed",
+        "checks": 21,
+        "failures": 0,
+        "log": "tests/commands/travel_command_lifecycle_astral/run.log",
+        "log_sha256": "d2778cf3ab550abba4b764ac678f64276677a0270532583213bbcc3d0c72ec67",
+        "exit_code": 0,
+        "failure_messages": []
+      }
+    ]
+  },
+  "legacy_pre_fix_saves": {
+    "run": {
+      "evidence_directory": "legacy-battle-actual-01",
+      "report_sha256": "2e4494e4cb3d4abcf31f2ebea8934f5c0d774cfbf18ca812c006282795f7f395",
+      "source_snapshot_sha256": "e7da1e30acd472b9bfe77ef46b39ce249685f866a9a65044a955b6ec4ff49f4a",
+      "status": "passed",
+      "counts": {
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "programs": 1,
+        "checks": 103,
+        "failed_checks": 0
+      },
+      "programs": [
+        {
+          "id": "quests/lia_campaign_late_legacy_battle",
+          "script": "tools/tests/lia_campaign_late_legacy_battle.gd",
+          "campaign": "lost_in_astral",
+          "status": "passed",
+          "checks": 103,
+          "failures": 0,
+          "log": "tests/quests/lia_campaign_late_legacy_battle/run.log",
+          "log_sha256": "f8cd356ffffa209bbad2244841c7d9a846126eb6c1e548c71bd25390ba4ec895",
+          "exit_code": 0,
+          "failure_messages": []
+        }
+      ]
+    },
+    "provenance": {
+      "scope": "Untouched pending final-battle saves produced by pre-fix engine, replayed through current normal save loader with narrowly gated alias migration.",
+      "source_game": "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/game",
+      "source_vm_sha256": "ad987a6c138f066649f72016bdb6a3133532d5799c9a20f0ba366a1e4beaca31",
+      "seed_generator_sha256": "4bf90481d9a2aff451d49369a32309f0cfb632ec0bf470b009af61add2b3eab1",
+      "seed_artifact": "legacy-battle-seed-01",
+      "seed_result": {
+        "checks": 46,
+        "failures": 0
+      },
+      "save_files": {
+        "legacy-battle-seed-01/tests/quests/lia_campaign_late_legacy_seed/profile/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/lia_legacy_battle_all_alive.info.sav": "fc33a610cbfd66001adc3610d5db7bda0b08eb84a8605dbe2454cf15077e2de5",
+        "legacy-battle-seed-01/tests/quests/lia_campaign_late_legacy_seed/profile/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/lia_legacy_battle_all_alive.sav": "59c72f714fd1155a459c727051eefc70994a31a543c89ced60843a8b6b2c3037",
+        "legacy-battle-seed-01/tests/quests/lia_campaign_late_legacy_seed/profile/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/lia_legacy_battle_last_alive.info.sav": "010f72268cef984188e821f69d6c5b481b40e88d4fcb839423301f487d7a68a3",
+        "legacy-battle-seed-01/tests/quests/lia_campaign_late_legacy_seed/profile/data/godot/app_userdata/Cursed Lands/saves/lost_in_astral/lia_legacy_battle_last_alive.sav": "d0a84404e55fe8c043f7106a622a375f9b510096e3310de72e0dc4a2bd075bd5"
+      },
+      "default_replay": {
+        "artifact": "legacy-battle-01",
+        "checks": 78,
+        "failures": 0
+      },
+      "genuine_replay": {
+        "artifact": "legacy-battle-actual-01",
+        "checks": 103,
+        "failures": 0
+      },
+      "migration_code_sha256": "2db2c586855b2c67cb17b8aa983935453fe5f0fc9f9122f943e63467e8acad66",
+      "asserted": "39 living enemies block completion after restore; 38 defeated with last alive still blocks; actual last death advances combat; restored aliases and resaves are persistent and idempotent; original quest outcomes are not injected.",
+      "limits": "Only verified stock LiA gz35j with actual zone35battle addon and the exact saved 39/34 actor sets is repaired. Completed quests are never rewound. No general mod namespace migration."
+    }
+  },
+  "native": {
+    "new_references": 16,
+    "total_references": 35,
+    "replays_each": 2,
+    "repeatable": 35,
+    "matches": 33,
+    "differences": 2,
+    "strict_runner_status": 1,
+    "quest_state_deltas_and_destinations_all_match": true,
+    "comparisons": [
+      {
+        "name": "lia_campaign_battle_all_but_one_controlled",
+        "status": "matched",
+        "checks_per_replay": 110,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "f30f90e4ddee1ccf9cc0244938657e756fcd7e25736b98d6b5c824f1863c8838",
+        "reference_file_sha256": "f8e6a629ccd233c4cd3b1f6004a1db3b95389ed4e54c471379aba082864acd8e",
+        "logs": [
+          {
+            "path": "lia_campaign_battle_all_but_one_controlled/repeat-1/run.log",
+            "sha256": "75606cdc3409a2353da5b168d47f56b2fc6b017fed1b8e16a4538ca8f8c8f1f8"
+          },
+          {
+            "path": "lia_campaign_battle_all_but_one_controlled/repeat-2/run.log",
+            "sha256": "3e1642020df05a0e6728341d18c5d35299579217e2c07bb85f76e1c60cbde5be"
+          }
+        ]
+      },
+      {
+        "name": "lia_campaign_battle_last_enemy_controlled",
+        "status": "matched",
+        "checks_per_replay": 112,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "a1da964200452907711c9870698456bf932594ab2eb1724ab58dfb56abd7ff90",
+        "reference_file_sha256": "e81fe24a6a5ca34381fdf779c32c62937a6090ebbb1454a374ff589399d14264",
+        "logs": [
+          {
+            "path": "lia_campaign_battle_last_enemy_controlled/repeat-1/run.log",
+            "sha256": "79df96b12ac8c57e7292afccc0537ec63858734c413e9b4d4eaeb23e5f4f83ef"
+          },
+          {
+            "path": "lia_campaign_battle_last_enemy_controlled/repeat-2/run.log",
+            "sha256": "42653e19c2b0a9a30df00e49881f18588693e7b538c1925fe3b07a0f1c2cb720"
+          }
+        ]
+      },
+      {
+        "name": "lia_campaign_battle_living_gate",
+        "status": "matched",
+        "checks_per_replay": 28,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "83ba1909f847d7a1dff71345441105ca1971fa029e43968b8e84733273dabd18",
+        "reference_file_sha256": "50cdaf92d41707de6fec34705210d03b59371930b33439ffbfd7c8c4dc5e0d8c",
+        "logs": [
+          {
+            "path": "lia_campaign_battle_living_gate/repeat-1/run.log",
+            "sha256": "9c8655fe20bbef817c9165cbd2c5c5051c7ba9f02f3cd5b2f39f60880889e49a"
+          },
+          {
+            "path": "lia_campaign_battle_living_gate/repeat-2/run.log",
+            "sha256": "3bc658b755e6a5874fca1b76e1d8cafb0f56bfc89434d13c14944ecc972823f9"
+          }
+        ]
+      },
+      {
+        "name": "lia_campaign_final_boss_completion",
+        "status": "matched",
+        "checks_per_replay": 56,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "be195ba494f535a4b4f592879161a145fcda4b00c9fd453fbcbc035d47d48f02",
+        "reference_file_sha256": "339840852169c018a0d1d0b84a087d479af8393041cb0afd2f7b39bd90d6a66c",
+        "logs": [
+          {
+            "path": "lia_campaign_final_boss_completion/repeat-1/run.log",
+            "sha256": "14f631d33a388678202d8fec99c5e66927adf159701cd32e5612ef2f09a47b13"
+          },
+          {
+            "path": "lia_campaign_final_boss_completion/repeat-2/run.log",
+            "sha256": "f241c907fc07ffe9819d4cd2c08ff10ba25a10f2f6d9ea33e2c0cb56262c3b73"
+          }
+        ]
+      },
+      {
+        "name": "lia_campaign_final_lever1",
+        "status": "matched",
+        "checks_per_replay": 39,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "19a569c42b0a9b6a8d5d6e8deee0d0fadaf52f9ad14bb446635f86189e6ef80f",
+        "reference_file_sha256": "bd7a7c4aaab84da8cdacbc193414aa965695570f8eaeb6b3db80018e04494cc0",
+        "logs": [
+          {
+            "path": "lia_campaign_final_lever1/repeat-1/run.log",
+            "sha256": "03b094f67f29dd6f495e308c21c71654547d811016cfb604565782c147f5bda2"
+          },
+          {
+            "path": "lia_campaign_final_lever1/repeat-2/run.log",
+            "sha256": "b836ceabbb98b6a41c2c3a948c723c65024dfef89ec135c0649dd0b4507754f9"
+          }
+        ]
+      },
+      {
+        "name": "lia_campaign_final_lever2_use",
+        "status": "matched",
+        "checks_per_replay": 31,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "46dda3a7b2978c6c604dc96197073ce42bbeb3b51896b27aa9c19b11e4904ccf",
+        "reference_file_sha256": "2add91a3c19b17bd768e647a6bcb8db7511799c76ec76da5db55fbd9183e9f85",
+        "logs": [
+          {
+            "path": "lia_campaign_final_lever2_use/repeat-1/run.log",
+            "sha256": "56ce8c2bbbff2b836065d2763187fe80f5147d356f2f852aadde09e05228c519"
+          },
+          {
+            "path": "lia_campaign_final_lever2_use/repeat-2/run.log",
+            "sha256": "065d8d3c89cf89828154b335ca99c9039ddb4347cb4ff6b25c2f614fa9980092"
+          }
+        ]
+      },
+      {
+        "name": "lia_campaign_final_lever3_use",
+        "status": "matched",
+        "checks_per_replay": 41,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "b102dc84b3b089611369f7b779216b7e4dd3a99517e047c4220c781fc3f52e23",
+        "reference_file_sha256": "2961f0f825e16e5b80999a09e669c508c12f1a26ddc34cbe241ffeb35dd45b13",
+        "logs": [
+          {
+            "path": "lia_campaign_final_lever3_use/repeat-1/run.log",
+            "sha256": "d93f69d03ae539fb512d389c5aa989258ba58feb7b156d427371d8cbc98a049a"
+          },
+          {
+            "path": "lia_campaign_final_lever3_use/repeat-2/run.log",
+            "sha256": "b092325666d7ae123353d8d0f971517bb0dc22fe102d3ce4624e8af73541d921"
+          }
+        ]
+      },
+      {
+        "name": "lia_campaign_final_lever4_use",
+        "status": "matched",
+        "checks_per_replay": 51,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "da1f5f7ead1d075f2f5f226ffb979ff69525a1e8fe0ce0326f507c723155c014",
+        "reference_file_sha256": "0d6a4f36551db6e6a8591467940ed1d12d0df20f98396c7a1ed3a805e4606bf2",
+        "logs": [
+          {
+            "path": "lia_campaign_final_lever4_use/repeat-1/run.log",
+            "sha256": "933d838a63aa817814bddd9a5fb341098bfd6ec1662141722421bad54ce1a5ac"
+          },
+          {
+            "path": "lia_campaign_final_lever4_use/repeat-2/run.log",
+            "sha256": "1e7be6af740b74e048cce66136661c70976e53b16998eb1f5f90c8ea837835b9"
+          }
+        ]
+      },
+      {
+        "name": "lia_campaign_firez_final_offer",
+        "status": "matched",
+        "checks_per_replay": 16,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "e4f9f0a9a16cca37e00ded7a546bdcbd5d6bdcf4efdda522e0c08f5360cc3c20",
+        "reference_file_sha256": "90f5502e9f60a2ebac15d301f0456d8434c965110ffda5be13c9f7c2615a2db1",
+        "logs": [
+          {
+            "path": "lia_campaign_firez_final_offer/repeat-1/run.log",
+            "sha256": "c1fb9dce7df52e7caae212f1d7db0b7b793a13776dd81ae6479e8e49fc6f02ac"
+          },
+          {
+            "path": "lia_campaign_firez_final_offer/repeat-2/run.log",
+            "sha256": "9539fca7201eed1b9d64d026994d6b9c846a2754521fd3a01cfbf921481be905"
+          }
+        ]
+      },
+      {
+        "name": "lia_campaign_shaina_control1_gpu",
+        "status": "matched",
+        "checks_per_replay": 51,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "6d1ffbcd88bbb2390caaa7c7e30deb241d129ee2b2b22bb37746aa4c79aa2e89",
+        "evidence_directory": "native-shaina-controls-01",
+        "checkpoint_sha256": "e9ae5fcd7259178019be50f7b0949b5bea97ac21256b360b1dfc01c129f6d91e",
+        "reference_file_sha256": "1d5ad572532888ab64df0bcfb7485d7308c6e0c4d6ed64227c34e08d171d9a99",
+        "logs": [
+          {
+            "path": "lia_campaign_shaina_control1_gpu/repeat-1/run.log",
+            "sha256": "94286d86311bc2e9182a2d9f9b20e2e0da88de59e4b5211a24fd3a18a5f94927"
+          },
+          {
+            "path": "lia_campaign_shaina_control1_gpu/repeat-2/run.log",
+            "sha256": "824b0bb8bae992fbdc5bad5251da7f6d8700815532dd56b97b5e14914e853e6b"
+          }
+        ]
+      },
+      {
+        "name": "lia_campaign_shaina_control2_gpu",
+        "status": "matched",
+        "checks_per_replay": 53,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "6d1ffbcd88bbb2390caaa7c7e30deb241d129ee2b2b22bb37746aa4c79aa2e89",
+        "evidence_directory": "native-shaina-controls-01",
+        "checkpoint_sha256": "353abe365251000c61ec96e5250fa09108af572be3b99b99495afa6582c8ea16",
+        "reference_file_sha256": "88f6972f2a924c40c62b0e7e546e801960115e6790dce4820ff07aea8718b001",
+        "logs": [
+          {
+            "path": "lia_campaign_shaina_control2_gpu/repeat-1/run.log",
+            "sha256": "7a1f759890f88abc2d65c1121f893c6dafd14ecefcd0ba452e1ca07af44f4068"
+          },
+          {
+            "path": "lia_campaign_shaina_control2_gpu/repeat-2/run.log",
+            "sha256": "63d0222aa6f2c8fc665db145eb9cd903ead5d1ecc53bd9c68bd42b1e6bb61817"
+          }
+        ]
+      },
+      {
+        "name": "lia_campaign_shaina_elder_reward",
+        "status": "matched",
+        "checks_per_replay": 30,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "7dab8c4b2dadfb55b0f6a494b23962d72fdce0d148b9e94ec2fbaa6ae106ddd5",
+        "evidence_directory": "native-shaina-handins-01",
+        "checkpoint_sha256": "e860e95b21a40f63287310f64ddb9942948b087b93e1af546e4b3283ff3c7e53",
+        "reference_file_sha256": "1dacb938fe851088ad98fe926380ecccbc36d00ec65e8c88045b4835127a708c",
+        "logs": [
+          {
+            "path": "lia_campaign_shaina_elder_reward/repeat-1/run.log",
+            "sha256": "54fece9a1ea6aae335f4e17e7e97f1f539374bb16c105ae68d9f68c8051aedec"
+          },
+          {
+            "path": "lia_campaign_shaina_elder_reward/repeat-2/run.log",
+            "sha256": "0cbf7b09f7cec765f524f8ba7cc26db6132490595c41b09495ab5ad51f177aad"
+          }
+        ]
+      },
+      {
+        "name": "lia_campaign_shaina_offer",
+        "status": "matched",
+        "checks_per_replay": 34,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "4118c8c9bf4c890cdaee7711c40aae29168fdf0bc72cf0db88a466375df23f62",
+        "evidence_directory": "native-shaina-offer-01",
+        "checkpoint_sha256": "ab3e609d65ad0296f89c876519b363a50c84000518629a5d92842a15ffce70c9",
+        "reference_file_sha256": "4cf6f783a91db1507ef5b37bc77b4cf5292da045b6e5aebb1238e449d2360ba5",
+        "logs": [
+          {
+            "path": "lia_campaign_shaina_offer/repeat-1/run.log",
+            "sha256": "4163cfe3b59693d6144887b3f73ea7188b321d444c438e4cad4a24e3750f8282"
+          },
+          {
+            "path": "lia_campaign_shaina_offer/repeat-2/run.log",
+            "sha256": "44900d94cc912eab998eb76550f40ca6be77625e8cdfc3bdb14205a6157a8eb1"
+          }
+        ]
+      },
+      {
+        "name": "lia_campaign_shaina_report",
+        "status": "matched",
+        "checks_per_replay": 30,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "7dab8c4b2dadfb55b0f6a494b23962d72fdce0d148b9e94ec2fbaa6ae106ddd5",
+        "evidence_directory": "native-shaina-handins-01",
+        "checkpoint_sha256": "51397414efa9db1b299aef68e18b4cc9e524452b289adb4554f1a3972d873c65",
+        "reference_file_sha256": "4435063c453ff506751b71bbfd32dca98f7ec72e29f7d65e489c117556603156",
+        "logs": [
+          {
+            "path": "lia_campaign_shaina_report/repeat-1/run.log",
+            "sha256": "f4c16a22403f00b78fdc000cad864ad13792abc1ca5c3e10539653840bb4b488"
+          },
+          {
+            "path": "lia_campaign_shaina_report/repeat-2/run.log",
+            "sha256": "fffd72e185094062aaae1164cd7e1b0ef3b1add9ca4dab0f75dd2fccb2872f43"
+          }
+        ]
+      },
+      {
+        "name": "lia_campaign_shaina_return",
+        "status": "difference",
+        "checks_per_replay": 52,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {
+          "observations": [
+            "cp_note8: original 0, remake 1"
+          ]
+        },
+        "report_sha256": "97a1aa9250506352dd5f2c391f61cb8e6ee53a4d805e7b15c90b7d3cf8267da1",
+        "evidence_directory": "native-shaina-return-01",
+        "checkpoint_sha256": "44bfc41d793bb895172f49529a14fb9e752e1c62a2ab54a71e8825ff7ada0214",
+        "reference_file_sha256": "3d9deaa09104487a2de0d5d3ee04651f74e6a542dc7658aeffcefeef41a7f71c",
+        "logs": [
+          {
+            "path": "lia_campaign_shaina_return/repeat-1/run.log",
+            "sha256": "c9d57c57a8b7c30f0438288ac588b1709e78e72b1e404fcb08d660ed8b7b4203"
+          },
+          {
+            "path": "lia_campaign_shaina_return/repeat-2/run.log",
+            "sha256": "da9ce548785b45045241214b552991d198473e28b58c4fe208a356070ed9c9bc"
+          }
+        ]
+      },
+      {
+        "name": "lia_campaign_spy_return",
+        "status": "matched",
+        "checks_per_replay": 24,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "c8e18ed070a526201e32e07e9c32115f5d859c7207435870958dd1dd879cd941",
+        "reference_file_sha256": "15a5f4cfeb0e9319852e664e3d622448c514b21812070fa14ac3014b973f0a42",
+        "logs": [
+          {
+            "path": "lia_campaign_spy_return/repeat-1/run.log",
+            "sha256": "0ec823b7d13f4c55d54713ce3aa47d801d74185572f5506910fe695c5d850aea"
+          },
+          {
+            "path": "lia_campaign_spy_return/repeat-2/run.log",
+            "sha256": "87572ef5ffe2a6a517267a3121447e000d64b2028fb8c43bf00c9c1e9be30041"
+          }
+        ]
+      },
+      {
+        "name": "lia_cellar_exit1_open",
+        "status": "matched",
+        "checks_per_replay": 12,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "668fd1c66e87c6f267dc44918176dd17c0dfea7ce345cdd336ac22e754141b0d",
+        "reference_file_sha256": "f20eadb09566bd6be7bcfa41650f29bea8d618b426cb363cdad569443c0975ee",
+        "logs": [
+          {
+            "path": "lia_cellar_exit1_open/repeat-1/run.log",
+            "sha256": "588511a8360c2b7ff2bec62da33d49949165575691f931b559dac1c0d2f92e4f"
+          },
+          {
+            "path": "lia_cellar_exit1_open/repeat-2/run.log",
+            "sha256": "c723cd8dd11ba8041935f15a313a25eea1abcc1bb63ff774fdb45634be0a5ff1"
+          }
+        ]
+      },
+      {
+        "name": "lia_cellar_exit2_open",
+        "status": "matched",
+        "checks_per_replay": 20,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "294842958164b4341784013d6c3cd36fec854cc5a9c5a02a784e80eae066f0ca",
+        "reference_file_sha256": "75f48fd4478d1b40da032fa0be7bbdd1b33e78efdd5c56ba6deb786118579bf6",
+        "logs": [
+          {
+            "path": "lia_cellar_exit2_open/repeat-1/run.log",
+            "sha256": "a0b144f07211dcea92fa2ea679fd50e44a9e0360f3ee3de6e48e0f6e42fee59e"
+          },
+          {
+            "path": "lia_cellar_exit2_open/repeat-2/run.log",
+            "sha256": "6b170cc9d7cdb2f1a86c6d67c54eb9a87ba059363ef6f54601cca78b7b643c84"
+          }
+        ]
+      },
+      {
+        "name": "lia_coconuts_all_six_normalized",
+        "status": "matched",
+        "checks_per_replay": 26,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "09c99413e9a86234cfe6367dd775e1f132209094bde3cb3ed16536c0782a3812",
+        "reference_file_sha256": "7dbac5113cfb23a4238eaad138bf0b2baf5b363ddfbd8ac2549109ed11afc9b1",
+        "logs": [
+          {
+            "path": "lia_coconuts_all_six_normalized/repeat-1/run.log",
+            "sha256": "3ee8ab4171cdb1c2cd18d96647ef0d6e3d2c15fdabcd15f6036397ad05039385"
+          },
+          {
+            "path": "lia_coconuts_all_six_normalized/repeat-2/run.log",
+            "sha256": "cca1376145f314ac92c261d04ef2b9f97d06372ef5b0733d635583a0975e91f2"
+          }
+        ]
+      },
+      {
+        "name": "lia_early_bz1h_entry",
+        "status": "matched",
+        "checks_per_replay": 4,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "d8135f27c724841c7c27267e56122c2a18763282edfffc2d02c67f24e6fa4d74",
+        "reference_file_sha256": "3310e5f8dd59268af917713afc5cdb891ff391a1b0bec31a55e98c8cff041fd1",
+        "logs": [
+          {
+            "path": "lia_early_bz1h_entry/repeat-1/run.log",
+            "sha256": "6ad964cf4c7e9aa17858232b9172c54598957493e32af1fcf2e99944fa438864"
+          },
+          {
+            "path": "lia_early_bz1h_entry/repeat-2/run.log",
+            "sha256": "d55a396d1cba2e744c536fe4eaf02a293e0e14a10613e25b2c80b4d949f0ef43"
+          }
+        ]
+      },
+      {
+        "name": "lia_fq13_fragment2_award_normalized",
+        "status": "matched",
+        "checks_per_replay": 34,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "a82317a132f31a7408d52cab8b9d7ad9abf92ef181f3adf8b990c24c63ea26d8",
+        "reference_file_sha256": "72d4ada3bc71a3dda76e63dcfbdb6de77a6dcebea28b8216e0ab32a5bf4b503d",
+        "logs": [
+          {
+            "path": "lia_fq13_fragment2_award_normalized/repeat-1/run.log",
+            "sha256": "cbe1334b9b44c858767a0d8f5f2688f8ea1f61da99e18ead53170ea64d2c2d17"
+          },
+          {
+            "path": "lia_fq13_fragment2_award_normalized/repeat-2/run.log",
+            "sha256": "0d29b02bf0b260d123a7ae2a48c8fc8bf6bbf98c9bc9c3754f2d7f7dfaa8befc"
+          }
+        ]
+      },
+      {
+        "name": "lia_fq19_fragment3_award_normalized",
+        "status": "matched",
+        "checks_per_replay": 60,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "0fd7ab3a8d1a480339dbdc3b1dd8ffd777d0c269f3dfb3a3ab694e06e99d0628",
+        "reference_file_sha256": "5a48242f73d4f4295c242ec23c10fd80a5082b05a324cea064a39e97900cfa0e",
+        "logs": [
+          {
+            "path": "lia_fq19_fragment3_award_normalized/repeat-1/run.log",
+            "sha256": "33676fb683d4a5764c6d4b02fe6de2fd96b696069b460cf2ddb37bc53a04d587"
+          },
+          {
+            "path": "lia_fq19_fragment3_award_normalized/repeat-2/run.log",
+            "sha256": "e84540683cca94b65a4243dfb202a76c3e6fa894c1ae5986b60d51fa91e1b65b"
+          }
+        ]
+      },
+      {
+        "name": "lia_fq2_raja_death_normalized",
+        "status": "matched",
+        "checks_per_replay": 22,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "710f993808dbc53a72f367efe27a00082d08efd37b1545e359c1d4234193aa76",
+        "reference_file_sha256": "5f09e91f21d47ba54551aea2ba9c5081b9bfe581cf0424be53df4da94ccb73ff",
+        "logs": [
+          {
+            "path": "lia_fq2_raja_death_normalized/repeat-1/run.log",
+            "sha256": "800fe7cc84eeab2f52199378ce7da4c75762871ae73512bb06cd1dac39272904"
+          },
+          {
+            "path": "lia_fq2_raja_death_normalized/repeat-2/run.log",
+            "sha256": "fc787df98e8cf7f1307e8e534e370d2434f0b1992964734f20b56fafff80a420"
+          }
+        ]
+      },
+      {
+        "name": "lia_fq4_document_chest_normalized",
+        "status": "matched",
+        "checks_per_replay": 28,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "fd511b1039f5e70dc04def1cc77e68e016c0b59c6ffd621e723f889060a9c183",
+        "reference_file_sha256": "c1b6a6557cc55ce3d77123bb6b26c6549a2be3348f585fb78b40b450970e9c47",
+        "logs": [
+          {
+            "path": "lia_fq4_document_chest_normalized/repeat-1/run.log",
+            "sha256": "33028460957e716a3c8c0ef7e27469d9b1e978c98618f3733b6e0b2aad665868"
+          },
+          {
+            "path": "lia_fq4_document_chest_normalized/repeat-2/run.log",
+            "sha256": "6e6798bb90c935eda8af091eec7e580a7b13f65eb914f513817b73c2f2a4f7eb"
+          }
+        ]
+      },
+      {
+        "name": "lia_fq4_trader_key_normalized",
+        "status": "matched",
+        "checks_per_replay": 28,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "9ef76d74e0c3f1161ff11fbe107bbed3140ea7f9f56ed239e79d3a12dd1ff575",
+        "reference_file_sha256": "73aa06610aad5712326aee04556c1c01bf2bc26095ecd7f57ab545fbf3aa4c6b",
+        "logs": [
+          {
+            "path": "lia_fq4_trader_key_normalized/repeat-1/run.log",
+            "sha256": "bc076dd936a3b922d125c2861d0e541d3e554bc77a55ce8415065f6d7f1b0fff"
+          },
+          {
+            "path": "lia_fq4_trader_key_normalized/repeat-2/run.log",
+            "sha256": "8196f26a6d377ea30301f6821d5dd3dbc4f2fb15a0d97e224b73dfa9eb7e42d8"
+          }
+        ]
+      },
+      {
+        "name": "lia_fq6_fragment1_award_normalized",
+        "status": "matched",
+        "checks_per_replay": 40,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "d772433a3f2edf267f527a54f53985d5e60c9bbfa96283d0d4763aec62436593",
+        "reference_file_sha256": "ea4e25e85027774c4c3129cf36610b007511bd63c703535f972b41faf8c27c5c",
+        "logs": [
+          {
+            "path": "lia_fq6_fragment1_award_normalized/repeat-1/run.log",
+            "sha256": "e131eceb8d8156c80780854d98ca581e77e4c0a5be258f73101569a50f53915d"
+          },
+          {
+            "path": "lia_fq6_fragment1_award_normalized/repeat-2/run.log",
+            "sha256": "64b6ef7fdc1a499e32aff78703d1ed8e8e118edad489962e8c80ac94c3034a83"
+          }
+        ]
+      },
+      {
+        "name": "lia_fq6_suslanger_puzzle_normalized",
+        "status": "matched",
+        "checks_per_replay": 38,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "5d11043692058e8de2bd829218ab4bf0d94a6902388aa9e4b4e30ab3b2d7ae07",
+        "reference_file_sha256": "c16b09cfa52027cccffe57980a633b5010c138970d17fe018d8b6af06c187abd",
+        "logs": [
+          {
+            "path": "lia_fq6_suslanger_puzzle_normalized/repeat-1/run.log",
+            "sha256": "4ae17efc0d0152247dafde5f069e36c11abe677cc76f32d31e0b9e73c97ab20a"
+          },
+          {
+            "path": "lia_fq6_suslanger_puzzle_normalized/repeat-2/run.log",
+            "sha256": "ec1f69295ca749d79fc4a348e3cb180a7f26525e6c80d9e01e3e3416820f6de8"
+          }
+        ]
+      },
+      {
+        "name": "lia_kel_death_scene_normalized",
+        "status": "matched",
+        "checks_per_replay": 22,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "ba9d589267e784717fbfa5b8fbc3598dd151b92c1e207c9d4c3892500e2a5481",
+        "reference_file_sha256": "7791df8d6eff0783617106d6115f54ac642b41bae29bbc84beb73f69e3b1e2e1",
+        "logs": [
+          {
+            "path": "lia_kel_death_scene_normalized/repeat-1/run.log",
+            "sha256": "c39c7bd5e80134891a010b31a97d0e25a523bb90b5a633a20115e085f4161946"
+          },
+          {
+            "path": "lia_kel_death_scene_normalized/repeat-2/run.log",
+            "sha256": "0d22daa45affcd2414bae5272c266d31cad7e3fa4cf02bfbaaaeb3b102b3029e"
+          }
+        ]
+      },
+      {
+        "name": "lia_kel_rescue_all_fragments_synced",
+        "status": "difference",
+        "checks_per_replay": 38,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {
+          "observations": [
+            "cp_item101: original 1, remake 0",
+            "cp_item102: original 1, remake 0",
+            "cp_item103: original 1, remake 0"
+          ]
+        },
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "e2957f5dd41dec16bfdc8bf3660d6f8f6e95b20599fe7d563c0ba0b1c88f6852",
+        "reference_file_sha256": "4556ce4694b6815fe763b361793a5224d07ceba24394153613b8f2008c3b293e",
+        "logs": [
+          {
+            "path": "lia_kel_rescue_all_fragments_synced/repeat-1/run.log",
+            "sha256": "621a7aaf26af620d215794e4122764af80f73bb58e78b0ccf558bd2806c5a4d6"
+          },
+          {
+            "path": "lia_kel_rescue_all_fragments_synced/repeat-2/run.log",
+            "sha256": "c486f40bb4d46863bd51d3acaa0ca76d278775236077646b5f835c4c5300bdb9"
+          }
+        ]
+      },
+      {
+        "name": "lia_kel_rescue_missing_fragment1_synced",
+        "status": "matched",
+        "checks_per_replay": 38,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "a6f68ffb5e500c413bec19f06b4eaefab051393dcb1d243f15c4d0929c70e78d",
+        "reference_file_sha256": "2bccc5584d255729d9dbba6c672c51a4e8d70d45fd16f24170fc3363652b2aef",
+        "logs": [
+          {
+            "path": "lia_kel_rescue_missing_fragment1_synced/repeat-1/run.log",
+            "sha256": "368e4096267f1583771ed2f72864013b612c29d1c91c7711b83b93b44109e1e5"
+          },
+          {
+            "path": "lia_kel_rescue_missing_fragment1_synced/repeat-2/run.log",
+            "sha256": "3fa2db10316e82d600acabbd5db6f037b01590d7012ccc853b1fdfee844dbe17"
+          }
+        ]
+      },
+      {
+        "name": "lia_kel_rescue_missing_fragment2_synced",
+        "status": "matched",
+        "checks_per_replay": 38,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "8fa39a66a5e92bcc97754106774f1ac5bad58099b4f8e85edd81165c19a44cec",
+        "reference_file_sha256": "978c3c7a0e0c49b9168965e2e7be382ca95d8eb97cdd6cf0217b88510370472e",
+        "logs": [
+          {
+            "path": "lia_kel_rescue_missing_fragment2_synced/repeat-1/run.log",
+            "sha256": "4d7377ebf89ef8ad9ed2e23e1b6c397031342ae7df02c6cacfe34e95c60f01c6"
+          },
+          {
+            "path": "lia_kel_rescue_missing_fragment2_synced/repeat-2/run.log",
+            "sha256": "56cde7c744f7a821a1cff37a265317bcdfe1e3ebd952fb9a9aa7859f9e36adca"
+          }
+        ]
+      },
+      {
+        "name": "lia_kel_rescue_missing_fragment3_synced",
+        "status": "matched",
+        "checks_per_replay": 38,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "dff10968946d7da32e95144a980af9f36da947e80c78ad246d13de707281def0",
+        "reference_file_sha256": "9224011c1fb4377e9885d5617515b7d20cebfcee5043b391939523ab9fde7617",
+        "logs": [
+          {
+            "path": "lia_kel_rescue_missing_fragment3_synced/repeat-1/run.log",
+            "sha256": "3c53defe30fab0ce82a32b829b24eb1a4d6a0b2235ccd4c973ae8f0a947d128a"
+          },
+          {
+            "path": "lia_kel_rescue_missing_fragment3_synced/repeat-2/run.log",
+            "sha256": "a822861dc2c4fb7508df82ecedeac1ffab4c61767ea53ae9b2dcc46ab69b334e"
+          }
+        ]
+      },
+      {
+        "name": "lia_kel_reunion_synced",
+        "status": "matched",
+        "checks_per_replay": 36,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "5f45701b56c2a370fbafad0350bd9f8b9f554967efe580c08ec5f87fe87ee6b3",
+        "reference_file_sha256": "2fd35d2ef24bcae9796901ff8e1ebb937c5ec3a69c443aba5febf637fa59bc25",
+        "logs": [
+          {
+            "path": "lia_kel_reunion_synced/repeat-1/run.log",
+            "sha256": "c93130b5acbcef40cf2ef66783967e72e3561ade0f4eda0b38b522d2455782e4"
+          },
+          {
+            "path": "lia_kel_reunion_synced/repeat-2/run.log",
+            "sha256": "754211cce7f749665b2eaf74a0c3e86bb74136d350e9e161ca99c31c938cbdfb"
+          }
+        ]
+      },
+      {
+        "name": "lia_portal_cellar_entry",
+        "status": "matched",
+        "checks_per_replay": 6,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "39dd5bc39958571d3a634faeef3fc86b8fc458d59fdd473eda4f96d76890e94f",
+        "reference_file_sha256": "ac1ca9c52316220b5e27145ef6c7ada4c2f5dd87d1e153708d8733b16fb2e845",
+        "logs": [
+          {
+            "path": "lia_portal_cellar_entry/repeat-1/run.log",
+            "sha256": "502b6160b9e0636f12d08cb032e3266c9a8c4feb3b3e8757c66a41903a5add6d"
+          },
+          {
+            "path": "lia_portal_cellar_entry/repeat-2/run.log",
+            "sha256": "ce75d3d6a8194b137c3fc44b9d38e2277b5708823d3a7657deb04666d14c3f07"
+          }
+        ]
+      },
+      {
+        "name": "lia_portal_torch_use",
+        "status": "matched",
+        "checks_per_replay": 17,
+        "replays": 2,
+        "repeatability_verified": true,
+        "differences": {},
+        "report_sha256": "3cc8f5847c4476087cf2e3a560c9b2c9fae3f09da9b074adc9feeb7dec372ab8",
+        "evidence_directory": "native-combined-01",
+        "checkpoint_sha256": "dd3b834f7adb910f9b64f1df3a09c21fdb966dfc62e99af29a477e1e773a5d79",
+        "reference_file_sha256": "082979aebfcc66468c2e045443ac98a2ec0725a94f0929cf450d0e440ea0ce52",
+        "logs": [
+          {
+            "path": "lia_portal_torch_use/repeat-1/run.log",
+            "sha256": "5bbfebf140561b380a43fcde0fbb21ac8676f98493ba78accbf7979f4a97a2aa"
+          },
+          {
+            "path": "lia_portal_torch_use/repeat-2/run.log",
+            "sha256": "c8343ef19431774137e431ed265c2ccf70c2ae34599262cb197e50fb95c1ee7f"
+          }
+        ]
+      }
+    ],
+    "raw_provenance_audit_sha256": "d74f236e888e0f5b174531d50ea5de546fefdc46fa80d06eb739a4a2ae807ca6",
+    "raw_reference_file_count": 393,
+    "qualified_capture_index_sha256": "06af26d43071f0579555c46bf515d09de0ff1b77fbbfa3d406ad61e2e2251de9",
+    "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12"
+  },
+  "patches": {
+    "order": [
+      "1.01",
+      "1.02"
+    ],
+    "files_verified_in_both_installations": 17,
+    "audit_sha256": "894b4bfad6342b594164e632c97097c4f256bdd280ee510490e79b3fdf088c93",
+    "patch_manifest_sha256": "0bc06ca44327e5117ed7438d085d7b7333a7bac4269aa9d1b29c6a4bf294ab7f"
+  },
+  "terminal_evidence": {
+    "from_checkpoint": "lia_campaign_final_boss_completion",
+    "after_save_sha256": {
+      "info.sav": "09488647b643df39e8c9132f8130e10e985c53b9c71feb3bca52aa279a01c2b8",
+      "cz4j.sav": "c48b34923f40a7a959f16ffc44901d65801145f96a262e48b0f4110fac84dd18",
+      "shot.sav": "2208a3ac295b01d4e65ab8ffefeba7cffc004c31343622e75e50979ba27ae6a5",
+      "mission.sav": "c127e2bdbd35d34e0396fbb716a4439eeed5bcaa4fc2e29f4abb66048fd01207",
+      "scenario.sav": "e591135442c82d83db0d7c73e770638033a0c951c70afef110b32d5b89bffd7f"
+    },
+    "resume_input": "space",
+    "observation_delays_seconds": [
+      0.5,
+      1.5,
+      3,
+      5,
+      10
+    ],
+    "source_exe_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+    "note": "Actual original runtime resumed from native completed quest save; screenshots recorded without forcing destination or ending flag.",
+    "additional_input": "Escape after timed screenshots",
+    "additional_observation": "LiA v1.02 main menu appeared; native terminal presentation was black in Wine/Xvfb, so credits rendering is unverified",
+    "screenshots_sha256": {
+      "00.png": "a364b89a7e085d9a22654af566b07cd55dcead6c57cc31024be3f816dff20787",
+      "04.png": "0e78e1e00e1b64efefcadff280b26c47573f6b85aa1a36b6d7773abfbc2088f9",
+      "01.png": "0e78e1e00e1b64efefcadff280b26c47573f6b85aa1a36b6d7773abfbc2088f9",
+      "05-after-escape.png": "2b7747bce680b6d87f7f347f7a768ddcefedc2a4714dbb131c2b19de3989c823",
+      "02.png": "0e78e1e00e1b64efefcadff280b26c47573f6b85aa1a36b6d7773abfbc2088f9",
+      "03.png": "0e78e1e00e1b64efefcadff280b26c47573f6b85aa1a36b6d7773abfbc2088f9"
+    }
+  },
+  "native_map_parser_evidence": {
+    "evidence_id": "ev_5d4fb06e4580a2af0a91e2c6a5d55603ab55a49cfc86856f88a6bf6c3e52ab68",
+    "function": "0x43a1a0",
+    "exit_record_branch": "0x43a7c5",
+    "finding": "Appends exits in file order without using numeric header label as an array index.",
+    "evidence_sha256": "13e2bef2468dfb6ff5337976287b085fdf10e546cfd8902de605668e17a33f19"
+  },
+  "python_controls": {
+    "tests": 168,
+    "skipped": 1,
+    "failures": 0,
+    "log_sha256": "303e34c8a69e38162346eb0fbcc5cd49baf448f27c8c9aecaf4e2bc051d05550"
+  },
+  "production_source_sha256": {
+    "game/src/game/campaign_map.gd": "e889c8b0cc338455cd25e18b5a3545a5a7b37bb10879c6e8add7b74bd8269fa7",
+    "game/src/game/script/vm.gd": "465750595fae54e7d1f6c6f623fe25b59dbdd76454bd65d75ef0dd925554c8b7",
+    "game/src/game/script/story_astral_battle_saves.gd": "2db2c586855b2c67cb17b8aa983935453fe5f0fc9f9122f943e63467e8acad66"
+  },
+  "test_source_sha256": {
+    "tools/tests/lia_campaign_late_arrival.gd": "dabe698df593431221e60b2a4fe3b4d54048ff3a083f1b332dddd782a0863350",
+    "tools/tests/lia_campaign_late_convoy.gd": "4f081d0290556b7881c8e1882a53abff04f575df385219e5b541b8f1096db7d0",
+    "tools/tests/lia_campaign_mid_gipat.gd": "57c935809fd5347b458500ec6cc21d0730397e51c28d79a03ef3b4fa9ef2a172",
+    "tools/tests/lia_campaign_gipat_settlements.gd": "bfea4c5b62549934e999921d69fe6a15287f3726a8d5a075b041d93cabb2d90d",
+    "tools/tests/lia_campaign_map_points.gd": "6ce19a033990c4a12629407ff7bd0caa08b914b7d17621a19689874b51d86911",
+    "tools/tests/lia_campaign_late_addmob.gd": "6fb1b922563e054a5997591e5323a4fdf9f9ddfc0cfc1ab515d8798e789e4311",
+    "tools/tests/lia_campaign_gipat_palantir.gd": "721a83418c345500f9d71795b6fbe03e7607dc849a0616e509164a5d89273088",
+    "tools/tests/lia_campaign_suslanger_departure.gd": "dc7711784f323e998e008d2ed89411054f2365a8fa3462226be5668455c4a1ae",
+    "tools/tests/lia_campaign_ingos_portal.gd": "15f11a702eb7c373e5c46374baee9a89167031f3e8988d1ec7c9399a8f6243a6",
+    "tools/tests/lia_campaign_late_supplies.gd": "b880515a4fd97bfa9758fc63c515cd5bdfb7429b62f62ce54a92a02cc1ed4a2c",
+    "tools/tests/lia_campaign_late_ending.gd": "b0265e31282e3a5902f5c2593379b5f4bf98c8c1761188dfa4288d381fdb0786",
+    "tools/tests/lia_campaign_gipat_arrival.gd": "4e3f2ae8144f4f9bd7512f00593e066691218dc2f06425ba85cbaa1dfd821151",
+    "tools/tests/lia_campaign_gipat_healer.gd": "53e239b18177f4a35d46149eeccfe74c8b879c29b2193c71ace3551254770c25",
+    "tools/tests/lia_campaign_travel_routes.gd": "12cd4e7119bd39a5246622163d8926050aedd736ab6c46cfa3ab5ac76d5983cf",
+    "tools/tests/lia_campaign_shaina.gd": "acdee5b773e8bb2d6f9ddb3547da8045eb2a6856e583eac9ec9dfd1668703e70",
+    "tools/tests/lia_campaign_gipat_departure.gd": "c28a504eeca2b9305efebff221f329fbdf96265829d04193b09df820fc23fba4",
+    "tools/tests/lia_campaign_early_suslanger.gd": "40c4607293625ab375550ce0c69e9f5cea15f8dd45efde2f1b57d060171d4c21",
+    "tools/tests/lia_campaign_ingos_investigation.gd": "2a7c0c7c767539809926cb400a87b941d7a2e16f6ce1baa5fb0828fedad39321",
+    "tools/tests/lia_campaign_late_legacy_battle.gd": "791a8e7291477ae46650615cb1b405462a248c5488f969a822840c4203061e6f",
+    "tools/tests/zone7_arrival.gd": "e779a6cd12848ac1c300a4d5ef0cdee17de4e86bdf2379d9661a08d75d022794",
+    "tools/tests/lia_revenge_return.gd": "1d4b6cdec9f6c1dc4822d27e329c29e7465d6a9df0ec1df89a4f81e30dc0f94f",
+    "tools/tests/lia_slave_lists_return.gd": "b3d207f7da0f37661a74c8272dfc32b6a897cddd8e1ed656b58d7768280f5c30",
+    "tools/tests/lia_tomb_exit.gd": "ad01781c5bc4968cd336d68cab4d56e6970c1e53a2a4ca3fc22543f98be4af4c",
+    "tools/tests/lia_kel_early_story.gd": "2d4562eb862f3f91e5f189edac144193808550726e26b17094a00b6b82d53d11",
+    "tools/tests/lia_kel_torch_cellar.gd": "d7f41824dc125d27fe24ed248147b7cdf199e41e83348bcea83850505a9f1ea6",
+    "tools/tests/lia_kel_suslanger.gd": "439b6dbfc04f8b5bf9f8437f3e0f2d3e9f5c0db56c4d50dff1b7463a25ba262c",
+    "tools/tests/lia_kel_gipat.gd": "79104bf326eb1677accd61a72c2e756a998c54e17ea7e293dccd83228058f89d",
+    "tools/tests/lia_kel_ingos.gd": "64e618f4da64514e53f5b2abfdbfe483138166d7752951a5986f4a101a388969",
+    "tools/tests/lia_kel_rescue.gd": "bbd0ab618388d05c8a0ac1deae8de465f08937b00eb8fc1dc46ed19ae88ce39e",
+    "tools/tests/use_callback_orders.gd": "8209d40137640dddb3f9a9a138bc3c85daad3f8cd21821f171fc6f5978e4b1e0",
+    "tools/tests/lia_kel_prologue.gd": "1b33d638c5f12930c070e13a8b7768289b5dffbc9d44157c14562bd92caffd21",
+    "tools/tests/lia_kel_departures.gd": "3b3be9fae5d5ce713b7cc72c289480746ea014825b12e80ec4754e0bbe549d8c",
+    "tools/tests/lia_kel_handoffs.gd": "fdf62dcdace1f7269a7c37436c720c123c998d20f0da6c00ba20b81e0c4afb05",
+    "tools/tests/lia_campaign_mid_ingos.gd": "b0832f5b15c4ab12dea764cc4b4be8ea3086b64d4a77906328e1c425134d987e"
+  },
+  "known_differences": {
+    "lia_kel_rescue_all_fragments_synced": "Original AddLoot restores three spent fragments from an archived named-party bag; remake consumes global quest items. Ritual, living Kel restoration and reunion pass.",
+    "lia_campaign_shaina_return": "Original active bag loses samples during Shaina→FSusel swap and regains them in report24. Remake keeps samples in its shared bag throughout. Quest state, roster, destination and reopened routes match; Elder still consumes samples."
+  },
+  "limits": [
+    "Chapter inputs and untested alternatives are explicit in coverage.json.",
+    "Native comparisons are selected independently captured actions, not an original executable replay of every quest.",
+    "Map/UI matrix prepares gate states and records final load dispatch; it does not load all destinations.",
+    "Legacy migration repairs verified pending stock battle aliases only; already completed objectives remain unchanged.",
+    "Native ending under Wine unloads to a black presentation; credits/video rendering is unverified.",
+    "No release, published artifact, normal player profile or private player save was changed."
+  ]
+}

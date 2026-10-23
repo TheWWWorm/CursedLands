@@ -1,0 +1,209 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz36j",
+ "fixture": {
+  "active_party": "FinalProof",
+  "money": 0,
+  "parties": {
+   "FinalProof": [
+    {
+     "name": "Hero",
+     "prototype": "Hero3"
+    },
+    {
+     "name": "merc2",
+     "prototype": "merc2"
+    }
+   ]
+  },
+  "setup": [
+   "GodMode(0,1)",
+   "RecalcMercBriefings()"
+  ],
+  "setup_steps": [
+   {
+    "wait": 2
+   },
+   {
+    "script": "SwitchLeverState(GetObject(1022101),1)"
+   },
+   {
+    "wait": 1.2
+   },
+   {
+    "script": "KillUnit(GetObject(1022001))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022002))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022003))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022004))"
+   },
+   {
+    "script": "SwitchLeverState(GetObject(1022102),1)"
+   },
+   {
+    "wait": 1.2
+   },
+   {
+    "script": "KillUnit(GetObject(1022005))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022006))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022007))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022008))"
+   },
+   {
+    "script": "SwitchLeverState(GetObject(1022103),1)"
+   },
+   {
+    "wait": 1.2
+   },
+   {
+    "script": "KillUnit(GetObject(1022009))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022010))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022011))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022012))"
+   },
+   {
+    "script": "SetCPFast(GetUnitOfPlayer(0,0),31.715999999999998,60.03,0)"
+   },
+   {
+    "script": "SetCPFast(GetUnitOfPlayer(0,1),32.716,61.03,0)"
+   },
+   {
+    "script": "SwitchLeverState(GetObject(1022104),1)"
+   },
+   {
+    "wait": 1.2
+   },
+   {
+    "script": "SetCPFast(GetUnitOfPlayer(0,0),48,60,0)"
+   },
+   {
+    "script": "SetCPFast(GetUnitOfPlayer(0,1),49,61,0)"
+   }
+  ]
+ },
+ "from_zone": "gz36j",
+ "note": "Actual native final boss death after all four obelisks were used normally. Paused shortly after death solely to save the genuine completed q22 state before the authored Sleep15 ending transition unloads gameplay. No outcome variable was assigned. Separate terminal evidence records resuming this state into the actual ending presentation.",
+ "observations_after": {
+  "cp_boss_alive": 0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_boss_alive": 1.0,
+  "money": 0
+ },
+ "probes": {
+  "cp_boss_alive": "IsAlive(GetObject(666666))"
+ },
+ "provenance": {
+  "after": {
+   "cz4j.sav": "c48b34923f40a7a959f16ffc44901d65801145f96a262e48b0f4110fac84dd18",
+   "info.sav": "09488647b643df39e8c9132f8130e10e985c53b9c71feb3bca52aa279a01c2b8",
+   "mission.sav": "c127e2bdbd35d34e0396fbb716a4439eeed5bcaa4fc2e29f4abb66048fd01207",
+   "scenario.sav": "e591135442c82d83db0d7c73e770638033a0c951c70afef110b32d5b89bffd7f",
+   "shot.sav": "2208a3ac295b01d4e65ab8ffefeba7cffc004c31343622e75e50979ba27ae6a5"
+  },
+  "before": {
+   "cz4j.sav": "c48b34923f40a7a959f16ffc44901d65801145f96a262e48b0f4110fac84dd18",
+   "info.sav": "c0e3e2b0df23b34b71cb2cbf919dbe4604ab43d27e2881967a59b6b0937d5714",
+   "mission.sav": "828a4f720de9091512dd1373da4df05dd5b94c9a630b91db9c8d6ae78ffa759c",
+   "scenario.sav": "552ad7c8e023fa5502806244ce66ee64daeb9d19c18587490f8a415d722f67bc",
+   "shot.sav": "700ff79cf438a0428290d0c679dbeb4dd7b4089ce49f3edb82a5e7ed1aa207cf"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "script": "KillUnit(GetObject(666666))"
+  },
+  {
+   "wait": "0.25"
+  }
+ ],
+ "vars_after": {
+  "b.Firez.brief_349": 2.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_final1": 1.0,
+  "cp_final2": 1.0,
+  "cp_final3": 1.0,
+  "cp_final4": 1.0,
+  "cp_mercs": 1.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz36j.q22j": 2.0,
+  "q.gz36j.q22j.1": 2.0,
+  "q.gz36j.q22j.2": 2.0,
+  "q.gz36j.q22j.3": 2.0,
+  "q.gz36j.q22j.4": 2.0,
+  "q.gz36j.q22j.5": 2.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z1d1": 1.0
+ },
+ "vars_before": {
+  "b.Firez.brief_349": 2.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_final1": 1.0,
+  "cp_final2": 1.0,
+  "cp_final3": 1.0,
+  "cp_final4": 1.0,
+  "cp_mercs": 1.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz36j.q22j": 1.0,
+  "q.gz36j.q22j.1": 2.0,
+  "q.gz36j.q22j.2": 2.0,
+  "q.gz36j.q22j.3": 2.0,
+  "q.gz36j.q22j.4": 2.0,
+  "q.gz36j.q22j.5": 1.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z1d1": 1.0
+ },
+ "zone": "gz36j"
+}

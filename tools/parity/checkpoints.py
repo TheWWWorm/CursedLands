@@ -47,6 +47,8 @@ def parse_step(text):
     if text.startswith("script ") and text[7:].strip():
         return {"script": text[7:].strip()}
     words = text.split()
+    if len(words) == 4 and words[0] == "leave":
+        return dict(zip(("leave", "destination", "entrance"), words[1:]))
     if not words or words[0] not in STEP or len(words) != len(STEP[words[0]]) + 1:
         raise SystemExit(f"bad step {text!r}; known: " + ", ".join(f"{k} {' '.join(v[1:])}" for k, v in STEP.items()))
     return dict(zip(STEP[words[0]], words[1:]))
@@ -88,7 +90,10 @@ def validate_checkpoint(cp):
         if len(actions) != 1:
             raise ValueError("each step needs exactly one action")
         action = next(iter(actions))
-        if set(step) != set(STEP.get(action, (action,))):
+        fields = set(STEP.get(action, (action,)))
+        if action == "leave" and "entrance" in step:
+            fields.add("entrance")
+        if set(step) != fields:
             raise ValueError("missing or unexpected step fields")
         if "enter" in step and (i != 0 or step["enter"] != cp["zone"]):
             raise ValueError("enter must be first and match zone")
@@ -98,6 +103,8 @@ def validate_checkpoint(cp):
             raise ValueError("object/exit id must be a nonnegative integer")
         if action == "leave" and not re.fullmatch(r"[A-Za-z0-9_]+", str(step["destination"])):
             raise ValueError("invalid exit destination")
+        if "entrance" in step and not re.fullmatch(r"[1-9][0-9]*", str(step["entrance"])):
+            raise ValueError("map entrance must be a positive integer")
         if action in ("script", "talk") and (not isinstance(step[action], str) or not step[action].strip()):
             raise ValueError("empty operation")
         if action == "reload" and step[action] is not True:

@@ -1,0 +1,113 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz36j",
+ "fixture": {
+  "active_party": "FinalProof",
+  "money": 0,
+  "parties": {
+   "FinalProof": [
+    {
+     "name": "Hero",
+     "prototype": "Hero3"
+    },
+    {
+     "name": "merc2",
+     "prototype": "merc2"
+    }
+   ]
+  },
+  "setup": [
+   "GodMode(0,1)",
+   "RecalcMercBriefings()"
+  ]
+ },
+ "from_zone": "gz1h",
+ "note": "Prepared clean Hero3+Kel party; cheat travel enters original confrontation scene, then actual automatic Firez brief349 is played through and original changes to final map. No final quest acceptance/outcome flag assigned.",
+ "observations_after": {
+  "cp_mercs": 1.0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_mercs": 1.0,
+  "money": 0
+ },
+ "probes": {
+  "cp_mercs": "GetMercsNumber(0)"
+ },
+ "provenance": {
+  "after": {
+   "cz4j.sav": "c48b34923f40a7a959f16ffc44901d65801145f96a262e48b0f4110fac84dd18",
+   "info.sav": "07ca18c317d0a523062dc2d3efd56b57bb8f0d0048beb2d43848f05c99eeb143",
+   "mission.sav": "595db980ca057cda41e7d25ffdd6f570bbfd80dd8deac056fcbf967a660b68e8",
+   "scenario.sav": "6d5ae438f1bfeef907ceb7589dcd44b199bdeeb72c89bee3fd2a979ccdcfb12d",
+   "shot.sav": "1a9d6efd05a25cb9b43db456d642c12f0a6ebe80496960ddf87bc4338ab654c6"
+  },
+  "before": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "gz1d1.sav": "d1e1c0053010469035a4db553b13151b6860cd320193b9a233508efb94b8e6d2",
+   "gz1h.sav": "91de91e3c6d77cae60677eaba35c712fb05ff5d22233164e323d7531e3edea58",
+   "info.sav": "c222e2654458cd07602bd4ddc36b83d94d79914d75c28e51ddb9f94bb532e53d",
+   "mission.sav": "14633b79b584dbc274efef2385caf6fb7fc5df39f14ef09913a0b4d892b1e925",
+   "scenario.sav": "cce84d93fe72c9789d88a0cc0f7980654dafe752f02c463851322f32429fa69e",
+   "shot.sav": "b4201509e3f1cd24a312b7fa2e89f117c93eb248e938f24cccd5c0b92857fdd5"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "script": "LeaveToZone(0,\"cz4j\",0)"
+  },
+  {
+   "wait": "8"
+  }
+ ],
+ "vars_after": {
+  "b.Firez.brief_349": 2.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz36j.q22j": 1.0,
+  "q.gz36j.q22j.1": 1.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z1d1": 1.0
+ },
+ "vars_before": {
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z1d1": 1.0
+ },
+ "zone": "gz1h"
+}
