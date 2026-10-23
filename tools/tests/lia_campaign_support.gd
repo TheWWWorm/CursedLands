@@ -8,6 +8,9 @@ func chapter(party: String, prototype: String, protagonist := "Hero", companion 
 	s.state.add_party_unit(party,protagonist,prototype)
 	if companion != "": s.state.add_party_unit(party,"merc2",companion)
 	s.state.set_current_party(party)
+	# This fixture starts with an already deployed chapter, before prerequisite
+	# items are supplied. Ordinary scripted selection remains deferred.
+	s.state.store_party_quest_items()
 	s.state.god_modes[0] = 1
 	s.mod_config.rules.auto_exit = 0
 

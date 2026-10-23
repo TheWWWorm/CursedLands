@@ -1679,9 +1679,9 @@
       "category": "party",
       "script": "tools/tests/party_dependents.gd",
       "marker": "PARTY_DEPENDENTS",
-      "min_checks": 20,
+      "min_checks": 23,
       "quick": false,
-      "description": "Expansion guest-owned companion and pet across chapter substitution and reload",
+      "description": "Shaina party replacement preserves host-controlled story companion Kel and the guest-owned pet across network travel and save/reload",
       "kind": "remake_regression",
       "timeout": 300,
       "args": [],
@@ -1973,7 +1973,7 @@
       "category": "network",
       "script": "tools/tests/campaign_state_transport.gd",
       "marker": "CAMPAIGN_STATE_TRANSPORT",
-      "min_checks": 24,
+      "min_checks": 26,
       "quick": true,
       "description": "Self-contained large campaign, lossless compression and acknowledged batching",
       "kind": "remake_regression",
@@ -6574,9 +6574,9 @@
       "category": "quests",
       "script": "tools/tests/lia_kel_rescue.gd",
       "marker": "LIA_KEL_RESCUE",
-      "min_checks": 142,
+      "min_checks": 145,
       "quick": false,
-      "description": "Travel-synchronized rescue, all missing-fragment guards, Kel party/stats/equipment restoration and reload; native spent-fragment retention difference tracked separately",
+      "description": "Travel-synchronized rescue, all missing-fragment guards, native stored-fragment retention, Kel party/stats/equipment restoration and reload",
       "kind": "remake_regression",
       "timeout": 480,
       "args": [],
@@ -6935,7 +6935,7 @@
       "category": "quests",
       "script": "tools/tests/lia_campaign_shaina.gd",
       "marker": "LIA_CAMPAIGN_SHAINA",
-      "min_checks": 171,
+      "min_checks": 178,
       "quick": false,
       "description": "Shaina infiltration, q9 handoffs and earned optional caravan/captive chain",
       "kind": "remake_regression",
@@ -8117,6 +8117,40 @@
         "res/texts.res"
       ],
       "description": "Base campaign exit, entrance, travel-map picking and quest-marker matrix with prepared gates"
+    },
+    {
+      "id": "party/party_quest_inventory",
+      "category": "party",
+      "script": "tools/tests/party_quest_inventory.gd",
+      "marker": "PARTY_QUEST_INVENTORY",
+      "min_checks": 24,
+      "quick": true,
+      "description": "Native live versus archived quest bags, delayed deployment, Copy/AddLoot ordering and legacy/new save persistence",
+      "kind": "remake_regression",
+      "timeout": 60,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "coop/party_quest_inventory_coop",
+      "category": "coop",
+      "script": "tools/tests/party_quest_inventory_coop.gd",
+      "marker": "PARTY_QUEST_INVENTORY_COOP",
+      "min_checks": 40,
+      "quick": true,
+      "description": "Deferred quest bag deployment, credited and ineligible guests, stale credits, save/reload, legacy contexts and checkpoint ownership",
+      "kind": "remake_regression",
+      "timeout": 240,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
     }
   ]
 }

@@ -32,6 +32,12 @@ var quests := {}          # quest id -> {state, objectives}
 var money := 0
 var items: Array = []     # shared party inventory (item ids "name.material")
 var quest_items := {}     # lowercase quest item name -> true
+## Named quest bags are snapshots collected at travel / RedeployParty.
+## Give/Erase affect only the live bag; Copy/AddLoot read these snapshots.
+var party_quest_items := {}
+## Loaded quest-bag owner. SetCurrentParty selects a roster before deployment,
+## so this can differ from current_party until the next collect/deploy.
+var quest_party := ""
 var parties := {}         # scripted alternative parties (CreateParty)
 var current_party := ""
 ## The quest of the last "q.<zone>.<quest>..." var set to 1 (the original interface
@@ -499,6 +505,16 @@ func create_party(party: String) -> void:
 		return
 	parties[party] = []
 	party_bags[party] = {"items": [], "money": 0}
+	party_quest_items[party] = {}
+
+
+## Native collect/deploy (LiA 4621b0 / 4613d0): store the loaded party, then
+## load the selected party. Saving alone must never refresh this archive:
+## Kel's ritual AddLoot intentionally sees the pre-ritual stored fragments.
+func store_party_quest_items() -> void:
+	party_quest_items[quest_party] = quest_items.duplicate()
+	quest_items = Dictionary(party_quest_items.get(current_party, {})).duplicate()
+	quest_party = current_party
 
 
 ## A party's bag by name, as finds it: the party of that name
@@ -517,9 +533,18 @@ func _bag(party: String) -> Dictionary:
 ## Script CopyLoot (copy = true) / AddLoot: the items and money of `from`'s bag
 ## replace / are added to `to`'s (the source keeps its own).
 func move_loot(from: String, to: String, copy: bool) -> void:
+	var source := _bag_name(from)
+	var target := _bag_name(to)
+	# Even the active party is addressed through its stored quest bag. Native
+	# CopyLoot clears the destination before reading the source, including
+	# when both names resolve to the same party (opcode 0xcb).
+	var target_quests: Dictionary = party_quest_items.get_or_add(target, {})
+	if copy: target_quests.clear()
+	var quest_loot := Dictionary(party_quest_items.get(source, {})).duplicate()
+	target_quests.merge(quest_loot, true)
 	var a := _bag(from)
 	var b := _bag(to)
-	var got: Array = Array(a.items).duplicate()
+	var got: Array = [] if copy and source == target else Array(a.items).duplicate()
 	var cash := int(a.money)
 	if copy:
 		b.items.clear()
@@ -1382,6 +1407,7 @@ func to_dict() -> Dictionary:
 	var tables := gs_metadata()
 	return {"version": 2, "campaign_id": campaign_id, "mod_config": mod_config, "vars": vars, "gs_tables": tables, "gs_reconstructed": gs_reconstructed, "heroes": heroes, "zones": zones, "visited": visited, "island_returns": island_returns,
 		"quests": quests, "money": money, "items": items, "quest_items": quest_items,
+		"party_quest_items": party_quest_items, "quest_party": quest_party,
 		"parties": parties, "current_party": current_party, "party_bags": party_bags, "experience": experience, "mercs": mercs, "dismissed_mercs": dismissed_mercs, "pets": pets, "side_quests": side_quests, "shops": shops, "current_zone": current_zone,
 		"world_time": world_time, "day": day, "campaign_time": get_var(0, "gtime"), "coop": coop, "camera": camera, "play_clock": play_clock, "god_modes": god_modes}
 
@@ -1453,6 +1479,13 @@ static func load_from(path: String) -> CampaignState:
 	for k in d:
 		if k != "version" and k in s:
 			s.set(k, d[k])
+	if not d.has("party_quest_items"):
+		# Older saves kept only the live global inventory. Preserve that known
+		# inventory without inventing historical bags for inactive parties.
+		s.quest_party = s.current_party
+		s.party_quest_items = {s.quest_party: s.quest_items.duplicate()}
+	elif not d.has("quest_party"):
+		s.quest_party = s.current_party
 	if not d.has("gs_tables"):
 		s.gs_reconstructed = true
 	s._reconcile_gs()
