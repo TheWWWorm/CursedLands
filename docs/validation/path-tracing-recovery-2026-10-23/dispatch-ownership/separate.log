@@ -1,0 +1,14 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.
+However, bear in mind that at the moment it can lead to project crashes or instability.
+So, unless you want to test the engine, set the "rendering/driver/threads/thread_model" project setting to 'Safe'.
+     at: setup2 (main/main.cpp:3514)
+
+PASS ordinary Callable negative control releases target
+PASS bound dispatch retains the last owner
+PASS operations execute in order before disposal
+PASS expected rendering thread executes operations
+PASS deferred notifications retain owner until delivery
+PASS deferred notifications delivered after disposal
+PASS owner releases after dispatch and notifications drain
+{"checks":7,"evidence":{"closed":true,"events":[41,42,99],"render_thread":5},"failures":[],"main_thread":1,"separate_thread":true}

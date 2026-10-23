@@ -1,0 +1,28 @@
+{
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/candidate-owned-linux/CursedLands.x86_64",
+    "--audio-driver",
+    "Dummy",
+    "--gpu-index",
+    "1",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--borderless",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--mod-tests",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03/fixtures/path_trace_qualification.gd",
+    "--qualification-fixture=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03/fixtures/path_trace_motion.gd",
+    "--qualification-render-thread=project",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03/motion"
+  ],
+  "cwd": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/candidate-owned-linux",
+  "profile": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03-profile/motion/data/godot/app_userdata/Cursed Lands",
+  "timeout": 480
+}

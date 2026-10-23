@@ -1,0 +1,83 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+Vulkan 1.4.312 - Forward+ - Using Device #1: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.
+However, bear in mind that at the moment it can lead to project crashes or instability.
+So, unless you want to test the engine, set the "rendering/driver/threads/thread_model" project setting to 'Safe'.
+     at: setup2 (main/main.cpp:3523)
+
+ERROR: An error occurred while trying to get the screen refresh rate.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1892)
+[trace 13:28:30 +6873ms] session 16971b819ccc: 1.23.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090 Ti, forward_plus / vulkan
+PT_QUALIFICATION_RUNTIME {"adapter":"NVIDIA GeForce RTX 3090 Ti","display":"X11","driver":"vulkan","engine":{"build":"custom_build","hash":"unknown","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (custom_build)","timestamp":0},"fixture":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03/fixtures/path_trace_emitters.gd","fsr":{"api":false,"engine":false,"fg3":false,"fg4":false,"sr3":false,"sr4":false},"method":"forward_plus","passed":true,"pid":242859,"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"pt_supported":true,"render_thread":{"actual_separate":true,"expected_separate":true,"main_id":1,"passed":true,"project_model":2,"render_id":5,"requested":"project"},"require_sdk":false,"user_data":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03-profile/emitters/data/godot/app_userdata/Cursed Lands","vendor":"NVIDIA"}
+PASS qualified native emitter sampler
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build small bright emitter above diffuse floor
+OpArrayLength is not supported yet.
+PASS one-sample emitter energy agrees with independent area quadrature
+PASS small-emitter: GPU timing covers at least eighty warmed frames
+PASS directly sampled small emitter no longer leaves black one-sample pixels
+PASS small-emitter raw variance remains below 0.01
+PASS every selected triangle has a matching hit PDF and normalized probability
+PASS an emitter omitted from the proposal retains its BSDF-hit energy
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS restore emitter proposal
+OpArrayLength is not supported yet.
+PASS emissive vertex deformation updates the sampled surface
+PASS extinguishing emission through vertex updates clears accumulated light
+PASS last emitter removal selects the lean raygen without replacing the scene
+PASS newly emissive snapshot geometry enters the light proposal
+PASS relighting reuses the cached emitter pipeline and stable output textures
+PASS two placements of one mesh contribute independently
+PASS every selected triangle has a matching hit PDF and normalized probability
+PASS hiding an emitter rebuilds the compact TLAS and clears its lighting history
+PASS hidden emissive movement preserves valid scene accumulation
+PASS non-emissive movement does not rebuild the light proposal
+PASS non-uniform scaling and movement update emitter area, placement and PDF
+PASS primary-only emitter has no indirect contribution or stale history
+PASS deforming camera-only or hidden emission does not reset history
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build non-shadow-casting occluder
+OpArrayLength is not supported yet.
+PASS emitter visibility matches continuation geometry even without a shadow mask
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build partially cutout emissive surface
+OpArrayLength is not supported yet.
+PASS cutout samples remain zero, preserving only the emitting area
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build texture-modulated shader emission
+OpArrayLength is not supported yet.
+PASS shader emission keeps the existing texture modulation and linear conversion
+PASS light proposal caps 4102 candidates at 4096 with bounded GPU storage
+PASS proposal and hit lookup stay within 384 KiB plus header
+PASS bounded CDF and hit PMFs agree at float precision
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build glossy emitter reflection
+OpArrayLength is not supported yet.
+PASS small emitter preserves its colour in glossy reflections
+PASS glossy-emitter: GPU timing covers at least eighty warmed frames
+PASS BSDF-hit MIS weights distinguish two glossy reflections of one shared mesh
+PASS four-sample quality preserves the same glossy energy
+PASS glossy-emitter-4spp: GPU timing covers at least eighty warmed frames
+PASS emitter buffers are freed with their scene
+SCENE_RT_DEVICE 38 checks 0 failures
+[trace 13:28:34 +10539ms] clean exit

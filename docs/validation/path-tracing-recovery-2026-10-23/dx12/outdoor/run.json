@@ -1,0 +1,87 @@
+{
+  "exit_code": 0,
+  "pid": 271825,
+  "wall_seconds": 52.11156909999954,
+  "stopped": "",
+  "errors": [],
+  "allowed_diagnostics": [],
+  "gpu_uuids_observed": [
+    "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0.07544456699997681,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": false,
+    "live_members_after_cleanup": []
+  },
+  "suite": "outdoor",
+  "checks": 13,
+  "fixture_failures": [],
+  "validation_errors": [],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "display": "Windows",
+    "driver": "d3d12",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-dx12-final-03/fixtures/path_trace_outdoor.gd",
+    "fsr": {
+      "api": true,
+      "engine": true,
+      "fg3": true,
+      "fg4": false,
+      "sr3": true,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 1196,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": false,
+      "expected_separate": false,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 1,
+      "render_id": 1,
+      "requested": "project"
+    },
+    "require_sdk": true,
+    "user_data": "C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "path-outdoor.json",
+  "passed": true,
+  "artifacts": {
+    "command.json": "5f5fb1bc1416a7de168605c7d497088ff629f9c537ee289cd9937bae04dc6060",
+    "gpu.jsonl": "4f7083a39296084272be5affedd25d9cbfdc90204badc47896cfa9d8edd9bb27",
+    "grove-evening.png": "d83e9f58ce43ae7e3c5fa389420cc75b1162011b28e4b3d39b334d38f5f05667",
+    "grove-night.png": "12108b4ad49b65b368db6631de4b2d0544344386fedd02cea7c0f7cfe4549d49",
+    "grove-noon.png": "80edba4cdd3ecedeba26b8de64700ce47b14bdfc77d2874ccf0f082de31af830",
+    "path-outdoor.json": "d3ba09143d04ca4fc811dfa9683e7ec3fb7ec78d13c9917aac7da874b707657f",
+    "qualification-runtime.json": "3b829488ac500b1c56fea1da6d5f7b68a9ac4c3b6694301d6ec290f655903b62",
+    "river-noon.png": "c9560d6de7ff75a2b24487ec2abb26c5446257aec0a884d16539cad2828e37f5",
+    "run.log": "ec6bdfb428b253f537ed32f3473c918ac72f4c62627236da803ce8c8a1286754"
+  }
+}

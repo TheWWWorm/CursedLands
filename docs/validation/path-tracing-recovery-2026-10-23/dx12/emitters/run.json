@@ -1,0 +1,102 @@
+{
+  "exit_code": 0,
+  "pid": 270496,
+  "wall_seconds": 21.4469771389995,
+  "stopped": "",
+  "errors": [],
+  "allowed_diagnostics": [],
+  "gpu_uuids_observed": [
+    "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0.06940210300035687,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": false,
+    "live_members_after_cleanup": []
+  },
+  "suite": "emitters",
+  "checks": 38,
+  "fixture_failures": [],
+  "validation_errors": [],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "display": "Windows",
+    "driver": "d3d12",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-dx12-final-03/fixtures/path_trace_emitters.gd",
+    "fsr": {
+      "api": true,
+      "engine": true,
+      "fg3": true,
+      "fg4": false,
+      "sr3": true,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 508,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": false,
+      "expected_separate": false,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 1,
+      "render_id": 1,
+      "requested": "project"
+    },
+    "require_sdk": true,
+    "user_data": "C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "path-emitters.json",
+  "passed": true,
+  "artifacts": {
+    "blocked-emitter.png": "4bde20096ec15bf718c3bcb0ec37b16de3112a157dcd9294f949673b02445604",
+    "camera-only-pose.png": "4bde20096ec15bf718c3bcb0ec37b16de3112a157dcd9294f949673b02445604",
+    "command.json": "47d0f86fb344f9d4ca620e7f29b934c9357eaa3dcf2b566fc8981fe0132519f4",
+    "cutout-emitter.png": "2ffa3d73f6cc1f6b938ec9eacdb8a66d0ffc643b5d89f291c95af9bbcff162d1",
+    "extinguished-emitter.png": "4bde20096ec15bf718c3bcb0ec37b16de3112a157dcd9294f949673b02445604",
+    "glossy-emitter-4spp.png": "5de896c2fc0a8445b53863c5430069c40e44ab262ea885fdbf6c104498cd90fd",
+    "glossy-emitter.png": "5de896c2fc0a8445b53863c5430069c40e44ab262ea885fdbf6c104498cd90fd",
+    "glossy-two-instances.png": "5de896c2fc0a8445b53863c5430069c40e44ab262ea885fdbf6c104498cd90fd",
+    "gpu.jsonl": "597aa60abd452f2ed39dd84e911a2385c86d3f340cd793de0447cfb8b21c0386",
+    "hidden-emitter-movement.png": "78dd490430148d55f4ae6767dfc137c899a9774ca575d5d21625ba5282a4f60e",
+    "hidden-instance.png": "499374b0f2bfba801a67a7f8bfcde1437e01ec3c2ce8462f382c5bf810092ef1",
+    "indirect-hidden.png": "4bde20096ec15bf718c3bcb0ec37b16de3112a157dcd9294f949673b02445604",
+    "omitted-emitter.png": "8a6bb44d718bde56e685c235b1b7394fd1cf68957b31398a8f7bf45506112e92",
+    "ordinary-movement.png": "2bb4a35e4d4a40abb3286968b0969e1c92d27f637045b630770f32f79c13dc9a",
+    "path-emitters.json": "95329e79b05ce0f7e18b95daa65f52f79d9547ccba001b0c8325d2e65ba8e661",
+    "posed-emitter.png": "94f563a4716a5995ca3a0fc05e041d2c46663da23f8870429b8349718c7cb792",
+    "qualification-runtime.json": "2c7cfb1109db1ab35c5cae5acdae63d9da41d3c3ccf12f6ced60b928c54f4721",
+    "relit-emitter.png": "ed643090ae9f79b351587d4a19f866ade3cad75a29c46c5748cbd0823ef22693",
+    "run.log": "01706ffd9fb889caa6bda681cb45d7b13143f0306d700907d5ac1450fe550017",
+    "scaled-moved-instance.png": "1b36e86f17b1b4a53691b8698769f027efbdaf3903f814d5430c861ea5bcc229",
+    "scene-device-results.json": "c0612b7f99147c97eb97157d2a5e95418d8d8961f62abf3bf0d00928a9ea6bb1",
+    "small-emitter.png": "8b8b1719be1c6526dfba251edf5b0e02323af0512409b72a36e71b299609a70c",
+    "textured-emitter.png": "8787ff03873cb6b5b2ae3f24bbe7c7b7a9c56c656dcd330b2cea19680f592c35",
+    "two-instances.png": "5de896c2fc0a8445b53863c5430069c40e44ab262ea885fdbf6c104498cd90fd"
+  }
+}

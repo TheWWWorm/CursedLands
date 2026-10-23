@@ -1,0 +1,103 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+Vulkan 1.4.312 - Forward+ - Using Device #1: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.
+However, bear in mind that at the moment it can lead to project crashes or instability.
+So, unless you want to test the engine, set the "rendering/driver/threads/thread_model" project setting to 'Safe'.
+     at: setup2 (main/main.cpp:3523)
+
+ERROR: An error occurred while trying to get the screen refresh rate.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1892)
+[trace 13:17:42 +6839ms] session 2a981cb22c0d: 1.23.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090 Ti, forward_plus / vulkan
+PT_QUALIFICATION_RUNTIME {"adapter":"NVIDIA GeForce RTX 3090 Ti","display":"X11","driver":"vulkan","engine":{"build":"custom_build","hash":"unknown","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (custom_build)","timestamp":0},"fixture":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03/fixtures/path_trace_controller.gd","fsr":{"api":false,"engine":false,"fg3":false,"fg4":false,"sr3":false,"sr4":false},"method":"forward_plus","passed":true,"pid":233488,"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"pt_supported":true,"render_thread":{"actual_separate":true,"expected_separate":true,"main_id":1,"passed":true,"project_model":2,"render_id":5,"requested":"project"},"require_sdk":false,"user_data":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03-profile/controller/data/godot/app_userdata/Cursed Lands","vendor":"NVIDIA"}
+[trace 13:17:43 +7570ms] zone load gz3g (entrance 1)
+PERFORMANCE {"buffer_bytes":5080236.0,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":65,"focus":"in","frame_limit":60,"interval_fps":88.8644625545662,"interval_s":0.731451,"msaa_3d":0,"nodes":786.0,"objects":4483.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=3 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":0.683,"pid":233488,"primitives":0.0,"process_ms":0.192,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":529.0,"screen_space_aa":2,"static_bytes":null,"taa":false,"texture_bytes":7138304.0,"time_scale":1.0,"uptime_s":7.571011,"video_allocated_bytes":17461760.0,"vsync":0,"window":[1280,720],"world_count":0,"worlds":[],"zone":"gz3g (loading)"}
+[trace 13:17:52 +16616ms] navigation prepared 6 classes in 496 ms
+[trace 13:17:57 +22077ms] shader warm-up: 24 of 24 materials, 3440 ms (zone's first picture 663 ms)
+[trace 13:17:57 +22094ms] zone ready gz3g
+PERFORMANCE {"buffer_bytes":40238206.0,"cache_entries":{"camera_materials":0,"figure_materials":3,"figure_meshes":1181,"figure_models":52,"object_textures":28,"unit_textures":32,"wound_jobs":0,"wound_layers":0},"draw_calls":3092.0,"drawn_frames":0,"focus":"in","frame_limit":60,"interval_fps":null,"interval_s":14.524049,"msaa_3d":0,"nodes":16097.0,"objects":34624.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=3 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":0.683,"pid":233488,"primitives":279622.0,"process_ms":0.192,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":530.0,"screen_space_aa":2,"static_bytes":null,"taa":false,"texture_bytes":285230592.0,"time_scale":1.0,"uptime_s":22.095214,"video_allocated_bytes":346866592.0,"vsync":0,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":9,"lights":4,"magic_endings":0,"missiles":0},"instance":508097991052,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":214,"visible":true,"zone":"gz3g"}],"zone":"gz3g"}
+ARTIFACT_CAMERA [X: (-0.923879, 0.0, 0.382684), Y: (0.089418, 0.972318, 0.215874), Z: (-0.372091, 0.233661, -0.898305), O: (157.8552, 9.927353, -239.7018)]
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpArrayLength is not supported yet.
+PASS resolution fixture prepares the real campaign PT snapshot
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpArrayLength is not supported yet.
+PASS camera recenter: replacement produces valid native output
+PASS camera recenter: current PT stays active throughout recenter preparation
+PASS camera recenter: asynchronous replacement was observed
+PASS replacement center matches its traced scene
+PASS superseded device is retired after handoff
+PASS late retired-generation notifications cannot corrupt current state
+PERFORMANCE {"buffer_bytes":77095526.0,"cache_entries":{"camera_materials":0,"figure_materials":3,"figure_meshes":1181,"figure_models":52,"object_textures":28,"unit_textures":32,"wound_jobs":0,"wound_layers":0},"draw_calls":1365.0,"drawn_frames":368,"focus":"in","frame_limit":0,"interval_fps":30.5450515439445,"interval_s":12.047778,"msaa_3d":0,"nodes":16046.0,"objects":49150.0,"options":"hd_textures=0 materials=1 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=1 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=1 firelight=0 torch_glow=0 lava_light=0 foliage_light=1 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=3 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":1.7,"pid":233488,"primitives":259803.0,"process_ms":104.276,"reason":"interval","recent_fps":73.0,"render_scale":1.0,"renderer":"forward_plus","resources":530.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":433117184.0,"time_scale":1.0,"uptime_s":34.143258,"video_allocated_bytes":571760208.0,"vsync":0,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":9,"lights":4,"magic_endings":0,"missiles":0},"instance":508097991052,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":214,"visible":true,"zone":"gz3g"}],"zone":"gz3g"}
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS replacement failure injection reaches an actual pending device
+PASS failed replacement preserves usable active output
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpArrayLength is not supported yet.
+PASS replacement retry: replacement produces valid native output
+PASS replacement retry: current PT stays active throughout recenter preparation
+PASS replacement retry: asynchronous replacement was observed
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS rapid-movement case reaches a real pending device
+PASS camera movement beyond the candidate region cancels and disposes it
+PASS cancelled candidate cannot publish through a late ready notification
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpArrayLength is not supported yet.
+PASS rapid camera recenter: replacement produces valid native output
+PASS rapid camera recenter: current PT stays active throughout recenter preparation
+PASS rapid camera recenter: asynchronous replacement was observed
+PASS rapid recenter uses the newest camera location
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS disable-during-build case reaches a real pending device
+PASS disabling PT drains active and pending device owners
+PASS late readiness cannot reactivate a disabled renderer
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpArrayLength is not supported yet.
+PASS PT can be re-enabled after cancelling a pending build
+PASS injected over-budget snapshot enters conventional fallback
+PASS failed snapshot retains a source-membership watch
+PASS failed snapshot releases packed CPU data
+PASS unchanged over-budget content does not repeatedly rebuild
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpArrayLength is not supported yet.
+PASS camera movement automatically recovers a snapshot failure
+PASS successful retry clears failure state and watch
+PASS injected over-budget snapshot enters conventional fallback
+PASS failed snapshot retains a source-membership watch
+PASS failed snapshot releases packed CPU data
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpArrayLength is not supported yet.
+PASS source-membership change recovers a failure without moving the camera
+PASS recovered scene contains the newly admitted source
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpArrayLength is not supported yet.
+PASS normal topology replacement settles after source cleanup
+PASS active-device failure restores conventional lighting immediately
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpArrayLength is not supported yet.
+PASS active pipeline failure retries automatically and restores real PT
+PASS pipeline retry 0 respects its delay
+PASS pipeline retry 1 respects its delay
+PASS pipeline retry 2 respects its delay
+PASS pipeline retry 3 respects its delay
+PASS pipeline retry 4 respects its delay
+PASS pipeline retry 5 respects its delay
+PASS pipeline retry 6 respects its delay
+PASS pipeline retry 7 respects its delay
+PASS persistent pipeline failures use bounded increasing backoff
+PASS controller remains usable after failure/retry cycles
+PATH_TRACE_CONTROLLER 47 checks 0 failures
+[trace 13:18:27 +51357ms] clean exit

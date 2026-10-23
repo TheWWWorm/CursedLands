@@ -1,0 +1,204 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+Vulkan 1.4.312 - Forward+ - Using Device #1: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.
+However, bear in mind that at the moment it can lead to project crashes or instability.
+So, unless you want to test the engine, set the "rendering/driver/threads/thread_model" project setting to 'Safe'.
+     at: setup2 (main/main.cpp:3523)
+
+ERROR: An error occurred while trying to get the screen refresh rate.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1892)
+[trace 13:17:31 +7418ms] session 7a94773bfd1b: 1.23.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090 Ti, forward_plus / vulkan
+PT_QUALIFICATION_RUNTIME {"adapter":"NVIDIA GeForce RTX 3090 Ti","display":"X11","driver":"vulkan","engine":{"build":"custom_build","hash":"unknown","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (custom_build)","timestamp":0},"fixture":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03/fixtures/path_trace_lifecycle.gd","fsr":{"api":false,"engine":false,"fg3":false,"fg4":false,"sr3":false,"sr4":false},"method":"forward_plus","passed":true,"pid":232171,"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"pt_supported":true,"render_thread":{"actual_separate":true,"expected_separate":true,"main_id":1,"passed":true,"project_model":2,"render_id":5,"requested":"project"},"require_sdk":false,"user_data":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03-profile/lifecycle/data/godot/app_userdata/Cursed Lands","vendor":"NVIDIA"}
+PASS qualified lifecycle reconstruction device
+PASS new device cannot be promoted before producing output
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build isolated lifecycle device
+PASS prepared acceleration structures are not yet display-ready
+OpArrayLength is not supported yet.
+PASS completed lighting and history copies make the device display-ready
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpArrayLength is not supported yet.
+PASS negative control proves an ordinary method Callable does not retain its target
+PASS bound dispatch retains the last device owner while the render queue is blocked
+PASS abandoned device completes queued build, render and disposal in order
+PASS abandoned native device builds and publishes a complete image before retirement
+PASS abandoned native device releases all scene and output resources
+PASS retained dispatch executes on the actual configured render thread
+PASS queued native notifications retain the disposed owner until main-thread delivery
+PASS device owner releases after render work and main-thread notifications drain
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS failed mode compilation preserves the active shader, flags and history
+PASS failed mode compilation can be retried without a false success
+PASS successful pipeline change preserves display readiness while temporal history resets
+PASS image failure preserves every live resource and output binding
+PASS image failure frees all staged resources
+PASS image failure permits a complete retry with reset history
+PASS image retry keeps unpublished output private until a successful render
+PASS image retry preserves ready, unchanged display pixels through the history reset
+PASS image successful retry publishes the complete resized output
+PASS filter_set failure preserves every live resource and output binding
+PASS filter_set failure frees all staged resources
+PASS filter_set failure permits a complete retry with reset history
+PASS filter_set retry keeps unpublished output private until a successful render
+PASS filter_set retry preserves ready, unchanged display pixels through the history reset
+PASS filter_set successful retry publishes the complete resized output
+PASS ray_set failure preserves every live resource and output binding
+PASS ray_set failure frees all staged resources
+PASS ray_set failure permits a complete retry with reset history
+PASS ray_set retry keeps unpublished output private until a successful render
+PASS ray_set retry preserves ready, unchanged display pixels through the history reset
+PASS ray_set successful retry publishes the complete resized output
+PASS sampler failure preserves every live resource and output binding
+PASS sampler failure frees all staged resources
+PASS sampler failure permits a complete retry with reset history
+PASS sampler retry keeps unpublished output private until a successful render
+PASS sampler retry preserves ready, unchanged display pixels through the history reset
+PASS sampler successful retry publishes the complete resized output
+PASS invalid frame dimensions/data do not consume transforms or change history
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS moving a real emissive placement invalidates its previous lighting history
+PASS emissive history reset preserves the complete published image and readiness
+PASS render after emissive motion publishes a fresh valid estimate
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS all emitter and path-depth pipeline variants are available
+PASS cycle 0 retains the bounded pipeline and scene resource pool
+PASS cycle 1 retains the bounded pipeline and scene resource pool
+PASS cycle 2 retains the bounded pipeline and scene resource pool
+PASS cycle 3 retains the bounded pipeline and scene resource pool
+PASS cycle 4 retains the bounded pipeline and scene resource pool
+PASS cycle 5 retains the bounded pipeline and scene resource pool
+PASS cycle 6 retains the bounded pipeline and scene resource pool
+PASS cycle 7 retains the bounded pipeline and scene resource pool
+PASS cycle 8 retains the bounded pipeline and scene resource pool
+PASS cycle 9 retains the bounded pipeline and scene resource pool
+PASS cycle 10 retains the bounded pipeline and scene resource pool
+PASS cycle 11 retains the bounded pipeline and scene resource pool
+PASS cycle 12 retains the bounded pipeline and scene resource pool
+PASS cycle 13 retains the bounded pipeline and scene resource pool
+PASS cycle 14 retains the bounded pipeline and scene resource pool
+PASS cycle 15 retains the bounded pipeline and scene resource pool
+PASS cycle 16 retains the bounded pipeline and scene resource pool
+PASS cycle 17 retains the bounded pipeline and scene resource pool
+PASS cycle 18 retains the bounded pipeline and scene resource pool
+PASS cycle 19 retains the bounded pipeline and scene resource pool
+PASS cycle 20 retains the bounded pipeline and scene resource pool
+PASS cycle 21 retains the bounded pipeline and scene resource pool
+PASS cycle 22 retains the bounded pipeline and scene resource pool
+PASS cycle 23 retains the bounded pipeline and scene resource pool
+PASS repeated resize, emitter and bounce changes produce finite fresh histories
+PASS only the current sixteen lighting, guide and auxiliary images remain live
+PASS retired device tolerates repeated disposal
+PASS retirement frees all created work and previously published images
+PASS new device cannot be promoted before producing output
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build isolated lifecycle device
+PASS prepared acceleration structures are not yet display-ready
+OpArrayLength is not supported yet.
+PASS completed lighting and history copies make the device display-ready
+PASS frame_upload failure clears confidence and blocks queued dispatch
+PASS frame_upload failure retains the complete display resource
+PASS frame_upload failure signals fallback exactly once
+PASS retired device tolerates repeated disposal
+PASS retirement frees all created work and previously published images
+PASS new device cannot be promoted before producing output
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build isolated lifecycle device
+PASS prepared acceleration structures are not yet display-ready
+OpArrayLength is not supported yet.
+PASS completed lighting and history copies make the device display-ready
+PASS history_copy failure clears confidence and blocks queued dispatch
+PASS history_copy failure retains the complete display resource
+PASS history_copy failure signals fallback exactly once
+PASS retired device tolerates repeated disposal
+PASS retirement frees all created work and previously published images
+PASS new device cannot be promoted before producing output
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build isolated lifecycle device
+PASS prepared acceleration structures are not yet display-ready
+OpArrayLength is not supported yet.
+PASS completed lighting and history copies make the device display-ready
+PASS pose_upload failure clears confidence and blocks queued dispatch
+PASS pose_upload failure retains the complete display resource
+PASS pose_upload failure signals fallback exactly once
+PASS retired device tolerates repeated disposal
+PASS retirement frees all created work and previously published images
+PASS new device cannot be promoted before producing output
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build isolated lifecycle device
+PASS prepared acceleration structures are not yet display-ready
+OpArrayLength is not supported yet.
+PASS completed lighting and history copies make the device display-ready
+PASS resize failure clears confidence and blocks queued dispatch
+PASS resize failure retains the complete display resource
+PASS resize failure signals fallback exactly once
+PASS retired device tolerates repeated disposal
+PASS retirement frees all created work and previously published images
+PASS new device cannot be promoted before producing output
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build isolated lifecycle device
+PASS prepared acceleration structures are not yet display-ready
+OpArrayLength is not supported yet.
+PASS completed lighting and history copies make the device display-ready
+PASS resize_frame_upload failure clears confidence and blocks queued dispatch
+PASS resize_frame_upload failure retains the complete display resource
+PASS resize_frame_upload failure signals fallback exactly once
+PASS retired device tolerates repeated disposal
+PASS retirement frees all created work and previously published images
+PASS new device cannot be promoted before producing output
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build isolated lifecycle device
+PASS prepared acceleration structures are not yet display-ready
+OpArrayLength is not supported yet.
+PASS completed lighting and history copies make the device display-ready
+PASS resize_history_copy failure clears confidence and blocks queued dispatch
+PASS resize_history_copy failure retains the complete display resource
+PASS resize_history_copy failure signals fallback exactly once
+PASS retired device tolerates repeated disposal
+PASS retirement frees all created work and previously published images
+PASS new device cannot be promoted before producing output
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build isolated lifecycle device
+PASS prepared acceleration structures are not yet display-ready
+OpArrayLength is not supported yet.
+PASS first_frame_upload failure clears confidence and blocks queued dispatch
+PASS first_frame_upload failure retains the complete display resource
+PASS first_frame_upload failure signals fallback exactly once
+PASS retired device tolerates repeated disposal
+PASS retirement frees all created work and previously published images
+PASS new device cannot be promoted before producing output
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build isolated lifecycle device
+PASS prepared acceleration structures are not yet display-ready
+OpArrayLength is not supported yet.
+PASS first_history_copy failure clears confidence and blocks queued dispatch
+PASS first_history_copy failure retains the complete display resource
+PASS first_history_copy failure signals fallback exactly once
+PASS retired device tolerates repeated disposal
+PASS retirement frees all created work and previously published images
+PASS new device cannot be promoted before producing output
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build isolated lifecycle device
+PASS prepared acceleration structures are not yet display-ready
+OpArrayLength is not supported yet.
+PASS completed lighting and history copies make the device display-ready
+PASS a fresh scene device renders after prior device failures
+PASS final disposal releases scene and reconstruction resources
+PASS final disposal frees all current and retired output images
+SCENE_RT_DEVICE 150 checks 0 failures
+[trace 13:17:35 +10936ms] clean exit

@@ -1,0 +1,575 @@
+{
+	"baseline": false,
+	"checks": 67,
+	"failures": [],
+	"metrics": {
+		"counter-limit": {
+			"dark_fraction": 0.0,
+			"mean": [
+				0.868719869189792,
+				0.868719869189792,
+				0.868719869189792
+			],
+			"peak": 0.97802734375,
+			"pixels": 36864,
+			"variance": [
+				0.00712459377237495,
+				0.00712459377237495,
+				0.00712459377237495
+			]
+		},
+		"counter-repeat": {
+			"dark_fraction": 0.0,
+			"mean": [
+				0.868719869189792,
+				0.868719869189792,
+				0.868719869189792
+			],
+			"peak": 0.97802734375,
+			"pixels": 36864,
+			"variance": [
+				0.00712459377237495,
+				0.00712459377237495,
+				0.00712459377237495
+			]
+		},
+		"counter-wrap": {
+			"dark_fraction": 0.0,
+			"mean": [
+				0.868490788671705,
+				0.868490788671705,
+				0.868490788671705
+			],
+			"peak": 0.97900390625,
+			"pixels": 36864,
+			"variance": [
+				0.00713313692664586,
+				0.00713313692664586,
+				0.00713313692664586
+			]
+		},
+		"emitter-1-spp": [
+			{
+				"finite": true,
+				"frames": 1,
+				"horizontal_correlation": -0.00314704566858746,
+				"mean": 0.669616632991367,
+				"mse": 0.000388017099841737,
+				"reference_mean": 0.669825578734393,
+				"relative_bias": -0.000311940525503762,
+				"samples_per_pixel": 1,
+				"variance": 0.000387973441518073,
+				"vertical_correlation": 0.00277297268708121
+			},
+			{
+				"finite": true,
+				"frames": 4,
+				"horizontal_correlation": 0.00666666767539243,
+				"mean": 0.669620676173104,
+				"mse": 0.0000233216527140051,
+				"reference_mean": 0.669825578734393,
+				"relative_bias": -0.000305904354498066,
+				"samples_per_pixel": 1,
+				"variance": 0.0000232796676542495,
+				"vertical_correlation": -0.00128191808799171
+			},
+			{
+				"finite": true,
+				"frames": 16,
+				"horizontal_correlation": 0.00189667391697229,
+				"mean": 0.669591932661004,
+				"mse": 0.00000486861021120729,
+				"reference_mean": 0.669825578734393,
+				"relative_bias": -0.000348816290102194,
+				"samples_per_pixel": 1,
+				"variance": 0.00000481401972344545,
+				"vertical_correlation": -0.00428943418273331
+			},
+			{
+				"finite": true,
+				"frames": 64,
+				"horizontal_correlation": 0.00346566132807891,
+				"mean": 0.669580820740925,
+				"mse": 0.00000122898571589089,
+				"reference_mean": 0.669825578734393,
+				"relative_bias": -0.000365405564133114,
+				"samples_per_pixel": 1,
+				"variance": 0.00000116907924036567,
+				"vertical_correlation": 0.00617099146343014
+			}
+		],
+		"emitter-2-spp": [
+			{
+				"finite": true,
+				"frames": 1,
+				"horizontal_correlation": 0.00548934288705052,
+				"mean": 0.669631070560879,
+				"mse": 0.0000684115484414032,
+				"reference_mean": 0.669825578734393,
+				"relative_bias": -0.000290386303075429,
+				"samples_per_pixel": 2,
+				"variance": 0.0000683737150117134,
+				"vertical_correlation": 0.00382618572881351
+			},
+			{
+				"finite": true,
+				"frames": 4,
+				"horizontal_correlation": 0.00580154529732933,
+				"mean": 0.66960428820716,
+				"mse": 0.0000101828492649461,
+				"reference_mean": 0.669825578734393,
+				"relative_bias": -0.000330370374405864,
+				"samples_per_pixel": 2,
+				"variance": 0.0000101338797673596,
+				"vertical_correlation": -0.00323391089827396
+			},
+			{
+				"finite": true,
+				"frames": 16,
+				"horizontal_correlation": 0.00150145746601115,
+				"mean": 0.669589860571755,
+				"mse": 0.00000241610168478605,
+				"reference_mean": 0.669825578734393,
+				"relative_bias": -0.000351909765947234,
+				"samples_per_pixel": 2,
+				"variance": 0.0000023605386324359,
+				"vertical_correlation": -0.00314423434265895
+			},
+			{
+				"finite": true,
+				"frames": 64,
+				"horizontal_correlation": 0.00728755528126017,
+				"mean": 0.66957928530044,
+				"mse": 0.000000651968662985086,
+				"reference_mean": 0.669825578734393,
+				"relative_bias": -0.000367697863103866,
+				"samples_per_pixel": 2,
+				"variance": 0.000000591308207217146,
+				"vertical_correlation": 0.0100059289510541
+			}
+		],
+		"emitter-4-spp": [
+			{
+				"finite": true,
+				"frames": 1,
+				"horizontal_correlation": 0.006705812803241,
+				"mean": 0.669619162877401,
+				"mse": 0.0000233382289554052,
+				"reference_mean": 0.669825578734393,
+				"relative_bias": -0.000308163592949828,
+				"samples_per_pixel": 4,
+				"variance": 0.0000232956214492535,
+				"vertical_correlation": -0.00144026177156118
+			},
+			{
+				"finite": true,
+				"frames": 4,
+				"horizontal_correlation": 0.00190828193444316,
+				"mean": 0.66959152619044,
+				"mse": 0.00000487224723913327,
+				"reference_mean": 0.669825578734393,
+				"relative_bias": -0.000349423120561521,
+				"samples_per_pixel": 4,
+				"variance": 0.00000481746664565055,
+				"vertical_correlation": -0.00446966206753782
+			},
+			{
+				"finite": true,
+				"frames": 16,
+				"horizontal_correlation": 0.00344895024462962,
+				"mean": 0.669580750995212,
+				"mse": 0.00000123049427382249,
+				"reference_mean": 0.669825578734393,
+				"relative_bias": -0.000365509689318921,
+				"samples_per_pixel": 4,
+				"variance": 0.00000117055365179132,
+				"vertical_correlation": 0.0060215132266412
+			},
+			{
+				"finite": true,
+				"frames": 64,
+				"horizontal_correlation": 0.00171445486842293,
+				"mean": 0.66958326784273,
+				"mse": 0.000000353373479747719,
+				"reference_mean": 0.669825578734393,
+				"relative_bias": -0.000361752222304057,
+				"samples_per_pixel": 4,
+				"variance": 0.000000294658911372017,
+				"vertical_correlation": 0.00579680582260287
+			}
+		],
+		"metal-1-spp": [
+			{
+				"finite": true,
+				"frames": 1,
+				"horizontal_correlation": -0.00408589756777234,
+				"mean": 0.869277483654312,
+				"mse": 0.0527087343096569,
+				"reference_mean": 0.868462443351746,
+				"relative_bias": 0.000938486527316984,
+				"samples_per_pixel": 1,
+				"variance": 0.0527080700189621,
+				"vertical_correlation": -0.0103554642423962
+			},
+			{
+				"finite": true,
+				"frames": 4,
+				"horizontal_correlation": -0.0113903156849879,
+				"mean": 0.868504758338935,
+				"mse": 0.00712923768428459,
+				"reference_mean": 0.868462443351746,
+				"relative_bias": 0.0000487240265987232,
+				"samples_per_pixel": 1,
+				"variance": 0.00712923589372645,
+				"vertical_correlation": 0.000866125520513484
+			},
+			{
+				"finite": true,
+				"frames": 16,
+				"horizontal_correlation": -0.00355516166079413,
+				"mean": 0.868147933318141,
+				"mse": 0.000664264651890844,
+				"reference_mean": 0.868462443351746,
+				"relative_bias": -0.000362145808390224,
+				"samples_per_pixel": 1,
+				"variance": 0.000664165735329606,
+				"vertical_correlation": 0.00154101201197139
+			},
+			{
+				"finite": true,
+				"frames": 64,
+				"horizontal_correlation": -0.000351337809468058,
+				"mean": 0.868359723302142,
+				"mse": 0.0000659254243910347,
+				"reference_mean": 0.868462443351746,
+				"relative_bias": -0.000118278056108867,
+				"samples_per_pixel": 1,
+				"variance": 0.0000659148729824442,
+				"vertical_correlation": 0.00440009862247638
+			}
+		],
+		"metal-2-spp": [
+			{
+				"finite": true,
+				"frames": 1,
+				"horizontal_correlation": -0.0083992113797594,
+				"mean": 0.869355314307743,
+				"mse": 0.0204211983792714,
+				"reference_mean": 0.868462443351746,
+				"relative_bias": 0.0010281054325747,
+				"samples_per_pixel": 2,
+				"variance": 0.0204204011607273,
+				"vertical_correlation": -0.0108599263647785
+			},
+			{
+				"finite": true,
+				"frames": 4,
+				"horizontal_correlation": -0.000942934142639555,
+				"mean": 0.868213681711091,
+				"mse": 0.0021852365353653,
+				"reference_mean": 0.868462443351746,
+				"relative_bias": -0.000286439146055195,
+				"samples_per_pixel": 2,
+				"variance": 0.00218517465301144,
+				"vertical_correlation": 0.00267946295640713
+			},
+			{
+				"finite": true,
+				"frames": 16,
+				"horizontal_correlation": 0.00170119195111592,
+				"mean": 0.868296299129725,
+				"mse": 0.000200756973993638,
+				"reference_mean": 0.868462443351746,
+				"relative_bias": -0.0001913084708417,
+				"samples_per_pixel": 2,
+				"variance": 0.000200729370091127,
+				"vertical_correlation": 0.00399959711180054
+			},
+			{
+				"finite": true,
+				"frames": 64,
+				"horizontal_correlation": 0.00875258817583649,
+				"mean": 0.868355663389795,
+				"mse": 0.000010399496502093,
+				"reference_mean": 0.868462443351746,
+				"relative_bias": -0.000122952883878535,
+				"samples_per_pixel": 2,
+				"variance": 0.0000103880945418189,
+				"vertical_correlation": 0.00321806899808074
+			}
+		],
+		"metal-4-spp": [
+			{
+				"finite": true,
+				"frames": 1,
+				"horizontal_correlation": -0.0113986461066537,
+				"mean": 0.868490788671705,
+				"mse": 0.00713313773009581,
+				"reference_mean": 0.868462443351746,
+				"relative_bias": 0.0000326385097904058,
+				"samples_per_pixel": 4,
+				"variance": 0.00713313692663865,
+				"vertical_correlation": 0.000826982362088692
+			},
+			{
+				"finite": true,
+				"frames": 4,
+				"horizontal_correlation": -0.00351259241732446,
+				"mean": 0.868133948908912,
+				"mse": 0.000664655077062864,
+				"reference_mean": 0.868462443351746,
+				"relative_bias": -0.00037824830002553,
+				"samples_per_pixel": 4,
+				"variance": 0.000664547168463891,
+				"vertical_correlation": 0.00147411195211689
+			},
+			{
+				"finite": true,
+				"frames": 16,
+				"horizontal_correlation": -0.000304928440455957,
+				"mean": 0.868345753186279,
+				"mse": 0.0000659673084132272,
+				"reference_mean": 0.868462443351746,
+				"relative_bias": -0.00013436408950096,
+				"samples_per_pixel": 4,
+				"variance": 0.0000659536918185105,
+				"vertical_correlation": 0.00435034331441351
+			},
+			{
+				"finite": true,
+				"frames": 64,
+				"horizontal_correlation": -0.00309181500705305,
+				"mean": 0.868379281833768,
+				"mse": 0.00000340931639467949,
+				"reference_mean": 0.868462443351746,
+				"relative_bias": -0.0000957571839914628,
+				"samples_per_pixel": 4,
+				"variance": 0.00000340240055660713,
+				"vertical_correlation": 0.000192335165853955
+			}
+		],
+		"metal-offset": [
+			{
+				"finite": true,
+				"frames": 1,
+				"horizontal_correlation": 0.000815066151722264,
+				"mean": 0.86665088388448,
+				"mse": 0.0546934340879772,
+				"reference_mean": 0.868462443351746,
+				"relative_bias": -0.00208593875432828,
+				"samples_per_pixel": 1,
+				"variance": 0.0546901523402737,
+				"vertical_correlation": 0.00426801703071053
+			},
+			{
+				"finite": true,
+				"frames": 4,
+				"horizontal_correlation": 0.0013893386687219,
+				"mean": 0.868186111912817,
+				"mse": 0.00923986885156956,
+				"reference_mean": 0.868462443351746,
+				"relative_bias": -0.000318184673435362,
+				"samples_per_pixel": 1,
+				"variance": 0.00923979249250542,
+				"vertical_correlation": -0.00647163397278066
+			},
+			{
+				"finite": true,
+				"frames": 16,
+				"horizontal_correlation": -0.000920311116752595,
+				"mean": 0.8680471187185,
+				"mse": 0.00119079750405216,
+				"reference_mean": 0.868462443351746,
+				"relative_bias": -0.000478229814570796,
+				"samples_per_pixel": 1,
+				"variance": 0.00119062500950118,
+				"vertical_correlation": -0.004368337470774
+			}
+		],
+		"purpose-base": {
+			"dark_fraction": 0.0,
+			"mean": [
+				0.868688027064005,
+				0.868688027064005,
+				0.868688027064005
+			],
+			"peak": 0.978515625,
+			"pixels": 36864,
+			"variance": [
+				0.00716082495070713,
+				0.00716082495070713,
+				0.00716082495070713
+			]
+		},
+		"purpose-difference": {
+			"changed_pixels": 0,
+			"maximum": 0.0,
+			"mean": 0.0
+		},
+		"purpose-unused-light": {
+			"dark_fraction": 0.0,
+			"mean": [
+				0.868688027064005,
+				0.868688027064005,
+				0.868688027064005
+			],
+			"peak": 0.978515625,
+			"pixels": 36864,
+			"variance": [
+				0.00716082495070713,
+				0.00716082495070713,
+				0.00716082495070713
+			]
+		},
+		"shadow-1-spp": [
+			{
+				"finite": true,
+				"frames": 1,
+				"horizontal_correlation": 0.0118591577480224,
+				"mean": 0.491769671440125,
+				"mse": 0.0653579804856237,
+				"reference_mean": 0.492423673198513,
+				"relative_bias": -0.00132812818307593,
+				"samples_per_pixel": 1,
+				"variance": 0.0653575527673239,
+				"vertical_correlation": 0.00404666984688236
+			},
+			{
+				"finite": true,
+				"frames": 4,
+				"horizontal_correlation": 0.00887242517407212,
+				"mean": 0.491102652417289,
+				"mse": 0.00809035089025843,
+				"reference_mean": 0.492423673198513,
+				"relative_bias": -0.00268269145681754,
+				"samples_per_pixel": 1,
+				"variance": 0.00808860579435425,
+				"vertical_correlation": 0.00126301782462901
+			},
+			{
+				"finite": true,
+				"frames": 16,
+				"horizontal_correlation": 0.00479215760797048,
+				"mean": 0.492107454273436,
+				"mse": 0.000887897008992979,
+				"reference_mean": 0.492423673198513,
+				"relative_bias": -0.000642168405559085,
+				"samples_per_pixel": 1,
+				"variance": 0.000887797014584462,
+				"vertical_correlation": -0.00180776502073935
+			},
+			{
+				"finite": true,
+				"frames": 64,
+				"horizontal_correlation": 0.00196859350279208,
+				"mean": 0.492213790408439,
+				"mse": 0.000103246257438177,
+				"reference_mean": 0.492423673198513,
+				"relative_bias": -0.000426224004851039,
+				"samples_per_pixel": 1,
+				"variance": 0.000103202206652647,
+				"vertical_correlation": -0.0186131105967131
+			}
+		],
+		"shadow-2-spp": [
+			{
+				"finite": true,
+				"frames": 1,
+				"horizontal_correlation": 0.00459511834231371,
+				"mean": 0.490974545478821,
+				"mse": 0.0311280223445208,
+				"reference_mean": 0.492423673198513,
+				"relative_bias": -0.00294284738643802,
+				"samples_per_pixel": 2,
+				"variance": 0.0311259223733731,
+				"vertical_correlation": 0.0031880166490834
+			},
+			{
+				"finite": true,
+				"frames": 4,
+				"horizontal_correlation": 0.0119175850133545,
+				"mean": 0.492075234651566,
+				"mse": 0.00272801222496963,
+				"reference_mean": 0.492423673198513,
+				"relative_bias": -0.000707599097915845,
+				"samples_per_pixel": 2,
+				"variance": 0.00272789081554869,
+				"vertical_correlation": 0.00246482762085181
+			},
+			{
+				"finite": true,
+				"frames": 16,
+				"horizontal_correlation": 0.0120914956967424,
+				"mean": 0.49223886595832,
+				"mse": 0.000300987927079427,
+				"reference_mean": 0.492423673198513,
+				"relative_bias": -0.000375301290843844,
+				"samples_per_pixel": 2,
+				"variance": 0.000300953773363434,
+				"vertical_correlation": 0.00616932953859398
+			},
+			{
+				"finite": true,
+				"frames": 64,
+				"horizontal_correlation": -0.0000419969128334941,
+				"mean": 0.492301803496149,
+				"mse": 0.0000356122117709148,
+				"reference_mean": 0.492423673198513,
+				"relative_bias": -0.00024748952781406,
+				"samples_per_pixel": 2,
+				"variance": 0.0000355973595465832,
+				"vertical_correlation": 0.00490142921323057
+			}
+		],
+		"shadow-4-spp": [
+			{
+				"finite": true,
+				"frames": 1,
+				"horizontal_correlation": 0.00887185110274624,
+				"mean": 0.491098427110248,
+				"mse": 0.00809056179919191,
+				"reference_mean": 0.492423673198513,
+				"relative_bias": -0.00269127209026532,
+				"samples_per_pixel": 4,
+				"variance": 0.0080888055219977,
+				"vertical_correlation": 0.00126990979186949
+			},
+			{
+				"finite": true,
+				"frames": 4,
+				"horizontal_correlation": 0.00480041958948925,
+				"mean": 0.492103541062938,
+				"mse": 0.000887912432247311,
+				"reference_mean": 0.492423673198513,
+				"relative_bias": -0.000650115242218141,
+				"samples_per_pixel": 4,
+				"variance": 0.000887809947663143,
+				"vertical_correlation": -0.0018062333293648
+			},
+			{
+				"finite": true,
+				"frames": 16,
+				"horizontal_correlation": 0.00197681098832281,
+				"mean": 0.492210040282872,
+				"mse": 0.0001032481216543,
+				"reference_mean": 0.492423673198513,
+				"relative_bias": -0.000433839653267709,
+				"samples_per_pixel": 4,
+				"variance": 0.000103202482631694,
+				"vertical_correlation": -0.018627586281685
+			},
+			{
+				"finite": true,
+				"frames": 64,
+				"horizontal_correlation": -0.00445997318392994,
+				"mean": 0.492309672602763,
+				"mse": 0.0000122323613507673,
+				"reference_mean": 0.492423673198513,
+				"relative_bias": -0.000231509169756117,
+				"samples_per_pixel": 4,
+				"variance": 0.0000122193652149572,
+				"vertical_correlation": 0.00428594423496514
+			}
+		]
+	}
+}

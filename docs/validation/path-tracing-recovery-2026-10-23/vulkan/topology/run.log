@@ -1,0 +1,97 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+Vulkan 1.4.312 - Forward+ - Using Device #1: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.
+However, bear in mind that at the moment it can lead to project crashes or instability.
+So, unless you want to test the engine, set the "rendering/driver/threads/thread_model" project setting to 'Safe'.
+     at: setup2 (main/main.cpp:3523)
+
+ERROR: An error occurred while trying to get the screen refresh rate.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1892)
+[trace 13:26:53 +7022ms] session 7c0d72aaf742: 1.23.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090 Ti, forward_plus / vulkan
+PT_QUALIFICATION_RUNTIME {"adapter":"NVIDIA GeForce RTX 3090 Ti","display":"X11","driver":"vulkan","engine":{"build":"custom_build","hash":"unknown","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (custom_build)","timestamp":0},"fixture":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03/fixtures/path_trace_topology.gd","fsr":{"api":false,"engine":false,"fg3":false,"fg4":false,"sr3":false,"sr4":false},"method":"forward_plus","passed":true,"pid":240872,"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"pt_supported":true,"render_thread":{"actual_separate":true,"expected_separate":true,"main_id":1,"passed":true,"project_model":2,"render_id":5,"requested":"project"},"require_sdk":false,"user_data":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03-profile/topology/data/godot/app_userdata/Cursed Lands","vendor":"NVIDIA"}
+PASS boundary body is included before its idle swing
+PASS whole figure includes hidden parts beyond the per-mesh boundary
+PASS negative control: old per-part admission changes during the idle swing
+PASS idle swing across 96 metres preserves the complete scene snapshot
+PASS repeated boundary pose 0 does not rebuild
+PASS repeated boundary pose 1 does not rebuild
+PASS repeated boundary pose 2 does not rebuild
+PASS repeated boundary pose 3 does not rebuild
+PASS repeated boundary pose 4 does not rebuild
+PASS repeated boundary pose 5 does not rebuild
+PASS repeated boundary pose 6 does not rebuild
+PASS repeated boundary pose 7 does not rebuild
+PASS repeated boundary pose 8 does not rebuild
+PASS repeated boundary pose 9 does not rebuild
+PASS repeated boundary pose 10 does not rebuild
+PASS repeated boundary pose 11 does not rebuild
+PASS both figure parts pack without exceeding the unchanged budgets
+PASS boundary animation still produces live instance transforms
+PASS revealing a retained hidden part uses instance updates
+PASS retained whole unit remains admitted at 119.5 metres
+PASS retained whole unit remains admitted at 120.5 metres
+PASS retained whole unit remains admitted at 127.5 metres
+PASS retained whole unit remains admitted at 128.0 metres
+PASS unit exits only after the eight-metre hysteresis margin
+PASS replacement snapshot omits a unit outside the exit radius
+PASS excluded unit does not re-enter at 127.5 metres
+PASS excluded unit does not re-enter at 120.5 metres
+PASS new unit entry is detected at the original 120-metre root radius
+PASS entry admits the complete figure
+PASS newly admitted figure receives exit hysteresis
+PASS equipment mesh replacement still invalidates the snapshot
+PASS restored mesh restores the original topology
+PASS same-resource material value edits still invalidate the snapshot
+PASS material resource replacement still invalidates the snapshot
+PASS new equipment outside the old per-part boundary is detected
+PASS removing newly added equipment restores baseline membership
+PASS removal of an existing hidden part is detected
+PASS re-attaching the same hidden part restores membership
+PASS a newly spawned nearby unit invalidates the snapshot
+PASS despawn of a snapshot unit is detected
+PASS unmodified original figure stays stable after the spawn/despawn
+PASS static mesh intersecting 96-metre sphere remains admitted
+PASS static objects retain per-mesh 96-metre admission
+PASS static mesh outside 96 metres remains omitted
+PASS production severing creates a detached opaque figure part
+PASS detached part remains outside gameplay object and unit registries
+PASS detached part registers its geometry on entering the world
+PASS new detached geometry invalidates the previous snapshot
+PASS detached geometry retains the original mesh and material
+PASS negative control: original object/unit-only collection omits the detached part
+PASS detached mesh enters the next lighting snapshot
+PASS detached part receives lighting, casts shadows and contributes to indirect paths
+PASS tumbling detached part uploads its live transform
+PASS detached rigid motion preserves scene membership
+PASS hidden detached part stops tracing without rebuilding
+PASS revealed detached part restores all lighting roles
+PASS an opted-in registered root contributes each mesh only once
+PASS another loaded world's registered geometry is excluded
+PASS water reflection collection also retains detached figure parts
+PASS off-tree detached parts release active group membership
+PASS reattaching a detached part restores one registry entry
+PASS detached figure receives the same bounded exit hysteresis as its source
+PASS detached figure outside the exit margin leaves the snapshot
+PASS expiry removes detached geometry from the next snapshot
+PASS freeing all detached parts releases every registry entry
+PASS unchanged ready terrain textures preserve the snapshot
+PASS replacing a ready terrain normal texture invalidates the snapshot
+PASS replacing a ready terrain macro texture invalidates the snapshot
+PASS terrain edge-sampling changes invalidate the snapshot
+PASS restoring the original terrain inputs restores its version
+PASS recovery watch begins with a fully populated scene
+PASS discarding a failed scene releases packed geometry, textures and placements
+PASS discarding releases pending work, mesh caches and native instance watches
+PASS discarded scene keeps the original topology snapshot
+PASS discarded scene still detects a material fix
+PASS discarded scene still detects new dynamic geometry
+PASS topology-only polling does not repopulate packing bookkeeping
+PASS discarded scene settles after temporary geometry is removed
+PASS geometry, texture and instance budget caps are unchanged
+PASS triangle overflow still rejects the snapshot
+PASS texture overflow still rejects the snapshot
+PASS instance overflow still rejects the snapshot
+PATH_TRACE_TOPOLOGY 82 checks 0 failures
+[trace 13:26:53 +7559ms] clean exit

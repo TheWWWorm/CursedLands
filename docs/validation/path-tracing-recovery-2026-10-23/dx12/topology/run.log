@@ -1,0 +1,152 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+Failed to enable screen_keep_on.
+warn:  CreateDXGIFactory2: Ignoring flags
+warn:  Skipping CPU adapter: llvmpipe (LLVM 20.1.2, 256 bits)
+warn:  DXGI: Found monitors not associated with any adapter, using fallback
+warn:  DxgiAdapter::QueryInterface: Unknown interface query
+warn:  f0db4c7f-fe5a-42a2-bd62-f2a6cf6fc83e
+7699.574:04a8:04ac:warn:vkd3d-proton:openvr_instance_extensions: Failed to open VR registry key, status 2.
+7699.574:04a8:04ac:warn:vkd3d-proton:openxr_vulkan_extensions: wineopenxr.dll is missing required symbols.
+7699.574:04a8:04ac:info:vkd3d-proton:vkd3d_instance_apply_application_workarounds: Program name: "CursedLands.exe" (hash: 33c38cdfc18b2417)
+7699.574:04a8:04ac:info:vkd3d-proton:vkd3d_instance_deduce_config_flags_from_environment: shader_cache is used, global_pipeline_cache is enforced.
+7699.574:04a8:04ac:info:vkd3d-proton:vkd3d_config_flags_init_once: VKD3D_CONFIG=''.
+7699.578:04a8:04ac:warn:vkd3d-proton:vkd3d_check_extensions: Optional user instance extension "VK_KHR_surface_maintenance1" is not supported.
+7699.578:04a8:04ac:info:vkd3d-proton:vkd3d_get_vk_version: vkd3d-proton - applicationVersion: 3.0.1.
+7699.578:04a8:04ac:info:vkd3d-proton:vkd3d_instance_init: vkd3d-proton - build: 3b10bd7a7ec6a73.
+7699.605:04a8:04ac:warn:vkd3d-proton:openvr_device_extensions: Failed to open VR registry key, status 2.
+7699.605:04a8:04ac:warn:vkd3d-proton:openxr_vulkan_extensions: wineopenxr.dll is missing required symbols.
+7699.605:04a8:04ac:info:vkd3d-proton:d3d12_device_create: Forcing singleton device due to RenderDoc being enabled.
+7699.641:04a8:04ac:warn:vkd3d-proton:vkd3d_check_extensions: Optional user device extension "VK_KHR_swapchain_maintenance1" is not supported.
+7699.644:04a8:04ac:warn:vkd3d-proton:vkd3d_physical_device_info_apply_workarounds: Disabling present_id2, wait2 and timing on pre-595 NV drivers.
+7699.644:04a8:04ac:info:vkd3d-proton:vkd3d_init_device_caps: Not all relevant pipeline stages are supported by EXT_dgc. Skipping.
+7699.644:04a8:04ac:warn:vkd3d-proton:vkd3d_supports_minimum_coopmat_caps: Missing sufficient features to expose WMMA.
+7700.161:04a8:04ac:warn:vkd3d-proton:d3d12_device_create_vkd3d_queues: Could not allocate an out of band queue for queue family 2. All out of band work will happen on the in band queue.
+7700.162:04a8:04ac:warn:vkd3d-proton:d3d12_device_create_vkd3d_queues: Could not allocate an out of band queue for queue family 3. All out of band work will happen on the in band queue.
+7700.166:04a8:04ac:info:vkd3d-proton:vkd3d_memory_info_decide_hvv_usage: Topology: Device heaps are split. Assuming small BAR situation.
+7700.166:04a8:04ac:info:vkd3d-proton:vkd3d_memory_info_upload_hvv_memory_properties: Topology: HVV usage is not allowed, using HOST_COHERENT for UPLOAD.
+7700.167:04a8:04ac:info:vkd3d-proton:vkd3d_bindless_state_get_bindless_flags: Device supports VK_EXT_mutable_descriptor_type.
+7700.167:04a8:04ac:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+7700.167:04a8:04ac:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+7700.167:04a8:04ac:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+7700.280:04a8:04ac:info:vkd3d-proton:d3d12_device_caps_init_shader_model: Enabling support for SM 6.6.
+7700.280:04a8:04ac:fixme:vkd3d-proton:d3d12_device_caps_init_feature_options1: TotalLaneCount = 8064, may be inaccurate.
+7700.280:04a8:04ac:info:vkd3d-proton:d3d12_device_determine_ray_tracing_tier: DXR support enabled.
+7700.280:04a8:04ac:info:vkd3d-proton:d3d12_device_determine_ray_tracing_tier: DXR 1.1 support enabled.
+7700.280:04a8:04ac:info:vkd3d-proton:d3d12_device_caps_init_feature_level: DX Ultimate supported!
+7700.280:04a8:04ac:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\home\llm2x\Documents\EI\local\scratchpad\water-raytracing-20261021\dx12-quality\pt-stability-20261023\qualification-dx12-final-03\vkd3d-proton.CursedLands.exe.cache.
+7700.280:04a8:04ac:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\home\llm2x\Documents\EI\local\scratchpad\water-raytracing-20261021\dx12-quality\pt-stability-20261023\qualification-dx12-final-03\vkd3d-proton.CursedLands.exe.cache.
+7700.281:04a8:04c8:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Performing async setup of stream archive ...
+7700.282:04a8:04c8:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_merge: Merging disk caches.
+7700.283:04a8:04c8:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_merge: Done merging shader caches, existing entries: 431, new entries: 322.
+7700.284:04a8:04c8:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_merge: Successfully replaced shader cache with merged cache.
+7700.284:04a8:04c8:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Merging pipeline libraries took 2.694 ms.
+7700.284:04a8:04c8:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Mapping read-only cache took 0.159 ms.
+7700.284:04a8:04c8:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Parsing stream archive took 0.224 ms.
+7700.284:04a8:04c8:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Done performing async setup of stream archive.
+warn:  DXGI: Found monitors not associated with any adapter, using fallback
+FidelityFX provider: 3.1.5
+FidelityFX provider: 2.3.4
+FidelityFX provider: 3.1.6
+7700.518:04a8:04ac:warn:vkd3d-proton:d3d12_device_CheckFeatureSupport: Assuming device does not support tile based rendering.
+D3D12 12_0 - Forward+ - Using Device #1: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+7701.602:04a8:04ac:fixme:vkd3d-proton:vkd3d_texture_view_desc_fixup: Remapping 2D to 2D_ARRAY. Needs Vulkan spec tightening to match D3D12 properly.
+
+7703.342:04a8:04ac:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+7703.342:04a8:04ac:info:vkd3d-proton:dxgi_vk_swap_chain_init: Creating swapchain (1280 x 720), BufferCount = 3.
+7703.349:04a8:04ac:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Enabling frame latency handles.
+7703.349:04a8:04ac:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Ensure maximum latency of 3 frames with KHR_present_wait.
+7703.350:04a8:04ac:info:vkd3d-proton:dxgi_vk_swap_chain_init_sleep_state: Timer interval is 1.0 ms.
+err:   readMonitorEdidFromKey: Failed to get EDID reg key size
+err:   DXGI: Failed to parse display metadata + colorimetry info, using blank.
+7703.352:04a8:04ac:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+warn:  DXGI: MakeWindowAssociation: Ignoring flags
+7703.463:04a8:04f8:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+WARNING: Failed to get SDR white level for adapterId: 0x00000000000006E0, id: 0
+   at: _get_sdr_white_level_for_hmonitor (platform/windows/display_server_windows.cpp:1708)
+[trace 13:49:45 +8672ms] session cdea90ce4c54: 1.23.0, Windows 10.0.19043, NVIDIA NVIDIA GeForce RTX 3090 Ti, forward_plus / d3d12
+PT_QUALIFICATION_RUNTIME {"adapter":"NVIDIA GeForce RTX 3090 Ti","display":"Windows","driver":"d3d12","engine":{"build":"custom_build","hash":"unknown","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (custom_build)","timestamp":0},"fixture":"Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-dx12-final-03/fixtures/path_trace_topology.gd","fsr":{"api":true,"engine":true,"fg3":true,"fg4":false,"sr3":true,"sr4":false},"method":"forward_plus","passed":true,"pid":1192,"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"pt_supported":true,"render_thread":{"actual_separate":false,"expected_separate":false,"main_id":1,"passed":true,"project_model":1,"render_id":1,"requested":"project"},"require_sdk":true,"user_data":"C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands","vendor":"NVIDIA"}
+PASS boundary body is included before its idle swing
+PASS whole figure includes hidden parts beyond the per-mesh boundary
+PASS negative control: old per-part admission changes during the idle swing
+PASS idle swing across 96 metres preserves the complete scene snapshot
+PASS repeated boundary pose 0 does not rebuild
+PASS repeated boundary pose 1 does not rebuild
+PASS repeated boundary pose 2 does not rebuild
+PASS repeated boundary pose 3 does not rebuild
+PASS repeated boundary pose 4 does not rebuild
+PASS repeated boundary pose 5 does not rebuild
+PASS repeated boundary pose 6 does not rebuild
+PASS repeated boundary pose 7 does not rebuild
+PASS repeated boundary pose 8 does not rebuild
+PASS repeated boundary pose 9 does not rebuild
+PASS repeated boundary pose 10 does not rebuild
+PASS repeated boundary pose 11 does not rebuild
+PASS both figure parts pack without exceeding the unchanged budgets
+PASS boundary animation still produces live instance transforms
+PASS revealing a retained hidden part uses instance updates
+PASS retained whole unit remains admitted at 119.5 metres
+PASS retained whole unit remains admitted at 120.5 metres
+PASS retained whole unit remains admitted at 127.5 metres
+PASS retained whole unit remains admitted at 128.0 metres
+PASS unit exits only after the eight-metre hysteresis margin
+PASS replacement snapshot omits a unit outside the exit radius
+PASS excluded unit does not re-enter at 127.5 metres
+PASS excluded unit does not re-enter at 120.5 metres
+PASS new unit entry is detected at the original 120-metre root radius
+PASS entry admits the complete figure
+PASS newly admitted figure receives exit hysteresis
+PASS equipment mesh replacement still invalidates the snapshot
+PASS restored mesh restores the original topology
+PASS same-resource material value edits still invalidate the snapshot
+PASS material resource replacement still invalidates the snapshot
+PASS new equipment outside the old per-part boundary is detected
+PASS removing newly added equipment restores baseline membership
+PASS removal of an existing hidden part is detected
+PASS re-attaching the same hidden part restores membership
+PASS a newly spawned nearby unit invalidates the snapshot
+PASS despawn of a snapshot unit is detected
+PASS unmodified original figure stays stable after the spawn/despawn
+PASS static mesh intersecting 96-metre sphere remains admitted
+PASS static objects retain per-mesh 96-metre admission
+PASS static mesh outside 96 metres remains omitted
+PASS production severing creates a detached opaque figure part
+PASS detached part remains outside gameplay object and unit registries
+PASS detached part registers its geometry on entering the world
+PASS new detached geometry invalidates the previous snapshot
+PASS detached geometry retains the original mesh and material
+PASS negative control: original object/unit-only collection omits the detached part
+PASS detached mesh enters the next lighting snapshot
+PASS detached part receives lighting, casts shadows and contributes to indirect paths
+PASS tumbling detached part uploads its live transform
+PASS detached rigid motion preserves scene membership
+PASS hidden detached part stops tracing without rebuilding
+PASS revealed detached part restores all lighting roles
+PASS an opted-in registered root contributes each mesh only once
+PASS another loaded world's registered geometry is excluded
+PASS water reflection collection also retains detached figure parts
+PASS off-tree detached parts release active group membership
+PASS reattaching a detached part restores one registry entry
+PASS detached figure receives the same bounded exit hysteresis as its source
+PASS detached figure outside the exit margin leaves the snapshot
+PASS expiry removes detached geometry from the next snapshot
+PASS freeing all detached parts releases every registry entry
+PASS unchanged ready terrain textures preserve the snapshot
+PASS replacing a ready terrain normal texture invalidates the snapshot
+PASS replacing a ready terrain macro texture invalidates the snapshot
+PASS terrain edge-sampling changes invalidate the snapshot
+PASS restoring the original terrain inputs restores its version
+PASS recovery watch begins with a fully populated scene
+PASS discarding a failed scene releases packed geometry, textures and placements
+PASS discarding releases pending work, mesh caches and native instance watches
+PASS discarded scene keeps the original topology snapshot
+PASS discarded scene still detects a material fix
+PASS discarded scene still detects new dynamic geometry
+PASS topology-only polling does not repopulate packing bookkeeping
+PASS discarded scene settles after temporary geometry is removed
+PASS geometry, texture and instance budget caps are unchanged
+PASS triangle overflow still rejects the snapshot
+PASS texture overflow still rejects the snapshot
+PASS instance overflow still rejects the snapshot
+PATH_TRACE_TOPOLOGY 82 checks 0 failures
+[trace 13:49:46 +9394ms] clean exit
+7708.833:04a8:04f8:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.

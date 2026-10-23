@@ -1,0 +1,30 @@
+{
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/wine-tools/root/usr/lib/wine/wine64",
+    "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/candidate-owned-windows/CursedLands.exe",
+    "--audio-driver",
+    "Dummy",
+    "--gpu-index",
+    "1",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "d3d12",
+    "--windowed",
+    "--borderless",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--mod-tests",
+    "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-dx12-final-03/fixtures/path_trace_qualification.gd",
+    "--qualification-fixture=Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-dx12-final-03/fixtures/path_trace_fsr.gd",
+    "--qualification-render-thread=project",
+    "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-dx12-final-03/fsr",
+    "--qualification-require-sdk"
+  ],
+  "cwd": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/candidate-owned-windows",
+  "profile": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-dx12-final-03-profile/wine-prefix/drive_c/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands",
+  "timeout": 480
+}

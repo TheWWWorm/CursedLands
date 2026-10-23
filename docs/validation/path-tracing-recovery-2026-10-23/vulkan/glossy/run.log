@@ -1,0 +1,55 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+Vulkan 1.4.312 - Forward+ - Using Device #1: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.
+However, bear in mind that at the moment it can lead to project crashes or instability.
+So, unless you want to test the engine, set the "rendering/driver/threads/thread_model" project setting to 'Safe'.
+     at: setup2 (main/main.cpp:3523)
+
+ERROR: An error occurred while trying to get the screen refresh rate.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1892)
+[trace 13:27:20 +6909ms] session e1116a4527e2: 1.23.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090 Ti, forward_plus / vulkan
+PT_QUALIFICATION_RUNTIME {"adapter":"NVIDIA GeForce RTX 3090 Ti","display":"X11","driver":"vulkan","engine":{"build":"custom_build","hash":"unknown","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (custom_build)","timestamp":0},"fixture":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03/fixtures/path_trace_glossy.gd","fsr":{"api":false,"engine":false,"fg3":false,"fg4":false,"sr3":false,"sr4":false},"method":"forward_plus","passed":true,"pid":241690,"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"pt_supported":true,"render_thread":{"actual_separate":true,"expected_separate":true,"main_id":1,"passed":true,"project_model":2,"render_id":5,"requested":"project"},"require_sdk":false,"user_data":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03-profile/glossy/data/godot/app_userdata/Cursed Lands","vendor":"NVIDIA"}
+PASS qualified glossy reconstruction device
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build mixed-metalness material guide fixture
+OpArrayLength is not supported yet.
+PASS native half-float guide preserves roughness and fractional metalness (0.08, 0.0)
+PASS native half-float guide preserves roughness and fractional metalness (0.2, 0.4)
+PASS native half-float guide preserves roughness and fractional metalness (0.6, 0.2)
+PASS native half-float guide preserves roughness and fractional metalness (0.5, 0.5)
+PASS native half-float guide preserves roughness and fractional metalness (1.0, 1.0)
+PASS formerly colliding material combinations have distinct guides
+PASS stationary glossy and diffuse histories both accumulate
+PASS camera motion retains matching diffuse history
+PASS orthographic translation retains an unchanged reflection direction
+PASS smooth perspective reflections discard changed viewing directions
+PASS rough reflection lobes keep useful history during the same movement
+PASS glossy confidence recovers independently of diffuse age
+PASS invalid glossy history does not invalidate diffuse history
+PASS invalid diffuse history does not invalidate glossy history
+PASS unrelated depth layer rejects both histories
+PASS different roughness/metalness combinations reject aliased history
+PASS normal changes reject glossy history within diffuse normal tolerance
+PASS still-scene glossy history continues beyond the responsive limit
+PASS still-scene glossy confidence reaches its full 256-frame budget
+PASS still-scene camera motion resets both histories
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build deterministic glossy motion fixture 0.12
+OpArrayLength is not supported yet.
+PASS native highlight measurement remains finite 0.12
+PASS moving native highlight remains within its reconstruction error budget 0.12
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build deterministic glossy motion fixture 0.35
+OpArrayLength is not supported yet.
+PASS native highlight measurement remains finite 0.35
+PASS moving native highlight remains within its reconstruction error budget 0.35
+PASS stationary glossy reconstruction reduces sampling variance by at least 75 percent
+PASS native stationary glossy energy agrees with independent hemisphere integration
+PASS native stationary glossy confidence reaches eight frames
+SCENE_RT_DEVICE 31 checks 0 failures
+[trace 13:27:22 +9045ms] clean exit

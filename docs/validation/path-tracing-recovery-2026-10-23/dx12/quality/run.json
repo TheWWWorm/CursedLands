@@ -1,0 +1,87 @@
+{
+  "exit_code": 0,
+  "pid": 268096,
+  "wall_seconds": 13.949724134999997,
+  "stopped": "",
+  "errors": [],
+  "allowed_diagnostics": [],
+  "gpu_uuids_observed": [
+    "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0.08833034300005238,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": false,
+    "live_members_after_cleanup": []
+  },
+  "suite": "quality",
+  "checks": 13,
+  "fixture_failures": [],
+  "validation_errors": [],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "display": "Windows",
+    "driver": "d3d12",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-dx12-final-03/fixtures/path_trace_quality.gd",
+    "fsr": {
+      "api": true,
+      "engine": true,
+      "fg3": true,
+      "fg4": false,
+      "sr3": true,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 1420,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": false,
+      "expected_separate": false,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 1,
+      "render_id": 1,
+      "requested": "project"
+    },
+    "require_sdk": true,
+    "user_data": "C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "path-quality.json",
+  "passed": true,
+  "artifacts": {
+    "command.json": "07e5accd660430354fb968dd73dfccaf7a50609a4a2c3c2e0c145f06463328f6",
+    "gpu.jsonl": "f7125d9b6aafd7f10d6c1a0d4f4ef9543493b4f59f5150536894c3340f1912be",
+    "grazing-metal-0.35.png": "c646fb272a720822a20bd1b51a8ff0fe6d22235daaa69842e101565a2b718d60",
+    "grazing-metal-0.65.png": "7df3011c7cd80bd7a2e298fc0cb0d0c704ecc93636c1051c0cd722600e9f1704",
+    "grazing-metal-1.0.png": "b0a4a862e41c612d5d7faf44978433b40bbbe84698c1680058f5a51a2f5c8a1a",
+    "path-quality.json": "805a6f43527169c2e6e308a49377d9bf94b10fd8d65d1298c0b316041543d3e7",
+    "qualification-runtime.json": "cf37063662e4f4bcf598208485c416826125157763bf6cc7aaee8bc3f809720d",
+    "run.log": "a5b14522f917041684366b0769c66d5eabd0d64adfe3305caf264fd03f2fc099",
+    "scene-device-results.json": "0c7e5680688afc5b6c6b7b4b045bd3c8b3b980f125624b8e6be858a45a10a432"
+  }
+}

@@ -1,0 +1,83 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+Vulkan 1.4.312 - Forward+ - Using Device #1: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.
+However, bear in mind that at the moment it can lead to project crashes or instability.
+So, unless you want to test the engine, set the "rendering/driver/threads/thread_model" project setting to 'Safe'.
+     at: setup2 (main/main.cpp:3523)
+
+ERROR: An error occurred while trying to get the screen refresh rate.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1892)
+[trace 13:28:21 +6958ms] session 7cbdb516fd61: 1.23.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090 Ti, forward_plus / vulkan
+PT_QUALIFICATION_RUNTIME {"adapter":"NVIDIA GeForce RTX 3090 Ti","display":"X11","driver":"vulkan","engine":{"build":"custom_build","hash":"unknown","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (custom_build)","timestamp":0},"fixture":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03/fixtures/path_trace_surface_detail.gd","fsr":{"api":false,"engine":false,"fg3":false,"fg4":false,"sr3":false,"sr4":false},"method":"forward_plus","passed":true,"pid":242733,"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"pt_supported":true,"render_thread":{"actual_separate":true,"expected_separate":true,"main_id":1,"passed":true,"project_model":2,"render_id":5,"requested":"project"},"require_sdk":false,"user_data":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03-profile/surface_detail/data/godot/app_userdata/Cursed Lands","vendor":"NVIDIA"}
+PASS qualified path-tracing device
+PASS verified original atlas stone03
+PASS changed source rejects mismatched regions stone03
+PASS export includes authored map stone03
+PASS lossless data map retains mip chain stone03
+PASS import preserves RGB even where metalness alpha is zero stone03
+PASS verified original atlas columnruins01
+PASS changed source rejects mismatched regions columnruins01
+PASS export includes authored map columnruins01
+PASS lossless data map retains mip chain columnruins01
+PASS import preserves RGB even where metalness alpha is zero columnruins01
+PASS verified original atlas bridge00
+PASS changed source rejects mismatched regions bridge00
+PASS export includes authored map bridge00
+PASS lossless data map retains mip chain bridge00
+PASS import preserves RGB even where metalness alpha is zero bridge00
+PASS bridge bone ornament stays smooth and dielectric
+PASS smooth bone region matches the runtime albedo row orientation
+PASS snow mask and neutral normal align to the decoded original texture
+PASS native and script collectors agree on detail maps
+PASS detail map uses one existing array layer
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build normal fixture [false, false]
+OpArrayLength is not supported yet.
+PASS GPU respects tangent orientation or degenerate fallback [false, false]: (0.599609, -0.293945, 0.743652)
+PASS GPU consumes packed roughness and metalness [false, false]
+PASS raster and ray normals agree [false, false]: (0.599609, -0.294434, 0.743164)
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build normal fixture [true, false]
+OpArrayLength is not supported yet.
+PASS GPU respects tangent orientation or degenerate fallback [true, false]: (-0.599609, -0.293945, 0.743652)
+PASS GPU consumes packed roughness and metalness [true, false]
+PASS raster and ray normals agree [true, false]: (-0.600098, -0.294434, 0.743164)
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build normal fixture [false, true]
+OpArrayLength is not supported yet.
+PASS GPU respects tangent orientation or degenerate fallback [false, true]: (-0.000015, -0.000015, 1.0)
+PASS GPU consumes packed roughness and metalness [false, true]
+PASS raster and ray normals agree [false, true]: (-0.000488, -0.000488, 1.0)
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build rotated nonuniform instance false
+OpArrayLength is not supported yet.
+PASS instance transforms preserve raster/ray basis parity false: (0.640625, -0.189941, 0.743652) / (0.640625, -0.19043, 0.743164)
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build rotated nonuniform instance true
+OpArrayLength is not supported yet.
+PASS instance transforms preserve raster/ray basis parity true: (-0.640625, -0.189941, 0.743652) / (-0.640869, -0.19043, 0.743164)
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build back-facing normal fixture
+OpArrayLength is not supported yet.
+PASS back-face normal stays in the visible geometry hemisphere
+PASS raster and ray back-face normals agree: (0.599609, -0.294434, -0.744141)
+PASS distance fades normal detail and broadens unresolved highlights
+PASS minification fades unresolved normals without dropping metalness
+PASS detail enable change invalidates the material snapshot
+PASS disabled detail uses scalar fallback without map upload
+PASS material-effects option disables authored detail collection
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build disabled material fixture
+OpArrayLength is not supported yet.
+PASS disabled material effects restore flat dielectric response
+SCENE_RT_DEVICE 47 checks 0 failures
+[trace 13:28:23 +8795ms] clean exit

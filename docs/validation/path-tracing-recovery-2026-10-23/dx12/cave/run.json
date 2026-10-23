@@ -1,0 +1,87 @@
+{
+  "exit_code": 0,
+  "pid": 272559,
+  "wall_seconds": 39.73577313900023,
+  "stopped": "",
+  "errors": [],
+  "allowed_diagnostics": [],
+  "gpu_uuids_observed": [
+    "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0.06856740799958061,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": false,
+    "live_members_after_cleanup": []
+  },
+  "suite": "cave",
+  "checks": 12,
+  "fixture_failures": [],
+  "validation_errors": [],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "display": "Windows",
+    "driver": "d3d12",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-dx12-final-03/fixtures/path_trace_cave.gd",
+    "fsr": {
+      "api": true,
+      "engine": true,
+      "fg3": true,
+      "fg4": false,
+      "sr3": true,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 1360,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": false,
+      "expected_separate": false,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 1,
+      "render_id": 1,
+      "requested": "project"
+    },
+    "require_sdk": true,
+    "user_data": "C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "path-cave.json",
+  "passed": true,
+  "artifacts": {
+    "cave-conventional.png": "a844240c3bf15edabeb611770686a69df9128ad01fadf512fd3d73137d11016a",
+    "cave-path-2-still.png": "fe7e0b56aae3e802294784137e5cf721d0079286e3791584d67500ed21201c3d",
+    "cave-path-4-still.png": "026f0dc5de82581b7f7d89ac469de69322137785a7b7a1cf0c85c684893e1b02",
+    "cave-path-blue.png": "7466356bd0db4e21dbda64c21042d487064a804b9a8f76c7b730b985283243d4",
+    "command.json": "45d03c1ccd0eb6da41acb52581666996f359b6be82eed2aded969150ac20690d",
+    "gpu.jsonl": "94d5cf14876f6aaf3d389e1a33dbbb8ee464d5dc74d102a4651934c16c6db493",
+    "path-cave.json": "a4ccdb0d9c613eca1e8d6652d40e74fc08c4527b56f57b32f1d735749a751165",
+    "qualification-runtime.json": "7a454a162f18f0f11a898553d99b8a09260eeb61ae32b1a97b728573733a16a9",
+    "run.log": "5996866033e8b13e9ee4c4bb651143acc56f0de9f9491e97e7b1098f331d6458"
+  }
+}

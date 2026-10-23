@@ -1,0 +1,6 @@
+{
+	"checks": 10,
+	"failures": [],
+	"note": "Executes the exact extracted current fixture accounting block under a headless Godot SceneTree; no GPU fixture or production code is run.",
+	"status": "passed"
+}

@@ -1,0 +1,34 @@
+{
+  "server_pid": 25522,
+  "display": ":97",
+  "server_stopped": true,
+  "private_authority_removed": true,
+  "unix": 1792757214.2349315,
+  "remaining_compute_processes": [
+    "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441, 3246, /usr/libexec/gnome-remote-desktop-daemon, 260 MiB",
+    "GPU-0eee028e-b998-532f-095b-e936c7f6191d, 2504, /home/llm2x/opt/ComfyUI/.venv/bin/python, 262 MiB"
+  ],
+  "qualification_queue": {
+    "status": "passed",
+    "runs": [
+      {
+        "tag": "qualification-vulkan-final-03",
+        "exit_code": 0
+      },
+      {
+        "tag": "qualification-dx12-final-03",
+        "exit_code": 0
+      },
+      {
+        "tag": "qualification-vulkan-benchmark-final-03",
+        "exit_code": 0
+      },
+      {
+        "tag": "qualification-dx12-benchmark-final-03",
+        "exit_code": 0
+      }
+    ],
+    "current": null,
+    "pid": null
+  }
+}

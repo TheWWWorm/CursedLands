@@ -1,0 +1,27 @@
+{
+	"checks": 4,
+	"direct_negative_control": {
+		"alive": true,
+		"disposed": true,
+		"references_in_helper": 2
+	},
+	"engine": {
+		"build": "custom_build",
+		"hash": "unknown",
+		"hex": 263936,
+		"major": 4,
+		"minor": 7,
+		"patch": 0,
+		"status": "stable",
+		"string": "4.7-stable (custom_build)",
+		"timestamp": 0
+	},
+	"failures": [],
+	"known_temporary_retention_reproduced": true,
+	"note": "Direct capture retention is a known compiler diagnostic, not a required behavior. Helper release is the regression gate.",
+	"synchronous_helper": {
+		"alive": false,
+		"disposed": true,
+		"references_in_helper": 0
+	}
+}
