@@ -100,6 +100,7 @@ func load_installed(id: String) -> String:
 	if database == null or GameData.textures == null or GameData.figures == null or GameData.redress == null:
 		_apply(previous)
 		return RemakeText.t("The installed campaign data could not be read.")
+	database.astral_patches = id == CampaignProfile.ASTRAL
 	GameData.db = EIDatabase.load_from(database)
 	error = ModStore.patch_database(GameData.db,false)
 	var lmp := _archive(path,"databaselmp.res")

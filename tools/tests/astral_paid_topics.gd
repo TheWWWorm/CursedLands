@@ -2,6 +2,11 @@ extends "astral_fortune.gd"
 ## Exercise the shipped paid-rumour scripts through the actual topic/close
 ## path. Wallets change after the original offer poll and after the list opens.
 ## The raw original script provides the reference when its wallet is current.
+const ZONE16_EDITIONS := {
+	"aba195909addc8771cdb25ceb04d709a62243341291dd843dfc6393d603ba4d7":"1.00",
+	"09ca5c96dec5f87d6bf06e80b8178b4a54cae88a1e70a1c40be3938143c2b082":"1.01",
+	"580852c8b985be8fe86402a253f4672cc9e6a9c82bb5587a420a6beea47759c1":"1.02",
+}
 
 func paid_market(zone: String, name: String, n: int, cash: int, adapt := true) -> Dictionary:
 	market()
@@ -85,6 +90,12 @@ func exclusions() -> void:
 		check(s.state.get_var(0,"b.shava.fq%d"%n)==2,"saved Gipat completion resumes its original durable bridge")
 
 func gipat_downstream() -> void:
+	var hash := HashingContext.new()
+	hash.start(HashingContext.HASH_SHA256)
+	hash.update(GameData.read_file("maps/zone16.mob"))
+	var edition: String = ZONE16_EDITIONS.get(hash.finish().hex_encode(),"")
+	check(not edition.is_empty(),"downstream fixture is a verified CD, 1.01 or 1.02 map")
+	if edition.is_empty(): return
 	for row: Array in [["gz11g","zone11","VCheck#6#1",9,"zone11_fq9"],
 		["gz16g","zone16","VCheck#3#1",10,"zone16_fq10"],
 		["gz7g","zone7","VCheck#5#1",11,"zone7_fq11"],
@@ -92,13 +103,27 @@ func gipat_downstream() -> void:
 		fixture()
 		var reference := vm_for(row[0],row[1],false)
 		var current := vm_for(row[0],row[1])
+		check(current.ast.has_meta(AstralPatches.META) if row[1]=="zone16" else true,"official zone16 correction is recognized")
+		if row[3]==10:
+			var lever := Node3D.new();allocations.append(lever)
+			lever.set_meta("ei",{"nid":4955,"position":Vector3.ZERO});s.world.objects[4955]=lever
+			s.world.levers[4955]={"state":0,"enabled":false}
 		for bought in [0,1,2,3]:
 			for stage in [0,1,2,3]:
 				s.state.set_var(0,"b.shava.fq%d"%row[3],bought);s.state.set_var(0,row[4],stage)
-				var outputs := []
-				for vm: ProbeVM in [reference,current]:
-					outputs.append(vm.ast.scripts[row[2]].blocks[0].conds.all(func(c):return bool(vm._eval(c,ScriptVM.Instance.new()))))
-				check(outputs==[bought==2 and stage==0,bought==2 and stage==0],"%s: authored unlock still requires purchase and unstarted event"%row[2])
+				for lever_state in ([0,1] if row[3]==10 else [0]):
+					if row[3]==10:s.world.levers[4955].state=lever_state
+					var outputs := []
+					for vm: ProbeVM in [reference,current]:
+						outputs.append(vm.ast.scripts[row[2]].blocks[0].conds.all(func(c):return bool(vm._eval(c,ScriptVM.Instance.new()))))
+					var ready: bool = stage==0
+					# 1.01 uses the actual lever state for fq10; 1.02 allows
+					# fq12 setup again after purchase regardless of its old flag.
+					if row[3]==10 and edition!="1.00":ready=lever_state==0
+					if row[3]==12 and edition=="1.02":ready=true
+					var expected: bool = bought==2 and ready
+					var patched_ready: bool = lever_state==0 if row[3]==10 else (true if row[3]==12 else stage==0)
+					check(outputs==[expected,bought==2 and patched_ready],"%s %s: native and built-in 1.02 gates, purchase=%d flag=%d lever=%d"%[row[2],edition,bought,stage,lever_state])
 	# The fifth rumour describes an existing crypt; the original does not
 	# require buying the information before opening it. Do not add that gate.
 	fixture()

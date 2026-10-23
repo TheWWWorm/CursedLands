@@ -1,0 +1,471 @@
+{
+  "date": "2026-10-23",
+  "source_base": "e01d9fbd37e20f6cef7800cc8f51ea757743da5b",
+  "work_directory": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023",
+  "inputs": [
+    {
+      "path": "/home/llm2x/Documents/EI/Lost In Astral/eia101r.exe",
+      "bytes": 8440638,
+      "sha256": "ef30af2b8e57384d0e542ba173cc6934665c095f9b924b25b6df788eeca8e495"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/Lost In Astral/eia102r.exe",
+      "bytes": 3554895,
+      "sha256": "25daa2fafc28e23a00a79318de69ff99146cd01aef0482da2e85ca0c1b2d6b51"
+    }
+  ],
+  "sequence": [
+    "CD",
+    "1.01",
+    "1.02"
+  ],
+  "windows_executables_executed": false,
+  "payload": {
+    "101": [
+      {
+        "file": "maps/bz31j.mob",
+        "before_bytes": 2166672,
+        "after_bytes": 2166528,
+        "before_sha256": "92662ee7289de666446f44d3e7984e06b3252679bc774ef1a08fa135d254ccda",
+        "after_sha256": "edc8097360867f3ad9c6cf6fb6d62a7341cd08a73e07bb8d8980e75835882142"
+      },
+      {
+        "file": "maps/bz32j.mob",
+        "before_bytes": 1511998,
+        "after_bytes": 1512145,
+        "before_sha256": "07208f5b193579880047f6dcf6a1f1ee8afb63a2af7a496b5793b9c15f305817",
+        "after_sha256": "540a6851163163311ce0e39c1154f1b90ca8c253e930acf8796054e619015dac"
+      },
+      {
+        "file": "maps/zone11dun2.mob",
+        "before_bytes": 224453,
+        "after_bytes": 224537,
+        "before_sha256": "1f38770e1678f802a8b904cc2c66285540243d16bb2dbfda1c5742ce581c6bc0",
+        "after_sha256": "ca996f915639be63721ff1820abb689f45121286454fc51bac99931c4fbcbfc0"
+      },
+      {
+        "file": "maps/zone13.mob",
+        "before_bytes": 440505,
+        "after_bytes": 440971,
+        "before_sha256": "f2f68b23884509aa233e3b301753791be58d0fa0735dc0d08c2d2283d3fa9304",
+        "after_sha256": "dda4661bbe3d1cfe71f2f2629eac2085147cb7232e04d2cef01da84550b4644a"
+      },
+      {
+        "file": "maps/zone14.mob",
+        "before_bytes": 570818,
+        "after_bytes": 570869,
+        "before_sha256": "04e2a3ffabd10a1b4d16cf49f89befd42842c5ee9a9662db31f7589a112365cb",
+        "after_sha256": "ee8917c5ccdf3b490e32ad3588c32e7463352e13dc29111c9710126f8939aecd"
+      },
+      {
+        "file": "maps/zone16.mob",
+        "before_bytes": 2488926,
+        "after_bytes": 2488975,
+        "before_sha256": "aba195909addc8771cdb25ceb04d709a62243341291dd843dfc6393d603ba4d7",
+        "after_sha256": "09ca5c96dec5f87d6bf06e80b8178b4a54cae88a1e70a1c40be3938143c2b082"
+      },
+      {
+        "file": "maps/zone1dun2.mob",
+        "before_bytes": 142497,
+        "after_bytes": 142747,
+        "before_sha256": "213dd95caa01a2068eecf6e1d91143172081b9be4388d282d722338adf2f3211",
+        "after_sha256": "e2a360ac9eb9950183d295854f68d66af0a5a9d3b27fe8233836fb85d60db430"
+      },
+      {
+        "file": "maps/zone21.mob",
+        "before_bytes": 2691502,
+        "after_bytes": 2691511,
+        "before_sha256": "22212a7bc8c7ae5b630f87607ad896298ec18c93b229fd81e0731d756633612f",
+        "after_sha256": "a2cc4ed071e1d697060b0d861659060ad9b74ec38c190916a907eb8ab6ec1d0e"
+      },
+      {
+        "file": "maps/zone23.mob",
+        "before_bytes": 2002370,
+        "after_bytes": 2002337,
+        "before_sha256": "d2987aee0dab81700d56552b52f9f60fe7e914d0f05f5753e14dbe3a7247660b",
+        "after_sha256": "cf4b87a3e1e35981355cd5241498fb80c4d992b55016a828afcf8e37a6a6104a"
+      },
+      {
+        "file": "maps/zone25.mob",
+        "before_bytes": 720791,
+        "after_bytes": 721042,
+        "before_sha256": "beda7011e98e6998bdeb737655d905467a40a6ecddf728662ae43140a335a37a",
+        "after_sha256": "16d8f3fb6049360c218a6ec5d8ffbfd06e95f13bc2b5cac678a4ab027d231c4d"
+      },
+      {
+        "file": "maps/zone31.mob",
+        "before_bytes": 2333101,
+        "after_bytes": 2333103,
+        "before_sha256": "933541cb1636380936b92d26014507f253d15f574dc9937235baca404bb46eee",
+        "after_sha256": "b5123e6955db0bce7907e8eef23b6c4f74876c78ed9ccd0ffdc5613e21ad4722"
+      },
+      {
+        "file": "maps/zone32.mob",
+        "before_bytes": 1001938,
+        "after_bytes": 1002486,
+        "before_sha256": "173c17f164e243121121a812722641d411627b1406ea4c403740bd9d140ecbd3",
+        "after_sha256": "37a05063fc74a24836664a14aa9e6f7e4e21ae1be1105281c2191e8e00f4d781"
+      },
+      {
+        "file": "maps/zone7.mob",
+        "before_bytes": 1998119,
+        "after_bytes": 1998116,
+        "before_sha256": "c687c1f10e05eb4145e7ace36f36b912e823ef483c99c8b77c3b5d0a6ee46187",
+        "after_sha256": "a6b2051ef04bba71de4af4ca270ae8bc95c896b8ca7119564b530aa74d9bc33d"
+      },
+      {
+        "file": "res/database.res",
+        "before_bytes": 979688,
+        "after_bytes": 979688,
+        "before_sha256": "b44fbff1c0a727b9ca72d2bc0c55c0fbfd2ddf38bfbbffe1f393a9541eedb36c",
+        "after_sha256": "f63541111b7e09053007153f29ad9456849210f86415b71946c3e5c86d3563a7"
+      },
+      {
+        "file": "res/texts.res",
+        "before_bytes": 917632,
+        "after_bytes": 912163,
+        "before_sha256": "b9dcc0aca76bde9c1c3eb907a38a830a9c36ddae2ab90260c28f82abb8057f28",
+        "after_sha256": "178ba0bdc738759459346aa24879ad16053f2345ddedb5c07ce0fc189b492a0b"
+      },
+      {
+        "file": "game.exe",
+        "before_bytes": 2617344,
+        "after_bytes": 2617344,
+        "before_sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff",
+        "after_sha256": "3f84fb45a8911f5c0071286232f58d40daeb24546e90ee6daa47f853f31f1f52"
+      },
+      {
+        "file": "starter.exe",
+        "before_bytes": 241664,
+        "after_bytes": 241664,
+        "before_sha256": "02d9921ebcf27df72258853d7c3aeb5b63407513c72828daf05d49177e9c7836",
+        "after_sha256": "1fd4c097e9977322d08f73d61d65ac62f341f13e559ce1298b7d3e00b8a34a9a"
+      }
+    ],
+    "102": [
+      {
+        "file": "maps/zone16.mob",
+        "before_bytes": 2488975,
+        "after_bytes": 2488977,
+        "before_sha256": "09ca5c96dec5f87d6bf06e80b8178b4a54cae88a1e70a1c40be3938143c2b082",
+        "after_sha256": "580852c8b985be8fe86402a253f4672cc9e6a9c82bb5587a420a6beea47759c1"
+      },
+      {
+        "file": "res/texts.res",
+        "before_bytes": 912163,
+        "after_bytes": 912163,
+        "before_sha256": "178ba0bdc738759459346aa24879ad16053f2345ddedb5c07ce0fc189b492a0b",
+        "after_sha256": "85fbb3a07fd8344bb5941f2e02b97a0c27b4981ea92c349ace3c33015a57341c"
+      },
+      {
+        "file": "game.exe",
+        "before_bytes": 2617344,
+        "after_bytes": 2617344,
+        "before_sha256": "3f84fb45a8911f5c0071286232f58d40daeb24546e90ee6daa47f853f31f1f52",
+        "after_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12"
+      }
+    ]
+  },
+  "database_changed_rows": {
+    "HitLocations": 5,
+    "RaceModels": 105,
+    "Materials": 26,
+    "Armors": 43,
+    "QuestItems": 93,
+    "LootItems": 86,
+    "Answers": 7,
+    "Cryes": 75
+  },
+  "native_delta": {
+    "inputs": [
+      {
+        "path": "/home/llm2x/Documents/EI/inspection/lost-in-astral/game/game.exe",
+        "sha256": "f04a305b77c84ea29c18ad2996d23072ccef1c0c46876c9b93bae4ce9351d1ff"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/eia101r/extracted/PackedData/game.exe",
+        "sha256": "3f84fb45a8911f5c0071286232f58d40daeb24546e90ee6daa47f853f31f1f52"
+      },
+      {
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/eia102r/extracted/PackedData/game.exe",
+        "sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12"
+      }
+    ],
+    "cd_to_102_changed_offsets": [
+      304,
+      305,
+      306,
+      307,
+      822169,
+      822170
+    ],
+    "patch101_null_guard": {
+      "virtual_address": "0x4c7117",
+      "bytes": "8b869801000085c00f8495020000"
+    },
+    "patched_call": {
+      "virtual_address": "0x4c8b98",
+      "cd": "e873e5ffff",
+      "101": "e873e5ffff",
+      "102": "e823e8ffff"
+    },
+    "cd_102_function_4c7110_equal": true
+  },
+  "before_fix": {
+    "trap_admission": {
+      "checks": 35,
+      "failures": 2
+    },
+    "cd_only_paid_topic_expectations": {
+      "checks": 804,
+      "failures": 6
+    }
+  },
+  "limitations": [
+    "Original Windows crashes were not reproduced.",
+    "No complete campaign or every-quest playthrough.",
+    "Legacy unstamped saves assume the same source edition used to create them; missing historic provenance cannot be reconstructed reliably.",
+    "Custom or unrecognized map/database/text payloads preserve their own content.",
+    "Launcher behavior was not exhaustively analyzed.",
+    "No release was published by this task."
+  ],
+  "investigation_tests": [
+    {
+      "run": "patched",
+      "tool": "probe.gd",
+      "data_edition": "1.02",
+      "checks": 35,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/patched/run.log",
+      "log_sha256": "0877cc1bc613b14dd6ee1ccf9c072f1110a3e4882d2d9f9c215ee09fccea0970"
+    },
+    {
+      "run": "guards",
+      "tool": "tools/tests/astral_official_patch_guards.gd",
+      "data_edition": "CD and 1.02",
+      "checks": 63,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/guards/run.log",
+      "log_sha256": "d92103e0a3848b9160d9f247c74b6a530428e1bb594fc4195da2c517b18a70f6"
+    },
+    {
+      "run": "coop-cd",
+      "tool": "tools/tests/lia_trap_registration.gd",
+      "data_edition": "CD",
+      "checks": 27,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/coop-cd/run.log",
+      "log_sha256": "2056d5f4ddc475ac1185089279b33e0cf6a45f9708bb73725673d9c51dc9d7ff"
+    },
+    {
+      "run": "coop-patched",
+      "tool": "tools/tests/lia_trap_registration.gd",
+      "data_edition": "1.02",
+      "checks": 27,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/coop-patched/run.log",
+      "log_sha256": "c10b423843871448a54618737328d41680116a67ed5314dfcc5e531c903e22c8"
+    },
+    {
+      "run": "ground-casts-player",
+      "tool": "ground_cast_probe.gd",
+      "data_edition": "1.02",
+      "checks": 18,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/ground-casts-player/run.log",
+      "log_sha256": "6164a6f06c949432ef4167e21d39e456a2b383a69f399e77fdbd623c50adb489"
+    },
+    {
+      "run": "paid-cd",
+      "tool": "tools/tests/astral_paid_topics.gd",
+      "data_edition": "CD",
+      "checks": 825,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/paid-cd/run.log",
+      "log_sha256": "96d8c9acbee65307b644b7bdbc1c64acd1d5addcc77857efad1365c34ff9a713"
+    },
+    {
+      "run": "paid-101",
+      "tool": "tools/tests/astral_paid_topics.gd",
+      "data_edition": "1.01",
+      "checks": 825,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/paid-101/run.log",
+      "log_sha256": "c792de310e1fe0c169bba14538e2bb21054810cf76b557bf59134294ed85a6c3"
+    },
+    {
+      "run": "paid-patched",
+      "tool": "tools/tests/astral_paid_topics.gd",
+      "data_edition": "1.02",
+      "checks": 825,
+      "failures": 0,
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/paid-patched/run.log",
+      "log_sha256": "ae9bf502464c798fee751cd5e107a5e1f7164575c8328ec6269fc551afdac1df"
+    }
+  ],
+  "investigation_passing_assertions": 2645,
+  "tests": [
+    {
+      "run": "verified-builtin-cd",
+      "tool": "tools/tests/astral_official_patches.gd",
+      "data_edition": "cd",
+      "checks": 329,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/verified-builtin-cd/run.log",
+      "log_sha256": "969f10c5da7ce185b266364e6707f81da58240c3f144a13c96fe0c9760366ca4"
+    },
+    {
+      "run": "verified-builtin-101",
+      "tool": "tools/tests/astral_official_patches.gd",
+      "data_edition": "101",
+      "checks": 329,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/verified-builtin-101/run.log",
+      "log_sha256": "f7385442e4051b525dae6fd1bd0024947572c8919683921746492f25cb111079"
+    },
+    {
+      "run": "verified-builtin-102",
+      "tool": "tools/tests/astral_official_patches.gd",
+      "data_edition": "102",
+      "checks": 329,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/verified-builtin-102/run.log",
+      "log_sha256": "385971942c1128c60edff0232656375cb0f636e8ad428013d49fa4ec7e109875"
+    },
+    {
+      "run": "verified-builtin-imported-pack",
+      "tool": "tools/tests/astral_official_patches.gd",
+      "data_edition": "imported-pack",
+      "checks": 329,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/verified-builtin-imported-pack/run.log",
+      "log_sha256": "776d3c01e7dafb6a3389470fafed893f8d1cf80de127aba0097f61a8e59220aa"
+    },
+    {
+      "run": "final-paid-cd",
+      "tool": "tools/tests/astral_paid_topics.gd",
+      "data_edition": "cd",
+      "checks": 825,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/final-paid-cd/run.log",
+      "log_sha256": "93441e31630d2c70f33edf9fca311d6271a65cf7ffc7b1d628764351e52e1a47"
+    },
+    {
+      "run": "final-paid-101",
+      "tool": "tools/tests/astral_paid_topics.gd",
+      "data_edition": "101",
+      "checks": 825,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/final-paid-101/run.log",
+      "log_sha256": "7645e7d3db3e18d08083885baf8d33a8c2ef5cd48181f2f6e4a06cfd3e2c6345"
+    },
+    {
+      "run": "final-paid-102",
+      "tool": "tools/tests/astral_paid_topics.gd",
+      "data_edition": "102",
+      "checks": 825,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/final-paid-102/run.log",
+      "log_sha256": "ed51872c6b1beee3b4f454ba94ed6445a37c2855c20e6683eaaff351029c6798"
+    },
+    {
+      "run": "final-guards",
+      "tool": "tools/tests/astral_official_patch_guards.gd",
+      "data_edition": "CD and 1.02",
+      "checks": 63,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/final-guards/run.log",
+      "log_sha256": "3abc16b1b0fc235b1091eaf0652b7465f2d70c3841ed1a4ccfb17ab04d24095c"
+    },
+    {
+      "run": "final-coop-cd",
+      "tool": "tools/tests/lia_trap_registration.gd",
+      "data_edition": "CD",
+      "checks": 27,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/final-coop-cd/run.log",
+      "log_sha256": "26dc0c588be10d3e365b5fe6e0221343d8c08d541c22b63a36f7ca3f714a9fe0"
+    },
+    {
+      "run": "final-coop-102",
+      "tool": "tools/tests/lia_trap_registration.gd",
+      "data_edition": "1.02",
+      "checks": 27,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/final-coop-102/run.log",
+      "log_sha256": "a7141492a76f679f7f3ab5f8951946d468187cbd216e8eab4c6b97cd32decb08"
+    },
+    {
+      "run": "builtin-journal-ui",
+      "tool": "tools/tests/astral_patch_journal_ui.gd",
+      "data_edition": "CD; EN/RU/DE; 800x600 and 1280x800",
+      "checks": 128,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/builtin-journal-ui/run.log",
+      "log_sha256": "bde2bbb9737511615020a2d7bdb72c478052126bcbb2814e1171d183f5402729"
+    }
+  ],
+  "total_passing_assertions": 4036,
+  "implementation": {
+    "patch_revision": 1,
+    "effective_content_version": "1.02",
+    "script_maps": 12,
+    "database_entries": [
+      "items.idb",
+      "units.udb",
+      "acks.db"
+    ],
+    "map_objects": "zone25.mob: 33398729",
+    "text_entry_identities": 16,
+    "input_files_modified": false,
+    "patch_installers_required_at_runtime": false,
+    "generated_payload_bytes": 139438,
+    "generated_payload_sha256": "96e5cbda95fd98478485b17294424a34f9421883cebce0c5c9946eab20b24f40",
+    "reproducible_from_fresh_export": true,
+    "legacy_vm_migration": true,
+    "alternate_campaign_wiki_database_patched": true
+  },
+  "data_pack_import": {
+    "run": "final-builtin-imported-pack",
+    "input": "/home/llm2x/Documents/EI/LostInAstral-ru.eipack",
+    "method": "PrivateDataImport.import_file, then GameData.open of imported folder",
+    "checks": 328,
+    "failures": 0,
+    "included_in_total": false,
+    "reason": "Final 329-check suite supersedes the 326 behavior checks in this import run. The two import assertions are retained as separate evidence.",
+    "log_sha256": "43d7f5f6080710e86a529df0c314998cbb234672700a05eeed4c8c2be38faa99"
+  },
+  "additional_checks": {
+    "translation_coverage": "3056 entries; 141 dynamic wiki keys; 179 dynamic arena keys; 0 errors",
+    "git_diff_check": "passed",
+    "generator_python_compile": "passed"
+  },
+  "screenshots": [
+    {
+      "file": "docs/validation/lia-official-patches-2026-10-23/journal-en-800.png",
+      "sha256": "9324df0d5435ca1d1baaf6c7bdb30cea3661f39a59db9680f20d07fb7eb2e335",
+      "visually_inspected": true
+    },
+    {
+      "file": "docs/validation/lia-official-patches-2026-10-23/journal-ru-1280.png",
+      "sha256": "862954e92079256f180d4c9fded3f0c1e8a746e255b95eaa5ebb3e7424634b28",
+      "visually_inspected": true
+    },
+    {
+      "file": "docs/validation/lia-official-patches-2026-10-23/journal-de-800.png",
+      "sha256": "e1c35b30a084bdaa4145712204192fbda3588724de3ac7e00e107c7542a9e1f3",
+      "visually_inspected": true
+    }
+  ]
+}

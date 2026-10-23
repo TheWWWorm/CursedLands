@@ -1,6 +1,7 @@
 extends Node
 ## Locates and opens the player's original Evil Islands installation.
-## Nothing from the original game is shipped; everything is read at runtime.
+## Original assets are supplied by the player; verified LiA patch corrections
+## are applied to those assets in memory.
 
 const CONFIG_PATH := "user://settings.cfg"
 ## Files that must exist in a valid installation (relative to its root).
@@ -679,6 +680,7 @@ func open(path: String) -> String:
 		return RemakeText.t("Could not read the game archives in res/.")
 	_open_text_archives()   # first: sets the code page the database strings use
 	campaign_id = CampaignProfile.detect(texts)
+	dbres.astral_patches = campaign_id == CampaignProfile.ASTRAL
 	ModStore.mount()
 	db = EIDatabase.load_from(dbres)
 	if ModStore.startup_error.is_empty():
@@ -747,7 +749,8 @@ func read_file(rel: String) -> PackedByteArray:
 	# AddMob("Zone3ObrVoev.mob") for maps/zone3obrvoev.mob.
 	if not GameFiles.exists(path) and GameFiles.exists(root.path_join(rel.to_lower())):
 		path = root.path_join(rel.to_lower())
-	return GameFiles.read(path)
+	var data := GameFiles.read(path)
+	return AstralPatches.map_file(rel,data) if campaign_id == CampaignProfile.ASTRAL else data
 
 
 func load_image(name: String, authored_mips := false) -> Image:
@@ -831,7 +834,8 @@ func text(key: String) -> String:
 		var b := texts.read(key) if texts else PackedByteArray()
 		if b.is_empty() and texts_lmp:
 			b = texts_lmp.read(key)
-		_text_cache[key] = EIText.ansi(b).replace("\r", "") if not b.is_empty() else ""
+		var value := EIText.ansi(b).replace("\r", "") if not b.is_empty() else ""
+		_text_cache[key] = AstralPatches.text(key,value) if campaign_id == CampaignProfile.ASTRAL else value
 	return _text_cache[key]
 
 

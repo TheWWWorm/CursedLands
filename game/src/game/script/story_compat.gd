@@ -31,6 +31,7 @@ static func apply(ast: ScriptParser, campaign: String, zone: String) -> void:
 				"root":"VCheck#0#404", "peer":"VCheck#0#393", "slot":2, "caller":"WorldScript",
 				"chain":{"VTriger#0#401":"VTriger#0#394", "VCheck#0#402":"VCheck#0#396", "VTriger#0#406":"VTriger#0#398"}})
 		return
+	AstralPatches.apply_script(ast,zone)
 	preload("res://src/game/script/story_astral_fortunes.gd").apply(ast,zone)
 	if zone == "gz1h": preload("res://src/game/script/story_astral_eavesdrop.gd").apply(ast)
 	preload("res://src/game/script/story_coop_effects.gd").apply(ast, zone)
