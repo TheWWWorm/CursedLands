@@ -526,6 +526,8 @@ const GFX_DEFAULTS := {
 }
 var _gfx_rev := GFX_REV
 var options := {}
+## Explicit graphics applications, distinct from camera-driven streaming.
+var graphics_revision := 0
 ## A player preference, independent of expedition saves and undo.
 var arena_speed := 1
 var arena_mode := 0
@@ -892,6 +894,11 @@ func set_options(values: Dictionary) -> void:
 			push_warning(problem)
 			return
 	if values.is_empty(): return
+	var shader_screen: ShaderCompilationScreen
+	if ShaderCompilationScreen.graphics_change(values):
+		graphics_revision += 1
+		shader_screen = ShaderCompilationScreen.begin(get_tree(), &"settings", ShaderCompilationScreen.GRAPHICS, 0, 0, ShaderCompilationScreen.SETTINGS_TITLE)
+		if shader_screen: shader_screen.present()
 	for name: String in values:
 		var value := int(values[name])
 		options[name] = value
@@ -908,6 +915,9 @@ func set_options(values: Dictionary) -> void:
 	_apply_window()
 	save_settings()
 	options_changed.emit()
+	if shader_screen:
+		shader_screen.prepare_terrain()
+		ShaderCompilationScreen.end(&"settings")
 
 
 ## Movies retain the music slider while the ordinary game buses are muted.

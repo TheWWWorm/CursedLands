@@ -8,9 +8,12 @@ var _stats: Label
 var _script_view: TextEdit
 var _objects_toggle: CheckBox
 var _args := {}
+var _preparation_owner: StringName
+var _loading := false
 
 
 func _ready() -> void:
+	_preparation_owner = StringName("scene:map-viewer:%d" % get_instance_id())
 	for a in OS.get_cmdline_user_args():
 		var kv := a.trim_prefix("--").split("=", true, 1)
 		_args[kv[0]] = kv[1] if kv.size() > 1 else true
@@ -119,15 +122,22 @@ func _setup_ui() -> void:
 
 
 func _load(map_name: String) -> void:
+	if _loading: return
+	_loading = true
 	_stats.text = RemakeText.t("Loading %s...") % map_name
 	await get_tree().process_frame
 	await get_tree().process_frame
+	var progress := ShaderCompilationScreen.begin(get_tree(), _preparation_owner,
+		ShaderCompilationScreen.GEOMETRY, 0, 0, ShaderCompilationScreen.SCENE_TITLE)
+	if progress: progress.present()
 	if _map:
 		_map.queue_free()
 		_map = null
 	var m := EIMapScene.load_map(map_name)
 	if m == null:
 		_stats.text = RemakeText.t("Failed to load %s") % map_name
+		ShaderCompilationScreen.end(_preparation_owner)
+		_loading = false
 		return
 	_map = m
 	add_child(m)
@@ -143,3 +153,11 @@ func _load(map_name: String) -> void:
 	if st.get("missing_models", []).size():
 		_stats.text += "\nmissing models: %s" % ", ".join(st.missing_models.slice(0, 8))
 	_script_view.text = m.mob.script_text if m.mob else "(no .mob)"
+	ShaderCompilationScreen.update(_preparation_owner, ShaderCompilationScreen.FIRST_FRAME)
+	await RenderingServer.frame_post_draw
+	ShaderCompilationScreen.end(_preparation_owner)
+	_loading = false
+
+
+func _exit_tree() -> void:
+	ShaderCompilationScreen.end(_preparation_owner)

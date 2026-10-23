@@ -178,6 +178,7 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 	_publish_targets()
 	_history_valid = true
 	_published_valid = true
+	completed_renders += 1
 
 func dispose() -> void:
 	_published_valid=false

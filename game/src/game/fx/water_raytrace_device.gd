@@ -2,6 +2,7 @@ extends RefCounted
 ## Shared hardware RT pipeline for DX12 and Vulkan. Resources belong to the
 ## render thread; dispatch explicitly retains this owner until queued work ends.
 signal prepared(ok: bool)
+signal rendered(preparation: int, ok: bool)
 
 const FRAME_BYTES := 352
 const SHADERS := "res://src/game/fx/shaders/water_raytrace_"
@@ -32,6 +33,8 @@ var _set := RID()
 var _size := Vector2i.ZERO
 var _ready := false
 var _closed := false
+# Written on the render thread, observed there by one-off preparation work.
+var completed_renders := 0
 var _opaque_fast_path := not OS.get_cmdline_user_args().has("--ei-water-rt-force-anyhit")
 
 func shader_prefix() -> String: return SHADERS
@@ -39,6 +42,17 @@ func shader_stage_path(stage: int) -> String: return shader_prefix()+STAGES[stag
 func frame_bytes() -> int: return FRAME_BYTES
 func instance_id(geometry_index: int, _placement_index: int) -> int: return geometry_index
 func build_extra(_data: PackedByteArray, _placements: Array) -> bool: return true
+
+func output_ready() -> bool:
+	return not _closed and _ready and output.texture_rd_rid.is_valid()
+
+## A settings request must complete its own render, not reuse an older image's
+## readiness. Notify once after pipeline creation and command recording; the
+## screen then remains through the real post-draw settling frames.
+func render_preparation(preparation: int, size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, texture_filter := 4) -> void:
+	var before := completed_renders
+	render(size, frame, changes, texture_filter)
+	_notify(&"rendered", [preparation, completed_renders > before and output_ready()])
 
 ## A method Callable stores only its target's ObjectID. Bind the RefCounted
 ## owner as data so cancellation cannot destroy it during queued GPU work.
@@ -294,12 +308,16 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 		if old_set.is_valid(): _rd.free_rid(old_set)
 		if resized and old_target.is_valid(): _rd.free_rid(old_target)
 	if frame.size() < FRAME_BYTES: frame.resize(FRAME_BYTES)
-	_rd.buffer_update(_frame,0,frame.size(),frame)
+	if _rd.buffer_update(_frame,0,frame.size(),frame) != OK:
+		_ready = false
+		_notify(&"prepared", [false])
+		return
 	var list := _rd.raytracing_list_begin()
 	_rd.raytracing_list_bind_raytracing_pipeline(list,_pipeline)
 	_rd.raytracing_list_bind_uniform_set(list,_set,0)
 	_rd.raytracing_list_trace_rays(list,0,_sbt,size.x,size.y,1)
 	_rd.raytracing_list_end()
+	completed_renders += 1
 
 func dispose() -> void:
 	_closed = true

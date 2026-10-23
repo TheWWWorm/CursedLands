@@ -43,6 +43,13 @@ var _rt_failed := false
 var _rt_center := Vector3.INF
 var _rt_plane := INF
 var rt_stats := {}
+var _settings_key := ""
+var _needs_preparation := false
+var _preparing := false
+var _preparation_submitted := false
+var _preparation_serial := 0
+var _preparation_owner: StringName
+var _mirror_draw_callback := Callable()
 
 
 static func supported() -> bool:
@@ -84,6 +91,7 @@ func request_refresh() -> void:
 func _ready() -> void:
 	process_priority = 100
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	_preparation_owner = StringName("pipeline:water:%d" % get_instance_id())
 
 
 func _active() -> bool:
@@ -96,6 +104,16 @@ func _active() -> bool:
 
 
 func _process(dt: float) -> void:
+	var settings_key := "%s:%s:%s:%s" % [GameData.option("gfx_water"), GameData.option("gfx_water_reflections"), GameData.option("q_water_rt_quality"), GameData.graphics_revision]
+	if settings_key != _settings_key:
+		_finish_preparation()
+		_settings_key = settings_key
+		_rt_topology_poll = 0.0
+		_rt_failed = false
+		# A settings request cannot acknowledge geometry gathered under the
+		# previous materials, nor wait for the ordinary topology poll interval.
+		if _rt_scene != null or (_rt != null and not _rt_ready): _release_raytrace()
+		_needs_preparation = Gfx.on("gfx_water") and GameData.option("gfx_water_reflections") >= 2
 	_rt_topology_poll -= dt
 	if not _active():
 		_disable()
@@ -112,6 +130,7 @@ func _process(dt: float) -> void:
 	if not is_finite(plane) or source.global_position.y < plane + 0.15:
 		_disable()
 		return
+	if _needs_preparation and not _preparing: _begin_preparation()
 	if viewport == null: _create_view()
 	viewport.size = target_size(source.get_viewport().get_visible_rect().size)
 	camera.keep_aspect = source.keep_aspect
@@ -141,14 +160,78 @@ func _process(dt: float) -> void:
 			_release_raytrace()
 			material.set_shader_parameter("planar_texture",viewport.get_texture())
 		_rt_failed = false
+		if _preparing and not _preparation_submitted:
+			_preparation_submitted = true
+			_mirror_draw_callback = _mirror_drawing.bind(_preparation_serial)
+			RenderingServer.frame_pre_draw.connect(_mirror_draw_callback)
+
+
+func _begin_preparation() -> void:
+	_preparing = true
+	_preparation_submitted = false
+	_preparation_serial += 1
+	var screen := ShaderCompilationScreen.begin(get_tree(), _preparation_owner, ShaderCompilationScreen.WATER)
+	if screen:
+		# This independent viewport must also stay out of the canvas-only draw.
+		var disabled := viewport.disable_3d if viewport else false
+		if viewport: viewport.disable_3d = true
+		screen.present()
+		if viewport: viewport.disable_3d = disabled
+
+
+func _mirror_drawing(serial: int) -> void:
+	if not _preparing or serial != _preparation_serial or viewport == null: return
+	# Another preparation owner can force a canvas-only draw. Its deferred
+	# post-draw signal is not evidence that this reflection has rendered.
+	if viewport.disable_3d or viewport.render_target_update_mode == SubViewport.UPDATE_DISABLED: return
+	RenderingServer.frame_pre_draw.disconnect(_mirror_draw_callback)
+	_mirror_draw_callback = Callable()
+	# frame_pre_draw fires before the engine queues the draw. Defer the fence
+	# until afterward, then acknowledge only when that render command ends.
+	_mirror_draw_submitted.call_deferred(serial)
+
+
+func _mirror_draw_submitted(serial: int) -> void:
+	if _preparing and serial == _preparation_serial:
+		RenderingServer.call_on_render_thread(_mirror_draw_recorded.bind(weakref(self), serial))
+
+
+static func _mirror_draw_recorded(owner: WeakRef, serial: int) -> void:
+	_mirror_draw_finished.call_deferred(owner, serial)
+
+
+static func _mirror_draw_finished(owner: WeakRef, serial: int) -> void:
+	var target: Node = owner.get_ref()
+	if is_instance_valid(target) and target.is_inside_tree() and target._preparing and serial == target._preparation_serial:
+		target._finish_preparation()
+
+
+func _preparation_rendered(serial: int, _ok: bool, device_id: int) -> void:
+	if _preparing and serial == _preparation_serial and _rt != null and _rt.get_instance_id() == device_id:
+		# Failure also releases the cover; the existing planar fallback remains.
+		_finish_preparation()
+
+
+func _finish_preparation(clear_intent := true) -> void:
+	if _mirror_draw_callback.is_valid() and RenderingServer.frame_pre_draw.is_connected(_mirror_draw_callback):
+		RenderingServer.frame_pre_draw.disconnect(_mirror_draw_callback)
+	_mirror_draw_callback = Callable()
+	ShaderCompilationScreen.end(_preparation_owner)
+	_preparing = false
+	_preparation_submitted = false
+	if clear_intent: _needs_preparation = false
 
 
 func _update_raytrace(source: Camera3D) -> void:
-	if _rt_failed: return
+	if _rt_failed:
+		_finish_preparation()
+		return
 	if not RayDevice.supported():
 		_rt_failed = true
 		rt_stats = {"supported":false,"fallback":"planar"}
+		_finish_preparation()
 		return
+	if ShaderCompilationScreen.terrain_pending(terrain): return
 	if _rt_ready and _rt_live != null and _rt_topology_poll <= 0.0:
 		_rt_topology_poll = 1.0
 		_collect_raytrace_lights(source.global_position)
@@ -171,9 +254,11 @@ func _update_raytrace(source: Camera3D) -> void:
 			_rt_failed = true
 			rt_stats["fallback"] = "snapshot_budget"
 			_rt_scene = null
+			_finish_preparation()
 			return
 		_rt = RayDevice.new()
 		_rt.prepared.connect(_raytrace_prepared)
+		_rt.rendered.connect(_preparation_rendered.bind(_rt.get_instance_id()))
 		var geometries := []; var placements := []
 		var opaque := 0
 		for geometry: Dictionary in _rt_scene.geometries:
@@ -218,7 +303,12 @@ func _update_raytrace(source: Camera3D) -> void:
 	frame.append_array(colours)
 	var changes := _rt_live.updates()
 	var filtering := clampi(GameData.option("q_aniso"),0,4)
-	RayDevice.dispatch(_rt,&"render",[target,frame.to_byte_array(),changes,filtering])
+	if _preparing and not _preparation_submitted:
+		_preparation_submitted = true
+		ShaderCompilationScreen.update(_preparation_owner, ShaderCompilationScreen.FIRST_FRAME)
+		RayDevice.dispatch(_rt,&"render_preparation",[_preparation_serial,target,frame.to_byte_array(),changes,filtering])
+	else:
+		RayDevice.dispatch(_rt,&"render",[target,frame.to_byte_array(),changes,filtering])
 	rt_stats["updated_instances"] = changes.instances.size()
 	rt_stats["updated_morphs"] = changes.poses.size()
 	rt_stats["lights"] = _rt_lights.size()
@@ -248,12 +338,14 @@ func _raytrace_prepared(ok: bool) -> void:
 	_rt_failed = not ok
 	if not ok:
 		rt_stats["fallback"] = "pipeline_failed"
+		_finish_preparation()
 		_release_raytrace()
 		if is_instance_valid(terrain) and terrain._water_mat and viewport:
 			terrain._water_mat.set_shader_parameter("planar_texture",viewport.get_texture())
 
 
 func _release_raytrace() -> void:
+	_preparation_submitted = false
 	_rt_ready = false
 	rt_stats["active"] = false
 	_rt_scene = null
@@ -298,6 +390,9 @@ func _create_view() -> void:
 
 
 func _disable() -> void:
+	# Defer initial/settings work until water is visible, without showing a
+	# modal screen for ordinary camera-driven reflection replacement.
+	_finish_preparation(false)
 	rt_stats["active"] = false
 	if is_instance_valid(terrain) and terrain._water_mat:
 		terrain._water_mat.set_shader_parameter("planar_enabled", false)
@@ -306,6 +401,7 @@ func _disable() -> void:
 
 
 func _exit_tree() -> void:
+	_finish_preparation()
 	_disable()
 	if is_instance_valid(terrain) and terrain._water_mat:
 		terrain._water_mat.set_shader_parameter("planar_texture", null)

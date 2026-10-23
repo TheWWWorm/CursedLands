@@ -46,6 +46,15 @@ var _mode := ""
 var _path_mode := false
 var _path_signature := PackedByteArray()
 var _accumulation_frames := 0.0
+# A visible settings request owns one cover. Ordinary recenter/topology work
+# keeps this key, so cancellation and automatic recovery never reopen it.
+var _preparation_seen := ""
+var _preparation_owner: StringName = &""
+var _preparation_token := 0
+var _preparation_waiting_id := 0
+var _preparation_completed_id := 0
+var _preparation_size := Vector2i.ZERO
+var _preparation_visible_frame := -1
 # Diagnostic control for matched flicker comparisons; never freezes a light.
 var _strict_light_history := OS.get_cmdline_user_args().has("--ei-strict-light-history")
 # Diagnostic comparison against the old display-resolution PT workload.
@@ -79,22 +88,43 @@ func _process(dt: float) -> void:
 		_path_mode=path_mode
 		_mode = mode; _terrain = terrain; _clear_failure(); _history_key=""
 	if not wanted or not is_instance_valid(terrain) or not terrain.is_visible_in_tree() or game.simulation_only:
+		_preparation_seen="";_end_preparation()
 		if device != null or _gather != null or _pending_device!=null or _failure_watch!=null: _release()
 		return
 	if not Device.supported():
+		_preparation_seen="";_end_preparation()
 		_failed = true; stats = {"active":false,"supported":false,"fallback":"unsupported"}; return
 	var camera := terrain.get_viewport().get_camera_3d()
-	if camera == null: _release(); return
+	if camera == null:
+		_preparation_seen="";_release();return
+	var visible_request := game.is_visible_in_tree() and game.is_ancestor_of(camera)
+	var request := "%s:%s:%s"%[terrain.get_instance_id(),_mode,GameData.graphics_revision]
+	var prepare := visible_request and request!=_preparation_seen
+	var terrain_preparing := ShaderCompilationScreen.terrain_pending(terrain)
+	if prepare:
+		_clear_failure();_history_key="";_poll=0.0
+	elif not visible_request:
+		_preparation_seen="";_end_preparation()
 	var may_retry := _allow_retry(camera.global_position,dt)
 	_poll -= dt
-	if _scene != null and _poll<=0.0:
+	if _scene != null and _poll<=0.0 and not terrain_preparing:
 		_poll = 1.0
 		_collect_lights(camera.global_position)
 		# Incompatible mesh/material changes must not keep shading stale data.
-		if _scene.topology_changed(): _release(); may_retry=true
+		if _scene.topology_changed():
+			prepare=prepare or not _preparation_owner.is_empty()
+			_release();may_retry=true
 	var building := _gather if _gather!=null else _pending_scene
-	if building!=null and camera.global_position.distance_to(building.center)>32.0:
+	if building!=null and (camera.global_position.distance_to(building.center)>32.0 or (prepare and terrain_preparing)):
 		_cancel_candidate()
+	# Apply-time topology invalidation may release the old device above. Start
+	# the new intent afterward so that release cannot dismiss its own cover.
+	if prepare:
+		_preparation_seen=request
+		_begin_preparation()
+	# Explicit terrain workers continue under the shared pause. Do not gather
+	# their old geometry or acknowledge its shaders before their bounded work.
+	if terrain_preparing: return
 	if _gather==null and _pending_device==null and may_retry \
 		and (device==null or camera.global_position.distance_to(_center)>16.0):
 		_begin_snapshot(terrain,camera)
@@ -108,14 +138,17 @@ func _process(dt: float) -> void:
 	# receivers project world positions into this lattice beside FSR jitter.
 	var size := target_size(display_size,quality,trace_scale)
 	if _pending_ready and _pending_device.output_ready() and _pending_device.output.get_size()==Vector2(size):
-		if _pending_scene.topology_changed(): _cancel_candidate()
+		if _pending_scene.topology_changed():
+			var keep_cover := not _preparation_owner.is_empty()
+			_cancel_candidate()
+			if keep_cover: _begin_preparation()
 		else: _activate_candidate()
 	var frame := PackedByteArray()
 	if _ready_gpu and device!=null:
 		_scene.lighting_camera_mask = camera.cull_mask
 		var changes := _scene.updates()
 		frame = _frame(camera,size,quality,not changes.instances.is_empty() or not changes.poses.is_empty(),dt)
-		Device.dispatch(device,&"render",[size,frame,changes,GameData.option("q_aniso")])
+		_render(device,size,frame,changes)
 		if device.output_ready():
 			_set_gi_active(_path_mode or GameData.option("rt_gi")>0)
 			_bind_outputs()
@@ -137,7 +170,7 @@ func _process(dt: float) -> void:
 		# First output is private and never borrows the active scene's history.
 		frame.encode_float(82*4,0.0)
 		for axis in 3: frame.encode_float((84+axis)*4,_pending_scene.center[axis])
-		Device.dispatch(_pending_device,&"render",[size,frame,changes,GameData.option("q_aniso")])
+		_render(_pending_device,size,frame,changes)
 	stats["rebuilding"]=_gather!=null or _pending_device!=null
 	stats["snapshot_generation"]=_snapshot_generation
 	stats["size"]=[size.x,size.y]; stats["quality"]=quality
@@ -152,6 +185,60 @@ func _process(dt: float) -> void:
 	stats["path_tracing"]=_path_mode;stats["path_bounces"]=GameData.option("pt_mode")*2 if _path_mode else 0
 	stats["path_samples"]=GI_SAMPLES[quality] if _path_mode else 0
 	stats["accumulation_frames"]=_accumulation_frames if _path_mode else 0
+	_settle_preparation(size)
+
+func _begin_preparation() -> void:
+	_end_preparation()
+	_preparation_token+=1
+	_preparation_owner=StringName("pipeline:scene:%d:%d"%[get_instance_id(),_preparation_token])
+	var phase := ShaderCompilationScreen.GEOMETRY if device==null else _pipeline_phase()
+	var screen := ShaderCompilationScreen.begin(get_tree(),_preparation_owner,phase)
+	if screen==null: _end_preparation();return
+	# Show the cover before synchronous geometry/material packing can begin.
+	screen.present()
+
+func _pipeline_phase() -> String:
+	return ShaderCompilationScreen.PATH_TRACE if _path_mode else ShaderCompilationScreen.RAYTRACE
+
+func _end_preparation() -> void:
+	if not _preparation_owner.is_empty(): ShaderCompilationScreen.end(_preparation_owner)
+	_preparation_owner=&"";_preparation_waiting_id=0;_preparation_completed_id=0
+	_preparation_size=Vector2i.ZERO;_preparation_visible_frame=-1
+
+func _render(target: Device,size: Vector2i,frame: PackedByteArray,changes: Dictionary) -> void:
+	# An active device is the visible target even while a recenter replacement
+	# builds. With no active scene, the candidate must finish privately first.
+	if _preparation_owner.is_empty() or (target!=device and device!=null):
+		Device.dispatch(target,&"render",[size,frame,changes,GameData.option("q_aniso")]);return
+	var id := target.get_instance_id()
+	if id!=_preparation_waiting_id or size!=_preparation_size:
+		_preparation_token+=1
+		_preparation_waiting_id=id;_preparation_completed_id=0
+		_preparation_size=size;_preparation_visible_frame=-1
+		ShaderCompilationScreen.update(_preparation_owner,_pipeline_phase())
+		Device.dispatch(target,&"render_preparation",[_preparation_token,size,frame,changes,GameData.option("q_aniso")])
+	else:
+		Device.dispatch(target,&"render",[size,frame,changes,GameData.option("q_aniso")])
+
+func _rendered(token: int,ok: bool,id: int) -> void:
+	# A prior settings request, resize or canceled device cannot complete the
+	# current request. The acknowledgment follows an actual successful render;
+	# output_ready alone may still describe the previous PT depth variant.
+	if _preparation_owner.is_empty() or token!=_preparation_token or id!=_preparation_waiting_id: return
+	if not ok: _end_preparation();return
+	_preparation_completed_id=id
+	ShaderCompilationScreen.update(_preparation_owner,ShaderCompilationScreen.FIRST_FRAME)
+
+func _settle_preparation(size: Vector2i) -> void:
+	if _preparation_owner.is_empty(): return
+	if device==null or device.get_instance_id()!=_preparation_completed_id \
+		or not stats.get("active",false) or not device.output_ready() \
+		or size!=_preparation_size or device.output.get_size()!=Vector2(size):
+		_preparation_visible_frame=-1;return
+	# Candidate acknowledgment can arrive before promotion. Wait for a draw
+	# after its output is bound, then let the shared screen settle its frames.
+	if _preparation_visible_frame<0: _preparation_visible_frame=Engine.get_frames_drawn()
+	elif Engine.get_frames_drawn()>_preparation_visible_frame: _end_preparation()
 
 func _begin_snapshot(terrain: EITerrain,camera: Camera3D) -> void:
 	_failed=false
@@ -182,7 +269,9 @@ func _queue_candidate(terrain: EITerrain,camera: Camera3D) -> void:
 		_pending_stats["terrain_material_triangles"]=_pending_device.terrain.terrain_triangles
 	var id := _pending_device.get_instance_id()
 	_pending_device.prepared.connect(_prepared.bind(id))
+	_pending_device.rendered.connect(_rendered.bind(id))
 	if _path_mode: _pending_device.emitter_stats.connect(_emitter_stats.bind(id))
+	if not _preparation_owner.is_empty(): ShaderCompilationScreen.update(_preparation_owner,_pipeline_phase())
 	Device.dispatch(_pending_device,&"build",[_pending_scene.vertices.to_byte_array(),_pending_scene.images,geometries,placements])
 	_collect_lights(camera.global_position)
 
@@ -239,6 +328,7 @@ func _reject_candidate(reason: String) -> void:
 	_remember_failure(reason,position,failed_scene if reason.begins_with("snapshot_") else null)
 
 func _cancel_candidate() -> void:
+	_end_preparation()
 	_retire_device(_pending_device)
 	_pending_device=null;_pending_scene=null;_pending_ready=false;_pending_stats={};_gather=null
 
@@ -246,6 +336,8 @@ func _retire_device(retired: Device) -> void:
 	if retired==null: return
 	var ready_callback := _prepared.bind(retired.get_instance_id())
 	if retired.prepared.is_connected(ready_callback): retired.prepared.disconnect(ready_callback)
+	var rendered_callback := _rendered.bind(retired.get_instance_id())
+	if retired.rendered.is_connected(rendered_callback): retired.rendered.disconnect(rendered_callback)
 	if retired is PathDevice:
 		var emitter_callback := _emitter_stats.bind(retired.get_instance_id())
 		if retired.emitter_stats.is_connected(emitter_callback): retired.emitter_stats.disconnect(emitter_callback)

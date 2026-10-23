@@ -41,10 +41,18 @@ REPORTS = {
     "light_history": "path-light-history.json", "daylight": "path-daylight.json", "live": "path-live.json",
     "outdoor": "path-outdoor.json", "cave": "path-cave.json", "receivers": "path-receivers.json",
     "underwater": "path-underwater.json", "water_live": "live.json", "fsr": "rt-fsr.json",
+    "shader_ui": "shader-compilation-screen.json", "shader_live": "shader-compilation-live.json",
+    "shader_arena": "shader-compilation-arena.json", "shader_scene": "shader-compilation-scene.json",
+    "shader_water": "shader-compilation-water.json",
+    "shader_settings": "shader-compilation-settings.json",
 }
-FIXTURES = {"water_live": "water_raytrace_live.gd"}
+FIXTURES = {"water_live": "water_raytrace_live.gd", "shader_ui": "shader_compilation_screen.gd",
+            "shader_live": "shader_compilation_live.gd", "shader_arena": "shader_compilation_arena.gd",
+            "shader_scene": "shader_compilation_scene.gd", "shader_water": "shader_compilation_water.gd",
+            "shader_settings": "shader_compilation_settings.gd"}
 GROUPS = {
     "core": ["device", "motion", "lifecycle", "topology", "controller", "detached_live", "resolution", "sustained"],
+    "preparation": ["shader_ui", "shader_live", "shader_arena", "shader_scene", "shader_water", "shader_settings"],
     "full": [name for name in REPORTS if name not in ("fsr", "resolution_performance")],
     "sdk": ["resolution", "fsr", "sustained"],
     "benchmark": ["resolution_performance"],

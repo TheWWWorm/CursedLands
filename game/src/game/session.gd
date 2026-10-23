@@ -5262,6 +5262,7 @@ func saved_play_clock() -> Dictionary:
 	if local_host.worker and local_host.single_player and not local_host.saved_clock.is_empty():
 		return _play_clock(bool(local_host.saved_clock.get("paused", false)), game.speed if game else 0)
 	var paused := get_tree().paused
+	if ShaderCompilationScreen.owns_pause(get_tree()): paused = false
 	if game and game.hud:
 		if game.hud._pause_before != null: paused = bool(game.hud._pause_before)
 		elif game.hud._tutorial and game.hud._tutorial._paused: paused = false
