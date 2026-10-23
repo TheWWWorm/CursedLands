@@ -1,0 +1,12 @@
+{
+  "device": "Retroid Pocket 5 (kona, USB ADB)",
+  "apk_sha256": "45b83e8d3b9bf2830b1a645db3d6e0b06c19cb3671d0fc90ca6bb1b9a9c6979e",
+  "install": "adb install -r over the existing signed installation: Success",
+  "installed_version": {
+    "versionCode": 59,
+    "versionName": "1.25.0"
+  },
+  "launch": "Reached the main menu showing \"Версия 1.25.0\" at 60 FPS (rp5-start.png) after the intro movie; no Godot, script or extension errors in the process log",
+  "release_template_check": "The first 1.25.0 candidate (source d6b3cf18) failed to compile mp_camp_host.gd in release templates; this check repeats on the rebuilt candidate (source 424649b1). Its first start offered the crash report for the force-stopped earlier candidate, as designed.",
+  "manifest_note": "Re-exporting over a template rebuilt from the published 1.23.0 APK repeats two Godot meta-data entries and the INTERNET permission with identical values; the device installs and starts normally."
+}

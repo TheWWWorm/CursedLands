@@ -1,0 +1,44 @@
+{
+	"checks": 17,
+	"failures": [],
+	"stats": {
+		"accumulation_frames": 4.0,
+		"active": false,
+		"display_size": [
+			1280,
+			720
+		],
+		"geometries": 2040,
+		"gi_samples": 0,
+		"history_limit": 256.0,
+		"history_reused": true,
+		"instances": 2171,
+		"light_history_limited": false,
+		"lights": 1,
+		"path_bounces": 4,
+		"path_samples": 1,
+		"path_tracing": true,
+		"quality": 0,
+		"rebuilding": false,
+		"render_scale": 1.0,
+		"render_size": [
+			1280,
+			720
+		],
+		"shadow_samples": 0,
+		"size": [
+			640,
+			360
+		],
+		"snapshot_generation": 1,
+		"supported": true,
+		"terrain_material_build_us": 0,
+		"terrain_material_bytes": 64,
+		"terrain_material_triangles": 0,
+		"trace_render_scale": 1.0,
+		"triangles": 150449,
+		"updated_instances": 0,
+		"updated_poses": 0,
+		"window_resolution_reference": false
+	}
+}

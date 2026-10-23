@@ -1,0 +1,27 @@
+{
+	"checks": 17,
+	"device": "NVIDIA GeForce RTX 3090 Ti",
+	"failures": [],
+	"renderer": "gl_compatibility",
+	"rows": [
+		{
+			"median_ms": 2.817,
+			"mode": 0,
+			"p95_ms": 4.494,
+			"stats": {}
+		},
+		{
+			"median_ms": 2.873,
+			"mode": 2,
+			"p95_ms": 4.659,
+			"stats": {}
+		},
+		{
+			"median_ms": 2.965,
+			"mode": 3,
+			"p95_ms": 4.75,
+			"stats": {}
+		}
+	],
+	"supported": false
+}

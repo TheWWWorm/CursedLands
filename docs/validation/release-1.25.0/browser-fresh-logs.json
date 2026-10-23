@@ -1,0 +1,8 @@
+[
+  {
+    "level": "error",
+    "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "timestamp": "2026-10-23T16:08:31.395Z",
+    "url": "http://127.0.0.1:30931/favicon.ico"
+  }
+]

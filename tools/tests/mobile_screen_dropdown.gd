@@ -90,6 +90,12 @@ func _ready() -> void:
 				await tap(item_point(popup, target))
 				check(not popup.visible, language + " " + name + " list closes after a choice")
 				check(int(panel._values.get(name, -1)) == target, language + " the tapped " + name + " entry is chosen (%s)" % panel._values.get(name))
+				# Applying a graphics choice shows the preparation cover, which
+				# takes input until the new pipelines settle.
+				for i in 120:
+					if not ShaderCompilationScreen.active(): break
+					await frames(1)
+				check(not ShaderCompilationScreen.active(), language + " " + name + " preparation cover closes")
 				await tap(picker.get_global_rect().get_center())
 				check(popup.visible, language + " list reopens")
 				await tap(Vector2(20, get_viewport().get_visible_rect().size.y - 20))

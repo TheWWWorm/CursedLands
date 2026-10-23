@@ -87,7 +87,7 @@ func character_screen() -> void:
 	panel.touch_transform(PackedVector2Array([centre-Vector2(100,0),centre+Vector2(100,0)]),
 		PackedVector2Array([centre-Vector2(110,0),centre+Vector2(110,0)]))
 	check(panel._doll.get_rect().is_equal_approx(panel.r8(panel._doll.camp_rect())), "pinch keeps the character preview aligned with its artwork")
-	check(panel._cells[0].get_rect().is_equal_approx(panel.r8(Rect2(55,5,90,90))), "pinch keeps face buttons aligned with their artwork")
+	check(panel._cells[0].get_rect().is_equal_approx(panel.r8(Rect2(65,15,70,70))), "pinch keeps face buttons aligned with their artwork")
 	panel._touch_zoom = 1.0
 	panel._touch_pan = Vector2.ZERO
 	panel._layout()

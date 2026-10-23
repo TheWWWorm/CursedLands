@@ -1,0 +1,38 @@
+{
+	"checks": 32,
+	"failures": [],
+	"stats": {
+		"accumulation_frames": 0,
+		"active": false,
+		"display_size": [
+			1280,
+			720
+		],
+		"geometries": 2040,
+		"gi_samples": 1,
+		"instances": 2171,
+		"lights": 1,
+		"path_bounces": 0,
+		"path_samples": 0,
+		"path_tracing": false,
+		"quality": 0,
+		"rebuilding": false,
+		"render_scale": 1.0,
+		"render_size": [
+			1280,
+			720
+		],
+		"shadow_samples": 1,
+		"size": [
+			640,
+			360
+		],
+		"snapshot_generation": 1,
+		"supported": true,
+		"trace_render_scale": 1.0,
+		"triangles": 150449,
+		"updated_instances": 0,
+		"updated_poses": 0,
+		"window_resolution_reference": false
+	}
+}

@@ -1,0 +1,63 @@
+{
+  "suite": "path_trace_live",
+  "platform": "linux",
+  "renderer": "vulkan",
+  "exit": 0,
+  "seconds": 30.78,
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "summary": [
+    "PASS conventional campaign retains original exposure",
+    "PASS path tracing prepares with both old RT toggles off",
+    "PASS main view uses the multi-bounce pipeline",
+    "PASS working path output enables the HDR display profile",
+    "PASS two-bounce mode reaches the runtime",
+    "PASS path lighting replaces the actual world lighting",
+    "PASS responsive mode retains reprojection through small camera motion",
+    "PASS projection changes invalidate responsive history",
+    "PASS four-bounce mode reuses scene resources",
+    "PASS frozen outdoor scene accumulates progressively: { \"active\": true, \"supported\": true, \"triangles\": 150449, \"geometries\": 2040, \"instances\": 2171, \"terrain_material_bytes\": 64, \"terrain_material_build_us\": 0, \"terrain_material_triangles\": 0, \"emissive_triangles\": 0, \"emissive_candidates\": 0, \"history_reused\": true, \"history_limit\": 256.0, \"light_history_limited\": false, \"updated_instances\": 0, \"updated_poses\": 0, \"rebuilding\": false, \"snapshot_generation\": 1, \"size\": [960, 540], \"quality\": 1, \"display_size\": [1280, 720], \"render_size\": [1280, 720], \"render_scale\": 1.0, \"trace_render_scale\": 1.0, \"window_resolution_reference\": false, \"gi_samples\": 0, \"shadow_samples\": 0, \"lights\": 1, \"path_tracing\": true, \"path_bounces\": 4, \"path_samples\": 2, \"accumulation_frames\": 80.0 }",
+    "PASS four-bounce accumulated view changes the image",
+    "PASS camera motion resets progressive history",
+    "PASS stationary camera starts accumulating again",
+    "PASS quality resize resets accumulation and follows window dimensions",
+    "PASS turning path tracing off releases its resources",
+    "PASS turning path tracing off restores original display and exposure",
+    "PASS turning off restores the original lighting image",
+    "PATH_TRACE_LIVE 17 checks 0 failures"
+  ],
+  "command": [
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.25.0-20261023/release/CursedLands-1.25.0-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--gpu-index",
+    "0",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--borderless",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.25.0-20261023/release/fixtures-linux/path_trace_live.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.25.0-20261023/release/checks/linux-vulkan-path_trace_live",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/release-1.25.0-20261023/release/CursedLands-1.25.0-linux-x86_64/mods"
+  ],
+  "profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  }
+}

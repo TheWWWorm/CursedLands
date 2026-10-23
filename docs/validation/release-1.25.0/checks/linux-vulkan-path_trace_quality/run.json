@@ -1,0 +1,59 @@
+{
+  "suite": "path_trace_quality",
+  "platform": "linux",
+  "renderer": "vulkan",
+  "exit": 0,
+  "seconds": 7.0,
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "summary": [
+    "PASS qualified path quality device",
+    "PASS build grazing metal 0.35",
+    "PASS grazing metal energy agrees with independent integral 0.35",
+    "PASS build grazing metal 0.65",
+    "PASS grazing metal energy agrees with independent integral 0.65",
+    "PASS build grazing metal 1.0",
+    "PASS grazing metal energy agrees with independent integral 1.0",
+    "PASS flat history interpolates a quarter-pixel camera translation",
+    "PASS sloped history retains matching surface samples",
+    "PASS depth discontinuity rejects unrelated history",
+    "PASS sloped receiver rejects history from an offset surface",
+    "PASS perspective slope retains bilinear history",
+    "PASS perspective slope rejects unrelated depth layers",
+    "SCENE_RT_DEVICE 13 checks 0 failures"
+  ],
+  "command": [
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.25.0-20261023/release/CursedLands-1.25.0-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--gpu-index",
+    "0",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--borderless",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.25.0-20261023/release/fixtures-linux/path_trace_quality.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.25.0-20261023/release/checks/linux-vulkan-path_trace_quality",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/release-1.25.0-20261023/release/CursedLands-1.25.0-linux-x86_64/mods"
+  ],
+  "profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  }
+}

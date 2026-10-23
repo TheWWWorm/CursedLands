@@ -1,0 +1,55 @@
+{
+  "suite": "path_trace_alpha",
+  "platform": "linux",
+  "renderer": "vulkan",
+  "exit": 0,
+  "seconds": 8.0,
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "summary": [
+    "PASS qualified path-tracing alpha-test device",
+    "PASS build path alpha fixture false",
+    "PASS primary paths respect alpha cutoff false",
+    "PASS direct visibility respects alpha cutoff false",
+    "PASS continuation rays respect alpha cutoff false",
+    "PASS build path alpha fixture true",
+    "PASS primary paths respect alpha cutoff true",
+    "PASS direct visibility respects alpha cutoff true",
+    "PASS continuation rays respect alpha cutoff true",
+    "SCENE_RT_DEVICE 9 checks 0 failures"
+  ],
+  "command": [
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.25.0-20261023/release/CursedLands-1.25.0-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--gpu-index",
+    "0",
+    "--rendering-method",
+    "forward_plus",
+    "--rendering-driver",
+    "vulkan",
+    "--windowed",
+    "--borderless",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.25.0-20261023/release/fixtures-linux/path_trace_alpha.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.25.0-20261023/release/checks/linux-vulkan-path_trace_alpha",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/release-1.25.0-20261023/release/CursedLands-1.25.0-linux-x86_64/mods"
+  ],
+  "profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  }
+}

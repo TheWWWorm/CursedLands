@@ -1,0 +1,63 @@
+{
+  "suite": "water_raytrace",
+  "platform": "linux",
+  "renderer": "opengl3",
+  "exit": 0,
+  "seconds": 35.38,
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "summary": [
+    "PASS unsupported renderer retains its established reflection path",
+    "PASS Off releases the reflection owner",
+    "PASS all reflection choices exist in en",
+    "PASS RT choice is translated in en",
+    "PASS water reflection help is visible in en",
+    "PASS localized help matches the selected option in en",
+    "PASS water reflection help fits in en",
+    "PASS all reflection choices exist in ru",
+    "PASS RT choice is translated in ru",
+    "PASS water reflection help is visible in ru",
+    "PASS localized help matches the selected option in ru",
+    "PASS water reflection help fits in ru",
+    "PASS all reflection choices exist in de",
+    "PASS RT choice is translated in de",
+    "PASS water reflection help is visible in de",
+    "PASS localized help matches the selected option in de",
+    "PASS water reflection help fits in de",
+    "WATER_RT 17 checks 0 failures"
+  ],
+  "command": [
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.25.0-20261023/release/CursedLands-1.25.0-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--gpu-index",
+    "0",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--windowed",
+    "--borderless",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.25.0-20261023/release/fixtures-linux/water_raytrace.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.25.0-20261023/release/checks/linux-water-fallback",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/release-1.25.0-20261023/release/CursedLands-1.25.0-linux-x86_64/mods"
+  ],
+  "profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  }
+}

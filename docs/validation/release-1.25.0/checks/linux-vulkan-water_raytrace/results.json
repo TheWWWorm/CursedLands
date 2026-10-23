@@ -1,0 +1,47 @@
+{
+	"checks": 29,
+	"device": "NVIDIA GeForce RTX 3090 Ti",
+	"failures": [],
+	"renderer": "forward_plus",
+	"rows": [
+		{
+			"median_ms": 2.457,
+			"mode": 0,
+			"p95_ms": 4.365,
+			"stats": {}
+		},
+		{
+			"median_ms": 3.295,
+			"mode": 2,
+			"p95_ms": 5.083,
+			"stats": {}
+		},
+		{
+			"median_ms": 2.632,
+			"mode": 3,
+			"p95_ms": 5.784,
+			"stats": {
+				"active": true,
+				"geometries": 3391,
+				"instances": 3710,
+				"lights": 4,
+				"native_scene": true,
+				"opaque_geometries": 2494,
+				"quality": 2,
+				"radius": 96.0,
+				"samples_per_pixel": 4,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"texture_anisotropy": 16,
+				"textures": 48,
+				"triangles": 223498,
+				"updated_instances": 0,
+				"updated_morphs": 0
+			}
+		}
+	],
+	"supported": true
+}
