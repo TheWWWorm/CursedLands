@@ -10,6 +10,7 @@
 - Give Autochess elementals and ogres original looks as they gain stars. Elementals go from earth to lava to ice, and ogres gain a vest at two stars and become Hadagan sand ogres at three. These rigs share every animation, clip length, speed and reach, so combat is unchanged. Names, portraits and previews follow, and the earth and lava elemental names come from the original Russian and German texts.
 - Show wiki creatures in the colours they wear on the campaign maps, for example the black boar and the black unicorn, instead of their base models.
 - Reuse the unit under a still pointer for up to 40 ms when choosing the cursor and the hover labels, instead of measuring every unit part under it each frame. With the party under the pointer this cuts that work from about 2 ms to 0.3 ms per frame on average. Clicks and orders still pick exactly.
+- Show water contact rings, foam and propagating waves around creatures again. Since 1.7.0 the water shader no longer contained the comments these effects were inserted at, so they were left out. They now attach to shader statements.
 
 ## 1.24.0 — 2026-10-22
 

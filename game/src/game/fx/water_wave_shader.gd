@@ -22,7 +22,7 @@ vec3 water_propagating_wave(vec3 position, float footprint) {
 
 static func source(original: String) -> String:
 	var source := original.replace("void fragment() {",CODE+"\nvoid fragment() {")
-	var marker := "\t\t// Raindrops on open water; subpixel rings fade out with distance."
+	var marker := "\t\tvec2 rain_slope = vec2(0.0);"
 	assert(source.contains(marker),"water wave normal insertion point changed")
 	source=source.replace(marker,"""
 		vec3 propagated = vec3(0.0);
@@ -32,7 +32,7 @@ static func source(original: String) -> String:
 			slope += propagated.xy;
 		}
 """+marker)
-	marker="\t\t// Reflection weight: Schlick's Fresnel term without its 2 % floor,"
+	marker="\t\tfloat fres = "
 	assert(source.contains(marker),"water wave colour insertion point changed")
 	return source.replace(marker,"""
 		float stirred = propagated.z*shore;

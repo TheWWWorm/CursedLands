@@ -80,7 +80,7 @@ static func source(original: String, currents := false) -> String:
 		contact = contact.replace("max(abs(q.x), abs(q.y)) > reach", "max(abs(q.x), abs(q.y)) > max(reach, body.w + min(4.0,max(0.4,body.w*6.0)))")
 		contact = contact.replace("\t\t// Diverging crests",CURRENT_CONTACT+"\t\t// Diverging crests")
 	var source := original.replace("void fragment() {",contact+"\nvoid fragment() {")
-	var marker := "\t\t// Raindrops on open water; subpixel rings fade out with distance."
+	var marker := "\t\tvec2 rain_slope = vec2(0.0);"
 	assert(source.contains(marker),"water normal insertion point changed")
 	source = source.replace(marker,"""
 		vec3 unit_contact = vec3(0.0);
@@ -91,7 +91,7 @@ static func source(original: String, currents := false) -> String:
 		}
 """+marker)
 	if currents: source = source.replace("water_unit_contact(wpos,footprint)","water_unit_contact(wpos,footprint,river_flow.xy,water_time)")
-	marker = "\t\t// Reflection weight: Schlick's Fresnel term without its 2 % floor,"
+	marker = "\t\tfloat fres = "
 	assert(source.contains(marker),"water colour insertion point changed")
 	return source.replace(marker,"""
 		float contact_foam = unit_contact.z * shore;
