@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Show creatures in the public web wiki with their original colour variants, as the in-game wiki does since 1.25.0: black boars, black unicorns, white wolves and horses, coloured dryads, succubi and banshees, spotted leopards and the map-authored looks of Lost in Astral creatures.
+
 ## 1.25.0 — 2026-10-23
 
 - Fit multiplayer character-creation kit items inside their cells when **Items inside cells** is on, turn the item under the pointer, and frame the picked weapon, belt item and spell as the shop does. ([#78](https://github.com/TheWWWorm/CursedLands/issues/78))
