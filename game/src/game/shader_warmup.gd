@@ -558,7 +558,7 @@ static func arena(field: ArenaPveField) -> void:
 		for item: Array in items:
 			var shown:=warmer._show(item[1],item[2],item[3])
 			if item[1] is BaseMaterial3D: _keep.append(_shader_holder(item[1]))
-			await _arena_frame(tree)
+			await _arena_frame(tree, field.view)
 			if not is_instance_valid(field) or not field.is_inside_tree() or field.is_queued_for_deletion():
 				exited.call()
 				return
@@ -580,9 +580,30 @@ static func arena(field: ArenaPveField) -> void:
 		if not is_instance_valid(field) or not field.is_inside_tree() or field.is_queued_for_deletion(): return
 
 
-static func _arena_frame(tree: SceneTree) -> void:
+static func _arena_frame(tree: SceneTree, view: SubViewport = null) -> void:
 	await tree.process_frame
-	await RenderingServer.frame_post_draw
+	while true:
+		await RenderingServer.frame_pre_draw
+		if not is_instance_valid(view) or not view.is_inside_tree(): break
+		# A different preparation owner can present only the canvas. That
+		# must not admit this batch before its arena viewport actually draws.
+		if not view.disable_3d and view.render_target_update_mode != SubViewport.UPDATE_DISABLED: break
+	# On Separate, frame_post_draw is deferred and may belong to an older
+	# draw. Queue this fence after the observed draw has been submitted, and
+	# resume only after its rendering command has finished on either model.
+	var fence := ArenaDrawFence.new()
+	ArenaDrawFence.submit.call_deferred(fence)
+	await fence.completed
+
+
+class ArenaDrawFence extends RefCounted:
+	signal completed
+	static func submit(fence: ArenaDrawFence) -> void:
+		RenderingServer.call_on_render_thread(recorded.bind(fence))
+	static func recorded(fence: ArenaDrawFence) -> void:
+		finish.call_deferred(fence)
+	static func finish(fence: ArenaDrawFence) -> void:
+		fence.completed.emit()
 
 
 static func _arena_end(view_reference: WeakRef, owner: StringName, update_mode: int) -> void:

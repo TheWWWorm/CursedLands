@@ -38,6 +38,7 @@ var final_capture := false
 var ready_under_cover := 0
 var original_warmup := true
 var previous_observer := Callable()
+var ordering_violations: Array[Dictionary] = []
 
 
 func _ready() -> void:
@@ -47,8 +48,20 @@ func _ready() -> void:
 
 func check(ok: bool, label: String) -> void:
 	checks += 1
+	if not ok:
+		failures.append(label)
+		# The qualification runner stops on FAIL. Preserve the actual counters
+		# before printing so an ordering regression retains its evidence.
+		save_report()
 	print("PASS " if ok else "FAIL ", label)
-	if not ok: failures.append(label)
+
+
+func save_report() -> void:
+	var report := {"checks":checks,"failures":failures,"progress":rows,"captures":captures,
+		"ready_under_cover":ready_under_cover,"scene_draws":probe.count() if probe else 0,
+		"ordering_violations":ordering_violations,
+		"driver":RenderingServer.get_current_rendering_driver_name(),"device":RenderingServer.get_video_adapter_name()}
+	FileAccess.open(out.path_join("shader-compilation-arena.json"),FileAccess.WRITE).store_string(JSON.stringify(report,"\t")+"\n")
 
 
 func frames(count := 1) -> void:
@@ -166,6 +179,9 @@ func run() -> void:
 	for row: Dictionary in rows:
 		if row["case"] != "normal" or row.phase != ShaderCompilationScreen.MATERIALS or int(row.completed) <= completed: continue
 		count += 1
+		if int(row.scene_draws) <= previous_draws or int(row.completed) != completed+1 \
+				or int(row.viewport_mode) != SubViewport.UPDATE_ALWAYS:
+			ordering_violations.append({"previous_draws":previous_draws,"previous_completed":completed,"progress":row})
 		ordered = ordered and int(row.scene_draws) > previous_draws and int(row.completed) == completed+1
 		viewport_live = viewport_live and int(row.viewport_mode) == SubViewport.UPDATE_ALWAYS
 		gated = gated and bool(row.warming) and bool(row.screen_active)
@@ -201,10 +217,7 @@ func run() -> void:
 	ShaderCompilationScreen.on_progress = previous_observer
 	RenderingServer.frame_post_draw.disconnect(_posted)
 	ShaderWarmup.enabled = original_warmup
-	var report := {"checks":checks,"failures":failures,"progress":rows,"captures":captures,
-		"ready_under_cover":ready_under_cover,"scene_draws":probe.count(),
-		"driver":RenderingServer.get_current_rendering_driver_name(),"device":RenderingServer.get_video_adapter_name()}
-	FileAccess.open(out.path_join("shader-compilation-arena.json"),FileAccess.WRITE).store_string(JSON.stringify(report,"\t")+"\n")
+	save_report()
 	TexUpscale.shutdown()
 	UnitWounds.shutdown()
 	print("SHADER_COMPILATION_ARENA ",checks," checks ",failures.size()," failures")
