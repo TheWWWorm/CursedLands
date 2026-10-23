@@ -33,6 +33,9 @@ var camera: Camera3D
 var plane := -INF
 var _poll := 0.0
 var _source: Camera3D
+var _plane_key := []   # camera frustum, position and plane of the last _select_plane
+var _rows: Array[PackedInt32Array] = []   # even x of liquid cells per even y (_index)
+var _rows_terrain: EITerrain
 var _rt: RayDevice
 var _rt_scene: RayScene
 var _rt_live: RayScene
@@ -79,6 +82,8 @@ static func raytrace_target_size(size: Vector2, quality := 2) -> Vector2i:
 
 func request_refresh() -> void:
 	_poll = 0.0
+	_plane_key = []
+	_rows_terrain = null
 
 
 func _ready() -> void:
@@ -106,7 +111,12 @@ func _process(dt: float) -> void:
 		return
 	_poll -= dt
 	if source != _source or _poll <= 0.0:
-		plane = _select_plane(source)
+		# The scan (~1.5 ms in Rindale's mansion) depends only on the view and
+		# the current plane while the water stays as it is (request_refresh).
+		var key := [source.get_frustum(), source.global_position, plane, terrain]
+		if source != _source or key != _plane_key:
+			plane = _select_plane(source, true)
+			_plane_key = [key[0], key[1], plane, terrain]
 		_source = source
 		_poll = 0.125
 	if not is_finite(plane) or source.global_position.y < plane + 0.15:
@@ -312,7 +322,27 @@ func _exit_tree() -> void:
 	_release_raytrace()
 
 
-func _select_plane(source: Camera3D) -> float:
+## The liquid cells of the even rows and columns _select_plane probes. Level
+## changes (EITerrain.set_water_offset) keep a cell finite or not; a new
+## terrain or request_refresh rebuilds the list.
+func _index(width: int, height: int) -> void:
+	if _rows_terrain == terrain and _rows.size() == (height + 1) >> 1:
+		return
+	_rows_terrain = terrain
+	_rows.clear()
+	_rows.resize((height + 1) >> 1)
+	for y in range(0, height, 2):
+		var row := PackedInt32Array()
+		for x in range(0, width, 2):
+			var i := y * width + x
+			if is_finite(terrain.water[i]) and not terrain.liquid_ground[i] in [EITerrain.LAVA, 255]:
+				row.append(x)
+		_rows[y >> 1] = row
+
+
+## `indexed` scans only the liquid cells found when the water was last
+## refreshed (_index); direct callers that edit the water arrays scan all.
+func _select_plane(source: Camera3D, indexed := false) -> float:
 	var position := source.global_position
 	# Camera3D.is_position_in_frustum rebuilds all six projection planes on
 	# every call. A water scan can test thousands of cells with one camera.
@@ -320,10 +350,24 @@ func _select_plane(source: Camera3D) -> float:
 	var width := terrain.sectors_x * EITerrain.SECTOR
 	var height := terrain.sectors_y * EITerrain.SECTOR
 	var groups := {}
+	if indexed: _index(width, height)
+	var x0 := maxi(0, int(position.x - REACH)) & ~1
+	var x1 := mini(width, int(position.x + REACH))
 	# Probe original liquid cells, not walkable bridge heights. Bucket nearby
 	# surface levels so tiny authored river slopes share a stable plane.
 	for y in range(maxi(0, int(-position.z - REACH)) & ~1, mini(height, int(-position.z + REACH)), 2):
-		for x in range(maxi(0, int(position.x - REACH)) & ~1, mini(width, int(position.x + REACH)), 2):
+		var row := _rows[y >> 1] if indexed else PackedInt32Array()
+		if indexed and row.is_empty(): continue
+		var k := row.bsearch(x0) if indexed else 0
+		var x := x0 - 2
+		while true:
+			if indexed:
+				if k >= row.size(): break
+				x = row[k]
+				k += 1
+			else:
+				x += 2
+			if x >= x1: break
 			var i := y * width + x
 			var water_height := terrain.water[i]
 			if not is_finite(water_height) or terrain.liquid_ground[i] in [EITerrain.LAVA, 255]: continue
