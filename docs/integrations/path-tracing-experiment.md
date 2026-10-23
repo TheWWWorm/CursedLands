@@ -192,8 +192,9 @@ Alpha stores metalness, so alpha-border repair, premultiplication, sRGB data
 sampling and automatic normal-map compression are disabled. Do not treat these
 maps as color images, ORM, or the separate equipment `surface_tex` format.
 The [authored-surface qualification](../validation/path-tracing-authored-surfaces-2026-10-23/README.md)
-contains matched captures, source/import checks and the outstanding performance
-qualification limit.
+contains matched captures, source/import checks and follow-through measurements.
+The [GPU 1 control](../validation/path-tracing-gpu1-control-2026-10-23/README.md)
+completes the separate unmapped-scene performance check on an RTX 3090 Ti.
 
 Enhanced terrain and identified stone/wood object profiles also supply
 texture-derived relief to traced shading when no authored map is present. The existing terrain/material options
@@ -315,7 +316,8 @@ immediately. Still scene continues to require exact lighting. The diagnostic
 the source animation. No shader, ray budget, binding or buffer was added.
 The [torch-history qualification](../validation/path-tracing-torch-history-2026-10-23/README.md)
 contains controlled original-torch sequences, noise/response measurements and
-the performance qualification limit.
+links to the subsequent performance measurements. Its original synchronous
+capture timings remain excluded.
 
 The material lookup also compares reconstructed positions against the raster
 triangle's tangent plane, rather than comparing adjacent pixels' raw depths.

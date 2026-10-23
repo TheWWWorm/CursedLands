@@ -67,16 +67,18 @@ responsive cap of eight. Still-scene mode retains its exact-change reset and
 There are no new shaders, rays, bindings or buffers. The existing filter
 consumes the smaller, potentially fractional age. Retaining history does
 execute reprojection work that strict resets skipped, so it is not valid to
-call the GPU improvement free. **Performance remains unqualified:** another
+call the GPU improvement free. **The original timings remain unqualified:** another
 independent game benchmark was using the same GPU, and these capture sequences
-perform synchronous readbacks. An uncontended end-to-end comparison remains
-required, including the earlier authored-material changes.
+perform synchronous readbacks. The follow-through below supplies a separate
+comparison without those readbacks.
 
 Later follow-through: the [authored-lighting qualification](../path-tracing-authored-lighting-2026-10-23/README.md)
 includes a readback-free strict/bounded comparison with the new finite flame
 radius held fixed. Bounded history costs about +0.34 ms PT time and +0.47 ms
 frame time at Medium on native Vulkan in that scene. The capture sequences in
 this original checkpoint remain excluded from performance claims.
+The later [GPU 1 control](../path-tracing-gpu1-control-2026-10-23/README.md)
+also closes the earlier material work's unmapped-scene performance check.
 
 The internal `--ei-strict-light-history` diagnostic restores the previous
 reset behavior for comparisons. It does not change light animation. No

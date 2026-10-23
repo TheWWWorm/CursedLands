@@ -87,18 +87,21 @@ including mipmaps. Their raster textures require approximately another 4 MiB.
 The fixture's ordinary array grew from 74 to 77 layers. The existing 192-layer
 limit remains; broader material coverage needs an explicit texture budget.
 
-**Performance remains unqualified for this checkpoint.** Another independent
+**The original checkpoint's timings remain unqualified.** Another independent
 game benchmark repeatedly used the same RTX 3090 during the measurements.
 The saved timing windows are retained with overlap observations in
 [summary.json](summary.json), but are excluded from performance claims. The
-spare RTX 3090 Ti could not present a window through the current desktop setup.
-FPS overlays in the captures are not benchmark results. A quiet-machine
-comparison, including an unmapped-scene control, remains required.
+spare RTX 3090 Ti could not present a window through the desktop setup used at
+that time. FPS overlays in the captures are not benchmark results.
 
 Later follow-through: the [authored-lighting qualification](../path-tracing-authored-lighting-2026-10-23/README.md)
 contains fresh measurements without the competing game benchmark. In the
 representative prop scene the maps cost about +0.20 ms PT time on Vulkan and
 +0.65 ms on DX12/Wine. The original contended measurements above remain excluded.
+The subsequent [GPU 1 control](../path-tracing-gpu1-control-2026-10-23/README.md)
+uses a private RTX 3090 Ti display and completes the outstanding unmapped-scene
+comparison on both backends. It qualifies the incremental program cost in that
+frozen scene; wider material coverage still needs its own budget and evaluation.
 
 ## Validation
 

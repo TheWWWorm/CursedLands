@@ -7,9 +7,7 @@
   "timings_file": "performance.json",
   "observations_file": "gpu-observations.json",
   "backend_scope": "RTX 3090 native Vulkan and Windows DX12 through Wine/VKD3D; not native Windows performance.",
-  "pending_qualification": [
-    "Repeat the unmapped-surface shader comparison while no other game/Godot renderer uses GPU 0. Mapped-prop and lighting timing windows precede the observed competing renderer."
-  ],
+  "pending_qualification": [],
   "source_sha256": {
     "game/src/game/gfx.gd": "22bb42a4ed740fc246d8a9eeb808b6b0595ae17cb9fe18e5d78b7ac4c6301258",
     "game/src/game/fx/local_lighting.gd": "d276bb68ff79e5d2eef74d94e1f845717c66bb3e1e772b2e1989df9375bfe231",
@@ -52,5 +50,13 @@
     "Selective removal of painted lighting from original color art",
     "Additional mixed-material and emission masks",
     "Mesh and UV improvement"
-  ]
+  ],
+  "resolved_qualification": {
+    "unmapped_control": "../path-tracing-gpu1-control-2026-10-23/README.md",
+    "device": "NVIDIA GeForce RTX 3090 Ti (physical GPU 1)",
+    "additional_checks": 132,
+    "additional_runs": 2,
+    "scope": "Separate frozen-scene control on native Vulkan and DX12 through Wine/VKD3D; retain prior contended records as excluded.",
+    "expected_environment_diagnostic": "Vulkan NoScanout startup refresh rate unknown; uncapped, VSync disabled during sampling."
+  }
 }

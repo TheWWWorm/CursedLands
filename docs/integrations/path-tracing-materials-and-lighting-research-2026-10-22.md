@@ -16,6 +16,9 @@ The [authored-lighting follow-through](../validation/path-tracing-authored-light
 adds flame-sized PT sources, a calibrated fixed HDR display profile and matched
 day/night/cave qualification. Per-zone source placement and broader color-art
 cleanup remain content-authoring work.
+The [GPU 1 control](../validation/path-tracing-gpu1-control-2026-10-23/README.md)
+completes the remaining unmapped-scene performance qualification on an RTX 3090
+Ti, separately from the mapped-content and lighting measurements.
 
 The recommended first step is to carry the existing equipment material masks
 into PT. Then establish one material format shared by raster and ray hits,

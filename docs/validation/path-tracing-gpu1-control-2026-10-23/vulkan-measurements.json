@@ -1,0 +1,2226 @@
+{
+	"checks": 66,
+	"device": "NVIDIA GeForce RTX 3090 Ti",
+	"driver": "vulkan",
+	"failures": [],
+	"note": "Frozen river, detailed materials, identical raygen, controller, scene and images. Alternating saved/current program identified by reference_files, 120 samples after 40 warmup frames.",
+	"reference_files": {
+		"dxil": "fc2fc79bd4f8193c4d56372c19510ff1cf90859102f5cb3b6a2382a2776a6078",
+		"library": "path_trace_closest_hit_terrain",
+		"spirv": "9d1e9e2f21dca8e0dcade80073bcc3ba7df243e7dda1b1e06bf491945145f142"
+	},
+	"runs": [
+		{
+			"controller_cpu_ms": {
+				"median": 0.62,
+				"n": 120,
+				"p95": 0.862
+			},
+			"end_unix": 1792739114.25792,
+			"frame_ms": {
+				"median": 4.83,
+				"n": 120,
+				"p95": 7.878
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.044032,
+					"n": 120,
+					"p95": 0.04496
+				},
+				"rays": {
+					"median": 2.78416,
+					"n": 120,
+					"p95": 2.818784
+				},
+				"reconstruction": {
+					"median": 0.190464,
+					"n": 120,
+					"p95": 0.191488
+				}
+			},
+			"mode": 1,
+			"quality": 1,
+			"reference": true,
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 3.017632,
+				"n": 120,
+				"p95": 3.054304
+			},
+			"start_unix": 1792739113.63897,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.639,
+				"n": 120,
+				"p95": 1.096
+			},
+			"end_unix": 1792739115.1081,
+			"frame_ms": {
+				"median": 4.92,
+				"n": 120,
+				"p95": 8.336
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.044032,
+					"n": 120,
+					"p95": 0.045056
+				},
+				"rays": {
+					"median": 2.749632,
+					"n": 120,
+					"p95": 2.76976
+				},
+				"reconstruction": {
+					"median": 0.18944,
+					"n": 120,
+					"p95": 0.190464
+				}
+			},
+			"mode": 1,
+			"quality": 1,
+			"reference": false,
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 2.984128,
+				"n": 120,
+				"p95": 3.002304
+			},
+			"start_unix": 1792739114.45515,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.769,
+				"n": 120,
+				"p95": 1.197
+			},
+			"end_unix": 1792739117.00869,
+			"frame_ms": {
+				"median": 11.208,
+				"n": 120,
+				"p95": 13.451
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.075776,
+					"n": 120,
+					"p95": 0.0768
+				},
+				"rays": {
+					"median": 10.015168,
+					"n": 120,
+					"p95": 10.334624
+				},
+				"reconstruction": {
+					"median": 0.326656,
+					"n": 120,
+					"p95": 0.32768
+				}
+			},
+			"mode": 1,
+			"quality": 2,
+			"reference": false,
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 10.418432,
+				"n": 120,
+				"p95": 10.737056
+			},
+			"start_unix": 1792739115.64166,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.751,
+				"n": 120,
+				"p95": 1.036
+			},
+			"end_unix": 1792739118.91335,
+			"frame_ms": {
+				"median": 11.577,
+				"n": 120,
+				"p95": 13.57
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.075776,
+					"n": 120,
+					"p95": 0.0768
+				},
+				"rays": {
+					"median": 10.269376,
+					"n": 120,
+					"p95": 10.476576
+				},
+				"reconstruction": {
+					"median": 0.32768,
+					"n": 120,
+					"p95": 0.328704
+				}
+			},
+			"mode": 1,
+			"quality": 2,
+			"reference": true,
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 10.672576,
+				"n": 120,
+				"p95": 10.880032
+			},
+			"start_unix": 1792739117.51515,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.728,
+				"n": 120,
+				"p95": 1.053
+			},
+			"end_unix": 1792739119.90506,
+			"frame_ms": {
+				"median": 5.325,
+				"n": 120,
+				"p95": 8.335
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.04304,
+					"n": 120,
+					"p95": 0.044032
+				},
+				"rays": {
+					"median": 3.136768,
+					"n": 120,
+					"p95": 3.157856
+				},
+				"reconstruction": {
+					"median": 0.190464,
+					"n": 120,
+					"p95": 0.191488
+				}
+			},
+			"mode": 2,
+			"quality": 1,
+			"reference": true,
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 3.371264,
+				"n": 120,
+				"p95": 3.391968
+			},
+			"start_unix": 1792739119.22252,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.725,
+				"n": 120,
+				"p95": 1.032
+			},
+			"end_unix": 1792739120.79116,
+			"frame_ms": {
+				"median": 5.248,
+				"n": 120,
+				"p95": 7.989
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.043008,
+					"n": 120,
+					"p95": 0.044032
+				},
+				"rays": {
+					"median": 3.15552,
+					"n": 120,
+					"p95": 3.17824
+				},
+				"reconstruction": {
+					"median": 0.190464,
+					"n": 120,
+					"p95": 0.191488
+				}
+			},
+			"mode": 2,
+			"quality": 1,
+			"reference": false,
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 3.389152,
+				"n": 120,
+				"p95": 3.412736
+			},
+			"start_unix": 1792739120.13139,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.786,
+				"n": 120,
+				"p95": 1.173
+			},
+			"end_unix": 1792739122.8749,
+			"frame_ms": {
+				"median": 12.429,
+				"n": 120,
+				"p95": 14.334
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.075776,
+					"n": 120,
+					"p95": 0.0768
+				},
+				"rays": {
+					"median": 11.050784,
+					"n": 120,
+					"p95": 11.363008
+				},
+				"reconstruction": {
+					"median": 0.329728,
+					"n": 120,
+					"p95": 0.330752
+				}
+			},
+			"mode": 2,
+			"quality": 2,
+			"reference": false,
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 11.456576,
+				"n": 120,
+				"p95": 11.768512
+			},
+			"start_unix": 1792739121.37874,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.809,
+				"n": 120,
+				"p95": 1.044
+			},
+			"end_unix": 1792739124.95063,
+			"frame_ms": {
+				"median": 12.507,
+				"n": 120,
+				"p95": 16.55
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.0768,
+					"n": 120,
+					"p95": 0.077824
+				},
+				"rays": {
+					"median": 11.103936,
+					"n": 120,
+					"p95": 11.297408
+				},
+				"reconstruction": {
+					"median": 0.329728,
+					"n": 120,
+					"p95": 1.524736
+				}
+			},
+			"mode": 2,
+			"quality": 2,
+			"reference": true,
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 11.512704,
+				"n": 120,
+				"p95": 12.899968
+			},
+			"start_unix": 1792739123.41957,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.713,
+				"n": 120,
+				"p95": 0.945
+			},
+			"end_unix": 1792739126.99535,
+			"frame_ms": {
+				"median": 12.415,
+				"n": 120,
+				"p95": 14.105
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.075776,
+					"n": 120,
+					"p95": 0.0768
+				},
+				"rays": {
+					"median": 11.169664,
+					"n": 120,
+					"p95": 11.498912
+				},
+				"reconstruction": {
+					"median": 0.331776,
+					"n": 120,
+					"p95": 0.3328
+				}
+			},
+			"mode": 2,
+			"quality": 2,
+			"reference": true,
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 11.577216,
+				"n": 120,
+				"p95": 11.907488
+			},
+			"start_unix": 1792739125.49494,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.722,
+				"n": 120,
+				"p95": 1.034
+			},
+			"end_unix": 1792739129.05914,
+			"frame_ms": {
+				"median": 12.443,
+				"n": 120,
+				"p95": 14.043
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.0768,
+					"n": 120,
+					"p95": 0.077824
+				},
+				"rays": {
+					"median": 11.118304,
+					"n": 120,
+					"p95": 11.405184
+				},
+				"reconstruction": {
+					"median": 0.293888,
+					"n": 120,
+					"p95": 0.331776
+				}
+			},
+			"mode": 2,
+			"quality": 2,
+			"reference": false,
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 11.49424,
+				"n": 120,
+				"p95": 11.795776
+			},
+			"start_unix": 1792739127.54483,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.563,
+				"n": 120,
+				"p95": 0.787
+			},
+			"end_unix": 1792739129.97128,
+			"frame_ms": {
+				"median": 4.985,
+				"n": 120,
+				"p95": 7.28
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.044032,
+					"n": 120,
+					"p95": 0.045056
+				},
+				"rays": {
+					"median": 3.201184,
+					"n": 120,
+					"p95": 3.233696
+				},
+				"reconstruction": {
+					"median": 0.173056,
+					"n": 120,
+					"p95": 0.192512
+				}
+			},
+			"mode": 2,
+			"quality": 1,
+			"reference": false,
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 3.419552,
+				"n": 120,
+				"p95": 3.451712
+			},
+			"start_unix": 1792739129.3445,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.519,
+				"n": 120,
+				"p95": 0.837
+			},
+			"end_unix": 1792739130.76165,
+			"frame_ms": {
+				"median": 4.478,
+				"n": 120,
+				"p95": 6.445
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.044032,
+					"n": 120,
+					"p95": 0.04496
+				},
+				"rays": {
+					"median": 3.185408,
+					"n": 120,
+					"p95": 3.21376
+				},
+				"reconstruction": {
+					"median": 0.193536,
+					"n": 120,
+					"p95": 0.193536
+				}
+			},
+			"mode": 2,
+			"quality": 1,
+			"reference": true,
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 3.422816,
+				"n": 120,
+				"p95": 3.450208
+			},
+			"start_unix": 1792739130.18377,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.806,
+				"n": 120,
+				"p95": 1.113
+			},
+			"end_unix": 1792739132.72762,
+			"frame_ms": {
+				"median": 11.701,
+				"n": 120,
+				"p95": 13.743
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.076768,
+					"n": 120,
+					"p95": 0.0768
+				},
+				"rays": {
+					"median": 10.421728,
+					"n": 120,
+					"p95": 10.681216
+				},
+				"reconstruction": {
+					"median": 0.331776,
+					"n": 120,
+					"p95": 0.3328
+				}
+			},
+			"mode": 1,
+			"quality": 2,
+			"reference": true,
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 10.829472,
+				"n": 120,
+				"p95": 11.082784
+			},
+			"start_unix": 1792739131.31672,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.672,
+				"n": 120,
+				"p95": 0.915
+			},
+			"end_unix": 1792739134.61982,
+			"frame_ms": {
+				"median": 11.5,
+				"n": 120,
+				"p95": 13.034
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.076736,
+					"n": 120,
+					"p95": 0.076864
+				},
+				"rays": {
+					"median": 10.174944,
+					"n": 120,
+					"p95": 10.456192
+				},
+				"reconstruction": {
+					"median": 0.331776,
+					"n": 120,
+					"p95": 0.331872
+				}
+			},
+			"mode": 1,
+			"quality": 2,
+			"reference": false,
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 10.577888,
+				"n": 120,
+				"p95": 10.854144
+			},
+			"start_unix": 1792739133.23858,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.555,
+				"n": 120,
+				"p95": 0.881
+			},
+			"end_unix": 1792739135.49191,
+			"frame_ms": {
+				"median": 4.654,
+				"n": 120,
+				"p95": 6.754
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.044032,
+					"n": 120,
+					"p95": 0.045056
+				},
+				"rays": {
+					"median": 2.804,
+					"n": 120,
+					"p95": 2.822592
+				},
+				"reconstruction": {
+					"median": 0.192512,
+					"n": 120,
+					"p95": 0.193536
+				}
+			},
+			"mode": 1,
+			"quality": 1,
+			"reference": false,
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 3.039104,
+				"n": 120,
+				"p95": 3.060064
+			},
+			"start_unix": 1792739134.91466,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.546,
+				"n": 120,
+				"p95": 0.844
+			},
+			"end_unix": 1792739136.27313,
+			"frame_ms": {
+				"median": 4.538,
+				"n": 120,
+				"p95": 6.797
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.044032,
+					"n": 120,
+					"p95": 0.044864
+				},
+				"rays": {
+					"median": 2.827328,
+					"n": 120,
+					"p95": 2.847008
+				},
+				"reconstruction": {
+					"median": 0.19264,
+					"n": 120,
+					"p95": 0.193536
+				}
+			},
+			"mode": 1,
+			"quality": 1,
+			"reference": true,
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 3.064896,
+				"n": 120,
+				"p95": 3.083552
+			},
+			"start_unix": 1792739135.70151,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.582,
+				"n": 120,
+				"p95": 0.817
+			},
+			"end_unix": 1792739137.08272,
+			"frame_ms": {
+				"median": 4.716,
+				"n": 120,
+				"p95": 7.687
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.044032,
+					"n": 120,
+					"p95": 0.045056
+				},
+				"rays": {
+					"median": 2.827712,
+					"n": 120,
+					"p95": 2.849984
+				},
+				"reconstruction": {
+					"median": 0.192512,
+					"n": 120,
+					"p95": 0.193536
+				}
+			},
+			"mode": 1,
+			"quality": 1,
+			"reference": true,
+			"round": 2,
+			"rt_gpu_ms": {
+				"median": 3.06512,
+				"n": 120,
+				"p95": 3.08768
+			},
+			"start_unix": 1792739136.48171,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.593,
+				"n": 120,
+				"p95": 0.837
+			},
+			"end_unix": 1792739137.86777,
+			"frame_ms": {
+				"median": 4.638,
+				"n": 120,
+				"p95": 7.206
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.044032,
+					"n": 120,
+					"p95": 0.045056
+				},
+				"rays": {
+					"median": 2.803232,
+					"n": 120,
+					"p95": 2.819296
+				},
+				"reconstruction": {
+					"median": 0.192512,
+					"n": 120,
+					"p95": 0.193536
+				}
+			},
+			"mode": 1,
+			"quality": 1,
+			"reference": false,
+			"round": 2,
+			"rt_gpu_ms": {
+				"median": 3.040096,
+				"n": 120,
+				"p95": 3.05584
+			},
+			"start_unix": 1792739137.28738,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.725,
+				"n": 120,
+				"p95": 0.914
+			},
+			"end_unix": 1792739139.79973,
+			"frame_ms": {
+				"median": 11.432,
+				"n": 120,
+				"p95": 13.075
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.075776,
+					"n": 120,
+					"p95": 0.077824
+				},
+				"rays": {
+					"median": 10.174432,
+					"n": 120,
+					"p95": 10.442592
+				},
+				"reconstruction": {
+					"median": 0.331776,
+					"n": 120,
+					"p95": 0.3328
+				}
+			},
+			"mode": 1,
+			"quality": 2,
+			"reference": false,
+			"round": 2,
+			"rt_gpu_ms": {
+				"median": 10.579552,
+				"n": 120,
+				"p95": 10.850048
+			},
+			"start_unix": 1792739138.41674,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.758,
+				"n": 120,
+				"p95": 1.061
+			},
+			"end_unix": 1792739141.73536,
+			"frame_ms": {
+				"median": 11.639,
+				"n": 120,
+				"p95": 13.362
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.075776,
+					"n": 120,
+					"p95": 0.076896
+				},
+				"rays": {
+					"median": 10.425504,
+					"n": 120,
+					"p95": 10.73568
+				},
+				"reconstruction": {
+					"median": 0.331776,
+					"n": 120,
+					"p95": 0.3328
+				}
+			},
+			"mode": 1,
+			"quality": 2,
+			"reference": true,
+			"round": 2,
+			"rt_gpu_ms": {
+				"median": 10.834048,
+				"n": 120,
+				"p95": 11.144256
+			},
+			"start_unix": 1792739140.32312,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.689,
+				"n": 120,
+				"p95": 0.894
+			},
+			"end_unix": 1792739142.70456,
+			"frame_ms": {
+				"median": 5.273,
+				"n": 120,
+				"p95": 7.722
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.044032,
+					"n": 120,
+					"p95": 0.045056
+				},
+				"rays": {
+					"median": 3.18544,
+					"n": 120,
+					"p95": 3.208896
+				},
+				"reconstruction": {
+					"median": 0.193536,
+					"n": 120,
+					"p95": 0.193696
+				}
+			},
+			"mode": 2,
+			"quality": 1,
+			"reference": true,
+			"round": 2,
+			"rt_gpu_ms": {
+				"median": 3.42256,
+				"n": 120,
+				"p95": 3.44544
+			},
+			"start_unix": 1792739142.05802,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.697,
+				"n": 120,
+				"p95": 1.005
+			},
+			"end_unix": 1792739143.63077,
+			"frame_ms": {
+				"median": 5.371,
+				"n": 120,
+				"p95": 8.733
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.044032,
+					"n": 120,
+					"p95": 0.045056
+				},
+				"rays": {
+					"median": 3.201856,
+					"n": 120,
+					"p95": 3.242144
+				},
+				"reconstruction": {
+					"median": 0.193536,
+					"n": 120,
+					"p95": 0.193696
+				}
+			},
+			"mode": 2,
+			"quality": 1,
+			"reference": false,
+			"round": 2,
+			"rt_gpu_ms": {
+				"median": 3.438848,
+				"n": 120,
+				"p95": 3.479712
+			},
+			"start_unix": 1792739142.96407,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.716,
+				"n": 120,
+				"p95": 1.004
+			},
+			"end_unix": 1792739145.70836,
+			"frame_ms": {
+				"median": 12.399,
+				"n": 120,
+				"p95": 13.878
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.0768,
+					"n": 120,
+					"p95": 0.07696
+				},
+				"rays": {
+					"median": 11.122784,
+					"n": 120,
+					"p95": 11.460864
+				},
+				"reconstruction": {
+					"median": 0.331776,
+					"n": 120,
+					"p95": 0.3328
+				}
+			},
+			"mode": 2,
+			"quality": 2,
+			"reference": false,
+			"round": 2,
+			"rt_gpu_ms": {
+				"median": 11.523232,
+				"n": 120,
+				"p95": 11.86944
+			},
+			"start_unix": 1792739144.21676,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.723,
+				"n": 120,
+				"p95": 0.941
+			},
+			"end_unix": 1792739147.76201,
+			"frame_ms": {
+				"median": 12.49,
+				"n": 120,
+				"p95": 13.885
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.0768,
+					"n": 120,
+					"p95": 0.077824
+				},
+				"rays": {
+					"median": 11.181088,
+					"n": 120,
+					"p95": 11.506144
+				},
+				"reconstruction": {
+					"median": 0.331776,
+					"n": 120,
+					"p95": 0.3328
+				}
+			},
+			"mode": 2,
+			"quality": 2,
+			"reference": true,
+			"round": 2,
+			"rt_gpu_ms": {
+				"median": 11.581408,
+				"n": 120,
+				"p95": 11.885024
+			},
+			"start_unix": 1792739146.26073,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.751,
+				"n": 120,
+				"p95": 0.974
+			},
+			"end_unix": 1792739149.8143,
+			"frame_ms": {
+				"median": 12.443,
+				"n": 120,
+				"p95": 13.957
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.075776,
+					"n": 120,
+					"p95": 0.0768
+				},
+				"rays": {
+					"median": 11.182272,
+					"n": 120,
+					"p95": 11.502112
+				},
+				"reconstruction": {
+					"median": 0.331776,
+					"n": 120,
+					"p95": 0.3328
+				}
+			},
+			"mode": 2,
+			"quality": 2,
+			"reference": true,
+			"round": 3,
+			"rt_gpu_ms": {
+				"median": 11.582464,
+				"n": 120,
+				"p95": 11.910688
+			},
+			"start_unix": 1792739148.31471,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.823,
+				"n": 120,
+				"p95": 1.043
+			},
+			"end_unix": 1792739151.8662,
+			"frame_ms": {
+				"median": 12.366,
+				"n": 120,
+				"p95": 14.436
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.076704,
+					"n": 120,
+					"p95": 0.0768
+				},
+				"rays": {
+					"median": 11.187936,
+					"n": 120,
+					"p95": 11.493376
+				},
+				"reconstruction": {
+					"median": 0.333824,
+					"n": 120,
+					"p95": 0.334848
+				}
+			},
+			"mode": 2,
+			"quality": 2,
+			"reference": false,
+			"round": 3,
+			"rt_gpu_ms": {
+				"median": 11.598944,
+				"n": 120,
+				"p95": 11.904
+			},
+			"start_unix": 1792739150.36513,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.619,
+				"n": 120,
+				"p95": 0.851
+			},
+			"end_unix": 1792739152.75445,
+			"frame_ms": {
+				"median": 4.759,
+				"n": 120,
+				"p95": 6.861
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.044032,
+					"n": 120,
+					"p95": 0.044128
+				},
+				"rays": {
+					"median": 3.224896,
+					"n": 120,
+					"p95": 3.246688
+				},
+				"reconstruction": {
+					"median": 0.19456,
+					"n": 120,
+					"p95": 0.195584
+				}
+			},
+			"mode": 2,
+			"quality": 1,
+			"reference": false,
+			"round": 3,
+			"rt_gpu_ms": {
+				"median": 3.462848,
+				"n": 120,
+				"p95": 3.484256
+			},
+			"start_unix": 1792739152.14669,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.632,
+				"n": 120,
+				"p95": 0.877
+			},
+			"end_unix": 1792739153.61333,
+			"frame_ms": {
+				"median": 5.076,
+				"n": 120,
+				"p95": 7.701
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.044032,
+					"n": 120,
+					"p95": 0.045056
+				},
+				"rays": {
+					"median": 3.20704,
+					"n": 120,
+					"p95": 3.237184
+				},
+				"reconstruction": {
+					"median": 0.19456,
+					"n": 120,
+					"p95": 0.195584
+				}
+			},
+			"mode": 2,
+			"quality": 1,
+			"reference": true,
+			"round": 3,
+			"rt_gpu_ms": {
+				"median": 3.445504,
+				"n": 120,
+				"p95": 3.474752
+			},
+			"start_unix": 1792739152.98996,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.696,
+				"n": 120,
+				"p95": 0.914
+			},
+			"end_unix": 1792739155.59077,
+			"frame_ms": {
+				"median": 11.693,
+				"n": 120,
+				"p95": 13.512
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.075776,
+					"n": 120,
+					"p95": 0.077824
+				},
+				"rays": {
+					"median": 10.487808,
+					"n": 120,
+					"p95": 10.739136
+				},
+				"reconstruction": {
+					"median": 0.333824,
+					"n": 120,
+					"p95": 0.334848
+				}
+			},
+			"mode": 1,
+			"quality": 2,
+			"reference": true,
+			"round": 3,
+			"rt_gpu_ms": {
+				"median": 10.888032,
+				"n": 120,
+				"p95": 11.14976
+			},
+			"start_unix": 1792739154.16918,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.727,
+				"n": 120,
+				"p95": 1.045
+			},
+			"end_unix": 1792739157.50024,
+			"frame_ms": {
+				"median": 11.511,
+				"n": 120,
+				"p95": 13.46
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.076064,
+					"n": 120,
+					"p95": 0.077824
+				},
+				"rays": {
+					"median": 10.243008,
+					"n": 120,
+					"p95": 10.5544
+				},
+				"reconstruction": {
+					"median": 0.295936,
+					"n": 120,
+					"p95": 0.29696
+				}
+			},
+			"mode": 1,
+			"quality": 2,
+			"reference": false,
+			"round": 3,
+			"rt_gpu_ms": {
+				"median": 10.615904,
+				"n": 120,
+				"p95": 10.927136
+			},
+			"start_unix": 1792739156.10546,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.672,
+				"n": 120,
+				"p95": 0.956
+			},
+			"end_unix": 1792739158.48531,
+			"frame_ms": {
+				"median": 5.516,
+				"n": 120,
+				"p95": 8.395
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.044032,
+					"n": 120,
+					"p95": 0.045056
+				},
+				"rays": {
+					"median": 2.821472,
+					"n": 120,
+					"p95": 2.842432
+				},
+				"reconstruction": {
+					"median": 0.17408,
+					"n": 120,
+					"p95": 0.175104
+				}
+			},
+			"mode": 1,
+			"quality": 1,
+			"reference": false,
+			"round": 3,
+			"rt_gpu_ms": {
+				"median": 3.039808,
+				"n": 120,
+				"p95": 3.06144
+			},
+			"start_unix": 1792739157.78865,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.703,
+				"n": 120,
+				"p95": 0.938
+			},
+			"end_unix": 1792739159.4176,
+			"frame_ms": {
+				"median": 5.404,
+				"n": 120,
+				"p95": 7.894
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.044032,
+					"n": 120,
+					"p95": 0.045056
+				},
+				"rays": {
+					"median": 2.846656,
+					"n": 120,
+					"p95": 2.866048
+				},
+				"reconstruction": {
+					"median": 0.19456,
+					"n": 120,
+					"p95": 0.195584
+				}
+			},
+			"mode": 1,
+			"quality": 1,
+			"reference": true,
+			"round": 3,
+			"rt_gpu_ms": {
+				"median": 3.084416,
+				"n": 120,
+				"p95": 3.10464
+			},
+			"start_unix": 1792739158.73505,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1285,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 1420,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 19541,
+				"terrain_material_bytes": 649028,
+				"terrain_material_triangles": 56145,
+				"triangles": 116008,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		}
+	],
+	"viewport": [
+		1280,
+		720
+	]
+}

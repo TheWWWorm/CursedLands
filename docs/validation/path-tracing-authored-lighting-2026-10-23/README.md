@@ -115,8 +115,8 @@ This includes the rendered HDR and UI checks, actual campaign mode restoration,
 flame-source handoff, OpenGL fallback, five matched campaign views on both
 backends, live flutter/noise/extinction and benchmark resource checks.
 
-**The unmapped-surface performance control remains unqualified.** Its functional
-checks pass, but separate Godot processes overlapped its timing runs. Those
+The original unmapped-surface timing runs remain excluded because separate
+Godot processes overlapped them. Their functional checks pass. Those
 numbers are retained in `vulkan-unmapped-cost.json`, `dx12-unmapped-cost.json`
 and `excluded-unmapped-contention.json`, and excluded from `performance.json`.
 The observed competing renderer started after the lighting and mapped-prop
@@ -124,8 +124,16 @@ measurement windows. The [GPU observations](gpu-observations.json) distinguish
 the initial executable-name monitoring from the later Godot lifetime check and
 broader monitoring. Ordinary desktop applications remained running throughout;
 these are interleaved comparisons on this desktop, not exclusive-device lab
-measurements. A quiet-GPU unmapped control is still required before treating
-the wider material-performance qualification as complete.
+measurements.
+
+The subsequent [GPU 1 control](../path-tracing-gpu1-control-2026-10-23/README.md)
+closes this pending qualification on an RTX 3090 Ti using a private display.
+It adds 132 passing assertions across native Vulkan and DX12/Wine, with no
+observed positive activity from unrelated clients on that GPU. The largest
+median frame increase is 0.229 ms (3.2%); Vulkan is effectively unchanged.
+The addendum records the expected NoScanout refresh-rate diagnostic and keeps
+these different-GPU measurements separate from the RTX 3090 tables above.
+Previously excluded timing records remain excluded.
 
 Every run uses an isolated test profile with cursor confinement off, FPS visible
 and all three audio volumes zero. No player-visible option or string was added.

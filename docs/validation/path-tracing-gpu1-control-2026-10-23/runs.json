@@ -1,0 +1,82 @@
+[
+  {
+    "suite": "path_trace_material_performance",
+    "platform": "linux",
+    "renderer": "vulkan",
+    "exit": 0,
+    "seconds": 64.66,
+    "profile": {
+      "isolated": true,
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "backend": "vulkan",
+    "device": "NVIDIA GeForce RTX 3090 Ti",
+    "tag": "gpu1-unmapped-vulkan-final",
+    "checks": 66,
+    "failures": [],
+    "expected_environment_diagnostics": [
+      "ERROR: An error occurred while trying to get the screen refresh rate."
+    ],
+    "unexpected_errors": [],
+    "raw_measurements_sha256": "f9b3d00041c0f0b96fb4c8b3901120d2faf68f05357d09bdfbedc47b8c99b7ed",
+    "run_log_sha256": "374c232fcc56a43110ba370232fcf9549fa415ecb19d5c88597a8453e34f2363",
+    "arguments": [
+      "--gpu-index",
+      "1",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--windowed",
+      "--borderless",
+      "--resolution",
+      "1280x720",
+      "--pt-hit-reference=<saved-pre-authored-prop-library>",
+      "--pt-unmapped-control",
+      "--ei-profile-rt"
+    ]
+  },
+  {
+    "suite": "path_trace_material_performance",
+    "platform": "windows",
+    "renderer": "d3d12",
+    "exit": 0,
+    "seconds": 102.04,
+    "profile": {
+      "isolated": true,
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "backend": "dx12",
+    "device": "NVIDIA GeForce RTX 3090 Ti",
+    "tag": "gpu1-unmapped-dx12",
+    "checks": 66,
+    "failures": [],
+    "expected_environment_diagnostics": [],
+    "unexpected_errors": [],
+    "raw_measurements_sha256": "1f3f452005451e453e5ebde1e22b9579fd6eb9679a6d6d19cb3662e794b12c53",
+    "run_log_sha256": "e6ed1426107918697ab2ea09890557150b940f950500ba995239a9c54036a241",
+    "arguments": [
+      "--gpu-index",
+      "1",
+      "--render-thread",
+      "safe",
+      "--audio-driver",
+      "Dummy",
+      "--windowed",
+      "--borderless",
+      "--resolution",
+      "1280x720",
+      "--pt-hit-reference=<saved-pre-authored-prop-library>",
+      "--pt-unmapped-control",
+      "--ei-profile-rt"
+    ]
+  }
+]
