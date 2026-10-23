@@ -15,12 +15,14 @@ conserve owned items. A pending choice goes to the stash when preparation ends.
 Old saves start with no items and receive no retroactive awards.
 
 The supplied Underlords recording guided the finished item interface: three
-illustrated reward cards over the dimmed board, a persistent icon tray below
+framed reward cards with existing game item pictures over the dimmed board, a persistent icon tray below
 alliances, and direct assignment to field or reserve creatures. Players can drag
 items or select an icon and click a creature. Circular targets reveal empty and
 occupied slots; equipped badges remain visible. Hover and keyboard focus show the
 effect and carrier. Replacement, transfers, stash returns and cancellation use
-the same ownership rules. Eight original illustrated icons are shared throughout.
+the same ownership rules. Eight direct native item renders are shared throughout.
+The cards reuse the original stone and metal textures, with larger artwork,
+effect roles, emphasized values and explicit selection actions.
 
 All six alliances now change combat behavior: Beast cooperation and pursuit,
 Horde retaliation, nearby Warrior protection, Hunter response to casting,
@@ -66,11 +68,13 @@ Player settings were not modified.
 | Opposing alliance symmetry | 12 | `opponent-alliances-1` |
 | Bot strategy regression | 21 | `equipment-bot-planner-final` |
 | Native fitted-body formation legality and proximity | 107 | `equipment-bot-formation-3` |
-| Dynamic item/alliance/effect names, help and all equipment/screen literal text in EN/RU/DE | 717 | `equipment-localization-underlords` |
+| Dynamic item/alliance/effect names, help and all equipment/screen literal text in EN/RU/DE | 735 | `native-rewards-localization` |
 | Direct item UI, real drag input, keyboard controls, cancellation and combat inspection | 366 | `equipment-tray-ui-{en,ru,de}-{720,1080}-final` |
-| Final reward cards, tray layout, long help and health/star clearance | 52 | `equipment-tray-presentation-{en,ru,de}-720-final`, `equipment-tray-presentation-de-1080-final` |
+| Input regression after native item artwork and reward framing | 61 | `native-rewards-input-en` |
+| Final reward cards, tray layout, long help and health/star clearance | 168 | `native-rewards-{en,ru,de}-{720,1080}-final` |
+| Original item pictures at reward and inventory sizes, input transparency and viewport | 58 | `native-rewards-item-art-final` |
 
-The final UI matrix passed 366 checks across three languages at both 1280×720
+The core UI matrix passed 366 checks across three languages at both 1280×720
 and 1920×1080. It covers reward selection, actual press/move/release dragging,
 field and reserve transfers, replacement, stash returns, invalid destinations,
 Escape/right-click cancellation, keyboard access, full-inventory scrolling,

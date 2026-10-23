@@ -1,1 +1,1 @@
-ARENA_EQUIPMENT_PRESENTATION equipment-tray-de-1920 13 checks; failures=[]
+ARENA_EQUIPMENT_PRESENTATION equipment-tray-de-1920 28 checks; failures=[]

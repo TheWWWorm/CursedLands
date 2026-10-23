@@ -73,10 +73,10 @@
     "runtime_errors": false
   },
   "localization": {
-    "run": "equipment-localization-underlords",
+    "run": "native-rewards-localization",
     "exit": 0,
     "summary": [
-      "ARENA_EQUIPMENT_LOCALIZATION checks=717 failures=[]"
+      "ARENA_EQUIPMENT_LOCALIZATION checks=735 failures=[]"
     ],
     "runtime_errors": false
   },
@@ -161,34 +161,34 @@
     "runtime_errors": false
   },
   "presentation_en_720": {
-    "run": "equipment-tray-presentation-en-720-final",
+    "run": "native-rewards-en-720-final",
     "exit": 0,
     "summary": [
-      "ARENA_EQUIPMENT_PRESENTATION equipment-tray-en-1280 13 checks; failures=[]"
+      "ARENA_EQUIPMENT_PRESENTATION equipment-tray-en-1280 28 checks; failures=[]"
     ],
     "runtime_errors": false
   },
   "presentation_ru_720": {
-    "run": "equipment-tray-presentation-ru-720-final",
+    "run": "native-rewards-ru-720-final",
     "exit": 0,
     "summary": [
-      "ARENA_EQUIPMENT_PRESENTATION equipment-tray-ru-1280 13 checks; failures=[]"
+      "ARENA_EQUIPMENT_PRESENTATION equipment-tray-ru-1280 28 checks; failures=[]"
     ],
     "runtime_errors": false
   },
   "presentation_de_720": {
-    "run": "equipment-tray-presentation-de-720-final",
+    "run": "native-rewards-de-720-final",
     "exit": 0,
     "summary": [
-      "ARENA_EQUIPMENT_PRESENTATION equipment-tray-de-1280 13 checks; failures=[]"
+      "ARENA_EQUIPMENT_PRESENTATION equipment-tray-de-1280 28 checks; failures=[]"
     ],
     "runtime_errors": false
   },
   "presentation_de_1080": {
-    "run": "equipment-tray-presentation-de-1080-final",
+    "run": "native-rewards-de-1080-final",
     "exit": 0,
     "summary": [
-      "ARENA_EQUIPMENT_PRESENTATION equipment-tray-de-1920 13 checks; failures=[]"
+      "ARENA_EQUIPMENT_PRESENTATION equipment-tray-de-1920 28 checks; failures=[]"
     ],
     "runtime_errors": false
   },
@@ -200,5 +200,37 @@
     ],
     "runtime_errors": false,
     "exact_headless_parity": true
+  },
+  "presentation_en_1080": {
+    "run": "native-rewards-en-1080-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_PRESENTATION equipment-tray-en-1920 28 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "presentation_ru_1080": {
+    "run": "native-rewards-ru-1080-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_PRESENTATION equipment-tray-ru-1920 28 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "native_art_ui": {
+    "run": "native-rewards-input-en",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_UI en (1280, 720) 61 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "native_item_art": {
+    "run": "native-rewards-item-art-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_ITEM_ART {\"checks\":58,\"failures\":[]}"
+    ],
+    "runtime_errors": false
   }
 }

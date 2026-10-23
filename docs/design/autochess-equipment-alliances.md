@@ -43,8 +43,12 @@ provides the direct visual and interaction reference for the equipment UI:
 
 Replace the initial modal inventory and recipient dropdown with this direct
 board interaction. Retain the existing HUD's alliance position and place the
-tray beneath it. Use distinct illustrated icons for the eight Cursed Lands
-items, shared by rewards, tray, creature slots and descriptions. Equipped items
+tray beneath it. Use direct renders of existing game items for the eight Cursed
+Lands rewards, shared by the tray, creature slots and descriptions. Reward cards
+use the original stone and metal materials, larger object pictures, serif names,
+short effect roles, left-aligned descriptions with emphasized values, and a
+visible Choose action. Hover and keyboard focus illuminate the frame and artwork.
+Equipped items
 remain visible in the tray with their carrier identified. Dragging or selecting
 an icon then clicking a creature assigns it; moving an item between carriers,
 replacing an occupied slot and returning to the stash use the same ownership

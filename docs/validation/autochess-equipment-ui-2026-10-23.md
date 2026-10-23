@@ -2,8 +2,12 @@
 
 The final interface follows the user-provided Underlords gameplay reference:
 three reward cards float over a dimmed board, while owned equipment stays in a
-compact icon tray below alliances. Original circular illustrations, colored name
-headers and dark description areas preserve the reference's visual hierarchy.
+compact icon tray below alliances. The pictures are direct 256×256 native renders
+of eight existing game items, shared by rewards, the tray, creature badges and
+tooltips. The cards reuse the original stone and metal textures around larger
+objects, serif names, short effect roles, left-aligned descriptions and explicit
+Choose actions. Highlighted values come from the same translated effect text.
+Hover and keyboard focus illuminate the frame and gently enlarge the object.
 The earlier inventory modal and recipient dropdown have been replaced.
 
 A reward click closes the cards and selects the newly owned item. Players can
@@ -28,7 +32,7 @@ Field badges avoid every visible creature's HP and star rectangle, including
 neighboring creatures. Reward cards isolate background input and keep focus
 inside the modal. Opening and closing them restores the tray's editing state.
 
-## Rendered interaction matrix
+## Rendered interaction checks
 
 `tools/tests/arena_equipment_ui.gd` ran against native game assets in Godot 4.7,
 OpenGL compatibility rendering. All six runs passed without runtime errors.
@@ -51,6 +55,10 @@ isolation, a different-match scouting guard, combat locking, frozen equipment
 badges, keyboard inspection and all six translated alliance explanations.
 The scouting check changes the viewed match; it is not an online end-to-end test.
 
+After the native artwork and reward framing refinement, `native-rewards-input-en`
+reran all 61 interaction checks successfully. `native-rewards-localization`
+passed 735 checks, including all eight short effect roles and complete item text.
+
 Each run captures reward, drag and combat-tooltip views. EN/RU/DE captures were
 visually reviewed for readable text, bounded layout and clear item ownership.
 Viewport input events avoid late desktop mouse-warp events; failed actions are
@@ -68,20 +76,33 @@ Selected repository evidence: [item tray](autochess-equipment-alliances-2026-10-
 formation, one reserve and eight owned items. It captures the normal tray,
 Ward Stone / Guardian Knot / Storm Shard reward cards, circular targets, an actual
 native drag, the resulting equipped badge and the illustrated item tooltip.
-The shield cards include the complete rule that shields do not stack.
+The shield cards include the complete rule that shields do not stack. The final
+checks also verify that each whole card and its Choose action are visible without
+scrolling, rich text preserves the full translated effect, and the reward uses
+the native PNG without an icon medallion.
 
 | Evidence run | Checks |
 | --- | ---: |
-| `equipment-tray-presentation-en-720-final` | 13 |
-| `equipment-tray-presentation-ru-720-final` | 13 |
-| `equipment-tray-presentation-de-720-final` | 13 |
-| `equipment-tray-presentation-de-1080-final` | 13 |
+| `native-rewards-en-720-final` | 28 |
+| `native-rewards-ru-720-final` | 28 |
+| `native-rewards-de-720-final` | 28 |
+| `native-rewards-en-1080-final` | 28 |
+| `native-rewards-ru-1080-final` | 28 |
+| `native-rewards-de-1080-final` | 28 |
 
-All 52 checks passed without runtime errors. They include badge-rectangle
+All 168 checks passed without runtime errors. They include badge-rectangle
 intersection checks against every visible HP/star marker. Visual review confirmed
 the two-row inventory, translated return control, full reward descriptions and
 uncovered health markers. The final captures use the revised item tray rather
 than the superseded modal inventory.
+
+The [native item manifest](../../game/assets/arena/items/manifest.json) records
+original item IDs, source models, textures and camera orientation. The eight
+images use original materials without repainting or recoloring. The art fixture
+checks source dimensions, caller sizes and pointer transparency; its contact
+sheet shows the pictures at 138 px reward size and 32/44 px inventory sizes.
+`native-rewards-item-art-final` passed all 58 checks, including the requested
+1280×720 viewport; the final sheet was visually inspected at those actual sizes.
 
 ## Native combat at both speeds
 

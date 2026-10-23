@@ -48,6 +48,12 @@ func _ready() -> void:
 	await frames(15)
 	check(screen._modal_layer.visible and screen._equipment_panel._offer_row.get_child_count() == 3, "three reward-only cards")
 	bounded(screen._modal_panel, "reward modal")
+	for card in screen._equipment_panel._offer_row.get_children():
+		bounded(card, "reward card " + card.kind)
+		check(screen._equipment_scroll.get_global_rect().grow(1).encloses(card.get_global_rect()), "whole reward and choose action visible without scrolling " + card.kind)
+		check(card.description.get_content_height() <= card.description.size.y + 1, "complete effect visible " + card.kind)
+		check(card.description.get_parsed_text() == ArenaItems.description(card.kind), "emphasis preserves translated effect " + card.kind)
+		check(ArenaItemEmblem.ART[card.kind].resource_path.ends_with(".png") and not card.art.framed, "native item picture without icon medallion " + card.kind)
 	await shot(tag + "-rewards")
 	screen._choose_item(1)
 	await frames(15)

@@ -1933,7 +1933,12 @@ func _show_equipment() -> void:
 	_modal_panel.queue_redraw()
 	var title := _modal_box.find_child("ModalHeading", true, false) as Label
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_font_size_override("font_size", 32)
+	title.add_theme_font_size_override("font_size", 34)
+	title.add_theme_color_override("font_color", Color("f1dfb6"))
+	var balance := Control.new()
+	balance.custom_minimum_size.x = _modal_box.find_child("CloseModal", true, false).get_combined_minimum_size().x
+	title.get_parent().add_child(balance)
+	title.get_parent().move_child(balance, 0)
 	_modal_box.get_node("ModalDivider").hide()
 	_equipment_scroll = ScrollContainer.new()
 	_equipment_scroll.name = "EquipmentScroll"

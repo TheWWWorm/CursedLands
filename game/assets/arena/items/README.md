@@ -1,11 +1,10 @@
-# Arena equipment illustrations
+# Autochess item pictures
 
-Eight original code-native SVG relics, authored for Cursed Lands. The shared
-metal rim and dark circular backing keep their silhouettes clear in the item
-tray and reward cards. The object colors distinguish materials and item identity;
-they do not represent rarity or strength. No third-party game artwork is included.
+These transparent 256×256 pictures are direct native renders of existing Evil
+Islands items, using `Items.look`, the original materials and `WikiPreview` camp
+orientation. They have not been repainted or recolored. The same pictures appear
+on reward cards, in the inventory tray, in tooltips and on equipped creatures.
 
-The SVGs are the editable source. Each uses a 128-unit view box and a 256-pixel
-import size. `ArenaItemEmblem` draws the same art at every size and preserves the
-minimum size requested by its parent. Use the matching `color_for(kind)` accent
-only alongside the localized item name and icon.
+`manifest.json` records each reward kind, original item ID, model/texture source
+and framing. Reward names and effects belong to Autochess; the pictures reuse the
+original objects. Color accents identify items and do not represent rarity tiers.

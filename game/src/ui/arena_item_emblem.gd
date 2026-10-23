@@ -1,17 +1,17 @@
 class_name ArenaItemEmblem
 extends Control
-## Original illustrated relics share a metal rim. Their colors identify each
-## object and do not indicate rarity, strength or a separate equipment tier.
+## Direct renders of existing native items. Small slots share a metal rim;
+## reward cards show the original object without a surrounding icon badge.
 
 const ART := {
-	"fang": preload("res://assets/arena/items/fang.svg"),
-	"storm": preload("res://assets/arena/items/storm.svg"),
-	"venom": preload("res://assets/arena/items/venom.svg"),
-	"ward": preload("res://assets/arena/items/ward.svg"),
-	"guardian": preload("res://assets/arena/items/guardian.svg"),
-	"echo": preload("res://assets/arena/items/echo.svg"),
-	"thorn": preload("res://assets/arena/items/thorn.svg"),
-	"berserker": preload("res://assets/arena/items/berserker.svg"),
+	"fang": preload("res://assets/arena/items/fang.png"),
+	"storm": preload("res://assets/arena/items/storm.png"),
+	"venom": preload("res://assets/arena/items/venom.png"),
+	"ward": preload("res://assets/arena/items/ward.png"),
+	"guardian": preload("res://assets/arena/items/guardian.png"),
+	"echo": preload("res://assets/arena/items/echo.png"),
+	"thorn": preload("res://assets/arena/items/thorn.png"),
+	"berserker": preload("res://assets/arena/items/berserker.png"),
 }
 const ACCENTS := {
 	"fang": Color("e6cfad"), "storm": Color("80dce9"),
@@ -25,6 +25,7 @@ var kind := "":
 		kind = value
 		queue_redraw()
 var ink := ArenaCreatureCard.GOLD
+var framed := true
 
 
 func _init() -> void:
@@ -46,7 +47,13 @@ func _draw() -> void:
 	var edge := minf(size.x, size.y)
 	var origin := (size - Vector2.ONE * edge) / 2.0
 	if ART.has(kind):
-		draw_texture_rect(ART[kind], Rect2(origin, Vector2.ONE * edge), false)
+		if framed:
+			var centre := origin + Vector2.ONE * edge * 0.5
+			draw_circle(centre, edge * 0.48, Color("101917"))
+			draw_circle(centre, edge * 0.48, Color("738079"), false, maxf(1.0, edge / 32.0), true)
+			draw_circle(centre, edge * 0.43, Color(color_for(kind), 0.45), false, 1, true)
+		var inset := edge * 0.07 if framed else 0.0
+		draw_texture_rect(ART[kind], Rect2(origin + Vector2.ONE * inset, Vector2.ONE * (edge - inset * 2)), false)
 		return
 	# Empty slots use a quiet bag, with no item color or ownership implied.
 	draw_set_transform(origin, 0, Vector2.ONE * edge / 32.0)
