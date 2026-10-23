@@ -1,0 +1,85 @@
+{
+  "version": "1.26.0",
+  "base": "https://cursedlands.wwworm.com",
+  "passed": true,
+  "checks": [
+    {
+      "campaign": "cursed_lands",
+      "language": "en",
+      "control": true,
+      "reload": true,
+      "back": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "campaign": "cursed_lands",
+      "language": "ru",
+      "control": true,
+      "reload": true,
+      "back": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "campaign": "cursed_lands",
+      "language": "de",
+      "control": true,
+      "reload": true,
+      "back": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "campaign": "lost_in_astral",
+      "language": "en",
+      "control": true,
+      "reload": true,
+      "back": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "campaign": "lost_in_astral",
+      "language": "ru",
+      "control": true,
+      "reload": true,
+      "back": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "campaign": "lost_in_astral",
+      "language": "de",
+      "control": true,
+      "reload": true,
+      "back": true,
+      "no_horizontal_overflow": true
+    }
+  ],
+  "logs": {
+    "console": [],
+    "page_errors": [],
+    "failed_responses": []
+  },
+  "release_commit": "2cf57d305c014010206610a4653731417b50b5ac",
+  "game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+  "gpu_lab": {
+    "job_id": "bb3d1457028d421f",
+    "gpu": "auto",
+    "workload": "light",
+    "exit_code": 0
+  },
+  "visual_review": {
+    "reviewed_at": "2026-10-23T23:31:20Z",
+    "viewport": [
+      1280,
+      800
+    ],
+    "reviewed_files": [
+      "wiki-cut-cursed_lands-de.png",
+      "wiki-cut-cursed_lands-en.png",
+      "wiki-cut-cursed_lands-ru.png",
+      "wiki-cut-lost_in_astral-de.png",
+      "wiki-cut-lost_in_astral-en.png",
+      "wiki-cut-lost_in_astral-ru.png"
+    ],
+    "result": "All six deployed campaign/language overview screenshots are readable. Localized headings, navigation and Cut content links fit the viewport without horizontal overflow. Normal vertical scrolling retains the full article."
+  },
+  "fixture_sha256": "0e7d6a5708b0d5b43da9bac0b40a3267ed72cf2c2f2427b187e7d17d33f9c8ee"
+}

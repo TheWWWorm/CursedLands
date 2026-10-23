@@ -1,0 +1,62 @@
+{
+  "version": "1.26.0",
+  "release_commit": "2cf57d305c014010206610a4653731417b50b5ac",
+  "source_commit": "0158ff77335a485399067e74ce65c580d01fbf31",
+  "game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+  "site": "https://cursedlands.wwworm.com/",
+  "status": "passed",
+  "scenarios": 6,
+  "languages": [
+    "en",
+    "ru",
+    "de"
+  ],
+  "campaigns": [
+    "cursed_lands",
+    "lost_in_astral"
+  ],
+  "screenshots_reviewed": 6,
+  "report": "wiki-browser.json",
+  "files": {
+    "BUILD-INFO.json": {
+      "bytes": 607,
+      "sha256": "668a6fa7f0be8b81efea8dbeb2759068afc381c0283d3dd2fbf548d09547cec4"
+    },
+    "browser-wiki.cjs": {
+      "bytes": 2488,
+      "sha256": "0e7d6a5708b0d5b43da9bac0b40a3267ed72cf2c2f2427b187e7d17d33f9c8ee"
+    },
+    "cloudflare-build-check.json": {
+      "bytes": 833,
+      "sha256": "78c8910302943d4bf0810754bee8659258d0f3be87c7464f04a52ac2e2329334"
+    },
+    "wiki-browser.json": {
+      "bytes": 2181,
+      "sha256": "8e6b0e32eb0df69283ec1c3020c5adea0f2bc51889125283b3314a15acc1c5f2"
+    },
+    "wiki-cut-cursed_lands-de.png": {
+      "bytes": 149942,
+      "sha256": "cd6794463ca6ff1e70a5cf0e1bf463795670b934c52cbb13c8b77616e1ad219f"
+    },
+    "wiki-cut-cursed_lands-en.png": {
+      "bytes": 146755,
+      "sha256": "1e3a77be5474db2fa8111ddc2fe489a7487a3abf72de25d5abc9a45ed20e4cbe"
+    },
+    "wiki-cut-cursed_lands-ru.png": {
+      "bytes": 152443,
+      "sha256": "3c154983ef91d7bc33c157af18cebc4c45f9d4c2f40748aa0801c66f7a0438b0"
+    },
+    "wiki-cut-lost_in_astral-de.png": {
+      "bytes": 143174,
+      "sha256": "f545fe6db7288e7480fa31ea4a534eb32baead521766c49a0d78d35b9b4a0717"
+    },
+    "wiki-cut-lost_in_astral-en.png": {
+      "bytes": 149243,
+      "sha256": "9dec90cbcb883b04cc10193f412f75f8b2922872d8c47f43cfd666b03cc4cb0e"
+    },
+    "wiki-cut-lost_in_astral-ru.png": {
+      "bytes": 148651,
+      "sha256": "a91bfc89a1623700086324da03d894be4135baf4c165d89f2893944e66372b34"
+    }
+  }
+}

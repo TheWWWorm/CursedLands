@@ -88,7 +88,8 @@
     ],
     "actual_home_control_click": true,
     "reload_and_back": true,
-    "screenshots_reviewed": 6
+    "screenshots_reviewed": 6,
+    "origin": "local prepared release host"
   },
   "native_wiki": {
     "passed": true,
@@ -106,7 +107,8 @@
     "native_base_de": "f75cebd3a53246a0",
     "native_lia_en": "d8cb2192ddd84200",
     "native_lia_ru": "338f78f3f8b94b15",
-    "native_lia_de": "9d27020b6a504764"
+    "native_lia_de": "9d27020b6a504764",
+    "deployed_wiki": "bb3d1457028d421f"
   },
   "fixture_failure_then_correction": {
     "job_id": "4c3e1a7a94524161",
@@ -119,11 +121,32 @@
   "scope_limits": [
     "Local browser runtime starts the engine to the data installation screen; it does not import proprietary game data or run a browser campaign.",
     "Native LiA English/German wiki captures use original Russian LiA data with an explicit UI language override and the production fingerprint-checked WikiReferenceText translations.",
-    "Cloudflare/live publication verification belongs to the publishing task and has not been performed by this subtask."
+    "Live deployment verification covers current changed hosted files since v1.25.0, the full engine cache and split/reassembled files. Unchanged wiki files outside that cache were checked locally against the hosted manifest; this is not a fresh live download of all 13,652 hosted files."
   ],
   "changed_repository_paths": [
     "public/",
-    "parts.json"
+    "parts.json",
+    "docs/validation/release-1.26.0/"
   ],
-  "no_commits_or_publication": true
+  "release_commit": "2cf57d305c014010206610a4653731417b50b5ac",
+  "deployed_wiki": {
+    "passed": true,
+    "origin": "https://cursedlands.wwworm.com",
+    "scenarios": 6,
+    "screenshots_reviewed": 6,
+    "report": "deployed-wiki/wiki-browser.json",
+    "gpu_job": "bb3d1457028d421f"
+  },
+  "live_deployment": {
+    "passed": true,
+    "commit": "2cf57d305c014010206610a4653731417b50b5ac",
+    "verified_at": "2026-10-23T23:32:07Z",
+    "files": 3199,
+    "all_hashes_match": true,
+    "isolation_headers": true,
+    "scope": "Every changed hosted asset since 1.25.0, complete service-worker engine cache, build metadata, all split parts and reassembled files",
+    "report": "deployment.json",
+    "cloudflare_build_check": "cloudflare-build-check.json"
+  },
+  "subtask_actions": "This validation subtask made no commits, pushes, tags, release uploads or issue changes. The publishing task handled publication."
 }

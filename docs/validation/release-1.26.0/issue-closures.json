@@ -1,0 +1,93 @@
+{
+  "version": "1.26.0",
+  "release": "https://github.com/TheWWWorm/CursedLands/releases/tag/v1.26.0",
+  "comment": "fixed in #1.26.0\n\n[Release 1.26.0](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.26.0)",
+  "issues": [
+    {
+      "number": 61,
+      "state": "closed",
+      "state_reason": "completed",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/61",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/61#issuecomment-6376834837"
+    },
+    {
+      "number": 62,
+      "state": "closed",
+      "state_reason": "completed",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/62",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/62#issuecomment-6376835783"
+    },
+    {
+      "number": 90,
+      "state": "closed",
+      "state_reason": "completed",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/90",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/90#issuecomment-6376836561"
+    },
+    {
+      "number": 91,
+      "state": "closed",
+      "state_reason": "completed",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/91",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/91#issuecomment-6376837388"
+    },
+    {
+      "number": 92,
+      "state": "closed",
+      "state_reason": "completed",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/92",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/92#issuecomment-6376838184"
+    },
+    {
+      "number": 93,
+      "state": "closed",
+      "state_reason": "completed",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/93",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/93#issuecomment-6376839056"
+    },
+    {
+      "number": 97,
+      "state": "closed",
+      "state_reason": "completed",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/97",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/97#issuecomment-6376839954"
+    },
+    {
+      "number": 99,
+      "state": "closed",
+      "state_reason": "completed",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/99",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/99#issuecomment-6376841100"
+    },
+    {
+      "number": 100,
+      "state": "closed",
+      "state_reason": "completed",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/100",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/100#issuecomment-6376842019"
+    },
+    {
+      "number": 101,
+      "state": "closed",
+      "state_reason": "completed",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/101",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/101#issuecomment-6376842900"
+    },
+    {
+      "number": 102,
+      "state": "closed",
+      "state_reason": "completed",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/102",
+      "comment_url": "https://github.com/TheWWWorm/CursedLands/issues/102#issuecomment-6376843808"
+    }
+  ],
+  "kept_open": [
+    29,
+    89,
+    94,
+    95,
+    96,
+    98
+  ],
+  "verified_at": "2026-10-23T23:33:25.569889+00:00"
+}
