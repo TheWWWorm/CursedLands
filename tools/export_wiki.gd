@@ -101,6 +101,7 @@ func _ready() -> void:
 			if entry.kind == "item" and not craftable[entry.value]:
 				html = html.replace(WikiCatalog.paragraph(WikiCatalog.item_link("bp:" + String(entry.value), RemakeText.t("Blueprint and materials")), true), "")
 			var title := public_item_title(choice) if choice else String(entry.title)
+			if choice and entry.kind == "creature": title = String(entry.title) + " · " + catalog.cut.appearance_label(entry.value, choice)
 			if choice: html = html.replace("<h1>" + WikiCatalog.esc(entry.title) + "</h1>", "<h1>" + WikiCatalog.esc(title) + "</h1>")
 			html = rename_item_links(html)
 			for internal: String in placeholder_names:
@@ -112,6 +113,7 @@ func _ready() -> void:
 				var identity := String(preview.kind) + ":" + String(preview.value)
 				if preview.has("layer"): identity += ":" + preview.mask + ":" + preview.layer
 				if preview.kind == "map": identity += ":" + str(preview.dimensions)
+				if preview.has("identity"): identity += ":" + String(preview.identity)
 				if GameData.campaign_id == CampaignProfile.ASTRAL: identity = GameData.campaign_id + ":" + identity
 				image = identity.sha256_text().substr(0, 24)
 				images[image] = preview

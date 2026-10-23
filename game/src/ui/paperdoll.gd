@@ -140,8 +140,9 @@ func show_unit(u: GameUnit) -> void:
 
 ## Same for a bare unit spec (prototype, complexion, armors, weapons).
 func show_info(info: Dictionary) -> void:
-	var key := "%s|%s|%s|%s|%s|%s" % [info.get("prototype", ""), info.get("texture", ""),
-		info.get("complexion", ""), info.get("armors", []), info.get("weapons", []), info.get("look_race", "")]
+	var key := "%s|%s|%s|%s|%s|%s|%s" % [info.get("prototype", ""), info.get("texture", ""),
+		info.get("complexion", ""), info.get("armors", []), info.get("weapons", []), info.get("look_race", ""),
+		info.get("template", "")]
 	if key == _key:
 		return
 	_key = key
@@ -194,6 +195,13 @@ func show_info(info: Dictionary) -> void:
 		_model._cycle_pos = phase
 	else:
 		_model.act("idle")
+		# A bare figure without an idle (the messenger bird has only its
+		# flight) loops its first authored clip rather than a bind pose.
+		if _model._current.is_empty() and _model.player != null:
+			for clip_name: StringName in _model.player.get_animation_list():
+				if String(clip_name).begins_with("ei/"):
+					_model.play(String(clip_name).trim_prefix("ei/"), 0.0, true)
+					break
 	for n in _model.get_children():
 		if n is EIAnimPart and n.animation_parent == null:
 			_anim_roots.append(n)

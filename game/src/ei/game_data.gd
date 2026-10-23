@@ -839,12 +839,18 @@ func use_lmp_database(on: bool) -> bool:
 func text(key: String) -> String:
 	key = key.to_lower()
 	if not _text_cache.has(key):
-		var b := texts.read(key) if texts else PackedByteArray()
-		if b.is_empty() and texts_lmp:
-			b = texts_lmp.read(key)
-		var value := EIText.ansi(b).replace("\r", "") if not b.is_empty() else ""
+		var value := archive_text(key)
 		_text_cache[key] = AstralPatches.text(key,value) if campaign_id == CampaignProfile.ASTRAL else value
 	return _text_cache[key]
+
+
+## The installed archive text, before built-in corrections or overrides.
+func archive_text(key: String) -> String:
+	key = key.to_lower()
+	var b := texts.read(key) if texts else PackedByteArray()
+	if b.is_empty() and texts_lmp:
+		b = texts_lmp.read(key)
+	return EIText.ansi(b).replace("\r", "") if not b.is_empty() else ""
 
 
 func save_settings() -> void:

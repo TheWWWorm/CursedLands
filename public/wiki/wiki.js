@@ -255,6 +255,7 @@ async function load() {
     if (token !== generation) return;
     $('#variant').replaceChildren(...page.versions.map(row => new Option(row.title, row.id)));
     $('#versions').hidden = page.versions.length < 2;
+    $('#versions label').textContent = entry.kind === 'creature' ? strings.appearance : strings.variant;
     showVersion(target.variant);
     $('#notice').textContent = location.hash.startsWith('#build=')&&!decode(location.hash.slice(7)) ? strings.invalidLink : '';
   } catch (error) {
@@ -299,7 +300,7 @@ function home(content){
     const text=el('span');text.append(el('strong',strings[label]),el('span',strings[help]));a.append(text);paths.append(a);
   }
   content.append(paths,el('h2',strings.prepareAdventure));
-  for(const [key,label,help] of [['mechanics/planning','planner','plannerIntro'],['mechanics/crafting','craftingGuide','craftingGuideHelp'],['mechanics/armor','combatGuide','combatGuideHelp']]){const a=el('a','','home-guide');a.href=href(key);a.append(el('strong',strings[label]),el('span',strings[help]));content.append(a);}
+  for(const [key,label,help] of [['mechanics/planning','planner','plannerIntro'],['mechanics/crafting','craftingGuide','craftingGuideHelp'],['mechanics/armor','combatGuide','combatGuideHelp'],['cut/overview','cutContent','cutContentHelp']]){const a=el('a','','home-guide');a.href=href(key);a.append(el('strong',strings[label]),el('span',strings[help]));content.append(a);}
 }
 
 const translations = await fetch('/wiki/i18n.json', {cache: 'no-cache'}).then(r => {

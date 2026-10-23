@@ -906,6 +906,10 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		skin = skins[skin_i] if skin_i >= 0 and skin_i < skins.size() else (skins[0] if skins.size() else "")
 		if String(unit.get("texture", "")) != "":
 			skin = String(unit.texture)
+	elif race.is_empty() and unit.has("template"):
+		# A bare figure without a race record (wiki previews of figures no
+		# race uses) names its own texture, or none at all.
+		skin = String(unit.get("texture", ""))
 	layers.append(skin.to_lower())
 	surfaces.append(SurfaceResponse.SKIN)
 

@@ -77,7 +77,11 @@ def prepare(base, astral, translations, output):
             for name in [item_base, item_base.replace(' special ', ' ')]:
                 used.add('instr ' + name.replace(' ', '_'))
     for key in sorted(used):
-        source = astral['texts'].get(key, '')
+        # Zone and quest texts are not audited; the game localizes them itself.
+        # An empty override would hide those maps and quests.
+        if key not in astral['texts']:
+            continue
+        source = astral['texts'][key]
         title, description = parts(source)
         names = translate(title, key, 0)
         descriptions = translate(description, key, 1)

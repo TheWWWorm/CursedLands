@@ -212,7 +212,10 @@
     "filterCreaturesHelp": "Filter creature markers by their translated names. Exits and quest markers stay visible.",
     "noMatchingCreatures": "No creatures match this name.",
     "mapHighlight": "Highlighted: %s",
-    "dataVersion": "Reference data: %s"
+    "dataVersion": "Reference data: %s",
+    "cutContent": "Cut content",
+    "cutContentHelp": "Models, colours, creatures and equipment that exist in the data but not in the campaign.",
+    "appearance": "Appearance"
   },
   "ru": {
     "encyclopedia": "Энциклопедия",
@@ -427,7 +430,10 @@
     "filterCreaturesHelp": "Фильтровать значки существ по именам на выбранном языке. Выходы и значки заданий остаются видимыми.",
     "noMatchingCreatures": "Существ с таким именем не найдено.",
     "mapHighlight": "Выделено: %s",
-    "dataVersion": "Версия справочных данных: %s"
+    "dataVersion": "Версия справочных данных: %s",
+    "cutContent": "Вырезанный контент",
+    "cutContentHelp": "Модели, окраски, существа и снаряжение, которые есть в данных, но не в кампании.",
+    "appearance": "Облик"
   },
   "de": {
     "encyclopedia": "Enzyklopädie",
@@ -642,6 +648,9 @@
     "filterCreaturesHelp": "Filtert Kreaturenmarkierungen nach ihren übersetzten Namen. Ausgänge und Questmarkierungen bleiben sichtbar.",
     "noMatchingCreatures": "Keine Kreaturen mit diesem Namen gefunden.",
     "mapHighlight": "Hervorgehoben: %s",
-    "dataVersion": "Referenzdaten: %s"
+    "dataVersion": "Referenzdaten: %s",
+    "cutContent": "Entfernte Inhalte",
+    "cutContentHelp": "Modelle, Färbungen, Kreaturen und Ausrüstung, die in den Daten, aber nicht in der Kampagne vorkommen.",
+    "appearance": "Aussehen"
   }
 }

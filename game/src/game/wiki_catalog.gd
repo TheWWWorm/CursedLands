@@ -5,7 +5,7 @@ extends RefCounted
 ## Pages are generated on demand as well-formed HTML fragments. WikiHtml renders
 ## the same fragments in the game without a platform-specific browser dependency.
 
-const CATEGORIES := ["All pages", "Characters", "Allods", "Maps", "Quests", "Items", "Spells", "Creatures", "Materials", "Runes", "Game mechanics"]
+const CATEGORIES := ["All pages", "Characters", "Allods", "Maps", "Quests", "Items", "Spells", "Creatures", "Materials", "Runes", "Game mechanics", "Cut content"]
 const DAMAGE_TYPES := ["Piercing", "Slashing", "Crushing", "Fire", "Acid", "Lightning", "General"]
 const ITEM_TYPES := {
 	"weapon_sword": "Swords", "weapon_axe": "Axes", "weapon_dagger": "Daggers",
@@ -43,6 +43,7 @@ var _campaign: CampaignMap
 var _quests := {}
 var _quest_zones := {}
 var knowledge: WikiKnowledge
+var cut: WikiCut
 var lore: WikiLore
 var _search_text := {}
 var _map_records := {}
@@ -124,6 +125,8 @@ func rebuild() -> void:
 		_add("creature/" + value.uri_encode(), title, "Creatures", "creature", value)
 	_prepare_items()
 	_index_world()
+	cut = WikiCut.new()
+	cut.build(self)
 	lore = WikiLore.new()
 	lore.build(self)
 	ordered.assign(entries.keys())
@@ -204,7 +207,7 @@ static func _read_map(reader: EIMob, data: PackedByteArray, start: int, end: int
 			var entry := {"kind": "UNIT"}
 			_read_map(reader, data, at + 8, at + size, kind, entry)
 			reader.objects.append(entry)
-		elif id in [EIMob.SS_TEXT, EIMob.SS_TEXT_PLAIN] or (parent == "UNIT" and id in [EIMob.OBJNAME, EIMob.UNIT_PROTOTYPE, EIMob.OBJPOSITION, EIMob.UNIT_QUEST_ITEMS, EIMob.UNIT_QUICK_ITEMS, EIMob.OBJPRIMTXTR]):
+		elif id in [EIMob.SS_TEXT, EIMob.SS_TEXT_PLAIN] or (parent == "UNIT" and id in [EIMob.OBJNAME, EIMob.UNIT_PROTOTYPE, EIMob.OBJPOSITION, EIMob.UNIT_QUEST_ITEMS, EIMob.UNIT_QUICK_ITEMS, EIMob.OBJPRIMTXTR, EIMob.UNIT_WEAPONS, EIMob.UNIT_ARMORS, EIMob.OBJTEMPLATE]):
 			reader._field(data, id, at + 8, size - 8, unit)
 		at += size
 
@@ -373,6 +376,7 @@ static func item_key(id: String) -> String:
 
 func variants_for(key: String) -> Array[String]:
 	var out: Array[String] = []
+	if entries.has(key) and entries[key].kind == "creature" and cut != null: return cut.appearance_choices(entries[key].value)
 	if not entries.has(key) or entries[key].kind != "item": return out
 	var base := String(entries[key].value)
 	out.assign(_families.get(base, [base]))
@@ -491,7 +495,7 @@ func page(key: String, variant := "") -> Dictionary:
 		"item":
 			var choices := variants_for(key)
 			if not variant in choices and not valid_item_variant(key,variant): variant = choices[0]
-			body = _item(variant)
+			body = _item(variant) + cut.item_html(entry.value)
 			preview = {"kind": "item", "value": variant}
 		"material":
 			body = _material(entry.value)
@@ -503,8 +507,20 @@ func page(key: String, variant := "") -> Dictionary:
 			body = _rune(entry.value)
 			preview = {"kind": "item", "value": "rune:" + entry.value}
 		"creature":
-			body = _creature(entry.value)
+			# Map colours other than the most frequent one are page versions.
+			var choices := variants_for(key)
+			if not variant in choices: variant = choices[0] if not choices.is_empty() else ""
+			body = _creature(entry.value) + cut.creature_html(entry.value)
 			preview = {"kind": "creature", "value": entry.value, "appearance": creature_appearance(entry.value)}
+			var identity: Array[String] = []
+			var figure := cut.template_for(entry.value)
+			if figure:
+				preview.appearance.template = figure
+				identity.append(figure)
+			if variant:
+				preview.appearance.texture = variant
+				if variant != choices[0]: identity.append(variant)
+			if not identity.is_empty(): preview.identity = ":".join(identity)
 		"character", "allod":
 			body = lore.html(key)
 			preview = lore.model(key)
@@ -520,6 +536,10 @@ func page(key: String, variant := "") -> Dictionary:
 					preview.caption = RemakeText.t("Location: %s") % entries["map/" + location.uri_encode()].title
 					break
 		"mechanics": body = _mechanics(entry.value)
+		"cut", "cut_figure", "cut_palette", "figure":
+			var section := cut.page(entry)
+			body = section.body
+			preview = section.preview
 	body += knowledge.html(key) if knowledge != null else ""
 	var model := ""
 	if not preview.is_empty():

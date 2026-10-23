@@ -135,6 +135,12 @@ for filename in ['ui/wiki_planner.gd','ui/wiki_panel.gd','ui/wiki_camp_construct
     source=(ROOT / filename).read_text()
     for match in re.finditer(r'for (?:field|pair|family): Array in (\[\[.*?\]\]):',source):
         wiki_keys.update(row[1] for row in json.loads(match[1]))
+cut_source=(ROOT / 'game/wiki_cut.gd').read_text()
+for table in ('ENGINE_FIGURES','FIGURES','PALETTES','SPECIES'):
+    block=cut_source.split('const '+table+' := {',1)[1].split('\n}' if table=='FIGURES' else '}\n',1)[0]
+    wiki_keys.update(json.loads(m[1]) for m in re.finditer(r'(?:"(?:title|text)"|"[A-Za-z0-9]+")\s*:\s*('+STRING+r')',block) if not json.loads(m[1]).startswith(('bird','un')))
+for match in re.finditer(r'sections\.append\(\[('+STRING+r'), ('+STRING+r')',cut_source):
+    wiki_keys.update([json.loads(match[1]),json.loads(match[2])])
 home_source=(ROOT / 'ui/wiki_home.gd').read_text()
 for match in re.finditer(r'for row: Array in (\[\[.*?\]\]):',home_source):
     for row in json.loads(match[1]):wiki_keys.update(row[1:])

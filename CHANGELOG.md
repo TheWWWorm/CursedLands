@@ -3,6 +3,8 @@
 ## Unreleased
 
 - Show creatures in the public web wiki with their original colour variants, as the in-game wiki does since 1.25.0: black boars, black unicorns, white wolves and horses, coloured dryads, succubi and banshees, spotted leopards and the map-authored looks of Lost in Astral creatures.
+- Add a **Cut content** section to the in-game and web wiki for each campaign. It lists original creature models, colours, creature variants and weapons and armour that the data contains but no map, trader, script or quest uses, such as the black and dark blue lizards and the unfinished beast and early ogre figures in Cursed Lands. Creatures that maps place in several colours now show each one as a version of their article with its locations, Lost in Astral creatures show the figure their maps give them, and the messenger bird has its own article.
+- Restore the Lost in Astral wiki histories for Dar-Ulgorn, Jigran, the baron, Uncle Rad and the hero, which stopped appearing after the official 1.02 journal corrections were included.
 
 ## 1.25.0 — 2026-10-23
 

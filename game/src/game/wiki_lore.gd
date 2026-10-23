@@ -39,7 +39,11 @@ func matches(section: Dictionary) -> bool:
 	return true
 
 func source_text(key: String) -> String:
-	if not sources[key].has("script"): return GameData.text(key)
+	if not sources[key].has("script"):
+		# Built-in LiA 1.02 corrections replace a few journal texts. The
+		# history still follows the original text they correct.
+		if AstralPatches.DATA.texts.has(key) and GameData.campaign_id == CampaignProfile.ASTRAL: return GameData.archive_text(key)
+		return GameData.text(key)
 	var name: String = sources[key].script
 	if not _script_cache.has(name):
 		_script_cache[name] = catalog.map_records(name).script_text

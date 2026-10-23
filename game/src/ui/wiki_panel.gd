@@ -53,6 +53,7 @@ var _ui_scale := -1.0
 var _title: Label
 var _versions: ScrollOptionButton
 var _version_block: VBoxContainer
+var _version_title: Label
 var _selected_versions := {}
 var _model_title: Label
 var _rotate_buttons: Array[Button] = []
@@ -158,7 +159,7 @@ func _ready() -> void:
 	_import_text=LineEdit.new();_import_text.placeholder_text=RemakeText.t("Paste a build link and press Enter");_import_text.max_length=26000;_import_text.text_submitted.connect(_import_plan);article_column.add_child(_import_text)
 	_planner=WikiPlanner.new();_planner.size_flags_vertical=Control.SIZE_EXPAND_FILL;_planner.article_requested.connect(func(key,variant):navigate(key,true,variant));_planner.craft_requested.connect(_craft_equipment);article_column.add_child(_planner)
 	_version_block=VBoxContainer.new();article_column.add_child(_version_block)
-	var version_title := Label.new();version_title.text=RemakeText.t("Material / version");version_title.add_theme_font_size_override("font_size",13);_version_block.add_child(version_title)
+	_version_title = Label.new();_version_title.text=RemakeText.t("Material / version");_version_title.add_theme_font_size_override("font_size",13);_version_block.add_child(_version_title)
 	_versions=ScrollOptionButton.new();_versions.fit_to_longest_item=false;_versions.item_selected.connect(func(i):navigate(current,false,String(_versions.get_item_metadata(i))));_version_block.add_child(_versions)
 	_article=RichTextLabel.new();_article.bbcode_enabled=true;_article.selection_enabled=true;_article.size_flags_vertical=Control.SIZE_EXPAND_FILL;_article.size_flags_horizontal=Control.SIZE_EXPAND_FILL;_article.custom_minimum_size=Vector2(100,70);_article.add_theme_constant_override("line_separation",5);_article.meta_clicked.connect(func(meta):follow_link(str(meta)));article_column.add_child(_article)
 	_preview_box=VBoxContainer.new();_preview_box.add_theme_constant_override("separation",10);_content.add_child(_preview_box)
@@ -463,10 +464,12 @@ func _fill_versions(key: String, selected: String) -> void:
 	var choices := catalog.variants_for(key)
 	_version_block.visible = choices.size() > 1
 	if choices.size() <= 1: return
+	_version_title.text = RemakeText.t("Appearance") if catalog.entries[key].kind == "creature" else RemakeText.t("Material / version")
 	for id: String in choices:
 		var label := RemakeText.t("Blueprint") if id.begins_with("bp:") else catalog.display_item_title(id)
 		var info := Items.info(id)
 		if not id.begins_with("bp:") and not info.mat.is_empty():label=WikiCatalog.item_title(Items.material_unit(info.material))
+		if catalog.entries[key].kind == "creature": label = catalog.cut.appearance_label(catalog.entries[key].value, id)
 		_versions.add_item(label);_versions.set_item_metadata(_versions.item_count-1,id)
 		if id == Items.plain(selected):_versions.select(_versions.item_count-1)
 

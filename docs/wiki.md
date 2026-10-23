@@ -156,6 +156,34 @@ the standard setting, called Normal in some editions. Network play uses that
 setting before additional co-op scaling. These exceptions are explained in the
 article; the wiki does not pretend to simulate a particular live creature.
 
+## Colour variants and cut content
+
+When maps place the same creature in more than one colour, its article lists
+each **Appearance** with the maps that use it. Choose one in the version selector
+to see that colour in the model; the most frequent colour remains the default.
+Figures that the game draws without a creature record, such as the messenger
+bird that arrives when a quest is completed, have their own creature articles.
+
+The **Cut content** category lists original data that the selected campaign
+does not use. `WikiCut` calculates it from the loaded databases, archives and
+every map in the campaign's `maps` folder, including side-quest and multiplayer
+maps and their scripts, so it changes with data mods and differs between the two
+campaigns. It contains:
+
+- creature figures that no race record, map or game effect uses, with a live
+  preview when the figure's format can be read;
+- creature colours in the texture archive that no map record uses, shown on a
+  representative creature. Colours that Trials reuses for ranked recruits say so;
+- creature types whose textures exist but whose model is missing;
+- creature variants that no map places and no map script names;
+- weapons and armour that no trader, map record, placed creature, script or
+  quest reward provides. Their item articles carry the same notice.
+
+These lists describe the authored data. A script could still create something
+in an unusual way, and the wiki does not speculate about what was planned. The
+names of unused figures and the two lizard colours were checked visually; other
+unused colours use the species name and a number.
+
 ## Build planning and sharing
 
 Use **Add to plan** on equipment and constructed-spell articles, then open
