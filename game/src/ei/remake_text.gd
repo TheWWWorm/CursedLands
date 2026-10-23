@@ -2356,6 +2356,8 @@ const TEXTS := {
 	"Skilled brigand": ["Опытный разбойник", "Erfahrener Bandit"],
 	"Skilled female brigand": ["Опытная разбойница", "Erfahrene Banditin"],
 	"Snow elemental (big)": ["Элементаль снега (большой)", "Schnee-Element (Groß)"],
+	"Earth elemental": ["Элементаль земли", "Erd-Element"],
+	"Lava elemental": ["Элементаль лавы", "Lava-Element"],
 	"Snow elemental (medium)": ["Элементаль снега (средний)", "Schnee-Elemente"],
 	"Snow elemental (small)": ["Элементаль снега (маленький)", "Schnee-Element (Klein)"],
 	"Veteran battle mage": ["Боевой маг-ветеран", "Kampfmagier (Veteran)"],

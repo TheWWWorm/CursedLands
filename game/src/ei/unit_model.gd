@@ -337,7 +337,8 @@ static func create(unit: Dictionary, ui_preview := false, initial_action := true
 	unit = CampaignState.map_unit_record(unit)
 	var db := GameData.db
 	var proto := db.find("monster_prototypes", unit.get("prototype", unit.get("parent_template", "")))
-	var race := db.find("race_models", proto.get("base_race", ""))
+	# Autochess rank looks may show an interchangeable rig (ArenaAppearance).
+	var race := db.find("race_models", unit.get("look_race", proto.get("base_race", "")))
 	var tmpl: String = unit.get("template", "")
 	if tmpl.is_empty():
 		tmpl = String(race.get("mask", "")).to_lower()

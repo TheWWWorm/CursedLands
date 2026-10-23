@@ -19,16 +19,22 @@ func _ready() -> void:
 			var base := ArenaAppearance.info(id)
 			var shown := ArenaAppearance.info(id, family, rank)
 			var proto := GameData.db.find("monster_prototypes", id)
-			var race := GameData.db.find("race_models", proto.base_race)
+			var own_race := GameData.db.find("race_models", proto.base_race)
+			var race := GameData.db.find("race_models", shown.get("look_race", proto.base_race))
+			if shown.has("look_race"):
+				check(not race.is_empty() and race.mask != own_race.mask, "rank figure is another original rig %d:%d" % [family, rank])
+				for key in ["speeds", "anim_speeds", "attack_distance", "head", "torso", "left_arm", "right_arm", "left_leg", "right_leg"]:
+					check(race.get(key) == own_race.get(key), "rank figure keeps %s %d:%d" % [key, family, rank])
+				check(rig({"prototype": id, "look_race": shown.look_race}) == rig({"prototype": id}), "rank figure has the same parts and clip lengths %d:%d" % [family, rank])
 			var textures: Array[String] = []
 			for compatible: Dictionary in GameData.db.tables.race_models:
 				if compatible.mask == race.mask:
 					for texture: String in compatible.textures: textures.append(texture.to_lower())
-			check(shown.prototype == id and shown.keys().all(func(key): return key in ["prototype", "texture"]), "appearance changes only native texture %d:%d" % [family, rank])
+			check(shown.prototype == id and shown.keys().all(func(key): return key in ["prototype", "texture", "look_race"]), "appearance changes only native texture or rig %d:%d" % [family, rank])
 			if shown.has("texture"):
 				check(shown.texture in textures, "palette belongs to original rig %d:%d" % [family, rank])
 				check(GameData.textures.has(shown.texture + ".mmp"), "native palette exists %d:%d" % [family, rank])
-			if not ArenaAppearance.RANK_PALETTES.has(family): check(shown == base, "single-palette recruit remains native %d:%d" % [family, rank])
+			if not ArenaAppearance.RANK_PALETTES.has(family) and not ArenaAppearance.RANK_RACES.has(family): check(shown == base, "single-palette recruit remains native %d:%d" % [family, rank])
 			check(ArenaAppearance.info(id, -1, rank) == base, "creeps keep native appearance %d:%d" % [family, rank])
 			check(ArenaAppearance.info(id, (family+1)%28, rank) == base, "mismatched family cannot recolour creep %d:%d" % [family, rank])
 			check(ArenaPortraits.texture(id, family, rank) != null, "rank portrait exists %d:%d" % [family, rank])
@@ -48,6 +54,8 @@ func _ready() -> void:
 			run.arrange()
 			var saved := run.snapshot()
 			check(restore.restore(saved) and restore.snapshot() == saved, "original canonical save identity round-trips %d:%d" % [family,rank])
+	for family: int in ArenaAppearance.RANK_RACES:
+		check(not ArenaAppearance.same(ArenaAppearance.info(ArenaRules.prototype(family,0),family,0), ArenaAppearance.info(ArenaRules.prototype(family,2),family,2)), "three stars have a distinct native rig %d" % family)
 	for family: int in ArenaAppearance.RANK_PALETTES:
 		check(ArenaAppearance.RANK_PALETTES[family][0] != ArenaAppearance.RANK_PALETTES[family][2], "three stars have a distinct native palette %d" % family)
 		check(ArenaPortraits.texture(ArenaRules.prototype(family,0),family,0) != ArenaPortraits.texture(ArenaRules.prototype(family,2),family,2), "three-star portrait has its own resource %d" % family)
@@ -100,3 +108,14 @@ func record(battle: ArenaPveMatch, unit: GameUnit) -> Dictionary:
 	result.online_body = ArenaOnlineGame.exact_body(unit)
 	result.placement = unit.get_meta("arena_placement", {}).duplicate(true)
 	return result
+
+
+## Part names and every clip's length of a built figure.
+func rig(record: Dictionary) -> Dictionary:
+	var model := EIUnitModel.create(record, true)
+	var out := {"parts": model.find_children("*", "MeshInstance3D", true, false).map(func(mesh): return String(mesh.get_parent().name))}
+	out.parts.sort()
+	if model.player:
+		for clip in model.player.get_animation_list(): out[clip] = snappedf(model.player.get_animation(clip).length, 0.001)
+	model.free()
+	return out

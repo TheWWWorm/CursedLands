@@ -304,7 +304,7 @@ func _placement_key(placement: Dictionary) -> String:
 
 static func _same_appearance(unit: GameUnit, placement: Dictionary) -> bool:
 	var appearance := ArenaAppearance.placement_info(placement)
-	return unit.info.prototype == appearance.prototype and unit.info.get("texture", "") == appearance.get("texture", "")
+	return ArenaAppearance.same(unit.info, appearance)
 
 
 ## Moving one creature must not recreate the others or restart their clips.
@@ -632,7 +632,7 @@ func apply_board(data: Dictionary) -> void:
 			var unit: GameUnit = world.units.get(uid)
 			var previous_point: Vector2 = unit.get_meta("arena_placement", {}).get("point", Vector2.INF) if unit else Vector2.INF
 			var origin := unit.pos if unit and same_board else Vector2.INF
-			if unit and (unit.info.prototype != record.prototype or unit.info.get("texture", "") != record.get("texture", "")):
+			if unit and not ArenaAppearance.same(unit.info, record):
 				formation_motion.forget(unit)
 				world.remove_unit(unit); unit = null
 			var created := unit == null

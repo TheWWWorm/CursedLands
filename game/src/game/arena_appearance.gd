@@ -28,12 +28,21 @@ const RANK_PALETTES := {
 	10: ["lizardman00", "lizardman01", "lizardman02"],
 	11: ["driad00", "driad01", "driad02"],
 	14: ["troll01", "troll00", "troll02"],
-	15: ["ogre00", "ogre00", "ogre01"],
+	15: ["ogre00", "ogre01", "ogre02"],
 	16: ["succubus00", "succubus01", "succubus02"],
 	18: ["beholder02", "beholder02", "beholder01"],
 	19: ["banshee00", "banshee00", "banshee01"],
 	20: ["unicorn00", "unicorn00", "unicorn01"],
 	23: ["dragon00", "dragon01", "dragon02"],
+}
+
+## Interchangeable original rigs: the same parts, clips and clip lengths,
+## locomotion and reach as the recruit's own race, so only the figure and its
+## palette change (earth, lava and ice elementals; Gipat and Hadagan ogres).
+## Empty entries keep the recruit's own race.
+const RANK_RACES := {
+	15: ["", "", "OgreHadagan"],
+	22: ["Elemental Earth", "Elemental Lava", ""],
 }
 
 ## Use original localized variant names where the old name specifies a colour
@@ -45,10 +54,12 @@ const RANK_NAMES := {
 	7: ["", "", "tigerwhitef10"],
 	11: ["", "driadsnowa9", "driaddarka11"],
 	14: ["trollgreenf10", "", "trollblackslowf16"],
+	15: ["", "", "ogrehadaganf17"],
 	16: ["", "succubbluem10", "succubgreym13"],
 	18: ["", "", "evileyegreenm17"],
 	19: ["bansheelightm5", "bansheelightm7", ""],
 	20: ["", "", "unicornblackm15"],
+	22: ["elementalearthf8", "elementallavaf12", ""],
 	23: ["dragongreenm12", "dragonbluem14", ""],
 }
 
@@ -66,7 +77,14 @@ static func info(id: String, family := -1, rank := 0) -> Dictionary:
 			break
 	if _recruit(id, family, rank) and RANK_PALETTES.has(family):
 		result.texture = RANK_PALETTES[family][rank]
+	if _recruit(id, family, rank) and RANK_RACES.has(family) and not String(RANK_RACES[family][rank]).is_empty():
+		result.look_race = RANK_RACES[family][rank]
 	return result
+
+## Whether a figure built from record `a` already shows appearance `b`.
+static func same(a: Dictionary, b: Dictionary) -> bool:
+	return a.get("prototype") == b.get("prototype") and a.get("texture", "") == b.get("texture", "") \
+		and a.get("look_race", "") == b.get("look_race", "")
 
 static func preview(id: String, family := -1, rank := 0) -> Dictionary:
 	return {"kind":"creature", "value":id, "appearance":info(id, family, rank)}
