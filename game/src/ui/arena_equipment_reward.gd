@@ -69,7 +69,7 @@ func _ready() -> void:
 	description.add_theme_constant_override("line_separation", 2)
 	description.text = _effect_text()
 	column.add_child(description)
-	_action = _label(column, RemakeText.t("Choose item") + "  →", 15, ArenaCreatureCard.GOLD)
+	_action = _label(column, RemakeText.t("Choose item"), 15, ArenaCreatureCard.GOLD)
 	_action.name = "ChooseAction"
 	_action.add_theme_font_override("font", BOLD)
 	_action.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

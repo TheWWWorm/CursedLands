@@ -1543,7 +1543,7 @@ func issue(cmd: Dictionary) -> void:
 	# answers for every unit given the order (per unit
 	# (code), net message 0xb to
 	# the unit's player); Follow is said client side by every selected unit
-	if ORDER_ACKS.has(t) and world:
+	if ORDER_ACKS.has(t) and t != "cast" and world:
 		var ids: Array = cmd.get("units", [])
 		if ids.is_empty():
 			ids = [int(cmd.get("unit", -1))]

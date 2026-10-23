@@ -24,9 +24,10 @@ func _ready() -> void:
 	var enemy:=body(at,900002,false);enemy.faction=1;hero.faction=0
 	s.world.set_relation(0,1,2)
 	s.world.set_relation(1,0,2)
-	var fx:=ParticleFx.of(s.world)
+	var world_fx:=ParticleFx.of(s.world)
+	var fx:=ParticleFx.for_order_marks(s.world)
 	get_tree().paused=true
-	var time:=s.world.time;var pos:=hero.pos;var mana:=hero.mana;var hp:=hero.hp;var ticks:=fx.tick
+	var time:=s.world.time;var pos:=hero.pos;var mana:=hero.mana;var hp:=hero.hp;var ticks:=world_fx.tick
 	for attack in [false,true]:
 		reset()
 		var before:=fx.effects.duplicate()
@@ -43,7 +44,7 @@ func _ready() -> void:
 			if DisplayServer.get_name()!="headless":
 				await frames(3)
 				check(marks[0].mmi!=null and marks[0].mmi.multimesh.visible_instance_count>0,"paused path reaches rendered instance buffer")
-		check(hero.pos==pos and hero.mana==mana and hero.hp==hp and s.world.time==time and fx.tick==ticks,"preview does not advance actor, world or effects clocks")
+		check(hero.pos==pos and hero.mana==mana and hero.hp==hp and s.world.time==time and world_fx.tick==ticks,"preview does not advance actor, world or effects clocks")
 	get_tree().paused=false
 	mode="issues 13 and 14"
 	for aggressive in [false,true]:

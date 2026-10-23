@@ -119,7 +119,7 @@ func _show(u: GameUnit, at: Vector2, a: int, b: int, ticks: PackedVector3Array, 
 	if not GameData.option("show_path"):
 		return
 	var w := game.world
-	var fx := ParticleFx.of(w)
+	var fx := ParticleFx.for_order_marks(w)
 	if fx == null:
 		return
 	for old in _paused_marks.get(u.uid, []):

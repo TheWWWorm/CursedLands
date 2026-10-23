@@ -16,6 +16,7 @@ extends Node
 const CHANNELS := 15
 const CAT_SFX := 0
 const CAT_SPEECH := 1
+const CAT_UI := 2
 ##   each 55 ms tick. Only its random-source
 ## branch is gated by GetTickCount() - previous > 99.
 const SERVICE := 0.055
@@ -42,6 +43,17 @@ var right_dir := Vector2(1, 0)
 ## Category volume factor (0 or 1): sets the SFX volume to 0 for
 ## a zone load and restores it on world tick 10.
 var sfx_on := true
+## Shop pages suppress the world mix while retaining loops for the return.
+var world_muted := false:
+	set(value):
+		if world_muted == value: return
+		world_muted = value
+		for channel in _chans:
+			if channel.handle < 0: continue
+			if value and int(channel.snd.cat) != CAT_UI and not channel.snd.loop:
+				stop(channel.handle)
+			else:
+				_apply(channel)
 ## Dungeon reverb ((0.3, 1.0, 3.0) when world == 1).
 var reverb := false
 ## Random sources (16 slots of 0x38 bytes).
@@ -134,6 +146,7 @@ func play_stream2d(stream: AudioStream, prio: int, vol: float, pan: float, cat :
 
 
 func _start(s: Dictionary) -> int:
+	if world_muted and int(s.cat) != CAT_UI and not s.loop: return -1
 	if not s.has("stream"):
 		var stream := EIAudio.sfx(String(s.path))
 		if stream == null:
@@ -148,6 +161,10 @@ func _start(s: Dictionary) -> int:
 	s.handle = h
 	if suspended and s.loop:   # starts with the zone's other loops on resume()
 		_held[h] = s
+		return h
+	if world_muted and int(s.cat) != CAT_UI:
+		s.at = 0.0
+		_virtual[h] = s
 		return h
 	var ci := _alloc(int(s.prio))
 	# the channel is taken first (a lower
@@ -427,6 +444,7 @@ func screen_pan(d: Vector2) -> float:
 ## category volume (sound manager SFX / speech, the Options
 ## volumes; SFX 0 during a zone load) × 0.0127), 0..127.
 func _miles(s: Dictionary) -> int:
+	if world_muted and int(s.cat) != CAT_UI: return 0
 	var cat := 0.0
 	if int(s.cat) == CAT_SPEECH:
 		cat = GameData.option("volume_voice")
@@ -452,7 +470,7 @@ func _apply(c: Chan) -> void:
 	else:
 		v = float(s.vol) * (_cam_fade() if s.cam else 1.0)
 		pan = float(s.pan)
-	if int(s.cat) == CAT_SFX and not sfx_on:
+	if (int(s.cat) != CAT_SPEECH and not sfx_on) or (world_muted and int(s.cat) != CAT_UI):
 		v = 0.0
 	var category: float = GameData.option("volume_voice" if int(s.cat) == CAT_SPEECH else "volume_sfx")
 	var controls := miles_controls(v, pan, category)
@@ -500,6 +518,7 @@ func _restore_virtual() -> void:
 	var order := _virtual.values()
 	order.sort_custom(func(a, b): return int(a.prio) > int(b.prio))
 	for s: Dictionary in order:
+		if world_muted and int(s.cat) != CAT_UI: continue
 		var free := -1
 		for i in _chans.size():
 			if _chans[i].handle < 0:

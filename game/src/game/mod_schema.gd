@@ -14,7 +14,7 @@ const RESOURCE_ARCHIVES := ["textures.res", "redress.res"]
 ## Rules added after API 1 saves shipped. Missing entries retain these defaults.
 const ADDED_DEFAULTS := {"free_run": 0, "stamina_regen": 0, "armor_formula": 0}
 const RULES := {
-	"difficulty": ["Difficulty", ["Normal", "Easy"], "new_game"],
+	"difficulty": ["Difficulty", ["Normal", "Easy"], "live"],
 	"unit_fog": ["Unit visibility", ["Off", "On"], "new_game"],
 	"start_zones": ["Revisit starting areas", ["Off", "On"], "new_game"],
 	"sp_full_xp": ["Experience distribution", XpRules.CHOICES, "camp"],

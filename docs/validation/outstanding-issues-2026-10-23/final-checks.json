@@ -1,0 +1,121 @@
+[
+  {
+    "profile": "shader-quiet-screen",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/shader-quiet-screen/run.log",
+    "checks": 380,
+    "failures": 0,
+    "summary": "SHADER_COMPILATION_SCREEN 380 checks 0 failures"
+  },
+  {
+    "profile": "shader-quiet-arena-final",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/shader-quiet-arena-final/run.log",
+    "checks": 27,
+    "failures": 0,
+    "summary": "SHADER_COMPILATION_ARENA 27 checks 0 failures"
+  },
+  {
+    "profile": "fsr-final-quiet",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/fsr-final-quiet/run.log",
+    "checks": 64,
+    "failures": 0,
+    "summary": "FSR_TRANSITIONS 64 checks 0 failures"
+  },
+  {
+    "profile": "menu-return-quiet-final",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/menu-return-quiet-final/run.log",
+    "checks": 29,
+    "failures": 0,
+    "summary": "MENU_LOADING_SCREEN 29 checks 0 failures"
+  },
+  {
+    "profile": "remaining-localization-final",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/remaining-localization-final/run.log",
+    "checks": 45,
+    "failures": 0,
+    "summary": "OUTSTANDING_UI_ISSUES 45 checks 0 failures"
+  },
+  {
+    "profile": "shop-filter-retention",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/shop-filter-retention/run.log",
+    "checks": 116,
+    "failures": 0,
+    "summary": "CAMP_INVENTORY_UI {\"checks\":116,\"failures\":0}"
+  },
+  {
+    "profile": "village-fixes-final",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/village-fixes-final/run.log",
+    "checks": 68,
+    "failures": 0,
+    "summary": "VILLAGE_CAMERA_TRANSITION 68 checks 0 failures"
+  },
+  {
+    "profile": "worker-live-rules",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/worker-live-rules/run.log",
+    "checks": 28,
+    "failures": 0,
+    "summary": "LOCAL_HOST_PLAY_CLOCK 28 checks 0 failures"
+  },
+  {
+    "profile": "dialogue-clock-coop-verified",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/dialogue-clock-coop-verified/run.log",
+    "checks": 12,
+    "failures": 0,
+    "summary": "DIALOGUE_CLOCK_COOP 12 checks 0 failures"
+  },
+  {
+    "profile": "arena-equipment-localization",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/arena-equipment-localization/run.log",
+    "checks": 714,
+    "failures": 0,
+    "summary": "ARENA_EQUIPMENT_LOCALIZATION checks=714 failures=[]"
+  },
+  {
+    "profile": "arena-procs-without-labels",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/arena-procs-without-labels/run.log",
+    "checks": 23,
+    "failures": [],
+    "summary": "ARENA_EQUIPMENT_NATIVE_VISUAL"
+  },
+  {
+    "profile": "arena-final-ru",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/arena-final-ru/run.log",
+    "checks": 69,
+    "failures": 0,
+    "summary": "ARENA_EQUIPMENT_UI ru (1280, 720) 69 checks; failures=[]"
+  },
+  {
+    "profile": "arena-items-de",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/arena-items-de/run.log",
+    "checks": 68,
+    "failures": 0,
+    "summary": "ARENA_EQUIPMENT_UI de (1280, 720) 68 checks; failures=[]"
+  },
+  {
+    "profile": "mod-rules-final",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/mod-rules-final/run.log",
+    "checks": 87,
+    "failures": 0,
+    "summary": "MOD_PROFILES {\"checks\":87,\"details\":[],\"failures\":0}"
+  },
+  {
+    "profile": "audio-routing-final",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/audio-routing-final/run.log",
+    "checks": 2,
+    "failures": 0,
+    "summary": "AUDIO_BUS_ROUTES {\"checks\":2,\"failures\":0}"
+  },
+  {
+    "profile": "footprints-current",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/footprints-current/run.log",
+    "checks": 15,
+    "failures": 0,
+    "summary": "FOOTPRINT_RUNNING_SCENE checks=15 failures=0 generated=93"
+  },
+  {
+    "profile": "arena-controller-verified",
+    "log": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/arena-controller-verified/run.log",
+    "checks": 74,
+    "failures": 0,
+    "summary": "ARENA_EQUIPMENT_UI en (1280, 720) 74 checks; failures=[]"
+  }
+]

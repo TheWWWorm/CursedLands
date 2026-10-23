@@ -253,6 +253,10 @@ func _process(dt: float) -> void:
 		# ): no world ticks, no combat flag, no zone music rules.
 		return
 	_update_listener()
+	# This node also serves UI music while paused. World ambience, weather
+	# and creature clocks still belong to the paused simulation.
+	if not w.can_process():
+		return
 	if units:
 		units.tick()
 	if spells:
@@ -295,9 +299,11 @@ func _screens() -> void:
 		return
 	var shop: bool = hud._inventory != null and hud._inventory.visible \
 		and hud._inventory._camp != null and hud._inventory._camp.visible
+	mixer.world_muted = shop
 	if shop != _shop_was:
 		_shop_was = shop
 		if shop:
+			_silence_chatter()
 			music.set_constructor()
 		elif _on_map:
 			music.set_none()
@@ -321,6 +327,12 @@ func dialogue_active() -> bool:
 	var hud := game.hud if game else null
 	return hud != null and hud._dialog != null and hud._dialog.visible \
 		and hud._dialog._mode in [DialogPanel.PLAYING, DialogPanel.LAST]
+
+
+func chatter_blocked() -> bool:
+	var hud := game.hud if game else null
+	return dialogue_active() or (hud != null and hud._inventory != null \
+		and hud._inventory.visible and hud._inventory._camp != null and hud._inventory._camp.visible)
 
 
 func _silence_chatter() -> void:
@@ -607,9 +619,9 @@ func _script_fx(f: String, a: Array) -> void:
 # ------------------------------------------------------------------ one-shots
 
 ## A UI sound: (wav, priority 1000, volume 100
-## pan 0, no loop, no camera fade, category 0).
+## pan 0, no loop, no camera fade; remains audible on shop pages).
 func ui(path: String) -> void:
-	mixer.play2d(path, 1000, 100, 0)
+	mixer.play2d(path, 1000, 100, 0, false, false, SoundMixer.CAT_UI)
 
 
 ## Unit voices and steps come from the animation clips (UnitSounds); these
@@ -660,6 +672,7 @@ static func ack(u: GameUnit, code: int) -> void:
 	# a named unit crawling or kneeling (unit
 	#  < 2) answers quietly: its positive answers (0..5, 7..0xa) use
 	# the 0x27 lines, its refusals (0xb..0x13, 0x1d) the 0x28 lines.
+	var order_code := code
 	if Combat.named(u) and u.stance != GameUnit.STANCE_NONE:
 		if code in [0, 1, 2, 3, 4, 5, 7, 8, 9, 0xa]:
 			code = EIAcks.SHOP_YES
@@ -681,7 +694,7 @@ static func ack(u: GameUnit, code: int) -> void:
 		print("[ack] %s code 0x%x lines %d -> %s" % [u.display_name, code, ls.size(), l.get("wav", "-")])
 	if l.is_empty():
 		return
-	instance._ack_queue(u, code, String(l.wav))
+	instance._ack_queue(u, code, String(l.wav), order_code)
 
 
 ## the context a Bored line's mask must hold: the unit's gait
@@ -708,7 +721,7 @@ func bored_context(u: GameUnit) -> int:
 ## net handler, unit). Approx.: "acts" = the remake unit is
 ## not idle, rather than the native post-action dispatcher's return value.
 func _bored_tick() -> void:
-	if dialogue_active(): return
+	if chatter_blocked(): return
 	for u: GameUnit in _world.unit_rows():
 		if not is_instance_valid(u) or u.dead or u.controller < 0 or not u.has_meta("hero"):
 			continue
@@ -765,22 +778,28 @@ static func voice_name(u: GameUnit) -> String:
 ## queue plays the line at once, else it waits for its turn (counter 3 ticks
 ## once it is first). A "say_block" line (0x2b) blocks the
 ## unit's orders from the moment it is queued first until it ends.
-func _ack_queue(u: GameUnit, code: int, wav: String) -> void:
-	if code not in [EIAcks.SCENARIO, 0x2b] and dialogue_active(): return
+func _ack_queue(u: GameUnit, code: int, wav: String, order_code := -1) -> void:
+	if code not in [EIAcks.SCENARIO, 0x2b] and chatter_blocked(): return
+	if order_code < 0: order_code = code
 	var q: Array = _ack_q.get(u.uid, [])
-	var drop: Array = ACK_REPLACES.get(code, [])
-	q = q.filter(func(e): return not (int(e.code) in drop))
+	var drop: Array = ACK_REPLACES.get(order_code, [])
+	# Removing a queue record alone leaves its already playing voice alive.
+	# Keep the order identity even when crouching selects a quieter line.
+	for old: Dictionary in q:
+		if int(old.get("order_code", old.code)) in drop:
+			mixer.stop(int(old.handle))
+	q = q.filter(func(e): return not (int(e.get("order_code", e.code)) in drop))
 	# a finished say_block line clears the flag as it leaves.
 	for e in q:
 		if bool(e.block) and int(e.handle) >= 0 and not mixer.playing(int(e.handle)):
 			u.blocked = false
 	q = q.filter(func(e): return int(e.handle) < 0 or mixer.playing(int(e.handle)))
-	if not q.is_empty() and not (code in ACK_URGENT):
+	if not q.is_empty() and not (order_code in ACK_URGENT):
 		_ack_q[u.uid] = q
 		if SoundMixer.trace or trace_acks:
 			print("[ack] %s 0x%x dropped: a line is pending" % [u.display_name, code])
 		return
-	var e := {"u": u, "wav": wav, "code": code, "counter": 3, "handle": -1, "block": code == 0x2b}
+	var e := {"u": u, "wav": wav, "code": code, "order_code": order_code, "counter": 3, "handle": -1, "block": code == 0x2b}
 	if q.is_empty():
 		e.counter = 0
 		if e.block:
@@ -830,7 +849,7 @@ func _on_item_worn(u: GameUnit, _item: String, kind: String) -> void:
 func _ack_play(e: Dictionary) -> void:
 	var u: GameUnit = e.u
 	var code := int(e.code)
-	if code not in [EIAcks.SCENARIO, 0x2b] and dialogue_active(): return
+	if code not in [EIAcks.SCENARIO, 0x2b] and chatter_blocked(): return
 	if (code == 2 or code == 0x1c) and units and units.attack_playing(u):
 		if trace_acks:
 			print("[ack] %s 0x%x %s skipped: attack sound playing" % [u.display_name, code, e.wav])

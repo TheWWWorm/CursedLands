@@ -1,5 +1,5 @@
 extends Node
-## Reusing a sample channel alternates speech/SFX routing while the native
+## Reusing a sample channel alternates speech/SFX/UI routing while the native
 ## audio thread mixes it. No silent/disabled mixer shortcut is used.
 var checks := 0
 var failures := 0
@@ -18,12 +18,12 @@ func _ready() -> void:
 	var swaps := 0; var wrong := 0
 	for frame in 300:
 		for i in 200:
-			sound.cat=i%2
+			sound.cat=i%3
 			mixer._bind(chan,sound,0.0)
-			if AudioServer.get_bus_send(AudioServer.get_bus_index(chan.bus))!=(&"Voice" if i%2 else &"SFX"): wrong+=1
+			if AudioServer.get_bus_send(AudioServer.get_bus_index(chan.bus))!=(&"Voice" if sound.cat==SoundMixer.CAT_SPEECH else &"SFX"): wrong+=1
 			swaps+=1
 		await get_tree().process_frame
-	check(swaps==60000 and wrong==0,"60,000 live sample reuses retain their requested speech/SFX destination")
+	check(swaps==60000 and wrong==0,"60,000 live sample reuses retain their requested speech/SFX/UI destination")
 	check(AudioServer.get_bus_send(0)==&"" and AudioServer.get_bus_send(AudioServer.get_bus_index("SFX"))==&"Master", "sample rerouting leaves the master and SFX parent topology intact")
 	mixer.stop_all(); mixer.queue_free()
 	for i in 8: await get_tree().process_frame

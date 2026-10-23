@@ -22,6 +22,7 @@ var _hero_scroll: ScrollContainer
 var _camp: CampView
 ## The hero picked with the camp hero widget's arrows (uid; -1 = selection).
 var _hero_uid := -1
+var _camp_was_visible := false
 
 
 func _ready() -> void:
@@ -104,6 +105,14 @@ func _ready() -> void:
 	_camp.exit_pressed.connect(func(): visible = false)   # Exit (tip 20107)
 	_camp.hero_step.connect(_step_hero)
 	_camp.swap_cmd.connect(func(cmd): hud.game.session.swap.send(cmd))
+	visibility_changed.connect(_camp_visibility_changed)
+
+
+func _camp_visibility_changed() -> void:
+	var on := visible and _camp != null and _camp.visible
+	if _camp_was_visible and not on and hud and hud.game and hud.game.world:
+		hud.game.rig.village_start_view(hud.game.world.zone)
+	_camp_was_visible = on
 
 
 ## The player swap's screen (the original screen 9, CampView mode "swap"): open

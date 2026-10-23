@@ -464,6 +464,16 @@ func set_coop_clock(sector: int, player := 0) -> void:
 	_send_clock()
 
 
+## A conversation must be able to stage and animate even if it was opened
+## during tactical pause. Shared clocks are reset by the authority only.
+func begin_dialogue_clock() -> void:
+	if multiplayer_game and (not is_host or local_host.frontend):
+		return
+	field_speed = 0
+	_apply_clock(false, 0)
+	_send_clock()
+
+
 func reset_coop_clock() -> void:
 	if is_host:
 		_apply_clock(false, 0)
@@ -1418,7 +1428,9 @@ func _replay_state() -> Dictionary:
 func _track(event: Dictionary) -> void:
 	var t := String(event.get("t", ""))
 	match t:
-		"dialog": _dialog_ev = event
+		"dialog":
+			begin_dialogue_clock()
+			_dialog_ev = event
 		"dialog_close": _dialog_ev = {}
 		"travel": _travel_ev = event
 		"travel_close": _travel_ev = {}

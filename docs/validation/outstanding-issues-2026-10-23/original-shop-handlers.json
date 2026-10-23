@@ -1,0 +1,180 @@
+{
+  "camp_native_press": {
+    "evidence_id": "ev_8b5cef83486d6303c03f3a211fca982623fde80de2b6cd56ec6ba64e4c0952c9",
+    "subject": {
+      "name": "game.exe",
+      "digest": {
+        "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+      },
+      "format": "pe",
+      "architecture": "x86",
+      "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+    },
+    "authority": "shipped-artifact",
+    "procedure": {
+      "address": "0x6108e0",
+      "name": "FUN_006108e0",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x6108e0",
+            "end": "0x610a6d"
+          }
+        ],
+        "total_bytes": 398,
+        "span_bytes": 398,
+        "non_contiguous": false,
+        "contains_entry": true
+      },
+      "signature": "undefined FUN_006108e0()",
+      "locals": []
+    },
+    "pseudocode": "\nvoid FUN_006108e0(int param_1)\n\n{\n  char cVar1;\n  undefined4 uVar2;\n  int *in_ECX;\n  int iVar3;\n  undefined4 uVar4;\n  undefined4 uVar5;\n  undefined4 uVar6;\n  \n  switch(in_ECX[100]) {\n  case 0:\n  case 1:\n    FUN_0060fc60(param_1);\n    return;\n  case 2:\n    uVar6 = 0;\n    uVar5 = 1;\n    uVar4 = 8;\n    uVar2 = FUN_00578ba0(8,1,0);\n    iVar3 = in_ECX[0x74];\n    break;\n  case 3:\n    uVar6 = 0;\n    uVar5 = 0;\n    uVar4 = 0;\n    uVar2 = FUN_00578ba0(0,0,0);\n    iVar3 = in_ECX[0x75];\n    break;\n  case 4:\n    uVar6 = 0;\n    uVar5 = 1;\n    uVar4 = 8;\n    uVar2 = FUN_00578ba0(8,1,0);\n    FUN_005ee1b0(param_1,in_ECX[0x6f],uVar2,uVar4,uVar5,uVar6);\n    FUN_005f7e60(s_buttons_camp_put_on_wav_007937a4,0);\n    return;\n  case 5:\n    cVar1 = FUN_005ee110(param_1);\n    if ((cVar1 == '\\0') || (*(char *)(in_ECX[0x26] + 0x7d) == '\\0')) {\n      uVar6 = 0;\n      uVar5 = 0;\n      uVar4 = 0;\n      uVar2 = FUN_00578ba0(0,0,0);\n      FUN_005ee1b0(param_1,in_ECX[0x70],uVar2,uVar4,uVar5,uVar6);\n    }\n    else {\n      iVar3 = *(int *)(param_1 + 0x48);\n      while (0 < iVar3) {\n        iVar3 = iVar3 + -1;\n        cVar1 = (**(code **)(*in_ECX + 0xac))(param_1,1);\n        if (cVar1 == '\\0') break;\n        uVar6 = 0;\n        uVar5 = 0;\n        uVar4 = 0;\n        uVar2 = FUN_00578ba0(0,0,0);\n        FUN_005ee1b0(param_1,in_ECX[0x70],uVar2,uVar4,uVar5,uVar6);\n      }\n    }\n    FUN_005f7e60(s_buttons_camp_put_on_wav_007937a4,0);\n    return;\n  case 6:\n    uVar6 = 0;\n    uVar5 = 1;\n    uVar4 = 0x10;\n    uVar2 = FUN_00578ba0(0x10,1,0);\n    FUN_005ee1b0(param_1,in_ECX[0x71],uVar2,uVar4,uVar5,uVar6);\n    FUN_005f7e60(s_buttons_camp_put_on_wav_007937a4,0);\n    return;\n  default:\n    return;\n  }\n  FUN_005ee1b0(param_1,iVar3,uVar2,uVar4,uVar5,uVar6);\n  FUN_005f7e60(s_buttons_camp_put_on_wav_007937a4,0);\n  return;\n}\n\n"
+  },
+  "transfer": {
+    "evidence_id": "ev_c018802ad7c6fee637f0cf829f1db1542f8f85bc3288248cdc9933c3f3b45d24",
+    "subject": {
+      "name": "game.exe",
+      "digest": {
+        "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+      },
+      "format": "pe",
+      "architecture": "x86",
+      "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+    },
+    "authority": "shipped-artifact",
+    "procedure": {
+      "address": "0x5ee1b0",
+      "name": "FUN_005ee1b0",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x5ee1b0",
+            "end": "0x5ee2bf"
+          }
+        ],
+        "total_bytes": 272,
+        "span_bytes": 272,
+        "non_contiguous": false,
+        "contains_entry": true
+      },
+      "signature": "undefined FUN_005ee1b0()",
+      "locals": [
+        {
+          "description": "undefined4 local_4 @ Stack[-0x4]:4",
+          "provenance": "ghidra-function-database"
+        }
+      ]
+    },
+    "pseudocode": "\nint FUN_005ee1b0(int *param_1,int param_2,undefined4 param_3,int param_4,undefined4 param_5,\n                char param_6)\n\n{\n  undefined4 *puVar1;\n  int iVar2;\n  undefined4 *puVar3;\n  int in_ECX;\n  int iVar4;\n  undefined4 local_4;\n  \n  iVar2 = 0;\n  if (((char)param_5 == '\\0') || (local_4 = 1, *(char *)(*(int *)(in_ECX + 0x98) + 0x7d) == '\\0')) {\n    local_4 = 0;\n  }\n  if ((param_4 < 1) || (*(int *)(param_2 + 0x44) < param_4)) {\n    iVar2 = FUN_00661d70(param_1,local_4,param_5);\n    FUN_00661ef0(param_1,local_4);\n    if (param_6 != '\\0') {\n      puVar3 = *(undefined4 **)(iVar2 + 0x1c);\n      if (puVar3 == (undefined4 *)0x0) {\n        puVar3 = (undefined4 *)FUN_0070056f(0x18);\n        puVar3[1] = 0;\n        if (puVar3 == (undefined4 *)0x0) {\n          puVar3 = (undefined4 *)0x0;\n        }\n        else {\n          *puVar3 = &PTR_FUN_007403f8;\n        }\n        puVar3[2] = 0;\n        puVar3[3] = 0;\n        puVar1 = *(undefined4 **)(iVar2 + 0x1c);\n        *(undefined4 **)(iVar2 + 0x1c) = puVar3;\n        if (puVar3 != (undefined4 *)0x0) {\n          *(short *)(puVar3 + 1) = *(short *)(puVar3 + 1) + 1;\n        }\n        if ((puVar1 != (undefined4 *)0x0) &&\n           (*(short *)(puVar1 + 1) = *(short *)(puVar1 + 1) + -1, *(short *)(puVar1 + 1) == 0)) {\n          (**(code **)*puVar1)(1);\n        }\n      }\n      *(undefined1 *)(puVar3 + 4) = 1;\n    }\n  }\n  else {\n    iVar4 = 0;\n    if (0 < param_4) {\n      do {\n        iVar2 = (**(code **)(*param_1 + 0x38))\n                          (*(undefined4 *)(*(int *)(param_2 + 0x40) + iVar4 * 4));\n        if (iVar2 != 0) {\n          iVar2 = FUN_00661d70(param_1,local_4,param_5);\n          FUN_00661ef0(param_1,local_4);\n          return iVar2;\n        }\n        iVar4 = iVar4 + 1;\n      } while (iVar4 < param_4);\n      return 0;\n    }\n  }\n  return iVar2;\n}\n\n"
+  },
+  "takeback": {
+    "evidence_id": "ev_5bf2f30f8564a43c4d2a51762b52f6f5b1373d166a051afd5f699af02d4cd498",
+    "subject": {
+      "name": "game.exe",
+      "digest": {
+        "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+      },
+      "format": "pe",
+      "architecture": "x86",
+      "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+    },
+    "authority": "shipped-artifact",
+    "procedure": {
+      "address": "0x610a90",
+      "name": "FUN_00610a90",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x610a90",
+            "end": "0x611089"
+          }
+        ],
+        "total_bytes": 1530,
+        "span_bytes": 1530,
+        "non_contiguous": false,
+        "contains_entry": true
+      },
+      "signature": "undefined FUN_00610a90()",
+      "locals": []
+    },
+    "pseudocode": "\nvoid FUN_00610a90(int param_1,undefined4 param_2)\n\n{\n  int iVar1;\n  char cVar2;\n  undefined4 uVar3;\n  int *in_ECX;\n  int *piVar4;\n  int iVar5;\n  int iVar6;\n  undefined4 uVar7;\n  undefined4 uVar8;\n  undefined4 uVar9;\n  \n  cVar2 = (**(code **)(*in_ECX + 0xac))(param_1,param_2);\n  if (cVar2 == '\\0') {\n    FUN_005f7e60(s_buttons_messbox_cancel_wav_007937d8,0);\n    return;\n  }\n  switch(param_2) {\n  case 0:\n    uVar3 = FUN_0060fe00(param_1);\n    FUN_00621530(uVar3);\n    return;\n  case 1:\n    FUN_006108e0(param_1);\n    return;\n  case 2:\n    if (in_ECX[100] != 2) {\n      if (in_ECX[100] == 3) {\n        FUN_005ee1b0(param_1,in_ECX[0x75],in_ECX[0x72],0,0,1);\n      }\n      FUN_005f7e60(s_buttons_camp_put_on_wav_007937a4,0);\n      return;\n    }\n    FUN_005ee1b0(param_1,in_ECX[0x73],in_ECX[0x72],8,1,0);\n    FUN_005f7e60(s_buttons_camp_put_on_wav_007937a4,0);\n    return;\n  case 3:\n    if (in_ECX[100] == 4) {\n      FUN_005ee1b0(param_1,in_ECX[0x6e],in_ECX[0x6d],8,1,0);\n      FUN_005f7e60(s_buttons_camp_put_on_wav_007937a4,0);\n      return;\n    }\n    if (in_ECX[100] == 5) {\n      cVar2 = FUN_005ee110(param_1);\n      if ((cVar2 == '\\0') || (*(char *)(in_ECX[0x26] + 0x7d) == '\\0')) {\n        FUN_005ee1b0(param_1,in_ECX[0x70],in_ECX[0x6d],0,0,1);\n      }\n      else {\n        iVar6 = *(int *)(param_1 + 0x48);\n        if (0 < iVar6) {\n          while( true ) {\n            iVar6 = iVar6 + -1;\n            cVar2 = (**(code **)(*in_ECX + 0xac))(param_1,3);\n            if (cVar2 == '\\0') break;\n            FUN_005ee1b0(param_1,in_ECX[0x70],in_ECX[0x6d],0,0,1);\n            if (iVar6 < 1) {\n              FUN_005f7e60(s_buttons_camp_put_on_wav_007937a4,0);\n              return;\n            }\n          }\n        }\n      }\n    }\n    FUN_005f7e60(s_buttons_camp_put_on_wav_007937a4,0);\n    return;\n  case 4:\n    iVar6 = in_ECX[0x73];\n    iVar5 = 0;\n    if (0 < *(int *)(iVar6 + 0x44)) {\n      piVar4 = *(int **)(iVar6 + 0x40);\n      do {\n        if (param_1 == *piVar4) {\n          uVar3 = FUN_005ee1b0(param_1,in_ECX[0x72],iVar6,0,1,0);\n          goto LAB_0061106d;\n        }\n        iVar5 = iVar5 + 1;\n        piVar4 = piVar4 + 1;\n      } while (iVar5 < *(int *)(iVar6 + 0x44));\n    }\n    iVar6 = in_ECX[0x74];\n    iVar5 = 0;\n    if (*(int *)(iVar6 + 0x44) < 1) {\n      return;\n    }\n    piVar4 = *(int **)(iVar6 + 0x40);\n    while (param_1 != *piVar4) {\n      iVar5 = iVar5 + 1;\n      piVar4 = piVar4 + 1;\n      if (*(int *)(iVar6 + 0x44) <= iVar5) {\n        return;\n      }\n    }\n    break;\n  case 5:\n    iVar6 = in_ECX[0x6e];\n    iVar5 = 0;\n    if (0 < *(int *)(iVar6 + 0x44)) {\n      piVar4 = *(int **)(iVar6 + 0x40);\n      do {\n        if (param_1 == *piVar4) goto LAB_00610bf1;\n        iVar5 = iVar5 + 1;\n        piVar4 = piVar4 + 1;\n      } while (iVar5 < *(int *)(iVar6 + 0x44));\n    }\n    iVar6 = in_ECX[0x6f];\n    iVar5 = 0;\n    if (*(int *)(iVar6 + 0x44) < 1) {\n      return;\n    }\n    piVar4 = *(int **)(iVar6 + 0x40);\n    while (param_1 != *piVar4) {\n      iVar5 = iVar5 + 1;\n      piVar4 = piVar4 + 1;\n      if (*(int *)(iVar6 + 0x44) <= iVar5) {\n        return;\n      }\n    }\n    break;\n  case 6:\n    cVar2 = FUN_005ee080(param_1);\n    if (cVar2 != '\\0') {\n      if ((*(int *)(param_1 + 0x1c) == 0) || (*(char *)(*(int *)(param_1 + 0x1c) + 0x10) == '\\0')) {\n        iVar6 = in_ECX[0x75];\n        break;\n      }\n      uVar3 = FUN_005ee1b0(param_1,in_ECX[0x72],in_ECX[0x75],0,1,0);\n      goto LAB_0061106d;\n    }\n    iVar6 = in_ECX[0x75];\n    iVar5 = *(int *)(iVar6 + 0x44);\n    while (iVar5 != 0) {\n      iVar5 = **(int **)(iVar6 + 0x40);\n      if ((*(int *)(iVar5 + 0x1c) == 0) || (*(char *)(*(int *)(iVar5 + 0x1c) + 0x10) == '\\0')) {\n        uVar9 = 0;\n        uVar8 = 1;\n        uVar7 = 0;\n        uVar3 = FUN_00578ba0(iVar6,0,1,0);\n        uVar3 = FUN_005ee1b0(iVar5,uVar3,iVar6,uVar7,uVar8,uVar9);\n      }\n      else {\n        uVar3 = FUN_005ee1b0(iVar5,in_ECX[0x72],iVar6,0,1,0);\n      }\n      FUN_00621530(uVar3);\n      iVar6 = in_ECX[0x75];\n      iVar5 = *(int *)(iVar6 + 0x44);\n    }\n    goto LAB_00611072;\n  case 7:\n    cVar2 = FUN_005ee0b0(param_1);\n    if (cVar2 == '\\0') {\n      cVar2 = FUN_005ee110(param_1);\n      if (cVar2 == '\\0') {\n        iVar6 = in_ECX[0x70];\n        iVar5 = *(int *)(iVar6 + 0x44);\n        while (iVar5 != 0) {\n          iVar5 = **(int **)(iVar6 + 0x40);\n          if ((*(int *)(iVar5 + 0x1c) == 0) || (*(char *)(*(int *)(iVar5 + 0x1c) + 0x10) == '\\0')) {\n            uVar9 = 0;\n            uVar8 = 1;\n            uVar7 = 0;\n            uVar3 = FUN_00578ba0(iVar6,0,1,0);\n            uVar3 = FUN_005ee1b0(iVar5,uVar3,iVar6,uVar7,uVar8,uVar9);\n          }\n          else {\n            uVar3 = FUN_005ee1b0(iVar5,in_ECX[0x6d],iVar6,0,1,0);\n          }\n          FUN_00621530(uVar3);\n          iVar6 = in_ECX[0x70];\n          iVar5 = *(int *)(iVar6 + 0x44);\n        }\n      }\n      else {\n        if ((*(int *)(param_1 + 0x1c) == 0) || (*(char *)(*(int *)(param_1 + 0x1c) + 0x10) == '\\0'))\n        {\n          iVar6 = in_ECX[0x70];\n          uVar9 = 0;\n          uVar8 = 1;\n          uVar7 = 0;\n          uVar3 = FUN_00578ba0(iVar6,0,1,0);\n          uVar3 = FUN_005ee1b0(param_1,uVar3,iVar6,uVar7,uVar8,uVar9);\n        }\n        else {\n          uVar3 = FUN_005ee1b0(param_1,in_ECX[0x6d],in_ECX[0x70],0,1,0);\n        }\n        FUN_00621530(uVar3);\n        if (*(char *)(in_ECX[0x26] + 0x7d) != '\\0') {\n          iVar6 = in_ECX[0x70];\n          iVar5 = 0;\n          if (0 < *(int *)(iVar6 + 0x44)) {\n            do {\n              cVar2 = FUN_005ee110(*(undefined4 *)(*(int *)(iVar6 + 0x40) + iVar5 * 4));\n              if (cVar2 != '\\0') {\n                iVar6 = in_ECX[0x70];\n                iVar1 = *(int *)(*(int *)(iVar6 + 0x40) + iVar5 * 4);\n                if ((*(int *)(iVar1 + 0x1c) == 0) ||\n                   (*(char *)(*(int *)(iVar1 + 0x1c) + 0x10) == '\\0')) {\n                  uVar9 = 0;\n                  uVar8 = 1;\n                  uVar7 = 0;\n                  uVar3 = FUN_00578ba0(iVar6,0,1,0);\n                  uVar3 = FUN_005ee1b0(iVar1,uVar3,iVar6,uVar7,uVar8,uVar9);\n                }\n                else {\n                  uVar3 = FUN_005ee1b0(iVar1,in_ECX[0x6d],iVar6,0,1,0);\n                }\n                FUN_00621530(uVar3);\n                iVar5 = iVar5 + -1;\n              }\n              iVar6 = in_ECX[0x70];\n              iVar5 = iVar5 + 1;\n            } while (iVar5 < *(int *)(iVar6 + 0x44));\n          }\n        }\n        iVar6 = in_ECX[0x70];\n        iVar5 = 0;\n        if (0 < *(int *)(iVar6 + 0x44)) {\n          do {\n            cVar2 = FUN_005ee0b0(*(undefined4 *)(*(int *)(iVar6 + 0x40) + iVar5 * 4));\n            if (cVar2 != '\\0') {\n              iVar6 = in_ECX[0x70];\n              param_1 = *(int *)(*(int *)(iVar6 + 0x40) + iVar5 * 4);\n              if ((*(int *)(param_1 + 0x1c) == 0) ||\n                 (*(char *)(*(int *)(param_1 + 0x1c) + 0x10) == '\\0')) goto LAB_00611053;\n              uVar3 = FUN_005ee1b0(param_1,in_ECX[0x6d],iVar6,0,1,0);\n              goto LAB_0061106d;\n            }\n            iVar6 = in_ECX[0x70];\n            iVar5 = iVar5 + 1;\n          } while (iVar5 < *(int *)(iVar6 + 0x44));\n        }\n      }\n      goto LAB_00611072;\n    }\n    if ((*(int *)(param_1 + 0x1c) != 0) && (*(char *)(*(int *)(param_1 + 0x1c) + 0x10) != '\\0')) {\n      iVar6 = in_ECX[0x70];\nLAB_00610bf1:\n      uVar3 = FUN_005ee1b0(param_1,in_ECX[0x6d],iVar6,0,1,0);\n      goto LAB_0061106d;\n    }\n    iVar6 = in_ECX[0x70];\n    break;\n  case 8:\n    iVar6 = in_ECX[0x71];\n    break;\n  default:\n    goto switchD_00610acc_default;\n  }\nLAB_00611053:\n  uVar9 = 0;\n  uVar8 = 1;\n  uVar7 = 0;\n  uVar3 = FUN_00578ba0(iVar6,0,1,0);\n  uVar3 = FUN_005ee1b0(param_1,uVar3,iVar6,uVar7,uVar8,uVar9);\nLAB_0061106d:\n  FUN_00621530(uVar3);\nLAB_00611072:\n  FUN_005f7e60(s_buttons_camp_put_off_wav_007937bc,0);\nswitchD_00610acc_default:\n  return;\n}\n\n"
+  },
+  "native0x5f7938": {
+    "evidence_id": "ev_b35e36ec32de3639788ace1561f25ca0debbdb6d5f8869b4f65daf98c1395336",
+    "subject": {
+      "name": "game.exe",
+      "digest": {
+        "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+      },
+      "format": "pe",
+      "architecture": "x86",
+      "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+    },
+    "authority": "shipped-artifact",
+    "procedure": {
+      "address": "0x5f78c0",
+      "name": "FUN_005f78c0",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x5f78c0",
+            "end": "0x5f7b13"
+          }
+        ],
+        "total_bytes": 596,
+        "span_bytes": 596,
+        "non_contiguous": false,
+        "contains_entry": true
+      },
+      "signature": "undefined FUN_005f78c0()",
+      "locals": [
+        {
+          "description": "undefined local_1c @ Stack[-0x1c]:1",
+          "provenance": "ghidra-function-database"
+        },
+        {
+          "description": "undefined4 local_4 @ Stack[-0x4]:4",
+          "provenance": "ghidra-function-database"
+        },
+        {
+          "description": "undefined4 local_c @ Stack[-0xc]:4",
+          "provenance": "ghidra-function-database"
+        }
+      ]
+    },
+    "pseudocode": "\nvoid FUN_005f78c0(undefined4 param_1,undefined *param_2,uint param_3)\n\n{\n  uint uVar1;\n  void **ppvVar2;\n  char cVar3;\n  int *piVar4;\n  int in_ECX;\n  uint uVar5;\n  undefined1 local_1c [4];\n  void *pvStack_18;\n  void *local_c;\n  undefined1 *puStack_8;\n  int local_4;\n  \n  uVar1 = param_3;\n  local_4 = 0xffffffff;\n  puStack_8 = &LAB_0072a0e0;\n  local_c = ExceptionList;\n  uVar5 = param_3 & 0x1ff;\n  if (uVar5 < 0x39) {\n    if (uVar5 != 0x38) {\n      ppvVar2 = &local_c;\n      switch(uVar5) {\n      case 0x1d:\n        goto switchD_005f7900_caseD_1d;\n      case 0x29:\n        ExceptionList = &local_c;\n        FUN_005e3fd0(*(char *)(*(int *)(in_ECX + 0x14) + 0x7a) == '\\0');\n        ExceptionList = local_c;\n        return;\n      case 0x2a:\n      case 0x36:\n        if ((param_3 & 0x4000) != 0) {\n          return;\n        }\n        ExceptionList = &local_c;\n        *(undefined1 *)(in_ECX + 0x7d) = 1;\n        ppvVar2 = ExceptionList;\n      }\n      goto switchD_005f7900_caseD_1e;\n    }\n  }\n  else {\n    if (uVar5 == 0x46) {\n      ExceptionList = &local_c;\n      piVar4 = (int *)FUN_006d6f80();\n      if (piVar4 == (int *)0x0) {\n        ExceptionList = local_c;\n        return;\n      }\n      param_2 = PTR_DAT_00796e38;\n      local_4 = 0;\n      FUN_006fdf1f(&param_2,s_shot__4d_bmp_007930b4,DAT_007c7e14);\n      DAT_007c7e14 = DAT_007c7e14 + 1;\n      FUN_0070104b(param_2,0x1001);\n      local_4._0_1_ = 1;\n      FUN_006d5a80(local_1c);\n      FUN_007013c3();\n      (**(code **)(*piVar4 + 4))(1);\n      local_4 = (uint)local_4._1_3_ << 8;\n      FUN_007010eb();\n      local_4 = 0xffffffff;\n      FUN_00700930();\n      ExceptionList = local_c;\n      return;\n    }\n    if (uVar5 == 0x11d) {\nswitchD_005f7900_caseD_1d:\n      if ((param_3 & 0x4000) != 0) {\n        return;\n      }\n      ExceptionList = &local_c;\n      *(undefined1 *)(in_ECX + 0x7c) = 1;\n      ppvVar2 = ExceptionList;\n      goto switchD_005f7900_caseD_1e;\n    }\n    ppvVar2 = &local_c;\n    if (uVar5 != 0x138) goto switchD_005f7900_caseD_1e;\n  }\n  if ((param_3 & 0x4000) != 0) {\n    return;\n  }\n  ExceptionList = &local_c;\n  *(undefined1 *)(in_ECX + 0x7e) = 1;\n  ppvVar2 = ExceptionList;\nswitchD_005f7900_caseD_1e:\n  ExceptionList = ppvVar2;\n  if (*(char *)(*(int *)(in_ECX + 0x14) + 0x7a) != '\\0') {\n    FUN_005e4180(param_1,param_2,param_3);\n    ExceptionList = local_c;\n    return;\n  }\n  cVar3 = FUN_0057f440();\n  if ((cVar3 != '\\0') && (*(char *)(*(int *)(in_ECX + 0x1c) + 0x14c) != '\\0')) {\n    (**(code **)(*(int *)(*(int *)(in_ECX + 0x1c) + 0x94) + 0x24))(param_1,param_2,uVar1);\n    ExceptionList = pvStack_18;\n    return;\n  }\n  if (*(int *)(in_ECX + 0x34) != *(int *)(in_ECX + 0x38)) {\n    (**(code **)(*(int *)(*(int *)(*(int *)(in_ECX + 0x38) + -4) + 0x94) + 0x24))\n              (param_1,param_2,uVar1);\n  }\n  if (((*(int *)(in_ECX + 0x34) != *(int *)(in_ECX + 0x38)) &&\n      (*(char *)(*(int *)(*(int *)(in_ECX + 0x38) + -4) + 0x9c) == '\\0')) &&\n     (*(char *)((int)&DAT_0079bf60 + uVar5) == ';')) {\n    FUN_005f86f0(1);\n    ExceptionList = local_c;\n    return;\n  }\n  ExceptionList = local_c;\n  return;\n}\n\n"
+  }
+}

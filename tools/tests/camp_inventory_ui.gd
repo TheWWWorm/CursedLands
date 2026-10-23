@@ -20,7 +20,7 @@ func body(key: String) -> String:
 func frame() -> void:
 	for i in 3: await get_tree().process_frame
 
-func click_item(id: String, where: String, pressed := true) -> void:
+func click_item(id: String, where: String, pressed := true, shift := false) -> void:
 	camp._process(0.0)
 	var point := Vector2(-10, -10)
 	for key: String in camp._content:
@@ -29,7 +29,12 @@ func click_item(id: String, where: String, pressed := true) -> void:
 			break
 	check(point.x >= 0, "actual %s cell exists for %s" % [where, id])
 	TouchInput.motion(point, Vector2.ZERO)
-	TouchInput.button(point, pressed)
+	if shift:
+		var click := InputEventMouseButton.new()
+		click.position = point; click.button_index = MOUSE_BUTTON_LEFT; click.pressed = pressed; click.shift_pressed = true
+		Input.parse_input_event(click)
+	else:
+		TouchInput.button(point, pressed)
 	Input.flush_buffered_events()
 	await frame()
 
@@ -88,8 +93,16 @@ func paging_and_filters() -> void:
 		camp.set_mode("itemtrade" if activity == "weapons" else "weapons")
 		camp._set_bag_filter(4); camp._set_shop_filter(4); camp.scroll=9; camp.shop_scroll=9
 		camp.set_mode(activity)
-		var expected := 0 if activity in ["itemconstr","spellconstr","spelltrade","spells"] else (2 if activity == "repair" else 5)
-		check(camp.filter == expected and camp.shop_filter == 5 and camp.scroll == 0 and camp.shop_scroll == 0, "fresh relevant filters and first page: " + activity)
+		check(camp.filter == 4 and camp.scroll == 9, "selected bag tab survives activity change: " + activity)
+	camp.set_mode("itemtrade"); camp._set_shop_filter(1); camp.shop_scroll = 3
+	camp.set_mode("spelltrade"); camp._set_shop_filter(2); camp.shop_scroll = 5
+	camp.set_mode("itemconstr")
+	check(camp.shop_filter == 1 and camp.shop_scroll == 3, "item blueprint tab and scroll survive the spell shop")
+	camp.set_mode("weapons"); camp.set_mode("itemtrade")
+	check(camp.shop_filter == 1 and camp.shop_scroll == 3, "item blueprint tab survives dressing")
+	camp.set_mode("spelltrade")
+	check(camp.shop_filter == 2 and camp.shop_scroll == 5, "spell goods retain their independent tab")
+	camp.reset_filters()
 	st.items = [Items.with_wear("stone axe.rock",1),"stone axe.rock","tiny potion 1","spell:fireball","rune:e1","keystone:fireball"]
 	camp.set_mode("weapons"); camp.set_mode("repair")
 	check(camp.bag_items() == [st.items[0]], "repair starts with damaged equipment only")
@@ -157,7 +170,8 @@ func _ready() -> void:
 	camp.set_process(false) # Deterministic hold timing, while input dispatch stays live.
 	camp._set_bag_filter(4)
 	camp.set_mode("spellconstr")
-	check(camp.filter == 0 and camp.shop_filter == 5, "spell constructor selects its category automatically")
+	check(camp.filter == 4, "spell constructor preserves a manually selected quest tab")
+	camp._set_bag_filter(0)
 	var bag := camp.bag_items()
 	check(bag.has("keystone:fireball") and bag.has("rune:e1") and bag.has("spell:" + spell)
 		and bag.has("spell:fireball"), "spell constructor shows keystones, runes, bag and learned spells together")
@@ -174,7 +188,7 @@ func _ready() -> void:
 	await snapshot("spell-constructor-runes")
 	camp.set_mode("itemconstr")
 	bag = camp.bag_items(); stock = camp.shop_items()
-	check(camp.filter == 0 and camp.shop_filter == 5, "item constructor replaces the spell filters automatically")
+	check(camp.filter == 0 and camp.shop_filter == 5, "item constructor keeps the chosen bag tab and item goods row")
 	check(bag.has("bp:stone axe") and bag.has("bp:gipat medium plate") and bag.has(weapon) and bag.has(armor), "weapon and armour blueprints and dismantlable equipment remain accessible")
 	check(bag.has("material.rock") and bag.has("material.thin") and bag.has("spell:" + spell), "item constructor includes materials and enchantment spells")
 	check(not bag.has("rune:e1") and not bag.has("keystone:fireball") and not bag.has(potion), "item constructor hides unrelated ingredients and consumables")
@@ -182,7 +196,7 @@ func _ready() -> void:
 	camp._set_bag_filter(5)
 	check(camp.bag_items().has(potion), "manual all-items filter remains available")
 	camp.set_mode("spellconstr"); camp.set_mode("itemconstr")
-	check(camp.filter == 0 and not camp.bag_items().has(potion), "re-entering a constructor restores its automatic filter")
+	check(camp.filter == 5 and camp.bag_items().has(potion), "re-entering a constructor retains the selected all-items tab")
 	camp._process(0.0)
 	for key: String in camp._content:
 		if camp._content[key][0] == "material.rock": camp._update_hover(camp._slot_rect(key).get_center())
@@ -193,6 +207,9 @@ func _ready() -> void:
 	camp.set_mode("itemtrade"); camp._set_bag_filter(5)
 	st.items = [potion, potion, potion, potion, potion, worn, worn, weapon]
 	st.shops[1].goods = {potion: 8}
+	await click_item(potion, "bag", true, true)
+	check(camp.sell_pile.size() == 5 and camp._transfer_hold.is_empty(), "physical Shift-click transfers the full stack without starting repeat")
+	await release(); camp._on_cancel()
 	await click_item(potion, "bag")
 	check(camp.sell_pile == [potion] and not camp._transfer_hold.is_empty(), "mouse press stages one copy and captures held transfer")
 	camp._process_transfer_hold(0.49)

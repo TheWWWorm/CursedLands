@@ -46,6 +46,7 @@ var _pending_item_choice := {}
 var _menu_items := {}
 var _menu_was_fighting := false
 var _modal_focus: Array[Dictionary] = []
+var _keyboard_navigation := false
 var _guide_scroll: ScrollContainer
 var _reserve_count: Label
 var _alliance_list: GridContainer
@@ -194,8 +195,7 @@ func _ready() -> void:
 	_hit_numbers.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	battle.visual_event.connect(func(event):
 		if field.match_state != battle: return
-		if event.get("t") == "hitnum": _hit_numbers.add(event)
-		elif event.get("t") == "arena_proc": _hit_numbers.add_proc(event))
+		if event.get("t") == "hitnum": _hit_numbers.add(event))
 	battle.world_replacing.connect(func(): _hit_numbers._items.clear())
 	_hud = Control.new()
 	_hud.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -1578,6 +1578,18 @@ func _notification(what: int) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion or event is InputEventMouseButton:
+		_keyboard_navigation = false
+		if is_instance_valid(_modal_layer) and _modal_layer.visible and (event is InputEventMouseMotion or event.pressed):
+			get_viewport().gui_release_focus()
+	elif (event is InputEventKey and event.pressed) or (event is InputEventJoypadButton and event.pressed) or (event is InputEventJoypadMotion and absf(event.axis_value) > 0.5):
+		_keyboard_navigation = true
+		if is_instance_valid(_modal_layer) and _modal_layer.visible and get_viewport().gui_get_focus_owner() == null:
+			for action in ["ui_left", "ui_right", "ui_up", "ui_down", "ui_focus_next", "ui_focus_prev", "ui_accept"]:
+				if event.is_action_pressed(action):
+					_focus_modal()
+					get_viewport().set_input_as_handled()
+					return
 	if _item_uid > 0 and ((event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE) or (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT)):
 		_cancel_item()
 		get_viewport().set_input_as_handled()
@@ -1646,7 +1658,7 @@ func _guide() -> void:
 		topics[6] = ["Battle", "Both teams fight under AI control. The host runs all battles on the same clock and can switch between normal and double speed. Hover a creature for details. Online battles cannot be paused."]
 		topics[8] = ["Players", "Up to nine players compete with their own armies. Computers fill empty seats and take over disconnected players. At zero health you are eliminated and can keep watching. If the host leaves, the game ends for everyone."]
 	topics.append(["Equipment", "Each creature carries one item. After rounds 3, 5 and every fifth round, choose one of three rewards. Equip or move items freely during preparation. Selling returns equipment; evolution keeps the surviving creature's item and returns the others to your inventory."])
-	topics.append(["Camera", "Use WASD to move the camera. Hold Q/E or drag with the right or middle mouse button to rotate. Right-drag also tilts the camera; Shift + middle-drag pans. Use the wheel to zoom. Home restores the starting view."])
+	topics.append(["Camera", "Use WASD to move the camera. Hold Q/E or drag with the right or middle mouse button to rotate. Both drags also tilt the camera; Shift + middle-drag pans. Use the wheel to zoom. Home restores the starting view."])
 	for topic in topics:
 		_label(content, RemakeText.t(topic[0]), 18, GOLD)
 		_wrap(content, RemakeText.t(topic[1]), 15, PAPER)
@@ -1912,8 +1924,11 @@ func _open_modal(title: String, width := 360.0) -> void:
 
 
 func _focus_modal() -> void:
-	if not _modal_layer.visible: return
+	if not _modal_layer.visible or not _keyboard_navigation: return
 	if is_instance_valid(_wiki) and _wiki.visible: return
+	if is_instance_valid(_equipment_panel):
+		_equipment_panel.focus_first()
+		return
 	for control in _modal_box.find_children("*", "Button", true, false):
 		if not control.disabled:
 			control.grab_focus()
@@ -1933,8 +1948,9 @@ func _close_modal() -> void:
 	if _menu_was_fighting and battle.phase == ArenaMatch.Phase.PAUSED: battle.toggle_pause()
 	_menu_was_fighting = false
 	_sync_item_tray()
-	if is_instance_valid(_equipment_panel) and not _item_tray.buttons.is_empty(): _item_tray.buttons.values()[0].grab_focus()
-	else: _menu.grab_focus()
+	if _keyboard_navigation:
+		if is_instance_valid(_equipment_panel) and not _item_tray.buttons.is_empty(): _item_tray.buttons.values()[0].grab_focus()
+		else: _menu.grab_focus()
 
 
 func _show_equipment() -> void:
@@ -1963,7 +1979,6 @@ func _show_equipment() -> void:
 	_equipment_panel.minimum_size_changed.connect(_layout_modal.call_deferred)
 	_equipment_panel.choose_requested.connect(_choose_item)
 	_equipment_scroll.add_child(_equipment_panel)
-	_equipment_panel.focus_first.call_deferred()
 	_layout_modal.call_deferred()
 	_tooltips.capture.call_deferred(_hud)
 
@@ -2083,7 +2098,7 @@ func _finish_item_choice() -> void:
 	if is_instance_valid(_equipment_panel) and _modal_layer.visible: _close_modal()
 	if uid > 0 and _can_edit_equipment():
 		_pick_item(uid)
-		_item_tray.focus_item(uid)
+		if _keyboard_navigation: _item_tray.focus_item(uid)
 
 
 func _item_target_uid(unit: GameUnit) -> int:
@@ -2417,7 +2432,6 @@ func _setup_tournament_battles() -> void:
 				if _alliance_panel: _refresh_alliances())
 		_tournament_battles.board_event.connect(func(event):
 			if event.get("t") == "hitnum" and _hit_numbers: _hit_numbers.add(event)
-			elif event.get("t") == "arena_proc" and _hit_numbers: _hit_numbers.add_proc(event)
 			if _sound:
 				_listen_to(field.match_state.world)
 				_sound.on_event(event))

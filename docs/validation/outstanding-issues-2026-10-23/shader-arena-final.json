@@ -1,0 +1,161 @@
+{
+	"captures": [
+		{
+			"background_max_error": 0.0,
+			"file": "arena-before-first-draw.png",
+			"progress": {
+				"case": "normal",
+				"completed": 4,
+				"elapsed_ms": 1176,
+				"phase": "Preparing materials…",
+				"presentations": 4,
+				"scene_draws": 9,
+				"screen_active": true,
+				"title": "Compiling shaders",
+				"total": 9,
+				"viewport_mode": 4,
+				"warming": true
+			},
+			"scene_draws": 10,
+			"text_bar_samples": 290
+		},
+		{
+			"background_max_error": 0.0,
+			"file": "arena-materials-in-progress.png",
+			"progress": {
+				"case": "normal",
+				"completed": 5,
+				"elapsed_ms": 1331,
+				"phase": "Preparing materials…",
+				"presentations": 5,
+				"scene_draws": 10,
+				"screen_active": true,
+				"title": "Compiling shaders",
+				"total": 9,
+				"viewport_mode": 4,
+				"warming": true
+			},
+			"scene_draws": 11,
+			"text_bar_samples": 304
+		},
+		{
+			"background_max_error": 0.0,
+			"file": "arena-materials-completed.png",
+			"progress": {
+				"case": "normal",
+				"completed": 9,
+				"elapsed_ms": 1582,
+				"phase": "Preparing materials…",
+				"presentations": 10,
+				"scene_draws": 15,
+				"screen_active": true,
+				"title": "Compiling shaders",
+				"total": 9,
+				"viewport_mode": 4,
+				"warming": true
+			},
+			"scene_draws": 16,
+			"text_bar_samples": 367
+		}
+	],
+	"checks": 27,
+	"device": "NVIDIA GeForce RTX 3090 Ti",
+	"driver": "vulkan",
+	"failures": [],
+	"ordering_violations": [],
+	"progress": [
+		{
+			"case": "normal",
+			"completed": 4,
+			"elapsed_ms": 1176,
+			"phase": "Preparing materials…",
+			"presentations": 4,
+			"scene_draws": 9,
+			"screen_active": true,
+			"title": "Compiling shaders",
+			"total": 9,
+			"viewport_mode": 4,
+			"warming": true
+		},
+		{
+			"case": "normal",
+			"completed": 5,
+			"elapsed_ms": 1331,
+			"phase": "Preparing materials…",
+			"presentations": 5,
+			"scene_draws": 10,
+			"screen_active": true,
+			"title": "Compiling shaders",
+			"total": 9,
+			"viewport_mode": 4,
+			"warming": true
+		},
+		{
+			"case": "normal",
+			"completed": 6,
+			"elapsed_ms": 1482,
+			"phase": "Preparing materials…",
+			"presentations": 6,
+			"scene_draws": 11,
+			"screen_active": true,
+			"title": "Compiling shaders",
+			"total": 9,
+			"viewport_mode": 4,
+			"warming": true
+		},
+		{
+			"case": "normal",
+			"completed": 7,
+			"elapsed_ms": 1485,
+			"phase": "Preparing materials…",
+			"presentations": 7,
+			"scene_draws": 12,
+			"screen_active": true,
+			"title": "Compiling shaders",
+			"total": 9,
+			"viewport_mode": 4,
+			"warming": true
+		},
+		{
+			"case": "normal",
+			"completed": 8,
+			"elapsed_ms": 1548,
+			"phase": "Preparing materials…",
+			"presentations": 9,
+			"scene_draws": 14,
+			"screen_active": true,
+			"title": "Compiling shaders",
+			"total": 9,
+			"viewport_mode": 4,
+			"warming": true
+		},
+		{
+			"case": "normal",
+			"completed": 9,
+			"elapsed_ms": 1582,
+			"phase": "Preparing materials…",
+			"presentations": 10,
+			"scene_draws": 15,
+			"screen_active": true,
+			"title": "Compiling shaders",
+			"total": 9,
+			"viewport_mode": 4,
+			"warming": true
+		},
+		{
+			"case": "normal",
+			"completed": 9,
+			"elapsed_ms": 1718,
+			"phase": "Finishing preparation…",
+			"presentations": 11,
+			"scene_draws": 16,
+			"screen_active": true,
+			"title": "Compiling shaders",
+			"total": 9,
+			"viewport_mode": 4,
+			"warming": true
+		}
+	],
+	"ready_under_cover": 0,
+	"scene_draws": 30
+}

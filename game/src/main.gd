@@ -17,6 +17,35 @@ var session: Session
 var _leaving := false   # back_to_menu waiting for a joiner's last package
 
 
+class MenuReturnCover extends CanvasLayer:
+	func _input(_event: InputEvent) -> void:
+		get_viewport().set_input_as_handled()
+
+
+## Keep the last presented image through session teardown and menu creation.
+## This lives outside Main so _clear cannot expose the empty viewport.
+func _cover_menu_return() -> CanvasLayer:
+	if DisplayServer.get_name() == "headless": return null
+	var cover := MenuReturnCover.new()
+	cover.name = "MenuReturnCover"
+	cover.layer = 1095
+	cover.process_mode = Node.PROCESS_MODE_ALWAYS
+	get_tree().root.add_child(cover)
+	var background := ColorRect.new()
+	background.color = Color("12110f")
+	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	cover.add_child(background)
+	var frame := get_viewport().get_texture().get_image()
+	if frame and not frame.is_empty():
+		var image := TextureRect.new()
+		image.texture = ImageTexture.create_from_image(frame)
+		image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		image.stretch_mode = TextureRect.STRETCH_SCALE
+		image.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		cover.add_child(image)
+	return cover
+
+
 func _ready() -> void:
 	if OS.get_cmdline_user_args().has("--renderer-probe"):
 		add_child(preload("res://src/platform/renderer_probe.gd").new())
@@ -218,6 +247,7 @@ func back_to_menu() -> void:
 		return
 	_leaving = true
 	GameData.trace("back to main menu")
+	var cover := _cover_menu_return()
 	if session:
 		var s := session
 		s.coop.flush()   # co-op: the joiners' last progress packages
@@ -236,6 +266,10 @@ func back_to_menu() -> void:
 	var menu := preload("res://src/ui/main_menu.gd").new()
 	menu.start_game.connect(start_game)
 	add_child(menu)
+	if cover:
+		await get_tree().process_frame
+		await RenderingServer.frame_post_draw
+		cover.queue_free()
 	_leaving = false
 
 

@@ -152,8 +152,8 @@ const REFUND_RECT := Rect2(20, 462, 160, 28)
 ##   (_move); a refused press plays messbox\cancel.wav;
 ## Rows start on filter 5: "all" for the bag, "ready-made" for traders.
 ## The remake's constructors select a combined relevant-items filter on entry;
-## Each activity starts with its own relevant filter; manual filters remain
-## available until the player switches activity.
+## Manual bag tabs survive activity changes; item and spell goods retain
+## independent tabs and scroll positions.
 
 signal picked(id: String, where: String)
 ## Yes pressed in a trade screen: items to buy from the trader, items to sell.
@@ -242,6 +242,7 @@ var shop_id := 0
 ## at the bottom of the right info widget.
 var right_panel: VBoxContainer
 var filter := 5
+var _bag_filter_chosen := false
 var scroll := 0
 var shop_filter := 5
 var shop_scroll := 0
@@ -470,6 +471,7 @@ func first_mode() -> String:
 
 ## The original rebuilds the rows on opening the camp.
 func reset_filters() -> void:
+	_bag_filter_chosen = false
 	_row_arrivals.clear()
 	filter = 5
 	scroll = 0
@@ -495,16 +497,20 @@ func set_mode(m: String) -> void:
 		_clear_constr()
 		_rows_returned(rows)
 		_turn_dir = 0
+		if shop_row():
+			var row: Dictionary = _shop_rows["spells" if spell_shop() else "items"]
+			row.filter = shop_filter
+			row.scroll = shop_scroll
 	mode = m
 	if changed:
-		# Filter indices have different meanings on different pages. Never
-		# carry a construction/quest filter or its scroll offset into another
-		# activity, or restore it when returning to that activity.
-		reset_filters()
-		if mode in ["spellconstr", "itemconstr", "spelltrade", "spells"]:
-			filter = 0
-		elif mode == "repair":
-			filter = 2
+		# Keep the player's chosen tab instead of resetting it on every page.
+		# Fresh visits still start on the activity's relevant default.
+		if not _bag_filter_chosen:
+			filter = 0 if mode in ["spellconstr", "itemconstr", "spelltrade", "spells"] else 2 if mode == "repair" else 5
+			scroll = 0
+		var row: Dictionary = _shop_rows["spells" if spell_shop() else "items"]
+		shop_filter = int(row.filter)
+		shop_scroll = int(row.scroll)
 	_doll.visible = mode == "weapons"
 	for k in _views:
 		_views[k].visible = _key_shown(k)
@@ -1025,6 +1031,7 @@ func _shop_received(it: String) -> void:
 
 ##  keeps a scroll offset for every filter.
 func _set_bag_filter(f: int) -> void:
+	_bag_filter_chosen = true
 	_stop_transfer_hold()
 	_bag_scrolls[filter] = scroll
 	filter = f
@@ -1859,8 +1866,8 @@ func _gui_input(e: InputEvent) -> void:
 			_press(id, where)
 			picked.emit(id, where if where == "bag" else "info")
 		else:
-			_move(id, where)
-			_start_transfer_hold(id, where)
+			_move(id, where, e.shift_pressed)
+			if not e.shift_pressed: _start_transfer_hold(id, where)
 			picked.emit(id, "info")
 		queue_redraw()
 		accept_event()
@@ -2095,9 +2102,34 @@ func _process_transfer_hold(dt: float) -> void:
 
 
 ## Trade screens: goods -> buy pile, bag -> sell pile, a pile -> back.
-func _move(id: String, where: String) -> void:
+func _move(id: String, where: String, whole_stack := false) -> void:
 	var rows := _row_counts()
-	_move_now(id, where)
+	if mode in ["itemtrade", "spelltrade"]:
+		var before := [buy_pile.duplicate(), sell_pile.duplicate()]
+		var count := 1
+		if whole_stack:
+			match where:
+				"bag": count = bag_count(id)
+				"shop": count = shop_left(id)
+				"buy": count = buy_pile.count(id)
+				"sell": count = sell_pile.count(id)
+		# Validate once, then move the bounded stack and recalculate totals once.
+		if not trade_wait and not repair_wait:
+			if where in ["bag", "shop"] and _transfer_available(id, where):
+				var pile := sell_pile if where == "bag" else buy_pile
+				count = mini(count, Session.MAX_TRADE_ITEMS - buy_pile.size() - sell_pile.size())
+				for i in count: pile.append(id)
+			elif where in ["buy", "sell"]:
+				var pile := buy_pile if where == "buy" else sell_pile
+				for i in mini(count, pile.count(id)): pile.erase(id)
+			_sig = ""
+			_update_total()
+		if before != [buy_pile, sell_pile]:
+			_ui_sound("buttons\\camp\\put_on.wav" if where in ["bag", "shop"] else "buttons\\camp\\put_off.wav")
+		elif not trade_wait:
+			_ui_sound("buttons\\messbox\\cancel.wav")
+	else:
+		_move_now(id, where)
 	_rows_returned(rows)
 
 

@@ -538,47 +538,37 @@ static func arena(field: ArenaPveField) -> void:
 	var previous_update := field.view.render_target_update_mode
 	var exited := _arena_end.bind(weakref(field.view), progress_owner, previous_update)
 	field.tree_exiting.connect(exited, CONNECT_ONE_SHOT)
-	var progress := ShaderCompilationScreen.begin(tree, progress_owner, ShaderCompilationScreen.SCENE)
-	# The root's canvas-only present does not suppress an arena SubViewport.
-	# Present the cover before admitting new materials, then restore ordinary
-	# 3D rendering for every preparation batch beneath it.
-	field.view.render_target_update_mode = SubViewport.UPDATE_DISABLED
-	if progress: progress.present()
-	await _arena_frame(tree)
-	if not is_instance_valid(field):
-		exited.call()
-		return
-	if not field.is_inside_tree() or field.is_queued_for_deletion():
-		exited.call()
-		return
-	if is_instance_valid(field.view): field.view.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	var items := []; var seen := {}
 	var env := "arena:"+str([field._environment.fog_enabled,field._environment.volumetric_fog_enabled,
 		field._sun_light.shadow_enabled,Gfx.on("gfx_firelight"),GameData.option("q_msaa")])
 	for additive in [false,true]:
 		var material:=ShaderMaterial.new();material.shader=ParticleFx._shader(additive,false,false)
+		var before := items.size()
 		_add(items,seen,material,env,PARTICLE)
-		await _arena_frame(tree)
+		if items.size() > before: await _arena_frame(tree)
 		if not is_instance_valid(field) or not field.is_inside_tree() or field.is_queued_for_deletion():
 			exited.call()
 			return
 	for make: Callable in [func():return FxLightning._strip_mat(false),FxLightning._glow_mat]:
 		var material: Material = make.call()
+		var before := items.size()
 		_add(items,seen,material,env,MESH,_zero_lightning())
-		await _arena_frame(tree)
+		if items.size() > before: await _arena_frame(tree)
 		if not is_instance_valid(field) or not field.is_inside_tree() or field.is_queued_for_deletion():
 			exited.call()
 			return
+	var before_projectile := items.size()
 	_add(items,seen,Projectile.material(),env,MESH,_zero_format(Projectile.shaft_mesh()))
-	await _arena_frame(tree)
+	if items.size() > before_projectile: await _arena_frame(tree)
 	if not is_instance_valid(field) or not field.is_inside_tree() or field.is_queued_for_deletion():
 		exited.call()
 		return
 	if Gfx.on("gfx_torch_glow"):
 		# A temporary MeshInstance followed by immediate free synchronizes the
 		# rendering worker. Warm its material without allocating an instance.
+		var before := items.size()
 		_add(items,seen,Gfx.torch_halo_material(Color.WHITE),env,MESH)
-		await _arena_frame(tree)
+		if items.size() > before: await _arena_frame(tree)
 		if not is_instance_valid(field) or not field.is_inside_tree() or field.is_queued_for_deletion():
 			exited.call()
 			return
@@ -586,13 +576,16 @@ static func arena(field: ArenaPveField) -> void:
 	# of inspecting thousands of figure surfaces in a single transition frame.
 	for branch: Node in field.stage.get_children():
 		if is_instance_valid(branch) and branch is Node3D:
+			var before := items.size()
 			for variant: Array in _zone_materials(branch):
 				_add(items,seen,variant[0],env,variant[1],variant[2])
-			await _arena_frame(tree)
+			if items.size() > before: await _arena_frame(tree)
 			if not is_instance_valid(field) or not field.is_inside_tree() or field.is_queued_for_deletion():
 				exited.call()
 				return
 	if not items.is_empty():
+		ShaderCompilationScreen.begin(tree, progress_owner, ShaderCompilationScreen.MATERIALS, 0, items.size())
+		if is_instance_valid(field.view): field.view.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 		ShaderCompilationScreen.update(progress_owner, ShaderCompilationScreen.MATERIALS, 0, items.size())
 		var warmer:=ShaderWarmup.new();field.camera.add_child(warmer)
 		warmer._progress_owner = progress_owner

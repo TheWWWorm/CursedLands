@@ -12,6 +12,9 @@ var captured := false
 var covered_captured := false
 var new_game := false
 var requested_zone := "bz1g"
+var returning := false
+var empty_return_frames := 0
+var covered_return_frames := 0
 
 func check(ok: bool, label: String) -> void:
 	checks += 1
@@ -26,6 +29,15 @@ func finish_loading_frames() -> void:
 		if LoadingScreen._current == null: return
 
 func presented() -> void:
+	if returning:
+		var cover := get_tree().root.get_node_or_null("MenuReturnCover")
+		if cover:
+			covered_return_frames += 1
+			if covered_return_frames == 1:
+				get_viewport().get_texture().get_image().save_png("user://menu-return-covered.png")
+		elif get_tree().root.get_camera_3d() == null:
+			empty_return_frames += 1
+			get_viewport().get_texture().get_image().save_png("user://menu-return-empty.png")
 	if not monitoring or session == null or session.game == null: return
 	if session.world != null and not session.loading_game and not session._remote_loading:
 		if LoadingScreen._current != null: final_cover += 1
@@ -104,12 +116,41 @@ func _ready() -> void:
 	check(not await session.load_game_shown("missing-slot"),"missing save returns failure")
 	await finish_loading_frames()
 	check(LoadingScreen._current==null,"failed load cleans up loading picture")
+	if OS.get_cmdline_user_args().has("--quiet-transitions"):
+		check(GameData.option("fsr_upscaling") == 0 and GameData.option("fsr_frame_generation") == 0, "transition fixture runs with FSR off")
+		for i in 3:
+			session.game.hud._open_menu()
+			await quiet("menu open")
+			session.game.hud._close_menu()
+			await quiet("menu close")
+			session.game.hud._tutorial.show_screen("options",true)
+			await quiet("tutorial open")
+			session.game.hud._tutorial.hide()
+			await quiet("tutorial close")
 	if OS.get_cmdline_user_args().has("--back-to-menu"):
+		# Present gameplay again before capturing the outgoing frame.
+		for i in 3: await RenderingServer.frame_post_draw
+		returning=true
 		await main.back_to_menu()
+		for i in 3: await get_tree().process_frame
+		returning=false
 		check(main.session == null and main.game == null, "real menu return clears game and session")
+		check(covered_return_frames>0 and empty_return_frames==0,"outgoing image covers every empty viewport frame during menu return")
+		check(not get_tree().root.has_node("MenuReturnCover"),"menu return releases its cover after the menu is presented")
+		var menu_camera := get_tree().root.get_camera_3d()
+		check(menu_camera!=null and menu_camera.get_parent() is MenuScene,"menu return presents the new menu camera")
+		FileAccess.open("user://menu-return.json",FileAccess.WRITE).store_string(JSON.stringify({
+			"covered":covered_return_frames,"exposed":empty_return_frames},"\t"))
 	else:
 		await session.local_host.stop()
 		session.game.queue_free();session.queue_free()
 	for i in 8:await get_tree().process_frame
 	print("MENU_LOADING_SCREEN ",checks," checks ",failures," failures")
 	get_tree().quit(1 if failures else 0)
+
+func quiet(label: String) -> void:
+	var flashes := 0
+	for i in 20:
+		await RenderingServer.frame_post_draw
+		if ShaderCompilationScreen.displayed(): flashes += 1
+	check(flashes == 0, label + " never displays shader preparation with FSR off")

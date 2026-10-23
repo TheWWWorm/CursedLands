@@ -27,7 +27,7 @@ func _ready() -> void:
 	if OS.get_cmdline_user_args().has("--enhanced"):
 		for key: String in ["gfx_terrain","gfx_materials","gfx_soft_ground","gfx_ground_contact"]: GameData.options[key]=1
 	GameData.options.merge({"auto_graphics":0,"confine_mouse":0,"footprints":1,"vsync":0},true)
-	Gfx.ensure_globals(); Engine.max_fps=120
+	Gfx.ensure_globals(); Engine.max_fps=30
 	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS,true)
 	RenderingServer.set_render_loop_enabled(true)
 	run.call_deferred()

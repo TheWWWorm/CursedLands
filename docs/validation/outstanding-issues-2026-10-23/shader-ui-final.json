@@ -1,0 +1,9842 @@
+{
+	"checks": 380,
+	"contracts": [
+		{
+			"case": "cached-input-cancellation",
+			"events": [
+				{
+					"action": "shader_fixture_hold",
+					"phase": "up"
+				}
+			],
+			"input_kind": "simulated-ui-contract"
+		},
+		{
+			"case": "sdk-sticky-error",
+			"input_kind": "simulated-ui-contract",
+			"native_bridge_called": false,
+			"pending_status": {
+				"frame_generation_dispatches": 4,
+				"frame_generation_initializing": false,
+				"last_error": 37,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 10,
+				"upscaler_initializing": false
+			},
+			"ready_status": {
+				"frame_generation_dispatches": 4,
+				"frame_generation_initializing": false,
+				"last_error": 37,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 11,
+				"upscaler_initializing": false
+			}
+		}
+	],
+	"display": "X11",
+	"driver": "vulkan",
+	"elapsed_seconds": 11.377,
+	"failures": [],
+	"layouts": [
+		{
+			"case": "en-1280x720-0",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing scene shaders…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						243.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing scene shaders…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/en-1280x720-materials.png",
+				"size": [
+					1280,
+					720
+				]
+			},
+			"case": "en-1280x720-materials",
+			"completed": 124,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing materials…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						194.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing materials…"
+				},
+				{
+					"measured": [
+						214.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "124 of 240 materials ready"
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 240,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/en-1280x720-2.png",
+				"size": [
+					1280,
+					720
+				]
+			},
+			"case": "en-1280x720-2",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Applying graphics settings…",
+			"text": [
+				{
+					"measured": [
+						227.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Applying settings"
+				},
+				{
+					"measured": [
+						253.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Applying graphics settings…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/en-1280x720-3.png",
+				"size": [
+					1280,
+					720
+				]
+			},
+			"case": "en-1280x720-3",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing temporal shaders…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						267.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing temporal shaders…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "en-1280x720-4",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing FSR upscaling…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						243.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing FSR upscaling…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "en-1280x720-5",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing frame generation…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						264.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing frame generation…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "en-1280x720-6",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Finishing preparation…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						207.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Finishing preparation…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/en-1280x720-7.png",
+				"size": [
+					1280,
+					720
+				]
+			},
+			"case": "en-1280x720-7",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing scene geometry…",
+			"text": [
+				{
+					"measured": [
+						203.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Preparing scene"
+				},
+				{
+					"measured": [
+						255.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing scene geometry…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "en-1280x720-8",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing ray-tracing shaders…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						284.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing ray-tracing shaders…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "en-1280x720-9",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing path-tracing shaders…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						295.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing path-tracing shaders…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "en-1280x720-10",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing water reflections…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						258.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing water reflections…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "en-1280x720-11",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing the first frame…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						235.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing the first frame…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "en-1280x720-12",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing terrain and vegetation…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						306.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing terrain and vegetation…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "en-640x480-0",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing scene shaders…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						243.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing scene shaders…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/en-640x480-materials.png",
+				"size": [
+					640,
+					480
+				]
+			},
+			"case": "en-640x480-materials",
+			"completed": 124,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing materials…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						194.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing materials…"
+				},
+				{
+					"measured": [
+						214.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "124 of 240 materials ready"
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 240,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/en-640x480-2.png",
+				"size": [
+					640,
+					480
+				]
+			},
+			"case": "en-640x480-2",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Applying graphics settings…",
+			"text": [
+				{
+					"measured": [
+						227.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Applying settings"
+				},
+				{
+					"measured": [
+						253.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Applying graphics settings…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/en-640x480-3.png",
+				"size": [
+					640,
+					480
+				]
+			},
+			"case": "en-640x480-3",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing temporal shaders…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						267.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing temporal shaders…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "en-640x480-4",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing FSR upscaling…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						243.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing FSR upscaling…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "en-640x480-5",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing frame generation…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						264.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing frame generation…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "en-640x480-6",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Finishing preparation…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						207.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Finishing preparation…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/en-640x480-7.png",
+				"size": [
+					640,
+					480
+				]
+			},
+			"case": "en-640x480-7",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing scene geometry…",
+			"text": [
+				{
+					"measured": [
+						203.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Preparing scene"
+				},
+				{
+					"measured": [
+						255.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing scene geometry…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "en-640x480-8",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing ray-tracing shaders…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						284.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing ray-tracing shaders…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "en-640x480-9",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing path-tracing shaders…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						295.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing path-tracing shaders…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "en-640x480-10",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing water reflections…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						258.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing water reflections…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "en-640x480-11",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing the first frame…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						235.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing the first frame…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "en-640x480-12",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "en",
+			"phase": "Preparing terrain and vegetation…",
+			"text": [
+				{
+					"measured": [
+						241.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Compiling shaders"
+				},
+				{
+					"measured": [
+						306.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Preparing terrain and vegetation…"
+				},
+				{
+					"measured": [
+						294.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "The first preparation can take longer."
+				},
+				{
+					"measured": [
+						98.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Elapsed: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "ru-1280x720-0",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing scene shaders…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						289.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка шейдеров сцены…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/ru-1280x720-materials.png",
+				"size": [
+					1280,
+					720
+				]
+			},
+			"case": "ru-1280x720-materials",
+			"completed": 124,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing materials…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						243.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка материалов…"
+				},
+				{
+					"measured": [
+						260.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Готово материалов: 124 из 240"
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 240,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/ru-1280x720-2.png",
+				"size": [
+					1280,
+					720
+				]
+			},
+			"case": "ru-1280x720-2",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Applying graphics settings…",
+			"text": [
+				{
+					"measured": [
+						300.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Применение настроек"
+				},
+				{
+					"measured": [
+						309.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Применение настроек графики…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/ru-1280x720-3.png",
+				"size": [
+					1280,
+					720
+				]
+			},
+			"case": "ru-1280x720-3",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing temporal shaders…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						475.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка шейдеров временной реконструкции…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "ru-1280x720-4",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing FSR upscaling…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						347.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка масштабирования FSR…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "ru-1280x720-5",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing frame generation…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						298.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка генерации кадров…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "ru-1280x720-6",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Finishing preparation…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						244.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Завершение подготовки…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/ru-1280x720-7.png",
+				"size": [
+					1280,
+					720
+				]
+			},
+			"case": "ru-1280x720-7",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing scene geometry…",
+			"text": [
+				{
+					"measured": [
+						248.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Подготовка сцены"
+				},
+				{
+					"measured": [
+						291.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка геометрии сцены…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "ru-1280x720-8",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing ray-tracing shaders…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						406.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка шейдеров трассировки лучей…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "ru-1280x720-9",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing path-tracing shaders…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						404.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка шейдеров трассировки путей…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "ru-1280x720-10",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing water reflections…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						284.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка отражений воды…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "ru-1280x720-11",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing the first frame…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						264.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка первого кадра…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "ru-1280x720-12",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing terrain and vegetation…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						409.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка ландшафта и растительности…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "ru-640x480-0",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing scene shaders…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						289.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка шейдеров сцены…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/ru-640x480-materials.png",
+				"size": [
+					640,
+					480
+				]
+			},
+			"case": "ru-640x480-materials",
+			"completed": 124,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing materials…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						243.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка материалов…"
+				},
+				{
+					"measured": [
+						260.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Готово материалов: 124 из 240"
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 240,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/ru-640x480-2.png",
+				"size": [
+					640,
+					480
+				]
+			},
+			"case": "ru-640x480-2",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Applying graphics settings…",
+			"text": [
+				{
+					"measured": [
+						300.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Применение настроек"
+				},
+				{
+					"measured": [
+						309.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Применение настроек графики…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/ru-640x480-3.png",
+				"size": [
+					640,
+					480
+				]
+			},
+			"case": "ru-640x480-3",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing temporal shaders…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						475.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка шейдеров временной реконструкции…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "ru-640x480-4",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing FSR upscaling…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						347.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка масштабирования FSR…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "ru-640x480-5",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing frame generation…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						298.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка генерации кадров…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "ru-640x480-6",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Finishing preparation…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						244.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Завершение подготовки…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/ru-640x480-7.png",
+				"size": [
+					640,
+					480
+				]
+			},
+			"case": "ru-640x480-7",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing scene geometry…",
+			"text": [
+				{
+					"measured": [
+						248.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Подготовка сцены"
+				},
+				{
+					"measured": [
+						291.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка геометрии сцены…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "ru-640x480-8",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing ray-tracing shaders…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						406.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка шейдеров трассировки лучей…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "ru-640x480-9",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing path-tracing shaders…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						404.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка шейдеров трассировки путей…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "ru-640x480-10",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing water reflections…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						284.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка отражений воды…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "ru-640x480-11",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing the first frame…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						264.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка первого кадра…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "ru-640x480-12",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "ru",
+			"phase": "Preparing terrain and vegetation…",
+			"text": [
+				{
+					"measured": [
+						311.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Компиляция шейдеров"
+				},
+				{
+					"measured": [
+						409.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Подготовка ландшафта и растительности…"
+				},
+				{
+					"measured": [
+						428.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Первая подготовка может занять больше времени."
+				},
+				{
+					"measured": [
+						101.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Прошло: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "de-1280x720-0",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing scene shaders…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						331.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Szenen-Shader werden vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/de-1280x720-materials.png",
+				"size": [
+					1280,
+					720
+				]
+			},
+			"case": "de-1280x720-materials",
+			"completed": 124,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing materials…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						290.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Materialien werden vorbereitet…"
+				},
+				{
+					"measured": [
+						243.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "124 von 240 Materialien bereit"
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 240,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/de-1280x720-2.png",
+				"size": [
+					1280,
+					720
+				]
+			},
+			"case": "de-1280x720-2",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Applying graphics settings…",
+			"text": [
+				{
+					"measured": [
+						439.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Einstellungen werden angewendet"
+				},
+				{
+					"measured": [
+						377.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Grafikeinstellungen werden angewendet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/de-1280x720-3.png",
+				"size": [
+					1280,
+					720
+				]
+			},
+			"case": "de-1280x720-3",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing temporal shaders…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						355.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Temporale Shader werden vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "de-1280x720-4",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing FSR upscaling…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						297.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "FSR-Upscaling wird vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "de-1280x720-5",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing frame generation…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						338.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Frame-Generierung wird vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "de-1280x720-6",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Finishing preparation…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						315.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Vorbereitung wird abgeschlossen…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						1271,
+						360,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						640,
+						711,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/de-1280x720-7.png",
+				"size": [
+					1280,
+					720
+				]
+			},
+			"case": "de-1280x720-7",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing scene geometry…",
+			"text": [
+				{
+					"measured": [
+						290.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Szene wird vorbereitet"
+				},
+				{
+					"measured": [
+						320.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Szenengeometrie wird vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "de-1280x720-8",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing ray-tracing shaders…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						358.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Raytracing-Shader werden vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "de-1280x720-9",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing path-tracing shaders…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						364.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Pathtracing-Shader werden vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "de-1280x720-10",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing water reflections…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						357.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Wasserreflexionen werden vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "de-1280x720-11",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing the first frame…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						287.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Das erste Bild wird vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "de-1280x720-12",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing terrain and vegetation…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						360.0,
+						263.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						406.0,
+						24.0
+					],
+					"rect": [
+						360.0,
+						319.5,
+						560.0,
+						24.0
+					],
+					"text": "Gelände und Vegetation werden vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						360.0,
+						392.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						360.0,
+						431.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				1280.0,
+				720.0
+			]
+		},
+		{
+			"case": "de-640x480-0",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing scene shaders…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						331.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Szenen-Shader werden vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/de-640x480-materials.png",
+				"size": [
+					640,
+					480
+				]
+			},
+			"case": "de-640x480-materials",
+			"completed": 124,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing materials…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						290.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Materialien werden vorbereitet…"
+				},
+				{
+					"measured": [
+						243.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "124 von 240 Materialien bereit"
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 240,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/de-640x480-2.png",
+				"size": [
+					640,
+					480
+				]
+			},
+			"case": "de-640x480-2",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Applying graphics settings…",
+			"text": [
+				{
+					"measured": [
+						439.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Einstellungen werden angewendet"
+				},
+				{
+					"measured": [
+						377.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Grafikeinstellungen werden angewendet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/de-640x480-3.png",
+				"size": [
+					640,
+					480
+				]
+			},
+			"case": "de-640x480-3",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing temporal shaders…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						355.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Temporale Shader werden vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "de-640x480-4",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing FSR upscaling…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						297.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "FSR-Upscaling wird vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "de-640x480-5",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing frame generation…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						338.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Frame-Generierung wird vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "de-640x480-6",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Finishing preparation…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						315.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Vorbereitung wird abgeschlossen…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"capture": {
+				"edge_pixels": [
+					[
+						8,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						8,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						631,
+						240,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						8,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					],
+					[
+						320,
+						471,
+						0.0705882385373116,
+						0.0666666701436043,
+						0.0588235296308994,
+						1.0
+					]
+				],
+				"opaque": true,
+				"path": "user://shader-compilation-screen/de-640x480-7.png",
+				"size": [
+					640,
+					480
+				]
+			},
+			"case": "de-640x480-7",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing scene geometry…",
+			"text": [
+				{
+					"measured": [
+						290.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Szene wird vorbereitet"
+				},
+				{
+					"measured": [
+						320.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Szenengeometrie wird vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "de-640x480-8",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing ray-tracing shaders…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						358.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Raytracing-Shader werden vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "de-640x480-9",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing path-tracing shaders…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						364.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Pathtracing-Shader werden vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "de-640x480-10",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing water reflections…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						357.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Wasserreflexionen werden vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "de-640x480-11",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing the first frame…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						287.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Das erste Bild wird vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		},
+		{
+			"case": "de-640x480-12",
+			"completed": 0,
+			"fits": true,
+			"glyphs": true,
+			"language": "de",
+			"phase": "Preparing terrain and vegetation…",
+			"text": [
+				{
+					"measured": [
+						332.0,
+						36.0
+					],
+					"rect": [
+						40.0,
+						143.5,
+						560.0,
+						36.0
+					],
+					"text": "Shader werden kompiliert"
+				},
+				{
+					"measured": [
+						406.0,
+						24.0
+					],
+					"rect": [
+						40.0,
+						199.5,
+						560.0,
+						24.0
+					],
+					"text": "Gelände und Vegetation werden vorbereitet…"
+				},
+				{
+					"measured": [
+						345.0,
+						21.0
+					],
+					"rect": [
+						40.0,
+						272.5,
+						560.0,
+						21.0
+					],
+					"text": "Die erste Vorbereitung kann länger dauern."
+				},
+				{
+					"measured": [
+						118.0,
+						19.0
+					],
+					"rect": [
+						40.0,
+						311.5,
+						560.0,
+						24.0
+					],
+					"text": "Vergangen: 0:00"
+				}
+			],
+			"total": 0,
+			"viewport": [
+				640.0,
+				480.0
+			]
+		}
+	],
+	"lifecycle": [
+		{
+			"case": "materials:brief",
+			"removed": true,
+			"starting_presentations": 0,
+			"wait_ms": 165
+		},
+		{
+			"case": "pipeline:scene:brief",
+			"removed": true,
+			"starting_presentations": 0,
+			"wait_ms": 166
+		},
+		{
+			"case": "pipeline:water:brief",
+			"removed": true,
+			"starting_presentations": 0,
+			"wait_ms": 167
+		},
+		{
+			"case": "settings:brief",
+			"removed": true,
+			"starting_presentations": 0,
+			"wait_ms": 167
+		},
+		{
+			"active": true,
+			"case": "held-progress",
+			"drawn_frames": 69,
+			"owners": [
+				"materials:fixture-primary"
+			],
+			"owns_pause": true,
+			"paused": true,
+			"presentations": 44,
+			"screen_instance": 542877157810
+		},
+		{
+			"active": true,
+			"case": "settings-retained",
+			"drawn_frames": 211,
+			"owners": [
+				"settings"
+			],
+			"owns_pause": true,
+			"paused": true,
+			"presentations": 264,
+			"screen_instance": 542877157810
+		},
+		{
+			"case": "owned-pause-complete",
+			"removed": true,
+			"starting_presentations": 276,
+			"wait_ms": 166
+		},
+		{
+			"case": "replacement-complete",
+			"removed": true,
+			"starting_presentations": 12,
+			"wait_ms": 167
+		},
+		{
+			"case": "player-pause-complete",
+			"removed": true,
+			"starting_presentations": 8,
+			"wait_ms": 167
+		},
+		{
+			"active": false,
+			"case": "player-pause-preserved",
+			"drawn_frames": 260,
+			"owners": [],
+			"owns_pause": false,
+			"paused": true,
+			"presentations": 0,
+			"screen_instance": 0
+		},
+		{
+			"case": "multiplayer-complete",
+			"removed": true,
+			"starting_presentations": 8,
+			"wait_ms": 167
+		},
+		{
+			"case": "simulated-sdk-complete",
+			"removed": true,
+			"starting_presentations": 13,
+			"wait_ms": 167
+		},
+		{
+			"case": "sdk-reinitialization-complete",
+			"removed": true,
+			"starting_presentations": 0,
+			"wait_ms": 133
+		}
+	],
+	"note": "Deterministic screen API/ownership/input tests with simulated progress counts. Captures use the real canvas and camera input guard. This fixture does not validate actual shader or SDK compilation completion.",
+	"profile": {
+		"confine_mouse": 0,
+		"show_fps": 1,
+		"volume_sfx": 0,
+		"volume_stream": 0,
+		"volume_voice": 0
+	},
+	"progress": [
+		{
+			"completed": 0,
+			"elapsed_ms": 535,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 15,
+			"title": "Compiling shaders",
+			"total": 24
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 633,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 18,
+			"title": "Compiling shaders",
+			"total": 24
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 732,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 21,
+			"title": "Compiling shaders",
+			"total": 24
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 833,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 24,
+			"title": "Compiling shaders",
+			"total": 24
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 933,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 27,
+			"title": "Compiling shaders",
+			"total": 24
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1033,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 30,
+			"title": "Compiling shaders",
+			"total": 24
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1133,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 33,
+			"title": "Compiling shaders",
+			"total": 24
+		},
+		{
+			"completed": 7,
+			"elapsed_ms": 1167,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 35,
+			"title": "Compiling shaders",
+			"total": 24
+		},
+		{
+			"completed": 7,
+			"elapsed_ms": 1167,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 35,
+			"title": "Compiling shaders",
+			"total": 24
+		},
+		{
+			"completed": 7,
+			"elapsed_ms": 1299,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 39,
+			"title": "Compiling shaders",
+			"total": 24
+		},
+		{
+			"completed": 7,
+			"elapsed_ms": 1399,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 42,
+			"title": "Compiling shaders",
+			"total": 24
+		},
+		{
+			"completed": 7,
+			"elapsed_ms": 1499,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 45,
+			"title": "Compiling shaders",
+			"total": 24
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1533,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing scene shaders…",
+			"presentations": 47,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1533,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing scene shaders…",
+			"presentations": 47,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1533,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing scene shaders…",
+			"presentations": 47,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1567,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 49,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 124,
+			"elapsed_ms": 1567,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 49,
+			"title": "Compiling shaders",
+			"total": 240
+		},
+		{
+			"completed": 124,
+			"elapsed_ms": 1567,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 49,
+			"title": "Compiling shaders",
+			"total": 240
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1659,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Applying graphics settings…",
+			"presentations": 52,
+			"title": "Applying settings",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1659,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Applying graphics settings…",
+			"presentations": 52,
+			"title": "Applying settings",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1659,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Applying graphics settings…",
+			"presentations": 52,
+			"title": "Applying settings",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1725,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing temporal shaders…",
+			"presentations": 55,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1725,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing temporal shaders…",
+			"presentations": 55,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1725,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing temporal shaders…",
+			"presentations": 55,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1795,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing FSR upscaling…",
+			"presentations": 58,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1795,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing FSR upscaling…",
+			"presentations": 58,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1795,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing FSR upscaling…",
+			"presentations": 58,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1801,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing frame generation…",
+			"presentations": 60,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1801,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing frame generation…",
+			"presentations": 60,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1801,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing frame generation…",
+			"presentations": 60,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1834,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Finishing preparation…",
+			"presentations": 62,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1834,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Finishing preparation…",
+			"presentations": 62,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1834,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Finishing preparation…",
+			"presentations": 62,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1868,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing scene geometry…",
+			"presentations": 64,
+			"title": "Preparing scene",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1868,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing scene geometry…",
+			"presentations": 64,
+			"title": "Preparing scene",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1868,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing scene geometry…",
+			"presentations": 64,
+			"title": "Preparing scene",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1961,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing ray-tracing shaders…",
+			"presentations": 67,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1961,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing ray-tracing shaders…",
+			"presentations": 67,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1961,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing ray-tracing shaders…",
+			"presentations": 67,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1968,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing path-tracing shaders…",
+			"presentations": 69,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1968,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing path-tracing shaders…",
+			"presentations": 69,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 1968,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing path-tracing shaders…",
+			"presentations": 69,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2001,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing water reflections…",
+			"presentations": 71,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2001,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing water reflections…",
+			"presentations": 71,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2001,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing water reflections…",
+			"presentations": 71,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2035,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing the first frame…",
+			"presentations": 73,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2035,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing the first frame…",
+			"presentations": 73,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2035,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing the first frame…",
+			"presentations": 73,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2068,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 75,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2068,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 75,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2068,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 75,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2103,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 77,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2200,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing scene shaders…",
+			"presentations": 80,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2200,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing scene shaders…",
+			"presentations": 80,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2200,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing scene shaders…",
+			"presentations": 80,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2235,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 82,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 124,
+			"elapsed_ms": 2235,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 82,
+			"title": "Compiling shaders",
+			"total": 240
+		},
+		{
+			"completed": 124,
+			"elapsed_ms": 2235,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 82,
+			"title": "Compiling shaders",
+			"total": 240
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2312,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Applying graphics settings…",
+			"presentations": 85,
+			"title": "Applying settings",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2312,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Applying graphics settings…",
+			"presentations": 85,
+			"title": "Applying settings",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2312,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Applying graphics settings…",
+			"presentations": 85,
+			"title": "Applying settings",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2377,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing temporal shaders…",
+			"presentations": 88,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2377,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing temporal shaders…",
+			"presentations": 88,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2377,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing temporal shaders…",
+			"presentations": 88,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2444,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing FSR upscaling…",
+			"presentations": 91,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2444,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing FSR upscaling…",
+			"presentations": 91,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2444,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing FSR upscaling…",
+			"presentations": 91,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2468,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing frame generation…",
+			"presentations": 93,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2468,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing frame generation…",
+			"presentations": 93,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2468,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing frame generation…",
+			"presentations": 93,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2501,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Finishing preparation…",
+			"presentations": 95,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2502,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Finishing preparation…",
+			"presentations": 95,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2502,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Finishing preparation…",
+			"presentations": 95,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2535,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing scene geometry…",
+			"presentations": 97,
+			"title": "Preparing scene",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2535,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing scene geometry…",
+			"presentations": 97,
+			"title": "Preparing scene",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2535,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing scene geometry…",
+			"presentations": 97,
+			"title": "Preparing scene",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2612,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing ray-tracing shaders…",
+			"presentations": 100,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2612,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing ray-tracing shaders…",
+			"presentations": 100,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2612,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing ray-tracing shaders…",
+			"presentations": 100,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2636,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing path-tracing shaders…",
+			"presentations": 102,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2636,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing path-tracing shaders…",
+			"presentations": 102,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2636,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing path-tracing shaders…",
+			"presentations": 102,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2669,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing water reflections…",
+			"presentations": 104,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2669,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing water reflections…",
+			"presentations": 104,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2669,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing water reflections…",
+			"presentations": 104,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2702,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing the first frame…",
+			"presentations": 106,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2702,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing the first frame…",
+			"presentations": 106,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2702,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing the first frame…",
+			"presentations": 106,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2735,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 108,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2735,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 108,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2735,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 108,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2771,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 110,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2867,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing scene shaders…",
+			"presentations": 113,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2867,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing scene shaders…",
+			"presentations": 113,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2867,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing scene shaders…",
+			"presentations": 113,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2902,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing materials…",
+			"presentations": 115,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 124,
+			"elapsed_ms": 2902,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing materials…",
+			"presentations": 115,
+			"title": "Compiling shaders",
+			"total": 240
+		},
+		{
+			"completed": 124,
+			"elapsed_ms": 2902,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing materials…",
+			"presentations": 115,
+			"title": "Compiling shaders",
+			"total": 240
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2992,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Applying graphics settings…",
+			"presentations": 118,
+			"title": "Applying settings",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2992,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Applying graphics settings…",
+			"presentations": 118,
+			"title": "Applying settings",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 2992,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Applying graphics settings…",
+			"presentations": 118,
+			"title": "Applying settings",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3059,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing temporal shaders…",
+			"presentations": 121,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3060,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing temporal shaders…",
+			"presentations": 121,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3060,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing temporal shaders…",
+			"presentations": 121,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3126,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing FSR upscaling…",
+			"presentations": 124,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3126,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing FSR upscaling…",
+			"presentations": 124,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3126,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing FSR upscaling…",
+			"presentations": 124,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3135,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing frame generation…",
+			"presentations": 126,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3135,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing frame generation…",
+			"presentations": 126,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3135,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing frame generation…",
+			"presentations": 126,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3169,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Finishing preparation…",
+			"presentations": 128,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3169,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Finishing preparation…",
+			"presentations": 128,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3169,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Finishing preparation…",
+			"presentations": 128,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3202,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing scene geometry…",
+			"presentations": 130,
+			"title": "Preparing scene",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3202,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing scene geometry…",
+			"presentations": 130,
+			"title": "Preparing scene",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3202,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing scene geometry…",
+			"presentations": 130,
+			"title": "Preparing scene",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3292,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing ray-tracing shaders…",
+			"presentations": 133,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3292,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing ray-tracing shaders…",
+			"presentations": 133,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3292,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing ray-tracing shaders…",
+			"presentations": 133,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3302,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing path-tracing shaders…",
+			"presentations": 135,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3302,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing path-tracing shaders…",
+			"presentations": 135,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3302,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing path-tracing shaders…",
+			"presentations": 135,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3337,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing water reflections…",
+			"presentations": 137,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3337,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing water reflections…",
+			"presentations": 137,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3337,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing water reflections…",
+			"presentations": 137,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3369,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing the first frame…",
+			"presentations": 139,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3369,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing the first frame…",
+			"presentations": 139,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3369,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing the first frame…",
+			"presentations": 139,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3402,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 141,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3402,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 141,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3402,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 141,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3437,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 143,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3533,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing scene shaders…",
+			"presentations": 146,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3533,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing scene shaders…",
+			"presentations": 146,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3533,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing scene shaders…",
+			"presentations": 146,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3570,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing materials…",
+			"presentations": 148,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 124,
+			"elapsed_ms": 3570,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing materials…",
+			"presentations": 148,
+			"title": "Compiling shaders",
+			"total": 240
+		},
+		{
+			"completed": 124,
+			"elapsed_ms": 3570,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing materials…",
+			"presentations": 148,
+			"title": "Compiling shaders",
+			"total": 240
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3649,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Applying graphics settings…",
+			"presentations": 151,
+			"title": "Applying settings",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3649,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Applying graphics settings…",
+			"presentations": 151,
+			"title": "Applying settings",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3649,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Applying graphics settings…",
+			"presentations": 151,
+			"title": "Applying settings",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3712,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing temporal shaders…",
+			"presentations": 154,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3712,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing temporal shaders…",
+			"presentations": 154,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3712,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing temporal shaders…",
+			"presentations": 154,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3778,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing FSR upscaling…",
+			"presentations": 157,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3778,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing FSR upscaling…",
+			"presentations": 157,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3778,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing FSR upscaling…",
+			"presentations": 157,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3803,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing frame generation…",
+			"presentations": 159,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3803,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing frame generation…",
+			"presentations": 159,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3803,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing frame generation…",
+			"presentations": 159,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3837,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Finishing preparation…",
+			"presentations": 161,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3837,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Finishing preparation…",
+			"presentations": 161,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3837,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Finishing preparation…",
+			"presentations": 161,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3870,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing scene geometry…",
+			"presentations": 163,
+			"title": "Preparing scene",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3870,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing scene geometry…",
+			"presentations": 163,
+			"title": "Preparing scene",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3870,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing scene geometry…",
+			"presentations": 163,
+			"title": "Preparing scene",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3946,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing ray-tracing shaders…",
+			"presentations": 166,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3946,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing ray-tracing shaders…",
+			"presentations": 166,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3946,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing ray-tracing shaders…",
+			"presentations": 166,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3970,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing path-tracing shaders…",
+			"presentations": 168,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3970,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing path-tracing shaders…",
+			"presentations": 168,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 3970,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing path-tracing shaders…",
+			"presentations": 168,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4003,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing water reflections…",
+			"presentations": 170,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4003,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing water reflections…",
+			"presentations": 170,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4003,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing water reflections…",
+			"presentations": 170,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4036,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing the first frame…",
+			"presentations": 172,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4036,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing the first frame…",
+			"presentations": 172,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4036,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing the first frame…",
+			"presentations": 172,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4072,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 174,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4072,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 174,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4072,
+			"input_kind": "simulated-ui-progress",
+			"language": "ru",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 174,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4107,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 176,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4200,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing scene shaders…",
+			"presentations": 179,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4200,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing scene shaders…",
+			"presentations": 179,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4200,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing scene shaders…",
+			"presentations": 179,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4237,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing materials…",
+			"presentations": 181,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 124,
+			"elapsed_ms": 4237,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing materials…",
+			"presentations": 181,
+			"title": "Compiling shaders",
+			"total": 240
+		},
+		{
+			"completed": 124,
+			"elapsed_ms": 4237,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing materials…",
+			"presentations": 181,
+			"title": "Compiling shaders",
+			"total": 240
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4332,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Applying graphics settings…",
+			"presentations": 184,
+			"title": "Applying settings",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4332,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Applying graphics settings…",
+			"presentations": 184,
+			"title": "Applying settings",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4332,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Applying graphics settings…",
+			"presentations": 184,
+			"title": "Applying settings",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4395,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing temporal shaders…",
+			"presentations": 187,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4395,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing temporal shaders…",
+			"presentations": 187,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4395,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing temporal shaders…",
+			"presentations": 187,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4463,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing FSR upscaling…",
+			"presentations": 190,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4463,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing FSR upscaling…",
+			"presentations": 190,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4463,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing FSR upscaling…",
+			"presentations": 190,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4470,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing frame generation…",
+			"presentations": 192,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4470,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing frame generation…",
+			"presentations": 192,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4470,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing frame generation…",
+			"presentations": 192,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4503,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Finishing preparation…",
+			"presentations": 194,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4503,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Finishing preparation…",
+			"presentations": 194,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4503,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Finishing preparation…",
+			"presentations": 194,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4537,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing scene geometry…",
+			"presentations": 196,
+			"title": "Preparing scene",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4537,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing scene geometry…",
+			"presentations": 196,
+			"title": "Preparing scene",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4537,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing scene geometry…",
+			"presentations": 196,
+			"title": "Preparing scene",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4632,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing ray-tracing shaders…",
+			"presentations": 199,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4632,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing ray-tracing shaders…",
+			"presentations": 199,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4632,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing ray-tracing shaders…",
+			"presentations": 199,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4637,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing path-tracing shaders…",
+			"presentations": 201,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4637,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing path-tracing shaders…",
+			"presentations": 201,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4637,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing path-tracing shaders…",
+			"presentations": 201,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4671,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing water reflections…",
+			"presentations": 203,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4671,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing water reflections…",
+			"presentations": 203,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4671,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing water reflections…",
+			"presentations": 203,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4705,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing the first frame…",
+			"presentations": 205,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4705,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing the first frame…",
+			"presentations": 205,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4705,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing the first frame…",
+			"presentations": 205,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4738,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 207,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4738,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 207,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4739,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 207,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4775,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 209,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4867,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing scene shaders…",
+			"presentations": 212,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4867,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing scene shaders…",
+			"presentations": 212,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4867,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing scene shaders…",
+			"presentations": 212,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4905,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing materials…",
+			"presentations": 214,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 124,
+			"elapsed_ms": 4905,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing materials…",
+			"presentations": 214,
+			"title": "Compiling shaders",
+			"total": 240
+		},
+		{
+			"completed": 124,
+			"elapsed_ms": 4905,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing materials…",
+			"presentations": 214,
+			"title": "Compiling shaders",
+			"total": 240
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4981,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Applying graphics settings…",
+			"presentations": 217,
+			"title": "Applying settings",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4981,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Applying graphics settings…",
+			"presentations": 217,
+			"title": "Applying settings",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 4981,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Applying graphics settings…",
+			"presentations": 217,
+			"title": "Applying settings",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5049,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing temporal shaders…",
+			"presentations": 220,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5049,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing temporal shaders…",
+			"presentations": 220,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5049,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing temporal shaders…",
+			"presentations": 220,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5114,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing FSR upscaling…",
+			"presentations": 223,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5115,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing FSR upscaling…",
+			"presentations": 223,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5115,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing FSR upscaling…",
+			"presentations": 223,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5140,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing frame generation…",
+			"presentations": 225,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5140,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing frame generation…",
+			"presentations": 225,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5141,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing frame generation…",
+			"presentations": 225,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5171,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Finishing preparation…",
+			"presentations": 227,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5171,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Finishing preparation…",
+			"presentations": 227,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5172,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Finishing preparation…",
+			"presentations": 227,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5205,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing scene geometry…",
+			"presentations": 229,
+			"title": "Preparing scene",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5205,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing scene geometry…",
+			"presentations": 229,
+			"title": "Preparing scene",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5205,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing scene geometry…",
+			"presentations": 229,
+			"title": "Preparing scene",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5282,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing ray-tracing shaders…",
+			"presentations": 232,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5282,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing ray-tracing shaders…",
+			"presentations": 232,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5282,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing ray-tracing shaders…",
+			"presentations": 232,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5305,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing path-tracing shaders…",
+			"presentations": 234,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5305,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing path-tracing shaders…",
+			"presentations": 234,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5305,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing path-tracing shaders…",
+			"presentations": 234,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5339,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing water reflections…",
+			"presentations": 236,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5339,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing water reflections…",
+			"presentations": 236,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5339,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing water reflections…",
+			"presentations": 236,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5371,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing the first frame…",
+			"presentations": 238,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5371,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing the first frame…",
+			"presentations": 238,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5371,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing the first frame…",
+			"presentations": 238,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5404,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 240,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5404,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 240,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 5404,
+			"input_kind": "simulated-ui-progress",
+			"language": "de",
+			"phase": "Preparing terrain and vegetation…",
+			"presentations": 240,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 24,
+			"elapsed_ms": 5438,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 242,
+			"title": "Compiling shaders",
+			"total": 24
+		},
+		{
+			"completed": 24,
+			"elapsed_ms": 5566,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 245,
+			"title": "Compiling shaders",
+			"total": 24
+		},
+		{
+			"completed": 24,
+			"elapsed_ms": 5666,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 248,
+			"title": "Compiling shaders",
+			"total": 24
+		},
+		{
+			"completed": 24,
+			"elapsed_ms": 5766,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 251,
+			"title": "Compiling shaders",
+			"total": 24
+		},
+		{
+			"completed": 24,
+			"elapsed_ms": 5833,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 254,
+			"title": "Compiling shaders",
+			"total": 24
+		},
+		{
+			"completed": 1,
+			"elapsed_ms": 5833,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 254,
+			"title": "Compiling shaders",
+			"total": 3
+		},
+		{
+			"completed": 1,
+			"elapsed_ms": 5834,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 254,
+			"title": "Compiling shaders",
+			"total": 3
+		},
+		{
+			"completed": 1,
+			"elapsed_ms": 5933,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 256,
+			"title": "Compiling shaders",
+			"total": 3
+		},
+		{
+			"completed": 1,
+			"elapsed_ms": 6033,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 259,
+			"title": "Compiling shaders",
+			"total": 3
+		},
+		{
+			"completed": 1,
+			"elapsed_ms": 6133,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 262,
+			"title": "Compiling shaders",
+			"total": 3
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 6167,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Applying graphics settings…",
+			"presentations": 264,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 6172,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Finishing preparation…",
+			"presentations": 264,
+			"title": "Compiling shaders",
+			"total": 0
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 6172,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 264,
+			"title": "Compiling shaders",
+			"total": 2
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 6299,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 267,
+			"title": "Compiling shaders",
+			"total": 2
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 6399,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 270,
+			"title": "Compiling shaders",
+			"total": 2
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 6499,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Preparing materials…",
+			"presentations": 273,
+			"title": "Compiling shaders",
+			"total": 2
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 6567,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Finishing preparation…",
+			"presentations": 276,
+			"title": "Compiling shaders",
+			"total": 2
+		},
+		{
+			"completed": 0,
+			"elapsed_ms": 6666,
+			"input_kind": "simulated-ui-progress",
+			"language": "en",
+			"phase": "Finishing preparation…",
+			"presentations": 278,
+			"title": "Compiling shaders",
+			"total": 2
+		}
+	],
+	"status": "passed",
+	"user_data": "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/shader-quiet-screen/data/godot/app_userdata/Cursed Lands"
+}
