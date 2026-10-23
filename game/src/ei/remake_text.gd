@@ -2558,6 +2558,7 @@ const TEXTS := {
 	"Lever": ["Рычаг", "Hebel"],
 	"Skeleton": ["Скелет", "Skelett"],
 	"Creature": ["Существо", "Kreatur"],
+	"Trader": ["Торговец", "Händler"],
 	"Remains": ["Останки", "Überreste"],
 	"Object": ["Объект", "Objekt"],
 	"Cage": ["Клетка", "Käfig"],

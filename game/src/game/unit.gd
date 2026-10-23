@@ -496,6 +496,9 @@ func setup(w: GameWorld, record: Dictionary) -> bool:
 	if display_name.is_empty() and (uid == ScriptVM.name_id(named) \
 			or not GameData.text("unit " + named.to_lower().replace(" ", "_")).is_empty()):
 		display_name = unit_title(named)
+	# Untitled traders (Black Market, Ingos) keep their record's role.
+	if display_name.is_empty() and named == "Trader":
+		display_name = RemakeText.t("Trader")
 	if display_name.is_empty():
 		display_name = RemakeText.t("Creature")
 	var p: Vector3 = record.get("position", Vector3.ZERO)

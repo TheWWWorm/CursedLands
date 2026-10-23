@@ -150,10 +150,16 @@ static func sfx_random(dir: String) -> AudioStreamWAV:
 	return sfx(files[randi() % files.size()]) if not files.is_empty() else null
 
 
-## Voice line `n` of briefing `id` (speech.res "briefing\\<id>\\<n>.mp3").
-static func speech(id: String, n: int) -> AudioStreamMP3:
+## Opens speech.res's index (~4 ms) before a conversation needs it, so the
+## first voiced phrase does not stall the frame that opens the dialog.
+static func open_speech() -> void:
 	if _speech == null:
 		_speech = _archive("speech.res")
+
+
+## Voice line `n` of briefing `id` (speech.res "briefing\\<id>\\<n>.mp3").
+static func speech(id: String, n: int) -> AudioStreamMP3:
+	open_speech()
 	# English / German the original: "briefing\\%s\\%d.mp3". The
 	# Russian the original formats "%s\\briefing\\%s\\%d.mp3" with "t" or "s"
 	# picked at random (rand · 2 / 32767 into the table {"t", "s"}

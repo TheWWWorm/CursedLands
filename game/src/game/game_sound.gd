@@ -147,6 +147,7 @@ func _zone_start(w: GameWorld) -> void:
 	# Remake: the zone's unit and ambient sounds decoded on a worker thread.
 	EIAudio.prefetch(ambient.folders(w.session.state.world_time if w.session and w.session.state else 12.0)
 		+ UnitSounds.zone_folders(w))
+	EIAudio.open_speech()
 	spells = SpellSounds.new(mixer, w)
 	weather = Weather.new(mixer, w)
 	if w.authority and not w.item_worn.is_connected(_on_item_worn):
