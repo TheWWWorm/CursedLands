@@ -290,7 +290,7 @@ class QualificationTests(unittest.TestCase):
 import json,os,pathlib,sys,time
 if os.environ.get('QUALIFICATION_SERVICE_TEST'):
  assert os.environ['DISPLAY']==':98' and os.environ['WAYLAND_DISPLAY']=='service-owned'
- assert os.environ['CUDA_VISIBLE_DEVICES']=='service-owned'
+ assert os.environ['CUDA_VISIBLE_DEVICES']=='GPU-test-1'
  assert sys.argv[sys.argv.index('--gpu-index')+1]=='0'
  assert sys.argv[sys.argv.index('--display-driver')+1]=='x11'
 args={s.split('=',1)[0]:s.split('=',1)[1] for s in sys.argv if '=' in s}
@@ -336,14 +336,17 @@ time.sleep(0.2)
             # verify the same physical GPU and use logical adapter zero.
             service_env = {"QUALIFICATION_SERVICE_TEST": "1", "DISPLAY": ":98",
                            "XAUTHORITY": str(root / "authority"), "WAYLAND_DISPLAY": "service-owned",
-                           "CUDA_VISIBLE_DEVICES": "service-owned"}
+                           "CUDA_VISIBLE_DEVICES": GPU["uuid"]}
             lab_args = ["--executable", str(executable), "--data-root", str(root / "data"),
                         "--profile-root", str(root / "lab-profile"), "--output", str(root / "lab-output"),
-                        "--driver", "vulkan", "--inherit-display", "--physical-gpu-uuid", GPU["uuid"], "--suite", "device"]
+                        "--driver", "vulkan", "--inherit-display", "--suite", "device"]
             with patch.dict(os.environ, service_env), patch.object(q, "gpu_inventory", return_value=[{**GPU, "index": "0"}]), patch.object(q, "supervise", side_effect=run), contextlib.redirect_stdout(io.StringIO()):
                 self.assertEqual(q.main(lab_args), 0)
                 for key in q.GPU_ENV:
                     self.assertEqual(q.main(lab_args + ["--env", key + "=unrequested"]), 1)
+                for assignment in ("", "0", "GPU-other", "GPU-test-1,GPU-other"):
+                    with patch.dict(os.environ, {"CUDA_VISIBLE_DEVICES": assignment}):
+                        self.assertEqual(q.main(lab_args), 1)
             manifest = json.loads((root / "lab-output/qualification.json").read_text())
             self.assertTrue(manifest["passed"])
             self.assertTrue(manifest["inherited_display"])

@@ -460,7 +460,7 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--inherit-display", action="store_true", help="Inherit the GPU Lab service's display and GPU environment unchanged; defaults to logical adapter 0")
     p.add_argument("--display", help="Already prepared dedicated X11 display; omit with --inherit-display")
     p.add_argument("--xauthority", type=Path)
-    p.add_argument("--physical-gpu", type=int, default=1, help="nvidia-smi physical GPU index; verified by process UUID evidence")
+    p.add_argument("--physical-gpu", type=int, help="nvidia-smi index; default 1 outside GPU Lab, otherwise use the service-assigned UUID")
     p.add_argument("--physical-gpu-uuid", help="Select the exact physical UUID instead of its potentially renumbered nvidia-smi index")
     p.add_argument("--engine-gpu-index", type=int, help="Godot adapter index; default 0 with --inherit-display, otherwise 1")
     p.add_argument("--suite", action="append", choices=sorted(set(REPORTS) | set(GROUPS)), help="Repeatable; default core")
@@ -516,8 +516,14 @@ def main(argv=None) -> int:
                 raise ValueError("Invalid or protected --env key: " + key)
             explicit_env[key] = value
         inventory = gpu_inventory()
-        gpu = next((row for row in inventory if row["uuid"] == args.physical_gpu_uuid), None) if args.physical_gpu_uuid else next(
-            (row for row in inventory if int(row["index"]) == args.physical_gpu), None)
+        requested_uuid = args.physical_gpu_uuid
+        if args.inherit_display and not requested_uuid and args.physical_gpu is None:
+            requested_uuid = env.get("CUDA_VISIBLE_DEVICES", "")
+            if not requested_uuid.startswith("GPU-") or "," in requested_uuid:
+                raise ValueError("GPU Lab must assign one physical UUID through CUDA_VISIBLE_DEVICES")
+        physical_index = 1 if args.physical_gpu is None else args.physical_gpu
+        gpu = next((row for row in inventory if row["uuid"] == requested_uuid), None) if requested_uuid else next(
+            (row for row in inventory if int(row["index"]) == physical_index), None)
         if gpu is None:
             raise ValueError("Requested physical GPU is absent from nvidia-smi")
         # An advisory lock prevents overlapping runs of this qualification

@@ -60,8 +60,7 @@ gpu-lab submit --cwd /absolute/repository --timeout 1800 -- \
   python3 /absolute/repository/tools/tests/run_path_trace_qualification.py \
   --executable /build/CursedLands.x86_64 --data-root /data/EvilIslands \
   --profile-root /evidence/preparation-profile --output /evidence/preparation \
-  --driver vulkan --physical-gpu-uuid GPU-TARGET-UUID \
-  --inherit-display --suite preparation
+  --driver vulkan --inherit-display --suite preparation
 ```
 
 The group includes localized layout/input/ownership contracts, actual campaign

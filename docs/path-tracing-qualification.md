@@ -26,10 +26,14 @@ and each command.
 ## Hardware and virtual display
 
 On the development workstation, submit graphical runs through GPU Lab. It owns
-the accelerated virtual screen and serializes physical GPU1 tests. Do not start
+one accelerated virtual screen per GPU and can run one test on each concurrently.
+Leave the submission's GPU choice omitted or `auto`; pin a card only for an
+explicit device-specific comparison. Do not start
 another Xorg/Xvfb, change the desktop, or override the service's display or GPU
 environment. Use `--inherit-display`; the runner preserves those variables and
-defaults to Godot's logical adapter **0** inside the job. Native launches use
+defaults to Godot's logical adapter **0** inside the job. The expected physical
+UUID comes from the service's inherited `CUDA_VISIBLE_DEVICES` and is checked
+against actual GPU process telemetry. Native launches use
 `--display-driver x11 --audio-driver Dummy`. GPU Lab's private `/tmp` is separate
 from the caller's, so keep inputs, profiles and evidence in project/home paths.
 See `/opt/gpu-lab/README.md` for service commands.
@@ -39,8 +43,9 @@ Other hosts can use an already prepared accelerated X11 display by supplying
 qualification target. The GPU must support the patched engine's ray-tracing API.
 
 `--physical-gpu 1` selects the physical index reported by `nvidia-smi`.
-`--physical-gpu-uuid GPU-...` selects an exact UUID instead; prefer this inside
-GPU Lab because device isolation can renumber NVML indices.
+`--physical-gpu-uuid GPU-...` selects an exact UUID instead. In ordinary GPU Lab
+runs omit both selectors and verify the scheduler-assigned UUID automatically;
+device isolation can renumber NVML indices.
 `--engine-gpu-index` selects Godot's enumeration index; these are separate
 namespaces and may differ on another machine. The runner checks the actual
 runtime adapter name, renderer and supported PT API, then observes the launched
@@ -67,7 +72,7 @@ gpu-lab submit --cwd /absolute/repository --timeout 7200 -- \
   --data-root /data/EvilIslands \
   --profile-root /evidence/pt-vulkan-profile-01 \
   --output /evidence/pt-vulkan-01 \
-  --driver vulkan --physical-gpu-uuid GPU-TARGET-UUID --inherit-display \
+  --driver vulkan --inherit-display \
   --suite full
 ```
 
@@ -98,7 +103,7 @@ gpu-lab submit --cwd /absolute/repository --timeout 7200 -- \
   --data-root /data/EvilIslands \
   --profile-root /evidence/pt-dx12-profile-01 \
   --output /evidence/pt-dx12-01 \
-  --driver d3d12 --physical-gpu-uuid GPU-TARGET-UUID --inherit-display \
+  --driver d3d12 --inherit-display \
   --wine /opt/qualified-wine/lib/wine/wine64 \
   --wine-prefix-template /opt/qualified-wine/pt-prefix \
   --wine-user tester \
