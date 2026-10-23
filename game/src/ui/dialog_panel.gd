@@ -4,10 +4,8 @@ extends Control
 ## screen,: build, per-frame, left
 ## button, keys; phrases). In co-op every
 ## player sees the conversation; any player can advance it and the host is
-## told when done. Layout in the 800×600 frame, stretched to the window like
-## every CInterface3D rect: x · W/800, y · H/600; the font is
-## sized by the width alone, so at 16:9 the box spans 18.75 %..
-## 81.25 % of the width with large type (about 6 lines at 1920×1080):
+## told when done. Layout uses a centred 800×600 frame, uniformly fitted to
+## the window. Artwork, text and input share that frame on every aspect ratio:
 ## - phrase box (mode 3/4, controls 2-3): black over (155,416)-
 ##   (645,580), a 5 px "saveload" frame (150,411)-(650,585) (
 ##   strip UV u 2..180, v 254 outer .. 249 inner);
@@ -20,7 +18,7 @@ extends Control
 ## Text (ScrollText): words with
 ## "\aC" colour codes, font 1 of CInterface3D (: "Times New
 ## Roman", W·0.14 tenths of a point normalised by a 75 pt probe -> 15 px em at
-## 800 wide, 15 · W/800 px at any height), lines of the font's height, a space of height / 3, every line
+## 800 wide, scaled with the fitted frame), lines of the font's height, a space of height / 3, every line
 ## but a paragraph's last JUSTIFIED (the gap spread evenly between the words),
 ## each word drawn with a 1 px shadow. A phrase is
 ## "\aC ffb331" name ":\n" "\aC e4d7a7" text "\n" (#nolips phrases
@@ -149,19 +147,21 @@ static func _flipped(name: String) -> Texture2D:
 
 # ------------------------------------------------------------------ layout
 
-## Scale of 800×600 interface units on each axis (: x · W/800
-## y · H/600; the original stretches its 4:3 layout over a wide screen).
+## Artwork and fonts retain their authored proportions in the interface frame.
 func _kv() -> Vector2:
-	return Vector2(size.x / 800.0, size.y / 600.0)
+	return Vector2.ONE * _k()
 
 
-## Font scale: CInterface3D's fonts follow the screen width.
 func _k() -> float:
-	return size.x / 800.0
+	return minf(size.x / 800.0, size.y / 600.0)
+
+
+func _origin() -> Vector2:
+	return Interface800.fit_rect(Rect2(Vector2.ZERO, size)).position
 
 
 func _p(v: Vector2) -> Vector2:
-	return v * _kv()
+	return _origin() + v * _kv()
 
 
 func _r(r: Rect2) -> Rect2:
@@ -169,7 +169,7 @@ func _r(r: Rect2) -> Rect2:
 
 
 func _to800(p: Vector2) -> Vector2:
-	return p / _kv()
+	return (p - _origin()) / _kv()
 
 
 # ------------------------------------------------------------------ conversations
@@ -552,8 +552,9 @@ func _frame(r: Rect2, w := 5.0, ci: CanvasItem = null, kv := Vector2.ZERO) -> vo
 		ci = self
 	if kv == Vector2.ZERO:
 		kv = _kv()
+	var origin := Interface800.fit_rect(Rect2(Vector2.ZERO, (ci as Control).size)).position
 	if _ui == null:
-		ci.draw_rect(Rect2(r.position * kv, r.size * kv).grow(-w * 0.5 * kv.y), Color(0.55, 0.5, 0.4), false, w * kv.y)
+		ci.draw_rect(Rect2(origin + r.position * kv, r.size * kv).grow(-w * 0.5 * kv.y), Color(0.55, 0.5, 0.4), false, w * kv.y)
 		return
 	var o := [r.position, Vector2(r.end.x, r.position.y), r.end, Vector2(r.position.x, r.end.y)]
 	var ii := [o[0] + Vector2(w, w), o[1] + Vector2(-w, w), o[2] - Vector2(w, w), o[3] + Vector2(w, -w)]
@@ -566,7 +567,7 @@ func _frame(r: Rect2, w := 5.0, ci: CanvasItem = null, kv := Vector2.ZERO) -> vo
 	for side in 4:
 		var a: int = side
 		var b: int = (side + 1) % 4
-		var pts := PackedVector2Array([o[a] * kv, o[b] * kv, ii[b] * kv, ii[a] * kv])
+		var pts := PackedVector2Array([origin + o[a] * kv, origin + o[b] * kv, origin + ii[b] * kv, origin + ii[a] * kv])
 		ci.draw_polygon(pts, white, PackedVector2Array([uo0, uo1, ui1, ui0]), _ui)
 
 
@@ -746,14 +747,16 @@ func _process(dt: float) -> void:
 	if b.held >= 2:
 		if b.hold(dt):
 			_after_scroll()
-	if _mode == PLAYING:
+	if _mode == PLAYING or _mode == LAST:
 		if _voiced:
 			if hud.game.sound == null or not hud.game.sound.speaking():
-				_next()
+				if _mode == PLAYING: _next()
+				else: _end_actor_speech()
 		else:
 			_timer -= dt
 			if _timer < 0.0:
-				_next()
+				if _mode == PLAYING: _next()
+				else: _end_actor_speech()
 	if _aimed.is_empty() or hud.game.world == null:
 		return
 	if _cast_signature() != _cast_sig:
@@ -836,12 +839,14 @@ class TopicList extends Control:
 		mouse_filter = Control.MOUSE_FILTER_STOP
 
 	func _k() -> float:
-		return size.x / 800.0   # fonts follow the width
+		return minf(size.x / 800.0, size.y / 600.0)
+
+	func _r(r: Rect2) -> Rect2:
+		var origin := Interface800.fit_rect(Rect2(Vector2.ZERO, size)).position
+		return Rect2(origin + r.position * _k(), r.size * _k())
 
 	func _row_rect(i: int) -> Rect2:
-		var kx := size.x / 800.0
-		var ky := size.y / 600.0
-		return Rect2(210.0 * kx, (440.0 + 24.0 * i) * ky, 360.0 * kx, 24.0 * ky)
+		return _r(Rect2(210.0, 440.0 + 24.0 * i, 360.0, 24.0))
 
 	func _index_at(p: Vector2) -> int:
 		for i in 5:
@@ -885,8 +890,7 @@ class TopicList extends Control:
 				break
 			# the surface at (200,430)-(600,570), row i
 			# at (15, 12 + 24·i)-(380, 34 + 24·i), DT_LEFT | DT_TOP (format 0).
-			var ky := size.y / 600.0
-			var rr := Rect2(215.0 * k, (442.0 + 24.0 * i) * ky, 365.0 * k, 22.0 * ky)
+			var rr := _r(Rect2(215.0, 442.0 + 24.0 * i, 365.0, 22.0))
 			var y := rr.position.y + f.get_ascent(fs)
 			var s := " " + String(rows[n])
 			draw_string(f, Vector2(rr.position.x + sh, y + sh), s, HORIZONTAL_ALIGNMENT_LEFT, rr.size.x, fs, DialogPanel.SHADOW_COLOR)
@@ -924,27 +928,28 @@ func _show_items(shows: Array) -> void:
 ## ) and a saveload frame (x ± 65, 5 wide
 ##  with the dialog box's UVs) under the figure.
 func _draw_shows() -> void:
-	var kv := _shows_layer.size / Vector2(800.0, 600.0)
+	var frame := Interface800.fit_rect(Rect2(Vector2.ZERO, _shows_layer.size))
+	var kv := frame.size / Vector2(800.0, 600.0)
 	for n in _shown:
 		var slot: int = _shown[n][0]
 		if slot >= 7:
 			continue
 		var c := Vector2(SHOW_X[slot], SHOW_Y[slot])
-		_shows_layer.draw_rect(Rect2((c - Vector2(60, 60)) * kv, Vector2(120, 120) * kv), Color(0, 0, 0, 0xa0 / 255.0))
+		_shows_layer.draw_rect(Rect2(frame.position + (c - Vector2(60, 60)) * kv, Vector2(120, 120) * kv), Color(0, 0, 0, 0xa0 / 255.0))
 		_frame(Rect2(c - Vector2(65, 65), Vector2(130, 130)), 5.0, _shows_layer, kv)
 
 
 ## The figure: (x, y, 12) at scale 1, turned π about x, in the
 ## original's perspective (ItemView.screen_at); the view is not clipped.
 func _layout_shows() -> void:
-	var vs := _shows_layer.size
-	var kv := vs / Vector2(800.0, 600.0)   # stretched like every interface rect
+	var frame := Interface800.fit_rect(Rect2(Vector2.ZERO, _shows_layer.size))
+	var kv := frame.size / Vector2(800.0, 600.0)
 	for n in _shown:
 		var slot: int = _shown[n][0]
 		var c := Vector2(SHOW_X[slot % 7], SHOW_Y[slot % 7])
 		var v: ItemView = _shown[n][1]
 		v.size = Vector2(240, 240) * kv
-		v.position = c * kv - v.size * 0.5
+		v.position = frame.position + c * kv - v.size * 0.5
 		v.unit_px = kv.y * 400.0 / ItemView.K / 12.0
 		v.screen_at = Vector3(c.x, c.y, 12.0)
 		v.item = "~"
@@ -976,9 +981,15 @@ func _pose_actors(phrase: Dictionary, listening := false) -> void:
 		if u == null or u.dead or u.model == null:
 			continue
 		u.anim_flush()
-		if u.model.begin_dialogue(u.uid == speaker, int(phrase.get("anim", 0)) if u.uid == speaker else 0):
+		if u.model.begin_dialogue(u.uid == speaker, int(phrase.get("anim", 0)) if u.uid == speaker else 0, not phrase.get("nolips", false)):
 			if not u in _animated_units:
 				_animated_units.append(u)
+
+
+func _end_actor_speech() -> void:
+	for u in _animated_units:
+		if is_instance_valid(u) and is_instance_valid(u.model):
+			u.model.set_speaking(false)
 
 
 func _end_actor_poses() -> void:

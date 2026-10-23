@@ -4,7 +4,7 @@ extends Interface800
 ## (s; build, draw, update
 ## click, button-up, keys
 ## (n) sets the state), in 800×600 units
-## stretched to the window:
+## fitted to the window without stretching:
 ## - 9 selection: the main menu signpost's «Сетевая игра» board (unmoco2
 ##   MainMenu00, parts but03 + button03_multiplayer, π/2 · 1.2 at (400,350,8)),
 ##   panels (100,100)-(390,220) with the commands New / Change clan / Delete
@@ -215,6 +215,11 @@ static func _perk(code: String) -> Array:
 
 # ------------------------------------------------------------------ 3D children
 
+func touch_transform(before: PackedVector2Array, after: PackedVector2Array) -> void:
+	super.touch_transform(before, after)
+	_layout()
+
+
 func _layout() -> void:
 	if not is_inside_tree():
 		return
@@ -313,6 +318,10 @@ func _item_cells() -> Array:
 func _draw() -> void:
 	if MessageBox.is_up(_box):
 		return
+	# Creation and equipment are opaque camp-style screens. Their artwork
+	# occupies the fitted frame, with black margins outside it on wide displays.
+	if state != SEL:
+		draw_rect(Rect2(Vector2.ZERO, size), Color.BLACK)
 	match state:
 		SEL: _draw_select()
 		CREATE: _draw_create()

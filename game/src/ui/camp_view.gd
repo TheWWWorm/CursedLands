@@ -26,8 +26,8 @@ const REFUND_RECT := Rect2(20, 355, 160, 28)
 ##     (items, tips 21000-21005, icon U + 0) or mode 1 (spells, tips
 ##     21200-21205, icon U + 84);
 ##   - the centre 200..600 × 100..500 tiled from "trade1".."trade4": 100×100
-##     cells, UV origin alternating 28 / 128; the first row uses trade1 / trade2,
-##     the rest trade3 / trade4;
+##     cells, UV origin alternating 28 / 128; the two buying rows use trade1 /
+##     trade2, the two selling rows trade3 / trade4;
 ##   - two 8-item piles, each shown with its count and price at the cell's
 ##     bottom (x+15..85, y+65..85). The upper pile (centres 250+100i, 150+100j)
 ##     is priced with deal mode 4 = buy (spells 0); the lower one (centres
@@ -1399,9 +1399,14 @@ func _process(_dt: float) -> void:
 	scroll = clampi(scroll, 0, maxi(0, bag.size() - BAG_CELLS))
 	var shop := shop_items() if shop_row() else []
 	shop_scroll = clampi(shop_scroll, 0, maxi(0, shop.size() - BAG_CELLS))
+	var spell_limits := []
+	if mode == "spellconstr":
+		var party := hud.game.session.party_units(hud.game.session.my_index)
+		for subtype: String in Skills.SCHOOL:
+			spell_limits.append(Spells.party_limits(party, subtype))
 	var sig := "%s|%s|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%d|%d" % [u.uid if u else -1, h.get("weapons", []), h.get("armors", []),
 		[h.get("quick", []), h.get("spells", []), h.get("perks", []), h.get("exp", 0), h.get("skills", {})], bag, filter, scroll, size, mode, shop, buy_pile + ["/"] + sell_pile + ["/"] + repair_pile + [c_bp, c_mat, c_ready, c_spell, s_spell, s_kind, s_from, s_wait, trade_wait, repair_wait] + s_runes + s_rune_from + hero_spells(), shop_filter, shop_scroll,
-		hud.game.session.state.money] + str(hash(hud.game.session.state.shops.get(shop_id, {}))) + _swap_view() + str(GameData.option("original_rune_layout"))
+		hud.game.session.state.money] + str(hash(hud.game.session.state.shops.get(shop_id, {}))) + _swap_view() + str(GameData.option("original_rune_layout")) + str(spell_limits)
 	if sig == _sig:
 		return
 	_sig = sig
@@ -2209,7 +2214,7 @@ func _mat_fits(bp: String, mat: String) -> bool:
 
 func _filter_set(y0: float) -> Array:
 	var fset: Array = FILTER_SETS["bag" if y0 > 0 else ("spells" if spell_shop() else "items")]
-	if mode in ["itemconstr", "spellconstr"]:
+	if mode == "itemconstr" or (mode == "spellconstr" and y0 > 0):
 		fset = fset.duplicate(true)
 		fset[2][0 if y0 > 0 else 5] = "constructor"
 	elif y0 > 0 and mode in ["spells", "spelltrade", "repair"]:
@@ -2279,6 +2284,11 @@ static func _row_end_uv(pos: float, count: int, right: bool) -> Rect2:
 func _draw_row(y0: float, tex: String, fset: Array, sel: int) -> void:
 	for i in BAG_CELLS:
 		_region(tex, Rect2(50 + i * 100, y0, 100, 100), Rect2(14, 14, 100, 100))
+		var key := "%s%d" % ["shop" if y0 == 0 else "bag", i]
+		if not fset.is_empty() and not String(_content.get(key, [""])[0]).is_empty():
+			# Occupied cells hide the empty scales/backpack symbol with the
+			# original dark patterned inset, leaving the stone frame visible.
+			_region("campslots", _slot_rect(key).grow(-15.0), Rect2(157, 157, 70, 70))
 	var pos := 0 if fset.is_empty() else (shop_scroll if y0 == 0 else scroll)
 	var count := 0 if fset.is_empty() else (shop_items().size() if y0 == 0 else bag_items().size())
 	_region(tex, Rect2(0, y0, 50, 100), _row_end_uv(pos, count, false))
@@ -2316,7 +2326,7 @@ func _draw() -> void:
 					Rect2(28, 28, 200, 200))
 		for yi in (0 if mode in ["itemconstr", "spellconstr"] else 4):
 			for xi in 4:
-				var t := "%s%d" % [base, (1 if xi < 2 else 2) + (0 if yi == 0 else 2)]
+				var t := "%s%d" % [base, (1 if xi < 2 else 2) + (0 if yi < 2 else 2)]
 				_region(t, Rect2(200 + xi * 100, 100 + yi * 100, 100, 100),
 					Rect2(28 if xi % 2 == 0 else 128, 28 if yi % 2 == 0 else 128, 100, 100))
 	else:
@@ -2340,7 +2350,7 @@ func _draw() -> void:
 		elif b == "cancel":
 			lit = d[3]
 		_region("campinfo", SIDE_BUTTONS[b][0], SIDE_BUTTONS[b][1], Color.WHITE if lit else Color(0.5, 0.5, 0.5))
-	# Spells, templates and runes fill the square cell with their own artwork.
+	# Spells, templates and runes fill the frame's inner 70-pixel aperture.
 	# The shared 3D item-card model leaves large perspective-dependent gaps.
 	for k: String in _content:
 		var id := String(_content[k][0])
@@ -2348,10 +2358,11 @@ func _draw() -> void:
 		var texture := String(Items.look(id).get("texture", ""))
 		var picture := SpellSlots.icon(texture) if not texture.is_empty() else null
 		if picture:
-			var rect := _r(_slot_rect(k).grow(-10.0))
-			draw_texture_rect(picture, rect, false)
+			var rect := _r(_spell_art_rect(k))
+			var tint := _spell_art_tint(k)
+			draw_texture_rect(picture, rect, false, tint)
 			if Items.is_spell_container(id):
-				SpellSlots.draw_runes(self, Items.spell_code(id), rect, Color.WHITE, _spell_rune_rects(k))
+				SpellSlots.draw_runes(self, Items.spell_code(id), rect, tint, _spell_rune_rects(k))
 
 	# Selection.
 	for k in _content:
@@ -2359,6 +2370,20 @@ func _draw() -> void:
 		if _key_shown(k) and alpha > 0.0:
 			draw_rect(_r(_slot_rect(k)).grow(-10 * s), Color(0.95, 0.8, 0.35, alpha), false, 2.0)
 	_overlay.queue_redraw()
+
+
+func _spell_art_rect(key: String) -> Rect2:
+	return _slot_rect(key).grow(-15.0)
+
+
+func _spell_art_tint(key: String) -> Color:
+	var row: Array = _content.get(key, ["", ""])
+	# Use the actual party-wide constructor predicate, including the pending
+	# keystone, rune types/count, knowledge and stamina. Pieces already in the
+	# pile remain removable, and a ready spell can always be taken apart.
+	if mode == "spellconstr" and row[1] in ["bag", "shop"] and not _spell_accepts(row[0]):
+		return Color(1.0, 0.4, 0.4)
+	return Color.WHITE
 
 
 ## The original camp renderer (005eca10) positions inscriptions from the full
@@ -2375,7 +2400,7 @@ func _spell_rune_rects(key: String) -> Array[Rect2]:
 		"shop": count = shop_left(id)
 		"buy": count = buy_pile.count(id)
 		"sell": count = sell_pile.count(id)
-	var rect := _r(slot.grow(-10.0))
+	var rect := _r(_spell_art_rect(key))
 	var width := rect.size.x
 	if count != 1:
 		width -= Interface800.font().get_string_size(str(count), HORIZONTAL_ALIGNMENT_LEFT, -1, _fpx(1)).x + 8.0 * _s()

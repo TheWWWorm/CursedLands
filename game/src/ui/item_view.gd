@@ -117,6 +117,25 @@ void fragment() {
 	m.set_shader_parameter("add_rgb", Vector3(add_color.r, add_color.g, add_color.b))
 
 
+## The authored UI figures address fixed regions of a 256-unit UV canvas.
+## Weapons and helmets use a 128-unit redress layer; other armour uses 256;
+## quick/quest/loot/material cards use 64. Replacement pixels may have any
+## resolution, including in a repacked archive without the original image.
+## Keep the figure family's logical canvas instead of using pixel dimensions.
+static func texture_canvas(model: String) -> int:
+	if model.begins_with("initwe") or model.begins_with("initarhl"):
+		return 128
+	if model.begins_with("initqi") or model.begins_with("initqu") or model.begins_with("initli"):
+		return 64
+	return 256
+
+
+static func apply_texture_canvas(mat: StandardMaterial3D, model: String) -> void:
+	var k := 256.0 / texture_canvas(model)
+	mat.uv1_scale = Vector3(k, k, 1)
+	mat.uv1_offset = Vector3(0, 1.0 - k, 0)
+
+
 func show_item(id: String) -> void:
 	# Wear/charge belong to the inventory copy, not its geometry. Recharging
 	# must not rebuild every weapon viewport (or restart its hover animation).
@@ -149,26 +168,16 @@ func show_item(id: String) -> void:
 		mat.albedo_texture = EIUnitModel._compose("unhuma", [look.layer] as Array[String])
 		mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
 		mat.alpha_scissor_threshold = 0.5
-		# The item models address a 256×256 canvas holding the layer at its own
-		# size: 256 layers (plates, boots, leggings, gloves) fill it, 128 ones
-		# (swords, helms) its corner — initwesw2weapon's UVs are rh3.sword02's
-		# halved there.
-		var k := 256.0 / maxf(mat.albedo_texture.get_width(), 1.0) if mat.albedo_texture else 1.0
-		mat.uv1_scale = Vector3(k, k, 1)
-		mat.uv1_offset = Vector3(0, 1.0 - k, 0)
+		apply_texture_canvas(mat, look.model)
 		for mi: MeshInstance3D in m.find_children("*", "MeshInstance3D", true, false):
 			mi.material_override = mat
 	elif look.has("texture"):
-		# Small skins (64×64 keystone / rune pictures) sit in the corner of the
-		# same 256 canvas: initqi1item's UVs span 0..0.25.
 		for mi: MeshInstance3D in m.find_children("*", "MeshInstance3D", true, false):
 			var sm := mi.get_active_material(0) as StandardMaterial3D
-			if sm == null or sm.albedo_texture == null or sm.albedo_texture.get_width() >= 256:
+			if sm == null or sm.albedo_texture == null:
 				continue
 			sm = sm.duplicate()
-			var k := 256.0 / float(sm.albedo_texture.get_width())
-			sm.uv1_scale = Vector3(k, k, 1)
-			sm.uv1_offset = Vector3(0, 1.0 - k, 0)
+			apply_texture_canvas(sm, look.model)
 			mi.material_override = sm
 	_vp.add_child(m)
 	# Exact original float constants.

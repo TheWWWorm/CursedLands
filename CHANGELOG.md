@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- Restore the shop's buy/sell background quadrants and the dark patterned backing in occupied inventory slots. ([#69](https://github.com/TheWWWorm/CursedLands/issues/69))
+- Fit spell, template and rune pictures inside their slot frames, and tint constructor pieces red when the party cannot use them in the current recipe. ([#70](https://github.com/TheWWWorm/CursedLands/issues/70))
+- Keep the spell constructor's Ready spells filter limited to completed spells. ([#71](https://github.com/TheWWWorm/CursedLands/issues/71))
+- Preserve the proportions of character creation, pause/options menus, dialogue and objectives on wide and tall windows, with pointer and gamepad targets following the fitted interface. ([#72](https://github.com/TheWWWorm/CursedLands/issues/72))
+- Preserve the character preview's animation and playback position when appearance or equipment changes. ([#73](https://github.com/TheWWWorm/CursedLands/issues/73))
+- Read multiplayer objective text, rewards and map-marker coordinates from the original quest archives. ([#74](https://github.com/TheWWWorm/CursedLands/issues/74))
+- Rotate selection triangles with the displayed character's facing and keep them flat above the ground beneath the character as the camera moves. ([#75](https://github.com/TheWWWorm/CursedLands/issues/75))
+- Animate dialogue speakers' mouths using the original race/skin mouth atlases, including portrait heads, and stop the animation when the line ends. ([#76](https://github.com/TheWWWorm/CursedLands/issues/76))
+- Preserve item-icon texture coordinates when replacement textures have a higher resolution, including replacements inside repacked archives. ([#77](https://github.com/TheWWWorm/CursedLands/issues/77))
 - Ship the DirectX Agility runtime (`x86_64/D3D12Core.dll`, 1.618.5) with the Windows package again. 1.24.0 omitted it, so Direct3D 12 fell back to the system runtime, which on Windows 10 and older Windows 11 builds lacks enhanced barriers and can lower frame rates. The Windows package check now rejects a build without the verified runtime.
 
 ## 1.24.0 — 2026-10-22

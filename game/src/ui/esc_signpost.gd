@@ -181,11 +181,12 @@ func _sfx(path: String) -> void:
 
 
 ## first menus.reg [EscMenu] rectangle containing the point
-## with half-open right/bottom edges, in the stretched 800x600 interface.
+## with half-open right/bottom edges, in the fitted 800x600 interface.
 func board_at(p: Vector2) -> String:
 	if size.x <= 0.0 or size.y <= 0.0:
 		return ""
-	var q := p * Vector2(800, 600) / size
+	var frame := Interface800.fit_rect(Rect2(Vector2.ZERO, size))
+	var q := (p - frame.position) * Vector2(800, 600) / frame.size
 	for i in _rects.size():
 		if _rects[i].has_point(q):
 			return REG[i][1]
@@ -224,12 +225,13 @@ func pad_targets() -> Array:
 	var out: Array = []
 	if size.x <= 0.0 or size.y <= 0.0:
 		return out
-	var to_ctrl := size / Vector2(800, 600)
+	var frame := Interface800.fit_rect(Rect2(Vector2.ZERO, size))
+	var to_ctrl := frame.size / Vector2(800, 600)
 	var xf := get_global_transform_with_canvas()
 	for i in _rects.size():
 		var r := _rects[i]
 		if r.size != Vector2.ZERO:
-			out.append({"rect": Rect2(xf * (r.position * to_ctrl), r.size * to_ctrl), "id": BOARDS[REG[i][1]]})
+			out.append({"rect": xf * Rect2(frame.position + r.position * to_ctrl, r.size * to_ctrl), "id": BOARDS[REG[i][1]]})
 	if pad_extra.is_valid():
 		out.append_array(pad_extra.call())
 	return out

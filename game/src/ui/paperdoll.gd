@@ -146,6 +146,10 @@ func show_info(info: Dictionary) -> void:
 		return
 	_key = key
 	_info = info
+	var previous := _model
+	var clip := previous._current if is_instance_valid(previous) else ""
+	var phase := previous.player.current_animation_position if is_instance_valid(previous) and previous.player else 0.0
+	var rate := previous.player.speed_scale if is_instance_valid(previous) and previous.player else 1.0
 	_pose_wait = 0.0
 	_pose_clip = ""
 	_pose_time = -1.0
@@ -169,7 +173,9 @@ func show_info(info: Dictionary) -> void:
 			old.queue_free()
 		old = _old_pivot
 	_old_pivot = null
-	_model = EIUnitModel.create(info, true)
+	# Rebuilding the geometry must not re-roll an idle variant or rewind its
+	# clock. Character creation rebuilds on every small height/stat change.
+	_model = EIUnitModel.create(info, true, false)
 	if _model == null:
 		_pivot = null
 		if is_instance_valid(old):
@@ -178,7 +184,16 @@ func show_info(info: Dictionary) -> void:
 	_pivot = Node3D.new()
 	_vp.add_child(_pivot)
 	_pivot.add_child(_model)
-	_model.act("idle")
+	if is_instance_valid(previous) and previous.template == _model.template and _model.has_anim(clip):
+		_model.play(clip, 0.0, true)
+		_model.player.speed_scale = rate
+		_model.player.seek(minf(phase, _model.player.current_animation_length), true)
+		# An ordinary (non-camp) preview still chooses the next idle normally,
+		# using the new outfit's weapon mask when the retained clip wraps.
+		_model._cycle = _model.code_for("idle") if previous._cycle >= 0 else -1
+		_model._cycle_pos = phase
+	else:
+		_model.act("idle")
 	for n in _model.get_children():
 		if n is EIAnimPart and n.animation_parent == null:
 			_anim_roots.append(n)
@@ -449,6 +464,7 @@ func _sync_pose(wounds := true) -> void:
 		return
 	var src: EIUnitModel = _unit.model
 	src.flush_pending_pose()
+	_model.copy_speech_from(src)
 	if src != _pairs_src:
 		_pairs_src = src
 		_pairs.clear()

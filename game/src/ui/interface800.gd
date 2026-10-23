@@ -1,9 +1,9 @@
 class_name Interface800
 extends Control
 ## Drawing helpers shared by the original's 800×600 interface screens (the Options
-## and network screens): every rect is in 800×600 units stretched to the window
-## on each axis (: x · W/800, y · H/600) and the fonts follow the
-## width (CInterface3D::Create: "Times New Roman", fonts 0 / 1 / 2
+## and network screens): every rect is in 800×600 units, fitted and centred
+## in the safe area without changing the proportions of artwork or text.
+## CInterface3D::Create uses "Times New Roman", fonts 0 / 1 / 2
 ## = W · 0.01733 / 0.01867 / 0.024 px em, i.e. 14 / 15 / 19 px at 800 wide).
 ## - sprites: a rect with UVs in 256ths of the texture ("saveload"
 ##   "Scrollbar"; V as stored, the remake flips the images like the other screens);
@@ -29,6 +29,15 @@ static func canvas_size(control: CanvasItem) -> Vector2:
 	if layer and layer.has_method("ui_size"):
 		return layer.call("ui_size")
 	return control.get_viewport_rect().size
+
+
+## Fit the authored 4:3 interface inside an available rectangle. Backgrounds
+## may still cover the whole window; artwork, text and hit targets share this
+## frame so wide windows do not stretch portraits, signposts or scrollbars.
+static func fit_rect(bounds: Rect2) -> Rect2:
+	var k := minf(bounds.size.x / 800.0, bounds.size.y / 600.0)
+	var extent := Vector2(800, 600) * k
+	return Rect2(bounds.get_center() - extent * 0.5, extent)
 
 ## The screen's text widget hidden: (0) on its first widget
 ## ([0], the GDI text surface over (100,100)-(700,500))
@@ -93,10 +102,10 @@ func _safe() -> Rect2:
 
 func _origin() -> Vector2:
 	var safe := _safe()
-	return safe.position + (safe.size - safe.size * _touch_zoom) * 0.5 + _touch_pan
+	return safe.get_center() - Vector2(800, 600) * kv() * 0.5 + _touch_pan
 
 func kv() -> Vector2:
-	return _safe().size * _touch_zoom / Vector2(800.0, 600.0)
+	return fit_rect(_safe()).size * _touch_zoom / Vector2(800.0, 600.0)
 
 
 func p8(v: Vector2) -> Vector2:
@@ -117,7 +126,7 @@ func pad_rect(r: Rect2) -> Rect2:
 
 
 func font_px(i: int) -> int:
-	return maxi(6, int(round(_safe().size.x * _touch_zoom * FONT_EM[i])))
+	return maxi(6, int(round(800.0 * kv().x * FONT_EM[i])))
 
 
 # ------------------------------------------------------------------ drawing
@@ -421,8 +430,9 @@ func touch_transform(before: PackedVector2Array, after: PackedVector2Array) -> v
 	var anchor := to800(old_mid)
 	_touch_zoom = clampf(_touch_zoom * after[0].distance_to(after[1]) / maxf(16.0, before[0].distance_to(before[1])), 1.0, 2.5)
 	var safe := _safe()
-	_touch_pan = mid - anchor * kv() - safe.position - (safe.size - safe.size * _touch_zoom) * 0.5
-	var limit := safe.size * (_touch_zoom - 1.0) * 0.5
+	var extent := Vector2(800, 600) * kv()
+	_touch_pan = mid - anchor * kv() - safe.get_center() + extent * 0.5
+	var limit := ((extent - safe.size) * 0.5).max(Vector2.ZERO)
 	_touch_pan = _touch_pan.clamp(-limit, limit)
 	queue_redraw()
 

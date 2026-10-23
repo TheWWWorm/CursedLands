@@ -126,9 +126,7 @@ func show_model(descriptor: Dictionary, reuse_creature_view := false) -> bool:
 			if source == null: continue
 			var material := source.duplicate() as StandardMaterial3D
 			material.albedo_texture = texture
-			var scale := 256.0 / float(texture.get_width())
-			material.uv1_scale = Vector3(scale, scale, 1)
-			material.uv1_offset = Vector3(0, 1.0 - scale, 0)
+			ItemView.apply_texture_canvas(material, String(Items.look(descriptor.value).get("model", "")))
 			mesh.material_override = material
 	# Wiki rotation is controlled by the reader rather than the inventory's
 	# hover spring. ItemView still owns all material and framing behavior.

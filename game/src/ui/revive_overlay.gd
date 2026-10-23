@@ -34,7 +34,7 @@ func _process(_dt: float) -> void:
 			var t := game.revive_target(game.pick_unit(p))
 			if t:
 				s = RemakeText.t(HOVER) % t.display_name
-				at = (p - global_position) / kv()
+				at = to800(get_global_transform_with_canvas().affine_inverse() * p)
 		var cam := get_viewport().get_camera_3d()
 		if cam:
 			for u: GameUnit in game.world.visible_units():
@@ -44,7 +44,7 @@ func _process(_dt: float) -> void:
 				var wp := u.get_global_transform_interpolated().origin + Vector3(0.0, BAR_UP, 0.0)
 				if cam.is_position_behind(wp):
 					continue
-				bars.append([(cam.unproject_position(wp) - global_position) / kv(), f])
+				bars.append([to800(get_global_transform_with_canvas().affine_inverse() * cam.unproject_position(wp)), f])
 	if s != _label or (s and at != _at) or bars != _bars or not _bars.is_empty():
 		_label = s
 		_at = at

@@ -1,0 +1,336 @@
+{
+  "date": "2026-10-23",
+  "repository": "https://github.com/TheWWWorm/CursedLands",
+  "branch": "fix/issues-68-77",
+  "base_commit": "5521491c6980669f1ed46ed18aa70a3af259cd40",
+  "published_release_baseline": "v1.24.0",
+  "issues": [
+    {
+      "number": 68,
+      "status": "existing fix verified; regression coverage added",
+      "details": "The 1.24 embedded-popup touch routing already handles AA. Added selection, outside-tap, cancellation and close-while-held recovery checks.",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/68"
+    },
+    {
+      "number": 69,
+      "status": "fixed",
+      "details": "Correct trade atlas quadrants for both buying rows and original occupied-slot backing.",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/69"
+    },
+    {
+      "number": 70,
+      "status": "fixed",
+      "details": "Spell artwork fits the inner aperture; constructor availability tint follows party requirements and selected ingredients.",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/70"
+    },
+    {
+      "number": 71,
+      "status": "fixed",
+      "details": "Ready spells retains the same filter predicate in the spell constructor and shop.",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/71"
+    },
+    {
+      "number": 72,
+      "status": "fixed",
+      "details": "Uniform centered UI frame, matching font/artwork/input scale, updated board/pinch/scroll and projected label mappings.",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/72"
+    },
+    {
+      "number": 73,
+      "status": "fixed",
+      "details": "Paperdoll rebuilds retain the active animation clip, clock phase and playback rate instead of selecting a new random idle. Ordinary previews retain future idle selection with the updated weapon mask.",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/73"
+    },
+    {
+      "number": 74,
+      "status": "fixed",
+      "details": "Objectives consume localized MQ text and quest.reg markers/rewards; all 28 native quest archives tested in EN/RU/DE, including visible marker pixels.",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/74"
+    },
+    {
+      "number": 75,
+      "status": "fixed",
+      "details": "Ground triangle follows the interpolated figure transform, with a 46.4-degree apex independent of camera orientation.",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/75"
+    },
+    {
+      "number": 76,
+      "status": "fixed",
+      "details": "Original indexed mouth atlases animate only the current speaking actor. Database mouth coordinates and original open/closed strips are composed into two immutable full-size skin textures before filtering, preventing adjacent strip bleed in the world and preview shaders. Portrait heads map the same authored mouth into the separate face atlas. Shipped shaders retain independent wound overlays; StandardMaterial3D uses the same compositor. The body special may return to listening while lips continue until the phrase ends; #nolips, skip, final-line duration/voice completion, close, death and redress preserve the correct state. Head materials are owned before highlight copies exist.",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/76"
+    },
+    {
+      "number": 77,
+      "status": "fixed",
+      "details": "Logical UV canvas follows original item model family; stable under higher resolution/repacked texture data in inventory and wiki renderers.",
+      "url": "https://github.com/TheWWWorm/CursedLands/issues/77"
+    }
+  ],
+  "validation": {
+    "checks": 5600,
+    "failures": 0,
+    "runtime_errors": 0,
+    "tests": [
+      {
+        "script": "tools/tests/camp_art_regressions.gd",
+        "mode": "OpenGL rendered, 1920x1080",
+        "checks": 115,
+        "failures": 0,
+        "log": "inventory-tests/camp_art_regressions.log"
+      },
+      {
+        "script": "tools/tests/camp_inventory_ui.gd",
+        "mode": "headless",
+        "checks": 111,
+        "failures": 0,
+        "log": "inventory-tests/camp_inventory_ui.log"
+      },
+      {
+        "script": "tools/tests/spell_constructor_transactions.gd",
+        "mode": "headless ENet host and guest",
+        "checks": 52,
+        "failures": 0,
+        "log": "inventory-tests/spell_constructor_transactions.log"
+      },
+      {
+        "script": "tools/tests/spell_rune_layout.gd",
+        "mode": "headless EN/RU/DE, 800x600 and 1600x900",
+        "checks": 2140,
+        "failures": 0,
+        "log": "inventory-tests/spell_rune_layout.log"
+      },
+      {
+        "script": "tools/tests/interface_aspect.gd",
+        "mode": "OpenGL rendered",
+        "language": "en",
+        "checks": 366,
+        "failures": 0,
+        "log": "layout-tests/interface_aspect-en.log"
+      },
+      {
+        "script": "tools/tests/interface_aspect.gd",
+        "mode": "OpenGL rendered",
+        "language": "ru",
+        "checks": 366,
+        "failures": 0,
+        "log": "layout-tests/interface_aspect-ru.log"
+      },
+      {
+        "script": "tools/tests/interface_aspect.gd",
+        "mode": "OpenGL rendered",
+        "language": "de",
+        "checks": 366,
+        "failures": 0,
+        "log": "layout-tests/interface_aspect-de.log"
+      },
+      {
+        "script": "tools/tests/mobile_screen_dropdown.gd",
+        "mode": "OpenGL rendered",
+        "language": "en/ru/de",
+        "checks": 85,
+        "failures": 0,
+        "log": "layout-tests/mobile_screen_dropdown-en.log"
+      },
+      {
+        "script": "tools/tests/zone_description_scroll.gd",
+        "mode": "OpenGL rendered",
+        "language": "en",
+        "checks": 12,
+        "failures": 0,
+        "log": "layout-tests/zone_description_scroll-en.log"
+      },
+      {
+        "script": "tools/tests/paperdoll_animation_continuity.gd",
+        "mode": "headless",
+        "checks": 56,
+        "failures": 0,
+        "log": "character-tests/paperdoll.log"
+      },
+      {
+        "script": "tools/tests/dialogue_mouths.gd",
+        "mode": "Mesa llvmpipe OpenGL4.5 Compatibility",
+        "checks": 93,
+        "failures": 0,
+        "log": "character-tests/mouth-render-opengl3.log"
+      },
+      {
+        "script": "tools/tests/dialogue_mouths.gd",
+        "mode": "NVIDIA RTX3090 Vulkan1.4 Forward+",
+        "checks": 93,
+        "failures": 0,
+        "log": "character-tests/mouth-render-vulkan.log"
+      },
+      {
+        "script": "tools/tests/mp_objectives_archives.gd",
+        "mode": "OpenGL rendered, original English archives",
+        "checks": 310,
+        "failures": 0,
+        "log": "integration-tests/objectives-en/run.log"
+      },
+      {
+        "script": "tools/tests/mp_objectives_archives.gd",
+        "mode": "OpenGL rendered, original Russian archives",
+        "checks": 310,
+        "failures": 0,
+        "log": "integration-tests/objectives-ru/run.log"
+      },
+      {
+        "script": "tools/tests/mp_objectives_archives.gd",
+        "mode": "OpenGL rendered, original German archives",
+        "checks": 310,
+        "failures": 0,
+        "log": "integration-tests/objectives-de/run.log"
+      },
+      {
+        "script": "tools/tests/selection_marker_facing.gd",
+        "mode": "headless, emitted mesh",
+        "checks": 101,
+        "failures": 0,
+        "log": "integration-tests/marker-headless/run.log"
+      },
+      {
+        "script": "tools/tests/side_quest_lifecycle.gd",
+        "mode": "headless",
+        "checks": 590,
+        "failures": 0,
+        "log": "integration-tests/side-quest-lifecycle/run.log"
+      },
+      {
+        "script": "tools/tests/quest_objective_registration.gd",
+        "mode": "headless",
+        "checks": 14,
+        "failures": 0,
+        "log": "integration-tests/quest-registration/run.log"
+      },
+      {
+        "script": "tools/tests/dialogue_poses.gd",
+        "mode": "headless, ENet host and guest",
+        "checks": 54,
+        "failures": 0,
+        "log": "integration-tests/dialogue-poses/run.log"
+      },
+      {
+        "script": "tools/tests/equipment_animation_continuity.gd",
+        "mode": "headless",
+        "checks": 56,
+        "failures": 0,
+        "log": "integration-tests/equipment-continuity/run.log"
+      }
+    ],
+    "editor_import": {
+      "exit_code": 0,
+      "script_errors": [],
+      "log": "integration-tests/final-import.log"
+    },
+    "translations": {
+      "entries": 3042,
+      "dynamic_wiki_keys": 141,
+      "dynamic_arena_keys": 179,
+      "errors": 0
+    },
+    "diff_check": "passed",
+    "review": "Independent review found no actionable layout, input or marker-transform regressions."
+  },
+  "rendered_layouts": {
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "sizes": [
+      [
+        1152,
+        864
+      ],
+      [
+        1920,
+        1080
+      ],
+      [
+        2560,
+        1080
+      ],
+      [
+        960,
+        1200
+      ]
+    ],
+    "data": "Original localized text/menu archives; MQ originals supplied separately for objectives."
+  },
+  "item_canvas_survey": {
+    "item_model_texture_pairs": 315,
+    "logical_size_mismatches": 0,
+    "data": "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/inventory-tests/data.json"
+  },
+  "native_mouth_evidence": {
+    "path": "character-tests/mouth-native-evidence.json",
+    "target_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+    "provider": "Ghidra12.1.4 via REA",
+    "observations": [
+      "538db0 loads <mask>mouth_%02d for race type0x32 and <mask>mouth otherwise",
+      "538ed0/539010 use race record offsets0x158/0x15c/0x160/0x164 as x/y/width/height, destination(x,256-y-height), open strip preceding closed strip at texture bottom",
+      "5341a0 toggles after randomized2..9 countdown plus the next update:3..10 native ticks",
+      "604c50 and608410 original local decompilation set/clear lip flag independently of body special; #nolips is respected"
+    ],
+    "portrait_mapping": "Remake-specific portrait head adaptation: the authored face texture matches body atlas crop x0..128,y28..156; original game never replaces world heads with these HUD figures. Matched original male skin03 against facem03: best offset28, RGB mean absolute sum5.483 versus next-best41.084."
+  },
+  "mouth_coverage": [
+    "Seven authored model families: unhuma/unhufe/unorma/unmodr/unmogo/unmoli/unmori",
+    "Native rectangle and padded atlas strip geometry",
+    "Same-skin speaker/listener material isolation",
+    "Selection present before speech; current and unlit copies; highlight removal",
+    "Independent asynchronous wound overlay retained",
+    "Original and portrait head option in actual rendered world and preview materials",
+    "StandardMaterial3D composition and cleanup",
+    "Actual DialogPanel speaker routing, #nolips, skip, final voiced and unvoiced phrase end",
+    "Animation/body special lifetime independent of lips",
+    "Redress, death and close cleanup",
+    "Complete skin frames with mipmaps, composed before sharp filtering to prevent adjacent strip bleed"
+  ],
+  "profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "artifact_root": "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023",
+  "limits": [
+    "No physical Android or Windows runtime was exercised. Android AA used simulated screen-touch events on Linux.",
+    "Mouth placement and timing were established from original shipped assets and static binary analysis; no new original-game runtime capture.",
+    "Release packaging, publication and hosted browser updates were not performed."
+  ],
+  "source_sha256": {
+    "CHANGELOG.md": "f551a4e3a157194b59629ae775ca4b191d39f6976ce6ed996f8f6264cc5d11ce",
+    "game/src/ei/database.gd": "667f2b57529500e5243123a18adda6717a6dcca9ca6992de714b96cba0d78b43",
+    "game/src/ei/detailed_head.gd": "11a0a416e985757ca470ddd7321fe8503acf8580afc0ae80aa27d0d9660364fa",
+    "game/src/ei/dialogue_mouth.gd": "b06f28501a63c71b535610d0810d3c39ac98b7280f393e57191a139358d10585",
+    "game/src/ei/dialogue_mouth.gd.uid": "ea3be8b14d8d3e4a2c45373fb7f30385efaf12b195cff086f16cbb4028369b29",
+    "game/src/ei/unit_model.gd": "9a097cb283a1995522593061684a1bc0796f129c575411012d82ff53a9e559f2",
+    "game/src/game/order_marks.gd": "fec632c2bfbd5bef4d86e15cb05c7b3dd158553d3711dc6c4650b034a12c570c",
+    "game/src/game/side_quests.gd": "f96ab433a419d0b8fef173eb5098e8f532f6d332435396637334f65ca8aebed3",
+    "game/src/game/unit.gd": "c51509cc620f4bde9fa68d2753c89f7cd29de54e846299748a867177a99aa983",
+    "game/src/ui/camp_view.gd": "7f17cd55c413f25ad2c4ced28189b5017f0cf949fdccea1806728f383801f79c",
+    "game/src/ui/dialog_panel.gd": "09fe68afe85c49dfc3e69894c0892022474bd638447e04b6a99b06b904de4fd3",
+    "game/src/ui/esc_signpost.gd": "b4f65295cb570a62fa376daf82864d06ae2df172d20eaaee6cd4993049e12854",
+    "game/src/ui/interface800.gd": "ac0ebffc52359e5df999c35896b856176e1fa534144a02f6f5f548b913a989d8",
+    "game/src/ui/interface_board.gd": "ffe4858b907d87bf0b07df450eb04cced1ed639dc0dbd3ab82ab7dd5670f62c0",
+    "game/src/ui/item_view.gd": "71105f81ff476922c33937a41fd4a08e00d837b18e1a81cc5b79be05681d4a0b",
+    "game/src/ui/mp_char_panel.gd": "7e3616a992fb3b797dead3064ca661d7e40579641d5072ab4dc9254c3b904025",
+    "game/src/ui/paperdoll.gd": "e41ff48320fc44ff70c947536d9a1fe1b6d6ed3def6c3e71c006a3e50c4985e3",
+    "game/src/ui/revive_overlay.gd": "96c58e569c8eeac6e32a93de94a135a27a87818a99ef5ff31f1c7b6fe2a95201",
+    "game/src/ui/village_name.gd": "e299379c45c78a514a8e0853ed591b03b7417856c0c002ca4d4df9cbbd427a6c",
+    "game/src/ui/wiki_preview.gd": "5ffba331fb41b30b520b2c4718fe874b6621ed561f70ab1001a19397cc854c7a",
+    "game/src/ui/zone_objectives.gd": "cb1502b45f8f0e76ff7242f181447126524776b731129b7edc404f50f3b550f2",
+    "tools/export_wiki_images.gd": "97daf1ff455eeb34947ce2f321472c86a6d0803e9bc35cafd5582576ded30dab",
+    "tools/tests/camp_art_regressions.gd": "5f3142e5428fc47bcfdf15527d5c3ad904a89f60b11cfc46e041c6f5244baf12",
+    "tools/tests/camp_inventory_ui.gd": "a2eebd11ca57e29eb6db834d9324a934010ab6d3e9b0f19899f7af8ba4c3514a",
+    "tools/tests/dialogue_mouths.gd": "fdd2c160f60a2dfe5aa8ba774a96db70be2ebdbb1824ed1ca30c6909cf6a906d",
+    "tools/tests/interface_aspect.gd": "53d1cb943a02dd6be40bf9689d882ced7e778265096e09b06f9180b96eb42598",
+    "tools/tests/mobile_screen_dropdown.gd": "eba20e0652b1e16b1479aea5869857a5fb40bab9bd7376a0e2816541a8f69888",
+    "tools/tests/mp_objectives_archives.gd": "0ba7009dde4f6884df3ec8a6d1042d42a3baf02846d5879599ca6bf41ed9d1db",
+    "tools/tests/paperdoll_animation_continuity.gd": "fca361c4a0e6ef09896644263cbd175a032d01d763265ff2415617c8391312f4",
+    "tools/tests/selection_marker_facing.gd": "9f2aadc8e0f69c375e3852cd7f757883e2bf42e627651f309e1b0f05d0046c94"
+  }
+}
