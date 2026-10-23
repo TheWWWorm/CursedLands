@@ -60,6 +60,10 @@ GROUPS = {
 ERROR = re.compile(r"SCRIPT ERROR:|^ERROR:|Parse Error|Unhandled exception|^FAIL |device (?:removed|lost)|VK_ERROR_DEVICE_LOST", re.I)
 REFRESH_DIAGNOSTIC = "ERROR: An error occurred while trying to get the screen refresh rate."
 PROTECTED_ENV = {"DISPLAY", "XAUTHORITY", "WAYLAND_DISPLAY", "WINEPREFIX", "WINEARCH", "XDG_DATA_HOME", "XDG_CONFIG_HOME", "XDG_CACHE_HOME"}
+GPU_ENV = {"CUDA_VISIBLE_DEVICES", "NVIDIA_VISIBLE_DEVICES", "VK_ICD_FILENAMES", "VK_DRIVER_FILES",
+           "MESA_VK_DEVICE_SELECT", "MESA_VK_DEVICE_SELECT_FORCE_DEFAULT_DEVICE",
+           "DXVK_FILTER_DEVICE_NAME", "VKD3D_FILTER_DEVICE_NAME", "__NV_PRIME_RENDER_OFFLOAD",
+           "__GLX_VENDOR_LIBRARY_NAME", "DRI_PRIME"}
 DESCENDANT_EXIT_GRACE = 5.0
 
 
@@ -127,6 +131,28 @@ def gpu_inventory() -> list[dict]:
     result = subprocess.run(command, capture_output=True, text=True, timeout=10, check=True)
     return [dict(zip(("index", "uuid", "name", "pci_bus_id", "driver"), [item.strip() for item in row]))
             for row in csv.reader(result.stdout.splitlines())]
+
+
+def display_environment(args, inherited: dict) -> tuple[str, Path, dict]:
+    env = dict(inherited)
+    if args.inherit_display:
+        if args.display or args.xauthority:
+            raise ValueError("--inherit-display cannot override the service display or Xauthority")
+        display = env.get("DISPLAY", "")
+        authority_value = env.get("XAUTHORITY", "")
+        if not display or not authority_value:
+            raise ValueError("--inherit-display requires service-provided DISPLAY and XAUTHORITY")
+        authority = Path(authority_value).expanduser().resolve(strict=True)
+    else:
+        if not args.display or not args.xauthority:
+            raise ValueError("Use --inherit-display inside GPU Lab, or supply --display and --xauthority")
+        display = args.display
+        authority = args.xauthority.expanduser().resolve(strict=True)
+        env.update(DISPLAY=display, XAUTHORITY=str(authority))
+        env.pop("WAYLAND_DISPLAY", None)
+    if not authority.is_file():
+        raise ValueError("Xauthority must be a file")
+    return display, authority, env
 
 
 def parse_gpu_xml(text: str) -> list[dict]:
@@ -422,10 +448,12 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--profile-root", type=Path, required=True, help="New directory; existing directories are rejected")
     p.add_argument("--output", type=Path, required=True, help="New evidence directory")
     p.add_argument("--driver", choices=("vulkan", "d3d12"), required=True)
-    p.add_argument("--display", required=True, help="Dedicated X11 display, for example :97")
-    p.add_argument("--xauthority", type=Path, required=True)
+    p.add_argument("--inherit-display", action="store_true", help="Inherit the GPU Lab service's display and GPU environment unchanged; defaults to logical adapter 0")
+    p.add_argument("--display", help="Already prepared dedicated X11 display; omit with --inherit-display")
+    p.add_argument("--xauthority", type=Path)
     p.add_argument("--physical-gpu", type=int, default=1, help="nvidia-smi physical GPU index; verified by process UUID evidence")
-    p.add_argument("--engine-gpu-index", type=int, default=1, help="Godot adapter enumeration index; independent of physical index")
+    p.add_argument("--physical-gpu-uuid", help="Select the exact physical UUID instead of its potentially renumbered nvidia-smi index")
+    p.add_argument("--engine-gpu-index", type=int, help="Godot adapter index; default 0 with --inherit-display, otherwise 1")
     p.add_argument("--suite", action="append", choices=sorted(set(REPORTS) | set(GROUPS)), help="Repeatable; default core")
     p.add_argument("--require-sdk", action="store_true", help="Fail without DX12 FSR 3.1; also enables sustained SDK phases")
     p.add_argument("--timeout", type=float, default=480, help="Per ordinary suite, including process teardown")
@@ -452,9 +480,11 @@ def main(argv=None) -> int:
             raise ValueError("This runner requires a Linux host; Wine covers the Windows DX12 build")
         executable = args.executable.expanduser().resolve(strict=True)
         data = args.data_root.expanduser().resolve(strict=True)
-        authority = args.xauthority.expanduser().resolve(strict=True)
-        if not executable.is_file() or not data.is_dir() or not authority.is_file():
-            raise ValueError("Executable, data directory and Xauthority must exist")
+        display, authority, env = display_environment(args, os.environ)
+        if args.engine_gpu_index is None:
+            args.engine_gpu_index = 0 if args.inherit_display else 1
+        if not executable.is_file() or not data.is_dir():
+            raise ValueError("Executable and data directory must exist")
         wine = args.wine is not None
         require_sdk = args.require_sdk or "sdk" in (args.suite or []) or "fsr" in (args.suite or [])
         if (args.driver == "d3d12") != wine:
@@ -473,24 +503,26 @@ def main(argv=None) -> int:
         explicit_env = {}
         for item in args.env:
             key, separator, value = item.partition("=")
-            if not separator or not re.fullmatch(r"[A-Z_][A-Z_0-9]*", key) or key in PROTECTED_ENV:
+            if not separator or not re.fullmatch(r"[A-Z_][A-Z_0-9]*", key) or key in PROTECTED_ENV or (args.inherit_display and key in GPU_ENV):
                 raise ValueError("Invalid or protected --env key: " + key)
             explicit_env[key] = value
         inventory = gpu_inventory()
-        gpu = next((row for row in inventory if int(row["index"]) == args.physical_gpu), None)
+        gpu = next((row for row in inventory if row["uuid"] == args.physical_gpu_uuid), None) if args.physical_gpu_uuid else next(
+            (row for row in inventory if int(row["index"]) == args.physical_gpu), None)
         if gpu is None:
             raise ValueError("Requested physical GPU is absent from nvidia-smi")
         # An advisory lock prevents overlapping runs of this qualification
         # workflow. External workload inventory remains in the GPU evidence.
-        lock = open(Path("/tmp") / ("ei-pt-qualification-" + gpu["uuid"] + ".lock"), "a")
+        lock_dir = Path.home() / ".cache/cursed-lands/qualification-locks"
+        lock_dir.mkdir(parents=True, exist_ok=True)
+        lock = open(lock_dir / (gpu["uuid"] + ".lock"), "a")
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         before = immutable_inputs(executable, data)
         output = reserve_directory(args.output, "evidence")
         profile = reserve_directory(args.profile_root, "profile")
         fixture_dir = output / "fixtures"
         fixture_hashes = freeze_fixtures(fixture_dir, wine)
-        env = dict(os.environ, **explicit_env, DISPLAY=args.display, XAUTHORITY=str(authority))
-        env.pop("WAYLAND_DISPLAY", None)
+        env.update(explicit_env)
         prefix = None
         if wine:
             args.wine = args.wine.resolve(strict=True)
@@ -517,7 +549,8 @@ def main(argv=None) -> int:
                 "repository_commit": commit, "repository_status": source_state, "suites_requested": suites,
                 "runner": {"path": str(RUNNER_PATH), "sha256": RUNNER_SHA256},
                 "require_sdk": require_sdk, "render_thread": args.render_thread, "inputs": before, "fixture_hashes": fixture_hashes,
-                "profile": str(profile), "mandated_settings": PROFILE, "display": args.display,
+                "profile": str(profile), "mandated_settings": PROFILE, "display": display,
+                "inherited_display": args.inherit_display,
                 "xauthority": str(authority), "physical_gpu": gpu, "engine_gpu_index": args.engine_gpu_index,
                 "gpu_inventory": inventory, "runtime_environment": explicit_env,
                 "wine": {"binary": str(args.wine), "prefix_template": str(args.wine_prefix_template), "user": args.wine_user,
@@ -554,6 +587,8 @@ def main(argv=None) -> int:
                        "--qualification-fixture=" + host_path(fixture_dir / FIXTURES.get(suite, "path_trace_" + suite + ".gd"), wine),
                        "--qualification-render-thread=" + args.render_thread,
                        "--audit-out=" + host_path(directory, wine)]
+            if not wine:
+                command[1:1] = ["--display-driver", "x11"]
             if require_sdk:
                 command.append("--qualification-require-sdk")
             if suite == "sustained":

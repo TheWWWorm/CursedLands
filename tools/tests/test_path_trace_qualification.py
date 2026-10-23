@@ -10,6 +10,7 @@ import sys
 import tempfile
 import time
 import unittest
+from types import SimpleNamespace
 from unittest.mock import patch
 
 import run_path_trace_qualification as q
@@ -24,6 +25,28 @@ def telemetry(_group):
 
 
 class QualificationTests(unittest.TestCase):
+    def test_inherited_service_display_and_gpu_environment_are_preserved(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            authority = Path(temporary) / "authority"; authority.touch()
+            inherited = {"DISPLAY": ":98", "XAUTHORITY": str(authority), "WAYLAND_DISPLAY": "service-owned",
+                         **{key: "service-owned" for key in q.GPU_ENV}}
+            args = SimpleNamespace(inherit_display=True, display=None, xauthority=None)
+            display, actual_authority, env = q.display_environment(args, inherited)
+            self.assertEqual(display, ":98")
+            self.assertEqual(actual_authority, authority)
+            self.assertEqual(env, inherited)
+            self.assertIsNot(env, inherited)
+            args.display = ":97"
+            with self.assertRaises(ValueError):
+                q.display_environment(args, inherited)
+            args.display = None; args.xauthority = authority
+            with self.assertRaises(ValueError):
+                q.display_environment(args, inherited)
+            args.xauthority = None
+            for missing in ("DISPLAY", "XAUTHORITY"):
+                with self.subTest(missing=missing), self.assertRaises(ValueError):
+                    q.display_environment(args, {key: value for key, value in inherited.items() if key != missing})
+
     def test_existing_player_or_test_profile_is_never_overwritten(self):
         with tempfile.TemporaryDirectory() as temporary:
             profile = Path(temporary) / "profile"
@@ -258,6 +281,11 @@ class QualificationTests(unittest.TestCase):
             executable = root / "fake-engine"
             executable.write_text("""#!/usr/bin/env python3
 import json,os,pathlib,sys,time
+if os.environ.get('QUALIFICATION_SERVICE_TEST'):
+ assert os.environ['DISPLAY']==':98' and os.environ['WAYLAND_DISPLAY']=='service-owned'
+ assert os.environ['CUDA_VISIBLE_DEVICES']=='service-owned'
+ assert sys.argv[sys.argv.index('--gpu-index')+1]=='0'
+ assert sys.argv[sys.argv.index('--display-driver')+1]=='x11'
 args={s.split('=',1)[0]:s.split('=',1)[1] for s in sys.argv if '=' in s}
 out=pathlib.Path(args['--audit-out'])
 user=pathlib.Path(os.environ['XDG_DATA_HOME'])/'godot/app_userdata/Cursed Lands'
@@ -297,6 +325,23 @@ time.sleep(0.2)
             self.assertTrue((root / "profile/device/data/godot/app_userdata/Cursed Lands/settings.cfg").exists())
             self.assertTrue((root / "profile/motion/data/godot/app_userdata/Cursed Lands/settings.cfg").exists())
             self.assertFalse((root / "profile/resolution").exists())
+            # The service renumbers NVML devices; UUID selection must still
+            # verify the same physical GPU and use logical adapter zero.
+            service_env = {"QUALIFICATION_SERVICE_TEST": "1", "DISPLAY": ":98",
+                           "XAUTHORITY": str(root / "authority"), "WAYLAND_DISPLAY": "service-owned",
+                           "CUDA_VISIBLE_DEVICES": "service-owned"}
+            lab_args = ["--executable", str(executable), "--data-root", str(root / "data"),
+                        "--profile-root", str(root / "lab-profile"), "--output", str(root / "lab-output"),
+                        "--driver", "vulkan", "--inherit-display", "--physical-gpu-uuid", GPU["uuid"], "--suite", "device"]
+            with patch.dict(os.environ, service_env), patch.object(q, "gpu_inventory", return_value=[{**GPU, "index": "0"}]), patch.object(q, "supervise", side_effect=run), contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(q.main(lab_args), 0)
+                for key in q.GPU_ENV:
+                    self.assertEqual(q.main(lab_args + ["--env", key + "=unrequested"]), 1)
+            manifest = json.loads((root / "lab-output/qualification.json").read_text())
+            self.assertTrue(manifest["passed"])
+            self.assertTrue(manifest["inherited_display"])
+            self.assertEqual(manifest["engine_gpu_index"], 0)
+            self.assertEqual(manifest["physical_gpu"]["uuid"], GPU["uuid"])
 
 
 if __name__ == "__main__":

@@ -25,15 +25,23 @@ and each command.
 
 ## Hardware and virtual display
 
-Prepare a dedicated NVIDIA Xorg screen with an actual GPU, such as `:97`, and
-its Xauthority file. A software Xvfb display is not a PT qualification target.
-The NVIDIA Device section should identify the intended physical GPU by PCI
-BusID, allow an empty initial configuration, and use `UseDisplayDevice "None"`.
-Give the virtual screen enough room for the requested benchmark resolution.
-The existing GPU must support the patched engine's ray-tracing API.
+On the development workstation, submit graphical runs through GPU Lab. It owns
+the accelerated virtual screen and serializes physical GPU1 tests. Do not start
+another Xorg/Xvfb, change the desktop, or override the service's display or GPU
+environment. Use `--inherit-display`; the runner preserves those variables and
+defaults to Godot's logical adapter **0** inside the job. Native launches use
+`--display-driver x11 --audio-driver Dummy`. GPU Lab's private `/tmp` is separate
+from the caller's, so keep inputs, profiles and evidence in project/home paths.
+See `/opt/gpu-lab/README.md` for service commands.
+
+Other hosts can use an already prepared accelerated X11 display by supplying
+`--display` and `--xauthority` instead. A software Xvfb display is not a PT
+qualification target. The GPU must support the patched engine's ray-tracing API.
 
 `--physical-gpu 1` selects the physical index reported by `nvidia-smi`.
-`--engine-gpu-index 1` selects Godot's enumeration index; these are separate
+`--physical-gpu-uuid GPU-...` selects an exact UUID instead; prefer this inside
+GPU Lab because device isolation can renumber NVML indices.
+`--engine-gpu-index` selects Godot's enumeration index; these are separate
 namespaces and may differ on another machine. The runner checks the actual
 runtime adapter name, renderer and supported PT API, then observes the launched
 process group's graphics-process UUID in `nvidia-smi`. Using another GPU, missing
@@ -53,13 +61,13 @@ All paths below are placeholders to replace with absolute local paths. The
 profile and output directories must not exist, even after a previous test run.
 
 ```sh
-python3 tools/tests/run_path_trace_qualification.py \
+gpu-lab submit --cwd /absolute/repository --timeout 7200 -- \
+  python3 /absolute/repository/tools/tests/run_path_trace_qualification.py \
   --executable /builds/pt-linux/CursedLands.x86_64 \
   --data-root /data/EvilIslands \
   --profile-root /evidence/pt-vulkan-profile-01 \
   --output /evidence/pt-vulkan-01 \
-  --driver vulkan --physical-gpu 1 --engine-gpu-index 1 \
-  --display :97 --xauthority /run/pt-display/Xauthority \
+  --driver vulkan --physical-gpu-uuid GPU-TARGET-UUID --inherit-display \
   --suite full
 ```
 
@@ -80,13 +88,13 @@ profile resolves outside the copied prefix is rejected. Wine paths require the
 usual `Z:` mapping to the host filesystem.
 
 ```sh
-python3 tools/tests/run_path_trace_qualification.py \
+gpu-lab submit --cwd /absolute/repository --timeout 7200 -- \
+  python3 /absolute/repository/tools/tests/run_path_trace_qualification.py \
   --executable /builds/pt-windows/CursedLands.exe \
   --data-root /data/EvilIslands \
   --profile-root /evidence/pt-dx12-profile-01 \
   --output /evidence/pt-dx12-01 \
-  --driver d3d12 --physical-gpu 1 --engine-gpu-index 1 \
-  --display :97 --xauthority /run/pt-display/Xauthority \
+  --driver d3d12 --physical-gpu-uuid GPU-TARGET-UUID --inherit-display \
   --wine /opt/qualified-wine/lib/wine/wine64 \
   --wine-prefix-template /opt/qualified-wine/pt-prefix \
   --wine-user tester \
@@ -122,6 +130,7 @@ no workload. Cleanup targets only the group created for that suite.
 | Selection | Coverage |
 | --- | --- |
 | `core` (default) | Device transport, rigid motion/disocclusion, lifecycle failures and resizing, topology, controller handoff/recovery, real detached geometry, applied resolution, sustained live campaign |
+| `preparation` | Localized progress/input ownership, live material/temporal/SDK work, arena warmup, PT/RT/water settings, graphics detection cancellation and sampling; see [graphics preparation](graphics-preparation.md) |
 | `full` | Core plus variance, quality, glossy paths, sampling, contacts, foliage, terrain, surface maps/detail, emitters, lighting/history, daylight, outdoor/cave, receivers, underwater and live water-reflection ownership |
 | `sdk` | Resolution, production FSR/FG, sustained live SDK transitions; requires DX12 FSR 3.1 |
 | `benchmark` | Eight alternating old/new PT resolution blocks with image comparisons and GPU/CPU timings |
@@ -231,7 +240,8 @@ Run the runner's CPU-only negative controls without a GPU or Godot:
 python3 -m unittest discover -s tools/tests -p test_path_trace_qualification.py -v
 ```
 
-These exercise profile preservation, exact diagnostic allowance, graphics UUID
+These exercise service display/GPU environment preservation, logical adapter
+selection after NVML renumbering, profile preservation, exact diagnostic allowance, graphics UUID
 parsing, wrong-GPU and missing-GPU evidence, runtime errors, wall-time teardown
 limits, surviving descendants after a zero-exit launcher, nested runtime-library
 mutation, incomplete benchmark/SDK/stress reports, and an end-to-end fake-export
