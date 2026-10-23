@@ -69,3 +69,6 @@ and graphics detection cancellation/sampling. Synthetic negative controls and
 failure injection are labelled in their reports. Repeat on the qualified Windows
 DX12 package for actual SDK FSR/FG coverage, and use `--suite core` for movement,
 topology, recenter/recovery, resource lifetime and sustained PT checks.
+
+The [2026-10-23 integration results](validation/shader-preparation-2026-10-23/README.md)
+record the completed Vulkan/DX12 checks, localized captures and known scope.

@@ -1,0 +1,27 @@
+{
+  "built_source": "7e54e5d6e853563dcecbf58ad32bea1dc20fd3a0",
+  "candidate": "candidate-06",
+  "imports_and_packs": {
+    "import": {
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/candidate-06-import.log",
+      "sha256": "ca442e700dc96838d7c439a1c2a6f6a78c3fcebea0d56b4de5ce4ec49504146b",
+      "errors": []
+    },
+    "linux-pack": {
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/candidate-06-linux-pack.log",
+      "sha256": "15e5642e80615d13f62b31183640b86c1bd9057f58448e92549414dc0fdf66ea",
+      "errors": []
+    },
+    "windows-pack": {
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/candidate-06-windows-pack.log",
+      "sha256": "15e5642e80615d13f62b31183640b86c1bd9057f58448e92549414dc0fdf66ea",
+      "errors": []
+    }
+  },
+  "source_manifest_sha256": "3bfae54463089ab56746ea88ef55e499a1472de987ad101278be0522651b3e04",
+  "job_ids": {
+    "inventory": "8e8715194576477c",
+    "vulkan_preparation": "b77bac5d51774c67",
+    "dx12_core_preparation": "a13491463cc849d3"
+  }
+}

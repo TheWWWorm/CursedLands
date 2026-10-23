@@ -1,0 +1,95 @@
+{
+  "exit_code": -15,
+  "pid": 504943,
+  "wall_seconds": 57.77930335700148,
+  "stopped": "runtime error",
+  "errors": [
+    "FAIL automatic-retry: real output is bound and the compilation cover settles within its deadline"
+  ],
+  "allowed_diagnostics": [],
+  "gpu_uuids_observed": [
+    "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": true,
+    "live_members_after_cleanup": []
+  },
+  "suite": "shader_scene",
+  "checks": 47,
+  "fixture_failures": [
+    "automatic-retry: real output is bound and the compilation cover settles within its deadline"
+  ],
+  "validation_errors": [
+    "Fixture did not report positive checks and an empty failures list"
+  ],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "display": "Windows",
+    "driver": "d3d12",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-final-01/fixtures/shader_compilation_scene.gd",
+    "fsr": {
+      "api": true,
+      "engine": true,
+      "fg3": true,
+      "fg4": false,
+      "sr3": true,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 1676,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": false,
+      "expected_separate": false,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 1,
+      "render_id": 1,
+      "requested": "project"
+    },
+    "require_sdk": true,
+    "user_data": "C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "shader-compilation-scene.json",
+  "passed": false,
+  "artifacts": {
+    "CursedLands_dxgi.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "command.json": "589ff65d681a24e22de7bcfa304dc08fbec736e4f3b755e42f1868389126a937",
+    "explicit-material-topology.png": "92bc77e0cddc3937445b71d5178737ceedc7dda627804acf19a0b3dc97744bcc",
+    "explicit-render-scale.png": "2274dcd8f1fa4f42cdb9864f929bd3ce3aef271adfebb839761da7a86ab958b4",
+    "gpu.jsonl": "01abf0928b14895404fdc1b0ef8e984aed3a314bb6a535cac16374d96ff49e75",
+    "initial-path.png": "52d21b4c1cf71ab2a5107e46c23f50fb5e20ab5b751265cc65e77819ae2fb9bb",
+    "qualification-runtime.json": "1c68e0dedd02619161f8419979bf02270e4591c05831cd2afddfa62dc229bfab",
+    "quality-resize.png": "f28c4d1be802e028cc722d940f1ac3eb665aa8c222ad45f130a196d840712a9e",
+    "run.log": "e9f7e684b27ce2c121eb03bc31f04cb5ccc8fc79b63339001fbf362dc4c11a91",
+    "same-device-deep.png": "ed09ef079dafd9e78344f36a0f56a96afa27829597f4c1f3231adcf2ea6e8fdd",
+    "shader-compilation-scene.json": "eab9d4056f792e8616581c7b276991e57ed31d9c4f102e90a7f37693f6bf6bc9"
+  }
+}

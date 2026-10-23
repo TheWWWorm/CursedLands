@@ -1,0 +1,626 @@
+{
+  "source_commit": "7e54e5d6e853563dcecbf58ad32bea1dc20fd3a0",
+  "runtime_candidate": "candidate-06",
+  "physical_gpus": {
+    "vulkan-core": {
+      "index": "1",
+      "uuid": "GPU-0eee028e-b998-532f-095b-e936c7f6191d",
+      "name": "NVIDIA GeForce RTX 3090 Ti",
+      "pci_bus_id": "00000000:0A:00.0",
+      "driver": "580.178.04"
+    },
+    "vulkan-ui": {
+      "index": "0",
+      "uuid": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441",
+      "name": "NVIDIA GeForce RTX 3090",
+      "pci_bus_id": "00000000:09:00.0",
+      "driver": "580.178.04"
+    },
+    "vulkan-settings": {
+      "index": "0",
+      "uuid": "GPU-0eee028e-b998-532f-095b-e936c7f6191d",
+      "name": "NVIDIA GeForce RTX 3090 Ti",
+      "pci_bus_id": "00000000:0A:00.0",
+      "driver": "580.178.04"
+    },
+    "vulkan-scene-water": {
+      "index": "0",
+      "uuid": "GPU-0eee028e-b998-532f-095b-e936c7f6191d",
+      "name": "NVIDIA GeForce RTX 3090 Ti",
+      "pci_bus_id": "00000000:0A:00.0",
+      "driver": "580.178.04"
+    },
+    "dx12-core-ui": {
+      "index": "0",
+      "uuid": "GPU-0eee028e-b998-532f-095b-e936c7f6191d",
+      "name": "NVIDIA GeForce RTX 3090 Ti",
+      "pci_bus_id": "00000000:0A:00.0",
+      "driver": "580.178.04"
+    },
+    "dx12-remaining": {
+      "index": "0",
+      "uuid": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441",
+      "name": "NVIDIA GeForce RTX 3090",
+      "pci_bus_id": "00000000:09:00.0",
+      "driver": "580.178.04"
+    }
+  },
+  "local_evidence": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023",
+  "batches": [
+    {
+      "label": "vulkan-core",
+      "source_manifest": "final-vulkan-01",
+      "original_aggregate_passed": false,
+      "selected_suites": [
+        "device",
+        "motion",
+        "lifecycle",
+        "topology",
+        "controller",
+        "detached_live",
+        "resolution",
+        "sustained"
+      ],
+      "checks": 822,
+      "runs": [
+        {
+          "suite": "device",
+          "checks": 17,
+          "wall_seconds": 12.281641986000977,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/final-vulkan-01/device/run.log",
+          "log_sha256": "f9e090362921a8894f0043bbcbcf9f7ea3c99e11e51db095bedb76fb1561e9af",
+          "allowed_diagnostics": [
+            "ERROR: An error occurred while trying to get the screen refresh rate."
+          ]
+        },
+        {
+          "suite": "motion",
+          "checks": 55,
+          "wall_seconds": 9.62046049700075,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/final-vulkan-01/motion/run.log",
+          "log_sha256": "22adc3c3ef683f3338713f1dce880aa3ad45b13e829ab54b2cfba1f2f07bdf44",
+          "allowed_diagnostics": [
+            "ERROR: An error occurred while trying to get the screen refresh rate."
+          ]
+        },
+        {
+          "suite": "lifecycle",
+          "checks": 150,
+          "wall_seconds": 11.925432258,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/final-vulkan-01/lifecycle/run.log",
+          "log_sha256": "bafcab785b5f4f459918ddef1692b71e9f5f568a2e79f796a4e2c8167242f99d",
+          "allowed_diagnostics": [
+            "ERROR: An error occurred while trying to get the screen refresh rate."
+          ]
+        },
+        {
+          "suite": "topology",
+          "checks": 82,
+          "wall_seconds": 8.690433464998932,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/final-vulkan-01/topology/run.log",
+          "log_sha256": "a5ec42655b835985e4683bd3136879806d00dc2d044c2c44188f96e18e9a5d02",
+          "allowed_diagnostics": [
+            "ERROR: An error occurred while trying to get the screen refresh rate."
+          ]
+        },
+        {
+          "suite": "controller",
+          "checks": 47,
+          "wall_seconds": 56.572657142000025,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/final-vulkan-01/controller/run.log",
+          "log_sha256": "c151b9bc137aa41671281e82c393108cc5f4cb03885c95740ccc22549d0040b5",
+          "allowed_diagnostics": [
+            "ERROR: An error occurred while trying to get the screen refresh rate."
+          ]
+        },
+        {
+          "suite": "detached_live",
+          "checks": 15,
+          "wall_seconds": 40.36295202399924,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/final-vulkan-01/detached_live/run.log",
+          "log_sha256": "9f3da97986afb464659462dbaa4cb5bf12984804aa3594f2d1cae839cbcdfdbb",
+          "allowed_diagnostics": [
+            "ERROR: An error occurred while trying to get the screen refresh rate."
+          ]
+        },
+        {
+          "suite": "resolution",
+          "checks": 104,
+          "wall_seconds": 65.57386837800004,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/final-vulkan-01/resolution/run.log",
+          "log_sha256": "99c4553b8c0c333bd1e75a669b49c6753ec48aee97f1f860a170ae415431eaa6",
+          "allowed_diagnostics": [
+            "ERROR: An error occurred while trying to get the screen refresh rate."
+          ]
+        },
+        {
+          "suite": "sustained",
+          "checks": 352,
+          "wall_seconds": 441.26935098099966,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/final-vulkan-01/sustained/run.log",
+          "log_sha256": "ec7cae1e9fc8f83ed7c22de7ae41f310f8cf1e40f8245821ea7507fbb5d00fbd",
+          "allowed_diagnostics": [
+            "ERROR: An error occurred while trying to get the screen refresh rate."
+          ]
+        }
+      ]
+    },
+    {
+      "label": "vulkan-ui",
+      "source_manifest": "lab-vulkan-preparation-02",
+      "original_aggregate_passed": false,
+      "selected_suites": [
+        "shader_ui",
+        "shader_live",
+        "shader_arena"
+      ],
+      "checks": 420,
+      "runs": [
+        {
+          "suite": "shader_ui",
+          "checks": 354,
+          "wall_seconds": 8.015500236000662,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-vulkan-preparation-02/shader_ui/run.log",
+          "log_sha256": "044a6b486b81a48202adeea5186c5b66994850a0b73469f447fa26628fd83016",
+          "allowed_diagnostics": [
+            "ERROR: Parameter \"monitors\" is null.\n   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+          ]
+        },
+        {
+          "suite": "shader_live",
+          "checks": 42,
+          "wall_seconds": 40.79719752700112,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-vulkan-preparation-02/shader_live/run.log",
+          "log_sha256": "1d20428e9fde126734ecad70cd63b8dbefd62144f2749abe5c34ceceb68ce7fd",
+          "allowed_diagnostics": [
+            "ERROR: Parameter \"monitors\" is null.\n   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+          ]
+        },
+        {
+          "suite": "shader_arena",
+          "checks": 24,
+          "wall_seconds": 14.690884971998457,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-vulkan-preparation-02/shader_arena/run.log",
+          "log_sha256": "c3be3bd47de990c0082ad6a108fd5fea1d12c24a3195111b1233c26eabe2247d",
+          "allowed_diagnostics": [
+            "ERROR: Parameter \"monitors\" is null.\n   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "vulkan-settings",
+      "source_manifest": "lab-vulkan-settings-04",
+      "original_aggregate_passed": true,
+      "selected_suites": [
+        "shader_settings"
+      ],
+      "checks": 44,
+      "runs": [
+        {
+          "suite": "shader_settings",
+          "checks": 44,
+          "wall_seconds": 8.502108305998263,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-vulkan-settings-04/shader_settings/run.log",
+          "log_sha256": "79c74ee6cfac141e4cc8c5cb681b06b5c8d519c03bd6c18a1de79fe24a40276f",
+          "allowed_diagnostics": [
+            "ERROR: Parameter \"monitors\" is null.\n   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)",
+            "ERROR: Parameter \"monitors\" is null.\n   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "vulkan-scene-water",
+      "source_manifest": "lab-vulkan-remaining-05",
+      "original_aggregate_passed": true,
+      "selected_suites": [
+        "shader_scene",
+        "shader_water"
+      ],
+      "checks": 128,
+      "runs": [
+        {
+          "suite": "shader_scene",
+          "checks": 68,
+          "wall_seconds": 47.909257873998286,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-vulkan-remaining-05/shader_scene/run.log",
+          "log_sha256": "46941fc31d438ac3eb241dd18cf355b9b3ce82dfd636ec3fa029b395ba2e908a",
+          "allowed_diagnostics": [
+            "ERROR: Parameter \"monitors\" is null.\n   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+          ]
+        },
+        {
+          "suite": "shader_water",
+          "checks": 60,
+          "wall_seconds": 28.89974938600062,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-vulkan-remaining-05/shader_water/run.log",
+          "log_sha256": "f6ceaf0c0176dd213912ab0fa91145040f644b800861cf571e280197d0ac7646",
+          "allowed_diagnostics": [
+            "ERROR: Parameter \"monitors\" is null.\n   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "dx12-core-ui",
+      "source_manifest": "lab-dx12-final-01",
+      "original_aggregate_passed": false,
+      "selected_suites": [
+        "device",
+        "motion",
+        "lifecycle",
+        "topology",
+        "controller",
+        "detached_live",
+        "resolution",
+        "sustained",
+        "shader_ui",
+        "shader_live",
+        "shader_arena"
+      ],
+      "checks": 1368,
+      "runs": [
+        {
+          "suite": "device",
+          "checks": 17,
+          "wall_seconds": 19.351878293000482,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-final-01/device/run.log",
+          "log_sha256": "bb3e1442c2107ca73ea436ab395d90a48fbc95e3463a48f610abde03ffbb9dc4",
+          "allowed_diagnostics": []
+        },
+        {
+          "suite": "motion",
+          "checks": 55,
+          "wall_seconds": 13.187782166000034,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-final-01/motion/run.log",
+          "log_sha256": "785b65d411fc9e6121dae26daec17cbf02e6a58616a36f512d66dbc3abde0afc",
+          "allowed_diagnostics": []
+        },
+        {
+          "suite": "lifecycle",
+          "checks": 149,
+          "wall_seconds": 20.953795131001243,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-final-01/lifecycle/run.log",
+          "log_sha256": "696df67615dde7afb2fca8e901d8e3aaf128b167db698e8ef5e8850df6181fe0",
+          "allowed_diagnostics": []
+        },
+        {
+          "suite": "topology",
+          "checks": 82,
+          "wall_seconds": 12.930303764998825,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-final-01/topology/run.log",
+          "log_sha256": "cadfbbc3dfa2090937371531b61fc36e9df6c660886758ca9d5ef3ee8e2f14cb",
+          "allowed_diagnostics": []
+        },
+        {
+          "suite": "controller",
+          "checks": 47,
+          "wall_seconds": 74.40117657600058,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-final-01/controller/run.log",
+          "log_sha256": "1de62f5e51f3fc5a399a805fa62e9f54490739bf657f6fb34df2ea64d7e42372",
+          "allowed_diagnostics": []
+        },
+        {
+          "suite": "detached_live",
+          "checks": 15,
+          "wall_seconds": 45.4806366039993,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-final-01/detached_live/run.log",
+          "log_sha256": "cc7cc41ab566a08a7a4ec05467143fe1631b10d85e0afa79e1d99e7d4ca89e87",
+          "allowed_diagnostics": []
+        },
+        {
+          "suite": "resolution",
+          "checks": 156,
+          "wall_seconds": 76.00548472500122,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-final-01/resolution/run.log",
+          "log_sha256": "c40cd7588fbed23b6c637bd38f1c789a96af546f67f1d319eb353e9149c39833",
+          "allowed_diagnostics": []
+        },
+        {
+          "suite": "sustained",
+          "checks": 389,
+          "wall_seconds": 809.6758693680003,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-final-01/sustained/run.log",
+          "log_sha256": "8c33ca4705abdf174c1f86b1078cd89ccb8bb15fa85f72ab932b65b0723dc88e",
+          "allowed_diagnostics": []
+        },
+        {
+          "suite": "shader_ui",
+          "checks": 354,
+          "wall_seconds": 12.632131746000596,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-final-01/shader_ui/run.log",
+          "log_sha256": "4fb9319163341c4eff39aa060c3948572227c5c15e8699c38b5dfdd3baed8a3a",
+          "allowed_diagnostics": []
+        },
+        {
+          "suite": "shader_live",
+          "checks": 80,
+          "wall_seconds": 98.2895917349997,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-final-01/shader_live/run.log",
+          "log_sha256": "0ed59fe5bb83f2c09cb3db95a540e00a1d2fd8d8e83e1dbf05a8bfcf13d2656d",
+          "allowed_diagnostics": []
+        },
+        {
+          "suite": "shader_arena",
+          "checks": 24,
+          "wall_seconds": 18.028330822002317,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-final-01/shader_arena/run.log",
+          "log_sha256": "7c36699d0ea26654e9378c8af7015d5991823d4bad08a5d9da16957538510a14",
+          "allowed_diagnostics": []
+        }
+      ]
+    },
+    {
+      "label": "dx12-remaining",
+      "source_manifest": "lab-dx12-remaining-02",
+      "original_aggregate_passed": true,
+      "selected_suites": [
+        "shader_scene",
+        "shader_water",
+        "shader_settings"
+      ],
+      "checks": 178,
+      "runs": [
+        {
+          "suite": "shader_scene",
+          "checks": 74,
+          "wall_seconds": 74.02945668500251,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-remaining-02/shader_scene/run.log",
+          "log_sha256": "095d6885d0c18e780207dc18025a38e181052741eecb4b659979289d24f4126a",
+          "allowed_diagnostics": []
+        },
+        {
+          "suite": "shader_water",
+          "checks": 60,
+          "wall_seconds": 33.739452947000245,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-remaining-02/shader_water/run.log",
+          "log_sha256": "a8916143e17e09035dcb0f08e7016a391af1485ce5ceb255ac64e2f2b8024dc4",
+          "allowed_diagnostics": []
+        },
+        {
+          "suite": "shader_settings",
+          "checks": 44,
+          "wall_seconds": 12.87368701500236,
+          "passed": true,
+          "local_log": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-remaining-02/shader_settings/run.log",
+          "log_sha256": "d34212d7b4786e59ccfac1386006eb75624b151e013a90af187c4fffd570a22d",
+          "allowed_diagnostics": []
+        }
+      ]
+    }
+  ],
+  "scope": "Native Linux Vulkan Separate and Windows DX12 via Wine/VKD3D Safe. Core qualification uses GPU1 RTX3090Ti; preparation exercises GPU0 RTX3090 and GPU1 through the GPU Lab shared pool. Each batch records its physical UUID. No native Windows certification.",
+  "vulkan_core_checkpoint": "62853f16; subsequent game changes are limited to arena draw ordering and graphics-detection sampling/cancellation, exercised by the final preparation suites.",
+  "all_selected_suites_passed": true,
+  "checks": 2960,
+  "suites": 28,
+  "rejected_runs": [
+    {
+      "run": "final-vulkan-01",
+      "suite": "shader_arena",
+      "errors": [
+        "FAIL every material completion follows a real SubViewport draw beneath the cover"
+      ],
+      "stopped": "runtime error"
+    },
+    {
+      "run": "lab-vulkan-preparation-01",
+      "suite": "shader_ui",
+      "errors": [
+        "ERROR: Parameter \"monitors\" is null."
+      ],
+      "stopped": "runtime error"
+    },
+    {
+      "run": "lab-vulkan-preparation-02",
+      "suite": "shader_scene",
+      "errors": [
+        "FAIL same-device-deep: controller progresses while its visible single-player cover owns the pause"
+      ],
+      "stopped": "runtime error"
+    },
+    {
+      "run": "lab-vulkan-remaining-03",
+      "suite": "shader_water",
+      "errors": [
+        "FAIL initial-rt: presenting the cover did not draw the campaign"
+      ],
+      "stopped": "runtime error"
+    },
+    {
+      "run": "lab-dx12-final-01",
+      "suite": "shader_scene",
+      "errors": [
+        "FAIL automatic-retry: real output is bound and the compilation cover settles within its deadline"
+      ],
+      "stopped": "runtime error"
+    }
+  ],
+  "jobs": {
+    "inventory": {
+      "id": "8e8715194576477c",
+      "status": "completed",
+      "argv": [
+        "/usr/bin/nvidia-smi",
+        "--query-gpu=index,uuid,name,pci.bus_id",
+        "--format=csv,noheader,nounits"
+      ],
+      "cwd": "/home/llm2x/Documents/EI",
+      "timeout_seconds": 30.0,
+      "created_at": 1792762871.6658201,
+      "label": "/usr/bin/nvidia-smi",
+      "directory": "/var/lib/gpu-lab/jobs/8e8715194576477c",
+      "gpu_uuid": "GPU-0eee028e-b998-532f-095b-e936c7f6191d",
+      "display": ":98",
+      "started_at": 1792763747.3486543,
+      "pid": 469417,
+      "stderr_truncated": false,
+      "stdout_truncated": false,
+      "exit_code": 0,
+      "finished_at": 1792763747.5818875,
+      "gpu_slot": "1"
+    },
+    "dx12-core-ui": {
+      "id": "a13491463cc849d3",
+      "status": "failed",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/run_lab_suites.py",
+        "d3d12",
+        "candidate-06",
+        "lab-dx12-final-01",
+        "core",
+        "preparation"
+      ],
+      "cwd": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/repo",
+      "timeout_seconds": 3600.0,
+      "created_at": 1792763593.6671917,
+      "label": "/usr/bin/python3",
+      "directory": "/var/lib/gpu-lab/jobs/a13491463cc849d3",
+      "gpu_uuid": "GPU-0eee028e-b998-532f-095b-e936c7f6191d",
+      "display": ":98",
+      "started_at": 1792763754.7144897,
+      "pid": 470134,
+      "stdout_truncated": false,
+      "stderr_truncated": false,
+      "exit_code": 1,
+      "finished_at": 1792765015.1454732,
+      "gpu_slot": "1"
+    },
+    "vulkan-ui": {
+      "id": "760934cdd2db4b1a",
+      "status": "failed",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/run_lab_suites.py",
+        "vulkan",
+        "candidate-06",
+        "lab-vulkan-preparation-02",
+        "preparation"
+      ],
+      "cwd": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/repo",
+      "timeout_seconds": 1800.0,
+      "created_at": 1792764697.7683613,
+      "label": "/usr/bin/python3",
+      "directory": "/var/lib/gpu-lab-gpu0/jobs/760934cdd2db4b1a",
+      "gpu_uuid": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441",
+      "display": ":99",
+      "started_at": 1792764697.7685905,
+      "pid": 496073,
+      "stderr_truncated": false,
+      "stdout_truncated": false,
+      "exit_code": 1,
+      "finished_at": 1792764791.5662313,
+      "gpu_slot": "0"
+    },
+    "vulkan-settings": {
+      "id": "9659cf64df734dfa",
+      "status": "completed",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/run_lab_suites.py",
+        "vulkan",
+        "candidate-06",
+        "lab-vulkan-settings-04",
+        "shader_settings"
+      ],
+      "cwd": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/repo",
+      "timeout_seconds": 600.0,
+      "created_at": 1792765058.4454195,
+      "label": "/usr/bin/python3",
+      "directory": "/var/lib/gpu-lab/jobs/9659cf64df734dfa",
+      "gpu_uuid": "GPU-0eee028e-b998-532f-095b-e936c7f6191d",
+      "display": ":98",
+      "started_at": 1792765058.445629,
+      "pid": 509570,
+      "stdout_truncated": false,
+      "stderr_truncated": false,
+      "exit_code": 0,
+      "finished_at": 1792765067.364867,
+      "gpu_slot": "1"
+    },
+    "vulkan-scene-water": {
+      "id": "ecbbd7d9930244bf",
+      "status": "completed",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/run_lab_suites.py",
+        "vulkan",
+        "candidate-06",
+        "lab-vulkan-remaining-05",
+        "shader_scene",
+        "shader_water"
+      ],
+      "cwd": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/repo",
+      "timeout_seconds": 1800.0,
+      "created_at": 1792765559.298992,
+      "label": "/usr/bin/python3",
+      "directory": "/var/lib/gpu-lab/jobs/ecbbd7d9930244bf",
+      "gpu_uuid": "GPU-0eee028e-b998-532f-095b-e936c7f6191d",
+      "display": ":98",
+      "started_at": 1792765559.299198,
+      "pid": 522759,
+      "stderr_truncated": false,
+      "stdout_truncated": false,
+      "exit_code": 0,
+      "finished_at": 1792765636.5799248,
+      "gpu_slot": "1"
+    },
+    "dx12-remaining": {
+      "id": "0a980b3f1e344de6",
+      "status": "completed",
+      "argv": [
+        "/usr/bin/python3",
+        "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/run_lab_suites.py",
+        "d3d12",
+        "candidate-06",
+        "lab-dx12-remaining-02",
+        "shader_scene",
+        "shader_water",
+        "shader_settings"
+      ],
+      "cwd": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/repo",
+      "timeout_seconds": 1800.0,
+      "created_at": 1792765559.4263058,
+      "label": "/usr/bin/python3",
+      "directory": "/var/lib/gpu-lab-gpu0/jobs/0a980b3f1e344de6",
+      "gpu_uuid": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441",
+      "display": ":99",
+      "started_at": 1792765559.4264894,
+      "pid": 522775,
+      "stderr_truncated": false,
+      "stdout_truncated": false,
+      "exit_code": 0,
+      "finished_at": 1792765681.2661476,
+      "gpu_slot": "0"
+    }
+  }
+}

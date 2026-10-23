@@ -1,0 +1,48 @@
+{
+	"adapter": "NVIDIA GeForce RTX 3090 Ti",
+	"display": "X11",
+	"driver": "vulkan",
+	"engine": {
+		"build": "custom_build",
+		"hash": "unknown",
+		"hex": 263936,
+		"major": 4,
+		"minor": 7,
+		"patch": 0,
+		"status": "stable",
+		"string": "4.7-stable (custom_build)",
+		"timestamp": 0
+	},
+	"fixture": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/final-vulkan-01/fixtures/path_trace_topology.gd",
+	"fsr": {
+		"api": false,
+		"engine": false,
+		"fg3": false,
+		"fg4": false,
+		"sr3": false,
+		"sr4": false
+	},
+	"method": "forward_plus",
+	"passed": true,
+	"pid": 416041,
+	"profile": {
+		"confine_mouse": 0,
+		"show_fps": 1,
+		"volume_sfx": 0,
+		"volume_stream": 0,
+		"volume_voice": 0
+	},
+	"pt_supported": true,
+	"render_thread": {
+		"actual_separate": true,
+		"expected_separate": true,
+		"main_id": 1,
+		"passed": true,
+		"project_model": 2,
+		"render_id": 5,
+		"requested": "project"
+	},
+	"require_sdk": false,
+	"user_data": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/final-vulkan-01-profile/topology/data/godot/app_userdata/Cursed Lands",
+	"vendor": "NVIDIA"
+}

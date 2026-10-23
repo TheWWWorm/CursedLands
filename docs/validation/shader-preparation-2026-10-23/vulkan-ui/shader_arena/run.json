@@ -1,0 +1,88 @@
+{
+  "exit_code": 0,
+  "pid": 498412,
+  "wall_seconds": 14.690884971998457,
+  "stopped": "",
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null.\n   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+  ],
+  "gpu_uuids_observed": [
+    "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0.09738284899867722,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": false,
+    "live_members_after_cleanup": []
+  },
+  "suite": "shader_arena",
+  "checks": 24,
+  "fixture_failures": [],
+  "validation_errors": [],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090",
+    "display": "X11",
+    "driver": "vulkan",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-vulkan-preparation-02/fixtures/shader_compilation_arena.gd",
+    "fsr": {
+      "api": false,
+      "engine": false,
+      "fg3": false,
+      "fg4": false,
+      "sr3": false,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 498412,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": true,
+      "expected_separate": true,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 2,
+      "render_id": 5,
+      "requested": "project"
+    },
+    "require_sdk": false,
+    "user_data": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-vulkan-preparation-02-profile/shader_arena/data/godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "shader-compilation-arena.json",
+  "passed": true,
+  "artifacts": {
+    "arena-before-first-draw.png": "826faefecf74ce25492011301789b2fafcb14ef2beb94c2a46b1729fa9586ff6",
+    "arena-materials-completed.png": "2e760e40d7de42f99ff300a6df9fa26085f6ae4546c52cedb0d9394baa5dd4f0",
+    "arena-materials-in-progress.png": "38497488d3a9b2562fd6e4acc468c2d3233c2228be899ada288a3836aca8e33e",
+    "command.json": "c8aa88ef3b1185722021032592fdf9605f936181723c235e7e80c1414186855a",
+    "gpu.jsonl": "ea8ebe2ed8af8bd316c579cad30e89708753e15fc44ca55acbfbe8c92a16ab2d",
+    "qualification-runtime.json": "cf0634555bda559bd4161d34b9d43d820b69c215423c26d1e277a90649e83ace",
+    "run.log": "c3be3bd47de990c0082ad6a108fd5fea1d12c24a3195111b1233c26eabe2247d",
+    "shader-compilation-arena.json": "8929a1b4eebe5947c142ac6e22b99230e935c3166e959695016565fc803d3aa4"
+  }
+}

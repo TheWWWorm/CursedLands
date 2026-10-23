@@ -1,0 +1,92 @@
+{
+  "exit_code": -15,
+  "pid": 435592,
+  "wall_seconds": 13.686480105001465,
+  "stopped": "runtime error",
+  "errors": [
+    "FAIL every material completion follows a real SubViewport draw beneath the cover"
+  ],
+  "allowed_diagnostics": [
+    "ERROR: An error occurred while trying to get the screen refresh rate."
+  ],
+  "gpu_uuids_observed": [
+    "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": true,
+    "live_members_after_cleanup": []
+  },
+  "suite": "shader_arena",
+  "checks": null,
+  "fixture_failures": null,
+  "validation_errors": [
+    "Cannot read shader-compilation-arena.json: [Errno 2] No such file or directory: '/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/final-vulkan-01/shader_arena/shader-compilation-arena.json'",
+    "Fixture did not report positive checks and an empty failures list"
+  ],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "display": "X11",
+    "driver": "vulkan",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/final-vulkan-01/fixtures/shader_compilation_arena.gd",
+    "fsr": {
+      "api": false,
+      "engine": false,
+      "fg3": false,
+      "fg4": false,
+      "sr3": false,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 435592,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": true,
+      "expected_separate": true,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 2,
+      "render_id": 5,
+      "requested": "project"
+    },
+    "require_sdk": false,
+    "user_data": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/final-vulkan-01-profile/shader_arena/data/godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "shader-compilation-arena.json",
+  "passed": false,
+  "artifacts": {
+    "arena-before-first-draw.png": "826faefecf74ce25492011301789b2fafcb14ef2beb94c2a46b1729fa9586ff6",
+    "arena-materials-completed.png": "2e760e40d7de42f99ff300a6df9fa26085f6ae4546c52cedb0d9394baa5dd4f0",
+    "arena-materials-in-progress.png": "f9330d9472c01f00a12120740ad30121d6eedd27d04953ffe24429d5fdb819a0",
+    "command.json": "ac492a510d4e7f59561f42275b8c4282b492e055f2c09f0b86e3da40a2d373be",
+    "gpu.jsonl": "27e77cb63608f81ae1116e1065ebd90b246e32d2b5622c9533611fe01b11a3b7",
+    "qualification-runtime.json": "2fd17d4c0dd5208acd0ee9a69c7f07703a9f68d820ceae468111dd5b10df7e92",
+    "run.log": "c200ef82a9a695914703f538162c98d29edbfcdb71fa3afab028af5d26584e60"
+  }
+}

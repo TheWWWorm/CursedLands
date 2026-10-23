@@ -1,0 +1,85 @@
+{
+  "exit_code": 0,
+  "pid": 416041,
+  "wall_seconds": 8.690433464998932,
+  "stopped": "",
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: An error occurred while trying to get the screen refresh rate."
+  ],
+  "gpu_uuids_observed": [
+    "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0.10784695199981797,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": false,
+    "live_members_after_cleanup": []
+  },
+  "suite": "topology",
+  "checks": 82,
+  "fixture_failures": [],
+  "validation_errors": [],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "display": "X11",
+    "driver": "vulkan",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/final-vulkan-01/fixtures/path_trace_topology.gd",
+    "fsr": {
+      "api": false,
+      "engine": false,
+      "fg3": false,
+      "fg4": false,
+      "sr3": false,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 416041,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": true,
+      "expected_separate": true,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 2,
+      "render_id": 5,
+      "requested": "project"
+    },
+    "require_sdk": false,
+    "user_data": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/final-vulkan-01-profile/topology/data/godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "path-topology-results.json",
+  "passed": true,
+  "artifacts": {
+    "command.json": "46eacbb045702486b5082d1c8e220f3e355998cc19afedacf26d854c4d15c19e",
+    "gpu.jsonl": "f34c7dc17ced799fc7fcb33e056ae91f59e72caea50937f38f27fe9bb67f8f0d",
+    "path-topology-results.json": "c95d6a9caf00bc76500b6987f2a76f7fbc2722e90729074773f4448bc9ac7256",
+    "qualification-runtime.json": "b47e58baae471ad35f75c52454e93f5383e328f0a6ed06e3f9ca8fa6e93eba87",
+    "run.log": "a5ec42655b835985e4683bd3136879806d00dc2d044c2c44188f96e18e9a5d02"
+  }
+}
