@@ -51,6 +51,6 @@ func contact_geometry() -> void:
 	var empty: Array[Dictionary]=[]
 	var empty_contact: Array=contact.build(field,empty,Vector2i.ZERO)
 	check(empty_contact.is_empty(),"empty chunks allocate no contact mesh")
-	var reference:=weakref(field)
+	var reference: WeakRef = weakref(field)
 	field=null
 	check(reference.get_ref()==null,"contact generation releases its immutable map snapshot")

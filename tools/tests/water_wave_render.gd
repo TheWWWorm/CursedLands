@@ -94,7 +94,7 @@ func render_case() -> void:
 	check(t._water_mat.get_shader_parameter("rain_cover")==t._rain_cover,"new shader receives late rain-cover publication")
 	# Test the existing pause/travel/movie scheduling contract with a live field.
 	await scheduling(owner,world,camera)
-	var weak := weakref(owner._field)
+	var weak: WeakRef = weakref(owner._field)
 	GameData.options["gfx_water_waves"]=0; t.apply_gfx(); owner.refresh(); owner.set_process(false); t._water_mat.set_shader_parameter("waves",0.0)
 	check(owner._field==null and weak.get_ref()==null and t._water_mat.get_shader_parameter("water_wave_field")==null,"disable releases numerical and GPU histories")
 	var off := await snap(view,"wave-disabled")

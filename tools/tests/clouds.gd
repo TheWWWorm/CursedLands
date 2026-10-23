@@ -6,6 +6,8 @@ const SUN := Vector3(0.5,0.8660254,0.0)
 class QuietGame extends Game:
 	func _ready() -> void: set_process(false)
 	func _process(_dt: float) -> void: pass
+	# No HUD in this fixture; window input must not reach the game.
+	func _unhandled_input(_e: InputEvent) -> void: pass
 
 
 func analytical() -> void:
@@ -97,7 +99,7 @@ func lifecycle() -> void:
 	get_tree().paused=false; await frames(8)
 	check(t._clouds.frame.phases!=held.phases,"unpause resumes the existing cloud phase")
 	Engine.time_scale=0; t.set_process(false)
-	var weak := weakref(t._clouds)
+	var weak: WeakRef = weakref(t._clouds)
 	GameData.options["gfx_clouds"]=0; Gfx.apply_surface_options(); t.apply_gfx()
 	check(t._clouds==null and weak.get_ref()==null and Gfx._cloud_owner==0,"option disable releases local phase history and clears global ownership")
 	GameData.options["gfx_clouds"]=1; t._update_cloud_parameters()

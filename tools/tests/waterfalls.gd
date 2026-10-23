@@ -124,7 +124,7 @@ func maps() -> void:
 				check(helper.field.falls==field.falls,"restored mean levels restore classification "+map)
 			else:
 				check(helper.get_child_count()==0 and helper._shell==null and helper._spray==null,"no matched drops means no render resources "+map)
-			var weak := weakref(helper.field)
+			var weak: WeakRef = weakref(helper.field)
 			GameData.options.gfx_waterfalls=0; terrain.apply_gfx()
 			check(terrain._waterfalls==null and weak.get_ref()==null,"option disable releases visual field "+map)
 			GameData.options.gfx_water=0; GameData.options.gfx_waterfalls=1; terrain.apply_gfx()

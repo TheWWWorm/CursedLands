@@ -107,7 +107,7 @@ func scene(site: Dictionary) -> void:
 	await compare(view,terrain,site.map+"-oblique")
 	var pixels := terrain._transitions.tiles.get_image().get_data()
 	for mode in [1,0,2]:
-		var old := weakref(terrain._pair_land_mat) if terrain._pair_land_mat else null
+		var old: WeakRef = weakref(terrain._pair_land_mat) if terrain._pair_land_mat else null
 		GameData.options.gfx_terrain = mode; apply(terrain)
 		await frames()
 		if mode != 2:
@@ -134,7 +134,7 @@ func scene(site: Dictionary) -> void:
 		GameData.options.gfx_soft_ground = 0; apply(terrain)
 		check(terrain.details.soft_ground == null, "live disable releases deformation")
 		await compare(view,terrain,site.map+"-tracks-disabled")
-	var retained := weakref(terrain._pair_land_mat) if terrain._pair_land_mat else null
+	var retained: WeakRef = weakref(terrain._pair_land_mat) if terrain._pair_land_mat else null
 	view.free(); await frames()
 	check(retained == null or retained.get_ref() == null, "map unload releases shared specialized material")
 

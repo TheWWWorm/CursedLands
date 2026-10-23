@@ -155,7 +155,7 @@ func real_maps() -> void:
 				requested[0]=0.7; flow.refresh(requested,true)
 				check(flow._task>=0,"teardown fixture owns a running worker")
 			t.set_water_offset(0,0.1) # retirement while a deferred refresh is queued
-		var weak := weakref(flow); flow=null
+		var weak: WeakRef = weakref(flow); flow=null
 		GameData.options["gfx_water_current"]=0; t.apply_gfx()
 		check(weak.get_ref()==null and t._current==null,"disable releases field snapshot "+zone)
 		check(t._water_mat.get_shader_parameter("water_current")==null,"disable releases GPU texture "+zone)

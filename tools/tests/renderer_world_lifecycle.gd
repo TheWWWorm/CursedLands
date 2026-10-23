@@ -65,7 +65,8 @@ func configure_view() -> void:
 
 
 func owners_tick() -> void:
-	ambient._process(0.055); mist._process(0.055); lens._process(0.055)
+	ambient._process(0.055); mist._process(0.055)
+	if lens: lens._process(0.055)
 
 
 func advance(count: int) -> void:
@@ -79,14 +80,14 @@ func snapshot() -> Dictionary:
 	for row: Dictionary in ambient.residents.values(): poses.append(row.node.transform)
 	for row: Dictionary in ambient.flock: poses.append(row.node.transform)
 	return {"ambient":ambient.clock,"poses":poses,"mist":mist.clock,"drift":mist.drift,
-		"weights":mist.weights,"clouds":Gfx._cloud_frame.duplicate(true),"focus":lens._focus}
+		"weights":mist.weights,"clouds":Gfx._cloud_frame.duplicate(true),"focus":lens._focus if lens else null}
 
 
 func installed(label: String) -> void:
 	var g := host.game; var w := host.world; var t := w.terrain
 	check(g.world==w and w.get_parent()==g and w.map.get_parent()==w and t.get_parent()==w.map,
 		label+": actual Game/World/Map/Terrain ownership")
-	check(ambient.game==g and mist.game==g and lens.rig==g.rig,
+	check(ambient.game==g and mist.game==g and (lens==null or lens.rig==g.rig),
 		label+": naturally installed local effect owners share the Game")
 	check(ambient.world==w and ambient.field.terrain==t and ambient.root.get_parent()==t,
 		label+": ambient resources belong to current terrain")
@@ -101,8 +102,9 @@ func installed(label: String) -> void:
 				label+": actual active world has ready volume textures and cloud state")
 		else:
 			check(Gfx._cloud_volume_noise==null,label+": unsupported volume falls back without allocating volume resources")
-	check(g.rig.camera.attributes==lens._attributes and lens._attributes!=null,
-		label+": current camera owns the optional low-angle lens")
+	if lens:
+		check(g.rig.camera.attributes==lens._attributes and lens._attributes!=null,
+			label+": current camera owns the optional low-angle lens")
 	check(not ambient.flock.is_empty() or not ambient.residents.is_empty(),label+": original ambient models are present")
 	check(ambient.particles!=null and ambient.particles.multimesh.visible_instance_count>0,
 		label+": regional particles contain authored habitat instances")
@@ -114,7 +116,7 @@ func installed(label: String) -> void:
 	rows.append({"case":label,"world":w.get_instance_id(),"terrain":t.get_instance_id(),
 		"point":str(point),"water_height":water_height,"ambient_models":ambient.residents.size()+ambient.flock.size(),
 		"particles":ambient.particles.multimesh.visible_instance_count,"mist_volumes":shown,
-		"mist_cell_size":Sources.CELL,"cloud_owner":Gfx._cloud_owner,"focus":lens._focus})
+		"mist_cell_size":Sources.CELL,"cloud_owner":Gfx._cloud_owner,"focus":lens._focus if lens else null})
 
 
 func clocks_and_gates() -> void:
@@ -150,8 +152,9 @@ func clocks_and_gates() -> void:
 	owners_tick()
 	check(host.game.rig.camera.attributes==null,"movie gate releases the camera lens")
 	host._movie_ev={}; owners_tick()
-	check(host.game.rig.camera.attributes==lens._attributes and lens._attributes!=null,
-		"camera lens returns after movie gate")
+	if lens:
+		check(host.game.rig.camera.attributes==lens._attributes and lens._attributes!=null,
+			"camera lens returns after movie gate")
 
 
 func difference(a: Image,b: Image) -> Dictionary:
@@ -184,7 +187,7 @@ func rendered_composition() -> void:
 	var floor_changes := maxi(32,int(held.channels_over_2)*2)
 	var cloud_frame := Gfx._cloud_frame.duplicate(true)
 	var comparisons := {}
-	for effect: String in ["ambient","mist","clouds","lens"]:
+	for effect: String in ["ambient","mist","clouds"] + (["lens"] if lens else []):
 		match effect:
 			"ambient": ambient.root.hide()
 			"mist": mist.root.hide()
@@ -220,7 +223,8 @@ func options_release() -> void:
 	for key: String in EFFECTS: GameData.options[key]=1
 	GameData.options.gfx_clouds=cloud_quality
 	GameData.options_changed.emit()
-	ambient.set_process(false); mist.set_process(false); lens.set_process(false)
+	ambient.set_process(false); mist.set_process(false)
+	if lens: lens.set_process(false)
 	advance(220)
 	installed("re-enabled")
 
@@ -264,8 +268,10 @@ func _ready() -> void:
 	host.state.day=1; host.state.world_time=7.0; host.set_physics_process(false)
 	await host.enter_zone(ZONE,1,false)
 	configure_view()
-	check(ambient!=null and mist!=null and lens!=null,"actual Game installs all requested supported owners")
-	if ambient==null or mist==null or lens==null:
+	# The lens needs an engine with the far depth-of-field reference.
+	var lens_ok := lens!=null or not CameraDepthOfField.supported()
+	check(ambient!=null and mist!=null and lens_ok,"actual Game installs all requested supported owners")
+	if ambient==null or mist==null or not lens_ok:
 		await finish(); return
 	advance(220); installed("initial")
 	await clocks_and_gates()

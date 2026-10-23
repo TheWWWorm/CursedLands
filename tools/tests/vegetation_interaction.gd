@@ -241,7 +241,7 @@ func fixture() -> void:
 	GameData.options["gfx_wind"] = 0; details.apply_options()
 	# Flooding invalidates geometry and all pressure history before rebuilding.
 	details.water_changed(); check(field._cells.is_empty() and details._chunks.is_empty(),"water change discards pressure and resident grass")
-	var ref := weakref(field); field = null
+	var ref: WeakRef = weakref(field); field = null
 	GameData.options["gfx_vegetation_interaction"] = 0; details.apply_options(); build(details,p)
 	check(ref.get_ref() == null and details.interaction == null,"disable releases the pressure field")
 	u.position = focus; u.stance = GameUnit.STANCE_NONE; u.model.player.play("ei/cidle01",0.0); u.model.player.seek(0.3,true)
@@ -249,7 +249,7 @@ func fixture() -> void:
 		var delta := difference(off,await snap(view,"restored")); rows.append({"case":"restored","difference":delta})
 		check(delta.changed_pixels == 0,"off-on-off restores authored grass")
 	GameData.options["gfx_vegetation_interaction"] = 1; details.apply_options(); build(details,p)
-	var owner_ref := weakref(details.interaction); var texture_ref := weakref(details.interaction.texture)
+	var owner_ref: WeakRef = weakref(details.interaction); var texture_ref: WeakRef = weakref(details.interaction.texture)
 	GameData.options["gfx_grass"] = 0; details.apply_options()
 	check(owner_ref.get_ref() == null and texture_ref.get_ref() == null and details._chunks.is_empty(),"disabling grass releases interaction texture and geometry")
 	GameData.options["gfx_grass"] = 1; GameData.options["gfx_vegetation_interaction"] = 0; details.apply_options(); build(details,p)

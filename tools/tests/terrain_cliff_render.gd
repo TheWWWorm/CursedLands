@@ -132,7 +132,7 @@ func case(map: String, positive := true) -> void:
 		for entry: Dictionary in terrain.color_cache._resident.values():
 			check(entry.material.shader.code.contains("#define EI_TERRAIN_CLIFFS")==positive,"cached terrain uses matching optional source "+map)
 			if positive: check(entry.material.get_shader_parameter("cliff_tiles")==terrain._cliffs.tiles,"cached land shares live projection fields "+map)
-	var retired := weakref(terrain._cliffs)
+	var retired: WeakRef = weakref(terrain._cliffs)
 	GameData.options.gfx_terrain_cliffs=0; terrain.apply_gfx(); await frames()
 	check(terrain._cliffs==null and retired.get_ref()==null,"disable releases world projection helper "+map)
 	check(not figure.material_override.shader.code.contains("#define EI_TERRAIN_CLIFFS"),"disable retires contact shader variants "+map)
@@ -146,7 +146,7 @@ func case(map: String, positive := true) -> void:
 	check(terrain._cliffs==null,"terrain details dependency suppresses owner "+map)
 	check(difference(original,await snap(view,map+"-dependency")).changed_pixels==0,"disabled terrain dependency is pixel exact "+map)
 	GameData.options.gfx_terrain=1; terrain.apply_gfx(); await frames()
-	var weak := weakref(terrain._cliffs)
+	var weak: WeakRef = weakref(terrain._cliffs)
 	records.append({"map":map,"positive":positive,"site":selected,"difference":diff,"cached_sectors":cache_count,"renderer":RenderingServer.get_current_rendering_method()})
 	view.free(); await frames()
 	check(weak.get_ref()==null,"world retirement releases projection field "+map)

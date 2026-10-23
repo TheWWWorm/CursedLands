@@ -101,7 +101,7 @@ func test_requests() -> void:
 	models[2].remove_meta("wound_key")
 	var newer := PackedByteArray([1,0,0,0,0,0])
 	UnitWounds.apply(models[2],newer,true)
-	var ref := weakref(mats[3])
+	var ref: WeakRef = weakref(mats[3])
 	models[3].free()
 	mats[3] = null
 	check(ref.get_ref() == null,"pending request does not retain a discarded preview material")

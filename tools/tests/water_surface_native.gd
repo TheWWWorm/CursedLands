@@ -90,7 +90,7 @@ func native_contracts() -> void:
 	check(not reference._sample_mean(record,Transform3D.IDENTITY,probe,Vector2i.ZERO,{}).is_empty(),"preserved snapshot probe has water")
 	check(var_to_bytes(kernel.sample_mean(probe,Transform3D.IDENTITY,bucket,terrain.water_offsets,terrain._lava,reference._frame,{})) ==
 		var_to_bytes(reference._sample_mean(record,Transform3D.IDENTITY,probe,Vector2i.ZERO,{})),"rejected initialization preserves previous snapshot")
-	var weak := weakref(kernel); kernel = null
+	var weak: WeakRef = weakref(kernel); kernel = null
 	check(weak.get_ref()==null,"native owner releases independently")
 	rows.append({"case":"native-contracts","queries":total_queries,"hits":total_hits})
 	terrain.free()
@@ -118,7 +118,7 @@ func native_lifetime() -> void:
 	surface.clear()
 	for owner: WeakRef in owners: check(owner.get_ref()==null,"clear releases remaining native sectors")
 	surface.sample(Vector2(1.5,-1.5))
-	var previous := weakref(surface._sectors[Vector2i.ZERO].mean_kernel)
+	var previous: WeakRef = weakref(surface._sectors[Vector2i.ZERO].mean_kernel)
 	var node := terrain.get_node("Water_0_0") as MeshInstance3D
 	node.mesh = mesh_fixture(); surface.sample(Vector2(1.5,-1.5))
 	check(previous.get_ref()==null,"mesh replacement releases native snapshot")

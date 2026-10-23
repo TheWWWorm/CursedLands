@@ -132,7 +132,7 @@ func _ready() -> void:
 	verify(soft, palette, "dispatched contact retains accepted bytes")
 	drain(soft)
 	verify(soft, palette, "later snapshot installed")
-	var retained := weakref(palette)
+	var retained: WeakRef = weakref(palette)
 	palette = null
 	check(retained.get_ref() == null, "last consumer release drops the contact palette")
 	palette = soft.field.contact_colors()

@@ -172,7 +172,7 @@ func fixture() -> void:
 		draws = view.get_render_info(Viewport.RENDER_INFO_TYPE_VISIBLE,Viewport.RENDER_INFO_DRAW_CALLS_IN_FRAME)
 	var started := Time.get_ticks_usec(); enable(t,true); var build_us := Time.get_ticks_usec()-started
 	check(t._caustics != null and t._caustics.admitted > 0 and t._land_mat.shader != EITerrain._land_shader,"enabled terrain uses an admitted bed field and a dedicated program")
-	var field_ref := weakref(t._caustics); var texture_ref := weakref(t._caustics.texture)
+	var field_ref: WeakRef = weakref(t._caustics); var texture_ref: WeakRef = weakref(t._caustics.texture)
 	rows.append({"case":"field","bytes":t._caustics.bytes,"tiles":t._caustics.tiles,"admitted":t._caustics.admitted,"enable_us":build_us})
 	enable(t,true); check(field_ref.get_ref() == t._caustics,"option refresh reuses immutable map metadata")
 	cache_bindings(t)

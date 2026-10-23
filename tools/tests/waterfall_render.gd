@@ -90,9 +90,9 @@ func case(map: String, positive: bool) -> void:
 	# Compare the disabled option at the same current wave clock.
 	helper.hide()
 	var hidden := await snap(view,map+"-hidden-control")
-	var weak := weakref(helper.field)
+	var weak: WeakRef = weakref(helper.field)
 	var query: Variant=helper.get("_surface")
-	var weak_query := weakref(query) if query!=null else null
+	var weak_query: WeakRef = weakref(query) if query!=null else null
 	query=null
 	GameData.options.gfx_waterfalls=0; terrain.apply_gfx()
 	check(terrain._waterfalls==null and weak.get_ref()==null,"disable releases snapshot and renderer "+map)
@@ -104,7 +104,7 @@ func case(map: String, positive: bool) -> void:
 	check(terrain._waterfalls==null,"water dependency suppresses owner "+map)
 	check(difference(original,await snap(view,map+"-dependency")).changed_pixels==0,"disabled water dependency is pixel exact "+map)
 	GameData.options.gfx_water=1; terrain.apply_gfx()
-	var retirement := weakref(terrain._waterfalls)
+	var retirement: WeakRef = weakref(terrain._waterfalls)
 	rows.append({"map":map,"positive":positive,"focus":str(focus),"difference":changed,"added_draws":added_draws,"renderer":RenderingServer.get_current_rendering_method()})
 	view.free(); await frames()
 	check(retirement.get_ref()==null,"terrain retirement releases waterfall nodes "+map)

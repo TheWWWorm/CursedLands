@@ -106,7 +106,7 @@ func rendered_composition() -> void:
 	for part: UnitBodyPart in actor.parts: part.cur=part.max
 	UnitWounds.update(actor)
 	var camera := host.game.rig.camera
-	lens.clear()
+	if lens: lens.clear()
 	camera.global_position=actor.global_position+Vector3(2.8,2.4,4.5)
 	camera.look_at(actor.global_position+Vector3(0,0.9,0))
 	var doll := Paperdoll.new()
@@ -165,8 +165,8 @@ func rendered_composition() -> void:
 	# Exercise the actual equipment replacement, not an in-place test texture.
 	for part: UnitBodyPart in actor.parts: part.cur=part.max*0.5
 	UnitWounds.update(actor)
-	var old_model := weakref(actor.model)
-	var old_preview := weakref(doll._model)
+	var old_model: WeakRef = weakref(actor.model)
+	var old_preview: WeakRef = weakref(doll._model)
 	var preview_view := doll._vp
 	var weapon := authored_weapon()
 	check(not weapon.is_empty(),"original database supplies a valid dagger/material pair")

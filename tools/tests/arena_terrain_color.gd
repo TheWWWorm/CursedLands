@@ -51,7 +51,7 @@ func run() -> void:
 	authority.free()
 	var forward := RenderingServer.get_current_rendering_method() == "forward_plus"
 	check((terrain._color != null) == forward, "cache uses only the tested Forward+ renderer")
-	var shared := weakref(terrain._color) if terrain._color else null
+	var shared: WeakRef = weakref(terrain._color) if terrain._color else null
 	if forward:
 		check(other._color == terrain._color, "two rendered boards share the same array")
 		check(terrain._color.get_layers() == 4, "all four sectors are resident")

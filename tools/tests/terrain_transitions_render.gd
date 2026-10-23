@@ -166,7 +166,7 @@ func case(name: String,path_control := false) -> void:
 		cached=terrain.color_cache._resident.size();check(cached>0,"native immutable base cache is active "+name)
 		for entry: Dictionary in terrain.color_cache._resident.values():
 			check(entry.material.shader.code.contains("#define EI_TERRAIN_TRANSITIONS") and entry.material.get_shader_parameter("transition_tiles")==field.tiles,"cached land applies the same live transition field "+name)
-	var weak:=weakref(field);field=null
+	var weak: WeakRef = weakref(field);field=null
 	GameData.options.gfx_terrain=1;Gfx.apply_surface_options();terrain.apply_gfx();await frames(30)
 	check(terrain._transitions==null and weak.get_ref()==null,"1 mode releases transition owner and shaders "+name)
 	check(difference(before,await capture(view,label+"-disabled")).changed_pixels==0,"2 to 1 restores exact original image "+name)

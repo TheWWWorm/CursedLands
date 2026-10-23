@@ -71,7 +71,7 @@ func cache_lifecycle(t: EITerrain, camera: Camera3D, game: Game) -> void:
 	until=Time.get_ticks_msec()+200
 	while Time.get_ticks_msec()<until:await frames(1)
 	check(bool(t._water_mat.get_shader_parameter("cloud_reflection_ready")),"return to water resumes sky view")
-	var gone:=weakref(cache.viewport)
+	var gone: WeakRef = weakref(cache.viewport)
 	GameData.options.gfx_cloud_reflections=0;game._apply_options();t.apply_gfx();await frames(4)
 	check(t.get("_cloud_reflection")==null and gone.get_ref()==null,"option disable releases the reflection viewport")
 

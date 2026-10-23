@@ -36,7 +36,7 @@ func run()->void:
 	s.submit({'t':'cast','unit':u.uid,'spell':'litnwall{}','x':at.x,'y':at.y})
 	check(await until(func():return is_instance_valid(s.world) and ParticleFx.of(s.world).bolts.size()>0,12),'authority cast reaches frontend lightning geometry')
 	if failures:await finish();return
-	var old_world:=weakref(s.world);var old_bolt:=weakref(ParticleFx.of(s.world).bolts[0].node)
+	var old_world: WeakRef = weakref(s.world);var old_bolt: WeakRef = weakref(ParticleFx.of(s.world).bolts[0].node)
 	var serial:=s._load_serial
 	# The field F9 action delegates to this same load_game_shown quick slot.
 	g._key_action('quickload')

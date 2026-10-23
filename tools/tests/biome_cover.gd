@@ -325,7 +325,7 @@ func render_fixture() -> void:
 	check(delta(on,await snap(view,"rebuilt")).changed==0,"clear/reload restores the cover image")
 	d._stream(Vector2i((p/8).floor()))
 	check(d._wanted_chunks.size()<=TerrainDetails.MAX_CHUNKS,"cover shares the existing bounded stream")
-	var field_ref := weakref(d._cover_field)
+	var field_ref: WeakRef = weakref(d._cover_field)
 	GameData.options["gfx_biome_cover"] = 0; d.apply_options()
 	if d._grass: build(d,p)
 	await frames(40)

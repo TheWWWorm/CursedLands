@@ -69,7 +69,8 @@ func scene() -> void:
 			check(Gfx._cloud_frame==field.frame,"consumer toggle keeps phases and weather")
 			var land:=terrain._land_mat.shader.code;var water:=terrain._water_mat.shader.code
 			check(land.contains("ei_cloud_sun")==bool(flags&1),"land only samples enabled cloud shadows")
-			check(water.contains("ei_cloud_sky(ei_sky,wpos,")==bool(flags&2),"water only marches enabled cloud reflections")
+			# Cached reflections march through ei_water_cloud when the cache misses.
+			check((water.contains("ei_cloud_sky(ei_sky,wpos,") or water.contains("ei_water_cloud("))==bool(flags&2),"water only marches enabled cloud reflections")
 			check(water.contains("ei_cloud_sun(wpos)")==bool(flags&1),"water sunlight follows shadow setting")
 			if flags==0:check(land==native_land and water==native_water,"sky-only uses exact cloud-free surface programs")
 			if Clouds.mode()>1:
@@ -100,7 +101,7 @@ func scene() -> void:
 					var delta:=difference(ref_img,img);rows.append({"case":"pre-split-parity","path":path,"quality":quality,"delta":delta})
 					check(delta.changed_pixels==0,"all consumers retain pre-split pixels "+path)
 			if flags==3 and Gfx._cloud_shadow_field:
-				var old_view:=weakref(Gfx._cloud_shadow_field.view)
+				var old_view: WeakRef = weakref(Gfx._cloud_shadow_field.view)
 				var rid:=RenderingServer.texture_get_rd_texture(Gfx._cloud_shadow_field.view.get_texture().get_rid())
 				GameData.options.gfx_cloud_shadows=0;Gfx.apply_surface_options();await frames(5)
 				check(Gfx._cloud_shadow_field==null and old_view.get_ref()==null and not texture_live(rid),"shadow disable releases producer and its GPU texture")

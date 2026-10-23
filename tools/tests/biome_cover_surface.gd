@@ -367,7 +367,7 @@ func run() -> void:
 		t.set_water_offset(water_material,0); build(d,p)
 		check(difference(base,await snap(view,"water-restored")).changed==0,"water round trip restores cover and original geometry")
 	rows.append({"case":"water-level","material":water_material,"applicable":water_material>=0})
-	var surface_ref := weakref(d._cover_surface)
+	var surface_ref: WeakRef = weakref(d._cover_surface)
 	GameData.options["gfx_soft_ground"]=0; t.apply_gfx(); await frames()
 	check(d._cover_surface==null and surface_ref.get_ref()==null,"soft-ground off releases cover's geometry snapshot")
 	check(d._cover_material.get_shader_parameter("query_vertices")==null and d._cover_material.get_shader_parameter("query_tracks")==null,"unused material drops field textures")

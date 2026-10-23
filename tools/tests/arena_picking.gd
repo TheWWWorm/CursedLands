@@ -63,7 +63,9 @@ func _ready() -> void:
 	field.zoom=17;field._update_camera()
 	var units: Array[GameUnit]=[]
 	for side in 2:
-		for family in [0,11,24,26,32,35,36,38,39]:
+		# Fixture families by their earlier numbers (ArenaRules.LEGACY_FAMILIES).
+		for legacy in [0,11,24,26,32,35,36,38,39]:
+			var family:int=ArenaRules.LEGACY_FAMILIES[legacy]
 			var index:=units.size()
 			var unit:=battle._spawn({"id":ArenaRules.FAMILIES[family].forms[2],"team":side,"rank":2,"point":Vector2(14.5+(index%6)*0.6,15.0+int(index/6)*0.7)})
 			check(unit!=null and unit.model!=null,"native crowded fixture loads "+str(family))

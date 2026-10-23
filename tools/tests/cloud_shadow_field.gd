@@ -66,14 +66,14 @@ func _ready() -> void:
 		check(active.view==current_view and active.view.render_target_update_mode==SubViewport.UPDATE_DISABLED,"night suspends field work without reallocating")
 		Gfx.set_cloud_frame(owners[0].get_instance_id(),frame);await frames(3)
 		check(active.view==current_view and active.view.render_target_update_mode==SubViewport.UPDATE_ONCE,"daylight renders once and reuses the same field")
-		var old:=weakref(current_view);current_view=null
+		var old: WeakRef = weakref(current_view);current_view=null
 		Gfx.set_cloud_frame(owners[1].get_instance_id(),frame);await frames(4)
 		Gfx.set_cloud_frame(owners[1].get_instance_id(),frame);await frames(4)
 		check(old.get_ref()==null,"viewport switch destroys the previous producer")
 		check(not texture_live(old_rid),"viewport switch releases the old GPU texture")
 		check(active.view.get_parent()==views[1],"new receiver renders after its own producer")
 		check(views[0].get_child_count()==1 and views[1].get_child_count()==2,"one bounded producer survives ownership transfer")
-		var gone:=weakref(active.view)
+		var gone: WeakRef = weakref(active.view)
 		var final_rid:=RenderingServer.texture_get_rd_texture(active.view.get_texture().get_rid())
 		GameData.options.gfx_clouds=0;Gfx.apply_surface_options();await frames(4)
 		check(Gfx._cloud_shadow_field==null and gone.get_ref()==null,"disabling clouds releases the field")
@@ -83,7 +83,7 @@ func _ready() -> void:
 	# Exercise attach followed immediately by release, before deferred parenting.
 	if supported:
 		GameData.options.gfx_clouds=3;Gfx.apply_surface_options();Gfx.set_cloud_frame(owners[0].get_instance_id(),frame)
-		var pending:=weakref(Gfx._cloud_shadow_field.view)
+		var pending: WeakRef = weakref(Gfx._cloud_shadow_field.view)
 		Gfx.clear_clouds();await frames(4)
 		check(pending.get_ref()==null and views[0].get_child_count()==1,"pending attachment is also released on a rapid toggle")
 	Gfx.clear_clouds()

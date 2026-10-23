@@ -23,7 +23,7 @@ func land_materials(terrain: EITerrain) -> Array[ShaderMaterial]:
 	if terrain._pair_land_mat: result.append(terrain._pair_land_mat)
 	if is_instance_valid(terrain.color_cache):
 		for entry: Dictionary in terrain.color_cache._resident.values():result.append(entry.material)
-	if is_instance_valid(terrain.details.soft_ground):
+	if terrain.details and is_instance_valid(terrain.details.soft_ground):
 		for entry: Dictionary in terrain.details.soft_ground.sectors.values():result.append(entry.material)
 	return result
 
@@ -120,7 +120,7 @@ func junction(site: Dictionary) -> void:
 	if args.has("--ei-baked-terrain"):check(cached>0,"real cached land installed "+label)
 	if args.has("--junction-composed"):
 		check(terrain._land_mat.shader.code.contains("ei_cloud_sun") and terrain._land_mat.shader.code.contains("caustic_bed") and terrain._land_mat.shader.code.contains("#define EI_TERRAIN_CLIFFS"),"cloud/caustic/cliff composition "+label)
-	var weak:=weakref(field);var texture_bytes:=saved_pixels.get_data().size();field=null
+	var weak: WeakRef = weakref(field);var texture_bytes:=saved_pixels.get_data().size();field=null
 	GameData.options.gfx_terrain=1;Gfx.apply_surface_options();terrain.apply_gfx();await frames(30)
 	check(terrain._transitions==null and weak.get_ref()==null,"disable releases current transition owner "+label)
 	check(difference(before,await capture(view,label+"-disabled")).changed_pixels==0,"disable restores exact Detailed output "+label)
