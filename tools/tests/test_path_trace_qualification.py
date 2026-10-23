@@ -69,6 +69,13 @@ class QualificationTests(unittest.TestCase):
         errors, allowed = q.classify_errors(q.REFRESH_DIAGNOSTIC + " unexpected suffix", True)
         self.assertEqual(len(errors), 1)
         self.assertEqual(allowed, [])
+        null_monitor = q.MONITOR_REFRESH_DIAGNOSTIC + "\n   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+        self.assertEqual(q.classify_errors(null_monitor, True), ([], [null_monitor]))
+        self.assertEqual(q.classify_errors(null_monitor, False)[0], [q.MONITOR_REFRESH_DIAGNOSTIC])
+        for log in (q.MONITOR_REFRESH_DIAGNOSTIC, null_monitor.replace("screen_get_refresh_rate", "screen_get_size"),
+                    null_monitor.replace("platform/linuxbsd/x11/", "platform/windows/"), null_monitor + " unexpected suffix"):
+            with self.subTest(log=log):
+                self.assertEqual(q.classify_errors(log, True), ([q.MONITOR_REFRESH_DIAGNOSTIC], []))
 
     def test_gpu_xml_uses_graphics_processes_and_uuid_not_names(self):
         xml = """<nvidia_smi_log><gpu><uuid>GPU-A</uuid><product_name>Same GPU</product_name>

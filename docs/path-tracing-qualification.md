@@ -74,8 +74,12 @@ gpu-lab submit --cwd /absolute/repository --timeout 7200 -- \
 Some NVIDIA virtual screens cannot report their refresh rate. Only on those
 screens, add `--allow-virtual-refresh-diagnostic`. This retains the exact
 `ERROR: An error occurred while trying to get the screen refresh rate.` line
-under `allowed_diagnostics`; it does not ignore any other engine error or make
-a failing process pass. Vsync is disabled in the isolated test settings.
+under `allowed_diagnostics`. GPU Lab can instead report `Parameter "monitors"
+is null` because its screen has no active RandR monitor; this is allowed only
+when the immediately following engine call site is `screen_get_refresh_rate`
+in `platform/linuxbsd/x11/display_server_x11.cpp`, which returns the same refresh
+fallback. Missing context or another API remains a failure. Neither allowance
+makes a failing process pass. Vsync is disabled in the isolated test settings.
 
 ## Windows DX12 and the actual FSR SDK
 

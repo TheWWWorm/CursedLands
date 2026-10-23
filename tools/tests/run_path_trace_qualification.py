@@ -59,6 +59,8 @@ GROUPS = {
 }
 ERROR = re.compile(r"SCRIPT ERROR:|^ERROR:|Parse Error|Unhandled exception|^FAIL |device (?:removed|lost)|VK_ERROR_DEVICE_LOST", re.I)
 REFRESH_DIAGNOSTIC = "ERROR: An error occurred while trying to get the screen refresh rate."
+MONITOR_REFRESH_DIAGNOSTIC = 'ERROR: Parameter "monitors" is null.'
+MONITOR_REFRESH_SITE = re.compile(r"\s+at: screen_get_refresh_rate \(platform/linuxbsd/x11/display_server_x11\.cpp:\d+\)")
 PROTECTED_ENV = {"DISPLAY", "XAUTHORITY", "WAYLAND_DISPLAY", "WINEPREFIX", "WINEARCH", "XDG_DATA_HOME", "XDG_CONFIG_HOME", "XDG_CACHE_HOME"}
 GPU_ENV = {"CUDA_VISIBLE_DEVICES", "NVIDIA_VISIBLE_DEVICES", "VK_ICD_FILENAMES", "VK_DRIVER_FILES",
            "MESA_VK_DEVICE_SELECT", "MESA_VK_DEVICE_SELECT_FORCE_DEFAULT_DEVICE",
@@ -205,11 +207,18 @@ def sample_gpu(group: int) -> dict:
 
 def classify_errors(text: str, allow_refresh: bool) -> tuple[list[str], list[str]]:
     errors, diagnostics = [], []
-    for line in text.splitlines():
+    lines = text.splitlines()
+    for index, line in enumerate(lines):
         if not ERROR.search(line):
             continue
         if allow_refresh and line == REFRESH_DIAGNOSTIC:
             diagnostics.append(line)
+        elif allow_refresh and line == MONITOR_REFRESH_DIAGNOSTIC and index + 1 < len(lines) \
+                and MONITOR_REFRESH_SITE.fullmatch(lines[index + 1]):
+            # GPU Lab has an accelerated X screen without an active RandR
+            # monitor. Godot returns SCREEN_REFRESH_RATE_FALLBACK here. The
+            # generic null-parameter text is allowed only at this exact API.
+            diagnostics.append(line + "\n" + lines[index + 1])
         else:
             errors.append(line)
     return errors, diagnostics
