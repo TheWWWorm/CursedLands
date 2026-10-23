@@ -7,7 +7,7 @@ const FIELDS := [Mesh.ARRAY_VERTEX, Mesh.ARRAY_NORMAL, Mesh.ARRAY_TEX_UV, Mesh.A
 
 class Capture extends SoftGroundDeform:
 	var result: Array
-	func _apply_mesh(_rec: Dictionary, arrays: Array, shadow: Array) -> void:
+	func _apply_mesh(_rec: Dictionary, arrays: Array, shadow: Array, _defer_shadow := false) -> void:
 		result = [arrays, shadow]
 
 func check(ok: bool, label: String) -> void:

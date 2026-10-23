@@ -36,6 +36,7 @@ var _walkers := {} # rendered foot identity -> most recent grounded contact
 var _native_mesh := ClassDB.class_exists("SoftGroundMeshJob") and not OS.get_cmdline_user_args().has("--ei-script-soft-ground")
 var _paint_kernel: Object = ClassDB.instantiate("SoftGroundPaintKernel") if ClassDB.class_exists("SoftGroundPaintKernel") and not OS.get_cmdline_user_args().has("--ei-script-soft-ground") else null
 var _mesh_jobs: Array[Dictionary] = []
+var _shadow_queue: Array[Vector2i] = [] # sectors whose shadow surface publishes next frame
 var _generation := 0
 var _material_shader: Shader
 var _material_code := ""
@@ -59,6 +60,7 @@ func clear() -> void:
 	for job: Dictionary in _mesh_jobs:
 		WorkerThreadPool.wait_for_task_completion(job.task)
 	_mesh_jobs.clear()
+	_shadow_queue.clear()
 	_queue.clear()
 	_walkers.clear()
 	for key: Vector2i in sectors.keys():
@@ -406,7 +408,9 @@ func _rebuild(rec: Dictionary) -> void:
 	_apply_mesh(rec, arrays, shadow_arrays)
 
 
-func _apply_mesh(rec: Dictionary, arrays: Array, shadow_arrays: Array) -> void:
+## `defer_shadow`: a busy sector's surfaces cost ~3.5 ms each to publish;
+## the shadow copy follows on the next frame (_finish_mesh_jobs).
+func _apply_mesh(rec: Dictionary, arrays: Array, shadow_arrays: Array, defer_shadow := false) -> void:
 	var mesh := ArrayMesh.new()
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 	mesh.surface_set_material(0, rec.material)
@@ -415,6 +419,23 @@ func _apply_mesh(rec: Dictionary, arrays: Array, shadow_arrays: Array) -> void:
 		node.mesh = mesh
 	field.install(rec.key, rec.tiles)
 	field.flush(_age)
+	if defer_shadow:
+		if not rec.has("shadow_pending"): _shadow_queue.append(rec.key)
+		rec.shadow_pending = shadow_arrays
+		return
+	rec.erase("shadow_pending")
+	_apply_shadow(rec, shadow_arrays)
+
+
+func _publish_shadow(key: Vector2i) -> void:
+	var rec: Dictionary = sectors.get(key, {})
+	if rec.has("shadow_pending"):
+		var arrays: Array = rec.shadow_pending
+		rec.erase("shadow_pending")
+		_apply_shadow(rec, arrays)
+
+
+func _apply_shadow(rec: Dictionary, shadow_arrays: Array) -> void:
 	var shadow := (rec.shadow as WeakRef).get_ref() as MeshInstance3D
 	if shadow:
 		if shadow_arrays[Mesh.ARRAY_INDEX] == null:
@@ -434,7 +455,13 @@ func _finish_mesh_jobs(wait := false) -> void:
 		# Explicit blocking drains (fallback/setup) also release pending
 		# coalesced work, even if no worker happened to be running yet.
 		for rec: Dictionary in sectors.values(): rec.next_build_us = 0
+		for key: Vector2i in _shadow_queue: _publish_shadow(key)
+		_shadow_queue.clear()
 	elif _installed_frame == Engine.get_process_frames(): return
+	elif not _shadow_queue.is_empty():
+		_publish_shadow(_shadow_queue.pop_front())
+		_installed_frame = Engine.get_process_frames()
+		return
 	var i := 0
 	while i < _mesh_jobs.size():
 		var job: Dictionary = _mesh_jobs[i]
@@ -455,7 +482,7 @@ func _finish_mesh_jobs(wait := false) -> void:
 		var result: Array = job.kernel.read_result()
 		for id: int in result[2]:
 			rec.tiles[id] = result[2][id]
-		_apply_mesh(rec, result[0], result[1])
+		_apply_mesh(rec, result[0], result[1], not wait)
 		_installed_frame = Engine.get_process_frames()
 		if not wait: return
 
