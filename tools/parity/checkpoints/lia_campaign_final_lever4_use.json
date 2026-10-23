@@ -1,0 +1,194 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz36j",
+ "fixture": {
+  "active_party": "FinalProof",
+  "money": 0,
+  "parties": {
+   "FinalProof": [
+    {
+     "name": "Hero",
+     "prototype": "Hero3"
+    },
+    {
+     "name": "merc2",
+     "prototype": "merc2"
+    }
+   ]
+  },
+  "setup": [
+   "GodMode(0,1)",
+   "RecalcMercBriefings()"
+  ],
+  "setup_steps": [
+   {
+    "wait": 2
+   },
+   {
+    "script": "SwitchLeverState(GetObject(1022101),1)"
+   },
+   {
+    "wait": 1.2
+   },
+   {
+    "script": "KillUnit(GetObject(1022001))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022002))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022003))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022004))"
+   },
+   {
+    "script": "SwitchLeverState(GetObject(1022102),1)"
+   },
+   {
+    "wait": 1.2
+   },
+   {
+    "script": "KillUnit(GetObject(1022005))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022006))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022007))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022008))"
+   },
+   {
+    "script": "SwitchLeverState(GetObject(1022103),1)"
+   },
+   {
+    "wait": 1.2
+   },
+   {
+    "script": "KillUnit(GetObject(1022009))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022010))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022011))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022012))"
+   },
+   {
+    "script": "SetCPFast(GetUnitOfPlayer(0,0),31.715999999999998,60.03,0)"
+   },
+   {
+    "script": "SetCPFast(GetUnitOfPlayer(0,1),32.716,61.03,0)"
+   }
+  ]
+ },
+ "from_zone": "gz36j",
+ "note": "Actual native left-click control obelisk4; all preceding obelisks used normally in native. Explicit fixture recreates prior physical lever states, removes already spawned combat guards, and places party beside measured object. Quest objective advances only from measured normal use.",
+ "observations_after": {
+  "cp_final4": 1.0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_final4": 0,
+  "money": 0
+ },
+ "probes": {
+  "cp_final4": "GetLeverState(GetObject(1022104))"
+ },
+ "provenance": {
+  "after": {
+   "cz4j.sav": "c48b34923f40a7a959f16ffc44901d65801145f96a262e48b0f4110fac84dd18",
+   "info.sav": "85e287884099fd37765c231d6553bd3b775d3b1782ed24c9543085ab5ef2165d",
+   "mission.sav": "2cc2179b959a2554231443aa1da73a1be9cd8d0fe63955e4fe1469491bd6bbe7",
+   "scenario.sav": "e365cd958a6cd735067deee1a759c38cead0fde86a23695d5d212080f724cb20",
+   "shot.sav": "40e6bb0dba9bae50b860333040ae2ba67738aca61ab125e16219df0362c70023"
+  },
+  "before": {
+   "cz4j.sav": "c48b34923f40a7a959f16ffc44901d65801145f96a262e48b0f4110fac84dd18",
+   "info.sav": "febfaea828637170c67a79f49768812b60fa35c5dab5df0d78c47840629e57fc",
+   "mission.sav": "335a5eaae02918099d67dacfa55d512df0fefbbfe19ad47cdf0fa144373ec61e",
+   "scenario.sav": "3a583426e0c986be97b71a11bdf22ad686c8287d67ec2c327a966ef9066c0004",
+   "shot.sav": "a685cc701a5d8fa31fd4ea7ab4f52762a294affb8bc56d82f452db9bb58fbfc7"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "use": "1022104"
+  },
+  {
+   "wait": "3"
+  }
+ ],
+ "vars_after": {
+  "b.Firez.brief_349": 2.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_final1": 1.0,
+  "cp_final2": 1.0,
+  "cp_final3": 1.0,
+  "cp_mercs": 1.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz36j.q22j": 1.0,
+  "q.gz36j.q22j.1": 2.0,
+  "q.gz36j.q22j.2": 2.0,
+  "q.gz36j.q22j.3": 2.0,
+  "q.gz36j.q22j.4": 2.0,
+  "q.gz36j.q22j.5": 1.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z1d1": 1.0
+ },
+ "vars_before": {
+  "b.Firez.brief_349": 2.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_final1": 1.0,
+  "cp_final2": 1.0,
+  "cp_final3": 1.0,
+  "cp_mercs": 1.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz36j.q22j": 1.0,
+  "q.gz36j.q22j.1": 2.0,
+  "q.gz36j.q22j.2": 2.0,
+  "q.gz36j.q22j.3": 2.0,
+  "q.gz36j.q22j.4": 1.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z1d1": 1.0
+ },
+ "zone": "gz36j"
+}

@@ -1,0 +1,277 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz35j",
+ "fixture": {
+  "active_party": "BattleProof",
+  "money": 0,
+  "parties": {
+   "BattleProof": [
+    {
+     "name": "Hero",
+     "prototype": "Hero3"
+    },
+    {
+     "name": "merc2",
+     "prototype": "merc2"
+    }
+   ]
+  },
+  "setup": [
+   "GodMode(0,1)",
+   "RecalcMercBriefings()"
+  ],
+  "setup_steps": [
+   {
+    "wait": 5
+   },
+   {
+    "script": "SetCPFast(GetUnitOfPlayer(0,0),200,280,0)"
+   },
+   {
+    "script": "SetCPFast(GetUnitOfPlayer(0,1),201,281,0)"
+   },
+   {
+    "script": "SetCPFast(GetObject(1021139),350,350,0)"
+   },
+   {
+    "script": "UMSentry(GetObject(1021139),350,350)"
+   },
+   {
+    "script": "SetPlayer(GetObject(1021139),0)"
+   },
+   {
+    "script": "SetCPFast(GetObject(1021139),200,290,0)"
+   },
+   {
+    "script": "UMSentry(GetObject(1021139),200,290)"
+   },
+   {
+    "script": "KillUnit(GetObject(1021101))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021102))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021103))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021104))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021105))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021106))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021107))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021108))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021109))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021110))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021111))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021112))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021113))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021114))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021115))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021116))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021117))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021118))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021119))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021120))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021121))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021122))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021123))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021124))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021125))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021126))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021127))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021128))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021129))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021130))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021131))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021132))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021133))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021134))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021135))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021136))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021137))"
+   },
+   {
+    "script": "KillUnit(GetObject(1021138))"
+   },
+   {
+    "wait": 2
+   }
+  ]
+ },
+ "from_zone": "gz35j",
+ "note": "Actual final member1021139 KillUnit (bypasses native GodMode) completes combat objective; same explicitly protected canary fixture as prior checkpoint. No outcome assignment.",
+ "observations_after": {
+  "cp_first_enemy": 0,
+  "cp_last_enemy": 0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_first_enemy": 0,
+  "cp_last_enemy": 1.0,
+  "money": 0
+ },
+ "probes": {
+  "cp_first_enemy": "IsAlive(GetObject(1021101))",
+  "cp_last_enemy": "IsAlive(GetObject(1021139))"
+ },
+ "provenance": {
+  "after": {
+   "cz4j.sav": "c48b34923f40a7a959f16ffc44901d65801145f96a262e48b0f4110fac84dd18",
+   "gz36j.sav": "d92b4db49e4796ed66c6c19c7e80a09c0fbd018bb60432d5c5df295cefc675d5",
+   "info.sav": "da6b62dcced4c3d6eb1db0667215bb15dca89e0d07727196e62c45d03b03a8c6",
+   "mission.sav": "d690f4ed46a543c5ec323e40f39b37143afea2dc81883415e15041f39f270689",
+   "scenario.sav": "c3ce7c044089a2523897d75f53bf28c0f5000621c79e94c8a96167dca20a6e0d",
+   "shot.sav": "fcaa8dac93a47a6d25716e08e6ce5694f0153ec958526bf9d382a858a7b25854"
+  },
+  "before": {
+   "cz4j.sav": "c48b34923f40a7a959f16ffc44901d65801145f96a262e48b0f4110fac84dd18",
+   "gz36j.sav": "d92b4db49e4796ed66c6c19c7e80a09c0fbd018bb60432d5c5df295cefc675d5",
+   "info.sav": "06e0f723975aa02891b147b45ac6222db47268133978d6a09a694dbccc1480e6",
+   "mission.sav": "ccedd2bf480b581a2ee1adeccbc94d4c56455fccaa84fa2dd5a600af536786bf",
+   "scenario.sav": "80a79fda87ca6e15af03fe9556a89b5c9b75c92e8a63c73745c0c78bace4e5fe",
+   "shot.sav": "32244b8f4ca5a74029d34a17595d2d2688eec2b51e412363474369cf3cc8737b"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "script": "KillUnit(GetObject(1021139))"
+  },
+  {
+   "wait": "3"
+  }
+ ],
+ "vars_after": {
+  "b.Firez.brief_349": 2.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_final1": 1.0,
+  "cp_mercs": 1.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz35j.q17j": 2.0,
+  "q.gz35j.q21j": 1.0,
+  "q.gz35j.q21j.1": 2.0,
+  "q.gz35j.q21j.2": 1.0,
+  "q.gz36j.q22j": 1.0,
+  "q.gz36j.q22j.1": 2.0,
+  "q.gz36j.q22j.2": 1.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z.gz34j_gz35j": 1.0,
+  "z1d1": 1.0
+ },
+ "vars_before": {
+  "b.Firez.brief_349": 2.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_final1": 1.0,
+  "cp_mercs": 1.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz35j.q17j": 2.0,
+  "q.gz35j.q21j": 1.0,
+  "q.gz35j.q21j.1": 1.0,
+  "q.gz36j.q22j": 1.0,
+  "q.gz36j.q22j.1": 2.0,
+  "q.gz36j.q22j.2": 1.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z.gz34j_gz35j": 1.0,
+  "z1d1": 1.0
+ },
+ "zone": "gz35j"
+}

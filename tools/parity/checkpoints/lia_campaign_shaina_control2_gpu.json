@@ -1,0 +1,247 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz2h",
+ "fixture": {
+  "active_party": "Shaina",
+  "money": 0,
+  "parties": {
+   "FSusel": [
+    {
+     "name": "Hero2",
+     "prototype": "Hero2"
+    },
+    {
+     "name": "merc2",
+     "prototype": "merc2"
+    }
+   ],
+   "Shaina": [
+    {
+     "name": "merc8",
+     "prototype": "merc8"
+    }
+   ]
+  },
+  "setup": [
+   "GodMode(0,1)",
+   "RecalcMercBriefings()",
+   "SetCPFast(GetUnitOfPlayer(0,0),94.343,177.5,0)",
+   "KillUnit(GetObject(1079499))",
+   "KillUnit(GetObject(1121942))",
+   "KillUnit(GetObject(47516))",
+   "KillUnit(GetObject(47514))",
+   "KillUnit(GetObject(47515))",
+   "KillUnit(GetObject(150301))",
+   "KillUnit(GetObject(150303))"
+  ],
+  "setup_steps": [
+   {
+    "wait": 2
+   },
+   {
+    "script": "SwitchLeverState(GetObject(46470),1)"
+   },
+   {
+    "wait": 1.2
+   }
+  ]
+ },
+ "from_zone": "gz2h",
+ "note": "Actual normal native left-click q8 control2; Shaina party and prerequisite stage reached by actual brief23 and prior normal gate use. Seven nearby original guards/hyenas are killed explicitly in setup to prevent combat interrupting normal interaction. Teleport only supplies proximity; both numeric inventory IDs7/8 are probed without assuming their names. No measured lever or quest outcome assigned.",
+ "observations_after": {
+  "cp_key7": 0,
+  "cp_mercs": 0,
+  "cp_note8": 1.0,
+  "cp_shaina2": 1.0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_key7": 0,
+  "cp_mercs": 0,
+  "cp_note8": 0,
+  "cp_shaina2": 0,
+  "money": 0
+ },
+ "probes": {
+  "cp_key7": "HaveItem(0,7)",
+  "cp_mercs": "GetMercsNumber(0)",
+  "cp_note8": "HaveItem(0,8)",
+  "cp_shaina2": "GetLeverState(GetObject(47543))"
+ },
+ "provenance": {
+  "after": {
+   "bz1h.sav": "0da26d10ed6d7c2a2845e10a62e36996252a44390a6f505a8e8929d9a6ff5e92",
+   "bz5h.sav": "64872a11ec735e786eccf60223680d63736e690bd54dd8b8b98a99b31bc4d6df",
+   "info.sav": "633b3846a503d7c62e020c15d63da3f8078528150d23af7868b3f06734137cb0",
+   "mission.sav": "98ceeaecc265331b4196ec6fb7b3987cfdc3df30f36ec30055ac1e3c55f2fe59",
+   "scenario.sav": "ab3022e916b5ee36f22cdb787995cf979fc6707b632d9382fe18e6912195c166",
+   "shot.sav": "b433ad4fdd8daffa55b98266bcbcd76b37b790b594bee5c01f9cba991dff3ec1"
+  },
+  "before": {
+   "bz1h.sav": "0da26d10ed6d7c2a2845e10a62e36996252a44390a6f505a8e8929d9a6ff5e92",
+   "bz5h.sav": "64872a11ec735e786eccf60223680d63736e690bd54dd8b8b98a99b31bc4d6df",
+   "info.sav": "7ee54216fd587c3ea37b67bcc38c1b9903eb37f9e96c2f3c763331f7fc3a0c4e",
+   "mission.sav": "2b6f78da9683c33003ad04af75bf933968349f6c6f44e989eaf27f07f30d206d",
+   "scenario.sav": "9967693df4ae4574178cde05b86efd51ae0f04dbd4aa00dc83097da4358c8771",
+   "shot.sav": "77c0e9a185423d77bc65ff796c32015f0d1d828a3e88ec57c3f4e33531b74943"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "use": "47543"
+  },
+  {
+   "wait": "3"
+  }
+ ],
+ "vars_after": {
+  "b.NSheriff.buy_1": 1.0,
+  "b.NSheriff.buy_ax_01": 3.0,
+  "b.NSheriff.buy_ax_01f": 3.0,
+  "b.NSheriff.buy_ax_02": 3.0,
+  "b.NSheriff.buy_ax_02f": 3.0,
+  "b.NSheriff.buy_ax_03": 3.0,
+  "b.NSheriff.buy_ax_03f": 3.0,
+  "b.NSheriff.buy_bw_01": 3.0,
+  "b.NSheriff.buy_bw_01f": 3.0,
+  "b.NSheriff.buy_bw_02": 3.0,
+  "b.NSheriff.buy_bw_02f": 3.0,
+  "b.NSheriff.buy_bw_03": 3.0,
+  "b.NSheriff.buy_bw_03f": 3.0,
+  "b.NSheriff.buy_cb_01": 3.0,
+  "b.NSheriff.buy_cb_01f": 3.0,
+  "b.NSheriff.buy_cb_02": 3.0,
+  "b.NSheriff.buy_cb_02f": 3.0,
+  "b.NSheriff.buy_cb_03": 3.0,
+  "b.NSheriff.buy_cb_03f": 3.0,
+  "b.NSheriff.buy_dg_01": 3.0,
+  "b.NSheriff.buy_dg_01f": 3.0,
+  "b.NSheriff.buy_dg_02": 3.0,
+  "b.NSheriff.buy_dg_02f": 3.0,
+  "b.NSheriff.buy_dg_03": 3.0,
+  "b.NSheriff.buy_dg_03f": 3.0,
+  "b.NSheriff.buy_hm_01": 3.0,
+  "b.NSheriff.buy_hm_01f": 3.0,
+  "b.NSheriff.buy_hm_02": 3.0,
+  "b.NSheriff.buy_hm_02f": 3.0,
+  "b.NSheriff.buy_hm_03": 3.0,
+  "b.NSheriff.buy_hm_03f": 3.0,
+  "b.NSheriff.buy_sp_01": 3.0,
+  "b.NSheriff.buy_sp_01f": 3.0,
+  "b.NSheriff.buy_sp_02": 3.0,
+  "b.NSheriff.buy_sp_02f": 3.0,
+  "b.NSheriff.buy_sp_03": 3.0,
+  "b.NSheriff.buy_sp_03f": 3.0,
+  "b.NSheriff.buy_sw_01": 3.0,
+  "b.NSheriff.buy_sw_01f": 3.0,
+  "b.NSheriff.buy_sw_02": 3.0,
+  "b.NSheriff.buy_sw_02f": 3.0,
+  "b.NSheriff.buy_sw_03": 3.0,
+  "b.NSheriff.buy_sw_03f": 3.0,
+  "b.Sheriff.brief_22": 3.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.brief_23": 2.0,
+  "b.merc9.n11_9": 1.0,
+  "cp_gx": 108.1729965209961,
+  "cp_gy": 179.0659942626953,
+  "cp_gz": 10.038755416870117,
+  "cp_hx": 108.1729965209961,
+  "cp_hy": 181.0659942626953,
+  "cp_hz": 20.077510833740234,
+  "cp_shaina1": 1.0,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz2h.q7h": 2.0,
+  "q.gz2h.q8h": 1.0,
+  "q.gz2h.q8h.1": 2.0,
+  "q.gz2h.q8h.2": 2.0,
+  "q.gz2h.q8h.3": 1.0,
+  "z.bz5h": 1.0,
+  "z.gz1h_gz2h": 1.0
+ },
+ "vars_before": {
+  "b.NSheriff.buy_1": 1.0,
+  "b.NSheriff.buy_ax_01": 3.0,
+  "b.NSheriff.buy_ax_01f": 3.0,
+  "b.NSheriff.buy_ax_02": 3.0,
+  "b.NSheriff.buy_ax_02f": 3.0,
+  "b.NSheriff.buy_ax_03": 3.0,
+  "b.NSheriff.buy_ax_03f": 3.0,
+  "b.NSheriff.buy_bw_01": 3.0,
+  "b.NSheriff.buy_bw_01f": 3.0,
+  "b.NSheriff.buy_bw_02": 3.0,
+  "b.NSheriff.buy_bw_02f": 3.0,
+  "b.NSheriff.buy_bw_03": 3.0,
+  "b.NSheriff.buy_bw_03f": 3.0,
+  "b.NSheriff.buy_cb_01": 3.0,
+  "b.NSheriff.buy_cb_01f": 3.0,
+  "b.NSheriff.buy_cb_02": 3.0,
+  "b.NSheriff.buy_cb_02f": 3.0,
+  "b.NSheriff.buy_cb_03": 3.0,
+  "b.NSheriff.buy_cb_03f": 3.0,
+  "b.NSheriff.buy_dg_01": 3.0,
+  "b.NSheriff.buy_dg_01f": 3.0,
+  "b.NSheriff.buy_dg_02": 3.0,
+  "b.NSheriff.buy_dg_02f": 3.0,
+  "b.NSheriff.buy_dg_03": 3.0,
+  "b.NSheriff.buy_dg_03f": 3.0,
+  "b.NSheriff.buy_hm_01": 3.0,
+  "b.NSheriff.buy_hm_01f": 3.0,
+  "b.NSheriff.buy_hm_02": 3.0,
+  "b.NSheriff.buy_hm_02f": 3.0,
+  "b.NSheriff.buy_hm_03": 3.0,
+  "b.NSheriff.buy_hm_03f": 3.0,
+  "b.NSheriff.buy_sp_01": 3.0,
+  "b.NSheriff.buy_sp_01f": 3.0,
+  "b.NSheriff.buy_sp_02": 3.0,
+  "b.NSheriff.buy_sp_02f": 3.0,
+  "b.NSheriff.buy_sp_03": 3.0,
+  "b.NSheriff.buy_sp_03f": 3.0,
+  "b.NSheriff.buy_sw_01": 3.0,
+  "b.NSheriff.buy_sw_01f": 3.0,
+  "b.NSheriff.buy_sw_02": 3.0,
+  "b.NSheriff.buy_sw_02f": 3.0,
+  "b.NSheriff.buy_sw_03": 3.0,
+  "b.NSheriff.buy_sw_03f": 3.0,
+  "b.Sheriff.brief_22": 3.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.brief_23": 2.0,
+  "b.merc9.n11_9": 1.0,
+  "cp_gx": 108.1729965209961,
+  "cp_gy": 179.0659942626953,
+  "cp_gz": 10.038755416870117,
+  "cp_hx": 108.1729965209961,
+  "cp_hy": 181.0659942626953,
+  "cp_hz": 20.077510833740234,
+  "cp_shaina1": 1.0,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz2h.q7h": 2.0,
+  "q.gz2h.q8h": 1.0,
+  "q.gz2h.q8h.1": 2.0,
+  "q.gz2h.q8h.2": 1.0,
+  "z.bz5h": 1.0,
+  "z.gz1h_gz2h": 1.0
+ },
+ "zone": "gz2h"
+}

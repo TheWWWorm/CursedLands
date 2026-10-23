@@ -26,8 +26,19 @@ class CheckpointsTest(unittest.TestCase):
         self.assertEqual(c.parse_step('script GiveQuestItem(0, "Kel1")'),
                          {'script': 'GiveQuestItem(0, "Kel1")'})
         self.assertEqual(c.parse_step('leave 2 gz1h'), {'leave': '2', 'destination': 'gz1h'})
+        self.assertEqual(c.parse_step('leave 1 gz33j 3'),
+                         {'leave': '1', 'destination': 'gz33j', 'entrance': '3'})
         self.assertEqual(c.parse_step('reload'), {'reload': True})
         with self.assertRaises(SystemExit): c.parse_step('use')
+
+    def test_map_arrival_validation_does_not_allow_unrecognized_step_fields(self):
+        c.validate_checkpoint(self.cp(steps=[{'leave': 1, 'destination': 'gz33j', 'entrance': 3}]))
+        for value in (0, -1, 1.5, float('nan'), True, 'three'):
+            with self.assertRaisesRegex(ValueError, 'positive integer'):
+                c.validate_checkpoint(self.cp(steps=[{'leave': 1, 'destination': 'gz33j', 'entrance': value}]))
+        for step in ({'use': 1, 'entrance': 3}, {'leave': 1, 'destination': 'gz33j', 'arrival': 3}):
+            with self.assertRaisesRegex(ValueError, 'unexpected step fields'):
+                c.validate_checkpoint(self.cp(steps=[step]))
 
     def test_unknown_and_invalid_entry_rejected(self):
         for steps in ([{'telepathy': 42}], [{'enter': 'gz1d1'}],

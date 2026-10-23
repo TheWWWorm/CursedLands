@@ -1,0 +1,1084 @@
+{
+  "schema": 1,
+  "campaign": "lost_in_astral",
+  "evidence_kind": "bounded loaded-map regressions with declared seams; native comparisons are separately identified in results.json",
+  "cases": [
+    {
+      "case": "quests/lia_campaign_early_suslanger",
+      "script": "tools/tests/lia_campaign_early_suslanger.gd",
+      "canonical_quest_ids": [
+        "q4h",
+        "q5h",
+        "q6h",
+        "q7h",
+        "q13h",
+        "q13oh",
+        "q14h",
+        "q15h",
+        "q16h",
+        "q17h",
+        "q17oh",
+        "q18h",
+        "q19h",
+        "q20h"
+      ],
+      "chapter": {
+        "party": "FSusel: Hero2 + merc2",
+        "story": {
+          "q.gz1h.q01h": 2,
+          "q.gz1h.q02h": 2,
+          "q.gz2h.q5h": 1,
+          "b.merc8.brief_37": 1
+        },
+        "later_offer_seam": "Shaina37 is supplied only at q13 entry after early q5/q7/q6 outcomes. lia_campaign_shaina independently earns it; accepted in actual bz5h.",
+        "prior_cases": [
+          "quests/lia_kel_prologue",
+          "quests/lia_kel_early_story",
+          "quests/lia_campaign_shaina"
+        ],
+        "prepared_gate": "z.gz1h=1 before the actual q6 ambush completion.",
+        "earned_route": "All listed quest outcomes and intermediate hand-ins through Guru52/Glav53 offers; q4h optional fruit gathering also unlocks fortune purchase prerequisites.",
+        "travel": [
+          "gz3h→gz3d1 scripted hole; normal gz3d1→gz3h return",
+          "gz3h→bz3h camp entry, siege closure/reopening and return",
+          "gz4h→bz4h joint bones/boss reopening and return"
+        ]
+      }
+    },
+    {
+      "case": "quests/lia_campaign_gipat_arrival",
+      "script": "tools/tests/lia_campaign_gipat_arrival.gd",
+      "canonical_quest_ids": [
+        "q1g",
+        "q2g",
+        "q3g",
+        "q4g",
+        "q5g",
+        "q6g"
+      ],
+      "chapter": {
+        "story": {
+          "b.Sergant.brief_88a": 1
+        },
+        "party": "FSusel: Hero2 + merc2",
+        "prior_case": "quests/lia_campaign_suslanger_departure",
+        "earned_route": "Actual Suslanger departure grants q1g; q1..6 carried to real q7g grant. Inner q3ag mine completed and ordinary return observed.",
+        "travel": [
+          "Suslanger actual briefing handoff to gz7g",
+          "gz7g→gz7d1→gz7g normal exits"
+        ]
+      }
+    },
+    {
+      "case": "quests/lia_campaign_gipat_departure",
+      "script": "tools/tests/lia_campaign_gipat_departure.gd",
+      "canonical_quest_ids": [
+        "q25g",
+        "q26g",
+        "q27g",
+        "q28g"
+      ],
+      "chapter": {
+        "story": {
+          "q.gz16g.q22g": 2,
+          "q.gz16g.q24g": 2,
+          "b.Karh.brief_142": 1,
+          "b.Karh.brief_143": 1
+        },
+        "items": [
+          "ZakKnife",
+          "PalantirBroken00"
+        ],
+        "party": "Gipat: Hero + merc2",
+        "prior_case": "quests/lia_campaign_gipat_palantir",
+        "earned_route": "q25g timed city attack; q26g book via earned Smith145b; q27g repair; earned Witch148→q28g golem controls; Rick149/151→cz0k→Kel200→playable Ingos.",
+        "additional_fixture_gates": {
+          "z.gz11g_gz14g_exit": 1
+        },
+        "travel": [
+          "gz14g→gz11g_gz14g_exit→gz11g normal exit + real travel-map choice",
+          "gz11g→bz14g normal exit",
+          "Rick151 actual cz0k travel and full arrival scene→gz21k"
+        ],
+        "untested_alternative": "Smith145a/145c alternate ordering (main branch145b tested)"
+      }
+    },
+    {
+      "case": "quests/lia_campaign_gipat_healer",
+      "script": "tools/tests/lia_campaign_gipat_healer.gd",
+      "canonical_quest_ids": [
+        "q13g",
+        "q14g",
+        "q15g",
+        "q16g",
+        "q17g"
+      ],
+      "chapter": {
+        "story": {
+          "q.gz10g.q12g": 2,
+          "b.Karh.brief_121": 1
+        },
+        "party": "Gipat: Hero + merc2",
+        "prior_case": "quests/lia_campaign_gipat_settlements",
+        "earned_route": "q13g hunters; both q14g letter branches independently saved; q15g caravan; earned Smith126a→q16g/q16ag needle then q17g traps/healer→grants q18g/q19g.",
+        "additional_fixture_gates": {
+          "z.gz11d1": 1,
+          "z.bz12g": 1
+        },
+        "travel": [
+          "gz11g→gz11d1→gz11g normal exits",
+          "gz13g→bz12g normal exit"
+        ]
+      }
+    },
+    {
+      "case": "quests/lia_campaign_gipat_palantir",
+      "script": "tools/tests/lia_campaign_gipat_palantir.gd",
+      "canonical_quest_ids": [
+        "q18g",
+        "q19g",
+        "q20g",
+        "q21g",
+        "q22g",
+        "q23g",
+        "q24g"
+      ],
+      "chapter": {
+        "story": {
+          "q.gz13g.q17g": 2,
+          "b.bz12g.brief_129": 1
+        },
+        "party": "Gipat: Hero + merc2",
+        "prior_case": "quests/lia_campaign_gipat_healer",
+        "earned_route": "q18g gift; q19g Witch route; q20g flower; actual q21g Witch casts/combat/return; q22g gear+Palantir; q23g knife; q24g two-key Babur rescue; grants q25g and Smith book offer.",
+        "travel": [
+          "gz7g→bz13g normal exit",
+          "Witch flower dialogue→gz7g actual scripted travel"
+        ]
+      }
+    },
+    {
+      "case": "quests/lia_campaign_gipat_settlements",
+      "script": "tools/tests/lia_campaign_gipat_settlements.gd",
+      "canonical_quest_ids": [
+        "q7g",
+        "q8g",
+        "q9g",
+        "q10g",
+        "q11g",
+        "q12g"
+      ],
+      "chapter": {
+        "story": {
+          "q.gz11g.q6g": 2,
+          "b.OrcPyr.brief_110": 1
+        },
+        "party": "Gipat: Hero + merc2",
+        "prior_case": "quests/lia_campaign_gipat_arrival",
+        "earned_route": "q7g report then q8g shell, q9g battle, q10g shell handoff, q11g Rick approach, q12g village liberation; grants q13g.",
+        "travel": [
+          "gz11g→bz14g normal exit",
+          "gz10g→bz11g normal exit"
+        ]
+      }
+    },
+    {
+      "case": "quests/lia_campaign_ingos_investigation",
+      "script": "tools/tests/lia_campaign_ingos_investigation.gd",
+      "canonical_quest_ids": [
+        "q6k",
+        "q7k",
+        "q8k",
+        "q9k",
+        "q10k",
+        "q11k",
+        "q12k",
+        "q13k",
+        "q14k"
+      ],
+      "chapter": {
+        "party": "Gipat: Hero + merc2g",
+        "story": {
+          "q.gz23k.q6k": 1,
+          "b.His.brief_210": 1,
+          "b.Trapper.brief_207a": 1
+        },
+        "items": [
+          "SverAlc"
+        ],
+        "prior_cases": [
+          "quests/lia_campaign_mid_ingos"
+        ],
+        "earned_route": "Ritual follow-ups→factory approach/sabotage, forest clearance, magic items, supplies, all four looted elemental corpses; shared hand-in gate→arrow evidence→spy sighting (also detected failure/reload)→note delivery. Actual final talks earn Guard239 and accept q16k.",
+        "travel": [
+          "gz23k→bz23k earned factory entrance",
+          "gz22k→bz22k earned forest entrance",
+          "MThief228 scripted return to gz22k; spy gate closes then reopens; actual return to bz22k"
+        ]
+      }
+    },
+    {
+      "case": "quests/lia_campaign_ingos_portal",
+      "script": "tools/tests/lia_campaign_ingos_portal.gd",
+      "canonical_quest_ids": [
+        "q16k",
+        "q17k",
+        "q18k",
+        "q19k",
+        "q20k",
+        "q21k"
+      ],
+      "chapter": {
+        "party": "Gipat: Hero + merc2g",
+        "story": {
+          "q.gz24k.q15k": 2,
+          "q.gz21k.q16k": 1,
+          "b.Huber.brief_240": 1,
+          "b.MThief.brief_230": 2
+        },
+        "items": [
+          "MageDocs"
+        ],
+        "prior_cases": [
+          "quests/lia_campaign_mid_ingos",
+          "quests/lia_campaign_ingos_investigation"
+        ],
+        "earned_route": "Missing-person evidence plus mine/witness hand-ins→ambush corpse→dual Gerald/Kel offer→betrayal cache/full return scene→mage laboratory key→key exchange→ice-pass mechanism→portal two doors/keys/activation/entry→full cz4k departure scene offers Kel254. Actual Kel254 transfer is separately tested in lia_kel_handoffs.",
+        "travel": [
+          "q18k full cz3k→bz21k scene/return",
+          "gz21k→gz25k→gz26k ordinary earned exits",
+          "activated portal area→cz4k authored scene"
+        ]
+      }
+    },
+    {
+      "case": "quests/lia_campaign_late_addmob",
+      "script": "tools/tests/lia_campaign_late_addmob.gd",
+      "canonical_quest_ids": [],
+      "chapter": {
+        "prepared": "Minimal synthetic scripts with colliding global and script names.",
+        "earned_route": "AddMob shares and preserves parent symbols; regular quest overlays remain isolated.",
+        "limits": "Pure VM regression; actual 39-enemy battle is in late_ending."
+      }
+    },
+    {
+      "case": "quests/lia_campaign_late_arrival",
+      "script": "tools/tests/lia_campaign_late_arrival.gd",
+      "canonical_quest_ids": [
+        "q1j",
+        "q2j",
+        "q3j",
+        "q4j",
+        "q5j",
+        "q6j"
+      ],
+      "chapter": {
+        "story": {},
+        "party": "Prepared Gipat: Hero + merc2 at cz1j arrival",
+        "prior_case": "quests/lia_kel_handoffs",
+        "earned_route": "Full cz1j scene→Baron300→q1j..q6j carried quests, items and reports→actual BSon318 duel offer and material/quest continuations.",
+        "travel": [
+          "cz1j actual scene/dialogue→gz31j"
+        ],
+        "seam_note": "Entry is the Jigran arrival scene, not an Ingos progression setup. Actual prior island departure is in lia_kel_handoffs.",
+        "original_authored_limit": "q4j dead-captive failure thread is declared but never started by shipped script; records living escape success and missing continuation after dead captive, not an invented failure call."
+      }
+    },
+    {
+      "case": "quests/lia_campaign_late_convoy",
+      "script": "tools/tests/lia_campaign_late_convoy.gd",
+      "canonical_quest_ids": [
+        "q13j",
+        "q14j",
+        "q15j",
+        "q16j",
+        "q17j"
+      ],
+      "chapter": {
+        "story": {
+          "q.gz33j.q12j": 2,
+          "b.Baron.brief_331": 1,
+          "b.Doctor.brief_330": 1,
+          "start_zone31": 1,
+          "z.gz34j_gz35j": 1
+        },
+        "party": "Prepared Jigran2: Hero + merc2",
+        "prior_case": "quests/lia_campaign_late_supplies",
+        "earned_route": "q13j map/q14j survey→q15j commanders/q16j amulet→Kel339→q17j convoy→actual q19j belongings offer; independent convoy-arrival/captive-death failures.",
+        "travel": [
+          "gz34j exit2→world map→gz35j actual normal route"
+        ]
+      }
+    },
+    {
+      "case": "quests/lia_campaign_late_ending",
+      "script": "tools/tests/lia_campaign_late_ending.gd",
+      "canonical_quest_ids": [
+        "q18j",
+        "q20j",
+        "q21j",
+        "q22j"
+      ],
+      "chapter": {
+        "story": {
+          "q.gz35j.q17j": 2,
+          "q.gz31j.q16j": 2,
+          "z.gz34j": 2,
+          "b.Deva.brief_345": 3,
+          "b.BSon.brief_337": 1,
+          "z.gz34d1": 1,
+          "z.gz34j_gz34d1": 1
+        },
+        "party": "Prepared restored Jigran3: Hero + living Kel",
+        "prior_case": [
+          "quests/lia_campaign_late_convoy",
+          "quests/lia_kel_departures",
+          "quests/lia_kel_rescue"
+        ],
+        "earned_route": "BSon337→Junofil341→q18j crypt→q20j living creatures→q21j populated 39-enemy battle→portal/cz4j→Firez349→q22j four levers and boss→authored terminal ending event once; repeat from pre-boss save.",
+        "travel": [
+          "gz34j→gz34d1→gz34j normal exits",
+          "q21j portal actual cz4j scene→gz36j",
+          "q22j authored EndofGame event after boss death"
+        ],
+        "seam_note": "Amulet report is intentionally postponed to after rescue here; convoy suite completes it before rescue and proves the crypt still remains locked then. These are bounded alternative timing checkpoints, not literal chained save files.",
+        "native_cases": [
+          "lia_campaign_battle_living_gate",
+          "lia_campaign_battle_all_but_one_controlled",
+          "lia_campaign_battle_last_enemy_controlled",
+          "lia_campaign_firez_final_offer",
+          "lia_campaign_final_lever1",
+          "lia_campaign_final_lever2_use",
+          "lia_campaign_final_lever3_use",
+          "lia_campaign_final_lever4_use",
+          "lia_campaign_final_boss_completion"
+        ]
+      }
+    },
+    {
+      "case": "quests/lia_campaign_late_legacy_battle",
+      "script": "tools/tests/lia_campaign_late_legacy_battle.gd",
+      "canonical_quest_ids": [],
+      "chapter": {
+        "prepared": "Accepted final battle; actual initializer and kills generate pending saved state. Default reconstructs only two historical namespace fields.",
+        "earned_route": "Stock campaign/zone/source/addon/actor-set guards, old aliases restored without altering quest flags; 39 alive and last-alive blocked after load, actual last death advances, persistent/idempotent save.",
+        "additional_evidence": "Untouched earlier-engine saves additionally replayed; see results.json.",
+        "limits": "Completed objectives and arbitrary mods are never migrated."
+      }
+    },
+    {
+      "case": "quests/lia_campaign_late_supplies",
+      "script": "tools/tests/lia_campaign_late_supplies.gd",
+      "canonical_quest_ids": [
+        "q8j",
+        "q9j",
+        "q10j",
+        "q11j",
+        "q12j"
+      ],
+      "chapter": {
+        "story": {
+          "b.BSon.brief_324": 2,
+          "q.gz31j.q6j": 2,
+          "z.gz31j_gz33j": 2,
+          "z.bz32j": 2,
+          "b.Stark.brief_319": 1,
+          "b.Baron.brief_323": 1,
+          "start_zone31": 1
+        },
+        "party": "Prepared Jigran2: Hero + merc2",
+        "prior_case": [
+          "quests/lia_campaign_late_arrival",
+          "quests/lia_kel_handoffs"
+        ],
+        "earned_route": "q8j materials→q9j documents→q10j ingredients→q11j meal→q12j battle→actual western map/survey offers.",
+        "travel": [
+          "gz33j exit3→bz32j normal exit"
+        ]
+      }
+    },
+    {
+      "case": "quests/lia_campaign_map_points",
+      "script": "tools/tests/lia_campaign_map_points.gd",
+      "canonical_quest_ids": [],
+      "chapter": {
+        "prepared": "Matrix prepares each route and quest marker state independently.",
+        "earned_route": "110 exits, 89 reachable map choices, 25 region pieces, 118 quest markers and 12 settlement points; ordinary point picking/arrows, blocked and stale choices, party eligibility, single dispatch.",
+        "limits": "Final destination load is recorded at the command boundary; no claim to earn each flag or load every map."
+      }
+    },
+    {
+      "case": "quests/lia_campaign_mid_gipat",
+      "script": "tools/tests/lia_campaign_mid_gipat.gd",
+      "canonical_quest_ids": [
+        "q16g",
+        "q16ag",
+        "q17g",
+        "q28g"
+      ],
+      "chapter": {
+        "party": "Gipat: Hero + merc2g",
+        "story": {
+          "b.Smith.brief_126a": 1,
+          "b.Witch.brief_148": 1
+        },
+        "prepared_gates": {
+          "z.gz11d1": 1,
+          "z.bz12g": 1,
+          "z.gz11g_gz14g_exit": 1
+        },
+        "prior_cases": [
+          "quests/lia_campaign_gipat_healer",
+          "quests/lia_campaign_gipat_departure"
+        ],
+        "earned_route": "Actual accepted Smith offer→keyed/flooded needle crypt→both Smith hand-ins→ordered healer trap controls/full arrival. Later Witch offer→golem-center key and controls→actual secret return and Rick route.",
+        "travel": [
+          "gz11g→gz11d1→gz11g normal passages",
+          "gz13g→bz12g earned cave entrance",
+          "gz14g→secret edge→gz11g ordinary route selection"
+        ]
+      }
+    },
+    {
+      "case": "quests/lia_campaign_mid_ingos",
+      "script": "tools/tests/lia_campaign_mid_ingos.gd",
+      "canonical_quest_ids": [
+        "q1k",
+        "q2k",
+        "q3k",
+        "q4k",
+        "q5k",
+        "q15k"
+      ],
+      "chapter": {
+        "party": "Gipat: Hero + merc2g (retained by actual Ingos handoff)",
+        "story": {
+          "q.gz21k.q1k": 1,
+          "b.Guard.brief_239": 1
+        },
+        "later_offer_seam": "Guard239 is supplied only before the mine section; the investigation suite independently earns it.",
+        "prior_cases": [
+          "quests/lia_kel_handoffs",
+          "quests/lia_campaign_ingos_investigation"
+        ],
+        "earned_route": "Arrival→Trader/Trapper/Kel203→lab guards/full His scene→Trapper206→paired flower/mark quests→full Grey ritual/return→Trapper207a. Guard key→three mine approach gates→two actual keys and physical doors→MageDocs/Huber240.",
+        "travel": [
+          "gz21k→bz21k ordinary arrival",
+          "gz21k↔gz23k real travel-map selection",
+          "q2k cz1k and q5k cz2k complete authored scenes/returns",
+          "gz21k→gz22k→gz24k→gz22k actual mine route"
+        ],
+        "dialogue_return_simulation": "Before Kel203, advance the ordinary world loop until introduction return walks finish, within the production path/turn deadline. Assert no active dialogue, only return movers, unchanged rewards and unaccepted q2k. NPC-only ticks were insufficient while the return coordinator was frozen."
+      }
+    },
+    {
+      "case": "quests/lia_campaign_shaina",
+      "script": "tools/tests/lia_campaign_shaina.gd",
+      "canonical_quest_ids": [
+        "q8h",
+        "q9h",
+        "q11h",
+        "q12h"
+      ],
+      "chapter": {
+        "party": "FSusel: Hero2 + Kel; actual Shaina deployment and FSusel restoration",
+        "story": {
+          "q.gz1h.q01h": 2,
+          "q.gz1h.q02h": 2,
+          "q.gz2h.q7h": 2,
+          "b.merc8.brief_23": 1
+        },
+        "later_offer_seam": {
+          "b.YCF.brief_26": 2
+        },
+        "prior_cases": [
+          "quests/lia_campaign_early_suslanger"
+        ],
+        "earned_route": "Shaina23→solo party/closed exits→lever/chest/samples→return area/restored party/reopened routes→Shaina24/Elder25; joint q8 and letter report→YCF27→letter/meeting/target→YCF28 and captive offers; optional YCF33 caravan→chest/corpse document→YCF34a→living captive follow/own arrival→YCF36.",
+        "failures": "Competing robber arrives before chest; captive dies. Both branches restore the earlier pending save before continuing success.",
+        "travel": [
+          "actual infiltration handoff gz2h",
+          "authored return gz2h→bz5h"
+        ],
+        "native_mismatch": "Original temporarily stores samples in Shaina bag until report; remake global quest bag exposes them immediately after return."
+      }
+    },
+    {
+      "case": "quests/lia_campaign_suslanger_departure",
+      "script": "tools/tests/lia_campaign_suslanger_departure.gd",
+      "canonical_quest_ids": [
+        "q22oh",
+        "q21h",
+        "q21oh",
+        "q22h",
+        "q23h",
+        "q24h"
+      ],
+      "chapter": {
+        "party": "FSusel: Hero2 + merc2",
+        "story": {
+          "q.gz1h.q01h": 2,
+          "q.gz1h.q02h": 2,
+          "q.gz3h.q17h": 2,
+          "q.gz4h.q19h": 2,
+          "q.gz4h.q20h": 2,
+          "b.Guru.brief_52": 1,
+          "b.Glav.brief_53": 1
+        },
+        "items": [
+          "SackofBones"
+        ],
+        "prior_cases": [
+          "quests/lia_campaign_early_suslanger"
+        ],
+        "earned_route": "Dual hand-ins→Sheriff report→YCF ritual→Guru harpy and rescuer sack→Kel north→Sergeant three sites→actual Sergeant88a island offer. One of two alternative sack rewards is sufficient in authored scripts.",
+        "travel": [
+          "gz4h→gz4h_gz5h→gz5h actual route selection",
+          "gz5h→bz7h→gz5h_bz7h→gz5h normal field/village exits"
+        ]
+      }
+    },
+    {
+      "case": "quests/lia_campaign_travel_routes",
+      "script": "tools/tests/lia_campaign_travel_routes.gd",
+      "canonical_quest_ids": [],
+      "chapter": {
+        "prepared": "Declared open route flags and party.",
+        "earned_route": "Normal spy-settlement return to arrival3, save/load and west route to gz34j; normal Ingos gz21k→gz23k and reverse with arrival-only exit guard; repeated/sparse header labels preserve ordinal numbering."
+      }
+    },
+    {
+      "case": "quests/lia_kel_departures",
+      "canonical_quest_ids": [
+        "q19j"
+      ],
+      "chapter": {
+        "prepared": "q17j=2 and Deva340 offer; earned by late_convoy, actual Deva340 grants Kel342 here",
+        "earned": "actual JToys belongings→cz3j acid death/archive/removal→gz35j; separately first fragment and Suslanger handoff"
+      },
+      "script": "tools/tests/lia_kel_departures.gd"
+    },
+    {
+      "case": "quests/lia_kel_early_story",
+      "script": "tools/tests/lia_kel_early_story.gd",
+      "canonical_quest_ids": [
+        "q2h",
+        "q3h"
+      ],
+      "chapter": {
+        "prepared": "Completed escape and Shelter introduction; exact offers/items are stated in script.",
+        "earned_route": "Actual Elder poison/Slave Lists offer and objectives, hand-in, Shaina disguise/key/guards/return, party transformation and Kel/Elder next-route handoffs.",
+        "limits": "Canonical q2h is internally called POISON in the fixture, but is the localized Slave Lists quest."
+      }
+    },
+    {
+      "case": "quests/lia_kel_gipat",
+      "script": "tools/tests/lia_kel_gipat.gd",
+      "canonical_quest_ids": [
+        "fq8",
+        "fq9",
+        "fq10",
+        "fq11",
+        "fq12",
+        "fq13"
+      ],
+      "chapter": {
+        "prepared": "Earlier story/paid-fortune offer checkpoint; travel and combat accelerated.",
+        "earned_route": "Tomb prerequisites, key/items and mechanisms, second fragment and rewards."
+      }
+    },
+    {
+      "case": "quests/lia_kel_handoffs",
+      "canonical_quest_ids": [
+        "q7j"
+      ],
+      "chapter": {
+        "prepared": "duel offer BSon318; earned by late_arrival, plus prepared earlier fragment/island scenes",
+        "earned": "nonlethal threshold, actual cz2j briefing and Jigran1→Jigran2 transfers; this suite separately carries all3 fragments across island handoffs"
+      },
+      "script": "tools/tests/lia_kel_handoffs.gd"
+    },
+    {
+      "case": "quests/lia_kel_ingos",
+      "script": "tools/tests/lia_kel_ingos.gd",
+      "canonical_quest_ids": [
+        "fq15",
+        "fq16",
+        "fq17",
+        "fq18",
+        "fq19"
+      ],
+      "chapter": {
+        "prepared": "Earlier story/paid-fortune offer checkpoint; travel and combat accelerated.",
+        "earned_route": "Water/mine prerequisite items and mechanisms, third fragment and rewards.",
+        "authored_limit": "Water completion sets fq17 but rewards fq18, preserving shipped content."
+      }
+    },
+    {
+      "case": "quests/lia_kel_prologue",
+      "script": "tools/tests/lia_kel_prologue.gd",
+      "canonical_quest_ids": [
+        "q1r",
+        "q02h",
+        "q03h",
+        "q1h"
+      ],
+      "chapter": {
+        "prepared": "Fresh initial party and god mode; no quest outcome supplied.",
+        "earned_route": "Introductory portal and key, prison/class/night/Kel escape, pursuit/map, catacombs/lift/clothes, Shelter guard and arrival.",
+        "limits": "One class choice is selected; movement, guard positioning and combat are accelerated."
+      }
+    },
+    {
+      "case": "quests/lia_kel_rescue",
+      "canonical_quest_ids": [
+        "fq20",
+        "fq21"
+      ],
+      "chapter": {
+        "prepared": "prior death archive and ingredient subsets; tied to separately tested fragment/death routes",
+        "earned": "actual Deva345 ritual, living Kel restoration/solo missing-fragment alternatives, save/reload, once-only/stat guards",
+        "native_mismatch": "native synchronized AddLoot restores spent fragments; remake consumes them, retained as strict native comparison difference"
+      },
+      "script": "tools/tests/lia_kel_rescue.gd"
+    },
+    {
+      "case": "quests/lia_kel_suslanger",
+      "script": "tools/tests/lia_kel_suslanger.gd",
+      "canonical_quest_ids": [
+        "fq2",
+        "fq3",
+        "fq4",
+        "fq5",
+        "fq6"
+      ],
+      "chapter": {
+        "prepared": "Accepted fortune flags supplied; no measured reward or fragment supplied. Separate astral_fortune tests cover paid-topic behavior.",
+        "earned_route": "Raja and torch gating; trader key/document; timed basket/fruit/escape switch; nocturnal undead/chest; ordered three-control puzzle and first fragment.",
+        "limits": "Earlier offers and travel accelerated; correct and incorrect mechanism orders exercised."
+      }
+    },
+    {
+      "case": "quests/lia_kel_torch_cellar",
+      "script": "tools/tests/lia_kel_torch_cellar.gd",
+      "canonical_quest_ids": [],
+      "chapter": {
+        "prepared": "Declared completed escape/fortune gate and actual torch activation.",
+        "earned_route": "Torch opens cellar; actual entry, both usable return exits and pending/completed save continuation; modified-map/closed-gate negatives."
+      }
+    }
+  ],
+  "canonical_quest_cases": {
+    "fq10": [
+      "quests/lia_kel_gipat"
+    ],
+    "fq11": [
+      "quests/lia_kel_gipat"
+    ],
+    "fq12": [
+      "quests/lia_kel_gipat"
+    ],
+    "fq13": [
+      "quests/lia_kel_gipat"
+    ],
+    "fq15": [
+      "quests/lia_kel_ingos"
+    ],
+    "fq16": [
+      "quests/lia_kel_ingos"
+    ],
+    "fq17": [
+      "quests/lia_kel_ingos"
+    ],
+    "fq18": [
+      "quests/lia_kel_ingos"
+    ],
+    "fq19": [
+      "quests/lia_kel_ingos"
+    ],
+    "fq2": [
+      "quests/lia_kel_suslanger"
+    ],
+    "fq20": [
+      "quests/lia_kel_rescue"
+    ],
+    "fq21": [
+      "quests/lia_kel_rescue"
+    ],
+    "fq3": [
+      "quests/lia_kel_suslanger"
+    ],
+    "fq4": [
+      "quests/lia_kel_suslanger"
+    ],
+    "fq5": [
+      "quests/lia_kel_suslanger"
+    ],
+    "fq6": [
+      "quests/lia_kel_suslanger"
+    ],
+    "fq8": [
+      "quests/lia_kel_gipat"
+    ],
+    "fq9": [
+      "quests/lia_kel_gipat"
+    ],
+    "q02h": [
+      "quests/lia_kel_prologue"
+    ],
+    "q03h": [
+      "quests/lia_kel_prologue"
+    ],
+    "q10g": [
+      "quests/lia_campaign_gipat_settlements"
+    ],
+    "q10j": [
+      "quests/lia_campaign_late_supplies"
+    ],
+    "q10k": [
+      "quests/lia_campaign_ingos_investigation"
+    ],
+    "q11g": [
+      "quests/lia_campaign_gipat_settlements"
+    ],
+    "q11h": [
+      "quests/lia_campaign_shaina"
+    ],
+    "q11j": [
+      "quests/lia_campaign_late_supplies"
+    ],
+    "q11k": [
+      "quests/lia_campaign_ingos_investigation"
+    ],
+    "q12g": [
+      "quests/lia_campaign_gipat_settlements"
+    ],
+    "q12h": [
+      "quests/lia_campaign_shaina"
+    ],
+    "q12j": [
+      "quests/lia_campaign_late_supplies"
+    ],
+    "q12k": [
+      "quests/lia_campaign_ingos_investigation"
+    ],
+    "q13g": [
+      "quests/lia_campaign_gipat_healer"
+    ],
+    "q13h": [
+      "quests/lia_campaign_early_suslanger"
+    ],
+    "q13j": [
+      "quests/lia_campaign_late_convoy"
+    ],
+    "q13k": [
+      "quests/lia_campaign_ingos_investigation"
+    ],
+    "q13oh": [
+      "quests/lia_campaign_early_suslanger"
+    ],
+    "q14g": [
+      "quests/lia_campaign_gipat_healer"
+    ],
+    "q14h": [
+      "quests/lia_campaign_early_suslanger"
+    ],
+    "q14j": [
+      "quests/lia_campaign_late_convoy"
+    ],
+    "q14k": [
+      "quests/lia_campaign_ingos_investigation"
+    ],
+    "q15g": [
+      "quests/lia_campaign_gipat_healer"
+    ],
+    "q15h": [
+      "quests/lia_campaign_early_suslanger"
+    ],
+    "q15j": [
+      "quests/lia_campaign_late_convoy"
+    ],
+    "q15k": [
+      "quests/lia_campaign_mid_ingos"
+    ],
+    "q16ag": [
+      "quests/lia_campaign_mid_gipat"
+    ],
+    "q16g": [
+      "quests/lia_campaign_gipat_healer",
+      "quests/lia_campaign_mid_gipat"
+    ],
+    "q16h": [
+      "quests/lia_campaign_early_suslanger"
+    ],
+    "q16j": [
+      "quests/lia_campaign_late_convoy"
+    ],
+    "q16k": [
+      "quests/lia_campaign_ingos_portal"
+    ],
+    "q17g": [
+      "quests/lia_campaign_gipat_healer",
+      "quests/lia_campaign_mid_gipat"
+    ],
+    "q17h": [
+      "quests/lia_campaign_early_suslanger"
+    ],
+    "q17j": [
+      "quests/lia_campaign_late_convoy"
+    ],
+    "q17k": [
+      "quests/lia_campaign_ingos_portal"
+    ],
+    "q17oh": [
+      "quests/lia_campaign_early_suslanger"
+    ],
+    "q18g": [
+      "quests/lia_campaign_gipat_palantir"
+    ],
+    "q18h": [
+      "quests/lia_campaign_early_suslanger"
+    ],
+    "q18j": [
+      "quests/lia_campaign_late_ending"
+    ],
+    "q18k": [
+      "quests/lia_campaign_ingos_portal"
+    ],
+    "q19g": [
+      "quests/lia_campaign_gipat_palantir"
+    ],
+    "q19h": [
+      "quests/lia_campaign_early_suslanger"
+    ],
+    "q19j": [
+      "quests/lia_kel_departures"
+    ],
+    "q19k": [
+      "quests/lia_campaign_ingos_portal"
+    ],
+    "q1g": [
+      "quests/lia_campaign_gipat_arrival"
+    ],
+    "q1h": [
+      "quests/lia_kel_prologue"
+    ],
+    "q1j": [
+      "quests/lia_campaign_late_arrival"
+    ],
+    "q1k": [
+      "quests/lia_campaign_mid_ingos"
+    ],
+    "q1r": [
+      "quests/lia_kel_prologue"
+    ],
+    "q20g": [
+      "quests/lia_campaign_gipat_palantir"
+    ],
+    "q20h": [
+      "quests/lia_campaign_early_suslanger"
+    ],
+    "q20j": [
+      "quests/lia_campaign_late_ending"
+    ],
+    "q20k": [
+      "quests/lia_campaign_ingos_portal"
+    ],
+    "q21g": [
+      "quests/lia_campaign_gipat_palantir"
+    ],
+    "q21h": [
+      "quests/lia_campaign_suslanger_departure"
+    ],
+    "q21j": [
+      "quests/lia_campaign_late_ending"
+    ],
+    "q21k": [
+      "quests/lia_campaign_ingos_portal"
+    ],
+    "q21oh": [
+      "quests/lia_campaign_suslanger_departure"
+    ],
+    "q22g": [
+      "quests/lia_campaign_gipat_palantir"
+    ],
+    "q22h": [
+      "quests/lia_campaign_suslanger_departure"
+    ],
+    "q22j": [
+      "quests/lia_campaign_late_ending"
+    ],
+    "q22oh": [
+      "quests/lia_campaign_suslanger_departure"
+    ],
+    "q23g": [
+      "quests/lia_campaign_gipat_palantir"
+    ],
+    "q23h": [
+      "quests/lia_campaign_suslanger_departure"
+    ],
+    "q24g": [
+      "quests/lia_campaign_gipat_palantir"
+    ],
+    "q24h": [
+      "quests/lia_campaign_suslanger_departure"
+    ],
+    "q25g": [
+      "quests/lia_campaign_gipat_departure"
+    ],
+    "q26g": [
+      "quests/lia_campaign_gipat_departure"
+    ],
+    "q27g": [
+      "quests/lia_campaign_gipat_departure"
+    ],
+    "q28g": [
+      "quests/lia_campaign_gipat_departure",
+      "quests/lia_campaign_mid_gipat"
+    ],
+    "q2g": [
+      "quests/lia_campaign_gipat_arrival"
+    ],
+    "q2h": [
+      "quests/lia_kel_early_story"
+    ],
+    "q2j": [
+      "quests/lia_campaign_late_arrival"
+    ],
+    "q2k": [
+      "quests/lia_campaign_mid_ingos"
+    ],
+    "q3g": [
+      "quests/lia_campaign_gipat_arrival"
+    ],
+    "q3h": [
+      "quests/lia_kel_early_story"
+    ],
+    "q3j": [
+      "quests/lia_campaign_late_arrival"
+    ],
+    "q3k": [
+      "quests/lia_campaign_mid_ingos"
+    ],
+    "q4g": [
+      "quests/lia_campaign_gipat_arrival"
+    ],
+    "q4h": [
+      "quests/lia_campaign_early_suslanger"
+    ],
+    "q4j": [
+      "quests/lia_campaign_late_arrival"
+    ],
+    "q4k": [
+      "quests/lia_campaign_mid_ingos"
+    ],
+    "q5g": [
+      "quests/lia_campaign_gipat_arrival"
+    ],
+    "q5h": [
+      "quests/lia_campaign_early_suslanger"
+    ],
+    "q5j": [
+      "quests/lia_campaign_late_arrival"
+    ],
+    "q5k": [
+      "quests/lia_campaign_mid_ingos"
+    ],
+    "q6g": [
+      "quests/lia_campaign_gipat_arrival"
+    ],
+    "q6h": [
+      "quests/lia_campaign_early_suslanger"
+    ],
+    "q6j": [
+      "quests/lia_campaign_late_arrival"
+    ],
+    "q6k": [
+      "quests/lia_campaign_ingos_investigation"
+    ],
+    "q7g": [
+      "quests/lia_campaign_gipat_settlements"
+    ],
+    "q7h": [
+      "quests/lia_campaign_early_suslanger"
+    ],
+    "q7j": [
+      "quests/lia_kel_handoffs"
+    ],
+    "q7k": [
+      "quests/lia_campaign_ingos_investigation"
+    ],
+    "q8g": [
+      "quests/lia_campaign_gipat_settlements"
+    ],
+    "q8h": [
+      "quests/lia_campaign_shaina"
+    ],
+    "q8j": [
+      "quests/lia_campaign_late_supplies"
+    ],
+    "q8k": [
+      "quests/lia_campaign_ingos_investigation"
+    ],
+    "q9g": [
+      "quests/lia_campaign_gipat_settlements"
+    ],
+    "q9h": [
+      "quests/lia_campaign_shaina"
+    ],
+    "q9j": [
+      "quests/lia_campaign_late_supplies"
+    ],
+    "q9k": [
+      "quests/lia_campaign_ingos_investigation"
+    ]
+  },
+  "dormant_quests": [
+    {
+      "quest": "q10h",
+      "reason": "Database-only record; no quest-variable reference in 130 decoded patched map scripts."
+    },
+    {
+      "quest": "fq1",
+      "reason": "One database reward row, but no reference in 130 map scripts, 186 briefing reward records or map markers."
+    },
+    {
+      "quest": "q01h",
+      "reason": "Dormant legacy branch: absent from quest database and briefing rewards. Only zone1 references it; its initializer already requires q01h=1. Map marker persists, while live prison escape starts q02h from zero. Fixture q01h=2 is prepared setup, not earned completion."
+    }
+  ],
+  "inner_objective_quests": {
+    "q.gz7d1.q3ag": "quests/lia_campaign_gipat_arrival",
+    "q.gz11d1.q16ag": "quests/lia_campaign_gipat_healer"
+  },
+  "limits": [
+    "Bounded chapter fixtures are not one continuous fresh-campaign save; listed earlier completed flags/topics/objects are prepared at each seam.",
+    "Quest points, rewards, items, subsequent topics and final ending under test come from installed authored handlers. Missing/dead inputs are separate restored branches; outcomes are not forced.",
+    "Helpers select and run named original root monitors, accelerating unrelated ambient scripts. Combat uses kill/nonlethal-HP cheats, walking/escort positions use teleport.",
+    "Several ordinary route boundaries are tested explicitly; other travel between maps is direct test entry. Root general map/UI matrix supplies separate exhaustive geometry/open-state coverage.",
+    "No exhaustive optional randomized/chest/shop/mercenary dialogue branch proof; no claim that every unmarked physical encounter was traversed.",
+    "Gipat Smith145a/145c order variant omitted; first-letter Smith126a route tested through completion, second-letter Smith126b acceptance tested independently before restoring the first-branch checkpoint.",
+    "Native original captures are selected controls, not a native replay of every quest in this manifest.",
+    "Pending stock final-battle saves with the exact earlier AddMob alias groups migrate without changing objective flags; previously awarded combat/quest completion is never rewound. No general mod migration is attempted."
+  ],
+  "map_exclusions": {
+    "dormant_edge": "gz21k_gz23dk has no active incoming passage",
+    "absent_selectable_assets": [
+      "mov1",
+      "cz3h",
+      "cz4h",
+      "gz17g",
+      "bz15g"
+    ]
+  },
+  "quest_database_audit": {
+    "decoded_database_sha256": "5ff0830114d5188cac8a80e1dc4175417657d4dd00932e45ec339c23562f673d",
+    "numbered_quest_reward_records": 119,
+    "mapped_to_case": 117,
+    "unmapped_dormant_records": [
+      "fq1",
+      "q10h"
+    ],
+    "note": "Mapping identifies tested quest/reward handlers, not all possible branch orders. Extra inner objectives and rescue dialogues need not have a separate database reward record. Generic barrels/chests and incidental loot are outside this numbered quest inventory."
+  }
+}

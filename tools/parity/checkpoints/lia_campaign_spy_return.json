@@ -1,0 +1,144 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz33j",
+ "fixture": {
+  "active_party": "ReturnProof",
+  "money": 0,
+  "parties": {
+   "ReturnProof": [
+    {
+     "name": "Hero",
+     "prototype": "Hero3"
+    }
+   ]
+  },
+  "setup": [
+   "GodMode(0,1)",
+   "RecalcMercBriefings()"
+  ]
+ },
+ "from_zone": "bz32j",
+ "note": "Native before save is inside spy settlement bz32j after actual world-map settlement entry. Ordinary left-click movement reaches its only exit (brief scene leaves without a confirmation dialog), then actual world-map click on Dar-Ulgorn opens the three-arrow map. Selected third (right-side middle) arrow and confirmed; native loads gz33j. Setup prepares z.gz33j,z.gz33j_bz32j,z.bz32j=2 and clean one-Hero party. No measured travel command or destination outcome assigned. Intermediate menu was opened and dismissed while finding the exit; it did not change gameplay.",
+ "observations_after": {
+  "cp_mercs": 0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_mercs": 0,
+  "money": 0
+ },
+ "probes": {
+  "cp_mercs": "GetMercsNumber(0)"
+ },
+ "provenance": {
+  "after": {
+   "bz32j.sav": "734e14940cf081168fd601a1b86fc1de6e60a7178fb5525145529f466cfe43c5",
+   "cz4j.sav": "c48b34923f40a7a959f16ffc44901d65801145f96a262e48b0f4110fac84dd18",
+   "gz35j.sav": "7f16240188692f8e64a17dd49c38114150dcaeb86d757068131e9ccb75007252",
+   "gz36j.sav": "d92b4db49e4796ed66c6c19c7e80a09c0fbd018bb60432d5c5df295cefc675d5",
+   "info.sav": "2d3203faa246a18123fbba4323f750f8f9f39513aebad5f1880062d185318c3d",
+   "mission.sav": "6a312ebe5b20585eee0eff04307ac4ab47f13b65bbf9a45146079d2157216d99",
+   "scenario.sav": "6b2dddc159f15eea06c115d19f4e7c396e4b48e594f53444867c1382557431f3",
+   "shot.sav": "1bb14cfb7ebbf03ac06f5aae57009bd2b873052f114741ca44c8771408ef6c49"
+  },
+  "before": {
+   "bz32j.sav": "4541bddacfa1bd351a3431f51cadccfc530366e25ffa4ff691bfe03ac8dd3461",
+   "cz4j.sav": "c48b34923f40a7a959f16ffc44901d65801145f96a262e48b0f4110fac84dd18",
+   "gz35j.sav": "7f16240188692f8e64a17dd49c38114150dcaeb86d757068131e9ccb75007252",
+   "gz36j.sav": "d92b4db49e4796ed66c6c19c7e80a09c0fbd018bb60432d5c5df295cefc675d5",
+   "info.sav": "d583550e9bcfbbebc456ad15f63dfa9e136a8ac5bc76bfbabcd5f5aaa667590d",
+   "mission.sav": "b37c0f22dea4ee03e14bf24ef15245787e95580135a9021d96087db48a8ec432",
+   "scenario.sav": "3f7ad11a6fa54b8a1597ceea486b055d5918ed1d1b7cad08f485621c8e7cfb0b",
+   "shot.sav": "4ebdc40a7a2f03da20a3d1780b8f1bbdd7ba92800e631dad1ca167a246d4cff0"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "destination": "gz33j",
+   "entrance": "3",
+   "leave": "1"
+  },
+  {
+   "script": "GodMode(0,1)"
+  },
+  {
+   "script": "RecalcMercBriefings()"
+  }
+ ],
+ "vars_after": {
+  "b.Firez.brief_349": 2.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_final1": 1.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz35j.q17j": 2.0,
+  "q.gz35j.q21j": 1.0,
+  "q.gz35j.q21j.1": 2.0,
+  "q.gz35j.q21j.2": 1.0,
+  "q.gz36j.q22j": 1.0,
+  "q.gz36j.q22j.1": 2.0,
+  "q.gz36j.q22j.2": 1.0,
+  "start_zone33": 1.0,
+  "z.bz32j": 2.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z.gz33j": 2.0,
+  "z.gz33j_bz32j": 2.0,
+  "z.gz34j_gz35j": 1.0,
+  "z1d1": 1.0
+ },
+ "vars_before": {
+  "b.Firez.brief_349": 2.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_final1": 1.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz35j.q17j": 2.0,
+  "q.gz35j.q21j": 1.0,
+  "q.gz35j.q21j.1": 2.0,
+  "q.gz35j.q21j.2": 1.0,
+  "q.gz36j.q22j": 1.0,
+  "q.gz36j.q22j.1": 2.0,
+  "q.gz36j.q22j.2": 1.0,
+  "z.bz32j": 2.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z.gz33j": 2.0,
+  "z.gz33j_bz32j": 2.0,
+  "z.gz34j_gz35j": 1.0,
+  "z1d1": 1.0
+ },
+ "zone": "bz32j"
+}

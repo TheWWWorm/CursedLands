@@ -89,7 +89,10 @@ func _parse(text: String) -> void:
 					exit = {}
 				"exit":
 					exit = {}
-					cur.exits[int(w[1])] = exit
+					# Native LiA 0x43a1a0 appends each record and ignores
+					# the label after #exit. gz33j repeats label 2; using
+					# it as a key erased its western route and entrance 3.
+					cur.exits[cur.exits.size() + 1] = exit
 				"cage":
 					# zone record; the village screen
 					# copies it to to choose dialog actor placement.

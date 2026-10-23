@@ -27,8 +27,11 @@ GODOT=/path/to/godot-4 PYTHON=/path/to/parity-venv/bin/python \
   tools/parity/run_lia_quests.sh /path/to/NEW-evidence-directory
 ```
 
-This runs all `lia_kel_` gameplay cases, the interaction-callback regression,
-and every `lia_` native checkpoint. Each native checkpoint is replayed twice in
+This runs all `lia_kel_` and `lia_campaign_` gameplay cases, the existing
+arrival, Revenge, Slave Lists return and tomb-exit regressions, the
+interaction-callback regression, and every `lia_` native checkpoint.
+The campaign cases include late Jigran through the ending and all four region
+maps. Each native checkpoint is replayed twice in
 fresh profiles. The directory must not exist: previous evidence is never
 silently replaced. The gameplay report and native checkpoint report have
 separate results and scopes. A nonzero exit means a failed check or capture.
@@ -102,7 +105,8 @@ evidence; a remake failure alone is never a reason to change the oracle.
 | `talk <npc> <topic>` | Open the ordinary NPC topic list, select the topic and finish the conversation. |
 | `use <object-id>` | Issue the ordinary use command and wait for the mechanism state to change. |
 | `enter <zone>` | First step only; restore the before variables in the destination and include its entry script in the measured delta. This is a cheat entry, not a travel-route test. |
-| `leave <exit-id> <zone>` | Teleport the party to the exit, require availability and normal confirmation, then execute the normal transfer and verify the destination. |
+| `leave <exit-id> <zone>` | Teleport the party to the exit, require availability and the normal confirmation when applicable, then execute the normal transfer and verify the destination. Village exits follow their ordinary immediate departure. |
+| `leave <exit-id> <zone> <entrance>` | Also open the ordinary destination panel on the travel map, require the recorded entrance to be offered, select its arrow and confirm. Verify both the loaded destination and arrival number. |
 | `script <expression>` | Execute the same explicit original-console operation. State clearly when this bypasses physical interaction or combat. |
 | `wait <seconds>` | Advance simulation for the recorded watcher delay, at most 300 seconds per step. |
 | `reload` | Save and reload the remake before continuing; use for continuation checks whose original result is independently recorded. |
@@ -192,5 +196,7 @@ patched-1.02 reference without a fresh recording. A previously visited native
 zone includes persisted actor/lever state, so do not treat it as a fresh-entry
 fixture without reconstructing and checking that state.
 
-The [LiA qualification report](validation/lia-kel-checkpoints-2026-10-23.md)
-lists coverage, intentional passability repairs and remaining differences.
+The [initial LiA qualification](validation/lia-kel-checkpoints-2026-10-23.md) and
+[whole-campaign extension](validation/lia-campaign-checkpoints-2026-10-23.md)
+list coverage, prepared checkpoint seams, passability repairs and remaining
+differences.

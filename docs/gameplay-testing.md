@@ -1,7 +1,7 @@
 # Gameplay regression suite
 
-`tools/parity/gameplay.py` runs 334 registered test configurations across 19
-areas, using 258 scripts. It combines existing regression programs with item,
+`tools/parity/gameplay.py` runs 354 registered test configurations across 19
+areas, using 278 scripts. It combines existing regression programs with item,
 effect, theft, crafting, side-quest, localization and travel boundary tests.
 A registration selects a script, campaign
 and arguments; some scripts are exercised in both campaigns or in several
@@ -13,17 +13,21 @@ the independent [original-executable suite](original-parity.md).
 The reports keep those two kinds of evidence separate.
 
 The [LiA quest checkpoint command](original-checkpoints.md#run-the-lia-quest-checks)
-combines ten focused gameplay programs with independently recorded patched-original
-saves. It covers the prologue, early Portal and torch cellar, all three Rod of
-Life fragments, chapter handoffs, Кель's death and rescue, missing prerequisites,
-and save/reload continuation. Repeated `--case` filters combine selections.
+combines 34 selected gameplay programs with independently recorded
+patched-original saves, including the existing interaction/return regressions. It covers
+the numbered LiA campaign route through the ending, early Portal and torch
+cellar, all three Rod of Life fragments, Кель's death and rescue, route gates,
+map points, missing prerequisites and save/reload continuation. The
+[campaign qualification](validation/lia-campaign-checkpoints-2026-10-23.md)
+records prepared chapter seams, native comparisons and their limits. Repeated
+`--case` filters combine selections.
 
 ## Run
 
 Requirements: Linux, Python 3.11+, Godot 4.7, and owned base-game and Lost in
 Astral installations. The regression runner itself uses only Python's standard
 library. The 58 rendered configurations also require an explicitly selected
-private X display, such as Xvfb; the other 276 run headlessly.
+private X display, such as Xvfb; the other 296 run headlessly.
 The optional original comparison additionally requires
 `tools/parity/requirements.txt` in the Python environment.
 
@@ -98,7 +102,7 @@ asset roots, and each process confirms the campaign it actually loaded.
 
 | Area | Programs | Examples |
 |---|---:|---|
-| Quests | 48 | Predicates, triggers, traps, numeric precision, wait timing and old/new save continuity in both campaigns, area save compatibility, quest items, rewards, actor removal, group levers, chapter transitions, captivity and escape, Catacombs, dragon timers, all 28 installed base side-quest archives, and the LiA prologue/three-fragment/Kel-rescue route |
+| Quests | 68 | Predicates, triggers, traps, numeric precision, wait timing and old/new save continuity in both campaigns, area save compatibility, quest items, rewards, actor removal, group levers, chapter transitions, captivity and escape, Catacombs, dragon timers, all 28 installed base side-quest archives, and the LiA campaign through its ending, map-point matrix, three-fragment/Kel-rescue route and pending final-battle save repair |
 | Creatures | 12 | AI sleep/wake eligibility, senses, reaction recipients, witnessed attacks, hostility snapshots, authored creature spell damage, actor lifetime, peasant help and registry queries |
 | Animation | 18 | Attack clips across both campaigns' creatures, gait continuity, moving attacks/casts, rendered first-person shadows, initial and loaded paused poses, original dialogue poses on peers and attack stance |
 | Effects | 14 | Model attachment points and projectile origins in both campaigns, delayed effects, pause/lifetime/teardown, repeated spells, healing, fire and tornado particle kernels, exact duration boundaries and overlapping status expiry |

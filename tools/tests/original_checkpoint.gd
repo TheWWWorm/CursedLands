@@ -127,7 +127,7 @@ func use(s: Session, g: Game, nid: int) -> void:
 
 ## Teleport only to skip walking. Availability, deliberate exit click,
 ## confirmation and transfer all use the ordinary campaign routes.
-func leave(s: Session, g: Game, id: int, destination: String) -> void:
+func leave(s: Session, g: Game, id: int, destination: String, entrance := -1) -> void:
 	var ex: Dictionary = s.world.zone.get("exits", {}).get(id, {})
 	check(ex.has("remove"), "recorded exit exists")
 	if not ex.has("remove"): return
@@ -139,12 +139,29 @@ func leave(s: Session, g: Game, id: int, destination: String) -> void:
 		hero.resync_drawn()
 	s._arm_exit(0, center, true, id)
 	s._check_exits()
-	check(MessageBox.is_up(g.hud._leave_box), "ordinary exit offers confirmation")
-	s.apply_command({"t":"leave_exit", "exit":id}, 0)
+	if s.world.zone.get("type", "") != "brief":
+		check(MessageBox.is_up(g.hud._leave_box), "ordinary exit offers confirmation")
+		if not MessageBox.is_up(g.hud._leave_box): return
+		g.hud._leave_box._answer(true)
+	if entrance >= 0:
+		await get_tree().process_frame
+		var maps := g.hud._travel.get_children().filter(func(node):return node is TravelMap and not node.is_queued_for_deletion())
+		check(s.map_open and maps.size() == 1,"recorded exit opens its ordinary travel map")
+		if not s.map_open or maps.size() != 1: return
+		var map: TravelMap = maps[0]
+		var panel := map.open_objectives(destination)
+		var chosen := -1
+		for i in panel.entrances.size():
+			if panel.entrances[i].n == entrance and panel.entrances[i].ok: chosen = i
+		check(chosen >= 0,"recorded map route offers the requested arrival")
+		if chosen < 0: return
+		panel.press(["entrance",chosen]); panel.press(["ok"])
 	for i in 1800:
 		await get_tree().process_frame
 		if s.zone_id == destination and not s.loading_game: break
 	check(s.zone_id == destination and not s.loading_game, "confirmed exit reaches " + destination)
+	if entrance >= 0:
+		check(s._lmp_entrance == entrance,"map travel preserves its selected arrival")
 	freeze(s)
 
 ## Let the zone run for `seconds` of game time, playing any conversation that
@@ -177,7 +194,7 @@ func perform(s: Session, g: Game, step: Dictionary) -> void:
 	elif step.has("wait"):
 		await settle(s, g, float(step.wait))
 	elif step.has("leave"):
-		await leave(s, g, int(step.leave), String(step.destination))
+		await leave(s, g, int(step.leave), String(step.destination), int(step.get("entrance",-1)))
 	elif step.has("reload"):
 		check(s.save_game("checkpoint-reload") == OK, "checkpoint saves before replay continuation")
 		check(await s.load_game_shown("checkpoint-reload"), "checkpoint reloads before replay continuation")

@@ -1,0 +1,172 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz36j",
+ "fixture": {
+  "active_party": "FinalProof",
+  "money": 0,
+  "parties": {
+   "FinalProof": [
+    {
+     "name": "Hero",
+     "prototype": "Hero3"
+    },
+    {
+     "name": "merc2",
+     "prototype": "merc2"
+    }
+   ]
+  },
+  "setup": [
+   "GodMode(0,1)",
+   "RecalcMercBriefings()"
+  ],
+  "setup_steps": [
+   {
+    "wait": 2
+   },
+   {
+    "script": "SwitchLeverState(GetObject(1022101),1)"
+   },
+   {
+    "wait": 1.2
+   },
+   {
+    "script": "KillUnit(GetObject(1022001))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022002))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022003))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022004))"
+   },
+   {
+    "script": "SwitchLeverState(GetObject(1022102),1)"
+   },
+   {
+    "wait": 1.2
+   },
+   {
+    "script": "KillUnit(GetObject(1022005))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022006))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022007))"
+   },
+   {
+    "script": "KillUnit(GetObject(1022008))"
+   },
+   {
+    "script": "SetCPFast(GetUnitOfPlayer(0,0),65.769,32.027,0)"
+   },
+   {
+    "script": "SetCPFast(GetUnitOfPlayer(0,1),66.769,33.027,0)"
+   }
+  ]
+ },
+ "from_zone": "gz36j",
+ "note": "Actual native left-click control obelisk3; all preceding obelisks used normally in native. Explicit fixture recreates prior physical lever states, removes already spawned combat guards, and places party beside measured object. Quest objective advances only from measured normal use.",
+ "observations_after": {
+  "cp_final3": 1.0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_final3": 0,
+  "money": 0
+ },
+ "probes": {
+  "cp_final3": "GetLeverState(GetObject(1022103))"
+ },
+ "provenance": {
+  "after": {
+   "cz4j.sav": "c48b34923f40a7a959f16ffc44901d65801145f96a262e48b0f4110fac84dd18",
+   "info.sav": "4e95f0ece10121a8b85f46f2239dd9592755691453c315e5f42842c2a30f2276",
+   "mission.sav": "9a671c2a368cc2a8830953a5615037370148602c530c0dd0940e8f16c85c5206",
+   "scenario.sav": "36bfcdc2d49c1b37c57da27fa7c2a25eb7c0b3458ca9f379fccecba0a9c703f5",
+   "shot.sav": "a3557f0520a6c2555313284eb5871459cfeb65bf0e17e0ab6ff323f6453bd998"
+  },
+  "before": {
+   "cz4j.sav": "c48b34923f40a7a959f16ffc44901d65801145f96a262e48b0f4110fac84dd18",
+   "info.sav": "1e4d7e2cf5637df50d455b41f5541e3ec4a5231f6237f7d2ff1ceb3c90f20745",
+   "mission.sav": "e333fa14964fdcef8f4de07c121ed0aeecd74bf4ba787fa9ebc0cd65fc6a8ea3",
+   "scenario.sav": "e3f1d672899d7bab19e48b13fa417ce12f436e6043e101ba29710181bb165b38",
+   "shot.sav": "ba904e69130b6aa10c131348754b459432c741c4a12062d99daa82bbad14035a"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "use": "1022103"
+  },
+  {
+   "wait": "3"
+  }
+ ],
+ "vars_after": {
+  "b.Firez.brief_349": 2.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_final1": 1.0,
+  "cp_final2": 1.0,
+  "cp_mercs": 1.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz36j.q22j": 1.0,
+  "q.gz36j.q22j.1": 2.0,
+  "q.gz36j.q22j.2": 2.0,
+  "q.gz36j.q22j.3": 2.0,
+  "q.gz36j.q22j.4": 1.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z1d1": 1.0
+ },
+ "vars_before": {
+  "b.Firez.brief_349": 2.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_final1": 1.0,
+  "cp_final2": 1.0,
+  "cp_mercs": 1.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz36j.q22j": 1.0,
+  "q.gz36j.q22j.1": 2.0,
+  "q.gz36j.q22j.2": 2.0,
+  "q.gz36j.q22j.3": 1.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z1d1": 1.0
+ },
+ "zone": "gz36j"
+}
