@@ -104,10 +104,12 @@ static var _quad: QuadMesh
 var _bones := {}             # unit instance id -> {model: instance id, parts: {name: Node3D}}
 var _boxes := {}             # unit instance id -> [tick, AABB] (unit local, Godot space)
 var _zone_set := false
-## Zone exit stars: [Effect, GS var "z.<target>"] per exit (the original's list).
+## Zone exit stars: [Effect, GS var "z.<target>", exit number].
 var _exit_fx: Array = []
 ## GS var reader (player 0) set by Game: key -> value.
 var gs_var: Callable
+## The game's passage predicate includes narrowly recognized story repairs.
+var exit_open: Callable
 ## Particles drawn last frame (tools/fx_test.gd reports it).
 var drawn := 0
 ## Native figure creation (667e80) adds 204d to every world wisp. Registry
@@ -1749,7 +1751,7 @@ func setup_zone() -> void:
 		var ef := spawn(0x2038, _ground_pt(c.x, c.y), 1.0, null,
 			{"k118": r.size.x * 0.5, "k11c": r.size.y * 0.5, "k120": 1.0, "k124": 0.0, "prewarm": 20})
 		if ef:
-			_exit_fx.append([ef, LmpMode.exit_var(String(ex.to).to_lower())])
+			_exit_fx.append([ef, LmpMode.exit_var(String(ex.to).to_lower()), n])
 	exit_colours()   #  ends, after the prewarm
 	for node in world.objects.values():
 		if not is_instance_valid(node) or not node.has_meta("ei"):
@@ -1780,7 +1782,8 @@ func exit_colours() -> void:
 		return
 	for x in _exit_fx:
 		var ef: Effect = x[0]
-		ef.e.v130 = Vector3(1.0 if float(gs_var.call(x[1])) == 1.0 else 0.0, 0.0, 0.0)
+		var open := bool(exit_open.call(x[2])) if exit_open.is_valid() else float(gs_var.call(x[1])) != 1.0
+		ef.e.v130 = Vector3(0.0 if open else 1.0, 0.0, 0.0)
 
 
 ## Script builtins (event "fxcmd": f, a), vm.gd and neighbours.

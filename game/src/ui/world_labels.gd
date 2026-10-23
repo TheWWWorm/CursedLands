@@ -166,7 +166,8 @@ func entries() -> Array:
 	for n in exits:
 		var ex: Dictionary = exits[n]
 		var to := String(ex.get("to", "none")).to_lower()
-		if to == "none" or not ex.has("area") or s.state.get_var(0, "z." + to) == 1.0:
+		var open := s._exit_is_open(n) if s.lmp.is_empty() else s.state.get_var(0,"z."+to) != 1.0
+		if to == "none" or not ex.has("area") or not open:
 			continue
 		var c := Rect2(ex.area).get_center()
 		if not _near(eyes, c, fog):

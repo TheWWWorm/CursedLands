@@ -970,6 +970,7 @@ func _call(name: String, a: Array, inst: Instance):
 		"RemoveUnitFromServer", "RemoveObjectFromServer":
 			var u := _unit(v[0])
 			if u:
+				preload("res://src/game/script/story_astral_kel.gd").before_remove(self, inst.sname, u)
 				world.remove_unit(u)
 				session.broadcast({"t": "remove", "uid": u.uid})
 			# Looted actors are retained off-tree for WasLooted/IsDead and
@@ -1953,6 +1954,18 @@ func recalc_merc_briefings() -> void:
 		for n in st.mercs:
 			if _merc_of(int(n), p) and st.get_var(0, "adeadn%d" % int(n)) < 1.0:
 				hired += 1
+		# LiA's named parties contain companions directly in the hero
+		# roster. Native 4e9bc0 tests that current roster, not only the
+		# separately recruited mercenary records used by the base campaign.
+		var named_mercs := {}
+		var roster: Array = st.heroes.get(p, [])
+		for slot in roster.size():
+			var h: Dictionary = roster[slot]
+			var name := String(h.get("unit_name", "")).to_lower()
+			if name.begins_with("merc") and name.substr(4).is_valid_int():
+				named_mercs[name.substr(4).to_int()] = true
+			if slot > 0 and not h.get("dead", false) and float(h.get("hp", -1.0)) != 0.0:
+				hired += 1
 		for i in range(1, 11):
 			var b := func(k: int) -> String: return "b.merc%d.n%d_%d" % [i, k, i]
 			var getv := func(k: String) -> float: return st.get_pvar(p, k)
@@ -1965,7 +1978,7 @@ func recalc_merc_briefings() -> void:
 				# topics in this player's view, even outside its home village.
 				for k in [8, 1, 2, 3, 9, 10]:
 					setv.call(b.call(k), 0.0)
-			elif _merc_of(i, p):
+			elif _merc_of(i, p) or named_mercs.has(i):
 				setv.call(b.call(8), 0.0)
 				setv.call(b.call(1), 0.0)
 				setv.call(b.call(3), 0.0)

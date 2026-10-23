@@ -3,6 +3,52 @@ extends RefCounted
 const P := preload("res://src/game/script/script_parser.gd")
 
 
+## The stock Portal torch opens its cellar before q6 opens the Portal's
+## global-map region. Both original return passages then test that same
+## region flag and trap the party. This is an intentional repair to the
+## original's passability, not a change to its quest or map progression.
+## Recognize both scripts and the complete two-way passage contract; never
+## open an unrelated/custom gate, and do not write a flag into old saves.
+const PORTAL_SCRIPT := "56c682a2d9df4a81d2a18cde60bf59e60c69e6576ee648b7564a3ba084770020"
+const PORTAL_CELLAR_SCRIPT := "78ae064ad6e60b696b09c836de9a8837bcfd7a44a7f84a57a7bdbb1551f107d2"
+const PORTAL_CELLAR_META := &"portal_cellar_sources"
+
+static func portal_cellar_return_open(s: Session, number: int) -> bool:
+	if s.state.campaign_id != CampaignProfile.ASTRAL or not s.lmp.is_empty() \
+			or s.zone_id != "gz1d1" or s.world == null or s.world.mob == null \
+			or not number in [1,2] or s.state.get_var(0,"z.gz1d1") != 2.0: return false
+	var cellar := s.world.zone
+	var portal := s.campaign.zone("gz1h")
+	if cellar.get("id","") != "gz1d1" or cellar.get("mob","") != "zone1dun1" \
+			or cellar.get("type","") != "game" or portal.get("mob","") != "zone1" \
+			or cellar.get("exits",{}).size() != 2: return false
+	for link: Array in [[1,6,Rect2(16.5,18.5,5,3.5),Rect2(87,77.5,2.5,4.5)],
+			[2,7,Rect2(23,82,3.7,4),Rect2(108,108,5,5)]]:
+		if not _portal_cellar_link(cellar.exits.get(link[0],{}),"gz1h",link[1],link[2]) \
+				or not _portal_cellar_link(portal.get("exits",{}).get(link[1],{}),"gz1d1",link[0],link[3]): return false
+	# Source recognition is per loaded world (including a restored old save),
+	# so the hover/label checks never parse a map on every frame. A different
+	# loaded script or data root invalidates it; no cache is saved or synced.
+	var cached: Dictionary = s.world.get_meta(PORTAL_CELLAR_META,{})
+	var source := s.world.mob.script_text
+	if cached.get("root","") != GameData.root or cached.get("revision",-1) != ModStore.data_revision \
+			or cached.get("cellar","") != source:
+		var outer := EIMob.load_bytes(GameData.read_file("maps/zone1.mob"))
+		cached = {"root":GameData.root,"revision":ModStore.data_revision,"cellar":source,
+			"match":_portal_cellar_sources_match(source,outer.script_text)}
+		s.world.set_meta(PORTAL_CELLAR_META,cached)
+	return cached.get("match",false)
+
+static func _portal_cellar_sources_match(cellar: String, portal: String) -> bool:
+	return cellar.sha256_text() == PORTAL_CELLAR_SCRIPT and portal.sha256_text() == PORTAL_SCRIPT
+
+static func _portal_cellar_link(ex: Dictionary, to: String, entrance: int, rect: Rect2) -> bool:
+	return ex.get("to","") == to and ex.get("to_exit",-1) == entrance \
+		and ex.get("remove",Rect2()).is_equal_approx(rect) \
+		and ex.get("deploy",Rect2()).is_equal_approx(rect) \
+		and ex.get("area",Rect2()).is_equal_approx(rect)
+
+
 ## Earlier saves could retain the activated tunnel golem with Guard's
 ## calm behaviour but no combat motivations. Idle/deactivated and custom
 ## motivation lists are deliberately left alone.

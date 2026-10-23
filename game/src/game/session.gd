@@ -1777,7 +1777,8 @@ func _exit_is_open(n: int, player := -1) -> bool:
 	if to.to_lower() == "none":
 		return false
 	var key := LmpMode.exit_var(to) if not lmp.is_empty() else "z." + to.to_lower()
-	return state.get_var(0, key) != 1.0
+	return state.get_var(0, key) != 1.0 or \
+		preload("res://src/game/script/story_compat.gd").portal_cellar_return_open(self,n)
 
 
 func _exit_at(at: Vector2) -> int:
@@ -1880,7 +1881,7 @@ func _alone_exit_check() -> void:
 				break
 			n = e
 			any = true
-		if n >= 0 and state.get_var(0, "z." + String(world.zone.exits[n].get("to", "none")).to_lower()) == 1.0:
+		if n >= 0 and not _exit_is_open(n,idx):
 			n = -1
 		if n < 0 or n == lp_exit:
 			_alone_exit.erase(idx)
@@ -1950,7 +1951,7 @@ func _party_exit() -> int:
 		if e < 0 or (n >= 0 and e != n):
 			return -1
 		n = e
-	if n >= 0 and state.get_var(0, "z." + String(world.zone.exits[n].get("to", "none")).to_lower()) == 1.0:
+	if n >= 0 and not _exit_is_open(n,lp):
 		return -1
 	return n
 

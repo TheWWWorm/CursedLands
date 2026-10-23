@@ -1,0 +1,104 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz1h",
+ "fixture": {
+  "active_party": "EarlyProof",
+  "money": 0,
+  "parties": {
+   "EarlyProof": [
+    {
+     "name": "Hero",
+     "prototype": "Hero3"
+    },
+    {
+     "name": "merc2",
+     "prototype": "merc2"
+    }
+   ]
+  },
+  "setup": [
+   "GodMode(0,1)",
+   "RecalcMercBriefings()"
+  ]
+ },
+ "from_zone": "gz1h",
+ "note": "Original accepted fq2 with early main quest state prepared. Combat cheat kills actual Raja object; measured script watches death and completes quest. No quest outcome assignment. Native RecalcMercBriefings() executed before baseline to normalize stale generic mercenary-topic flags; recorded as fixture setup.",
+ "observations_after": {
+  "cp_mercs": 1.0,
+  "cp_raja_alive": 0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_mercs": 1.0,
+  "cp_raja_alive": 1.0,
+  "money": 0
+ },
+ "probes": {
+  "cp_mercs": "GetMercsNumber(0)",
+  "cp_raja_alive": "IsAlive(GetObject(1140714))"
+ },
+ "provenance": {
+  "after": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "info.sav": "1bed186db3c152fa950eb23eebfbc01c688bd5da6f6d41f6a2c8256f509613fa",
+   "mission.sav": "741f8ad29588c990a35dc418dfa6012a6465d3888a6feca99f592159515245e2",
+   "scenario.sav": "6d6fb7899f21e3e6d502ac72c9cbe4eca6209e0be29b273235a5efd9f423f44a",
+   "shot.sav": "030dc2751188190bc442d0b8696187518f2a7671de5b97d78d1a20795cff0220"
+  },
+  "before": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "info.sav": "93776f77eff75db2ea4a580e0f60777a706eafb7c87313697adb2f675c4aaeb4",
+   "mission.sav": "8093502e166eac18181a40c5cbcabad98da000d9b5acdeb14aa6d73c24202f65",
+   "scenario.sav": "f4b3d5c94741c45399496b51c99348644af6cc115417b543273e00da067e8dc9",
+   "shot.sav": "1e76896f44b2069276d53c9364e6e4e5c6e304538e8b824790afd2a3b579b94e"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "script": "KillUnit(GetObject(1140714))"
+  },
+  {
+   "wait": "2"
+  }
+ ],
+ "vars_after": {
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "q.gz1h.fq2": 2.0,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "z.gz1d1": 1.0,
+  "z.gz1h": 1.0
+ },
+ "vars_before": {
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "z.gz1d1": 1.0,
+  "z.gz1h": 1.0
+ },
+ "zone": "gz1h"
+}

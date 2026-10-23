@@ -1,0 +1,712 @@
+{
+  "schema": 1,
+  "date": "2026-10-23",
+  "base_commit": "3431b92599c1ed8a9f27d71616fec13d82a99fce",
+  "branch": "test/lia-kel-checkpoints-20261023",
+  "local_evidence_root": "/home/llm2x/Documents/EI/local/scratchpad/lia-kel-checkpoints-20261023",
+  "scope": "Bounded LiA prologue/fragment/death/rescue checkpoints. No uninterrupted full campaign, exhaustive quest graph, general native inventory, audiovisual, co-op or platform equivalence claim.",
+  "gameplay": {
+    "programs": [
+      {
+        "id": "quests/lia_kel_early_story",
+        "checks": 122,
+        "failures": 0,
+        "status": "passed",
+        "script": "tools/tests/lia_kel_early_story.gd",
+        "campaign": "lost_in_astral",
+        "evidence_directory": "final-early-torch",
+        "report_sha256": "6a50bda88a064e490432c4f8930fe46cde0d51892754802aced6188aefc67f58",
+        "log": "tests/quests/lia_kel_early_story/run.log",
+        "runtime_source_sha256": "3e8767807ee593c6aff8289af9588c4fd056e22c4ea4c423d1d95fb55ccf5f2b"
+      },
+      {
+        "id": "quests/lia_kel_torch_cellar",
+        "checks": 71,
+        "failures": 0,
+        "status": "passed",
+        "script": "tools/tests/lia_kel_torch_cellar.gd",
+        "campaign": "lost_in_astral",
+        "evidence_directory": "remake-review-guards-01",
+        "report_sha256": "23dc7393f1d99b30250beb2cb2c9b94997c35e28b0c0f107d2fc7cb0ea9584d7",
+        "log": "tests/quests/lia_kel_torch_cellar/run.log",
+        "runtime_source_sha256": "fb6654eed0f601e98d9ef7a69490a325b2b75055e87dbe4b9ac7cc5b68e8533d"
+      },
+      {
+        "id": "commands/use_callback_orders",
+        "checks": 27,
+        "failures": 0,
+        "status": "passed",
+        "script": "tools/tests/use_callback_orders.gd",
+        "campaign": "cursed_lands",
+        "evidence_directory": "final-early-torch",
+        "report_sha256": "6a50bda88a064e490432c4f8930fe46cde0d51892754802aced6188aefc67f58",
+        "log": "tests/commands/use_callback_orders/run.log",
+        "runtime_source_sha256": "3e8767807ee593c6aff8289af9588c4fd056e22c4ea4c423d1d95fb55ccf5f2b"
+      },
+      {
+        "id": "quests/lia_kel_prologue",
+        "checks": 152,
+        "failures": 0,
+        "status": "passed",
+        "script": "tools/tests/lia_kel_prologue.gd",
+        "campaign": "lost_in_astral",
+        "evidence_directory": "final-early-torch",
+        "report_sha256": "6a50bda88a064e490432c4f8930fe46cde0d51892754802aced6188aefc67f58",
+        "log": "tests/quests/lia_kel_prologue/run.log",
+        "runtime_source_sha256": "3e8767807ee593c6aff8289af9588c4fd056e22c4ea4c423d1d95fb55ccf5f2b"
+      },
+      {
+        "id": "quests/lia_kel_suslanger",
+        "checks": 106,
+        "failures": 0,
+        "status": "passed",
+        "script": "tools/tests/lia_kel_suslanger.gd",
+        "campaign": "lost_in_astral",
+        "evidence_directory": "remake-final-fragments-01",
+        "report_sha256": "058dea7a6edc99c81441781b4806be2b8fb884dabad33d5fd3da1d952e1d4b96",
+        "log": "tests/quests/lia_kel_suslanger/run.log",
+        "runtime_source_sha256": "1ed8e5b32e22e757c177f0a84682cd1d5a8ef8269421ac5181117f98853a8665"
+      },
+      {
+        "id": "quests/lia_kel_gipat",
+        "checks": 114,
+        "failures": 0,
+        "status": "passed",
+        "script": "tools/tests/lia_kel_gipat.gd",
+        "campaign": "lost_in_astral",
+        "evidence_directory": "remake-final-fragments-01",
+        "report_sha256": "058dea7a6edc99c81441781b4806be2b8fb884dabad33d5fd3da1d952e1d4b96",
+        "log": "tests/quests/lia_kel_gipat/run.log",
+        "runtime_source_sha256": "1ed8e5b32e22e757c177f0a84682cd1d5a8ef8269421ac5181117f98853a8665"
+      },
+      {
+        "id": "quests/lia_kel_ingos",
+        "checks": 149,
+        "failures": 0,
+        "status": "passed",
+        "script": "tools/tests/lia_kel_ingos.gd",
+        "campaign": "lost_in_astral",
+        "evidence_directory": "remake-final-fragments-01",
+        "report_sha256": "058dea7a6edc99c81441781b4806be2b8fb884dabad33d5fd3da1d952e1d4b96",
+        "log": "tests/quests/lia_kel_ingos/run.log",
+        "runtime_source_sha256": "1ed8e5b32e22e757c177f0a84682cd1d5a8ef8269421ac5181117f98853a8665"
+      },
+      {
+        "id": "quests/lia_kel_rescue",
+        "checks": 142,
+        "failures": 0,
+        "status": "passed",
+        "script": "tools/tests/lia_kel_rescue.gd",
+        "campaign": "lost_in_astral",
+        "evidence_directory": "remake-rescue-synchronized-02",
+        "report_sha256": "61abccc0812dc9e6756297df4134a5a51be3a3349ad8b1f1fcde87207c4e1675",
+        "log": "tests/quests/lia_kel_rescue/run.log",
+        "runtime_source_sha256": "28f8c61d5135ae4e9ec7999ffdd96214b7cae0986031fed2d23897279e83a839"
+      },
+      {
+        "id": "quests/lia_kel_departures",
+        "checks": 84,
+        "failures": 0,
+        "status": "passed",
+        "script": "tools/tests/lia_kel_departures.gd",
+        "campaign": "lost_in_astral",
+        "evidence_directory": "remake-review-guards-01",
+        "report_sha256": "23dc7393f1d99b30250beb2cb2c9b94997c35e28b0c0f107d2fc7cb0ea9584d7",
+        "log": "tests/quests/lia_kel_departures/run.log",
+        "runtime_source_sha256": "fb6654eed0f601e98d9ef7a69490a325b2b75055e87dbe4b9ac7cc5b68e8533d"
+      },
+      {
+        "id": "quests/lia_kel_handoffs",
+        "checks": 95,
+        "failures": 0,
+        "status": "passed",
+        "script": "tools/tests/lia_kel_handoffs.gd",
+        "campaign": "lost_in_astral",
+        "evidence_directory": "remake-final-fragments-01",
+        "report_sha256": "058dea7a6edc99c81441781b4806be2b8fb884dabad33d5fd3da1d952e1d4b96",
+        "log": "tests/quests/lia_kel_handoffs/run.log",
+        "runtime_source_sha256": "1ed8e5b32e22e757c177f0a84682cd1d5a8ef8269421ac5181117f98853a8665"
+      }
+    ],
+    "passed_programs": 10,
+    "checks": 1062,
+    "failures": 0,
+    "aggregation": "Latest affected-program runs replace earlier rows. Final guard changes reran cellar and departures; original death was also repeated."
+  },
+  "native": {
+    "references": [
+      {
+        "name": "lia_cellar_exit1_open",
+        "ok": true,
+        "zone": "gz1d1",
+        "repeatability_verified": true,
+        "checks": 12,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "668fd1c66e87c6f267dc44918176dd17c0dfea7ce345cdd336ac22e754141b0d",
+        "evidence_directory": "native-final-01",
+        "report_sha256": "93ca17d84f661e8824669a8da074a05e04b279c28fe26fa00362a2a625f6d8d7",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "019ca65c84d913abacff3f85b1810ab7291d79b7edf96bd2a636e1112c278029",
+          "1940cb56b28a34ff5ffeab6d0499c4db4b33bf3f7f473cfd05466134face30f9"
+        ]
+      },
+      {
+        "name": "lia_cellar_exit2_open",
+        "ok": true,
+        "zone": "gz1d1",
+        "repeatability_verified": true,
+        "checks": 20,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "294842958164b4341784013d6c3cd36fec854cc5a9c5a02a784e80eae066f0ca",
+        "evidence_directory": "native-final-01",
+        "report_sha256": "93ca17d84f661e8824669a8da074a05e04b279c28fe26fa00362a2a625f6d8d7",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "01f5f29c257678c47ba76cb4535ce1c20cb9f6d2e71e1d93fddbc33ceeb7c9f5",
+          "69be042d85d19c672edeb118ab7ab5539475bec8a69ac103d4ea8c9803dd2948"
+        ]
+      },
+      {
+        "name": "lia_coconuts_all_six_normalized",
+        "ok": true,
+        "zone": "gz1h",
+        "repeatability_verified": true,
+        "checks": 26,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "09c99413e9a86234cfe6367dd775e1f132209094bde3cb3ed16536c0782a3812",
+        "evidence_directory": "native-final-01",
+        "report_sha256": "93ca17d84f661e8824669a8da074a05e04b279c28fe26fa00362a2a625f6d8d7",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "719f318bd1d8caacb0a18219b7d5c6bcd3250eb3cbf7292aee3dc3e27e1b6582",
+          "961259dcf015d72b7067f22119fa68478760643fd706e1cbf77b648aac49b1d8"
+        ]
+      },
+      {
+        "name": "lia_early_bz1h_entry",
+        "ok": true,
+        "zone": "bz1h",
+        "repeatability_verified": true,
+        "checks": 4,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "d8135f27c724841c7c27267e56122c2a18763282edfffc2d02c67f24e6fa4d74",
+        "evidence_directory": "native-final-01",
+        "report_sha256": "93ca17d84f661e8824669a8da074a05e04b279c28fe26fa00362a2a625f6d8d7",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "bc591630fd21060714ee10e4041bb97c01dacb2497c39cbe2194cce0ef780e15",
+          "c82884e005970a166a7d415a798e7a27a0665e75d49e87f114bff83cf2341d3b"
+        ]
+      },
+      {
+        "name": "lia_fq13_fragment2_award_normalized",
+        "ok": true,
+        "zone": "gz11d1",
+        "repeatability_verified": true,
+        "checks": 34,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "a82317a132f31a7408d52cab8b9d7ad9abf92ef181f3adf8b990c24c63ea26d8",
+        "evidence_directory": "native-final-01",
+        "report_sha256": "93ca17d84f661e8824669a8da074a05e04b279c28fe26fa00362a2a625f6d8d7",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "bc1eca71afa6cf61cddb3a1b3fc809e99f31b4697e3d8530d9f8e2e607f044ed",
+          "bb0b3ed6095694ef00c10bf4790eab7d43f0cdf3c12cb4c258d66547d86590a3"
+        ]
+      },
+      {
+        "name": "lia_fq19_fragment3_award_normalized",
+        "ok": true,
+        "zone": "gz24k",
+        "repeatability_verified": true,
+        "checks": 60,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "0fd7ab3a8d1a480339dbdc3b1dd8ffd777d0c269f3dfb3a3ab694e06e99d0628",
+        "evidence_directory": "native-final-01",
+        "report_sha256": "93ca17d84f661e8824669a8da074a05e04b279c28fe26fa00362a2a625f6d8d7",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "47c5fe1835420647d95dd1b68e4a5caa82bbd7f2e231e22d7dff9d9edbc933c9",
+          "8b418919302550300bdabb239ee2ad7f3ae1dd973baa81ff96a23c42a966b8e4"
+        ]
+      },
+      {
+        "name": "lia_fq2_raja_death_normalized",
+        "ok": true,
+        "zone": "gz1h",
+        "repeatability_verified": true,
+        "checks": 22,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "710f993808dbc53a72f367efe27a00082d08efd37b1545e359c1d4234193aa76",
+        "evidence_directory": "native-final-01",
+        "report_sha256": "93ca17d84f661e8824669a8da074a05e04b279c28fe26fa00362a2a625f6d8d7",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "09ae69d52bb6edeba4d31bf32e7dec8787f92c259ccc56b190b944be2d219f4e",
+          "e072807d15842c00c397e4403581d21eed723605d3cc3058e47d602a6dc58379"
+        ]
+      },
+      {
+        "name": "lia_fq4_document_chest_normalized",
+        "ok": true,
+        "zone": "gz1h",
+        "repeatability_verified": true,
+        "checks": 28,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "fd511b1039f5e70dc04def1cc77e68e016c0b59c6ffd621e723f889060a9c183",
+        "evidence_directory": "native-final-01",
+        "report_sha256": "93ca17d84f661e8824669a8da074a05e04b279c28fe26fa00362a2a625f6d8d7",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "7f0da6b44a9f4ba328364b644dbe40a4c2fe317a5ee7c460df9acac51a099360",
+          "727ae110bc4440090ae61719056d7fb561a89849b56aab328258d343e92de83a"
+        ]
+      },
+      {
+        "name": "lia_fq4_trader_key_normalized",
+        "ok": true,
+        "zone": "gz1h",
+        "repeatability_verified": true,
+        "checks": 28,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "9ef76d74e0c3f1161ff11fbe107bbed3140ea7f9f56ed239e79d3a12dd1ff575",
+        "evidence_directory": "native-final-01",
+        "report_sha256": "93ca17d84f661e8824669a8da074a05e04b279c28fe26fa00362a2a625f6d8d7",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "21cdf3905b320ccb07ff5fcd5587b52dc75f87443e30b317a4ee88927c80cd5f",
+          "fb4f2773c20b6d9c5394101b2d2616f6042abe07efdff6cbd51cc9fecaa6f2c5"
+        ]
+      },
+      {
+        "name": "lia_fq6_fragment1_award_normalized",
+        "ok": true,
+        "zone": "gz4h",
+        "repeatability_verified": true,
+        "checks": 40,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "d772433a3f2edf267f527a54f53985d5e60c9bbfa96283d0d4763aec62436593",
+        "evidence_directory": "native-final-01",
+        "report_sha256": "93ca17d84f661e8824669a8da074a05e04b279c28fe26fa00362a2a625f6d8d7",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "388702cffc92192f8891b59b95e0efb215cae72dcec482e479d04a819176ca53",
+          "d2ce2343e1f1ecb4f239cbe7428b9a27e7ad0fc275944ed70e9af154420038fd"
+        ]
+      },
+      {
+        "name": "lia_fq6_suslanger_puzzle_normalized",
+        "ok": true,
+        "zone": "gz4h",
+        "repeatability_verified": true,
+        "checks": 38,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "5d11043692058e8de2bd829218ab4bf0d94a6902388aa9e4b4e30ab3b2d7ae07",
+        "evidence_directory": "native-final-01",
+        "report_sha256": "93ca17d84f661e8824669a8da074a05e04b279c28fe26fa00362a2a625f6d8d7",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "1c0b081822f39ca7343579fb003778ed02e61484f46ddfe785ef2e8dcd3f4146",
+          "35d3bd563d2b728dcc003f3ce9f91f8eb686b5203bb85c2f97f405815ae46057"
+        ]
+      },
+      {
+        "name": "lia_kel_death_scene_normalized",
+        "ok": true,
+        "zone": "bz31j",
+        "repeatability_verified": true,
+        "checks": 22,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "ba9d589267e784717fbfa5b8fbc3598dd151b92c1e207c9d4c3892500e2a5481",
+        "evidence_directory": "native-final-death-guards",
+        "report_sha256": "f36aeaf0a01f69af76947213283ce211e4dec2e73e4fb71870773ac064602348",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "02df023722cb6b27eb18c743bbb1b856564ce122b6e5af84c36c9b6edaf976bf",
+          "e69f64e0829c0765889c5d298223e233eb33fd868a27457b1126e7233745b0c8"
+        ]
+      },
+      {
+        "name": "lia_kel_rescue_all_fragments_synced",
+        "ok": false,
+        "zone": "bz31j",
+        "repeatability_verified": true,
+        "checks": 38,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [
+          "cp_item101: original 1, remake 0",
+          "cp_item102: original 1, remake 0",
+          "cp_item103: original 1, remake 0"
+        ],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "e2957f5dd41dec16bfdc8bf3660d6f8f6e95b20599fe7d563c0ba0b1c88f6852",
+        "evidence_directory": "native-final-01",
+        "report_sha256": "93ca17d84f661e8824669a8da074a05e04b279c28fe26fa00362a2a625f6d8d7",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "4615485af7d624cb059411bf74f8a6c62c1573ea4051a6c208576c9653feea0a",
+          "748b245aa47a0ff5268f5329c14a35e1d5dbf857c9994ed528372e91249b9ce2"
+        ]
+      },
+      {
+        "name": "lia_kel_rescue_missing_fragment1_synced",
+        "ok": true,
+        "zone": "bz31j",
+        "repeatability_verified": true,
+        "checks": 38,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "a6f68ffb5e500c413bec19f06b4eaefab051393dcb1d243f15c4d0929c70e78d",
+        "evidence_directory": "native-final-01",
+        "report_sha256": "93ca17d84f661e8824669a8da074a05e04b279c28fe26fa00362a2a625f6d8d7",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "db758cfd63349e8ac965ed422f91f8b9f0f31da0d2575360419f1bdea9299ba9",
+          "f96248b07da055ed152a0df1ffb4ff12106e0c623763c594225e7d78c6705bef"
+        ]
+      },
+      {
+        "name": "lia_kel_rescue_missing_fragment2_synced",
+        "ok": true,
+        "zone": "bz31j",
+        "repeatability_verified": true,
+        "checks": 38,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "8fa39a66a5e92bcc97754106774f1ac5bad58099b4f8e85edd81165c19a44cec",
+        "evidence_directory": "native-final-01",
+        "report_sha256": "93ca17d84f661e8824669a8da074a05e04b279c28fe26fa00362a2a625f6d8d7",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "18b780601a6f6253a126f16218de44ad83e1ee6f2bf9fd5f4a83847507c3c3c9",
+          "6599a2ef418b1c4d35d23c71fa0cd83f8ec2aca88eb2f87aa9990de9ed7fe44f"
+        ]
+      },
+      {
+        "name": "lia_kel_rescue_missing_fragment3_synced",
+        "ok": true,
+        "zone": "bz31j",
+        "repeatability_verified": true,
+        "checks": 38,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "dff10968946d7da32e95144a980af9f36da947e80c78ad246d13de707281def0",
+        "evidence_directory": "native-final-01",
+        "report_sha256": "93ca17d84f661e8824669a8da074a05e04b279c28fe26fa00362a2a625f6d8d7",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "d1c1cee903427a8d4cefca90b5ee5e934cf71d9d9c6be72c39466e4204a91f1d",
+          "b2bd762bf78ef05638ed9f939a7a7644948b73e33658c9b000bef50d3e99b3e1"
+        ]
+      },
+      {
+        "name": "lia_kel_reunion_synced",
+        "ok": true,
+        "zone": "bz31j",
+        "repeatability_verified": true,
+        "checks": 36,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "5f45701b56c2a370fbafad0350bd9f8b9f554967efe580c08ec5f87fe87ee6b3",
+        "evidence_directory": "native-final-01",
+        "report_sha256": "93ca17d84f661e8824669a8da074a05e04b279c28fe26fa00362a2a625f6d8d7",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "e6504e3c0c8780528f29212be4802ddcec8a7eb3de088c8d2ea2762fb5eb03ef",
+          "c2441c3d483a218e5e7120477ddf7e6e0a35a4e80db2cef7aa5486a39cc02ccc"
+        ]
+      },
+      {
+        "name": "lia_portal_cellar_entry",
+        "ok": true,
+        "zone": "gz1d1",
+        "repeatability_verified": true,
+        "checks": 6,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "39dd5bc39958571d3a634faeef3fc86b8fc458d59fdd473eda4f96d76890e94f",
+        "evidence_directory": "native-final-01",
+        "report_sha256": "93ca17d84f661e8824669a8da074a05e04b279c28fe26fa00362a2a625f6d8d7",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "c65f99f585cb90725dac31876fd7c0707b64ab01438bb993acd8f45bcc85fa7e",
+          "f044a45fa0556c1517d882c22d13b7bf69643bb65e6e4fd1d11b3072454bea3e"
+        ]
+      },
+      {
+        "name": "lia_portal_torch_use",
+        "ok": true,
+        "zone": "gz1h",
+        "repeatability_verified": true,
+        "checks": 17,
+        "harness_failures": 0,
+        "entry": [],
+        "delta": [],
+        "observations": [],
+        "observations_entry": [],
+        "destination": [],
+        "checkpoint_sha256": "dd3b834f7adb910f9b64f1df3a09c21fdb966dfc62e99af29a477e1e773a5d79",
+        "evidence_directory": "native-final-01",
+        "report_sha256": "93ca17d84f661e8824669a8da074a05e04b279c28fe26fa00362a2a625f6d8d7",
+        "captures": 2,
+        "capture_log_sha256s": [
+          "db76659e474709b1d50767c25ed0bae2eabd609a5c548767b7f97ad72f52647b",
+          "bbd6aa096b7050a3dfb5aae859955c6d528a988eb44f33275ce5bfe1437739ac"
+        ]
+      }
+    ],
+    "matching_references": 18,
+    "differing_references": 1,
+    "repeatable_references": 19,
+    "repetitions_per_reference": 2,
+    "all_quest_state_destination_money_and_party_observations_match": true,
+    "strict_runner_exit_code": 1
+  },
+  "patched_original": {
+    "patch_order": [
+      "1.01",
+      "1.02"
+    ],
+    "game_exe_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+    "verified_files": [
+      {
+        "file": "game.exe",
+        "patch_stage": "102",
+        "sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12"
+      },
+      {
+        "file": "starter.exe",
+        "patch_stage": "101",
+        "sha256": "1fd4c097e9977322d08f73d61d65ac62f341f13e559ce1298b7d3e00b8a34a9a"
+      },
+      {
+        "file": "res/database.res",
+        "patch_stage": "101",
+        "sha256": "f63541111b7e09053007153f29ad9456849210f86415b71946c3e5c86d3563a7"
+      },
+      {
+        "file": "res/texts.res",
+        "patch_stage": "102",
+        "sha256": "85fbb3a07fd8344bb5941f2e02b97a0c27b4981ea92c349ace3c33015a57341c"
+      },
+      {
+        "file": "maps/zone23.mob",
+        "patch_stage": "101",
+        "sha256": "cf4b87a3e1e35981355cd5241498fb80c4d992b55016a828afcf8e37a6a6104a"
+      },
+      {
+        "file": "maps/bz31j.mob",
+        "patch_stage": "101",
+        "sha256": "edc8097360867f3ad9c6cf6fb6d62a7341cd08a73e07bb8d8980e75835882142"
+      },
+      {
+        "file": "maps/zone31.mob",
+        "patch_stage": "101",
+        "sha256": "b5123e6955db0bce7907e8eef23b6c4f74876c78ed9ccd0ffdc5613e21ad4722"
+      },
+      {
+        "file": "maps/zone14.mob",
+        "patch_stage": "101",
+        "sha256": "ee8917c5ccdf3b490e32ad3588c32e7463352e13dc29111c9710126f8939aecd"
+      },
+      {
+        "file": "maps/zone32.mob",
+        "patch_stage": "101",
+        "sha256": "37a05063fc74a24836664a14aa9e6f7e4e21ae1be1105281c2191e8e00f4d781"
+      },
+      {
+        "file": "maps/zone21.mob",
+        "patch_stage": "101",
+        "sha256": "a2cc4ed071e1d697060b0d861659060ad9b74ec38c190916a907eb8ab6ec1d0e"
+      },
+      {
+        "file": "maps/zone7.mob",
+        "patch_stage": "101",
+        "sha256": "a6b2051ef04bba71de4af4ca270ae8bc95c896b8ca7119564b530aa74d9bc33d"
+      },
+      {
+        "file": "maps/zone1dun2.mob",
+        "patch_stage": "101",
+        "sha256": "e2a360ac9eb9950183d295854f68d66af0a5a9d3b27fe8233836fb85d60db430"
+      },
+      {
+        "file": "maps/zone16.mob",
+        "patch_stage": "102",
+        "sha256": "580852c8b985be8fe86402a253f4672cc9e6a9c82bb5587a420a6beea47759c1"
+      },
+      {
+        "file": "maps/zone13.mob",
+        "patch_stage": "101",
+        "sha256": "dda4661bbe3d1cfe71f2f2629eac2085147cb7232e04d2cef01da84550b4644a"
+      },
+      {
+        "file": "maps/bz32j.mob",
+        "patch_stage": "101",
+        "sha256": "540a6851163163311ce0e39c1154f1b90ca8c253e930acf8796054e619015dac"
+      },
+      {
+        "file": "maps/zone11dun2.mob",
+        "patch_stage": "101",
+        "sha256": "ca996f915639be63721ff1820abb689f45121286454fc51bac99931c4fbcbfc0"
+      },
+      {
+        "file": "maps/zone25.mob",
+        "patch_stage": "101",
+        "sha256": "16d8f3fb6049360c218a6ec5d8ffbfd06e95f13bc2b5cac678a4ab027d231c4d"
+      }
+    ],
+    "runtime": "Wine 11.20, private Xvfb :94",
+    "runtime_stopped": true,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "native_audio_settings": {
+      "AudioSFX": 0,
+      "AudioSpeech": 0,
+      "AudioStreaming": 0
+    }
+  },
+  "checks": {
+    "python_tests": 167,
+    "python_skipped": 1,
+    "python_failures": 0,
+    "python_log_sha256": "49ff6a6d7d1fb8b80984fbc9421fd92b0930b68fe778d6f596eceac8716907f3",
+    "negative_engine_controls": "/home/llm2x/Documents/EI/local/scratchpad/lia-kel-checkpoints-20261023/review-checkpoint-controls-fixed-01/report.json",
+    "negative_engine_controls_sha256": "6bbd43c82046c54da91066f07bf5252f8b6e66fbdfe4fab4f043866490d2dd70",
+    "original_save_hash_audit": "All19 reference identities and all before/after .sav SHA256 values match retained native files.",
+    "git_diff_check": "passed"
+  },
+  "known_differences": [
+    {
+      "kind": "native_inventory",
+      "reference": "lia_kel_rescue_all_fragments_synced",
+      "detail": "After the synchronized ritual, native stored-party AddLoot restores Kel1/Kel2/Kel3; remake consumes them. Strict comparison remains red. Both complete ritual and reunion with exactly one living Kel."
+    },
+    {
+      "kind": "intentional_passability_repair",
+      "detail": "Stock opened Portal cellar allows both return passages even while z.gz1h is1; patched original traps the party. Exact script/geometry guards preserve unrelated gates and custom maps."
+    },
+    {
+      "kind": "preserved_original_content",
+      "detail": "Ingos water objective sets fq17 but calls fq18 reward. Preserved; fragment progression remains passable."
+    }
+  ],
+  "unchanged_baseline_limitations": {
+    "bounded_mercenary_comparison": {
+      "matches": 28,
+      "differences": 3,
+      "same_scenarios_and_divergences_on_unmodified_base": true,
+      "reports": [
+        "native-base-merc-regression/report.json",
+        "native-base-merc-baseline/report.json"
+      ]
+    },
+    "coop_party_switch": {
+      "status": "incomplete; expected NETWORK_DONE absent",
+      "same_failure_on_unmodified_base": true,
+      "reports": [
+        "integration-existing-02/report.json",
+        "coop-party-baseline/report.json"
+      ]
+    }
+  },
+  "production_source_sha256": {
+    "game/src/game/fx/particle_system.gd": "c2c89c80bfa5220c982db928d141923fdc4ab359743a185e13ab84c700f98b9b",
+    "game/src/game/game.gd": "916970d3363f8863cde03429b3e25082a48f14281e9e86b59b24a4dad5de6d17",
+    "game/src/game/script/story_compat.gd": "8b286db7fd1b61dabe66dec15877bb9c6bb36090d8d0e7542318f216fcdaa9d8",
+    "game/src/game/script/vm.gd": "ad987a6c138f066649f72016bdb6a3133532d5799c9a20f0ba366a1e4beaca31",
+    "game/src/game/session.gd": "dd50cd31607abcbc064ca2e42c9a7daba1cb3aa8c6a65e1c0015c471db006ee8",
+    "game/src/game/unit.gd": "48703194f589bfc5a6ca973c01c820acc395305ec644b047e4139a59b89955a1",
+    "game/src/ui/world_labels.gd": "e84d268dc5b774239d1ea00780555057c70f735c81372c2be3e0a1d2ea10c227",
+    "game/src/ui/zone_objectives.gd": "e64f2bbdfe2d0920de98528a894b0674b04621ad1a0c18b91e7a0e966c2f4584",
+    "game/src/game/script/story_astral_kel.gd": "f45bd99dc00e49fee79fad0852d312391004ffb4c9c86ba0c29cbff2fba2cefb"
+  }
+}

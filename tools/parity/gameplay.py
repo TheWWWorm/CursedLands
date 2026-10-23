@@ -245,7 +245,7 @@ def main():
     parser.add_argument("--godot", default=shutil.which("godot-4") or shutil.which("godot"))
     parser.add_argument("--out", type=Path)
     parser.add_argument("--category", action="append", help="Repeat to combine categories")
-    parser.add_argument("--case", help="Program ID substring")
+    parser.add_argument("--case", action="append", help="Program ID substring; repeat to combine selections")
     parser.add_argument("--display", choices=("headless", "rendered"), help="Select only this execution mode")
     parser.add_argument("--quick", action="store_true", help="Select fixtures without full map sessions")
     parser.add_argument("--with-original", action="store_true", help="Also run independent original-x86 suite")
@@ -258,7 +258,7 @@ def main():
     args = parser.parse_args()
     tests = [row for row in catalog(args.replay_selection) if (not args.quick or row["quick"])
              and (not args.category or row["category"] in args.category)
-             and (not args.case or args.case in row["id"])
+             and (not args.case or any(part in row["id"] for part in args.case))
              and (not args.display or row.get("display", "headless") == args.display)]
     if not tests:
         raise ValueError("No gameplay programs selected")

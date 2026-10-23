@@ -1,0 +1,93 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz1h",
+ "fixture": {
+  "money": 0,
+  "setup": [
+   "GodMode(0,1)",
+   "SetCPFast(GetUnitOfPlayer(0,0),19,20,0)"
+  ]
+ },
+ "from_zone": "gz1d1",
+ "note": "Real cellar exit1: normal ground click, native leave confirmation, confirm. z.gz1h=2 prepared to match authored completed-escape state. No LeaveToZone call for action; GodMode reapplied after transition.",
+ "observations_after": {
+  "money": 0
+ },
+ "observations_before": {
+  "money": 0
+ },
+ "probes": {},
+ "provenance": {
+  "after": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "gz1d1.sav": "ab9737167f218c8d678d5365b8b5ea01dc1d9e143693b0f570e071153093ab5b",
+   "gz1h.sav": "91de91e3c6d77cae60677eaba35c712fb05ff5d22233164e323d7531e3edea58",
+   "info.sav": "78c3b578824e5aedcc4fc75317cd0118e89a7668ca587fe3b2b4ceb40b4f940b",
+   "mission.sav": "daf64fdb7bf5c49d7d4d0b779d1b955d8951653f6763b59a4c31f4b25e8d5b79",
+   "scenario.sav": "1276d67fd8513dd55647c825f7192991927a492014a64a9dd29e73d8ccc989fa",
+   "shot.sav": "910791116196407dd0022d2f565706c7ef8a0420322d75aa03ce1a41a6544793"
+  },
+  "before": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "gz1h.sav": "91de91e3c6d77cae60677eaba35c712fb05ff5d22233164e323d7531e3edea58",
+   "info.sav": "627193879a39b801409e05cc67fc27b188944ca32e3e4f6544f9001432f79648",
+   "mission.sav": "2275cbdb3ff17c5049e9e0f2b8943ba3abdb8dcc3579de6f34e7b67d9c7a9220",
+   "scenario.sav": "0bf65a744d77b6b0381ab811ab91efd8fb323f5ed69e3966e20ce55921c406a9",
+   "shot.sav": "963d8964dfe463e1747e4d893561517d123e66a99312c93aa64ae71dc75a074f"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12"
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "destination": "gz1h",
+   "leave": "1"
+  }
+ ],
+ "vars_after": {
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc2.n1_2": 2.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z1d1": 1.0
+ },
+ "vars_before": {
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc2.n1_2": 2.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z1d1": 1.0
+ },
+ "zone": "gz1d1"
+}

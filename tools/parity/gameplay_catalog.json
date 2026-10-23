@@ -6456,6 +6456,233 @@
         "res/texts.res"
       ],
       "display": "rendered"
+    },
+    {
+      "id": "quests/lia_kel_early_story",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_early_story.gd",
+      "marker": "LIA_KEL_EARLY_STORY",
+      "min_checks": 122,
+      "quick": false,
+      "description": "LiA poison/disguise actual objectives, missing item/enemy gates, normal hand-ins, Kel/elder route and full saves",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob",
+        "maps/zone1thief.mob",
+        "maps/zone1rats.mob",
+        "maps/bz2h.mob"
+      ]
+    },
+    {
+      "id": "quests/lia_kel_torch_cellar",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_torch_cellar.gd",
+      "marker": "LIA_KEL_TORCH_CELLAR",
+      "min_checks": 71,
+      "quick": false,
+      "description": "LiA first fortune torch, active Portal region, both basement exits, normal confirmation travel and save/reload",
+      "kind": "remake_regression",
+      "timeout": 300,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob",
+        "maps/zone1dun1.mob"
+      ]
+    },
+    {
+      "id": "quests/lia_kel_suslanger",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_suslanger.gd",
+      "marker": "LIA_KEL_SUSLANGER",
+      "min_checks": 106,
+      "quick": false,
+      "description": "Five Suslanger fortune outcomes, actual carrier keys, clock gates, undead, 3-1-2 mechanism, first fragment and saves",
+      "kind": "remake_regression",
+      "timeout": 480,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone1.mob",
+        "maps/zone2.mob",
+        "maps/zone4.mob"
+      ]
+    },
+    {
+      "id": "quests/lia_kel_gipat",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_gipat.gd",
+      "marker": "LIA_KEL_GIPAT",
+      "min_checks": 114,
+      "quick": false,
+      "description": "Six Gipat fortune outcomes, randomized objects, captive/giant progression, crypt key, second fragment and saves",
+      "kind": "remake_regression",
+      "timeout": 480,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone9.mob",
+        "maps/zone9mushroom.mob",
+        "maps/zone11.mob",
+        "maps/zone11clerk.mob",
+        "maps/zone16.mob",
+        "maps/zone7.mob",
+        "maps/zone7invalid.mob",
+        "maps/zone11dun1.mob"
+      ]
+    },
+    {
+      "id": "quests/lia_kel_ingos",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_ingos.gd",
+      "marker": "LIA_KEL_INGOS",
+      "min_checks": 149,
+      "quick": false,
+      "description": "Complete Haburu dialogue/object chain, water inventory, cow destination, keyed doors, third fragment and saves",
+      "kind": "remake_regression",
+      "timeout": 480,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/bz23k.mob",
+        "maps/zone23.mob",
+        "maps/zone21.mob",
+        "maps/zone22.mob",
+        "maps/zone22tree1.mob",
+        "maps/zone22tree2.mob",
+        "maps/zone22tree3.mob",
+        "maps/zone22tree4.mob",
+        "maps/zone22tree5.mob",
+        "maps/zone24.mob"
+      ]
+    },
+    {
+      "id": "quests/lia_kel_rescue",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_rescue.gd",
+      "marker": "LIA_KEL_RESCUE",
+      "min_checks": 142,
+      "quick": false,
+      "description": "Travel-synchronized rescue, all missing-fragment guards, Kel party/stats/equipment restoration and reload; native spent-fragment retention difference tracked separately",
+      "kind": "remake_regression",
+      "timeout": 480,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/bz31j.mob"
+      ]
+    },
+    {
+      "id": "commands/use_callback_orders",
+      "category": "commands",
+      "script": "tools/tests/use_callback_orders.gd",
+      "marker": "USE_CALLBACK_ORDERS",
+      "min_checks": 27,
+      "quick": true,
+      "description": "All use completion phases preserve cleared, replaced or queued orders after an interaction callback",
+      "kind": "remake_regression",
+      "timeout": 60,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ]
+    },
+    {
+      "id": "quests/lia_kel_prologue",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_prologue.gd",
+      "marker": "LIA_KEL_PROLOGUE",
+      "min_checks": 152,
+      "quick": false,
+      "description": "Fresh LiA opening, portal key, prison/night escape, pursuit map, catacomb clothing and real Shelter arrival",
+      "kind": "remake_regression",
+      "timeout": 600,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zonezero.mob",
+        "maps/bz1r.mob",
+        "maps/bz1h.mob",
+        "maps/zone1.mob",
+        "maps/zone1evil.mob",
+        "maps/cz1h.mob",
+        "maps/zone1dun2.mob",
+        "maps/cz2h.mob",
+        "maps/zone1cityg.mob",
+        "maps/bz2h.mob"
+      ]
+    },
+    {
+      "id": "quests/lia_kel_departures",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_departures.gd",
+      "marker": "LIA_KEL_DEPARTURES",
+      "min_checks": 84,
+      "quick": false,
+      "description": "Earned first fragment and actual island departure; Kel belongings, archived party, scripted death and return",
+      "kind": "remake_regression",
+      "timeout": 480,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone4.mob",
+        "maps/bz7h.mob",
+        "maps/zone7.mob",
+        "maps/bz31j.mob",
+        "maps/zone35.mob",
+        "maps/cz3j.mob"
+      ]
+    },
+    {
+      "id": "quests/lia_kel_handoffs",
+      "category": "quests",
+      "script": "tools/tests/lia_kel_handoffs.gd",
+      "marker": "LIA_KEL_HANDOFFS",
+      "min_checks": 95,
+      "quick": false,
+      "description": "Fragment retention across real Gipat, Ingos and Jigran island and party handoffs",
+      "kind": "remake_regression",
+      "timeout": 600,
+      "args": [],
+      "campaign": "lost_in_astral",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res",
+        "maps/zone11dun1.mob",
+        "maps/bz14g.mob",
+        "maps/cz0k.mob",
+        "maps/zone21.mob",
+        "maps/bz23k.mob",
+        "maps/zone24.mob",
+        "maps/cz4k.mob",
+        "maps/cz1j.mob",
+        "maps/zone31.mob",
+        "maps/bz31j.mob",
+        "maps/zone32.mob",
+        "maps/zone32duel.mob",
+        "maps/cz2j.mob"
+      ]
     }
   ]
 }

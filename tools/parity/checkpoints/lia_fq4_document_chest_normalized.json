@@ -1,0 +1,130 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz1h",
+ "fixture": {
+  "active_party": "EarlyProof",
+  "money": 0,
+  "parties": {
+   "EarlyProof": [
+    {
+     "name": "Hero",
+     "prototype": "Hero3"
+    },
+    {
+     "name": "merc2",
+     "prototype": "merc2"
+    }
+   ]
+  },
+  "quest_items": [
+   "TraderKey1"
+  ],
+  "setup": [
+   "GodMode(0,1)",
+   "RecalcMercBriefings()"
+  ]
+ },
+ "from_zone": "gz1h",
+ "note": "Continues native corpse key result. Physical chest-state cheat must grant FakeDocument00 and complete fq4; no tested outcome flags assigned. Native RecalcMercBriefings() executed before baseline to normalize stale generic mercenary-topic flags; recorded as fixture setup.",
+ "observations_after": {
+  "cp_document23": 1.0,
+  "cp_key21": 1.0,
+  "cp_mercs": 1.0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_document23": 0,
+  "cp_key21": 1.0,
+  "cp_mercs": 1.0,
+  "money": 0
+ },
+ "probes": {
+  "cp_document23": "HaveItem(0,23)",
+  "cp_key21": "HaveItem(0,21)",
+  "cp_mercs": "GetMercsNumber(0)"
+ },
+ "provenance": {
+  "after": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "info.sav": "5045437ae199bdfe25ba72daa38655bafec54cafb6746b11f6dd39cf024659dc",
+   "mission.sav": "0b82373084f5402d9781f3407f1ed5fe9bd4f993e30a3932dff6a2b076672c57",
+   "scenario.sav": "a859d762cbb76bdef60812ec879a238a4d17ccdd3d63cfef40b9893860bc928d",
+   "shot.sav": "97d82fadacb35b5fbcafac96a4c65c2ac917c909bff85a3edc7386ddf4a2a03f"
+  },
+  "before": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "info.sav": "6691e974286eee6c6393694daa0f2191aa1d7022d9c47eceea9a44d7e3e3bab1",
+   "mission.sav": "aa070bf5500f0e10dc8402f2f287caa246c04606abeb53d8797a9fa7326256dd",
+   "scenario.sav": "c36490ba9f73f792b24ab9e65d7955cc1d020a04c574d94e5ad710b864d4031e",
+   "shot.sav": "d77d55aef5c18501b9fec912e3bb5e06167d35492091dec8e8c47ffcd24d68bb"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "script": "SwitchLeverState(GetObject(2001539),1)"
+  },
+  {
+   "wait": "3"
+  }
+ ],
+ "vars_after": {
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "b.skelet.fq4": 2.0,
+  "deadman": 50.0,
+  "fruit1": 2.0,
+  "fruit2": 2.0,
+  "fruit3": 2.0,
+  "fruit4": 2.0,
+  "fruit5": 2.0,
+  "fruit6": 2.0,
+  "q.gz1h.fq2": 2.0,
+  "q.gz1h.fq4": 2.0,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz1h.q4h": 2.0,
+  "z.gz1d1": 1.0,
+  "z.gz1h": 1.0
+ },
+ "vars_before": {
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "b.skelet.fq4": 2.0,
+  "deadman": 50.0,
+  "fruit1": 2.0,
+  "fruit2": 2.0,
+  "fruit3": 2.0,
+  "fruit4": 2.0,
+  "fruit5": 2.0,
+  "fruit6": 2.0,
+  "q.gz1h.fq2": 2.0,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz1h.q4h": 2.0,
+  "z.gz1d1": 1.0,
+  "z.gz1h": 1.0
+ },
+ "zone": "gz1h"
+}

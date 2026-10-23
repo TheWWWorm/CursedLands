@@ -1,0 +1,126 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz1h",
+ "fixture": {
+  "active_party": "EarlyProof",
+  "money": 0,
+  "parties": {
+   "EarlyProof": [
+    {
+     "name": "Hero",
+     "prototype": "Hero3"
+    },
+    {
+     "name": "merc2",
+     "prototype": "merc2"
+    }
+   ]
+  },
+  "setup": [
+   "GodMode(0,1)",
+   "RecalcMercBriefings()"
+  ]
+ },
+ "from_zone": "gz1h",
+ "note": "Prepared fq4 acceptance, native corpse placement script settled. Physical corpse-state cheat must grant real TraderKey1; no key supplied in setup. Native RecalcMercBriefings() executed before baseline to normalize stale generic mercenary-topic flags; recorded as fixture setup.",
+ "observations_after": {
+  "cp_document23": 0,
+  "cp_key21": 1.0,
+  "cp_mercs": 1.0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_document23": 0,
+  "cp_key21": 0,
+  "cp_mercs": 1.0,
+  "money": 0
+ },
+ "probes": {
+  "cp_document23": "HaveItem(0,23)",
+  "cp_key21": "HaveItem(0,21)",
+  "cp_mercs": "GetMercsNumber(0)"
+ },
+ "provenance": {
+  "after": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "info.sav": "15f0fc3ec6c24d8f52c01ac4e47d714ca0be584bd6fc2cbeb9aae7a05946c89a",
+   "mission.sav": "fdce29fc67eba2620fbbaf6d0c02d5ccf2ec3cd2ac3e41e252af20905206428b",
+   "scenario.sav": "4ec6496444001d5d032ac2146cead24e1388df208433316e5b4d694b9811a5f5",
+   "shot.sav": "f75bea84c104159bc307032b089e1a5aca2cff28788a7be3256165ff4758983e"
+  },
+  "before": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "info.sav": "67fd27829dedb555e2c3d819b66f798c184eb7cabba0c24c91c5a9ad4bcc3042",
+   "mission.sav": "c96abb45cb61a7b2b8ab5e6a2c6ba0bfe17b5ae916c47e5fa3aab6285361be3f",
+   "scenario.sav": "c05a7e6d0955abfbac6b5b0834fd0f0615d502e2bd6aaf5d5a11edba70904f70",
+   "shot.sav": "7ae6b7ae6eddf93e8198372c911cd3d56e851efe18add4c6ee5f982317a845d8"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "script": "SwitchLeverState(GetObject(2017083),1)"
+  },
+  {
+   "wait": "3"
+  }
+ ],
+ "vars_after": {
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "b.skelet.fq4": 2.0,
+  "deadman": 50.0,
+  "fruit1": 2.0,
+  "fruit2": 2.0,
+  "fruit3": 2.0,
+  "fruit4": 2.0,
+  "fruit5": 2.0,
+  "fruit6": 2.0,
+  "q.gz1h.fq2": 2.0,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz1h.q4h": 2.0,
+  "z.gz1d1": 1.0,
+  "z.gz1h": 1.0
+ },
+ "vars_before": {
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "b.skelet.fq4": 2.0,
+  "deadman": 50.0,
+  "fruit1": 2.0,
+  "fruit2": 2.0,
+  "fruit3": 2.0,
+  "fruit4": 2.0,
+  "fruit5": 2.0,
+  "fruit6": 2.0,
+  "q.gz1h.fq2": 2.0,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz1h.q4h": 2.0,
+  "z.gz1d1": 1.0,
+  "z.gz1h": 1.0
+ },
+ "zone": "gz1h"
+}
