@@ -1,6 +1,6 @@
 extends Node
-## Phone routing for the Screen dropdowns (1.22.0 made Resolution and Render
-## scale dropdowns): a finger tap must open the list and a second tap must
+## Phone routing for the Screen dropdowns, including the reported Android
+## anti-aliasing list: a finger tap must open the list and a second tap must
 ## choose an entry. Run with --touch so TouchInput owns the gestures.
 var checks := 0
 var failures := 0
@@ -57,12 +57,19 @@ func drag(from: Vector2, to: Vector2) -> void:
 func _ready() -> void:
 	TutorialPanel.auto_show = false
 	await frames(5)
+	var test_size := get_window().size
 	# Also run at a large screen (RES=1920x1080): the lists are scaled up there.
 	print("touch enabled=", TouchInput.enabled, " screen=", DisplayServer.screen_get_size(), " choices=", GameData.option_choices("resolution"))
 	for language: String in ["en", "ru", "de"]:
 		RemakeText.lang = language
-		for name: String in ["resolution", "render_scale"]:
-			GameData.set_options({name: 0 if name == "resolution" else 4})
+		for name: String in ["resolution", "render_scale", "q_aa"]:
+			GameData.set_options({name: 4 if name == "render_scale" else 0})
+			# Choosing Resolution applies immediately. Restore the test window
+			# before the next picker so AA is also exercised at the requested size.
+			GameData._window_gen += 1
+			get_window().mode = Window.MODE_WINDOWED
+			get_window().size = test_size
+			await frames(3)
 			panel = OptionsPanel.new()
 			add_child(panel)
 			panel.open()
@@ -75,7 +82,7 @@ func _ready() -> void:
 			await tap(picker.get_global_rect().get_center())
 			var popup := picker.get_popup()
 			check(popup.visible, language + " tapping the " + name + " dropdown opens it")
-			print("popup scale ", popup.content_scale_factor)
+			print("popup scale ", popup.content_scale_factor, " window=", get_window().size)
 			if popup.visible:
 				get_viewport().get_texture().get_image().save_png("user://mobile-" + name + "-" + language + ".png")
 				var scroll := scroller(popup)
@@ -87,6 +94,8 @@ func _ready() -> void:
 				check(popup.visible, language + " list reopens")
 				await tap(Vector2(20, get_viewport().get_visible_rect().size.y - 20))
 				check(not popup.visible, language + " a tap outside closes the list")
+				if name == "q_aa":
+					await cancelled_choice(picker, target, language)
 			await frames(3)
 			print(language, " ", name, " before=", before, " after=", GameData.option(name), " panel=", panel._values.get(name))
 			check(int(panel._values.get(name, before)) != before, language + " tapping an entry changes " + name)
@@ -97,6 +106,45 @@ func _ready() -> void:
 	await long_list()
 	print("MOBILE_SCREEN_DROPDOWN ", JSON.stringify({"checks": checks, "failures": failures}))
 	get_tree().quit(1 if failures else 0)
+
+
+## Android may cancel a finger or close a window while it is held. Neither
+## path may leave the AA dropdown holding a finger and ignoring later taps.
+func cancelled_choice(picker: OptionButton, target: int, language: String) -> void:
+	await tap(picker.get_global_rect().get_center())
+	var popup := picker.get_popup()
+	check(popup.visible, language + " AA list opens for a cancelled gesture")
+	var point := item_point(popup, target)
+	var event := InputEventScreenTouch.new()
+	event.index = 3
+	event.position = point
+	event.pressed = true
+	Input.parse_input_event(event)
+	await frames(1)
+	event = event.duplicate()
+	event.pressed = false
+	event.canceled = true
+	Input.parse_input_event(event)
+	await frames(2)
+	check(popup.visible and TouchInput._popup_finger == -1, language + " a cancelled AA touch releases the finger without choosing")
+	await tap(point)
+	check(not popup.visible and int(panel._values.q_aa) == target, language + " AA list accepts the next tap after cancellation")
+	await tap(picker.get_global_rect().get_center())
+	event = InputEventScreenTouch.new()
+	event.index = 3
+	event.position = item_point(popup, target)
+	event.pressed = true
+	Input.parse_input_event(event)
+	await frames(1)
+	popup.hide()
+	check(TouchInput._popup_finger == -1, language + " closing a held AA list releases the finger")
+	event = event.duplicate()
+	event.pressed = false
+	Input.parse_input_event(event)
+	await frames(2)
+	await tap(picker.get_global_rect().get_center())
+	await tap(item_point(popup, target))
+	check(not popup.visible and int(panel._values.q_aa) == target, language + " reopening AA after a held close remains usable")
 
 ## Any dropdown longer than the screen scrolls under a finger; a drag never
 ## chooses, a following tap does.

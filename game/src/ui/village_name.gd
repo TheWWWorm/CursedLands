@@ -51,7 +51,7 @@ func _process(_dt: float) -> void:
 		var u := game.pick_hover(p)
 		if u and not u.dead and u.village_talk_ready():
 			s = title_of(u)
-			at = (p - global_position) / kv()
+			at = to800(get_global_transform_with_canvas().affine_inverse() * p)
 	if s != _name or (s and at != _at):
 		_name = s
 		_at = at

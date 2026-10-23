@@ -7,12 +7,13 @@ extends MeshInstance3D
 ##
 ## The triangle is, drawn for every object of the
 ## selection list when SelectionType == 1 with size CornerSize 0.5:
-## with s = size / 3, r / u the camera's right and up axes (
-## only their x, y are used), flat at the unit's z + 0.3, an
+## with s = size / 3, r / u the unit's right and backward ground axes,
+## flat at the ground beneath the unit + 0.3, an
 ## outer triangle P + 3s·r + 2s·u, P − 3s·r + 2s·u, P − 5s·u and an inner one
 ## P + 2s·r + 1.4s·u, P − 2s·r + 1.4s·u, P − 4s·u joined into a band of six
-## triangles, colour (green, half transparent). The apex points
-## the viewer. With SelectionType 0 the original draws no marker (selecting only
+## triangles, colour (green, half transparent). The narrow apex points
+## along the figure's facing, independent of camera pitch and yaw.
+## With SelectionType 0 the original draws no marker (selecting only
 ## sets the figure's colour to white
 ## each part's colour is pushed and its RGB set to 1.0). The
 ## remake lightens the selected figures with an additive overlay
@@ -381,21 +382,23 @@ func _process(dt: float) -> void:
 		return
 	var w := game.world
 	var tris := PackedVector3Array()
-	var cam := get_viewport().get_camera_3d()
-	if GameData.option("select_type") == 1 and cam:
-		# Camera axes in EI space (x, y): Godot (x, y, z) = EI (x, z, −y).
-		var bx := cam.global_basis.x
-		var by := cam.global_basis.y
+	if GameData.option("select_type") == 1:
 		var s := SEL_SIZE / 3.0
-		var r := Vector2(bx.x, -bx.z) * s
-		var up := Vector2(by.x, -by.z) * s
 		for u: GameUnit in game.selected:
 			if not is_instance_valid(u) or u.dead:
 				continue
-			var z := w.ground_at(u.pos.x, u.pos.y) + 0.3
+			# Use the drawn transform so the marker follows local path sampling
+			# and co-op interpolation together with the figure. Models face +Z
+			# in Godot before the unit's MODEL_YAW_OFFSET is applied.
+			var xf := u.get_global_transform_interpolated()
+			var center := Vector2(xf.origin.x, -xf.origin.z)
+			var forward := Vector2(xf.basis.z.x, -xf.basis.z.z).normalized()
+			var r := Vector2(forward.y, -forward.x) * s
+			var up := -forward * s
+			var z := w.ground_at(center.x, center.y) + 0.3
 			for i: int in SEL_TRIS:
 				var v: Vector2 = SEL_VERTS[i]
-				var p: Vector2 = u.pos + r * v.x + up * v.y
+				var p: Vector2 = center + r * v.x + up * v.y
 				tris.append(EISpace.pos(p.x, p.y, z))
 	for pass_ in [[tris, Mesh.PRIMITIVE_TRIANGLES, _sel_mat]]:
 		var vs: PackedVector3Array = pass_[0]

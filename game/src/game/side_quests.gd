@@ -456,3 +456,21 @@ static func _list(v) -> PackedStringArray:
 static func quest_doc(q: String) -> String:
 	var t := GameData.text("quest " + q)
 	return t if t else text("quest " + q)
+
+
+## Zone-picture markers in a quest map's quest.reg. The authored value is
+## either one "{x;y}" string or an array of those strings (not map.txt's
+## whitespace-separated coordinate pairs).
+static func quest_places(id: String) -> PackedVector2Array:
+	var out := PackedVector2Array()
+	var q := get_quest(id)
+	for value: String in _list(q.get("reg", {}).get("quest", {}).get("questplaces", [])):
+		if not value.begins_with("{") or not value.ends_with("}"):
+			continue
+		var xy := value.substr(1, value.length() - 2).split(";")
+		if xy.size() != 2 or not xy[0].strip_edges().is_valid_float() or not xy[1].strip_edges().is_valid_float():
+			continue
+		var point := Vector2(float(xy[0]), float(xy[1]))
+		if is_finite(point.x) and is_finite(point.y):
+			out.append(point)
+	return out

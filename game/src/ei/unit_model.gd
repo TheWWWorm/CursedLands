@@ -34,6 +34,7 @@ const AnimatedPart = preload("res://src/ei/anim_part.gd")
 const SurfaceResponse = preload("res://src/game/surface_materials.gd")
 const FigureMaterial = preload("res://src/ei/figure_material.gd")
 const WispGlow = preload("res://src/ei/wisp_glow.gd")
+const Mouth = preload("res://src/ei/dialogue_mouth.gd")
 
 ## Remake option gfx_sharp_units ("Sharp character textures"; default on,
 ## off under "Original look"): the unit texture fetch of every unit material
@@ -146,7 +147,7 @@ uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, r
 uniform sampler2D surface_tex : hint_default_black, filter_linear_mipmap_anisotropic, repeat_enable;
 #endif
 uniform vec3 unit_emission = vec3(0.0);
-""" + SHARP_FETCH + WOUND_FETCH + """
+""" + SHARP_FETCH + WOUND_FETCH + Mouth.FETCH + """
 void vertex() {
 	ei_e = max(unit_emission, ei_material_emissive);
 	ei_k = 0.0;
@@ -162,6 +163,7 @@ void fragment() {
 	}
 	FOG = ei_fog_of(VERTEX, (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz);
 	vec4 t = ei_unit_tex(albedo_tex, UV);
+	t = ei_unit_mouth(t, UV);
 	if (wound_enabled) { t = ei_unit_wound(t, ei_unit_tex(wound_tex, UV)); }
 	ALBEDO = t.rgb;
 	ALPHA = t.a * ei_material_diffuse.a;
@@ -212,9 +214,10 @@ const PREVIEW_SHADER := """
 shader_type spatial;
 render_mode cull_back, diffuse_lambert, specular_disabled, alpha_to_coverage;
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
-""" + SHARP_FETCH + WOUND_FETCH + """
+""" + SHARP_FETCH + WOUND_FETCH + Mouth.FETCH + """
 void fragment() {
 	vec4 t = ei_unit_tex(albedo_tex, UV);
+	t = ei_unit_mouth(t, UV);
 	if (wound_enabled) { t = ei_unit_wound(t, ei_unit_tex(wound_tex, UV)); }
 	ALBEDO = t.rgb;
 	ALPHA = t.a;
@@ -410,11 +413,13 @@ func act_with_start(action: String, variant := 1, blend := 0.15) -> float:
 
 
 func _act(action: String, variant: int, blend: float, with_start: bool) -> float:
+	if action != "idle":
+		set_speaking(false)
 	# The village screen owns an idle actor's presentation until it closes.
 	# Ordinary movement, attacks, death and explicit script clips still play.
 	if action == "idle" and _dialogue_active:
 		if _current != _dialogue_clip or not player.is_playing():
-			begin_dialogue(false)
+			_resume_dialogue_pose()
 		if _dialogue_active:
 			return player.get_animation("ei/" + _dialogue_clip).length
 	if action == "idle" and not village_idle_clip.is_empty():
@@ -505,6 +510,10 @@ const DIALOGUE_SPEAK := [1, 6, 7, 8]
 const DIALOGUE_LISTEN := [2, 10, 12, 13]
 var _dialogue_active := false
 var _dialogue_clip := ""
+var _mouth_spec := {}
+var _mouth: RefCounted
+var _mouth_checked := false
+var _speaking := false
 ## A peaceful village dragon rests in its authored listening pose between
 ## conversations. Movement, attacks and script animations still take priority.
 var village_idle_clip := ""
@@ -521,21 +530,56 @@ func dialogue_clip(speaking: bool, special := 0) -> String:
 	return ""
 
 
-func begin_dialogue(speaking: bool, special := 0) -> bool:
+func begin_dialogue(speaking: bool, special := 0, lips := true) -> bool:
 	var clip := dialogue_clip(speaking, special)
 	if clip.is_empty() or player == null:
 		end_dialogue()
-		return false
+		set_speaking(speaking and lips)
+		return _speaking
 	_dialogue_active = true
 	_dialogue_clip = clip
 	play(clip, 0.1, true)
+	set_speaking(speaking and lips)
 	return true
+
+
+## A body special may finish before its phrase. The native completion
+## callback selects a listening body pose without clearing the lip flag.
+func _resume_dialogue_pose() -> void:
+	var clip := dialogue_clip(false)
+	if clip.is_empty():
+		_dialogue_active = false
+		_dialogue_clip = ""
+		return
+	_dialogue_clip = clip
+	play(clip, 0.1, true)
+
+
+func set_speaking(on: bool) -> void:
+	_speaking = on
+	if on and not _mouth_checked:
+		_mouth_checked = true
+		var mouth := Mouth.new()
+		if mouth.prepare(self, _mouth_spec): _mouth = mouth
+	if _mouth:
+		_mouth.set_speaking(on)
+
+
+func copy_speech_from(other: EIUnitModel) -> void:
+	set_speaking(other._speaking)
+	if _mouth and other._mouth:
+		var changed: bool = _mouth.opened != other._mouth.opened
+		_mouth.opened = other._mouth.opened
+		_mouth.remaining = other._mouth.remaining
+		_mouth.random.state = other._mouth.random.state
+		if changed: _mouth.apply()
 
 
 func end_dialogue() -> void:
 	var held := _dialogue_active and _current == _dialogue_clip
 	_dialogue_active = false
 	_dialogue_clip = ""
+	set_speaking(false)
 	if held:
 		act("idle", 1, 0.1)
 
@@ -726,11 +770,12 @@ func cross(from_st: int, to_st: int, resume: String) -> float:
 
 
 func _process(_dt: float) -> void:
+	if _mouth: _mouth.advance(_dt)
 	# Native callback6023f0 resumes a listening special after each special
 	# finishes. This keeps the Old Dragon in its authored grounded clips
 	# throughout the conversation instead of falling back to flying idle.
 	if _dialogue_active and _current == _dialogue_clip and player and not player.is_playing():
-		begin_dialogue(false)
+		_resume_dialogue_pose()
 		return
 	if not village_idle_clip.is_empty() and _current == village_idle_clip and player and not player.is_playing():
 		play(village_idle_clip, 0.0, true)
@@ -793,6 +838,7 @@ func anim_names() -> PackedStringArray:
 
 func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictionary, ui_preview := false, initial_action := true) -> void:
 	_preview_model = ui_preview
+	_mouth_spec = Mouth.specification(proto, race)
 	var db := GameData.db
 	# Natural weapons have no inventory item to set this later. Their type
 	# still selects the ADB weapon mask (e.g. goblin pike vs sling).
@@ -1073,6 +1119,8 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 			var part_mat: Material = wmat if weapon_parts.has(p) else (hmat if helm_parts.has(p) else mat)
 			if not ui_preview:
 				part_mat = FigureMaterial.part_material(part_mat, fig.get("material", 0), lighting_parts)
+			if p == "hd":
+				part_mat = part_mat.duplicate()   # per-actor lip state, before selection copies it
 			if mask == "unmowi":
 				part_mat = WispGlow.material_for(part_mat, wisp_index, int(unit.get("nid", 0)))
 				wisp_index += 1

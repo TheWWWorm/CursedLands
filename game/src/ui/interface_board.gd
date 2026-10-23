@@ -7,7 +7,7 @@ extends TextureRect
 ## position ((x·0.0025 − 1)·0.48157462·d, (y·0.0025 − 0.75)·0.48157462·d, d)
 ## with view x right, y down, z forward — the interface camera
 ## (tan 0.48157462 per 400 px). Like the rest of the 800×600 interface the
-## picture is stretched to the window (rendered 4:3, drawn over the full rect).
+## picture retains the authored 4:3 proportions in the fitted interface frame.
 ## Interface figures are not lit by the world (CI3DFigure::Draw): unshaded.
 ## Examples: Options "unmoco1" escMenu00 / escMenu00labels
 ## parts "options" + "optionslabel", angle π/2, (400, 480, 4.8); network
@@ -35,7 +35,7 @@ func _build(model: String, skin: String, labels: String, parts: PackedStringArra
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	stretch_mode = TextureRect.STRETCH_SCALE
+	stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_vp = SubViewport.new()
 	_vp.own_world_3d = true
 	_vp.transparent_bg = true
@@ -121,8 +121,16 @@ func _reveal() -> void:
 func _process(_dt: float) -> void:
 	if not is_visible_in_tree():
 		return
-	# Render at the window height (4:3), drawn stretched over the full rect.
-	var h := maxi(60, int(size.y))
+	# Normal interface boards follow the parent's safe-area and touch-zoom
+	# mapping. The standalone Esc signpost fills its parent but fits its 4:3
+	# texture inside it; its pointer and gamepad targets use the same frame.
+	var screen := get_parent() as Interface800
+	if screen:
+		set_anchors_preset(Control.PRESET_TOP_LEFT)
+		var rect := screen.r8(Rect2(0, 0, 800, 600))
+		position = rect.position
+		size = rect.size
+	var h := maxi(60, int(Interface800.fit_rect(Rect2(Vector2.ZERO, size)).size.y))
 	var want := Vector2i(int(round(h * 4.0 / 3.0)), h)
 	if _vp and _vp.size != want:
 		_vp.size = want

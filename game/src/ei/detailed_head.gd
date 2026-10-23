@@ -97,7 +97,9 @@ static func attach(hd: Node3D, names: PackedStringArray, model: Dictionary, mask
 	mi.name = "DetailedHead"
 	mi.mesh = _mesh(names[0])
 	mi.transform = stretch * (fit[0] as Transform3D)
-	mi.material_override = _material(names[1], ui_preview)
+	# Speaking flags belong to this actor, including the unlit material
+	# retained if selection highlighting starts before the conversation.
+	mi.material_override = _material(names[1], ui_preview).duplicate()
 	mi.set_meta("detailed_head", true)   # UnitWounds: the body atlas's wound layers do not fit it
 	mi.visible = false
 	hd.add_child(mi)

@@ -66,9 +66,7 @@ func _ready() -> void:
 			for mesh: MeshInstance3D in preview.item._model.find_children("*", "MeshInstance3D", true, false):
 				var material := mesh.get_active_material(0).duplicate() as StandardMaterial3D
 				material.albedo_texture = texture
-				var scale := 256.0 / float(texture.get_width())
-				material.uv1_scale = Vector3(scale, scale, 1)
-				material.uv1_offset = Vector3(0, 1.0 - scale, 0)
+				ItemView.apply_texture_canvas(material, String(Items.look(descriptor.value).get("model", "")))
 				mesh.material_override = material
 		# Framing, paperdoll pose, transparent target allocation and its first
 		# submitted draw must all finish before the readback.

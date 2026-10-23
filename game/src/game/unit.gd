@@ -728,6 +728,7 @@ func refresh_figure(force := false) -> void:
 	for property: String in ["pose_state", "pose_mod", "_current", "_cycle", "_cycle_pos", "_resume", "_resume_clip",
 			"_dialogue_active", "_dialogue_clip", "village_idle_clip"]:
 		m.set(property, old.get(property))
+	m.copy_speech_from(old)
 	var was_acc := _anim_acc
 	var was_due := _anim_due
 	add_child(m)

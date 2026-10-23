@@ -34,7 +34,7 @@ const SCHEMA := {
 	"units.udb": [
 		["hit_locations", "SffUU", "name,resist,resist2,unknown,unknown2"],
 		["race_models", "SUFFUUFfFUUf222222            SssFSsfUUfUUIUSBFUUUU",
-			"name,type_id,health_regen,mana_regen,language,locomotion,vision_arc,speeds,attack_distance,ai_stay,ai_lie,attack,head,torso,left_arm,right_arm,left_leg,right_leg,mask,textures,textures2,model_shift,sfx_path,steps_path,anim_speeds,idle_sound_p,attack_sound_p,defence,blood_type,cast_type,footprint_type,leg_segment,skin_type,first_step_right,head_height,unknown,unknown2,unknown3,unknown4"],
+			"name,type_id,health_regen,mana_regen,language,locomotion,vision_arc,speeds,attack_distance,ai_stay,ai_lie,attack,head,torso,left_arm,right_arm,left_leg,right_leg,mask,textures,textures2,model_shift,sfx_path,steps_path,anim_speeds,idle_sound_p,attack_sound_p,defence,blood_type,cast_type,footprint_type,leg_segment,skin_type,first_step_right,head_height,mouth_x,mouth_y,mouth_width,mouth_height"],
 		["monster_prototypes", "SSIUIFFFSFFFFFFFFFUFFFFFFff33sfssSFFFFFUFUSF",
 			"name,base_race,unknown,skin,hair,complexion_x,complexion_y,complexion_z,unknown2,hp,mana,absorption,tuning_actions,tuning_move,attack_range,to_hit,parry,weapon_weight,weapon_type_id,damage_min,damage_max,general_skills,steal_skills,tame_skills,peripheral_skills,senses,detection,loot,rare_loot,items,skills,spells,wears,weapon,info_scale,altitude,random_hit,dialog_cam_distance,dialog_cam_height,real_weapon_type_id,detonation,base_level,second_weapon,experience"],
 		["npcs", "SUFFFFbbssssFUB", "name,unknown,experience,str,dex,int,skills,skills2,perks,weapons,quest_items,spells,exp_to_distribute,money,voice"],

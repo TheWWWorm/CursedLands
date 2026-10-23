@@ -76,8 +76,8 @@ extends Control
 ## village) pushes it (screen, 1, 1): the frame under
 ## it captured, greyed and frozen (Interface800.dim_layer), the map's own
 ## panels and buttons included.
-## Layout uses the native independently stretched 800×600 axes and font 1
-## scales with window width. In remake co-op only the party leader has ✓
+## Layout fits the authored 800×600 frame uniformly inside the window; font 1
+## follows that same scale. In remake co-op only the party leader has ✓
 ## (clients browse read-only).
 
 signal confirmed(option: Dictionary)
@@ -349,16 +349,22 @@ func _select(i: int) -> void:
 	_desc.text = description(q)
 	_desc.scroll_to_line(0)
 	_areas = PackedVector2Array()
-	for p: Vector2 in session.campaign.quest_areas.get(q, PackedVector2Array()):
+	var places: PackedVector2Array = session.campaign.quest_areas.get(q, PackedVector2Array())
+	if places.is_empty():
+		places = SideQuests.quest_places(q)
+	for p: Vector2 in places:
 		_areas.append(_zone_point(p))
 	queue_redraw()
 
 
 ##  text, as BBCode.
 func description(q: String) -> String:
-	var lines := GameData.text("quest " + q).split("\n")
+	var lines := SideQuests.quest_doc(q).split("\n")
 	var s := "[color=#e4d7a7]%s[/color]\n" % _paragraph(lines, 1)
 	var row: Dictionary = GameData.db.find("quests", q) if GameData.db else {}
+	if row.is_empty():
+		var record: Dictionary = SideQuests.get_quest(q).get("reg", {}).get("quest", {})
+		row = {"experience": record.get("exp", 0), "money": record.get("money", 0)}
 	for f: Array in [["experience", "obj_cost_exp"], ["money", "obj_cost_money"]]:
 		var v := float(row.get(f[0], 0.0))
 		if v > 0.0:
@@ -387,19 +393,23 @@ static func _str(key: String) -> String:
 # ------------------------------------------------------------------ layout
 
 func _k() -> float:
-	return size.y / 600.0
+	return minf(size.x / 800.0, size.y / 600.0)
 
 
 func _kv() -> Vector2:
-	return size / Vector2(800, 600)
+	return Vector2.ONE * _k()
+
+
+func _origin() -> Vector2:
+	return Interface800.fit_rect(Rect2(Vector2.ZERO, size)).position
 
 
 func _r(r: Rect2) -> Rect2:
-	return Rect2(r.position * _kv(), r.size * _kv())
+	return Rect2(_p(r.position), r.size * _kv())
 
 
 func _p(p: Vector2) -> Vector2:
-	return p * _kv()
+	return _origin() + p * _kv()
 
 
 func _layout() -> void:
@@ -408,7 +418,7 @@ func _layout() -> void:
 		if not is_instance_valid(label):
 			continue
 		var r := _r(pair[1].rect)
-		r.size.x -= _p(Vector2(10, 0)).x
+		r.size.x -= 10.0 * _k()
 		label.position = r.position
 		label.size = r.size
 		label.add_theme_font_size_override("normal_font_size", _font_px())
@@ -465,7 +475,7 @@ func _draw() -> void:
 			var u := 68.0 if st == 2 else 0.0
 			var s := _cross.get_size() / 256.0
 			draw_texture_rect_region(_cross, _r(Rect2(62, y + 1, 17, 22)), Rect2(Vector2(4 + u, 164) * s, Vector2(68, 88) * s))
-		var title := GameData.text("quest " + quests[i]).get_slice("\n", 0).strip_edges()
+		var title := SideQuests.quest_doc(quests[i]).get_slice("\n", 0).strip_edges()
 		_label(Rect2(86, y + 3, 284, 21), title if title else quests[i], TEXT)
 	DialogPanel.paint_bar(self, _list_bar, _r)
 	DialogPanel.paint_bar(self, _desc_bar, _r)
@@ -533,9 +543,9 @@ func _label(r: Rect2, s: String, col: Color, align := HORIZONTAL_ALIGNMENT_LEFT)
 
 ## The screen's texts are all CInterface3D font 1 (the draws
 ##  and the ScrollText): Times New Roman
-## 0.01867 × window width em.
+## 0.01867 × fitted interface width em.
 func _font_px() -> int:
-	return maxi(6, int(round(size.x * Interface800.FONT_EM[1])))
+	return maxi(6, int(round(800.0 * _k() * Interface800.FONT_EM[1])))
 
 
 # ------------------------------------------------------------------ input
@@ -578,7 +588,7 @@ func _get_tooltip(at: Vector2) -> String:
 
 
 func _gui_input(e: InputEvent) -> void:
-	var p800: Vector2 = e.position / _kv() if e is InputEventMouse else Vector2.ZERO
+	var p800: Vector2 = (e.position - _origin()) / _kv() if e is InputEventMouse else Vector2.ZERO
 	for b: DialogPanel.Bar in [_list_bar, _desc_bar, _zone_bar]:
 		if e is InputEventMouseMotion and b.held == 1:
 			b.drag(p800)
