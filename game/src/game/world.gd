@@ -12,6 +12,9 @@ signal item_worn(u: GameUnit, item: String, kind: String)
 
 const TICK := GameUnit.TICK
 const DIAGNOSTIC_GROUP := &"ei_diagnostic_worlds"
+## Opt-in roots for supported opaque effects outside the gameplay registries.
+## SceneTree membership owns their lifetime; ray collectors filter by world.
+const RAYTRACE_GEOMETRY_GROUP := &"ei_raytrace_geometry"
 const CorpsePools = preload("res://src/game/corpse_pools.gd")
 ## Godot4.7 Node's suspend notifications are not bound as script constants.
 ## The engine enum sends these two values through _notification nonetheless.

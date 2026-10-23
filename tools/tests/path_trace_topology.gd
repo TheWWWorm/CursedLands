@@ -125,6 +125,103 @@ func static_bounds() -> void:
 	check(not outside._nodes.has(mesh.get_instance_id()),"static mesh outside 96 metres remains omitted")
 	world.objects.clear();root.free()
 
+func detached_geometry() -> void:
+	var source := GameUnit.new();source.name="LimbSource";source.world=world
+	world.add_child(source);source.position=Vector3(20,0,0)
+	world.units={1:unit,2:source}
+	var model := EIUnitModel.new();source.add_child(model);source.model=model
+	var arm := part(model,"Arm",Vector3(0,1,0))
+	var original := snapshot()
+	# Exercise the production severing path, including copied meshes/materials,
+	# world parenting and registration, rather than manually opting into a group.
+	var limb := SeveredLimb.throw(source,"Arm")
+	check(limb!=null,"production severing creates a detached opaque figure part")
+	if limb==null:
+		world.units={1:unit};source.free();return
+	limb.set_process(false);arm.hide()
+	check(not world.objects.values().has(limb) and not world.units.values().has(limb),"detached part remains outside gameplay object and unit registries")
+	check(limb.is_in_group(GameWorld.RAYTRACE_GEOMETRY_GROUP),"detached part registers its geometry on entering the world")
+	check(original.topology_changed(),"new detached geometry invalidates the previous snapshot")
+	var copy := limb.get_child(0) as MeshInstance3D
+	check(copy!=null and copy.mesh==arm.mesh and copy.material_override==arm.material_override,"detached geometry retains the original mesh and material")
+	var scene := snapshot()
+	check(not legacy_nodes(scene).has(copy.get_instance_id()),"negative control: original object/unit-only collection omits the detached part")
+	check(scene._nodes.has(copy.get_instance_id()),"detached mesh enters the next lighting snapshot")
+	while not scene.step(): pass
+	scene.updates(true)
+	var index := -1
+	for i in scene.instances.size():
+		if scene.instances[i].node.get_ref()==copy: index=i
+	check(index>=0 and scene.instances[index].mask==7,"detached part receives lighting, casts shadows and contributes to indirect paths")
+	limb.position+=Vector3(0.3,0.2,0.1);limb.rotate_y(0.4)
+	var changes: Dictionary=scene.updates()
+	check(changes.instances.any(func(row: Dictionary):return row.index==index and row.transform==copy.global_transform),"tumbling detached part uploads its live transform")
+	check(not scene.topology_changed(),"detached rigid motion preserves scene membership")
+	limb.hide();changes=scene.updates()
+	check(changes.instances.any(func(row: Dictionary):return row.index==index and row.mask==0),"hidden detached part stops tracing without rebuilding")
+	limb.show();changes=scene.updates()
+	check(changes.instances.any(func(row: Dictionary):return row.index==index and row.mask==7),"revealed detached part restores all lighting roles")
+	world.objects["audit_detached"]=limb
+	var duplicate := snapshot();while not duplicate.step(): pass
+	check(duplicate.instances.filter(func(row: Dictionary):return row.node.get_ref()==copy).size()==1,"an opted-in registered root contributes each mesh only once")
+	world.objects.erase("audit_detached")
+	var other_world := GameWorld.new();other_world.process_mode=Node.PROCESS_MODE_DISABLED;add_child(other_world)
+	var foreign := SeveredLimb.new();other_world.add_child(foreign);part(foreign,"OtherWorldPart",Vector3.ZERO)
+	check(not scene.topology_changed(),"another loaded world's registered geometry is excluded")
+	other_world.free()
+	var water := Scene.new();water.begin(terrain,Vector3.ZERO,-1.0e20)
+	check(water._nodes.has(copy.get_instance_id()),"water reflection collection also retains detached figure parts")
+	world.remove_child(limb)
+	check(scene.topology_changed() and get_tree().get_nodes_in_group(GameWorld.RAYTRACE_GEOMETRY_GROUP).is_empty(),"off-tree detached parts release active group membership")
+	world.add_child(limb)
+	check(not scene.topology_changed() and get_tree().get_nodes_in_group(GameWorld.RAYTRACE_GEOMETRY_GROUP).size()==1,"reattaching a detached part restores one registry entry")
+	limb.position.x=127.5
+	check(not scene.topology_changed(),"detached figure receives the same bounded exit hysteresis as its source")
+	limb.position.x=128.5
+	check(scene.topology_changed(),"detached figure outside the exit margin leaves the snapshot")
+	limb.position.x=20.0
+	var before_free := snapshot();limb.free()
+	check(before_free.topology_changed(),"expiry removes detached geometry from the next snapshot")
+	check(get_tree().get_nodes_in_group(GameWorld.RAYTRACE_GEOMETRY_GROUP).is_empty(),"freeing all detached parts releases every registry entry")
+	world.units={1:unit};source.free()
+
+func terrain_versions() -> void:
+	var material := ShaderMaterial.new();var shader := Shader.new()
+	shader.code="shader_type spatial; uniform sampler2D detail_nm; uniform sampler2D macro_tex; uniform bool blend_edges=true;"
+	material.shader=shader;terrain._land_mat=material
+	var image:=Image.create(2,2,false,Image.FORMAT_RGBA8);image.fill(Color.WHITE)
+	var first:=ImageTexture.create_from_image(image);var second:=ImageTexture.create_from_image(image)
+	material.set_shader_parameter("detail_nm",first);material.set_shader_parameter("macro_tex",first)
+	var scene:=Scene.new();scene.path_materials=true;scene.begin(terrain,Vector3.ZERO,-1.0e20)
+	check(not scene.topology_changed(),"unchanged ready terrain textures preserve the snapshot")
+	material.set_shader_parameter("detail_nm",second)
+	check(scene.topology_changed(),"replacing a ready terrain normal texture invalidates the snapshot")
+	material.set_shader_parameter("detail_nm",first);material.set_shader_parameter("macro_tex",second)
+	check(scene.topology_changed(),"replacing a ready terrain macro texture invalidates the snapshot")
+	material.set_shader_parameter("macro_tex",first);material.set_shader_parameter("blend_edges",false)
+	check(scene.topology_changed(),"terrain edge-sampling changes invalidate the snapshot")
+	material.set_shader_parameter("blend_edges",true)
+	check(not scene.topology_changed(),"restoring the original terrain inputs restores its version")
+	terrain._land_mat=null
+
+func discarded_watcher() -> void:
+	var scene := snapshot();while not scene.step(): pass
+	check(not scene.vertices.is_empty() and not scene.images.is_empty(),"recovery watch begins with a fully populated scene")
+	var nodes: Dictionary=scene._nodes.duplicate(true)
+	scene.discard_geometry()
+	check(scene.vertices.is_empty() and scene.images.is_empty() and scene.geometries.is_empty() and scene.instances.is_empty(),"discarding a failed scene releases packed geometry, textures and placements")
+	check(scene.pending.is_empty() and scene._mesh_cache.is_empty() and scene._mesh_roots.is_empty() and scene._groups.is_empty() and scene._morph_geometries.is_empty() and scene._kernel==null,"discarding releases pending work, mesh caches and native instance watches")
+	check(scene._nodes==nodes and not scene.topology_changed(),"discarded scene keeps the original topology snapshot")
+	var material:=body.material_override as StandardMaterial3D
+	var roughness:=material.roughness;material.roughness=0.2
+	check(scene.topology_changed(),"discarded scene still detects a material fix")
+	material.roughness=roughness
+	var limb:=SeveredLimb.new();world.add_child(limb);part(limb,"WatcherPart",Vector3.ZERO)
+	check(scene.topology_changed(),"discarded scene still detects new dynamic geometry")
+	check(scene._mesh_roots.is_empty(),"topology-only polling does not repopulate packing bookkeeping")
+	limb.free()
+	check(not scene.topology_changed(),"discarded scene settles after temporary geometry is removed")
+
 func budgets() -> void:
 	check(Scene.MAX_TRIANGLES==320000 and Scene.MAX_TEXTURES==192 and Scene.MAX_INSTANCES==4096,"geometry, texture and instance budget caps are unchanged")
 	var scene := Scene.new();scene._kernel=null;scene.triangles=Scene.MAX_TRIANGLES
@@ -146,9 +243,10 @@ func run() -> void:
 	unit=GameUnit.new();unit.name="BoundaryUnit";world.add_child(unit);world.units={1:unit}
 	body=part(unit,"Body",Vector3(-0.4,0,0))
 	hidden_part=part(unit,"HiddenPart",Vector3(5,0,0));hidden_part.hide()
-	boundaries();mutations();static_bounds();budgets()
+	boundaries();mutations();static_bounds();detached_geometry();terrain_versions();discarded_watcher();budgets()
 	world.free()
 	FileAccess.open(out.path_join("path-topology-results.json"),FileAccess.WRITE).store_string(JSON.stringify({
-		"checks":checks,"failures":failures,"legacy_boundary_changed":legacy_boundary_changed},"\t"))
+		"checks":checks,"failures":failures,"legacy_boundary_changed":legacy_boundary_changed,
+		"native_kernel":Scene.new()._kernel!=null},"\t"))
 	print("PATH_TRACE_TOPOLOGY ",checks," checks ",failures.size()," failures")
 	get_tree().quit(0 if failures.is_empty() else 1)

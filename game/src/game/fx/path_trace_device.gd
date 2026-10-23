@@ -71,17 +71,23 @@ func build_extra(data: PackedByteArray, placements: Array) -> bool:
 ## shares hit stages, TLAS, SBT ranges and stable output images.
 func _select_pipeline(enabled: bool,deep: bool) -> bool:
 	if enabled==_uses_emitters and deep==_deep_paths: return true
-	_uses_emitters = enabled;_deep_paths = deep
 	var key := int(enabled)|(int(deep)<<1)
 	if not _variants.has(key):
+		# Compilation reads these flags and replaces _shader. Do not publish a
+		# requested mode until both its pipeline and SBT transition succeed.
+		var old_enabled := _uses_emitters;var old_deep := _deep_paths;var old_shader := _shader
+		_uses_emitters=enabled;_deep_paths=deep
 		var program := _compile()
+		var shader := _shader
+		_uses_emitters=old_enabled;_deep_paths=old_deep;_shader=old_shader
 		if program==null: return false
 		var group := RDHitGroup.new();group.closest_hit_shader=program;group.any_hit_shader=program
 		var pipeline := _own(_rd.raytracing_pipeline_create([program],[program],[group],1))
 		if not pipeline.is_valid(): return false
-		_variants[key] = {"shader":_shader,"pipeline":pipeline}
-	_shader = _variants[key].shader;_pipeline = _variants[key].pipeline
-	if _rd.hit_sbt_set_pipeline(_sbt,_pipeline)!=OK: return false
+		_variants[key] = {"shader":shader,"pipeline":pipeline}
+	if _rd.hit_sbt_set_pipeline(_sbt,_variants[key].pipeline)!=OK: return false
+	_shader=_variants[key].shader;_pipeline=_variants[key].pipeline
+	_uses_emitters=enabled;_deep_paths=deep
 	if _set.is_valid(): _rd.free_rid(_set);_set=RID()
 	_history_valid = false
 	return true
@@ -89,7 +95,7 @@ func _select_pipeline(enabled: bool,deep: bool) -> bool:
 func _upload_emitters() -> bool:
 	if _rd.buffer_update(_emitters,0,emitters.records.size(),emitters.records) != OK \
 		or _rd.buffer_update(_emitter_lookup,0,emitters.lookup.size(),emitters.lookup) != OK: return false
-	emitter_stats.emit.call_deferred(emitters.count,emitters.candidates)
+	_notify(&"emitter_stats",[emitters.count,emitters.candidates])
 	return true
 
 func extra_ray_uniforms() -> Array[RDUniform]:
@@ -104,12 +110,12 @@ func extra_ray_uniforms() -> Array[RDUniform]:
 func update_scene(changes: Dictionary) -> bool:
 	if _closed or not _ready: return false
 	if not _update_motion(changes):
-		_ready=false;prepared.emit.call_deferred(false);return false
+		_render_failed();return false
 	if not super.update_scene(changes): return false
 	if emitters.update(changes):
 		_history_valid = false
 		if not _upload_emitters() or not _select_pipeline(emitters.count>0,_deep_paths):
-			_ready = false; prepared.emit.call_deferred(false); return false
+			_render_failed();return false
 	return true
 
 func _write_motion(index: int,position: Transform3D,normal: Basis,valid: bool,moving: bool) -> void:
@@ -162,7 +168,7 @@ func _update_motion(changes: Dictionary) -> bool:
 func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, texture_filter := 4) -> void:
 	if _closed or not _ready or size.x<2 or size.y<2 or frame.size()!=frame_bytes(): return
 	if not _select_pipeline(_uses_emitters,frame.decode_float(144*4)>2.0 and not _full_paths_reference):
-		_ready=false;prepared.emit.call_deferred(false);return
+		_render_failed();return
 	super.render(size,frame,changes,texture_filter)
 
 func dispose() -> void:

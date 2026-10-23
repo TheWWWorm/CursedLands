@@ -16,6 +16,12 @@ var _filter_sets: Array[RID] = []
 var _filter_shader := RID()
 var _filter_pipeline := RID()
 var _history_valid := false
+# Readiness describes the last complete public image, independently of the
+# next render's temporal confidence. The main thread may query it mid-render.
+var _published_valid := false
+# A resize can succeed before the next frame upload fails. Keep the last
+# published images alive until the replacement has produced complete output.
+var _retired_outputs: Array[RID] = []
 
 func shader_prefix() -> String: return "res://src/game/fx/shaders/scene_raytrace_"
 func frame_bytes() -> int: return 576
@@ -25,6 +31,10 @@ func extra_ray_uniforms() -> Array[RDUniform]: return []
 ## bindings 13 onward and are copied together with the stable lighting outputs.
 func filter_auxiliary_formats() -> Array[int]: return []
 func extra_filter_uniforms() -> Array[RDUniform]: return []
+## A new device becomes display-ready only after a complete successful render.
+## History resets and private resizes keep its prior published image ready.
+func output_ready() -> bool:
+	return not _closed and _ready and _published_valid and output.texture_rd_rid.is_valid()
 
 func _lighting_texture(size: Vector2i, data_format:=RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT) -> RID:
 	var format := RDTextureFormat.new()
@@ -38,68 +48,114 @@ func _release_targets() -> void:
 		if rid.is_valid(): _rd.free_rid(rid)
 	_filter_sets.clear()
 	if _set.is_valid(): _rd.free_rid(_set); _set = RID()
-	for rid in _raw+_history+_filter_auxiliary:
+	for rid in _raw+_history+_filter_auxiliary+_retired_outputs:
 		if rid.is_valid(): _rd.free_rid(rid)
 	_raw.clear(); _history.clear(); _filter_auxiliary.clear()
+	_retired_outputs.clear()
 	_history_valid = false
+	_published_valid = false
+
+func _target_set(bindings: Array[RDUniform],shader: RID) -> RID:
+	return _rd.uniform_set_create(bindings,shader,0)
+
+func _ray_bindings(raw: Array[RID],sampler: RID) -> Array[RDUniform]:
+	var bindings: Array[RDUniform] = [
+		_uniform(RenderingDevice.UNIFORM_TYPE_ACCELERATION_STRUCTURE,0,[_tlas]),
+		_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,1,[raw[0]]),
+		_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,2,[_vertices]),
+		_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,3,[_colours]),
+		_uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,4,[_frame]),
+		_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,5,[_materials]),
+		_uniform(RenderingDevice.UNIFORM_TYPE_SAMPLER,6,[sampler]),
+		_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,7,[raw[1]]),
+		_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,8,[raw[2]]),
+		_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,9,[raw[3]])]
+	bindings.append_array(extra_ray_uniforms())
+	return bindings
+
+func _free_targets(resources: Array[RID]) -> void:
+	for rid in resources:
+		if rid.is_valid(): _rd.free_rid(rid)
 
 func _targets(size: Vector2i, sampler: RID) -> bool:
+	if _closed or not _ready or size.x<2 or size.y<2: return false
 	if not _filter_shader.is_valid():
 		_filter_shader = _own(_rd.shader_create_from_spirv(filter_spirv(),"Scene RT reconstruction"))
 		if not _filter_shader.is_valid(): return false
+	if not _filter_pipeline.is_valid():
 		_filter_pipeline = _own(_rd.compute_pipeline_create(_filter_shader))
 		if not _filter_pipeline.is_valid(): return false
 	if size != _size:
-		# Keep the RS handles alive while replacing their backing RD textures.
-		var old_raw := _raw; var old_history := _history; var old_sets := _filter_sets
-		var old_auxiliary := _filter_auxiliary
-		_raw = []; _history = []; _filter_sets = []; _filter_auxiliary = []
-		for i in 4: _raw.append(_lighting_texture(size))
-		for i in 8: _history.append(_lighting_texture(size))
-		for format: int in filter_auxiliary_formats(): _filter_auxiliary.append(_lighting_texture(size,format))
-		if not (_raw+_history+_filter_auxiliary).all(func(rid: RID): return rid.is_valid()):
-			_raw.append_array(old_raw); _history.append_array(old_history); _filter_sets = old_sets
-			_filter_auxiliary.append_array(old_auxiliary)
-			return false
+		# Stage the entire replacement. A failed image or descriptor allocation
+		# must leave the previous complete output and its resource indices intact.
+		var raw: Array[RID] = [];var history: Array[RID] = [];var auxiliary: Array[RID] = []
+		for i in 4: raw.append(_lighting_texture(size))
+		for i in 8: history.append(_lighting_texture(size))
+		for format: int in filter_auxiliary_formats(): auxiliary.append(_lighting_texture(size,format))
+		if not (raw+history+auxiliary).all(func(rid: RID): return rid.is_valid()):
+			_free_targets(raw+history+auxiliary);return false
 		var bindings: Array[RDUniform] = []
-		for i in 4: bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,i,[_raw[i]]))
-		for i in 4: bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,i+4,[_history[i+4]]))
-		for i in 4: bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,i+8,[_history[i]]))
+		for i in 4: bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,i,[raw[i]]))
+		for i in 4: bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,i+4,[history[i+4]]))
+		for i in 4: bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,i+8,[history[i]]))
 		bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,12,[_frame]))
-		for i in _filter_auxiliary.size(): bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,13+i,[_filter_auxiliary[i]]))
+		for i in auxiliary.size(): bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,13+i,[auxiliary[i]]))
 		bindings.append_array(extra_filter_uniforms())
-		_filter_sets.append(_rd.uniform_set_create(bindings,_filter_shader,0))
-		output.texture_rd_rid = _history[0]; guide.texture_rd_rid = _history[1]
-		shadow0.texture_rd_rid = _history[2]; shadow1.texture_rd_rid = _history[3]
-		if _set.is_valid(): _rd.free_rid(_set); _set = RID()
-		for rid in old_sets+old_raw+old_history+old_auxiliary:
-			if rid.is_valid(): _rd.free_rid(rid)
-		_size = size; _history_valid = false
-	if not _set.is_valid() or sampler != _sampler:
+		var filter_set := _target_set(bindings,_filter_shader)
+		if not filter_set.is_valid():
+			_free_targets(raw+history+auxiliary);return false
+		var ray_set := _target_set(_ray_bindings(raw,sampler),_shader)
+		if not ray_set.is_valid():
+			_rd.free_rid(filter_set);_free_targets(raw+history+auxiliary);return false
+		var old_targets := _filter_sets+_raw+_history+_filter_auxiliary
+		if _set.is_valid(): old_targets.push_front(_set)
+		var published: Array[RID] = [output.texture_rd_rid,guide.texture_rd_rid,shadow0.texture_rd_rid,shadow1.texture_rd_rid]
+		for rid in published:
+			if rid.is_valid() and old_targets.has(rid):
+				old_targets.erase(rid);_retired_outputs.append(rid)
+		_raw=raw;_history=history;_filter_auxiliary=auxiliary
+		_filter_sets=[filter_set];_set=ray_set;_sampler=sampler;_size=size
+		_history_valid=false
+		# Unpublished work images and descriptors are no longer needed. The
+		# four public images stay valid through upload/dispatch/copy failures.
+		_free_targets(old_targets)
+	elif not _set.is_valid() or sampler != _sampler:
+		var ray_set := _target_set(_ray_bindings(_raw,sampler),_shader)
+		if not ray_set.is_valid(): return false
 		if _set.is_valid(): _rd.free_rid(_set)
-		var bindings: Array[RDUniform] = [
-			_uniform(RenderingDevice.UNIFORM_TYPE_ACCELERATION_STRUCTURE,0,[_tlas]),
-			_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,1,[_raw[0]]),
-			_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,2,[_vertices]),
-			_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,3,[_colours]),
-			_uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,4,[_frame]),
-			_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,5,[_materials]),
-			_uniform(RenderingDevice.UNIFORM_TYPE_SAMPLER,6,[sampler]),
-			_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,7,[_raw[1]]),
-			_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,8,[_raw[2]]),
-			_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,9,[_raw[3]])]
-		bindings.append_array(extra_ray_uniforms())
-		_set = _rd.uniform_set_create(bindings,_shader,0)
-		_sampler = sampler
-	return _set.is_valid() and _filter_sets.all(func(rid: RID): return rid.is_valid())
+		_set=ray_set;_sampler=sampler
+		_history_valid=false
+	return _set.is_valid() and _filter_sets.size()==1 and _filter_sets[0].is_valid()
+
+func _publish_targets() -> void:
+	if output.texture_rd_rid!=_history[0]:
+		# Keep the RS handles stable, and change their backing only once the
+		# replacement render is complete. Ordinary frames avoid this churn.
+		output.texture_rd_rid=_history[0];guide.texture_rd_rid=_history[1]
+		shadow0.texture_rd_rid=_history[2];shadow1.texture_rd_rid=_history[3]
+	_free_targets(_retired_outputs);_retired_outputs.clear()
+
+func _upload_frame(frame: PackedByteArray) -> bool:
+	return _rd.buffer_update(_frame,0,frame.size(),frame)==OK
+
+func _copy_history() -> bool:
+	var extent := Vector3(_size.x,_size.y,1)
+	for i in 4:
+		if _rd.texture_copy(_history[i],_history[i+4],Vector3.ZERO,Vector3.ZERO,extent,0,0,0,0)!=OK: return false
+	for i in range(0,_filter_auxiliary.size(),2):
+		if _rd.texture_copy(_filter_auxiliary[i+1],_filter_auxiliary[i],Vector3.ZERO,Vector3.ZERO,extent,0,0,0,0)!=OK: return false
+	return true
+
+func _render_failed() -> void:
+	_history_valid=false;_published_valid=false;_ready=false;_notify(&"prepared",[false])
 
 func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, texture_filter := 4) -> void:
-	if not update_scene(changes): return
-	if size.x < 2 or size.y < 2 or frame.size() != frame_bytes(): return
+	if _closed or not _ready or size.x<2 or size.y<2 or frame.size()!=frame_bytes(): return
+	if not update_scene(changes): _history_valid=false;_published_valid=false;return
 	if not _targets(size,_samplers[clampi(texture_filter,0,_samplers.size()-1)]):
-		_ready = false; prepared.emit.call_deferred(false); return
+		_render_failed();return
 	if not _history_valid: frame.encode_float(82*4,0.0)
-	_rd.buffer_update(_frame,0,frame.size(),frame)
+	if not _upload_frame(frame): _render_failed();return
 	_rd.capture_timestamp("Scene RT begin")
 	var rays := _rd.raytracing_list_begin()
 	_rd.raytracing_list_bind_raytracing_pipeline(rays,_pipeline)
@@ -116,15 +172,17 @@ func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, te
 	# Texture2DRD replacement invalidates every material sampling that RS
 	# texture. Keep four stable outputs instead of swapping them every frame;
 	# a small GPU copy supplies next frame's history without descriptor churn.
-	for i in 4:
-		_rd.texture_copy(_history[i],_history[i+4],Vector3.ZERO,Vector3.ZERO,Vector3(size.x,size.y,1),0,0,0,0)
-	for i in range(0,_filter_auxiliary.size(),2):
-		_rd.texture_copy(_filter_auxiliary[i+1],_filter_auxiliary[i],Vector3.ZERO,Vector3.ZERO,Vector3(size.x,size.y,1),0,0,0,0)
+	var copied := _copy_history()
 	_rd.capture_timestamp("Scene RT end")
+	if not copied: _render_failed();return
+	_publish_targets()
 	_history_valid = true
+	_published_valid = true
 
 func dispose() -> void:
+	_published_valid=false
 	guide.texture_rd_rid = RID(); shadow0.texture_rd_rid = RID(); shadow1.texture_rd_rid = RID()
 	output.texture_rd_rid = RID()
 	if _rd != null: _release_targets()
 	super.dispose()
+	_filter_shader=RID();_filter_pipeline=RID()

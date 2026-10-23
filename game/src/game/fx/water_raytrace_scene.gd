@@ -56,21 +56,30 @@ func _scene_meshes(remember_units := false) -> Array[MeshInstance3D]:
 	var found: Array[MeshInstance3D] = []
 	var world := _terrain.game_world()
 	if world == null: return found
-	for root: Node3D in world.objects.values()+world.units.values():
+	var roots: Array = world.objects.values()+world.units.values()
+	# Combat effects such as detached limbs own real figure meshes without
+	# becoming gameplay objects or units. Explicit opt-in avoids scanning the
+	# whole tree, collecting particles, or retaining another loaded world's
+	# geometry. The SceneTree removes freed roots from the group automatically.
+	if world.is_inside_tree():
+		for root: Node in world.get_tree().get_nodes_in_group(GameWorld.RAYTRACE_GEOMETRY_GROUP):
+			if root is Node3D and world.is_ancestor_of(root) and root.get_world_3d()==world.get_world_3d() and not roots.has(root):
+				roots.append(root)
+	for root: Node3D in roots:
 		if not is_instance_valid(root): continue
-		var unit := root is GameUnit
+		var dynamic := root is GameUnit or root.is_in_group(GameWorld.RAYTRACE_GEOMETRY_GROUP)
 		var radius := RADIUS+24.0
-		if unit and _unit_roots.has(root.get_instance_id()): radius+=UNIT_HYSTERESIS
+		if dynamic and _unit_roots.has(root.get_instance_id()): radius+=UNIT_HYSTERESIS
 		# Include hidden parts, too: visibility is a live instance mask, and a
 		# fogged creature must not require a fresh mesh build when revealed.
 		if root.global_position.distance_squared_to(center) > radius*radius: continue
-		if unit and remember_units: _unit_roots[root.get_instance_id()]=true
+		if dynamic and remember_units: _unit_roots[root.get_instance_id()]=true
 		for mesh: MeshInstance3D in root.find_children("*","MeshInstance3D",true,false):
 			if mesh.mesh == null or mesh is EIObjectWater: continue
 			# Admit an animated figure as a whole. Idle limbs crossing the 96 m
 			# boundary only need instance updates, not a new scene/AS every poll.
 			# Root hysteresis keeps a retained figure stable near its entry edge.
-			if not unit and not _near(mesh.global_transform*mesh.get_aabb(),false): continue
+			if not dynamic and not _near(mesh.global_transform*mesh.get_aabb(),false): continue
 			var supported := false
 			for surface in mesh.mesh.get_surface_count():
 				var mat := mesh.get_active_material(surface)
@@ -78,7 +87,7 @@ func _scene_meshes(remember_units := false) -> Array[MeshInstance3D]:
 					supported = true; break
 			if supported:
 				found.append(mesh)
-				_mesh_roots[mesh.get_instance_id()] = weakref(root)
+				if remember_units: _mesh_roots[mesh.get_instance_id()] = weakref(root)
 	return found
 
 func _material_version(material: Material) -> Array:
@@ -131,6 +140,15 @@ func topology_changed() -> bool:
 	var materials := {}
 	for mesh: MeshInstance3D in _scene_meshes(): current[mesh.get_instance_id()] = _mesh_version(mesh,materials)
 	return current != _nodes
+
+## Retain only inexpensive source watches after a failed/empty gather. The
+## controller can retry when real inputs change without keeping copied images
+## or repeatedly repacking an unchanged over-budget scene.
+func discard_geometry() -> void:
+	vertices=PackedFloat32Array();images.clear();geometries.clear();instances.clear()
+	pending.clear();_textures.clear();_opaque_textures.clear();_mesh_cache.clear()
+	_mesh_roots.clear();_groups.clear();_morph_geometries.clear()
+	_kernel=null;_watching=false;_cursor=0
 
 func _near(bounds: AABB, clip_plane := true) -> bool:
 	var p := center.clamp(bounds.position,bounds.end)

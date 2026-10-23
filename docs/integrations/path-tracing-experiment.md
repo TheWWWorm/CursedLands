@@ -1,11 +1,12 @@
-# Path-traced lighting prototype (unreleased)
+# Path-traced lighting
 
 The development build adds an optional multi-bounce lighting mode for nearby
 terrain, objects and characters. It traces direct shadows, diffuse colour
 transport and rough glossy reflections through two or four surface bounces.
 It is a bounded lighting prototype: the main view still uses raster visibility,
 material composition, sky, fog, water and particles. It is not a replacement
-for the complete renderer and is not included in published 1.23.0.
+for the complete renderer. These notes describe the current development branch;
+individual validation reports identify the source and builds they qualify.
 
 ## Controls
 
@@ -46,6 +47,40 @@ the acceleration structures. Switching between scene RT and path tracing
 replaces the pipeline and resets its history. Preparation failures and budget
 limits fall back to conventional lighting.
 
+Camera recentering builds at most one replacement scene while the current
+scene continues rendering. The controller promotes it only after its first
+ray pass, reconstruction and history copies succeed at the requested size,
+then retires the old device. Movement beyond the candidate region cancels
+the outdated build. Deferred callbacks carry the device identity so a retired
+build cannot reactivate lighting or overwrite its successor's statistics.
+Incompatible material/topology changes still use conventional lighting during
+replacement rather than continuing to shade an outdated scene.
+
+Transient pipeline failures retry with increasing delays, capped at 30 seconds.
+An unchanged over-budget scene retains only a lightweight source watch and
+does not repeatedly repack; movement or changed source membership allows
+recovery without toggling an option. A failed recenter keeps the usable current
+device. Quality/renderer changes clear the failure state.
+
+Image and descriptor allocation is transactional. A resize publishes new
+backing images only after a complete render; four previous output images stay
+alive until then. Frame/morph uploads and history copies are checked, failed
+frames invalidate history, and failures notify the controller to restore
+conventional lighting. This does not establish recovery from a lost physical
+GPU or an operating-system driver reset.
+
+Published-output readiness is separate from temporal-history confidence.
+Sampler, pipeline, resize and emitter changes can reset history while the last
+complete image remains display-ready. This keeps the controller updating camera
+projection globals when the separate render thread is between those operations.
+
+Queued build, render and disposal callbacks bind their device owner explicitly,
+and deferred notifications retain it until delivery. Ordinary method callables
+and signal values only identify their targets; they do not retain `RefCounted`
+objects. The shared water controller uses the same retained dispatch. A native
+lifecycle regression drops the final main-thread owner while the render queue
+is blocked, then verifies resource disposal and final release after delivery.
+
 `path_trace.hlsl` uses a camera visibility ray followed by up to two or four
 continuation segments. At every hit, direct lighting is evaluated from the
 sun and up to seven nearby point lights with traced visibility. A continuation
@@ -55,8 +90,11 @@ sampled with a shared mixture PDF. Glossy continuations use
 [visible-normal GGX sampling](https://jcgt.org/published/0007/04/01/), with
 Fresnel-aware lobe selection and no diffuse samples for pure metals. This
 reduces grazing-angle variance without increasing the sample budget. The
-bounce count bounds work; there is no
-Russian roulette or light reservoir sampling. Geometric normals offset rays
+bounce count bounds work. Four-bounce mode uses compensated Russian roulette
+after its first two continuation segments; the survival floor ranges from
+25% for diffuse surfaces to 75% for smooth metals. Two-bounce mode uses a
+smaller shader without this tail, and `--ei-full-paths` retains the full-path
+comparison. There is no light reservoir sampling. Geometric normals offset rays
 outside the actual triangles, while interpolated normals shade the surfaces.
 
 Outdoor misses now evaluate a continuous zenith/horizon/ground environment
@@ -227,7 +265,10 @@ Tile identities come from retained terrain triangles, not world XZ: original
 maps can shift their vertices. The immutable snapshot retains the atlas owner
 and copies tile/transition/guard metadata, while normal and macro data join the
 existing raw texture array. Terrain detail, cliff or material setting changes,
-and completion of asynchronous procedural textures, rebuild the snapshot.
+completion or replacement of procedural textures, and changes to edge blending
+rebuild the snapshot. Ready normal/macro texture identities are tracked as well
+as their generation state, so replacing a ready texture cannot leave the old
+traced material resident.
 Separate original/detailed/transition hit variants avoid loading transition
 code into scenes that do not use it. The existing sample and bounce budgets,
 96-byte ray payload and screen-sized buffers stay unchanged.
@@ -353,6 +394,16 @@ conventional illumination between 60 and 72 m from the scene snapshot centre.
 World geometry is gathered within 96 m, with the existing budgets of 320,000
 unique triangles, 4,096 instances and 192 texture layers of 512×512.
 Characters' supported articulated and morph animation updates live.
+Opaque detached limbs also participate after leaving their source character.
+They register through the world's explicit ray-geometry group, preserving
+their original copied meshes/materials, live transforms and visibility masks
+in both scene lighting and water reflections. Registration is filtered to the
+current world and follows scene-tree lifetime. Whole-root admission and exit
+hysteresis apply to these moving parts; particles remain on their own renderer.
+
+A failed or empty gather can discard its packed vertices, copied textures,
+placements, morph data and native watcher while retaining its lightweight
+source-version snapshot. Topology-only polling does not refill packing caches.
 
 PT receiver composition retains the terrain's authored underwater depth factor
 on reflected diffuse and glossy light, while preserving emission. Since the
@@ -401,12 +452,19 @@ formula. It does not simulate water-volume transport on secondary paths.
   textures and acceleration structures. FSR Quality's two-thirds render scale
   reduces those pixel allocations to approximately four-ninths. The motion
   buffer uses at most 384 KiB for 4,096 placements. Water tracing has separate
-  resources.
+  resources. A recenter can temporarily retain two bounded scenes and their
+  lighting targets; a resize additionally retains four previous RGBA16F output
+  images until publication. Allocation failure preserves the last valid output
+  long enough for the controller to retire the device safely.
 
 See the [validation report](../validation/path-tracing-2026-10-22/README.md)
 for actual outdoor/cave captures, timings, frame-generation checks and known
 API diagnostics. DX12 tests here use the Windows build through Wine/VKD3D;
 native Windows and other GPU vendors still require qualification.
+The [recovery and sustained qualification report](../validation/path-tracing-recovery-2026-10-23/README.md)
+tracks the subsequent output-lifetime, recenter/retry and live-scene hardening.
+Use the repository-owned [qualification runner](../path-tracing-qualification.md)
+for reproducible hardware, runtime, profile, memory and shutdown gates.
 The [sampling and reconstruction follow-up](../validation/path-tracing-smoothing-2026-10-22/README.md)
 records variance, subpixel history, steep-receiver coverage and before/after
 GPU timings for the subsequent smoothing changes.
@@ -432,8 +490,8 @@ views, Vulkan compiler compatibility and the increased GPU cost.
 
 ## Rebuild and checks
 
-All four stages, the additional ray-generation variant and two terrain hit
-variants are checked in as fourteen matching DXIL and SPIR-V binaries. Manifests
+The four base stages, three additional ray-generation variants and two terrain
+hit variants are checked in as eighteen matching DXIL and SPIR-V binaries. Manifests
 pin source, builder and binary hashes. Rebuild or reproduce with DXC 1.9.2609:
 
 ```sh
@@ -449,9 +507,15 @@ Fixtures run through the existing `--tool` interface:
 | Fixture in `tools/tests/` | Coverage |
 | --- | --- |
 | `path_trace_device.gd` | Additional bounce energy, emissive transport, glossy metal, accumulation, emitter removal, stable bindings, resize and teardown |
+| `path_trace_lifecycle.gd` | Transactional image/descriptor allocation, failed pipeline/upload/copy combinations, output publication, retry and repeated teardown |
+| `path_trace_controller.gd` | Real recenter continuity, automatic failure recovery, cancellation, stale callbacks, disabled renderer and bounded retry delays |
+| `path_trace_sustained.gd` | Repeated live quality/scale/renderer changes, two campaign zones, actor motion, generated save/load, owner retirement and warmed allocation trends |
+| `path_trace_weakref_regression.gd` | Standalone CPU reproduction of coroutine temporary retention and the synchronous weak-capture lifetime guard |
 | `path_trace_alpha.gd` | Cutout alpha in primary, direct visibility and continuation rays |
 | `path_trace_emitters.gd` | Raw small-light and glossy variance, area-integral energy reference, cutout/textured emission, movement/deformation, duplicate placements, visibility masks and proposal-budget fallback |
 | `path_trace_emitter_live.gd` | Production scene collection, emissive terrain illumination, movement/hiding and material changes in the actual campaign |
+| `path_trace_detached_live.gd` | Original campaign severing, native primary-hit identities on detached meshes, transform/visibility updates and removal on expiry |
+| `path_trace_topology.gd` | Whole-figure boundaries, dynamic-root lifetime/world isolation, ready terrain texture replacement, lightweight failure watches and unchanged geometry budgets |
 | `path_trace_quality.gd` | Native grazing-metal variance and energy against numerical quadrature; subpixel and sloped reprojection; rejection of unrelated depth layers |
 | `path_trace_motion.gd` | Rigid motion and camera reprojection, rotation/nonuniform scale, stable object identities, visibility/morph rejection, movement stopping, high instance IDs and resource lifetime |
 | `path_trace_resolution.gd` | Real raster/PT dimensions, render scale, FSR jitter, native qualities, resizing, history reset, image comparison and unchanged scene RT sizing |

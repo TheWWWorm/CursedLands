@@ -36,6 +36,12 @@ var _quiet_time := 0.0
 var _sink_from := 0.0
 
 
+func _enter_tree() -> void:
+	# Detached parts are no longer under a registered unit. Keep their opaque
+	# copied meshes in scene lighting and water reflections until they expire.
+	add_to_group(GameWorld.RAYTRACE_GEOMETRY_GROUP)
+
+
 ## Copies the chain of `unit`'s model starting at part node `part` (call it
 ## before the chain is hidden) and launches it. Returns null if the model has
 ## no such node or no mesh under it.

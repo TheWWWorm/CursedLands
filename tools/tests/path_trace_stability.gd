@@ -352,6 +352,12 @@ func _recenter() -> void:
 		if not ready: return
 		await _hold(1.0)
 
+func _wait_save_thumbnail(_slot: String) -> bool:
+	# Keep the short stability probe's original cadence. Sustained probes can
+	# override this hook to require the production asynchronous image on disk.
+	await _frames(4)
+	return true
+
 func _save_reload_destination() -> void:
 	if not running: return
 	var destination := session.zone_id
@@ -375,7 +381,7 @@ func _save_reload_destination() -> void:
 	if not generated_save.saved or not running: return
 	# Give the ordinary asynchronous save thumbnail its normal drawn frames
 	# before loading. Its readback is part of the real save path under test.
-	await _frames(4)
+	if not await _wait_save_thumbnail(slot): return
 	generated_save["thumbnail_written"]=FileAccess.file_exists(SaveInfo.path(slot,"shot.png"))
 	_record("generated-save-written",generated_save.duplicate())
 	if not running: return

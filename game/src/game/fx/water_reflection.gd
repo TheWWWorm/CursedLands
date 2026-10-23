@@ -183,7 +183,7 @@ func _update_raytrace(source: Camera3D) -> void:
 		rt_stats["opaque_geometries"] = opaque
 		for entry: Dictionary in _rt_scene.instances:
 			placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":0})
-		RenderingServer.call_on_render_thread(_rt.build.bind(_rt_scene.vertices.to_byte_array(),_rt_scene.images,geometries,placements))
+		RayDevice.dispatch(_rt,&"build",[_rt_scene.vertices.to_byte_array(),_rt_scene.images,geometries,placements])
 		_rt_live = _rt_scene
 		_rt_scene = null
 		_collect_raytrace_lights(source.global_position)
@@ -218,7 +218,7 @@ func _update_raytrace(source: Camera3D) -> void:
 	frame.append_array(colours)
 	var changes := _rt_live.updates()
 	var filtering := clampi(GameData.option("q_aniso"),0,4)
-	RenderingServer.call_on_render_thread(_rt.render.bind(target,frame.to_byte_array(),changes,filtering))
+	RayDevice.dispatch(_rt,&"render",[target,frame.to_byte_array(),changes,filtering])
 	rt_stats["updated_instances"] = changes.instances.size()
 	rt_stats["updated_morphs"] = changes.poses.size()
 	rt_stats["lights"] = _rt_lights.size()
@@ -263,7 +263,7 @@ func _release_raytrace() -> void:
 	_rt_plane = INF
 	if _rt != null:
 		_rt.prepared.disconnect(_raytrace_prepared)
-		RenderingServer.call_on_render_thread(_rt.dispose)
+		RayDevice.dispatch(_rt,&"dispose")
 		_rt = null
 
 
