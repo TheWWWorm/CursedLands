@@ -1,0 +1,3067 @@
+{
+  "schema": 1,
+  "campaign": "cursed_lands",
+  "basis": "Source census and bounded loaded-map checkpoint mapping, not a success result; consult results.json for executed evidence.",
+  "census": {
+    "database_records": 109,
+    "named_quests": 92,
+    "gipat": 44,
+    "ingos": 23,
+    "suslanger_and_ending": 25,
+    "installed_side_archives": 28,
+    "excluded_dummy_records": [
+      1,
+      10,
+      20,
+      32,
+      41,
+      50,
+      57,
+      62,
+      68,
+      76,
+      78,
+      86,
+      93,
+      98,
+      102,
+      107,
+      109
+    ]
+  },
+  "canonical_quests": [
+    {
+      "id": "q0g",
+      "database_record": 2,
+      "database_zone": 1,
+      "authored_experience": 40.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_village"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_village.gd",
+      "root_variable": "q.gz1g.q0g",
+      "completion_action": "distance to187,110; actual village travel",
+      "negative_control": "hero remains away; opening pending",
+      "original_completion_sites": [
+        {
+          "map": "zone1.mob",
+          "script": "VTriger#0#188",
+          "line": 1078
+        },
+        {
+          "map": "zone1.mob",
+          "script": "VTriger#0#194",
+          "line": 1147
+        }
+      ]
+    },
+    {
+      "id": "q1ag",
+      "database_record": 3,
+      "database_zone": 3,
+      "authored_experience": 24.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_village"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_village.gd",
+      "root_variable": "q.gz3g.q1ag",
+      "completion_action": "GSentry death; actual Elder briefing afterward",
+      "negative_control": "living sentry",
+      "original_completion_sites": [
+        {
+          "map": "zone3obr.mob",
+          "script": "VTriger#0#361",
+          "line": 2535
+        }
+      ]
+    },
+    {
+      "id": "q1g",
+      "database_record": 4,
+      "database_zone": 3,
+      "authored_experience": 40.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_village"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_village.gd",
+      "root_variable": "q.gz3g.q1g",
+      "completion_action": "WhiteWolf corpse loot",
+      "negative_control": "death without hide",
+      "original_completion_sites": [
+        {
+          "map": "zone3obr.mob",
+          "script": "VTriger#0#191",
+          "line": 1390
+        }
+      ]
+    },
+    {
+      "id": "q2g",
+      "database_record": 5,
+      "database_zone": 3,
+      "authored_experience": 40.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_village"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_village.gd",
+      "root_variable": "q.gz3g.q2g",
+      "completion_action": "Boss knife plus ChiefWife awl; Smith m4 consumes both",
+      "negative_control": "one recovered tool only",
+      "original_completion_sites": [
+        {
+          "map": "zone3obr.mob",
+          "script": "VTriger#0#231",
+          "line": 1645
+        }
+      ]
+    },
+    {
+      "id": "q3g",
+      "database_record": 6,
+      "database_zone": 3,
+      "authored_experience": 40.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_village"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_village.gd",
+      "root_variable": "q.gz3g.q3g",
+      "completion_action": "seven counted Goblins deaths",
+      "negative_control": "six kills, source threshold is greater than6",
+      "original_completion_sites": [
+        {
+          "map": "zone3obr.mob",
+          "script": "VTriger#0#209",
+          "line": 1481
+        }
+      ]
+    },
+    {
+      "id": "q4g",
+      "database_record": 7,
+      "database_zone": 3,
+      "authored_experience": 70.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_village"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_village.gd",
+      "root_variable": "q.gz3g.q4g",
+      "completion_action": "Renegade death then corpse loot",
+      "negative_control": "death without map",
+      "original_completion_sites": [
+        {
+          "map": "zone3obr.mob",
+          "script": "VTriger#0#217",
+          "line": 1551
+        }
+      ]
+    },
+    {
+      "id": "q5g",
+      "database_record": 8,
+      "database_zone": 5,
+      "authored_experience": 100.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_witch"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_witch.gd",
+      "root_variable": "q.gz5g.q5g",
+      "completion_action": "sheriff gear use4583, KeyOrc loot, keyed chest4522",
+      "negative_control": "missing crypt key",
+      "original_completion_sites": [
+        {
+          "map": "zone5_1.mob",
+          "script": "VTriger#0#91",
+          "line": 595
+        }
+      ]
+    },
+    {
+      "id": "q5dg",
+      "database_record": 9,
+      "database_zone": 3,
+      "authored_experience": 100.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_village"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_village.gd",
+      "root_variable": "q.gz3g.q5dg",
+      "completion_action": "PShaman death plus use4636; Smith m5_4 report",
+      "negative_control": "shaman dead but switch unused",
+      "original_completion_sites": [
+        {
+          "map": "zone3obr.mob",
+          "script": "VTriger#0#326",
+          "line": 2234
+        }
+      ]
+    },
+    {
+      "id": "q6g",
+      "database_record": 11,
+      "database_zone": 2,
+      "authored_experience": 80.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_witch"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_witch.gd",
+      "root_variable": "q.gz2g.q6g",
+      "completion_action": "hidden key1281, switches1323/1322/1321, arrival54,146, actual hut passage",
+      "negative_control": "switches without key and only two switches",
+      "original_completion_sites": [
+        {
+          "map": "zone2.mob",
+          "script": "VTriger#0#96",
+          "line": 797
+        }
+      ]
+    },
+    {
+      "id": "q8g",
+      "database_record": 12,
+      "database_zone": 7,
+      "authored_experience": 50.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_witch"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_witch.gd",
+      "root_variable": "q.gz7g.q8g",
+      "completion_action": "use4961 then earned Smith/Elder reports",
+      "negative_control": "totem not yet used",
+      "original_completion_sites": [
+        {
+          "map": "zone7.mob",
+          "script": "VTriger#0#104",
+          "line": 697
+        }
+      ]
+    },
+    {
+      "id": "q7g",
+      "database_record": 13,
+      "database_zone": 6,
+      "authored_experience": 50.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_witch"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_witch.gd",
+      "root_variable": "q.gz6g.q7g",
+      "completion_action": "original added wagon chest1000383",
+      "negative_control": "actual quest addition must exist",
+      "original_completion_sites": [
+        {
+          "map": "zone6.mob",
+          "script": "VTriger#0#349",
+          "line": 870
+        }
+      ]
+    },
+    {
+      "id": "q9g",
+      "database_record": 14,
+      "database_zone": 7,
+      "authored_experience": 130.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_witch"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_witch.gd",
+      "root_variable": "q.gz7g.q9g",
+      "completion_action": "original added chest1000252",
+      "negative_control": "paper cannot satisfy separate Palantir",
+      "original_completion_sites": [
+        {
+          "map": "zone7.mob",
+          "script": "VTriger#0#97",
+          "line": 654
+        }
+      ]
+    },
+    {
+      "id": "q10g",
+      "database_record": 15,
+      "database_zone": 7,
+      "authored_experience": 160.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_witch"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_witch.gd",
+      "root_variable": "q.gz7g.q10g",
+      "completion_action": "original added altar1000308 then Witch z2 consumes it",
+      "negative_control": "separate paper completion leaves Palantir active",
+      "original_completion_sites": [
+        {
+          "map": "zone7.mob",
+          "script": "VTriger#0#86",
+          "line": 616
+        }
+      ]
+    },
+    {
+      "id": "q11g",
+      "database_record": 16,
+      "database_zone": 7,
+      "authored_experience": 160.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_witch"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_witch.gd",
+      "root_variable": "q.gz7g.q11g",
+      "completion_action": "LetoShaman corpse loot then Witch z11",
+      "negative_control": "shaman dead without annals loot",
+      "original_completion_sites": [
+        {
+          "map": "zone7.mob",
+          "script": "VTriger#0#100",
+          "line": 680
+        }
+      ]
+    },
+    {
+      "id": "q12g",
+      "database_record": 17,
+      "database_zone": 9,
+      "authored_experience": 160.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_investigation",
+        "quests/base_campaign_gipat_investigation_alternative"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_investigation.gd",
+      "root_variable": "q.gz9g.q12g",
+      "completion_action": "use2051, either108,127 or138,147 exit, Elder sack exchange for400",
+      "negative_control": "exit without sack, sack without exit; separate real refusal branch",
+      "original_completion_sites": [
+        {
+          "map": "zone9.mob",
+          "script": "VTriger#0#92",
+          "line": 790
+        }
+      ]
+    },
+    {
+      "id": "q13g",
+      "database_record": 18,
+      "database_zone": 7,
+      "authored_experience": 50.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_investigation",
+        "quests/base_campaign_gipat_investigation_alternative"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_investigation.gd",
+      "root_variable": "q.gz7g.q13g",
+      "completion_action": "original Zone7Zasada Goblin-Z all dead",
+      "negative_control": "one goblin survives",
+      "original_completion_sites": [
+        {
+          "map": "zone7zasada.mob",
+          "script": "VTriger#1#11",
+          "line": 152
+        },
+        {
+          "map": "zone7zasada.mob",
+          "script": "VTriger#1#47",
+          "line": 467
+        }
+      ]
+    },
+    {
+      "id": "q13ag",
+      "database_record": 19,
+      "database_zone": 7,
+      "authored_experience": 160.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_investigation",
+        "quests/base_campaign_gipat_investigation_alternative"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_investigation.gd",
+      "root_variable": "q.gz7g.q13ag",
+      "completion_action": "see original ZLeader, all five optional combat groups, leader corpse loot",
+      "negative_control": "leader death without instructions; regional gates remain blocked until loot",
+      "original_completion_sites": [
+        {
+          "map": "zone7zasada.mob",
+          "script": "VTriger#1#37",
+          "line": 374
+        }
+      ]
+    },
+    {
+      "id": "q14g",
+      "database_record": 21,
+      "database_zone": 8,
+      "authored_experience": 60.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_investigation",
+        "quests/base_campaign_gipat_investigation_alternative"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_investigation.gd",
+      "root_variable": "q.gz8g.q14g",
+      "completion_action": "OrcShB loot then Witch consumes alphabet and instructions",
+      "negative_control": "shaman death without loot",
+      "original_completion_sites": [
+        {
+          "map": "zone8.mob",
+          "script": "VTriger#0#18",
+          "line": 310
+        }
+      ]
+    },
+    {
+      "id": "q14ag",
+      "database_record": 22,
+      "database_zone": 8,
+      "authored_experience": 60.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_mountains",
+        "quests/base_campaign_gipat_mountains_peaceful"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_mountains.gd",
+      "root_variable": "q.gz6g.q14ag",
+      "completion_action": "Witch consumes prior gear; original added Beastmaster death and loot",
+      "negative_control": "young dragon refuses no-amulet hero; beastmaster death alone",
+      "original_completion_sites": [
+        {
+          "map": "zone6.mob",
+          "script": "VTriger#0#312",
+          "line": 582
+        }
+      ]
+    },
+    {
+      "id": "q15ag",
+      "database_record": 23,
+      "database_zone": 4,
+      "authored_experience": 60.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_mountains",
+        "quests/base_campaign_gipat_mountains_peaceful"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_mountains.gd",
+      "root_variable": "q.gz4g.q15ag",
+      "completion_action": "use533094 grants actual installation objective",
+      "negative_control": "uncollected shell",
+      "original_completion_sites": [
+        {
+          "map": "zone4.mob",
+          "script": "VTriger#0#110",
+          "line": 727
+        }
+      ]
+    },
+    {
+      "id": "q15bg",
+      "database_record": 24,
+      "database_zone": 6,
+      "authored_experience": 60.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_mountains",
+        "quests/base_campaign_gipat_mountains_peaceful"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_mountains.gd",
+      "root_variable": "q.gz6g.q15bg",
+      "completion_action": "ordinary use1432 consumes dragonshell00 and sets dragonkin peace",
+      "negative_control": "actual earned shell required",
+      "original_completion_sites": [
+        {
+          "map": "zone6.mob",
+          "script": "VTriger#0#33",
+          "line": 384
+        }
+      ]
+    },
+    {
+      "id": "q17g",
+      "database_record": 25,
+      "database_zone": 9,
+      "authored_experience": 90.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_mountains",
+        "quests/base_campaign_gipat_mountains_peaceful"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_mountains.gd",
+      "root_variable": "q.gz9g.q17g",
+      "completion_action": "use2054 then escape185,235; Witch report freezes lake",
+      "negative_control": "wrong crystal2055 rejected; true pickup without escape",
+      "original_completion_sites": [
+        {
+          "map": "zone9.mob",
+          "script": "VTriger#0#156",
+          "line": 1258
+        }
+      ]
+    },
+    {
+      "id": "q18g",
+      "database_record": 26,
+      "database_zone": 6,
+      "authored_experience": 150.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_mountains",
+        "quests/base_campaign_gipat_mountains_peaceful"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_mountains.gd",
+      "root_variable": "q.gz6g.q18g",
+      "completion_action": "amulet-driven young dragon follow, defenders, science switch1170 opens doors, book1390",
+      "negative_control": "no amulet; one defender alive; doors open only after normal use",
+      "original_completion_sites": [
+        {
+          "map": "zone6.mob",
+          "script": "VTriger#0#52",
+          "line": 542
+        },
+        {
+          "map": "zone6.mob",
+          "script": "VTriger#0#341",
+          "line": 817
+        }
+      ]
+    },
+    {
+      "id": "q16g",
+      "database_record": 27,
+      "database_zone": 4,
+      "authored_experience": 90.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_mountains",
+        "quests/base_campaign_gipat_mountains_peaceful"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_mountains.gd",
+      "root_variable": "q.gz4g.q16g",
+      "completion_action": "direct Cyclope death OR all pigs dead then living Cyclope reaches exit",
+      "negative_control": "living cyclops/pigs; one pig survives; alarm alone",
+      "original_completion_sites": [
+        {
+          "map": "zone4.mob",
+          "script": "VTriger#0#80",
+          "line": 530
+        }
+      ]
+    },
+    {
+      "id": "q19g",
+      "database_record": 28,
+      "database_zone": 7,
+      "authored_experience": 60.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_investigation",
+        "quests/base_campaign_gipat_investigation_alternative"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_investigation.gd",
+      "root_variable": "q.gz7g.q19g",
+      "completion_action": "hidden letter1000101 OR actual runner detection transfers it to ORunner then corpse loot",
+      "negative_control": "detected runner must be looted",
+      "original_completion_sites": [
+        {
+          "map": "zone7letter.mob",
+          "script": "VTriger#2#33",
+          "line": 278
+        }
+      ]
+    },
+    {
+      "id": "q20g",
+      "database_record": 29,
+      "database_zone": 9,
+      "authored_experience": 120.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_mountains",
+        "quests/base_campaign_gipat_mountains_peaceful"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_mountains.gd",
+      "root_variable": "q.gz9g.q20g",
+      "completion_action": "earned password reaches elemental, two route points, ordinary bz3g passage",
+      "negative_control": "password and actual route gates exercised",
+      "original_completion_sites": [
+        {
+          "map": "zone9.mob",
+          "script": "VTriger#0#51",
+          "line": 457
+        }
+      ]
+    },
+    {
+      "id": "q39g",
+      "database_record": 30,
+      "database_zone": 6,
+      "authored_experience": 60.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_daughter"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_daughter.gd",
+      "root_variable": "q.gz6g.q39g",
+      "completion_action": "original added remains1000123 then Witch consumes girlsign",
+      "negative_control": "physical evidence missing",
+      "original_completion_sites": [
+        {
+          "map": "zone6gr.mob",
+          "script": "VTriger#2#23",
+          "line": 199
+        }
+      ]
+    },
+    {
+      "id": "q22g",
+      "database_record": 31,
+      "database_zone": 5,
+      "authored_experience": 210.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_queen_source1",
+        "quests/base_campaign_gipat_queen_source2",
+        "quests/base_campaign_gipat_queen_source3"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_queen.gd",
+      "root_variable": "q.gz5g.q22g",
+      "completion_action": "actual Dr20 poison; source1/2/3 normal use; weakened queen and required brood deaths; Dr22 report",
+      "negative_control": "all sources without poison; only selected source completes; replacement is not death; surviving brood",
+      "original_completion_sites": [
+        {
+          "map": "zone5_1.mob",
+          "script": "VTriger#0#96",
+          "line": 635
+        }
+      ]
+    },
+    {
+      "id": "q23g",
+      "database_record": 33,
+      "database_zone": 3,
+      "authored_experience": 140.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_investigation",
+        "quests/base_campaign_gipat_investigation_alternative"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_investigation.gd",
+      "root_variable": "q.gz3g.q23g",
+      "completion_action": "evidence report then original added Voevoda death; new-sheriff report",
+      "negative_control": "living sheriff",
+      "original_completion_sites": [
+        {
+          "map": "zone3obrvoev.mob",
+          "script": "VTriger#1#7",
+          "line": 76
+        }
+      ]
+    },
+    {
+      "id": "q40g",
+      "database_record": 34,
+      "database_zone": 8,
+      "authored_experience": 200.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_daughter"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_daughter.gd",
+      "root_variable": "q.gz8g.q40g",
+      "completion_action": "OrcSvKey gear loot, bridge1378 lowers1088, arrival285,160",
+      "negative_control": "bridge without gear",
+      "original_completion_sites": [
+        {
+          "map": "zone8.mob",
+          "script": "VTriger#0#28",
+          "line": 354
+        }
+      ]
+    },
+    {
+      "id": "q40ag",
+      "database_record": 35,
+      "database_zone": 8,
+      "authored_experience": 200.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_daughter"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_daughter.gd",
+      "root_variable": "q.gz8g.q40ag",
+      "completion_action": "three ogre deaths, chest1670→1626→1669 with chained keys, exact1000 gold",
+      "negative_control": "later chests without keys; first and second keys incomplete",
+      "original_completion_sites": [
+        {
+          "map": "zone8.mob",
+          "script": "VTriger#0#164",
+          "line": 1380
+        }
+      ]
+    },
+    {
+      "id": "q26g",
+      "database_record": 36,
+      "database_zone": 9,
+      "authored_experience": 70.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_queen_source1",
+        "quests/base_campaign_gipat_queen_source2",
+        "quests/base_campaign_gipat_queen_source3"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_queen.gd",
+      "root_variable": "q.gz9g.q26g",
+      "completion_action": "ordinary statue2065 gives coded report then Witch z26",
+      "negative_control": "physical note not yet collected",
+      "original_completion_sites": [
+        {
+          "map": "zone9.mob",
+          "script": "VTriger#0#67",
+          "line": 585
+        }
+      ]
+    },
+    {
+      "id": "q24g",
+      "database_record": 37,
+      "database_zone": 6,
+      "authored_experience": 200.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_investigation",
+        "quests/base_campaign_gipat_investigation_alternative"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_investigation.gd",
+      "root_variable": "q.gz6g.q24g",
+      "completion_action": "original added flower1000016; Elder-first OR Smith-first report order",
+      "negative_control": "physical flower needed",
+      "original_completion_sites": [
+        {
+          "map": "zone6flower.mob",
+          "script": "VTriger#1#20",
+          "line": 186
+        }
+      ]
+    },
+    {
+      "id": "q41g",
+      "database_record": 38,
+      "database_zone": 8,
+      "authored_experience": 400.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_daughter"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_daughter.gd",
+      "root_variable": "q.gz8g.q41g",
+      "completion_action": "OrcC consumes keys, original added Demon death, chief and Witch reports",
+      "negative_control": "living Demon",
+      "original_completion_sites": [
+        {
+          "map": "zone8demon.mob",
+          "script": "VTriger#1#7",
+          "line": 76
+        }
+      ]
+    },
+    {
+      "id": "q25g",
+      "database_record": 39,
+      "database_zone": 6,
+      "authored_experience": 200.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_investigation",
+        "quests/base_campaign_gipat_investigation_alternative"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_investigation.gd",
+      "root_variable": "q.gz6g.q25g",
+      "completion_action": "original added ambush, both route points and optional attackers; Witch report",
+      "negative_control": "first location alone",
+      "original_completion_sites": [
+        {
+          "map": "zone6zs.mob",
+          "script": "VTriger#3#13",
+          "line": 120
+        }
+      ]
+    },
+    {
+      "id": "q29g",
+      "database_record": 40,
+      "database_zone": 4,
+      "authored_experience": 400.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_departure",
+        "quests/base_campaign_gipat_departure_hermit_first"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_departure.gd",
+      "root_variable": "q.gz4g.q29g",
+      "completion_action": "actual patrol-distance trigger awards quest and transfers to bz4g; commander-first OR hermit-first",
+      "negative_control": "party away from patrol",
+      "original_completion_sites": [
+        {
+          "map": "zone4hadagans.mob",
+          "script": "VTriger#1#28",
+          "line": 286
+        }
+      ]
+    },
+    {
+      "id": "qk9g",
+      "database_record": 42,
+      "database_zone": 4,
+      "authored_experience": 100.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_departure",
+        "quests/base_campaign_gipat_departure_hermit_first"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_departure.gd",
+      "root_variable": "q.gz4g.qk9g",
+      "completion_action": "ordinary bonus chest999448",
+      "negative_control": "actual source chest exists and use activates",
+      "original_completion_sites": [
+        {
+          "map": "zone4.mob",
+          "script": "VTriger#0#165",
+          "line": 1072
+        }
+      ]
+    },
+    {
+      "id": "q30g",
+      "database_record": 43,
+      "database_zone": 8,
+      "authored_experience": 150.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_departure",
+        "quests/base_campaign_gipat_departure_hermit_first"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_departure.gd",
+      "root_variable": "q.gz8g.q30g",
+      "completion_action": "captive escape grants claw; keyed bridge1712 then52,300; actual hermit dialogue",
+      "negative_control": "claw consumed by real control",
+      "original_completion_sites": [
+        {
+          "map": "zone8.mob",
+          "script": "VTriger#0#185",
+          "line": 1545
+        }
+      ]
+    },
+    {
+      "id": "q34g",
+      "database_record": 44,
+      "database_zone": 8,
+      "authored_experience": 500.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_departure",
+        "quests/base_campaign_gipat_departure_hermit_first"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_departure.gd",
+      "root_variable": "q.gz8g.q34g",
+      "completion_action": "handle control862 then stone1122",
+      "negative_control": "dam mechanism alone",
+      "original_completion_sites": [
+        {
+          "map": "zone8.mob",
+          "script": "VTriger#0#9",
+          "line": 232
+        }
+      ]
+    },
+    {
+      "id": "q35ag",
+      "database_record": 45,
+      "database_zone": 8,
+      "authored_experience": 500.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_departure",
+        "quests/base_campaign_gipat_departure_hermit_first"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_departure.gd",
+      "root_variable": "q.gz8g.q35ag",
+      "completion_action": "actual Dkin sighting offers quest then use1890",
+      "negative_control": "encounter starts optional objective before chest",
+      "original_completion_sites": [
+        {
+          "map": "zone8.mob",
+          "script": "VTriger#0#212",
+          "line": 1758
+        }
+      ]
+    },
+    {
+      "id": "q35g",
+      "database_record": 46,
+      "database_zone": 8,
+      "authored_experience": 150.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_departure",
+        "quests/base_campaign_gipat_departure_hermit_first"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_departure.gd",
+      "root_variable": "q.gz8g.q35g",
+      "completion_action": "all original Dkin dead",
+      "negative_control": "last ambusher alive",
+      "original_completion_sites": [
+        {
+          "map": "zone8.mob",
+          "script": "VTriger#0#197",
+          "line": 1638
+        }
+      ]
+    },
+    {
+      "id": "q36g",
+      "database_record": 47,
+      "database_zone": 4,
+      "authored_experience": 500.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_departure",
+        "quests/base_campaign_gipat_departure_hermit_first"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_departure.gd",
+      "root_variable": "q.gz4g.q36g",
+      "completion_action": "closed-tunnel discovery, remote control1918, return to passage",
+      "negative_control": "closed route before control; discovery alone",
+      "original_completion_sites": [
+        {
+          "map": "zone4.mob",
+          "script": "VTriger#0#86",
+          "line": 568
+        }
+      ]
+    },
+    {
+      "id": "q36ag",
+      "database_record": 48,
+      "database_zone": 10,
+      "authored_experience": 500.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_departure",
+        "quests/base_campaign_gipat_departure_hermit_first"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_departure.gd",
+      "root_variable": "q.gz10g.q36ag",
+      "completion_action": "normal tunnel entry; key42/control57; delayed elemental/golem state; optional gold crypts44/43; route points and ordinary return",
+      "negative_control": "control without key; required post-combat delay; exact2500 optional gold",
+      "original_completion_sites": [
+        {
+          "map": "zone10.mob",
+          "script": "VTriger#0#36",
+          "line": 374
+        }
+      ]
+    },
+    {
+      "id": "q37g",
+      "database_record": 49,
+      "database_zone": 4,
+      "authored_experience": 250.0,
+      "island": "gipat",
+      "programs": [
+        "quests/base_campaign_gipat_departure",
+        "quests/base_campaign_gipat_departure_hermit_first"
+      ],
+      "fixture": "tools/tests/base_campaign_gipat_departure.gd",
+      "root_variable": "q.gz4g.q37g",
+      "completion_action": "return to gz4g,245,255, actual bz7g passage, Rick dialogue to playable gz11k",
+      "negative_control": "departure companion gate covered independently for all four companions",
+      "original_completion_sites": [
+        {
+          "map": "zone4.mob",
+          "script": "VTriger#0#91",
+          "line": 607
+        }
+      ]
+    },
+    {
+      "id": "q42k",
+      "database_record": 51,
+      "database_zone": 11,
+      "authored_experience": 700.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_arrival"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_arrival.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone11.mob",
+          "script": "VTriger#0#10",
+          "line": 220
+        }
+      ]
+    },
+    {
+      "id": "qk15k",
+      "database_record": 52,
+      "database_zone": 11,
+      "authored_experience": 400.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_treasures"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_treasures.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone11.mob",
+          "script": "VTriger#0#246",
+          "line": 1593
+        }
+      ]
+    },
+    {
+      "id": "q43k",
+      "database_record": 53,
+      "database_zone": 11,
+      "authored_experience": 700.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_arrival"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_arrival.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone11.mob",
+          "script": "VTriger#0#18",
+          "line": 318
+        }
+      ]
+    },
+    {
+      "id": "q44k",
+      "database_record": 54,
+      "database_zone": 13,
+      "authored_experience": 700.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_arrival"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_arrival.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone13.mob",
+          "script": "VTriger#0#62",
+          "line": 301
+        }
+      ]
+    },
+    {
+      "id": "q45ak",
+      "database_record": 55,
+      "database_zone": 11,
+      "authored_experience": 1900.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_dryads"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_dryads.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone11.mob",
+          "script": "VTriger#0#22",
+          "line": 388
+        }
+      ]
+    },
+    {
+      "id": "q45k",
+      "database_record": 56,
+      "database_zone": 11,
+      "authored_experience": 900.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_dryads"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_dryads.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone11.mob",
+          "script": "VTriger#0#35",
+          "line": 529
+        }
+      ]
+    },
+    {
+      "id": "q48k",
+      "database_record": 58,
+      "database_zone": 13,
+      "authored_experience": 5000.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_arrival"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_arrival.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone13.mob",
+          "script": "VTriger#0#70",
+          "line": 405
+        }
+      ]
+    },
+    {
+      "id": "qk12k",
+      "database_record": 59,
+      "database_zone": 13,
+      "authored_experience": 700.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_treasures"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_treasures.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone13.mob",
+          "script": "VTriger#0#210",
+          "line": 1113
+        }
+      ]
+    },
+    {
+      "id": "qk13k",
+      "database_record": 60,
+      "database_zone": 13,
+      "authored_experience": 1000.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_treasures"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_treasures.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone13.mob",
+          "script": "VTriger#0#212",
+          "line": 1142
+        }
+      ]
+    },
+    {
+      "id": "qk14k",
+      "database_record": 61,
+      "database_zone": 13,
+      "authored_experience": 1000.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_treasures"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_treasures.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone13.mob",
+          "script": "VTriger#0#214",
+          "line": 1171
+        }
+      ]
+    },
+    {
+      "id": "q46k",
+      "database_record": 63,
+      "database_zone": 13,
+      "authored_experience": 1200.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_dryads"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_dryads.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone13.mob",
+          "script": "VTriger#0#69",
+          "line": 392
+        }
+      ]
+    },
+    {
+      "id": "q46bk",
+      "database_record": 64,
+      "database_zone": 13,
+      "authored_experience": 500.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_dryads"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_dryads.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone13.mob",
+          "script": "VTriger#0#302",
+          "line": 1567
+        }
+      ]
+    },
+    {
+      "id": "q49k",
+      "database_record": 65,
+      "database_zone": 12,
+      "authored_experience": 5000.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_labyrinth",
+        "quests/base_campaign_ingos_labyrinth_early"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_labyrinth.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone12.mob",
+          "script": "VTriger#0#35",
+          "line": 367
+        }
+      ]
+    },
+    {
+      "id": "qk10k",
+      "database_record": 66,
+      "database_zone": 12,
+      "authored_experience": 1600.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_treasures"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_treasures.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone12.mob",
+          "script": "VTriger#0#171",
+          "line": 1088
+        }
+      ]
+    },
+    {
+      "id": "q47ak",
+      "database_record": 67,
+      "database_zone": 12,
+      "authored_experience": 4000.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_dryads"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_dryads.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone12.mob",
+          "script": "VTriger#0#24",
+          "line": 327
+        }
+      ]
+    },
+    {
+      "id": "q50ak",
+      "database_record": 69,
+      "database_zone": 11,
+      "authored_experience": 4000.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_labyrinth",
+        "quests/base_campaign_ingos_labyrinth_early"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_labyrinth.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone11.mob",
+          "script": "VTriger#0#147",
+          "line": 1200
+        }
+      ]
+    },
+    {
+      "id": "q50bk",
+      "database_record": 70,
+      "database_zone": 13,
+      "authored_experience": 4000.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_labyrinth",
+        "quests/base_campaign_ingos_labyrinth_early"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_labyrinth.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone13.mob",
+          "script": "VTriger#0#71",
+          "line": 422
+        }
+      ]
+    },
+    {
+      "id": "q50ck",
+      "database_record": 71,
+      "database_zone": 13,
+      "authored_experience": 1200.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_labyrinth",
+        "quests/base_campaign_ingos_labyrinth_early"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_labyrinth.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "bz9k.mob",
+          "script": "VTriger#0#35",
+          "line": 277
+        },
+        {
+          "map": "zone11.mob",
+          "script": "VTriger#0#282",
+          "line": 544
+        }
+      ]
+    },
+    {
+      "id": "qk11k",
+      "database_record": 72,
+      "database_zone": 12,
+      "authored_experience": 1600.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_treasures"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_treasures.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone13.mob",
+          "script": "VTriger#0#114",
+          "line": 675
+        }
+      ]
+    },
+    {
+      "id": "q51k",
+      "database_record": 73,
+      "database_zone": 12,
+      "authored_experience": 1600.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_departure"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_departure.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone12.mob",
+          "script": "VTriger#0#178",
+          "line": 1152
+        },
+        {
+          "map": "zone12magess.mob",
+          "script": "VTriger#1#8",
+          "line": 103
+        }
+      ]
+    },
+    {
+      "id": "q53k",
+      "database_record": 74,
+      "database_zone": 12,
+      "authored_experience": 7000.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_departure"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_departure.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone12.mob",
+          "script": "VTriger#0#15",
+          "line": 287
+        }
+      ]
+    },
+    {
+      "id": "q54k",
+      "database_record": 75,
+      "database_zone": 12,
+      "authored_experience": 3100.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_departure",
+        "quests/base_campaign_ingos_routes"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_departure.gd",
+        "tools/tests/base_campaign_ingos_routes.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone12.mob",
+          "script": "VTriger#0#184",
+          "line": 1190
+        }
+      ]
+    },
+    {
+      "id": "q55k",
+      "database_record": 77,
+      "database_zone": 14,
+      "authored_experience": 29000.0,
+      "island": "ingos",
+      "programs": [
+        "quests/base_campaign_ingos_departure"
+      ],
+      "fixtures": [
+        "tools/tests/base_campaign_ingos_departure.gd"
+      ],
+      "original_completion_sites": [
+        {
+          "map": "zone14.mob",
+          "script": "VTriger#0#131",
+          "line": 944
+        }
+      ]
+    },
+    {
+      "id": "q60h",
+      "database_record": 79,
+      "database_zone": 15,
+      "authored_experience": 27000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_prison"
+      ],
+      "root_variable": "q.gz15h.q60h",
+      "completion_action": "Death Canyon arrival and finish-gate crossing",
+      "original_completion_sites": [
+        {
+          "map": "zone15.mob",
+          "script": "VTriger#0#18",
+          "line": 332
+        }
+      ]
+    },
+    {
+      "id": "qh1h",
+      "database_record": 80,
+      "database_zone": 15,
+      "authored_experience": 2700.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_prison"
+      ],
+      "root_variable": "q.gz15h.qh1h",
+      "completion_action": "Upper canyon treasure chest",
+      "original_completion_sites": [
+        {
+          "map": "zone15.mob",
+          "script": "VTriger#0#61",
+          "line": 641
+        }
+      ]
+    },
+    {
+      "id": "qh2h",
+      "database_record": 81,
+      "database_zone": 15,
+      "authored_experience": 2700.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_prison"
+      ],
+      "root_variable": "q.gz15h.qh2h",
+      "completion_action": "Lower canyon treasure chest",
+      "original_completion_sites": [
+        {
+          "map": "zone15.mob",
+          "script": "VTriger#0#63",
+          "line": 667
+        }
+      ]
+    },
+    {
+      "id": "qh3h",
+      "database_record": 82,
+      "database_zone": 15,
+      "authored_experience": 2700.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_prison"
+      ],
+      "root_variable": "q.gz15h.qh3h",
+      "completion_action": "First canyon shrine",
+      "original_completion_sites": [
+        {
+          "map": "zone15.mob",
+          "script": "VTriger#0#324",
+          "line": 1997
+        }
+      ]
+    },
+    {
+      "id": "qh4h",
+      "database_record": 83,
+      "database_zone": 15,
+      "authored_experience": 2700.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_prison"
+      ],
+      "root_variable": "q.gz15h.qh4h",
+      "completion_action": "Second canyon shrine",
+      "original_completion_sites": [
+        {
+          "map": "zone15.mob",
+          "script": "VTriger#0#325",
+          "line": 2009
+        }
+      ]
+    },
+    {
+      "id": "qh5h",
+      "database_record": 84,
+      "database_zone": 15,
+      "authored_experience": 2700.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_prison"
+      ],
+      "root_variable": "q.gz15h.qh5h",
+      "completion_action": "Third canyon shrine",
+      "original_completion_sites": [
+        {
+          "map": "zone15.mob",
+          "script": "VTriger#0#326",
+          "line": 2021
+        }
+      ]
+    },
+    {
+      "id": "qh6h",
+      "database_record": 85,
+      "database_zone": 15,
+      "authored_experience": 6000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_prison"
+      ],
+      "root_variable": "q.gz15h.qh6h",
+      "completion_action": "All three night students",
+      "original_completion_sites": [
+        {
+          "map": "zone15.mob",
+          "script": "VTriger#0#327",
+          "line": 2033
+        }
+      ]
+    },
+    {
+      "id": "q61h",
+      "database_record": 87,
+      "database_zone": 15,
+      "authored_experience": 7000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_prison"
+      ],
+      "root_variable": "q.gz15h.q61h",
+      "completion_action": "Nalo rescues the captive protagonist",
+      "original_completion_sites": [
+        {
+          "map": "zone15.mob",
+          "script": "VTriger#0#23",
+          "line": 373
+        }
+      ]
+    },
+    {
+      "id": "q62h",
+      "database_record": 88,
+      "database_zone": 15,
+      "authored_experience": 23000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_prison"
+      ],
+      "root_variable": "q.gz15h.q62h",
+      "completion_action": "Night prison escape and cave key",
+      "original_completion_sites": [
+        {
+          "map": "zone15.mob",
+          "script": "VTriger#0#28",
+          "line": 416
+        }
+      ]
+    },
+    {
+      "id": "q63h",
+      "database_record": 89,
+      "database_zone": 16,
+      "authored_experience": 23000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_prison"
+      ],
+      "root_variable": "q.gz16h.q63h",
+      "completion_action": "Both cave bridges and rebel meeting",
+      "original_completion_sites": [
+        {
+          "map": "zone16.mob",
+          "script": "VTriger#0#14",
+          "line": 168
+        }
+      ]
+    },
+    {
+      "id": "qk31h",
+      "database_record": 90,
+      "database_zone": 17,
+      "authored_experience": 5000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_town"
+      ],
+      "root_variable": "q.gz17h.qk31h",
+      "completion_action": "Succubus hunt and necromancer reward",
+      "original_completion_sites": [
+        {
+          "map": "zone17.mob",
+          "script": "VTriger#0#64",
+          "line": 488
+        }
+      ]
+    },
+    {
+      "id": "qk32h",
+      "database_record": 91,
+      "database_zone": 17,
+      "authored_experience": 7000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_town"
+      ],
+      "root_variable": "q.gz17h.qk32h",
+      "completion_action": "Imperial seal from cyclops chest and Glav hand-in",
+      "original_completion_sites": [
+        {
+          "map": "zone17.mob",
+          "script": "VTriger#0#79",
+          "line": 593
+        }
+      ]
+    },
+    {
+      "id": "q64ah",
+      "database_record": 92,
+      "database_zone": 18,
+      "authored_experience": 12000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_town"
+      ],
+      "root_variable": "q.gz18h.q64ah",
+      "completion_action": "Both supervisors and dual report/training rewards",
+      "original_completion_sites": [
+        {
+          "map": "zone18.mob",
+          "script": "VTriger#0#34",
+          "line": 370
+        }
+      ]
+    },
+    {
+      "id": "q65h",
+      "database_record": 94,
+      "database_zone": 18,
+      "authored_experience": 50000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_town"
+      ],
+      "root_variable": "q.gz18h.q65h",
+      "completion_action": "Recover the thief sack",
+      "original_completion_sites": [
+        {
+          "map": "zone18.mob",
+          "script": "VTriger#0#29",
+          "line": 332
+        }
+      ]
+    },
+    {
+      "id": "q66h",
+      "database_record": 95,
+      "database_zone": 18,
+      "authored_experience": 50000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_town"
+      ],
+      "root_variable": "q.gz18h.q66h",
+      "completion_action": "Deliver the letter",
+      "original_completion_sites": [
+        {
+          "map": "zone18.mob",
+          "script": "VTriger#0#39",
+          "line": 410
+        }
+      ]
+    },
+    {
+      "id": "q67h",
+      "database_record": 96,
+      "database_zone": 18,
+      "authored_experience": 22000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_town"
+      ],
+      "root_variable": "q.gz18h.q67h",
+      "completion_action": "Junofil market encounter and sack hand-in",
+      "original_completion_sites": [
+        {
+          "map": "zone18.mob",
+          "script": "VTriger#0#41",
+          "line": 436
+        }
+      ]
+    },
+    {
+      "id": "qk30h",
+      "database_record": 97,
+      "database_zone": 18,
+      "authored_experience": 11000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_town"
+      ],
+      "root_variable": "q.gz18h.qk30h",
+      "completion_action": "Manor key, gate, theft and mercenary eligibility report",
+      "original_completion_sites": [
+        {
+          "map": "zone18.mob",
+          "script": "VTriger#0#147",
+          "line": 1255
+        }
+      ]
+    },
+    {
+      "id": "q68h",
+      "database_record": 99,
+      "database_zone": 17,
+      "authored_experience": 30000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_necromancer"
+      ],
+      "root_variable": "q.gz17h.q68h",
+      "completion_action": "Reach old necromancer and accept laboratory task",
+      "original_completion_sites": [
+        {
+          "map": "zone17.mob",
+          "script": "VTriger#0#56",
+          "line": 422
+        }
+      ]
+    },
+    {
+      "id": "q69h",
+      "database_record": 100,
+      "database_zone": 17,
+      "authored_experience": 90000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_necromancer"
+      ],
+      "root_variable": "q.gz17h.q69h",
+      "completion_action": "Laboratory key, scientist corpse and spirit hand-in",
+      "original_completion_sites": [
+        {
+          "map": "zone17.mob",
+          "script": "VTriger#0#52",
+          "line": 383
+        }
+      ]
+    },
+    {
+      "id": "q70h",
+      "database_record": 101,
+      "database_zone": 18,
+      "authored_experience": 80000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_necromancer"
+      ],
+      "root_variable": "q.gz18h.q70h",
+      "completion_action": "Artifact chest and Nekro/Glav report",
+      "original_completion_sites": [
+        {
+          "map": "zone18.mob",
+          "script": "VTriger#0#45",
+          "line": 488
+        }
+      ]
+    },
+    {
+      "id": "q71h",
+      "database_record": 103,
+      "database_zone": 19,
+      "authored_experience": 90000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_ending"
+      ],
+      "root_variable": "q.gz19h.q71h",
+      "completion_action": "Elder meeting",
+      "original_completion_sites": [
+        {
+          "map": "zone19.mob",
+          "script": "VTriger#0#29",
+          "line": 410
+        }
+      ]
+    },
+    {
+      "id": "qk16h",
+      "database_record": 104,
+      "database_zone": 19,
+      "authored_experience": 13000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_ending"
+      ],
+      "root_variable": "q.gz19h.qk16h",
+      "completion_action": "First city treasure chest",
+      "original_completion_sites": [
+        {
+          "map": "zone19.mob",
+          "script": "VTriger#0#224",
+          "line": 1239
+        }
+      ]
+    },
+    {
+      "id": "qk17h",
+      "database_record": 105,
+      "database_zone": 19,
+      "authored_experience": 13000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_ending"
+      ],
+      "root_variable": "q.gz19h.qk17h",
+      "completion_action": "Second city treasure chest",
+      "original_completion_sites": [
+        {
+          "map": "zone19.mob",
+          "script": "VTriger#0#288",
+          "line": 1574
+        }
+      ]
+    },
+    {
+      "id": "q72h",
+      "database_record": 106,
+      "database_zone": 19,
+      "authored_experience": 210000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_ending"
+      ],
+      "root_variable": "q.gz19h.q72h",
+      "completion_action": "City betrayal, alarms, mine controls, two portal controls and actual portal entry",
+      "original_completion_sites": [
+        {
+          "map": "zone19.mob",
+          "script": "VTriger#0#35",
+          "line": 510
+        }
+      ]
+    },
+    {
+      "id": "q73g",
+      "database_record": 108,
+      "database_zone": 20,
+      "authored_experience": 1500000.0,
+      "island": "suslanger_and_ending",
+      "programs": [
+        "quests/base_campaign_suslanger_ending"
+      ],
+      "root_variable": "q.gz20g.q73g",
+      "completion_action": "Jun Curse boss death and actual EndofGame",
+      "original_completion_sites": [
+        {
+          "map": "zone20.mob",
+          "script": "VTriger#0#8",
+          "line": 105
+        }
+      ]
+    }
+  ],
+  "side_quests": [
+    {
+      "id": "z12q1",
+      "map": "zone12.mob",
+      "island": "ingos",
+      "program": "quests/base_campaign_side_ingos",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z12q1.mq": "31c335d928bc9e6b0baa82a9884fbb3c1f15c5cc759af0b9d957a2f2a49f9825",
+        "maps/z12q1.mob": "b6d14d2238902f870f633b47e9557351f048d361d2bb2ca5c20fcb3751105d79"
+      }
+    },
+    {
+      "id": "z12q2",
+      "map": "zone12.mob",
+      "island": "ingos",
+      "program": "quests/base_campaign_side_ingos",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z12q2.mq": "09c6fb053b23526c56e6641e9a8b97468bb42ddc0e3547c1cdd78e1d1bd293b8",
+        "maps/z12q2.mob": "33f3057471b039c0b79bad18174847c4287234dbff738d58288031089fa7c994"
+      }
+    },
+    {
+      "id": "z12q3",
+      "map": "zone12.mob",
+      "island": "ingos",
+      "program": "quests/base_campaign_side_ingos",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z12q3.mq": "dc2be0d50d13babc30efb951745d77c714629879ea193c780d4625794f94c706",
+        "maps/z12q3.mob": "898efe8f034a250fdbf7b14ab5a93517a141d4a70c5632b2edeceb9aa06e636c"
+      }
+    },
+    {
+      "id": "z13q1",
+      "map": "zone13.mob",
+      "island": "ingos",
+      "program": "quests/base_campaign_side_ingos",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z13q1.mq": "e69b5ace408af469f06d08a1602d4c398df12735ea76502f52521154b7a54d32",
+        "maps/z13q1.mob": "fc3ab91eab6b30f5c45dd41c9dca52fc34f6d193b699c44193ec90212c37bd2f"
+      }
+    },
+    {
+      "id": "z13q2",
+      "map": "zone13.mob",
+      "island": "ingos",
+      "program": "quests/base_campaign_side_ingos",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z13q2.mq": "aa58983c40e96825d75a7c4984bb9184d5621f526728fc4ba3c0957ef1a7d5c9",
+        "maps/z13q2.mob": "a00ede12a29b4d56ec12d9e1058917e2d6b2ee4a7aa33fa1df40a859404310da"
+      }
+    },
+    {
+      "id": "z13q3",
+      "map": "zone13.mob",
+      "island": "ingos",
+      "program": "quests/base_campaign_side_ingos",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z13q3.mq": "4e0f8f1389a4f1c0161c56cbbe7b803226e3b96038ce17f2a03d3ba4819a8e66",
+        "maps/z13q3.mob": "f657d3a67224277f2b1de23feebde2d0a5691b396721abe9a2e54eb5465f0988"
+      }
+    },
+    {
+      "id": "z17q1",
+      "map": "zone17.mob",
+      "island": "suslanger",
+      "program": "quests/base_campaign_side_suslanger",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z17q1.mq": "0c7bea04e4331c50785979eeca9375826e5fdbc24ba0fbc5c85b559ce610a033",
+        "maps/z17q1.mob": "e964b07ff802568199b096096e918f4f2bdbcdb3f43be00c5ad85eb8fcb6b8db"
+      }
+    },
+    {
+      "id": "z17q2",
+      "map": "zone17.mob",
+      "island": "suslanger",
+      "program": "quests/base_campaign_side_suslanger",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z17q2.mq": "eed881b04a8675d0a39b83bcc2026eedd1b1715f9934ae5f572afcaef33632f8",
+        "maps/z17q2.mob": "21e78d7675aed9602c0cfafd347ddd82328503db8e487a4c1a86ef72410ecaed"
+      }
+    },
+    {
+      "id": "z17q3",
+      "map": "zone17.mob",
+      "island": "suslanger",
+      "program": "quests/base_campaign_side_suslanger",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z17q3.mq": "647d3eea1e6b6e3d0e56270f45f8c0a03add31470e56cd99ec7d3f862c6ac70d",
+        "maps/z17q3.mob": "854704bebab51c2589bb5603ca51e1f480e5427b7eeaf1218f4ae6f7928cad5b"
+      }
+    },
+    {
+      "id": "z18q1",
+      "map": "zone18.mob",
+      "island": "suslanger",
+      "program": "quests/base_campaign_side_suslanger",
+      "objective_code": "custom authored watchers",
+      "original_archive_sha256": {
+        "maps/z18q1.mq": "41f25c599af0885c704e82f2635be2040d1875276e3075aab5d4a0f5d6679acb",
+        "maps/z18q1.mob": "44964b5f4d4ed8543db7a06f0b4d2fc23874afef89bbb4189d57c46efc0244da"
+      }
+    },
+    {
+      "id": "z18q2",
+      "map": "zone18.mob",
+      "island": "suslanger",
+      "program": "quests/base_campaign_side_suslanger",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z18q2.mq": "76bf6289d0b58803d6733135b3a03e88095a3397c74904a1ce4bb0d78195d6d8",
+        "maps/z18q2.mob": "5377c9bb5c28eaeba296a6266818ae3ed20dbcf1805a32c268a0c29d02fe164c"
+      }
+    },
+    {
+      "id": "z18q3",
+      "map": "zone18.mob",
+      "island": "suslanger",
+      "program": "quests/base_campaign_side_suslanger",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z18q3.mq": "fead3b8543cb169400c346ce36e43805bce4da09d17f014358941a019c36db7e",
+        "maps/z18q3.mob": "5c7fe8825c871df97e3b0dd125f4726d3517592b8db76d5278b768aae0a71bbd"
+      }
+    },
+    {
+      "id": "z18q4",
+      "map": "zone18.mob",
+      "island": "suslanger",
+      "program": "quests/base_campaign_side_suslanger",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z18q4.mq": "9a2747af90a4e138d39cc0f6b9ac539a33e66a170dee5a67070bcf7bc7fbd1df",
+        "maps/z18q4.mob": "e9d61226efa2b82fb7cc6337b5d5fa9e5520c26900cd788d542389cb82b1b7a1"
+      }
+    },
+    {
+      "id": "z19q1",
+      "map": "zone19.mob",
+      "island": "suslanger",
+      "program": "quests/base_campaign_side_suslanger",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z19q1.mq": "6a27c024dc195aea5e657640fb777608c31ea2520672ff9c0e0689fc0637a4d6",
+        "maps/z19q1.mob": "5fffa5017a40299d8f66a5636d535a481492671976fa2e4b9d18c65326e9e82f"
+      }
+    },
+    {
+      "id": "z19q2",
+      "map": "zone19.mob",
+      "island": "suslanger",
+      "program": "quests/base_campaign_side_suslanger",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z19q2.mq": "54d26d4caceefad6cdf08db23c1de139d91b3b6ee55465d3de3a889d1a0ec38d",
+        "maps/z19q2.mob": "7812ddef704ab54b98558d36fde4c10f1995e81e9fa04aa813466f1a8f69316a"
+      }
+    },
+    {
+      "id": "z19q3",
+      "map": "zone19.mob",
+      "island": "suslanger",
+      "program": "quests/base_campaign_side_suslanger",
+      "objective_code": "custom authored watchers",
+      "original_archive_sha256": {
+        "maps/z19q3.mq": "84feb22664d36c8620214becf1253a2097a10e58c6ca9ae4170e2457dab4031e",
+        "maps/z19q3.mob": "2b30ec73fe6f0498a54a62467ac7fc2ff864c05b18a513da5338e9c3db6d483a"
+      }
+    },
+    {
+      "id": "z3q1",
+      "map": "zone3obr.mob",
+      "island": "gipat",
+      "program": "quests/base_campaign_side_gipat",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z3q1.mq": "89feb71bdc81c55838df717675751a3a044dc2455b89133853aaf070d6c61777",
+        "maps/z3q1.mob": "d5d2ef18f33966993621ef6b81f1f92c1cdc271c5c99d3e98250fb74a56c3eea"
+      }
+    },
+    {
+      "id": "z3q2",
+      "map": "zone3obr.mob",
+      "island": "gipat",
+      "program": "quests/base_campaign_side_gipat",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z3q2.mq": "81a1f86f64c39d4e83a84b5d103fad91593c1fedfaf95f96d92b78fb2ccff55d",
+        "maps/z3q2.mob": "4bab43ac1cbfffc38c5ec4bef0f94913cb8927ff43b39a0b5c33f31929db9ae3"
+      }
+    },
+    {
+      "id": "z3q3",
+      "map": "zone3obr.mob",
+      "island": "gipat",
+      "program": "quests/base_campaign_side_gipat",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z3q3.mq": "5e0c6d43123f7c35ef8f0e1fbd0f21188e4d9bdb0f81a67ad32f7d8a044880cc",
+        "maps/z3q3.mob": "e1f8f38ca5ce7ae8cbefa1b95d516b7c5f163982214fa1072cd6af707c6bbef2"
+      }
+    },
+    {
+      "id": "z6q1",
+      "map": "zone6.mob",
+      "island": "gipat",
+      "program": "quests/base_campaign_side_gipat",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z6q1.mq": "c4687616e240d3f9c5fc00ca6d52e8c6167ca53c17b6729c1b1c6f817a5daf8b",
+        "maps/z6q1.mob": "29541d160feee0c83700d4c22bf5ce9b050411d3e6492b96e1db90c13f6f39b5"
+      }
+    },
+    {
+      "id": "z6q2",
+      "map": "zone6.mob",
+      "island": "gipat",
+      "program": "quests/base_campaign_side_gipat",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z6q2.mq": "761bc0c633e0b0115cdca7b2a1588e6c83592d008fb6f5696c03e727f2f9276a",
+        "maps/z6q2.mob": "2397f51d0d844e0a875f6fa76ca4fc4a64eaab8017a4a6f5c68b70c001bef26f"
+      }
+    },
+    {
+      "id": "z6q3",
+      "map": "zone6.mob",
+      "island": "gipat",
+      "program": "quests/base_campaign_side_gipat",
+      "objective_code": "custom authored watchers",
+      "original_archive_sha256": {
+        "maps/z6q3.mq": "b1e543209cfd9484aa8eaa6559151a71f9cf255512f41c9eb4c3f9d692bd12c6",
+        "maps/z6q3.mob": "da4b2a736cf8816983d8ef9e1d2e6e933b9ab0e48213591a0fcae83515b420fe"
+      }
+    },
+    {
+      "id": "z7q1",
+      "map": "zone7.mob",
+      "island": "gipat",
+      "program": "quests/base_campaign_side_gipat",
+      "objective_code": "custom authored watchers",
+      "original_archive_sha256": {
+        "maps/z7q1.mq": "31b9d171bd1d5f94739093457f8fc750f307e7db98129643f6bd3edfb9fd1981",
+        "maps/z7q1.mob": "fb540bd25e5a6170d879f1b255a2a902cbf24d24d7a410049893b47539d6f4dd"
+      }
+    },
+    {
+      "id": "z7q2",
+      "map": "zone7.mob",
+      "island": "gipat",
+      "program": "quests/base_campaign_side_gipat",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z7q2.mq": "d13e9f8df7e0060cee38ddc451f0487478f13f7468703f8d15cb895712cfdb76",
+        "maps/z7q2.mob": "f2ba36f088252dee13c6b68d1776b9f890f66e5a00f51c62a52d74c9d1f4d96f"
+      }
+    },
+    {
+      "id": "z7q3",
+      "map": "zone7.mob",
+      "island": "gipat",
+      "program": "quests/base_campaign_side_gipat",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z7q3.mq": "ed0d36996f02ddc45cdc73f34c0b479df3583b326faa36ee9f99de4eea7b6f43",
+        "maps/z7q3.mob": "76ca69c2ea8980bf38d6fbf2a445abf504a86a916cbb36be4959576e34f4503b"
+      }
+    },
+    {
+      "id": "z9q1",
+      "map": "zone9.mob",
+      "island": "gipat",
+      "program": "quests/base_campaign_side_gipat",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z9q1.mq": "ab511bed78eebc068cc5df7d1fa4f2ae5e09295b31eaecf8591d55a38ac936dc",
+        "maps/z9q1.mob": "9e5e72d3be15d2b63cea0d10807568fe23029c49453457a472e3628466a01732"
+      }
+    },
+    {
+      "id": "z9q2",
+      "map": "zone9.mob",
+      "island": "gipat",
+      "program": "quests/base_campaign_side_gipat",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z9q2.mq": "f8f06d79424caa63c1eead26553bc74c7daadb55dc20130b564772bc99f69780",
+        "maps/z9q2.mob": "ac8242df8e3e4167a643bc79d6f81a0454bb4f83fd9458e03105be281e446663"
+      }
+    },
+    {
+      "id": "z9q3",
+      "map": "zone9.mob",
+      "island": "gipat",
+      "program": "quests/base_campaign_side_gipat",
+      "objective_code": "authored QStart/QObj/QFinish chain",
+      "original_archive_sha256": {
+        "maps/z9q3.mq": "3bbda4468f90db23dcec848e3b75f1f5c557810fc75740c99a4f692f36c6c7e5",
+        "maps/z9q3.mob": "17ad51da57689ee1643a08048c35ba671d6505dfef81d29ccefbc4859c567a5d"
+      }
+    }
+  ],
+  "branch_matrix": {
+    "gipat": [
+      "q12g both gold-valley exits plus actual Smith-warning/Elder-refusal continuation",
+      "q19g hidden-letter and detected-runner corpse-loot alternatives",
+      "q24g Elder-first and Smith-first report order",
+      "q16g cyclops kill and pig-distraction/living departure",
+      "q17g wrong-crystal rejection plus true crystal escape",
+      "q22g all three mutually exclusive poison sources",
+      "q29g commander-first and hermit-first captive dialogue order",
+      "q36ag both optional gold crypts, key mechanism and delayed elemental state",
+      "Rick solo departure plus each of four real companion recruit/farewell branches",
+      "returned-Ingos R54 handoff to HeroAlone and playable bz13h"
+    ],
+    "ingos": [
+      "Living elder succeeds; dead elder fails and saved pre-casualty state resumes.",
+      "Shopper Tr49 early gratitude and Tr49_1 late gratitude; late route completes q50ck and Yc47_1 before finishing earned Yc47 at the distant camp.",
+      "Each of the three q54 mine approaches opens its corresponding actual transfer/deployment entrance.",
+      "All q55 corridor controls and optional rune/potion caches, plus q53 skeleton cache.",
+      "Manager documents obtained by ordinary live pickpocket and corpse loot from one saved pending encounter; optional mill distraction and escape subobjective.",
+      "Optional q45ak laborer camp/fence rescue and all three living evacuations.",
+      "Companion-present Deva departure warning and ordinary farewells for each Ingos companion5/6/9."
+    ],
+    "suslanger": [
+      {
+        "id": "nalo_party",
+        "suite": "prison",
+        "coverage": "Actual Kr60 selects Pretty/Nalo, actual q61 return restores HeroAlone, actual Kr61 restores main party"
+      },
+      {
+        "id": "canyon_extras",
+        "suite": "prison",
+        "coverage": "Both original chest areas/uses, all three shrine approaches/uses, all three night students with last-survivor save"
+      },
+      {
+        "id": "escape_beasts",
+        "suite": "prison",
+        "coverage": "Actual beast-cage lever grants q62 distraction branch LongD=1"
+      },
+      {
+        "id": "escape_keys",
+        "suite": "prison",
+        "coverage": "Each absent cell/main/cave key blocks use; kill and ordinary corpse loot earn unique original carrier key; actual use consumes each"
+      },
+      {
+        "id": "cave_bridges",
+        "suite": "prison",
+        "coverage": "Both original cycled bridges begin1; actual off switches wrap to0; second pending switch survives save"
+      },
+      {
+        "id": "town_parallel",
+        "suite": "town",
+        "coverage": "Gl64 unlocks actual supervisor/succubus/thief quests; one supervisor remains incomplete; both deaths unlock both reports and Guru+3dex"
+      },
+      {
+        "id": "town_joint",
+        "suite": "town",
+        "coverage": "Thief sack without delivered letter leaves main report unavailable; original letter use consumes Note and unlocks actual combined report"
+      },
+      {
+        "id": "town_manor",
+        "suite": "town",
+        "coverage": "Original manor key must be looted; missing-key control; consumed by actual gate; actual chest pays100000; report+letter grants amerc_10"
+      },
+      {
+        "id": "market",
+        "suite": "town",
+        "coverage": "All seven original market guards are bound; six dead and save/load remain incomplete; seventh death offers jf67; actual meeting consumes ThiefSack"
+      },
+      {
+        "id": "necro_spirit",
+        "suite": "necromancer",
+        "coverage": "Actual corpse report starts summoning; follow-up is unavailable before this; spirit dialogue consumes corpse and grants artifact quest"
+      },
+      {
+        "id": "city_ambush",
+        "suite": "ending",
+        "coverage": "Elder briefing installs22 original betrayal actors; last survivor blocks objective and remains alive across save/load"
+      },
+      {
+        "id": "city_gate_alarm_kill",
+        "suite": "ending",
+        "coverage": "Original gate area installs8 guards; last living guard blocks objective inside gate; eighth death clears it"
+      },
+      {
+        "id": "city_gate_alarm_escape",
+        "suite": "ending",
+        "coverage": "Restore same eight live guards; all party members escape original area; objective clears without guard death",
+        "compatibility": "Intentional existing remake compatibility repair in story_guard_escape.gd; not claimed as native behavior"
+      },
+      {
+        "id": "city_sight_alarm",
+        "suite": "ending",
+        "coverage": "No visible guard leaves second alarm absent; approach actual sentry from front; actual sight installs18 original reinforcement records; save persists them; inner area clears objective"
+      },
+      {
+        "id": "city_optional_treasures",
+        "suite": "ending",
+        "coverage": "Actual chest1 gives1000000; chest2 gives canonical keystone:feeblemind; no repeated reward"
+      },
+      {
+        "id": "mine_controls",
+        "suite": "ending",
+        "coverage": "All3 off controls reject missing key; independently restored first key tests third control; main path consumes2 separately looted mine keys on first and second controls"
+      },
+      {
+        "id": "portal",
+        "suite": "ending",
+        "coverage": "No key blocks both controls; one enabled control and full delay cannot finish; both enabled still require portal area; actual entry transfers to bz7g and consumes teleport key"
+      },
+      {
+        "id": "final_companion",
+        "suite": "ending",
+        "coverage": "Rick device hand-in consumes BrokenToy, active mercenary forces R72_3; that conversation alone cannot transform; actual mercenary farewell unlocks transformation"
+      },
+      {
+        "id": "final_jun",
+        "suite": "ending",
+        "coverage": "Actual R72_1 creates JunParty/JunBoy, followed by Rick/Deva/Rick/departure topics and actual chamber travel"
+      },
+      {
+        "id": "ending_once",
+        "suite": "ending",
+        "coverage": "Living boss checkpoint incomplete; actual boss death completes q73g and emits ending exactly once; later polls duplicate neither reward nor ending; reload living boss then death reaches ending again"
+      }
+    ]
+  },
+  "prepared_seams": {
+    "gipat": "Each short chapter checkpoint lists prepared earlier offers/items/availability. It does not claim one uninterrupted ordinary playthrough.",
+    "ingos": {
+      "arrival": "Original lone protagonist at Ingos entry; q42 and town introductions start in original handlers. No quest flags supplied.",
+      "dryads": "T43 offer previously earned from detective investigation. No tested rescue/escort/ranger outcomes supplied.",
+      "labyrinth": "Earlier q48 documents recovered and q46bk living escort complete; retained arrow/book, Yc46 complete, Yc47 earned pending or previously closed. Actual Tr48 accepts q49; both ordering branches tested.",
+      "departure": "Mg50 accusation offer from completed secret path; earlier manager journal40, governor chest31 and Gipat document book38 retained. All confrontation, keys, mine approaches, rescue and departure earned. Deva explanation consumes book38/chest31; actual departure clears journal40.",
+      "treasures": "Only protagonist and map entry; all six treasure quests are discovered from actual proximity and ordinary use.",
+      "routes": "Earlier q53 gold and G53 offer. Actual exchange accepts q54; three approach branches restored from one saved pending state.",
+      "farewells": "Earlier companion availability (5,6 or9) and D55 arrival offer earned by mine rescue. Ordinary hire, explanation/warning, each selected farewell and actual departure. Original merc_travel=0; prior book38/chest31 retained."
+    },
+    "suslanger": {
+      "prison": {
+        "vars": {
+          "b.bz13h.Hns59": 1
+        },
+        "party": "HeroAlone created with original Human Hero Hadagan / Hero; no companions",
+        "source": "Prior Suslanger arrival earned by the separate Gipat returned-Ingos handoff and Ingos departure fixtures."
+      },
+      "town": {
+        "vars": {
+          "q.gz16h.q63h": 2,
+          "b.bz14h.Gl63": 1
+        },
+        "source": "Earned at end of prison suite"
+      },
+      "necromancer": {
+        "vars": {
+          "b.Nekro.Ne67": 1,
+          "z.gz17h_bz15h": 1
+        },
+        "source": "Ne67 earned by town jf67; return edge originally closed by Gl63"
+      },
+      "ending": {
+        "vars": {
+          "b.Glav.Gl70": 1,
+          "apartyn7": 1,
+          "amerc_7": 1
+        },
+        "items": [
+          "BrokenToy"
+        ],
+        "party": "Previously hired merc7 constructed from exactly one original bz14h UNIT record",
+        "source": "Gl70/BrokenToy earned in necromancer suite; hired companion is explicit final farewell branch input"
+      }
+    }
+  },
+  "known_source_quirks": {
+    "gipat": "Static call graph from each shipped WorldScript and named engine callbacks finds no callers for these legacy roots; no corresponding q30ag/q30bg/q31ag/q31bg DB records exist. GTwolf and GTgold have reads but no authored initialization. Do not fabricate timed or legacy playable branches by calling these orphan triggers.",
+    "ingos": [
+      "qk11k record declares zone12 but actual original completion is in zone13.",
+      "q50ck has original completion handlers in bz9k and a deferred zone11 watcher; the late-order fixture retains its live VM history across the camp return.",
+      "q51k active encounter is supplied by original zone12magess AddMob; unused zone12 success/failure declarations are not treated as reachable branches.",
+      "Tr52 is a briefing that accepts q53k; there is no separate named q52k quest record in the original inventory."
+    ],
+    "suslanger": [
+      {
+        "id": "qh6h_root",
+        "detail": "Original night addon writes qh6h.1=2/.2=1 on discovery but does not set root1; all students dead still sets root2 and grants real completion"
+      },
+      {
+        "id": "qk17h_approach",
+        "detail": "Original qk17h approach watcher refers to HChest1; actual HChest2 use completes the quest and grants its spell prototype. Checkpoint verifies discovery and actual HChest2 reward, and does not invent a corrected marker"
+      },
+      {
+        "id": "old_necromancer_gate",
+        "detail": "Gl63 closes z.gz17h_bz15h (return edge), not the direct inbound gz17h→bz15h destination; checkpoint preserves this exact authored key"
+      }
+    ]
+  },
+  "limits": [
+    "Bounded completion checkpoints use god mode, accelerated combat and walking, a high interaction-skill fixture, selected original VM roots and declared prior chapter state; they are not a continuous no-cheat playthrough or proof of pathfinding/combat balance.",
+    "Opening tutorial presentation and optional tutorial subobjective sequence are not measured.",
+    "The optional boar-luring aid for the wolf encounter is not replayed; white-wolf death and loot completion are tested.",
+    "Smith-first totem reporting is exercised; the equivalent Goblin-first order is not independently replayed.",
+    "Selected real exit controls and destination loads are exercised. The full map matrix prepares gates and records final load requests; it does not earn every gate or load every destination.",
+    "Every named quest and installed side archive has a completion fixture. The declared branch matrix is not every informational dialogue, party permutation or simultaneously active quest combination.",
+    "The final companion branch uses previously hired merc7. Gipat and Ingos farewell variants are listed separately.",
+    "Only the four independently captured native references constitute original-executable comparisons; source-derived assertions and existing compatibility repairs do not.",
+    "Rendering, cinematics, sound, co-op, other platforms and arbitrary legacy/mod player saves are outside this qualification.",
+    "Validation is selected from immutable completed case reports. Incomplete and failed developmental runs remain retained and are not represented as passing suites."
+  ],
+  "original_map_identity": [
+    {
+      "map": "basecam-mp.mob",
+      "objects": 358,
+      "script_sha256": "8830fc3858f92b8c030c8972f68ecde9823c81151f4552fabc1c0afeb2a17a64",
+      "sha256": "f9ad3b9deb8de69ba14c9b86ba7025f660a7f627d83f44f85e0c398e834b48e7"
+    },
+    {
+      "map": "basecam.mob",
+      "objects": 365,
+      "script_sha256": "ec832bb0f4f6350d352698db2b5328f2285f89d3b6bdd92acbdb69aa81a386c6",
+      "sha256": "f5633aa53d8a3acd969bc5227d4a6631fa52e63ae275ac76659bbc27f58f7291"
+    },
+    {
+      "map": "bz10k.mob",
+      "objects": 143,
+      "script_sha256": "160b20704f25e64798ef2bc82573560683e9cd5bda97394b296698513740bb54",
+      "sha256": "e9abfde0d8dbdc3095eff73dd629d64abf6326e0dd5366d2ff80f04f8447a856"
+    },
+    {
+      "map": "bz11k.mob",
+      "objects": 90,
+      "script_sha256": "04a937610b5dddf24e2525da4d755513f5a1baaf649fcf4830488d838c24fba7",
+      "sha256": "89e55c094d2e1e8508bc022a76894aae1d88e7b4f2c4610745140ae8d1c935fb"
+    },
+    {
+      "map": "bz13h.mob",
+      "objects": 297,
+      "script_sha256": "be547dfde335882ca4c05be68cda94cf46f3b30a0fa28478b3da8e25dc5ad2e5",
+      "sha256": "06b049ac734921b48c27cdecd3bc523c552a6ab1b62e00d16b6181ad1ff3c501"
+    },
+    {
+      "map": "bz14h-lmp.mob",
+      "objects": 96,
+      "script_sha256": "28e6f946355b8e54916892118d17ee7ae2a52e51e1fb132150df12104b18ae88",
+      "sha256": "b2accd8b35fb160bf6192a1f751bc6bfabed926cec71a111addc64b1b004dbde"
+    },
+    {
+      "map": "bz14h.mob",
+      "objects": 102,
+      "script_sha256": "ebdef9872a71792df79457aaddd608ccd8bbd3a65f549f39a6542072ad9bc4e4",
+      "sha256": "4c42a3a9d72f624cddc07a3982caf2070dec5d12a4f24ef9550659b3e38d874d"
+    },
+    {
+      "map": "bz15h.mob",
+      "objects": 246,
+      "script_sha256": "d1450c53a5e2681ac1648a99da709de05843bc7b5115c6cd721ba504d8f7772f",
+      "sha256": "72f40a7625b34025fa41ed1308e3989e3bb3c80a6426b66b3fa88521ef4bb510"
+    },
+    {
+      "map": "bz16h.mob",
+      "objects": 329,
+      "script_sha256": "f32e18feee89bd5bbd9844a19c1ec5fa67e50e53200a28110b2f01b4345de05f",
+      "sha256": "88c24d6006c2f3c8076b029d659eccd9d00198beb7a5c8fb5f6543a060525aba"
+    },
+    {
+      "map": "bz18h.mob",
+      "objects": 12,
+      "script_sha256": "a6fa16301d10629cb95ef630fbe5d8d8e39ac3b424cffc38b13d6cab3c7c0938",
+      "sha256": "8ac85dcac4e0f3024924617dd27ec6f4ce86508a36729086d2188642f783f87c"
+    },
+    {
+      "map": "bz2g.mob",
+      "objects": 421,
+      "script_sha256": "16456d3aa156d19f57f954d597acd66819a099eef8a556ae795021574c593021",
+      "sha256": "821a49f154ae832e7c79a2df7e774ed07fa2ba8e69c3c9bf929f22140e6f9236"
+    },
+    {
+      "map": "bz3g.mob",
+      "objects": 302,
+      "script_sha256": "99e1702d0cc09235c9e2251368d8d4d1e8da6e9bf245cf88a5f94acfd0f62991",
+      "sha256": "420340ac5fac7fa459c5147a9e57fdb101d493a6a942838ee75dccfd2110f060"
+    },
+    {
+      "map": "bz4g.mob",
+      "objects": 203,
+      "script_sha256": "9a263394a10f24794199d7ffffb43a82bf98d2f70e9ddbbcb598e2df6ac29c36",
+      "sha256": "374ad316ea2c15a64c644ce3404abc6aa64fe3e1f1e8a1e0ef41d92fba29c632"
+    },
+    {
+      "map": "bz5g.mob",
+      "objects": 137,
+      "script_sha256": "bda0fa36c282dd753ac9133a60286a2d40064e0f9f827bfa78cf608741821754",
+      "sha256": "45c8c42559e0d7bb1dc5821c760f4bab3382a26c3b037ba70e7a9ebe03c1eb67"
+    },
+    {
+      "map": "bz6g.mob",
+      "objects": 251,
+      "script_sha256": "982b0b747d63531068bb704edc86aa2d3fbdbd482d32b18026b3be6944b35cb5",
+      "sha256": "5e3eb543e8df438eedf9f6da943e6cbec47330decfb6c18e50b20806e7dbe249"
+    },
+    {
+      "map": "bz7g-lmp.mob",
+      "objects": 28,
+      "script_sha256": "6f3a5d4b416858f411e74f95087830414c49a2069bd77470b0f6103338529551",
+      "sha256": "7e16f04a8e1017b34e559805d4ffffba3ef827c86f446218b58e10eddda1b0a5"
+    },
+    {
+      "map": "bz7g.mob",
+      "objects": 29,
+      "script_sha256": "3c583037098aafaac673d315f6f2913b1765187f6d148bc224d29fb185be3fae",
+      "sha256": "1d8c2c6054331aeae0ec8382f14c8c244ccfec815a16fd5598d82cec9acdbd98"
+    },
+    {
+      "map": "bz8k-lmp.mob",
+      "objects": 385,
+      "script_sha256": "14abbec68de69700abd37f97e494d620260a39d1c8cad74cff3f9bb0f73cf791",
+      "sha256": "517f2f6a95cf7e8edc1e248266e8d9f8f58dea74b98c11cbe39cfebae07baa30"
+    },
+    {
+      "map": "bz8k.mob",
+      "objects": 393,
+      "script_sha256": "926c9ca0d13e76fcd2f60b15de867caeadfb960fe8e7ea8fd0bde361ae9deaf3",
+      "sha256": "ca9870d4f024072f24d05a23e2ebc0d6cbbc0eaaf1390d37ab80fada2ef22577"
+    },
+    {
+      "map": "bz9k.mob",
+      "objects": 165,
+      "script_sha256": "87d4fecca058388fe3b208440d801183553c3955ea6143fbc11637cd06919d84",
+      "sha256": "bd055afbfa8da9bb2be48eacd27e05e0279746ff3d26dee8c9476454c1be0294"
+    },
+    {
+      "map": "z12q1.mob",
+      "objects": 93,
+      "script_sha256": "87642e5d8cdb97079f281d4dce2da905dcc1ed42a5fda40bc62a140c9e86ecf3",
+      "sha256": "b6d14d2238902f870f633b47e9557351f048d361d2bb2ca5c20fcb3751105d79"
+    },
+    {
+      "map": "z12q2.mob",
+      "objects": 68,
+      "script_sha256": "9331c970e18532dad97c192c3c7b9add80ed0d993da51d9904529d8acb0c4b78",
+      "sha256": "33f3057471b039c0b79bad18174847c4287234dbff738d58288031089fa7c994"
+    },
+    {
+      "map": "z12q3.mob",
+      "objects": 64,
+      "script_sha256": "ac95bf782777bb464f0661c997f6849184442269d053b9bef6b730af81647a1d",
+      "sha256": "898efe8f034a250fdbf7b14ab5a93517a141d4a70c5632b2edeceb9aa06e636c"
+    },
+    {
+      "map": "z13q1.mob",
+      "objects": 53,
+      "script_sha256": "11501015a9826699e101bebbc0691eeac658fba6bbcd72e30011236a4c0ccb58",
+      "sha256": "fc3ab91eab6b30f5c45dd41c9dca52fc34f6d193b699c44193ec90212c37bd2f"
+    },
+    {
+      "map": "z13q2.mob",
+      "objects": 47,
+      "script_sha256": "1709a6e2ef445ad5c5a4cfdfe0a0e2f2e5e98b6fd09a282f25c82b5ce2e6be66",
+      "sha256": "a00ede12a29b4d56ec12d9e1058917e2d6b2ee4a7aa33fa1df40a859404310da"
+    },
+    {
+      "map": "z13q3.mob",
+      "objects": 54,
+      "script_sha256": "e6bbc2b235bd51a980fc291ae7d55043362d788d97bce11fd57fca3e66d24005",
+      "sha256": "f657d3a67224277f2b1de23feebde2d0a5691b396721abe9a2e54eb5465f0988"
+    },
+    {
+      "map": "z17q1.mob",
+      "objects": 2,
+      "script_sha256": "c1f493fa14de884e158f6ea53471c3f745df491b4d1a9b7dc90bb66a4f2fbecb",
+      "sha256": "e964b07ff802568199b096096e918f4f2bdbcdb3f43be00c5ad85eb8fcb6b8db"
+    },
+    {
+      "map": "z17q2.mob",
+      "objects": 5,
+      "script_sha256": "540a6677746b7cfcdea2c378430ff9fcbb7dd3b706fd27f81faa6bd6196a74f7",
+      "sha256": "21e78d7675aed9602c0cfafd347ddd82328503db8e487a4c1a86ef72410ecaed"
+    },
+    {
+      "map": "z17q3.mob",
+      "objects": 3,
+      "script_sha256": "30ab9a45fdf32100344fde0a55145cc09817eae6a464826774c5eb5e7b5d45e2",
+      "sha256": "854704bebab51c2589bb5603ca51e1f480e5427b7eeaf1218f4ae6f7928cad5b"
+    },
+    {
+      "map": "z18q1.mob",
+      "objects": 34,
+      "script_sha256": "418b61d897520f5497e7577cc10861eb6db757f6d73bbb2fa820fb4a2ef3c06f",
+      "sha256": "44964b5f4d4ed8543db7a06f0b4d2fc23874afef89bbb4189d57c46efc0244da"
+    },
+    {
+      "map": "z18q2.mob",
+      "objects": 7,
+      "script_sha256": "2e115187d1a0aead3033219c4a5ab7d2e2efaaa14479fb0bc8f7ff057a24970f",
+      "sha256": "5377c9bb5c28eaeba296a6266818ae3ed20dbcf1805a32c268a0c29d02fe164c"
+    },
+    {
+      "map": "z18q3.mob",
+      "objects": 24,
+      "script_sha256": "0d9e3627e2bd773c82c96f553f40c04ca2958bb167ba9dc1476f2c2cd973cbef",
+      "sha256": "5c7fe8825c871df97e3b0dd125f4726d3517592b8db76d5278b768aae0a71bbd"
+    },
+    {
+      "map": "z18q4.mob",
+      "objects": 13,
+      "script_sha256": "95a02918404ba091b7d3204cc4e29577f3297d29acd3b5fffd74ef9b2c325c33",
+      "sha256": "e9d61226efa2b82fb7cc6337b5d5fa9e5520c26900cd788d542389cb82b1b7a1"
+    },
+    {
+      "map": "z19q1.mob",
+      "objects": 463,
+      "script_sha256": "da3334f9f33b5e11db3681e3e4d7bcc18e89ae65d4efaf737c67175607a0daf1",
+      "sha256": "5fffa5017a40299d8f66a5636d535a481492671976fa2e4b9d18c65326e9e82f"
+    },
+    {
+      "map": "z19q2.mob",
+      "objects": 457,
+      "script_sha256": "6202a89195f8ea6caf14a75fdea4b2aade6b2b34a77e8414675005917445825b",
+      "sha256": "7812ddef704ab54b98558d36fde4c10f1995e81e9fa04aa813466f1a8f69316a"
+    },
+    {
+      "map": "z19q3.mob",
+      "objects": 457,
+      "script_sha256": "5d98c4c6675e9ef576acefd439a501231e1ef4e18227526d587fa5b16f2f8ea7",
+      "sha256": "2b30ec73fe6f0498a54a62467ac7fc2ff864c05b18a513da5338e9c3db6d483a"
+    },
+    {
+      "map": "z3q1.mob",
+      "objects": 41,
+      "script_sha256": "d2aa989722db837685a2eadd2d748f49ff88274dadac5a30e0cbbba772abd78d",
+      "sha256": "d5d2ef18f33966993621ef6b81f1f92c1cdc271c5c99d3e98250fb74a56c3eea"
+    },
+    {
+      "map": "z3q2.mob",
+      "objects": 28,
+      "script_sha256": "9b2166b9c6dda99306568a35fc9594277e2082dff528c92d599149d9e28cd896",
+      "sha256": "4bab43ac1cbfffc38c5ec4bef0f94913cb8927ff43b39a0b5c33f31929db9ae3"
+    },
+    {
+      "map": "z3q3.mob",
+      "objects": 31,
+      "script_sha256": "74f7102ba6fb89354fbff2a471406188d694b6b4b122f0715cf62f2c85bc94e2",
+      "sha256": "e1f8f38ca5ce7ae8cbefa1b95d516b7c5f163982214fa1072cd6af707c6bbef2"
+    },
+    {
+      "map": "z6q1.mob",
+      "objects": 46,
+      "script_sha256": "1b78692894597d1026276a78c011669e29428eed6613b1a077e43ef410ebd968",
+      "sha256": "29541d160feee0c83700d4c22bf5ce9b050411d3e6492b96e1db90c13f6f39b5"
+    },
+    {
+      "map": "z6q2.mob",
+      "objects": 56,
+      "script_sha256": "80baa197f8eaf0b7e383e4b5a7a2a4a8b008b36b624b37254aa78ce72b2a0cc6",
+      "sha256": "2397f51d0d844e0a875f6fa76ca4fc4a64eaab8017a4a6f5c68b70c001bef26f"
+    },
+    {
+      "map": "z6q3.mob",
+      "objects": 43,
+      "script_sha256": "ba059bae6a5f066d8edc364811bedb451de1ec222cfe4d0265629feac4be601e",
+      "sha256": "da4b2a736cf8816983d8ef9e1d2e6e933b9ab0e48213591a0fcae83515b420fe"
+    },
+    {
+      "map": "z7q1.mob",
+      "objects": 48,
+      "script_sha256": "f73e714e51d38ea578fbf15bec9e3482febfb1317220cd55b650a79a5bc05005",
+      "sha256": "fb540bd25e5a6170d879f1b255a2a902cbf24d24d7a410049893b47539d6f4dd"
+    },
+    {
+      "map": "z7q2.mob",
+      "objects": 50,
+      "script_sha256": "7da0409ac07c12c00b3a93fad6e6cccf40474f44f398a652d8d80c13f0b03f8a",
+      "sha256": "f2ba36f088252dee13c6b68d1776b9f890f66e5a00f51c62a52d74c9d1f4d96f"
+    },
+    {
+      "map": "z7q3.mob",
+      "objects": 66,
+      "script_sha256": "c873e4f5936a01d4da49300d5a2a5cc7359f63b72b5a5055a6ffbc0a5fddebf8",
+      "sha256": "76ca69c2ea8980bf38d6fbf2a445abf504a86a916cbb36be4959576e34f4503b"
+    },
+    {
+      "map": "z9q1.mob",
+      "objects": 42,
+      "script_sha256": "62cbb8c100e6d92c37df087060ab1b2b0c709ebeefc8e1b5f2bd5fd40bab38cb",
+      "sha256": "9e5e72d3be15d2b63cea0d10807568fe23029c49453457a472e3628466a01732"
+    },
+    {
+      "map": "z9q2.mob",
+      "objects": 36,
+      "script_sha256": "e34f7dc2ab8bb450f3ea1180f5c1bacaf94d8ca104ef55eaf85fb74583c08cbd",
+      "sha256": "ac8242df8e3e4167a643bc79d6f81a0454bb4f83fd9458e03105be281e446663"
+    },
+    {
+      "map": "z9q3.mob",
+      "objects": 60,
+      "script_sha256": "fae9a1f4b391fd5378ac401278223fbc8170f0a99a69c6280bacb26b631e8de3",
+      "sha256": "17ad51da57689ee1643a08048c35ba671d6505dfef81d29ccefbc4859c567a5d"
+    },
+    {
+      "map": "zone1.mob",
+      "objects": 777,
+      "script_sha256": "2012ec23ba73153b02b1272fd118dcce7789219c58ec16b7afbed1ad098856b2",
+      "sha256": "e3cdecb0529323c020492f0dfec85b819588764ab605621b14b871d2a3b26d6f"
+    },
+    {
+      "map": "zone10.mob",
+      "objects": 240,
+      "script_sha256": "7195674920d5e4b7c1bbbfb20af63f175a304c75d690a7ea8bc85acd5e1d29e3",
+      "sha256": "452a99d4d6a53a1f5d363c3dbf5e4df051d1635bddcf72a094979592db45fbd4"
+    },
+    {
+      "map": "zone11.mob",
+      "objects": 2311,
+      "script_sha256": "f29f9e44d98d4172b0ed5f66fa799d536d90a124013322964d075a2227f7ffd9",
+      "sha256": "c8bb948a464bee27a58feda99db5704653cb6acbf4a7b2a8bbc3ed12f82ff3b9"
+    },
+    {
+      "map": "zone12-lmp.mob",
+      "objects": 1692,
+      "script_sha256": "70b00f840a111c8b43fd00420d3155861ce72b09c5f27cd30b39e74aa1ade939",
+      "sha256": "a514523c245359162f241d8d70c1ad466b485d4f81f0dbc7aefc9b0bcdecb0f4"
+    },
+    {
+      "map": "zone12.mob",
+      "objects": 1796,
+      "script_sha256": "1a574c9972b7ee082491b90d00d4279b2e1a973b1746ffe1ee74d830ecea5856",
+      "sha256": "20b4c82f69c09f0a27088e7dc07b03208a4d9eea05ca3afe722f9d604b5a4f46"
+    },
+    {
+      "map": "zone12dm1.mob",
+      "objects": 30,
+      "script_sha256": "b9e8e728958df16c95bf7467878fb8d2136f9ebee7e39dad8948a4d02b88d697",
+      "sha256": "d141d4fa5463b21876f89a55092dac7f1e8f1a253ae7eb286bf4d086f9f8f826"
+    },
+    {
+      "map": "zone12dm2.mob",
+      "objects": 30,
+      "script_sha256": "a74640e13896afb735572db97e2a852b6654ff2bc02bbb06dcb2b669f51098c0",
+      "sha256": "9f56f93f9b8eb728f92096ef34e44329ccf6d16e835ddc5db72956ad6e52055f"
+    },
+    {
+      "map": "zone12magess.mob",
+      "objects": 3,
+      "script_sha256": "80b2a99136ad1cf4dcc8912674d0c4986fb06079220283eabe7f1fe5ad84dd8f",
+      "sha256": "65396021ea402d3afb3f9786d7604b4b08d13d07efc33b0dcdd7a8781ae97492"
+    },
+    {
+      "map": "zone13-lmp.mob",
+      "objects": 1659,
+      "script_sha256": "f7eed1c58ca380788c760b95f249efbd62ceff5c850489c919def99103613fcf",
+      "sha256": "19f6d7f81dd4eca8c7e01e09693e32920ef987e33c2aa8b8646aac48bf4bdc7e"
+    },
+    {
+      "map": "zone13.mob",
+      "objects": 1735,
+      "script_sha256": "e6689ed045efaf470e73852d0ebf447a9634393bfada8eeecfcfc655517c2db7",
+      "sha256": "654de0ceb0617b645abbe78283f1f7d276d79a567ae26282b97b36717967faf7"
+    },
+    {
+      "map": "zone14.mob",
+      "objects": 202,
+      "script_sha256": "588b76c69160754e4a2a70f9d2741b8f92a8db66e78d1cf516752b6c252171ab",
+      "sha256": "30e9205f289ae537a7284ae6a8400a534035741e8d0034d02baa874e1dbe66d0"
+    },
+    {
+      "map": "zone15.mob",
+      "objects": 1352,
+      "script_sha256": "aecf8f7e00c75e9570001294bbc247bbf4e9a987a688c6e3d158505a067385cc",
+      "sha256": "8926acd53867f4fac4a20d6cb4e64eb004c10ad73b5aa6d3be53d643f0e8b275"
+    },
+    {
+      "map": "zone15night.mob",
+      "objects": 28,
+      "script_sha256": "9d35a5130e62922d020a2d60542f99860769b317d1405bb7fcd60efd8f1df9ba",
+      "sha256": "c01c1020633571316be467618b062f8b2482f08598a8d44dfa8f208333bb72f4"
+    },
+    {
+      "map": "zone16.mob",
+      "objects": 132,
+      "script_sha256": "eac226e4166c111bd6741bbcd6c78df9bf5445d45d586139d7ed2e81e0ae9811",
+      "sha256": "45a250c3e60484757255423b9482c50cd0f20c1e6c365bd2edfdd17fc8d698d8"
+    },
+    {
+      "map": "zone17-lmp.mob",
+      "objects": 2488,
+      "script_sha256": "7978635b27343caa595683c3acf4c26f543343612250ab23b5bc85f3b424205a",
+      "sha256": "e809d97218e1147dec51b7b130bff1d7e761d46216f55fe38292a7134e437cc9"
+    },
+    {
+      "map": "zone17.mob",
+      "objects": 2494,
+      "script_sha256": "d09ed89036df8755369115d41a7e71dcc3a977b0944467a8854c9a7d91d0cccc",
+      "sha256": "5ece830de3c68bb9b12b1a579749921c8ceb86dedefd3806b3d768b0f16742b9"
+    },
+    {
+      "map": "zone18-lmp.mob",
+      "objects": 2379,
+      "script_sha256": "9a5fe6a2a1d379fa090e5e083566f54e213b7ab475f6c5c889f5a5e8f561cfec",
+      "sha256": "ea8e12aea82191bf9ecc497adccb2c9d6796389906e809b9274dd602af11e65b"
+    },
+    {
+      "map": "zone18.mob",
+      "objects": 2466,
+      "script_sha256": "dfe8e4e2c9be9ec9b156a3470b35f3fbc73c047c70ce9f897ee7917ea94d4bac",
+      "sha256": "5e7ddab61618d7f53ca1a0e70e08d6aa85c8111913a93109aab485b518a38ccf"
+    },
+    {
+      "map": "zone18market.mob",
+      "objects": 7,
+      "script_sha256": "40d7d1ca3e43fa20c886ef83948032df2bc528e4a21d4d8227535f147f036217",
+      "sha256": "0c125c6a2705aa075e2040d6841a4e889aedab56befe5d86bbac2c197d8e549c"
+    },
+    {
+      "map": "zone19-lmp.mob",
+      "objects": 3000,
+      "script_sha256": "0c6a372f782c624022cd190f5eefd9f2ed1f2837fd67c6ccbd3c20c01222253b",
+      "sha256": "1f26146b4b4fba66b1ca35f9f19b715747ed10559eea22f141182d95a1c6dfa4"
+    },
+    {
+      "map": "zone19.mob",
+      "objects": 3348,
+      "script_sha256": "be3563f125987345d54a84745d77d323a1ec990e52ca1db6bcd4440be210f38b",
+      "sha256": "cb84eaf58818f6cea27fe71f3da0d678abc3cf8118b544f3dc0a59b957b1ab68"
+    },
+    {
+      "map": "zone19alarm1.mob",
+      "objects": 8,
+      "script_sha256": "8cad875e9c312070390df74acdda11e8af04b92ddce1b4c42774be1ce4ef3109",
+      "sha256": "f816d51c3c63e208fa89058903ca3cd9787f5f4959a0304890bfcacb92dc1a47"
+    },
+    {
+      "map": "zone19alarm2.mob",
+      "objects": 18,
+      "script_sha256": "dd7de37510a01a3fcdf2b3031bf36a9b0a3ca19c37ccbc0ab29acd61e2ed804e",
+      "sha256": "c3e583ff5d004113fc3e16a0c88d6b6daa8839701d1829c38954f3f84e5235e7"
+    },
+    {
+      "map": "zone19q71h.mob",
+      "objects": 26,
+      "script_sha256": "5a3bad279f8af2b9fe307dbeb7e7717d80afefa2c397b045041ce44f0a6588de",
+      "sha256": "f4071d6e6f102a4ce6fe55a1daee88001ff741056886886f9dc05b13d3f794cd"
+    },
+    {
+      "map": "zone2.mob",
+      "objects": 740,
+      "script_sha256": "719cfbd1d56b8d0417aa93ddc711d96a11ef41033fad6880d040ae209e46906b",
+      "sha256": "b6ad605534da2e0bd2418f2ebf3965d42ce0eaf00efbb476a8a5a6abb7d674b5"
+    },
+    {
+      "map": "zone20.mob",
+      "objects": 80,
+      "script_sha256": "35f2db7ba244c5e34909353aea14cc5c92df9898f1a804d4cb0fb14cbdd53d2e",
+      "sha256": "b0ec5d5b0a76e6f38606767ec009f13a88280859c774c7ea00504a931d09329e"
+    },
+    {
+      "map": "zone3obr-lmp.mob",
+      "objects": 1145,
+      "script_sha256": "3a03794e0ddd5601887f17c80b734c0ea9b2c9aa37732f0e8eb8c5d91ff2a7d6",
+      "sha256": "e6fa8070166f356ed962e135b832cdc41488b187865316dfd40af02b4fcf2bcd"
+    },
+    {
+      "map": "zone3obr.mob",
+      "objects": 1202,
+      "script_sha256": "23018b051f518f2ae03eb4df7a9f34984ced051457b6ef76b25ee9601cbf6f07",
+      "sha256": "9006e9c34475c0e10288c7ef25e61ba1af085230dbdcea886577e5fd0b624292"
+    },
+    {
+      "map": "zone3obrvoev.mob",
+      "objects": 3,
+      "script_sha256": "6147f198b213688399ae34f1eeae87a0f0fec0933a4d1a65ddeba5d80ab466de",
+      "sha256": "e98f0be378c3dd51271619ed89c88b5666b0957fbb07a9bb245f93307e198415"
+    },
+    {
+      "map": "zone4.mob",
+      "objects": 1516,
+      "script_sha256": "22e08333c7bf919484a6f8e345d290e646985133572994e0db951aaf10bf047d",
+      "sha256": "6abb4708bb21756b8e8c35bad3c105c07eaa4c3c85f1810393ae29a88753dc14"
+    },
+    {
+      "map": "zone4hadagans.mob",
+      "objects": 32,
+      "script_sha256": "8300575355a89c1383c46230cf3e84b4d3c2a1e5958017dcc76403df651b6388",
+      "sha256": "6151bee488303cc50e3387a0ba9a067065f87463654d0aac079de1f958731780"
+    },
+    {
+      "map": "zone5_1.mob",
+      "objects": 66,
+      "script_sha256": "60c9e675b9aa7bfe35ec524f8f72ffb48cddc6b15d1772062257812ea56fae4a",
+      "sha256": "31ff36738cdced3922784469c79d7d59bf6b819573edcee00332d495035d90ca"
+    },
+    {
+      "map": "zone5scrabpoison.mob",
+      "objects": 1,
+      "script_sha256": "c05f68dfd5eeac8027a2244adc8d39411f949671e434746879fe96f99c3a0358",
+      "sha256": "f4c566c79154f436b46c981a0ea94549c07bd05be4d87fc376902305502b1010"
+    },
+    {
+      "map": "zone6-lmp.mob",
+      "objects": 1079,
+      "script_sha256": "764257e54e38023af90f64682546ab8dc9c1e0a2c131877706a93916274c1612",
+      "sha256": "98b993942252fb35c950123830f45692215dc9fb7962a2878bbce573d878efae"
+    },
+    {
+      "map": "zone6.mob",
+      "objects": 1120,
+      "script_sha256": "d4918cdc920bf7af06d0ea6402a6a080b47edcdb53f84e78263ceade605664c9",
+      "sha256": "c859fb0f36892107fee8dea4203bd4a04c7be8e184fc74864967843dfca7f9cf"
+    },
+    {
+      "map": "zone6dkin.mob",
+      "objects": 3,
+      "script_sha256": "647d6b5caa7f0695198e39ce2fc71878a83726379d51a93b6191d83648f638c3",
+      "sha256": "c940f43fae92dee37c5bb0d2c3748d37f98c72814da9ae6968af24bb927602fb"
+    },
+    {
+      "map": "zone6flower.mob",
+      "objects": 7,
+      "script_sha256": "9b6d1ef0766fd57dce023e63d09d91c55a51be669fc68a817aff7c9c0a058c73",
+      "sha256": "eed7bca11ea60be3ec2aea3fd7c472ca9d014627ea3e2ad4995a45a16e291364"
+    },
+    {
+      "map": "zone6gr.mob",
+      "objects": 1,
+      "script_sha256": "710c0fcd8278f095f8e1749773231afd83b6b26e1f4a1417a8dd9513cf9614a9",
+      "sha256": "49fadf9db5b6ed68f3ef25db35d92f042dbc7f044d06a3f2698ae2140b205957"
+    },
+    {
+      "map": "zone6van.mob",
+      "objects": 2,
+      "script_sha256": "010316a46af3789b9fce1d64f1d43e13594e936a2b71209f086e8ffc4b0d8483",
+      "sha256": "decbcdf3227e18af78f5b68c4684a3cf60a6aff8c042991f7022ef1cc720b77c"
+    },
+    {
+      "map": "zone6zs.mob",
+      "objects": 5,
+      "script_sha256": "fbc979529e42d09b3eea1924a0b63297688899051529ba2fa2141fe6f315eade",
+      "sha256": "18abf2dfebaf5a9ce20e8d2eaa3c6feba0bb29fc7077d616879b7efca55b3e30"
+    },
+    {
+      "map": "zone7-lmp.mob",
+      "objects": 2802,
+      "script_sha256": "3bd2e3fd702799be08a27da3e0e4e1529832a21c5f4d8c07c0d43ccadf55c627",
+      "sha256": "ec8c1a824fdac184c6033a12473567bc9eeb39328ca9d4b51589a53a489b07c8"
+    },
+    {
+      "map": "zone7.mob",
+      "objects": 2819,
+      "script_sha256": "e2795ecc021d9cd96305a7da1633b122e5b445af2a6a7363456a0fce0906be21",
+      "sha256": "0108df01a28982ace30c20ffc8c0fdfc6b7fd5bad0f6ad9ee2b571a737c14619"
+    },
+    {
+      "map": "zone7altar.mob",
+      "objects": 7,
+      "script_sha256": "d2922a7da2813cbdbb525de9c91ccfbd07163fc76fdc2a06a7d844f3dc457654",
+      "sha256": "fad14d320e2bf9bc9f39a2a6d67cc75d81ec246256d6cc04544566e89be32e7a"
+    },
+    {
+      "map": "zone7chest.mob",
+      "objects": 1,
+      "script_sha256": "9ca5d09122546c3786389752d7df8fbf26cb9585466c451d37c844ac0da2e30e",
+      "sha256": "b28b5dee838e55bf1468545c5315defc509278489d70a7b330b52eb40e4aaa95"
+    },
+    {
+      "map": "zone7letter.mob",
+      "objects": 7,
+      "script_sha256": "c6e7a73459e840d674377c24665173297998596f0d0b47ba3ef92fb0116fc7dc",
+      "sha256": "eb3ef35415865e8deecb8b3249d73426ab3769039f698911bb99f9440cf219d0"
+    },
+    {
+      "map": "zone7zasada.mob",
+      "objects": 21,
+      "script_sha256": "e05fbecc993702402f102cad0e3892e96680873bc2e053376c9cc13f40ac1611",
+      "sha256": "71afb7824fb4980f4df8fcb35895ee4c3c2406802a1a388aa7823cbcca37b66c"
+    },
+    {
+      "map": "zone8.mob",
+      "objects": 1092,
+      "script_sha256": "5ca36ac0ee59e6af7d2007d918fd9e22f3235c79037cbcb0d6af1910dbd2b23c",
+      "sha256": "d33309ea26b989807fed59e1c197334fe2da1850c1df73dd8a985849b4d2ebfc"
+    },
+    {
+      "map": "zone8demon.mob",
+      "objects": 1,
+      "script_sha256": "c18b5fd1bf464d39079511d7d9865653786dc0fddb0fd2bb6c219d1275cee1e9",
+      "sha256": "972b54bbc41e030e74e901ad9c479c55e6af32829354a0f6f27c13bb01684b0d"
+    },
+    {
+      "map": "zone9-lmp.mob",
+      "objects": 1682,
+      "script_sha256": "3fd7b0d3731e0029ac049b86f365b7938cffa71df025a77e34f0c3f083734760",
+      "sha256": "7233e72db11c9612d67e2c07e1b3c0d112cb7e2b6edb6b05ad6cec97e7af77e5"
+    },
+    {
+      "map": "zone9.mob",
+      "objects": 1713,
+      "script_sha256": "2a31ecaa9736abf3d901b687a6394ac946d16419a9a0f2f95ee5ddd08f1912ac",
+      "sha256": "abcc5abd6604f056ee4eb98b585dd3081e39604444b827d8c43a720941098673"
+    },
+    {
+      "map": "zonemainmenunew.mob",
+      "objects": 51,
+      "script_sha256": "9dee49fff3cba3c15266b4c7de43be5217028f03532a7010f4bc2b1c9a2c83b6",
+      "sha256": "b7462c845a3fbb4f171fbded60df8ba251717204eda80707e68337f2dde39ac6"
+    }
+  ],
+  "evidence_root": "/home/llm2x/Documents/EI/local/scratchpad/base-campaign-quests-20261023"
+}

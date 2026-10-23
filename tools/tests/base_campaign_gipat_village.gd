@@ -1,0 +1,51 @@
+extends "base_campaign_gipat_support.gd"
+
+func _ready() -> void:
+	await run()
+
+func run() -> void:
+	boot()
+	await s.new_campaign(false); freeze(); ticks(8)
+	vm().instances.clear(); vm().briefings.active = ""; game.hud._dialog.hide()
+	check(s.zone_id == "gz1g" and value("q.gz1g.q0g") < 2,"actual new campaign starts before the village objective")
+	start(["VTriger#0#205","VCheck#0#185","VCheck#0#296"]); ticks(30)
+	check(value("q.gz1g.q0g") < 2,"opening objective waits while the hero stays away from the village")
+	arm("q.gz1g.q0g"); teleport(Vector2(187,110)); quest("q.gz1g.q0g","opening village arrival")
+	check(value("b.elder.s1") == 1,"opening reward offers the first Elder conversation")
+	await roundtrip("base_gipat_opening",["q.gz1g.q0g","b.elder.s1"])
+	if not await leave("bz1g"):
+		await finish_gipat("BASE_CAMPAIGN_GIPAT_VILLAGE","Fresh campaign opening failed its ordinary village route."); return
+	vm().instances.clear(); await complete("b.elder.s1")
+	check(value("q.gz3g.q1ag") == 1,"first Elder dialogue starts the goblin sentry quest")
+	await enter("gz3g"); start(["VCheck#0#355","VCheck#0#358"])
+	check(value("q.gz3g.q1ag") == 1,"living sentry blocks its objective")
+	arm("q.gz3g.q1ag"); dead("GSentry"); quest("q.gz3g.q1ag","goblin sentry")
+	await enter("bz1g"); await complete("b.elder.s1_3"); await complete("b.smith.m1")
+	check(value("q.gz3g.q1g") == 1 and value("q.gz3g.q2g") == 1,"earned Elder and Smith topics grant wolf and tools quests")
+	await enter("gz3g"); start(["VCheck#0#60","VCheck#0#311","VCheck#0#197","VCheck#0#266","VCheck#0#268","VCheck#0#187","VCheck#0#229"])
+	dead("WhiteWolf")
+	check(value("q.gz3g.q1g") == 1,"wolf death without collecting its hide does not complete the quest")
+	arm("q.gz3g.q1g"); collect("WhiteWolf"); quest("q.gz3g.q1g","white wolf hide")
+	collect("Boss")
+	check(value("q.gz3g.q2g") == 1,"one recovered tool does not complete the two-tool objective")
+	await roundtrip("base_gipat_one_tool",["q.gz3g.q2g","q.gz3g.q2g.3"],["knife"])
+	arm("q.gz3g.q2g"); collect("ChiefWife"); quest("q.gz3g.q2g","Smith tools")
+	await enter("bz1g"); await complete("b.smith.m4")
+	check(not s.state.quest_items.has("knife") and not s.state.quest_items.has("awl"),"normal Smith report takes both recovered tools")
+	# Earlier Elder/sheriff discussion is a declared offer seam for this
+	# optional extermination objective; its kill counter is never assigned.
+	await offer("bz1g","b.sheriff.v3_1","q.gz3g.q3g")
+	await enter("gz3g"); start(["VTriger#0#175","VCheck#0#74","VCheck#0#210","VCheck#0#81","VCheck#0#83","VCheck#0#270","VCheck#0#214"])
+	var goblins := group_ids("Goblins")
+	kill(goblins.slice(0,6)); check(value("q.gz3g.q3g") == 1,"six goblins leave the source's greater-than-six objective pending")
+	arm("q.gz3g.q3g"); kill([goblins[6]]); quest("q.gz3g.q3g","seven goblin deaths")
+	dead("Renegade"); check(value("q.gz3g.q4g") == 1,"renegade death still requires the map from his body")
+	arm("q.gz3g.q4g"); collect("Renegade"); quest("q.gz3g.q4g","renegade map")
+	await enter("bz1g"); await complete("b.smith.m5_3")
+	await enter("gz3g"); start(["VCheck#0#314","VCheck#0#317","VCheck#0#320","VCheck#0#323"])
+	dead("PShaman"); check(value("q.gz3g.q5dg") == 1,"shaman death does not substitute for the pyramid switch")
+	await roundtrip("base_gipat_pyramid_shaman",["q.gz3g.q5dg","q.gz3g.q5dg.2"])
+	arm("q.gz3g.q5dg"); use(4636); quest("q.gz3g.q5dg","pyramid")
+	await enter("bz1g"); await complete("b.smith.m5_4")
+	await roundtrip("base_gipat_village_complete",["q.gz1g.q0g","q.gz3g.q1ag","q.gz3g.q1g","q.gz3g.q2g","q.gz3g.q3g","q.gz3g.q4g","q.gz3g.q5dg"])
+	await finish_gipat("BASE_CAMPAIGN_GIPAT_VILLAGE","Actual new campaign to q0g village and first Elder briefing, then q1ag sentry, q1g hide, q2g both looted tools/report, q3g source threshold of seven goblins, q4g looted renegade map and q5dg shaman plus ordinary pyramid switch/report. Only v3_1 optional offer is prepared; other tested offers are earned. Teleportation and ordinary deaths accelerate walking/combat. Partial objectives, ordinary travel, save/load and duplicate rewards covered; tutorial presentation and the ambient boar-luring aid are outside this fixture.")

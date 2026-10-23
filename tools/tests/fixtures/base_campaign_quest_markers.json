@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "evidence": "Quest-marker keys in owned original map scripts, cross-referenced with authored map positions. UI inventory, not trigger-completion proof.",
+  "zones": {
+    "gz10g": [
+      "q36ag"
+    ],
+    "gz11k": [
+      "q42k",
+      "q43k",
+      "q45ak",
+      "q45k",
+      "q50ak",
+      "q50ck",
+      "qk15k"
+    ],
+    "gz12k": [
+      "q47ak",
+      "q49k",
+      "q51k",
+      "q53k",
+      "q54k",
+      "qk10k"
+    ],
+    "gz13k": [
+      "q44k",
+      "q46bk",
+      "q46k",
+      "q48k",
+      "q50bk",
+      "qk11k",
+      "qk12k",
+      "qk13k",
+      "qk14k"
+    ],
+    "gz14k": [
+      "q55k"
+    ],
+    "gz15h": [
+      "q60h",
+      "q61h",
+      "q62h",
+      "qh1h",
+      "qh2h",
+      "qh3h",
+      "qh4h",
+      "qh5h",
+      "qh6h"
+    ],
+    "gz16h": [
+      "q63h"
+    ],
+    "gz17h": [
+      "q68h",
+      "q69h",
+      "qk31h",
+      "qk32h"
+    ],
+    "gz18h": [
+      "q64ah",
+      "q65h",
+      "q66h",
+      "q67h",
+      "q70h",
+      "qk30h"
+    ],
+    "gz19h": [
+      "q71h",
+      "q72h",
+      "qk16h",
+      "qk17h"
+    ],
+    "gz1g": [
+      "q0g"
+    ],
+    "gz20g": [
+      "q73g"
+    ],
+    "gz2g": [
+      "q6g"
+    ],
+    "gz3g": [
+      "q1ag",
+      "q1g",
+      "q23g",
+      "q2g",
+      "q3g",
+      "q4g",
+      "q5dg"
+    ],
+    "gz4g": [
+      "q15ag",
+      "q16g",
+      "q29g",
+      "q36g",
+      "q37g",
+      "qk9g"
+    ],
+    "gz5g": [
+      "q22g",
+      "q5g"
+    ],
+    "gz6g": [
+      "q14ag",
+      "q15bg",
+      "q18g",
+      "q24g",
+      "q25g",
+      "q39g",
+      "q7g"
+    ],
+    "gz7g": [
+      "q10g",
+      "q11g",
+      "q13g",
+      "q19g",
+      "q8g",
+      "q9g"
+    ],
+    "gz8g": [
+      "q14g",
+      "q30g",
+      "q34g",
+      "q35ag",
+      "q35g",
+      "q40ag",
+      "q40g",
+      "q41g"
+    ],
+    "gz9g": [
+      "q12g",
+      "q17g",
+      "q20g",
+      "q26g"
+    ]
+  }
+}

@@ -1,0 +1,86 @@
+extends "base_campaign_ingos_support.gd"
+## Starts at the accusation offered by the separately tested secret path.
+## The earlier manager's journal, governor's chest and Gipat document book
+## are retained; Deva consumes the latter two at her explanation.
+
+func _ready() -> void: run.call_deferred()
+
+func run() -> void:
+	ingos()
+	s.state.add_item(item_name(40)); s.state.add_item(item_name(31)); s.state.add_item(item_name(38))
+	await accept("bz8k","b.Magess.Mg50","q.gz12k.q51k")
+	await enter("gz12k")
+	start(["VCheck#1#2","VCheck#1#4","VCheck#1#6"])
+	check(s.world.units.has(1000094),"accepted confrontation loads the original Magess encounter")
+	kill([1000095,1000096])
+	check(value("q.gz12k.q51k") == 1,"Magess's dead escorts do not complete the principal target quest")
+	await roundtrip("base_ingos_magess_alive",["q.gz12k.q51k"])
+	kill([1000094]); ticks(8)
+	done("q.gz12k.q51k","the original Magess death completes her confrontation")
+	use(5634,false)
+	check(not has_item(29),"confrontation does not invent the first mine key")
+	await enter("bz8k"); await complete("b.Kapitan.K51"); await complete("b.Shopper.Tr52")
+	check(value("q.gz12k.q53k") == 1 and has_item(29),"normal captain/Shopper chain supplies the first key and gold quest")
+	await enter("gz12k")
+	start(["VCheck#0#13","VTriger#0#40","VCheck#0#71","VCheck#0#124","VCheck#0#150"])
+	near_object(5634); use(5634)
+	check(not has_item(29) and value("q.gz12k.q53k") == 1,"first physical gate consumes its key without granting the gold")
+	near_object(6085)
+	check(not has_item(28),"gold still requires opening its actual chest")
+	use(6085); ticks(8)
+	done("q.gz12k.q53k","normal gold chest use finishes the retrieval quest")
+	check(has_item(28) and value("b.Huber.G53") == 1,"collected nugget offers the actual governor hand-in")
+	near_object(5934); use(6095)
+	check(value("q.gz12k.q53k.6") == 2,"optional skeleton cache completes its authored gold-quest objective")
+	use(5636,false)
+	check(not has_item(30),"second mine gate remains locked before the governor exchanges the nugget")
+	await enter("bz8k"); await complete("b.Huber.G53")
+	check(not has_item(28) and has_item(30) and value("q.gz12k.q54k") == 1,"actual governor exchange consumes gold and gives the distinct second key")
+	await enter("gz12k")
+	start(["VTriger#0#79","VCheck#0#126","VCheck#0#181"])
+	near_object(5636); use(5636)
+	check(not has_item(30) and value("q.gz12k.q54k") == 1,"second gate consumes its key while the mine approach remains pending")
+	# Each approach is a one-shot route choice; the separate route matrix
+	# tests the two other mine entrances from a saved pending checkpoint.
+	near_object(5657)
+	teleport(Vector2(244,458)); ticks(8)
+	done("q.gz12k.q54k","actual mine approach completes the journey quest")
+	check(value("q.gz14k.q55k") == 1,"mine approach starts the final Ingos rescue")
+	gate("gz12k_gz14k",true,"chosen mine entrance is opened by the original approach handler")
+	gate("gz12k_gz14ak",false,"other mine entrance remains unavailable after choosing the main approach")
+	if not await leave("gz12k_gz14k","gz14k"):
+		await finish("BASE_CAMPAIGN_INGOS_DEPARTURE","Stopped at original mine transfer"); return
+	ticks(8); vm().instances.clear()
+	start(["VTriger#0#13","VTriger#0#19","VCheck#0#28","VCheck#0#48","VCheck#0#71","VCheck#0#73","VCheck#0#75","VCheck#0#94","VCheck#0#98","VCheck#0#102","VCheck#0#129"])
+	teleport(Vector2(55,162)); use(4368,false)
+	check(value("q.gz14k.q55k") == 1 and int(s.world.levers[4306].state) == 0,"keyed mine control keeps its physical door shut before the leader key")
+	if not await loot_original("zone14.mob",34):
+		await finish("BASE_CAMPAIGN_INGOS_DEPARTURE","Stopped at mine leader key"); return
+	use(4368)
+	check(not has_item(34) and int(s.world.levers[4306].state) == 1,"ordinary keyed mine control consumes its key and opens its door")
+	teleport(Vector2(164,133)); use(4371)
+	check(int(s.world.levers[4302].state) == 1 and int(s.world.levers[4303].state) == 1,"actual cross-corridor control opens both linked doors")
+	use(4374)
+	check(int(s.world.levers[4301].state) == 1 and int(s.world.levers[4304].state) == 1,"actual upper-corridor control opens both linked doors")
+	use(4370)
+	check(int(s.world.levers[4305].state) == 1,"actual side-corridor control opens its linked door")
+	use(4557); use(4367)
+	check(value("q.gz14k.q55k.17") == 2 and value("q.gz14k.q55k.19") == 2,"both optional mine treasures are collected through ordinary use")
+	teleport(Vector2(148,86)); near_object(4555)
+	check(value("q.gz14k.q55k") == 1,"mine controls and rewards do not complete rescue before the last entrance")
+	await roundtrip("base_ingos_mine_last_door",["q.gz14k.q55k","q.gz14k.q55k.8"],[item_name(40),item_name(31),item_name(38)])
+	use(4555); teleport(Vector2(218,51)); ticks(8)
+	done("q.gz14k.q55k","normal final mine door and original rescue approach complete Ingos")
+	check(value("b.bz11k.D55") == 1,"completed mine rescue offers Deva's introduction")
+	if not await leave("bz11k"):
+		await finish("BASE_CAMPAIGN_INGOS_DEPARTURE","Stopped at Deva refuge"); return
+	await complete("b.bz11k.D55")
+	check(value("b.Deva.D55_2") == 0,"Deva departure stays unavailable before the quest explanation")
+	await complete("b.Deva.D55_3"); ticks(8)
+	check(not has_item(38) and not has_item(31) and has_item(40) and value("b.Deva.D55_2") == 1,"actual explanation consumes Gipat's document book and the chest, retains the manager journal, and offers departure")
+	await roundtrip("base_ingos_deva_departure",["q.gz14k.q55k","b.Deva.D55_2"])
+	await complete("b.Deva.D55_2")
+	if await wait_zone("bz7g"):
+		check(value("b.bz7g.R54") == 1,"actual Ingos departure returns to Gipat and offers Tka-Rik's next-island briefing")
+		check(not has_item(40),"actual departure clears the now-obsolete manager journal")
+	await finish("BASE_CAMPAIGN_INGOS_DEPARTURE","Prepared earned Mg50 accusation offer and earlier manager journal/governor chest/Gipat document book. Actual q51 loaded Magess encounter, K51/Tr52 first key, q53 gold plus optional skeleton reward, G53 second key, q54 selected mine approach and real entrance, q55 leader key/all linked physical controls/optional treasures/final door, D55/Deva explanations and actual D55_2 return to bz7g with R54 offer. Missing-key/final-target/last-door/departure-prerequisite negatives, save/load and duplicate hand-ins. No tested outcomes assigned; walking/combat accelerated; native runtime comparisons are separate.")

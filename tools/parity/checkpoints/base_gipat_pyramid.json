@@ -1,0 +1,144 @@
+{
+ "campaign": "original",
+ "expected_zone": "gz3g",
+ "fixture": {
+  "money": 0,
+  "setup": [
+   "GodMode(0,1)",
+   "KillUnit(GetObject(4634))"
+  ]
+ },
+ "from_zone": "gz3g",
+ "note": "Prepared accepted pyramid quest and defeated pyramid shaman. Measured original switch-state action satisfies the second prerequisite and completes q5dg, without assigning its outcome. Normal switch use, corpse and quest hand-in are covered independently by the loaded-map suite. Native mercenary topics are recalculated before capture, as during normal campaign village visits, after the prepared chapter jump.",
+ "observations_after": {
+  "cp_pyramid": 1.0,
+  "cp_shaman_alive": 0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_pyramid": 0,
+  "cp_shaman_alive": 0,
+  "money": 0
+ },
+ "probes": {
+  "cp_pyramid": "GetLeverState(GetObject(4636))",
+  "cp_shaman_alive": "IsAlive(GetObject(4634))"
+ },
+ "provenance": {
+  "after": {
+   "info.sav": "4f86dc80f11d9312c41595edbce0de8175084bf07ce47d6de763f5b94ac6948d",
+   "mission.sav": "f209bed51f2e12d2c6b88e8561bd32708ada8d77edae550970aa2e17116e4e15",
+   "scenario.sav": "fbf6fec92a3c25df2f702f5ba07d7971fe58d72ee27d06ceff54d7bfd4cc85d2",
+   "shot.sav": "03cf9bf1bc39caba3269356fd449c3e39b45c802c9ac89be951396fe13f473ac"
+  },
+  "before": {
+   "info.sav": "f00131e5c4c8fbc5d756284d13b9afc43276cd3187796378a1c9e04b78400da1",
+   "mission.sav": "4f710a8e94a492ddc22c408ba643d675d7045bdd0e1e0f6ef1069cdf5b204591",
+   "scenario.sav": "5e3b67f2843b8dcd0499a4d611ef5689ec8e1e1e41898beaefe779194e482458",
+   "shot.sav": "00e160f03736c2193b2a75e3ced12b6102408b544955bfe4b703160c5e3472f6"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "script": "SwitchLeverState(GetObject(4636),1)"
+  },
+  {
+   "wait": "2"
+  }
+ ],
+ "vars_after": {
+  "AnimPray": 1.0,
+  "Fk13": 1.0,
+  "PState": 2.0,
+  "Said1": 1.0,
+  "ZT1": 1.0,
+  "b.YCF.Yc46": 1.0,
+  "b.YCF.Yc47": 1.0,
+  "b.bz2g.z0": 1.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.smith.m5_4": 1.0,
+  "cp_key": 1.0,
+  "cp_panel_a": 1.0,
+  "cp_panel_b": 1.0,
+  "cp_prison": 1.0,
+  "q.gz13k.q46bk": 2.0,
+  "q.gz13k.q46bk.1": 2.0,
+  "q.gz13k.q46k": 2.0,
+  "q.gz13k.q46k.4": 2.0,
+  "q.gz13k.q46k.5": 2.0,
+  "q.gz19h.q72h": 1.0,
+  "q.gz19h.q72h.21": 2.0,
+  "q.gz19h.q72h.22": 1.0,
+  "q.gz19h.q72h.23": 1.0,
+  "q.gz19h.q72h.24": 2.0,
+  "q.gz19h.q72h.25": 1.0,
+  "q.gz19h.q72h.26": 2.0,
+  "q.gz19h.q72h.27": 1.0,
+  "q.gz19h.q72h.36": 2.0,
+  "q.gz19h.q72h.37": 2.0,
+  "q.gz3g.q5dg": 2.0,
+  "q.gz3g.q5dg.2": 2.0,
+  "q.gz3g.q5dg.3": 2.0,
+  "z.gz1g_gz2g": 1.0,
+  "z.gz2g_gz3g": 1.0
+ },
+ "vars_before": {
+  "AnimPray": 1.0,
+  "Fk13": 1.0,
+  "PState": 2.0,
+  "Said1": 1.0,
+  "ZT1": 1.0,
+  "b.YCF.Yc46": 1.0,
+  "b.YCF.Yc47": 1.0,
+  "b.bz2g.z0": 1.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "cp_key": 1.0,
+  "cp_panel_a": 1.0,
+  "cp_panel_b": 1.0,
+  "cp_prison": 1.0,
+  "q.gz13k.q46bk": 2.0,
+  "q.gz13k.q46bk.1": 2.0,
+  "q.gz13k.q46k": 2.0,
+  "q.gz13k.q46k.4": 2.0,
+  "q.gz13k.q46k.5": 2.0,
+  "q.gz19h.q72h": 1.0,
+  "q.gz19h.q72h.21": 2.0,
+  "q.gz19h.q72h.22": 1.0,
+  "q.gz19h.q72h.23": 1.0,
+  "q.gz19h.q72h.24": 2.0,
+  "q.gz19h.q72h.25": 1.0,
+  "q.gz19h.q72h.26": 2.0,
+  "q.gz19h.q72h.27": 1.0,
+  "q.gz19h.q72h.36": 2.0,
+  "q.gz19h.q72h.37": 2.0,
+  "q.gz3g.q5dg": 1.0,
+  "q.gz3g.q5dg.2": 2.0,
+  "z.gz1g_gz2g": 1.0,
+  "z.gz2g_gz3g": 1.0
+ },
+ "zone": "gz3g"
+}

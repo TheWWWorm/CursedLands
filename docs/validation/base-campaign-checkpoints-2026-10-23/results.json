@@ -1,0 +1,2194 @@
+{
+  "schema": 1,
+  "campaign": "cursed_lands",
+  "status": "passed",
+  "evidence_root": "/home/llm2x/Documents/EI/local/scratchpad/base-campaign-quests-20261023",
+  "base_commit": "ab047fcba041da7cd151f60fc297b4da86db8732",
+  "production_change": {
+    "file": "game/src/game/side_quests.gd",
+    "sha256": "152fcccafef29c0e02b20ebd1368789831806c36d6ad637aacfe0c92bcf0a8fc"
+  },
+  "catalog_sha256": "79eef57d8cefdafda8b64dca634524833bebe22da8def3ef0c49fc134beae0f3",
+  "coverage": {
+    "named_campaign_quests": 92,
+    "side_quest_archives": 28,
+    "coverage_manifest_sha256": "3d8345fa94b2882ccce18971f8df3a4adbf331defeb5cb73c550802e7652b309",
+    "continuous_playthrough": false,
+    "every_dialogue_permutation": false
+  },
+  "counts": {
+    "base_programs": 36,
+    "base_checks": 8408,
+    "related_programs": 4,
+    "related_checks": 3825,
+    "total_gameplay_programs": 40,
+    "total_gameplay_checks": 12233,
+    "failed_checks": 0,
+    "engine_errors": 0,
+    "native_references": 4,
+    "native_replays": 8,
+    "native_checks": 192,
+    "native_differences": 0
+  },
+  "regions": {
+    "gipat": {
+      "programs": 18,
+      "checks": 2638
+    },
+    "ingos": {
+      "programs": 10,
+      "checks": 1034
+    },
+    "suslanger": {
+      "programs": 4,
+      "checks": 864
+    }
+  },
+  "programs": [
+    {
+      "id": "quests/base_campaign_gipat_village",
+      "script": "tools/tests/base_campaign_gipat_village.gd",
+      "args": [],
+      "checks": 185,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "gipat-reward-focus-run1/report.json",
+      "log": "gipat-reward-focus-run1/tests/quests/base_campaign_gipat_village/run.log",
+      "log_sha256": "5283e21cd3c0fea9210127602f9eb5a8c4cf1d1d30e0d638acc4d3db975211db",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_gipat_village.gd": {
+          "final_sha256": "731cb849137ffc85f49e2258bfdec30da3791bd1836fba37a222365b202e4a09",
+          "tested_sha256": "731cb849137ffc85f49e2258bfdec30da3791bd1836fba37a222365b202e4a09"
+        },
+        "tools/tests/base_campaign_gipat_support.gd": {
+          "final_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1",
+          "tested_sha256": "f4ae8557179faf7f8c10a0bf60288af5bf8fb8973b9b546fb78e55ca9cbd1e51"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Exact fixture file and inherited helper hashes; support differs only by an unused rearm_mob method.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "9bf479b66924e727fb8080d4d828487c46c6298337bc3eb3fe895c72f8cbd42c"
+    },
+    {
+      "id": "quests/base_campaign_gipat_witch",
+      "script": "tools/tests/base_campaign_gipat_witch.gd",
+      "args": [],
+      "checks": 225,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "gipat-final-run1/report.json",
+      "log": "gipat-final-run1/tests/quests/base_campaign_gipat_witch/run.log",
+      "log_sha256": "3bd079e0cf8198314be91a4679d66b9af42126bd456e910db062e0e0191312f0",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_gipat_witch.gd": {
+          "final_sha256": "8cc5317a792f7427a8ac42ab16c1877bece82461736f392c01d66035201e071c",
+          "tested_sha256": "8cc5317a792f7427a8ac42ab16c1877bece82461736f392c01d66035201e071c"
+        },
+        "tools/tests/base_campaign_gipat_support.gd": {
+          "final_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1",
+          "tested_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Fresh final-source snapshot after source-owned dynamic watcher deduplication.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0"
+    },
+    {
+      "id": "quests/base_campaign_gipat_investigation",
+      "script": "tools/tests/base_campaign_gipat_investigation.gd",
+      "args": [],
+      "checks": 284,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "gipat-final-run1/report.json",
+      "log": "gipat-final-run1/tests/quests/base_campaign_gipat_investigation/run.log",
+      "log_sha256": "5b3c1ac45df3f95f588045adde5655e50ec2ca9d2f32b15cb797669fd9e29269",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_gipat_investigation.gd": {
+          "final_sha256": "1bb68362a579f25721b0d26b80166d91d2750e06ce5a0b5dddd6696ab7d32434",
+          "tested_sha256": "1bb68362a579f25721b0d26b80166d91d2750e06ce5a0b5dddd6696ab7d32434"
+        },
+        "tools/tests/base_campaign_gipat_support.gd": {
+          "final_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1",
+          "tested_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Fresh final-source snapshot after source-owned dynamic watcher deduplication.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0"
+    },
+    {
+      "id": "quests/base_campaign_gipat_investigation_alternative",
+      "script": "tools/tests/base_campaign_gipat_investigation.gd",
+      "args": [
+        "--alternative-investigation"
+      ],
+      "checks": 290,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "gipat-final-run1/report.json",
+      "log": "gipat-final-run1/tests/quests/base_campaign_gipat_investigation_alternative/run.log",
+      "log_sha256": "5183c96ee42075248134508984e483b436a12840f14b446542badc2b847ae734",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_gipat_investigation.gd": {
+          "final_sha256": "1bb68362a579f25721b0d26b80166d91d2750e06ce5a0b5dddd6696ab7d32434",
+          "tested_sha256": "1bb68362a579f25721b0d26b80166d91d2750e06ce5a0b5dddd6696ab7d32434"
+        },
+        "tools/tests/base_campaign_gipat_support.gd": {
+          "final_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1",
+          "tested_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Fresh final-source snapshot after source-owned dynamic watcher deduplication.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0"
+    },
+    {
+      "id": "quests/base_campaign_gipat_mountains",
+      "script": "tools/tests/base_campaign_gipat_mountains.gd",
+      "args": [],
+      "checks": 191,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "gipat-final-run1/report.json",
+      "log": "gipat-final-run1/tests/quests/base_campaign_gipat_mountains/run.log",
+      "log_sha256": "448f8f26f10a961bfe1cc3266aabe06976bc7e1d8c31edc70c353544bdd390e0",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_gipat_mountains.gd": {
+          "final_sha256": "65ca83d7e7cbf59b4e28a03c34862387f9fcd13db906f89a8c20c002ea3181fd",
+          "tested_sha256": "65ca83d7e7cbf59b4e28a03c34862387f9fcd13db906f89a8c20c002ea3181fd"
+        },
+        "tools/tests/base_campaign_gipat_support.gd": {
+          "final_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1",
+          "tested_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Fresh final-source snapshot after source-owned dynamic watcher deduplication.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0"
+    },
+    {
+      "id": "quests/base_campaign_gipat_mountains_peaceful",
+      "script": "tools/tests/base_campaign_gipat_mountains.gd",
+      "args": [
+        "--drive-cyclops"
+      ],
+      "checks": 216,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "gipat-final-run1/report.json",
+      "log": "gipat-final-run1/tests/quests/base_campaign_gipat_mountains_peaceful/run.log",
+      "log_sha256": "d70aafd12675fda33d40ac0bb611a3dbf2a5882d597e4f9c134dc1453ce01daa",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_gipat_mountains.gd": {
+          "final_sha256": "65ca83d7e7cbf59b4e28a03c34862387f9fcd13db906f89a8c20c002ea3181fd",
+          "tested_sha256": "65ca83d7e7cbf59b4e28a03c34862387f9fcd13db906f89a8c20c002ea3181fd"
+        },
+        "tools/tests/base_campaign_gipat_support.gd": {
+          "final_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1",
+          "tested_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Fresh final-source snapshot after source-owned dynamic watcher deduplication.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0"
+    },
+    {
+      "id": "quests/base_campaign_gipat_queen_source1",
+      "script": "tools/tests/base_campaign_gipat_queen.gd",
+      "args": [
+        "--source=1"
+      ],
+      "checks": 93,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "gipat-final-run1/report.json",
+      "log": "gipat-final-run1/tests/quests/base_campaign_gipat_queen_source1/run.log",
+      "log_sha256": "9a494b4c2b3020bfb79190eefdd56e21cc05c26fe8b3cf8b1f06beab9c94c19e",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_gipat_queen.gd": {
+          "final_sha256": "9691584956d443fd7e4d3ff472d6a849f1903882b8252f68a973e4e600b238dd",
+          "tested_sha256": "9691584956d443fd7e4d3ff472d6a849f1903882b8252f68a973e4e600b238dd"
+        },
+        "tools/tests/base_campaign_gipat_support.gd": {
+          "final_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1",
+          "tested_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Fresh final-source snapshot after source-owned dynamic watcher deduplication.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0"
+    },
+    {
+      "id": "quests/base_campaign_gipat_queen_source2",
+      "script": "tools/tests/base_campaign_gipat_queen.gd",
+      "args": [
+        "--source=2"
+      ],
+      "checks": 91,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "gipat-final-run1/report.json",
+      "log": "gipat-final-run1/tests/quests/base_campaign_gipat_queen_source2/run.log",
+      "log_sha256": "d9ddc6ed65dea62ee02a20adbb3d34b1c1d67497e2d5d5ceb5ab9f482dcbea74",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_gipat_queen.gd": {
+          "final_sha256": "9691584956d443fd7e4d3ff472d6a849f1903882b8252f68a973e4e600b238dd",
+          "tested_sha256": "9691584956d443fd7e4d3ff472d6a849f1903882b8252f68a973e4e600b238dd"
+        },
+        "tools/tests/base_campaign_gipat_support.gd": {
+          "final_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1",
+          "tested_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Fresh final-source snapshot after source-owned dynamic watcher deduplication.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0"
+    },
+    {
+      "id": "quests/base_campaign_gipat_queen_source3",
+      "script": "tools/tests/base_campaign_gipat_queen.gd",
+      "args": [
+        "--source=3"
+      ],
+      "checks": 86,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "gipat-final-run1/report.json",
+      "log": "gipat-final-run1/tests/quests/base_campaign_gipat_queen_source3/run.log",
+      "log_sha256": "700f4d4e373ce85f562cc6b6172c800fcb6ae5aa29174b961a41ba21d8982912",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_gipat_queen.gd": {
+          "final_sha256": "9691584956d443fd7e4d3ff472d6a849f1903882b8252f68a973e4e600b238dd",
+          "tested_sha256": "9691584956d443fd7e4d3ff472d6a849f1903882b8252f68a973e4e600b238dd"
+        },
+        "tools/tests/base_campaign_gipat_support.gd": {
+          "final_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1",
+          "tested_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Fresh final-source snapshot after source-owned dynamic watcher deduplication.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0"
+    },
+    {
+      "id": "quests/base_campaign_gipat_daughter",
+      "script": "tools/tests/base_campaign_gipat_daughter.gd",
+      "args": [],
+      "checks": 141,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "gipat-final-run1/report.json",
+      "log": "gipat-final-run1/tests/quests/base_campaign_gipat_daughter/run.log",
+      "log_sha256": "9eb908be3f9a6e8f377063afec0590bb2c83bf8109ec346422e19d9482c45e4b",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_gipat_daughter.gd": {
+          "final_sha256": "4b98a03b5e66721ae86cf5235c694ee142ee160b11b83022e21b5e48b9fba326",
+          "tested_sha256": "4b98a03b5e66721ae86cf5235c694ee142ee160b11b83022e21b5e48b9fba326"
+        },
+        "tools/tests/base_campaign_gipat_support.gd": {
+          "final_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1",
+          "tested_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Fresh final-source snapshot after source-owned dynamic watcher deduplication.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0"
+    },
+    {
+      "id": "quests/base_campaign_gipat_departure",
+      "script": "tools/tests/base_campaign_gipat_departure.gd",
+      "args": [],
+      "checks": 260,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "gipat-final-run1/report.json",
+      "log": "gipat-final-run1/tests/quests/base_campaign_gipat_departure/run.log",
+      "log_sha256": "b9e75ff5336b3b832de768da078639cb07da88c1fbba381cdf7f97ae256f601b",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_gipat_departure.gd": {
+          "final_sha256": "7d04f630137a15f1319c0cadfd8f1d78bee977d13c5425c89df54851713dafff",
+          "tested_sha256": "7d04f630137a15f1319c0cadfd8f1d78bee977d13c5425c89df54851713dafff"
+        },
+        "tools/tests/base_campaign_gipat_support.gd": {
+          "final_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1",
+          "tested_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Fresh final-source snapshot after source-owned dynamic watcher deduplication.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0"
+    },
+    {
+      "id": "quests/base_campaign_gipat_departure_hermit_first",
+      "script": "tools/tests/base_campaign_gipat_departure.gd",
+      "args": [
+        "--hermit-first"
+      ],
+      "checks": 254,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "gipat-final-run1/report.json",
+      "log": "gipat-final-run1/tests/quests/base_campaign_gipat_departure_hermit_first/run.log",
+      "log_sha256": "c63decc00865aeca2f4171f33f237fe7a6ec6b71e170ae5054af2b9bba8ca7f4",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_gipat_departure.gd": {
+          "final_sha256": "7d04f630137a15f1319c0cadfd8f1d78bee977d13c5425c89df54851713dafff",
+          "tested_sha256": "7d04f630137a15f1319c0cadfd8f1d78bee977d13c5425c89df54851713dafff"
+        },
+        "tools/tests/base_campaign_gipat_support.gd": {
+          "final_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1",
+          "tested_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Fresh final-source snapshot after source-owned dynamic watcher deduplication.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0"
+    },
+    {
+      "id": "quests/base_campaign_gipat_gold_refusal",
+      "script": "tools/tests/base_campaign_gipat_branches.gd",
+      "args": [
+        "--gold-refusal"
+      ],
+      "checks": 43,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "gipat-reward-focus-run1/report.json",
+      "log": "gipat-reward-focus-run1/tests/quests/base_campaign_gipat_gold_refusal/run.log",
+      "log_sha256": "71127eb9ce74c43799c6cc4a6ded29f1c5dfdd963fb531c64a4dba36de0d14ae",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_gipat_branches.gd": {
+          "final_sha256": "eebd4ee2132141bdc58cffe300e9ad3be03d4a5e5b0817b872a85bde9976acb0",
+          "tested_sha256": "eebd4ee2132141bdc58cffe300e9ad3be03d4a5e5b0817b872a85bde9976acb0"
+        },
+        "tools/tests/base_campaign_gipat_support.gd": {
+          "final_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1",
+          "tested_sha256": "f4ae8557179faf7f8c10a0bf60288af5bf8fb8973b9b546fb78e55ca9cbd1e51"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Exact fixture file and inherited helper hashes; support differs only by an unused rearm_mob method.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "9bf479b66924e727fb8080d4d828487c46c6298337bc3eb3fe895c72f8cbd42c"
+    },
+    {
+      "id": "quests/base_campaign_gipat_returned_ingos",
+      "script": "tools/tests/base_campaign_gipat_branches.gd",
+      "args": [
+        "--return-from-ingos"
+      ],
+      "checks": 35,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "gipat-branches-run2/report.json",
+      "log": "gipat-branches-run2/tests/quests/base_campaign_gipat_returned_ingos/run.log",
+      "log_sha256": "d831ce3aa9eec86eeb6e45d33a80ae13f82a74ab45aaee280b38bb0abb2d5b86",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_gipat_branches.gd": {
+          "final_sha256": "eebd4ee2132141bdc58cffe300e9ad3be03d4a5e5b0817b872a85bde9976acb0",
+          "tested_sha256": "dcace4e9c52f6163c5ec11beec670c691af7332d0cf30aec827ff88e43832895"
+        },
+        "tools/tests/base_campaign_gipat_support.gd": {
+          "final_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1",
+          "tested_sha256": "f55cefad7f0e939110151095600776489a113d16d468422a93b145d04c9633b4"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Executed run/ready/farewell/returned_handoff functions match exactly. Fixture difference is only the unexecuted gold_refusal assertion. Added arm/kill/quest/rearm support methods are unused; all inherited helper files match exactly.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "56a099d7a12197e6ff3753f869ae0241cfaf6c59abf7136e6e0c7a63c52719f9"
+    },
+    {
+      "id": "quests/base_campaign_gipat_farewell1",
+      "script": "tools/tests/base_campaign_gipat_branches.gd",
+      "args": [
+        "--merc=1"
+      ],
+      "checks": 61,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "gipat-branches-run2/report.json",
+      "log": "gipat-branches-run2/tests/quests/base_campaign_gipat_farewell1/run.log",
+      "log_sha256": "16d813bf57bb363d0c7987a6d2cb2a23e3ec997dd844e58794f87ecf80584c91",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_gipat_branches.gd": {
+          "final_sha256": "eebd4ee2132141bdc58cffe300e9ad3be03d4a5e5b0817b872a85bde9976acb0",
+          "tested_sha256": "dcace4e9c52f6163c5ec11beec670c691af7332d0cf30aec827ff88e43832895"
+        },
+        "tools/tests/base_campaign_gipat_support.gd": {
+          "final_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1",
+          "tested_sha256": "f55cefad7f0e939110151095600776489a113d16d468422a93b145d04c9633b4"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Executed run/ready/farewell/returned_handoff functions match exactly. Fixture difference is only the unexecuted gold_refusal assertion. Added arm/kill/quest/rearm support methods are unused; all inherited helper files match exactly.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "56a099d7a12197e6ff3753f869ae0241cfaf6c59abf7136e6e0c7a63c52719f9"
+    },
+    {
+      "id": "quests/base_campaign_gipat_farewell2",
+      "script": "tools/tests/base_campaign_gipat_branches.gd",
+      "args": [
+        "--merc=2"
+      ],
+      "checks": 61,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "gipat-branches-run2/report.json",
+      "log": "gipat-branches-run2/tests/quests/base_campaign_gipat_farewell2/run.log",
+      "log_sha256": "2588995aef499b278e025871ad023a19b514a2bf655974a655459b946863b2d0",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_gipat_branches.gd": {
+          "final_sha256": "eebd4ee2132141bdc58cffe300e9ad3be03d4a5e5b0817b872a85bde9976acb0",
+          "tested_sha256": "dcace4e9c52f6163c5ec11beec670c691af7332d0cf30aec827ff88e43832895"
+        },
+        "tools/tests/base_campaign_gipat_support.gd": {
+          "final_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1",
+          "tested_sha256": "f55cefad7f0e939110151095600776489a113d16d468422a93b145d04c9633b4"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Executed run/ready/farewell/returned_handoff functions match exactly. Fixture difference is only the unexecuted gold_refusal assertion. Added arm/kill/quest/rearm support methods are unused; all inherited helper files match exactly.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "56a099d7a12197e6ff3753f869ae0241cfaf6c59abf7136e6e0c7a63c52719f9"
+    },
+    {
+      "id": "quests/base_campaign_gipat_farewell3",
+      "script": "tools/tests/base_campaign_gipat_branches.gd",
+      "args": [
+        "--merc=3"
+      ],
+      "checks": 61,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "gipat-branches-run2/report.json",
+      "log": "gipat-branches-run2/tests/quests/base_campaign_gipat_farewell3/run.log",
+      "log_sha256": "34b03c962bafec6a0d4f8e215a5bfae8dbbda8edcbfead1689e4124c899519d6",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_gipat_branches.gd": {
+          "final_sha256": "eebd4ee2132141bdc58cffe300e9ad3be03d4a5e5b0817b872a85bde9976acb0",
+          "tested_sha256": "dcace4e9c52f6163c5ec11beec670c691af7332d0cf30aec827ff88e43832895"
+        },
+        "tools/tests/base_campaign_gipat_support.gd": {
+          "final_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1",
+          "tested_sha256": "f55cefad7f0e939110151095600776489a113d16d468422a93b145d04c9633b4"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Executed run/ready/farewell/returned_handoff functions match exactly. Fixture difference is only the unexecuted gold_refusal assertion. Added arm/kill/quest/rearm support methods are unused; all inherited helper files match exactly.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "56a099d7a12197e6ff3753f869ae0241cfaf6c59abf7136e6e0c7a63c52719f9"
+    },
+    {
+      "id": "quests/base_campaign_gipat_farewell4",
+      "script": "tools/tests/base_campaign_gipat_branches.gd",
+      "args": [
+        "--merc=4"
+      ],
+      "checks": 61,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "gipat-branches-run2/report.json",
+      "log": "gipat-branches-run2/tests/quests/base_campaign_gipat_farewell4/run.log",
+      "log_sha256": "a502463cd1d2e0b330a4de838c8952a89e1f1b48e14f0793e7372898636a305e",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_gipat_branches.gd": {
+          "final_sha256": "eebd4ee2132141bdc58cffe300e9ad3be03d4a5e5b0817b872a85bde9976acb0",
+          "tested_sha256": "dcace4e9c52f6163c5ec11beec670c691af7332d0cf30aec827ff88e43832895"
+        },
+        "tools/tests/base_campaign_gipat_support.gd": {
+          "final_sha256": "be41a6bfea3e8c3b2deb9afa47bf9e25e2cd5768ac160390632924e329f386f1",
+          "tested_sha256": "f55cefad7f0e939110151095600776489a113d16d468422a93b145d04c9633b4"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Executed run/ready/farewell/returned_handoff functions match exactly. Fixture difference is only the unexecuted gold_refusal assertion. Added arm/kill/quest/rearm support methods are unused; all inherited helper files match exactly.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "56a099d7a12197e6ff3753f869ae0241cfaf6c59abf7136e6e0c7a63c52719f9"
+    },
+    {
+      "id": "quests/base_campaign_ingos_arrival",
+      "script": "tools/tests/base_campaign_ingos_arrival.gd",
+      "args": [],
+      "checks": 154,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "ingos-full-run3/report.json",
+      "log": "ingos-full-run3/tests/quests/base_campaign_ingos_arrival/run.log",
+      "log_sha256": "f00acf7f1ab4b6b9c4591b3b72fbdb4327133d8222a00cf902ebe650b5708151",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_ingos_arrival.gd": {
+          "final_sha256": "35f92b104ef3e4beac6a18c3ce63c613c36321b670199504d55a1e905a240c38",
+          "tested_sha256": "35f92b104ef3e4beac6a18c3ce63c613c36321b670199504d55a1e905a240c38"
+        },
+        "tools/tests/base_campaign_ingos_support.gd": {
+          "final_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83",
+          "tested_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Exact final test files and all four inherited helpers are byte-identical to their selected retained evidence. Production source differences are recorded per report; no blanket identical-source claim. Parent accepted reuse: the quest change only affects active generated side-quest overlays, and these ordinary story fixtures enter none. Other older differences concern raytrace diagnostics, crash reporting and performance logging; these are headless quest assertions.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "2c5610c972a1f32f5177fe175b1e0631b21ea9116c9eb2aaa084a969d0714709"
+    },
+    {
+      "id": "quests/base_campaign_ingos_dryads",
+      "script": "tools/tests/base_campaign_ingos_dryads.gd",
+      "args": [],
+      "checks": 149,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "ingos-full-run3/report.json",
+      "log": "ingos-full-run3/tests/quests/base_campaign_ingos_dryads/run.log",
+      "log_sha256": "ea9485e5b4fbcc2a976b511419808c90e0dc9b2c3417f6a2c7dbea81f62f1967",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_ingos_dryads.gd": {
+          "final_sha256": "f4d8e4d8be364a43780e4f1f938d21b96637a473c98d92e3ee04e8c90371da63",
+          "tested_sha256": "f4d8e4d8be364a43780e4f1f938d21b96637a473c98d92e3ee04e8c90371da63"
+        },
+        "tools/tests/base_campaign_ingos_support.gd": {
+          "final_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83",
+          "tested_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Exact final test files and all four inherited helpers are byte-identical to their selected retained evidence. Production source differences are recorded per report; no blanket identical-source claim. Parent accepted reuse: the quest change only affects active generated side-quest overlays, and these ordinary story fixtures enter none. Other older differences concern raytrace diagnostics, crash reporting and performance logging; these are headless quest assertions.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "2c5610c972a1f32f5177fe175b1e0631b21ea9116c9eb2aaa084a969d0714709"
+    },
+    {
+      "id": "quests/base_campaign_ingos_labyrinth",
+      "script": "tools/tests/base_campaign_ingos_labyrinth.gd",
+      "args": [],
+      "checks": 133,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "ingos-full-run3/report.json",
+      "log": "ingos-full-run3/tests/quests/base_campaign_ingos_labyrinth/run.log",
+      "log_sha256": "3e39e242306defd313d0f07a7bbc817c7120b2870f49633dabe87240f65c2f7c",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_ingos_labyrinth.gd": {
+          "final_sha256": "23bd65b881901ac2aec90f4eeb810630a3a31cf3ced1f05160e00c5c400fd832",
+          "tested_sha256": "23bd65b881901ac2aec90f4eeb810630a3a31cf3ced1f05160e00c5c400fd832"
+        },
+        "tools/tests/base_campaign_ingos_support.gd": {
+          "final_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83",
+          "tested_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Exact final test files and all four inherited helpers are byte-identical to their selected retained evidence. Production source differences are recorded per report; no blanket identical-source claim. Parent accepted reuse: the quest change only affects active generated side-quest overlays, and these ordinary story fixtures enter none. Other older differences concern raytrace diagnostics, crash reporting and performance logging; these are headless quest assertions.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "2c5610c972a1f32f5177fe175b1e0631b21ea9116c9eb2aaa084a969d0714709"
+    },
+    {
+      "id": "quests/base_campaign_ingos_labyrinth_early",
+      "script": "tools/tests/base_campaign_ingos_labyrinth.gd",
+      "args": [
+        "--ingos-early-gratitude"
+      ],
+      "checks": 106,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "ingos-full-run3/report.json",
+      "log": "ingos-full-run3/tests/quests/base_campaign_ingos_labyrinth_early/run.log",
+      "log_sha256": "663100192dd97be1f377b2f68a883a613232af10223e2d92b22242159fd65c65",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_ingos_labyrinth.gd": {
+          "final_sha256": "23bd65b881901ac2aec90f4eeb810630a3a31cf3ced1f05160e00c5c400fd832",
+          "tested_sha256": "23bd65b881901ac2aec90f4eeb810630a3a31cf3ced1f05160e00c5c400fd832"
+        },
+        "tools/tests/base_campaign_ingos_support.gd": {
+          "final_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83",
+          "tested_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Exact final test files and all four inherited helpers are byte-identical to their selected retained evidence. Production source differences are recorded per report; no blanket identical-source claim. Parent accepted reuse: the quest change only affects active generated side-quest overlays, and these ordinary story fixtures enter none. Other older differences concern raytrace diagnostics, crash reporting and performance logging; these are headless quest assertions.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "2c5610c972a1f32f5177fe175b1e0631b21ea9116c9eb2aaa084a969d0714709"
+    },
+    {
+      "id": "quests/base_campaign_ingos_departure",
+      "script": "tools/tests/base_campaign_ingos_departure.gd",
+      "args": [],
+      "checks": 183,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "ingos-full-run2/report.json",
+      "log": "ingos-full-run2/tests/quests/base_campaign_ingos_departure/run.log",
+      "log_sha256": "0aa555cfeb88cc55cf1310bb6dc0a7415016f639270ab0d68e2ec99177930a55",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_ingos_departure.gd": {
+          "final_sha256": "1aa484b2a86f1d36606a3f910e35d6861fd27cebb7d81acf7e44630c5d9cd8e4",
+          "tested_sha256": "1aa484b2a86f1d36606a3f910e35d6861fd27cebb7d81acf7e44630c5d9cd8e4"
+        },
+        "tools/tests/base_campaign_ingos_support.gd": {
+          "final_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83",
+          "tested_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Exact final test files and all four inherited helpers are byte-identical to their selected retained evidence. Production source differences are recorded per report; no blanket identical-source claim. Parent accepted reuse: the quest change only affects active generated side-quest overlays, and these ordinary story fixtures enter none. Other older differences concern raytrace diagnostics, crash reporting and performance logging; these are headless quest assertions.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "56a099d7a12197e6ff3753f869ae0241cfaf6c59abf7136e6e0c7a63c52719f9"
+    },
+    {
+      "id": "quests/base_campaign_ingos_treasures",
+      "script": "tools/tests/base_campaign_ingos_treasures.gd",
+      "args": [],
+      "checks": 72,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "ingos-full-run2/report.json",
+      "log": "ingos-full-run2/tests/quests/base_campaign_ingos_treasures/run.log",
+      "log_sha256": "2973b05be5e34a144522a419254ee379f53997d8bf65b7be825a8a66c6e5d33e",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_ingos_treasures.gd": {
+          "final_sha256": "f12ce7349090682d24a1bd2aae790ec29976580f681db7fe662c211d7f5e7d07",
+          "tested_sha256": "f12ce7349090682d24a1bd2aae790ec29976580f681db7fe662c211d7f5e7d07"
+        },
+        "tools/tests/base_campaign_ingos_support.gd": {
+          "final_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83",
+          "tested_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Exact final test files and all four inherited helpers are byte-identical to their selected retained evidence. Production source differences are recorded per report; no blanket identical-source claim. Parent accepted reuse: the quest change only affects active generated side-quest overlays, and these ordinary story fixtures enter none. Other older differences concern raytrace diagnostics, crash reporting and performance logging; these are headless quest assertions.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "56a099d7a12197e6ff3753f869ae0241cfaf6c59abf7136e6e0c7a63c52719f9"
+    },
+    {
+      "id": "quests/base_campaign_ingos_routes",
+      "script": "tools/tests/base_campaign_ingos_routes.gd",
+      "args": [],
+      "checks": 69,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "ingos-full-run2/report.json",
+      "log": "ingos-full-run2/tests/quests/base_campaign_ingos_routes/run.log",
+      "log_sha256": "c8d67ec1e6e49e2b6556af26e6cc36bde9d831a496e2c580f8ed659e88fbc67e",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_ingos_routes.gd": {
+          "final_sha256": "abfadb84a8b8d404a50b3e565e5ff7c2fad7fc9be5c0523b0cef2d781e5e82a0",
+          "tested_sha256": "abfadb84a8b8d404a50b3e565e5ff7c2fad7fc9be5c0523b0cef2d781e5e82a0"
+        },
+        "tools/tests/base_campaign_ingos_support.gd": {
+          "final_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83",
+          "tested_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Exact final test files and all four inherited helpers are byte-identical to their selected retained evidence. Production source differences are recorded per report; no blanket identical-source claim. Parent accepted reuse: the quest change only affects active generated side-quest overlays, and these ordinary story fixtures enter none. Other older differences concern raytrace diagnostics, crash reporting and performance logging; these are headless quest assertions.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "56a099d7a12197e6ff3753f869ae0241cfaf6c59abf7136e6e0c7a63c52719f9"
+    },
+    {
+      "id": "quests/base_campaign_ingos_farewell_5",
+      "script": "tools/tests/base_campaign_ingos_farewells.gd",
+      "args": [
+        "--merc=5"
+      ],
+      "checks": 56,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "ingos-resume-run1/report.json",
+      "log": "ingos-resume-run1/tests/quests/base_campaign_ingos_farewell_5/run.log",
+      "log_sha256": "3a03d54860e9a2d9bd9ab2a72a558f4f621f8c66fe314e1e31431aa905965b0c",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_ingos_farewells.gd": {
+          "final_sha256": "b6c04944471b9ffe166b955a6655f4b3899e5c9169cdc42c75aaff36d0b25ab2",
+          "tested_sha256": "b6c04944471b9ffe166b955a6655f4b3899e5c9169cdc42c75aaff36d0b25ab2"
+        },
+        "tools/tests/base_campaign_ingos_support.gd": {
+          "final_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83",
+          "tested_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Exact final test files and all four inherited helpers are byte-identical to their selected retained evidence. Production source differences are recorded per report; no blanket identical-source claim. Parent accepted reuse: the quest change only affects active generated side-quest overlays, and these ordinary story fixtures enter none. Other older differences concern raytrace diagnostics, crash reporting and performance logging; these are headless quest assertions.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0"
+    },
+    {
+      "id": "quests/base_campaign_ingos_farewell_6",
+      "script": "tools/tests/base_campaign_ingos_farewells.gd",
+      "args": [
+        "--merc=6"
+      ],
+      "checks": 56,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "ingos-resume-run1/report.json",
+      "log": "ingos-resume-run1/tests/quests/base_campaign_ingos_farewell_6/run.log",
+      "log_sha256": "0ecf4d2dbc997d19e20967a7359984230f7507d1ae483c2acbe2b5b2077a6c1f",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_ingos_farewells.gd": {
+          "final_sha256": "b6c04944471b9ffe166b955a6655f4b3899e5c9169cdc42c75aaff36d0b25ab2",
+          "tested_sha256": "b6c04944471b9ffe166b955a6655f4b3899e5c9169cdc42c75aaff36d0b25ab2"
+        },
+        "tools/tests/base_campaign_ingos_support.gd": {
+          "final_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83",
+          "tested_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Exact final test files and all four inherited helpers are byte-identical to their selected retained evidence. Production source differences are recorded per report; no blanket identical-source claim. Parent accepted reuse: the quest change only affects active generated side-quest overlays, and these ordinary story fixtures enter none. Other older differences concern raytrace diagnostics, crash reporting and performance logging; these are headless quest assertions.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0"
+    },
+    {
+      "id": "quests/base_campaign_ingos_farewell_9",
+      "script": "tools/tests/base_campaign_ingos_farewells.gd",
+      "args": [
+        "--merc=9"
+      ],
+      "checks": 56,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "ingos-resume-run1/report.json",
+      "log": "ingos-resume-run1/tests/quests/base_campaign_ingos_farewell_9/run.log",
+      "log_sha256": "c98ec0052923e557b404adb96244c9e0be01b9ce0018857bebcaeb4d64e50fab",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_ingos_farewells.gd": {
+          "final_sha256": "b6c04944471b9ffe166b955a6655f4b3899e5c9169cdc42c75aaff36d0b25ab2",
+          "tested_sha256": "b6c04944471b9ffe166b955a6655f4b3899e5c9169cdc42c75aaff36d0b25ab2"
+        },
+        "tools/tests/base_campaign_ingos_support.gd": {
+          "final_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83",
+          "tested_sha256": "027240402cdc53562d357ba68b819d2a6239d1e35455b1f8210429e67b75eb83"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Exact final test files and all four inherited helpers are byte-identical to their selected retained evidence. Production source differences are recorded per report; no blanket identical-source claim. Parent accepted reuse: the quest change only affects active generated side-quest overlays, and these ordinary story fixtures enter none. Other older differences concern raytrace diagnostics, crash reporting and performance logging; these are headless quest assertions.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0"
+    },
+    {
+      "id": "quests/base_campaign_suslanger_prison",
+      "script": "tools/tests/base_campaign_suslanger_prison.gd",
+      "args": [],
+      "checks": 220,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "suslanger-all-run3/report.json",
+      "log": "suslanger-all-run3/tests/quests/base_campaign_suslanger_prison/run.log",
+      "log_sha256": "bb1f81cd7f74abfd4c920f396ea4a69a5497179edc12cfe14f279ba23d97b7d9",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_suslanger_prison.gd": {
+          "final_sha256": "4fe8f1b17f9a14bdfa39e10d40db3d557eaeb5881631024a15d3cb57a608151f",
+          "tested_sha256": "4fe8f1b17f9a14bdfa39e10d40db3d557eaeb5881631024a15d3cb57a608151f"
+        },
+        "tools/tests/base_campaign_suslanger_support.gd": {
+          "final_sha256": "83420dfffefa58457ca8e2e8e88efd85216665fb7b2d518a3d82758e52d153ed",
+          "tested_sha256": "3f194dc3cc1d01ad45dd5434f7d2a0a5d9b6485859a806eb94bffd3e79f4849d",
+          "difference": "Trailing EOF whitespace only; executable fixture content is identical."
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Executable fixture content matches; shared support only had its final blank line removed. Exact hashes and production differences are recorded separately.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "0d8151d43c8c62295b34de3c7cc443842730bc5b2bdcf81355f88fabba2264d8"
+    },
+    {
+      "id": "quests/base_campaign_suslanger_town",
+      "script": "tools/tests/base_campaign_suslanger_town.gd",
+      "args": [],
+      "checks": 241,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "suslanger-all-run3/report.json",
+      "log": "suslanger-all-run3/tests/quests/base_campaign_suslanger_town/run.log",
+      "log_sha256": "61caba700df95418023fb03683322fa3916ac2ee3e6c35dfff643ceb3379b669",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_suslanger_town.gd": {
+          "final_sha256": "c601a05be34f9c416915599da72ebcca633b52184e1c093c77b4a9f28fec3c9e",
+          "tested_sha256": "c601a05be34f9c416915599da72ebcca633b52184e1c093c77b4a9f28fec3c9e"
+        },
+        "tools/tests/base_campaign_suslanger_support.gd": {
+          "final_sha256": "83420dfffefa58457ca8e2e8e88efd85216665fb7b2d518a3d82758e52d153ed",
+          "tested_sha256": "3f194dc3cc1d01ad45dd5434f7d2a0a5d9b6485859a806eb94bffd3e79f4849d",
+          "difference": "Trailing EOF whitespace only; executable fixture content is identical."
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Executable fixture content matches; shared support only had its final blank line removed. Exact hashes and production differences are recorded separately.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "0d8151d43c8c62295b34de3c7cc443842730bc5b2bdcf81355f88fabba2264d8"
+    },
+    {
+      "id": "quests/base_campaign_suslanger_necromancer",
+      "script": "tools/tests/base_campaign_suslanger_necromancer.gd",
+      "args": [],
+      "checks": 128,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "suslanger-all-run3/report.json",
+      "log": "suslanger-all-run3/tests/quests/base_campaign_suslanger_necromancer/run.log",
+      "log_sha256": "b2906a6fda6b9aecf6f182a67a3628aba0673d8859a04e60141d627e93d7af50",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_suslanger_necromancer.gd": {
+          "final_sha256": "a337c9302ef564eb1019a0ad2b7c85bc24f471b0a39337ab5496f4c7b129b188",
+          "tested_sha256": "a337c9302ef564eb1019a0ad2b7c85bc24f471b0a39337ab5496f4c7b129b188"
+        },
+        "tools/tests/base_campaign_suslanger_support.gd": {
+          "final_sha256": "83420dfffefa58457ca8e2e8e88efd85216665fb7b2d518a3d82758e52d153ed",
+          "tested_sha256": "3f194dc3cc1d01ad45dd5434f7d2a0a5d9b6485859a806eb94bffd3e79f4849d",
+          "difference": "Trailing EOF whitespace only; executable fixture content is identical."
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Executable fixture content matches; shared support only had its final blank line removed. Exact hashes and production differences are recorded separately.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "0d8151d43c8c62295b34de3c7cc443842730bc5b2bdcf81355f88fabba2264d8"
+    },
+    {
+      "id": "quests/base_campaign_suslanger_ending",
+      "script": "tools/tests/base_campaign_suslanger_ending.gd",
+      "args": [],
+      "checks": 275,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "suslanger-all-run3/report.json",
+      "log": "suslanger-all-run3/tests/quests/base_campaign_suslanger_ending/run.log",
+      "log_sha256": "cfc21dc1777361442e19fd476bd4843fca702cca8a077eedbbd20bbf56de6a53",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_suslanger_ending.gd": {
+          "final_sha256": "9dd40380a9c70fbc4b4e69e8c597db8a912f5299517600e3f8c67dd8ae8f10a0",
+          "tested_sha256": "9dd40380a9c70fbc4b4e69e8c597db8a912f5299517600e3f8c67dd8ae8f10a0"
+        },
+        "tools/tests/base_campaign_suslanger_support.gd": {
+          "final_sha256": "83420dfffefa58457ca8e2e8e88efd85216665fb7b2d518a3d82758e52d153ed",
+          "tested_sha256": "3f194dc3cc1d01ad45dd5434f7d2a0a5d9b6485859a806eb94bffd3e79f4849d",
+          "difference": "Trailing EOF whitespace only; executable fixture content is identical."
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Executable fixture content matches; shared support only had its final blank line removed. Exact hashes and production differences are recorded separately.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "0d8151d43c8c62295b34de3c7cc443842730bc5b2bdcf81355f88fabba2264d8"
+    },
+    {
+      "id": "quests/base_campaign_map_points",
+      "script": "tools/tests/base_campaign_map_points.gd",
+      "args": [],
+      "checks": 2482,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "map-run2/report.json",
+      "log": "map-run2/tests/quests/base_campaign_map_points/run.log",
+      "log_sha256": "0a518b626feab26d84f1fc76f44b89950aba7fc44be59d2ca4d061ee31ee2f36",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_map_points.gd": {
+          "final_sha256": "c1909589db1baa1a4e75d07ec5748140ba31a9ab8ee80e27276fbeb47530efda",
+          "tested_sha256": "c1909589db1baa1a4e75d07ec5748140ba31a9ab8ee80e27276fbeb47530efda"
+        },
+        "tools/tests/fixtures/base_campaign_quest_markers.json": {
+          "final_sha256": "9bcff11ae6dc0cafa26ef12c3c330f87431e278169344e390360cfd823806df1",
+          "tested_sha256": "9bcff11ae6dc0cafa26ef12c3c330f87431e278169344e390360cfd823806df1"
+        },
+        "tools/tests/lia_campaign_map_points.gd": {
+          "final_sha256": "71b58b4ae136f8b630e49b17f8435b4151738c1e15b526ceaf2751608be1cb3f",
+          "tested_sha256": "71b58b4ae136f8b630e49b17f8435b4151738c1e15b526ceaf2751608be1cb3f"
+        },
+        "tools/tests/fixtures/lia_campaign_quest_markers.json": {
+          "final_sha256": "48fe43d9555914e914c2b69ea060799a0144621d33b0835b0b1acbb9c6e7f95c",
+          "tested_sha256": "48fe43d9555914e914c2b69ea060799a0144621d33b0835b0b1acbb9c6e7f95c"
+        }
+      },
+      "reuse_basis": "Exact final fixture and inherited helper files; production differences are recorded separately.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "a19a3f376fe8f973fbc23a69e49ad4a54b242cae43430dc6e83f4158d1be30b1"
+    },
+    {
+      "id": "quests/base_campaign_side_gipat",
+      "script": "tools/tests/base_campaign_side_gipat.gd",
+      "args": [],
+      "checks": 538,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "side-final-gipat/report.json",
+      "log": "side-final-gipat/tests/quests/base_campaign_side_gipat/run.log",
+      "log_sha256": "aeadcb8d1e72914b5bca0ece03279233dd2ac4db5a675f93c72283d6949a7ec9",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_side_gipat.gd": {
+          "final_sha256": "3ddfc4fccf1325ec9672af20fa7a0a57d24ec46731cb4b47455ff157ab181098",
+          "tested_sha256": "3ddfc4fccf1325ec9672af20fa7a0a57d24ec46731cb4b47455ff157ab181098"
+        },
+        "tools/tests/base_campaign_side_support.gd": {
+          "final_sha256": "041ae3a0208dc89cfc0741ec2e5b21c215d9112884854a64acae257490a8e8a5",
+          "tested_sha256": "041ae3a0208dc89cfc0741ec2e5b21c215d9112884854a64acae257490a8e8a5"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Exact final fixture and inherited helper files; production differences are recorded separately.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "2d2ed81355a285944d1dd2254f383a7ca87caae858119d7aa6159c029771ab98"
+    },
+    {
+      "id": "quests/base_campaign_side_ingos",
+      "script": "tools/tests/base_campaign_side_ingos.gd",
+      "args": [],
+      "checks": 392,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "side-final-ingos/report.json",
+      "log": "side-final-ingos/tests/quests/base_campaign_side_ingos/run.log",
+      "log_sha256": "109614feaaefcae4ecc95396b62931fef478ceca347300a6dc9b63588a82763c",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_side_ingos.gd": {
+          "final_sha256": "47374d94fe8eb887b2aa2a04a31784830e7d4229ce75db698410a389200ff641",
+          "tested_sha256": "47374d94fe8eb887b2aa2a04a31784830e7d4229ce75db698410a389200ff641"
+        },
+        "tools/tests/base_campaign_side_support.gd": {
+          "final_sha256": "041ae3a0208dc89cfc0741ec2e5b21c215d9112884854a64acae257490a8e8a5",
+          "tested_sha256": "041ae3a0208dc89cfc0741ec2e5b21c215d9112884854a64acae257490a8e8a5"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Exact final fixture and inherited helper files; production differences are recorded separately.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "2d2ed81355a285944d1dd2254f383a7ca87caae858119d7aa6159c029771ab98"
+    },
+    {
+      "id": "quests/base_campaign_side_suslanger",
+      "script": "tools/tests/base_campaign_side_suslanger.gd",
+      "args": [],
+      "checks": 460,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "side-final-suslanger/report.json",
+      "log": "side-final-suslanger/tests/quests/base_campaign_side_suslanger/run.log",
+      "log_sha256": "35df1bda57eb8bc2560bef28554eba39216fdb3247482874962f8917e4aa34cb",
+      "fixture_dependencies": {
+        "tools/tests/base_campaign_side_suslanger.gd": {
+          "final_sha256": "9b84d32ded7a543df4253bd5750e2053b955ee0f13b109cc8adf4de93f52007b",
+          "tested_sha256": "9b84d32ded7a543df4253bd5750e2053b955ee0f13b109cc8adf4de93f52007b"
+        },
+        "tools/tests/base_campaign_side_support.gd": {
+          "final_sha256": "041ae3a0208dc89cfc0741ec2e5b21c215d9112884854a64acae257490a8e8a5",
+          "tested_sha256": "041ae3a0208dc89cfc0741ec2e5b21c215d9112884854a64acae257490a8e8a5"
+        },
+        "tools/tests/base_campaign_support.gd": {
+          "final_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2",
+          "tested_sha256": "b18a3141da2ced6e75644b20bed8e6f4c53d2c21c267776006168779538a73c2"
+        },
+        "tools/tests/lia_campaign_support.gd": {
+          "final_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0",
+          "tested_sha256": "9550711c47f246434c47a0605ac03aecab6a1028bdb0215a6c90ca4da5afc9f0"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Exact final fixture and inherited helper files; production differences are recorded separately.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "2d2ed81355a285944d1dd2254f383a7ca87caae858119d7aa6159c029771ab98"
+    },
+    {
+      "id": "quests/lever_transition_save",
+      "script": "tools/tests/lever_transition_save.gd",
+      "args": [],
+      "checks": 59,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "related-run2/report.json",
+      "log": "related-run2/tests/quests/lever_transition_save/run.log",
+      "log_sha256": "ead6200c6e2b93cf484025b480ac01507c5feef9cce4219373b316660a63f8c7",
+      "fixture_dependencies": {
+        "tools/tests/lever_transition_save.gd": {
+          "final_sha256": "ccee8cfeec6a5536910e59a9002cefd4dceb7cde1579f59a84ebb315ee0d01b5",
+          "tested_sha256": "ccee8cfeec6a5536910e59a9002cefd4dceb7cde1579f59a84ebb315ee0d01b5"
+        }
+      },
+      "reuse_basis": "Exact final fixture and inherited helper files; production differences are recorded separately.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0"
+    },
+    {
+      "id": "quests/side_quest_lifecycle",
+      "script": "tools/tests/side_quest_lifecycle.gd",
+      "args": [],
+      "checks": 590,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "related-run2/report.json",
+      "log": "related-run2/tests/quests/side_quest_lifecycle/run.log",
+      "log_sha256": "9a1add8e6f46b255f22d9e809aff93e67d3590d796666533be42343fe3d00529",
+      "fixture_dependencies": {
+        "tools/tests/side_quest_lifecycle.gd": {
+          "final_sha256": "11f86133396652ce15792db64ab597c0315158bcddca23eb3e26237b3bb865c5",
+          "tested_sha256": "11f86133396652ce15792db64ab597c0315158bcddca23eb3e26237b3bb865c5"
+        }
+      },
+      "reuse_basis": "Exact final fixture and inherited helper files; production differences are recorded separately.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0"
+    },
+    {
+      "id": "quests/lia_kel_early_story",
+      "script": "tools/tests/lia_kel_early_story.gd",
+      "args": [],
+      "checks": 122,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "related-run2/report.json",
+      "log": "related-run2/tests/quests/lia_kel_early_story/run.log",
+      "log_sha256": "538fba89f98fbefb55e36fbf92c560aa7c56e4ff8c3610d1de7dc63e5920f077",
+      "fixture_dependencies": {
+        "tools/tests/lia_kel_early_story.gd": {
+          "final_sha256": "2d4562eb862f3f91e5f189edac144193808550726e26b17094a00b6b82d53d11",
+          "tested_sha256": "2d4562eb862f3f91e5f189edac144193808550726e26b17094a00b6b82d53d11"
+        },
+        "tools/tests/lia_kel_support.gd": {
+          "final_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1",
+          "tested_sha256": "9ac99f9b456a953638d7bad520194508a175f533f57ef9d8a98add2ecb2719f1"
+        }
+      },
+      "reuse_basis": "Exact final fixture and inherited helper files; production differences are recorded separately.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0"
+    },
+    {
+      "id": "quests/lia_campaign_map_points",
+      "script": "tools/tests/lia_campaign_map_points.gd",
+      "args": [],
+      "checks": 3054,
+      "failures": 0,
+      "status": "passed",
+      "exit_code": 0,
+      "report": "related-run2/report.json",
+      "log": "related-run2/tests/quests/lia_campaign_map_points/run.log",
+      "log_sha256": "332ca90395ca8a7a5708f878388d478da49997968b2fe80ee2f4c8185a59c43e",
+      "fixture_dependencies": {
+        "tools/tests/lia_campaign_map_points.gd": {
+          "final_sha256": "71b58b4ae136f8b630e49b17f8435b4151738c1e15b526ceaf2751608be1cb3f",
+          "tested_sha256": "71b58b4ae136f8b630e49b17f8435b4151738c1e15b526ceaf2751608be1cb3f"
+        },
+        "tools/tests/fixtures/lia_campaign_quest_markers.json": {
+          "final_sha256": "48fe43d9555914e914c2b69ea060799a0144621d33b0835b0b1acbb9c6e7f95c",
+          "tested_sha256": "48fe43d9555914e914c2b69ea060799a0144621d33b0835b0b1acbb9c6e7f95c"
+        }
+      },
+      "reuse_basis": "Exact final fixture and inherited helper files; production differences are recorded separately.",
+      "profile": {
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0"
+    }
+  ],
+  "retained_reports": {
+    "gipat-reward-focus-run1/report.json": {
+      "report_sha256": "00c1dce7afa2f2a5963a3dab99accda674709b7190d49c04eb5bf6a63300b4e7",
+      "complete": true,
+      "overall_status": "failed",
+      "selected_programs": [
+        "quests/base_campaign_gipat_village",
+        "quests/base_campaign_gipat_gold_refusal"
+      ],
+      "source_manifest_sha256": "9bf479b66924e727fb8080d4d828487c46c6298337bc3eb3fe895c72f8cbd42c",
+      "production_differences_from_merge_candidate": [
+        {
+          "file": "game/src/game/fx/path_trace_device.gd",
+          "tested_sha256": "80427a38b9a4e5cd91919df1670c1fc46854bae49717a76358647ed66124a88d",
+          "merge_candidate_sha256": "36a921b04a166614fd943c3e6c9a63f83c8d6684e2810179db7349f6c350669f"
+        },
+        {
+          "file": "game/src/game/fx/scene_raytrace_device.gd",
+          "tested_sha256": "883323a139341a6201bce68dacc2d3655f620bc1ff3593256cc9fb4bdbcb63bc",
+          "merge_candidate_sha256": "1c4d4b2e2cfe80ce234740356e45e5e993749a726bd1a809ec9e818db420f0c6"
+        },
+        {
+          "file": "game/src/game/fx/water_raytrace_device.gd",
+          "tested_sha256": "5675fab51c37537af2f05219cf396d70695d64efa93cebfb0e71498d23ffc384",
+          "merge_candidate_sha256": "4b5c59909477b95262f15f83f076f0bd545033495aa140bc83ee2f2e80c53e24"
+        },
+        {
+          "file": "game/src/game/side_quests.gd",
+          "tested_sha256": "f96ab433a419d0b8fef173eb5098e8f532f6d332435396637334f65ca8aebed3",
+          "merge_candidate_sha256": "152fcccafef29c0e02b20ebd1368789831806c36d6ad637aacfe0c92bcf0a8fc"
+        },
+        {
+          "file": "game/src/platform/crash_report.gd",
+          "tested_sha256": "28f2e03852ce74c6cd0c66dce30984925307f0e53be38c296b84446f1b49974e",
+          "merge_candidate_sha256": "93afdd059803364a2324230219602564b1785d64d768d593c289a09afa67dc34"
+        },
+        {
+          "file": "game/src/platform/performance_log.gd",
+          "tested_sha256": "e209b10dd8168246d70ca6dc1085ce8eec77ff6759404c4546aeaecf774f2b70",
+          "merge_candidate_sha256": "fd94ed498e9100d0becd0003c7c9bf07864fc4a0194d8aa84c5501b6b3c01fde"
+        }
+      ]
+    },
+    "gipat-final-run1/report.json": {
+      "report_sha256": "6893558f2d5ade68653f6f6373eb187d80a92760a3f9526016fe9d0513bbe372",
+      "complete": true,
+      "overall_status": "passed",
+      "selected_programs": [
+        "quests/base_campaign_gipat_witch",
+        "quests/base_campaign_gipat_investigation",
+        "quests/base_campaign_gipat_investigation_alternative",
+        "quests/base_campaign_gipat_mountains",
+        "quests/base_campaign_gipat_mountains_peaceful",
+        "quests/base_campaign_gipat_queen_source1",
+        "quests/base_campaign_gipat_queen_source2",
+        "quests/base_campaign_gipat_queen_source3",
+        "quests/base_campaign_gipat_daughter",
+        "quests/base_campaign_gipat_departure",
+        "quests/base_campaign_gipat_departure_hermit_first"
+      ],
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0",
+      "production_differences_from_merge_candidate": [
+        {
+          "file": "game/src/game/fx/path_trace_device.gd",
+          "tested_sha256": "80427a38b9a4e5cd91919df1670c1fc46854bae49717a76358647ed66124a88d",
+          "merge_candidate_sha256": "36a921b04a166614fd943c3e6c9a63f83c8d6684e2810179db7349f6c350669f"
+        },
+        {
+          "file": "game/src/game/fx/scene_raytrace_device.gd",
+          "tested_sha256": "883323a139341a6201bce68dacc2d3655f620bc1ff3593256cc9fb4bdbcb63bc",
+          "merge_candidate_sha256": "1c4d4b2e2cfe80ce234740356e45e5e993749a726bd1a809ec9e818db420f0c6"
+        },
+        {
+          "file": "game/src/game/fx/water_raytrace_device.gd",
+          "tested_sha256": "5675fab51c37537af2f05219cf396d70695d64efa93cebfb0e71498d23ffc384",
+          "merge_candidate_sha256": "4b5c59909477b95262f15f83f076f0bd545033495aa140bc83ee2f2e80c53e24"
+        },
+        {
+          "file": "game/src/platform/crash_report.gd",
+          "tested_sha256": "28f2e03852ce74c6cd0c66dce30984925307f0e53be38c296b84446f1b49974e",
+          "merge_candidate_sha256": "93afdd059803364a2324230219602564b1785d64d768d593c289a09afa67dc34"
+        },
+        {
+          "file": "game/src/platform/performance_log.gd",
+          "tested_sha256": "e209b10dd8168246d70ca6dc1085ce8eec77ff6759404c4546aeaecf774f2b70",
+          "merge_candidate_sha256": "fd94ed498e9100d0becd0003c7c9bf07864fc4a0194d8aa84c5501b6b3c01fde"
+        }
+      ]
+    },
+    "gipat-branches-run2/report.json": {
+      "report_sha256": "112b02f5e16ebed9c1e143a1b035c5cc8252dced7951c985771b26f1ccc82603",
+      "complete": true,
+      "overall_status": "failed",
+      "selected_programs": [
+        "quests/base_campaign_gipat_returned_ingos",
+        "quests/base_campaign_gipat_farewell1",
+        "quests/base_campaign_gipat_farewell2",
+        "quests/base_campaign_gipat_farewell3",
+        "quests/base_campaign_gipat_farewell4"
+      ],
+      "source_manifest_sha256": "56a099d7a12197e6ff3753f869ae0241cfaf6c59abf7136e6e0c7a63c52719f9",
+      "production_differences_from_merge_candidate": [
+        {
+          "file": "game/src/game/side_quests.gd",
+          "tested_sha256": "f96ab433a419d0b8fef173eb5098e8f532f6d332435396637334f65ca8aebed3",
+          "merge_candidate_sha256": "152fcccafef29c0e02b20ebd1368789831806c36d6ad637aacfe0c92bcf0a8fc"
+        }
+      ]
+    },
+    "ingos-full-run3/report.json": {
+      "report_sha256": "90a1bb919eb14aafe36ddc7db868774f90492544ba10882fee42eb91879599e8",
+      "complete": false,
+      "overall_status": "incomplete",
+      "selected_programs": [
+        "quests/base_campaign_ingos_arrival",
+        "quests/base_campaign_ingos_dryads",
+        "quests/base_campaign_ingos_labyrinth",
+        "quests/base_campaign_ingos_labyrinth_early"
+      ],
+      "source_manifest_sha256": "2c5610c972a1f32f5177fe175b1e0631b21ea9116c9eb2aaa084a969d0714709",
+      "production_differences_from_merge_candidate": [
+        {
+          "file": "game/src/game/fx/path_trace_device.gd",
+          "tested_sha256": "80427a38b9a4e5cd91919df1670c1fc46854bae49717a76358647ed66124a88d",
+          "merge_candidate_sha256": "36a921b04a166614fd943c3e6c9a63f83c8d6684e2810179db7349f6c350669f"
+        },
+        {
+          "file": "game/src/game/fx/scene_raytrace_device.gd",
+          "tested_sha256": "883323a139341a6201bce68dacc2d3655f620bc1ff3593256cc9fb4bdbcb63bc",
+          "merge_candidate_sha256": "1c4d4b2e2cfe80ce234740356e45e5e993749a726bd1a809ec9e818db420f0c6"
+        },
+        {
+          "file": "game/src/game/fx/water_raytrace_device.gd",
+          "tested_sha256": "5675fab51c37537af2f05219cf396d70695d64efa93cebfb0e71498d23ffc384",
+          "merge_candidate_sha256": "4b5c59909477b95262f15f83f076f0bd545033495aa140bc83ee2f2e80c53e24"
+        },
+        {
+          "file": "game/src/game/side_quests.gd",
+          "tested_sha256": "f96ab433a419d0b8fef173eb5098e8f532f6d332435396637334f65ca8aebed3",
+          "merge_candidate_sha256": "152fcccafef29c0e02b20ebd1368789831806c36d6ad637aacfe0c92bcf0a8fc"
+        },
+        {
+          "file": "game/src/platform/crash_report.gd",
+          "tested_sha256": "28f2e03852ce74c6cd0c66dce30984925307f0e53be38c296b84446f1b49974e",
+          "merge_candidate_sha256": "93afdd059803364a2324230219602564b1785d64d768d593c289a09afa67dc34"
+        },
+        {
+          "file": "game/src/platform/performance_log.gd",
+          "tested_sha256": "e209b10dd8168246d70ca6dc1085ce8eec77ff6759404c4546aeaecf774f2b70",
+          "merge_candidate_sha256": "fd94ed498e9100d0becd0003c7c9bf07864fc4a0194d8aa84c5501b6b3c01fde"
+        }
+      ]
+    },
+    "ingos-full-run2/report.json": {
+      "report_sha256": "f03425dc17e65345ed6f500ba8d678151c5319d12b306ea5dd77d3e4ab65eb18",
+      "complete": true,
+      "overall_status": "passed",
+      "selected_programs": [
+        "quests/base_campaign_ingos_departure",
+        "quests/base_campaign_ingos_treasures",
+        "quests/base_campaign_ingos_routes"
+      ],
+      "source_manifest_sha256": "56a099d7a12197e6ff3753f869ae0241cfaf6c59abf7136e6e0c7a63c52719f9",
+      "production_differences_from_merge_candidate": [
+        {
+          "file": "game/src/game/side_quests.gd",
+          "tested_sha256": "f96ab433a419d0b8fef173eb5098e8f532f6d332435396637334f65ca8aebed3",
+          "merge_candidate_sha256": "152fcccafef29c0e02b20ebd1368789831806c36d6ad637aacfe0c92bcf0a8fc"
+        }
+      ]
+    },
+    "ingos-resume-run1/report.json": {
+      "report_sha256": "acba23bd8e9b14b6b1363d3dfd79fc37df23ef9b64dafac62ea449629cd787fa",
+      "complete": true,
+      "overall_status": "passed",
+      "selected_programs": [
+        "quests/base_campaign_ingos_farewell_5",
+        "quests/base_campaign_ingos_farewell_6",
+        "quests/base_campaign_ingos_farewell_9"
+      ],
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0",
+      "production_differences_from_merge_candidate": [
+        {
+          "file": "game/src/game/fx/path_trace_device.gd",
+          "tested_sha256": "80427a38b9a4e5cd91919df1670c1fc46854bae49717a76358647ed66124a88d",
+          "merge_candidate_sha256": "36a921b04a166614fd943c3e6c9a63f83c8d6684e2810179db7349f6c350669f"
+        },
+        {
+          "file": "game/src/game/fx/scene_raytrace_device.gd",
+          "tested_sha256": "883323a139341a6201bce68dacc2d3655f620bc1ff3593256cc9fb4bdbcb63bc",
+          "merge_candidate_sha256": "1c4d4b2e2cfe80ce234740356e45e5e993749a726bd1a809ec9e818db420f0c6"
+        },
+        {
+          "file": "game/src/game/fx/water_raytrace_device.gd",
+          "tested_sha256": "5675fab51c37537af2f05219cf396d70695d64efa93cebfb0e71498d23ffc384",
+          "merge_candidate_sha256": "4b5c59909477b95262f15f83f076f0bd545033495aa140bc83ee2f2e80c53e24"
+        },
+        {
+          "file": "game/src/platform/crash_report.gd",
+          "tested_sha256": "28f2e03852ce74c6cd0c66dce30984925307f0e53be38c296b84446f1b49974e",
+          "merge_candidate_sha256": "93afdd059803364a2324230219602564b1785d64d768d593c289a09afa67dc34"
+        },
+        {
+          "file": "game/src/platform/performance_log.gd",
+          "tested_sha256": "e209b10dd8168246d70ca6dc1085ce8eec77ff6759404c4546aeaecf774f2b70",
+          "merge_candidate_sha256": "fd94ed498e9100d0becd0003c7c9bf07864fc4a0194d8aa84c5501b6b3c01fde"
+        }
+      ]
+    },
+    "suslanger-all-run3/report.json": {
+      "report_sha256": "ca6487d1fd62bd68282d04d15b112c8c3e5634f3e00382c231211e71e1f16430",
+      "complete": true,
+      "overall_status": "passed",
+      "selected_programs": [
+        "quests/base_campaign_suslanger_prison",
+        "quests/base_campaign_suslanger_town",
+        "quests/base_campaign_suslanger_necromancer",
+        "quests/base_campaign_suslanger_ending"
+      ],
+      "source_manifest_sha256": "0d8151d43c8c62295b34de3c7cc443842730bc5b2bdcf81355f88fabba2264d8",
+      "production_differences_from_merge_candidate": [
+        {
+          "file": "game/src/game/fx/path_trace_device.gd",
+          "tested_sha256": "80427a38b9a4e5cd91919df1670c1fc46854bae49717a76358647ed66124a88d",
+          "merge_candidate_sha256": "36a921b04a166614fd943c3e6c9a63f83c8d6684e2810179db7349f6c350669f"
+        },
+        {
+          "file": "game/src/game/fx/scene_raytrace_device.gd",
+          "tested_sha256": "883323a139341a6201bce68dacc2d3655f620bc1ff3593256cc9fb4bdbcb63bc",
+          "merge_candidate_sha256": "1c4d4b2e2cfe80ce234740356e45e5e993749a726bd1a809ec9e818db420f0c6"
+        },
+        {
+          "file": "game/src/game/fx/water_raytrace_device.gd",
+          "tested_sha256": "5ba3a5683a347b11253b3abfb567c3732e67e31d3fe7feca375ea94ec049aefe",
+          "merge_candidate_sha256": "4b5c59909477b95262f15f83f076f0bd545033495aa140bc83ee2f2e80c53e24"
+        },
+        {
+          "file": "game/src/game/side_quests.gd",
+          "tested_sha256": "f96ab433a419d0b8fef173eb5098e8f532f6d332435396637334f65ca8aebed3",
+          "merge_candidate_sha256": "152fcccafef29c0e02b20ebd1368789831806c36d6ad637aacfe0c92bcf0a8fc"
+        },
+        {
+          "file": "game/src/platform/crash_report.gd",
+          "tested_sha256": "9e4f2a9c47f2be7b1bf72efc8974a095514e7f65d5838c81860dfb76fa2609b7",
+          "merge_candidate_sha256": "93afdd059803364a2324230219602564b1785d64d768d593c289a09afa67dc34"
+        },
+        {
+          "file": "game/src/platform/performance_log.gd",
+          "tested_sha256": "e209b10dd8168246d70ca6dc1085ce8eec77ff6759404c4546aeaecf774f2b70",
+          "merge_candidate_sha256": "fd94ed498e9100d0becd0003c7c9bf07864fc4a0194d8aa84c5501b6b3c01fde"
+        }
+      ]
+    },
+    "map-run2/report.json": {
+      "report_sha256": "3909a367ee57112a33e7f4932f49574ebb39953f8280a1c33f6b57cae9945be4",
+      "complete": true,
+      "overall_status": "passed",
+      "selected_programs": [
+        "quests/base_campaign_map_points"
+      ],
+      "source_manifest_sha256": "a19a3f376fe8f973fbc23a69e49ad4a54b242cae43430dc6e83f4158d1be30b1",
+      "production_differences_from_merge_candidate": [
+        {
+          "file": "game/src/game/side_quests.gd",
+          "tested_sha256": "f96ab433a419d0b8fef173eb5098e8f532f6d332435396637334f65ca8aebed3",
+          "merge_candidate_sha256": "152fcccafef29c0e02b20ebd1368789831806c36d6ad637aacfe0c92bcf0a8fc"
+        }
+      ]
+    },
+    "side-final-gipat/report.json": {
+      "report_sha256": "5b4f3846d11c0fe137d9e886fce1614231ec9436cf6916419155d6286405aa2d",
+      "complete": true,
+      "overall_status": "passed",
+      "selected_programs": [
+        "quests/base_campaign_side_gipat"
+      ],
+      "source_manifest_sha256": "2d2ed81355a285944d1dd2254f383a7ca87caae858119d7aa6159c029771ab98",
+      "production_differences_from_merge_candidate": []
+    },
+    "side-final-ingos/report.json": {
+      "report_sha256": "a6c24d3ee277cef714c00638a9a8e5c3d69b825ccb9bb1e355c8e80aade6d2ff",
+      "complete": true,
+      "overall_status": "passed",
+      "selected_programs": [
+        "quests/base_campaign_side_ingos"
+      ],
+      "source_manifest_sha256": "2d2ed81355a285944d1dd2254f383a7ca87caae858119d7aa6159c029771ab98",
+      "production_differences_from_merge_candidate": []
+    },
+    "side-final-suslanger/report.json": {
+      "report_sha256": "555ee5a4796ff3039570c3203571b16bbc1f4c43e6f95eb3e96a01a887e603f2",
+      "complete": true,
+      "overall_status": "passed",
+      "selected_programs": [
+        "quests/base_campaign_side_suslanger"
+      ],
+      "source_manifest_sha256": "2d2ed81355a285944d1dd2254f383a7ca87caae858119d7aa6159c029771ab98",
+      "production_differences_from_merge_candidate": []
+    },
+    "related-run2/report.json": {
+      "report_sha256": "4fdc05356048606c75752c61a88690ba8af6805cd44a84775f4060d4d1561dc3",
+      "complete": true,
+      "overall_status": "passed",
+      "selected_programs": [
+        "quests/lever_transition_save",
+        "quests/side_quest_lifecycle",
+        "quests/lia_kel_early_story",
+        "quests/lia_campaign_map_points"
+      ],
+      "source_manifest_sha256": "c81470c23dc77059f038afce08ed61abd25a2b0c5dab32599f912b6c5948dea0",
+      "production_differences_from_merge_candidate": [
+        {
+          "file": "game/src/game/fx/path_trace_device.gd",
+          "tested_sha256": "80427a38b9a4e5cd91919df1670c1fc46854bae49717a76358647ed66124a88d",
+          "merge_candidate_sha256": "36a921b04a166614fd943c3e6c9a63f83c8d6684e2810179db7349f6c350669f"
+        },
+        {
+          "file": "game/src/game/fx/scene_raytrace_device.gd",
+          "tested_sha256": "883323a139341a6201bce68dacc2d3655f620bc1ff3593256cc9fb4bdbcb63bc",
+          "merge_candidate_sha256": "1c4d4b2e2cfe80ce234740356e45e5e993749a726bd1a809ec9e818db420f0c6"
+        },
+        {
+          "file": "game/src/game/fx/water_raytrace_device.gd",
+          "tested_sha256": "5675fab51c37537af2f05219cf396d70695d64efa93cebfb0e71498d23ffc384",
+          "merge_candidate_sha256": "4b5c59909477b95262f15f83f076f0bd545033495aa140bc83ee2f2e80c53e24"
+        },
+        {
+          "file": "game/src/platform/crash_report.gd",
+          "tested_sha256": "28f2e03852ce74c6cd0c66dce30984925307f0e53be38c296b84446f1b49974e",
+          "merge_candidate_sha256": "93afdd059803364a2324230219602564b1785d64d768d593c289a09afa67dc34"
+        },
+        {
+          "file": "game/src/platform/performance_log.gd",
+          "tested_sha256": "e209b10dd8168246d70ca6dc1085ce8eec77ff6759404c4546aeaecf774f2b70",
+          "merge_candidate_sha256": "fd94ed498e9100d0becd0003c7c9bf07864fc4a0194d8aa84c5501b6b3c01fde"
+        }
+      ]
+    }
+  },
+  "native": {
+    "report": "native-replay3/report.json",
+    "report_sha256": "da3aeec4ff22254ad0eaf142ec392bfb72cd2184574a0ee6b25e8165bea34490",
+    "original_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+    "references": [
+      {
+        "name": "base_gipat_pyramid",
+        "zone": "gz3g",
+        "status": "passed",
+        "repeatability_verified": true,
+        "checkpoint": "tools/parity/checkpoints/base_gipat_pyramid.json",
+        "checkpoint_file_sha256": "75463fa5538d76b3c84390ab9d1b95f942cd666bdb110156ef4bd3e315fcdc25",
+        "checkpoint_value_sha256": "be7aaab46867a8d50cb11597874e0ae83c3c4927e38e57c4f96835bedab43b71",
+        "measured_action_limits": "Prepared accepted pyramid quest and defeated pyramid shaman. Measured original switch-state action satisfies the second prerequisite and completes q5dg, without assigning its outcome. Normal switch use, corpse and quest hand-in are covered independently by the loaded-map suite. Native mercenary topics are recalculated before capture, as during normal campaign village visits, after the prepared chapter jump.",
+        "repetitions": [
+          {
+            "checks": 22,
+            "log": "native-replay3/base_gipat_pyramid/repeat-1/run.log",
+            "log_sha256": "b81872e0406f66bc04f04202f37ba4257ed58d8c7cf8a7b2b728551bbecb4add",
+            "status": "passed"
+          },
+          {
+            "checks": 22,
+            "log": "native-replay3/base_gipat_pyramid/repeat-2/run.log",
+            "log_sha256": "0c3d6f7e5addc68481a020c580c5a7a1207cde9f84758940235e14a370062b67",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "base_ingos_elder_keyed_release",
+        "zone": "gz13k",
+        "status": "passed",
+        "repeatability_verified": true,
+        "checkpoint": "tools/parity/checkpoints/base_ingos_elder_keyed_release.json",
+        "checkpoint_file_sha256": "46a223723815fd8644d6b92f5e89a90e0505caedbf0a00f891034742f010a02f",
+        "checkpoint_value_sha256": "6e5f19dba069439c5c712aa984a0c1652454c2038a89337b7f44dd0494c8a2b5",
+        "measured_action_limits": "Prepared accepted q46k and authentic prison key. Measured physical prison-state action executes original release, key consumption and escort-start watchers; normal keyed use is separately covered by the loaded-map suite. God mode, accelerated travel; no measured outcome assigned. Native mercenary topics are recalculated before capture, as during normal campaign village visits, after the prepared chapter jump.",
+        "repetitions": [
+          {
+            "checks": 20,
+            "log": "native-replay3/base_ingos_elder_keyed_release/repeat-1/run.log",
+            "log_sha256": "3fe7efc899e9ed616036917807562cdd1f27db7ee5235c4bfa55fd72de1817d8",
+            "status": "passed"
+          },
+          {
+            "checks": 20,
+            "log": "native-replay3/base_ingos_elder_keyed_release/repeat-2/run.log",
+            "log_sha256": "d03456c0902d8b7dd84a4479c8d25803e41b8a451a79f152854f80950518b028",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "base_suslanger_first_portal_control",
+        "zone": "gz19h",
+        "status": "passed",
+        "repeatability_verified": true,
+        "checkpoint": "tools/parity/checkpoints/base_suslanger_first_portal_control.json",
+        "checkpoint_file_sha256": "506cdac226e7b2b71ea87f3c920c28d7024f4301f9b21bcf5fc358b70a44e467",
+        "checkpoint_value_sha256": "c4c5f3e9df15f0d168251f18962b210377a623d3a593fbef1e99b1a789d512d9",
+        "measured_action_limits": "Prepared accepted city portal quest and owned teleport key; captures each original portal-control watcher and partial/completed PState, without assigning measured outcomes. Physical lever-state action; normal keyed use and delayed actual portal travel are independently checked in the loaded-map suite. Native mercenary topics are recalculated before capture, as during normal campaign village visits, after the prepared chapter jump.",
+        "repetitions": [
+          {
+            "checks": 26,
+            "log": "native-replay3/base_suslanger_first_portal_control/repeat-1/run.log",
+            "log_sha256": "e33d13bfb402c0e99c32a5861f2b052ad064731237de4d1ac57e23e299b1e987",
+            "status": "passed"
+          },
+          {
+            "checks": 26,
+            "log": "native-replay3/base_suslanger_first_portal_control/repeat-2/run.log",
+            "log_sha256": "adc11e988654bc2aa8353ed1764e60041179309ef3b5ce9afce2055b8eb78bf3",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "name": "base_suslanger_second_portal_control",
+        "zone": "gz19h",
+        "status": "passed",
+        "repeatability_verified": true,
+        "checkpoint": "tools/parity/checkpoints/base_suslanger_second_portal_control.json",
+        "checkpoint_file_sha256": "ebf38adc0b5041fa03a3340ea0a5a2b85d60329d3f505ab12638b924ce374031",
+        "checkpoint_value_sha256": "69283ef13cd4b23dd0cb1014a3b63403adffd38100797c2b28480096fb936663",
+        "measured_action_limits": "Prepared accepted city portal quest and owned teleport key; captures each original portal-control watcher and partial/completed PState, without assigning measured outcomes. Physical lever-state action; normal keyed use and delayed actual portal travel are independently checked in the loaded-map suite. Native mercenary topics are recalculated before capture, as during normal campaign village visits, after the prepared chapter jump.",
+        "repetitions": [
+          {
+            "checks": 28,
+            "log": "native-replay3/base_suslanger_second_portal_control/repeat-1/run.log",
+            "log_sha256": "06c2fa07972859945826a20e7537b850a6404279eaefc76a5779be2681a042d4",
+            "status": "passed"
+          },
+          {
+            "checks": 28,
+            "log": "native-replay3/base_suslanger_second_portal_control/repeat-2/run.log",
+            "log_sha256": "d9901856fc7d36fe324939617abe784fd21d6b02c5b47cfff8a408529f4f1311",
+            "status": "passed"
+          }
+        ]
+      }
+    ]
+  },
+  "source_reuse_note": "Evidence is selected per completed configuration, not presented as one uninterrupted suite run. App restarts left some reports incomplete; completed cases remain identified with exact logs and source hashes. The seven reused Gipat cases have narrowly audited differences in unexecuted functions. Other fixture content matches, with one explicitly recorded trailing-blank-line cleanup in the Suslanger helper. Production differences are limited to the side-overlay fix (inactive in reused story/map tests) and unrelated concurrent raytracing/diagnostic edits. The final three side suites use clean local-main production source plus only this quest fix.",
+  "retained_failed_evidence": [
+    "side-run3/report.json",
+    "side-run4/report.json",
+    "native-replay1/report.json"
+  ],
+  "failure_note": "Developmental fixture failures and the original portal-reload failure remain retained; only the explicitly selected successful cases count. Earlier native replay failed generic mercenary-topic entry setup. Fresh original captures explicitly recalculate those topics before the baseline and are compared without narrowing the GS-state oracle."
+}

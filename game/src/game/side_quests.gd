@@ -322,17 +322,22 @@ static func spawn_units(w: GameWorld, id: String) -> void:
 	w.add_mob_objects("%s.mob" % id)
 	w.set_meta("quest_mob", id)
 	w.set_meta("quest_script", _lmp_bindings(w, mob.script_text))
+	# Cycling belongs to the active overlay, including saved quests. Apply it
+	# before restore_zone interprets legacy lever permissions using this rule.
+	prepare_levers(w, null, id, false)
 
 
 ## The multiplayer zone's levers marked for a quest (quest_info) start as the
 ## quest needs them: z19q3's teleport panels TCP-A / TCP-B are on there, and
 ## the quest is to switch them off; the campaign map has them off for q72h, so
 ## its objectives 5..7 were done on arrival. Applied when the quest's script
-## starts in the zone (ScriptVM.create), after any saved lever rows, and
-## never to a zone already built from the LMP map. A campaign check already
+## starts in the zone (ScriptVM.create), after any saved lever rows. Overlay
+## loading first reapplies only the cycling rule, retaining saved poses and
+## use permissions. Never applies to a zone already built from the LMP map.
+## A campaign check already
 ## waiting for a lever the quest turns on is re-armed (_rearm_lever_checks),
 ## so the quest's start does not switch q72h's teleports on for the player.
-static func prepare_levers(w: GameWorld, vm: ScriptVM, id: String) -> void:
+static func prepare_levers(w: GameWorld, vm: ScriptVM, id: String, initialize := true) -> void:
 	var mpr := String(w.zone.get("mpr", ""))
 	if mpr.is_empty() or w.lever_sys == null or bool(w.zone.get("lmp", false)) \
 			or String(w.zone.get("mob", mpr)).to_lower().ends_with("-lmp"):
@@ -345,9 +350,11 @@ static func prepare_levers(w: GameWorld, vm: ScriptVM, id: String) -> void:
 		if o.kind != "LEVER" or String(o.get("quest_info", "")).to_lower() != id.to_lower() or not w.levers.has(nid):
 			continue
 		var l: Dictionary = w.levers[nid]
+		l.cycled = int(o.get("lever_cycled", l.get("cycled", 0)))
+		if not initialize:
+			continue
 		var states := maxi(1, int(l.get("states", 2)))
 		var state := clampi(int(o.get("lever_state", 0)), 0, states - 1)
-		l.cycled = int(o.get("lever_cycled", l.get("cycled", 0)))
 		l.enabled = true
 		if state > int(l.get("state", 0)):
 			_rearm_lever_checks(vm, nid, state)

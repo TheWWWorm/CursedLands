@@ -1,0 +1,105 @@
+{
+ "campaign": "original",
+ "expected_zone": "gz13k",
+ "fixture": {
+  "money": 0,
+  "quest_items": [
+   "driadcagekey00"
+  ],
+  "setup": [
+   "GodMode(0,1)"
+  ]
+ },
+ "from_zone": "gz13k",
+ "note": "Prepared accepted q46k and authentic prison key. Measured physical prison-state action executes original release, key consumption and escort-start watchers; normal keyed use is separately covered by the loaded-map suite. God mode, accelerated travel; no measured outcome assigned. Native mercenary topics are recalculated before capture, as during normal campaign village visits, after the prepared chapter jump.",
+ "observations_after": {
+  "cp_key": 0,
+  "cp_prison": 1.0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_key": 1.0,
+  "cp_prison": 0,
+  "money": 0
+ },
+ "probes": {
+  "cp_key": "HaveItem(0,32)",
+  "cp_prison": "GetLeverState(GetObject(4216))"
+ },
+ "provenance": {
+  "after": {
+   "info.sav": "983253f7ecd62425c28799ea2c4aa5508f5b1ac3fc35fa5ad69ceda819f4f9c3",
+   "mission.sav": "3355b064e367cba399dece5bc4993d5606c59762f639d821f3fe2f5866952c7a",
+   "scenario.sav": "70606dbc9a6b1ac56b6063c00ba0d95e630f34a585a59c0ab84bfec311b3fda4",
+   "shot.sav": "35155e13b3a922e4e871d1696bb69104ebfbb7dbcb61fb395daf985020b5bce0"
+  },
+  "before": {
+   "info.sav": "c05fcb0fbbac405a085dd54b5ec4736365028a66323ddd2fe69d8d4dc02d5a4d",
+   "mission.sav": "bb11078bb45d1d6312de35fb126aa2c6a26da0eee5c3ca9ecf876057d74bc0a0",
+   "scenario.sav": "19a37c149f50884e0bcaefa254a9ebaff7d738a42ae047b54f91c483f44bf1b5",
+   "shot.sav": "d08ad9f0abf105270c00ab75df23d4fd6724ed89bbce63b0207d870feedd4cf2"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "script": "SwitchLeverState(GetObject(4216),1)"
+  },
+  {
+   "wait": "2"
+  }
+ ],
+ "vars_after": {
+  "AnimPray": 1.0,
+  "Fk13": 1.0,
+  "Said1": 1.0,
+  "ZT1": 1.0,
+  "b.YCF.Yc46": 1.0,
+  "b.bz2g.z0": 1.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "q.gz13k.q46bk": 1.0,
+  "q.gz13k.q46bk.1": 1.0,
+  "q.gz13k.q46k": 2.0,
+  "q.gz13k.q46k.4": 2.0,
+  "q.gz13k.q46k.5": 2.0,
+  "z.gz1g_gz2g": 1.0,
+  "z.gz2g_gz3g": 1.0
+ },
+ "vars_before": {
+  "AnimPray": 1.0,
+  "Fk13": 1.0,
+  "Said1": 1.0,
+  "ZT1": 1.0,
+  "b.bz2g.z0": 1.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "q.gz13k.q46k": 1.0,
+  "q.gz13k.q46k.4": 2.0,
+  "q.gz13k.q46k.5": 1.0,
+  "z.gz1g_gz2g": 1.0,
+  "z.gz2g_gz3g": 1.0
+ },
+ "zone": "gz13k"
+}

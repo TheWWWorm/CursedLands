@@ -18,6 +18,9 @@ func check(ok: bool, label: String) -> bool:
 func frames(n := 2) -> void:
 	for i in n: await get_tree().process_frame
 
+func expected_campaign() -> String:
+	return CampaignProfile.ASTRAL
+
 func boot() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	for option: Array in GameData.OPTIONS:
@@ -30,7 +33,7 @@ func boot() -> void:
 	s = Session.new(); add_child(s); s.set_physics_process(false)
 	game = Game.new(); game.session = s; s.game = game; add_child(game)
 	s.state.ensure_hero(0,"Human Hero")
-	check(GameData.campaign_id == CampaignProfile.ASTRAL,"owned Lost in Astral campaign loaded")
+	check(GameData.campaign_id == expected_campaign(),"owned expected campaign loaded: "+expected_campaign())
 
 func freeze() -> void:
 	s.set_physics_process(false)

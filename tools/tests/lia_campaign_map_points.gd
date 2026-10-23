@@ -23,7 +23,13 @@ var tested_routes := 0
 var tested_markers := 0
 var tested_pieces := 0
 var tested_settlements := 0
-const CUT := ["mov1","cz3h","cz4h","gz17g","bz15g"]
+func missing_maps() -> Array: return ["mov1","cz3h","cz4h","gz17g","bz15g"]
+func unused_edges() -> Array: return ["gz21k_gz23dk"]
+func marker_fixture() -> String: return "res://tools/tests/fixtures/lia_campaign_quest_markers.json"
+func result_marker() -> String: return "LIA_CAMPAIGN_MAP_POINTS"
+func campaign_name() -> String: return "LiA"
+func starting_areas() -> int: return 0
+func scripted_only_maps() -> Array: return []
 
 func check(ok: bool, label: String) -> bool:
 	checks += 1
@@ -46,6 +52,7 @@ func prepare() -> void:
 	s.travel_options.clear()
 	s.loads.clear(); s.deliveries.clear()
 	s.state.vars.clear()
+	if starting_areas(): s.state.visited["gz1g"] = true
 	s.state.set_var(0,"i.nocamp",1)
 	for z: Dictionary in s.campaign.zones.values():
 		s.state.set_var(0,"z."+z.id,2 if z.type == "edge" or available(z.id) else 1)
@@ -84,15 +91,15 @@ func exit_geometry() -> void:
 			check(arrow.size() == 1 and arrow[0].ok,label+" field map exposes the opened exit arrow")
 			objectives.free()
 	missing.sort()
-	var expected: Array = CUT.duplicate(); expected.sort()
-	check(missing == expected,"missing authored assets remain the five explicitly classified dormant map records")
+	var expected: Array = missing_maps().duplicate(); expected.sort()
+	check(missing == expected,"missing authored assets match the explicitly classified dormant map records")
 
 func edge_routes() -> void:
 	for edge: Dictionary in s.campaign.zones.values():
 		if edge.type != "edge": continue
-		if edge.id == "gz21k_gz23dk":
+		if unused_edges().has(edge.id):
 			check(not s.campaign.zones.values().any(func(z):return z.exits.values().any(func(ex):return ex.get("to","") == edge.id)),
-				"unused dryad edge still has no authored incoming passage; excluded from reachable map choices")
+				edge.id+" has no authored incoming passage; excluded from reachable map choices")
 			continue
 		prepare()
 		# Adjacent regions begin unseen. Entering this edge must reveal them
@@ -161,17 +168,27 @@ func map_points() -> void:
 		# Prepared complete regions let all reachable route controls be exercised.
 		s.leave_zone(edge,1)
 		var map := TravelMap.new()
-		map.setup(s,s.travel_options,true,edge); add_child(map)
+		map.setup(s,s.travel_options,true,edge,s.start_zones_shown()); add_child(map)
 		await frame(); await frame()
 		for i in map._pieces.size():
 			var piece: Dictionary = map._pieces[i]
 			if not available(piece.id): continue
 			tested_pieces += 1
-			var p := pick_piece(map,i)
-			if check(p.is_finite(),piece.id+" island piece is reachable by a ground pointer"):
-				map._on_press(p)
-				check(map.objectives != null and map.objectives.zone == piece.id,piece.id+" pointer opens the matching map objectives")
-				map.close_objectives(); await frame()
+			if scripted_only_maps().has(piece.id):
+				check(not s.travel_options.any(func(o):return o.zone == piece.id),piece.id+" is reached by story transfer, never an invented map route")
+			else:
+				var p := pick_piece(map,i)
+				if check(p.is_finite(),piece.id+" island piece is reachable by a ground pointer"):
+					var got := []
+					var receive := func(o):got.append(o)
+					map.picked.connect(receive)
+					map._on_press(p)
+					if map._link and piece.link >= 0 and not map._separate_brief(i):
+						check(got.size() == 1 and got[0].zone == map._briefs[piece.link].id,piece.id+" linked village piece selects its authored settlement")
+					else:
+						check(map.objectives != null and map.objectives.zone == piece.id,piece.id+" pointer opens the matching map objectives")
+					map.picked.disconnect(receive)
+					map.close_objectives(); await frame()
 			var quests: Array = inventory.zones.get(piece.id,[])
 			check(piece.quests.size() == quests.size(),piece.id+" exposes every prepared active quest marker")
 			var panel := map.open_objectives(piece.id)
@@ -201,19 +218,19 @@ func run() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	TutorialPanel.auto_show = false
 	GameData.options.merge({"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0,
-		"auto_exit":0,"start_zones":0,"autosave":0,"show_tutorial":0,"net_lan":0,"net_upnp":0,"net_directory":0},true)
+		"auto_exit":0,"start_zones":starting_areas(),"autosave":0,"show_tutorial":0,"net_lan":0,"net_upnp":0,"net_directory":0},true)
 	s = MapSession.new(); add_child(s); s.set_physics_process(false)
 	w = GameWorld.new(); w.session = s; w.presentation = false; s.world = w
 	h = GameUnit.new(); h.uid = 1; h.controller = 0; h.set_meta("hero",{"name":"Map checkpoint"}); w.set_unit(h.uid,h)
-	inventory = JSON.parse_string(FileAccess.get_file_as_string("res://tools/tests/fixtures/lia_campaign_quest_markers.json"))
+	inventory = JSON.parse_string(FileAccess.get_file_as_string(marker_fixture()))
 	prepare(); exit_geometry()
 	await edge_routes()
 	await map_points()
 	var report := {"checks":checks,"failures":failures,"assertions":evidence,"exits":tested_exits,"route_choices":tested_routes,
 		"quest_markers":tested_markers,"island_pieces":tested_pieces,"settlement_points":tested_settlements,
-		"scope":"All authored available LiA map records: prepared gates, exit geometry, ordinary entrance controls, map ray picking and quest points. Final load boundary recorded, not full scene traversal or earned story-state proof."}
-	FileAccess.open("user://lia_campaign_map_points.json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t")+"\n")
+		"scope":"All authored available "+campaign_name()+" map records: prepared gates, exit geometry, ordinary entrance controls, map ray picking and quest points. Final load boundary recorded, not full scene traversal or earned story-state proof."}
+	FileAccess.open("user://"+result_marker().to_lower()+".json",FileAccess.WRITE).store_string(JSON.stringify(report,"\t")+"\n")
 	s.world = null; w.units = {}; h.free(); w.free(); s.free()
 	await frame(); TexUpscale.shutdown()
-	print("LIA_CAMPAIGN_MAP_POINTS ",checks," checks ",failures.size()," failures")
+	print(result_marker()," ",checks," checks ",failures.size()," failures")
 	get_tree().quit(0 if failures.is_empty() else 1)

@@ -1,0 +1,125 @@
+{
+ "campaign": "original",
+ "expected_zone": "gz19h",
+ "fixture": {
+  "money": 0,
+  "quest_items": [
+   "teleportkey00"
+  ],
+  "setup": [
+   "GodMode(0,1)"
+  ]
+ },
+ "from_zone": "gz19h",
+ "note": "Prepared accepted city portal quest and owned teleport key; captures each original portal-control watcher and partial/completed PState, without assigning measured outcomes. Physical lever-state action; normal keyed use and delayed actual portal travel are independently checked in the loaded-map suite. Native mercenary topics are recalculated before capture, as during normal campaign village visits, after the prepared chapter jump.",
+ "observations_after": {
+  "cp_key": 1.0,
+  "cp_panel_a": 0,
+  "cp_panel_b": 1.0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_key": 1.0,
+  "cp_panel_a": 0,
+  "cp_panel_b": 0,
+  "money": 0
+ },
+ "probes": {
+  "cp_key": "HaveItem(0,46)",
+  "cp_panel_a": "GetLeverState(GetObject(43968))",
+  "cp_panel_b": "GetLeverState(GetObject(43974))"
+ },
+ "provenance": {
+  "after": {
+   "info.sav": "c0c405569975454fc6956e7404a630b282e1e5df6dc876a07725d8eec5a2ae05",
+   "mission.sav": "f2db2ef5012503f5da33b9eb7c3b2dd2c5b38e5727d38a6bab40231bdce384b1",
+   "scenario.sav": "feca1669926cf8503c1262b8d6a7766cc504dcd981f936e0c3d6f25c04ab4bee",
+   "shot.sav": "d62c987543f63cbe6b4b2b1e84c0d8bdafc66f8da2d296edf884b8a41cff6d66"
+  },
+  "before": {
+   "info.sav": "9681416936a4235fca3a7e94e1c95dd7cec032011df43e685db32de24d10c655",
+   "mission.sav": "e71ed758abe1423b0a0119a152e1f9a31c0a1efd2ebbd126017e35050b8fc96d",
+   "scenario.sav": "e622bf57c35e69e03d9cdeef1bab39015f6c5165ad800b7a183e6a3caab377f5",
+   "shot.sav": "1c29a5a5cdecb29bfbb0d0b6ba64225e0382369c49c975ba25dacb2cba889c9b"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "script": "SwitchLeverState(GetObject(43974),1)"
+  },
+  {
+   "wait": "2"
+  }
+ ],
+ "vars_after": {
+  "AnimPray": 1.0,
+  "Fk13": 1.0,
+  "PState": 1.0,
+  "Said1": 1.0,
+  "ZT1": 1.0,
+  "b.YCF.Yc46": 1.0,
+  "b.YCF.Yc47": 1.0,
+  "b.bz2g.z0": 1.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "cp_prison": 1.0,
+  "q.gz13k.q46bk": 2.0,
+  "q.gz13k.q46bk.1": 2.0,
+  "q.gz13k.q46k": 2.0,
+  "q.gz13k.q46k.4": 2.0,
+  "q.gz13k.q46k.5": 2.0,
+  "q.gz19h.q72h": 1.0,
+  "q.gz19h.q72h.21": 2.0,
+  "q.gz19h.q72h.22": 1.0,
+  "q.gz19h.q72h.24": 2.0,
+  "q.gz19h.q72h.25": 1.0,
+  "q.gz19h.q72h.36": 2.0,
+  "z.gz1g_gz2g": 1.0,
+  "z.gz2g_gz3g": 1.0
+ },
+ "vars_before": {
+  "AnimPray": 1.0,
+  "Fk13": 1.0,
+  "Said1": 1.0,
+  "ZT1": 1.0,
+  "b.YCF.Yc46": 1.0,
+  "b.YCF.Yc47": 1.0,
+  "b.bz2g.z0": 1.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "cp_prison": 1.0,
+  "q.gz13k.q46bk": 2.0,
+  "q.gz13k.q46bk.1": 2.0,
+  "q.gz13k.q46k": 2.0,
+  "q.gz13k.q46k.4": 2.0,
+  "q.gz13k.q46k.5": 2.0,
+  "q.gz19h.q72h": 1.0,
+  "q.gz19h.q72h.21": 2.0,
+  "q.gz19h.q72h.22": 1.0,
+  "z.gz1g_gz2g": 1.0,
+  "z.gz2g_gz3g": 1.0
+ },
+ "zone": "gz19h"
+}

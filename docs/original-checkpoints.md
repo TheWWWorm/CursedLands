@@ -12,6 +12,27 @@ passability, missing prerequisites, save/load and duplicate rewards. Matching an
 original bug is not proof that a quest is passable: the Portal cellar regression
 has a documented, intentional compatibility repair.
 
+## Run the base-game quest checks
+
+Use an owned Evil Islands / Cursed Lands installation:
+
+```sh
+BASE_GAME=/path/to/EvilIslands \
+GODOT=/path/to/godot-4 PYTHON=/path/to/parity-venv/bin/python \
+  tools/parity/run_base_quests.sh /path/to/NEW-evidence-directory
+```
+
+This selects all 36 `base_campaign_` configurations, the side-quest lifecycle
+and lever-save regressions, and every `base_` original checkpoint. The native
+references run twice in separate profiles. The output directory must be new;
+a failed gameplay assertion or original comparison produces a nonzero exit.
+Python needs the parity environment's Unicorn dependency for native-save work.
+
+The [base-campaign qualification](validation/base-campaign-checkpoints-2026-10-23.md)
+maps all 92 named campaign quests and 28 installed side archives to their
+completion checkpoints. It records prepared chapter boundaries, selected
+alternate branches, save/load coverage and the limits of accelerated tests.
+
 ## Run the LiA quest checks
 
 Use an owned base game and a Lost in Astral installation with official patches
