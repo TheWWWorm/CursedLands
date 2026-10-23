@@ -12,10 +12,12 @@ for the complete renderer and is not included in published 1.23.0.
 Open **Options → Graphics → Lighting and shadows → Ray-traced lighting**.
 
 - **Path tracing (test):** Off, 2 bounces or 4 bounces. Off is the default.
-- **RT lighting quality:** Low traces at 50% of the window width and height
+- **RT lighting quality:** Low traces at 50% of the 3D render width and height
   with one path sample per pixel; Medium uses 75% and two samples; High uses
-  100% and four samples. Medium is the default. This is independent of water
-  reflection quality and the internal FSR/render scale.
+  100% and four samples. Medium is the default. Path tracing follows the
+  viewport's applied Render scale or FSR resolution, so upscaling reduces
+  tracing and reconstruction work too. The separate scene RT mode retains
+  window-relative quality. Water reflection quality remains independent.
 - **Path accumulation:** Responsive uses a short filtered history for play.
   Still scene averages up to 256 frames for static comparisons. Moving the
   camera, changing projection/lighting or updating geometry restarts the
@@ -265,6 +267,26 @@ taps are independently checked against the receiver's world-space plane,
 normal and material, with reduced history confidence on partial disocclusion.
 This avoids snapping to a single pixel or unnecessarily rejecting a matching
 sloped surface during camera movement. Projection changes reset history.
+Rigid placements, including articulated character parts, reproject through
+their previous rendered transforms. A stable placement identity rejects history
+from a different object even when its depth and material match. Previous normals
+follow the inverse-transpose transform, including nonuniform scale and shear.
+Visibility changes and changed morph geometry reject that placement's history;
+stopped placements retire their motion on the next rendered frame. Static scenes
+need no transform-buffer updates. Still-scene accumulation retains its existing
+reset on scene motion.
+
+The raw diffuse alpha carries an exact FP16 placement code; two R16F history
+images preserve that identity without enlarging the ray payload. A 96-byte
+record per placement supplies previous position/normal transforms. The shader
+uses an identity fast path for stationary placements. Rays and receiver lookup
+share the unjittered camera projection; raster receivers project their world
+positions into the PT image, preserving alignment with FSR's jittered samples.
+The guide and reconstruction sizes follow the actual truncated 3D render size,
+then the selected PT quality. Resizing invalidates history while retaining the
+scene acceleration structures and public texture handles.
+The [speed and motion qualification](../validation/path-tracing-speed-motion-2026-10-23/README.md)
+records the measured cost reduction and moving-surface checks on GPU 1.
 Glossy history has its own confidence in the existing specular alpha channel.
 A roughness-dependent angular weight compares reflected viewing directions,
 including normal changes, for both spatial neighbours and historical taps.
@@ -348,8 +370,9 @@ formula. It does not simulate water-volume transport on secondary paths.
   textures and arbitrary object normal/roughness maps are not part of the path
   integrator. Terrain uses its existing procedural detail-normal texture and
   semantic roughness.
-- There are no object motion vectors, spatial light cache, light reservoirs or
-  production denoiser. Many occluded lights, cutout emitters, indirect paths
+- Rigid surface motion is supported; deformation motion vectors, a spatial
+  light cache, light reservoirs and a production denoiser are not. Many
+  occluded lights, cutout emitters, indirect paths
   and glossy motion can remain noisy. The emitter proposal is global to the
   bounded scene, without per-receiver visibility or distance importance.
   Glossy history still reprojects the primary surface, without reflected-hit
@@ -372,11 +395,13 @@ formula. It does not simulate water-volume transport on secondary paths.
   very large local coordinates can still require a noticeable displacement.
   Intersection constants have been tested on RTX hardware; other vendors
   require qualification before claiming equivalent self-intersection protection.
-- Twelve RGBA16F lighting/guide images plus two RG16F variance images use
-  104 bytes per tracing pixel: approximately 91 MiB at 1280×720 High and
-  823 MiB at 3840×2160 High, before scene textures and acceleration structures.
-  Variance history accounts for 7 MiB and 63 MiB respectively. Water tracing
-  has separate resources.
+- Twelve RGBA16F lighting/guide images, two RG16F variance images and two R16F
+  identity images use 108 bytes per tracing pixel: approximately 95 MiB at
+  native 1280×720 High and 854 MiB at native 3840×2160 High, before scene
+  textures and acceleration structures. FSR Quality's two-thirds render scale
+  reduces those pixel allocations to approximately four-ninths. The motion
+  buffer uses at most 384 KiB for 4,096 placements. Water tracing has separate
+  resources.
 
 See the [validation report](../validation/path-tracing-2026-10-22/README.md)
 for actual outdoor/cave captures, timings, frame-generation checks and known
@@ -428,6 +453,9 @@ Fixtures run through the existing `--tool` interface:
 | `path_trace_emitters.gd` | Raw small-light and glossy variance, area-integral energy reference, cutout/textured emission, movement/deformation, duplicate placements, visibility masks and proposal-budget fallback |
 | `path_trace_emitter_live.gd` | Production scene collection, emissive terrain illumination, movement/hiding and material changes in the actual campaign |
 | `path_trace_quality.gd` | Native grazing-metal variance and energy against numerical quadrature; subpixel and sloped reprojection; rejection of unrelated depth layers |
+| `path_trace_motion.gd` | Rigid motion and camera reprojection, rotation/nonuniform scale, stable object identities, visibility/morph rejection, movement stopping, high instance IDs and resource lifetime |
+| `path_trace_resolution.gd` | Real raster/PT dimensions, render scale, FSR jitter, native qualities, resizing, history reset, image comparison and unchanged scene RT sizing |
+| `path_trace_resolution_performance.gd` | Interleaved window-resolution/render-resolution PT grids with identical raster upscaling, scene, samples and bounce count |
 | `path_trace_glossy.gd` | Native moving highlights against their deterministic raw reference, stationary variance/energy, separate diffuse/glossy confidence, perspective/orthographic motion, material-guide aliases and progressive precision |
 | `path_trace_variance.gd` | Analytical stochastic means, dark/bright outliers, colour ratios, HDR variance range, coherent/persistent dark changes, reset/depth rejection and variance-resource resize/teardown |
 | `path_trace_sampling.gd` | Native unfiltered grazing-metal, disk-sun penumbra and small-emitter convergence at 1/2/4 samples; late sequence starts, repeatability, frame wrap, purpose independence, spatial error correlation and packaged attribution |

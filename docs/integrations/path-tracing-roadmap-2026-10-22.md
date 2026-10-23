@@ -11,6 +11,13 @@ would leave several visible limitations intact and consume an already expensive
 GPU budget. The proposals below are implementation priorities; their speed and
 image-quality gains require measurement in this game.
 
+Implementation update, 23 October: PT now follows the applied internal render
+resolution, and rigid primary surfaces retain history through their previous
+transforms and stable placement identities. The
+[speed and motion qualification](../validation/path-tracing-speed-motion-2026-10-23/README.md)
+records matched GPU 1 measurements, native Vulkan and DX12/Wine checks, FSR
+readiness, moving actors and remaining deformation/reflection limitations.
+
 ## What the Dark Souls II example demonstrates
 
 The author's [DS2LightingEngine page](https://www.nexusmods.com/darksouls2/mods/1146)
@@ -37,7 +44,7 @@ Russian roulette for deeper paths is already implemented.
 | Sampling | Owen-scrambled Sobol sampling, visible-normal GGX, emissive next-event estimation with MIS, compensated deep-path termination | Spatially informed light selection, reservoirs and radiance caching |
 | Materials | Albedo, compact roughness/metalness/specular profiles, detailed terrain transitions, procedural terrain normals, bounded texture-derived relief | Authored object normal/roughness/emission maps and consistent material data across renderers |
 | Lighting | Sun and up to seven selected local point lights; proposals for up to 4,096 emissive triangles | More light types and lights chosen by their contribution to each receiver |
-| Reconstruction | Separate diffuse/glossy channels, variance-aware history, camera reprojection, angular glossy rejection | Object/deformation motion, reflected-hit guides and production reconstruction |
+| Reconstruction | Separate diffuse/glossy channels, variance-aware history, camera and rigid-object reprojection, stable surface identities, angular glossy rejection | Deformation motion, reflected-hit guides and production reconstruction |
 | Coverage | 96 m scene snapshot; PT receivers fade to conventional lighting at 60–72 m | Persistent regional geometry and distant occluders/reflections |
 | Animation | Articulated transforms, visibility changes and supported morphs update | Shader-only vegetation deformation and consistent previous-frame geometry |
 | Water and atmosphere | Separate water reflections, sky, fog and particles | Shared illumination, reflection/refraction transport and consistent atmospheric attenuation |
@@ -70,11 +77,11 @@ Effort is relative implementation scope, not a delivery estimate.
 
 ## Reconstruction and practical rendering resolution
 
-The current filter reprojects a world position using the previous camera. A
-walking actor needs its previous surface position too. Retain previous rigid
-transforms and morph/deformation data, and produce motion consistent with the
-visible surface. Add separate diffuse/specular hit-distance guides and stable
-surface identity. Handle reflection motion separately where possible; primary
+The filter now reprojects rigid surfaces through their previous transforms and
+camera, with stable surface identity. Changed morph geometry rejects history;
+deformation motion still needs previous surface data consistent with the visible
+surface. Add separate diffuse/specular hit-distance guides. Handle reflection
+motion separately where possible; primary
 surface motion cannot describe every moving object seen in a reflection.
 
 [NRD](https://github.com/NVIDIA-RTX/NRD#inputs) supplies temporal diffuse/specular
@@ -90,13 +97,12 @@ from Godot's existing motion pass may help, but its resolution, material coverag
 and deformation behavior must match the PT inputs. Add diagnostic displays for
 these guides before tuning the denoiser.
 
-There is an especially actionable resolution issue:
-`scene_raytrace.gd` derives PT dimensions from the visible window and RT quality,
-independently of the FSR internal render scale. Lowering the raster render scale
-therefore does not directly lower the PT pixel count. Introduce one coherent
-internal-resolution policy for tracing, guides and reconstruction, while keeping
-an explicit high-quality override. Align jitter before applying temporal
-upscaling; multiplying two unrelated scale settings is insufficient.
+The window-relative PT resolution issue is addressed: `scene_raytrace.gd` now
+uses the viewport's applied scale and Godot's truncated internal size before
+applying PT quality to rays, guides and reconstruction. Raster receivers project
+world positions into the unjittered PT lattice. Compositor checks verify actual
+raster/PT dimensions and temporal jitter through scale and FSR changes. Native
+render scale retains the original PT sizes; scene RT remains window-relative.
 
 Optional [DLSS Ray Reconstruction](https://github.com/NVIDIA-RTX/Streamline/blob/main/docs/ProgrammingGuideDLSS_RR.md)
 can use the same groundwork. Its inputs include noisy color, diffuse/specular

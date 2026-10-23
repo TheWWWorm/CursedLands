@@ -390,7 +390,10 @@ void main() {
         PathSampler sampler=path_sampler(uint(frame.settings.x)*samples+i,pixel.x+pixel.y*uint(size.x));
         float3 d,s;path_sample(primary,-direction,sampler,d,s);diffuse+=d;specular+=s;
     }
-    indirect_image[pixel]=float4(diffuse/float(samples),1.0);
+    // Raw diffuse alpha is unused by lighting. Encode the stable placement ID
+    // in normal FP16 bit patterns: all 4096 instances remain exact, unlike
+    // storing integers above 2048 directly. The filter carries identity onward.
+    indirect_image[pixel]=float4(diffuse/float(samples),f16tof32(0x3c00u+primary.instance_id));
     shadow_image0[pixel]=float4(specular/float(samples),1.0);
     // Every integer up to 2047 is exact in the RGBA16F guide. Separate 6/5-bit
     // fields avoid aliases such as (roughness .2, metalness .4) and (.6, .2).

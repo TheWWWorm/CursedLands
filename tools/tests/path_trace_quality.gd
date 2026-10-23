@@ -66,6 +66,17 @@ func reconstruct(bytes: PackedByteArray,inputs: Array[Image]) -> void:
 			rd.texture_copy(source,device._filter_auxiliary[0],Vector3.ZERO,Vector3.ZERO,Vector3(size.x,size.y,1),0,0,0,0)
 			rd.free_rid(source)
 		else:rd.texture_clear(device._filter_auxiliary[0],Color(0,0,0,0),0,1,0,1)
+		if device._filter_auxiliary.size()>2:
+			# Legacy synthetic fixtures use the first placement's exact ID code.
+			# Motion fixtures can supply a distinct previous identity to test swaps.
+			if inputs.size()>9:
+				var format:=RDTextureFormat.new();format.width=size.x;format.height=size.y
+				format.format=RenderingDevice.DATA_FORMAT_R16_SFLOAT
+				format.usage_bits=RenderingDevice.TEXTURE_USAGE_CAN_COPY_FROM_BIT | RenderingDevice.TEXTURE_USAGE_SAMPLING_BIT
+				var source:=rd.texture_create(format,RDTextureView.new(),[inputs[9].get_data()])
+				rd.texture_copy(source,device._filter_auxiliary[2],Vector3.ZERO,Vector3.ZERO,Vector3(size.x,size.y,1),0,0,0,0)
+				rd.free_rid(source)
+			else:rd.texture_clear(device._filter_auxiliary[2],Color(1,0,0,0),0,1,0,1)
 	rd.buffer_update(device._frame,0,bytes.size(),bytes)
 	var compute:=rd.compute_list_begin()
 	rd.compute_list_bind_compute_pipeline(compute,device._filter_pipeline)

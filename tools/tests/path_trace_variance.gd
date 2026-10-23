@@ -116,7 +116,7 @@ func run() -> void:
 	await stochastic_case("constant_hdr",1.0,Color(32000,8000,4000,1))
 	await transitions()
 	if not variance_baseline:
-		check(device._filter_auxiliary.size()==2,"path reconstruction owns two compact variance images")
+		check(device._filter_auxiliary.size()==4,"path reconstruction owns paired variance and surface identity images")
 		var previous_noise: RID=device._filter_auxiliary[0]
 		size=Vector2i(96,54);await advance(input_images(),false)
 		check(filtered_noise.get_size()==size and device._filter_auxiliary[0]!=previous_noise,"resize replaces variance images with the lighting targets")

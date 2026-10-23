@@ -24,6 +24,7 @@ func extra_ray_uniforms() -> Array[RDUniform]: return []
 ## Optional reconstruction-only textures, in previous/result pairs. They use
 ## bindings 13 onward and are copied together with the stable lighting outputs.
 func filter_auxiliary_formats() -> Array[int]: return []
+func extra_filter_uniforms() -> Array[RDUniform]: return []
 
 func _lighting_texture(size: Vector2i, data_format:=RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT) -> RID:
 	var format := RDTextureFormat.new()
@@ -66,6 +67,7 @@ func _targets(size: Vector2i, sampler: RID) -> bool:
 		for i in 4: bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,i+8,[_history[i]]))
 		bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER,12,[_frame]))
 		for i in _filter_auxiliary.size(): bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,13+i,[_filter_auxiliary[i]]))
+		bindings.append_array(extra_filter_uniforms())
 		_filter_sets.append(_rd.uniform_set_create(bindings,_filter_shader,0))
 		output.texture_rd_rid = _history[0]; guide.texture_rd_rid = _history[1]
 		shadow0.texture_rd_rid = _history[2]; shadow1.texture_rd_rid = _history[3]

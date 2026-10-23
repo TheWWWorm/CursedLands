@@ -34,6 +34,8 @@ var _path_signature := PackedByteArray()
 var _accumulation_frames := 0.0
 # Diagnostic control for matched flicker comparisons; never freezes a light.
 var _strict_light_history := OS.get_cmdline_user_args().has("--ei-strict-light-history")
+# Diagnostic comparison against the old display-resolution PT workload.
+var _window_resolution_reference := OS.get_cmdline_user_args().has("--ei-pt-window-resolution")
 
 func _init(owner_game: Game) -> void:
 	game = owner_game; name = "SceneRaytrace"
@@ -43,9 +45,15 @@ func _ready() -> void:
 	process_priority = 101
 	Gfx.ensure_globals()
 
-static func target_size(viewport: Vector2,quality: int) -> Vector2i:
+static func internal_render_size(viewport: Vector2,render_scale: float) -> Vector2i:
+	# Godot truncates the scaled 3D dimensions before allocating its buffers.
+	# Use the viewport's applied scale, including FSR, rather than saved options.
+	return Vector2i(viewport*render_scale).max(Vector2i.ONE)
+
+static func target_size(viewport: Vector2,quality: int,render_scale := 1.0) -> Vector2i:
 	var scale: float = SCALES[clampi(quality,0,2)]
-	return Vector2i(maxi(2,roundi(viewport.x*scale)),maxi(2,roundi(viewport.y*scale)))
+	var internal := internal_render_size(viewport,render_scale)
+	return Vector2i(maxi(2,roundi(internal.x*scale)),maxi(2,roundi(internal.y*scale)))
 
 func _process(dt: float) -> void:
 	var wanted := Gfx.SceneRaytraceShader.requested()
@@ -103,7 +111,14 @@ func _process(dt: float) -> void:
 	if not _ready_gpu: return
 	_scene.lighting_camera_mask = camera.cull_mask
 	var quality := clampi(GameData.option("q_rt_lighting"),0,2)
-	var size := target_size(camera.get_viewport().get_visible_rect().size,quality)
+	var viewport := camera.get_viewport()
+	var display_size := viewport.get_visible_rect().size
+	var render_scale := viewport.scaling_3d_scale
+	var trace_scale := render_scale if _path_mode and not _window_resolution_reference else 1.0
+	# Rays and receiver lookup share the unjittered camera projection. Raster
+	# receivers project their world positions into this lattice, so FSR's own
+	# raster jitter does not require shifting the PT guide or its history.
+	var size := target_size(display_size,quality,trace_scale)
 	var changes := _scene.updates()
 	var frame := _frame(camera,size,quality,not changes.instances.is_empty() or not changes.poses.is_empty(),dt)
 	RenderingServer.call_on_render_thread(device.render.bind(size,frame,changes,GameData.option("q_aniso")))
@@ -125,6 +140,11 @@ func _process(dt: float) -> void:
 		RenderingServer.global_shader_parameter_set(&"ei_pt_active",float(_path_mode))
 		stats["active"]=true
 	stats["size"]=[size.x,size.y]; stats["quality"]=quality
+	var render_size := internal_render_size(display_size,render_scale)
+	stats["display_size"]=[int(display_size.x),int(display_size.y)]
+	stats["render_size"]=[render_size.x,render_size.y];stats["render_scale"]=render_scale
+	stats["trace_render_scale"]=trace_scale
+	stats["window_resolution_reference"]=_path_mode and _window_resolution_reference
 	stats["gi_samples"]=GI_SAMPLES[quality] if GameData.option("rt_gi")>0 else 0
 	stats["shadow_samples"]=SHADOW_SAMPLES[quality] if GameData.option("rt_shadows")>0 else 0
 	stats["lights"]=_lights.size();stats["updated_instances"]=changes.instances.size();stats["updated_poses"]=changes.poses.size()
