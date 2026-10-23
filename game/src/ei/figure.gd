@@ -254,6 +254,7 @@ static func build_morph_mesh(f: Dictionary, c: Vector3) -> ArrayMesh:
 	mesh.add_blend_shape("t")
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays, [target])
 	mesh.set_meta(GEOMETRY_META, [arrays[Mesh.ARRAY_VERTEX], arrays[Mesh.ARRAY_INDEX]])
+	mesh.set_meta(SHAPES_META, [target[Mesh.ARRAY_VERTEX]])
 	return mesh
 
 
@@ -362,6 +363,11 @@ static var _fig_ids := 0
 ## Immutable CPU positions/indices shared with the render mesh. Rain-cover
 ## construction must not read GPU buffers back during ordinary frame updates.
 const GEOMETRY_META := &"ei_cpu_geometry"
+## The blend shapes' positions in shape order, beside GEOMETRY_META.
+const SHAPES_META := &"ei_cpu_shapes"
+## Skinned multi-surface meshes: [positions, indices, bones, weights] per
+## surface, weights as given (the upload stores them as unorm16).
+const SURFACES_META := &"ei_cpu_surfaces"
 
 
 static func surface_geometry(mesh: Mesh, surface: int) -> Array:
@@ -447,6 +453,7 @@ static func build_anim_morph_mesh(f: Dictionary, c: Vector3, names: PackedString
 	mesh.set_meta("ei_morph_bounds", pose_bounds)
 	mesh.set_meta("ei_morph_rest_bounds", base.get_aabb())
 	mesh.set_meta(GEOMETRY_META, [pos, arrays[Mesh.ARRAY_INDEX]])
+	mesh.set_meta(SHAPES_META, shapes.map(func(shape: Array): return shape[Mesh.ARRAY_VERTEX]))
 	_meshes[key] = mesh
 	return mesh
 

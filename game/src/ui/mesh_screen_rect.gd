@@ -55,12 +55,21 @@ static func _mesh_data(mesh: Mesh) -> Dictionary:
 		return data
 	var surfaces := []
 	var bytes := 512
+	var shape_count: int = (mesh as ArrayMesh).get_blend_shape_count() if mesh is ArrayMesh else 0
 	for i in mesh.get_surface_count():
-		var a := mesh.surface_get_arrays(i)
+		var a := _cpu_arrays(mesh, i)
+		var cpu_shapes: Variant = mesh.get_meta(EIFigure.SHAPES_META) if not a.is_empty() and shape_count > 0 else null
+		if a.is_empty():
+			a = mesh.surface_get_arrays(i)
 		if a.is_empty() or a[Mesh.ARRAY_VERTEX] == null:
 			continue
 		var shapes := []
-		if mesh is ArrayMesh:
+		if cpu_shapes != null:
+			for vertices: PackedVector3Array in cpu_shapes:
+				shapes.append(vertices)
+				bytes += vertices.size() * 12 + 64
+		elif shape_count > 0:
+			# Also a render-thread read back, even for a mesh without shapes.
 			for shape: Array in mesh.surface_get_blend_shape_arrays(i):
 				var vertices: PackedVector3Array = shape[Mesh.ARRAY_VERTEX] if shape[Mesh.ARRAY_VERTEX] != null else PackedVector3Array()
 				shapes.append(vertices)
@@ -84,6 +93,48 @@ static func _mesh_data(mesh: Mesh) -> Dictionary:
 		_source_bytes += bytes
 		_trim_sources(mesh.get_instance_id())
 	return data
+
+
+## Figure parts and skinned bodies retain the arrays they were uploaded with
+## (EIFigure.GEOMETRY_META, SHAPES_META, SURFACES_META). surface_get_arrays()
+## reads the buffers back from the rendering thread: 1-40 ms per mesh when
+## FlyingHP or the cursor first meets a figure, e.g. as a fireball strikes.
+static func _cpu_arrays(mesh: Mesh, surface: int) -> Array:
+	var shapes: int = (mesh as ArrayMesh).get_blend_shape_count() if mesh is ArrayMesh else 0
+	var a := []
+	a.resize(Mesh.ARRAY_MAX)
+	if mesh.has_meta(EIFigure.SURFACES_META):
+		var cpu: Array = mesh.get_meta(EIFigure.SURFACES_META)
+		if shapes > 0 or cpu.size() != mesh.get_surface_count() or surface >= cpu.size():
+			return []
+		a[Mesh.ARRAY_VERTEX] = cpu[surface][0]
+		a[Mesh.ARRAY_INDEX] = cpu[surface][1]
+		a[Mesh.ARRAY_BONES] = cpu[surface][2]
+		a[Mesh.ARRAY_WEIGHTS] = _stored_weights(cpu[surface][3])
+		return a
+	if surface != 0 or mesh.get_surface_count() != 1 or not mesh.has_meta(EIFigure.GEOMETRY_META):
+		return []
+	if shapes > 0 and (not mesh.has_meta(EIFigure.SHAPES_META) or (mesh.get_meta(EIFigure.SHAPES_META) as Array).size() != shapes):
+		return []
+	var geometry: Array = mesh.get_meta(EIFigure.GEOMETRY_META)
+	a[Mesh.ARRAY_VERTEX] = geometry[0]
+	a[Mesh.ARRAY_INDEX] = geometry[1]
+	return a
+
+
+## Weights as surface_get_arrays() returns them: the upload truncates the
+## binary32 product w * 65535 to unorm16, the read divides by 65535.
+static func _stored_weights(weights: PackedFloat32Array) -> PackedFloat32Array:
+	var out := weights.duplicate()
+	var scratch := PackedFloat32Array([0.0])
+	for i in out.size():
+		var w := out[i]
+		if w == 0.0 or w == 1.0:
+			continue
+		scratch[0] = w * 65535.0
+		scratch[0] = clampi(int(clampf(scratch[0], 0.0, 65535.0)), 0, 65535) / 65535.0
+		out[i] = scratch[0]
+	return out
 
 
 ## Exact immutable extrema only decide whether the original per-vertex

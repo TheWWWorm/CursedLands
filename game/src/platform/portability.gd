@@ -25,7 +25,10 @@ static func group(job: Callable, count: int) -> void:
 	if count <= 0:
 		return
 	if threads():
-		var task := WorkerThreadPool.add_group_task(job, count)
+		# High priority: the caller blocks on it. Low-priority work (grass,
+		# terrain colour, soft ground...) shares a single pool thread, and a
+		# group queued behind it held a quest's messenger bird ~1.5 s.
+		var task := WorkerThreadPool.add_group_task(job, count, -1, true, "Portability.group")
 		WorkerThreadPool.wait_for_group_task_completion(task)
 	else:
 		for i in count:

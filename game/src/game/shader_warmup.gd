@@ -67,6 +67,9 @@ static func run(game: Game) -> void:
 	if ambient: ambient.prepare_world()
 	if game.world.ground_marks: game.world.ground_marks.prepare_footprints()
 	var previews := game.hud.prepare_previews() if game.hud else []
+	var polygons := CanvasPolygons.new()
+	cam.get_tree().root.add_child(polygons)
+	polygons.free_after(3)
 	var forced := LoadingScreen._current != null and not (OS.has_feature("web") or LoadingScreen.force_deferred)
 	if not previews.is_empty():
 		if forced:
@@ -113,6 +116,10 @@ static func run(game: Game) -> void:
 		var grass := game.world.terrain.details
 		_multimesh(GRASS).mesh = grass._mesh
 		_add(items, seen, grass._material, env, GRASS)
+		if grass._grass:
+			# Far tiles stream in a few seconds after play starts.
+			var far: Array = grass._far_grass.prepare()
+			_add(items, seen, far[1], env, GRASS, far[0])
 	# VisionFog: its overlay is a MultiMesh of plain transforms.
 	_add(items, seen, VisionFog.material(), env, INSTANCED)
 	if items.is_empty():
@@ -446,6 +453,21 @@ static func _zero_lightning() -> ImmediateMesh:
 			_lightning.surface_add_vertex(Vector3.ZERO)
 		_lightning.surface_end()
 	return _lightning
+
+
+## The conversation frame's strips (DialogPanel._frame) are the first
+## textured, vertex-coloured canvas polygons a zone draws; their pipeline
+## cost ~20 ms as the first briefing opened. An invisible quad builds it.
+class CanvasPolygons extends Node2D:
+	func _draw() -> void:
+		draw_polygon(PackedVector2Array([Vector2.ZERO, Vector2(1, 0), Vector2.ONE, Vector2(0, 1)]),
+			PackedColorArray([Color.TRANSPARENT, Color.TRANSPARENT, Color.TRANSPARENT, Color.TRANSPARENT]),
+			PackedVector2Array([Vector2.ZERO, Vector2(1, 0), Vector2.ONE, Vector2(0, 1)]), ShaderWarmup._stand_in())
+
+	func free_after(frames: int) -> void:
+		for i in frames:
+			await get_tree().process_frame
+		queue_free()
 
 
 func _free_after(frames: int) -> void:

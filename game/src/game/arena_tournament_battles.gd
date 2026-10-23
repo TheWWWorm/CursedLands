@@ -56,11 +56,20 @@ func synchronize() -> void:
 			if run.health(player) <= 0: continue
 			if rendered: _prepare_queue.append(player)
 			else: _sync_board(player)
-		viewed_player = viewed_player if run.health(viewed_player) > 0 else 0
+		if run.health(viewed_player) <= 0: viewed_player = _first_watchable()
 		if viewed_player > 0 and rendered:
 			_sync_board(viewed_player)
 		_apply_view()
 		board_changed.emit(viewed_player)
+
+
+## An eliminated spectator follows a living company's board; their own
+## board would only show their last army lined up for a fight it never has.
+func _first_watchable() -> int:
+	if run.health(0) > 0: return 0
+	for player in range(1, ArenaTournamentRun.PLAYER_COUNT):
+		if run.health(player) > 0: return player
+	return 0
 
 
 func _sync_board(player: int) -> void:

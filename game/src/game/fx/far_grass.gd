@@ -96,7 +96,7 @@ func tick(details: TerrainDetails, camera: Camera3D, focus: Vector3, delta: floa
 		# Wait for it and for its initial geometry before adding far work.
 		if not details._queue.is_empty() or not details._grass_jobs.is_empty(): return
 		_field = Field.new(); _field.capture(details)
-		_geometry = mesh(); _material = material()
+		prepare()
 	if _material:
 		_material.set_shader_parameter("view_position",focus)
 		_material.set_shader_parameter("breeze",float(Gfx.on("gfx_wind")))
@@ -168,6 +168,13 @@ func _retire(key: Vector3i) -> void:
 	_count -= node.multimesh.instance_count
 	_chunks.erase(key)
 	node.free()
+
+## The shared tile geometry and material. ShaderWarmup draws this exact
+## material during loading, so the first far tile does not compile it in play.
+func prepare() -> Array:
+	if _geometry == null: _geometry = mesh()
+	if _material == null: _material = material()
+	return [_geometry,_material]
 
 func _finish() -> void:
 	if _work==null: return
@@ -294,9 +301,12 @@ class Field extends RefCounted:
 				owned_bytes += copy.get_data().size()
 		# The near index already expands every real mesh box by the complete
 		# 0.56 m leaf envelope. Every far vertex and its wind fit inside it.
-		scenery = details._scenery.duplicate(true)
-		for height: float in sampler.heights:
-			low = minf(low,height); high = maxf(high,height)
+		# TerrainDetails clears its index before a rebuild and creates new
+		# chunk lists; neither the lists nor their records change afterwards.
+		scenery = details._scenery.duplicate()
+		# Both samplers copy terrain.heights, whose range is kept at load.
+		var bounds := terrain.height_range()
+		low = bounds.x; high = bounds.y
 
 	func allowed(p: Vector2) -> Dictionary:
 		if not p.is_finite() or p.x<0 or p.y<0 or p.x>=size.x or p.y>=size.y: return {}

@@ -32,10 +32,9 @@ static func title_of(u: GameUnit) -> String:
 					_pers[ScriptVM.name_id(k.substr(5))] = t
 		if _pers.is_empty():
 			_pers[-1] = ""
-	var t := String(_pers.get(u.uid, ""))
-	if t.is_empty() and u.info.get("name", ""):   # a unit named in the .mob
-		t = String(_pers.get(ScriptVM.name_id(String(u.info.name)), ""))
-	return t
+	# By id only: several units can share a .mob name (the Black Market's
+	# "Trader"s) while the persona belongs to the unit with its id.
+	return String(_pers.get(u.uid, ""))
 
 
 func _ready() -> void:

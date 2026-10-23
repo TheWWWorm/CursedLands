@@ -53,9 +53,24 @@ func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
 		rival.auto_save = false
 		rival.begin(1 + (run_seed * 37 + index * 7919) % 99999998)
 		rivals.append(rival); rival_health.append(100)
+	_share_pool()
 	_prepare_round()
 	_initializing = false
 	_touch()
+
+
+## Every company recruits from one pool; an eliminated company's creatures
+## return to it (only living companies hold copies).
+func _share_pool() -> void:
+	for player in 1 + rivals.size():
+		company(player).pool_companies = _pool_holders
+
+
+func _pool_holders() -> Array[ArenaRun]:
+	var holders: Array[ArenaRun] = []
+	for player in 1 + rivals.size():
+		if health(player) > 0: holders.append(company(player))
+	return holders
 
 
 func round_limit() -> int: return MAX_ROUNDS
@@ -434,4 +449,5 @@ func _restore_companies(data: Dictionary, seats: int) -> bool:
 			if saved is Dictionary and _integer(saved.get("actions"),0,40) and _integer(saved.get("rerolls"),0,12) and saved.get("done") is bool and _number(saved.get("wait"),-10,10):
 				plan = saved.duplicate(true)
 		bot_plans.append(plan)
+	_share_pool()
 	return true

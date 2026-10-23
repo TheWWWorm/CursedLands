@@ -489,8 +489,13 @@ func setup(w: GameWorld, record: Dictionary) -> bool:
 		race = imported[1]
 	faction = int(record.get("player", 1))
 	display_name = unit_title(String(proto.get("name", "")))
-	if display_name.is_empty():
-		display_name = unit_title(String(record.get("name", "")))
+	var named := String(record.get("name", ""))
+	# A "pers <name>" title belongs to the unit whose id is that name's script
+	# id (VillageName). Black Market traders all have the record name
+	# "Trader", whose persona Karansul is a different unit.
+	if display_name.is_empty() and (uid == ScriptVM.name_id(named) \
+			or not GameData.text("unit " + named.to_lower().replace(" ", "_")).is_empty()):
+		display_name = unit_title(named)
 	if display_name.is_empty():
 		display_name = RemakeText.t("Creature")
 	var p: Vector3 = record.get("position", Vector3.ZERO)

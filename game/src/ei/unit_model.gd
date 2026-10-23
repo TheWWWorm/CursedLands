@@ -1394,6 +1394,7 @@ func _weld(nodes: Dictionary, rest_pos: Dictionary, parent_of: Dictionary, welde
 		if surfaces.is_empty(): continue
 		var body := ArrayMesh.new()
 		var mats := []
+		var cpu := []
 		for m: Material in surfaces:
 			var s: Array = surfaces[m]
 			var arrays := []
@@ -1405,8 +1406,10 @@ func _weld(nodes: Dictionary, rest_pos: Dictionary, parent_of: Dictionary, welde
 			arrays[Mesh.ARRAY_WEIGHTS] = s[4]
 			arrays[Mesh.ARRAY_INDEX] = s[5]
 			body.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+			cpu.append([s[0], s[5], s[3], s[4]])
 			if m == torso_material: _view_neck.surface = mats.size()
 			mats.append(m)
+		body.set_meta(EIFigure.SURFACES_META, cpu)
 		var mi := MeshInstance3D.new()
 		mi.name = "Head" if head else "Body"
 		mi.mesh = body

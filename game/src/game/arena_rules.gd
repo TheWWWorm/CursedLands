@@ -28,6 +28,10 @@ const SHOP_ODDS := {
 	7: [22, 28, 28, 20, 2], 8: [15, 20, 25, 30, 10],
 	9: [10, 15, 25, 35, 15],
 }
+# Autochess companies recruit from one shared pool: copies of each creature by
+# tier, as in Dota Underlords (45/30/25/20/10). Owned, offered and merged
+# copies stay out of it until sold or their company is eliminated.
+const POOL_COPIES := [45, 30, 25, 20, 10]
 const COMPANIONS := ["orcfemalem3", "orcfemalem5", "octopuskaniam12", "octopushadaganm15"]
 const ACTIVE_FAMILIES := [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]
 # A species occupies one price tier. All ranks retain its silhouette and role.
@@ -120,6 +124,17 @@ const BOONS := {
 static func prototype(family: int, rank: int) -> String:
 	if family < 0 or family >= FAMILIES.size() or rank < 0 or rank >= FAMILIES[family].forms.size(): return ""
 	return FAMILIES[family].forms[rank]
+
+
+## Shop copies a creature of this rank holds (3 per merge).
+static func rank_copies(family: int, rank: int) -> int:
+	var copies := 1
+	for previous in rank: copies *= evolution_copies(family, previous)
+	return copies
+
+
+static func pool_size(family: int) -> int:
+	return int(POOL_COPIES[clampi(int(FAMILIES[family].tier) - 1, 0, POOL_COPIES.size() - 1)])
 
 
 static func evolution_copies(family: int, rank: int) -> int:

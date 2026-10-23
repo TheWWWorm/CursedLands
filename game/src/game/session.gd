@@ -1015,6 +1015,7 @@ func _enter_zone(id: String, entrance: int, autosave := true, island_resume: Dic
 	if autosave and is_host and GameData.option("autosave") and lmp.is_empty():
 		save_game.call_deferred("autosave")
 	LoadingScreen.step(10)
+	DialogCamera.prepare(world)
 	ShaderWarmup.run(game)
 	LoadingScreen.end()
 	if not lmp.is_empty():
@@ -1315,6 +1316,7 @@ func _rpc_zone(id: String, records: Array, diplo: PackedInt32Array, extra_mobs: 
 		world.process_mode = Node.PROCESS_MODE_DISABLED
 	world.prepare_animation_bindings()
 	game.rig.village_start_view(z)
+	DialogCamera.prepare(world)
 	ShaderWarmup.run(game)
 	if not _remote_loading:
 		LoadingScreen.end()

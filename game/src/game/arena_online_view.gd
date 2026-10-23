@@ -46,6 +46,7 @@ func apply_state(data: Dictionary) -> void:
 		var rival := ArenaRun.new(); rival.auto_save = false
 		_copy_company(rival, data.companies[server])
 		rivals.append(rival); rival_health.append(int(data.health[server]))
+	_share_pool()
 	pairings.clear()
 	for pairing: Dictionary in data.pairings:
 		var a := seats.find(int(pairing.a)); var b := seats.find(int(pairing.b))

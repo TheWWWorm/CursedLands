@@ -46,6 +46,7 @@ var knowledge: WikiKnowledge
 var lore: WikiLore
 var _search_text := {}
 var _map_records := {}
+var _creature_textures := {}   # prototype -> texture its map records use most
 
 
 func rebuild() -> void:
@@ -203,9 +204,39 @@ static func _read_map(reader: EIMob, data: PackedByteArray, start: int, end: int
 			var entry := {"kind": "UNIT"}
 			_read_map(reader, data, at + 8, at + size, kind, entry)
 			reader.objects.append(entry)
-		elif id in [EIMob.SS_TEXT, EIMob.SS_TEXT_PLAIN] or (parent == "UNIT" and id in [EIMob.OBJNAME, EIMob.UNIT_PROTOTYPE, EIMob.OBJPOSITION, EIMob.UNIT_QUEST_ITEMS, EIMob.UNIT_QUICK_ITEMS]):
+		elif id in [EIMob.SS_TEXT, EIMob.SS_TEXT_PLAIN] or (parent == "UNIT" and id in [EIMob.OBJNAME, EIMob.UNIT_PROTOTYPE, EIMob.OBJPOSITION, EIMob.UNIT_QUEST_ITEMS, EIMob.UNIT_QUICK_ITEMS, EIMob.OBJPRIMTXTR]):
 			reader._field(data, id, at + 8, size - 8, unit)
 		at += size
+
+
+## A creature's look comes from its map record (OBJPRIMTXTR), not the
+## prototype: every BoarDark / UnicornBlack has skin 0, the plain colour.
+## Use the texture the campaign's maps give it most often; creatures no map
+## places keep ArenaAppearance's restored palette defaults.
+func creature_appearance(prototype: String) -> Dictionary:
+	if _creature_textures.is_empty():
+		var counts := {}
+		var seen := {}
+		for zone: Dictionary in _campaign.zones.values():
+			var mob := String(zone.get("mob", ""))
+			if mob.is_empty() or seen.has(mob): continue
+			seen[mob] = true
+			for unit: Dictionary in map_records(mob).objects:
+				var texture := String(unit.get("texture", ""))
+				if texture.is_empty(): continue
+				var per: Dictionary = counts.get_or_add(String(unit.get("prototype", "")).to_lower(), {})
+				per[texture] = int(per.get(texture, 0)) + 1
+		for id: String in counts:
+			var best := ""
+			for texture: String in counts[id]:
+				if best.is_empty() or int(counts[id][texture]) > int(counts[id][best]): best = texture
+			_creature_textures[id] = best
+		_creature_textures[""] = ""   # scanned
+	var info := ArenaAppearance.info(prototype)
+	var texture := String(_creature_textures.get(prototype.to_lower(), ""))
+	if not texture.is_empty(): info.texture = texture
+	info.erase("prototype")
+	return info
 
 
 ## Share the public wiki's authored family names and fixed-item rules. Keep
@@ -473,7 +504,7 @@ func page(key: String, variant := "") -> Dictionary:
 			preview = {"kind": "item", "value": "rune:" + entry.value}
 		"creature":
 			body = _creature(entry.value)
-			preview = {"kind": "creature", "value": entry.value}
+			preview = {"kind": "creature", "value": entry.value, "appearance": creature_appearance(entry.value)}
 		"character", "allod":
 			body = lore.html(key)
 			preview = lore.model(key)

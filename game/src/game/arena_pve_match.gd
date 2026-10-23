@@ -260,8 +260,11 @@ func prepare() -> void:
 	# figures are still fighting. This snapshot owns this round's bonuses.
 	round_army.assign(run.army.duplicate(true))
 	formation.clear()
+	# An eliminated company no longer fights: its board stays empty instead
+	# of lining up its last army (online spectators, the board overview).
+	var eliminated := run is ArenaTournamentRun and run.lives <= 0
 	for entry: Dictionary in run.army:
-		if entry.deployed:
+		if entry.deployed and not eliminated:
 			formation.append({"id": entry.prototype, "team": 0,
 				"point": Vector2(entry.point[0], entry.point[1]), "run_uid": int(entry.uid), "rank": int(entry.rank), "family": int(entry.family)})
 	var enemies: Array[Dictionary] = []

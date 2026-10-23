@@ -35,6 +35,9 @@ var last_evolutions: Array[int] = []
 var _undo: Array[Dictionary] = []
 ## The rendered match checks scenery as well as the formation's reserved slots.
 var deployment_check: Callable
+## Autochess: the companies sharing one recruit pool (ArenaTournamentRun).
+## Unset, as in an expedition, offers are unlimited.
+var pool_companies: Callable
 
 
 func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
@@ -302,38 +305,84 @@ func _roll_shop(keep_lock: bool) -> void:
 		for index in range(slots, old.size()):
 			if old[index].locked: slots = index + 1
 	shop.clear()
-	var odds: Array = ArenaRules.SHOP_ODDS[capacity()]
+	var open: Array[int] = []
 	for i in slots:
 		if keep_lock and i < old.size() and old[i].locked and int(old[i].family) >= 0:
 			shop.append(old[i])
 		else:
-			var roll := rng.randi_range(0, 99)
-			var tier := 1
-			for weight: int in odds:
-				if roll < weight: break
-				roll -= weight
-				tier += 1
-			var candidates: Array[int] = []
-			for family in ArenaRules.ACTIVE_FAMILIES:
-				if int(ArenaRules.FAMILIES[family].tier) != tier: continue
-				candidates.append(family)
-
-			shop.append({"family": candidates[rng.randi_range(0, candidates.size() - 1)], "rank": 0, "locked": false})
+			shop.append({"family": -1, "locked": false})
+			open.append(i)
+	# The replaced offers are back in the pool; the kept ones are not.
+	var left := pool_left()
+	var odds: Array = ArenaRules.SHOP_ODDS[capacity()]
+	for i in open:
+		var roll := rng.randi_range(0, 99)
+		var tier := 1
+		for weight: int in odds:
+			if roll < weight: break
+			roll -= weight
+			tier += 1
+		var family := _draw(tier, left)
+		if family < 0: continue   # the whole pool is out: the slot stays empty
+		shop[i] = {"family": family, "rank": 0, "locked": false}
+		if left.has(family): left[family] -= 1
 	# An empty company must remain recoverable after a paid refresh/improvement.
 	if army.is_empty() and not shop.any(func(offer): return int(offer.family) >= 0 and offer_cost(offer) <= ArenaRules.MIN_RECRUIT_COST):
 		for i in shop.size():
 			if not shop[i].locked:
-				var affordable := ArenaRules.recruit_pool(capacity()).filter(func(family): return int(ArenaRules.FAMILIES[family].cost) <= ArenaRules.MIN_RECRUIT_COST)
+				var affordable := ArenaRules.recruit_pool(capacity()).filter(func(family): return int(ArenaRules.FAMILIES[family].cost) <= ArenaRules.MIN_RECRUIT_COST \
+					and (left.is_empty() or int(left[family]) > 0 or family == int(shop[i].family)))
+				if affordable.is_empty(): break
 				shop[i] = {"family": affordable[rng.randi_range(0, affordable.size() - 1)], "rank": 0, "locked": false}
 				break
 
 
+## A creature of `tier`. With a shared pool each remaining copy is one
+## ticket; an exhausted tier falls back to the nearest lower, then higher one.
+func _draw(tier: int, left: Dictionary) -> int:
+	if left.is_empty():
+		var candidates: Array[int] = []
+		for family in ArenaRules.ACTIVE_FAMILIES:
+			if int(ArenaRules.FAMILIES[family].tier) == tier: candidates.append(family)
+		return candidates[rng.randi_range(0, candidates.size() - 1)]
+	var order: Array[int] = []
+	for t in range(tier, 0, -1): order.append(t)
+	for t in range(tier + 1, ArenaRules.POOL_COPIES.size() + 1): order.append(t)
+	for t in order:
+		var total := 0
+		for family in ArenaRules.ACTIVE_FAMILIES:
+			if int(ArenaRules.FAMILIES[family].tier) == t: total += maxi(0, int(left[family]))
+		if total == 0: continue
+		var ticket := rng.randi_range(0, total - 1)
+		for family in ArenaRules.ACTIVE_FAMILIES:
+			if int(ArenaRules.FAMILIES[family].tier) != t: continue
+			ticket -= maxi(0, int(left[family]))
+			if ticket < 0: return family
+	return -1
+
+
+func shares_pool() -> bool:
+	return pool_companies.is_valid()
+
+
+## Copies left in the shared pool by family; empty when offers are unlimited.
+func pool_left() -> Dictionary:
+	if not shares_pool(): return {}
+	var left := {}
+	for family in ArenaRules.ACTIVE_FAMILIES: left[family] = ArenaRules.pool_size(family)
+	for company: ArenaRun in pool_companies.call():
+		for entry: Dictionary in company.army:
+			var family := int(entry.family)
+			if left.has(family): left[family] -= ArenaRules.rank_copies(family, int(entry.rank))
+		for offer: Dictionary in company.shop:
+			var family := int(offer.family)
+			if left.has(family): left[family] -= ArenaRules.rank_copies(family, int(offer.get("rank", 0)))
+	return left
+
+
 func offer_cost(offer: Dictionary) -> int:
 	var rule: Dictionary = ArenaRules.FAMILIES[int(offer.family)]
-	var rank := int(offer.get("rank", 0))
-	var copies := 1
-	for previous in rank: copies *= ArenaRules.evolution_copies(int(offer.family), previous)
-	return int(rule.cost) * copies
+	return int(rule.cost) * ArenaRules.rank_copies(int(offer.family), int(offer.get("rank", 0)))
 
 
 func deploy(uid: int, point: Vector2) -> String:

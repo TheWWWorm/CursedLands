@@ -11,6 +11,7 @@ const PALETTES := {
 	"succubred":"succubus00", "succubblue":"succubus01", "succubgrey":"succubus02",
 	"bansheedark":"banshee01", "bansheelight":"banshee00", "scrabmotherpoisoned":"crab02",
 	"evileyesimple":"beholder02", "evileyegreen":"beholder01", "evileyered":"beholder00",
+	"unicornwhite":"unicorn00", "unicornblack":"unicorn01",
 }
 
 ## Only palettes authored for the recruit's own rig. The combat prototype,

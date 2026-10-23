@@ -1073,18 +1073,23 @@ func _show_company() -> void:
 	_wrap(_inspect_box, RemakeText.t("Each completed round grants 1 XP. Higher levels add army slots and improve shop odds."), 12, MUTED)
 	_rule(_inspect_box)
 	_wrap(_inspect_box, RemakeText.t("Shop odds"), 15, GOLD)
+	var shared := run.shares_pool()
 	var grid := GridContainer.new()
-	grid.columns = 3
+	grid.columns = 4 if shared else 3
 	grid.add_theme_constant_override("h_separation", 12)
 	grid.add_theme_constant_override("v_separation", 2)
 	_inspect_box.add_child(grid)
-	for word in ["Tier", "Gold", "Chance"]:
+	for word in ["Tier", "Gold", "Chance"] + (["Pool"] if shared else []):
 		var label := _label(grid, RemakeText.t(word), 12, MUTED)
 		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var odds: Array = ArenaRules.SHOP_ODDS[run.capacity()]
 	for tier in 5:
-		for value in [str(tier + 1), ArenaRules.tier_price_label(tier + 1), "%d%%" % int(odds[tier])]:
+		var values := [str(tier + 1), ArenaRules.tier_price_label(tier + 1), "%d%%" % int(odds[tier])]
+		if shared: values.append(str(ArenaRules.POOL_COPIES[tier]))
+		for value in values:
 			_label(grid, value, 13, PAPER if int(odds[tier]) > 0 else MUTED)
+	if shared:
+		_wrap(_inspect_box, RemakeText.t("All companies recruit from one shared pool: the Pool column gives the copies of each creature. Sold creatures and eliminated companies return their copies."), 12, MUTED)
 	if not run.boons.is_empty():
 		_rule(_inspect_box)
 		for boon: String in run.boons:
@@ -1095,8 +1100,12 @@ func _show_company() -> void:
 func _shop_odds_text() -> String:
 	var text := RemakeText.t("Shop odds") + " · " + RemakeText.t("Level %d") % run.capacity()
 	var odds: Array = ArenaRules.SHOP_ODDS[run.capacity()]
-	for tier in 5: text += "\n" + RemakeText.t("Tier %d · %s gold · %d%%") % [tier + 1, ArenaRules.tier_price_label(tier + 1), int(odds[tier])]
-	return text + "\n\n" + RemakeText.t("New offers use your company level. Recruits start at one star; matching copies evolve them.")
+	for tier in 5:
+		if run.shares_pool(): text += "\n" + RemakeText.t("Tier %d · %s gold · %d%% · %d copies each") % [tier + 1, ArenaRules.tier_price_label(tier + 1), int(odds[tier]), int(ArenaRules.POOL_COPIES[tier])]
+		else: text += "\n" + RemakeText.t("Tier %d · %s gold · %d%%") % [tier + 1, ArenaRules.tier_price_label(tier + 1), int(odds[tier])]
+	text += "\n\n" + RemakeText.t("New offers use your company level. Recruits start at one star; matching copies evolve them.")
+	if run.shares_pool(): text += "\n" + RemakeText.t("All companies recruit from one shared pool. Sold creatures and eliminated companies return their copies.")
+	return text
 
 
 func _result_countdown() -> String:
@@ -1180,6 +1189,8 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 	if family >= 0:
 		ArenaCreatureCard.tribe_names(details, family, 13)
 		_wrap(details, RemakeText.t("Tier %d · %d gold") % [int(ArenaRules.FAMILIES[family].tier), int(ArenaRules.FAMILIES[family].cost)], 12, MUTED)
+		if run.shares_pool():
+			_wrap(details, RemakeText.t("Shared pool: %d/%d left") % [maxi(0, int(run.pool_left()[family])), ArenaRules.pool_size(family)], 12, MUTED)
 		if ArenaRules.FAMILIES[family].has("region"):
 			_wrap(details, ArenaRules.region_name(int(ArenaRules.FAMILIES[family].region)), 12, MUTED)
 	var stars := Control.new()

@@ -807,6 +807,10 @@ var tile_size := 64
 var materials: Array[Dictionary] = []
 ## Ground heights (EI z) on the global vertex grid.
 var heights := PackedFloat32Array()
+## Lowest/highest entry of `heights`, recorded while complete maps load.
+## height_range() scans any other grid once (arena ground, missing sectors).
+var _height_range := Vector2(INF, -INF)
+var _height_range_size := -1
 var grid_w := 0
 ## Water surface height per terrain cell (EI z), -INF where there is no water.
 ## Includes the SetWaterLevel offset of the cell's material (water_base + offset).
@@ -1140,12 +1144,14 @@ func _build(arc: EIResArchive) -> void:
 	_level.resize(64)
 	_lava.resize(64)
 
+	var complete := true
 	for sy in sectors_y:
 		NetStatus.keep_alive()
 		for sx in sectors_x:
 			var d := arc.read("%s%03d%03d.sec" % [resource_prefix, sx, sy])
 			if d.size() < 5 or d.decode_u32(0) != SEC_MAGIC:
 				push_warning("Missing sector %d,%d" % [sx, sy])
+				complete = false
 				continue
 			var liquids := d[4] != 0
 			var land := _read_vertices(d, 5, sx, sy, true)
@@ -1178,6 +1184,7 @@ func _build(arc: EIResArchive) -> void:
 					wm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 					wm.extra_cull_margin = 8.0   # SetWaterLevel moves it in the shader
 					add_child(wm)
+	_height_range_size = heights.size() if complete else -1
 	water_base = water.duplicate()
 	# Lava: map materials whose liquid tiles are of ground type 13.
 	for i in water_mat.size():
@@ -1185,6 +1192,16 @@ func _build(arc: EIResArchive) -> void:
 			_lava[water_mat[i]] = 1.0
 	_build_surface_data()
 	apply_gfx()
+
+
+## Lowest and highest ground height, without rescanning a loaded map.
+func height_range() -> Vector2:
+	if _height_range_size != heights.size():
+		var low := INF; var high := -INF
+		for height: float in heights:
+			low = minf(low, height); high = maxf(high, height)
+		_height_range = Vector2(low, high); _height_range_size = heights.size()
+	return _height_range
 
 
 ## Shared data for view-independent surf depth and material-specific ground
@@ -1958,6 +1975,7 @@ func _read_vertices(d: PackedByteArray, off: int, sx: int, sy: int, is_land: boo
 	pos.resize(VERTS * VERTS)
 	nrm.resize(VERTS * VERTS)
 	var scale := max_altitude / 65535.0
+	var low := _height_range.x; var high := _height_range.y
 	for i in VERTS * VERTS:
 		var p := off + i * 8
 		# Land: signed x / y jitter, char · 0.5 / 126 m (saved
@@ -1973,8 +1991,10 @@ func _read_vertices(d: PackedByteArray, off: int, sx: int, sy: int, is_land: boo
 				((n & 0x7FF) - 1000.0) / 1000.0, (n >> 22) / 1000.0)).normalized()
 		if is_land:
 			heights[gy * grid_w + gx] = z
+			low = minf(low, z); high = maxf(high, z)
 			land_xy[gy * grid_w + gx] = Vector2(ox, oy) / 252.0
 			land_n[gy * grid_w + gx] = nrm[i]
+	_height_range = Vector2(low, high)
 	return [pos, nrm]
 
 

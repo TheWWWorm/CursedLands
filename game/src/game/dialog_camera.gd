@@ -64,15 +64,23 @@ static func _clear_shot(w: GameWorld, shot: Array) -> Array:
 	var target: Vector3 = shot[1]
 	var meshes := []
 	var seen := {}
-	var objects: Array = w.objects.values()
-	if w.map: objects.append_array(w.map.object_nodes)
+	var scenery := _scenery(w)
 	var centre := EISpace.vec(target)
 	var reach := eye.distance_to(target) + 4.0
-	for object in objects:
-		if not is_instance_valid(object) or not object is Node3D or not object.is_visible_in_tree(): continue
-		if seen.has(object.get_instance_id()): continue
-		seen[object.get_instance_id()] = true
+	# Every probe segment and fallback eye lies within `reach` of the target.
+	var low := _cell(centre.x - reach, centre.z - reach)
+	var high := _cell(centre.x + reach, centre.z + reach)
+	var near := {}
+	for cx in range(low.x, high.x + 1):
+		for cz in range(low.y, high.y + 1):
+			for object: Variant in scenery.cells.get(Vector2i(cx, cz), []):
+				if is_instance_valid(object) and scenery.roots.has(object.get_instance_id()):
+					near[object.get_instance_id()] = object
+	for object: Node3D in near.values():
+		if not object.is_visible_in_tree(): continue
 		for child: Node in object.find_children("*", "MeshInstance3D", true, false):
+			if seen.has(child.get_instance_id()): continue
+			seen[child.get_instance_id()] = true
 			var mesh := child as MeshInstance3D
 			if mesh.mesh == null or not mesh.is_visible_in_tree(): continue
 			var box := mesh.global_transform * mesh.get_aabb()
@@ -89,6 +97,59 @@ static func _clear_shot(w: GameWorld, shot: Array) -> Array:
 				var candidate := target + Vector3(offset.x, offset.y, delta.z * scale + lift)
 				if _clear(w, meshes, candidate, target): return [candidate, target]
 	return shot
+
+
+## Map objects binned by where their meshes were when first seen. Scanning
+## every object's children for each shot took ~16 ms in bz1h (6000 objects)
+## as a conversation started; a shot now walks only the objects near it, and
+## still reads their current meshes and bounds. The margin covers doors and
+## other parts that swing or slide about their place.
+const CELL := 16.0
+const MARGIN := 4.0
+static var _index := {}
+
+
+## Builds the index while a zone loads (Session), not at the first shot.
+static func prepare(w: GameWorld) -> void:
+	if w:
+		_scenery(w)
+
+
+static func _cell(x: float, z: float) -> Vector2i:
+	return Vector2i(floori(x / CELL), floori(z / CELL))
+
+
+static func _scenery(w: GameWorld) -> Dictionary:
+	var map_count: int = w.map.object_nodes.size() if w.map else 0
+	var key := [w.get_instance_id(), w.objects_revision, w.objects.size(), map_count]
+	if _index.get("key", []) == key:
+		return _index
+	if _index.get("world", 0) != w.get_instance_id():
+		_index = {"world": w.get_instance_id(), "indexed": {}, "cells": {}}
+	_index.key = key
+	var roots := {}
+	var objects: Array = w.objects.values()
+	if w.map: objects.append_array(w.map.object_nodes)
+	for object in objects:
+		if not is_instance_valid(object) or not object is Node3D: continue
+		var id: int = object.get_instance_id()
+		roots[id] = true
+		if _index.indexed.has(id): continue
+		_index.indexed[id] = true
+		var bounds := AABB(object.global_position, Vector3.ZERO)
+		for child: Node in object.find_children("*", "MeshInstance3D", true, false):
+			var mesh := child as MeshInstance3D
+			bounds = bounds.merge(mesh.global_transform * mesh.get_aabb())
+		var low := _cell(bounds.position.x - MARGIN, bounds.position.z - MARGIN)
+		var high := _cell(bounds.end.x + MARGIN, bounds.end.z + MARGIN)
+		for cx in range(low.x, high.x + 1):
+			for cz in range(low.y, high.y + 1):
+				var cell := Vector2i(cx, cz)
+				if not _index.cells.has(cell): _index.cells[cell] = []
+				_index.cells[cell].append(object)
+	# Objects the scripts removed keep their cells but no longer qualify.
+	_index.roots = roots
+	return _index
 
 
 static func _clear(w: GameWorld, meshes: Array, eye: Vector3, target: Vector3) -> bool:

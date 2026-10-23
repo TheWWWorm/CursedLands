@@ -9,6 +9,11 @@ const DISTANCE := 55.0
 const ENTER_SECONDS := 0.35
 const LEAVE_SECONDS := 0.7
 const TURN_SECONDS := 0.22
+## A rejected actor that has not moved is re-sampled on this frame cadence.
+## Each deformed-triangle query costs ~0.2 ms; static NPCs beside water would
+## otherwise repeat the same miss every frame. Moving actors and scripted
+## water-level changes are re-sampled at once.
+const RECHECK_FRAMES := 8
 var game: Game
 var _world: GameWorld
 var _surface: Surface
@@ -17,6 +22,9 @@ var _clock := 0.0
 var _enabled := false
 var last_update_us := 0
 var _field: WaveField
+var _frame := 0
+var _rejected := {} # unit instance id -> [root at the rejecting sample]
+var _rejected_levels := PackedFloat32Array()
 
 class Contact:
 	var unit: WeakRef
@@ -57,7 +65,7 @@ func clear() -> void:
 	if is_instance_valid(_world) and is_instance_valid(_world.terrain) and _world.terrain._water_mat:
 		_world.terrain._water_mat.set_shader_parameter("water_contact_count",0)
 	_clear_field()
-	_contacts.clear(); _surface = null; _world = null; _clock = 0.0
+	_contacts.clear(); _rejected.clear(); _surface = null; _world = null; _clock = 0.0
 
 
 func _clear_field() -> void:
@@ -134,6 +142,7 @@ func step(world: GameWorld, camera: Camera3D, dt: float) -> void:
 		_contacts.clear(); _clear_field(); dt = 0.0 # resume without a long stale motion segment
 	var started := Time.get_ticks_usec()
 	_clock += dt
+	_frame += 1
 	if _surface == null: _surface = Surface.new(world.terrain)
 	_surface.begin_frame()
 	var candidates := []
@@ -151,18 +160,19 @@ func step(world: GameWorld, camera: Camera3D, dt: float) -> void:
 		candidates.append({"unit":u,"root":root,"id":id,"score":distance*(0.85 if _contacts.has(id) else 1.0)})
 	candidates.sort_custom(func(a: Dictionary,b: Dictionary): return a.score < b.score if a.score != b.score else a.id < b.id)
 	var inputs := {}
+	var rejected := {}
+	if world.terrain._level != _rejected_levels:
+		_rejected.clear(); _rejected_levels = world.terrain._level
 	for i in mini(MAX_CANDIDATES,candidates.size()):
 		var c: Dictionary = candidates[i]
-		var hit: Dictionary = _surface.sample(Vector2(c.root.x,c.root.z))
-		if hit.is_empty() or hit.lava: continue
-		var local := world.terrain.to_local(c.root)
-		var width := world.terrain.sectors_x*32
-		var cell := floori(-local.z)*width+floori(local.x)
-		if cell >= world.terrain.liquid_ground.size() or world.terrain.liquid_ground[cell] in [13,14]: continue
-		var bound := vertical_bounds(c.unit)
-		if bound.x > float(hit.height)+0.04 or bound.y < float(hit.height)-0.04: continue
-		c.height = hit.height; inputs[c.id] = c
+		var last: Array = _rejected.get(c.id,[])
+		if not last.is_empty() and (last[0] as Vector3).distance_squared_to(c.root) < 0.0001 \
+				and (_frame+c.id)%RECHECK_FRAMES != 0:
+			rejected[c.id] = last; continue
+		if not _admit(world,c): rejected[c.id] = [c.root]; continue
+		inputs[c.id] = c
 		if inputs.size() == MAX_UNITS: break
+	_rejected = rejected
 	for id: int in _contacts.keys():
 		var contact: Contact = _contacts[id]
 		var u := contact.unit.get_ref() as GameUnit
@@ -201,6 +211,21 @@ func step(world: GameWorld, camera: Camera3D, dt: float) -> void:
 		_field.advance(world.terrain,world.terrain._waves.time_ticks()*EIWaterWaves.TICK,centre,sources,weights)
 		_field.bind(world.terrain._water_mat)
 	last_update_us = Time.get_ticks_usec()-started
+
+
+## Rendered-triangle admission: the water surface under the root, outside
+## swamp/lava cells, crossing the posed model's vertical extent.
+func _admit(world: GameWorld, c: Dictionary) -> bool:
+	var hit: Dictionary = _surface.sample(Vector2(c.root.x,c.root.z))
+	if hit.is_empty() or hit.lava: return false
+	var local := world.terrain.to_local(c.root)
+	var width := world.terrain.sectors_x*32
+	var cell := floori(-local.z)*width+floori(local.x)
+	if cell >= world.terrain.liquid_ground.size() or world.terrain.liquid_ground[cell] in [13,14]: return false
+	var bound := vertical_bounds(c.unit)
+	if bound.x > float(hit.height)+0.04 or bound.y < float(hit.height)-0.04: return false
+	c.height = hit.height
+	return true
 
 
 func _bind() -> void:
