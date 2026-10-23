@@ -41,13 +41,18 @@ func run() -> void:
 		var green := Image.create(2,2,false,Image.FORMAT_RGBA8); green.fill(Color.GREEN)
 		var images: Array[Image] = [red,green]
 		var device := Device.new()
-		RenderingServer.call_on_render_thread(device.build.bind(data.to_byte_array(),images))
+		# Save loading starts with hidden placements. Reveal the geometry on the
+		# first trace, then rebuild the TLAS after tracing when resizing below.
+		# The second build must not add AS-build sync to the frame UBO barrier.
+		var placements := [{"geometry":0,"transform":Transform3D.IDENTITY,"mask":0}]
+		RenderingServer.call_on_render_thread(device.build.bind(data.to_byte_array(),images,[],placements))
 		var ok: bool = await device.prepared
 		check(ok,"build hardware acceleration structure, alpha="+str(transparent))
 		if ok:
 			var material_texture := RID()
 			for size: Vector2i in [Vector2i(128,128),Vector2i(96,64)]:
-				RenderingServer.call_on_render_thread(device.render.bind(size,frame.to_byte_array()))
+				var changes := {"instances":[{"index":0,"transform":Transform3D.IDENTITY,"mask":255}]}
+				RenderingServer.call_on_render_thread(device.render.bind(size,frame.to_byte_array(),changes))
 				await frames(8); await RenderingServer.frame_post_draw
 				var image := device.output.get_image()
 				if material_texture.is_valid():

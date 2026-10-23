@@ -365,10 +365,13 @@ production denoiser. Mode, resolution, projection and substantial light changes
 invalidate history in both modes. Geometry updates reset Still scene; Responsive rejects
 changed surfaces through the guides and neighbourhood clamp.
 
-Gentle local-light flutter now retains a short responsive history instead of
-resetting every frame. The light list, positions, ranges, source sizes, hues,
-sun and environment must remain unchanged; each changed light's linear peak
-intensity must stay within 10% of its previous value. The history-age cap is
+Gentle local-light flutter and gradual daylight changes retain a short responsive
+history instead of resetting every frame. The local-light list, positions,
+ranges, source sizes and hues must remain unchanged; each changed local light's
+linear peak intensity must stay within 10% of its previous value. Sun and sky
+channels may change by at most 0.2% per frame, and the sun direction by at most
+0.001 radians (approximately 0.057 degrees). Illumination switching on or off
+and larger changes reset immediately. The history-age cap is
 three at 60 Hz, 1.8 at 30 Hz and approximately 1.42 at 20 Hz. Slower frames
 therefore give current illumination more weight, preserving a bounded response
 time. At 60 Hz at least one third of the estimate is current, with the older
@@ -382,6 +385,8 @@ The [torch-history qualification](../validation/path-tracing-torch-history-2026-
 contains controlled original-torch sequences, noise/response measurements and
 links to the subsequent performance measurements. Its original synchronous
 capture timings remain excluded.
+The [native save-load validation](../validation/path-tracing-save-load-2026-10-24/README.md)
+covers daylight changes during live gameplay and the Direct3D 12 barrier fix.
 
 The material lookup also compares reconstructed positions against the raster
 triangle's tangent plane, rather than comparing adjacent pixels' raw depths.

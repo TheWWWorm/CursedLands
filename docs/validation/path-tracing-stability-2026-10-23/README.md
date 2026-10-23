@@ -1,5 +1,9 @@
 # Path-tracing stability investigation — 23 October 2026
 
+Follow-up: the [24 October native Windows validation](../path-tracing-save-load-2026-10-24/README.md)
+reproduces and fixes the D3D12 barrier failure on an RTX 4090 Laptop GPU. The
+earlier evidence and remaining untested hardware scope below are historical.
+
 The scene-membership bug described below is reproduced and fixed. The reported
 native Windows crashes on an RTX 4090 Laptop GPU and RTX 4070 Ti are **not yet
 confirmed fixed**. Local Windows tests run through Wine/VKD3D on an RTX 3090 Ti;

@@ -388,24 +388,24 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 		var stationary := history and not scene_changed and bytes==_path_signature
 		var progressive := GameData.option("pt_accumulation")>0
 		var limit := 256.0 if progressive else 8.0
-		# Fire/lava flutter changes intensity every frame. Keep a short
-		# responsive history for small intensity-only changes, while moving,
-		# recoloured, resized, switched or extinguished lights still reset.
+		# Fire/lava flutter and the advancing daylight change every frame.
+		# Keep a short responsive history for gradual lighting changes, while
+		# moving/recoloured local sources and larger daylight changes reset.
 		# Still-scene accumulation always requires exact lighting and geometry.
 		var same_lighting := bytes.slice(32*4)==_path_signature.slice(32*4)
 		var same_projection := bytes.slice(0,16*4)==_path_signature.slice(0,16*4)
-		var flutter := not progressive and not _strict_light_history and not same_lighting \
-			and _small_local_intensity_change(bytes,_path_signature)
-		if flutter:
+		var gentle_change := not progressive and not _strict_light_history and not same_lighting \
+			and _small_lighting_change(bytes,_path_signature)
+		if gentle_change:
 			# At 60 Hz retain at most 2/3 of the previous estimate. Shorten
 			# the history in slower frames so torch response does not acquire
 			# a longer time constant when the game is under GPU pressure.
 			limit=minf(3.0,1.0/(1.0-pow(2.0/3.0,maxf(delta_seconds,0.001)*60.0)))
-		var reuse := history and same_projection and (stationary if progressive else same_lighting or flutter)
+		var reuse := history and same_projection and (stationary if progressive else same_lighting or gentle_change)
 		if not reuse: data[82]=0.0
 		_accumulation_frames=minf(_accumulation_frames+1,limit) if reuse else 1.0
 		stats["history_reused"]=reuse;stats["history_limit"]=limit
-		stats["light_history_limited"]=flutter and reuse
+		stats["light_history_limited"]=gentle_change and reuse
 		_path_signature=bytes
 		data.append_array(PackedFloat32Array([GameData.option("pt_mode")*2,limit,float(stationary),1]))
 		var inverse_previous := _previous_view_projection.inverse()
@@ -416,13 +416,31 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 	_frame_number=(_frame_number+1)%1000000
 	return data.to_byte_array()
 
-static func _small_local_intensity_change(current: PackedByteArray, previous: PackedByteArray) -> bool:
+static func _small_lighting_change(current: PackedByteArray, previous: PackedByteArray) -> bool:
 	# Signature floats 76..103 are the seven linear RGB/source-size records.
 	# Projection is checked by the caller; ordinary camera motion reprojects.
-	# Everything else (sun, sky, region, light positions/ranges) stays exact.
-	if current.size()!=previous.size() or current.size()<104*4: return false
-	if current.slice(32*4,76*4)!=previous.slice(32*4,76*4) \
-		or current.slice(104*4)!=previous.slice(104*4): return false
+	# Region and local-light positions/ranges stay exact. The campaign clock
+	# advances sunlight and sky every frame, even with a stationary camera.
+	if current.size()!=previous.size() or current.size()!=116*4: return false
+	if current.slice(44*4,76*4)!=previous.slice(44*4,76*4): return false
+	for offset in [32,40,104,108,112]:
+		if current.decode_float((offset+3)*4)!=previous.decode_float((offset+3)*4): return false
+		var old := Vector3(previous.decode_float(offset*4),previous.decode_float((offset+1)*4),previous.decode_float((offset+2)*4))
+		var now := Vector3(current.decode_float(offset*4),current.decode_float((offset+1)*4),current.decode_float((offset+2)*4))
+		if old==now: continue
+		if not old.is_finite() or not now.is_finite(): return false
+		# Do not blend newly enabled or extinguished illumination. A 0.2%
+		# per-channel bound admits gradual daylight, not a weather/time jump.
+		if minf(old.x,minf(old.y,old.z))<0.0 or minf(now.x,minf(now.y,now.z))<0.0: return false
+		if old==Vector3.ZERO or now==Vector3.ZERO: return false
+		for channel in 3:
+			if absf(now[channel]-old[channel])>maxf(maxf(now[channel],old[channel]),0.0001)*0.002: return false
+	if current.decode_float(39*4)!=previous.decode_float(39*4): return false
+	var old_direction := Vector3(previous.decode_float(36*4),previous.decode_float(37*4),previous.decode_float(38*4))
+	var direction := Vector3(current.decode_float(36*4),current.decode_float(37*4),current.decode_float(38*4))
+	# At most 0.057 degrees per frame; history remains capped at three frames
+	# (and is shorter at low FPS), so moving sunlight cannot build a long trail.
+	if not direction.is_finite() or not old_direction.is_finite() or direction.distance_squared_to(old_direction)>0.000001: return false
 	for i in 7:
 		var offset := (76+i*4)*4
 		if current.slice(offset,offset+16)==previous.slice(offset,offset+16): continue
