@@ -958,6 +958,8 @@ func _enter_zone(id: String, entrance: int, autosave := true, island_resume: Dic
 		state.store_party_positions(world)
 		state.collect_pets(world)
 		state.store_zone(zone_id, world)
+	if not _restoring and lmp.is_empty():
+		coop.store_party_quest_items()
 	travel_options = []
 	_leave_armed = -1
 	_dialog_ev = {}
@@ -2899,6 +2901,7 @@ func redeploy_party(player: int) -> void:
 	state.store_party_positions(world)
 	if campaign_redeploy:
 		state.collect_pets(world)
+		coop.store_party_quest_items()
 	for u: GameUnit in world.units.values():
 		var character: Dictionary = u.get_meta("hero", {})
 		if (u.has_meta("hero") and (u.controller == player or (campaign_redeploy and character.has("merc")))) \
@@ -4690,6 +4693,8 @@ func _on_event(event: Dictionary) -> void:
 				state.current_party = String(event.get("current_party", state.current_party))
 				state.parties = event.get("parties", state.parties)
 				state.party_bags = event.get("party_bags", state.party_bags)
+				state.party_quest_items = event.get("party_quest_items", state.party_quest_items)
+				state.quest_party = String(event.get("quest_party", state.current_party))
 				state.god_modes = event.get("god_modes", {})
 				state.mercs = event.get("mercs", state.mercs)
 				state.side_quests = event.get("side_quests", {})
@@ -4860,6 +4865,7 @@ func _sync_state_to(only_pid: int, periodic: bool) -> void:
 			# Expansion chapters replace the host's active party. The live
 			# state must carry the same roster/bag identity as a zone snapshot.
 			"current_party": state.current_party, "parties": state.parties, "party_bags": state.party_bags,
+			"party_quest_items": state.party_quest_items, "quest_party": state.quest_party,
 			"god_modes": state.god_modes,
 			"vars": state.vars, "gs_tables": state.gs_metadata(), "gs_reconstructed": state.gs_reconstructed,
 			"last_quest": state.last_quest, "world_time": state.world_time, "day": state.day,

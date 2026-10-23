@@ -1193,6 +1193,7 @@ func _call(name: String, a: Array, inst: Instance):
 			if n >= 3:
 				session.coop.party_operation(name, v)
 				session.coop.with_campaign_purse(session.state.move_loot.bind(str(v[1]), str(v[2]), name == "CopyLoot"))
+				session.coop.party_inventory_changed()
 				session.sync_state()
 		"Nop", "SetPlayerAggression":
 			pass
@@ -1299,6 +1300,7 @@ func _call(name: String, a: Array, inst: Instance):
 		"SetCurrentParty":
 			session.coop.party_operation(name, v)
 			if session.coop.with_campaign_purse(session.state.set_current_party.bind(str(v[1]))):
+				session.coop.party_inventory_changed()
 				session.sync_state()
 		"AddUnitUnderControl":
 			var u := _unit(v[1])

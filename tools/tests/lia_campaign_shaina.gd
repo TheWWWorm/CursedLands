@@ -53,9 +53,15 @@ func run() -> void:
 		"return area completes the infiltration objective and quest")
 	check(s.state.current_party == "FSusel" and s.party_units(0).size() == 2,
 		"actual return restores the original protagonist and Kel")
+	check(not s.state.quest_items.has("note02") and s.state.party_quest_items.get("Shaina",{}).has("note02"),
+		"Shaina keeps her samples until the actual hand-in gives them to the restored party")
+	await roundtrip("campaign_shaina_before_handoff",["q.gz2h.q8h","b.merc8.brief_24"])
+	check(not s.state.quest_items.has("note02") and s.state.party_quest_items.get("Shaina",{}).has("note02"),
+		"save and reload preserve samples with Shaina before her hand-in")
 	check(value("z.bz5h") == 2 and value("z.gz1h_gz2h") == 2,
 		"actual return reopens both previously closed passages")
 	await complete("b.merc8.brief_24")
+	check(s.state.quest_items.has("note02"),"actual Shaina hand-in gives the samples to the restored party")
 	check(value("b.Elder.brief_25") == 1,"real Shaina hand-in offers the Elder conversation")
 	await roundtrip("campaign_shaina_return",["q.gz2h.q8h","b.Elder.brief_25","z.bz5h"])
 	await enter("bz2h"); start(["VCheck#1#3","VCheck#1#4"])

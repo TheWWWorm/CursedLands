@@ -78,6 +78,7 @@ var mod_refused := {}
 var joiners := {}
 var _zone := ""         # zone the entries' in_sync refers to
 var _qi_last := {}      # host quest items at the start of the period
+var _party_inventory_pending: Array[Dictionary] = []
 var _sq_last := {}      # host side quests at the start of the period
 var _loading := false
 var _send_t := SEND_EVERY
@@ -332,7 +333,11 @@ static func merge(st: CampaignState, pkg: Dictionary) -> void:
 			st.side_quests.erase(id)
 		else:
 			st.side_quests[String(id)] = String(sq[id])
+	# A complete modern context contains the live bag after every credited
+	# party/deployment operation. Flat credits are cumulative across older
+	# parties and would erase restored items (or leak a substitute's items).
 	var qi: Dictionary = pkg.get("quest_items", {}) if pkg.get("quest_items") is Dictionary else {}
+	if context != null and PartyProgress.has_quest_inventory(context): qi = {}
 	for n in qi:
 		if bool(qi[n]):
 			st.quest_items[String(n)] = true
@@ -526,6 +531,8 @@ static func _pristine_new_origin(data: Dictionary) -> bool:
 	if source.get("checkpoints", {}) == {}: source.erase("checkpoints")
 	source.hero.name = expected.hero.name
 	source.party_context.roster[0].name = expected.party_context.roster[0].name
+	if not PartyProgress.has_quest_inventory(context):
+		for key: String in PartyProgress.QUEST_FIELDS: expected.party_context.erase(key)
 	return source == expected
 
 
@@ -542,6 +549,9 @@ func _admit_new_origin(e: Dictionary, data: Dictionary) -> bool:
 			or not st.parties.is_empty() or not st.party_bags.is_empty() or not st.mercs.is_empty() or not st.pets.is_empty() \
 			or not st.quests.is_empty() or not st.quest_items.is_empty() or not st.side_quests.is_empty():
 		return false
+	if st.quest_party != "": return false
+	for party: String in st.party_quest_items:
+		if party != "" or not st.party_quest_items[party].is_empty(): return false
 	var lead: Array = st.heroes.get(0, [])
 	if lead.size() != 1 or lead[0].get("prototype") != "Human Hero" or String(lead[0].get("unit_name", "Hero")) != "Hero":
 		return false
@@ -574,6 +584,13 @@ func _story_matches(data: Dictionary) -> bool:
 	var context := PartyProgress.read(data.get("party_context"))
 	if context == null or context.current_party != session.state.current_party:
 		return false
+	if PartyProgress.has_quest_inventory(context):
+		if context.quest_party != session.state.quest_party \
+				or PartyProgress.quest_archives(context.party_quest_items) != PartyProgress.quest_archives(session.state.party_quest_items) \
+				or context.quest_items != data.get("quest_items", {}):
+			return false
+	elif context.current_party != session.state.quest_party or not PartyProgress.quest_archives(session.state.party_quest_items).is_empty():
+		return false   # absent archives cannot prove an identical story checkpoint
 	var own: Array = context.heroes.get(0, [])
 	var lead: Array = session.state.heroes.get(0, [])
 	if own.is_empty() or lead.is_empty() or own[0].get("prototype") != lead[0].get("prototype") \
@@ -1232,6 +1249,7 @@ func _ahead_in(e: Dictionary, z: String) -> bool:
 ## Quest items and side quests changed since the period began.
 func _settle() -> void:
 	var st := session.state
+	var changed: Array[Dictionary] = []
 	var names := _qi_last.keys()
 	for n in st.quest_items:
 		if not _qi_last.has(n):
@@ -1242,12 +1260,21 @@ func _settle() -> void:
 		if had == has:
 			continue
 		for e: Dictionary in joiners.values():
+			var raw: Variant = e.get("party_context")
+			if raw is Dictionary and String(raw.get("quest_party", raw.get("current_party", ""))) != st.quest_party:
+				continue
 			if e.active and e.in_sync and e.quest_items.has(n) == had:
 				if has:
 					e.quest_items[n] = true
 				else:
 					e.quest_items.erase(n)
 				e.credits.quest_items[n] = has
+				if not changed.has(e): changed.append(e)
+	for e: Dictionary in changed:
+		var context := PartyProgress.read(e.get("party_context"))
+		if context != null and PartyProgress.has_quest_inventory(context):
+			context.quest_items = e.quest_items.duplicate(true)
+			e.party_context = PartyProgress.capture(context)
 	var ids := _sq_last.keys()
 	for id in st.side_quests:
 		if not _sq_last.has(id):
@@ -1271,17 +1298,64 @@ func _settle() -> void:
 
 # ---------------------------------------------------------------- packages
 
+## An old private context has a known live set in its tally, but no evidence
+## for archived contents. Upgrade only that live set; real collection below
+## will establish the first snapshot without guessing earlier bags.
+func _quest_context(e: Dictionary) -> CampaignState:
+	var context := PartyProgress.read(e.get("party_context"))
+	if context != null:
+		context.quest_items = e.quest_items.duplicate(true)
+		if not PartyProgress.has_quest_inventory(context):
+			context.quest_party = context.current_party
+			context.set_meta(PartyProgress.QUEST_KNOWN, true)
+	return context
+
+
+## Session's actual collect/deploy boundary, never its save/snapshot path.
+## The selected roster and loaded quest bag may name different parties.
+func store_party_quest_items() -> void:
+	if not session.lmp.is_empty(): return
+	if not _loading: _settle()
+	if _host_online() and not _loading:
+		for e: Dictionary in joiners.values():
+			if not e.active or not e.in_sync or not e.clean or not e.present: continue
+			var context := _quest_context(e)
+			if context == null or context.current_party != session.state.current_party \
+					or context.quest_party != session.state.quest_party: continue
+			context.store_party_quest_items()
+			e.party_context = PartyProgress.capture(context)
+			e.quest_items = context.quest_items.duplicate(true)
+	session.state.store_party_quest_items()
+	# A bag becoming inactive is not a quest-item consumption credited to
+	# guests who missed this party transition.
+	_qi_last = session.state.quest_items.duplicate()
+
+
+## VM calls after the matching host operation. Selection/CopyLoot normally
+## change only archives; the live bag changes at collect/deploy instead.
+func party_inventory_changed() -> void:
+	for e: Dictionary in _party_inventory_pending:
+		var context := PartyProgress.read(e.get("party_context"))
+		if context != null and PartyProgress.has_quest_inventory(context):
+			e.quest_items = context.quest_items.duplicate(true)
+	_party_inventory_pending.clear()
+	if _qi_last != session.state.quest_items:
+		_qi_last = session.state.quest_items.duplicate()
+
 ## Original party operations run on each eligible player's private story
 ## copy before changing the host's party. This is event-driven, never part of
 ## an actor tick. A behind/ahead guest keeps its own chapter untouched.
 func party_operation(op: String, args: Array) -> void:
+	_party_inventory_pending.clear()
 	if not _host_online() or _loading or not session.lmp.is_empty():
 		return
+	_settle()
 	for e: Dictionary in joiners.values():
 		if not e.active or not e.in_sync or not e.clean or not e.present:
 			continue
-		var context := PartyProgress.read(e.get("party_context"))
-		if context == null or context.current_party != session.state.current_party:
+		var context := _quest_context(e)
+		if context == null or context.current_party != session.state.current_party \
+				or context.quest_party != session.state.quest_party:
 			continue
 		var roster: Array = session.state.heroes.get(int(e.idx), [])
 		var hero: Dictionary = roster[0] if not roster.is_empty() else e.hero_in
@@ -1293,10 +1367,12 @@ func party_operation(op: String, args: Array) -> void:
 		GuestRoles.progress(session, int(e.idx), context)
 		PartyProgress.operation(context, op, args)
 		e.party_context = PartyProgress.capture(context)
+		if op in ["SetCurrentParty", "CopyLoot", "AddLoot"]: _party_inventory_pending.append(e)
 	with_campaign_purse(GuestRoles.operation.bind(session, op, args))
 
 
 func package(e: Dictionary) -> Dictionary:
+	if not _loading: _settle()
 	var st := session.state
 	var roster: Array = st.heroes.get(int(e.idx), [])
 	var personal := GuestRoles.personal(session, int(e.idx), roster[0] if not roster.is_empty() else e.hero_in as Dictionary, e.get("purse", {}))
@@ -1338,6 +1414,12 @@ func package(e: Dictionary) -> Dictionary:
 		var saved := PartyProgress.read(previous.get("party_context"))
 		if saved != null:
 			PartyProgress.personal(saved, hero, purse, false)
+			# Partial quest credit can still be earned after a full checkpoint
+			# stops advancing. Carry that live set only when it belongs to the
+			# checkpoint's loaded party; another chapter's bag must not leak in.
+			if context != null and PartyProgress.has_quest_inventory(saved) \
+					and PartyProgress.has_quest_inventory(context) and saved.quest_party == context.quest_party:
+				saved.quest_items = context.quest_items.duplicate(true)
 			party_context = PartyProgress.capture(saved)
 			move = previous.get("move", {}).duplicate()
 	var host := "host"

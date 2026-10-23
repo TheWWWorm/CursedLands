@@ -26,6 +26,9 @@ func fixture() -> CampaignState:
 	st.shops[1]={"goods":{"rune:e1":12},"sold":{},"restock":false}
 	st.create_party("Waiting")
 	st.add_party_unit("Waiting","Hero","Human Hero")
+	st.quest_items = {"note02":true}
+	st.party_quest_items = {"":{"kel1":true},"Waiting":{"kel2":true}}
+	st.set_current_party("Waiting") # selected and loaded identities can differ
 	return st
 func _ready() -> void:
 	var source := ""
@@ -37,6 +40,7 @@ func _ready() -> void:
 	var ev := {"t":"state","money":st.money,"quests":st.quests,"quest_items":st.quest_items,"items":st.items,
 		"heroes":st.heroes,"mercs":st.mercs,"side_quests":st.side_quests,"shops":st.shops,"visited":st.visited,
 		"current_party":st.current_party,"parties":st.parties,"party_bags":st.party_bags,"vars":st.vars,
+		"party_quest_items":st.party_quest_items,"quest_party":st.quest_party,
 		"gs_tables":st.gs_metadata(),"gs_reconstructed":st.gs_reconstructed,"last_quest":st.last_quest,
 		"world_time":st.world_time,"day":st.day,"revive":0,"unit_stats":{},"lmp_settings":{}}
 	var packet := NetState.pack(ev)
@@ -50,6 +54,10 @@ func _ready() -> void:
 	check(receiver.state.vars==st.vars and receiver.state.gs_metadata()==st.gs_metadata(),"client restores exact script variables and hash metadata")
 	check(receiver.state.heroes==st.heroes and receiver.state.parties==st.parties,"client retains every party and character record")
 	check(receiver.state.items==st.items and receiver.state.party_bags==st.party_bags,"client retains every inventory and chapter bag")
+	check(receiver.state.quest_items==st.quest_items and receiver.state.party_quest_items==st.party_quest_items,
+		"client retains distinct live and archived quest items")
+	check(receiver.state.quest_party==st.quest_party and receiver.state.current_party==st.current_party,
+		"client retains pending selected versus deployed quest party")
 	check(receiver.state.quests==st.quests and receiver.state.visited==st.visited,"client retains journal and visited zones")
 	var own := ev.duplicate(); own.money=456; own.items=["guest item"]
 	var guest := NetState.pack(own)

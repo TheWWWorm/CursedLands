@@ -3,12 +3,50 @@ extends RefCounted
 ## world: original party operations run on this private copy, using the guest's
 ## own character/bags. Shared story companions and personally owned dependents
 ## are refreshed at a credited checkpoint.
+const QUEST_FIELDS := ["quest_items", "party_quest_items", "quest_party"]
+const QUEST_KNOWN := "coop_party_quest_inventory"
+
+static func has_quest_inventory(st: CampaignState) -> bool:
+	return bool(st.get_meta(QUEST_KNOWN, true))
+
+## An unrecorded archive and an explicitly empty archive both deploy no
+## items. Keep that bookkeeping difference out of story equality/receipts.
+static func quest_archives(bags: Dictionary) -> Dictionary:
+	var out := {}
+	for party: String in bags:
+		if not bags[party].is_empty(): out[party] = bags[party]
+	return out
 
 static func capture(st: CampaignState) -> Dictionary:
-	return {"version": 1, "current_party": st.current_party,
+	var out := {"version": 1, "current_party": st.current_party,
 		"roster": st.heroes.get(0, []), "parties": st.parties,
 		"money": st.money, "items": st.items, "party_bags": st.party_bags,
-		"mercs": st.mercs, "pets": st.pets}.duplicate(true)
+		"mercs": st.mercs, "pets": st.pets}
+	# An old context has no evidence for either the live quest bag or its
+	# archived copies. Preserve that absence when forwarding it unchanged.
+	if has_quest_inventory(st):
+		for key: String in QUEST_FIELDS: out[key] = st.get(key)
+	return out.duplicate(true)
+
+
+static func quest_items_ok(value: Variant) -> bool:
+	if not value is Dictionary or value.size() > 4096: return false
+	for name in value:
+		if not (name is String or name is StringName) or String(name).length() > 256 \
+				or not value[name] is bool or not value[name]: return false
+	return true
+
+
+static func quest_inventory_ok(value: Dictionary) -> bool:
+	var fields := QUEST_FIELDS.filter(func(key): return value.has(key))
+	if fields.is_empty(): return true
+	if fields.size() != QUEST_FIELDS.size() or not quest_items_ok(value.quest_items) \
+			or not value.party_quest_items is Dictionary or value.party_quest_items.size() > 33 \
+			or not value.quest_party is String or value.quest_party.length() > 64:
+		return false
+	for party in value.party_quest_items:
+		if not party is String or party.length() > 64 or not quest_items_ok(value.party_quest_items[party]): return false
+	return true
 
 
 ## Project only the transmitted copy. Private checkpoint contexts retain host
@@ -49,7 +87,7 @@ static func read(value: Variant) -> CampaignState:
 	# The imported context is used only for its owner's progress copy. Bound its
 	# size and reject broken containers instead of partially losing a party.
 	if value.parties.size() > 32 or value.party_bags.size() > 32 or value.mercs.size() > 64 \
-			or value.pets.size() > 128 or var_to_bytes(value).size() > 2097152:
+			or value.pets.size() > 128 or var_to_bytes(value).size() > 2097152 or not quest_inventory_ok(value):
 		return null
 	for roster in [value.roster] + value.parties.values():
 		if not roster is Array or roster.size() > 32:
@@ -76,6 +114,9 @@ static func read(value: Variant) -> CampaignState:
 	st.heroes[0] = d.roster
 	for k in ["parties", "party_bags", "money", "items", "mercs", "pets"]:
 		st.set(k, d[k])
+	st.set_meta(QUEST_KNOWN, d.has("quest_items"))
+	if has_quest_inventory(st):
+		for key: String in QUEST_FIELDS: st.set(key, d[key])
 	return st
 
 
@@ -86,6 +127,10 @@ static func apply(st: CampaignState, context: CampaignState) -> void:
 	for k in ["parties", "party_bags", "items", "mercs", "pets"]:
 		st.set(k, context.get(k).duplicate(true))
 	st.money = context.money
+	if has_quest_inventory(context):
+		st.quest_items = context.quest_items.duplicate(true)
+		st.party_quest_items = context.party_quest_items.duplicate(true)
+		st.quest_party = context.quest_party
 	# Hiring flags are not general quest credit. They belong to the companion
 	# record returned to this particular player.
 	for n in previous:

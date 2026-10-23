@@ -3,11 +3,8 @@ extends "lia_kel_support.gd"
 ## archived Kel. Actual dialogue and installed scripts decide every outcome.
 ## Native 1.02 distinguishes an unsynchronized cheat-given bag from a bag
 ## stored by LeaveToZone: AddLoot reads the named party's saved snapshot.
-## The remake currently consumes the three spent fragments in both cases;
-## original synchronized AddLoot restores them. The strict native checkpoint
-## comparison reports that unresolved inventory mismatch separately. This
-## suite verifies passability and the remake's current persistence behavior,
-## not original equivalence for the final synchronized fragment inventory.
+## Synchronized AddLoot restores the three stored fragments after the ritual
+## consumes the live set; saving alone does not synchronize a named bag.
 const FRAGMENTS := ["kel1","kel2","kel3"]
 var kel_stats: Array
 var kel_equipment: Array
@@ -46,7 +43,7 @@ func finish_rescue(tag: String, expected_fragments: Array) -> void:
 		tag+": all three fragments offer Junofil while Kel awaits ritual completion")
 	fragments(FRAGMENTS,tag+": fragment check leaves the live bag intact before ritual closes")
 	await complete("b.Junofil.fq20"); await settle()
-	fragments(expected_fragments,tag+": completed ritual leaves the documented current remake fragment set")
+	fragments(expected_fragments,tag+": completed ritual retains the original stored fragment set")
 	check(s.state.current_party == "Jigran3" and value("b.merc2.fq21") == 1,
 		tag+": ritual completes actual party transition and offers Kel conversation")
 	var restored := s.state.party_member("Jigran3::merc2")
@@ -64,7 +61,7 @@ func finish_rescue(tag: String, expected_fragments: Array) -> void:
 	fragments(expected_fragments,tag+": saved final inventory remains exact after reload")
 	if tag == "synchronized":
 		for fragment: String in FRAGMENTS:
-			check(not s.state.quest_items.has(fragment),"current remake reload does not recreate spent "+fragment)
+			check(s.state.quest_items.has(fragment),"reload retains native AddLoot's restored "+fragment)
 	check(s.state.party_records(0).filter(func(row): return String(row.get("name","")).to_lower() == "merc2").size() == 1,
 		tag+": reload retains exactly one rescued Kel")
 	actor = vm()._by_name("merc2")
@@ -118,5 +115,5 @@ func run() -> void:
 	check(await s.load_game_shown("lia_kel_before_rescue"),"restore complete fragment set before real travel")
 	freeze(); await synchronize()
 	fragments(FRAGMENTS,"same-zone travel preserves all three supplied fragments before ritual")
-	await finish_rescue("synchronized",[])
-	await finish("LIA_KEL_RESCUE","Prepared late-Jigran records and fragment set. Actual LeaveToZone precedes all four rescue branches: each missing fragment blocks restoration and retains its other two; the complete set enables actual preceding/ritual/reunion dialogues and once-only Kel restoration with archived stats/equipment. Current remake consumes the spent three in both synchronized and unsynchronized fixtures; save/load verifies no reappearance. Original synchronized AddLoot restores the spent three, an unresolved inventory mismatch reported by the separate strict native checkpoint comparison. Current named-mercenary recalculation and full save/load are covered. Not a full island-to-island playthrough or native executable replay.")
+	await finish_rescue("synchronized",FRAGMENTS)
+	await finish("LIA_KEL_RESCUE","Prepared late-Jigran records and fragment set. Actual LeaveToZone precedes all four rescue branches: each missing fragment blocks restoration and retains its other two; the complete set enables actual preceding/ritual/reunion dialogues and once-only Kel restoration with archived stats/equipment. Native AddLoot restores stored fragments after consuming the live set; the unsynchronized control has no stored fragments to restore. Save/load preserves both outcomes and current named-mercenary recalculation. Not a full island-to-island playthrough or native executable replay.")

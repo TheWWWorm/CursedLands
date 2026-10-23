@@ -1,6 +1,6 @@
 extends "coop_story.gd"
-## Original Shaina out/return handlers with a guest-owned Kel and a tamed
-## animal. Prepared chapter checkpoint, real ENet peers and save roundtrips.
+## Original Shaina out/return handlers with shared story companion Kel and a
+## guest-owned tamed animal. Prepared chapter checkpoint, real ENet peers and save roundtrips.
 var checks := 0
 var failures := 0
 func check(ok: bool, label: String) -> void:
@@ -43,7 +43,7 @@ func _ready() -> void:
 	kel_record.position=Vector3(lead.pos.x+2,lead.pos.y,0)
 	host.world.spawn_unit(kel_record)
 	host.state.set_var(0,"apartyn2",1);host.merc_changed(2,true,1)
-	check(companions(host).size()==1 and companions(host)[0].controller==1,"Kel is hired by the guest in FSusel")
+	check(companions(host).size()==1 and companions(host)[0].controller==0,"guest recruitment keeps story companion Kel with the host in FSusel")
 	var name:=""
 	for row: Dictionary in GameData.db.table("monster_prototypes"):
 		if "wolf" in String(row.get("name","")).to_lower():name=String(row.name);break
@@ -67,7 +67,7 @@ func _ready() -> void:
 	host.apply_command({"t":"dialog_done","id":"b.merc8.brief_23"},0)
 	for i in 4:vm.tick(GameUnit.TICK)
 	check(host.state.current_party=="Shaina","original conversation selects Shaina")
-	check(companions(host).is_empty(),"in-place substitute removes guest-owned waiting Kel")
+	check(companions(host).is_empty(),"in-place substitute removes waiting story companion Kel")
 	check(pets(host).is_empty() and host.state.pets.size()==1,"substitute leaves the protagonist's pet waiting intact")
 	check(await until(func():return host.zone_id=="gz2h" and client.zone_id=="gz2h" and not host.loading_game and not client.loading_game),"authored Shaina field transfer completes on both peers")
 	host.world.set_physics_process(false);host.world.vm.instances.clear()
@@ -82,16 +82,16 @@ func _ready() -> void:
 	vm.spawn("VCheck#1#1",[])
 	for i in 4:vm.tick(GameUnit.TICK)
 	check(host.state.current_party=="FSusel","original return handler restores FSusel in place")
-	check(companions(host).size()==1 and companions(host)[0].controller==1,"return restores exactly one guest-owned Kel")
+	check(companions(host).size()==1 and companions(host)[0].controller==0,"return restores exactly one host-controlled story companion Kel")
 	check(pets(host).size()==1 and pets(host)[0].controller==1 and is_equal_approx(pets(host)[0].hp,pet_hp),"return restores the guest's wounded animal")
-	check(companions(host).size()==1 and await until(func():return companions(client).size()==1 and companions(client)[0].controller==1),"returned companion is controlled by the guest on its peer")
+	check(companions(host).size()==1 and await until(func():return companions(client).size()==1 and companions(client)[0].controller==0),"guest peer retains host ownership of the returned story companion")
 	check(host.save_game("party_returned")==OK,"restored party saves")
 	check(await host.load_game_shown("party_returned"),"restored party reloads")
 	host.world.set_physics_process(false)
 	require(await until(func():return not client.loading_game and not host.loading_game))
 	check(companions(host).size()==1 and pets(host).size()==1,"save/reload does not duplicate restored dependents")
 	await enter("gz2h")
-	check(companions(host).size()==1 and companions(host)[0].controller==1 and pets(host).size()==1,"next field deployment keeps both dependents")
+	check(companions(host).size()==1 and companions(host)[0].controller==0 and pets(host).size()==1 and pets(host)[0].controller==1,"next field deployment keeps each dependent with its owner")
 	# Death removes only the active animal, never resurrects it next trip.
 	if not pets(host).is_empty():pets(host)[0].die(host.party_units(0)[0])
 	host.state.collect_pets(host.world)

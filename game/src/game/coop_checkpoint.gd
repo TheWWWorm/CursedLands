@@ -22,9 +22,12 @@ static func signature(data: Dictionary) -> String:
 		if value != 0.0 and not CoopProgress.excluded(key): vars[key] = value
 	var visited: Array = data.get("visited", {}).keys() if data.get("visited") is Dictionary else Array(data.get("visited", []))
 	visited.sort()
-	return JSON.stringify([vars, visited, data.get("side_quests", {}), data.get("quest_items", {}),
+	var values := [vars, visited, data.get("side_quests", {}), data.get("quest_items", {}),
 		data.get("zone", ""), context.get("current_party", ""), lead.get("prototype", ""),
-		lead.get("unit_name", "Hero")], "", true).sha256_text()
+		lead.get("unit_name", "Hero")]
+	if context.has("party_quest_items"):
+		values.append([context.get("quest_party", ""), CoopProgress.PartyProgress.quest_archives(context.party_quest_items)])
+	return JSON.stringify(values, "", true).sha256_text()
 
 static func receipts(st: CampaignState) -> Dictionary:
 	var out := {}
@@ -68,6 +71,13 @@ static func adopt(e: Dictionary, st: CampaignState) -> void:
 	e.visited = st.visited.duplicate()
 	e.side_quests = st.side_quests.duplicate(true)
 	e.quest_items = st.quest_items.duplicate(true)
+	var context := CoopProgress.PartyProgress.read(e.get("party_context"))
+	if context != null:
+		context.quest_items = st.quest_items.duplicate(true)
+		context.party_quest_items = st.party_quest_items.duplicate(true)
+		context.quest_party = st.quest_party
+		context.set_meta(CoopProgress.PartyProgress.QUEST_KNOWN, true)
+		e.party_context = CoopProgress.PartyProgress.capture(context)
 	var credited := {}
 	for key: String in current.vars:
 		if not CoopProgress.excluded(key): credited[key] = current.vars[key]
@@ -81,3 +91,4 @@ static func clear_story(st: CampaignState) -> void:
 		if key.begins_with("0:") and not CoopProgress.excluded(key.substr(2)): st.set_var(0, key.substr(2), 0.0)
 	st.quests.clear(); st.visited.clear(); st.zones.clear()
 	st.quest_items.clear(); st.side_quests.clear()
+	st.party_quest_items.clear(); st.quest_party = st.current_party

@@ -20,9 +20,7 @@ func check(ok: bool, label: String) -> void:
 	print("PASS " if ok else "FAIL ", label)
 
 func capture(st: CampaignState) -> Dictionary:
-	return {"version":1, "current_party":st.current_party, "roster":st.heroes.get(0,[]),
-		"parties":st.parties, "money":st.money, "items":st.items, "party_bags":st.party_bags,
-		"mercs":st.mercs, "pets":st.pets}.duplicate(true)
+	return CoopProgress.PartyProgress.capture(st)
 
 func clone(st: CampaignState) -> CampaignState:
 	var out := CampaignState.new()

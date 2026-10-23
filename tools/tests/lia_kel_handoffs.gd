@@ -27,6 +27,8 @@ func run() -> void:
 	s.state.add_party_unit("Gipat","Hero","Hero3")
 	s.state.add_party_unit("Gipat","merc2","merc2g")
 	s.state.set_current_party("Gipat")
+	# The checkpoint starts with Gipat deployed before its earned prerequisites.
+	s.state.store_party_quest_items()
 	s.state.add_item("Kel1")
 	# The crypt key is supplied by the separately tested paid fortune.
 	s.state.add_item("AmbushKey04")

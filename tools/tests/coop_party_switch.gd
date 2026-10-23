@@ -77,7 +77,7 @@ func _ready() -> void:
 	host.coop.on_hello(guest_pid,1,"Nalo Audit Guest")
 	host.state.set_var(0,"q.gz15h.q60h",2)
 	host.state.set_var(0,"q.gz15h.q61h",1)
-	# Pause automatic world ticking, but keep networking and normal load/save.
+	# Keep Session updates paused while world scripts and networking advance.
 	host.set_physics_process(false)
 	await host.enter_zone("bz13h",1,false)
 	check(await until(func():return client.world!=null and client.zone_id=="bz13h" and not client._remote_loading),"both peers at prepared prison checkpoint")
@@ -91,11 +91,11 @@ func _ready() -> void:
 	check(host.coop.purse_entry(1).purse=={"money":0,"items":[]},"guest Nalo receives an empty temporary bag")
 	check(host.state.coop.guest_roles[1].bags[""]=={"money":222,"items":["rune:r2"]},"guest keeps personal money and items parked with original hero")
 	check(host.state.current_party=="Pretty","authored completion selects Nalo party")
-	var target := vm._pending_zone.duplicate()
-	check(target.size()==2 and target[0]=="gz15h","authored completion queues rescue map")
+	# VM.tick consumes its pending target before the next frame. Observe the
+	# authored transfer itself, including both peers' completed map load.
+	check(await until(func():return host.zone_id=="gz15h" and client.zone_id=="gz15h" \
+		and not host.loading_game and not client.loading_game and not client._remote_loading),"authored completion transfers both peers to rescue map")
 	if failures: get_tree().quit(2); return
-	vm._pending_zone.clear()
-	await host.enter_zone(String(target[0]),int(target[1]),false)
 	check(await until(func():return client.zone_id==host.zone_id and client.state.current_party=="Pretty" and not client._remote_loading),"client receives Nalo chapter and map")
 	snapshot("after authored Nalo switch")
 	check(host.party_units(0).size()==1 and host.party_units(0)[0].info.name=="Nalo","host controls only Nalo")

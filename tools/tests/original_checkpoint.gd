@@ -233,6 +233,9 @@ func _ready() -> void:
 		for row: Dictionary in fixture.party:
 			s.state.add_party_unit(name, String(row.name), String(row.prototype))
 		s.state.set_current_party(name)
+	# The recorded before-state already has this party deployed. Align the
+	# loaded owner before supplying its recorded live prerequisite inventory.
+	s.state.store_party_quest_items()
 	for item: String in fixture.get("quest_items", []):
 		s.state.quest_items[Session._quest_item_key(item)] = true
 	if fixture.has("money"): s.state.money = int(fixture.money)
