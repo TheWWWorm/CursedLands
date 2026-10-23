@@ -1,0 +1,159 @@
+{
+  "date": "2026-10-23",
+  "main_before_merge": "3c42d8923cbc6e3b31880c7845fbe2d9ddce5855",
+  "feature_commit": "f1dbdb6a73a17ddbade8dedf91f6483df402b8e7",
+  "tested_tree_before_validation_receipt": "1a10f6288402fff86496ef7d2b458b53e638ccfa",
+  "conflicts": [],
+  "project": "/home/llm2x/Documents/EI/local/scratchpad/issues-68-77-20261023/repo/game",
+  "tests": [
+    {
+      "run": "main-merge-builtin-101",
+      "tool": "tools/tests/astral_official_patches.gd",
+      "edition": "101",
+      "exit_code": 0,
+      "checks": 329,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/main-merge-builtin-101/run.log",
+      "log_sha256": "b8d356a45d7eb3978b53c121686274395c784015de8b1f64dd89fd44813c4726"
+    },
+    {
+      "run": "main-merge-builtin-102",
+      "tool": "tools/tests/astral_official_patches.gd",
+      "edition": "102",
+      "exit_code": 0,
+      "checks": 329,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/main-merge-builtin-102/run.log",
+      "log_sha256": "6106061ebe6b07cd556cf526e8b69ab019a0f94b73dc99736f6d264d06a5b5bf"
+    },
+    {
+      "run": "main-merge-builtin-cd",
+      "tool": "tools/tests/astral_official_patches.gd",
+      "edition": "cd",
+      "exit_code": 0,
+      "checks": 329,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/main-merge-builtin-cd/run.log",
+      "log_sha256": "b19f0bc13a70e8fa76f12d5db73bfdcbc9f2b9956934f7cc2157255f6146698d"
+    },
+    {
+      "run": "main-merge-builtin-imported-pack",
+      "tool": "tools/tests/astral_official_patches.gd",
+      "edition": "imported-pack",
+      "exit_code": 0,
+      "checks": 329,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/main-merge-builtin-imported-pack/run.log",
+      "log_sha256": "dae838fdef4de231eb84c43742c88ddaee70f5c46837c5ea35782d4b80d7b788"
+    },
+    {
+      "run": "main-merge-coop-102",
+      "tool": "tools/tests/lia_trap_registration.gd",
+      "edition": "102",
+      "exit_code": 0,
+      "checks": 27,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/main-merge-coop-102/run.log",
+      "log_sha256": "1c0191ac3a2afc297de05a94eb81ab570c075b5b58e60e872e3812757cc6dd37"
+    },
+    {
+      "run": "main-merge-coop-cd",
+      "tool": "tools/tests/lia_trap_registration.gd",
+      "edition": "cd",
+      "exit_code": 0,
+      "checks": 27,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/main-merge-coop-cd/run.log",
+      "log_sha256": "1cc074855eefcd84149eb5458bbecec5b21fef09eedc8f669cabc9c6d8ed68e7"
+    },
+    {
+      "run": "main-merge-guards",
+      "tool": "tools/tests/astral_official_patch_guards.gd",
+      "edition": "102",
+      "exit_code": 0,
+      "checks": 63,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/main-merge-guards/run.log",
+      "log_sha256": "59567621d8f4ace84739f33e0f7d587d22e6ffa92390862e5b42659c0adba761"
+    },
+    {
+      "run": "main-merge-journal",
+      "tool": "tools/tests/astral_patch_journal_ui.gd",
+      "edition": "cd",
+      "exit_code": 0,
+      "checks": 128,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/main-merge-journal/run.log",
+      "log_sha256": "843e8c9c2b41c99952fcd3019592cdc14fc03c7e137f8879c2cf757a32923290"
+    },
+    {
+      "run": "main-merge-paid-101",
+      "tool": "tools/tests/astral_paid_topics.gd",
+      "edition": "101",
+      "exit_code": 0,
+      "checks": 825,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/main-merge-paid-101/run.log",
+      "log_sha256": "492bba9bd035a804ab498762237673783e44768f07f99a09e2e7647d8e7643f2"
+    },
+    {
+      "run": "main-merge-paid-102",
+      "tool": "tools/tests/astral_paid_topics.gd",
+      "edition": "102",
+      "exit_code": 0,
+      "checks": 825,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/main-merge-paid-102/run.log",
+      "log_sha256": "951176d5743fe419ddadd99c09886b788125c536f9c27011655e5ae5db6f3694"
+    },
+    {
+      "run": "main-merge-paid-cd",
+      "tool": "tools/tests/astral_paid_topics.gd",
+      "edition": "cd",
+      "exit_code": 0,
+      "checks": 825,
+      "failures": 0,
+      "runtime_errors": [],
+      "log": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/main-merge-paid-cd/run.log",
+      "log_sha256": "f319a9380cd51d3730e8ccb964473071ee0d52a8b9f3e0e91d46ed4757db9976"
+    }
+  ],
+  "total_passing_assertions": 4036,
+  "runtime_errors": 0,
+  "godot_editor_import": "passed without script/parse errors",
+  "translation_coverage": "3057 entries; 141 dynamic wiki keys; 179 dynamic arena keys; 0 errors",
+  "git_diff_check": "passed",
+  "profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "rendered_layouts_visually_checked": [
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/main-merge-journal/data/godot/app_userdata/Cursed Lands/expansion-lia-journal-en-800.png",
+      "sha256": "289d2976d787556d5c3db4690569d1ea5b7bc3261d9f17edf5631a17eecc22ab"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/main-merge-journal/data/godot/app_userdata/Cursed Lands/expansion-lia-journal-ru-1280.png",
+      "sha256": "f75b6ec55ef7e83adccfbb2646b710bb805515aef27f9ddb5ab0c90f594c951f"
+    },
+    {
+      "path": "/home/llm2x/Documents/EI/local/scratchpad/lia-official-patches-20261023/runs/main-merge-journal/data/godot/app_userdata/Cursed Lands/expansion-lia-journal-de-800.png",
+      "sha256": "87dd99c9261a0e50ff6de265e2c74a02a193857280a0ff5eb88adfe29310bc9b"
+    }
+  ],
+  "scope": "Local merge into main; no push or release."
+}

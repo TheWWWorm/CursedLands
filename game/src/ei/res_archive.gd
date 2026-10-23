@@ -11,6 +11,8 @@ var _path := ""
 var _file: FileAccess
 var _bytes: PackedByteArray
 var _archive_name := ""
+## Only the LiA campaign database enables the built-in official corrections.
+var astral_patches := false
 ## lowercase name -> Vector2i(offset, size)
 var entries := {}
 
@@ -51,7 +53,8 @@ func has(name: String) -> bool:
 func read(name: String) -> PackedByteArray:
 	var replacement := ModStore.override_path(_archive_name, name)
 	if not replacement.is_empty(): return FileAccess.get_file_as_bytes(replacement)
-	return read_original(name)
+	var data := read_original(name)
+	return AstralPatches.database_entry(name,data) if astral_patches else data
 
 
 ## Archive bytes without a texture-package replacement. Identity checks use

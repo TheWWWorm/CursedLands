@@ -97,6 +97,7 @@ static func create(w: GameWorld, s: Session) -> ScriptVM:
 			if extra and not extra.script_text.is_empty():
 				vm.world_bodies["m:" + file.to_lower()] = vm._merge_script(extra.script_text, file.get_basename().to_lower())
 	if restored.is_empty():
+		preload("res://src/game/script/story_astral_patch_saves.gd").prepare(vm)
 		vm._start_world(vm.ast.world)
 	else:
 		vm._restore(restored)
@@ -2107,7 +2108,8 @@ func save_state() -> Dictionary:
 		"world_done": _world_done.duplicate(),
 		"fx_auto": _fx_auto,   # the replayed CreateFXSource(-1) sources keep their ids (zone "fx")
 		"quest": String(world.get_meta("quest_mob", "")) if world.has_meta("quest_mob") else ""}
-	return preload("res://src/game/script/story_coop_traps.gd").save_registration(self,saved)
+	saved = preload("res://src/game/script/story_coop_traps.gd").save_registration(self,saved)
+	return preload("res://src/game/script/story_astral_patch_saves.gd").stamp(self,saved)
 
 
 func _set_scene_clock(hour: float, fixed: bool) -> void:
@@ -2148,6 +2150,7 @@ func _alarm_load(al) -> void:
 
 
 func _restore(d: Dictionary) -> void:
+	d = preload("res://src/game/script/story_astral_patch_saves.gd").migrate(self,d)
 	d = preload("res://src/game/script/coop_vm_state.gd").restore(self,d)
 	time_fixed = bool(d.get("time_fixed", false))
 	world.clock_fixed = time_fixed
@@ -2244,6 +2247,7 @@ func _restore(d: Dictionary) -> void:
 			inst.wait_unit = wu if wu is GameUnit else null
 		instances.append(inst)
 	preload("res://src/game/script/story_coop_traps.gd").restore_registration(self,d)
+	preload("res://src/game/script/story_astral_patch_saves.gd").recover(self,d)
 
 
 ## Script-selected NPC follow/guard/motivation state outlives the instruction

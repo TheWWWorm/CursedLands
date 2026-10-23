@@ -10154,9 +10154,9 @@ const TEXTS := {
 		""
 	],
 	"litem gepard_3": [
-		"158d97377126371c22ed5858e07df29c0aa2f8c76750b719b857ddc7bb556c54",
-		"Mature leopard hide\nA townsman could decorate his home with this hide.",
-		"Haut eines alten Leoparden\nMit dieser Haut könnte ein Stadtbewohner sein Heim schmücken."
+		"20cee3516a6fb56da6939f7be5fd830aabf7f601021a2ee1df0cd12223f1f6ff",
+		"Mature cheetah hide\nA townsman could decorate his home with this hide.",
+		"Haut eines alten Geparden\nMit dieser Haut könnte ein Stadtbewohner sein Heim schmücken."
 	],
 	"litem gepard_3 ": [
 		"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",

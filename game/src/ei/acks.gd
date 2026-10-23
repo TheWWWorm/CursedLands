@@ -94,6 +94,7 @@ static func _load() -> void:
 	var arc := EIResArchive.open_path(GameData.root.path_join("res/database.res"))
 	if arc == null or not arc.has("acks.db"):
 		return
+	arc.astral_patches = GameData.campaign_id == CampaignProfile.ASTRAL
 	var d := arc.read("acks.db")
 	var top := _node(d, 0)
 	for sec in _kids(d, top.y, top.y + top.z):

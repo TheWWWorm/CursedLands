@@ -26,6 +26,12 @@ const PRISON_DAMAGE_SIGNATURE := "bbf53da90e2290af92114110db2fd0f1b4dcca3541a1b3
 const ASTRAL_REGISTRATIONS := ["Trap#0#1", "Trap#1#1"]
 const ASTRAL_SIGNATURES := ["fb360e911b160ea684c10d400a2d88a521b3c2211f23c1a298a9d548b4fe30c9",
 	"496e82c285fcacdfb194a58498ca8bd1857ef9d60d4f909d8d2b35caf10b2b40"]
+## Official LiA 1.01 re-arms the Path to the Healer quest checks in
+## VCheck#0#1. Its two trap families keep their original geometry, timing
+## and damage. 1.02 retains this map unchanged; admit its verified caller
+## as well as the CD caller without relaxing the complete family guard.
+const ASTRAL_101_SIGNATURES := ["5cd8a48ef178bb4228d0c3b2169ebe13d97d8b49a99ea7bc68af7717b0fca937",
+	"337f8d682291dfafd26e2f1671fb18737543ca90a64e0f7efb7229ab265b2977"]
 const NATIVE_REGISTRATIONS := [PRISON_REGISTER,PRISON_DAMAGE_REGISTER,"Trap#0#1","Trap#1#1"]
 const PRISON_ACTOR := &"prison_actor_reference"
 const PRISON_LAST := &"prison_actor_tick"
@@ -60,7 +66,8 @@ static func apply_astral_registration(ast: ScriptParser) -> void:
 		var definitions := []
 		for name: String in ["VCheck#0#1", root] + family:
 			definitions.append([name, ast.scripts.get(name, {})])
-		if JSON.stringify(definitions,"",true,true).sha256_text() != ASTRAL_SIGNATURES[i]: continue
+		var signature := JSON.stringify(definitions,"",true,true).sha256_text()
+		if signature not in [ASTRAL_SIGNATURES[i], ASTRAL_101_SIGNATURES[i]]: continue
 		ast.scripts[root+WATCH] = {"params":[], "blocks":[{"conds":[],
 			"body":[[P.S_CALL,"RemakeTrapJoin",[[P.N_STR,root]]]]}],
 			"registration":{"children":[family[0]], "caller":"VCheck#0#1", "family":family,
