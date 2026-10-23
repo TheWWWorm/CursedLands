@@ -68,7 +68,9 @@ static func run(game: Game) -> void:
 	if game.world.ground_marks: game.world.ground_marks.prepare_footprints()
 	var previews := game.hud.prepare_previews() if game.hud else []
 	var polygons := CanvasPolygons.new()
-	cam.get_tree().root.add_child(polygons)
+	# The HUD (where conversations draw) accepts children while a zone is
+	# entered from a _ready; the root is then busy setting up its own.
+	(game.hud if game.hud and game.hud.is_inside_tree() else cam.get_tree().root).add_child(polygons)
 	polygons.free_after(3)
 	var forced := LoadingScreen._current != null and not (OS.has_feature("web") or LoadingScreen.force_deferred)
 	if not previews.is_empty():
@@ -83,6 +85,7 @@ static func run(game: Game) -> void:
 		if not is_instance_valid(terrain.color_cache) and TerrainColorCache.available(terrain):
 			terrain.color_cache=TerrainColorCache.create(terrain)
 		if is_instance_valid(terrain.color_cache):terrain.color_cache.prepare(cam)
+	_prepare_bird(game)
 	var t0 := Time.get_ticks_msec()
 	var env := _env_key(game)
 	var items: Array = []   # [key, material, kind]
@@ -170,6 +173,21 @@ static func run(game: Game) -> void:
 		w.queue_free()
 	else:
 		w._free_after(2)
+
+
+## QuestBird.prepare at the local hero (the bird's first flight is there),
+## else in front of the camera.
+static func _prepare_bird(game: Game) -> void:
+	var w := game.world
+	var cam := game.rig.camera
+	var at := cam.global_position - cam.global_basis.z * maxf(DIST, cam.near * 4.0)
+	if game.session:
+		for u: GameUnit in w.units.values():
+			if u.controller == game.session.my_index and u.has_meta("hero") and not u.dead \
+					and u.is_inside_tree():
+				at = u.global_position + Vector3(0, 2, 0)
+				break
+	QuestBird.prepare(w, at)
 
 
 static func _restore_previews(previews: Array) -> void:
@@ -465,8 +483,12 @@ class CanvasPolygons extends Node2D:
 			PackedVector2Array([Vector2.ZERO, Vector2(1, 0), Vector2.ONE, Vector2(0, 1)]), ShaderWarmup._stand_in())
 
 	func free_after(frames: int) -> void:
+		var tree := get_tree()
+		if tree == null:
+			queue_free()
+			return
 		for i in frames:
-			await get_tree().process_frame
+			await tree.process_frame
 		queue_free()
 
 

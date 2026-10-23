@@ -37,6 +37,7 @@ var _timer := 0.0
 var _angle := 0.0
 var _height := 0.0
 var _phase := 0
+var _warming := false       # prepare()'s tiny draw
 
 
 ## (re)start the world's bird at `u`.
@@ -51,6 +52,8 @@ static func visit(w: GameWorld, u: GameUnit) -> void:
 			return
 		w.add_child(bird)
 		w.set_meta("quest_bird", bird)
+	bird._warming = false
+	bird.scale = Vector3.ONE
 	bird.world = w
 	bird.hero = u
 	bird._p = bird._start_point(_hero_pos(w, u))
@@ -83,6 +86,33 @@ func _build() -> bool:
 		_player.play("ei/cflight")
 		_player.speed_scale = 0.0
 	return true
+
+
+## ShaderWarmup: builds the world's bird ahead of time (~10 ms of script)
+## and draws it at 1/1000 scale at `at` for a few frames. A completed quest
+## first drew the bird in a running zone, where its ~10 pipelines (shadow and
+## reflection passes included) cost a ~24 ms frame; stand-in meshes in front
+## of the camera did not build the same pipelines.
+static func prepare(w: GameWorld, at: Vector3) -> void:
+	if w == null or w.has_meta("quest_bird"):
+		return
+	var bird := QuestBird.new()
+	if not bird._build():
+		bird.free()
+		return
+	bird.set_process(false)
+	w.add_child(bird)
+	w.set_meta("quest_bird", bird)
+	bird._warming = true
+	bird.scale = Vector3.ONE * 0.001
+	bird.global_position = at
+	var tree := w.get_tree()
+	for i in 3:
+		await tree.process_frame
+	if is_instance_valid(bird) and bird._warming:
+		bird._warming = false
+		bird.scale = Vector3.ONE
+		bird.visible = false
 
 
 static func _hero_pos(w: GameWorld, u: GameUnit) -> Vector3:

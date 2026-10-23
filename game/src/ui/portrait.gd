@@ -387,6 +387,10 @@ func _build_face(vp: SubViewport, names: PackedStringArray, c: Vector3) -> bool:
 	vp.add_child(env)
 	_tex = names[1]
 	_expr = -1
+	# Decode the expression faces now: the first smile (a completed quest,
+	# a won fight) otherwise loads them in play, ~7 ms for a party.
+	for e in "abc":
+		GameData.get_texture(_tex + e)
 	_flash = ColorRect.new()
 	_flash.color = Color(1, 0, 0, 0)
 	_flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
