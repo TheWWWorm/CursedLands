@@ -19,6 +19,13 @@ func _ready() -> void:
 		var g := Game.new(); g.session = s; s.game = g; add_child(g)
 		s.state.ensure_hero(0,"Human Hero")
 		await s.enter_zone("bz1g",1,false); freeze(s)
+		# A packaged cold start can still be preparing the new world's shaders.
+		# The camera intentionally suspends follow updates until that owner ends.
+		for i in 2: await get_tree().process_frame
+		var ready_deadline := Time.get_ticks_msec() + 60000
+		while ShaderCompilationScreen.active() and Time.get_ticks_msec() < ready_deadline:
+			await get_tree().process_frame
+		check(not ShaderCompilationScreen.active(), "village presentation is ready before camera checks, style="+str(style))
 		var hero: GameUnit = s.party_units(0)[0]
 		var authored: Transform3D = preload("res://src/ei/camera_track.gd").read_first(s.world.zone.camera)
 		var angle := atan2(authored.basis.z.x, authored.basis.z.z)
