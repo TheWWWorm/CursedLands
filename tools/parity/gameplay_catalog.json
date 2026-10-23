@@ -8140,7 +8140,7 @@
       "category": "coop",
       "script": "tools/tests/party_quest_inventory_coop.gd",
       "marker": "PARTY_QUEST_INVENTORY_COOP",
-      "min_checks": 40,
+      "min_checks": 45,
       "quick": true,
       "description": "Deferred quest bag deployment, credited and ineligible guests, stale credits, save/reload, legacy contexts and checkpoint ownership",
       "kind": "remake_regression",

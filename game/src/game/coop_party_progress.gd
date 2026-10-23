@@ -131,6 +131,11 @@ static func apply(st: CampaignState, context: CampaignState) -> void:
 		st.quest_items = context.quest_items.duplicate(true)
 		st.party_quest_items = context.party_quest_items.duplicate(true)
 		st.quest_party = context.quest_party
+	else:
+		# Legacy contexts carried one global live bag. Associate it with the
+		# adopted party, as legacy save migration does, so the next collection
+		# cannot park it under the previous owner and deploy a stale archive.
+		st.quest_party = st.current_party
 	# Hiring flags are not general quest credit. They belong to the companion
 	# record returned to this particular player.
 	for n in previous:
