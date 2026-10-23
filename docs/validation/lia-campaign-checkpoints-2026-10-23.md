@@ -1,5 +1,9 @@
 # LiA campaign quest and travel checkpoints — 2026-10-23
 
+**Follow-up:** the two inventory differences recorded below are resolved by the
+[2026-10-24 party-inventory correction](lia-party-inventory-2026-10-24.md).
+The original results below remain the historical qualification record.
+
 This extends the [earlier prologue, fragment and Кель qualification](lia-kel-checkpoints-2026-10-23.md)
 across Suslanger, Gipat, Ingos and Jigran through the campaign-ending trigger.
 The focus is quest acceptance, objective transitions, required items, NPC
