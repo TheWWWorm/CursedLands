@@ -18,3 +18,4 @@ tools/windows/Prepare-PT-Diagnostics.ps1 text eol=crlf
 # Retain literal patch context and diagnostic logs as validation evidence.
 docs/validation/path-tracing-stability-2026-10-23/*.patch -whitespace
 docs/validation/path-tracing-stability-2026-10-23/**/*.log -whitespace
+docs/validation/shader-preparation-2026-10-23/**/*.log -text -whitespace
