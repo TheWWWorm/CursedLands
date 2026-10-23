@@ -75,4 +75,4 @@ func dispose() -> void:
 	for n: Node in [game.hud, game, unit, world]:
 		if is_instance_valid(n):
 			n.free()
-	free.call_deferred()
+	call_deferred("free")
