@@ -1,0 +1,91 @@
+{
+  "source_commit": "0158ff77335a485399067e74ce65c580d01fbf31",
+  "version": "1.26.0",
+  "version_code": 60,
+  "protocol": 23,
+  "steps": [
+    {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/android-stage",
+        "--editor",
+        "--import",
+        "--quit"
+      ],
+      "exit": 0,
+      "seconds": 25.375699830001395,
+      "errors": []
+    },
+    {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/android-stage",
+        "--export-release",
+        "Android",
+        "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/CursedLands-1.26.0-android/CursedLands.apk"
+      ],
+      "exit": 0,
+      "seconds": 14.894529434997821,
+      "errors": []
+    }
+  ],
+  "template": {
+    "base_template": "/home/llm2x/Documents/EI/local/scratchpad/wiki-rework-20261016/release-1.8.0/android_release_startup.apk",
+    "base_sha256": "39618fbc955046168013eaf2ab96577f776a240d5f5c075e3ff55fa7f06f6012",
+    "release_template": "/home/llm2x/Documents/EI/local/scratchpad/issues-5-9-15-20261017/release-1.10.0/android_release_startup.apk",
+    "release_template_sha256": "d6b076f7887e995c994984423fdbd5f6e17d075f55de44b080c2840a0cd8761a",
+    "engine_sha256": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+    "libcxx_sha256": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+    "classes_dex_sha256": "386484cf1c35c955d0a1996d5628ae51e56626cb03cd4ec46d692313330a6601",
+    "patch_count": 16,
+    "new_java_diagnostics_sources": {
+      "AndroidExitReport.java": "466f2236cc950a79b8b409d383bad99d93d0aea282c540627979c459b8587143",
+      "EISimulation.java": "56cdcaedd3d7027e7672231035005cd0b6b5c95e38ca2636fd07b7cebc721c0f",
+      "EarlyStartup.java": "9759125edf22ee9260cad2f87b5220e08400a899499a4471e08a69844b7a0602",
+      "NativeTombstone.java": "4cdb78b00c6434e2905ed946d1d7fd235a90732105793516628ec4b0641a3779",
+      "StartupApplication.java": "450bddb5ad3514c240e697a17e44009dc1a1a15121c9668d62ce2ec8ac6292a4"
+    },
+    "java_template_build": "generateGodotTemplates --offline; all native SCons tasks excluded",
+    "java_template_tested_in": "docs/validation/android-early-startup-recovery-2026-10-15.json",
+    "production_native_libraries_unchanged": true,
+    "private_instrumentation": false,
+    "java_source_commit": "70fd01919514aa68781c0585c7a3b9005e4a4487",
+    "early_startup_journal": true,
+    "additional_native_patches": [
+      "mobile-render-work.patch",
+      "mobile-screen-mip-demand.patch"
+    ],
+    "native_validation": "docs/android-vulkan-water-performance-2026-10-17.json",
+    "previous_stable": "1.9.0",
+    "template_reconstruction": {
+      "reason": "The 1.23.0 release template file was removed by a scratchpad cleanup on 2026-10-22.",
+      "source": "Published v1.23.0 asset CursedLands-1.23.0-android.apk",
+      "source_sha256": "e9b6071fcb7af6d807da7313a190712f6ba6f079a010d77b86774c94e98a405a",
+      "removed": "META-INF signature, project assets (except assets/dexopt), libmod_archive_android.so and libterrain_search_android.so",
+      "verified": "classes.dex, libgodot_android.so and libc++_shared.so equal the recorded template hashes",
+      "sha256": "42623535bffc8da53ae1167e4f604f221d61120a8c68774099c8d7fddd21f207"
+    }
+  },
+  "folder": "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/CursedLands-1.26.0-android",
+  "canonicalized_imports": [
+    "assets/materials/surface-detail/stone03.png.import",
+    "assets/materials/surface-detail/columnruins01.png.import",
+    "assets/materials/surface-detail/bridge00.png.import"
+  ],
+  "libraries": {
+    "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+    "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+    "lib/arm64-v8a/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+    "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+    "lib/arm64-v8a/libterrain_search_android.so": "db4560020be613f63e061defa86ac14555d0cd8ea8c7d0b7c72d306f306dff1a"
+  },
+  "apk_sha256": "1d7fb613959c165e2f79a700b72f45aafa1c932d23bff1f6976310018f37dbca",
+  "bytes": 48310465,
+  "debuggable": false,
+  "matching_public_certificate": true,
+  "source_exact_except_export_preset_and_canonicalized_imports": true
+}

@@ -1,0 +1,587 @@
+{
+	"assertions": [
+		{
+			"label": "owned expected campaign loaded: lost_in_astral",
+			"ok": true
+		},
+		{
+			"label": "loaded authored map bz31j",
+			"ok": true
+		},
+		{
+			"label": "bz31j: authored thread VCheck#0#5",
+			"ok": true
+		},
+		{
+			"label": "bz31j: authored thread VCheck#0#6",
+			"ok": true
+		},
+		{
+			"label": "bz31j: authored thread VCheck#0#7",
+			"ok": true
+		},
+		{
+			"label": "all fragments alone do not skip the preceding Deva conversation",
+			"ok": true
+		},
+		{
+			"label": "archived Kel alone is not treated as a member of the current party",
+			"ok": true
+		},
+		{
+			"label": "save prepared three-fragment rescue checkpoint",
+			"ok": true
+		},
+		{
+			"label": "authored conversation offered: b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "authored conversation actor exists: Deva",
+			"ok": true
+		},
+		{
+			"label": "normal topic list contains b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "normal topic selection reaches closing controls: b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "normal dialogue close completes b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "duplicate dialogue close grants nothing: b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "unsynchronized: all three fragments offer Junofil while Kel awaits ritual completion",
+			"ok": true
+		},
+		{
+			"label": "unsynchronized: fragment check leaves the live bag intact before ritual closes",
+			"ok": true
+		},
+		{
+			"label": "authored conversation offered: b.Junofil.fq20",
+			"ok": true
+		},
+		{
+			"label": "normal topic selection reaches closing controls: b.Junofil.fq20",
+			"ok": true
+		},
+		{
+			"label": "normal dialogue close completes b.Junofil.fq20",
+			"ok": true
+		},
+		{
+			"label": "duplicate dialogue close grants nothing: b.Junofil.fq20",
+			"ok": true
+		},
+		{
+			"label": "unsynchronized: completed ritual retains the original stored fragment set",
+			"ok": true
+		},
+		{
+			"label": "unsynchronized: ritual completes actual party transition and offers Kel conversation",
+			"ok": true
+		},
+		{
+			"label": "unsynchronized: rescued party contains original Kel role",
+			"ok": true
+		},
+		{
+			"label": "unsynchronized: rescue restores Kel's archived stats and earned experience",
+			"ok": true
+		},
+		{
+			"label": "unsynchronized: rescue restores Kel's archived equipment",
+			"ok": true
+		},
+		{
+			"label": "unsynchronized: rescued Kel is a living deployed party actor",
+			"ok": true
+		},
+		{
+			"label": "unsynchronized: actual roster recalculation recognizes named-party Kel without a hired-merc record",
+			"ok": true
+		},
+		{
+			"label": "authored conversation offered: b.merc2.fq21",
+			"ok": true
+		},
+		{
+			"label": "authored conversation actor exists: merc2",
+			"ok": true
+		},
+		{
+			"label": "normal topic list contains b.merc2.fq21",
+			"ok": true
+		},
+		{
+			"label": "normal topic selection reaches closing controls: b.merc2.fq21",
+			"ok": true
+		},
+		{
+			"label": "normal dialogue close completes b.merc2.fq21",
+			"ok": true
+		},
+		{
+			"label": "duplicate dialogue close grants nothing: b.merc2.fq21",
+			"ok": true
+		},
+		{
+			"label": "unsynchronized: rescued Kel conversation is passable",
+			"ok": true
+		},
+		{
+			"label": "save checkpoint lia_kel_rescued_unsynchronized",
+			"ok": true
+		},
+		{
+			"label": "reload checkpoint lia_kel_rescued_unsynchronized",
+			"ok": true
+		},
+		{
+			"label": "saved quest points survive lia_kel_rescued_unsynchronized",
+			"ok": true
+		},
+		{
+			"label": "reload/poll does not replay rewards: lia_kel_rescued_unsynchronized",
+			"ok": true
+		},
+		{
+			"label": "unsynchronized: saved final inventory remains exact after reload",
+			"ok": true
+		},
+		{
+			"label": "unsynchronized: reload retains exactly one rescued Kel",
+			"ok": true
+		},
+		{
+			"label": "unsynchronized: reloaded Kel remains alive and under player control",
+			"ok": true
+		},
+		{
+			"label": "unsynchronized: reload recalculation still recognizes named-party Kel",
+			"ok": true
+		},
+		{
+			"label": "restore independent missing-fragment branch kel1",
+			"ok": true
+		},
+		{
+			"label": "real same-zone LeaveToZone stores the prepared named party",
+			"ok": true
+		},
+		{
+			"label": "missing kel1: same-zone travel preserves exactly the two supplied fragments",
+			"ok": true
+		},
+		{
+			"label": "authored conversation offered: b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "authored conversation actor exists: Deva",
+			"ok": true
+		},
+		{
+			"label": "normal topic list contains b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "normal topic selection reaches closing controls: b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "normal dialogue close completes b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "duplicate dialogue close grants nothing: b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "missing kel1 refuses both rescue conversations",
+			"ok": true
+		},
+		{
+			"label": "missing kel1 follows original solo branch without resurrecting Kel",
+			"ok": true
+		},
+		{
+			"label": "missing kel1: native AddLoot retains exactly the other two synchronized fragments",
+			"ok": true
+		},
+		{
+			"label": "missing kel1: archived Kel is still excluded from current-roster recalculation",
+			"ok": true
+		},
+		{
+			"label": "save checkpoint lia_kel_missing_kel1",
+			"ok": true
+		},
+		{
+			"label": "reload checkpoint lia_kel_missing_kel1",
+			"ok": true
+		},
+		{
+			"label": "saved quest points survive lia_kel_missing_kel1",
+			"ok": true
+		},
+		{
+			"label": "saved quest item survives: kel2",
+			"ok": true
+		},
+		{
+			"label": "saved quest item survives: kel3",
+			"ok": true
+		},
+		{
+			"label": "reload/poll does not replay rewards: lia_kel_missing_kel1",
+			"ok": true
+		},
+		{
+			"label": "missing kel1: reload preserves the exact retained fragment set",
+			"ok": true
+		},
+		{
+			"label": "restore independent missing-fragment branch kel2",
+			"ok": true
+		},
+		{
+			"label": "real same-zone LeaveToZone stores the prepared named party",
+			"ok": true
+		},
+		{
+			"label": "missing kel2: same-zone travel preserves exactly the two supplied fragments",
+			"ok": true
+		},
+		{
+			"label": "authored conversation offered: b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "authored conversation actor exists: Deva",
+			"ok": true
+		},
+		{
+			"label": "normal topic list contains b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "normal topic selection reaches closing controls: b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "normal dialogue close completes b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "duplicate dialogue close grants nothing: b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "missing kel2 refuses both rescue conversations",
+			"ok": true
+		},
+		{
+			"label": "missing kel2 follows original solo branch without resurrecting Kel",
+			"ok": true
+		},
+		{
+			"label": "missing kel2: native AddLoot retains exactly the other two synchronized fragments",
+			"ok": true
+		},
+		{
+			"label": "missing kel2: archived Kel is still excluded from current-roster recalculation",
+			"ok": true
+		},
+		{
+			"label": "save checkpoint lia_kel_missing_kel2",
+			"ok": true
+		},
+		{
+			"label": "reload checkpoint lia_kel_missing_kel2",
+			"ok": true
+		},
+		{
+			"label": "saved quest points survive lia_kel_missing_kel2",
+			"ok": true
+		},
+		{
+			"label": "saved quest item survives: kel1",
+			"ok": true
+		},
+		{
+			"label": "saved quest item survives: kel3",
+			"ok": true
+		},
+		{
+			"label": "reload/poll does not replay rewards: lia_kel_missing_kel2",
+			"ok": true
+		},
+		{
+			"label": "missing kel2: reload preserves the exact retained fragment set",
+			"ok": true
+		},
+		{
+			"label": "restore independent missing-fragment branch kel3",
+			"ok": true
+		},
+		{
+			"label": "real same-zone LeaveToZone stores the prepared named party",
+			"ok": true
+		},
+		{
+			"label": "missing kel3: same-zone travel preserves exactly the two supplied fragments",
+			"ok": true
+		},
+		{
+			"label": "authored conversation offered: b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "authored conversation actor exists: Deva",
+			"ok": true
+		},
+		{
+			"label": "normal topic list contains b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "normal topic selection reaches closing controls: b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "normal dialogue close completes b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "duplicate dialogue close grants nothing: b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "missing kel3 refuses both rescue conversations",
+			"ok": true
+		},
+		{
+			"label": "missing kel3 follows original solo branch without resurrecting Kel",
+			"ok": true
+		},
+		{
+			"label": "missing kel3: native AddLoot retains exactly the other two synchronized fragments",
+			"ok": true
+		},
+		{
+			"label": "missing kel3: archived Kel is still excluded from current-roster recalculation",
+			"ok": true
+		},
+		{
+			"label": "save checkpoint lia_kel_missing_kel3",
+			"ok": true
+		},
+		{
+			"label": "reload checkpoint lia_kel_missing_kel3",
+			"ok": true
+		},
+		{
+			"label": "saved quest points survive lia_kel_missing_kel3",
+			"ok": true
+		},
+		{
+			"label": "saved quest item survives: kel1",
+			"ok": true
+		},
+		{
+			"label": "saved quest item survives: kel2",
+			"ok": true
+		},
+		{
+			"label": "reload/poll does not replay rewards: lia_kel_missing_kel3",
+			"ok": true
+		},
+		{
+			"label": "missing kel3: reload preserves the exact retained fragment set",
+			"ok": true
+		},
+		{
+			"label": "restore complete fragment set before real travel",
+			"ok": true
+		},
+		{
+			"label": "real same-zone LeaveToZone stores the prepared named party",
+			"ok": true
+		},
+		{
+			"label": "same-zone travel preserves all three supplied fragments before ritual",
+			"ok": true
+		},
+		{
+			"label": "authored conversation offered: b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "authored conversation actor exists: Deva",
+			"ok": true
+		},
+		{
+			"label": "normal topic list contains b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "normal topic selection reaches closing controls: b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "normal dialogue close completes b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "duplicate dialogue close grants nothing: b.Deva.brief_345",
+			"ok": true
+		},
+		{
+			"label": "synchronized: all three fragments offer Junofil while Kel awaits ritual completion",
+			"ok": true
+		},
+		{
+			"label": "synchronized: fragment check leaves the live bag intact before ritual closes",
+			"ok": true
+		},
+		{
+			"label": "authored conversation offered: b.Junofil.fq20",
+			"ok": true
+		},
+		{
+			"label": "normal topic selection reaches closing controls: b.Junofil.fq20",
+			"ok": true
+		},
+		{
+			"label": "normal dialogue close completes b.Junofil.fq20",
+			"ok": true
+		},
+		{
+			"label": "duplicate dialogue close grants nothing: b.Junofil.fq20",
+			"ok": true
+		},
+		{
+			"label": "synchronized: completed ritual retains the original stored fragment set",
+			"ok": true
+		},
+		{
+			"label": "synchronized: ritual completes actual party transition and offers Kel conversation",
+			"ok": true
+		},
+		{
+			"label": "synchronized: rescued party contains original Kel role",
+			"ok": true
+		},
+		{
+			"label": "synchronized: rescue restores Kel's archived stats and earned experience",
+			"ok": true
+		},
+		{
+			"label": "synchronized: rescue restores Kel's archived equipment",
+			"ok": true
+		},
+		{
+			"label": "synchronized: rescued Kel is a living deployed party actor",
+			"ok": true
+		},
+		{
+			"label": "synchronized: actual roster recalculation recognizes named-party Kel without a hired-merc record",
+			"ok": true
+		},
+		{
+			"label": "authored conversation offered: b.merc2.fq21",
+			"ok": true
+		},
+		{
+			"label": "authored conversation actor exists: merc2",
+			"ok": true
+		},
+		{
+			"label": "normal topic list contains b.merc2.fq21",
+			"ok": true
+		},
+		{
+			"label": "normal topic selection reaches closing controls: b.merc2.fq21",
+			"ok": true
+		},
+		{
+			"label": "normal dialogue close completes b.merc2.fq21",
+			"ok": true
+		},
+		{
+			"label": "duplicate dialogue close grants nothing: b.merc2.fq21",
+			"ok": true
+		},
+		{
+			"label": "synchronized: rescued Kel conversation is passable",
+			"ok": true
+		},
+		{
+			"label": "save checkpoint lia_kel_rescued_synchronized",
+			"ok": true
+		},
+		{
+			"label": "reload checkpoint lia_kel_rescued_synchronized",
+			"ok": true
+		},
+		{
+			"label": "saved quest points survive lia_kel_rescued_synchronized",
+			"ok": true
+		},
+		{
+			"label": "saved quest item survives: kel1",
+			"ok": true
+		},
+		{
+			"label": "saved quest item survives: kel2",
+			"ok": true
+		},
+		{
+			"label": "saved quest item survives: kel3",
+			"ok": true
+		},
+		{
+			"label": "reload/poll does not replay rewards: lia_kel_rescued_synchronized",
+			"ok": true
+		},
+		{
+			"label": "synchronized: saved final inventory remains exact after reload",
+			"ok": true
+		},
+		{
+			"label": "reload retains native AddLoot's restored kel1",
+			"ok": true
+		},
+		{
+			"label": "reload retains native AddLoot's restored kel2",
+			"ok": true
+		},
+		{
+			"label": "reload retains native AddLoot's restored kel3",
+			"ok": true
+		},
+		{
+			"label": "synchronized: reload retains exactly one rescued Kel",
+			"ok": true
+		},
+		{
+			"label": "synchronized: reloaded Kel remains alive and under player control",
+			"ok": true
+		},
+		{
+			"label": "synchronized: reload recalculation still recognizes named-party Kel",
+			"ok": true
+		}
+	],
+	"checks": 145,
+	"failures": [],
+	"scope": "Prepared late-Jigran records and fragment set. Actual LeaveToZone precedes all four rescue branches: each missing fragment blocks restoration and retains its other two; the complete set enables actual preceding/ritual/reunion dialogues and once-only Kel restoration with archived stats/equipment. Native AddLoot restores stored fragments after consuming the live set; the unsynchronized control has no stored fragments to restore. Save/load preserves both outcomes and current named-mercenary recalculation. Not a full island-to-island playthrough or native executable replay."
+}

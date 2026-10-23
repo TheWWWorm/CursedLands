@@ -1,0 +1,38 @@
+{
+  "suite": "local_host_play_clock",
+  "platform": "linux",
+  "renderer": "headless",
+  "exit": 0,
+  "seconds": 26.96,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/CursedLands-1.26.0-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--headless",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/linux-local_host_play_clock/fixtures/local_host_play_clock.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/linux-local_host_play_clock",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/CursedLands-1.26.0-linux-x86_64/mods"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "LOCAL_HOST_PLAY_CLOCK 28 checks 0 failures"
+  ],
+  "errors": [],
+  "allowed_diagnostics": [],
+  "source_game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+  "fixture_sha256": "44c0fbb079261bfe7a5ba243c28ae97c047bf9ced5a7517d04176cb224b9dc1c"
+}

@@ -1,0 +1,110 @@
+{
+	"active_frames": 511,
+	"driver": "d3d12",
+	"elapsed_ms": 62008,
+	"failures": [],
+	"loads": [
+		{
+			"active_frames": 257,
+			"cycle": 0,
+			"device": -9223369795586471271,
+			"history_reused_frames": 256,
+			"load_and_hold_ms": 40347,
+			"stats": {
+				"accumulation_frames": 1.93045517422783,
+				"active": true,
+				"display_size": [
+					2880,
+					1774
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 903,
+				"gi_samples": 0,
+				"history_limit": 1.93045517422783,
+				"history_reused": true,
+				"instances": 1216,
+				"light_history_limited": true,
+				"lights": 2,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"rebuilding": false,
+				"render_scale": 1.0,
+				"render_size": [
+					2880,
+					1774
+				],
+				"shadow_samples": 0,
+				"size": [
+					2160,
+					1331
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 11150,
+				"terrain_material_bytes": 344024,
+				"terrain_material_triangles": 30190,
+				"trace_render_scale": 1.0,
+				"triangles": 77733,
+				"updated_instances": 316,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"zone": "bz8k"
+		},
+		{
+			"active_frames": 252,
+			"cycle": 1,
+			"device": -9223368638277346812,
+			"history_reused_frames": 252,
+			"load_and_hold_ms": 20613,
+			"stats": {
+				"accumulation_frames": 1.90663940011335,
+				"active": true,
+				"display_size": [
+					2880,
+					1774
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 903,
+				"gi_samples": 0,
+				"history_limit": 1.90663940011335,
+				"history_reused": true,
+				"instances": 1216,
+				"light_history_limited": true,
+				"lights": 2,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"rebuilding": false,
+				"render_scale": 1.0,
+				"render_size": [
+					2880,
+					1774
+				],
+				"shadow_samples": 0,
+				"size": [
+					2160,
+					1331
+				],
+				"snapshot_generation": 2,
+				"supported": true,
+				"terrain_material_build_us": 9591,
+				"terrain_material_bytes": 344024,
+				"terrain_material_triangles": 30190,
+				"trace_render_scale": 1.0,
+				"triangles": 77733,
+				"updated_instances": 437,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"zone": "bz8k"
+		}
+	],
+	"path_mode": 2,
+	"quality": 1
+}

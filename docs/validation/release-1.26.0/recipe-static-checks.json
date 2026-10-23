@@ -1,0 +1,164 @@
+{
+  "version": "1.26.0",
+  "status": "static syntax and pinned input checks passed; runtime/build checks not run",
+  "syntax_checks": [
+    {
+      "file": "android.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "archive-platforms.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "audit-android.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "audit_branding.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "browser-server.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "build.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "export_mobile_template.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "pack_audit.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "preflight.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "prepare-browser-input.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "prepare-host.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "prepare_web_host.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "record-release.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "release_config.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "run_packaged.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "sync-host.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "tools_bundle.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "verify-publication.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "verify_live.py",
+      "language": "Python",
+      "syntax": "passed"
+    },
+    {
+      "file": "browser-common.cjs",
+      "language": "JavaScript",
+      "syntax": "passed"
+    },
+    {
+      "file": "browser-fresh.cjs",
+      "language": "JavaScript",
+      "syntax": "passed"
+    },
+    {
+      "file": "browser-run.cjs",
+      "language": "JavaScript",
+      "syntax": "passed"
+    },
+    {
+      "file": "browser-wiki.cjs",
+      "language": "JavaScript",
+      "syntax": "passed"
+    },
+    {
+      "file": "browser-check.html:inline-0",
+      "language": "JavaScript",
+      "syntax": "passed"
+    }
+  ],
+  "json_parse_checks": 4,
+  "windows_engine_sha256": "db24f2fea341a129568a83c4ac68c7007e57671a495e4f8dea181bf3618b9d6c",
+  "qualified_linux_template_verified": true,
+  "unchanged_android_template_verified": true,
+  "published_1_25_web_archive_verified": true,
+  "no_build_export_or_publication_run": true,
+  "prepared_file_sha256": {
+    "EXECUTION.md": "b1ccf2b59c34c5452094c7eaa7c39c39cf875ac266d6812fc61a312a6d56e3ac",
+    "android.py": "f28520d9b568b2c452f9d16fe4ec5f85a27b4bdb2ebc87e97989a4f1a301ea94",
+    "archive-platforms.py": "3e5ac7eac6d0fca3c16cf3793019eceb88af8eb2dff0b55c3272d9f24e48223a",
+    "audit-android.py": "fc22c4d51fe59ac8490d0ad27b68b25c5d27bc32201b611d44b35e11e2a73301",
+    "audit_branding.py": "294b5918f4fe68fb2bc881f92504ba403590bae4f00d48d86dc9317328bfcb60",
+    "browser-check.html": "7f747ed2db40da237d509eb2d38a257162e1d1c440b8ec26ed75476e108b093f",
+    "browser-common.cjs": "517a077c58f6cf831b05b75584523c212c07baedc0fe059704d06b70a08d0a24",
+    "browser-fresh.cjs": "147381cc973ce5aa21827f2c281c907c93b224f8c15b771ec80a93e48db840a9",
+    "browser-run.cjs": "d031210d6f878ef634905d7e88f9b8e803b4620649b5b2caad5881825e04a1c1",
+    "browser-server.py": "56904fae3f6964954cd31eeda1e0afa7a3ac9acb7213050878ebb88bca558c80",
+    "browser-wiki.cjs": "d55acf55d0004239e3f22df80061494c7bf3a4852f67bdae09971ef4f0731d4d",
+    "build.py": "62da4f485f47f2721f26fe1ee867cb2d2d9a06910039fce1b6e912a5b1541a99",
+    "export_mobile_template.py": "bf86d05eee23ab41ac8af332dd7bd7c69cdcf2667c7d938866f3d8c835bb4913",
+    "pack_audit.py": "e1d5c57bb27399d76ae9c2773aabbe68ceee217aa6d79016a96e91cc097d47bb",
+    "preflight.py": "a1d79ec2f6a4c5cf06cd55b83e3d3f25b043552514047f383eae670eeb56e721",
+    "prepare-browser-input.py": "dbbdde5aa62263fd9e19fb30a2f84ab2fee9e9cabbe80faa745d237dc98920eb",
+    "prepare-host.py": "4bed09100d7bcb865ed96f3def9b190572af3b540d1b8d9581925a81e7eed7a5",
+    "prepare_web_host.py": "8c73197c8fa282c65569af93bff52110ae595bde0f97a3f11ace401cff399885",
+    "recipe-provenance.json": "a487581f1d33a6ff91dd7ee344bef3438fa57cbb29c2e0036d74cd65daed3c99",
+    "record-release.py": "7605597a794569825a0f9dd6167658ee807aad30bac1f7d5c281af346b919955",
+    "release-container.json": "7e97e28a50e65eb6cea1739be5a34f56e6cf2a0d26a828c271183cf4f1b85b38",
+    "release-evidence.example.json": "f2719258405b97fcb923ada2ae8b570ff68246525e355d1817917a988762c53f",
+    "release_config.py": "1ecc1617d42e756e7df58ec71febe4ea65dc9b26d8e8bc5634f88aedcfe520ea",
+    "run_packaged.py": "30b24e99b416cb6037beed256c11661b482e4bb093e9f37c608a56a5e679756d",
+    "sync-host.py": "33178384d4f60e9f20cc398850c544d32bb6d303450755e4a64ba6aa783ce691",
+    "tools_bundle.py": "47dd6feeeb559b5980c5c41ff8f60174231ba2125dc748ee374da95d83e45fe5",
+    "verify-publication.py": "5f18c0a902bd5ec0246c53cb1aa604d0a36a1e7bc8981a7f0854bccee209cbb4",
+    "verify_live.py": "62e25a6431c1c66b10387644b8de6c849331327e5df5b59716e25657b94a95d7",
+    "web-export-presets.cfg": "73c6c38066e6edbe063d1ce117ad11baa886480246c7b1b9cd1671bc20393e4d",
+    "windows-engine-template.json": "5f9af06149af692309b7f60ca20e57a2c8b190ea0d7f4dff5eda1c4d5235e59b"
+  }
+}

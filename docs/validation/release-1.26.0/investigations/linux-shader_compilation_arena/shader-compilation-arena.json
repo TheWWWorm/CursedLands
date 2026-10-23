@@ -1,0 +1,266 @@
+{
+	"captures": [
+		{
+			"background_max_error": 0.0,
+			"file": "arena-before-first-draw.png",
+			"progress": {
+				"case": "normal",
+				"completed": 4,
+				"elapsed_ms": 1879,
+				"phase": "Preparing materials…",
+				"presentations": 5,
+				"scene_draws": 0,
+				"screen_active": true,
+				"title": "Compiling shaders",
+				"total": 9,
+				"viewport_mode": 4,
+				"warming": true
+			},
+			"scene_draws": 0,
+			"text_bar_samples": 289
+		},
+		{
+			"background_max_error": 0.0,
+			"file": "arena-materials-in-progress.png",
+			"progress": {
+				"case": "normal",
+				"completed": 5,
+				"elapsed_ms": 3839,
+				"phase": "Preparing materials…",
+				"presentations": 6,
+				"scene_draws": 0,
+				"screen_active": true,
+				"title": "Compiling shaders",
+				"total": 9,
+				"viewport_mode": 4,
+				"warming": true
+			},
+			"scene_draws": 0,
+			"text_bar_samples": 301
+		},
+		{
+			"background_max_error": 0.0,
+			"file": "arena-materials-completed.png",
+			"progress": {
+				"case": "normal",
+				"completed": 9,
+				"elapsed_ms": 4855,
+				"phase": "Preparing materials…",
+				"presentations": 10,
+				"scene_draws": 0,
+				"screen_active": true,
+				"title": "Compiling shaders",
+				"total": 9,
+				"viewport_mode": 4,
+				"warming": true
+			},
+			"scene_draws": 0,
+			"text_bar_samples": 366
+		}
+	],
+	"checks": 27,
+	"device": "NVIDIA GeForce RTX 3090 Ti",
+	"driver": "opengl3",
+	"failures": [
+		"every material completion follows a real SubViewport draw beneath the cover"
+	],
+	"ordering_violations": [
+		{
+			"previous_completed": 0,
+			"previous_draws": 0,
+			"progress": {
+				"case": "normal",
+				"completed": 4,
+				"elapsed_ms": 1879,
+				"phase": "Preparing materials…",
+				"presentations": 5,
+				"scene_draws": 0,
+				"screen_active": true,
+				"title": "Compiling shaders",
+				"total": 9,
+				"viewport_mode": 4,
+				"warming": true
+			}
+		},
+		{
+			"previous_completed": 4,
+			"previous_draws": 0,
+			"progress": {
+				"case": "normal",
+				"completed": 5,
+				"elapsed_ms": 3839,
+				"phase": "Preparing materials…",
+				"presentations": 6,
+				"scene_draws": 0,
+				"screen_active": true,
+				"title": "Compiling shaders",
+				"total": 9,
+				"viewport_mode": 4,
+				"warming": true
+			}
+		},
+		{
+			"previous_completed": 5,
+			"previous_draws": 0,
+			"progress": {
+				"case": "normal",
+				"completed": 6,
+				"elapsed_ms": 4255,
+				"phase": "Preparing materials…",
+				"presentations": 7,
+				"scene_draws": 0,
+				"screen_active": true,
+				"title": "Compiling shaders",
+				"total": 9,
+				"viewport_mode": 4,
+				"warming": true
+			}
+		},
+		{
+			"previous_completed": 6,
+			"previous_draws": 0,
+			"progress": {
+				"case": "normal",
+				"completed": 7,
+				"elapsed_ms": 4444,
+				"phase": "Preparing materials…",
+				"presentations": 8,
+				"scene_draws": 0,
+				"screen_active": true,
+				"title": "Compiling shaders",
+				"total": 9,
+				"viewport_mode": 4,
+				"warming": true
+			}
+		},
+		{
+			"previous_completed": 7,
+			"previous_draws": 0,
+			"progress": {
+				"case": "normal",
+				"completed": 8,
+				"elapsed_ms": 4650,
+				"phase": "Preparing materials…",
+				"presentations": 9,
+				"scene_draws": 0,
+				"screen_active": true,
+				"title": "Compiling shaders",
+				"total": 9,
+				"viewport_mode": 4,
+				"warming": true
+			}
+		},
+		{
+			"previous_completed": 8,
+			"previous_draws": 0,
+			"progress": {
+				"case": "normal",
+				"completed": 9,
+				"elapsed_ms": 4855,
+				"phase": "Preparing materials…",
+				"presentations": 10,
+				"scene_draws": 0,
+				"screen_active": true,
+				"title": "Compiling shaders",
+				"total": 9,
+				"viewport_mode": 4,
+				"warming": true
+			}
+		}
+	],
+	"progress": [
+		{
+			"case": "normal",
+			"completed": 4,
+			"elapsed_ms": 1879,
+			"phase": "Preparing materials…",
+			"presentations": 5,
+			"scene_draws": 0,
+			"screen_active": true,
+			"title": "Compiling shaders",
+			"total": 9,
+			"viewport_mode": 4,
+			"warming": true
+		},
+		{
+			"case": "normal",
+			"completed": 5,
+			"elapsed_ms": 3839,
+			"phase": "Preparing materials…",
+			"presentations": 6,
+			"scene_draws": 0,
+			"screen_active": true,
+			"title": "Compiling shaders",
+			"total": 9,
+			"viewport_mode": 4,
+			"warming": true
+		},
+		{
+			"case": "normal",
+			"completed": 6,
+			"elapsed_ms": 4255,
+			"phase": "Preparing materials…",
+			"presentations": 7,
+			"scene_draws": 0,
+			"screen_active": true,
+			"title": "Compiling shaders",
+			"total": 9,
+			"viewport_mode": 4,
+			"warming": true
+		},
+		{
+			"case": "normal",
+			"completed": 7,
+			"elapsed_ms": 4444,
+			"phase": "Preparing materials…",
+			"presentations": 8,
+			"scene_draws": 0,
+			"screen_active": true,
+			"title": "Compiling shaders",
+			"total": 9,
+			"viewport_mode": 4,
+			"warming": true
+		},
+		{
+			"case": "normal",
+			"completed": 8,
+			"elapsed_ms": 4650,
+			"phase": "Preparing materials…",
+			"presentations": 9,
+			"scene_draws": 0,
+			"screen_active": true,
+			"title": "Compiling shaders",
+			"total": 9,
+			"viewport_mode": 4,
+			"warming": true
+		},
+		{
+			"case": "normal",
+			"completed": 9,
+			"elapsed_ms": 4855,
+			"phase": "Preparing materials…",
+			"presentations": 10,
+			"scene_draws": 0,
+			"screen_active": true,
+			"title": "Compiling shaders",
+			"total": 9,
+			"viewport_mode": 4,
+			"warming": true
+		},
+		{
+			"case": "normal",
+			"completed": 9,
+			"elapsed_ms": 5043,
+			"phase": "Finishing preparation…",
+			"presentations": 11,
+			"scene_draws": 0,
+			"screen_active": true,
+			"title": "Compiling shaders",
+			"total": 9,
+			"viewport_mode": 4,
+			"warming": true
+		}
+	],
+	"ready_under_cover": 0,
+	"scene_draws": 0
+}

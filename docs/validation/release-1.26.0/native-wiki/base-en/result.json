@@ -1,0 +1,66 @@
+{
+  "version": "1.26.0",
+  "campaign": "cursed_lands",
+  "language": "en",
+  "passed": true,
+  "exit": 0,
+  "seconds": 7.28,
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "pages": [
+    "cut/overview",
+    "cut/figure/unmoog"
+  ],
+  "screenshots": [
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/native-wiki/base-en/en-cut_figure_unmoog_.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/native-wiki/base-en/en-cut_overview_.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/native-wiki/base-en/en-home.png"
+  ],
+  "command": [
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/CursedLands-1.26.0-linux-x86_64/CursedLands.x86_64",
+    "--display-driver",
+    "x11",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/native-wiki/visual.gd",
+    "--capture=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/native-wiki/base-en",
+    "--pages=cut/overview,cut/figure/unmoog",
+    "--ui-lang=en"
+  ],
+  "meta": [
+    {
+      "campaign": "cursed_lands",
+      "language": "en",
+      "pages": [
+        "cut/overview",
+        "cut/figure/unmoog"
+      ],
+      "version": "1.26.0"
+    }
+  ],
+  "binary_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "pck_sha256": "29bd5771ee771b533f622badb55538bd5e7556cea8c36ce9a7d3a587e5a16206",
+  "profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "language_setup": "Original installed localized base edition"
+}

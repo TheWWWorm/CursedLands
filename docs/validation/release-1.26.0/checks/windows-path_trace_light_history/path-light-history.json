@@ -1,0 +1,24 @@
+{
+	"checks": 49,
+	"failures": [],
+	"observations": {
+		"30hz": {
+			"diffuse": 0.72509765625,
+			"diffuse_age": 1.7998046875,
+			"specular": 0.994140625,
+			"specular_age": 1.7998046875
+		},
+		"extinguished": {
+			"diffuse": 0.0,
+			"diffuse_age": 1.0,
+			"specular": 0.0,
+			"specular_age": 1.0
+		},
+		"limited": {
+			"diffuse": 0.71484375,
+			"diffuse_age": 3.0,
+			"specular": 0.95654296875,
+			"specular_age": 3.0
+		}
+	}
+}

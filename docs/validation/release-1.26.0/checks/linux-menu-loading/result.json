@@ -1,0 +1,60 @@
+{
+  "suite": "menu_loading_screen",
+  "platform": "linux",
+  "renderer": "opengl3",
+  "exit": 0,
+  "seconds": 52.86,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/CursedLands-1.26.0-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--display-driver",
+    "x11",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/linux-menu-loading/fixtures/menu_loading_screen.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/linux-menu-loading",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/CursedLands-1.26.0-linux-x86_64/mods"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "PASS rendered single-player uses the simulation service",
+    "PASS prepare disposable camp save",
+    "PASS HUD stays hidden for every unfinished-world frame",
+    "PASS cover stays through the first completed-world frame",
+    "PASS HUD becomes visible only with ready world",
+    "PASS menu starts a real separate simulation process",
+    "PASS menu reaches the requested playable zone",
+    "PASS loading picture covers service startup",
+    "PASS no presented HUD frame before loading picture",
+    "PASS loading picture closes after successful load",
+    "PASS missing save returns failure",
+    "PASS failed load cleans up loading picture",
+    "MENU_LOADING_SCREEN 12 checks 0 failures"
+  ],
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "source_game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+  "fixture_sha256": "09ce8f5a911012a92d539eaedb3ef7ec96a7982efca8117a1aca71cb6ea3ea5f"
+}

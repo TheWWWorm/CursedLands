@@ -1,0 +1,163 @@
+[
+  {
+    "run": "linux-camp_inventory_ui",
+    "platform": "linux",
+    "suite": "camp_inventory_ui",
+    "checks": 116,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "linux-campaign_state_transport",
+    "platform": "linux",
+    "suite": "campaign_state_transport",
+    "checks": 26,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "linux-dialogue_clock_coop",
+    "platform": "linux",
+    "suite": "dialogue_clock_coop",
+    "checks": 12,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "linux-lia_campaign_shaina",
+    "platform": "linux",
+    "suite": "lia_campaign_shaina",
+    "checks": 178,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "linux-lia_kel_rescue",
+    "platform": "linux",
+    "suite": "lia_kel_rescue",
+    "checks": 145,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "linux-local_host_play_clock",
+    "platform": "linux",
+    "suite": "local_host_play_clock",
+    "checks": 28,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "linux-menu-loading",
+    "platform": "linux",
+    "suite": "menu_loading_screen",
+    "checks": 12,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "linux-menu-return-quiet",
+    "platform": "linux",
+    "suite": "menu_loading_screen",
+    "checks": 29,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "linux-mod_profiles",
+    "platform": "linux",
+    "suite": "mod_profiles",
+    "checks": 87,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "linux-outstanding-ui",
+    "platform": "linux",
+    "suite": "outstanding_ui_issues",
+    "checks": 45,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "linux-party_quest_inventory",
+    "platform": "linux",
+    "suite": "party_quest_inventory",
+    "checks": 24,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "linux-party_quest_inventory_coop",
+    "platform": "linux",
+    "suite": "party_quest_inventory_coop",
+    "checks": 45,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "linux-shader-arena-vulkan",
+    "platform": "linux",
+    "suite": "shader_compilation_arena",
+    "checks": 27,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "linux-shader_compilation_screen",
+    "platform": "linux",
+    "suite": "shader_compilation_screen",
+    "checks": 380,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "linux-village-camera-ready",
+    "platform": "linux",
+    "suite": "village_camera_transition",
+    "checks": 70,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "windows-fsr-campaign",
+    "platform": "windows",
+    "suite": "fsr_campaign",
+    "checks": 97,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "windows-path-trace-save-load-low",
+    "platform": "windows",
+    "suite": "path_trace_save_load",
+    "checks": null,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "windows-path-trace-save-load-medium",
+    "platform": "windows",
+    "suite": "path_trace_save_load",
+    "checks": null,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "windows-path_trace_device",
+    "platform": "windows",
+    "suite": "path_trace_device",
+    "checks": 17,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "windows-path_trace_light_history",
+    "platform": "windows",
+    "suite": "path_trace_light_history",
+    "checks": 49,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "windows-path_trace_live",
+    "platform": "windows",
+    "suite": "path_trace_live",
+    "checks": 17,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "windows-path_trace_motion",
+    "platform": "windows",
+    "suite": "path_trace_motion",
+    "checks": 55,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  },
+  {
+    "run": "windows-water_raytrace_device",
+    "platform": "windows",
+    "suite": "water_raytrace_device",
+    "checks": 25,
+    "scope": "Independent suite/configuration; assertions overlap between some configurations."
+  }
+]

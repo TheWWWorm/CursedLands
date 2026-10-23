@@ -1,0 +1,32 @@
+{
+  "frontend_version": "1.26.0",
+  "indexes": {
+    "wiki/data/de/index.json": {
+      "entries": 1287,
+      "article_version": "1.25.0"
+    },
+    "wiki/data/en/index.json": {
+      "entries": 1287,
+      "article_version": "1.25.0"
+    },
+    "wiki/data/ru/index.json": {
+      "entries": 1287,
+      "article_version": "1.25.0"
+    },
+    "wiki/data/lost_in_astral/de/index.json": {
+      "entries": 1768,
+      "article_version": "1.25.0"
+    },
+    "wiki/data/lost_in_astral/en/index.json": {
+      "entries": 1768,
+      "article_version": "1.25.0"
+    },
+    "wiki/data/lost_in_astral/ru/index.json": {
+      "entries": 1768,
+      "article_version": "1.25.0"
+    }
+  },
+  "files": 13627,
+  "manifest_sha256": "4b08ea7ca0f8080280836f87ebe4ff8948b9ae06fc62b1d605704b50bcbd95d7",
+  "content": "Current public wiki retained with the 1.26.0 Cut content interface; original article-export version preserved."
+}

@@ -1,0 +1,14 @@
+{
+  "build_complete": true,
+  "path": "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/windows-engine/engine/bin/godot.windows.template_release.x86_64.exe",
+  "sha256": "db24f2fea341a129568a83c4ac68c7007e57671a495e4f8dea181bf3618b9d6c",
+  "bytes": 94136832,
+  "patch_count": 20,
+  "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88 plus exact 20-patch stack from dd12a31e571d33d6c6607ceb5e8e78a2a382fa5b; all 62 patched and 13979 base files verified",
+  "compiler": "MinGW 13-posix; GCC macros 13.0.0",
+  "provenance_file": "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/windows-engine/preparation-manifest.json",
+  "verification_file": "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/windows-engine/verification.json",
+  "build_result_file": "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/windows-engine/build-result.json",
+  "native_windows_runtime_tested": false,
+  "runtime_qualification": "This rebuilt binary has no graphical execution yet. Prior native Windows source qualification used MinGW 15.2; current Linux cross-build needs packaged checks and must not claim native Windows execution."
+}

@@ -1,0 +1,48 @@
+{
+  "suite": "village_camera_transition",
+  "platform": "linux",
+  "renderer": "opengl3",
+  "exit": 0,
+  "seconds": 40.94,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/CursedLands-1.26.0-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--display-driver",
+    "x11",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/linux-village-camera-ready/fixtures/village_camera_transition.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/linux-village-camera-ready",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/CursedLands-1.26.0-linux-x86_64/mods"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "VILLAGE_CAMERA_TRANSITION 70 checks 0 failures"
+  ],
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "source_game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+  "fixture_sha256": "d393adb56ee59fd87290e22f740e929e94d730b240f782cfd8aa64510e837f8d"
+}

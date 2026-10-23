@@ -1,0 +1,76 @@
+{
+  "version": "1.26.0",
+  "base": "http://127.0.0.1:30941",
+  "passed": true,
+  "checks": [
+    {
+      "campaign": "cursed_lands",
+      "language": "en",
+      "control": true,
+      "reload": true,
+      "back": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "campaign": "cursed_lands",
+      "language": "ru",
+      "control": true,
+      "reload": true,
+      "back": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "campaign": "cursed_lands",
+      "language": "de",
+      "control": true,
+      "reload": true,
+      "back": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "campaign": "lost_in_astral",
+      "language": "en",
+      "control": true,
+      "reload": true,
+      "back": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "campaign": "lost_in_astral",
+      "language": "ru",
+      "control": true,
+      "reload": true,
+      "back": true,
+      "no_horizontal_overflow": true
+    },
+    {
+      "campaign": "lost_in_astral",
+      "language": "de",
+      "control": true,
+      "reload": true,
+      "back": true,
+      "no_horizontal_overflow": true
+    }
+  ],
+  "logs": {
+    "console": [],
+    "page_errors": [],
+    "failed_responses": []
+  },
+  "visual_review": {
+    "passed": true,
+    "resolution": [
+      1280,
+      800
+    ],
+    "screenshots": [
+      "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/wiki-cut-cursed_lands-de.png",
+      "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/wiki-cut-cursed_lands-en.png",
+      "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/wiki-cut-cursed_lands-ru.png",
+      "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/wiki-cut-lost_in_astral-de.png",
+      "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/wiki-cut-lost_in_astral-en.png",
+      "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/wiki-cut-lost_in_astral-ru.png"
+    ],
+    "observations": "All six localized Cut content overview pages inspected. Header, campaign switch, navigation, article text and links are readable with no horizontal overflow."
+  }
+}

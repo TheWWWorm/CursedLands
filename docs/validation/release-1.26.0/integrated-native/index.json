@@ -1,0 +1,10 @@
+{
+  "source_commit": "0158ff77335a485399067e74ce65c580d01fbf31",
+  "game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+  "references": 2,
+  "repeats_each": 2,
+  "checks_reported": 90,
+  "passed": true,
+  "oracles_modified": false,
+  "scope": "Both previously failing native inventory checkpoints rerun against the integrated 1.26.0 game tree, in addition to the broader source qualification. The original checkpoint comparisons and repeatability pass."
+}

@@ -1,0 +1,18 @@
+{
+	"checks": 45,
+	"failures": 0,
+	"observations": [
+		{
+			"language": "en",
+			"quest_reward": "White wolf's head"
+		},
+		{
+			"language": "ru",
+			"quest_reward": "Голова белого волка"
+		},
+		{
+			"language": "de",
+			"quest_reward": "Kopf des weißen Wolfs"
+		}
+	]
+}

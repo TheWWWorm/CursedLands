@@ -1,0 +1,50 @@
+{
+  "suite": "dialogue_clock_coop",
+  "platform": "linux",
+  "renderer": "headless",
+  "exit": 0,
+  "seconds": 9.84,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/CursedLands-1.26.0-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--headless",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/linux-dialogue_clock_coop/fixtures/dialogue_clock_coop.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/linux-dialogue_clock_coop",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/CursedLands-1.26.0-linux-x86_64/mods"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "PASS dialogue peers connect",
+    "PASS both dialogue peers admitted",
+    "PASS both peers enter camp",
+    "PASS network difficulty stays Normal",
+    "PASS accelerated clock reaches guest",
+    "PASS guest cannot override the authority clock",
+    "PASS dialogue resets both peers to normal speed",
+    "PASS host discards accelerated field speed",
+    "PASS accelerated clock reaches guest",
+    "PASS guest cannot override the authority clock",
+    "PASS dialogue resets both peers to normal speed",
+    "PASS host discards accelerated field speed",
+    "DIALOGUE_CLOCK_COOP 12 checks 0 failures"
+  ],
+  "errors": [],
+  "allowed_diagnostics": [],
+  "source_game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+  "fixture_sha256": "98c13ea9f2d27dd1a5816c21d321116ae5e0bcec9234ae3fc996007f3dad2f33"
+}

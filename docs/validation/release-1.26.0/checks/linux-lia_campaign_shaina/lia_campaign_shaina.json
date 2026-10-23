@@ -1,0 +1,719 @@
+{
+	"assertions": [
+		{
+			"label": "owned expected campaign loaded: lost_in_astral",
+			"ok": true
+		},
+		{
+			"label": "loaded authored map bz2h",
+			"ok": true
+		},
+		{
+			"label": "bz2h: authored thread VCheck#1#3",
+			"ok": true
+		},
+		{
+			"label": "bz2h: authored thread VCheck#1#4",
+			"ok": true
+		},
+		{
+			"label": "later offers remain closed before the infiltration and letter hand-in",
+			"ok": true
+		},
+		{
+			"label": "loaded authored map bz5h",
+			"ok": true
+		},
+		{
+			"label": "bz5h: authored thread VCheck#1#1",
+			"ok": true
+		},
+		{
+			"label": "authored conversation offered: b.merc8.brief_23",
+			"ok": true
+		},
+		{
+			"label": "authored conversation actor exists: merc8",
+			"ok": true
+		},
+		{
+			"label": "normal topic list contains b.merc8.brief_23",
+			"ok": true
+		},
+		{
+			"label": "normal topic selection reaches closing controls: b.merc8.brief_23",
+			"ok": true
+		},
+		{
+			"label": "normal dialogue close completes b.merc8.brief_23",
+			"ok": true
+		},
+		{
+			"label": "duplicate dialogue close grants nothing: b.merc8.brief_23",
+			"ok": true
+		},
+		{
+			"label": "authored transfer reaches gz2h",
+			"ok": true
+		},
+		{
+			"label": "actual infiltration conversation deploys Shaina alone",
+			"ok": true
+		},
+		{
+			"label": "actual offer and map arrival start the infiltration objective",
+			"ok": true
+		},
+		{
+			"label": "infiltration closes the outward route",
+			"ok": true
+		},
+		{
+			"label": "infiltration closes the ordinary return until its objectives finish",
+			"ok": true
+		},
+		{
+			"label": "teleport target exists",
+			"ok": true
+		},
+		{
+			"label": "standing at the return area cannot skip infiltration mechanisms",
+			"ok": true
+		},
+		{
+			"label": "authored interactable exists: 46470",
+			"ok": true
+		},
+		{
+			"label": "normal use activates 46470",
+			"ok": true
+		},
+		{
+			"label": "first mechanism alone cannot award the meteorite samples",
+			"ok": true
+		},
+		{
+			"label": "save checkpoint campaign_shaina_first_mechanism",
+			"ok": true
+		},
+		{
+			"label": "reload checkpoint campaign_shaina_first_mechanism",
+			"ok": true
+		},
+		{
+			"label": "saved quest points survive campaign_shaina_first_mechanism",
+			"ok": true
+		},
+		{
+			"label": "reload/poll does not replay rewards: campaign_shaina_first_mechanism",
+			"ok": true
+		},
+		{
+			"label": "save and reload preserve the temporary party",
+			"ok": true
+		},
+		{
+			"label": "authored interactable exists: 47543",
+			"ok": true
+		},
+		{
+			"label": "normal use activates 47543",
+			"ok": true
+		},
+		{
+			"label": "second real mechanism awards the meteorite samples and activates return",
+			"ok": true
+		},
+		{
+			"label": "teleport target exists",
+			"ok": true
+		},
+		{
+			"label": "authored transfer reaches bz5h",
+			"ok": true
+		},
+		{
+			"label": "return area completes the infiltration objective and quest",
+			"ok": true
+		},
+		{
+			"label": "actual return restores the original protagonist and Kel",
+			"ok": true
+		},
+		{
+			"label": "Shaina keeps her samples until the actual hand-in gives them to the restored party",
+			"ok": true
+		},
+		{
+			"label": "save checkpoint campaign_shaina_before_handoff",
+			"ok": true
+		},
+		{
+			"label": "reload checkpoint campaign_shaina_before_handoff",
+			"ok": true
+		},
+		{
+			"label": "saved quest points survive campaign_shaina_before_handoff",
+			"ok": true
+		},
+		{
+			"label": "reload/poll does not replay rewards: campaign_shaina_before_handoff",
+			"ok": true
+		},
+		{
+			"label": "save and reload preserve samples with Shaina before her hand-in",
+			"ok": true
+		},
+		{
+			"label": "actual return reopens both previously closed passages",
+			"ok": true
+		},
+		{
+			"label": "authored conversation offered: b.merc8.brief_24",
+			"ok": true
+		},
+		{
+			"label": "authored conversation actor exists: merc8",
+			"ok": true
+		},
+		{
+			"label": "normal topic list contains b.merc8.brief_24",
+			"ok": true
+		},
+		{
+			"label": "normal topic selection reaches closing controls: b.merc8.brief_24",
+			"ok": true
+		},
+		{
+			"label": "normal dialogue close completes b.merc8.brief_24",
+			"ok": true
+		},
+		{
+			"label": "duplicate dialogue close grants nothing: b.merc8.brief_24",
+			"ok": true
+		},
+		{
+			"label": "actual Shaina hand-in gives the samples to the restored party",
+			"ok": true
+		},
+		{
+			"label": "real Shaina hand-in offers the Elder conversation",
+			"ok": true
+		},
+		{
+			"label": "save checkpoint campaign_shaina_return",
+			"ok": true
+		},
+		{
+			"label": "reload checkpoint campaign_shaina_return",
+			"ok": true
+		},
+		{
+			"label": "saved quest points survive campaign_shaina_return",
+			"ok": true
+		},
+		{
+			"label": "reload/poll does not replay rewards: campaign_shaina_return",
+			"ok": true
+		},
+		{
+			"label": "loaded authored map bz2h",
+			"ok": true
+		},
+		{
+			"label": "bz2h: authored thread VCheck#1#3",
+			"ok": true
+		},
+		{
+			"label": "bz2h: authored thread VCheck#1#4",
+			"ok": true
+		},
+		{
+			"label": "completed infiltration alone cannot skip the letter hand-in",
+			"ok": true
+		},
+		{
+			"label": "both earlier quests unlock the actual q9h offer",
+			"ok": true
+		},
+		{
+			"label": "authored conversation offered: b.Elder.brief_25",
+			"ok": true
+		},
+		{
+			"label": "authored conversation actor exists: Elder",
+			"ok": true
+		},
+		{
+			"label": "normal topic list contains b.Elder.brief_25",
+			"ok": true
+		},
+		{
+			"label": "normal topic selection reaches closing controls: b.Elder.brief_25",
+			"ok": true
+		},
+		{
+			"label": "normal dialogue close completes b.Elder.brief_25",
+			"ok": true
+		},
+		{
+			"label": "duplicate dialogue close grants nothing: b.Elder.brief_25",
+			"ok": true
+		},
+		{
+			"label": "actual Elder hand-in consumes the meteorite samples",
+			"ok": true
+		},
+		{
+			"label": "Elder hand-in alone cannot unlock the captive quest",
+			"ok": true
+		},
+		{
+			"label": "authored conversation offered: b.YCF.brief_27",
+			"ok": true
+		},
+		{
+			"label": "authored conversation actor exists: YCF",
+			"ok": true
+		},
+		{
+			"label": "normal topic list contains b.YCF.brief_27",
+			"ok": true
+		},
+		{
+			"label": "normal topic selection reaches closing controls: b.YCF.brief_27",
+			"ok": true
+		},
+		{
+			"label": "normal dialogue close completes b.YCF.brief_27",
+			"ok": true
+		},
+		{
+			"label": "duplicate dialogue close grants nothing: b.YCF.brief_27",
+			"ok": true
+		},
+		{
+			"label": "actual YCF conversation accepts the next quest",
+			"ok": true
+		},
+		{
+			"label": "actual q9h offer provides its letter",
+			"ok": true
+		},
+		{
+			"label": "loaded authored map gz2h",
+			"ok": true
+		},
+		{
+			"label": "gz2h: authored thread VCheck#3#1",
+			"ok": true
+		},
+		{
+			"label": "new quest waits for its real meeting area",
+			"ok": true
+		},
+		{
+			"label": "teleport target exists",
+			"ok": true
+		},
+		{
+			"label": "meeting area advances its objective without spawning the target early",
+			"ok": true
+		},
+		{
+			"label": "authored interactable exists: 1009001",
+			"ok": true
+		},
+		{
+			"label": "normal use activates 1009001",
+			"ok": true
+		},
+		{
+			"label": "normal quest mechanism consumes the letter",
+			"ok": true
+		},
+		{
+			"label": "actual mechanism spawns the living target",
+			"ok": true
+		},
+		{
+			"label": "teleport target exists",
+			"ok": true
+		},
+		{
+			"label": "approach starts the final objective but a living target blocks completion",
+			"ok": true
+		},
+		{
+			"label": "save checkpoint campaign_shaina_last_target",
+			"ok": true
+		},
+		{
+			"label": "reload checkpoint campaign_shaina_last_target",
+			"ok": true
+		},
+		{
+			"label": "saved quest points survive campaign_shaina_last_target",
+			"ok": true
+		},
+		{
+			"label": "reload/poll does not replay rewards: campaign_shaina_last_target",
+			"ok": true
+		},
+		{
+			"label": "authored combat target exists: 1009002",
+			"ok": true
+		},
+		{
+			"label": "target death completes q9h, clears the region and offers its real hand-in",
+			"ok": true
+		},
+		{
+			"label": "q9h completion: completed handlers grant no duplicate reward",
+			"ok": true
+		},
+		{
+			"label": "loaded authored map bz2h",
+			"ok": true
+		},
+		{
+			"label": "bz2h: authored thread VCheck#1#4",
+			"ok": true
+		},
+		{
+			"label": "earned q9h and Elder hand-in unlock the captive and follow-up quest offers",
+			"ok": true
+		},
+		{
+			"label": "authored conversation offered: b.YCF.brief_28",
+			"ok": true
+		},
+		{
+			"label": "authored conversation actor exists: YCF",
+			"ok": true
+		},
+		{
+			"label": "normal topic list contains b.YCF.brief_28",
+			"ok": true
+		},
+		{
+			"label": "normal topic selection reaches closing controls: b.YCF.brief_28",
+			"ok": true
+		},
+		{
+			"label": "normal dialogue close completes b.YCF.brief_28",
+			"ok": true
+		},
+		{
+			"label": "duplicate dialogue close grants nothing: b.YCF.brief_28",
+			"ok": true
+		},
+		{
+			"label": "save checkpoint campaign_shaina_bridge_done",
+			"ok": true
+		},
+		{
+			"label": "reload checkpoint campaign_shaina_bridge_done",
+			"ok": true
+		},
+		{
+			"label": "saved quest points survive campaign_shaina_bridge_done",
+			"ok": true
+		},
+		{
+			"label": "reload/poll does not replay rewards: campaign_shaina_bridge_done",
+			"ok": true
+		},
+		{
+			"label": "authored conversation offered: b.YCF.brief_33",
+			"ok": true
+		},
+		{
+			"label": "authored conversation actor exists: YCF",
+			"ok": true
+		},
+		{
+			"label": "normal topic list contains b.YCF.brief_33",
+			"ok": true
+		},
+		{
+			"label": "normal topic selection reaches closing controls: b.YCF.brief_33",
+			"ok": true
+		},
+		{
+			"label": "normal dialogue close completes b.YCF.brief_33",
+			"ok": true
+		},
+		{
+			"label": "duplicate dialogue close grants nothing: b.YCF.brief_33",
+			"ok": true
+		},
+		{
+			"label": "earned YCF offer accepts the optional caravan quest",
+			"ok": true
+		},
+		{
+			"label": "loaded authored map gz1h",
+			"ok": true
+		},
+		{
+			"label": "gz1h: authored thread VCheck#6#1",
+			"ok": true
+		},
+		{
+			"label": "teleport target exists",
+			"ok": true
+		},
+		{
+			"label": "real caravan area starts its guard objective",
+			"ok": true
+		},
+		{
+			"label": "authored interactable exists: 1011003",
+			"ok": true
+		},
+		{
+			"label": "unavailable use stays blocked 1011003",
+			"ok": true
+		},
+		{
+			"label": "authored combat target exists: 1011011",
+			"ok": true
+		},
+		{
+			"label": "authored combat target exists: 1011012",
+			"ok": true
+		},
+		{
+			"label": "authored combat target exists: 1011013",
+			"ok": true
+		},
+		{
+			"label": "one surviving caravan guard still blocks the quest chest",
+			"ok": true
+		},
+		{
+			"label": "save checkpoint campaign_caravan_last_guard",
+			"ok": true
+		},
+		{
+			"label": "reload checkpoint campaign_caravan_last_guard",
+			"ok": true
+		},
+		{
+			"label": "saved quest points survive campaign_caravan_last_guard",
+			"ok": true
+		},
+		{
+			"label": "reload/poll does not replay rewards: campaign_caravan_last_guard",
+			"ok": true
+		},
+		{
+			"label": "original caravan timer spawns the competing robber",
+			"ok": true
+		},
+		{
+			"label": "teleport target exists",
+			"ok": true
+		},
+		{
+			"label": "robber reaching the unopened chest records the original failed quest",
+			"ok": true
+		},
+		{
+			"label": "reload pending caravan before its alternate failure",
+			"ok": true
+		},
+		{
+			"label": "pending caravan save restores its unfailed quest",
+			"ok": true
+		},
+		{
+			"label": "authored combat target exists: 1011014",
+			"ok": true
+		},
+		{
+			"label": "authored interactable exists: 1011003",
+			"ok": true
+		},
+		{
+			"label": "normal use activates 1011003",
+			"ok": true
+		},
+		{
+			"label": "normal unlocked caravan chest completes the quest and offers its first report",
+			"ok": true
+		},
+		{
+			"label": "chest completion cannot substitute for the caravaneer's document",
+			"ok": true
+		},
+		{
+			"label": "authored corpse is available for ordinary loot: 1011001",
+			"ok": true
+		},
+		{
+			"label": "teleport target exists",
+			"ok": true
+		},
+		{
+			"label": "ordinary corpse loot replaces the report with the document hand-in",
+			"ok": true
+		},
+		{
+			"label": "loaded authored map bz2h",
+			"ok": true
+		},
+		{
+			"label": "authored conversation offered: b.YCF.brief_34a",
+			"ok": true
+		},
+		{
+			"label": "authored conversation actor exists: YCF",
+			"ok": true
+		},
+		{
+			"label": "normal topic list contains b.YCF.brief_34a",
+			"ok": true
+		},
+		{
+			"label": "normal topic selection reaches closing controls: b.YCF.brief_34a",
+			"ok": true
+		},
+		{
+			"label": "normal dialogue close completes b.YCF.brief_34a",
+			"ok": true
+		},
+		{
+			"label": "duplicate dialogue close grants nothing: b.YCF.brief_34a",
+			"ok": true
+		},
+		{
+			"label": "actual document hand-in consumes it and accepts the captive follow-up",
+			"ok": true
+		},
+		{
+			"label": "loaded authored map gz1h",
+			"ok": true
+		},
+		{
+			"label": "gz1h: authored thread VCheck#5#1",
+			"ok": true
+		},
+		{
+			"label": "original captive encounter spawns its living rescue target",
+			"ok": true
+		},
+		{
+			"label": "authored combat target exists: 1012002",
+			"ok": true
+		},
+		{
+			"label": "last living captive guard prevents the escort objective",
+			"ok": true
+		},
+		{
+			"label": "save checkpoint campaign_captive_last_guard",
+			"ok": true
+		},
+		{
+			"label": "reload checkpoint campaign_captive_last_guard",
+			"ok": true
+		},
+		{
+			"label": "saved quest points survive campaign_captive_last_guard",
+			"ok": true
+		},
+		{
+			"label": "reload/poll does not replay rewards: campaign_captive_last_guard",
+			"ok": true
+		},
+		{
+			"label": "authored combat target exists: 1012001",
+			"ok": true
+		},
+		{
+			"label": "captive death fails rescue without offering its successful hand-in",
+			"ok": true
+		},
+		{
+			"label": "reload living captive checkpoint",
+			"ok": true
+		},
+		{
+			"label": "authored combat target exists: 1012003",
+			"ok": true
+		},
+		{
+			"label": "last guard death gives the living captive its original follow motivation",
+			"ok": true
+		},
+		{
+			"label": "teleport target exists",
+			"ok": true
+		},
+		{
+			"label": "protagonist arriving alone cannot complete the captive escort",
+			"ok": true
+		},
+		{
+			"label": "teleport target exists",
+			"ok": true
+		},
+		{
+			"label": "living captive's own arrival completes rescue and offers its real hand-in",
+			"ok": true
+		},
+		{
+			"label": "optional captive completion: completed handlers grant no duplicate reward",
+			"ok": true
+		},
+		{
+			"label": "loaded authored map bz2h",
+			"ok": true
+		},
+		{
+			"label": "authored conversation offered: b.YCF.brief_36",
+			"ok": true
+		},
+		{
+			"label": "authored conversation actor exists: YCF",
+			"ok": true
+		},
+		{
+			"label": "normal topic list contains b.YCF.brief_36",
+			"ok": true
+		},
+		{
+			"label": "normal topic selection reaches closing controls: b.YCF.brief_36",
+			"ok": true
+		},
+		{
+			"label": "normal dialogue close completes b.YCF.brief_36",
+			"ok": true
+		},
+		{
+			"label": "duplicate dialogue close grants nothing: b.YCF.brief_36",
+			"ok": true
+		},
+		{
+			"label": "save checkpoint campaign_caravan_captive_done",
+			"ok": true
+		},
+		{
+			"label": "reload checkpoint campaign_caravan_captive_done",
+			"ok": true
+		},
+		{
+			"label": "saved quest points survive campaign_caravan_captive_done",
+			"ok": true
+		},
+		{
+			"label": "reload/poll does not replay rewards: campaign_caravan_captive_done",
+			"ok": true
+		}
+	],
+	"checks": 178,
+	"failures": [],
+	"scope": "Prepared q7h's Shaina offer and the independently earned q6h letter hand-in; actual q8h party swap, two controls, meteorite samples, return area and party restoration; actual Elder and YCF conversations, q9h letter/meeting/mechanism/target, and joint captive/follow-up offers. Earned optional q11h caravan and q12h captive branch, competing robber and captive-death failure controls, corpse document and hand-ins. Save/reload retains temporary party and pending/completed stages. God mode, teleport and kill cheats accelerate traversal/combat."
+}

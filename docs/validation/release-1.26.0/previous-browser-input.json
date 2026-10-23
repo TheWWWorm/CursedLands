@@ -1,0 +1,24 @@
+{
+  "version": "1.25.0",
+  "archive": "/home/llm2x/Documents/EI/local/scratchpad/release-1.25.0-20261023/release/assets/CursedLands-1.25.0-web.zip",
+  "archive_sha256": "2bd496f57e9bd01a9b1bc980ee1cacf40580380e8ca890115472ce2eda49af5f",
+  "folder": "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/prev-1.25.0/CursedLands-1.25.0-web",
+  "build_info": {
+    "version": "1.25.0",
+    "source_tag": "v1.25.0",
+    "source_commit": "424649b1e40fd0985cb286519b68d8e94db23589",
+    "game_tree": "07cf6be3ca1b8b0313b9eda992b423a471c822ad",
+    "protocol": 23,
+    "platform": "web",
+    "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+    "threads": false,
+    "extensions": false,
+    "compiled_scripts": 418,
+    "resource_count": 1298,
+    "all_pck_resource_md5_valid": true,
+    "original_game_data_bundled": false,
+    "pck_sha256": "3e41007d630ebb2d413cd6e75e679a615e159ba054d949481d392fd91e43b3ed",
+    "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+  },
+  "service_worker_sha256": "da62c2b5958dba2d0bf714844f8aea6c14f8158c217d57f129d6654c3ed3758e"
+}

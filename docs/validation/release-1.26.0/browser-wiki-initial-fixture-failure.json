@@ -1,0 +1,8 @@
+{
+  "job_id": "4c3e1a7a94524161",
+  "exit_code": 1,
+  "scope": "private browser-wiki fixture only",
+  "cause": "Wait selector required #article h1, while current UI moves non-home headings into #article-heading. The page loaded, but the obsolete selector timed out.",
+  "correction": "Wait for #article-heading h1 or #article h1; no production edits.",
+  "passed_rerun": "e77153452eb54abf"
+}

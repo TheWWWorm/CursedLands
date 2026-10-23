@@ -1,0 +1,129 @@
+{
+  "version": "1.26.0",
+  "source_commit": "0158ff77335a485399067e74ce65c580d01fbf31",
+  "game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+  "passed": true,
+  "web_export": {
+    "version": "1.26.0",
+    "source_tag": "v1.26.0",
+    "source_commit": "0158ff77335a485399067e74ce65c580d01fbf31",
+    "game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+    "protocol": 23,
+    "platform": "web",
+    "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+    "threads": false,
+    "extensions": false,
+    "compiled_scripts": 419,
+    "resource_count": 1300,
+    "all_pck_resource_md5_valid": true,
+    "original_game_data_bundled": false,
+    "pck_sha256": "eae644cd57a5270477fccbbb467bc5108f1db0f4aaf89d22ba822308d3a9d787",
+    "wasm_sha256": "7eda98958eb09135a1acb54a4323a00b1a55af1997f15fa1cdc2b93e3df46656"
+  },
+  "hosted": {
+    "files": 13652,
+    "all_hashes_match_public": true,
+    "parts_manifest_exact": true,
+    "wasm_parts": 2
+  },
+  "wiki_package": {
+    "checked": true,
+    "files_excluding_build_manifest": 13626,
+    "frontend_version": "1.26.0",
+    "article_version": "1.25.0"
+  },
+  "browser_fresh": {
+    "version": "1.26.0",
+    "passed": true,
+    "engine_start_resolved": true,
+    "canvas_visible": true,
+    "isolated": true,
+    "original_game_data_imported": false,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    }
+  },
+  "browser_upgrade": {
+    "version": "1.26.0",
+    "previous_version": "1.25.0",
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-07a5836e93c222a4a68c",
+      "new_cache": "cursed-engine-2-975a5ddd7166cd85ff6f",
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "pck_sha256": "eae644cd57a5270477fccbbb467bc5108f1db0f4aaf89d22ba822308d3a9d787",
+      "old_tab_wait_verified": true
+    },
+    "cache": {
+      "keys": [
+        "cursed-engine-2-975a5ddd7166cd85ff6f"
+      ],
+      "packs": {
+        "cursed-engine-2-975a5ddd7166cd85ff6f": "eae644cd57a5270477fccbbb467bc5108f1db0f4aaf89d22ba822308d3a9d787"
+      },
+      "worker": "activated",
+      "waiting": null,
+      "isolated": true
+    }
+  },
+  "public_wiki": {
+    "passed": true,
+    "scenarios": 6,
+    "languages": [
+      "en",
+      "ru",
+      "de"
+    ],
+    "campaigns": [
+      "cursed_lands",
+      "lost_in_astral"
+    ],
+    "actual_home_control_click": true,
+    "reload_and_back": true,
+    "screenshots_reviewed": 6
+  },
+  "native_wiki": {
+    "passed": true,
+    "runs": 6,
+    "screenshots": 18,
+    "screenshots_reviewed": 12,
+    "report": "native-wiki/summary.json"
+  },
+  "gpu_jobs": {
+    "browser_fresh": "5e2c4437d33a4539",
+    "browser_upgrade": "2c62c8c059a54fc2",
+    "public_wiki": "e77153452eb54abf",
+    "native_base_en": "a46c207821d94000",
+    "native_base_ru": "99a3b35b316a4a9a",
+    "native_base_de": "f75cebd3a53246a0",
+    "native_lia_en": "d8cb2192ddd84200",
+    "native_lia_ru": "338f78f3f8b94b15",
+    "native_lia_de": "9d27020b6a504764"
+  },
+  "fixture_failure_then_correction": {
+    "job_id": "4c3e1a7a94524161",
+    "exit_code": 1,
+    "scope": "private browser-wiki fixture only",
+    "cause": "Wait selector required #article h1, while current UI moves non-home headings into #article-heading. The page loaded, but the obsolete selector timed out.",
+    "correction": "Wait for #article-heading h1 or #article h1; no production edits.",
+    "passed_rerun": "e77153452eb54abf"
+  },
+  "scope_limits": [
+    "Local browser runtime starts the engine to the data installation screen; it does not import proprietary game data or run a browser campaign.",
+    "Native LiA English/German wiki captures use original Russian LiA data with an explicit UI language override and the production fingerprint-checked WikiReferenceText translations.",
+    "Cloudflare/live publication verification belongs to the publishing task and has not been performed by this subtask."
+  ],
+  "changed_repository_paths": [
+    "public/",
+    "parts.json"
+  ],
+  "no_commits_or_publication": true
+}

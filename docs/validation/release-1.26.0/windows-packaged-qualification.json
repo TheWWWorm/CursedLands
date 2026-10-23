@@ -1,0 +1,272 @@
+{
+  "status": "passed",
+  "programs": 8,
+  "checks": 303,
+  "failures": 0,
+  "runtime": "Windows packaged executable under Wine / VKD3D-Proton on Linux through GPU Lab auto",
+  "native_windows_runtime_tested": false,
+  "package_provenance": {
+    "source_commit": "0158ff77335a485399067e74ce65c580d01fbf31",
+    "game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+    "engine_template_sha256": "db24f2fea341a129568a83c4ac68c7007e57671a495e4f8dea181bf3618b9d6c",
+    "exported_exe_sha256": "3703c35f5a05fc8eeb31ea0b4ea720d7f428d898b07bedc30d274beaae64d5de",
+    "exported_pck_sha256": "7978edc2acc033f6b6ef853b6a3c4141c88626bdee03ec245077dd80934afed2",
+    "template_and_exported_text_section_equal": true,
+    "text_section": {
+      "size": 70449664,
+      "sha256": "d055f0b3e2d5122cc381418a647d2b038811b483fbc487d7de5dd58babb847c8"
+    },
+    "runtime": "Wine / VKD3D-Proton on Linux",
+    "native_windows_runtime_tested": false,
+    "gpu_jobs": [
+      "98cf49ef1f7841e8",
+      "8ab08243af0145be"
+    ]
+  },
+  "cases": [
+    {
+      "tag": "windows-water_raytrace_device",
+      "suite": "water_raytrace_device",
+      "checks": 25,
+      "failures": 0,
+      "seconds": 11.78,
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/windows-water_raytrace_device/result.json",
+      "source_game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+      "fixture_sha256": "f02cebca71b6e3003e21ab1801e1a97da4cc781d9e2dfe83c9af0c76e1d34832"
+    },
+    {
+      "tag": "windows-path_trace_device",
+      "suite": "path_trace_device",
+      "checks": 17,
+      "failures": 0,
+      "seconds": 15.39,
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/windows-path_trace_device/result.json",
+      "source_game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+      "fixture_sha256": "414b8d5d074cf95984851f9c495581c29fa931e56c25c95abc0c46421aff3bb8"
+    },
+    {
+      "tag": "windows-path_trace_light_history",
+      "suite": "path_trace_light_history",
+      "checks": 49,
+      "failures": 0,
+      "seconds": 11.03,
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/windows-path_trace_light_history/result.json",
+      "source_game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+      "fixture_sha256": "c964bfa28477938784bc4f5188c915cf828220a7590fd03fe7ee71327245c468"
+    },
+    {
+      "tag": "windows-path_trace_motion",
+      "suite": "path_trace_motion",
+      "checks": 55,
+      "failures": 0,
+      "seconds": 11.88,
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/windows-path_trace_motion/result.json",
+      "source_game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+      "fixture_sha256": "b74d7b8fc1b68fbfa6865b530c38decef12a200c95d2ce0a48ce141ac7ffb4e6"
+    },
+    {
+      "tag": "windows-path_trace_live",
+      "suite": "path_trace_live",
+      "checks": 17,
+      "failures": 0,
+      "seconds": 36.63,
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/windows-path_trace_live/result.json",
+      "source_game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+      "fixture_sha256": "fb486d6418388b89ec5a9477a6851b36cb924f6fc228ab7c4d346735ab54b1d5"
+    },
+    {
+      "tag": "windows-path-trace-save-load-low",
+      "suite": "path_trace_save_load",
+      "checks": 25,
+      "failures": 0,
+      "seconds": 113.46,
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/windows-path-trace-save-load-low/result.json",
+      "source_game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+      "fixture_sha256": "47289a96c6efe2276f62addf7dee62ffef2d3ba5f1636db00778b3c6faa3ce3c",
+      "loads": 3,
+      "active_frames": 1753,
+      "held_active_frames": 1648,
+      "held_history_reused_frames": 1647,
+      "fresh_device_per_load": true,
+      "all_loads_have_daylight_limited_history": true
+    },
+    {
+      "tag": "windows-path-trace-save-load-medium",
+      "suite": "path_trace_save_load",
+      "checks": 18,
+      "failures": 0,
+      "seconds": 73.25,
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/windows-path-trace-save-load-medium/result.json",
+      "source_game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+      "fixture_sha256": "47289a96c6efe2276f62addf7dee62ffef2d3ba5f1636db00778b3c6faa3ce3c",
+      "loads": 2,
+      "active_frames": 511,
+      "held_active_frames": 509,
+      "held_history_reused_frames": 508,
+      "fresh_device_per_load": true,
+      "all_loads_have_daylight_limited_history": true
+    },
+    {
+      "tag": "windows-fsr-campaign",
+      "suite": "fsr_campaign",
+      "checks": 97,
+      "failures": 0,
+      "seconds": 62.68,
+      "result": "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/windows-fsr-campaign/result.json",
+      "source_game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+      "fixture_sha256": "f3662c3ee23602fc20b56e049f97b12fa7837c9578416777a42e085ec5641e1b",
+      "fsr_samples": [
+        {
+          "label": "gameplay",
+          "generated_frames": 90,
+          "presented_frames": 180,
+          "frame_generation_active": true
+        },
+        {
+          "label": "display-mode-2",
+          "generated_frames": 90,
+          "presented_frames": 180,
+          "frame_generation_active": true
+        },
+        {
+          "label": "display-mode-1",
+          "generated_frames": 90,
+          "presented_frames": 180,
+          "frame_generation_active": true
+        },
+        {
+          "label": "display-mode-0",
+          "generated_frames": 90,
+          "presented_frames": 180,
+          "frame_generation_active": true
+        },
+        {
+          "label": "paused",
+          "generated_frames": 0,
+          "presented_frames": 90,
+          "frame_generation_active": false
+        },
+        {
+          "label": "resumed",
+          "generated_frames": 90,
+          "presented_frames": 180,
+          "frame_generation_active": true
+        },
+        {
+          "label": "loading",
+          "generated_frames": 0,
+          "presented_frames": 90,
+          "frame_generation_active": false
+        },
+        {
+          "label": "menu",
+          "generated_frames": 0,
+          "presented_frames": 90,
+          "frame_generation_active": false
+        },
+        {
+          "label": "menu-closed",
+          "generated_frames": 90,
+          "presented_frames": 180,
+          "frame_generation_active": true
+        },
+        {
+          "label": "upscaling-off",
+          "generated_frames": 90,
+          "presented_frames": 180,
+          "frame_generation_active": true
+        },
+        {
+          "label": "native-gameplay",
+          "generated_frames": 90,
+          "presented_frames": 180,
+          "frame_generation_active": true
+        },
+        {
+          "label": "native-menu",
+          "generated_frames": 0,
+          "presented_frames": 90,
+          "frame_generation_active": false
+        },
+        {
+          "label": "native-menu-closed",
+          "generated_frames": 90,
+          "presented_frames": 180,
+          "frame_generation_active": true
+        },
+        {
+          "label": "all-fsr-off",
+          "generated_frames": 0,
+          "presented_frames": 90,
+          "frame_generation_active": false
+        }
+      ]
+    }
+  ],
+  "gpu_jobs": [
+    {
+      "id": "98cf49ef1f7841e8",
+      "status": "completed",
+      "argv": [
+        "python3",
+        "run-windows-pt.py"
+      ],
+      "cwd": "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release",
+      "timeout_seconds": 1200.0,
+      "created_at": 1792796960.1800392,
+      "label": "python3",
+      "directory": "/var/lib/gpu-lab-gpu0/jobs/98cf49ef1f7841e8",
+      "gpu_uuid": "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441",
+      "display": ":99",
+      "workload": "auto",
+      "vram_mb": 4096,
+      "started_at": 1792796960.1802964,
+      "pid": 1483835,
+      "stderr_truncated": false,
+      "stdout_truncated": false,
+      "exit_code": 0,
+      "finished_at": 1792797050.2017987,
+      "gpu_slot": "0"
+    },
+    {
+      "id": "8ab08243af0145be",
+      "status": "completed",
+      "argv": [
+        "python3",
+        "run-windows-resume.py"
+      ],
+      "cwd": "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release",
+      "timeout_seconds": 1200.0,
+      "created_at": 1792797015.0027585,
+      "label": "python3",
+      "directory": "/var/lib/gpu-lab/jobs/8ab08243af0145be",
+      "gpu_uuid": "GPU-0eee028e-b998-532f-095b-e936c7f6191d",
+      "display": ":98",
+      "workload": "auto",
+      "vram_mb": 4096,
+      "started_at": 1792797015.0030408,
+      "pid": 1486843,
+      "stdout_truncated": false,
+      "stderr_truncated": false,
+      "exit_code": 0,
+      "finished_at": 1792797266.2444556,
+      "gpu_slot": "1"
+    }
+  ],
+  "visual_review": [
+    "windows-path_trace_live/river-path-2.png: main river path traced scene renders correctly",
+    "windows-path-trace-save-load-medium/live-after-load.png: bz8k image renders after worker save load",
+    "windows-fsr-campaign/fsr-campaign-resumed.png: campaign/HUD visible after pause and FSR recovery"
+  ],
+  "limits": [
+    "These are Wine checks, not native Windows runtime qualification.",
+    "Repeated save/load uses a copied prior private renderer fixture on authored bz8k, without mod packages; it is not a fresh campaign playthrough.",
+    "FSR resume covers pause/loading/menu gates, display modes and native-resolution frame generation through the production autoload. Save/load cycles are measured independently with FSR disabled."
+  ],
+  "expected_wine_diagnostics": [
+    "readMonitorEdidFromKey: Failed to get EDID reg key size",
+    "DXGI: Failed to parse display metadata + colorimetry info, using blank.",
+    "Failed to get SDR white level for virtual monitor"
+  ],
+  "helper_change": "run_packaged.run optional profile_source / --profile-source seeds only the isolated profile, records file hashes and rewrites muted/free-cursor/FPS settings. No game-source edits."
+}

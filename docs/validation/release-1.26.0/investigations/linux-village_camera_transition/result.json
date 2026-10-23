@@ -1,0 +1,61 @@
+{
+  "suite": "village_camera_transition",
+  "platform": "linux",
+  "renderer": "opengl3",
+  "exit": 1,
+  "seconds": 26.86,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/CursedLands-1.26.0-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--display-driver",
+    "x11",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/linux-village_camera_transition/fixtures/village_camera_transition.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/linux-village_camera_transition",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/CursedLands-1.26.0-linux-x86_64/mods"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "FAIL entry style=1 reset=0 follow=1: follow preference respected",
+    "FAIL shop style=1 reset=0 follow=1: follow preference respected",
+    "FAIL entry style=1 reset=1 follow=1: follow preference respected",
+    "FAIL shop style=1 reset=1 follow=1: follow preference respected",
+    "VILLAGE_CAMERA_TRANSITION 68 checks 4 failures"
+  ],
+  "errors": [
+    "FAIL entry style=1 reset=0 follow=1: follow preference respected",
+    "FAIL shop style=1 reset=0 follow=1: follow preference respected",
+    "FAIL entry style=1 reset=1 follow=1: follow preference respected",
+    "FAIL shop style=1 reset=1 follow=1: follow preference respected",
+    "VILLAGE_CAMERA_TRANSITION 68 checks 4 failures",
+    "ERROR: Texture with GL ID of 138: leaked 349524 bytes.",
+    "ERROR: Texture with GL ID of 139: leaked 349524 bytes.",
+    "village-camera-transition.json: 4"
+  ],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "source_game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+  "fixture_sha256": "cd4ad31c831e2aab61ce46fddb35142aa0bfd8f0c77ca0cb77151401f21558c8"
+}

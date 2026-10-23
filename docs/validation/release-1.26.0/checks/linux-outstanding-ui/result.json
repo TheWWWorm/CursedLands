@@ -1,0 +1,51 @@
+{
+  "suite": "outstanding_ui_issues",
+  "platform": "linux",
+  "renderer": "opengl3",
+  "exit": 0,
+  "seconds": 38.48,
+  "argv": [
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/CursedLands-1.26.0-linux-x86_64/CursedLands.x86_64",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--max-fps",
+    "30",
+    "--display-driver",
+    "x11",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--windowed",
+    "--resolution",
+    "1280x720",
+    "--",
+    "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/linux-outstanding-ui/fixtures/outstanding_ui_issues.gd",
+    "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/linux-outstanding-ui",
+    "--mod-tests",
+    "--examples=/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/CursedLands-1.26.0-linux-x86_64/mods",
+    "--en-texts=/home/llm2x/Documents/EI/inspection/extracted/app/res/texts.res",
+    "--ru-texts=/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/languages/ru/app/Res/texts.res",
+    "--de-texts=/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/languages/de/app/Res/texts.res"
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "summary": [
+    "OUTSTANDING_UI_ISSUES 45 checks 0 failures"
+  ],
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "source_game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+  "fixture_sha256": "0dcd37dffb86c661e6614dab304e7fa4e64e9e5fd8bfd9c58d0e4b48dd025c02"
+}

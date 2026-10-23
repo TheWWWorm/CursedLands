@@ -1,0 +1,18 @@
+{
+  "source_commit": "0158ff77335a485399067e74ce65c580d01fbf31",
+  "game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+  "engine_template_sha256": "db24f2fea341a129568a83c4ac68c7007e57671a495e4f8dea181bf3618b9d6c",
+  "exported_exe_sha256": "3703c35f5a05fc8eeb31ea0b4ea720d7f428d898b07bedc30d274beaae64d5de",
+  "exported_pck_sha256": "7978edc2acc033f6b6ef853b6a3c4141c88626bdee03ec245077dd80934afed2",
+  "template_and_exported_text_section_equal": true,
+  "text_section": {
+    "size": 70449664,
+    "sha256": "d055f0b3e2d5122cc381418a647d2b038811b483fbc487d7de5dd58babb847c8"
+  },
+  "runtime": "Wine / VKD3D-Proton on Linux",
+  "native_windows_runtime_tested": false,
+  "gpu_jobs": [
+    "98cf49ef1f7841e8",
+    "8ab08243af0145be"
+  ]
+}

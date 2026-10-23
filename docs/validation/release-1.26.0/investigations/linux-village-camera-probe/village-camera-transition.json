@@ -1,0 +1,86 @@
+{
+	"checks": 68,
+	"failures": 4,
+	"observations": [
+		{
+			"case": "entry style=0 reset=0 follow=0",
+			"followed": false,
+			"yaw": 0.73
+		},
+		{
+			"case": "shop style=0 reset=0 follow=0",
+			"followed": false,
+			"yaw": 0.73
+		},
+		{
+			"case": "entry style=0 reset=0 follow=1",
+			"followed": true,
+			"yaw": 0.73
+		},
+		{
+			"case": "shop style=0 reset=0 follow=1",
+			"followed": true,
+			"yaw": 0.73
+		},
+		{
+			"case": "entry style=0 reset=1 follow=0",
+			"followed": false,
+			"yaw": -3.13179105556089
+		},
+		{
+			"case": "shop style=0 reset=1 follow=0",
+			"followed": false,
+			"yaw": -3.13179105556089
+		},
+		{
+			"case": "entry style=0 reset=1 follow=1",
+			"followed": true,
+			"yaw": -3.13179105556089
+		},
+		{
+			"case": "shop style=0 reset=1 follow=1",
+			"followed": true,
+			"yaw": -3.13179105556089
+		},
+		{
+			"case": "entry style=1 reset=0 follow=0",
+			"followed": false,
+			"yaw": 0.73
+		},
+		{
+			"case": "shop style=1 reset=0 follow=0",
+			"followed": false,
+			"yaw": 0.73
+		},
+		{
+			"case": "entry style=1 reset=0 follow=1",
+			"followed": false,
+			"yaw": 0.73
+		},
+		{
+			"case": "shop style=1 reset=0 follow=1",
+			"followed": false,
+			"yaw": 0.73
+		},
+		{
+			"case": "entry style=1 reset=1 follow=0",
+			"followed": false,
+			"yaw": -3.13179105556089
+		},
+		{
+			"case": "shop style=1 reset=1 follow=0",
+			"followed": false,
+			"yaw": -3.13179105556089
+		},
+		{
+			"case": "entry style=1 reset=1 follow=1",
+			"followed": false,
+			"yaw": -3.13179105556089
+		},
+		{
+			"case": "shop style=1 reset=1 follow=1",
+			"followed": false,
+			"yaw": -3.13179105556089
+		}
+	]
+}

@@ -1,0 +1,10 @@
+{
+  "source": "/home/llm2x/Documents/EI/local/scratchpad/wiki-cut-content-20261023/probe/visual.gd",
+  "source_sha256": "be492bacc2cee55768324c4582eae37c1b4ce306e361d570ab813c1ef3c6faf3",
+  "fixture_sha256": "a7771cb1a34fd5a9f498e5ebb42f385668138833d8979307733f2ce1437c60f5",
+  "changes": [
+    "Private UI-language override before opening the wiki; production WikiSource applies reviewed reference translations",
+    "Reject missing page/navigation; record campaign/language/version"
+  ],
+  "not_changed": "Production source, game data and wiki output"
+}

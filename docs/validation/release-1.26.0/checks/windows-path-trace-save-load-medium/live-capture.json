@@ -1,0 +1,10 @@
+{
+  "observed_state": {
+    "active_frames": 66,
+    "elapsed_ms": 34908,
+    "phase": "trace-0"
+  },
+  "gpu_job": "8ab08243af0145be",
+  "capture": "{\n  \"path\": \"/home/llm2x/Documents/EI/local/scratchpad/release-1.26.0-20261024/release/checks/windows-path-trace-save-load-medium/live-after-load.png\",\n  \"width\": 2880,\n  \"height\": 1800,\n  \"preview_width\": 1600,\n  \"preview_height\": 1000,\n  \"job_id\": \"8ab08243af0145be\",\n  \"display\": \":98\",\n  \"gpu_slot\": \"1\"\n}\n",
+  "exit": 0
+}

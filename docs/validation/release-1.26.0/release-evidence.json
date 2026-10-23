@@ -1,0 +1,80 @@
+{
+  "version": "1.26.0",
+  "game_tree": "8a4372be6bc73647f158747950f68d49550a711e",
+  "source_validation": [
+    {
+      "scope": "Base campaign: 40 configurations, 12,233 checks in the unchanged base quest implementation, including all 36 base quest configurations.",
+      "status": "passed",
+      "evidence": "docs/validation/base-campaign-checkpoints-2026-10-23.md"
+    },
+    {
+      "scope": "61 distinct gameplay programs/9,508 checks, including all 34 LiA configurations/7,771 checks and surrounding co-op, save, travel and base-campaign controls. All 39 native references match twice, with 2,798 harness checks; exact snapshot/retained-process limits are in the indexed report.",
+      "status": "passed",
+      "evidence": "docs/validation/lia-party-inventory-2026-10-24.md"
+    },
+    {
+      "scope": "Merged issue fixes, translated controls, shop state, shader/menu transitions and Autochess presentation. Current packaged checks are recorded below.",
+      "status": "passed",
+      "evidence": "docs/validation/outstanding-issues-2026-10-23/README.md"
+    },
+    {
+      "scope": "Original native Windows save/load comparison qualifies the corrected engine source, using a different compiler from this new cross-built package.",
+      "status": "source evidence",
+      "evidence": "docs/validation/path-tracing-save-load-2026-10-24/README.md"
+    },
+    {
+      "status": "passed",
+      "scope": "Both previously failing native LiA inventory references rerun twice against the exact merged release game tree; all comparisons and repeatability pass.",
+      "evidence": "docs/validation/release-1.26.0/integrated-native/index.json"
+    }
+  ],
+  "platform_runtime": {
+    "linux-x86_64": {
+      "target_os_tested": true,
+      "status": "passed",
+      "scope": "Actual package: quest inventory/save/co-op, Kel rescue and Shaina, shop and translated controls, difficulty/dialogue clocks, village camera, shader preparation and menu loading/return. Native wiki in both campaigns and EN/RU/DE."
+    },
+    "windows-x86_64": {
+      "target_os_tested": false,
+      "status": "Wine/VKD3D passed",
+      "scope": "303 checks in eight current packaged D3D12 suites, including PT motion/history, five real simulation-worker loads, and FSR recovery. The exported executable code section matches the freshly linked corrected engine template. No native Windows execution of this binary."
+    },
+    "macos-universal": {
+      "target_os_tested": false,
+      "status": "archive verified",
+      "scope": "Unsigned universal archive, version/icon and compiled-script parity verified; no macOS runtime test."
+    },
+    "android": {
+      "target_os_tested": false,
+      "status": "signed export verified",
+      "scope": "Version code 60, unchanged app ID and public signing certificate, release manifest, native library hashes and script parity verified. No current device runtime test."
+    },
+    "web": {
+      "target_os_tested": true,
+      "status": "passed",
+      "scope": "Fresh engine startup, update from the actual published 1.25.0 service-worker cache with byte-identical IndexedDB sentinels, and public Cut content controls in both campaigns/EN/RU/DE with Back/reload and layout checks."
+    }
+  },
+  "superseded_checks": {
+    "linux-village_camera_transition": {
+      "superseded_by": "linux-village-camera-ready",
+      "reason": "Cold packaged shader preparation was still active while the fixture froze the camera and asserted modern follow. Diagnostic probe confirmed the intended camera suspension. Fixture now waits for actual preparation completion; all 70 checks pass without a production change."
+    },
+    "linux-village-camera-probe": {
+      "superseded_by": "linux-village-camera-ready",
+      "reason": "Diagnostic reproduction retained: modern follow assertions ran with shader=true/blocked=true. Corrected readiness fixture supersedes this diagnostic run."
+    },
+    "linux-shader_compilation_arena": {
+      "superseded_by": "linux-shader-arena-vulkan",
+      "reason": "OpenGL does not execute this CompositorEffect draw probe (counter remained zero). The unchanged fixture passes all 27 checks on Vulkan, where the real draw counter is supported."
+    }
+  },
+  "limits": [
+    "Quest coverage uses prepared authored scenarios and checkpoint comparisons; it is not an uninterrupted manual playthrough of every possible save or quest ordering.",
+    "Older saves preserve known live quest items; historical named-party inventories that were never recorded cannot be reconstructed.",
+    "The new Windows binary was exercised under Wine/VKD3D, not native Windows. The separate native Windows record qualifies source built with a different compiler.",
+    "macOS was not executed, the package is unsigned, and no current Android device runtime test was performed.",
+    "Browser qualification covers engine startup, offline cache migration and wiki controls; it does not claim a complete browser campaign run.",
+    "Audio checks use requests, mixer state and routing while the required development profile remains muted."
+  ]
+}
