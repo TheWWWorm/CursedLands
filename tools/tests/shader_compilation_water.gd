@@ -33,6 +33,7 @@ var releases: Array[Dictionary] = []
 var acknowledgements: Array[Dictionary] = []
 var screenshots: Array[Dictionary] = []
 var cases: Array[Dictionary] = []
+var cover_draws: Array[Dictionary] = []
 var previously_held := false
 var previous_observer := Callable()
 var original_warmup := true
@@ -41,6 +42,25 @@ var original_warmup := true
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	run.call_deferred()
+
+
+func check(ok: bool, label: String) -> void:
+	checks += 1
+	if not ok:
+		failures.append(label)
+		# The qualification runner stops on FAIL; preserve the measured draw
+		# counters and ownership events before announcing the failure.
+		save_report()
+	print("PASS " if ok else "FAIL ", label)
+
+
+func save_report() -> void:
+	var report := {"checks":checks,"failures":failures,"cases":cases,"progress":progress,"owner_releases":releases,
+		"render_acknowledgements":acknowledgements,"screenshots":screenshots,"cover_draws":cover_draws,
+		"last_state":snapshot(),"raytracing_supported":RayDevice.supported(),
+		"driver":RenderingServer.get_current_rendering_driver_name(),"device":RenderingServer.get_video_adapter_name(),
+		"profile":OS.get_user_data_dir(),"injected_failure":"snapshot failed after real gather began"}
+	FileAccess.open(out.path_join("shader-compilation-water.json"),FileAccess.WRITE).store_string(JSON.stringify(report,"\t")+"\n")
 
 
 func reflector() -> Reflection:
@@ -104,15 +124,23 @@ func _acknowledged(serial: int, ok: bool, device_id: int) -> void:
 
 func begin_case(label: String) -> Dictionary:
 	case_name = label
+	var before_sync := scene_probe.count() if scene_probe else 0
+	# Separate defers frame_post_draw; its callback can arrive while a newer
+	# campaign draw is already queued. Drain that real work before measuring
+	# this synchronous settings request, whose canvas-only present also syncs.
+	RenderingServer.force_sync()
 	previously_held = held()
 	var start := snapshot()
-	cases.append({"case":label,"start":start})
+	cases.append({"case":label,"start":start,"scene_draws_before_sync":before_sync,
+		"prior_draws_drained":int(start.scene_draws)-before_sync})
 	return start
 
 
 func cover_capture(label: String, draws_before: int) -> void:
+	var observed := scene_probe.count()
+	cover_draws.append({"case":label,"baseline":draws_before,"observed":observed,"state":snapshot()})
 	check(ShaderCompilationScreen.active(), label+": preparation cover is active before 3D work")
-	check(scene_probe.count() == draws_before, label+": presenting the cover did not draw the campaign")
+	check(observed == draws_before, label+": presenting the cover did not draw the campaign")
 	var image := get_viewport().get_texture().get_image()
 	check(image != null and not image.is_empty(), label+": completed canvas draw is readable")
 	if image == null or image.is_empty(): return
@@ -350,11 +378,7 @@ func run() -> void:
 	check(GameData.option("confine_mouse") == 0 and GameData.option("show_fps") == 1 \
 		and GameData.option("volume_sfx") == 0 and GameData.option("volume_stream") == 0 and GameData.option("volume_voice") == 0,
 		"fixture preserves all mandated development profile preferences")
-	var report := {"checks":checks,"failures":failures,"cases":cases,"progress":progress,"owner_releases":releases,
-		"render_acknowledgements":acknowledgements,"screenshots":screenshots,"raytracing_supported":RayDevice.supported(),
-		"driver":RenderingServer.get_current_rendering_driver_name(),"device":RenderingServer.get_video_adapter_name(),
-		"profile":OS.get_user_data_dir(),"injected_failure":"snapshot failed after real gather began"}
-	FileAccess.open(out.path_join("shader-compilation-water.json"),FileAccess.WRITE).store_string(JSON.stringify(report,"\t")+"\n")
+	save_report()
 	TexUpscale.shutdown()
 	UnitWounds.shutdown()
 	print("SHADER_COMPILATION_WATER ",checks," checks ",failures.size()," failures")
