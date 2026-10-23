@@ -76,6 +76,45 @@ func classify() -> void:
 	extra[2].position.x+=0.001;data=next_frame()
 	check(data.decode_float(82*4)==0,"one moving source invalidates a multi-light flutter frame")
 	for light in extra:light.queue_free()
+	daylight_history()
+
+func prime_daylight(progressive:=false) -> void:
+	prime(progressive)
+	game_stub._sky_cave=false
+	Gfx.sun=Color(1.0,0.95,0.7);Gfx.ambient=Color(0.5,0.6,0.7);Gfx.fog_sky=Color(0.3,0.5,0.8)
+	Gfx._cloud_sun_direction=Vector3(0.1,0.6,0.8).normalized()
+	next_frame();next_frame()
+
+func daylight_history() -> void:
+	prime_daylight()
+	Gfx.sun.g+=0.00005;Gfx.sun.b+=0.00005
+	Gfx.ambient.r+=0.00001;Gfx.fog_sky.b+=0.00001
+	Gfx._cloud_sun_direction=Gfx._cloud_sun_direction.rotated(Vector3.UP,0.0001)
+	var data:=next_frame()
+	check(data.decode_float(82*4)==1 and data.decode_float(145*4)==3,"gradual daylight retains bounded responsive history")
+	lamp.light_energy=1.03;Gfx.sun.b+=0.00005;data=next_frame()
+	check(data.decode_float(82*4)==1 and data.decode_float(145*4)==3,"daylight and torch flutter can reuse history together")
+	for i in 10:data=next_frame()
+	check(data.decode_float(145*4)==8 and controller._accumulation_frames==8,"unchanged daylight recovers full responsive history")
+	for rate in [30,20]:
+		prime_daylight();Gfx.sun.b+=0.00005;data=next_frame(false,1.0/rate)
+		check(data.decode_float(82*4)==1 and data.decode_float(145*4)<2,"daylight history time stays bounded at "+str(rate)+" Hz")
+	prime_daylight();Gfx.sun.b+=0.01;data=next_frame()
+	check(data.decode_float(82*4)==0,"larger sun colour changes reset immediately")
+	prime_daylight();Gfx.ambient.r+=0.01;data=next_frame()
+	check(data.decode_float(82*4)==0,"larger environment changes reset immediately")
+	prime_daylight();Gfx._cloud_sun_direction=Gfx._cloud_sun_direction.rotated(Vector3.UP,0.01);data=next_frame()
+	check(data.decode_float(82*4)==0,"a sun direction jump resets immediately")
+	prime_daylight();Gfx.sun=Color.BLACK;data=next_frame()
+	check(data.decode_float(82*4)==0,"extinguished sunlight cannot retain its previous radiance")
+	prime_daylight();lamp.position.x+=0.001;Gfx.sun.b+=0.00005;data=next_frame()
+	check(data.decode_float(82*4)==0,"gradual daylight does not hide a moving local source")
+	prime_daylight();camera.size+=0.01;Gfx.sun.b+=0.00005;data=next_frame()
+	check(data.decode_float(82*4)==0,"gradual daylight does not hide a projection change")
+	prime_daylight(true);Gfx.sun.b+=0.00005;data=next_frame()
+	check(data.decode_float(82*4)==0,"still-scene accumulation keeps exact daylight matching")
+	prime_daylight();controller._strict_light_history=true;Gfx.sun.b+=0.00005;data=next_frame()
+	check(data.decode_float(82*4)==0,"strict diagnostic mode rejects gradual daylight")
 
 func inputs_for(dark:=false) -> Array[Image]:
 	var inputs: Array[Image]=[]

@@ -20,6 +20,19 @@ the Windows executable; a new PCK alone cannot enable DX12 ray tracing. The game
 ships matching DXIL/SPIR-V shaders built from one HLSL source. See the water guide
 for compiler pinning, limitations, and the DX12/Vulkan regression fixtures.
 
+The DXR barrier masks keep acceleration-structure build stages out of constant
+buffer, vertex-fetch and shading-rate accesses. A TLAS rebuild after tracing
+must not turn a frame-uniform transition into a constant-buffer barrier with
+an acceleration-structure build scope. Native D3D12 rejects that command list;
+the resulting device removal can subsequently crash a driver resource binding.
+Enhanced barriers remain enabled. Rebuild the Windows template to apply this
+fix. `tools/tests/water_raytrace_device.gd` covers hidden-to-visible geometry,
+tracing followed by a TLAS rebuild, resizing and GPU readbacks.
+`tools/tests/path_trace_save_load.gd` exercises repeated loads through the
+frontend and simulation worker using a copied save in an isolated profile.
+See the [native Windows validation](../../docs/validation/path-tracing-save-load-2026-10-24/README.md)
+for reproduction, engine build details and regression results.
+
 `d3d12-device-diagnostics.patch` is an optional diagnostic/hardening patch
 applied after the DXR patch. `EI_D3D12_DIAGNOSTICS=1` enables DRED before device
 creation and records debug-layer warnings, device-removal reasons and available
