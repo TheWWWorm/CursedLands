@@ -200,7 +200,9 @@ func build(d: TerrainDetails,p: Vector2) -> Dictionary:
 			all[key] = data.get("cover",{})
 	var view := Vector3(p.x,d.terrain.height_at(p.x,p.y),-p.y)
 	d._material.set_shader_parameter("view_position",view)
-	if d._cover_material: d._cover_material.set_shader_parameter("view_position",view)
+	# Mirror TerrainDetails._process: stone contacts fade with this distance.
+	for material: ShaderMaterial in [d._cover_material,d._cover_contact_material,d._mound_material]:
+		if material: material.set_shader_parameter("view_position",view)
 	return {"records":records,"vertices":vertices,"data":all}
 
 func camera_clear(d: TerrainDetails,focus: Vector3) -> bool:
