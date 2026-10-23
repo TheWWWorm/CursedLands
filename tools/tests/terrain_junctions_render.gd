@@ -76,7 +76,12 @@ func junction(site: Dictionary) -> void:
 			var node: MeshInstance3D=entry.node.get_ref()
 			if node and node.mesh!=entry.source:tracks+=1
 		check(tracks>0,"real dense footprint receivers installed "+label);soft.set_process(false)
-	if is_instance_valid(terrain.color_cache):terrain.color_cache.prepare(camera);terrain.color_cache.set_process(false)
+	# Forward+ bakes Detailed colour only while no transition is admitted
+	# (TerrainColorCache._forward_eligible), so its exact comparisons use the
+	# live Detailed path. Mobile and Compatibility keep the baked base.
+	var baked:=is_instance_valid(terrain.color_cache) and RenderingServer.get_current_rendering_method()!="forward_plus"
+	if is_instance_valid(terrain.color_cache):terrain.color_cache.set_process(false)
+	if baked:terrain.color_cache.prepare(camera)
 	await frames(60)
 	var before:=await capture(view,label+"-detailed")
 	check(terrain._transitions==null,"Detailed has no transition owner "+label)

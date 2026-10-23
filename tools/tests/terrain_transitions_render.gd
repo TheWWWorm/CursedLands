@@ -105,7 +105,12 @@ func case(name: String,path_control := false) -> void:
 			if node and node.mesh!=entry.source:tracks+=1
 		check(tracks>0,"real footprints have installed dense terrain receivers "+name)
 		soft.set_process(false)
-	if is_instance_valid(terrain.color_cache): terrain.color_cache.prepare(camera);terrain.color_cache.set_process(false)
+	# Forward+ bakes Detailed colour only while no transition is admitted
+	# (TerrainColorCache._forward_eligible), so its exact comparisons use the
+	# live Detailed path. Mobile and Compatibility keep the baked base.
+	var baked:=is_instance_valid(terrain.color_cache) and RenderingServer.get_current_rendering_method()!="forward_plus"
+	if is_instance_valid(terrain.color_cache):terrain.color_cache.set_process(false)
+	if baked:terrain.color_cache.prepare(camera)
 	await frames(60)
 	check(terrain._transitions==null,"Detailed creates no transition owner "+name)
 	var before:=await capture(view,label+"-detailed")
@@ -163,7 +168,8 @@ func case(name: String,path_control := false) -> void:
 	check(difference(after,await capture(view,label+"-restored")).changed_pixels==0,"static field restores exact natural image "+name)
 	var cached:=0
 	if is_instance_valid(terrain.color_cache):
-		cached=terrain.color_cache._resident.size();check(cached>0,"native immutable base cache is active "+name)
+		cached=terrain.color_cache._resident.size()
+		check(cached>0 if baked else cached==0,("native immutable base cache is active " if baked else "Forward+ cache yields to admitted transitions ")+name)
 		for entry: Dictionary in terrain.color_cache._resident.values():
 			check(entry.material.shader.code.contains("#define EI_TERRAIN_TRANSITIONS") and entry.material.get_shader_parameter("transition_tiles")==field.tiles,"cached land applies the same live transition field "+name)
 	var weak: WeakRef = weakref(field);field=null
