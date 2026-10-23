@@ -343,6 +343,14 @@ func health_anchor(unit: GameUnit) -> Vector2:
 	return camera.unproject_position(unit.global_position + Vector3.UP * EnemyBars.head_top(unit)) - Vector2(0, 10 * ui_scale)
 
 
+func health_marker_rect(unit: GameUnit) -> Rect2:
+	var text := "%d/%d" % [maxi(0, ceili(unit.hp)), ceili(unit.max_hp)] if numeric_health else unit.display_name if unit == hovered else ""
+	var pixels := roundi(14 * ui_scale)
+	var width := maxf(54 * ui_scale, ThemeDB.fallback_font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, pixels).x)
+	var outline := maxi(3, roundi(3 * ui_scale))
+	return Rect2(health_anchor(unit) - Vector2(width * 0.5 + outline, 40 * ui_scale), Vector2(width + outline * 2, 46 * ui_scale))
+
+
 func _unit_markers_visible() -> bool:
 	return true
 

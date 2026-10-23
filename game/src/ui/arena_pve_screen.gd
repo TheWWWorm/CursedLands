@@ -2154,7 +2154,7 @@ func _update_item_targets() -> void:
 	if own_board:
 		for unit: GameUnit in battle.world.unit_rows():
 			if unit.dead or not unit.visible or unit.hidden or field.camera.is_position_behind(unit.global_position): continue
-			occupied.append(Rect2(field.health_anchor(unit) + Vector2(-48, -40) * _ui_scale, Vector2(96, 46) * _ui_scale))
+			occupied.append(field.health_marker_rect(unit))
 	for unit: GameUnit in battle.world.unit_rows() if own_board else []:
 		var placement: Dictionary = unit.get_meta("arena_placement", {})
 		var uid := int(placement.get("run_uid", 0))
@@ -2207,10 +2207,15 @@ func _update_item_targets() -> void:
 
 
 func _item_badge_position(anchor: Vector2, extent: Vector2, occupied: Array[Rect2]) -> Vector2:
-	var offsets := [Vector2(-ArenaItemSlot.TARGET_SIZE / 2, 12)] if _item_uid > 0 else [Vector2(52, 8)]
-	offsets.append_array([Vector2(-84, 8), Vector2(8, 12), Vector2(-40, 12), Vector2(52, 44), Vector2(-84, 44), Vector2(-16, 50), Vector2(52, -38), Vector2(-84, -38)])
+	var origin := anchor
+	var offsets := [Vector2(52, 8), Vector2(-84, 8), Vector2(8, 12), Vector2(-40, 12), Vector2(52, 44), Vector2(-84, 44), Vector2(-16, 50), Vector2(52, -38), Vector2(-84, -38)]
+	if _item_uid > 0:
+		# Center the target under its creature's marker. Crowding may move it
+		# slightly down or sideways, but never to a distant unrelated position.
+		origin -= Vector2(extent.x * 0.5, 0)
+		offsets = [Vector2(0, 10), Vector2(0, 26), Vector2(-20, 10), Vector2(20, 10), Vector2(-20, 26), Vector2(20, 26)]
 	for offset: Vector2 in offsets:
-		var rectangle := Rect2(anchor + offset * _ui_scale, extent)
+		var rectangle := Rect2(origin + offset * _ui_scale, extent)
 		if not Rect2(Vector2.ZERO, field.size).encloses(rectangle): continue
 		if not occupied.any(func(other): return rectangle.grow(2).intersects(other)):
 			return rectangle.position

@@ -62,6 +62,23 @@ displays include the existing OpenGL antialiasing warning and a null-monitor
 refresh-rate query from crash-report metadata, before the fixture begins.
 Complete GPU job metadata and combined logs are retained beside each profile.
 
+## Assignment target alignment
+
+After integration into local main, assignment targets center beneath their own
+creature's health marker. Health-marker exclusion uses the rendered bar and text
+width instead of a fixed 96 px reserve, which had pushed the rat's plus target
+67 px to the side of its creature. Crowded targets can move slightly down or at
+most 20 scaled pixels sideways; the distant badge fallback positions are reserved
+for passive equipment badges. No labels or item sizes change.
+
+The existing rendered fixtures passed another 117 checks: English 720p
+presentation (`aligned-item-targets-en`, 28), German 1080p presentation
+(`aligned-item-targets-de-1080`, 28), and English real drag/keyboard interaction
+(`aligned-item-targets-input`, 61). GPU Lab jobs were `366c5cef4fc04fdb`,
+`69458e6bdd5d4e79` and `1082e368c77e4bd8`, with automatic GPU assignment.
+Both presentation captures were visually reviewed: the plus is aligned with
+its creature, HP and stars remain readable, and reserve targets still work.
+
 ## Rendered interaction checks
 
 `tools/tests/arena_equipment_ui.gd` ran against native game assets in Godot 4.7,

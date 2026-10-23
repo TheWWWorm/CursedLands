@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Keep item assignment targets beneath their creature’s health bar when nearby creatures have health labels.
 - Restore the shop's buy/sell background quadrants and the dark patterned backing in occupied inventory slots. ([#69](https://github.com/TheWWWorm/CursedLands/issues/69))
 - Fit spell, template and rune pictures inside their slot frames, and tint constructor pieces red when the party cannot use them in the current recipe. ([#70](https://github.com/TheWWWorm/CursedLands/issues/70))
 - Keep the spell constructor's Ready spells filter limited to completed spells. ([#71](https://github.com/TheWWWorm/CursedLands/issues/71))
