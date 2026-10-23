@@ -1,0 +1,256 @@
+{
+	"purchase_cost": 54,
+	"rank": 1,
+	"rows": [
+		{
+			"a": "casters",
+			"b": "screened_casters",
+			"reason": "defeated",
+			"seconds": 29.4249999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "screened_casters",
+			"reason": "defeated",
+			"seconds": 27.9949999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "screened_casters",
+			"reason": "defeated",
+			"seconds": 29.9749999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "screened_casters",
+			"reason": "defeated",
+			"seconds": 29.0949999999999,
+			"seed": 10777,
+			"side": 1,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "mixed",
+			"reason": "defeated",
+			"seconds": 49.3349999999998,
+			"seed": 8519,
+			"side": 0,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "mixed",
+			"reason": "defeated",
+			"seconds": 40.4249999999998,
+			"seed": 8519,
+			"side": 1,
+			"winner": "mixed"
+		},
+		{
+			"a": "casters",
+			"b": "mixed",
+			"reason": "defeated",
+			"seconds": 48.3449999999998,
+			"seed": 10777,
+			"side": 0,
+			"winner": "mixed"
+		},
+		{
+			"a": "casters",
+			"b": "mixed",
+			"reason": "defeated",
+			"seconds": 45.0999999999998,
+			"seed": 10777,
+			"side": 1,
+			"winner": "mixed"
+		},
+		{
+			"a": "casters",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 31.3499999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "assault"
+		},
+		{
+			"a": "casters",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 50.2149999999998,
+			"seed": 8519,
+			"side": 1,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 33.4949999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "assault"
+		},
+		{
+			"a": "casters",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 44.8249999999998,
+			"seed": 10777,
+			"side": 1,
+			"winner": "assault"
+		},
+		{
+			"a": "screened_casters",
+			"b": "mixed",
+			"reason": "defeated",
+			"seconds": 26.0149999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "mixed"
+		},
+		{
+			"a": "screened_casters",
+			"b": "mixed",
+			"reason": "defeated",
+			"seconds": 26.0149999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "mixed"
+		},
+		{
+			"a": "screened_casters",
+			"b": "mixed",
+			"reason": "defeated",
+			"seconds": 31.1299999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "mixed"
+		},
+		{
+			"a": "screened_casters",
+			"b": "mixed",
+			"reason": "defeated",
+			"seconds": 25.9599999999999,
+			"seed": 10777,
+			"side": 1,
+			"winner": "mixed"
+		},
+		{
+			"a": "screened_casters",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 31.3499999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "assault"
+		},
+		{
+			"a": "screened_casters",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 26.4549999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "assault"
+		},
+		{
+			"a": "screened_casters",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 26.7299999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "assault"
+		},
+		{
+			"a": "screened_casters",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 29.4249999999999,
+			"seed": 10777,
+			"side": 1,
+			"winner": "assault"
+		},
+		{
+			"a": "mixed",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 47.4649999999998,
+			"seed": 8519,
+			"side": 0,
+			"winner": "assault"
+		},
+		{
+			"a": "mixed",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 22.6049999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "mixed"
+		},
+		{
+			"a": "mixed",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 26.0699999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "mixed"
+		},
+		{
+			"a": "mixed",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 26.0149999999999,
+			"seed": 10777,
+			"side": 1,
+			"winner": "assault"
+		}
+	],
+	"teams": {
+		"assault": [
+			6,
+			9,
+			7,
+			14,
+			24,
+			27
+		],
+		"casters": [
+			6,
+			11,
+			13,
+			18,
+			19,
+			20
+		],
+		"mixed": [
+			6,
+			9,
+			11,
+			14,
+			23,
+			27
+		],
+		"screened_casters": [
+			0,
+			28,
+			29,
+			18,
+			19,
+			20
+		]
+	}
+}

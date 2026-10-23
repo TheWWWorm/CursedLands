@@ -30,7 +30,7 @@ func _ready() -> void:
 				check(GameData.textures.has(shown.texture + ".mmp"), "native palette exists %d:%d" % [family, rank])
 			if not ArenaAppearance.RANK_PALETTES.has(family): check(shown == base, "single-palette recruit remains native %d:%d" % [family, rank])
 			check(ArenaAppearance.info(id, -1, rank) == base, "creeps keep native appearance %d:%d" % [family, rank])
-			check(ArenaAppearance.info(id, (family+1)%28, rank) == base, "mismatched family cannot recolour creep %d:%d" % [family, rank])
+			check(ArenaAppearance.info(id, (family+1)%ArenaRules.FAMILIES.size(), rank) == base, "mismatched family cannot recolour creep %d:%d" % [family, rank])
 			check(ArenaPortraits.texture(id, family, rank) != null, "rank portrait exists %d:%d" % [family, rank])
 			var named := ArenaAppearance.name_prototype(id, family, rank)
 			var named_proto := GameData.db.find("monster_prototypes", named)

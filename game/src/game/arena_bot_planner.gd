@@ -90,11 +90,13 @@ static func evolution_value(bot: ArenaRun, family: int, rank: int, weakest: floa
 static func step(bot: ArenaRun, player: int, round_number: int, hp: int, plan: Dictionary) -> void:
 	if plan.done: return
 	plan.actions+=1
-	if plan.actions>=40: plan.done=true;return
+	if plan.actions>=40:
+		equip(bot); plan.done=true; return
 	var profile: Dictionary=PROFILES[strategy(bot,player)]
 	var bank:=reserve(bot,round_number,hp,profile)
 	var style: String=ArenaTournamentRun.STYLES[posmod(player-1,ArenaTournamentRun.STYLES.size())]
 	arrange(bot,style)
+	equip(bot)
 	var weakest:=INF
 	for entry: Dictionary in bot.army:
 		if entry.deployed: weakest=minf(weakest,entry_power(entry))
@@ -158,14 +160,120 @@ static func arrange(bot: ArenaRun, style: String) -> void:
 		if not families.has(best.family):
 			families[best.family]=true
 			for trait_key in ArenaAlliances.traits(int(best.family)):counts[trait_key]=int(counts.get(trait_key,0))+1
-	for entry: Dictionary in bot.army:entry.deployed=false
-	var front:=0;var back:=0
+	var compact := ["beast", "horde", "warrior", "spirit"].any(func(key): return ArenaAlliances.rank(key, int(counts.get(key,0))) > 0)
+	compact = compact or chosen.any(func(entry): return bot.item_for(int(entry.uid)) == "guardian")
+	var guards := ArenaAlliances.rank("warrior", int(counts.get("warrior",0))) > 0
+	# Put real protectors in central frontline slots before placing the carry
+	# behind them. Clustering trades area vulnerability for proximity effects.
+	chosen.sort_custom(func(a: Dictionary, b: Dictionary):
+		var a_front := ArenaRules.recruit_role(int(a.family), int(a.rank)) == "Melee"
+		var b_front := ArenaRules.recruit_role(int(b.family), int(b.rank)) == "Melee"
+		if a_front != b_front: return a_front
+		var a_guard := guards and "warrior" in ArenaAlliances.traits(int(a.family))
+		var b_guard := guards and "warrior" in ArenaAlliances.traits(int(b.family))
+		if a_guard != b_guard: return a_guard
+		return int(a.uid) < int(b.uid) if is_equal_approx(entry_power(a), entry_power(b)) else entry_power(a) > entry_power(b))
+	var bodies := _formation_bodies(bot)
+	var occupied: Array[Dictionary] = []
+	for entry: Dictionary in bot.army: entry.deployed = false
 	for entry: Dictionary in chosen:
-		var ranged:=ArenaRules.recruit_role(int(entry.family),int(entry.rank))!="Melee"
-		var number:=back if ranged else front
-		entry.deployed=true
-		entry.point=[(22.0 if ranged else 27.0) if number<5 else 24.0,
-			32.0+[0.0,-4.0,4.0,-8.0,8.0][number%5]+(2.0 if number>=5 else 0.0)]
-		if ranged:back+=1
-		else:front+=1
+		var radius := float(bodies.get(int(entry.uid), {}).get("radius", 2.0))
+		var ranged := ArenaRules.recruit_role(int(entry.family), int(entry.rank)) != "Melee"
+		var point := _formation_point(bot, bodies, occupied, entry, ranged, compact)
+		if point == Vector2.INF: continue
+		entry.deployed = true; entry.point = [point.x, point.y]
+		occupied.append({"point":point, "radius":radius})
 	bot.reserve_slots()
+
+
+## Reuse fitted native bodies when this company already has a board. A newly
+## bought or evolved body uses the native 2m maximum until it is constructed.
+## Model sizes never justify overlap merely to obtain an alliance trigger.
+static func _formation_bodies(bot: ArenaRun) -> Dictionary:
+	var bodies := {}
+	if not bot.deployment_check.is_valid(): return bodies
+	var battle := bot.deployment_check.get_object() as ArenaPveMatch
+	if not is_instance_valid(battle) or not is_instance_valid(battle.world): return bodies
+	for unit: GameUnit in battle.world.unit_rows():
+		var p: Dictionary = unit.get_meta("arena_placement", {})
+		var uid := int(p.get("run_uid", 0)); var entry := bot.unit(uid)
+		if entry.is_empty() or String(p.get("id", "")) != String(entry.prototype): continue
+		bodies[uid] = {"radius":unit.body_radius(), "class":unit.move_class()}
+	return bodies
+
+
+static func _formation_point(bot: ArenaRun, bodies: Dictionary, occupied: Array[Dictionary], entry: Dictionary, ranged: bool, compact: bool) -> Vector2:
+	var radius := float(bodies.get(int(entry.uid), {}).get("radius", 2.0))
+	var movement := int(bodies.get(int(entry.uid), {}).get("class", NavGrid.WALK_CLASS))
+	var preferred_x := (24.25 if compact else 22.0) if ranged else 27.0
+	var spacing := 2.75 if compact else 4.0
+	var candidates: Array[Vector2] = []
+	for x in [27.0, 24.25, 21.5, 29.75, 22.0, 20.5]:
+		for lane in [0,-1,1,-2,2,-3,3,-4,4]: candidates.append(Vector2(x,32.0+lane*spacing))
+	# The conservative fallback grid can hold nine maximum-radius bodies.
+	for x in [20.5,25.0,29.5]:
+		for y in [20.5,25.0,29.5,34.0,38.5,43.0]: candidates.append(Vector2(x,y))
+	candidates.sort_custom(func(a: Vector2, b: Vector2):
+		var sa := 4.0*pow(a.x-preferred_x,2)+pow(a.y-32.0,2)
+		var sb := 4.0*pow(b.x-preferred_x,2)+pow(b.y-32.0,2)
+		return a.y < b.y if is_equal_approx(sa,sb) else sa < sb)
+	var battle: ArenaPveMatch
+	if bot.deployment_check.is_valid(): battle = bot.deployment_check.get_object() as ArenaPveMatch
+	for point: Vector2 in candidates:
+		if not ArenaRun.DEPLOY.has_point(point) or not ArenaTerrain.PLAY_AREA.grow(-radius).has_point(point): continue
+		if occupied.any(func(other): return point.distance_to(other.point) < maxf(2.5 if compact else 4.0,radius+float(other.radius)+0.25)): continue
+		if is_instance_valid(battle) and is_instance_valid(battle.world) and not battle.world.nav.cell_open(point,movement): continue
+		return point
+	return Vector2.INF
+
+
+## Item decisions use the same public ownership actions as human preparation.
+## A deterministic carrier preference never rerolls rewards or spends shop RNG.
+static func equip(bot: ArenaRun) -> void:
+	if bot.stage != "prepare" or bot.preparing_battle: return
+	var deployed := bot.army.filter(func(entry): return entry.deployed)
+	if not bot.item_offers.is_empty():
+		var choice := 0; var best := -INF
+		for index in bot.item_offers.size():
+			var value := 0.0
+			for entry: Dictionary in deployed: value = maxf(value, item_value(bot.item_offers[index], entry))
+			if value > best: best = value; choice = index
+		bot.choose_item(choice)
+	var remaining := bot.items.duplicate()
+	var assignments := {}
+	while not remaining.is_empty() and not deployed.is_empty():
+		var best := -INF; var selected_item: Dictionary = {}; var selected_unit: Dictionary = {}
+		for item: Dictionary in remaining:
+			for entry: Dictionary in deployed:
+				var value := item_value(String(item.kind), entry)
+				if value > best: best = value; selected_item = item; selected_unit = entry
+		if best <= 0.0: break
+		assignments[int(selected_item.uid)] = int(selected_unit.uid)
+		remaining.erase(selected_item); deployed.erase(selected_unit)
+	# Clear moved equipment first so displacement cannot erase another match.
+	for item: Dictionary in bot.items:
+		if int(item.unit_uid) != int(assignments.get(int(item.uid), 0)):
+			bot.equip_item(int(item.uid), 0)
+	for item_uid: int in assignments:
+		bot.equip_item(item_uid, int(assignments[item_uid]))
+	bot._undo.clear()
+
+
+static func item_value(kind: String, entry: Dictionary) -> float:
+	var family := int(entry.family); var rank := int(entry.rank)
+	if family < 0: return 0.0
+	var role := ArenaRules.recruit_role(family, rank)
+	var melee := role == "Melee"; var caster := role == "Magic"
+	var proto := ArenaRules.recruit_prototype(family, rank, GameData.db.find("monster_prototypes", ArenaRules.prototype(family, rank)))
+	if int(proto.get("weapon_type_id",0)) == 16 and kind in ["fang","storm","venom","berserker"]: return 0.0
+	var weight := 1.0
+	match kind:
+		"fang": weight = 1.4 if melee else 0.4 if caster else 1.1
+		"storm": weight = 0.35 if caster else 1.35
+		"venom": weight = 0.35 if caster else 1.4 if role == "Ranged" else 1.0
+		"ward": weight = 1.3 if melee else 0.9
+		"guardian": weight = 1.2 if melee else 1.0
+		"echo": weight = 1.8 if caster else 0.0
+		"thorn": weight = 1.6 if melee else 0.3
+		"berserker": weight = 1.6 if Array(proto.get("spells", [])).is_empty() else 0.0
+	return entry_power(entry) * weight

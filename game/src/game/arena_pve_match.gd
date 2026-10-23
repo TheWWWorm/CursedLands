@@ -58,7 +58,8 @@ func _spawn(placement: Dictionary) -> GameUnit:
 	if unit:
 		_fit_figure(unit)
 		unit.display_name = ArenaRules.title(placement.id, int(placement.get("family", -1)), int(placement.get("rank", 0)))
-		if rendered: _entrants[unit] = Vector2.INF
+		if rendered:
+			if phase == Phase.DEPLOY: _entrants[unit] = Vector2.INF
 		else:
 			unit.set_process(false);unit.set_physics_process(false)
 			unit.model.set_process(false)
@@ -252,6 +253,9 @@ func _exit_tree() -> void:
 
 
 func prepare() -> void:
+	if is_instance_valid(world) and world.arena_effects:
+		world.arena_effects.stop()
+		world.arena_effects = null
 	if _round_key.is_empty(): previous_damage.clear()
 	elif phase in [Phase.FIGHT, Phase.PAUSED, Phase.FINISHED]: _remember_damage()
 	if drives_clock: Engine.time_scale = 1.0
@@ -263,7 +267,7 @@ func prepare() -> void:
 	for entry: Dictionary in run.army:
 		if entry.deployed:
 			formation.append({"id": entry.prototype, "team": 0,
-				"point": Vector2(entry.point[0], entry.point[1]), "run_uid": int(entry.uid), "rank": int(entry.rank), "family": int(entry.family)})
+				"point": Vector2(entry.point[0], entry.point[1]), "run_uid": int(entry.uid), "rank": int(entry.rank), "family": int(entry.family), "item": String(entry.get("item", ""))})
 	var enemies: Array[Dictionary] = []
 	if not run.arrivals_at_start(): enemies = run.enemy_formation()
 	for index in enemies.size():
@@ -418,6 +422,7 @@ func _start_combat() -> bool:
 	seed(run.battle_seed())
 	world.arena_rng.seed=run.battle_seed()
 	world.combat.rng.seed = run.battle_seed()
+	world.arena_effects = ArenaCombatEffects.new(world, round_army, run.enemy_army())
 	return super.start()
 
 
@@ -462,6 +467,7 @@ func _combat_event(kind: String, a: GameUnit, b: GameUnit, amount: float) -> voi
 
 
 func _resolved(side: int) -> void:
+	if world.arena_effects: world.arena_effects.stop()
 	_remember_damage()
 	_stop_locomotion()
 	settle_remaining = 1.6 if rendered else 0.0
@@ -476,6 +482,7 @@ func _resolved(side: int) -> void:
 	for unit: GameUnit in world.unit_rows():
 		if not unit.dead:
 			var placement: Dictionary = unit.get_meta("arena_placement", {})
+			if placement.get("echo", false): continue
 			survivors[int(placement.get("team", 0))] += int(placement.get("rank", 0)) + 1
 	if run and not external_combat: run.resolve(side, world.time, damage, survivors)
 
@@ -639,7 +646,7 @@ func apply_board(data: Dictionary) -> void:
 				_fit_figure(unit)
 				restore_body(unit, record.online_body)
 				unit.set_meta("arena_placement", record.placement)
-				unit.display_name = ArenaRules.title(record.prototype, int(record.placement.get("family", -1)), int(record.placement.get("rank", 0)))
+				unit.display_name = RemakeText.t("Spirit echo") if record.placement.get("echo", false) else ArenaRules.title(record.prototype, int(record.placement.get("family", -1)), int(record.placement.get("rank", 0)))
 				unit.stats = record.runtime_stats.duplicate(true)
 				keep[uid] = true
 				if deploying and rendered:
@@ -674,6 +681,9 @@ func apply_board(data: Dictionary) -> void:
 		phase = Phase.PAUSED
 	winner = int(data.winner)
 	world.authority = false
+	if world.arena_effects:
+		world.arena_effects.stop()
+		world.arena_effects = null
 	world.process_mode = Node.PROCESS_MODE_DISABLED if phase == Phase.PAUSED else Node.PROCESS_MODE_INHERIT
 	update_presentation_processing()
 	world.set_process(true); world.set_physics_process(true)
@@ -686,7 +696,7 @@ func apply_effects(data: Dictionary) -> void:
 	if String(data.generation) != generation or not is_instance_valid(world): return
 	for event: Dictionary in data.events:
 		# Only visual/combat events are accepted, never campaign state or scripts.
-		if String(event.get("t", "")) not in ["arrow", "direct_arrow", "spellfx", "spell_light", "hitnum", "blood", "sound", "unit_sound"] + Array(ParticleFx.EVENTS): continue
+		if String(event.get("t", "")) not in ["arena_proc", "arrow", "direct_arrow", "spellfx", "spell_light", "hitnum", "blood", "sound", "unit_sound"] + Array(ParticleFx.EVENTS): continue
 		_on_event(event)
 		visual_event.emit(event)
 

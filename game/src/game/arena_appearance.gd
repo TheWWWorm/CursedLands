@@ -19,7 +19,7 @@ const PALETTES := {
 const RANK_PALETTES := {
 	0: ["boar00", "boar00", "boar01"],
 	1: ["wolf00", "wolf00", "wolf01"],
-	3: ["bat00", "bat01", "bat02"],
+	3: ["bat00", "bat02", "bat01"],
 	4: ["goblin00", "goblin00", "goblin00l"],
 	6: ["skeleton00", "skeleton00", "skeleton01"],
 	7: ["tiger00", "tiger00", "tiger01"],
@@ -33,6 +33,7 @@ const RANK_PALETTES := {
 	19: ["banshee00", "banshee00", "banshee01"],
 	20: ["unicorn00", "unicorn00", "unicorn01"],
 	23: ["dragon00", "dragon01", "dragon02"],
+	29: ["driad00l", "driad01l", "driad02l"],
 }
 
 ## Use original localized variant names where the old name specifies a colour

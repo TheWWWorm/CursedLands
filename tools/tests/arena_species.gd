@@ -19,8 +19,12 @@ func _ready() -> void:
 		check(not String(rule.forms[0]).begins_with("human"), "no same-face human recruits %d" % family)
 		var first := GameData.db.find("monster_prototypes", rule.forms[0])
 		var silhouette: String = first.get("base_race", "")
-		check(not bodies.has(silhouette), "one shop entry per native species " + silhouette)
-		bodies[silhouette] = true
+		# The seer deliberately shares the woodsfolk rig, with a different kit,
+		# price and authored leader palettes. No other duplicate role is allowed.
+		if bodies.has(silhouette):
+			check(bodies[silhouette] == 11 and family == 29 and rule.role == "Magic" and ArenaRules.FAMILIES[11].role == "Ranged", "approved woodsfolk caster role " + silhouette)
+		else:
+			bodies[silhouette] = family
 		var before := {}
 		for rank in 3:
 			var id := ArenaRules.prototype(family, rank)
@@ -43,7 +47,7 @@ func _ready() -> void:
 		RemakeText.lang = "en"
 		# A full reserve must still merge on the third purchase.
 		run.begin(7429); run.gold = 200; run.army.clear()
-		for n in 6: run._recruit((family+1)%28,2,45)
+		for n in 6: run._recruit((family+1)%ArenaRules.FAMILIES.size(),2,45)
 		for n in 2: run._recruit(family,0,rule.cost)
 		run.reserve_slots(); run.shop[0] = {"family":family,"rank":0,"locked":false}
 		check(run.buy(0).is_empty(), "third copy purchases on a full bench %d" % family)

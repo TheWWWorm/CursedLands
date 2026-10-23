@@ -399,7 +399,8 @@ func melee(att: GameUnit, def: GameUnit, roll := {}) -> void:
 			last_types[t] *= mul
 		world.combat_event.emit("backstab", att, def, dmg)
 	apply_wear(att, def)
-	def.take_damage(dmg, att, part, last_types, hit_flags)
+	def.take_damage(dmg, att, part, last_types, hit_flags, Callable(), false,
+		{"kind": "attack", "ranged": bool(att.stats.get("ranged", false)) if is_instance_valid(att) else true})
 	# a unit that lives on after the damage.
 	if not def.dead:
 		armor_spells(def, false)

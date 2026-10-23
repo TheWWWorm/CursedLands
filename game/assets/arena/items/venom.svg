@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 128 128">
+<!-- Original Cursed Lands arena relic illustration. Color identifies the object, not rarity. -->
+
+  <defs>
+    <linearGradient id="rim" x1=".16" y1="0" x2=".83" y2="1">
+      <stop stop-color="#d0c8ab"/><stop offset=".24" stop-color="#7a847f"/><stop offset=".5" stop-color="#343f42"/><stop offset=".76" stop-color="#566463"/><stop offset="1" stop-color="#9a9277"/>
+    </linearGradient>
+    <radialGradient id="well" cx=".38" cy=".26" r=".8"><stop stop-color="#294c32"/><stop offset=".72" stop-color="#101b22"/><stop offset="1" stop-color="#080e13"/></radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2=".75" y2="1"><stop stop-color="#fff0b3"/><stop offset=".24" stop-color="#d3aa5a"/><stop offset=".6" stop-color="#8c6029"/><stop offset=".82" stop-color="#d6a655"/><stop offset="1" stop-color="#5e3d22"/></linearGradient>
+    <linearGradient id="ivory" x1="0" y1=".1" x2=".8" y2="1"><stop stop-color="#9e8b70"/><stop offset=".32" stop-color="#eee2bd"/><stop offset=".6" stop-color="#fff8da"/><stop offset="1" stop-color="#bd9b6b"/></linearGradient>
+    <linearGradient id="wax" x1=".1" y1="0" x2=".9" y2="1"><stop stop-color="#b9dc68"/><stop offset=".34" stop-color="#75ae42"/><stop offset=".7" stop-color="#346c35"/><stop offset="1" stop-color="#163d31"/></linearGradient>
+  </defs>
+  <circle cx="64" cy="66" r="61" fill="#03080c" fill-opacity=".65"/>
+  <circle cx="64" cy="63" r="60" fill="url(#rim)" stroke="#090f12" stroke-width="2"/>
+  <circle cx="64" cy="63" r="55.5" fill="url(#well)" stroke="#0b1116" stroke-width="2"/>
+  <path d="M14 49 A53 53 0 0 1 81 12" fill="none" stroke="#f6edd4" stroke-opacity=".25" stroke-width="1.5"/>
+  <path d="M111 86 A53 53 0 0 1 44 113" fill="none" stroke="#bcc4af" stroke-opacity=".2" stroke-width="1.5"/>
+
+  <path d="M47 84 L39 109 L53 103 L61 112 L69 85 M78 80 L96 102 L94 85 L107 87 L89 68" fill="#3f7139" stroke="#102b22" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M50 24 Q62 12 75 24 L76 38 L49 41Z" fill="url(#gold)" stroke="#17241b" stroke-width="4"/>
+  <path d="M57 25 Q63 20 68 25 L68 34 L57 36Z" fill="#183023"/>
+  <path d="M45 38 L59 33 L71 36 L83 32 L90 43 L101 49 L98 63 L102 77 L91 86 L85 99 L70 97 L57 103 L46 94 L31 90 L30 74 L23 63 L31 52 L33 40Z" fill="url(#wax)" stroke="#0e211b" stroke-width="4" stroke-linejoin="round"/>
+  <circle cx="64" cy="67" r="28" fill="#245b30" stroke="#a5cb60" stroke-width="2"/>
+  <circle cx="64" cy="67" r="24" fill="none" stroke="#142e24" stroke-width="2"/>
+  <path d="M78 48 C60 42 46 51 52 61 C57 69 78 66 77 78 C76 89 53 92 48 79 C57 85 69 82 68 77 C68 71 48 73 43 61 C37 45 58 34 78 42Z" fill="#d6eb88" stroke="#143323" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M74 41 L87 45 L77 53 L70 48Z" fill="#dfee9a"/>
+  <circle cx="79" cy="45" r="1.8" fill="#183025"/>
+  <path d="M87 46 L94 48 L96 45 M94 48 L96 51" fill="none" stroke="#d1e480" stroke-width="1.5"/>
+  <path d="M35 51 L40 44 M33 70 L36 80 M78 92 L85 88" stroke="#bfe77c" stroke-opacity=".55" stroke-width="2.5" stroke-linecap="round"/>
+
+</svg>

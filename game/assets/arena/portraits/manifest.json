@@ -812,6 +812,87 @@
       64
     ]
   },
+  "28:0": {
+    "appearance": {
+      "prototype": "orcmalef3"
+    },
+    "family": 28,
+    "file": "28-0.png",
+    "prototype": "orcmalef3",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "28:1": {
+    "appearance": {
+      "prototype": "orcmalef5"
+    },
+    "family": 28,
+    "file": "28-1.png",
+    "prototype": "orcmalef5",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "28:2": {
+    "appearance": {
+      "prototype": "orcmalef7"
+    },
+    "family": 28,
+    "file": "28-2.png",
+    "prototype": "orcmalef7",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "29:0": {
+    "appearance": {
+      "prototype": "driadgreenm7",
+      "texture": "driad00l"
+    },
+    "family": 29,
+    "file": "29-0.png",
+    "prototype": "driadgreenm7",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "29:1": {
+    "appearance": {
+      "prototype": "driadsnowm9",
+      "texture": "driad01l"
+    },
+    "family": 29,
+    "file": "29-1.png",
+    "prototype": "driadsnowm9",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "29:2": {
+    "appearance": {
+      "prototype": "driaddarkm11",
+      "texture": "driad02l"
+    },
+    "family": 29,
+    "file": "29-2.png",
+    "prototype": "driaddarkm11",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
   "2:0": {
     "appearance": {
       "prototype": "ratsmallf1"
@@ -868,7 +949,7 @@
   "3:1": {
     "appearance": {
       "prototype": "batredm3",
-      "texture": "bat01"
+      "texture": "bat02"
     },
     "family": 3,
     "file": "03-1.png",
@@ -882,7 +963,7 @@
   "3:2": {
     "appearance": {
       "prototype": "batredm5",
-      "texture": "bat02"
+      "texture": "bat01"
     },
     "family": 3,
     "file": "03-2.png",

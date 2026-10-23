@@ -1,0 +1,74 @@
+[
+  {
+    "run": "roster-final-recruits",
+    "exit": 0,
+    "result": [
+      "ARENA_RECRUITS {\"checks\":98,\"failures\":[]}"
+    ],
+    "errors": []
+  },
+  {
+    "run": "roster-roster-current",
+    "exit": 0,
+    "result": [
+      "ARENA_ROSTER {\"checks\":1525,\"failures\":[]}"
+    ],
+    "errors": []
+  },
+  {
+    "run": "roster-species-current",
+    "exit": 0,
+    "result": [
+      "ARENA_SPECIES {\"checks\":2181,\"failures\":[]}"
+    ],
+    "errors": []
+  },
+  {
+    "run": "roster-appearance-current",
+    "exit": 0,
+    "result": [
+      "ARENA_RANK_APPEARANCE {\"checks\":1354,\"failures\":[]}"
+    ],
+    "errors": []
+  },
+  {
+    "run": "roster-budgets-final",
+    "exit": 0,
+    "result": [
+      "ARENA_COMBAT_BUDGETS checks=915 failures=[]"
+    ],
+    "errors": []
+  },
+  {
+    "run": "roster-combat-budget-baseline-corrected",
+    "exit": 0,
+    "result": [
+      "ARENA_COMBAT_BUDGETS checks=855 failures=[]"
+    ],
+    "errors": []
+  },
+  {
+    "run": "roster-new-board-en",
+    "exit": 0,
+    "result": [
+      "ARENA_RECRUITS_BOARD_UI {\"checks\":46,\"failures\":[],\"language\":\"en\"}"
+    ],
+    "errors": []
+  },
+  {
+    "run": "roster-new-board-ru",
+    "exit": 0,
+    "result": [
+      "ARENA_RECRUITS_BOARD_UI {\"checks\":46,\"failures\":[],\"language\":\"ru\"}"
+    ],
+    "errors": []
+  },
+  {
+    "run": "roster-new-board-de",
+    "exit": 0,
+    "result": [
+      "ARENA_RECRUITS_BOARD_UI {\"checks\":46,\"failures\":[],\"language\":\"de\"}"
+    ],
+    "errors": []
+  }
+]

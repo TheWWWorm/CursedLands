@@ -1,0 +1,767 @@
+[
+	{
+		"a": 13,
+		"b": 29,
+		"context": "physical",
+		"draws": 0,
+		"rank": 0,
+		"seconds": 30.5112499999999,
+		"supports": [
+			9,
+			4,
+			1
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 3
+	},
+	{
+		"a": 13,
+		"b": 29,
+		"context": "physical",
+		"draws": 0,
+		"rank": 1,
+		"seconds": 31.9687499999999,
+		"supports": [
+			9,
+			4,
+			1
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 13,
+		"b": 29,
+		"context": "physical",
+		"draws": 0,
+		"rank": 2,
+		"seconds": 26.5512499999999,
+		"supports": [
+			9,
+			4,
+			1
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 13,
+		"b": 29,
+		"context": "fire",
+		"draws": 0,
+		"rank": 0,
+		"seconds": 21.3949999999999,
+		"supports": [
+			0,
+			3,
+			16
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 13,
+		"b": 29,
+		"context": "fire",
+		"draws": 0,
+		"rank": 1,
+		"seconds": 22.5774999999999,
+		"supports": [
+			0,
+			3,
+			16
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 13,
+		"b": 29,
+		"context": "fire",
+		"draws": 0,
+		"rank": 2,
+		"seconds": 24.5024999999999,
+		"supports": [
+			0,
+			3,
+			16
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 13,
+		"b": 29,
+		"context": "lightning",
+		"draws": 0,
+		"rank": 0,
+		"seconds": 47.5337499999998,
+		"supports": [
+			14,
+			19,
+			20
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 13,
+		"b": 29,
+		"context": "lightning",
+		"draws": 0,
+		"rank": 1,
+		"seconds": 40.2737499999998,
+		"supports": [
+			14,
+			19,
+			20
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 13,
+		"b": 29,
+		"context": "lightning",
+		"draws": 0,
+		"rank": 2,
+		"seconds": 33.3712499999999,
+		"supports": [
+			14,
+			19,
+			20
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 3
+	},
+	{
+		"a": 14,
+		"b": 29,
+		"context": "physical",
+		"draws": 0,
+		"rank": 0,
+		"seconds": 24.9699999999999,
+		"supports": [
+			9,
+			4,
+			1
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 2
+	},
+	{
+		"a": 14,
+		"b": 29,
+		"context": "physical",
+		"draws": 0,
+		"rank": 1,
+		"seconds": 21.9312499999999,
+		"supports": [
+			9,
+			4,
+			1
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 14,
+		"b": 29,
+		"context": "physical",
+		"draws": 0,
+		"rank": 2,
+		"seconds": 20.8862499999999,
+		"supports": [
+			9,
+			4,
+			1
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 14,
+		"b": 29,
+		"context": "fire",
+		"draws": 0,
+		"rank": 0,
+		"seconds": 20.1987499999999,
+		"supports": [
+			0,
+			3,
+			16
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 3
+	},
+	{
+		"a": 14,
+		"b": 29,
+		"context": "fire",
+		"draws": 0,
+		"rank": 1,
+		"seconds": 19.5524999999999,
+		"supports": [
+			0,
+			3,
+			16
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 14,
+		"b": 29,
+		"context": "fire",
+		"draws": 0,
+		"rank": 2,
+		"seconds": 18.3699999999999,
+		"supports": [
+			0,
+			3,
+			16
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 14,
+		"b": 29,
+		"context": "lightning",
+		"draws": 0,
+		"rank": 0,
+		"seconds": 44.7012499999998,
+		"supports": [
+			19,
+			20,
+			22
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 0
+	},
+	{
+		"a": 14,
+		"b": 29,
+		"context": "lightning",
+		"draws": 0,
+		"rank": 1,
+		"seconds": 47.5749999999998,
+		"supports": [
+			19,
+			20,
+			22
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 1
+	},
+	{
+		"a": 14,
+		"b": 29,
+		"context": "lightning",
+		"draws": 0,
+		"rank": 2,
+		"seconds": 45.0724999999998,
+		"supports": [
+			19,
+			20,
+			22
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 3
+	},
+	{
+		"a": 15,
+		"b": 29,
+		"context": "physical",
+		"draws": 0,
+		"rank": 0,
+		"seconds": 21.6424999999999,
+		"supports": [
+			9,
+			4,
+			1
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 15,
+		"b": 29,
+		"context": "physical",
+		"draws": 0,
+		"rank": 1,
+		"seconds": 21.4362499999999,
+		"supports": [
+			9,
+			4,
+			1
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 15,
+		"b": 29,
+		"context": "physical",
+		"draws": 0,
+		"rank": 2,
+		"seconds": 20.8449999999999,
+		"supports": [
+			9,
+			4,
+			1
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 3
+	},
+	{
+		"a": 15,
+		"b": 29,
+		"context": "fire",
+		"draws": 0,
+		"rank": 0,
+		"seconds": 24.0899999999999,
+		"supports": [
+			0,
+			3,
+			16
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 3
+	},
+	{
+		"a": 15,
+		"b": 29,
+		"context": "fire",
+		"draws": 0,
+		"rank": 1,
+		"seconds": 24.4199999999999,
+		"supports": [
+			0,
+			3,
+			16
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 3
+	},
+	{
+		"a": 15,
+		"b": 29,
+		"context": "fire",
+		"draws": 0,
+		"rank": 2,
+		"seconds": 17.5037499999999,
+		"supports": [
+			0,
+			3,
+			16
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 15,
+		"b": 29,
+		"context": "lightning",
+		"draws": 0,
+		"rank": 0,
+		"seconds": 65.2300000000007,
+		"supports": [
+			14,
+			19,
+			20
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 3
+	},
+	{
+		"a": 15,
+		"b": 29,
+		"context": "lightning",
+		"draws": 0,
+		"rank": 1,
+		"seconds": 39.4349999999998,
+		"supports": [
+			14,
+			19,
+			20
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 1
+	},
+	{
+		"a": 15,
+		"b": 29,
+		"context": "lightning",
+		"draws": 0,
+		"rank": 2,
+		"seconds": 30.9649999999999,
+		"supports": [
+			14,
+			19,
+			20
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 1
+	},
+	{
+		"a": 16,
+		"b": 29,
+		"context": "physical",
+		"draws": 0,
+		"rank": 0,
+		"seconds": 21.7937499999999,
+		"supports": [
+			9,
+			4,
+			1
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 3
+	},
+	{
+		"a": 16,
+		"b": 29,
+		"context": "physical",
+		"draws": 0,
+		"rank": 1,
+		"seconds": 20.6524999999999,
+		"supports": [
+			9,
+			4,
+			1
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 3
+	},
+	{
+		"a": 16,
+		"b": 29,
+		"context": "physical",
+		"draws": 0,
+		"rank": 2,
+		"seconds": 18.2462499999999,
+		"supports": [
+			9,
+			4,
+			1
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 16,
+		"b": 29,
+		"context": "fire",
+		"draws": 0,
+		"rank": 0,
+		"seconds": 24.7362499999999,
+		"supports": [
+			0,
+			3,
+			15
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 16,
+		"b": 29,
+		"context": "fire",
+		"draws": 0,
+		"rank": 1,
+		"seconds": 22.2887499999999,
+		"supports": [
+			0,
+			3,
+			15
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 3
+	},
+	{
+		"a": 16,
+		"b": 29,
+		"context": "fire",
+		"draws": 0,
+		"rank": 2,
+		"seconds": 19.7999999999999,
+		"supports": [
+			0,
+			3,
+			15
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 16,
+		"b": 29,
+		"context": "lightning",
+		"draws": 4,
+		"rank": 0,
+		"seconds": 90.0350000000029,
+		"supports": [
+			14,
+			19,
+			20
+		],
+		"tier": 3,
+		"timeouts": 4,
+		"trials": 4,
+		"wins": 0
+	},
+	{
+		"a": 16,
+		"b": 29,
+		"context": "lightning",
+		"draws": 0,
+		"rank": 1,
+		"seconds": 46.7912499999998,
+		"supports": [
+			14,
+			19,
+			20
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 0
+	},
+	{
+		"a": 16,
+		"b": 29,
+		"context": "lightning",
+		"draws": 0,
+		"rank": 2,
+		"seconds": 23.0037499999999,
+		"supports": [
+			14,
+			19,
+			20
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 17,
+		"b": 29,
+		"context": "physical",
+		"draws": 0,
+		"rank": 0,
+		"seconds": 19.7174999999999,
+		"supports": [
+			9,
+			4,
+			1
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 2
+	},
+	{
+		"a": 17,
+		"b": 29,
+		"context": "physical",
+		"draws": 0,
+		"rank": 1,
+		"seconds": 26.7849999999999,
+		"supports": [
+			9,
+			4,
+			1
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 3
+	},
+	{
+		"a": 17,
+		"b": 29,
+		"context": "physical",
+		"draws": 0,
+		"rank": 2,
+		"seconds": 19.8549999999999,
+		"supports": [
+			9,
+			4,
+			1
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 3
+	},
+	{
+		"a": 17,
+		"b": 29,
+		"context": "fire",
+		"draws": 0,
+		"rank": 0,
+		"seconds": 19.4699999999999,
+		"supports": [
+			0,
+			3,
+			16
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 3
+	},
+	{
+		"a": 17,
+		"b": 29,
+		"context": "fire",
+		"draws": 0,
+		"rank": 1,
+		"seconds": 19.6074999999999,
+		"supports": [
+			0,
+			3,
+			16
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 17,
+		"b": 29,
+		"context": "fire",
+		"draws": 0,
+		"rank": 2,
+		"seconds": 13.09,
+		"supports": [
+			0,
+			3,
+			16
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"a": 17,
+		"b": 29,
+		"context": "lightning",
+		"draws": 3,
+		"rank": 0,
+		"seconds": 76.9037500000021,
+		"supports": [
+			14,
+			19,
+			20
+		],
+		"tier": 3,
+		"timeouts": 3,
+		"trials": 4,
+		"wins": 0
+	},
+	{
+		"a": 17,
+		"b": 29,
+		"context": "lightning",
+		"draws": 0,
+		"rank": 1,
+		"seconds": 45.9937499999998,
+		"supports": [
+			14,
+			19,
+			20
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 2
+	},
+	{
+		"a": 17,
+		"b": 29,
+		"context": "lightning",
+		"draws": 0,
+		"rank": 2,
+		"seconds": 31.1574999999999,
+		"supports": [
+			14,
+			19,
+			20
+		],
+		"tier": 3,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 1
+	}
+]

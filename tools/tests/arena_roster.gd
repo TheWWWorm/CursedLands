@@ -5,18 +5,20 @@ func check(ok:bool,message:String)->void:
 	checks+=1
 	if not ok:failures.append(message);printerr("FAIL ",message)
 func _ready()->void:
-	check(ArenaRules.FAMILIES.size()==28 and ArenaRules.recruit_pool(3).size()==13,"expanded roster and opening pool")
+	check(ArenaRules.FAMILIES.size()==30 and ArenaRules.recruit_pool(3).size()==14,"expanded roster and opening pool")
 	var tiers := [0,0,0,0,0]
 	for family: Dictionary in ArenaRules.FAMILIES: tiers[int(family.tier)-1]+=1
-	check(tiers==[7,6,5,5,5],"every shop tier has multiple role and tribe choices")
+	check(tiers==[7,7,6,5,5],"every shop tier has multiple role and tribe choices")
 	check(ArenaRules.available(),"every recruited form exists in the loaded localized game")
 	var species := {}
 	for family: Dictionary in ArenaRules.FAMILIES:
 		check(family.cost==family.tier and family.cost in range(1,6),"price equals its 1–5 shop tier")
 		check(family.copies==[3,3],"nine base copies earn a final form")
 		var native_race: String=GameData.db.find("monster_prototypes",family.forms[0]).base_race
-		check(not species.has(native_race),"one recruit price per native species")
-		species[native_race]=true
+		if species.has(native_race):
+			check(species[native_race].name=="Woodsfolk" and family.name=="Woodsfolk seers" and family.role=="Magic" and species[native_race].role=="Ranged","only the approved woodsfolk caster shares a rig")
+		else:
+			species[native_race]=family
 		for index in 3:
 			check(GameData.db.find("monster_prototypes",family.forms[index]).base_race==native_race,"all ranks retain the recruit's species")
 	var native:=hash(GameData.db.tables)
@@ -35,7 +37,7 @@ func _ready()->void:
 				for b in range(a+1,run.shop.size()):
 					pairs+=1
 					if run.shop[a].family==run.shop[b].family:matching+=1
-	check(sampled.size()==13,"all thirteen opening families appear across seeds")
+	check(sampled.size()==14,"all fourteen opening families appear across seeds")
 	var duplicate_rate:=float(matching)/pairs
 	check(duplicate_rate<0.12,"early pairwise duplicate rate stays below twelve percent")
 	for family in ArenaRules.FAMILIES.size():

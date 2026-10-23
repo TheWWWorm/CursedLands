@@ -24,6 +24,8 @@ var terrain: EITerrain
 var ground_marks: GroundMarks
 var mob: EIMob
 var arena_rng := RandomNumberGenerator.new()
+## Installed only for an authoritative Trials battle; campaign combat stays native.
+var arena_effects: ArenaCombatEffects
 var nav := NavGrid.new():
 	set(value):
 		nav = value
@@ -976,6 +978,7 @@ func _tick_body(dt: float) -> void:
 	var timers := get_node_or_null("SpellTimers") as Spells.WorldTimers
 	if timers:
 		timers._tick(dt, true)
+	if arena_effects: arena_effects.tick()
 	corpse_pools.refresh()
 
 
@@ -1148,6 +1151,7 @@ func on_damage(u: GameUnit, amount: float, source: GameUnit) -> void:
 
 
 func on_death(u: GameUnit, killer: GameUnit) -> void:
+	if arena_effects: arena_effects.on_death(u, killer)
 	unit_died.emit(u, killer)
 	if not authority or session == null:
 		return

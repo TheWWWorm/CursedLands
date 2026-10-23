@@ -120,7 +120,7 @@ static func formation_for(army_rows: Array, team: int) -> Array[Dictionary]:
 		if not entry.deployed: continue
 		var point := Vector2(entry.point[0], entry.point[1])
 		if team == 1: point.x = 64.0 - point.x
-		var placement := {"id":entry.prototype, "team":team, "point":point, "rank":int(entry.rank), "family":int(entry.family)}
+		var placement := {"id":entry.prototype, "team":team, "point":point, "rank":int(entry.rank), "family":int(entry.family), "item":String(entry.get("item", ""))}
 		placement["run_uid" if team == 0 else "source_uid"] = int(entry.uid)
 		formation.append(placement)
 	return formation
@@ -172,7 +172,10 @@ func finish_preparation() -> void:
 
 func start_battle(allow_empty := false) -> String:
 	if stage == "prepare": finish_preparation()
-	return super.start_battle(allow_empty)
+	var error := super.start_battle(allow_empty)
+	if error.is_empty():
+		for player in alive_players(): company(player).settle_item_choice()
+	return error
 
 
 func record_board(player: int, winner: int, survivors: Array) -> void:
@@ -306,6 +309,7 @@ func _settle_round() -> void:
 	for index in eliminated.size(): placements[eliminated[index]] = alive.size() - index
 	for player in alive:
 		var company_run := company(player)
+		if health(player) > 0: company_run.offer_items_after(wave)
 		var won := bool(victories.get(player, false))
 		var income := company_run.income_preview(round_savings(player))
 		if not won:
@@ -395,6 +399,10 @@ func _restore_companies(data: Dictionary, seats: int) -> bool:
 		if not _integer(data.rival_health[index],0,100) or not data.rivals[index] is Dictionary: return false
 		var bot := ArenaRun.new(); bot.auto_save = false
 		if not bot.restore(data.rivals[index]) or bot.stage != "prepare": return false
+		# Company waves cap at the expedition limit; migration must use the
+		# actual tournament round for its no-retroactive-rewards watermark.
+		if int(data.rivals[index].version) < 14 and not data.rivals[index].has("items"):
+			bot.item_reward_round = int(data.wave) if data.stage in ["result", "won", "lost"] else int(data.wave) - 1
 		loaded.append(bot)
 	var ranked := {}
 	for rank in data.placements:

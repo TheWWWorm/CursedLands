@@ -20,6 +20,11 @@ var preparation_left := ArenaRules.PREPARATION_SECONDS
 var preparing_battle := false
 var army: Array[Dictionary] = []
 var shop: Array[Dictionary] = []
+var items: Array[Dictionary] = []
+var item_offers: Array[String] = []
+var next_item_uid := 1
+# A watermark also records skipped milestones when migrating an older save.
+var item_reward_round := 0
 var boons: Array[String] = []
 var free_refresh := false
 var training := 0
@@ -44,6 +49,7 @@ func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
 	challenge = clampi(difficulty, 0, 2)
 	wave = 1; wave_limit = round_limit(); gold = ArenaRules.OPENING_GOLD; lives = life_limit(); stage = "prepare"; next_uid = 1
 	army.clear(); shop.clear(); boons.clear(); rewards.clear(); history.clear(); _undo.clear()
+	items.clear(); item_offers.clear(); next_item_uid = 1; item_reward_round = 0
 	last_result = {}
 	free_refresh = false
 	training = 0; battle_savings = 0
@@ -185,6 +191,72 @@ func unit(uid: int) -> Dictionary:
 	for entry: Dictionary in army:
 		if int(entry.uid) == uid: return entry
 	return {}
+
+
+func item_for(unit_uid: int) -> String:
+	if unit_uid <= 0: return ""
+	for item: Dictionary in items:
+		if int(item.unit_uid) == unit_uid: return String(item.kind)
+	return ""
+
+
+func equip_item(item_uid: int, unit_uid: int) -> String:
+	if stage != "prepare" or preparing_battle: return RemakeText.t("Change equipment between battles.")
+	var selected: Dictionary = {}
+	for item: Dictionary in items:
+		if int(item.uid) == item_uid: selected = item; break
+	if selected.is_empty(): return RemakeText.t("Choose an item from your inventory.")
+	if unit_uid < 0 or (unit_uid > 0 and unit(unit_uid).is_empty()): return RemakeText.t("Choose a creature from your army.")
+	if int(selected.unit_uid) == unit_uid: return ""
+	_checkpoint()
+	if unit_uid > 0: _return_item(unit_uid)
+	selected.unit_uid = unit_uid
+	_touch()
+	return ""
+
+
+func choose_item(index: int) -> String:
+	if stage != "prepare" or preparing_battle: return RemakeText.t("Choose equipment between battles.")
+	if index < 0 or index >= item_offers.size(): return RemakeText.t("Choose one of the offered items.")
+	_checkpoint()
+	_claim_item(index)
+	_touch()
+	return ""
+
+
+func _claim_item(index: int) -> void:
+	items.append({"uid":next_item_uid, "kind":item_offers[index], "unit_uid":0})
+	next_item_uid += 1
+	item_offers.clear()
+
+
+## Called only by the tournament after a completed round, regardless of winner.
+## If an untouched offer remains, conserve it before creating the next one.
+func offer_items_after(completed_round: int) -> void:
+	if completed_round <= item_reward_round or completed_round > ArenaItems.MAX_REWARD_ROUND or not ArenaItems.reward_round(completed_round): return
+	if not item_offers.is_empty(): _claim_item(0)
+	item_reward_round = completed_round
+	item_offers = ArenaItems.offers(run_seed, completed_round)
+
+
+## Preparation can finish without opening the equipment drawer. The visible
+## first choice remains owned, in the stash, instead of timing out a reward.
+func settle_item_choice() -> void:
+	if not item_offers.is_empty(): _claim_item(0)
+
+
+func _return_item(unit_uid: int) -> void:
+	for item: Dictionary in items:
+		if int(item.unit_uid) == unit_uid: item.unit_uid = 0
+
+
+## Army snapshots are shared with workers and scouting. Rebuild their derived
+## item field from inventory; saved or replicated row text cannot invent gear.
+func _sync_items() -> void:
+	for entry: Dictionary in army:
+		var kind := item_for(int(entry.uid))
+		if kind.is_empty(): entry.erase("item")
+		else: entry["item"] = kind
 
 
 func _recruit(family: int, rank: int, investment: int, special := "") -> Dictionary:
@@ -398,6 +470,7 @@ func sell(uid: int) -> String:
 	if stage != "prepare" and entry.deployed: return RemakeText.t("Only reserves can be sold during battle.")
 	_checkpoint()
 	gold += sale_value(entry)
+	_return_item(uid)
 	army.erase(entry)
 	_touch()
 	return ""
@@ -443,6 +516,7 @@ func _merge(entry: Dictionary) -> void:
 	for other: Dictionary in copies(entry):
 		if other.uid == entry.uid: continue
 		entry.investment += other.investment
+		_return_item(int(other.uid))
 		army.erase(other)
 		consumed += 1
 		if consumed == needed - 1: break
@@ -460,6 +534,8 @@ func elapse_preparation(seconds: float) -> bool:
 func start_battle(timed_out := false) -> String:
 	if stage != "prepare": return RemakeText.t("Finish the current encounter first.")
 	if deployed_count() == 0 and not (timed_out and preparation_left <= 0): return RemakeText.t("Deploy at least one creature before starting.")
+	# Starting or reaching the bell must never discard a reward opportunity.
+	settle_item_choice()
 	battle_savings = gold
 	stage = "fight"
 	_undo.clear()
@@ -571,7 +647,8 @@ func _checkpoint() -> void:
 	# Combat shopping is committed immediately. A failed wave must not make
 	# those purchases undoable after its income/result has already resolved.
 	if stage != "prepare": return
-	_undo.append({"army": army.duplicate(true), "shop": shop.duplicate(true), "gold": gold, "next_uid": next_uid, "training": training})
+	_undo.append({"army": army.duplicate(true), "shop": shop.duplicate(true), "gold": gold, "next_uid": next_uid, "training": training,
+		"items":items.duplicate(true), "item_offers":item_offers.duplicate(), "next_item_uid":next_item_uid})
 	if _undo.size() > 30: _undo.pop_front()
 
 
@@ -580,6 +657,7 @@ func undo() -> void:
 	var previous: Dictionary = _undo.pop_back()
 	army.assign(previous.army); shop.assign(previous.shop)
 	gold = previous.gold; next_uid = previous.next_uid; training = previous.training
+	items.assign(previous.items); item_offers.assign(previous.item_offers); next_item_uid = int(previous.next_item_uid)
 	_touch()
 
 
@@ -592,13 +670,16 @@ func can_shop() -> bool:
 
 
 func snapshot() -> Dictionary:
+	_sync_items()
 	return {"version": ArenaRules.VERSION, "seed": str(run_seed), "rng": str(rng.state),
 		"challenge": challenge, "starter": starter, "wave": wave, "wave_limit": wave_limit, "gold": gold, "lives": lives,
 		"stage": stage, "preparation_left": preparation_left, "army": army.duplicate(true), "shop": shop.duplicate(true),
 		"boons": boons.duplicate(), "rewards": rewards.duplicate(true), "history": history.duplicate(true),
 		"free_refresh": free_refresh,
 		"training": training, "battle_savings": battle_savings,
-		"last_result": last_result.duplicate(true), "next_uid": next_uid}
+		"last_result": last_result.duplicate(true), "next_uid": next_uid,
+		"items":items.duplicate(true), "item_offers":item_offers.duplicate(),
+		"next_item_uid":next_item_uid, "item_reward_round":item_reward_round}
 
 
 func restore(data: Dictionary) -> bool:
@@ -666,6 +747,31 @@ func restore(data: Dictionary) -> bool:
 			points.append(point)
 			deployed += 1
 		seen[int(entry.uid)] = true
+	# Old saves receive an empty inventory. A completed old round must not
+	# retroactively award equipment on its first advance after migration.
+	var item_fields := ["items", "item_offers", "next_item_uid", "item_reward_round"]
+	var has_equipment := item_fields.all(func(key): return data.has(key))
+	if item_fields.any(func(key): return data.has(key)) and not has_equipment: return false
+	if int(data.version) >= 14 and not has_equipment: return false
+	if not has_equipment:
+		data.items = []; data.item_offers = []; data.next_item_uid = 1
+		data.item_reward_round = int(data.wave) if data.stage in ["result", "reward", "won", "lost"] else int(data.wave) - 1
+	if not data.items is Array or not data.item_offers is Array or data.items.size() > ArenaItems.MAX_ITEMS: return false
+	if not _integer(data.next_item_uid, 1, 100000) or not _integer(data.item_reward_round, 0, ArenaItems.MAX_REWARD_ROUND): return false
+	var item_ids := {}; var carriers := {}
+	for item in data.items:
+		if not item is Dictionary or not _integer(item.get("uid"), 1, 100000) or item_ids.has(int(item.uid)): return false
+		if not item.get("kind") is String or not ArenaItems.RULES.has(item.kind): return false
+		if not _integer(item.get("unit_uid"), 0, 100000): return false
+		var carrier := int(item.unit_uid)
+		if carrier > 0:
+			if not seen.has(carrier) or carriers.has(carrier): return false
+			carriers[carrier] = true
+		item_ids[int(item.uid)] = true
+		item.uid = int(item.uid); item.unit_uid = carrier
+	if not data.item_offers.is_empty():
+		if data.item_offers.size() != 3 or not ArenaItems.reward_round(int(data.item_reward_round)): return false
+		if data.item_offers != ArenaItems.offers(int(data.seed), int(data.item_reward_round)): return false
 	var capacity_at_wave := ArenaRules.level_for_xp(int(data.wave) - 1 + int(data.get("training", 0))) if int(data.version) >= 8 else mini(ArenaRules.MAX_ARMY, 3 + (int(data.wave) - 1 + int(data.get("training", 0))) / 3)
 	if deployed > capacity_at_wave: return false
 	var saved_boons := {}
@@ -725,6 +831,9 @@ func restore(data: Dictionary) -> bool:
 	stage = "prepare" if data.stage == "fight" else String(data.stage)
 	preparation_left = ArenaRules.preparation_seconds(challenge) if data.stage == "fight" else float(data.get("preparation_left", saved_preparation))
 	army.assign(data.army.duplicate(true)); shop.assign(data.shop.duplicate(true)); boons.assign(data.boons)
+	items.assign(data.items.duplicate(true)); item_offers.assign(data.item_offers)
+	next_item_uid = int(data.next_item_uid); item_reward_round = int(data.item_reward_round)
+	for id in item_ids: next_item_uid = maxi(next_item_uid, int(id) + 1)
 	free_refresh = bool(data.get("free_refresh", false))
 	training = int(data.get("training", 0)); battle_savings = int(data.get("battle_savings", 0))
 	rewards.assign(data.rewards.duplicate(true)); history.assign(data.history.duplicate(true))
@@ -744,6 +853,7 @@ func restore(data: Dictionary) -> bool:
 			_next_wave()
 	combine_ready()
 	reserve_slots()
+	_sync_items()
 	return true
 
 
@@ -813,6 +923,7 @@ func _update_profile() -> void:
 
 func _touch() -> void:
 	reserve_slots()
+	_sync_items()
 	if auto_save: save_error = not save()
 	changed.emit()
 

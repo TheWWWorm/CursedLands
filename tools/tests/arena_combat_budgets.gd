@@ -22,35 +22,38 @@ func _ready() -> void:
 			unit.hp=unit.max_hp*0.5
 			var before:=unit.hp
 			unit._regenerate(GameUnit.TICK*15.0)
-			check(is_equal_approx(unit.hp-before,unit.max_hp*float(values.health_regen)),"actual recovery uses Trials budget %d/%d"%[family,rank])
+			# Native part health is stored as float32, then combined into health.
+			# Compare within that storage precision, not float64 delta precision.
+			check(absf(unit.hp-before-unit.max_hp*float(values.health_regen))<=maxf(0.0001,unit.max_hp*0.000001),"actual recovery uses Trials budget %d/%d"%[family,rank])
 			check(float(values.health_regen)<=0.005001,"boss regeneration stays within round budget")
 			var original:=unit.race.duplicate(true)
 			unit.stats.erase("health_regen"); unit.hp=unit.max_hp*0.5; before=unit.hp
 			unit._regenerate(GameUnit.TICK*15.0)
-			check(is_equal_approx(unit.hp-before,unit.max_hp*float(original.get("health_regen",0.0))),"unbudgeted actors retain native recovery")
+			check(absf(unit.hp-before-unit.max_hp*float(original.get("health_regen",0.0)))<=maxf(0.0001,unit.max_hp*0.000001),"unbudgeted actors retain native recovery")
 			for lang in ["en","ru","de"]:
 				RemakeText.lang=lang
 				var summary:=ArenaUnitInfo.summary(unit.info.prototype,null,family,rank)
 				check(not summary.is_empty() and (lang=="en" or not summary.contains("Recovery:")),"localized recovery summary")
-			if family==7 and rank==1:
+			if family==20 and rank==1:
 				var enemy:GameUnit=battle.world.unit_rows().filter(func(u):return u.faction==2)[0]
+				unit.hp=unit.max_hp
 				unit.order={"type":"attack","ai":true,"target":enemy}
 				var choice:=battle.world.ai.choose(unit,[enemy])
 				check(not choice.is_empty() and choice.opt.slot.begins_with("lightning"),"hybrid reconsiders its stronger spell against the last enemy")
 				unit.stats.erase("trials_budget")
 				choice=battle.world.ai.choose(unit,[enemy])
 				check(not choice.is_empty() and choice.opt.slot.begins_with("lightning"),"native AI also evaluates all available actions against one enemy")
-			if family==18 and rank==2:
+			if family==25 and rank==2:
 				var damage_option:Dictionary=battle.world.ai.options(unit).a.filter(func(o):return o.slot.begins_with("curse_magic"))[0]
 				check(damage_option.v[5]==175 and damage_option.v[6]==0,"Curse AI evaluates actual lightning damage rather than the knowledge school")
-			if family==22 and rank==2:
+			if rank==2:
 				for option:Dictionary in battle.world.ai.options(unit).b:
 					if option.key not in ["infravision","silence"]: continue
 					check(battle.world.ai._score(unit,unit,option,[unit],null,-INF)==UnitAI.NO_SCORE,"Trials prioritizes combat over "+option.key)
 					unit.stats.erase("trials_budget")
 					check(battle.world.ai._score(unit,unit,option,[unit],null,-INF)>UnitAI.NO_SCORE,"campaign retains "+option.key)
 					unit.stats.trials_budget=true
-			if family==23 and rank==2:
+			if family==20 and rank==2:
 				var healing:Dictionary=battle.world.ai.options(unit).b.filter(func(o):return o.type==7)[0]
 				unit.hp=unit.max_hp*0.8
 				check(battle.world.ai._score(unit,unit,healing,[unit],null,-INF)==UnitAI.NO_SCORE,"Trials healer attacks through light wounds")
@@ -63,11 +66,11 @@ func _ready() -> void:
 				enemy.proto=enemy.proto.duplicate(true); enemy.proto.spells=["arrow{}"]
 				check(battle.world.ai._trials_protection_needed(unit,"fire"),"fire opponent makes fire protection useful")
 			battle.queue_free();await get_tree().process_frame
-	check(ArenaRules.recruit_role(17,2)=="Melee","utility-only dagger user retains melee health and formation")
+	check(ArenaRules.recruit_role(17,2)=="Melee","noncasting hyena retains melee health and formation")
 	for spell in ["inv_lit","acid_column","fireball"]:
 		check(ArenaRules.spell_target_budget(Spells.parse(spell))>1.0,"area budget includes "+spell)
 	check(ArenaRules.spell_target_budget(Spells.parse("lightning{t2}"))>ArenaRules.spell_target_budget(Spells.parse("lightning")),"extra bolts consume budget")
-	var curse:=ArenaRules.recruit_prototype(18,2,GameData.db.find("monster_prototypes",ArenaRules.prototype(18,2)))
+	var curse:=ArenaRules.recruit_prototype(25,2,GameData.db.find("monster_prototypes",ArenaRules.prototype(25,2)))
 	check(Spells.parse(curse.spells[0]).code=="curse_magic" and Spells.parse(curse.spells[0]).effect<350.0 and curse._trials_cast_rate<1.0,"Curse retains its native spell with a smaller heavy hit and slower wind-up")
 	check(hash(GameData.db.tables)==native,"Trials never mutate campaign data")
 	print("ARENA_COMBAT_BUDGETS checks=",checks," failures=",JSON.stringify(failures))

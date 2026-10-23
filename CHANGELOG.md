@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Add eight equippable Autochess items with one slot per creature and a shared inventory. Choose one of three items after rounds 3, 5, 10 and subsequent multiples of five. Reassign equipment during preparation; selling and merging return spare items to the inventory. Saves, undo, bots, scouting and online play preserve ownership and the equipment used by each battle.
+- Show items in a persistent tray beneath alliances, with illustrated circular icons and hover details. Assign equipment directly to field or reserve creatures by dragging or selecting targets, return it to the stash, and choose rewards from three large cards over the board. Keyboard controls support the same assignments.
+- Give the six Autochess alliances tactical effects: coordinated Beast strikes, Horde retaliation, nearby Warrior guards, Hunter focus on enemy casters, combined Mage spells and aid from fallen Spirits. Localized help explains their range and limits, and short combat notices identify triggered effects.
+- Add Orc warriors and Woodsfolk seers, each with three original visual stages and portraits. Improve three-star Skeleton health and Cyclops damage, reduce three-star Elemental health and Dragon damage, and correct the light/dark bat portraits. Equipment and alliance controls support English, Russian and German at 720p and 1080p.
+- Advance the internal Autochess save schema to 14 and its online protocol to 2. Existing saves retain their recruits and start with an empty equipment inventory; online participants need matching builds.
 - Ship the DirectX Agility runtime (`x86_64/D3D12Core.dll`, 1.618.5) with the Windows package again. 1.24.0 omitted it, so Direct3D 12 fell back to the system runtime, which on Windows 10 and older Windows 11 builds lacks enhanced barriers and can lower frame rates. The Windows package check now rejects a build without the verified runtime.
 
 ## 1.24.0 — 2026-10-22

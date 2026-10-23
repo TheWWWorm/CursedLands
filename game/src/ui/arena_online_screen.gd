@@ -32,7 +32,9 @@ func _effects(data: Dictionary) -> void:
 	var match_node: ArenaOnlineMatch = battle if player == 0 else _tournament_battles.boards.get(player)
 	if match_node: match_node.apply_effects(data)
 
-func _fight() -> void: connection.request("ready")
+func _fight() -> void:
+	_cancel_item()
+	connection.request("ready")
 func _show_player(player: int) -> void:
 	super._show_player(player)
 	connection.watch(player)

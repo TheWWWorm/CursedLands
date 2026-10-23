@@ -5,6 +5,8 @@ var prepared: Dictionary={}
 var outcomes: Dictionary={}
 var states: Dictionary={}
 var visual_events: Dictionary={}
+var proc_events := {}
+var echo_records := {}
 func _ready()->void:run.call_deferred()
 func run()->void:
 	GameData.options.merge({"net_lan":1,"net_upnp":0,"net_directory":0,"autosave":0,"auto_graphics":0},true)
@@ -12,8 +14,14 @@ func run()->void:
 	var host:=connection("Solo fixture")
 	host.solo_prepared.connect(func(data):prepared=data)
 	host.solo_result.connect(func(data):outcomes[int(data.seat)]=data)
-	host.board_received.connect(func(data):states[int(data.seat)]=data)
-	host.effects_received.connect(func(data):visual_events[int(data.seat)]=int(visual_events.get(int(data.seat),0))+data.events.size())
+	host.board_received.connect(func(data):
+		states[int(data.seat)]=data
+		for record: Dictionary in data.get("records",[]):
+			if record.placement.get("echo",false): echo_records[int(data.seat)]=true)
+	host.effects_received.connect(func(data):
+		visual_events[int(data.seat)]=int(visual_events.get(int(data.seat),0))+data.events.size()
+		for event: Dictionary in data.events:
+			if event.get("t","")=="arena_proc":proc_events[int(data.seat)]=true)
 	check(await host.local_host.start(0,false,true)==OK,"private worker starts on an ephemeral port")
 	if not host.local_host.owned:get_tree().quit(1);return
 	var child:=host.local_host.process_id
@@ -21,7 +29,10 @@ func run()->void:
 	league.wave=12
 	for player in 9:
 		var company:=league.company(player);company.army.clear();company.wave=12;company.training=126
-		for family in ([7,17,26] if player!=0 else [28,26,27]):company._recruit(family,1,10)
+		for family in ([6,11,19,21,3,5] if player!=0 else [6,11,19,21,28,29]):company._recruit(family,1,10)
+		var equipment := ["berserker","storm","echo","ward","thorn","guardian"]
+		for i in company.army.size():company.items.append({"uid":i+1,"kind":equipment[i],"unit_uid":company.army[i].uid})
+		company.next_item_uid=7;company._sync_items()
 		company.arrange()
 	league._prepare_round()
 	for plan:Dictionary in league.bot_plans:plan.done=true
@@ -58,9 +69,11 @@ func run()->void:
 		check(ledger==oracle.encounter(player).friendly_damage,"worker preserves per-unit friendly damage for board %d"%player)
 		print("WORKER_CLOCK ",player," worker=",outcomes[player].time," inline=",oracle.encounter(player).world.time)
 		check(is_equal_approx(float(outcomes[player].time),oracle.encounter(player).world.time),"worker preserves native clock for board %d"%player)
+	check(proc_events.size()==9,"all boards deliver behavioral effect notices")
+	check(not echo_records.is_empty(),"temporary spirits trigger full board records over private transport")
 	oracle.queue_free()
 	# A vacant player's immediate loss must not vanish before the bell.
-	prepared={};outcomes.clear();states.clear();league.army.clear();league.lives=1
+	prepared={};outcomes.clear();states.clear();league.army.clear();league.items.clear();league.lives=1
 	host._send(1,{"t":"solo_prepare","snapshot":league.snapshot(),"speed":1})
 	check(await until(func():return not prepared.is_empty(),30),"empty player round prepares")
 	check(prepared.get("boards",[]).any(func(board):return int(board.seat)==0),"bell-lethal empty player retains initial replica")

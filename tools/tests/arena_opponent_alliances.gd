@@ -1,5 +1,5 @@
 extends Node
-## Identical opposing companies must receive identical alliance modifiers.
+## Identical opposing companies must receive identical behavioral alliance ranks.
 func _ready() -> void:
 	var league := ArenaTournamentRun.new()
 	league.auto_save = false; league.begin(7391); league.wave = 4
@@ -28,7 +28,7 @@ func _ready() -> void:
 		if enemies.size()!=1 or own.stats!=enemies[0].stats or not is_equal_approx(own.max_hp,enemies[0].max_hp):
 			failures.append("opposing alliance symmetry for " + own.info.prototype)
 		checks += 1
-		if own.stats.dmg_min <= own.get_meta("alliance_base").stats.dmg_min:
-			failures.append("both armies receive their beast bonus")
+		if battle.world.arena_effects.levels[0] != battle.world.arena_effects.levels[1] or int(battle.world.arena_effects.levels[0].beast) != 2:
+			failures.append("both armies activate the same pack behaviors")
 	print("ARENA_OPPONENT_ALLIANCES ",checks," checks; failures=",JSON.stringify(failures))
 	get_tree().quit(0 if failures.is_empty() else 1)

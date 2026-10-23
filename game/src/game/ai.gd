@@ -1019,6 +1019,8 @@ func _score(u: GameUnit, c: GameUnit, opt: Dictionary, list: Array, cur, thr: fl
 				score = 3.0 * pw + (pw if u.hp >= u.max_hp else 0.0)
 			else:
 				score = bonus + 5.0 + 2.0 * mini(n - 1, k)
+	if ty <= 3 and world.arena_effects:
+		score += world.arena_effects.target_bonus(u, c, opt)
 	if score < thr:
 		return score
 	var d := u.pos.distance_to(c.pos)

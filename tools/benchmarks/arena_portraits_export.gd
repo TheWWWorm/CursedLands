@@ -38,9 +38,12 @@ func _ready() -> void:
 			# Upper-body portraits retain native faces, clothing and weapon hilts.
 			# Full figures made small human faces unreadable in the damage list.
 			if not first:
-				var clothed := id.begins_with("human") or id.begins_with("goblin") or id.begins_with("driad") or id.begins_with("orc")
+				var clothed := id.begins_with("human") or id.begins_with("goblin") or id.begins_with("orc")
 				var center := bounds.get_center()-Vector3(0,bounds.size.y*(0.7 if clothed else 0.25),0)
-				var diameter := maxf(bounds.size.x,bounds.size.y)*(3.2 if clothed else 1.85)
+				# Woodsfolk have a large head with the distinctive clan headdress;
+				# applying human upper-body framing reduced it to a tiny thumbnail.
+				var framing := 2.2 if id.begins_with("orc") else 3.2 if clothed else 1.85
+				var diameter := maxf(bounds.size.x,bounds.size.y)*framing
 				var distance := diameter*0.5/tan(deg_to_rad(15.0))+bounds.size.z*0.5
 				doll._cam.position=center+Vector3(0,0,distance); doll._cam.look_at(center)
 				doll._cam.force_update_transform()

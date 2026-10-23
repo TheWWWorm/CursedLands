@@ -66,7 +66,8 @@ func _ready() -> void:
 	formation.army.clear(); formation.training=ArenaRules.MAX_TRAINING
 	for choice in [Vector2i(11,1),Vector2i(3,2),Vector2i(17,2)]: formation._recruit(choice.x,choice.y,1)
 	ArenaBotPlanner.arrange(formation,"")
+	var front_x := float(formation.army.filter(func(entry): return entry.family == 17)[0].point[0])
 	for entry in formation.army:
-		check(entry.deployed and entry.point[0]==(27.0 if entry.family==17 and entry.rank==2 else 22.0),"ranged and spellcasting creatures stay behind the melee hunter")
+		check(entry.deployed and (float(entry.point[0]) == front_x if entry.family == 17 else float(entry.point[0]) < front_x),"ranged and spellcasting creatures stay behind the melee hunter")
 	print("ARENA_BOT_PLANNER ", JSON.stringify({"checks":checks,"failures":failures}))
 	get_tree().quit(0 if failures.is_empty() else 1)

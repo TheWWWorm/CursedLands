@@ -88,6 +88,12 @@ func _sync_board(player: int) -> void:
 			if viewed_player == player: board_event.emit(event))
 	var company := run.company(player)
 	match_node.run.army = company.army.duplicate(true)
+	# A board owns a frozen copy, never the source company's item records.
+	# ArenaRun.start_battle rebuilds derived entry.item fields from inventory.
+	match_node.run.items = company.items.duplicate(true)
+	match_node.run.item_offers = []
+	match_node.run.next_item_uid = company.next_item_uid
+	match_node.run.item_reward_round = company.item_reward_round
 	match_node.run.run_seed = run.run_seed + player * 997
 	match_node.run.wave = run.wave
 	match_node.run.stage = "prepare"

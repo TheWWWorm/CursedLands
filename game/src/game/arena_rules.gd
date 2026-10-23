@@ -3,7 +3,7 @@ extends RefCounted
 ## Content shared by the playable expedition and its balance simulations.
 ## Original prototypes remain immutable. Budgets apply only to Trials actors.
 
-const VERSION := 13
+const VERSION := 14
 const PREPARATION_SECONDS := 60.0
 const BATTLE_SECONDS := 90.0
 const WAVE_COUNT := 30
@@ -29,8 +29,9 @@ const SHOP_ODDS := {
 	9: [10, 15, 25, 35, 15],
 }
 const COMPANIONS := ["orcfemalem3", "orcfemalem5", "octopuskaniam12", "octopushadaganm15"]
-const ACTIVE_FAMILIES := [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]
-# A species occupies one price tier. All ranks retain its silhouette and role.
+const ACTIVE_FAMILIES := [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
+# A recruit line occupies one price tier. All ranks retain its species and role.
+# A second role of an existing species must have a distinct kit and native outfit.
 const FAMILIES := [
 	{"name":"Boars","role":"Melee","cost":1,"tier":1,"copies":[3,3],"forms":["boarredf1","boarredf2","boarredf3"],"health":1.25,"damage":0.85,"armor":1.2,"hook":"A sturdy frontline with a heavy hide."},
 	{"name":"Wolves","role":"Melee","cost":1,"tier":1,"copies":[3,3],"forms":["wolfgreyf1","wolfgreyf2","wolfgreyf3"],"health":1.03,"damage":1.2,"armor":0.8,"hook":"A fast melee hunter with strong sustained damage."},
@@ -60,6 +61,8 @@ const FAMILIES := [
 	{"name":"Horrors","role":"Magic","cost":5,"tier":5,"copies":[3,3],"forms":["ancientcursem25","ancientcursem25","ancientcursem25"],"health":1.05,"damage":1,"armor":0.75,"hook":"A powerful lightning strike with a long windup."},
 	{"name":"Wormheads","role":"Magic","cost":5,"tier":5,"copies":[3,3],"forms":["octopuskaniam11","octopuskaniam12","octopuskaniam15"],"health":1.0,"damage":1.02,"armor":0.8,"hook":"Area lightning and haste support the company."},
 	{"name":"Cyclopes","role":"Ranged","cost":5,"tier":5,"copies":[3,3],"forms":["cyclopsa16","cyclopsa18","cyclopsa20"],"health":1.25,"damage":1.15,"armor":1,"hook":"Heavy ranged crushing damage with slow attacks."},
+	{"name":"Orc warriors","role":"Melee","cost":2,"tier":2,"copies":[3,3],"forms":["orcmalef3","orcmalef5","orcmalef7"],"health":1.05,"damage":1.0,"armor":1.05,"hook":"A sturdy axe fighter that deals slashing damage."},
+	{"name":"Woodsfolk seers","role":"Magic","cost":3,"tier":3,"copies":[3,3],"forms":["driadgreenm7","driadsnowm9","driaddarkm11"],"health":1.0,"damage":1.25,"armor":0.75,"hook":"Lightning magic from a protected back line."},
 ]
 # Exact schema-12 contents remain available for validating and migrating saves.
 const EXPERIMENT_FORMS := [["boarredf1","trollbluef9","golemverticalf20"],["goblinf1","orcmalef5","cyclopsa20"],["wolfgreyf1","tigerwhitef10","unicornwhitem15"],["human hadagan students a10","orcfemalea5","human mercenary kania archer"],["batredm1","succubredm9","dragonbrownm16"],["toadm2","scrabmotherpoisonedf6","elementalearthf8"],["willowispm1","bansheedarkm12","dragonbluem14"],["driadsnowa7","human hadagan students m10","elementalicef15"],["evileyesimplem5","succubgreym13","dragongreenm12"],["hyenaf6","ogrehadaganf17","golemhorizontalf20"],["ratsmallf1","spiderf10","evileyeredm16"],["orcfemalem3","succubbluem10","octopushadaganm17"],["skeletonf2","bansheelightf4","shadowm20"],["driadgreena7","human hadagan citizens a1","human kania npc sorceress m11"],["doggreyf6","human kania hunter f7","human mercenary bodyguard"],["human gipath warlord f2","human kania sorceress bodyguard f9","human mercenary kania paladin"],["dragonkinbeastmenf3","ogregipatf9","trollblackslowf16"],["human gipath brigand a1","human kania ranger f9","human mercenary hadagan rogue"],["human hadagan guards m14","evileyegreenm17","ancientcursem25"],["human gipath brigand f1","human kania gang f9","human mercenary hadagan warrior"],["human kania police f8","human hadagan guards a14","human kania npc captain f14"],["zombiemalef10","undeadf17","elementallavaf12"],["human hadagan peasants a1","human gipath npc wife m3","human mercenary hadagan thief"],["human kania citizen a7","driaddarka7","human mercenary thief"],["human mercenary shaivar","driaddarkm9","human hadagan necromancer m17"],["human gipath brigand deputy f1","human kania police karansul f8","human mercenary warrior"],["human kania woodcutter f8","human kania police f10","human hadagan overseerba f14"],["human kania goldminer f7","human hadagan students f10","human gipath npc expeditor f15"],["human kania gang spear f10","human kania gang f11","human mercenary kania thief"],["human kania police a8","human hadagan overseer f14","human hadagan npc lieutenant f15"]]
@@ -176,11 +179,21 @@ const LEGACY_FORMS := {
 }
 const LEGACY_FAMILIES := {0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 2, 7: 0, 8: 11, 9: 9, 10: 10, 11: 8, 12: 12, 13: 6, 14: 2, 15: 12, 16: 16, 17: 11, 18: 18, 19: 5, 20: 13, 21: 16, 22: 4, 23: 11, 24: 19, 25: 17, 26: 18, 27: 21, 28: 20, 29: 7, 30: 22, 31: 14, 32: 24, 33: 21, 34: 10, 35: 8, 36: 1, 37: 12, 38: 20, 39: 6}
 
-static func star_health(_family: int, rank: int) -> float:
-	return [1.0, 2.1, 5.0][clampi(rank,0,2)]
+static func star_health(family: int, rank: int) -> float:
+	var scale: float = [1.0, 2.1, 5.0][clampi(rank,0,2)]
+	# Three-star mixed-company comparisons expose these final-form outliers.
+	# Earlier stars keep their established purchase and promotion budgets.
+	if rank == 2:
+		if family == 6: scale *= 1.08
+		elif family == 22: scale *= 0.92
+	return scale
 
-static func star_damage(_family: int, rank: int) -> float:
-	return [1.0, 1.75, 4.0][clampi(rank,0,2)]
+static func star_damage(family: int, rank: int) -> float:
+	var scale: float = [1.0, 1.75, 4.0][clampi(rank,0,2)]
+	if rank == 2:
+		if family == 27: scale *= 1.12
+		elif family == 23: scale *= 0.92
+	return scale
 
 static func recruit_role(family: int, rank: int) -> String:
 	var proto := GameData.db.find("monster_prototypes",prototype(family,rank))
@@ -397,7 +410,7 @@ static func tier_price_label(tier: int) -> String:
 
 
 static func saved_family_count(version: int) -> int:
-	return LEGACY_FORMS.size() if version < 11 else EXPERIMENT_FORMS.size() if version < 13 else FAMILIES.size()
+	return LEGACY_FORMS.size() if version < 11 else EXPERIMENT_FORMS.size() if version < 13 else 28 if version == 13 else FAMILIES.size()
 
 static func saved_prototype(version: int, family: int, rank: int) -> String:
 	if version < 11: return LEGACY_FORMS[family][rank]

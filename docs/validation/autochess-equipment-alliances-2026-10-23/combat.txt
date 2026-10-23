@@ -1,0 +1,1 @@
+ARENA_COMBAT_EFFECTS checks=40 failures=[] battle=[0,20.6799999999999,[403.005213678741,331.320364328766],{"echo":4,"guardian":2,"reaction":20,"spirit":4,"spirit_echo":2,"storm":1,"ward":2}]
