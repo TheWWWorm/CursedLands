@@ -1,0 +1,236 @@
+{
+  "combat": {
+    "run": "combat-effects-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_COMBAT_EFFECTS checks=40 failures=[] battle=[0,20.6799999999999,[403.005213678741,331.320364328766],{\"echo\":4,\"guardian\":2,\"reaction\":20,\"spirit\":4,\"spirit_echo\":2,\"storm\":1,\"ward\":2}]"
+    ],
+    "runtime_errors": false
+  },
+  "alliances": {
+    "run": "alliances-1",
+    "exit": 0,
+    "summary": [
+      "ARENA_ALLIANCES {\"checks\":622,\"failures\":[]}"
+    ],
+    "runtime_errors": false
+  },
+  "opponent_alliances": {
+    "run": "opponent-alliances-1",
+    "exit": 0,
+    "summary": [
+      "ARENA_OPPONENT_ALLIANCES 12 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "inventory": {
+    "run": "equipment-lifecycle-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT {\"checks\":51,\"failures\":[]}"
+    ],
+    "runtime_errors": false
+  },
+  "online_inventory": {
+    "run": "equipment-online-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_ONLINE {\"checks\":29,\"failures\":[]}"
+    ],
+    "runtime_errors": false
+  },
+  "online_regression": {
+    "run": "online-regression-1",
+    "exit": 0,
+    "summary": [
+      "ARENA_ONLINE 80 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "worker": {
+    "run": "solo-worker-final",
+    "exit": 0,
+    "summary": [
+      "WORKER_CLOCK 0 worker=35.1449999999998 inline=35.1449999999998",
+      "WORKER_CLOCK 1 worker=43.9449999999998 inline=43.9449999999998",
+      "WORKER_CLOCK 2 worker=27.8849999999999 inline=27.8849999999999",
+      "WORKER_CLOCK 3 worker=28.7649999999999 inline=28.7649999999999",
+      "WORKER_CLOCK 4 worker=43.8899999999998 inline=43.8899999999998",
+      "WORKER_CLOCK 5 worker=28.1049999999999 inline=28.1049999999999",
+      "WORKER_CLOCK 6 worker=32.2299999999999 inline=32.2299999999999",
+      "WORKER_CLOCK 7 worker=32.3949999999999 inline=32.3949999999999",
+      "WORKER_CLOCK 8 worker=26.8949999999999 inline=26.8949999999999",
+      "ARENA_SOLO_WORKER 59 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "bot_planner": {
+    "run": "equipment-bot-planner-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_BOT_PLANNER {\"checks\":21,\"failures\":[]}"
+    ],
+    "runtime_errors": false
+  },
+  "localization": {
+    "run": "native-rewards-localization",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_LOCALIZATION checks=735 failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "bot_formation": {
+    "run": "equipment-bot-formation-3",
+    "exit": 0,
+    "summary": [
+      "ARENA_BOT_EQUIPMENT_FORMATION {\"checks\":107,\"failures\":[]}"
+    ],
+    "runtime_errors": false
+  },
+  "native_headless": {
+    "run": "equipment-native-headless",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_NATIVE_VISUAL {\"checks\": 13, \"failures\": [], \"renderer\": \"headless\", \"speed\": 1, \"seconds\": 27.6649999999999, \"wall_seconds\": 0.262, \"winner\": 0, \"survivors\": [2, 0], \"damage\": [419.8192106987, 412.495226683807], \"effects\": {\"echo\": 4, \"guardian\": 2, \"pack\": 4, \"reaction\": 17, \"spirit\": 3, \"spirit_echo\": 2, \"ward\": 2}, \"native_notice_count\": 34}"
+    ],
+    "runtime_errors": false
+  },
+  "native_en-1x": {
+    "run": "equipment-native-en-1x",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_NATIVE_VISUAL {\"checks\": 20, \"failures\": [], \"renderer\": \"X11\", \"speed\": 1, \"seconds\": 27.6649999999999, \"wall_seconds\": 28.088, \"winner\": 0, \"survivors\": [2, 0], \"damage\": [419.8192106987, 412.495226683807], \"effects\": {\"echo\": 4, \"guardian\": 2, \"pack\": 4, \"reaction\": 17, \"spirit\": 3, \"spirit_echo\": 2, \"ward\": 2}, \"native_notice_count\": 34}"
+    ],
+    "runtime_errors": false
+  },
+  "native_de-2x": {
+    "run": "equipment-native-de-2x",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_NATIVE_VISUAL {\"checks\": 20, \"failures\": [], \"renderer\": \"X11\", \"speed\": 2, \"seconds\": 27.6649999999999, \"wall_seconds\": 14.248, \"winner\": 0, \"survivors\": [2, 0], \"damage\": [419.8192106987, 412.495226683807], \"effects\": {\"echo\": 4, \"guardian\": 2, \"pack\": 4, \"reaction\": 17, \"spirit\": 3, \"spirit_echo\": 2, \"ward\": 2}, \"native_notice_count\": 34}"
+    ],
+    "runtime_errors": false
+  },
+  "ui_en_720": {
+    "run": "equipment-tray-ui-en-720-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_UI en (1280, 720) 61 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "ui_en_1080": {
+    "run": "equipment-tray-ui-en-1080-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_UI en (1920, 1080) 61 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "ui_ru_720": {
+    "run": "equipment-tray-ui-ru-720-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_UI ru (1280, 720) 61 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "ui_ru_1080": {
+    "run": "equipment-tray-ui-ru-1080-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_UI ru (1920, 1080) 61 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "ui_de_720": {
+    "run": "equipment-tray-ui-de-720-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_UI de (1280, 720) 61 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "ui_de_1080": {
+    "run": "equipment-tray-ui-de-1080-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_UI de (1920, 1080) 61 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "presentation_en_720": {
+    "run": "native-rewards-en-720-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_PRESENTATION equipment-tray-en-1280 28 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "presentation_ru_720": {
+    "run": "native-rewards-ru-720-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_PRESENTATION equipment-tray-ru-1280 28 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "presentation_de_720": {
+    "run": "native-rewards-de-720-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_PRESENTATION equipment-tray-de-1280 28 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "presentation_de_1080": {
+    "run": "native-rewards-de-1080-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_PRESENTATION equipment-tray-de-1920 28 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "native_de-2x_tray": {
+    "run": "equipment-native-de-2x-tray-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_NATIVE_VISUAL {\"checks\": 23, \"failures\": [], \"renderer\": \"X11\", \"speed\": 2, \"seconds\": 27.6649999999999, \"wall_seconds\": 14.271, \"winner\": 0, \"survivors\": [2, 0], \"damage\": [419.8192106987, 412.495226683807], \"effects\": {\"echo\": 4, \"guardian\": 2, \"pack\": 4, \"reaction\": 17, \"spirit\": 3, \"spirit_echo\": 2, \"ward\": 2}, \"native_notice_count\": 34}"
+    ],
+    "runtime_errors": false,
+    "exact_headless_parity": true
+  },
+  "presentation_en_1080": {
+    "run": "native-rewards-en-1080-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_PRESENTATION equipment-tray-en-1920 28 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "presentation_ru_1080": {
+    "run": "native-rewards-ru-1080-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_PRESENTATION equipment-tray-ru-1920 28 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "native_art_ui": {
+    "run": "native-rewards-input-en",
+    "exit": 0,
+    "summary": [
+      "ARENA_EQUIPMENT_UI en (1280, 720) 61 checks; failures=[]"
+    ],
+    "runtime_errors": false
+  },
+  "native_item_art": {
+    "run": "native-rewards-item-art-final",
+    "exit": 0,
+    "summary": [
+      "ARENA_ITEM_ART {\"checks\":58,\"failures\":[]}"
+    ],
+    "runtime_errors": false
+  }
+}

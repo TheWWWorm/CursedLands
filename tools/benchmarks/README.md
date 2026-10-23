@@ -376,17 +376,19 @@ different location is not by itself evidence of a leak or a fix.
 
 # Trials balance depth
 
-`arena_balance_contexts.gd` compares every unordered pair of species at the same
+`arena_balance_contexts.gd` compares every unordered pair of recruit lines at the same
 shop price in physical, fire and lightning support teams. It tests two- and
-three-star candidates, with two fixed seeds and mirrored sides: 1,584 native
+three-star candidates, with two fixed seeds and mirrored sides: 1,848 native
 fights. The three shared two-star supports never duplicate either candidate.
 Native movement, targeting, regeneration, typed armor and alliance thresholds
-remain active. `--tiers=1,2` restricts a run. These are controlled substitutions,
-not 1,584 independent tournament observations. A 90-second timeout is retained
+remain active. `--tiers=1,2` restricts price tiers; `--families=28,29` keeps pairs
+containing either selected recruit, and `--ranks=0,1,2` selects zero-based star
+ranks. These are controlled substitutions, not 1,848 independent tournament
+observations. A 90-second timeout is retained
 as a draw rather than counted as a win.
 
-`arena_balance_catalog.gd` exports all 84 species/rank combinations, their spells,
-cadence, per-type armor and 1,764 actual `Combat.absorb` samples, plus the shop odds
+`arena_balance_catalog.gd` exports all 90 recruit/rank combinations, their spells,
+cadence, per-type armor and 1,890 actual `Combat.absorb` samples, plus the shop odds
 and level costs. `arena_star_balance.gd` checks promotions and equal-purchase-cost
 alternatives. Acquisition analysis must also account for rerolls and XP.
 

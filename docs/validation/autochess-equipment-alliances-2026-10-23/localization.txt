@@ -1,0 +1,1 @@
+ARENA_EQUIPMENT_LOCALIZATION checks=735 failures=[]

@@ -1,6 +1,6 @@
 # Native creature portraits
 
-The active roster's eighty-four 64 × 64 transparent PNGs were rendered directly
+The active roster's ninety 64 × 64 transparent PNGs were rendered directly
 from the original Cursed Lands unit models, textures, equipment and rig. The
 family/rank mapping is in `manifest.json`; the filename is
 `<family index>-<zero-based rank>`. Shared combat prototypes can have distinct

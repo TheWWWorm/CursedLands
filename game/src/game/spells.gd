@@ -606,6 +606,7 @@ static func cast_after(world: GameWorld, caster: GameUnit, spell: String, target
 		if needs_target and (t == null or t.dead or t.world != world or world.units.get(t.uid) != t):
 			return
 		cast_unit(world, c, spell, t, at)
+		if world.arena_effects: world.arena_effects.on_cast(c, spell, t, at)
 		# Hearing lasts 26 ticks at twice the caster's detectability. A spell
 		# can itself remove the caster, so resolve it again after dispatch.
 		c = _deref(caster_ref)
@@ -1039,7 +1040,8 @@ static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: 
 				return
 			layers = func(i: int, amount: float) -> float:
 				return walk.call(i, amount, true)
-	u.take_damage(dmg, caster, -1, PackedFloat32Array(), hit_flags, layers, owner_only)
+	u.take_damage(dmg, caster, -1, PackedFloat32Array(), hit_flags, layers, owner_only,
+		{"kind": "spell", "school": school, "periodic": owner_only})
 	wear_weapon.call()
 	# a unit that lives on after the damage (healing armour).
 	if not u.dead:

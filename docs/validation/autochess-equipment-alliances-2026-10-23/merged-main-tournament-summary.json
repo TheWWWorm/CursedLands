@@ -1,0 +1,32 @@
+{
+  "seed": 7319,
+  "rounds": 31,
+  "winner_seat": 6,
+  "battles": 229,
+  "end_reasons": {
+    "defeated": 229
+  },
+  "mean_seconds": 22.727489082969345,
+  "max_seconds": 56.2099999999997,
+  "preparation_samples": 229,
+  "item_budget_mismatches": [],
+  "item_kinds": [
+    "berserker",
+    "echo",
+    "fang",
+    "guardian",
+    "storm",
+    "thorn",
+    "venom",
+    "ward"
+  ],
+  "winner_alliances": {
+    "beast": 4,
+    "horde": 3,
+    "hunter": 3,
+    "mage": 4,
+    "spirit": 2,
+    "warrior": 1
+  },
+  "winner_strategy": 2
+}

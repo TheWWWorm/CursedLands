@@ -1,0 +1,82 @@
+[
+  {
+    "test": "arena_equipment_localization",
+    "checks": 747,
+    "exit_code": 0,
+    "run": "merge-main-equipment-localization"
+  },
+  {
+    "test": "arena_equipment",
+    "checks": 51,
+    "exit_code": 0,
+    "run": "merge-main-equipment"
+  },
+  {
+    "test": "arena_shared_pool",
+    "checks": 77,
+    "exit_code": 0,
+    "run": "merge-main-shared-pool"
+  },
+  {
+    "test": "arena_recruits",
+    "checks": 98,
+    "exit_code": 0,
+    "run": "merge-main-recruits"
+  },
+  {
+    "test": "arena_rank_appearance",
+    "checks": 1386,
+    "exit_code": 0,
+    "run": "merge-main-rank-appearance"
+  },
+  {
+    "test": "arena_species",
+    "checks": 2181,
+    "exit_code": 0,
+    "run": "merge-main-species"
+  },
+  {
+    "test": "arena_equipment_online",
+    "checks": 29,
+    "exit_code": 0,
+    "run": "merge-main-equipment-online"
+  },
+  {
+    "test": "arena_combat_effects",
+    "checks": 40,
+    "exit_code": 0,
+    "run": "merge-main-combat-effects"
+  },
+  {
+    "test": "arena_bot_planner",
+    "checks": 21,
+    "exit_code": 0,
+    "run": "merge-main-bot-planner"
+  },
+  {
+    "test": "arena_bot_equipment_formation",
+    "checks": 107,
+    "exit_code": 0,
+    "run": "merge-main-bot-equipment-formation"
+  },
+  {
+    "test": "arena_solo_worker",
+    "checks": 59,
+    "exit_code": 0,
+    "run": "merge-main-solo-worker"
+  },
+  {
+    "test": "arena_equipment_ui",
+    "checks": 61,
+    "exit_code": 0,
+    "run": "merge-main-input-en",
+    "gpu_job": "9ad2b5106f8742d7"
+  },
+  {
+    "test": "arena_equipment_presentation",
+    "checks": 28,
+    "exit_code": 0,
+    "run": "merge-main-presentation-de",
+    "gpu_job": "831848fbe5124c95"
+  }
+]

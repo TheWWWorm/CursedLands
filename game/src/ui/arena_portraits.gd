@@ -2,6 +2,12 @@ class_name ArenaPortraits
 extends RefCounted
 ## Direct 64 px renders of original models, with no repainting.
 const IMAGES := {
+	"driaddarkm11": preload("res://assets/arena/portraits/29-2.png"),
+	"driadsnowm9": preload("res://assets/arena/portraits/29-1.png"),
+	"driadgreenm7": preload("res://assets/arena/portraits/29-0.png"),
+	"orcmalef7": preload("res://assets/arena/portraits/28-2.png"),
+	"orcmalef5": preload("res://assets/arena/portraits/28-1.png"),
+	"orcmalef3": preload("res://assets/arena/portraits/28-0.png"),
 	"ancientcursem25": preload("res://assets/arena/portraits/25-2.png"),
 	"bansheedarkm12": preload("res://assets/arena/portraits/19-0.png"),
 	"bansheedarkm14": preload("res://assets/arena/portraits/19-1.png"),
@@ -108,6 +114,8 @@ const RANK_IMAGES := [
 	[preload("res://assets/arena/portraits/25-0.png"), preload("res://assets/arena/portraits/25-1.png"), preload("res://assets/arena/portraits/25-2.png")],
 	[preload("res://assets/arena/portraits/26-0.png"), preload("res://assets/arena/portraits/26-1.png"), preload("res://assets/arena/portraits/26-2.png")],
 	[preload("res://assets/arena/portraits/27-0.png"), preload("res://assets/arena/portraits/27-1.png"), preload("res://assets/arena/portraits/27-2.png")],
+	[preload("res://assets/arena/portraits/28-0.png"), preload("res://assets/arena/portraits/28-1.png"), preload("res://assets/arena/portraits/28-2.png")],
+	[preload("res://assets/arena/portraits/29-0.png"), preload("res://assets/arena/portraits/29-1.png"), preload("res://assets/arena/portraits/29-2.png")],
 ]
 
 static func texture(id: String, family := -1, rank := 0) -> Texture2D:

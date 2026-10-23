@@ -951,6 +951,8 @@ func refresh_max_hp() -> void:
 ## health spread over the damaged, attached parts by lethality
 ## destroyed parts that climb above 0 work again.
 func heal(amount: float) -> void:
+	if amount > 0.0 and world and world.arena_effects:
+		amount *= world.arena_effects.healing_multiplier(self)
 	if parts.is_empty():
 		_hp = minf(_max_hp, _hp + amount)
 		return
@@ -3533,7 +3535,7 @@ static func is_dying_hp(v: float) -> bool:
 ## `hit_flags`: native hit flags: 1 backstab, 4 electrical flash. Callers
 ## preserve bit4 from the pre-armour record; `types` here
 ## normally contains only what armour left for body-part severance.
-func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFloat32Array(), hit_flags := 0, layers := Callable(), owner_only := false) -> void:
+func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFloat32Array(), hit_flags := 0, layers := Callable(), owner_only := false, context: Dictionary = {}) -> void:
 	# Native554139 / LiA4c92be reject the damage record for an invulnerable
 	# player's units. Spell effects, direct script death and wound repair
 	# retain their separate paths; toggling the flag never heals the unit.
@@ -3544,6 +3546,12 @@ func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFlo
 		return
 	if source and is_instance_valid(source):
 		amount *= float(source.get_meta("coop_dmg_mul", 1.0))   # remake co-op MobScaling
+	if world.arena_effects:
+		var incoming := amount
+		amount = world.arena_effects.before_damage(self, source, amount, context, part)
+		if incoming > 0.0 and amount < incoming:
+			types = types.duplicate()
+			for i in types.size(): types[i] *= amount / incoming
 	var hp_before := hp
 	if part >= 0 and not parts.is_empty():
 		var before := float(parts[part].cur)
@@ -3562,6 +3570,8 @@ func take_damage(amount: float, source: GameUnit, part := -1, types := PackedFlo
 		world.session.broadcast({"t": "hitnum", "uid": uid, "n": int(maxf(hp_before - hp, 0.0)),
 			"f": hit_flags | (2 if part == 0 else 0)})
 	world.on_damage(self, amount, source)
+	if world.arena_effects:
+		world.arena_effects.after_damage(self, source, maxf(0.0, hp_before - hp), context)
 	if is_dying_hp(hp):
 		die(source)
 		return

@@ -44,16 +44,22 @@ func fight(a: int, b: int, rank: int, supports: Array, seed_value: int, side: in
 func _ready() -> void:
 	var native := hash(GameData.db.tables)
 	var tiers := [1,2,3,4,5]
+	var families := []
+	var ranks := [1,2]
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--tiers="): tiers=Array(arg.get_slice("=",1).split(",")).map(func(s):return int(s))
+		if arg.begins_with("--families="): families=Array(arg.get_slice("=",1).split(",")).map(func(s):return int(s))
+		if arg.begins_with("--ranks="): ranks=Array(arg.get_slice("=",1).split(",")).map(func(s):return int(s))
+	assert(ranks.all(func(rank): return rank in [0,1,2]))
 	for a in ArenaRules.ACTIVE_FAMILIES:
 		var tier: int=ArenaRules.FAMILIES[a].tier
 		if tier not in tiers: continue
 		for b in ArenaRules.ACTIVE_FAMILIES:
 			if b<=a or ArenaRules.FAMILIES[b].tier!=tier: continue
+			if not families.is_empty() and a not in families and b not in families: continue
 			for context: String in CONTEXTS:
 				var supports: Array=CONTEXTS[context].filter(func(f):return f!=a and f!=b).slice(0,3)
-				for rank in [1,2]:
+				for rank in ranks:
 					var row := {"a":a,"b":b,"tier":tier,"rank":rank,"context":context,"supports":supports,
 						"wins":0,"draws":0,"trials":4,"timeouts":0,"seconds":0.0}
 					for seed_value in [16729,23173]:

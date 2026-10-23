@@ -1,0 +1,270 @@
+{
+  "base_commit": "5521491c6980669f1ed46ed18aa70a3af259cd40",
+  "engine": "4.7.stable.official.5b4e0cb0f",
+  "old_alliances_baseline": {
+    "fights": 240,
+    "timeouts": 5,
+    "families": {
+      "6": {
+        "3": {
+          "wins": 24,
+          "draws": 5,
+          "trials": 72,
+          "score_percent": 36.81,
+          "timeouts": 5
+        }
+      },
+      "19": {
+        "3": {
+          "wins": 20,
+          "draws": 0,
+          "trials": 48,
+          "score_percent": 41.67,
+          "timeouts": 0
+        }
+      },
+      "22": {
+        "3": {
+          "wins": 33,
+          "draws": 1,
+          "trials": 48,
+          "score_percent": 69.79,
+          "timeouts": 0
+        }
+      },
+      "23": {
+        "3": {
+          "wins": 31,
+          "draws": 2,
+          "trials": 48,
+          "score_percent": 66.67,
+          "timeouts": 0
+        }
+      },
+      "27": {
+        "3": {
+          "wins": 14,
+          "draws": 1,
+          "trials": 48,
+          "score_percent": 30.21,
+          "timeouts": 0
+        }
+      }
+    }
+  },
+  "old_alliances_candidate": {
+    "fights": 240,
+    "timeouts": 5,
+    "families": {
+      "6": {
+        "3": {
+          "wins": 28,
+          "draws": 4,
+          "trials": 72,
+          "score_percent": 41.67,
+          "timeouts": 4
+        }
+      },
+      "19": {
+        "3": {
+          "wins": 21,
+          "draws": 0,
+          "trials": 48,
+          "score_percent": 43.75,
+          "timeouts": 0
+        }
+      },
+      "22": {
+        "3": {
+          "wins": 24,
+          "draws": 2,
+          "trials": 48,
+          "score_percent": 52.08,
+          "timeouts": 1
+        }
+      },
+      "23": {
+        "3": {
+          "wins": 22,
+          "draws": 2,
+          "trials": 48,
+          "score_percent": 47.92,
+          "timeouts": 0
+        }
+      },
+      "27": {
+        "3": {
+          "wins": 20,
+          "draws": 2,
+          "trials": 48,
+          "score_percent": 43.75,
+          "timeouts": 0
+        }
+      }
+    }
+  },
+  "new_alliances_initial_recruits": {
+    "fights": 396,
+    "timeouts": 31,
+    "families": {
+      "28": {
+        "1": {
+          "wins": 32,
+          "draws": 17,
+          "trials": 72,
+          "score_percent": 56.25,
+          "timeouts": 15
+        },
+        "2": {
+          "wins": 37,
+          "draws": 6,
+          "trials": 72,
+          "score_percent": 55.56,
+          "timeouts": 6
+        },
+        "3": {
+          "wins": 34,
+          "draws": 3,
+          "trials": 72,
+          "score_percent": 49.31,
+          "timeouts": 3
+        }
+      },
+      "29": {
+        "1": {
+          "wins": 17,
+          "draws": 7,
+          "trials": 60,
+          "score_percent": 34.17,
+          "timeouts": 7
+        },
+        "2": {
+          "wins": 16,
+          "draws": 0,
+          "trials": 60,
+          "score_percent": 26.67,
+          "timeouts": 0
+        },
+        "3": {
+          "wins": 11,
+          "draws": 0,
+          "trials": 60,
+          "score_percent": 18.33,
+          "timeouts": 0
+        }
+      }
+    }
+  },
+  "seer_control": {
+    "fights": 180,
+    "timeouts": 7,
+    "families": {
+      "29": {
+        "1": {
+          "wins": 15,
+          "draws": 7,
+          "trials": 60,
+          "score_percent": 30.83,
+          "timeouts": 7
+        },
+        "2": {
+          "wins": 16,
+          "draws": 0,
+          "trials": 60,
+          "score_percent": 26.67,
+          "timeouts": 0
+        },
+        "3": {
+          "wins": 10,
+          "draws": 0,
+          "trials": 60,
+          "score_percent": 16.67,
+          "timeouts": 0
+        }
+      }
+    }
+  },
+  "seer_candidate": {
+    "fights": 180,
+    "timeouts": 0,
+    "families": {
+      "29": {
+        "1": {
+          "wins": 30,
+          "draws": 0,
+          "trials": 60,
+          "score_percent": 50.0,
+          "timeouts": 0
+        },
+        "2": {
+          "wins": 23,
+          "draws": 0,
+          "trials": 60,
+          "score_percent": 38.33,
+          "timeouts": 0
+        },
+        "3": {
+          "wins": 21,
+          "draws": 0,
+          "trials": 60,
+          "score_percent": 35.0,
+          "timeouts": 0
+        }
+      }
+    }
+  },
+  "new_promotions": [
+    {
+      "copies": 1,
+      "draws": 0,
+      "family": 28,
+      "kind": "promotion",
+      "opponent": 28,
+      "opponent_rank": 0,
+      "rank": 1,
+      "seconds": 12.30625,
+      "timeouts": 0,
+      "trials": 4,
+      "wins": 4
+    },
+    {
+      "copies": 1,
+      "draws": 0,
+      "family": 28,
+      "kind": "promotion",
+      "opponent": 28,
+      "opponent_rank": 1,
+      "rank": 2,
+      "seconds": 5.45875,
+      "timeouts": 0,
+      "trials": 4,
+      "wins": 4
+    },
+    {
+      "copies": 1,
+      "draws": 0,
+      "family": 29,
+      "kind": "promotion",
+      "opponent": 29,
+      "opponent_rank": 0,
+      "rank": 1,
+      "seconds": 8.02999999999999,
+      "timeouts": 0,
+      "trials": 4,
+      "wins": 4
+    },
+    {
+      "copies": 1,
+      "draws": 0,
+      "family": 29,
+      "kind": "promotion",
+      "opponent": 29,
+      "opponent_rank": 1,
+      "rank": 2,
+      "seconds": 8.02999999999999,
+      "timeouts": 0,
+      "trials": 4,
+      "wins": 4
+    }
+  ]
+}

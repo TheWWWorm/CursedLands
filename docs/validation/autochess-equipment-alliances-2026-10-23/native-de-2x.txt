@@ -1,0 +1,1 @@
+ARENA_EQUIPMENT_NATIVE_VISUAL {"checks": 20, "failures": [], "renderer": "X11", "speed": 2, "seconds": 27.6649999999999, "wall_seconds": 14.248, "winner": 0, "survivors": [2, 0], "damage": [419.8192106987, 412.495226683807], "effects": {"echo": 4, "guardian": 2, "pack": 4, "reaction": 17, "spirit": 3, "spirit_echo": 2, "ward": 2}, "native_notice_count": 34}

@@ -71,6 +71,11 @@ static func _copy_company(target: ArenaRun, data: Dictionary) -> void:
 	target.history.assign(data.history.duplicate(true)); target.last_result = data.last_result.duplicate(true)
 	target.free_refresh = bool(data.free_refresh)
 	target.last_evolutions.assign(data.get("evolutions", []))
+	target.items.assign(data.get("items", []).duplicate(true))
+	target.item_offers.assign(data.get("item_offers", []))
+	target.next_item_uid = int(data.get("next_item_uid", 1))
+	target.item_reward_round = int(data.get("item_reward_round", 0))
+	target._sync_items()
 
 func player_title(player: int) -> String:
 	var server := seats[player]
@@ -89,6 +94,8 @@ func can_shop() -> bool: return connected and lives > 0 and super.can_shop()
 func buy(index: int) -> String: return _intent("buy", [index])
 func refresh() -> String: return _intent("refresh")
 func train() -> String: return _intent("train")
+func equip_item(item_uid: int, unit_uid: int) -> String: return _intent("equip_item", [item_uid, unit_uid])
+func choose_item(index: int) -> String: return _intent("choose_item", [index])
 func lock_offer(index: int) -> void: _intent("lock", [index])
 func deploy(uid: int, point: Vector2) -> String: return _intent("deploy", [uid, point])
 func bench(uid: int, slot := -1) -> String: return _intent("bench", [uid, slot])

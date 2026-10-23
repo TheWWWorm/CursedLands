@@ -3,10 +3,10 @@ extends Node
 ## not a search for optimal teams; all native traits and targeting remain active.
 const Duel=preload("arena_roster_matchups.gd").Duel
 const TEAMS := {
-	"casters":[6,11,7,13,8,24],
-	"screened_casters":[5,12,7,13,8,24],
-	"mixed":[5,17,15,23,25,29],
-	"assault":[5,12,15,23,25,28],
+	"casters":[6,11,13,18,19,20],
+	"screened_casters":[0,28,29,18,19,20],
+	"mixed":[6,9,11,14,23,27],
+	"assault":[6,9,7,14,24,27],
 }
 var rows := []
 func army(run: ArenaRun, name: String) -> void:

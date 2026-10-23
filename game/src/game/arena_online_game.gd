@@ -89,6 +89,7 @@ func start_round() -> void:
 	run.finish_preparation()
 	for player in run.alive_players():
 		var company := run.company(player)
+		company.settle_item_choice()
 		if company.deployed_count() == 0 and not company.army.is_empty(): company.arrange()
 		company.battle_savings = company.gold
 		if player == 0: home.prepare()
@@ -131,6 +132,14 @@ func command(player: int, action: String, args: Array) -> String:
 			else: error = "Finish the current encounter first."
 		"refresh": error = company.refresh()
 		"train": error = company.train()
+		"equip_item":
+			if args.size() != 2 or not ArenaRun._integer(args[0], 1, 100000) or not ArenaRun._integer(args[1], 0, 100000): return "Invalid online action."
+			if run.stage != "prepare" or run.preparing_battle: return "Change equipment between battles."
+			error = company.equip_item(int(args[0]), int(args[1]))
+		"choose_item":
+			if args.size() != 1 or not ArenaRun._integer(args[0], 0, 2): return "Invalid online action."
+			if run.stage != "prepare" or run.preparing_battle: return "Choose equipment between battles."
+			error = company.choose_item(int(args[0]))
 		"sell":
 			if args.size() not in [1,2] or not ArenaRun._integer(args[0],1,1000000): return "Invalid online action."
 			var entry := company.unit(int(args[0]))

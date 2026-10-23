@@ -34,6 +34,7 @@ const RANK_PALETTES := {
 	19: ["banshee00", "banshee00", "banshee01"],
 	20: ["unicorn00", "unicorn00", "unicorn01"],
 	23: ["dragon00", "dragon01", "dragon02"],
+	29: ["driad00l", "driad01l", "driad02l"],
 }
 
 ## Interchangeable original rigs: the same parts, clips and clip lengths,

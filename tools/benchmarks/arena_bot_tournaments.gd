@@ -26,8 +26,10 @@ class League extends ArenaOnlineTournament:
 				elif bot.training>before_training:spending.training+=spent
 				elif int(plan.rerolls)>before_rolls:spending.refreshes+=spent
 				else:spending.recruits+=spent
+			# Equipment access stays equal when comparing economy policies.
+			if not is_new(player): ArenaBotPlanner.equip(bot)
 			if player>0:bot_plans[player-1].done=true
-			samples.append({"round":wave,"seat":player,"new":is_new(player),"strategy":ArenaBotPlanner.strategy(bot,player+1+strategy_offset),"gold":bot.gold,"interest":bot.income_preview().interest,"capacity":bot.capacity(),"field":bot.deployed_count(),"families":bot.army.filter(func(entry):return entry.deployed).map(func(entry):return entry.family),"stars":bot.army.filter(func(entry):return entry.deployed).map(func(entry):return entry.rank),"hp":health(player),"spending":spending})
+			samples.append({"round":wave,"seat":player,"new":is_new(player),"strategy":ArenaBotPlanner.strategy(bot,player+1+strategy_offset),"gold":bot.gold,"interest":bot.income_preview().interest,"capacity":bot.capacity(),"field":bot.deployed_count(),"families":bot.army.filter(func(entry):return entry.deployed).map(func(entry):return entry.family),"stars":bot.army.filter(func(entry):return entry.deployed).map(func(entry):return entry.rank),"hp":health(player),"spending":spending,"items":bot.items.duplicate(true),"alliances":ArenaAlliances.counts(bot.army)})
 var results:=[]
 func _ready()->void:
 	var count:=4
@@ -52,7 +54,7 @@ func _ready()->void:
 			if league.stage=="fight":push_error("Tournament did not settle");get_tree().quit(1);return
 			for seat: int in participants:
 				var battle:=game.encounter(seat)
-				encounters.append({"round":league.wave,"seat":seat,"winner":battle.winner,"seconds":battle.world.time,"reason":battle.end_reason})
+				encounters.append({"round":league.wave,"seat":seat,"winner":battle.winner,"seconds":battle.world.time,"reason":battle.end_reason,"effects":battle.world.arena_effects.totals.duplicate(true) if battle.world.arena_effects else {}})
 			print("BOT_ROUND ",index," ",league.wave," alive=",league.alive_players()," bank=",league.alive_players().map(func(p):return league.company(p).gold))
 			if league.stage=="result":league.advance();game._prepare()
 		var winner:=league.placements.find(1)

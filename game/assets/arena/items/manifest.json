@@ -1,0 +1,227 @@
+{
+	"items": {
+		"berserker": {
+			"authored_title": "ogre's necklace",
+			"camera_position": [
+				0.0,
+				-2.41914987564087,
+				-0.0000000596046447753906
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.94142997264862,
+			"item_id": "ogrestuff",
+			"look": {
+				"model": "initqu68item",
+				"texture": "quitem0068"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-0.0000000437113882867379
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"echo": {
+			"authored_title": "Banshee stone",
+			"camera_position": [
+				0.0,
+				-2.04550004005432,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 0.639400005340576,
+			"item_id": "bansheerune00",
+			"look": {
+				"model": "initlitr28item",
+				"texture": "litem0028"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-0.0000000437113882867379
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"fang": {
+			"authored_title": "Wolf cub fangs",
+			"camera_position": [
+				0.0,
+				-2.20869994163513,
+				0.0000000596046447753906
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.90485990047455,
+			"item_id": "graywolfskin",
+			"look": {
+				"model": "initlitr24item",
+				"texture": "litem0024"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-0.0000000437113882867379
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"guardian": {
+			"authored_title": "Amulet",
+			"camera_position": [
+				0.0,
+				-2.67879986763,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.81216990947723,
+			"item_id": "toy",
+			"look": {
+				"model": "initqu39item",
+				"texture": "quitem0039"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-0.0000000437113882867379
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"storm": {
+			"authored_title": "Small crystal of cold",
+			"camera_position": [
+				0.0,
+				-2.58340001106262,
+				-0.0000000596046447753906
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.84827983379364,
+			"item_id": "elementalice00",
+			"look": {
+				"model": "initlitr31item",
+				"texture": "litem0031"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-0.0000000437113882867379
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"thorn": {
+			"authored_title": "Big shell",
+			"camera_position": [
+				0.0,
+				-2.31360006332397,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.70970487594604,
+			"item_id": "dragonshell00",
+			"look": {
+				"model": "initqu20item",
+				"texture": "quitem0020"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-0.0000000437113882867379
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"venom": {
+			"authored_title": "Poison",
+			"camera_position": [
+				0.0,
+				-2.58745002746582,
+				0.0000000596046447753906
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 1.6600250005722,
+			"item_id": "dragonpoison",
+			"look": {
+				"model": "initqu5item",
+				"texture": "quitem0005"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-0.0000000437113882867379
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		},
+		"ward": {
+			"authored_title": "Magic bit",
+			"camera_position": [
+				0.0,
+				-2.07050013542175,
+				0.0
+			],
+			"camera_rotation_degrees": [
+				90.0,
+				0.0,
+				0.0
+			],
+			"camera_size": 0.990379989147186,
+			"item_id": "cryptrune00",
+			"look": {
+				"model": "initqu11item",
+				"texture": "quitem0011"
+			},
+			"model_quaternion_xyzw": [
+				1.0,
+				0.0,
+				0.0,
+				-0.0000000437113882867379
+			],
+			"transparent": true,
+			"wiki_turn_radians": 0
+		}
+	},
+	"orientation": "Original ItemView camp orientation, zero WikiPreview turn; default fit_slot framing; no repainting or recoloring",
+	"renderer": "Godot 4.7 / OpenGL compatibility; unlit original item materials; 4x MSAA",
+	"size": [
+		256,
+		256
+	],
+	"source": "Original Cursed Lands figures.res and textures.res via Items.look and WikiPreview/ItemView"
+}

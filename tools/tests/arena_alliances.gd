@@ -52,7 +52,7 @@ func _ready() -> void:
 	check(run.alliances()==counts,"evolution stars do not inflate alliance progress")
 	for entry in run.army: entry.deployed = false
 	check(run.alliances().values().all(func(n):return n == 0),"reserves never activate an alliance")
-	# Live actors receive reversible, non-stacking battle modifiers.
+	# Preparation applies recruit budgets; behavioral alliances start at the bell.
 	run = fresh(); run.training = 126; run.wave = 25
 	for family in [0,3,4,11,13,14,19,21,22]: run._recruit(family,0,1)
 	run.arrange()
@@ -68,16 +68,16 @@ func _ready() -> void:
 		if int(placement.team) == 1:
 			var encounter: Dictionary=base.stats.duplicate(true)
 			ArenaRules.creep_stats(run.wave,encounter)
-			check(is_equal_approx(unit.stats.armor[3],encounter.armor[3]*0.7),"four mages reduce encounter elemental armor")
+			check(is_equal_approx(unit.stats.armor[3],encounter.armor[3]),"preparation leaves encounter elemental armor unchanged")
 		else:
 			var family := int(run.unit(placement.run_uid).family)
 			# Alliances modify the recruit budget, not campaign boss statistics.
 			var recruit:=ArenaUnitInfo.values(unit.info.prototype,null,family,0)
-			check(is_equal_approx(unit.stats.dmg_min,recruit.min*(1.08 if family in [0,3] else 1.0)),"two beasts improve only members' attack damage")
-			check(is_equal_approx(unit.max_hp,recruit.max_hp*(1.12 if family in [4,13,14] else 1.0)),"two horde families improve only member health")
-			check(is_equal_approx(unit.stats.armor[0],recruit.armor[0]+(2 if family in [0,14,22] else 0)),"warriors gain flat physical armor")
-			check(is_equal_approx(unit.stats.to_hit,recruit.attack*(1.1 if family in [4,11] else 1.0)),"hunters gain accuracy")
-			check(is_equal_approx(unit.stats.armor[3],recruit.armor[3]+(6 if family in [11,19,21,22] else 0)),"four spirits add flat elemental armor to members")
+			check(is_equal_approx(unit.stats.dmg_min,recruit.min),"Beasts keep their own attack budgets")
+			check(is_equal_approx(unit.max_hp,recruit.max_hp),"Horde keeps recruit health budgets")
+			check(is_equal_approx(unit.stats.armor[0],recruit.armor[0]),"Warriors protect through guarding, not flat armor")
+			check(is_equal_approx(unit.stats.to_hit,recruit.attack),"Hunters keep native accuracy")
+			check(is_equal_approx(unit.stats.armor[3],recruit.armor[3]),"Spirits keep recruit resistance budgets")
 	for repeat in 4: battle.prepare()
 	for unit in battle.world.unit_rows():
 		check(identity.has(unit.get_instance_id()),"alliance recalculation retains actors")

@@ -1,0 +1,1 @@
+ARENA_OPPONENT_ALLIANCES 12 checks; failures=[]

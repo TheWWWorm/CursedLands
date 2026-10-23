@@ -32,6 +32,17 @@ var _modal_layer: Control
 var _wiki: WikiPanel
 var _modal_panel: ArenaHudPanel
 var _modal_box: VBoxContainer
+var _equipment_panel: ArenaEquipmentPanel
+var _equipment_scroll: ScrollContainer
+var _equipment_reward_seen := ""
+var _item_tray: ArenaItemTray
+var _item_uid := 0
+var _item_kind := ""
+var _item_context := ""
+var _item_generation := 0
+var _item_drag_active := false
+var _item_targets := {}
+var _pending_item_choice := {}
 var _menu_items := {}
 var _menu_was_fighting := false
 var _modal_focus: Array[Dictionary] = []
@@ -170,6 +181,7 @@ func _ready() -> void:
 	field.creature_clicked.connect(_select_world)
 	field.cancel_requested.connect(_clear_selection)
 	field.board_chosen.connect(_show_player)
+	field.set_drag_forwarding(Callable(), _can_drop_item_on_field, _drop_item_on_field)
 	_vignette = ColorRect.new()
 	_vignette.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_vignette.material = ShaderMaterial.new()
@@ -181,7 +193,9 @@ func _ready() -> void:
 	add_child(_hit_numbers)
 	_hit_numbers.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	battle.visual_event.connect(func(event):
-		if field.match_state == battle and event.get("t") == "hitnum": _hit_numbers.add(event))
+		if field.match_state != battle: return
+		if event.get("t") == "hitnum": _hit_numbers.add(event)
+		elif event.get("t") == "arena_proc": _hit_numbers.add_proc(event))
 	battle.world_replacing.connect(func(): _hit_numbers._items.clear())
 	_hud = Control.new()
 	_hud.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -355,6 +369,14 @@ func _ready() -> void:
 	for key: String in ArenaAlliances.RULES:
 		var badge := ArenaAllianceBadge.new(); badge.key=key; badge.name=key
 		_alliance_list.add_child(badge)
+	_item_tray = ArenaItemTray.new()
+	_item_tray.run = run
+	_sidebar_content.add_child(_item_tray)
+	_item_tray.item_selected.connect(_pick_item)
+	_item_tray.rewards_requested.connect(_show_equipment)
+	_item_tray.stash_requested.connect(func(): _equip_item(_item_uid, 0))
+	_item_tray.cancel_requested.connect(_cancel_item)
+	_item_tray.stash.set_drag_forwarding(Callable(), _can_drop_item_on_stash, _drop_item_on_stash)
 	_bench_scroll = ScrollContainer.new()
 	_bench_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_bench_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -485,6 +507,7 @@ func _ready() -> void:
 	_tooltips = ArenaTooltips.new()
 	_tooltips.z_index = 3
 	_tooltips.scope = _hud
+	_tooltips.input_modal = _modal_layer
 	_tooltips.world_hint = _world_hint
 	_tooltips.viewport_pointer = field.viewport_pointer
 	_hud.add_child(_tooltips)
@@ -621,6 +644,14 @@ func _refresh() -> void:
 	elif not run.spending_error(ArenaRules.TRAINING_COST).is_empty(): _train_button.tooltip_text += "\n" + run.spending_error(ArenaRules.TRAINING_COST)
 	_refresh_alliances()
 	_reserve_count.text = RemakeText.t("Reserves %d/%d") % [run.bench_count(), run.bench_limit()]
+	_sync_item_tray()
+	if _item_uid > 0: _link_item_focus.call_deferred()
+	if is_instance_valid(_equipment_panel): _equipment_panel.synchronize()
+	if not _pending_item_choice.is_empty(): _finish_item_choice.call_deferred()
+	var reward_key := "%d:%d" % [run.run_seed, run.item_reward_round]
+	if preparing and not run.item_offers.is_empty() and reward_key != _equipment_reward_seen and not _modal_layer.visible:
+		_equipment_reward_seen = reward_key
+		_show_equipment.call_deferred()
 	_refresh_button.price = run.refresh_cost()
 	_refresh_button.queue_redraw()
 	_refresh_button.tooltip_text = RemakeText.t("Refresh · %d gold") % run.refresh_cost() + "\n" + RemakeText.t("Refresh unlocked offers. All locked recruits stay.")
@@ -704,6 +735,43 @@ func _build_army() -> void:
 				preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 				for child: Control in preview.find_children("*", "Control", true, false): child.mouse_filter = Control.MOUSE_FILTER_IGNORE
 				ArenaStars.add_to(button, int(entry.rank) + 1, Vector2(5, 1), ArenaStars.for_family(int(entry.family)))
+		if not entry.is_empty():
+			var uid := int(entry.uid)
+			button.accessibility_name = ArenaRules.title(entry.prototype, int(entry.family), int(entry.rank))
+			button.set_drag_forwarding(Callable(), _can_drop_item_on_creature.bind(uid), _drop_item_on_creature.bind(uid))
+			var item_slot := button.get_node_or_null("CreatureItemTarget") as ArenaItemSlot
+			if item_slot == null:
+				item_slot = ArenaItemSlot.new()
+				item_slot.name = "CreatureItemTarget"
+				item_slot.set_meta("item_target_uid", uid)
+				button.add_child(item_slot)
+				item_slot.activated.connect(func():
+					if _item_uid > 0: _equip_item(_item_uid, uid)
+					else:
+						for item: Dictionary in run.items:
+							if int(item.unit_uid) == uid: _pick_item(int(item.uid)); break)
+				item_slot.accept_drop = _can_drop_item_on_creature.bind(uid)
+				item_slot.receive_drop = _drop_item_on_creature.bind(uid)
+			item_slot.kind = run.item_for(uid)
+			item_slot.visible = _item_uid > 0 or not item_slot.kind.is_empty()
+			item_slot.custom_minimum_size = Vector2.ONE * (ArenaItemSlot.TARGET_SIZE if _item_uid > 0 else ArenaItemSlot.BADGE_SIZE)
+			item_slot.set_anchors_and_offsets_preset(Control.PRESET_CENTER if _item_uid > 0 else Control.PRESET_TOP_RIGHT)
+			if _item_uid > 0:
+				item_slot.offset_left = -ArenaItemSlot.TARGET_SIZE / 2; item_slot.offset_right = ArenaItemSlot.TARGET_SIZE / 2
+				item_slot.offset_top = -ArenaItemSlot.TARGET_SIZE / 2; item_slot.offset_bottom = ArenaItemSlot.TARGET_SIZE / 2
+			else:
+				item_slot.offset_left = -ArenaItemSlot.BADGE_SIZE - 2; item_slot.offset_right = -2
+				item_slot.offset_top = 0; item_slot.offset_bottom = ArenaItemSlot.BADGE_SIZE
+			item_slot.make_drag = Callable()
+			for item: Dictionary in run.items:
+				if int(item.unit_uid) == uid: item_slot.make_drag = _begin_item_drag.bind(int(item.uid)); break
+			item_slot.accessibility_name = RemakeText.t("Equip %s on %s") % [ArenaItems.title(_item_kind), button.accessibility_name] if _item_uid > 0 else ArenaItems.title(item_slot.kind)
+			if not item_slot.kind.is_empty():
+				item_slot.set_meta("arena_item_kind", item_slot.kind)
+				item_slot.set_meta("arena_help", ArenaItems.description(item_slot.kind) + "\n" + RemakeText.t("Equipped by %s") % button.accessibility_name)
+			else:
+				item_slot.remove_meta("arena_item_kind")
+				item_slot.remove_meta("arena_help")
 		_army_row.move_child(button, i)
 		button.mouse_filter = Control.MOUSE_FILTER_IGNORE if landing or not run.can_shop() else Control.MOUSE_FILTER_STOP
 		button.disabled = not returning if entry.is_empty() else landing or not run.can_shop()
@@ -919,6 +987,8 @@ func _layout_landing() -> void:
 
 
 func _begin() -> void:
+	_cancel_item()
+	_pending_item_choice.clear()
 	var value := _seed_input.text.strip_edges()
 	if not value.is_empty() and not value.is_valid_int():
 		_feedback(RemakeText.t("Enter a whole number for the seed."))
@@ -932,6 +1002,7 @@ func _begin() -> void:
 	_last_level = 0
 	_health_session = ""
 	_result_key = -1; _result_remaining = 4.0
+	_equipment_reward_seen = ""
 	_clear_selection()
 	run.auto_save = true
 	run.begin(chosen, 0, challenge_index)
@@ -1058,7 +1129,7 @@ func _show_company() -> void:
 	_clear(_inspect_box); _clear(_inspect_actions)
 	_inspect_scroll.scroll_vertical = 0
 	_wrap(_inspect_box, RemakeText.t("Level %d") % run.capacity(), 22, GOLD)
-	_wrap(_inspect_box, RemakeText.t("28 creature species cost 1–5 gold. Each species has one shop entry and equal odds within its tier."), 13, PAPER)
+	_wrap(_inspect_box, RemakeText.t("%d recruit lines cost 1–5 gold. Each line has one shop entry and equal odds within its tier.") % ArenaRules.FAMILIES.size(), 13, PAPER)
 	_wrap(_inspect_box, RemakeText.t("Three identical one-star creatures make a two-star creature. Three two-star creatures make a three-star creature of the same species."), 13, PAPER)
 	_wrap(_inspect_box, RemakeText.t("Stars strengthen health, attacks and spells. The strongest forms are evolution-only."), 13, GOLD)
 	_wrap(_inspect_box, RemakeText.t("Army %d/%d") % [run.deployed_count(), run.capacity()], 14, PAPER)
@@ -1128,6 +1199,9 @@ func _creature_preview(parent: Node, id: String, height: float, family := -1, ra
 
 
 func _select(uid: int) -> void:
+	if _item_uid > 0:
+		_equip_item(_item_uid, uid)
+		return
 	if landing or not run.can_shop(): return
 	var selected := run.unit(selected_uid)
 	var clicked := run.unit(uid)
@@ -1149,6 +1223,10 @@ func _select(uid: int) -> void:
 
 
 func _select_world(unit: GameUnit) -> void:
+	if _item_uid > 0:
+		var target_uid := _item_target_uid(unit)
+		if target_uid > 0: _equip_item(_item_uid, target_uid)
+		return
 	if field.match_state != battle: return
 	if landing or not run.can_shop(): return
 	var uid := int(unit.get_meta("arena_placement", {}).get("run_uid", 0))
@@ -1175,7 +1253,8 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 	var accent := ArenaStars.for_family(family)
 	_rail.accented = true; _rail.edge = accent; _rail.queue_redraw()
 	var rank := int(_inspected_unit.get_meta("arena_placement", {}).get("rank", ArenaUnitInfo.rank_of(id))) if is_instance_valid(_inspected_unit) else int(entry.get("rank", ArenaUnitInfo.rank_of(id)))
-	var title := _wrap(_inspect_box, ArenaRules.title(id, family, rank), 21, accent)
+	var title_text := _inspected_unit.display_name if is_instance_valid(_inspected_unit) and _inspected_unit.get_meta("arena_placement", {}).get("echo", false) else ArenaRules.title(id, family, rank)
+	var title := _wrap(_inspect_box, title_text, 21, accent)
 	title.add_theme_font_override("font", _heading_font)
 	var header := HBoxContainer.new()
 	header.add_theme_constant_override("separation", 10)
@@ -1200,11 +1279,23 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 	_rule(_inspect_box)
 	if family >= 0: _wrap(_inspect_box, RemakeText.t(ArenaRules.FAMILIES[family].hook), 13, accent)
 	_live_health = _wrap(_inspect_box, ArenaUnitInfo.summary(id, _inspected_unit, family, rank), 13)
-	if is_instance_valid(_inspected_unit) and family >= 0 and ArenaAlliances.counts(_field_army()).values().any(func(n): return int(n) >= 2):
-		_wrap(_inspect_box, RemakeText.t("Active bonuses are included in these stats."), 12, MUTED)
+	if is_instance_valid(_inspected_unit) and family >= 0 and (not String(_inspected_unit.get_meta("arena_placement", {}).get("item", "")).is_empty() or ArenaAlliances.counts(_field_army()).values().any(func(n): return int(n) >= 2)):
+		_wrap(_inspect_box, RemakeText.t("Equipment and alliance effects activate during battle."), 12, MUTED)
 
 	var spells := _spell_titles(ArenaRules.recruit_prototype(family,rank,GameData.db.find("monster_prototypes", id)))
 	if not spells.is_empty(): _wrap(_inspect_box, spells, 13, GOLD)
+	if not entry.has("offer") and (entry.has("uid") or is_instance_valid(_inspected_unit)):
+		_rule(_inspect_box)
+		var item := String(_inspected_unit.get_meta("arena_placement", {}).get("item", "")) if is_instance_valid(_inspected_unit) else run.item_for(int(entry.get("uid", 0)))
+		var row := HBoxContainer.new()
+		row.name = "InspectedEquipment"
+		row.add_theme_constant_override("separation", 8)
+		_inspect_box.add_child(row)
+		var emblem := ArenaItemEmblem.new()
+		emblem.kind = item
+		row.add_child(emblem)
+		_wrap(row, ArenaItems.title(item) if not item.is_empty() else RemakeText.t("Empty item slot"), 14, GOLD).size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		if not item.is_empty(): _wrap(_inspect_box, ArenaItems.description(item), 13, PAPER)
 	if family >= 0:
 		_rule(_inspect_box)
 		var counts := run.army
@@ -1238,7 +1329,7 @@ func _hide_inspector() -> void:
 func _hover_inspector(dt: float) -> void:
 	# Inspection is read-only. Eliminated spectators cannot shop, but still
 	# need to inspect the watched army and its alliances.
-	if landing or _modal_layer.visible:
+	if landing or _modal_layer.visible or _item_uid > 0:
 		_hide_inspector()
 		return
 	var control := get_viewport().gui_get_hovered_control()
@@ -1296,6 +1387,7 @@ func _hover_inspector(dt: float) -> void:
 
 
 func _place(point: Vector2) -> void:
+	if _item_uid > 0: return
 	if landing or field.match_state != battle or run.stage != "prepare" or selected_uid <= 0: return
 	var error := battle.placement_error(point)
 	if error.is_empty(): error = run.deploy(selected_uid, point)
@@ -1304,6 +1396,7 @@ func _place(point: Vector2) -> void:
 
 
 func _fight() -> void:
+	_cancel_item()
 	if landing: return
 	_show_player(0)
 	_clear_selection()
@@ -1363,6 +1456,7 @@ func _update_encounter_status() -> void:
 
 
 func _process(dt: float) -> void:
+	_update_item_targets()
 	_cursor.set_kind("cursor_camera" if field._right_dragged or field._orbit else "cursor_default")
 	if _camera_input_allowed():
 		var turn := float(_camera_keys.has(KEY_E)) - float(_camera_keys.has(KEY_Q))
@@ -1376,7 +1470,13 @@ func _process(dt: float) -> void:
 		_damage_wait = 0.2
 		var alliance_height := _alliance_panel.get_combined_minimum_size().y if _alliance_panel.visible else 0.0
 		var scout_height := _scout_bar.size.y + 12 if _scout_bar.visible else 0.0
-		_damage_panel.update_damage(_viewed_battle(), _field_army(), maxf(45,_bench_panel.position.y-_battle_sidebar.position.y-alliance_height-scout_height-58))
+		var available := _bench_panel.position.y - _battle_sidebar.position.y - alliance_height - scout_height - 40
+		var tray_minimum := _item_tray.minimum_height()
+		var reserve_damage := 92.0 if available >= tray_minimum + 92 else 0.0
+		_item_tray.limit_height(clampf(available - reserve_damage, tray_minimum, 150))
+		var tray_height := _item_tray.get_combined_minimum_size().y + 12
+		_damage_panel.update_damage(_viewed_battle(), _field_army(), maxf(32, available - tray_height))
+		_damage_panel.visible = _damage_panel.visible and reserve_damage > 0
 	_round_banner.size = Vector2(maxf(240, minf(460, _hud.size.x - 580)), 0)
 	var notice_top := 204.0 if _shop_panel.visible else 28.0
 	_round_banner.position = Vector2(roundf((_hud.size.x - _round_banner.size.x) * 0.5), notice_top)
@@ -1402,6 +1502,7 @@ func _process(dt: float) -> void:
 		if _result_remaining <= 0: run.advance()
 	if not network_play and not landing and run.stage == "prepare" and not _modal_layer.visible:
 		if run.elapse_preparation(dt / maxf(Engine.time_scale, 0.001)):
+			_cancel_item()
 			_clear_selection()
 			if is_instance_valid(_tournament_battles): _tournament_battles.request_start(true)
 			else: battle.expire_preparation()
@@ -1470,10 +1571,17 @@ func _clear_camera_input() -> void:
 
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_APPLICATION_FOCUS_OUT: _clear_camera_input()
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
+		_clear_camera_input()
+		_cancel_item()
+	if what == NOTIFICATION_DRAG_END and _item_drag_active: _cancel_item.call_deferred()
 
 
 func _input(event: InputEvent) -> void:
+	if _item_uid > 0 and ((event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE) or (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT)):
+		_cancel_item()
+		get_viewport().set_input_as_handled()
+		return
 	# Releases must reach us even when a focused widget consumes the event.
 	if event is InputEventKey and not event.pressed:
 		_camera_keys.erase(event.physical_keycode if event.physical_keycode else event.keycode)
@@ -1537,6 +1645,7 @@ func _guide() -> void:
 		topics[1] = ["Preparation", "Everyone has 60 seconds to recruit and arrange their army. The round starts early when all surviving human players are ready. Changing your army cancels ready. Menus and scouting do not pause the timer."]
 		topics[6] = ["Battle", "Both teams fight under AI control. The host runs all battles on the same clock and can switch between normal and double speed. Hover a creature for details. Online battles cannot be paused."]
 		topics[8] = ["Players", "Up to nine players compete with their own armies. Computers fill empty seats and take over disconnected players. At zero health you are eliminated and can keep watching. If the host leaves, the game ends for everyone."]
+	topics.append(["Equipment", "Each creature carries one item. After rounds 3, 5 and every fifth round, choose one of three rewards. Equip or move items freely during preparation. Selling returns equipment; evolution keeps the surviving creature's item and returns the others to your inventory."])
 	topics.append(["Camera", "Use WASD to move the camera. Hold Q/E or drag with the right or middle mouse button to rotate. Right-drag also tilts the camera; Shift + middle-drag pans. Use the wheel to zoom. Home restores the starting view."])
 	for topic in topics:
 		_label(content, RemakeText.t(topic[0]), 18, GOLD)
@@ -1548,6 +1657,10 @@ func _guide() -> void:
 
 
 func _feedback(error: String) -> void:
+	if not error.is_empty() and not _pending_item_choice.is_empty():
+		_pending_item_choice.clear()
+		if is_instance_valid(_equipment_panel): _equipment_panel.busy = false
+	if is_instance_valid(_equipment_panel) and _modal_layer.visible: _equipment_panel.show_message(error)
 	if not error.is_empty():
 		_message.text = error
 		_message.add_theme_color_override("font_color", Color("efbf87"))
@@ -1751,13 +1864,20 @@ func _icon_button(parent: Node, texture: Texture2D, action: Callable, help: Stri
 func _layout_modal() -> void:
 	if not _modal_panel: return
 	if is_instance_valid(_guide_scroll): _guide_scroll.custom_minimum_size.y = minf(440, _hud.size.y - 220)
+	if is_instance_valid(_equipment_scroll):
+		var content_height := _equipment_panel.get_combined_minimum_size().y if is_instance_valid(_equipment_panel) else 320.0
+		_equipment_scroll.custom_minimum_size.y = minf(maxf(320, content_height), minf(540, _hud.size.y - 160))
+		_modal_panel.custom_minimum_size.x = minf(960, _hud.size.x - 48)
 	_modal_panel.size = Vector2(_modal_panel.custom_minimum_size.x, 0)
 	_modal_panel.position = (_hud.size - _modal_panel.size) / 2
 
 
 func _open_modal(title: String, width := 360.0) -> void:
+	_cancel_item()
 	if is_instance_valid(_wiki): _wiki.dismiss()
 	_modal_panel.show()
+	_modal_panel.decorated = true
+	_modal_panel.queue_redraw()
 	battle.formation_motion.paused = not network_play
 	if not network_play and battle.phase == ArenaMatch.Phase.DEPLOY: battle.world.process_mode = Node.PROCESS_MODE_DISABLED
 	if not _modal_layer.visible:
@@ -1770,18 +1890,22 @@ func _open_modal(title: String, width := 360.0) -> void:
 			_modal_focus.append({"control": weakref(control), "mode": control.focus_mode})
 			control.focus_mode = Control.FOCUS_NONE
 	_guide_scroll = null
+	_equipment_scroll = null
+	_equipment_panel = null
 	_clear(_modal_box)
 	_modal_layer.show()
 	_modal_panel.custom_minimum_size = Vector2(width, 0)
 	var row := HBoxContainer.new()
 	_modal_box.add_child(row)
 	var heading := _wrap(row, title, 28, GOLD)
+	heading.name = "ModalHeading"
 	heading.add_theme_font_override("font", _heading_font)
 	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var close := _icon_button(row, preload("res://assets/arena/close.svg"), _close_modal, RemakeText.t("Close"))
 	close.name = "CloseModal"
 	close.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_rule(_modal_box)
+	_modal_box.get_child(_modal_box.get_child_count() - 1).name = "ModalDivider"
 	_layout_modal.call_deferred()
 	_tooltips.capture.call_deferred(_hud)
 	_focus_modal.call_deferred()
@@ -1808,7 +1932,303 @@ func _close_modal() -> void:
 	_modal_focus.clear()
 	if _menu_was_fighting and battle.phase == ArenaMatch.Phase.PAUSED: battle.toggle_pause()
 	_menu_was_fighting = false
-	_menu.grab_focus()
+	_sync_item_tray()
+	if is_instance_valid(_equipment_panel) and not _item_tray.buttons.is_empty(): _item_tray.buttons.values()[0].grab_focus()
+	else: _menu.grab_focus()
+
+
+func _show_equipment() -> void:
+	if not _can_edit_equipment() or run.item_offers.is_empty(): return
+	_open_modal(RemakeText.t("Choose one item"), minf(940, _hud.size.x - 48))
+	_modal_panel.decorated = false
+	_modal_panel.queue_redraw()
+	var title := _modal_box.find_child("ModalHeading", true, false) as Label
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 34)
+	title.add_theme_color_override("font_color", Color("f1dfb6"))
+	var balance := Control.new()
+	balance.custom_minimum_size.x = _modal_box.find_child("CloseModal", true, false).get_combined_minimum_size().x
+	title.get_parent().add_child(balance)
+	title.get_parent().move_child(balance, 0)
+	_modal_box.get_node("ModalDivider").hide()
+	_equipment_scroll = ScrollContainer.new()
+	_equipment_scroll.name = "EquipmentScroll"
+	_equipment_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_equipment_scroll.custom_minimum_size.y = minf(540, _hud.size.y - 160)
+	_equipment_scroll.follow_focus = true
+	_modal_box.add_child(_equipment_scroll)
+	_equipment_panel = ArenaEquipmentPanel.new()
+	_equipment_panel.run = run
+	_equipment_panel.focus_scope = _modal_box
+	_equipment_panel.minimum_size_changed.connect(_layout_modal.call_deferred)
+	_equipment_panel.choose_requested.connect(_choose_item)
+	_equipment_scroll.add_child(_equipment_panel)
+	_equipment_panel.focus_first.call_deferred()
+	_layout_modal.call_deferred()
+	_tooltips.capture.call_deferred(_hud)
+
+
+func _equip_item(item_uid: int, unit_uid: int) -> void:
+	if not _can_edit_equipment():
+		_cancel_item()
+		return
+	var item := _owned_item(item_uid)
+	if item.is_empty() or (unit_uid > 0 and run.unit(unit_uid).is_empty()): return
+	# A same-slot action is not a host command and must not clear online Ready.
+	if int(item.unit_uid) == unit_uid:
+		_cancel_item()
+		return
+	_cancel_item(false)
+	_feedback(run.equip_item(item_uid, unit_uid))
+	_finish_native_item_drag.call_deferred()
+	_sync_item_tray()
+
+
+func _choose_item(index: int) -> void:
+	if not _pending_item_choice.is_empty() or run.stage != "prepare" or index < 0 or index >= run.item_offers.size(): return
+	_pending_item_choice = {"kind":String(run.item_offers[index]), "before":run.items.map(func(i): return int(i.uid)), "context":_equipment_context()}
+	if is_instance_valid(_equipment_panel): _equipment_panel.busy = true
+	var error := run.choose_item(index)
+	if not error.is_empty():
+		_pending_item_choice.clear()
+		if is_instance_valid(_equipment_panel): _equipment_panel.busy = false
+	_feedback(error)
+	_finish_item_choice.call_deferred()
+
+
+func _equipment_context() -> String:
+	return "%d:%d:%d" % [run.get_instance_id(), run.run_seed, run.wave]
+
+
+func _can_edit_equipment() -> bool:
+	return is_instance_valid(field) and is_instance_valid(_modal_layer) and not landing \
+		and run.stage == "prepare" and not run.preparing_battle and run.can_shop() \
+		and field.match_state == battle and not field.showing_boards() and not _modal_layer.visible \
+		and not (is_instance_valid(_wiki) and _wiki.visible)
+
+
+func _owned_item(uid: int) -> Dictionary:
+	for item: Dictionary in run.items:
+		if int(item.uid) == uid: return item
+	return {}
+
+
+func _sync_item_tray() -> void:
+	if not is_instance_valid(_item_tray): return
+	_item_tray.run = run
+	_item_tray.selected_uid = _item_uid
+	_item_tray.editable = _can_edit_equipment()
+	_item_tray.synchronize()
+	for uid in _item_tray.buttons:
+		var button: ArenaItemSlot = _item_tray.buttons[uid]
+		button.make_drag = _begin_item_drag.bind(int(uid))
+	_damage_wait = 0
+
+
+func _pick_item(uid: int) -> void:
+	if not _can_edit_equipment():
+		_feedback(RemakeText.t("Equipment can only change on your board during preparation."))
+		return
+	var item := _owned_item(uid)
+	if item.is_empty(): return
+	_clear_selection()
+	_clear_camera_input()
+	_item_uid = uid
+	_item_kind = String(item.kind)
+	_item_context = _equipment_context()
+	_item_generation += 1
+	_hint(RemakeText.t("Choose a creature to carry %s") % ArenaItems.title(_item_kind))
+	_sync_item_tray()
+	_build_army()
+	_update_item_targets()
+	_link_item_focus.call_deferred()
+
+
+func _cancel_item(cancel_native := true) -> void:
+	if _item_uid == 0 and not _item_drag_active: return
+	_item_uid = 0
+	_item_kind = ""
+	_item_context = ""
+	_item_generation += 1
+	_item_drag_active = false
+	for target: Control in _item_targets.values():
+		target.focus_next = NodePath(); target.focus_previous = NodePath()
+	for button: Control in _item_tray.buttons.values():
+		button.focus_next = NodePath(); button.focus_previous = NodePath()
+	for button in _army_row.get_children():
+		var slot := button.get_node_or_null("CreatureItemTarget") as Control
+		if slot:
+			slot.focus_next = NodePath(); slot.focus_previous = NodePath()
+	for control in [_item_tray.stash, _item_tray.cancel]:
+		control.focus_next = NodePath(); control.focus_previous = NodePath()
+	if cancel_native and get_viewport().gui_is_dragging(): get_viewport().gui_cancel_drag()
+	if is_instance_valid(_tooltips): _tooltips.suspended = false
+	_sync_item_tray()
+	if is_instance_valid(_army_row): _build_army()
+	_hint("")
+
+
+func _finish_item_choice() -> void:
+	if _pending_item_choice.is_empty(): return
+	if _pending_item_choice.context != _equipment_context() or run.stage != "prepare":
+		_pending_item_choice.clear()
+		if is_instance_valid(_equipment_panel) and _modal_layer.visible: _close_modal()
+		return
+	if not run.item_offers.is_empty(): return # The online host has not confirmed yet.
+	var uid := 0
+	for item: Dictionary in run.items:
+		if String(item.kind) == _pending_item_choice.kind and not int(item.uid) in _pending_item_choice.before:
+			uid = int(item.uid)
+	_pending_item_choice.clear()
+	if is_instance_valid(_equipment_panel) and _modal_layer.visible: _close_modal()
+	if uid > 0 and _can_edit_equipment():
+		_pick_item(uid)
+		_item_tray.focus_item(uid)
+
+
+func _item_target_uid(unit: GameUnit) -> int:
+	if not _can_edit_equipment() or not is_instance_valid(unit) or unit.dead or not unit.visible: return 0
+	if not battle.world.units.has(unit.uid) or battle.world.units[unit.uid] != unit: return 0
+	var placement: Dictionary = unit.get_meta("arena_placement", {})
+	if int(placement.get("team", -1)) != 0 or placement.has("source_uid") or placement.get("echo", false): return 0
+	var uid := int(placement.get("run_uid", 0))
+	var entry := run.unit(uid)
+	return uid if not entry.is_empty() and entry.deployed else 0
+
+
+func _begin_item_drag(_at: Vector2, uid: int) -> Variant:
+	if not _can_edit_equipment() or _owned_item(uid).is_empty(): return null
+	_pick_item(uid)
+	_item_drag_active = true
+	return {"arena_item":true, "uid":uid, "kind":_item_kind, "context":_item_context, "generation":_item_generation}
+
+
+func _valid_item_drag(data: Variant) -> bool:
+	if not data is Dictionary or not data.get("arena_item", false) or not _can_edit_equipment(): return false
+	if String(data.get("context", "")) != _equipment_context() or int(data.get("generation", -1)) != _item_generation: return false
+	var item := _owned_item(int(data.get("uid", 0)))
+	return not item.is_empty() and String(item.kind) == String(data.get("kind", "")) and int(item.uid) == _item_uid
+
+
+func _can_drop_item_on_field(at: Vector2, data: Variant) -> bool:
+	return _valid_item_drag(data) and _item_target_uid(field._pick(at)) > 0
+
+
+func _drop_item_on_field(at: Vector2, data: Variant) -> void:
+	if not _can_drop_item_on_field(at, data): return
+	var uid := _item_target_uid(field._pick(at))
+	_equip_item(int(data.uid), uid)
+
+
+func _can_drop_item_on_creature(_at: Vector2, data: Variant, uid: int) -> bool:
+	return _valid_item_drag(data) and not run.unit(uid).is_empty()
+
+
+func _drop_item_on_creature(at: Vector2, data: Variant, uid: int) -> void:
+	if _can_drop_item_on_creature(at, data, uid): _equip_item(int(data.uid), uid)
+
+
+func _can_drop_item_on_stash(_at: Vector2, data: Variant) -> bool:
+	return _valid_item_drag(data)
+
+
+func _drop_item_on_stash(at: Vector2, data: Variant) -> void:
+	if _can_drop_item_on_stash(at, data): _equip_item(int(data.uid), 0)
+
+
+func _finish_native_item_drag() -> void:
+	# A keyboard activation can complete assignment while a pointer drag is
+	# still held. Defer to avoid cancelling inside the native drop callback.
+	if get_viewport().gui_is_dragging(): get_viewport().gui_cancel_drag()
+
+
+func _update_item_targets() -> void:
+	if not is_instance_valid(_item_tray): return
+	if _item_uid > 0 and (not _can_edit_equipment() or _item_context != _equipment_context() or _owned_item(_item_uid).is_empty()):
+		_cancel_item()
+	if is_instance_valid(_tooltips): _tooltips.suspended = _item_uid > 0
+	var live := {}
+	var own_board := not landing and field.match_state == battle and not field.showing_boards() and not _modal_layer.visible
+	var hovered_uid := _item_target_uid(field._pick(field.pointer_position())) if _item_uid > 0 else 0
+	var occupied: Array[Rect2] = []
+	if own_board:
+		for unit: GameUnit in battle.world.unit_rows():
+			if unit.dead or not unit.visible or unit.hidden or field.camera.is_position_behind(unit.global_position): continue
+			occupied.append(Rect2(field.health_anchor(unit) + Vector2(-48, -40) * _ui_scale, Vector2(96, 46) * _ui_scale))
+	for unit: GameUnit in battle.world.unit_rows() if own_board else []:
+		var placement: Dictionary = unit.get_meta("arena_placement", {})
+		var uid := int(placement.get("run_uid", 0))
+		if uid <= 0 or placement.get("team", -1) != 0 or placement.has("source_uid") or placement.get("echo", false): continue
+		if unit.dead or not unit.visible or unit.hidden or field.camera.is_position_behind(unit.global_position): continue
+		var item_kind := run.item_for(uid) if run.stage == "prepare" else String(placement.get("item", ""))
+		if _item_uid == 0 and item_kind.is_empty(): continue
+		live[uid] = true
+		var slot: ArenaItemSlot = _item_targets.get(uid)
+		if slot == null:
+			slot = ArenaItemSlot.new()
+			slot.name = "CreatureItemTarget%d" % uid
+			slot.set_meta("item_target_uid", uid)
+			field.overlay.add_child(slot)
+			slot.custom_minimum_size = Vector2.ONE * ArenaItemSlot.TARGET_SIZE
+			slot.size = Vector2.ONE * ArenaItemSlot.TARGET_SIZE
+			slot.activated.connect(func():
+				if _item_uid > 0: _equip_item(_item_uid, uid)
+				elif _can_edit_equipment():
+					for item: Dictionary in run.items:
+						if int(item.unit_uid) == uid: _pick_item(int(item.uid)); break)
+			slot.accept_drop = _can_drop_item_on_creature.bind(uid)
+			slot.receive_drop = _drop_item_on_creature.bind(uid)
+			_item_targets[uid] = slot
+		slot.kind = item_kind
+		slot.custom_minimum_size = Vector2.ONE * (ArenaItemSlot.TARGET_SIZE if _item_uid > 0 else ArenaItemSlot.BADGE_SIZE)
+		slot.size = slot.custom_minimum_size
+		slot.scale = Vector2.ONE * _ui_scale
+		var at := _item_badge_position(field.health_anchor(unit), slot.size * _ui_scale, occupied)
+		if at == Vector2.INF:
+			slot.hide()
+			continue
+		slot.position = at
+		occupied.append(Rect2(at, slot.size * _ui_scale))
+		slot.target_hover = hovered_uid == uid
+		slot.accessibility_name = RemakeText.t("Equip %s on %s") % [ArenaItems.title(_item_kind), unit.display_name] if _item_uid > 0 else ArenaItems.title(slot.kind)
+		if not slot.kind.is_empty():
+			slot.set_meta("arena_item_kind", slot.kind)
+			slot.set_meta("arena_help", ArenaItems.description(slot.kind) + "\n" + RemakeText.t("Equipped by %s") % unit.display_name)
+			if _item_uid > 0: slot.accessibility_name += ", " + RemakeText.t("Replace %s") % ArenaItems.title(slot.kind)
+		else:
+			slot.remove_meta("arena_item_kind"); slot.remove_meta("arena_help")
+		slot.make_drag = Callable()
+		if _can_edit_equipment():
+			for item: Dictionary in run.items:
+				if int(item.unit_uid) == uid: slot.make_drag = _begin_item_drag.bind(int(item.uid)); break
+		slot.show()
+	for uid in _item_targets:
+		if not live.has(uid): _item_targets[uid].hide()
+
+
+func _item_badge_position(anchor: Vector2, extent: Vector2, occupied: Array[Rect2]) -> Vector2:
+	var offsets := [Vector2(-ArenaItemSlot.TARGET_SIZE / 2, 12)] if _item_uid > 0 else [Vector2(52, 8)]
+	offsets.append_array([Vector2(-84, 8), Vector2(8, 12), Vector2(-40, 12), Vector2(52, 44), Vector2(-84, 44), Vector2(-16, 50), Vector2(52, -38), Vector2(-84, -38)])
+	for offset: Vector2 in offsets:
+		var rectangle := Rect2(anchor + offset * _ui_scale, extent)
+		if not Rect2(Vector2.ZERO, field.size).encloses(rectangle): continue
+		if not occupied.any(func(other): return rectangle.grow(2).intersects(other)):
+			return rectangle.position
+	return Vector2.INF
+
+
+func _link_item_focus() -> void:
+	if _item_uid == 0 or not _item_tray.buttons.has(_item_uid): return
+	var controls: Array[Control] = [_item_tray.buttons[_item_uid]]
+	for uid in _item_targets:
+		if _item_targets[uid].visible: controls.append(_item_targets[uid])
+	for button in _army_row.get_children():
+		var slot := button.get_node_or_null("CreatureItemTarget") as Control
+		if slot and slot.visible: controls.append(slot)
+	controls.append_array([_item_tray.stash, _item_tray.cancel])
+	for i in controls.size():
+		controls[i].focus_next = controls[i].get_path_to(controls[(i + 1) % controls.size()])
+		controls[i].focus_previous = controls[i].get_path_to(controls[(i - 1 + controls.size()) % controls.size()])
 
 
 func _menu_action(id: int) -> void:
@@ -1865,7 +2285,7 @@ func _spell_titles(row: Dictionary) -> String:
 	var names: Array[String] = []
 	for spell: String in row.get("spells", []):
 		var parsed := Spells.parse(spell)
-		var value := WikiCatalog.spell_title(parsed.code) if parsed.has("code") else ""
+		var value := RemakeText.t(WikiCatalog.spell_title(parsed.code)) if parsed.has("code") else ""
 		if not value.is_empty() and value not in names: names.append(value)
 	return ", ".join(names)
 
@@ -1992,6 +2412,7 @@ func _setup_tournament_battles() -> void:
 				if _alliance_panel: _refresh_alliances())
 		_tournament_battles.board_event.connect(func(event):
 			if event.get("t") == "hitnum" and _hit_numbers: _hit_numbers.add(event)
+			elif event.get("t") == "arena_proc" and _hit_numbers: _hit_numbers.add_proc(event)
 			if _sound:
 				_listen_to(field.match_state.world)
 				_sound.on_event(event))
@@ -1999,6 +2420,8 @@ func _setup_tournament_battles() -> void:
 
 func _switch_mode(index: int) -> void:
 	if not landing or index == int(run is ArenaTournamentRun): return
+	_cancel_item()
+	_pending_item_choice.clear()
 	if run.changed.is_connected(_refresh): run.changed.disconnect(_refresh)
 	run = ArenaRun.new() if index == 0 else ArenaTournamentRun.new()
 	run.auto_save = false
@@ -2145,6 +2568,7 @@ func _layout_standings() -> void:
 
 
 func _show_player(player: int) -> void:
+	_cancel_item()
 	if not run is ArenaTournamentRun or landing: return
 	if player > 0 and run.health(player) <= 0: return
 	_clear_selection()
@@ -2162,9 +2586,11 @@ func _show_player(player: int) -> void:
 	_update_scout()
 	_update_encounter_status()
 	if from_overview: _refresh()
+	_sync_item_tray()
 
 
 func _show_boards() -> void:
+	_cancel_item()
 	if not run is ArenaTournamentRun or landing: return
 	_clear_selection()
 	_tournament_battles.synchronize()
@@ -2172,6 +2598,7 @@ func _show_boards() -> void:
 	field.stop_camera_motion()
 	field._update_camera()
 	_hit_numbers._items.clear()
+	_sync_item_tray()
 
 
 func _update_scout() -> void:
@@ -2195,6 +2622,9 @@ func _layout_battle_sidebar() -> void:
 	if is_instance_valid(_shop_panel) and _shop_panel.visible:
 		top = _shop_panel.position.y + _shop_panel.size.y + ArenaCreatureCard.HOVER_TITLE_HEIGHT + 8.0
 	_battle_sidebar.position.y = top
+	# Containers retain their previous extent when sections shrink. Reclaim
+	# that transparent input area after the damage list or item actions close.
+	_battle_sidebar.size = Vector2(262, _battle_sidebar.get_combined_minimum_size().y)
 
 
 func _refresh_alliances() -> void:

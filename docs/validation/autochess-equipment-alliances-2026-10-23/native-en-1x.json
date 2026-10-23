@@ -1,0 +1,312 @@
+{
+	"battle_seed": 125834692,
+	"captures": [
+		"user://native-en-1x-effects.png",
+		"user://native-en-1x-echo.png",
+		"user://native-en-1x-echo-inspector.png",
+		"user://native-en-1x-finished.png"
+	],
+	"checks": 20,
+	"damage": [
+		419.8192106987,
+		412.495226683807
+	],
+	"echo_marker": true,
+	"echoes": [
+		{
+			"hp": 9.39999961853027,
+			"max_hp": 9.39999961853027,
+			"model": true,
+			"name": "Spirit echo",
+			"placement": {
+				"echo": true,
+				"family": -1,
+				"id": "willowispm1",
+				"item": "",
+				"point": "(31.60623, 30.0)",
+				"rank": 0,
+				"team": 0
+			},
+			"uid": 100013,
+			"visible": true
+		},
+		{
+			"hp": 9.39999961853027,
+			"max_hp": 9.39999961853027,
+			"model": true,
+			"name": "Spirit echo",
+			"placement": {
+				"echo": true,
+				"family": -1,
+				"id": "willowispm1",
+				"item": "",
+				"point": "(32.77762, 30.0)",
+				"rank": 0,
+				"team": 1
+			},
+			"uid": 100014,
+			"visible": true
+		}
+	],
+	"effects": {
+		"echo": 4,
+		"guardian": 2,
+		"pack": 4,
+		"reaction": 17,
+		"spirit": 3,
+		"spirit_echo": 2,
+		"ward": 2
+	},
+	"failures": [],
+	"live_markers": true,
+	"notices": [
+		{
+			"amount": 2.9025,
+			"effect": "reaction",
+			"t": "arena_proc",
+			"time": 2.255,
+			"uid": 100001
+		},
+		{
+			"amount": 2.1525,
+			"effect": "reaction",
+			"t": "arena_proc",
+			"time": 2.255,
+			"uid": 100002
+		},
+		{
+			"amount": 2.9025,
+			"effect": "reaction",
+			"t": "arena_proc",
+			"time": 2.31,
+			"uid": 100007
+		},
+		{
+			"amount": 2.6425,
+			"effect": "pack",
+			"t": "arena_proc",
+			"time": 2.915,
+			"uid": 100007
+		},
+		{
+			"amount": 17.0,
+			"effect": "guardian",
+			"t": "arena_proc",
+			"time": 3.135,
+			"uid": 100004
+		},
+		{
+			"amount": 17.0,
+			"effect": "guardian",
+			"t": "arena_proc",
+			"time": 3.19,
+			"uid": 100010
+		},
+		{
+			"amount": 0.0,
+			"effect": "spirit",
+			"t": "arena_proc",
+			"time": 4.235,
+			"uid": 100002
+		},
+		{
+			"amount": 0.0,
+			"effect": "spirit",
+			"t": "arena_proc",
+			"time": 4.235,
+			"uid": 100004
+		},
+		{
+			"amount": 0.0,
+			"effect": "spirit_echo",
+			"t": "arena_proc",
+			"time": 4.235,
+			"uid": 100013
+		},
+		{
+			"amount": 4.57,
+			"effect": "reaction",
+			"t": "arena_proc",
+			"time": 4.4,
+			"uid": 100009
+		},
+		{
+			"amount": 7.08000009536743,
+			"effect": "reaction",
+			"t": "arena_proc",
+			"time": 5.445,
+			"uid": 100006
+		},
+		{
+			"amount": 15.5,
+			"effect": "ward",
+			"t": "arena_proc",
+			"time": 6.04999999999999,
+			"uid": 100006
+		},
+		{
+			"amount": 15.5,
+			"effect": "ward",
+			"t": "arena_proc",
+			"time": 6.10499999999999,
+			"uid": 100012
+		},
+		{
+			"amount": 0.0,
+			"effect": "spirit",
+			"t": "arena_proc",
+			"time": 6.76499999999999,
+			"uid": 100010
+		},
+		{
+			"amount": 0.0,
+			"effect": "spirit_echo",
+			"t": "arena_proc",
+			"time": 6.76499999999999,
+			"uid": 100014
+		},
+		{
+			"amount": 0.8372,
+			"effect": "echo",
+			"t": "arena_proc",
+			"time": 9.73499999999998,
+			"uid": 100002
+		},
+		{
+			"amount": 1.93999990463257,
+			"effect": "reaction",
+			"t": "arena_proc",
+			"time": 9.73499999999998,
+			"uid": 100002
+		},
+		{
+			"amount": 6.09,
+			"effect": "reaction",
+			"t": "arena_proc",
+			"time": 9.73499999999998,
+			"uid": 100001
+		},
+		{
+			"amount": 3.41250009536743,
+			"effect": "reaction",
+			"t": "arena_proc",
+			"time": 10.01,
+			"uid": 100014
+		},
+		{
+			"amount": 0.8372,
+			"effect": "echo",
+			"t": "arena_proc",
+			"time": 10.01,
+			"uid": 100014
+		},
+		{
+			"amount": 2.014,
+			"effect": "reaction",
+			"t": "arena_proc",
+			"time": 12.155,
+			"uid": 100005
+		},
+		{
+			"amount": 4.82,
+			"effect": "reaction",
+			"t": "arena_proc",
+			"time": 12.155,
+			"uid": 100004
+		},
+		{
+			"amount": 2.1525,
+			"effect": "reaction",
+			"t": "arena_proc",
+			"time": 12.815,
+			"uid": 100008
+		},
+		{
+			"amount": 1.8925,
+			"effect": "pack",
+			"t": "arena_proc",
+			"time": 13.42,
+			"uid": 100008
+		},
+		{
+			"amount": 2.1525,
+			"effect": "reaction",
+			"t": "arena_proc",
+			"time": 15.3999999999999,
+			"uid": 100008
+		},
+		{
+			"amount": 2.014,
+			"effect": "reaction",
+			"t": "arena_proc",
+			"time": 16.6649999999999,
+			"uid": 100005
+		},
+		{
+			"amount": 0.8372,
+			"effect": "echo",
+			"t": "arena_proc",
+			"time": 18.8099999999999,
+			"uid": 100011
+		},
+		{
+			"amount": 2.014,
+			"effect": "reaction",
+			"t": "arena_proc",
+			"time": 18.8099999999999,
+			"uid": 100011
+		},
+		{
+			"amount": 2.014,
+			"effect": "reaction",
+			"t": "arena_proc",
+			"time": 21.3399999999999,
+			"uid": 100011
+		},
+		{
+			"amount": 1.2285,
+			"effect": "pack",
+			"t": "arena_proc",
+			"time": 23.3199999999999,
+			"uid": 100011
+		},
+		{
+			"amount": 1.2805,
+			"effect": "reaction",
+			"t": "arena_proc",
+			"time": 24.3099999999999,
+			"uid": 100011
+		},
+		{
+			"amount": 1.2285,
+			"effect": "pack",
+			"t": "arena_proc",
+			"time": 25.8499999999999,
+			"uid": 100011
+		},
+		{
+			"amount": 0.8372,
+			"effect": "echo",
+			"t": "arena_proc",
+			"time": 27.0599999999999,
+			"uid": 100011
+		},
+		{
+			"amount": 1.2805,
+			"effect": "reaction",
+			"t": "arena_proc",
+			"time": 27.0599999999999,
+			"uid": 100011
+		}
+	],
+	"renderer": "X11",
+	"seconds": 27.6649999999999,
+	"seed": 15877,
+	"speed": 1,
+	"survivors": [
+		2,
+		0
+	],
+	"wall_seconds": 28.088,
+	"winner": 0
+}

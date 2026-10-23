@@ -1,0 +1,380 @@
+{
+  "sources": [
+    "/home/llm2x/Documents/EI/local/scratchpad/autochess-equipment-alliances-20261023/runs/equipment-native-bot-tournaments-final/data/godot/app_userdata/Cursed Lands/arena-bot-tournaments.json",
+    "/home/llm2x/Documents/EI/local/scratchpad/autochess-equipment-alliances-20261023/runs/equipment-native-bot-tournaments-final-seed2/data/godot/app_userdata/Cursed Lands/arena-bot-tournaments.json"
+  ],
+  "games": 4,
+  "seeds": [
+    7319,
+    8316
+  ],
+  "boards": 856,
+  "end_reasons": {
+    "defeated": 856
+  },
+  "seconds_mean": 22.680882009345705,
+  "seconds_max": 73.9200000000009,
+  "sample_rows": 856,
+  "reward_budget_mismatches": [],
+  "item_types_observed": [
+    "berserker",
+    "echo",
+    "fang",
+    "guardian",
+    "storm",
+    "thorn",
+    "venom",
+    "ward"
+  ],
+  "effect_totals": {
+    "echo": 1079,
+    "fang": 298,
+    "guard": 279,
+    "guardian": 379,
+    "marked": 15016,
+    "pack": 1679,
+    "rally": 23,
+    "reaction": 7388,
+    "spirit": 495,
+    "spirit_echo": 294,
+    "storm": 16,
+    "thorn": 464,
+    "venom": 630,
+    "ward": 124
+  },
+  "policy_mean_placement": {
+    "economy": {
+      "seats": 9,
+      "mean": 5.666666666666667,
+      "wins": 1
+    },
+    "expansion": {
+      "seats": 9,
+      "mean": 4.444444444444445,
+      "wins": 0
+    },
+    "evolution": {
+      "seats": 9,
+      "mean": 4.777777777777778,
+      "wins": 3
+    },
+    "tempo": {
+      "seats": 9,
+      "mean": 5.111111111111111,
+      "wins": 0
+    }
+  },
+  "winners": [
+    {
+      "game": 0,
+      "seed": 7319,
+      "policy_offset": 0,
+      "winner_seat": 2,
+      "policy": "evolution",
+      "rounds": 25,
+      "board_count": 204,
+      "winner_final_hp": 71,
+      "alliances": {
+        "beast": 4,
+        "horde": 0,
+        "hunter": 1,
+        "mage": 4,
+        "spirit": 4,
+        "warrior": 1
+      },
+      "roster": [
+        {
+          "name": "Bats",
+          "stars": 3,
+          "family": 3
+        },
+        {
+          "name": "Toads",
+          "stars": 3,
+          "family": 5
+        },
+        {
+          "name": "Zombies",
+          "stars": 3,
+          "family": 12
+        },
+        {
+          "name": "Woodsfolk",
+          "stars": 3,
+          "family": 11
+        },
+        {
+          "name": "Harpies",
+          "stars": 2,
+          "family": 16
+        },
+        {
+          "name": "Unicorns",
+          "stars": 2,
+          "family": 20
+        },
+        {
+          "name": "Woodsfolk seers",
+          "stars": 2,
+          "family": 29
+        }
+      ],
+      "items": {
+        "berserker": 2,
+        "guardian": 1,
+        "ward": 1,
+        "thorn": 1
+      },
+      "placements": [
+        8,
+        4,
+        1,
+        9,
+        3,
+        2,
+        6,
+        5,
+        7
+      ]
+    },
+    {
+      "game": 1,
+      "seed": 7319,
+      "policy_offset": 1,
+      "winner_seat": 5,
+      "policy": "evolution",
+      "rounds": 29,
+      "board_count": 217,
+      "winner_final_hp": 56,
+      "alliances": {
+        "beast": 3,
+        "horde": 2,
+        "hunter": 1,
+        "mage": 4,
+        "spirit": 3,
+        "warrior": 2
+      },
+      "roster": [
+        {
+          "name": "Toads",
+          "stars": 3,
+          "family": 5
+        },
+        {
+          "name": "Boars",
+          "stars": 3,
+          "family": 0
+        },
+        {
+          "name": "Zombies",
+          "stars": 3,
+          "family": 12
+        },
+        {
+          "name": "Woodsfolk seers",
+          "stars": 3,
+          "family": 29
+        },
+        {
+          "name": "Orc shamans",
+          "stars": 2,
+          "family": 13
+        },
+        {
+          "name": "Harpies",
+          "stars": 2,
+          "family": 16
+        },
+        {
+          "name": "Orc shamans",
+          "stars": 2,
+          "family": 13
+        },
+        {
+          "name": "Horrors",
+          "stars": 2,
+          "family": 25
+        },
+        {
+          "name": "Cyclopes",
+          "stars": 1,
+          "family": 27
+        }
+      ],
+      "items": {
+        "echo": 4,
+        "berserker": 2
+      },
+      "placements": [
+        6,
+        4,
+        3,
+        9,
+        2,
+        1,
+        8,
+        7,
+        5
+      ]
+    },
+    {
+      "game": 2,
+      "seed": 8316,
+      "policy_offset": 2,
+      "winner_seat": 0,
+      "policy": "evolution",
+      "rounds": 29,
+      "board_count": 218,
+      "winner_final_hp": 21,
+      "alliances": {
+        "beast": 3,
+        "horde": 0,
+        "hunter": 1,
+        "mage": 4,
+        "spirit": 4,
+        "warrior": 0
+      },
+      "roster": [
+        {
+          "name": "Toads",
+          "stars": 3,
+          "family": 5
+        },
+        {
+          "name": "Woodsfolk",
+          "stars": 3,
+          "family": 11
+        },
+        {
+          "name": "Harpies",
+          "stars": 3,
+          "family": 16
+        },
+        {
+          "name": "Unicorns",
+          "stars": 2,
+          "family": 20
+        },
+        {
+          "name": "Woodsfolk seers",
+          "stars": 2,
+          "family": 29
+        },
+        {
+          "name": "Banshees",
+          "stars": 2,
+          "family": 19
+        },
+        {
+          "name": "Banshees",
+          "stars": 1,
+          "family": 19
+        },
+        {
+          "name": "Unicorns",
+          "stars": 2,
+          "family": 20
+        }
+      ],
+      "items": {
+        "berserker": 1,
+        "echo": 2,
+        "guardian": 1,
+        "venom": 2
+      },
+      "placements": [
+        1,
+        3,
+        5,
+        2,
+        9,
+        4,
+        8,
+        7,
+        6
+      ]
+    },
+    {
+      "game": 3,
+      "seed": 8316,
+      "policy_offset": 3,
+      "winner_seat": 5,
+      "policy": "economy",
+      "rounds": 29,
+      "board_count": 217,
+      "winner_final_hp": 15,
+      "alliances": {
+        "beast": 2,
+        "horde": 1,
+        "hunter": 1,
+        "mage": 4,
+        "spirit": 7,
+        "warrior": 2
+      },
+      "roster": [
+        {
+          "name": "Zombies",
+          "stars": 2,
+          "family": 12
+        },
+        {
+          "name": "Woodsfolk seers",
+          "stars": 2,
+          "family": 29
+        },
+        {
+          "name": "Unicorns",
+          "stars": 2,
+          "family": 20
+        },
+        {
+          "name": "Wisps",
+          "stars": 2,
+          "family": 21
+        },
+        {
+          "name": "Dragons",
+          "stars": 2,
+          "family": 23
+        },
+        {
+          "name": "Cyclopes",
+          "stars": 2,
+          "family": 27
+        },
+        {
+          "name": "Banshees",
+          "stars": 1,
+          "family": 19
+        },
+        {
+          "name": "Golems",
+          "stars": 1,
+          "family": 24
+        },
+        {
+          "name": "Horrors",
+          "stars": 1,
+          "family": 25
+        }
+      ],
+      "items": {
+        "echo": 2,
+        "guardian": 1,
+        "berserker": 3
+      },
+      "placements": [
+        2,
+        3,
+        5,
+        6,
+        4,
+        1,
+        7,
+        9,
+        8
+      ]
+    }
+  ],
+  "interpretation": "Four exploratory nine-seat native tournaments across two seeds and four policy rotations. This validates execution and reward budgets, not broad competitive balance. All winners reach Mage 4 with substantial Spirit support; evolution wins three games and economy wins one."
+}

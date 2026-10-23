@@ -1,0 +1,54 @@
+[
+	{
+		"copies": 1,
+		"draws": 0,
+		"family": 28,
+		"kind": "promotion",
+		"opponent": 28,
+		"opponent_rank": 0,
+		"rank": 1,
+		"seconds": 12.30625,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"copies": 1,
+		"draws": 0,
+		"family": 28,
+		"kind": "promotion",
+		"opponent": 28,
+		"opponent_rank": 1,
+		"rank": 2,
+		"seconds": 5.45875,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"copies": 1,
+		"draws": 0,
+		"family": 29,
+		"kind": "promotion",
+		"opponent": 29,
+		"opponent_rank": 0,
+		"rank": 1,
+		"seconds": 8.02999999999999,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	},
+	{
+		"copies": 1,
+		"draws": 0,
+		"family": 29,
+		"kind": "promotion",
+		"opponent": 29,
+		"opponent_rank": 1,
+		"rank": 2,
+		"seconds": 8.02999999999999,
+		"timeouts": 0,
+		"trials": 4,
+		"wins": 4
+	}
+]
