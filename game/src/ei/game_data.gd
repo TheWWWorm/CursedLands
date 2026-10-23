@@ -186,6 +186,10 @@ const OPTIONS := [
 	["character_buff_icons", 1, 2, 17, 10, 1],
 	["cursor_size", 1, 4, 17, 11, 0],
 	["show_player_status", 1, 2, 17, 12, 1],
+	# The camp's Skills/Spells screen: "Reset skills…" in place of ✓ / ✗ and
+	# training that applies on each click (CampView._immediate_training); off
+	# = the original's pending training deal without resets. Default on.
+	["skill_reset_button", 1, 2, 17, 13, 1],
 	# Gameplay (group 18).
 	# The network game's unit visibility in single player too (UnitFog);
 	# default on (user request).
@@ -288,6 +292,7 @@ const DISPLAY_CHOICES := {
 	"cursor_size": ["Automatic", "32 px", "48 px", "64 px"],
 	"show_player_status": ["Off", "On"],
 	"item_icon_fit": ["Off", "On"],
+	"skill_reset_button": ["Off", "On"],
 	"pad_glyphs": ["Automatic", "Xbox", "PlayStation", "Nintendo", "Steam Deck"],
 	"renderer": ["Compatibility", "Forward+ (experimental)", "Mobile (Vulkan)"],   # RendererChoice.METHODS
 }
@@ -358,7 +363,8 @@ const REMAKE_OPTIONS := {
 	"direct_quests": ["Quests", "Change this key for first and third person."],
 
 	"item_icon_fit": ["Fit items inside icons", "Shrinks oversized inventory and shop items to fit their cells while they turn, without enlarging small items. Also fits character creation portraits. Off keeps fixed item scale and allows models to extend beyond their cells."],
-	"ui_active_buttons": ["Bright usable camp buttons", "Available camp modes and Exit are bright. Skills apply immediately, so their inactive Accept and Cancel controls are hidden. Deal controls show whether a transaction can be made or undone. Off: the original button layout and tint."],
+	"ui_active_buttons": ["Bright usable camp buttons", "Available camp modes and Exit are bright. Deal controls show whether a transaction can be made or undone. Off: the original button tint."],
+	"skill_reset_button": ["Skill reset button", "The camp's Skills/Spells screen shows Reset skills… in place of Accept and Cancel, and each raised skill or learned ability applies immediately. Off: the original screen without resets; choices stay pending until Accept, and Cancel or leaving the screen discards them."],
 	"coop_clock": ["Shared pause and speed", "One pause and speed for the whole co-op game. The host can grant guests permission to control them. Off: co-op always runs at normal speed."],
 	"coop_guest_clock": ["Guest clock controls", "Default guest permissions for new co-op games. Adjust each player in the Players menu. Permissions are saved with the campaign; loading restores them. Speed-only permission cannot resume a paused game."],
 	"coop_guest_saves": ["Guest save controls", "Allow guests to trigger the host's quicksave or quickload with F5/F8 and the Save/Load menu. Guests cannot choose other save files. Set each player's permissions in Players. Permissions are saved with the campaign."],
@@ -494,7 +500,7 @@ const OPTIONS_APPLIED := ["hide_remake_hints", "discord_presence", "direct_hints
 	"spell_double_tap_self", "character_buff_icons",
 	"volume_sfx", "volume_stream", "volume_voice", "power_kbd",
 	"graphics_preset",
-	"item_icon_fit", "ui_active_buttons", "original_rune_layout", "coop_clock", "merc_travel", "auto_exit", "mechanism_motion", "cursor_size", "show_player_status",
+	"item_icon_fit", "ui_active_buttons", "skill_reset_button", "original_rune_layout", "coop_clock", "merc_travel", "auto_exit", "mechanism_motion", "cursor_size", "show_player_status",
 	"power_mouse", "scroll_border", "rubber_select", "marks", "footprints", "select_type", "show_path", "brightness", "contrast", "gamma",
 	"show_flying_hp", "show_tutorial", "autosave", "tooltip_time", "switch_filters",
 	"camera_reverse_x", "camera_reverse_y", "reverse_stereo", "cave_echo", "difficulty",

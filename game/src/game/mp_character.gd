@@ -344,15 +344,27 @@ static func can_continue(h: Dictionary) -> bool:
 
 
 ## every weapon, belt item and spell but the chosen one of each
-## goes (the active weapon is the first); the chosen spell goes too when the
-## hero cannot take it (its school knowledge below the spell's complexity, or
-## too little stamina:).
+## goes (the active weapon is the first). The chosen spell stays even when the
+## hero cannot use it yet, as in the original: the spell column dims it until
+## the school knowledge and stamina are there (Spells.known_usable).
 static func finish(data: Dictionary, weapon: String, belt: String, spell: String) -> void:
 	var h := hero_of(data)
 	h.weapons = [weapon] if weapon and (h.weapons as Array).has(weapon) else []
 	h.quick = [belt] if belt and (h.quick as Array).has(belt) else []
-	var stamina := Skills.base_pool(float(h.get("exp_total", 0.0)), float(h.get("dex", 25.0)), "MP")
-	h.spells = [spell] if spell and (h.spells as Array).has(spell) and Spells.usable_by(h, stamina, spell) else []
+	h.spells = [spell] if spell and (h.spells as Array).has(spell) else []
+
+
+## The stamina the camp's learn check uses (Combat.hero_stats' max_mana):
+## experience and dexterity with its ability bonus.
+static func stamina_of(h: Dictionary) -> float:
+	var dex := float(h.get("dex", 25.0)) + Perks.attr_bonus(h, "dex")
+	return Skills.base_pool(float(h.get("exp_total", 0.0)), dex, "MP")
+
+
+## Whether the hero can use `spell` now (school knowledge within its
+## complexity, stamina within its cost).
+static func spell_usable(h: Dictionary, spell: String) -> bool:
+	return Spells.usable_by(h, stamina_of(h), spell)
 
 
 # ---------------------------------------------------------------- network

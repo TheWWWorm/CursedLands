@@ -44,12 +44,13 @@ extends Interface800
 ## button (the original opens it from the main menu's multiplayer board and goes
 ## to the server screen with ✓); ✓ selects the character for the original
 ## multiplayer game (MpCharacter.selected), ✗ goes back to the co-op screen.
-## **Approx.**: View (the original opens the camp screen on the character, which
-## dresses it and spends its experience) shows state 11's layout with the
-## character's own kit and its skills widget; the spell row of state 11 sits
-## at the bottom (y 500, the original's position is not traced); seven
-## face cells (50..750) per strip with the remake's cell highlight. Faces
-## follow the native byte sort (female reversed); voices retain table order.
+## - View opens the camp screen on the character (Equipment and Skills/Spells,
+##   CampView on an MpCampHost), which dresses it from its bag and spends its
+##   experience; Exit / Esc writes the record back and returns to 9.
+## **Approx.**: the spell row of state 11 sits at the bottom (y 500, the
+## original's position is not traced); seven face cells (50..750) per strip.
+## Faces follow the native byte sort (female reversed); voices retain table
+## order.
 
 signal closed(accepted: bool)
 
@@ -74,6 +75,9 @@ const CARET := Color8(0xff, 0xb3, 0x31)   # COLORREF
 const DIMMED := Color8(0x82, 0x82, 0x82)
 const TURN_SPEED := 2.0
 const SPELL_CELL_UV := [14, 142, 114, 242]
+const PICK := Color8(0x8c, 0x8a, 0x31)   # the picked cell's frame, 5 units wide, 10 in
+const SPELL_DIM := Color(0.55, 0.55, 0.55)
+const UNMET := Color8(0xd0, 0x60, 0x48)   # a spell's missing requirements in the help
 
 var state := SEL
 var chars: Array = []      # MpCharacter.list()
@@ -84,7 +88,9 @@ var rename_text := ""
 var _rename_fresh := true
 var edit := {}             # the character being made / viewed
 var _edit_file := ""       # VIEW: its file
-var _kit_copy := {}        # state 11 / view entry: Back / Cancel restore it
+var _kit_copy := {}        # state 11 entry: Back / Cancel restore it
+var _camp: CampView        # VIEW: the camp screen on `edit`
+var _camp_host: MpCampHost
 var faces := [[], []]      # male / female prototypes
 var face_top: Array[int] = [0, 0]
 var voices := [[], []]
@@ -104,6 +110,7 @@ var _board: InterfaceBoard
 var _doll: Paperdoll
 var _cells: Array = []     # Portrait per face cell (male 0..6, female 7..13)
 var _items: Dictionary = {}   # slot key -> ItemView
+var _hover_cell := ""        # the item cell under the pointer (its model turns)
 var _skill_rows: Array = []   # [rect, kind, key, desc]
 var _scroll_repeat := preload("res://src/ui/scroll_repeat.gd").new()
 
@@ -259,7 +266,8 @@ func _layout_faces() -> void:
 		p.visible = on and k < (faces[g] as Array).size()
 		if not p.visible:
 			continue
-		var r := r8(Rect2(50 + (i % CELLS) * 100 + 5, (0 if g == 0 else 500) + 5, 90, 90))
+		# 70 × 70 inside the cell, within the picked face's frame.
+		var r := r8(Rect2(50 + (i % CELLS) * 100 + 15, (0 if g == 0 else 500) + 15, 70, 70))
 		p.position = r.position
 		p.size = r.size
 		p.fit_cell = GameData.option("item_icon_fit") != 0
@@ -268,9 +276,10 @@ func _layout_faces() -> void:
 
 func _layout_items() -> void:
 	var want := {}
-	if visible and state in [KIT, VIEW] and not MessageBox.is_up(_box):
+	if visible and state == KIT and not MessageBox.is_up(_box):
 		for c: Array in _item_cells():
-			want[c[0]] = c
+			if c[2] != "spell":   # spells are flat pictures (_draw_kit), as in the camp
+				want[c[0]] = c
 	for k in _items.keys():
 		if not want.has(k):
 			_items[k].queue_free()
@@ -287,15 +296,20 @@ func _layout_items() -> void:
 			_items[k] = v
 		var r: Rect2 = c[1]
 		var ctr := r.get_center()
+		# The camp's cells (CampView._layout): the same scale, room for the
+		# turning model, or kept inside the cell with "Fit items inside icons".
+		v.fit_slot = GameData.option("item_icon_fit") != 0
 		v.unit_px = 37.5 * s
 		v.screen_at = Vector3(ctr.x, ctr.y, 400.0 / ItemView.K / 37.5)
-		v.size = Vector2.ONE * 100.0 * s
+		v.size = Vector2.ONE * (80.0 if v.fit_slot else 240.0) * s
 		v.position = p8(ctr) - v.size * 0.5
-		v.add_color = Color8(0x40, 0x40, 0x40) if state == KIT and String(pick.get(c[2], "")) == String(c[3]) else Color(0, 0, 0)
-		v.show_item(("spell:" + String(c[3])) if c[2] == "spell" else String(c[3]))
+		v.spin = k == _hover_cell
+		v.show_item(String(c[3]))
+		# After show_item: building the figure clears its add colour.
+		v.add_color = Color8(0x40, 0x40, 0x40) if _picked(c) else Color(0, 0, 0)
 
 
-## State 11 / view cells: [key, rect, kind, item].
+## State 11 cells: [key, rect, kind, item].
 func _item_cells() -> Array:
 	var h := _hero()
 	var out := []
@@ -313,6 +327,11 @@ func _item_cells() -> Array:
 	return out
 
 
+## The cell holds the kit piece chosen for the new character.
+func _picked(c: Array) -> bool:
+	return state == KIT and String(pick.get(c[2], "")) == String(c[3])
+
+
 # ------------------------------------------------------------------ drawing
 
 func _draw() -> void:
@@ -325,7 +344,7 @@ func _draw() -> void:
 	match state:
 		SEL: _draw_select()
 		CREATE: _draw_create()
-		_: _draw_kit()
+		KIT: _draw_kit()
 	_draw_pad_glyphs()
 
 
@@ -412,14 +431,13 @@ func _draw_create() -> void:
 			sprite(inv, Rect2(50 + i * 100, y0, 100, 100), [14, 14, 114, 114])
 			var k: int = face_top[g] + i
 			if k < (faces[g] as Array).size() and String(faces[g][k]) == String(h.get("prototype", "")):
-				draw_rect(r8(Rect2(52 + i * 100, y0 + 2, 96, 96)), BAR)
-		sprite(inv, Rect2(0, y0, 50, 100), [192, 14, 142, 114])
-		sprite(inv, Rect2(750, y0, 50, 100), [142, 14, 192, 114])
-		for side in [[Vector2(40, y0 + 50), -1.0], [Vector2(760, y0 + 50), 1.0]]:
-			var c: Vector2 = side[0]
-			var d: float = side[1]
-			draw_colored_polygon(PackedVector2Array([p8(c + Vector2(d * 8, 0)), p8(c + Vector2(-d * 6, -12)),
-				p8(c + Vector2(-d * 6, 12))]), Color(0.85, 0.7, 0.35))
+				_pick_frame(Rect2(50 + i * 100, y0, 100, 100))
+		# The end caps' arrow plates are the next 50-unit strip of the atlas,
+		# shown only while the strip can scroll that way (CampView._row_end_uv).
+		var left := face_top[g] > 0
+		var right := face_top[g] < (faces[g] as Array).size() - CELLS
+		sprite(inv, Rect2(0, y0, 50, 100), [242 if left else 192, 14, 192 if left else 142, 114])
+		sprite(inv, Rect2(750, y0, 50, 100), [192 if right else 142, 14, 242 if right else 192, 114])
 	_name_plate()
 	_edit_line(NAME_EDIT, String(h.get("name", "")), Color.WHITE, true)
 	# Attributes, balance, height.
@@ -450,6 +468,11 @@ func _draw_create() -> void:
 	_draw_help()
 
 
+## The original's olive frame of a picked cell: 5 units wide, 10 inside it.
+func _pick_frame(cell: Rect2) -> void:
+	draw_rect(r8(cell.grow(-12.5)), PICK, false, 5.0 * kv().y)
+
+
 ## "−" / "+" of a row (x 140 / 160, 20×15 plates UV 144,177-164,192), the
 ## glyph when it cannot move.
 func _pm(y: float, minus_ok: bool, plus_ok: bool) -> void:
@@ -462,6 +485,9 @@ func _pm(y: float, minus_ok: bool, plus_ok: bool) -> void:
 
 func _draw_help() -> void:
 	if _hover_help.is_empty():
+		return
+	if _hover_help.size() > 2 and _hover_help[2] is Dictionary and _hover_help[2].get("t") == "item":
+		_draw_item_help(String(_hover_help[2].id))
 		return
 	if _hover_help.size() > 2 and _hover_help[2] is Dictionary and _hover_help[2].get("t") == "perk":
 		# The same native info-widget as the camp: a family title/prose
@@ -479,6 +505,47 @@ func _draw_help() -> void:
 		return
 	text_block(Rect2(615, 110, 170, 30), String(_hover_help[0]), 0, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
 	text_block(Rect2(615, 140, 170, 340), String(_hover_help[1]), 0, TEXT, HORIZONTAL_ALIGNMENT_CENTER)
+
+
+## A kit item's info: the camp info widget's text (CampView._item_info) — the
+## name, its rows, the description and the trailing rows, above the buttons.
+func _draw_item_help(id: String) -> void:
+	var inf := CampView._item_info(id)
+	var h := line_h(0)
+	var names := wrap_text(String(inf.name), 170, 0)
+	for i in mini(2, names.size()):
+		text(Rect2(615, 110 + h * i, 170, h), names[i], 0, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
+	var y := maxf(140.0, 110.0 + mini(2, names.size()) * h + 4.0)
+	for r: String in inf.rows:
+		text(Rect2(615, y, 170, 15), r, 0, TEXT)
+		y += maxf(15.0, h)
+	y += float(inf.gap)
+	# A spell the hero cannot use yet: what it still needs, under the rest.
+	var unmet := PackedStringArray()
+	if id.begins_with("spell:") and state == KIT:
+		var lack := Spells.unmet(_hero(), MpCharacter.stamina_of(_hero()), id.trim_prefix("spell:"))
+		if not lack.is_empty():
+			unmet.append_array(wrap_text(RemakeText.t("Spell requirements are not met."), 170, 0))
+			for l in lack:
+				unmet.append_array(wrap_text(l, 170, 0))
+	var bottom := BACK_RECT.position.y - 10.0 - unmet.size() * h
+	for i in unmet.size():
+		text(Rect2(615, bottom + h * i, 170, h), unmet[i], 0, UNMET, HORIZONTAL_ALIGNMENT_CENTER)
+	var remaining := maxi(0, floori((bottom - y) / h))
+	var tail: PackedStringArray = inf.tail
+	var tail_lines := mini(tail.size(), remaining)
+	var wrap := wrap_text(String(inf.get("wrap", "")), 170, 0) if inf.has("wrap") else PackedStringArray()
+	var wrap_lines := mini(mini(3, wrap.size()), remaining - tail_lines)
+	var desc := wrap_text(String(inf.desc), 170, 0) if String(inf.desc) != "" else PackedStringArray()
+	for i in mini(desc.size(), mini(int(inf.lines), remaining - tail_lines - wrap_lines)):
+		text(Rect2(615, y, 170, h), desc[i], 0, TEXT, HORIZONTAL_ALIGNMENT_CENTER)
+		y += h
+	for i in tail_lines:
+		text(Rect2(615, y, 170, 15), tail[i], 0, TEXT)
+		y += h
+	for i in wrap_lines:
+		text(Rect2(615, y, 170, h), wrap[i], 0, TEXT)
+		y += h
 
 
 func _help_block(rect: Rect2, value: String, colour: Color, max_lines: int) -> void:
@@ -507,6 +574,21 @@ func _draw_kit() -> void:
 	for i in 8:
 		sprite(slots, Rect2(i * 100, 0, 100, 100), [14, 14, 114, 114] if i < 4 else [142, 14, 242, 114])
 		sprite(slots, Rect2(i * 100, 500, 100, 100), SPELL_CELL_UV)
+	# Spells are flat pictures in the frame's inner 70 units, as in the camp;
+	# one the hero cannot use yet is dimmed (it can still be picked). The
+	# picked pieces are framed.
+	for c: Array in _item_cells():
+		if c[2] == "spell":
+			var picture := SpellSlots.icon(String(Items.look("spell:" + String(c[3])).get("texture", "")))
+			if picture:
+				var rect := r8((c[1] as Rect2).grow(-15.0))
+				var tint := Color.WHITE if MpCharacter.spell_usable(h, String(c[3])) else SPELL_DIM
+				draw_texture_rect(picture, rect, false, tint)
+				var cells := SpellSlots.camp_rune_rects(r8(c[1])) if GameData.option("original_rune_layout") != 0 \
+					else SpellSlots.rune_rects(rect, Spells.mods_of(String(c[3])).size())
+				SpellSlots.draw_runes(self, String(c[3]), rect, tint, cells)
+		if _picked(c):
+			_pick_frame(c[1])
 	_name_plate()
 	text(NAME_EDIT, String(h.get("name", "")), 1, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
 	var y := 165.0
@@ -644,13 +726,13 @@ func _hit(p: Vector2) -> Array:
 					return ["voice", voice_top + i]
 			if NAME_EDIT.grow(4).has_point(p):
 				return ["name"]
-		_:
+		KIT:
 			if BACK_RECT.has_point(p): return ["back"]
 			if RESET_RECT.has_point(p): return ["reset"]
 			if NEXT_RECT.has_point(p): return ["next"]
 			for c: Array in _item_cells():
 				if (c[1] as Rect2).has_point(p):
-					return ["item", c[2], c[3]]
+					return ["item", c[2], c[3], c[0]]
 			for r: Array in _skill_rows:
 				if (r[0] as Rect2).has_point(p):
 					if r[1] == "perk_help":
@@ -711,6 +793,14 @@ func _gui_input(e: InputEvent) -> void:
 		accept_event()
 
 
+## View: Esc leaves the camp even when the panel has lost the focus to it.
+func _unhandled_key_input(e: InputEvent) -> void:
+	if visible and state == VIEW and _camp and e is InputEventKey and e.pressed and not e.echo \
+			and e.keycode == KEY_ESCAPE and not MessageBox.is_up(_box) and not _camp.tutorial_visible():
+		_close_camp()
+		get_viewport().set_input_as_handled()
+
+
 func _update_help(h: Array) -> void:
 	var help := []
 	if not h.is_empty():
@@ -720,7 +810,14 @@ func _update_help(h: Array) -> void:
 			"voice": help = [_txt("string lmp_select_voice", ""), _desc("string lmp_select_voice_desc")]
 			"train": help = h[3]
 			"perk_help": help = h[1]
-			"item": help = [Items.title(("spell:" + String(h[2])) if h[1] == "spell" else String(h[2])), ""]
+			"item":
+				var id := ("spell:" + String(h[2])) if h[1] == "spell" else String(h[2])
+				help = [Items.title(id), "", {"t": "item", "id": id}]
+	var cell := String(h[3]) if not h.is_empty() and h[0] == "item" else ""
+	if cell != _hover_cell:
+		if _items.has(_hover_cell): _items[_hover_cell].spin = false
+		_hover_cell = cell
+		if _items.has(cell): _items[cell].spin = true
 	if help != _hover_help:
 		_hover_help = help
 		queue_redraw()
@@ -743,7 +840,7 @@ func _press(h: Array, edge := false) -> void:
 	match state:
 		SEL: _press_select(h)
 		CREATE: _press_create(h)
-		_: _press_kit(h)
+		KIT: _press_kit(h)
 	_layout()
 	queue_redraw()
 
@@ -810,8 +907,7 @@ func _press_select(h: Array) -> void:
 			if sel >= 0:
 				edit = (selected_record() as Dictionary).duplicate(true)
 				_edit_file = String(chars[sel].file)
-				_kit_copy = edit.duplicate(true)
-				_set_state(VIEW)
+				_open_camp()
 		"row":
 			sound("save\\select")
 			sel = h[1]
@@ -932,31 +1028,21 @@ func _apply_voice(preview: bool) -> void:
 func _press_kit(h: Array) -> void:
 	var hero := _hero()
 	match h[0]:
-		"back":
+		"back":   # (0, 0): the skills as they were; back to 10
 			sound("messbox\\cancel")
-			if state == VIEW:
-				_save_view()
-				_set_state(SEL)
-			else:   # (0, 0): the skills as they were; back to 10
-				edit = _kit_copy.duplicate(true)
-				_set_state(CREATE)
+			edit = _kit_copy.duplicate(true)
+			_set_state(CREATE)
 		"reset":
 			sound("messbox\\cancel")
 			edit = _kit_copy.duplicate(true)
-			if state == KIT:
-				var hr := _hero()
-				pick = {"weapon": _first(hr.weapons), "belt": _first(hr.quick), "spell": _first(hr.spells)}
+			var hr := _hero()
+			pick = {"weapon": _first(hr.weapons), "belt": _first(hr.quick), "spell": _first(hr.spells)}
 		"next":
 			sound("messbox\\ok")
-			if state == VIEW:
-				_save_view()
-				_set_state(SEL)
-			else:
-				_finish()
+			_finish()
 		"item":
-			if state == KIT:
-				sound("messbox\\ok")
-				pick[h[1]] = String(h[2])
+			sound("messbox\\ok")
+			pick[h[1]] = String(h[2])
 		"train":
 			var ok := false
 			if h[1] == "skill":
@@ -981,6 +1067,35 @@ func _save_view() -> void:
 	if _edit_file:
 		MpCharacter.save_file(_edit_file, edit)
 	_reload(_edit_file)
+
+
+## View: the camp screen on the selected character. Its commands change
+## `edit` at once (MpCampHost); Exit or Esc saves it and goes back to 9.
+func _open_camp() -> void:
+	_camp_host = MpCampHost.new(edit)
+	_camp = CampView.new()
+	_camp.hud = _camp_host.game.hud
+	_camp.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(_camp)
+	_camp.construct.connect(_camp_host.camp_command)
+	_camp.exit_pressed.connect(_close_camp, CONNECT_DEFERRED)
+	_camp.refresh(_camp_host.unit)
+	_camp.set_mode("weapons")
+	_set_state(VIEW)
+
+
+func _close_camp() -> void:
+	if _camp == null:
+		return
+	# Out of the tree first: nothing may draw or process the freed stand-ins.
+	remove_child(_camp)
+	_camp.queue_free()
+	_camp = null
+	_camp_host.dispose()
+	_camp_host = null
+	_save_view()
+	_set_state(SEL)
+	grab_focus()
 
 
 static func _filter(v: String) -> String:
@@ -1034,12 +1149,16 @@ func _key(e: InputEventKey) -> void:
 					if c and MpCharacter.name_char_ok(c) and s.length() <= MpCharacter.NAME_MAX \
 							and text_width(s, 1) < NAME_EDIT.size.x and not e.ctrl_pressed:
 						hero.name = s
-		_:
+		KIT:
 			match e.keycode:
 				KEY_ESCAPE:
 					_press_kit(["back"])
 				KEY_ENTER, KEY_KP_ENTER:
 					_press_kit(["next"])
+		VIEW:
+			if e.keycode == KEY_ESCAPE and not _camp.tutorial_visible():
+				_close_camp()
+				return
 	_layout()
 	queue_redraw()
 
@@ -1111,7 +1230,7 @@ func _process(dt: float) -> void:
 ## scrolling the list. Y is ✓ / Next; B is Esc (the key bridge). While the
 ## clan box or a message box is up the keys go to it (pad_active false).
 func pad_active() -> bool:
-	return not MessageBox.is_up(_box) and not renaming
+	return not MessageBox.is_up(_box) and not renaming and state != VIEW   # View: the camp's
 
 
 func pad_targets() -> Array:
@@ -1149,7 +1268,7 @@ func pad_targets() -> Array:
 			for i in VOICE_ROWS:
 				if voice_top + i < (voices[voice_list] as Array).size():
 					t["voice:%d" % (voice_top + i)] = Rect2(10, 325 + 15 * i, 170, 15)
-		_:
+		KIT:
 			t["back"] = BACK_RECT
 			t["reset"] = RESET_RECT
 			t["next"] = NEXT_RECT

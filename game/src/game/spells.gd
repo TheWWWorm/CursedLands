@@ -155,6 +155,24 @@ static func usable_by(h: Dictionary, max_stamina: float, spell: String) -> bool:
 	return not p.proto.is_empty() and Skills.knowledge(h, String(p.subtype)) >= float(p.complex) and max_stamina >= float(p.mana)
 
 
+## What `spell` still needs (usable_by): "<school>: <have> of <need> needed."
+## and the same for stamina; empty when the hero can take it.
+static func unmet(h: Dictionary, max_stamina: float, spell: String) -> PackedStringArray:
+	var p := parse(spell)
+	var out := PackedStringArray()
+	if p.proto.is_empty():
+		return out
+	var know := Skills.knowledge(h, String(p.subtype))
+	if know < float(p.complex):
+		var school := String(Skills.SCHOOL.get(String(p.subtype), String(p.subtype)))
+		out.append(RemakeText.t("%s: %d of %d needed.") % [Skills.title(school), int(know), ceili(float(p.complex))])
+	if max_stamina < float(p.mana):
+		var t := GameData.text("perk mana") if GameData.is_open() else ""
+		var stamina := t.get_slice("\n", 0).strip_edges() if t != "" else RemakeText.t("Stamina")
+		out.append(RemakeText.t("%s: %d of %d needed.") % [stamina, int(max_stamina), ceili(float(p.mana))])
+	return out
+
+
 ## Recheck learned spells after training, equipment changes and save loads.
 ## Keep the spell in its slot; item magic and scripted casts have their own rules.
 static func known_usable(u: GameUnit, spell: String) -> bool:

@@ -1,7 +1,8 @@
 class_name CampView
 extends Control
 const TrainingRefund := preload("res://src/game/training_refund.gd")
-const REFUND_RECT := Rect2(20, 355, 160, 28)
+## "Reset skills…" (option skill_reset_button) where ✓ / ✗ are otherwise.
+const REFUND_RECT := Rect2(20, 462, 160, 28)
 ## The camp / settlement screen in the original's stone-frame look (the original
 ## ), drawn at the original's 800×600 coordinates scaled to the window.
 ## Modes (the original's screen widgets):
@@ -65,7 +66,11 @@ const REFUND_RECT := Rect2(20, 355, 160, 28)
 ## - "spells" (Skills/Spells, tip 20101, tutorial camp_skills): the top row
 ##   holds the hero's spells (camphelp 1, up to eight), the left widget the
 ##   attributes (mode 1) and the centre the skills widget (
-##   _draw_skills; a click raises a skill or learns an ability at once).
+##   _draw_skills). With the remake's option skill_reset_button (default) a
+##   click raises a skill or learns an ability at once and "Reset skills…"
+##   stands where ✓ / ✗ are; off, the original: the choices are a pending
+##   deal on a preview of the hero ("camp_level_up" and the experience they
+##   cost) that ✓ makes, ✗ or leaving the screen drops, and nothing resets.
 ## - All modes: the hero's bag row 500..600 (
 ##   "Inventory01"): seven cells at x 50..750, end caps, scroll buttons (tip
 ##   20400) and six filter buttons (mode 0, tips 21100-21105
@@ -296,6 +301,8 @@ var _avail_scroll := 0   # available abilities
 var _scroll_repeat := preload("res://src/ui/scroll_repeat.gd").new()
 var _selection_alpha := {}
 var _hold_cmd := {}      # the held skill row's command
+var _pending: Array = []  # option skill_reset_button off: the training ✓ will send
+var _preview := {}        # the hero with `_pending` applied (what the skills widget shows)
 var _hold_t := 0.0
 var _hold_button := MOUSE_BUTTON_LEFT
 ## Shop transfer repeats only the captured item, even when its row scrolls.
@@ -478,6 +485,7 @@ func set_mode(m: String) -> void:
 	_touch_spell_info = false
 	var changed := m != mode
 	if changed:
+		_drop_training()
 		_close_training_reset()
 		_stop_transfer_hold()
 		var rows := _row_counts()
@@ -1086,7 +1094,11 @@ func deal_info() -> Array:
 				if can:
 					label = "camp_repair_all"
 		"spells":
-			pass
+			if not _immediate_training():
+				label = "camp_level_up"
+				total = _pending_cost()
+				can = not _pending.is_empty()
+				cancel = can
 		"itemtrade", "spelltrade":
 			if not buy_pile.is_empty() or not sell_pile.is_empty():
 				label = "camp_item_trade" if mode == "itemtrade" else "camp_spell_trade"
@@ -1197,6 +1209,9 @@ func constr_cost() -> int:
 func _on_yes() -> void:
 	_stop_transfer_hold()
 	if not deal_info()[2]:
+		return
+	if mode == "spells":
+		_commit_training()
 		return
 	if mode == "weapons":
 		#  mode 0: "camp_repair_all", the worn weapons and armour.
@@ -1336,6 +1351,9 @@ func constr_result(e: Dictionary) -> void:
 func _on_cancel() -> void:
 	_stop_transfer_hold()
 	if trade_wait or repair_wait: return
+	if mode == "spells":
+		_drop_training()
+		return
 	var rows := _row_counts()
 	var returns: Array[Array] = []
 	if mode in ["itemtrade", "spelltrade"]:
@@ -1364,6 +1382,7 @@ func _on_cancel() -> void:
 
 func refresh(u: GameUnit) -> void:
 	if u != _unit:
+		_drop_training()
 		_close_training_reset()
 		_stop_transfer_hold()
 	_unit = u
@@ -1494,9 +1513,9 @@ func side_buttons() -> Array:
 		match b:
 			"exit": out.append(b)
 			"accept", "cancel":
-				# Training applies on each skill/perk click; this screen has
-				# no pending deal for these controls to accept or cancel.
-				if mode == "spells" and GameData.option("ui_active_buttons") != 0:
+				# Training that applies on each click has no deal to accept or
+				# cancel: "Reset skills…" takes their place.
+				if mode == "spells" and _immediate_training():
 					continue
 				if not (mode == "weapons" and (not item_group() or _noconstr())):
 					out.append(b)
@@ -1563,7 +1582,7 @@ func pad_targets() -> Array:
 			add.call(_slot_rect(k), k)
 	for b: String in side_buttons():
 		add.call(SIDE_BUTTONS[b][0], "side:" + b)
-	if mode == "spells" and _unit and _unit.has_meta("hero"):
+	if mode == "spells" and _unit and _unit.has_meta("hero") and _immediate_training():
 		add.call(REFUND_RECT, "refund_training")
 	var rows := [500.0]
 	if _key_shown("shop0"):
@@ -1607,6 +1626,8 @@ func _notification(what: int) -> void:
 		_hold_cmd = {}
 		_stop_transfer_hold()
 		_scroll_repeat.stop()
+		if what == NOTIFICATION_VISIBILITY_CHANGED:
+			_drop_training()
 
 
 func _scroll_list(which: String, delta: int, edge := false) -> void:
@@ -1674,7 +1695,7 @@ func _process_training_hold(dt: float) -> void:
 			_hold_cmd = {}
 			return
 		_hold_cmd.perk = code
-	construct.emit(_hold_cmd.duplicate())
+	_train(_hold_cmd.duplicate())
 
 
 func _process_selection(dt: float) -> void:
@@ -1780,7 +1801,7 @@ func _gui_input(e: InputEvent) -> void:
 	# The hero widget's arrows (modes 0 / 1): plays
 	# buttons\camp\hero.wav and steps the hero
 	# (widget).
-	if mode in ["weapons", "spells"]:
+	if mode in ["weapons", "spells"] and _can_step_hero():
 		for a in [[Rect2(0, 125, 30, 20), -1], [Rect2(170, 125, 30, 20), 1]]:
 			if (a[0] as Rect2).has_point(p):
 				if GameSound.instance:
@@ -1801,7 +1822,7 @@ func _gui_input(e: InputEvent) -> void:
 				GameSound.instance.ui("buttons\\camp\\perk.wav")
 			if not cmd.is_empty():
 				if row[3] == "refund": _choose_training_reset()
-				else: construct.emit(cmd)
+				else: _train(cmd)
 				if row[3] == "skill":
 					_hold_cmd = cmd
 					_hold_button = MOUSE_BUTTON_LEFT
@@ -2794,9 +2815,9 @@ func _draw_side() -> void:
 	# Mode title.
 	_t(Rect2(600, 410, 200, 20), _str(MODE_TITLES.get(mode, "")), 1, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
 	if mode == "spells":
-		if GameData.option("ui_active_buttons") != 0:
-			_tb(Rect2(12, 450, 176, 15), RemakeText.t("Changes apply immediately."),
-				0, Interface800.TEXT, 3)
+		if _immediate_training():
+			_tb(Rect2(12, 430, 176, 15), RemakeText.t("Changes apply immediately."),
+				0, Interface800.TEXT, 2)
 		_draw_skills()
 
 
@@ -2825,7 +2846,7 @@ func _draw_help(x0: float, id: int) -> void:
 	_tb(Rect2(x0 + 15, 140, 170, 15), body, 0, Interface800.TEXT, 16)
 
 
-func _lbl(n: int) -> String:
+static func _lbl(n: int) -> String:
 	return _str("infoitem_%d" % n)
 
 
@@ -2898,7 +2919,7 @@ func _draw_item_info(x0: float, id: String) -> void:
 ##   material's resists.
 ## A keystone uses the spell rows; a blueprint's name and
 ## description come from "instr <prototype>" (loot mode 2).
-func _item_info(id: String) -> Dictionary:
+static func _item_info(id: String) -> Dictionary:
 	var out := {"name": Items.title(id), "rows": PackedStringArray(), "gap": 15.0, "desc": "", "lines": 4,
 		"tail_at": 0.0, "tail": PackedStringArray()}
 	var rows: PackedStringArray = out.rows
@@ -3022,7 +3043,7 @@ func _item_info(id: String) -> Dictionary:
 ## The info widget's text as plain lines (name, rows, a blank line, the
 ## description, the trailing rows), for the remake's action area under the
 ## camp (InventoryPanel) — the same port as _draw_item_info.
-func item_info_text(id: String) -> String:
+static func item_info_text(id: String) -> String:
 	var inf := _item_info(id)
 	var out := PackedStringArray([String(inf.name)])
 	out.append_array(inf.rows)
@@ -3039,7 +3060,7 @@ func item_info_text(id: String) -> String:
 	return "\n".join(out)
 
 
-func _weapon_rows(rows: PackedStringArray, row: Dictionary, dm: Vector2, f: PackedFloat32Array) -> void:
+static func _weapon_rows(rows: PackedStringArray, row: Dictionary, dm: Vector2, f: PackedFloat32Array) -> void:
 	var ty := ""
 	for t in 7:
 		if f[t] != 0.0:
@@ -3056,7 +3077,7 @@ func _weapon_rows(rows: PackedStringArray, row: Dictionary, dm: Vector2, f: Pack
 
 ## (0): "%.1f" of the general armour (type 6), then the types
 ## 0..5 below it ("string dmg_N") as the vulnerability.
-func _armor_rows(rows: PackedStringArray, l: PackedFloat32Array) -> void:
+static func _armor_rows(rows: PackedStringArray, l: PackedFloat32Array) -> void:
 	rows.append("%s %.1f" % [_lbl(25), l[6]])
 	var below := PackedStringArray()
 	for t in 6:
@@ -3066,14 +3087,14 @@ func _armor_rows(rows: PackedStringArray, l: PackedFloat32Array) -> void:
 		rows.append("%s %s" % [_lbl(24), ", ".join(below)])
 
 
-func _effect_row(pp: Dictionary) -> String:
+static func _effect_row(pp: Dictionary) -> String:
 	var mods: Array = Array(pp.proto.get("mods", []))
 	if mods.size() > 3 and int(mods[3]) == 0:
 		return "%s %s" % [_lbl(8), _lbl(28)]
 	return "%s %d" % [_lbl(8), int(pp.effect)]
 
 
-func _duration_row(d: float) -> String:
+static func _duration_row(d: float) -> String:
 	if d < 2.0:
 		return "%s %s" % [_lbl(12), _lbl(21)]
 	return "%s %.1f%s" % [_lbl(12), d / 15.0, _lbl(27)]
@@ -3166,8 +3187,9 @@ func _hero_rows() -> Array:
 func _draw_hero() -> void:
 	_region("campinfo", Rect2(14, 110, 86, 50), Rect2(231, 76, -86, 60))
 	_region("campinfo", Rect2(100, 110, 86, 50), Rect2(145, 76, 86, 60))
-	_region("campinfo", Rect2(176, 125, 16, 20), Rect2(2, 129, 16, 20))
-	_region("campinfo", Rect2(8, 125, 16, 20), Rect2(18, 129, -16, 20))
+	if _can_step_hero():
+		_region("campinfo", Rect2(176, 125, 16, 20), Rect2(2, 129, 16, 20))
+		_region("campinfo", Rect2(8, 125, 16, 20), Rect2(18, 129, -16, 20))
 	if _unit == null:
 		return
 	_t(Rect2(0, 127, 200, 16), _unit.display_name, 1, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
@@ -3178,6 +3200,14 @@ func _draw_hero() -> void:
 		_t(r, String(row[0]), 0, row[2])
 		_t(r, String(row[1]), 0, row[2], HORIZONTAL_ALIGNMENT_RIGHT)
 		y += 15.0
+
+
+## The hero widget's arrows step through the player's heroes; the original
+## shows them only when there is another one to step to.
+func _can_step_hero() -> bool:
+	if hud == null or hud.game == null:
+		return false
+	return hud.game.my_units().filter(func(u: GameUnit): return u.has_meta("hero")).size() > 1
 
 
 ## The skills widget (build, data
@@ -3214,21 +3244,8 @@ func _choose_training_reset() -> void:
 	dialog.open(_unit.get_meta("hero"))
 
 
-func _close_training_reset() -> void:
-	if is_instance_valid(_reset_dialog):
-		_reset_dialog.hide()
-		_reset_dialog.queue_free()
-	_reset_dialog = null
-
-
-func _draw_skills() -> void:
-	_skill_rows.clear()
-	if _unit == null or not _unit.has_meta("hero"):
-		return
-	var h: Dictionary = _unit.get_meta("hero")
-	var xp := float(h.get("exp", 0.0))
-	var mine := hud != null and _unit.controller == hud.game.session.my_index
-	var at_camp := mine and hud.game.session.camp_available()
+## "Reset skills…" and its help (option skill_reset_button).
+func _draw_refund(h: Dictionary, mine: bool, at_camp: bool) -> void:
 	var refundable := at_camp and not _unit.dead and (TrainingRefund.reason(h).is_empty() or TrainingRefund.reason(h, false).is_empty())
 	_region("campinfo", REFUND_RECT, Rect2(124, 138, 40, 15))
 	_t(Rect2(REFUND_RECT.position + Vector2(2, 6), REFUND_RECT.size - Vector2(4, 8)),
@@ -3245,6 +3262,81 @@ func _draw_skills() -> void:
 			refund_help = "Choose whether to restore starting skills or refund every skill and ability."
 	_skill_rows.append([REFUND_RECT, {"t": "refund_training", "unit": _unit.uid} if refundable else {},
 		[RemakeText.t("Reset skills…"), RemakeText.t(refund_help)], "refund"])
+
+
+## Option skill_reset_button: training applies on each click (default), else
+## it is the original's pending deal (`_pending`, ✓ / ✗).
+static func _immediate_training() -> bool:
+	return GameData.option("skill_reset_button") != 0
+
+
+## The hero the skills widget shows: with the pending training, if any.
+func _training_hero() -> Dictionary:
+	return _preview if not _pending.is_empty() else _unit.get_meta("hero")
+
+
+## A skill / ability click: sent at once, or added to the pending deal when
+## the preview can afford it (the original's own check on the deal).
+func _train(cmd: Dictionary) -> void:
+	if _immediate_training():
+		construct.emit(cmd)
+		return
+	if not String(cmd.get("t", "")) in ["train", "perk"] or _unit == null:
+		return
+	var h := _training_hero().duplicate(true)
+	var ok := Skills.raise(h, String(cmd.get("stat", ""))) if cmd.t == "train" else Perks.learn(h, String(cmd.get("perk", "")))
+	if ok:
+		_preview = h
+		_pending.append(cmd.duplicate())
+		_sig = ""
+		queue_redraw()
+
+
+## The experience the pending training costs.
+func _pending_cost() -> int:
+	if _pending.is_empty() or _unit == null:
+		return 0
+	return int(round(float(_unit.get_meta("hero").get("exp", 0.0)) - float(_preview.get("exp", 0.0))))
+
+
+## ✓: the pending training in the order it was chosen.
+func _commit_training() -> void:
+	var cmds := _pending.duplicate()
+	_drop_training()
+	for cmd: Dictionary in cmds:
+		construct.emit(cmd)
+
+
+## ✗, another mode or hero, or the screen closing.
+func _drop_training() -> void:
+	if _pending.is_empty():
+		return
+	_pending.clear()
+	_preview = {}
+	_hold_cmd = {}
+	_sig = ""
+	queue_redraw()
+
+
+func _close_training_reset() -> void:
+	if is_instance_valid(_reset_dialog):
+		_reset_dialog.hide()
+		_reset_dialog.queue_free()
+	_reset_dialog = null
+
+
+func _draw_skills() -> void:
+	_skill_rows.clear()
+	if _unit == null or not _unit.has_meta("hero"):
+		return
+	var h := _training_hero()
+	var xp := float(h.get("exp", 0.0))
+	var mine := hud != null and _unit.controller == hud.game.session.my_index
+	var at_camp := mine and hud.game.session.camp_available()
+	# Off: the original's camp, where nothing is unlearnt or reset.
+	var immediate := _immediate_training()
+	if immediate:
+		_draw_refund(h, mine, at_camp)
 	var o := Vector2(200, 100)
 	_t(Rect2(o + Vector2(0, 10), Vector2(200, 15)), _str("skills"), 0, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
 	_t(Rect2(o + Vector2(0, 205), Vector2(200, 15)), _str("perks"), 0, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
@@ -3264,7 +3356,7 @@ func _draw_skills() -> void:
 			_region("campinfo", Rect2(350, r.position.y, 40, 15), plate)
 			_t(r, _cost_text(c), 0, cost_col.call(c), HORIZONTAL_ALIGNMENT_RIGHT)
 		var desc := _skill_desc(sk, _unit)
-		var can_remove := at_camp and not _unit.dead and lv > 0
+		var can_remove := immediate and at_camp and not _unit.dead and lv > 0
 		var refund := TrainingRefund.rank_value(h, "skill", sk)
 		if lv == 100 and can_remove:
 			_region("campinfo", Rect2(350, r.position.y, 40, 15), plate)
@@ -3303,7 +3395,7 @@ func _draw_skills() -> void:
 		var code := "%s%d" % [fam, n]
 		var desc := _perk_desc(code, n, h)
 		var refund := TrainingRefund.rank_value(h, "perk", code)
-		var can_remove := at_camp and not _unit.dead and refund > 0.0
+		var can_remove := immediate and at_camp and not _unit.dead and refund > 0.0
 		if (n >= 3 or Perks.get_perk(nxt).is_empty()) and can_remove:
 			_region("campinfo", Rect2(350, y, 40, 15), plate)
 			_t(r, "−", 0, Interface800.TEXT, HORIZONTAL_ALIGNMENT_RIGHT)
