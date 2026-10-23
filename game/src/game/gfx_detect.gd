@@ -810,16 +810,7 @@ func _apply_live() -> void:
 	var screen := ShaderCompilationScreen.begin(get_tree(), PREPARATION_OWNER,
 		ShaderCompilationScreen.GRAPHICS, 0, 0, ShaderCompilationScreen.SETTINGS_TITLE)
 	if screen:
-		if not is_instance_valid(_preparation_screen) or _preparation_screen != screen:
-			_release_preparation_input()
-			_preparation_screen = screen
-			_preparation_input_enabled = screen.is_processing_input()
-			_preparation_hint = screen.hint
-			_preparation_override = true
-		# The detector's existing full-screen Overlay keeps Esc / B working.
-		# The shared cover displays its cancel hint while hiding the scene.
-		screen.set_process_input(false)
-		screen.hint = "Esc: skip the test"
+		_use_preparation_input(screen)
 		screen.present()
 	GameData.graphics_revision += 1
 	GameData._apply_window()
@@ -835,6 +826,19 @@ func _apply_live() -> void:
 	ShaderCompilationScreen.end(PREPARATION_OWNER)
 
 
+func _use_preparation_input(screen: ShaderCompilationScreen) -> void:
+	if is_instance_valid(_preparation_screen) and _preparation_screen == screen: return
+	_release_preparation_input()
+	_preparation_screen = screen
+	_preparation_input_enabled = screen.is_processing_input()
+	_preparation_hint = screen.hint
+	_preparation_override = true
+	# The detector's existing full-screen Overlay keeps Esc / B working,
+	# including preparation admitted later by an SDK or viewport resize.
+	screen.set_process_input(false)
+	screen.hint = "Esc: skip the test"
+
+
 func _release_preparation_input() -> void:
 	if not _preparation_override: return
 	if is_instance_valid(_preparation_screen):
@@ -848,6 +852,7 @@ func _release_preparation_input() -> void:
 ## live scene. Actual preparation/draw readiness supplies the wait; no timer.
 func _wait_preparation(allow_cancel := true) -> void:
 	while ShaderCompilationScreen.active():
+		_use_preparation_input(ShaderCompilationScreen._current)
 		if allow_cancel and _cancelled: return
 		await get_tree().process_frame
 	_release_preparation_input()
@@ -929,12 +934,25 @@ func _frames(secs: float, min_n: int) -> Dictionary:
 		var process_start := Time.get_ticks_usec()
 		var physics_ms := (process_start - int(physics_start[0])) / 1000.0 if physics_start[0] >= 0 else 0.0
 		physics_start[0] = -1
-		_sync_stress()
-		# TIME_PROCESS also includes RenderingServer.draw and is a one-second
-		# maximum, so adding viewport CPU time to it counts rendering twice.
-		# Measure the node-processing phase before draw instead.
-		if DisplayServer.get_name() != "headless":
-			await RenderingServer.frame_pre_draw
+		var interrupted := ShaderCompilationScreen.active()
+		if not interrupted:
+			_sync_stress()
+			# TIME_PROCESS also includes RenderingServer.draw and is a one-second
+			# maximum, so adding viewport CPU time to it counts rendering twice.
+			# Measure the node-processing phase before draw instead.
+			if DisplayServer.get_name() != "headless":
+				await RenderingServer.frame_pre_draw
+			interrupted = ShaderCompilationScreen.active()
+		if _cancelled: break
+		if interrupted:
+			# A late SDK/resize preparation can begin inside a timing batch.
+			# Discard that partial batch and its paused time before sampling again.
+			await _wait_preparation()
+			for key: String in out: out[key] = PackedFloat32Array()
+			t0 = Time.get_ticks_usec()
+			last = t0
+			physics_start[0] = -1
+			continue
 		var now := Time.get_ticks_usec()
 		out.wall.append((now - last) / 1000.0)
 		last = now

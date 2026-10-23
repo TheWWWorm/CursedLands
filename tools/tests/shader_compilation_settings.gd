@@ -19,6 +19,8 @@ class Detector extends GfxDetect:
 	var sample_frames := 0
 	var samples_under_cover := 0
 	var message_text := ""
+	var interrupt_at := 0
+	var interruption_hook := Callable()
 	func _ready() -> void:
 		layer = 104
 		process_mode = Node.PROCESS_MODE_ALWAYS
@@ -29,6 +31,9 @@ class Detector extends GfxDetect:
 	func _sync_stress() -> void:
 		sample_frames += 1
 		if ShaderCompilationScreen.active() or get_tree().paused: samples_under_cover += 1
+		if interrupt_at > 0 and sample_frames >= interrupt_at:
+			interrupt_at = 0
+			interruption_hook.call()
 	func _message(text: String) -> void:
 		message_text = text
 
@@ -165,6 +170,10 @@ func restore(detector: Detector) -> void:
 	restoration_done = true
 
 
+func interrupt_sample() -> void:
+	Screen.begin(get_tree(),HOLD,Screen.GRAPHICS)
+
+
 func run() -> void:
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--audit-out="): out = arg.trim_prefix("--audit-out=")
@@ -216,6 +225,25 @@ func run() -> void:
 	check(not Screen.active() and not get_tree().paused and not detector._preparation_override, "sampling releases detector presentation overrides")
 	rows.append({"case":"sampling-negative-control","sample_frames":detector.sample_frames,
 		"samples_under_cover":detector.samples_under_cover,"wall_frames":samples.wall.size()})
+	# Admit preparation in the middle of a real timing batch. This models a
+	# delayed SDK/resize hold without requiring that SDK on the current GPU.
+	sampling_done = false
+	detector.sample_frames = 0
+	detector.interrupt_at = 2
+	detector.interruption_hook = interrupt_sample
+	sample(detector)
+	check(await until(func(): return Screen.active()), "controlled late preparation interrupts an already running sample batch")
+	await frames(12)
+	check(not sampling_done and detector.sample_frames == 2 and get_tree().paused,
+		"late preparation stops the sampler without collecting covered or paused frames")
+	check(not Screen._current.is_processing_input() and Screen._current.hint == "Esc: skip the test",
+		"late preparation delegates cancellation to the existing detector overlay")
+	Screen.end(HOLD)
+	check(await until(func(): return sampling_done), "sampling restarts after late preparation retires")
+	check(detector.sample_frames >= 6 and samples.wall.size() >= 4 and detector.samples_under_cover == 0,
+		"interrupted partial samples are discarded and replaced by a complete uncovered batch")
+	rows.append({"case":"late-sampling-negative-control","sample_frames":detector.sample_frames,
+		"samples_under_cover":detector.samples_under_cover,"wall_frames":samples.wall.size()})
 	# The watchdog must use one central settings transaction while preserving
 	# its detection record and unrelated metadata.
 	var record := {"version":GfxDetect.VERSION,"fingerprint":GfxDetect.fingerprint(),
@@ -265,6 +293,24 @@ func run() -> void:
 		and screen.is_processing_input() == prior_input, "detector exit restores a shared cover without ending another owner's preparation")
 	Screen.end(HOLD)
 	check(await until(func(): return not Screen.active()), "shared cover closes cleanly after detector exit")
+	# Cancellation must preserve a pause that existed before preparation.
+	detector = Detector.new(); add_child(detector)
+	detector.manual = true
+	detector._before = GameData.options.duplicate(true)
+	detector._record_before = GfxDetect.load_record().duplicate(true)
+	detector._testing = true
+	get_tree().paused = true
+	detector._apply_live()
+	await frames(2)
+	check(get_tree().paused and not Screen.owns_pause(get_tree()), "preparation never claims the existing player pause")
+	escape.pressed = true; get_viewport().push_input(escape,true)
+	check(detector._cancelled, "existing player pause still permits detector cancellation")
+	escape.pressed = false; get_viewport().push_input(escape,true)
+	await detector._cancel_test()
+	check(get_tree().paused and not Screen.active() and not detector._preparation_override,
+		"cancellation restores screen input while preserving the player's original pause")
+	detector.free()
+	get_tree().paused = false
 	GameData.options_changed.disconnect(_notified)
 	terrain.free(); game.free(); session.free()
 	GameData.options = saved_options
