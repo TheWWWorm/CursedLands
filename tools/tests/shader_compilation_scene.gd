@@ -6,6 +6,10 @@ const Screen = preload("res://src/ui/shader_compilation_screen.gd")
 var controller: Node
 var campaign: Game
 var progress_rows: Array[Dictionary] = []
+var presented_rows: Array[Dictionary] = []
+var preparation_screens := {}
+var seen_presentations := {}
+var cover_captures := {}
 var preparation_cases: Array[Dictionary] = []
 var case_name := "setup"
 var old_observer := Callable()
@@ -16,24 +20,67 @@ func _ready() -> void:
 
 func observe_progress(value: Dictionary) -> void:
 	if not is_instance_valid(controller): return
+	var screen_id: int=Screen._current.get_instance_id() if Screen.active() else 0
+	if screen_id!=0 and Screen._current._owners.has(controller._preparation_owner):
+		if not preparation_screens.has(case_name): preparation_screens[case_name]={}
+		preparation_screens[case_name][screen_id]=true
 	var row := value.duplicate(true)
 	row.merge({"case":case_name,"owner":String(controller._preparation_owner),
 		"token":controller._preparation_token,"waiting_id":controller._preparation_waiting_id,
 		"completed_id":controller._preparation_completed_id,"drawn_frames":Engine.get_frames_drawn(),
+		"screen_id":screen_id,"screen_active":Screen.active(),
 		"screen_pause":Screen.owns_pause(get_tree()),"paused":get_tree().paused})
 	if progress_rows.size()<4000: progress_rows.append(row)
+
+func case_screen_active(label: String) -> bool:
+	return Screen.active() and preparation_screens.get(label,{}).has(Screen._current.get_instance_id())
+
+func capture_cover(label: String,source: String) -> void:
+	if cover_captures.has(label) or not case_screen_active(label): return
+	var image := get_viewport().get_texture().get_image()
+	var valid: bool=image!=null and not image.is_empty()
+	check(valid,label+": preparation cover has actual rendered pixels")
+	var covered := false;var saved := false
+	if valid:
+		var pixel := image.get_pixel(8,8)
+		covered=absf(pixel.r-Screen.BACKGROUND.r)<0.08 and absf(pixel.g-Screen.BACKGROUND.g)<0.08 \
+			and absf(pixel.b-Screen.BACKGROUND.b)<0.08
+		check(covered,label+": preparation covers the campaign view")
+		saved=image.save_png(out.path_join(label+".png"))==OK
+		check(saved,label+": preparation capture saved")
+	cover_captures[label]={"source":source,"screen_id":Screen._current.get_instance_id(),
+		"drawn_frames":Engine.get_frames_drawn(),"pixels_valid":valid,"covered":covered,"saved":saved}
+
+func observe_post_draw() -> void:
+	if not is_instance_valid(controller) or not case_screen_active(case_name): return
+	# The controller may release its owner before this coroutine's next poll.
+	# Observe the same actual screen through finishing, not just owner lifetime.
+	var screen_id: int=Screen._current.get_instance_id()
+	var drawn_frames := Engine.get_frames_drawn()
+	var key := "%s:%d:%d"%[case_name,screen_id,drawn_frames]
+	var new_frame := not seen_presentations.has(key)
+	seen_presentations[key]=true
+	if presented_rows.size()<8000:
+		presented_rows.append({"case":case_name,"screen_id":screen_id,"drawn_frames":drawn_frames,
+			"new_frame":new_frame,"phase":Screen._current._phase,"owner":String(controller._preparation_owner),
+			"screen_pause":Screen.owns_pause(get_tree()),"paused":get_tree().paused})
+	capture_cover(case_name,"frame_post_draw")
 
 func save_preparation_report() -> void:
 	FileAccess.open(out.path_join("shader-compilation-scene.json"),FileAccess.WRITE).store_string(JSON.stringify({
 		"checks":checks,"failures":failures,"cases":preparation_cases,"progress":progress_rows,
+		"presentations":presented_rows,
 		"driver":RenderingServer.get_current_rendering_driver_name(),"device":RenderingServer.get_video_adapter_name(),
 		"profile":OS.get_user_data_dir(),"stats":controller.stats if is_instance_valid(controller) else {},
 		"note":"Native campaign builds and renders. Stale acknowledgments, invalid render arguments and a pipeline-failure notification are explicitly injected; successful readiness is never fabricated."},"\t"))
 
-func wait_preparation(label: String,previous_id := 0,expect_cover := true) -> bool:
+func wait_preparation(label: String,previous_id := 0,expect_cover := true,allow_retry := false) -> bool:
 	var started := Time.get_ticks_msec()
 	var cover_frames := 0;var pause_frames := 0;var waiting_with_old_output := 0
-	var success := false;var captured := false
+	var success := false
+	# Explicit synchronous processing may already have presented the cover and
+	# queued a fast render acknowledgment before the first await below.
+	if expect_cover: capture_cover(label,"before_wait_after_present")
 	while Time.get_ticks_msec()-started<90_000:
 		await frames(1)
 		await RenderingServer.frame_post_draw
@@ -43,27 +90,25 @@ func wait_preparation(label: String,previous_id := 0,expect_cover := true) -> bo
 			if Screen.owns_pause(get_tree()) and get_tree().paused: pause_frames+=1
 			if controller.device!=null and controller.device.output_ready() and controller._preparation_completed_id==0:
 				waiting_with_old_output+=1
-			if not captured:
-				var image := get_viewport().get_texture().get_image()
-				check(image!=null and not image.is_empty(),label+": preparation cover has actual rendered pixels")
-				if image!=null and not image.is_empty():
-					var pixel := image.get_pixel(8,8)
-					check(absf(pixel.r-Screen.BACKGROUND.r)<0.08 and absf(pixel.g-Screen.BACKGROUND.g)<0.08 \
-						and absf(pixel.b-Screen.BACKGROUND.b)<0.08,label+": preparation covers the campaign view")
-					check(image.save_png(out.path_join(label+".png"))==OK,label+": preparation capture saved")
-				captured=true
-		if controller._failed: break
+		if controller._failed and not allow_retry: break
 		success=controller.device!=null and controller.device.get_instance_id()!=previous_id and controller.device.output_ready() \
 			and controller.stats.get("active",false) and not controller.stats.get("rebuilding",false) \
 			and not held and not Screen.active()
 		if success: break
 	var events := progress_rows.filter(func(row: Dictionary): return row.case==label and not String(row.owner).is_empty())
+	var presentations := presented_rows.filter(func(row: Dictionary): return row.case==label and row.new_frame)
+	var paused_presentations := presentations.filter(func(row: Dictionary): return row.screen_pause and row.paused)
 	check(success,label+": real output is bound and the compilation cover settles within its deadline")
 	check(not events.is_empty() if expect_cover else events.is_empty(),label+": explicit requests alone create a scene preparation owner")
 	if expect_cover:
-		check(cover_frames>0 and pause_frames>0,label+": controller progresses while its visible single-player cover owns the pause")
+		check(not presentations.is_empty() and not paused_presentations.is_empty(),
+			label+": controller progresses while its visible single-player cover owns the pause")
+		check(cover_captures.has(label) and cover_captures[label].covered and cover_captures[label].saved,
+			label+": actual presented cover was captured before removal")
 	preparation_cases.append({"case":label,"success":success,"elapsed_ms":Time.get_ticks_msec()-started,
 		"cover_frames":cover_frames,"owned_pause_frames":pause_frames,"waiting_with_old_output_frames":waiting_with_old_output,
+		"presented_cover_frames":presentations.size(),"presented_pause_frames":paused_presentations.size(),
+		"owner_progress_events":events.size(),"capture":cover_captures.get(label,{}),"allow_retry":allow_retry,
 		"device_id":controller.device.get_instance_id() if controller.device!=null else 0,
 		"completed_renders":controller.device.completed_renders if controller.device!=null else 0,
 		"token":controller._preparation_token,"stats":controller.stats.duplicate(true)})
@@ -93,6 +138,7 @@ func run() -> void:
 	get_window().borderless=true;get_window().size=Vector2i(1280,720)
 	await wait_cover_removed("initial material preparation")
 	old_observer=Screen.on_progress;Screen.on_progress=observe_progress
+	RenderingServer.frame_post_draw.connect(observe_post_draw)
 	check(controller.process_mode==Node.PROCESS_MODE_ALWAYS,"scene/PT controller continues during a screen-owned pause")
 
 	case_name="initial-path"
@@ -166,7 +212,7 @@ func run() -> void:
 		"injected active pipeline failure releases the preparation owner and enters fallback")
 	controller.set_process(true)
 	case_name="automatic-retry"
-	if not await wait_preparation(case_name,device_id,false): await finish(context);return
+	if not await wait_preparation(case_name,device_id,false,true): await finish(context);return
 
 	case_name="scene-raytracing"
 	change_mode(0,0,1)
@@ -187,6 +233,7 @@ func run() -> void:
 
 func finish(context: Array) -> void:
 	Screen.on_progress=old_observer
+	if RenderingServer.frame_post_draw.is_connected(observe_post_draw): RenderingServer.frame_post_draw.disconnect(observe_post_draw)
 	context[1].queue_free();context[0].queue_free();await frames(16)
 	check(not Screen.active(),"controller exit leaves no scene compilation cover")
 	TexUpscale.shutdown();save_preparation_report()
@@ -195,3 +242,4 @@ func finish(context: Array) -> void:
 
 func _exit_tree() -> void:
 	Screen.on_progress=old_observer
+	if RenderingServer.frame_post_draw.is_connected(observe_post_draw): RenderingServer.frame_post_draw.disconnect(observe_post_draw)
