@@ -1,0 +1,203 @@
+{
+	"checks": 47,
+	"failures": [],
+	"note": "Injected failure notifications and budget flag, actual campaign snapshots, native device builds and output. Physical OOM/device loss is not provoked.",
+	"retry_delays": [
+		1.0,
+		2.0,
+		4.0,
+		8.0,
+		16.0,
+		30.0,
+		30.0,
+		30.0
+	],
+	"runs": [
+		{
+			"case": "camera recenter",
+			"inactive_frames": 0,
+			"milliseconds": 3312,
+			"rebuilding_frames": 170,
+			"stats": {
+				"accumulation_frames": 1.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1930,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": false,
+				"instances": 2070,
+				"light_history_limited": false,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"rebuilding": false,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"snapshot_generation": 2,
+				"supported": true,
+				"terrain_material_build_us": 18563,
+				"terrain_material_bytes": 772672,
+				"terrain_material_triangles": 56210,
+				"trace_render_scale": 1.0,
+				"triangles": 146919,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			}
+		},
+		{
+			"case": "replacement retry",
+			"inactive_frames": 0,
+			"milliseconds": 3507,
+			"rebuilding_frames": 128,
+			"stats": {
+				"accumulation_frames": 1.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1842,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": false,
+				"instances": 1984,
+				"light_history_limited": false,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"rebuilding": false,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"snapshot_generation": 3,
+				"supported": true,
+				"terrain_material_build_us": 16558,
+				"terrain_material_bytes": 757312,
+				"terrain_material_triangles": 55634,
+				"trace_render_scale": 1.0,
+				"triangles": 143079,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			}
+		},
+		{
+			"case": "rapid camera recenter",
+			"inactive_frames": 0,
+			"milliseconds": 1952,
+			"rebuilding_frames": 91,
+			"stats": {
+				"accumulation_frames": 1.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1204,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": false,
+				"instances": 1269,
+				"light_history_limited": false,
+				"lights": 0,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"rebuilding": false,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"snapshot_generation": 4,
+				"supported": true,
+				"terrain_material_build_us": 16156,
+				"terrain_material_bytes": 558204,
+				"terrain_material_triangles": 38667,
+				"trace_render_scale": 1.0,
+				"triangles": 93302,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			}
+		}
+	],
+	"stats": {
+		"accumulation_frames": 5.0,
+		"active": true,
+		"display_size": [
+			1280,
+			720
+		],
+		"emissive_candidates": 0,
+		"emissive_triangles": 0,
+		"geometries": 791,
+		"gi_samples": 0,
+		"history_limit": 8.0,
+		"history_reused": true,
+		"instances": 793,
+		"light_history_limited": false,
+		"lights": 1,
+		"path_bounces": 2,
+		"path_samples": 1,
+		"path_tracing": true,
+		"quality": 0,
+		"rebuilding": true,
+		"render_scale": 1.0,
+		"render_size": [
+			1280,
+			720
+		],
+		"shadow_samples": 0,
+		"size": [
+			640,
+			360
+		],
+		"snapshot_generation": 9,
+		"supported": true,
+		"terrain_material_build_us": 13795,
+		"terrain_material_bytes": 421420,
+		"terrain_material_triangles": 25292,
+		"trace_render_scale": 1.0,
+		"triangles": 59106,
+		"updated_instances": 0,
+		"updated_poses": 0,
+		"window_resolution_reference": false
+	}
+}

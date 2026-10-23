@@ -1,0 +1,484 @@
+diff --git a/drivers/d3d12/rendering_context_driver_d3d12.cpp b/drivers/d3d12/rendering_context_driver_d3d12.cpp
+--- a/drivers/d3d12/rendering_context_driver_d3d12.cpp
++++ b/drivers/d3d12/rendering_context_driver_d3d12.cpp
+@@ -32,6 +32,7 @@
+ 
+ #include "core/config/engine.h"
+ #include "core/config/project_settings.h"
++#include "core/os/os.h"
+ #include "core/string/ustring.h"
+ #include "core/templates/local_vector.h"
+ 
+@@ -134,9 +135,51 @@
+ 		res = d3d_D3D12GetDebugInterface(IID_PPV_ARGS(&debug_controller));
+ 	}
+ 
++	if (FAILED(res) && device_diagnostics_enabled && !Engine::get_singleton()->is_validation_layers_enabled()) {
++		// Optional diagnostics may use DRED without the debug-layer package.
++		// The caller reports that fallback; explicit validation stays strict.
++		return ERR_QUERY_FAILED;
++	}
+ 	ERR_FAIL_COND_V(!SUCCEEDED(res), ERR_QUERY_FAILED);
+ 	debug_controller->EnableDebugLayer();
++	if (gpu_validation_requested) {
++		// Explicit IID also works with the pinned MinGW headers, which do not
++		// provide __uuidof specializations for every diagnostic interface.
++		static const GUID debug1_iid = { 0xaffaa4ca, 0x63fe, 0x4d8e, { 0xb8, 0xad, 0x15, 0x90, 0x00, 0xaf, 0x43, 0x04 } };
++		ComPtr<ID3D12Debug1> gpu_debug;
++		res = debug_controller->QueryInterface(debug1_iid, reinterpret_cast<void **>(gpu_debug.GetAddressOf()));
++		if (SUCCEEDED(res)) {
++			gpu_debug->SetEnableGPUBasedValidation(TRUE);
++			print_line("D3D12 diagnostics: GPU-based validation enabled.");
++		} else {
++			WARN_PRINT(vformat("D3D12 diagnostics: GPU-based validation unavailable (0x%08x).", uint32_t(res)));
++		}
++	}
+ 	return OK;
++}
++
++void RenderingContextDriverD3D12::_initialize_device_diagnostics() {
++	// DRED must be configured before creating any D3D12 device. It does not
++	// require the optional Windows Graphics Tools debug layer to be installed.
++	static const GUID dred_clsid = { 0x4a75bbc4, 0x9ff4, 0x4ad8, { 0x9f, 0x18, 0xab, 0xae, 0x84, 0xdc, 0x5f, 0xf2 } };
++	static const GUID dred_settings_iid = { 0x82bc481c, 0x6b9b, 0x4030, { 0xae, 0xdb, 0x7e, 0xe3, 0xd1, 0xdf, 0x1e, 0x63 } };
++	ComPtr<ID3D12DeviceRemovedExtendedDataSettings> settings;
++	HRESULT res = E_NOINTERFACE;
++	if (device_factory) {
++		res = device_factory->GetConfigurationInterface(dred_clsid, dred_settings_iid, reinterpret_cast<void **>(settings.GetAddressOf()));
++	} else {
++		auto get_debug_interface = reinterpret_cast<PFN_D3D12_GET_DEBUG_INTERFACE>(GetProcAddress(lib_d3d12, "D3D12GetDebugInterface"));
++		if (get_debug_interface) {
++			res = get_debug_interface(dred_settings_iid, reinterpret_cast<void **>(settings.GetAddressOf()));
++		}
++	}
++	if (SUCCEEDED(res)) {
++		settings->SetAutoBreadcrumbsEnablement(D3D12_DRED_ENABLEMENT_FORCED_ON);
++		settings->SetPageFaultEnablement(D3D12_DRED_ENABLEMENT_FORCED_ON);
++		print_line("D3D12 diagnostics: DRED breadcrumbs and page faults enabled.");
++	} else {
++		WARN_PRINT(vformat("D3D12 diagnostics: DRED configuration unavailable (0x%08x).", uint32_t(res)));
++	}
+ }
+ 
+ Error RenderingContextDriverD3D12::_create_dxgi_factory() {
+@@ -211,16 +254,26 @@
+ }
+ 
+ bool RenderingContextDriverD3D12::use_validation_layers() const {
+-	return Engine::get_singleton()->is_validation_layers_enabled();
++	return Engine::get_singleton()->is_validation_layers_enabled() || diagnostic_debug_layer_enabled;
+ }
+ 
+ Error RenderingContextDriverD3D12::initialize() {
++	gpu_validation_requested = OS::get_singleton()->get_environment("EI_D3D12_GPU_VALIDATION") == "1";
++	device_diagnostics_enabled = gpu_validation_requested || OS::get_singleton()->get_environment("EI_D3D12_DIAGNOSTICS") == "1";
+ 	Error err = _init_device_factory();
+ 	ERR_FAIL_COND_V(err != OK, ERR_CANT_CREATE);
+ 
+-	if (use_validation_layers()) {
++	if (use_validation_layers() || device_diagnostics_enabled) {
+ 		err = _initialize_debug_layers();
+-		ERR_FAIL_COND_V(err != OK, ERR_CANT_CREATE);
++		if (err != OK) {
++			ERR_FAIL_COND_V(Engine::get_singleton()->is_validation_layers_enabled(), ERR_CANT_CREATE);
++			WARN_PRINT("D3D12 diagnostics: debug layer unavailable; continuing with DRED only.");
++		} else {
++			diagnostic_debug_layer_enabled = device_diagnostics_enabled;
++		}
++	}
++	if (device_diagnostics_enabled) {
++		_initialize_device_diagnostics();
+ 	}
+ 
+ 	err = _initialize_devices();
+diff --git a/drivers/d3d12/rendering_context_driver_d3d12.h b/drivers/d3d12/rendering_context_driver_d3d12.h
+--- a/drivers/d3d12/rendering_context_driver_d3d12.h
++++ b/drivers/d3d12/rendering_context_driver_d3d12.h
+@@ -49,9 +49,13 @@
+ 	Microsoft::WRL::ComPtr<IDXGIFactory2> dxgi_factory;
+ 	TightLocalVector<Device> driver_devices;
+ 	bool tearing_supported = false;
++	bool device_diagnostics_enabled = false;
++	bool gpu_validation_requested = false;
++	bool diagnostic_debug_layer_enabled = false;
+ 
+ 	Error _init_device_factory();
+ 	Error _initialize_debug_layers();
++	void _initialize_device_diagnostics();
+ 	Error _create_dxgi_factory();
+ 	Error _initialize_devices();
+ 
+@@ -121,6 +125,7 @@
+ 	IDXGIFactory2 *dxgi_factory_get();
+ 	bool get_tearing_supported() const;
+ 	bool use_validation_layers() const;
++	bool is_device_diagnostics_enabled() const { return device_diagnostics_enabled; }
+ 
+ 	RenderingContextDriverD3D12();
+ 	virtual ~RenderingContextDriverD3D12() override;
+diff --git a/drivers/d3d12/rendering_device_driver_d3d12.cpp b/drivers/d3d12/rendering_device_driver_d3d12.cpp
+--- a/drivers/d3d12/rendering_device_driver_d3d12.cpp
++++ b/drivers/d3d12/rendering_device_driver_d3d12.cpp
+@@ -2426,13 +2426,46 @@
+ 
+ Error RenderingDeviceDriverD3D12::fence_wait(FenceID p_fence) {
+ 	FenceInfo *fence = (FenceInfo *)(p_fence.id);
+-	fence->d3d_fence->SetEventOnCompletion(fence->fence_value, fence->event_handle);
+-	DWORD res = WaitForSingleObjectEx(fence->event_handle, INFINITE, FALSE);
++	// RenderingDevice callers recycle resources after this returns and do not
++	// propagate failure. Device recovery is not implemented: diagnose and stop
++	// rather than allow CPU readback or reuse without confirmed GPU completion.
++	const char *failure_message = "D3D12 GPU fence completion failed. Rendering must stop to avoid reusing in-flight resources; see the device diagnostics above.";
++	HRESULT result = fence->d3d_fence->SetEventOnCompletion(fence->fence_value, fence->event_handle);
++	if (FAILED(result)) {
++		_report_device_failure("SetEventOnCompletion", result);
++		CRASH_NOW_MSG(failure_message);
++	}
++	DWORD res;
++	do {
++		// A slow workload has no timeout. Periodically check removal so a
++		// failed device cannot leave a load waiting on an unsignaled fence.
++		res = WaitForSingleObjectEx(fence->event_handle, 1000, FALSE);
++		if (res == WAIT_TIMEOUT) {
++			result = device->GetDeviceRemovedReason();
++			if (FAILED(result)) {
++				_report_device_failure("fence wait", result);
++				CRASH_NOW_MSG(failure_message);
++			}
++			_flush_diagnostic_messages();
++		}
++	} while (res == WAIT_TIMEOUT);
+ #ifdef PIX_ENABLED
+ 	PIXNotifyWakeFromFenceSignal(fence->event_handle);
+ #endif
+-
+-	return (res == WAIT_FAILED) ? FAILED : OK;
++	if (res != WAIT_OBJECT_0) {
++		_report_device_failure("WaitForSingleObjectEx", res == WAIT_FAILED ? HRESULT_FROM_WIN32(GetLastError()) : E_FAIL);
++		CRASH_NOW_MSG(failure_message);
++	}
++	const uint64_t completed_value = fence->d3d_fence->GetCompletedValue();
++	if (completed_value == UINT64_MAX) {
++		_report_device_failure("fence completion", DXGI_ERROR_DEVICE_REMOVED);
++		CRASH_NOW_MSG(failure_message);
++	} else if (completed_value < fence->fence_value) {
++		_report_device_failure("fence signaled before completion", E_FAIL);
++		CRASH_NOW_MSG(failure_message);
++	}
++	_flush_diagnostic_messages();
++	return OK;
+ }
+ 
+ void RenderingDeviceDriverD3D12::fence_free(FenceID p_fence) {
+@@ -2500,9 +2533,16 @@
+ 
+ Error RenderingDeviceDriverD3D12::command_queue_execute_and_present(CommandQueueID p_cmd_queue, VectorView<SemaphoreID> p_wait_semaphores, VectorView<CommandBufferID> p_cmd_buffers, VectorView<SemaphoreID> p_cmd_semaphores, FenceID p_cmd_fence, VectorView<SwapChainID> p_swap_chains) {
+ 	CommandQueueInfo *command_queue = (CommandQueueInfo *)(p_cmd_queue.id);
++	// Callers do not propagate submission failure. A failed signal must not
++	// leave them treating an old fence value as completion of new GPU work.
++	const char *failure_message = "D3D12 queue synchronization failed. Rendering must stop because GPU completion cannot be confirmed; see the device diagnostics above.";
+ 	for (uint32_t i = 0; i < p_wait_semaphores.size(); i++) {
+ 		const SemaphoreInfo *semaphore = (const SemaphoreInfo *)(p_wait_semaphores[i].id);
+-		command_queue->d3d_queue->Wait(semaphore->d3d_fence.Get(), semaphore->fence_value);
++		HRESULT res = command_queue->d3d_queue->Wait(semaphore->d3d_fence.Get(), semaphore->fence_value);
++		if (FAILED(res)) {
++			_report_device_failure("CommandQueue::Wait", res);
++			CRASH_NOW_MSG(failure_message);
++		}
+ 	}
+ 
+ 	if (p_cmd_buffers.size() > 0) {
+@@ -2518,13 +2558,21 @@
+ 		for (uint32_t i = 0; i < p_cmd_semaphores.size(); i++) {
+ 			SemaphoreInfo *semaphore = (SemaphoreInfo *)(p_cmd_semaphores[i].id);
+ 			semaphore->fence_value++;
+-			command_queue->d3d_queue->Signal(semaphore->d3d_fence.Get(), semaphore->fence_value);
++			HRESULT res = command_queue->d3d_queue->Signal(semaphore->d3d_fence.Get(), semaphore->fence_value);
++			if (FAILED(res)) {
++				_report_device_failure("CommandQueue::Signal (semaphore)", res);
++				CRASH_NOW_MSG(failure_message);
++			}
+ 		}
+ 
+ 		if (p_cmd_fence) {
+ 			FenceInfo *fence = (FenceInfo *)(p_cmd_fence.id);
+ 			fence->fence_value++;
+-			command_queue->d3d_queue->Signal(fence->d3d_fence.Get(), fence->fence_value);
++			HRESULT res = command_queue->d3d_queue->Signal(fence->d3d_fence.Get(), fence->fence_value);
++			if (FAILED(res)) {
++				_report_device_failure("CommandQueue::Signal (fence)", res);
++				CRASH_NOW_MSG(failure_message);
++			}
+ 		}
+ 	}
+ 
+@@ -2539,12 +2587,13 @@
+ 		res = swap_chain->d3d_swap_chain->Present(swap_chain->sync_interval, swap_chain->present_flags);
+ #endif
+ 		if (!SUCCEEDED(res)) {
+-			print_verbose(vformat("D3D12: Presenting swapchain failed with error 0x%08ux.", (uint64_t)res));
++			_report_device_failure("Present", res);
+ 			any_present_failed = true;
+ 		}
+ 	}
+ 
+ 
++	_flush_diagnostic_messages();
+ 	return any_present_failed ? FAILED : OK;
+ }
+ 
+@@ -5971,6 +6020,14 @@
+ }
+ 
+ RenderingDeviceDriverD3D12::~RenderingDeviceDriverD3D12() {
++	if (diagnostic_callback_registered) {
++		diagnostic_callback_queue->UnregisterMessageCallback(diagnostic_callback_cookie);
++		// Keep the flag set while draining to avoid replaying stored messages.
++		_flush_diagnostic_messages();
++		diagnostic_callback_registered = false;
++	} else {
++		_flush_diagnostic_messages();
++	}
+ #ifdef FSR_SDK_ENABLED
+ 	if (auto *fsr = FidelityFX::get_singleton()) { fsr->shutdown_device(device.Get()); }
+ #endif
+@@ -6062,6 +6119,10 @@
+ 	if (context_driver->use_validation_layers()) {
+ 		ComPtr<ID3D12InfoQueue> info_queue;
+ 		res = device.As(&info_queue);
++		if (FAILED(res) && context_driver->is_device_diagnostics_enabled() && !Engine::get_singleton()->is_validation_layers_enabled()) {
++			WARN_PRINT(vformat("D3D12 diagnostics: debug InfoQueue unavailable; continuing with DRED only (0x%08x).", uint32_t(res)));
++			return OK;
++		}
+ 		ERR_FAIL_COND_V(!SUCCEEDED(res), ERR_CANT_CREATE);
+ 
+ #if CUSTOM_INFO_QUEUE_ENABLED
+@@ -6111,6 +6172,7 @@
+ 		res = info_queue->PushStorageFilter(&filter);
+ 		ERR_FAIL_COND_V(!SUCCEEDED(res), ERR_CANT_CREATE);
+ 	}
++	_initialize_diagnostic_messages();
+ 
+ 	return OK;
+ }
+@@ -6255,6 +6317,9 @@
+ 		format_capabilities.relaxed_casting_supported = options12.RelaxedFormatCastingSupported;
+ 		barrier_capabilities.enhanced_barriers_supported = options12.EnhancedBarriersSupported;
+ 	}
++	if (context_driver->is_device_diagnostics_enabled()) {
++		print_line(vformat("D3D12 diagnostics: enhanced barriers %s; DXR %s.", barrier_capabilities.enhanced_barriers_supported ? "enabled" : "disabled", raytracing_device ? "enabled" : "disabled"));
++	}
+ 
+ 	D3D12_FEATURE_DATA_D3D12_OPTIONS19 options19 = {};
+ 	res = device->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS19, &options19, sizeof(options19));
+diff --git a/drivers/d3d12/rendering_device_driver_d3d12.h b/drivers/d3d12/rendering_device_driver_d3d12.h
+--- a/drivers/d3d12/rendering_device_driver_d3d12.h
++++ b/drivers/d3d12/rendering_device_driver_d3d12.h
+@@ -114,6 +114,21 @@
+ 	Microsoft::WRL::ComPtr<IDXGIAdapter> adapter;
+ 	Microsoft::WRL::ComPtr<ID3D12Device> device;
+ 	Microsoft::WRL::ComPtr<ID3D12Device5> raytracing_device;
++	Microsoft::WRL::ComPtr<ID3D12InfoQueue> diagnostic_info_queue;
++	Microsoft::WRL::ComPtr<ID3D12InfoQueue1> diagnostic_callback_queue;
++	DWORD diagnostic_callback_cookie = 0;
++	bool diagnostic_callback_registered = false;
++	bool device_removal_reported = false;
++	BinaryMutex diagnostics_mutex;
++	struct DiagnosticMessage {
++		D3D12_MESSAGE_CATEGORY category;
++		D3D12_MESSAGE_SEVERITY severity;
++		D3D12_MESSAGE_ID id;
++		String description;
++	};
++	BinaryMutex diagnostic_messages_mutex;
++	LocalVector<DiagnosticMessage> diagnostic_messages;
++	uint32_t diagnostic_messages_dropped = 0;
+ 	DeviceLimits device_limits;
+ 	RDD::Capabilities device_capabilities;
+ 	uint32_t feature_level = 0; // Major * 10 + minor.
+@@ -183,6 +198,10 @@
+ 	} indirect_cmd_signatures;
+ 
+ 	static void STDMETHODCALLTYPE _debug_message_func(D3D12_MESSAGE_CATEGORY p_category, D3D12_MESSAGE_SEVERITY p_severity, D3D12_MESSAGE_ID p_id, LPCSTR p_description, void *p_context);
++	static void STDMETHODCALLTYPE _diagnostic_message_func(D3D12_MESSAGE_CATEGORY p_category, D3D12_MESSAGE_SEVERITY p_severity, D3D12_MESSAGE_ID p_id, LPCSTR p_description, void *p_context);
++	void _initialize_diagnostic_messages();
++	void _flush_diagnostic_messages();
++	void _report_device_failure(const char *p_operation, HRESULT p_result);
+ 	void _set_object_name(ID3D12Object *p_object, String p_object_name);
+ 	Error _initialize_device();
+ 	Error _check_capabilities();
+diff --git a/drivers/d3d12/ei_device_diagnostics_d3d12.cpp b/drivers/d3d12/ei_device_diagnostics_d3d12.cpp
+new file mode 100644
+--- /dev/null
++++ b/drivers/d3d12/ei_device_diagnostics_d3d12.cpp
+@@ -0,0 +1,170 @@
++// Opt-in Windows diagnostics for device removal. Normal rendering does not
++// enable DRED, the debug layer, GPU validation, or InfoQueue collection.
++#include "rendering_context_driver_d3d12.h"
++#include "rendering_device_driver_d3d12.h"
++
++using Microsoft::WRL::ComPtr;
++
++void STDMETHODCALLTYPE RenderingDeviceDriverD3D12::_diagnostic_message_func(D3D12_MESSAGE_CATEGORY p_category, D3D12_MESSAGE_SEVERITY p_severity, D3D12_MESSAGE_ID p_id, LPCSTR p_description, void *p_context) {
++	if (p_severity > D3D12_MESSAGE_SEVERITY_WARNING || !p_context) {
++		return;
++	}
++	// This can run on a D3D worker thread while the runtime holds internal locks.
++	// Defer Godot logging, script backtraces and extension error handlers until
++	// outside the callback, where re-entry into the renderer is permitted.
++	auto *driver = static_cast<RenderingDeviceDriverD3D12 *>(p_context);
++	MutexLock lock(driver->diagnostic_messages_mutex);
++	if (driver->diagnostic_messages.size() < 4096) {
++		driver->diagnostic_messages.push_back({ p_category, p_severity, p_id, String::utf8(p_description ? p_description : "") });
++	} else if (driver->diagnostic_messages_dropped != UINT32_MAX) {
++		driver->diagnostic_messages_dropped++;
++	}
++}
++
++void RenderingDeviceDriverD3D12::_initialize_diagnostic_messages() {
++	if (!context_driver->is_device_diagnostics_enabled() || !context_driver->use_validation_layers()) {
++		return;
++	}
++	// Keep this explicit: MinGW's __uuidof specialization is translation-unit local.
++	static const GUID info_queue_iid = { 0x0742a90b, 0xc387, 0x483f, { 0xb9, 0x46, 0x30, 0xa7, 0xe4, 0xe6, 0x14, 0x58 } };
++	HRESULT res = device->QueryInterface(info_queue_iid, reinterpret_cast<void **>(diagnostic_info_queue.GetAddressOf()));
++	if (FAILED(res)) {
++		WARN_PRINT(vformat("D3D12 diagnostics: InfoQueue unavailable (0x%08x).", uint32_t(res)));
++		return;
++	}
++	// Preserve descriptor/lifetime errors that normal engine filters suppress.
++	diagnostic_info_queue->ClearStorageFilter();
++	diagnostic_info_queue->ClearRetrievalFilter();
++	diagnostic_info_queue->SetMessageCountLimit(4096);
++	// Device creation can produce messages before callback registration.
++	_flush_diagnostic_messages();
++	static const GUID info_queue1_iid = { 0x2852dd88, 0xb484, 0x4c0c, { 0xb6, 0xb1, 0x67, 0x16, 0x85, 0x00, 0xe6, 0x00 } };
++	res = device->QueryInterface(info_queue1_iid, reinterpret_cast<void **>(diagnostic_callback_queue.GetAddressOf()));
++	if (SUCCEEDED(res)) {
++		res = diagnostic_callback_queue->RegisterMessageCallback(&_diagnostic_message_func, D3D12_MESSAGE_CALLBACK_IGNORE_FILTERS, this, &diagnostic_callback_cookie);
++		diagnostic_callback_registered = SUCCEEDED(res);
++	}
++	print_line(diagnostic_callback_registered ? "D3D12 diagnostics: InfoQueue callback captures warnings/errors for the Godot log." : "D3D12 diagnostics: InfoQueue warnings/errors collected at queue and fence boundaries.");
++	_flush_diagnostic_messages();
++}
++
++void RenderingDeviceDriverD3D12::_flush_diagnostic_messages() {
++	if (!diagnostic_info_queue) {
++		return;
++	}
++	LocalVector<DiagnosticMessage> messages;
++	uint32_t dropped = 0;
++	{
++		MutexLock lock(diagnostic_messages_mutex);
++		messages = std::move(diagnostic_messages);
++		dropped = diagnostic_messages_dropped;
++		diagnostic_messages_dropped = 0;
++	}
++	for (const DiagnosticMessage &message : messages) {
++		_debug_message_func(message.category, message.severity, message.id, message.description.utf8().get_data(), nullptr);
++	}
++	if (dropped) {
++		WARN_PRINT(vformat("D3D12 diagnostics: %d additional InfoQueue messages omitted because the callback queue was full.", dropped));
++	}
++	if (diagnostic_callback_registered) {
++		return;
++	}
++	MutexLock lock(diagnostics_mutex);
++	const UINT64 count = diagnostic_info_queue->GetNumStoredMessagesAllowedByRetrievalFilter();
++	for (UINT64 i = 0; i < count; i++) {
++		SIZE_T size = 0;
++		if (FAILED(diagnostic_info_queue->GetMessage(i, nullptr, &size)) || size == 0) {
++			continue;
++		}
++		LocalVector<uint8_t> bytes;
++		bytes.resize(size);
++		auto *message = reinterpret_cast<D3D12_MESSAGE *>(bytes.ptr());
++		if (SUCCEEDED(diagnostic_info_queue->GetMessage(i, message, &size)) && message->Severity <= D3D12_MESSAGE_SEVERITY_WARNING) {
++			_debug_message_func(message->Category, message->Severity, message->ID, message->pDescription, nullptr);
++		}
++	}
++	diagnostic_info_queue->ClearStoredMessages();
++}
++
++static String _dred_name(const char *p_name, const wchar_t *p_wide_name) {
++	return p_wide_name ? String(p_wide_name) : (p_name ? String::utf8(p_name) : String("<unnamed>"));
++}
++
++static String _dred_operation(D3D12_AUTO_BREADCRUMB_OP p_operation) {
++	switch (p_operation) {
++		case D3D12_AUTO_BREADCRUMB_OP_BUILDRAYTRACINGACCELERATIONSTRUCTURE: return "BuildRaytracingAccelerationStructure";
++		case D3D12_AUTO_BREADCRUMB_OP_DISPATCHRAYS: return "DispatchRays";
++		case D3D12_AUTO_BREADCRUMB_OP_DISPATCH: return "Dispatch";
++		case D3D12_AUTO_BREADCRUMB_OP_RESOURCEBARRIER: return "ResourceBarrier";
++		case D3D12_AUTO_BREADCRUMB_OP_BARRIER: return "Barrier";
++		case D3D12_AUTO_BREADCRUMB_OP_COPYBUFFERREGION: return "CopyBufferRegion";
++		case D3D12_AUTO_BREADCRUMB_OP_COPYTEXTUREREGION: return "CopyTextureRegion";
++		default: return "operation " + itos(uint32_t(p_operation));
++	}
++}
++
++void RenderingDeviceDriverD3D12::_report_device_failure(const char *p_operation, HRESULT p_result) {
++	const HRESULT reason = device->GetDeviceRemovedReason();
++	_flush_diagnostic_messages();
++	MutexLock lock(diagnostics_mutex);
++	if (FAILED(reason) && device_removal_reported) {
++		return;
++	}
++	ERR_PRINT(vformat("D3D12: %s failed (HRESULT 0x%08x; device removed reason 0x%08x).", p_operation, uint32_t(p_result), uint32_t(reason)));
++	if (SUCCEEDED(reason)) {
++		return;
++	}
++	device_removal_reported = true;
++	if (!context_driver->is_device_diagnostics_enabled()) {
++		return;
++	}
++	static const GUID dred1_iid = { 0x9727a022, 0xcf1d, 0x4dda, { 0x9e, 0xba, 0xef, 0xfa, 0x65, 0x3f, 0xc5, 0x06 } };
++	ComPtr<ID3D12DeviceRemovedExtendedData1> dred;
++	HRESULT res = device->QueryInterface(dred1_iid, reinterpret_cast<void **>(dred.GetAddressOf()));
++	if (FAILED(res)) {
++		WARN_PRINT(vformat("D3D12 diagnostics: DRED output unavailable (0x%08x).", uint32_t(res)));
++		return;
++	}
++	D3D12_DRED_AUTO_BREADCRUMBS_OUTPUT1 breadcrumbs = {};
++	res = dred->GetAutoBreadcrumbsOutput1(&breadcrumbs);
++	print_line(vformat("D3D12 DRED: breadcrumbs result 0x%08x.", uint32_t(res)));
++	if (SUCCEEDED(res)) {
++		uint32_t nodes = 0;
++		const auto *node = breadcrumbs.pHeadAutoBreadcrumbNode;
++		for (; node && nodes < 64; node = node->pNext, nodes++) {
++			const uint32_t completed = node->pLastBreadcrumbValue ? MIN(*node->pLastBreadcrumbValue, node->BreadcrumbCount) : 0;
++			print_line(vformat("D3D12 DRED: command list %s; queue %s; completed %d/%d.", _dred_name(node->pCommandListDebugNameA, node->pCommandListDebugNameW), _dred_name(node->pCommandQueueDebugNameA, node->pCommandQueueDebugNameW), completed, node->BreadcrumbCount));
++			if (node->pCommandHistory && completed < node->BreadcrumbCount && node->BreadcrumbCount <= 15360) {
++				// Microsoft's older DRED debugger uses 15360 history slots, while
++				// current documentation describes 65536. Only inspect an unwrapped
++				// history that fits both, rather than guess a native runtime's layout.
++				// This is a progress window, not proof of the faulting operation.
++				const uint32_t first = completed > 8 ? completed - 8 : 0;
++				const uint32_t end = completed + MIN(8u, node->BreadcrumbCount - completed);
++				for (uint32_t i = first; i < end; i++) {
++					print_line(vformat("D3D12 DRED: breadcrumb %d %s (%s).", i, _dred_operation(node->pCommandHistory[i]), i < completed ? "completed" : "pending"));
++				}
++			} else if (node->pCommandHistory && completed < node->BreadcrumbCount) {
++				print_line("D3D12 DRED: history omitted to avoid assuming the runtime's ring capacity; command-list progress is retained above.");
++			}
++		}
++		if (node) {
++			print_line("D3D12 DRED: additional command lists omitted.");
++		}
++	}
++	D3D12_DRED_PAGE_FAULT_OUTPUT1 fault = {};
++	res = dred->GetPageFaultAllocationOutput1(&fault);
++	print_line(vformat("D3D12 DRED: page-fault result 0x%08x; GPU virtual address 0x%s.", uint32_t(res), String::num_uint64(fault.PageFaultVA, 16)));
++	if (SUCCEEDED(res)) {
++		for (uint32_t kind = 0; kind < 2; kind++) {
++			const auto *node = kind ? fault.pHeadRecentFreedAllocationNode : fault.pHeadExistingAllocationNode;
++			uint32_t nodes = 0;
++			for (; node && nodes < 64; node = node->pNext, nodes++) {
++				print_line(vformat("D3D12 DRED: %s allocation %s; type %d; object 0x%s.", kind ? "recently freed" : "existing", _dred_name(node->ObjectNameA, node->ObjectNameW), uint32_t(node->AllocationType), String::num_uint64(uintptr_t(node->pObject), 16)));
++			}
++			if (node) {
++				print_line("D3D12 DRED: additional allocations omitted.");
++			}
++		}
++	}
++}

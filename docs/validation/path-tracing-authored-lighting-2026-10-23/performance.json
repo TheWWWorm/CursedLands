@@ -1,0 +1,896 @@
+[
+  {
+    "kind": "lighting",
+    "backend": "vulkan",
+    "view": "brazier",
+    "quality": 1,
+    "previous": {
+      "frame_ms": {
+        "median_of_medians": 8.8205,
+        "per_run_medians": [
+          8.823,
+          8.818,
+          8.592,
+          8.878
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 0.889999985694885,
+        "per_run_medians": [
+          0.802999973297119,
+          1.11899995803833,
+          0.782000005245209,
+          0.976999998092651
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 7.581568000000001,
+        "per_run_medians": [
+          7.719712,
+          7.52288,
+          7.567008,
+          7.596128
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.538,
+        "per_run_medians": [
+          0.54,
+          0.512,
+          0.545,
+          0.536
+        ]
+      }
+    },
+    "current": {
+      "frame_ms": {
+        "median_of_medians": 9.155999999999999,
+        "per_run_medians": [
+          8.619,
+          9.238,
+          9.074,
+          10.82
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 0.93299999833107,
+        "per_run_medians": [
+          0.788999974727631,
+          0.920000016689301,
+          0.945999979972839,
+          1.15199995040894
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 7.973952,
+        "per_run_medians": [
+          7.537984,
+          8.08864,
+          7.859264,
+          9.249152
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.5700000000000001,
+        "per_run_medians": [
+          0.608,
+          0.554,
+          0.5,
+          0.586
+        ]
+      }
+    }
+  },
+  {
+    "kind": "lighting",
+    "backend": "vulkan",
+    "view": "brazier",
+    "quality": 2,
+    "previous": {
+      "frame_ms": {
+        "median_of_medians": 27.2775,
+        "per_run_medians": [
+          27.461,
+          27.094,
+          28.722,
+          26.916
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 1.014499962329865,
+        "per_run_medians": [
+          1.00399994850159,
+          1.05900001525879,
+          0.996999979019165,
+          1.02499997615814
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 26.21136,
+        "per_run_medians": [
+          26.370144,
+          26.052576,
+          27.501568,
+          25.823072
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.5925,
+        "per_run_medians": [
+          0.6,
+          0.59,
+          0.588,
+          0.595
+        ]
+      }
+    },
+    "current": {
+      "frame_ms": {
+        "median_of_medians": 27.557499999999997,
+        "per_run_medians": [
+          27.653,
+          27.462,
+          28.585,
+          27.282
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 1.0354999899864201,
+        "per_run_medians": [
+          0.976999998092651,
+          1.06400001049042,
+          1.07799994945526,
+          1.00699996948242
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 26.470080000000003,
+        "per_run_medians": [
+          26.486816,
+          26.453344,
+          27.28864,
+          26.076288
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.607,
+        "per_run_medians": [
+          0.589,
+          0.586,
+          0.625,
+          0.625
+        ]
+      }
+    }
+  },
+  {
+    "kind": "lighting",
+    "backend": "vulkan",
+    "view": "river-12",
+    "quality": 1,
+    "previous": {
+      "frame_ms": {
+        "median_of_medians": 6.199,
+        "per_run_medians": [
+          6.381,
+          6.227,
+          6.171,
+          6.048
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 0.999499976634981,
+        "per_run_medians": [
+          0.853999972343445,
+          1.00399994850159,
+          0.995000004768372,
+          1.03299999237061
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 4.625776,
+        "per_run_medians": [
+          4.748288,
+          4.612832,
+          4.63872,
+          4.610784
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.5615,
+        "per_run_medians": [
+          0.6,
+          0.546,
+          0.551,
+          0.572
+        ]
+      }
+    },
+    "current": {
+      "frame_ms": {
+        "median_of_medians": 6.151999999999999,
+        "per_run_medians": [
+          6.179,
+          5.975,
+          6.175,
+          6.129
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 0.947499990463259,
+        "per_run_medians": [
+          1.01499998569489,
+          0.83899998664856,
+          0.879999995231628,
+          1.02300000190735
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 4.555872,
+        "per_run_medians": [
+          4.482624,
+          4.595264,
+          4.988192,
+          4.51648
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.6034999999999999,
+        "per_run_medians": [
+          0.638,
+          0.575,
+          0.613,
+          0.594
+        ]
+      }
+    }
+  },
+  {
+    "kind": "lighting",
+    "backend": "vulkan",
+    "view": "river-12",
+    "quality": 2,
+    "previous": {
+      "frame_ms": {
+        "median_of_medians": 17.962,
+        "per_run_medians": [
+          17.319,
+          18.002,
+          18.145,
+          17.922
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 1.1520000100135799,
+        "per_run_medians": [
+          1.04299998283386,
+          1.13900005817413,
+          1.2059999704361,
+          1.16499996185303
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 16.653807999999998,
+        "per_run_medians": [
+          16.294432,
+          16.722976,
+          16.810784,
+          16.58464
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.7104999999999999,
+        "per_run_medians": [
+          0.716,
+          0.723,
+          0.692,
+          0.705
+        ]
+      }
+    },
+    "current": {
+      "frame_ms": {
+        "median_of_medians": 17.811,
+        "per_run_medians": [
+          17.645,
+          17.905,
+          19.162,
+          17.717
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 1.1270000338554351,
+        "per_run_medians": [
+          1.11000001430511,
+          1.10199999809265,
+          1.19700002670288,
+          1.14400005340576
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 16.593312,
+        "per_run_medians": [
+          16.530272,
+          16.646464,
+          17.81648,
+          16.54016
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.7324999999999999,
+        "per_run_medians": [
+          0.746,
+          0.701,
+          0.768,
+          0.719
+        ]
+      }
+    }
+  },
+  {
+    "kind": "lighting",
+    "backend": "dx12",
+    "view": "brazier",
+    "quality": 1,
+    "previous": {
+      "frame_ms": {
+        "median_of_medians": 11.4705,
+        "per_run_medians": [
+          11.28,
+          12.773,
+          11.53,
+          11.411
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 0.7650000154972075,
+        "per_run_medians": [
+          0.758000016212463,
+          0.768999993801117,
+          0.767000019550323,
+          0.763000011444092
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 10.088192,
+        "per_run_medians": [
+          9.902848,
+          11.249408,
+          10.052608,
+          10.123776
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.469,
+        "per_run_medians": [
+          0.47,
+          0.485,
+          0.468,
+          0.439
+        ]
+      }
+    },
+    "current": {
+      "frame_ms": {
+        "median_of_medians": 11.7805,
+        "per_run_medians": [
+          11.519,
+          11.98,
+          11.8,
+          11.761
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 0.76800000667572,
+        "per_run_medians": [
+          0.767000019550323,
+          0.773999989032745,
+          0.768999993801117,
+          0.765999972820282
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 10.374656,
+        "per_run_medians": [
+          10.185216,
+          10.528768,
+          10.220544,
+          10.544896
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.47,
+        "per_run_medians": [
+          0.467,
+          0.473,
+          0.479,
+          0.457
+        ]
+      }
+    }
+  },
+  {
+    "kind": "lighting",
+    "backend": "dx12",
+    "view": "brazier",
+    "quality": 2,
+    "previous": {
+      "frame_ms": {
+        "median_of_medians": 36.413,
+        "per_run_medians": [
+          36.71,
+          37.463,
+          35.196,
+          36.116
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 0.7725000083446505,
+        "per_run_medians": [
+          0.776000022888184,
+          0.777999997138977,
+          0.768999993801117,
+          0.767000019550323
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 34.56128,
+        "per_run_medians": [
+          34.639104,
+          35.15136,
+          33.721344,
+          34.483456
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.5155000000000001,
+        "per_run_medians": [
+          0.517,
+          0.531,
+          0.514,
+          0.483
+        ]
+      }
+    },
+    "current": {
+      "frame_ms": {
+        "median_of_medians": 35.5375,
+        "per_run_medians": [
+          35.706,
+          36.333,
+          35.25,
+          35.369
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 0.7745000123977666,
+        "per_run_medians": [
+          0.776000022888184,
+          0.779999971389771,
+          0.772000014781952,
+          0.773000001907349
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 34.038272,
+        "per_run_medians": [
+          34.0928,
+          35.001856,
+          33.983744,
+          33.916672
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.4945,
+        "per_run_medians": [
+          0.495,
+          0.505,
+          0.492,
+          0.494
+        ]
+      }
+    }
+  },
+  {
+    "kind": "lighting",
+    "backend": "dx12",
+    "view": "river-12",
+    "quality": 1,
+    "previous": {
+      "frame_ms": {
+        "median_of_medians": 7.9975000000000005,
+        "per_run_medians": [
+          7.763,
+          7.816,
+          8.179,
+          8.201
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 0.9975000023841856,
+        "per_run_medians": [
+          0.994000017642975,
+          0.999000012874603,
+          0.995999991893768,
+          1.02300000190735
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 5.682176,
+        "per_run_medians": [
+          5.5808,
+          5.558784,
+          5.783552,
+          5.793024
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.547,
+        "per_run_medians": [
+          0.544,
+          0.535,
+          0.586,
+          0.55
+        ]
+      }
+    },
+    "current": {
+      "frame_ms": {
+        "median_of_medians": 8.017,
+        "per_run_medians": [
+          7.878,
+          8.096,
+          7.938,
+          8.456
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 1.0139999985694899,
+        "per_run_medians": [
+          0.999000012874603,
+          1.03999996185303,
+          1.00399994850159,
+          1.02400004863739
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 5.657856,
+        "per_run_medians": [
+          5.662208,
+          5.653504,
+          5.531904,
+          5.846272
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.5745,
+        "per_run_medians": [
+          0.572,
+          0.55,
+          0.598,
+          0.577
+        ]
+      }
+    }
+  },
+  {
+    "kind": "lighting",
+    "backend": "dx12",
+    "view": "river-12",
+    "quality": 2,
+    "previous": {
+      "frame_ms": {
+        "median_of_medians": 21.814,
+        "per_run_medians": [
+          21.894,
+          21.734,
+          21.633,
+          22.556
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 1.0319999456405649,
+        "per_run_medians": [
+          1.03699994087219,
+          1.0460000038147,
+          1.02199995517731,
+          1.02699995040894
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 20.006656,
+        "per_run_medians": [
+          20.01152,
+          19.862528,
+          20.001792,
+          20.594944
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.607,
+        "per_run_medians": [
+          0.642,
+          0.582,
+          0.596,
+          0.618
+        ]
+      }
+    },
+    "current": {
+      "frame_ms": {
+        "median_of_medians": 21.624000000000002,
+        "per_run_medians": [
+          21.671,
+          21.577,
+          21.374,
+          23.397
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 1.037000000476835,
+        "per_run_medians": [
+          1.04299998283386,
+          1.0440000295639,
+          1.01900005340576,
+          1.03100001811981
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 19.879808,
+        "per_run_medians": [
+          19.974656,
+          19.78496,
+          19.6736,
+          21.001728
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.6174999999999999,
+        "per_run_medians": [
+          0.592,
+          0.614,
+          0.621,
+          0.651
+        ]
+      }
+    }
+  },
+  {
+    "kind": "history",
+    "backend": "vulkan",
+    "view": "brazier",
+    "quality": 1,
+    "previous": {
+      "frame_ms": {
+        "median_of_medians": 8.8225,
+        "per_run_medians": [
+          8.458,
+          8.809,
+          8.836,
+          8.875
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 0.78999999165535,
+        "per_run_medians": [
+          0.787999987602234,
+          0.815999984741211,
+          0.783999979496002,
+          0.791999995708466
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 7.66768,
+        "per_run_medians": [
+          7.309632,
+          7.675776,
+          7.659584,
+          7.69776
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.5974999999999999,
+        "per_run_medians": [
+          0.525,
+          0.616,
+          0.608,
+          0.587
+        ]
+      }
+    },
+    "current": {
+      "frame_ms": {
+        "median_of_medians": 9.292,
+        "per_run_medians": [
+          8.189,
+          9.419,
+          9.165,
+          9.497
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 1.1600000262260401,
+        "per_run_medians": [
+          0.763000011444092,
+          1.19200003147125,
+          1.12800002098083,
+          1.2150000333786
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 8.007152,
+        "per_run_medians": [
+          7.197312,
+          8.132576,
+          7.881728,
+          8.170496
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.6034999999999999,
+        "per_run_medians": [
+          0.521,
+          0.645,
+          0.6,
+          0.607
+        ]
+      }
+    }
+  },
+  {
+    "kind": "history",
+    "backend": "vulkan",
+    "view": "brazier",
+    "quality": 2,
+    "previous": {
+      "frame_ms": {
+        "median_of_medians": 27.691000000000003,
+        "per_run_medians": [
+          27.463,
+          27.515,
+          27.875,
+          27.867
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 1.1405000090599051,
+        "per_run_medians": [
+          1.14999997615814,
+          1.07299995422363,
+          1.13100004196167,
+          1.15799999237061
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 26.48552,
+        "per_run_medians": [
+          26.2912,
+          26.382496,
+          26.588544,
+          26.629888
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.62,
+        "per_run_medians": [
+          0.596,
+          0.612,
+          0.631,
+          0.628
+        ]
+      }
+    },
+    "current": {
+      "frame_ms": {
+        "median_of_medians": 27.9605,
+        "per_run_medians": [
+          27.674,
+          27.681,
+          28.253,
+          28.24
+        ]
+      },
+      "main_gpu_ms": {
+        "median_of_medians": 1.17400002479553,
+        "per_run_medians": [
+          1.15600001811981,
+          1.19200003147125,
+          1.09599995613098,
+          1.20200002193451
+        ]
+      },
+      "rt_gpu_ms": {
+        "median_of_medians": 26.754112,
+        "per_run_medians": [
+          26.547904,
+          26.38752,
+          27.00976,
+          26.96032
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.6225,
+        "per_run_medians": [
+          0.608,
+          0.637,
+          0.606,
+          0.649
+        ]
+      }
+    }
+  },
+  {
+    "kind": "surface",
+    "backend": "vulkan",
+    "quality": 1,
+    "previous": {
+      "rt_gpu_ms": {
+        "median_of_medians": 4.45608,
+        "per_run_medians": [
+          4.588032,
+          4.324128
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.9390000000000001,
+        "per_run_medians": [
+          0.954,
+          0.924
+        ]
+      }
+    },
+    "current": {
+      "rt_gpu_ms": {
+        "median_of_medians": 4.653168,
+        "per_run_medians": [
+          4.572704,
+          4.733632
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.9504999999999999,
+        "per_run_medians": [
+          0.953,
+          0.948
+        ]
+      }
+    }
+  },
+  {
+    "kind": "surface",
+    "backend": "dx12",
+    "quality": 1,
+    "previous": {
+      "rt_gpu_ms": {
+        "median_of_medians": 5.719424,
+        "per_run_medians": [
+          5.679104,
+          5.759744
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.865,
+        "per_run_medians": [
+          0.831,
+          0.899
+        ]
+      }
+    },
+    "current": {
+      "rt_gpu_ms": {
+        "median_of_medians": 6.365824,
+        "per_run_medians": [
+          6.467584,
+          6.264064
+        ]
+      },
+      "controller_cpu_ms": {
+        "median_of_medians": 0.8325,
+        "per_run_medians": [
+          0.858,
+          0.807
+        ]
+      }
+    }
+  }
+]

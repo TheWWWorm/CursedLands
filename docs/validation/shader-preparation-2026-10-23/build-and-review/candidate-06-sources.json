@@ -1,0 +1,1621 @@
+{
+  "base_commit": "7e54e5d6e853563dcecbf58ad32bea1dc20fd3a0",
+  "files": [
+    {
+      "path": "game/src/ei/acks.gd",
+      "sha256": "fedb0d5c4cb14ea21d1b8b03396eb1d5f1325eca3a5d259c185d69c51afe5aaf"
+    },
+    {
+      "path": "game/src/ei/anim.gd",
+      "sha256": "55bd3e8ee648284dbf0a1aa808b30d474fb35c3844883660cb5df115997946ad"
+    },
+    {
+      "path": "game/src/ei/anim_part.gd",
+      "sha256": "3283f29bd60c6a6ed6beec2f0fbbae8d8c3e409eae6e69f4f503d6d13971fe3d"
+    },
+    {
+      "path": "game/src/ei/astral_disc_import.gd",
+      "sha256": "6280eb6519978761e51141ee348ad5cf2b8f1dee292ad9c8edac975190a2c02d"
+    },
+    {
+      "path": "game/src/ei/bink.gd",
+      "sha256": "be55b928a24c06a1f7cff6605bab22011967b2f150c6f182dac1bfc4094f99e3"
+    },
+    {
+      "path": "game/src/ei/bink_audio.gd",
+      "sha256": "0091141172fe3426cfd7a00976e8e137e878066f84ff04750a5986f1d92bf246"
+    },
+    {
+      "path": "game/src/ei/bink_cache.gd",
+      "sha256": "66197fe0415ca9535b8eb643b4404bf6a2be738f45598961ada6899d03370eb4"
+    },
+    {
+      "path": "game/src/ei/camera_track.gd",
+      "sha256": "5f0ad5ef6493e8fd247f17c18b5cb2e6e23c0ca74d0618b6a374eeaa9fba3a63"
+    },
+    {
+      "path": "game/src/ei/catacomb_lift.gd",
+      "sha256": "cd8c0e31ebfcb4b85f7d3fc72a5a1a71120805dcae24969b910989ab37eeb98f"
+    },
+    {
+      "path": "game/src/ei/crt_random.gd",
+      "sha256": "acc03ff81f4529edbfe1ade1accfcbe70d135d24772e0837111068274e2bc873"
+    },
+    {
+      "path": "game/src/ei/database.gd",
+      "sha256": "4d31541bb68ac9dfab8f68de6a6e09bae2ae52d5053a4381e1119c41c75db858"
+    },
+    {
+      "path": "game/src/ei/detailed_head.gd",
+      "sha256": "544d37eb5b5998bc24ae44bc5772ff5d06059897eae89d2fa23254f3e22948b8"
+    },
+    {
+      "path": "game/src/ei/ei_audio.gd",
+      "sha256": "31adaa24ec21213fd9428a2eabfaeb24311f70d8ddacd07e87c0ba1c9620780c"
+    },
+    {
+      "path": "game/src/ei/ei_space.gd",
+      "sha256": "1e874061e8045b3c3dded3b37c82d8d03b89b4ffb8a9d579905dc8e5a5d4c5a7"
+    },
+    {
+      "path": "game/src/ei/figure.gd",
+      "sha256": "413b0ca95ae087311d54bf2f12722797384f15f8844f688efcd3858f8cfd300d"
+    },
+    {
+      "path": "game/src/ei/figure_geometry.gd",
+      "sha256": "d3cd2be0fee1cd6024bdb90cbbde690c171609b1f25d0d8da44bcb80b2be2f5d"
+    },
+    {
+      "path": "game/src/ei/figure_material.gd",
+      "sha256": "30f9de045ace9e6f7d3e497fab28a02350e242f8a00074de8e8b6f25f7b547e9"
+    },
+    {
+      "path": "game/src/ei/first_person_body.gd",
+      "sha256": "de157abf28eac613184fd38e14a5c272f8a763c060732a40b21c07916a294393"
+    },
+    {
+      "path": "game/src/ei/game_data.gd",
+      "sha256": "486523701dfc60033564c19c751351a402995fcdb807536f49634cb04fac2b87"
+    },
+    {
+      "path": "game/src/ei/inno_setup.gd",
+      "sha256": "71023de610faa9659f6e4be9fbc79455e137d0bd4941a229bf3699ac27936d18"
+    },
+    {
+      "path": "game/src/ei/iso_archive.gd",
+      "sha256": "6d491d57c714b4d4fb482a5ef121b309119488f6b6efedf64d5775c5fe366041"
+    },
+    {
+      "path": "game/src/ei/keymap.gd",
+      "sha256": "5960049b31186a486844fbb02530096c18a34382a48ce600791ec8355a3a82fc"
+    },
+    {
+      "path": "game/src/ei/lights.gd",
+      "sha256": "c7d651a759f5030764f8e33479b3e171f4913a67b7fb05c65b2a146466dc192c"
+    },
+    {
+      "path": "game/src/ei/lzma.gd",
+      "sha256": "7d6cf159cc5b91f43d48b6a15bb546330a9c9e42465b8a44cf645d0d61badfaf"
+    },
+    {
+      "path": "game/src/ei/map_scene.gd",
+      "sha256": "ceccd63e4b562c7427d2c08290e8fee4a261730c097c43ee419d39b0c5574b2e"
+    },
+    {
+      "path": "game/src/ei/mmp_texture.gd",
+      "sha256": "1c4aed0ea7cb368ca135c47cbe1d27e2266f31f81fa61f3281d610259b8fe609"
+    },
+    {
+      "path": "game/src/ei/mob_reader.gd",
+      "sha256": "f2e21805dbeb2c6af25cf614ab7aec8b93e76c3efaaf3591286f909b0e4e3e10"
+    },
+    {
+      "path": "game/src/ei/object_water.gd",
+      "sha256": "36359cf6d85709f243d7e5b8fef0c749092855883b16284135e6e0a258823d5a"
+    },
+    {
+      "path": "game/src/ei/reg_file.gd",
+      "sha256": "4e689d4bbe5ad5aa6d16294bc711aebd087688d0007712fe0a511add6fdf000a"
+    },
+    {
+      "path": "game/src/ei/remake_text.gd",
+      "sha256": "a0206503355ca2bcf6c0eff00e0420043c2249c748cf71cc4a9517366d8e6c3b"
+    },
+    {
+      "path": "game/src/ei/res_archive.gd",
+      "sha256": "452c7ba33c1baffdc0f4f94d16fc59cf6bbbb960c04524b860e2cd05fe48ab1d"
+    },
+    {
+      "path": "game/src/ei/terrain.gd",
+      "sha256": "4d1934bab3fb6382c8cfba1120c198f17d238707640668aef27f7f52745de475"
+    },
+    {
+      "path": "game/src/ei/terrain_sector.gd",
+      "sha256": "d93683c8bb3a90aec006c711070c15b6ca1d522f0136100760bc709911a50552"
+    },
+    {
+      "path": "game/src/ei/text.gd",
+      "sha256": "e27f07d6d87975122f5377285c09b6fdee6d9b8d4b40960c97bc7838cf416ea0"
+    },
+    {
+      "path": "game/src/ei/unit_model.gd",
+      "sha256": "bc872f119c16fcaa99a973ab57b9522a32a4fd79a4b104237ae7f81cf8f3839e"
+    },
+    {
+      "path": "game/src/ei/water_mesh.gd",
+      "sha256": "bfb80b0462f103a59b328ee3fca5334969e6a3d0b9309d70c2e4f4e0fd4d7141"
+    },
+    {
+      "path": "game/src/ei/water_waves.gd",
+      "sha256": "24f3708a5dd0870da4750bdc89496d498fcb6bf596442fb9c25607d0740c548e"
+    },
+    {
+      "path": "game/src/ei/wisp_glow.gd",
+      "sha256": "079e4b569dc401c1261abb403ed0400ed92c56a406f8c7e357d8d242558e3caa"
+    },
+    {
+      "path": "game/src/game/actor_refs.gd",
+      "sha256": "e2c100b61e6a5b5901a30c2f71b91e2caf4fe5317f73adfb83295cf990ec2277"
+    },
+    {
+      "path": "game/src/game/ai.gd",
+      "sha256": "e398c68661a7dbd05eea5d4d51843bcf717635188761ad3fd01803772227bf35"
+    },
+    {
+      "path": "game/src/game/ai_activity.gd",
+      "sha256": "0b6b8d29aba56de8577e7cc0acce8a4837e1e052b0c2d8fc1a3c86e9bfc9f0c8"
+    },
+    {
+      "path": "game/src/game/ambient_sound.gd",
+      "sha256": "65096b14e9b395a78c4c578ecf893eed0f1cb380d1257eb7ce8d1bc34ca7d440"
+    },
+    {
+      "path": "game/src/game/arena_alliances.gd",
+      "sha256": "7b7d4e3f78e5a42eed55a5b4083d0b17e70b037155e209026421c3c91410b1e2"
+    },
+    {
+      "path": "game/src/game/arena_animation_warmup.gd",
+      "sha256": "c3539d8a4173ba1f04189b07726088f22a32e87570381a6ca3316df8e0ec553f"
+    },
+    {
+      "path": "game/src/game/arena_appearance.gd",
+      "sha256": "2ca87da650a4a514c1da6102714996a0e01f696bceda0dc4c77ec4240838ac61"
+    },
+    {
+      "path": "game/src/game/arena_bot_planner.gd",
+      "sha256": "1147f73f48f7aa3c384fc79b5c484d61cd64bb785e7e6a3850e26de49f905622"
+    },
+    {
+      "path": "game/src/game/arena_catalog.gd",
+      "sha256": "97ae808e5ad59487f2a55389c39b9f1a8d167ca6bf2559a5e42595c844af1eda"
+    },
+    {
+      "path": "game/src/game/arena_formation_motion.gd",
+      "sha256": "bb454e90096deaaaaf15867a6c0f235992a9da4549c4309c2d9ad8085e0f2093"
+    },
+    {
+      "path": "game/src/game/arena_ground_details.gd",
+      "sha256": "2d25b49a5658ca0fc0e6b427c40cf6487a8194b9d2181d5569b35956afe62e71"
+    },
+    {
+      "path": "game/src/game/arena_local_host.gd",
+      "sha256": "65a3631d8b049c00d2d7dc190cbf0c9f650efc2566dc850a54906267b4027f85"
+    },
+    {
+      "path": "game/src/game/arena_match.gd",
+      "sha256": "556a24bd2170dfa93cc0179d7327c15ab7e963fb62a9135d319d57835555f01c"
+    },
+    {
+      "path": "game/src/game/arena_online_boards.gd",
+      "sha256": "b07f585f75ca49366c14325082fa2ce190dcb09c633403b1a7199334436effda"
+    },
+    {
+      "path": "game/src/game/arena_online_game.gd",
+      "sha256": "f98dcfaeaa96706137b569e1287be58bc489d736e871e848c0c44c52713d2e10"
+    },
+    {
+      "path": "game/src/game/arena_online_match.gd",
+      "sha256": "c923f17b85a58cc55fc0cbb74218406c30d5c4f33764b79f21fafd50b01eac5c"
+    },
+    {
+      "path": "game/src/game/arena_online_session.gd",
+      "sha256": "7ce0dbdea3d76793ce8c88ec265f5c832183ff9c733a1bc6239aacb9ba6d53ef"
+    },
+    {
+      "path": "game/src/game/arena_online_tournament.gd",
+      "sha256": "b187e85070022f9f3c58880d71f9812ce52da7739569984b35d9358339c59c90"
+    },
+    {
+      "path": "game/src/game/arena_online_view.gd",
+      "sha256": "98b1756e978a70732e9ca1e34c1c9856340507aad20a20e39598babff7c0adac"
+    },
+    {
+      "path": "game/src/game/arena_pve_match.gd",
+      "sha256": "e5ecd3b7fa2f869de3839f63804d6246e711779960298671f940532f4acfe584"
+    },
+    {
+      "path": "game/src/game/arena_rules.gd",
+      "sha256": "2a745d935a3b9cc15e9d980b0fb47d9fb33468f87c70de32378f67ab72a0fa7e"
+    },
+    {
+      "path": "game/src/game/arena_run.gd",
+      "sha256": "8e6e15a830cb438c6c15a875f4b897e1b9e22a88ba16a5d503d60001cb258afc"
+    },
+    {
+      "path": "game/src/game/arena_solo_battles.gd",
+      "sha256": "1d639e6e10dc19723b1d2ef8f3a757a77703eb54e98f96be9319f107cc520531"
+    },
+    {
+      "path": "game/src/game/arena_surface_cache.gd",
+      "sha256": "e4f3aa827fe8eebe2e77586a8391b68f7a3ec3b1102594744e81b71c8bfa50c0"
+    },
+    {
+      "path": "game/src/game/arena_terrain.gd",
+      "sha256": "26366bae682cde888c5f27f9fa0b7552db2f5255338337fa60e4a009c18d4b43"
+    },
+    {
+      "path": "game/src/game/arena_terrain_color.gd",
+      "sha256": "46ad3e5d52c290b171252c653083414a66cd219e32b356846fff5fb9287b04de"
+    },
+    {
+      "path": "game/src/game/arena_tournament_battles.gd",
+      "sha256": "8229410cf238e2b2189e4cb027dadc72c22605c6846e037ad71ced798d682854"
+    },
+    {
+      "path": "game/src/game/arena_tournament_run.gd",
+      "sha256": "fe10d204364f43356d65b96fd52121f73eac8dbf0f861f2f6f69455db69bcd63"
+    },
+    {
+      "path": "game/src/game/arena_unit_info.gd",
+      "sha256": "f02dd6a11fce1744616ac57d020fa9899bbdca90034760094de17428c1a89ea1"
+    },
+    {
+      "path": "game/src/game/arena_winter_terrain.gd",
+      "sha256": "a3623624c13dbbd01642fd0062d827971a6b09fe7b00d9d5757545adcc397dbb"
+    },
+    {
+      "path": "game/src/game/astral_challenge_reward_data.gd",
+      "sha256": "d97ab0f1bcf776f56a6648f8cdf9a31a5a1554d428d031f8e8108e891b3624c0"
+    },
+    {
+      "path": "game/src/game/astral_challenge_rewards.gd",
+      "sha256": "1acafb8edbb309e3ee47bee37e0b84d9584ea61b71a108a2e5049516d439a39b"
+    },
+    {
+      "path": "game/src/game/body_part.gd",
+      "sha256": "b7ccaf74b5163c71e52688f5f908b3677caa0b7eb2ac997316e83ad47f02c947"
+    },
+    {
+      "path": "game/src/game/campaign_map.gd",
+      "sha256": "5fb68823b853f7a35ee063975d77263fcf7c34398e9bec195623d2e59c62b695"
+    },
+    {
+      "path": "game/src/game/campaign_profile.gd",
+      "sha256": "66ff5cf575b770937c0862064ed05fadc64956fba5dc5d58cbd245f1af31ce20"
+    },
+    {
+      "path": "game/src/game/campaign_state.gd",
+      "sha256": "1cbcb37926e16917791c2472395661114d6db4c747f4df468e99b5ecd074d0e1"
+    },
+    {
+      "path": "game/src/game/combat.gd",
+      "sha256": "6ca8445d6b96a1aa12d0305bfd860918202bb859629b9e609ac41faa59297daa"
+    },
+    {
+      "path": "game/src/game/console_commands.gd",
+      "sha256": "57898866890ee8286c3515ef6b4c9d255ab268e813f99e15691e99b0aa318e32"
+    },
+    {
+      "path": "game/src/game/console_tools.gd",
+      "sha256": "40bf1d25108e235ba72c9e7c7ff7ff053b95c3c1656600fe5bcc5d303e798d65"
+    },
+    {
+      "path": "game/src/game/coop_checkpoint.gd",
+      "sha256": "6f97e037e5a1f9f8bfe40fb886f94987ef6a6c4ca39cc543b799fd9c375249d2"
+    },
+    {
+      "path": "game/src/game/coop_db.gd",
+      "sha256": "94bff80921f5359d1f030794502705961413c630e62c05fda0227014a05424bd"
+    },
+    {
+      "path": "game/src/game/coop_guest_roles.gd",
+      "sha256": "31eb28ddd70629dd73877bdbd65e72eda1839f4a088da63ef94eaf6f6e43c7f8"
+    },
+    {
+      "path": "game/src/game/coop_party_progress.gd",
+      "sha256": "c87b3972ece53de8c8f2c96d38772bbb7ba585fae51b45b79a79dfbf0ba452f0"
+    },
+    {
+      "path": "game/src/game/coop_permissions.gd",
+      "sha256": "de20438472c616eb393400c16f29e68baecbd061acbf11f5b37fbd73f2e7106e"
+    },
+    {
+      "path": "game/src/game/coop_progress.gd",
+      "sha256": "e36d04c595cbb6246279f1187f55de99519207630c3cefa3070168664084ecf7"
+    },
+    {
+      "path": "game/src/game/corpse_pools.gd",
+      "sha256": "7db544ba6f4616f6e5509760423a408c84818abcdb432d8ebd5023246bebfcae"
+    },
+    {
+      "path": "game/src/game/dialog_camera.gd",
+      "sha256": "fb8ae99ab8abb65925457c4098419699f8bb4b648d4629e7302d20d735e7aa37"
+    },
+    {
+      "path": "game/src/game/direct_combat.gd",
+      "sha256": "9a946a079f1505f804866288bb47374b1e97d474e0ff3e53a8bd1fa5f866f5b6"
+    },
+    {
+      "path": "game/src/game/direct_control.gd",
+      "sha256": "57fa5040abf73482bd18b8276ad230d2c09af469237b8740e38a96ad9006cc9c"
+    },
+    {
+      "path": "game/src/game/direct_pose.gd",
+      "sha256": "611ae0de8c709e79b75bea001bf6f401b91119bd1930da98e3986f52a28bbf45"
+    },
+    {
+      "path": "game/src/game/distant_ai.gd",
+      "sha256": "dbdaf9ae7c5bd32f50acb8f73597d06cf1103945af3ed2f08ff1913e4ea69c21"
+    },
+    {
+      "path": "game/src/game/flash_log.gd",
+      "sha256": "79abf3b5255d9b970fb41ac550f6d5674f0c2072f056b9a3bbd3d3674d3163f3"
+    },
+    {
+      "path": "game/src/game/fx/ambient_ground.gd",
+      "sha256": "443d0e07738ef50f59c773a2b8125e9cb41bab25f894d11540c339823d5521fd"
+    },
+    {
+      "path": "game/src/game/fx/ambient_habitats.gd",
+      "sha256": "086dfae474e3224631c532579e1a2cc6d29cb6be2c1f19e3dd5397056118119b"
+    },
+    {
+      "path": "game/src/game/fx/ambient_life.gd",
+      "sha256": "da1ac0eb73c5a97fccf217ef3c11ad8d3a2efda6c9fc02549c6c775e818eec42"
+    },
+    {
+      "path": "game/src/game/fx/ambient_models.gd",
+      "sha256": "d1e84944763337e305917431e8773a4a1fde6586436f842ea52064f7aac5084e"
+    },
+    {
+      "path": "game/src/game/fx/ambient_particles.gd",
+      "sha256": "5fdd51d0811ca08418de7db0b026bbf2e5c1ed9d50b0e66343e7889b87834625"
+    },
+    {
+      "path": "game/src/game/fx/biome_cover.gd",
+      "sha256": "ea3cabcb47f52dadf69c37cf4bbadb0e9d758bf5fcb69939f532d8164878f9ae"
+    },
+    {
+      "path": "game/src/game/fx/biome_cover_contact.gd",
+      "sha256": "16120ffa17d47fc4caef2d931a0bd729773d4fb32a7570fdd6bfe28a3f321954"
+    },
+    {
+      "path": "game/src/game/fx/biome_cover_mesh.gd",
+      "sha256": "a204aba859a899d5778438588fa4593662dd28851f8c328fa64eb48e84d908ed"
+    },
+    {
+      "path": "game/src/game/fx/biome_cover_region_mesh.gd",
+      "sha256": "3c8f21b5718b4b4627cff95fa84af33a9a77234bc09f56e1f41c049e1084d6d2"
+    },
+    {
+      "path": "game/src/game/fx/biome_cover_regions.gd",
+      "sha256": "36dc82c8f345153089ab2bdd36cb97bd02df0e823826078198c1825d52f36d3c"
+    },
+    {
+      "path": "game/src/game/fx/biome_cover_tiles.gd",
+      "sha256": "bc3f3f77f83e8a75b5d59f8acffff13d9c13642ccbeaf956844d2e6bc96f3d68"
+    },
+    {
+      "path": "game/src/game/fx/biome_cover_water.gd",
+      "sha256": "af5851a50b7e72205993d10b7246e10d997cf3e7a7cf768cc0a234b2ce2384ab"
+    },
+    {
+      "path": "game/src/game/fx/biome_mounds.gd",
+      "sha256": "0b9b7bcc31800b564273d8e41299ae287b32463bc09cb6e390faa27d594de1ed"
+    },
+    {
+      "path": "game/src/game/fx/biome_sand_tiles.gd",
+      "sha256": "6d4b1c9378c1cf146404db4286a48ad7286ae5d30962979529224f1911a30b8a"
+    },
+    {
+      "path": "game/src/game/fx/cloud_reflection_shader.gd",
+      "sha256": "acca8e1797fd263dac0abffe34738455eae9b42797dc5351f7161e7940d5bac4"
+    },
+    {
+      "path": "game/src/game/fx/cloud_reflection_view.gd",
+      "sha256": "27d9198ae2e4f2afb1a571949041a5d95c49d002a0da10b4586f231539d39d7a"
+    },
+    {
+      "path": "game/src/game/fx/cloud_shadow_field.gd",
+      "sha256": "d5538797b69d06fec4f63fdae9d3a97fd80022a760249b92ee024e2d2698d973"
+    },
+    {
+      "path": "game/src/game/fx/cloud_volume.gd",
+      "sha256": "0233e3df216cb3685227104780627ae2bca563977e17636e8c191dd94a449f17"
+    },
+    {
+      "path": "game/src/game/fx/cloud_volume_noise.gd",
+      "sha256": "a2d57c9a764e97256d93e478451d4c337980bfe396a08d756ebd175f79284a2c"
+    },
+    {
+      "path": "game/src/game/fx/clouds.gd",
+      "sha256": "ecf5c56c27972161478b7dee1563e6cca8bbbd11bcceb3211835e950b4a356fd"
+    },
+    {
+      "path": "game/src/game/fx/contact_shadows.gd",
+      "sha256": "7e7441818e2f8bd666f116bca6745b65e915b2827e73ed9a7c022d3d481f4b22"
+    },
+    {
+      "path": "game/src/game/fx/far_grass.gd",
+      "sha256": "6e486f190a0e515bfaed0c2f74a0236e6ba9d9f027c1c987b17153b03ba479af"
+    },
+    {
+      "path": "game/src/game/fx/fx_emitter.gd",
+      "sha256": "c9c6e9e21322ad05b579adca0456590de8531cc9471d0d2b91d7341a821a9b16"
+    },
+    {
+      "path": "game/src/game/fx/fx_ground.gd",
+      "sha256": "36178826193f86bb3b8e0d66a40a4f9a58109daf79df10143f460012708fb664"
+    },
+    {
+      "path": "game/src/game/fx/fx_types.gd",
+      "sha256": "bb4406fccdf1a50390efe8480bdd557075635a47f045c7672e6a2b23875af174"
+    },
+    {
+      "path": "game/src/game/fx/ground_contact.gd",
+      "sha256": "588f5c36b9d8e8a36146e5ab5e55d7e7208d09a17ed97352bc95276e637eb38a"
+    },
+    {
+      "path": "game/src/game/fx/ground_contact_data.gd",
+      "sha256": "cec4b21f7582cceef1f8db656c93e5b932bf65e558c4fc1cedcbf4b23536ebd9"
+    },
+    {
+      "path": "game/src/game/fx/ground_contact_shader.gd",
+      "sha256": "707df8b2ad5b7e5e3965a507b080ff22a71d6bce923943c51319829aed8ba33c"
+    },
+    {
+      "path": "game/src/game/fx/ground_dense_colors.gd",
+      "sha256": "5e506c052bc662f56966158a608791a4d208986a74171d6b526cc1ec82717995"
+    },
+    {
+      "path": "game/src/game/fx/ground_marks.gd",
+      "sha256": "5f72f57a840b20a79173b4a0e2f7d1cebe8ed24e2e42b139ca5a453c3bf5d87b"
+    },
+    {
+      "path": "game/src/game/fx/ground_surface_data.gd",
+      "sha256": "d62e6fd57ceb2a2bcbe65b60a45377e3020f2a32df58394e097194b2ce95282a"
+    },
+    {
+      "path": "game/src/game/fx/ground_surface_shader.gd",
+      "sha256": "d51b6c54a32f9cb1395bbfd3a17746a52da16934c65fb2c07a3e8537089569ca"
+    },
+    {
+      "path": "game/src/game/fx/lightning.gd",
+      "sha256": "ada9449f2327511b0a3fab662b868a8d44ec47a20c1111d5ca16f131f386a5f9"
+    },
+    {
+      "path": "game/src/game/fx/local_light_shader.gd",
+      "sha256": "d856b1cdc4e0143aee769b84aa9e1819988c55f2fc21966405b35f23c1352a74"
+    },
+    {
+      "path": "game/src/game/fx/local_lighting.gd",
+      "sha256": "d276bb68ff79e5d2eef74d94e1f845717c66bb3e1e772b2e1989df9375bfe231"
+    },
+    {
+      "path": "game/src/game/fx/particle_system.gd",
+      "sha256": "37d8e8b67386f0cc2620f383789d68d7a71f4f06b2c2a115282ce64661277a29"
+    },
+    {
+      "path": "game/src/game/fx/path_trace_device.gd",
+      "sha256": "36a921b04a166614fd943c3e6c9a63f83c8d6684e2810179db7349f6c350669f"
+    },
+    {
+      "path": "game/src/game/fx/path_trace_emitters.gd",
+      "sha256": "e8ba3a4c437a195a03899e5ca97450b2d565ba8de87c0e9c8d957f22fce0a574"
+    },
+    {
+      "path": "game/src/game/fx/path_trace_sky.gd",
+      "sha256": "d973d2d1a60e94fac759b0f63c71601c0b269d005efd324c57fd674fbae5dc1a"
+    },
+    {
+      "path": "game/src/game/fx/path_trace_terrain.gd",
+      "sha256": "f9a168608bddeaa278d1b8c95b123b8c60c3d0beb4d48637b6a6130e2f0968e2"
+    },
+    {
+      "path": "game/src/game/fx/quest_bird.gd",
+      "sha256": "ba4f656c61fe31f97faa8d5381910463f388ffab8cd12fb6b9b7da194e69fb92"
+    },
+    {
+      "path": "game/src/game/fx/quest_lights.gd",
+      "sha256": "097a8eaeb77803705df44446d6d01b4daef302d2c97b86cce8816d1fc801706d"
+    },
+    {
+      "path": "game/src/game/fx/rain_snow.gd",
+      "sha256": "1d90586314d42679f50769457752b021be5f008d8d3a9546110e268f80ee13aa"
+    },
+    {
+      "path": "game/src/game/fx/scene_raytrace.gd",
+      "sha256": "f8097106490fa38163c7b07e68fc68813d425687f15dd3c6b8094e34aa81e117"
+    },
+    {
+      "path": "game/src/game/fx/scene_raytrace_device.gd",
+      "sha256": "1c4d4b2e2cfe80ce234740356e45e5e993749a726bd1a809ec9e818db420f0c6"
+    },
+    {
+      "path": "game/src/game/fx/scene_raytrace_shader.gd",
+      "sha256": "cb59c737c6bd8126ef37f208ba560aecb5d97bb811e392ca93f74e097d40a45a"
+    },
+    {
+      "path": "game/src/game/fx/scenery_batch_watch.gd",
+      "sha256": "b0af74667003955c9d91f8c5141f494a0fc030f9fab560ecbd8dd66656e40f1c"
+    },
+    {
+      "path": "game/src/game/fx/scenery_batches.gd",
+      "sha256": "84f0b413d9f1c11737de4b73a2bc806c4e8607c38c747a01cf1a6223f2d7baa6"
+    },
+    {
+      "path": "game/src/game/fx/scenery_light_groups.gd",
+      "sha256": "db4961190b0e59a4e240915a00a6461d9f4fef21d9fa5f0c562692b1d28a91f0"
+    },
+    {
+      "path": "game/src/game/fx/severed_limb.gd",
+      "sha256": "a03e6b9eb8ee992f25e0228de3a4edb8b7dd0cd15285e5e353e695abf041b879"
+    },
+    {
+      "path": "game/src/game/fx/soft_ground_deform.gd",
+      "sha256": "212c447c83ed470c7e0a6d198845637fe6c4ffbb09eb1e4877c4b14d6e142e93"
+    },
+    {
+      "path": "game/src/game/fx/soft_ground_field.gd",
+      "sha256": "ff04e60936782bb80976279a7af28bfd5bb8d15d6795476fd751c0d1dc3c05fa"
+    },
+    {
+      "path": "game/src/game/fx/surface_weather.gd",
+      "sha256": "8cc8041f89ee018aa39cbc6144f0443a0f928a6b49eb0061afaf55da35187e4e"
+    },
+    {
+      "path": "game/src/game/fx/terrain_cliff.gd",
+      "sha256": "5f9482fef924d1784f3ac11bee6484ffca0689ff9535588cd8c3751cf61e726b"
+    },
+    {
+      "path": "game/src/game/fx/terrain_cliff_shader.gd",
+      "sha256": "4dbe939598202e7962eb00b4b6ff59409231a0f65b99da475b237cd39ad71fb5"
+    },
+    {
+      "path": "game/src/game/fx/terrain_cliff_tiles.gd",
+      "sha256": "e1b5e2afb3ff6d6d82d9ad40cb81b72c0c21b90ec286e5a580b256419f0e25a1"
+    },
+    {
+      "path": "game/src/game/fx/terrain_color_cache.gd",
+      "sha256": "4a15ef3ea33eca341145f6902d98a1e5670080820b3d1f88aa146984bb386851"
+    },
+    {
+      "path": "game/src/game/fx/terrain_details.gd",
+      "sha256": "b95f7451f5957a511b3f9fe900fc31eea198a05345e882e4d5377d9e06c3f1bd"
+    },
+    {
+      "path": "game/src/game/fx/terrain_sampling_shader.gd",
+      "sha256": "3220bab6169f1d828b862d807279dddf1b3755262c0cacd97ce72cb34c29c8ec"
+    },
+    {
+      "path": "game/src/game/fx/terrain_transition.gd",
+      "sha256": "5d90077e9ae26d463c4b56bc939e9ace9efcfac46a76c40f4ef6396ce00a0525"
+    },
+    {
+      "path": "game/src/game/fx/terrain_transition_shader.gd",
+      "sha256": "5253cb154d154447116f7b99603812c61a023aeafb0e4a53668a8f6aa38e4a11"
+    },
+    {
+      "path": "game/src/game/fx/terrain_transition_tiles.gd",
+      "sha256": "752a5f38b3bdc1c92acdf5eb859262139f0ffdcfac81426f06f8b17e75f4086e"
+    },
+    {
+      "path": "game/src/game/fx/vegetation_interaction.gd",
+      "sha256": "e999b431302615cf2a30fc01cecd1124bc137082b564b6a39c8feda7b95499cb"
+    },
+    {
+      "path": "game/src/game/fx/water_caustics.gd",
+      "sha256": "06e1f5bd38b838f9296eab74bf168dd60b8e4736fd0da26e1ebd67661dbec7d6"
+    },
+    {
+      "path": "game/src/game/fx/water_current.gd",
+      "sha256": "57e533c289a9bb194cb7363239017b6f73af015ff49e524a0a999ed52bc5dc92"
+    },
+    {
+      "path": "game/src/game/fx/water_current_shader.gd",
+      "sha256": "2f8bf1a57a3e3953ae3e504fdce635c100cdd34a63b74a192826ba4ad1c56442"
+    },
+    {
+      "path": "game/src/game/fx/water_interaction.gd",
+      "sha256": "c691ff44ef64ce326050852bdc2852ac5c3b7f538149d98a383d734ebafdcb18"
+    },
+    {
+      "path": "game/src/game/fx/water_interaction_shader.gd",
+      "sha256": "b65a4420bc155a5539080c0706b8ce1f4b9f2c674156a4883a5fdac05617d653"
+    },
+    {
+      "path": "game/src/game/fx/water_raytrace_device.gd",
+      "sha256": "4b5c59909477b95262f15f83f076f0bd545033495aa140bc83ee2f2e80c53e24"
+    },
+    {
+      "path": "game/src/game/fx/water_raytrace_scene.gd",
+      "sha256": "6288b6e0b98f9e08728e0fdc7eb07ac46910e553d9ebb228997de83b8a6a3b02"
+    },
+    {
+      "path": "game/src/game/fx/water_reflection.gd",
+      "sha256": "3f22ec0d2b5415094aaf022bafb1e3beb212ea5f3a26ba2caccf164ee0bc4388"
+    },
+    {
+      "path": "game/src/game/fx/water_surface.gd",
+      "sha256": "6ef19a9c9ac09510d1c7163a894742ce3a5a97bf0fb46c4c73f4c058160af197"
+    },
+    {
+      "path": "game/src/game/fx/water_texture_data.gd",
+      "sha256": "5dc6b740c394cb5735a09ee3a1c18225a33bdd52da6f784ce8d4fb578d7562eb"
+    },
+    {
+      "path": "game/src/game/fx/water_wave_field.gd",
+      "sha256": "eb218f7fcc211455b63d9db2bdd4e242132afd0b4e9bef0ab633355a180c6c12"
+    },
+    {
+      "path": "game/src/game/fx/water_wave_shader.gd",
+      "sha256": "1ad74048746e5b2a39f7e8bc0d38f1fa97ebeeb8059f216f54a36e97715757c2"
+    },
+    {
+      "path": "game/src/game/fx/waterfall_field.gd",
+      "sha256": "eb901e23553277da65c01d6bb936477135fb9a910fb8f2c52eda23fd3bdf8aae"
+    },
+    {
+      "path": "game/src/game/fx/waterfall_shader.gd",
+      "sha256": "d26f34c0fc2467e5a328737b4d8873d07ca81394d950df2fda3658f5703155f1"
+    },
+    {
+      "path": "game/src/game/fx/waterfalls.gd",
+      "sha256": "17d24e4d6bc32f5689cef65381e53786a79b23273bf765c8542200aa6f28091b"
+    },
+    {
+      "path": "game/src/game/fx/weather_mist.gd",
+      "sha256": "81e0a685997c2b6dddb01028ac0094e7aabf358c5655e6e218e31e2ef4f5570a"
+    },
+    {
+      "path": "game/src/game/fx/weather_mist_sources.gd",
+      "sha256": "f5507b2f48f267779f489011fc370a3ba3995130eb6d281cd2daea85a3c396fe"
+    },
+    {
+      "path": "game/src/game/fx/weather_wind.gd",
+      "sha256": "fb42547a9ec04cc025c95bf9d6b7964227aeab3398431292f87797f4f6ec728d"
+    },
+    {
+      "path": "game/src/game/game.gd",
+      "sha256": "e0cc7228074def59a1033ee5ef4e100109225288e2cd4edbaa340d84523a3ca3"
+    },
+    {
+      "path": "game/src/game/game_sound.gd",
+      "sha256": "2838d36adda3f419c65745062087ce2014ac4237880d1ebeb7b47b1aea7e7a44"
+    },
+    {
+      "path": "game/src/game/gfx.gd",
+      "sha256": "22bb42a4ed740fc246d8a9eeb808b6b0595ae17cb9fe18e5d78b7ac4c6301258"
+    },
+    {
+      "path": "game/src/game/gfx_detect.gd",
+      "sha256": "d67a3999aa499272612515f09c29053b63602d3fb738f839425e3a10801e390f"
+    },
+    {
+      "path": "game/src/game/gfx_presets.gd",
+      "sha256": "6130e5659f8fc62cbed07dc83664e655914030db1436b117fbe1cfe998d4a8a8"
+    },
+    {
+      "path": "game/src/game/internet_directory.gd",
+      "sha256": "5b6f1b7269313894373ad112a01e79687862ea22c28723bfcfb3f862482cc9bc"
+    },
+    {
+      "path": "game/src/game/items.gd",
+      "sha256": "4e4e93a9c08bfee8b6b74cb6516a29bb1f22e07e77a8412e70b8104fe30d28cb"
+    },
+    {
+      "path": "game/src/game/lan_discovery.gd",
+      "sha256": "8da4b2ee6bc370fd87879067032b30f90a2ae11f8750e14dd2153b0e619f2adf"
+    },
+    {
+      "path": "game/src/game/levers.gd",
+      "sha256": "405761bd4ddc41dd596ddd5c2659438dc5f15137053651cb53a4785f4ad7322f"
+    },
+    {
+      "path": "game/src/game/lmp_mode.gd",
+      "sha256": "c86a99c6cf5e55fad160d73d5700748ee3500ef7065383ff2b559e21017e242a"
+    },
+    {
+      "path": "game/src/game/lmp_travel.gd",
+      "sha256": "180d6d4cb3f4d89e31cab44fca0a0c3f301304bce5ca339e13a6ad8b461404af"
+    },
+    {
+      "path": "game/src/game/local_host.gd",
+      "sha256": "0ae7eeffba4989e7b4d869cbed98a6b22414c2d65c2be813aa37e6a66b87d71c"
+    },
+    {
+      "path": "game/src/game/mob_scaling.gd",
+      "sha256": "cc0d918f9d490236493ae70f8794713fe8b155574d716ba93f985021995fc4ab"
+    },
+    {
+      "path": "game/src/game/mod_catalog.gd",
+      "sha256": "adc8bbffd650a70b275bc73cb4405cd24f2bfc43abe4f06a768529f69a7c4058"
+    },
+    {
+      "path": "game/src/game/mod_download.gd",
+      "sha256": "16a0aee6794e1e417e5f4ef014c299bd37a2f103654bdd51450811b9fc819665"
+    },
+    {
+      "path": "game/src/game/mod_formula.gd",
+      "sha256": "03859521693464d67a8da793779eacd7f73ace35809db263d94bcbf9d7ae0c05"
+    },
+    {
+      "path": "game/src/game/mod_schema.gd",
+      "sha256": "a3f58717b2ab6aebb1db09df59a95188924fcb0d6acdd5f9fedfe1cb288a3065"
+    },
+    {
+      "path": "game/src/game/mod_store.gd",
+      "sha256": "28906ba4f3f1219f59fbf11ecf3b65e1eb16128918b2fc0adf6f5b930be0b26f"
+    },
+    {
+      "path": "game/src/game/mod_zip.gd",
+      "sha256": "f5ea47f80948098531d92982761fef46a0a5682cc661ec05f49513280c1097d5"
+    },
+    {
+      "path": "game/src/game/mp_character.gd",
+      "sha256": "cd0e93cc94610c2846ded3cc93e58fe448349bd0137abc1cb761ced5c4c1ea72"
+    },
+    {
+      "path": "game/src/game/music_system.gd",
+      "sha256": "ec3b7086a422b9d5931727c6f22474f109ba6313844af2efdb7138cd17659147"
+    },
+    {
+      "path": "game/src/game/nav_blocks.gd",
+      "sha256": "f79140f61964efef553ac7194addb08bc4b3e163a0a835b4de52a74c8cc576f6"
+    },
+    {
+      "path": "game/src/game/nav_grid.gd",
+      "sha256": "c28769d1e4a152308f83d4a648b6cf0d12a44a3d76bae882eb13298437a5b90b"
+    },
+    {
+      "path": "game/src/game/nav_spline.gd",
+      "sha256": "abfb966c48d47459da9f86548444f1a54110e7aa8fd75708865e4655b0970985"
+    },
+    {
+      "path": "game/src/game/nav_turn.gd",
+      "sha256": "a13869c348ddf1a18635571b22ef13517b2ed945a6f2f43d1c7312221aac020a"
+    },
+    {
+      "path": "game/src/game/net_input.gd",
+      "sha256": "b9124f8589808fdc9b47d1d3badf665cc636e422728fa519cd123d4583fe5a26"
+    },
+    {
+      "path": "game/src/game/net_sim.gd",
+      "sha256": "3ab0ff6bbe1ff5df9813168be8a4d253e54967bf94d56a27642370903afc10bc"
+    },
+    {
+      "path": "game/src/game/net_smooth.gd",
+      "sha256": "7285a92c5d9a29af5b98d07cbb98dcc6be9d1aa3002b097a903f8ee1fdc81700"
+    },
+    {
+      "path": "game/src/game/net_snapshot.gd",
+      "sha256": "7cf128a40c253e87c643bfaa1161372d1f67d4aeb0a8050f367c86f1fc73201b"
+    },
+    {
+      "path": "game/src/game/net_state.gd",
+      "sha256": "3160404ef9d189071b5d9c7e035f41354e608cc0af7c7dac516085b6adbd87a2"
+    },
+    {
+      "path": "game/src/game/net_status.gd",
+      "sha256": "66934cb6ce406033dcd58ffb14cf458bdc3a50ec1004185ac5c6fc73c11a7912"
+    },
+    {
+      "path": "game/src/game/object_activity.gd",
+      "sha256": "60b0cccfa410e73113414daaaa660e93bf2fe01909e9f04fa94202887ed1c1a1"
+    },
+    {
+      "path": "game/src/game/order_marks.gd",
+      "sha256": "290a410d353ff5d00153b1db34a4a72659e13c7256930a4cccec50169c80d355"
+    },
+    {
+      "path": "game/src/game/pad_field.gd",
+      "sha256": "38244b2457949b0cb393c37ba4af923ced7e3054aa028458bf4c561716da1012"
+    },
+    {
+      "path": "game/src/game/perks.gd",
+      "sha256": "b8a9eeaf30e525f2043117a5f4231faed19cd749f1f06beb7996674255d48403"
+    },
+    {
+      "path": "game/src/game/player_swap.gd",
+      "sha256": "618724aef1515dbf8c55245ef14fcea735e1ca1aed7c6a3a61ad3632862dda10"
+    },
+    {
+      "path": "game/src/game/projectile.gd",
+      "sha256": "e695d8d651da79b5dfc6a425869ea584b74de1b63ba8d2e102d234cc057d07fc"
+    },
+    {
+      "path": "game/src/game/revive.gd",
+      "sha256": "20f79f6601f68bf747147780b453e1e6277dff0dc0219319a81de0b812a920d0"
+    },
+    {
+      "path": "game/src/game/save_info.gd",
+      "sha256": "fa3f9889dee8ac7d6d6afc110af35e88bc04e08848c18ddbea7bb4dc9c194f17"
+    },
+    {
+      "path": "game/src/game/script/authored_village_talk.gd",
+      "sha256": "663fccf90c9f3a2a4a05913c9bc17547d4ebc606532d43fb9fe4890736daffe6"
+    },
+    {
+      "path": "game/src/game/script/briefings.gd",
+      "sha256": "b3561fd880ff144c7d6dee104697640bc0f3587911aeba527b25f54b56bb4ff5"
+    },
+    {
+      "path": "game/src/game/script/camp_grants.gd",
+      "sha256": "e1338d0249b50cc19f9b85d27640e9bc2b5346e40c033ddd700fa23ef82be692"
+    },
+    {
+      "path": "game/src/game/script/coop_vm_state.gd",
+      "sha256": "b071a76622d7d54fe71e6c543c7be0d599e8306b241526c2e889e50d7864b832"
+    },
+    {
+      "path": "game/src/game/script/gs_table.gd",
+      "sha256": "95e01b21ce54a1eca18373876b1473269ab60445b1a54694de6bce15a22c7c4b"
+    },
+    {
+      "path": "game/src/game/script/scene_visibility.gd",
+      "sha256": "b48be9bf5c27839e5bb6b75a25ddd9e6467f71a7c033224c2bcf4a77e636ab99"
+    },
+    {
+      "path": "game/src/game/script/script_parser.gd",
+      "sha256": "e71f9f06412e38a586c6cfb9158a1e680e656dcad07a31c79dea6583d3484919"
+    },
+    {
+      "path": "game/src/game/script/story_astral_eavesdrop.gd",
+      "sha256": "30cd6bec879181a67a75ce27056b9f9fce190b72773509713dfa067981df559e"
+    },
+    {
+      "path": "game/src/game/script/story_astral_fortunes.gd",
+      "sha256": "35ad671b2db163e7278284829ba0afaa3bd17eae0720a0a2d3ce554d67012d6b"
+    },
+    {
+      "path": "game/src/game/script/story_compat.gd",
+      "sha256": "c87803ccae82bdd6e0bff84701d97b1f7f564798f22effa48010cf729d114d46"
+    },
+    {
+      "path": "game/src/game/script/story_coop_effects.gd",
+      "sha256": "7d432cb6007f390e7bf625f7537b2ba37fcc3d22b901fc301f5d57270ea77540"
+    },
+    {
+      "path": "game/src/game/script/story_coop_predicates.gd",
+      "sha256": "b69f35cd8487f141cab14d2cbc377278dbf4443d9474b5a28e5ca4e53676f33c"
+    },
+    {
+      "path": "game/src/game/script/story_coop_traps.gd",
+      "sha256": "0fe31b248712b3aa735a3bb9467b41929cbeb5c861288e1937b2f47dae0523d3"
+    },
+    {
+      "path": "game/src/game/script/story_guard_escape.gd",
+      "sha256": "7fc64da15f96e1ba1d7aeeb013edbd5113f869232821f31f84d3c6b30ecfa0f3"
+    },
+    {
+      "path": "game/src/game/script/story_revenge.gd",
+      "sha256": "11f99c95aaef68b18136e6ebcd6fe7799c05040244e0c4859cb2bb31d1e6c08d"
+    },
+    {
+      "path": "game/src/game/script/vm.gd",
+      "sha256": "9f67c3673e2fe6d878efa6900c7b74268b9272cb674eb22f430903d3ec4c54af"
+    },
+    {
+      "path": "game/src/game/session.gd",
+      "sha256": "e76dae50d8ee3c5e84c7657506609472e1e5cbafc00213ae967440bdb8e79c39"
+    },
+    {
+      "path": "game/src/game/shader_warmup.gd",
+      "sha256": "5522c4ca56a249bca0854cf6526951fc434313f5a007f526e049d2bb704964af"
+    },
+    {
+      "path": "game/src/game/shadow_diag.gd",
+      "sha256": "836b6e7608c9b9ddd25f977847194a7f729a748551c4a9efb54a297c544ae41a"
+    },
+    {
+      "path": "game/src/game/shops.gd",
+      "sha256": "9b3cd5940bdde33c8cb94c9c50b20591ae3c0270549ccaf8d76587e4cddd776d"
+    },
+    {
+      "path": "game/src/game/side_quests.gd",
+      "sha256": "38ab5cc5b68ab5f5cdbf946e748c19cd5a1a53ac78982478fdfae19dcd17ea2c"
+    },
+    {
+      "path": "game/src/game/skills.gd",
+      "sha256": "a197627338c682050e248b0f136006b11763722587d990dcd7aeec50cca46fef"
+    },
+    {
+      "path": "game/src/game/sky.gd",
+      "sha256": "c3094487b1801cfa56154efe81bfe28f3eedbb97632f1ae98cc906588e6899fa"
+    },
+    {
+      "path": "game/src/game/smile_faces.gd",
+      "sha256": "34ece2b2bd496408d46a65b52fc9f8b3318a5d6037e4c97423f41cb535acaffe"
+    },
+    {
+      "path": "game/src/game/sound_mixer.gd",
+      "sha256": "d305d823158f4cfbbbf83c127fd925e2ee169faaa50cfee99a34f48f659d8a6f"
+    },
+    {
+      "path": "game/src/game/spell_fx.gd",
+      "sha256": "9aa6e92621304450964f73df6434fba007c9032a97077ec4f446be3b1798dc13"
+    },
+    {
+      "path": "game/src/game/spell_sounds.gd",
+      "sha256": "7ee844eb895b06556724ca2f62e46715f5560426b27fe2cb68b2cb3616817946"
+    },
+    {
+      "path": "game/src/game/spells.gd",
+      "sha256": "5b0f5b001d93a2768a87a4e0735948acedfd6466018b799d01c98e2840c438c4"
+    },
+    {
+      "path": "game/src/game/surface_detail.gd",
+      "sha256": "aafbe0d00b9e38216df7aab63192e47ed401b1a0b1ba7195557d63ea6ba390de"
+    },
+    {
+      "path": "game/src/game/surface_materials.gd",
+      "sha256": "8f0c79025c06944e7fd817949c6bbc5b83566d5add95ed7f04db534e6b16c7bb"
+    },
+    {
+      "path": "game/src/game/tex_upscale.gd",
+      "sha256": "0f13cadea2b2b96b73e97469612b74ed05e4e5400b2bbf7aa7bd349da9bc0079"
+    },
+    {
+      "path": "game/src/game/tex_upscale_texture.gd",
+      "sha256": "d2c84c17341be6c0ff018f6d588cd78b4864f56250e81d2691def6b963e467be"
+    },
+    {
+      "path": "game/src/game/tornado.gd",
+      "sha256": "efcb45ba70cd9c6eadac1e54ee45edf2303865df11184372f111fde35ad4acb2"
+    },
+    {
+      "path": "game/src/game/training_refund.gd",
+      "sha256": "68b6f43959b57f16394174beaa1ba81f233cbe1c5657880ce5334def33ea7cb9"
+    },
+    {
+      "path": "game/src/game/traps.gd",
+      "sha256": "cc1ed14aa5ddddab7bc40570e03768cd8f8b9376a51cc7716219cf8a3b3966f0"
+    },
+    {
+      "path": "game/src/game/unit.gd",
+      "sha256": "3daa23067ff21de29161fbf1664eff3655f3d2de4db100968d6b49d401414e88"
+    },
+    {
+      "path": "game/src/game/unit_fog.gd",
+      "sha256": "1a0c84fe8f0e0a6d9029ce0d594c9e44ec37c373f3d4eb3215371359cdcc97b3"
+    },
+    {
+      "path": "game/src/game/unit_sounds.gd",
+      "sha256": "abf23c12f5678698af22902ce79d8f147d282c37c56246796a1ed80a2d4660e0"
+    },
+    {
+      "path": "game/src/game/unit_wounds.gd",
+      "sha256": "7ce19d06ae90948644357ac653d27d6b8ae271b084f0dcb5ed813ca196cb52be"
+    },
+    {
+      "path": "game/src/game/upnp_port.gd",
+      "sha256": "721ba99399c6f994b099251409c454df5a8e7a46aff5fad73f1ce9d835326e11"
+    },
+    {
+      "path": "game/src/game/vision_fog.gd",
+      "sha256": "8df02d201df0821622eeaea2c390285a20fecdb9230ec7172daae5a9f1b278ce"
+    },
+    {
+      "path": "game/src/game/weather.gd",
+      "sha256": "0aa4661441ced16b64aadd47431a8a8a47d4e4b08126c65f15941f5074bd22c8"
+    },
+    {
+      "path": "game/src/game/wiki_catalog.gd",
+      "sha256": "10d724e79145d233c1714fcaa89a817a3f939bbdea464b5482b31f2698c0fca8"
+    },
+    {
+      "path": "game/src/game/wiki_knowledge.gd",
+      "sha256": "a26706023ecd43edfc83c285897f8e358884d14662a051560524f1da28268453"
+    },
+    {
+      "path": "game/src/game/wiki_library.gd",
+      "sha256": "54fecb7199e1bf641f25988e7df931a15ec9a789674a38668d680235b2a32f30"
+    },
+    {
+      "path": "game/src/game/wiki_lore.gd",
+      "sha256": "9b66ce05cbeb70d109fc8cb86a1956a3c6f4b61c297feb3272cfec98b201a3d1"
+    },
+    {
+      "path": "game/src/game/wiki_lore_data.gd",
+      "sha256": "113e6ad064f9fc19a100563628f8b51e507a507afea2a523322409ce970a268f"
+    },
+    {
+      "path": "game/src/game/wiki_plan.gd",
+      "sha256": "dc231753018fa72bbb43aae5a2464e36dbfdaefc6027e6311aa79f8697dbb614"
+    },
+    {
+      "path": "game/src/game/wiki_quest_text.gd",
+      "sha256": "024e39ffd6f803361181daec5aafbbddc6e8912351c0abf437d3e11daba68b52"
+    },
+    {
+      "path": "game/src/game/wiki_reference_text.gd",
+      "sha256": "222bb017f506ee1fc0447eda55297274c8676ee10b08bccdfa54ab7cbc09a83e"
+    },
+    {
+      "path": "game/src/game/wiki_search.gd",
+      "sha256": "fe5d6c469f13f5f5cc35cdf57ba158449becce49eced937c9ebe44b1e91a0caa"
+    },
+    {
+      "path": "game/src/game/wiki_source.gd",
+      "sha256": "97988ff7e05fd12ad122f206253cebc0fba5fff3395dfb4a837b8ef4701e9629"
+    },
+    {
+      "path": "game/src/game/wiki_world_text.gd",
+      "sha256": "dfa084492974ba9314d0293a99ced75f2ad56fa7d04ed33b9d205090d0a479d9"
+    },
+    {
+      "path": "game/src/game/world.gd",
+      "sha256": "8a157d9145af8f331879f33b20b3c247c5809d199d03bd4d1364cd38b80d35eb"
+    },
+    {
+      "path": "game/src/game/xp_rules.gd",
+      "sha256": "64e0b9ca80708dc56747acf3b9aaa2ed253ed604f7407e82861c9e4590c1eed4"
+    },
+    {
+      "path": "game/src/main.gd",
+      "sha256": "466ca19909cca95dd8873c73ab7f23a6fc20e7d7cbad7a6584d5e1864ff38645"
+    },
+    {
+      "path": "game/src/platform/crash_report.gd",
+      "sha256": "93afdd059803364a2324230219602564b1785d64d768d593c289a09afa67dc34"
+    },
+    {
+      "path": "game/src/platform/data_import.gd",
+      "sha256": "ab317ea76e1e12278a1d53ab88b696e211e757b39453df3d26fd95040ce978ec"
+    },
+    {
+      "path": "game/src/platform/data_switch.gd",
+      "sha256": "9e56b62e78aa15698fa43926044ed0abadc152534fefc9695599e7847dfb4867"
+    },
+    {
+      "path": "game/src/platform/discord_presence.gd",
+      "sha256": "cfd6c283be955a0af3b42226ffd0280fc04574001299c82ff8d18fa7698bc7e7"
+    },
+    {
+      "path": "game/src/platform/frame_rate_meter.gd",
+      "sha256": "ff89d528c177e6a3fc8cc8104327ebf6f29799dee6b13a4876b9f8ec3a0424d9"
+    },
+    {
+      "path": "game/src/platform/fsr_graphics.gd",
+      "sha256": "3d7cac514924c90d6e9510beae1784ac7b204022d17a4f0500e25aafc3329cf3"
+    },
+    {
+      "path": "game/src/platform/game_files.gd",
+      "sha256": "9a66aca761b4ea50018b70a15b073a50aa7673ba116c5602bd04454db740c92d"
+    },
+    {
+      "path": "game/src/platform/pad_gyro.gd",
+      "sha256": "0aa128beea31dcce40084b12339f5c4a6006b0715617d4b3b16920a4807642c9"
+    },
+    {
+      "path": "game/src/platform/pad_input.gd",
+      "sha256": "0ad78c941f4fb76009f84359fb34cb303fca820623acd35359adceed3ee34bab"
+    },
+    {
+      "path": "game/src/platform/pad_ui.gd",
+      "sha256": "e5dbdeeb08c6c6c53cb349c7d5d217e9d4513ca5580200ae0a32096fde3bd33b"
+    },
+    {
+      "path": "game/src/platform/performance_log.gd",
+      "sha256": "fd94ed498e9100d0becd0003c7c9bf07864fc4a0194d8aa84c5501b6b3c01fde"
+    },
+    {
+      "path": "game/src/platform/portability.gd",
+      "sha256": "6ec17950f2bb45117d1b34410ba19da3996f3bfea53c4722498f83a3de45763e"
+    },
+    {
+      "path": "game/src/platform/read_cursor.gd",
+      "sha256": "91b1e255a43bedd1fa7759973431f4f50474714c84caa9ec944c9ca264903f41"
+    },
+    {
+      "path": "game/src/platform/renderer_choice.gd",
+      "sha256": "5917f6b6f1719153745fcb94be66dba4a3dab9122bb89ffc631a0b500a12ee70"
+    },
+    {
+      "path": "game/src/platform/renderer_detector.gd",
+      "sha256": "97ad961cc04dfc1c3ed8e07a1b8a36784f5fe52a268d2f30b267a70c1fc50e13"
+    },
+    {
+      "path": "game/src/platform/renderer_probe.gd",
+      "sha256": "e274956026066983b5084a32dc7a23b4bd0011eb1609e9a1aced5372b44802f8"
+    },
+    {
+      "path": "game/src/platform/startup_graphics_probe.gd",
+      "sha256": "0c75906d7edc2aec96f3f9a5bc1bf4cdc950e348525e09f732228eea4ee70902"
+    },
+    {
+      "path": "game/src/platform/touch_input.gd",
+      "sha256": "5ff66bfc9aa507eec18f262c1a0d63cd98c514c9ba6eb17c623b32f00df3dd4d"
+    },
+    {
+      "path": "game/src/platform/web_cursor.gd",
+      "sha256": "890fbbf27db8c274bf64800b34f8efa4b4eaf2bbddb2001c52799d570af1a87e"
+    },
+    {
+      "path": "game/src/platform/web_music.gd",
+      "sha256": "caf971f0f1cffc94fbb875a37507a4bb8f613385c62a9458e85bc3e175793fec"
+    },
+    {
+      "path": "game/src/platform/windows_native_startup.gd",
+      "sha256": "4a1540bd4693b0b94e4b71c1ca06e8c45f0b024c56795ae84cdda43729c6ae41"
+    },
+    {
+      "path": "game/src/platform/windows_renderer.gd",
+      "sha256": "e819bd468a93d287a81a9fface11ef2798ceab52d41e73a0b4b246b3e3ebd1ff"
+    },
+    {
+      "path": "game/src/ui/action_strip.gd",
+      "sha256": "84ee6b4cf8a5648393b4fb7d9bc02eb375df62b61e05d133b27567ab350464e7"
+    },
+    {
+      "path": "game/src/ui/arena_alliance_badge.gd",
+      "sha256": "efcb10dece0e3936a66b9420dea40758f22debf0f85adf91544dcb6131488175"
+    },
+    {
+      "path": "game/src/ui/arena_creature_card.gd",
+      "sha256": "220e0437f0bdb8c7ab3895e742404263531e019f5ad64b12658b919c2bde3198"
+    },
+    {
+      "path": "game/src/ui/arena_damage_panel.gd",
+      "sha256": "846cd36e7488dc3d2de3ce1aee87d59ecf518d5acada596b32a7cb67abe441ad"
+    },
+    {
+      "path": "game/src/ui/arena_evolution_notice.gd",
+      "sha256": "e6a7fffebfc687521488fb207d7b5b9c772fa803c37b3a1eb5d13c5d9a930a8a"
+    },
+    {
+      "path": "game/src/ui/arena_evolution_path.gd",
+      "sha256": "d4271d6e09f92421aad6776a25593f99450ea90c130bc174a576b1429884d8de"
+    },
+    {
+      "path": "game/src/ui/arena_field.gd",
+      "sha256": "b12011efc070013140d4d5568d5f135da73d509aafd52782b21cab92f0406a80"
+    },
+    {
+      "path": "game/src/ui/arena_hit_numbers.gd",
+      "sha256": "fb0c93e58ecaf85bc829ca92ceec168f370210770214499b62c50dcd9681ea80"
+    },
+    {
+      "path": "game/src/ui/arena_hud_panel.gd",
+      "sha256": "344ed43adfeb82693eda2651f663a6f64888373f13939f1a7c7049e6b6278aa4"
+    },
+    {
+      "path": "game/src/ui/arena_info_panel.gd",
+      "sha256": "4ede3a00cfd0aa7db2ba5d1bbf668fa4734c941ecddcd5b9995cab4c731d8fb6"
+    },
+    {
+      "path": "game/src/ui/arena_online_lobby.gd",
+      "sha256": "316d96debc50e03769d3b18ba61d72ab8594d67e4e701fde47401be6b77623cd"
+    },
+    {
+      "path": "game/src/ui/arena_online_panel.gd",
+      "sha256": "d293edc406ee2d134c88163920f7011a6af289ec0103d10b64cdf1b099c299b5"
+    },
+    {
+      "path": "game/src/ui/arena_online_screen.gd",
+      "sha256": "837c2e9e0e9754a307d520cd61a7904b08bce08395b078d43a1d03ae0135a15d"
+    },
+    {
+      "path": "game/src/ui/arena_portraits.gd",
+      "sha256": "4548855e092438eed68560612b669c84d3009ef7aa2c3580dac99ff6fbc76ad2"
+    },
+    {
+      "path": "game/src/ui/arena_pve_field.gd",
+      "sha256": "2a3ba5e487b1cbedf9fbada1f474d9fe2fda68bdb105c97622cf3748b61c853c"
+    },
+    {
+      "path": "game/src/ui/arena_pve_screen.gd",
+      "sha256": "97bf595faf32b6d0a91b2ae06814b278aa84b84de908ea6104c1c9176ee9d01c"
+    },
+    {
+      "path": "game/src/ui/arena_result_volley.gd",
+      "sha256": "e6096dfb2e5732b776c48219ad75bcaa88c1aae2cb8e55a5f591bcbfd94e411e"
+    },
+    {
+      "path": "game/src/ui/arena_reward_card.gd",
+      "sha256": "80542db3efcebfebe85d90b420634607ac07924dcc4b73d73995ffefa31e124f"
+    },
+    {
+      "path": "game/src/ui/arena_round_banner.gd",
+      "sha256": "c735e868f84464eef3c54412b67e0c3cc64cfe1f04b53d2c83e0084900deab72"
+    },
+    {
+      "path": "game/src/ui/arena_round_button.gd",
+      "sha256": "0e01299e343f86f55c941b14e0a9410c21fe70310d04b46f9983509bdf7ccd10"
+    },
+    {
+      "path": "game/src/ui/arena_screen.gd",
+      "sha256": "4f5de323ba0709cc51d6cd9ac559c0af8b63c5348a8036075bf64889d27ec159"
+    },
+    {
+      "path": "game/src/ui/arena_shop_action.gd",
+      "sha256": "81b867db84a48af0d04651d7215b3716f6db78d5cd2b62c1c1b50fe4353512fe"
+    },
+    {
+      "path": "game/src/ui/arena_snow_surround.gd",
+      "sha256": "1099ffcff465be8cac24c86d03ae0ff06ed597c4dcc1b82a77a214aabef31455"
+    },
+    {
+      "path": "game/src/ui/arena_stars.gd",
+      "sha256": "6bf39080eb4e269270ba8355e2e5da6159f95028b26a0d4361d785abced56d31"
+    },
+    {
+      "path": "game/src/ui/arena_tooltips.gd",
+      "sha256": "2bdc3b639c7fedcaacf8d636a30d247817a2d095a17f76bfaabbfb499185d62c"
+    },
+    {
+      "path": "game/src/ui/base_strip.gd",
+      "sha256": "c30ebd6588c8355519f72ef9db26c50791623a7b38fe7f9cecbf65cd90581eb7"
+    },
+    {
+      "path": "game/src/ui/belt_strip.gd",
+      "sha256": "f5132685b4b3123447091adba036ea0bce948f085b41a08d9554594403334943"
+    },
+    {
+      "path": "game/src/ui/build_version.gd",
+      "sha256": "046131197c199c6692f0b4fa2b0154f887310b251f096e1204ecc406f6203cdf"
+    },
+    {
+      "path": "game/src/ui/camera_depth_of_field.gd",
+      "sha256": "e44f901b53eeba2f0b59ae48a88b8191b6ca96e5b4c13e85b5289cc5dc3f50c8"
+    },
+    {
+      "path": "game/src/ui/camera_fade.gd",
+      "sha256": "90c94a4c3b32cb360d00ce531fc87d708bf1a219bd4a57ac853d0baeb4fa7bcd"
+    },
+    {
+      "path": "game/src/ui/camera_rig.gd",
+      "sha256": "6e5abfe94212d8345e2535ba4488b2a4ddf023b598082c2c37cc4fa062d22a5d"
+    },
+    {
+      "path": "game/src/ui/camp_view.gd",
+      "sha256": "fa377d33089a1e1e439f1f124e7325838e33e1357d69df272589455dd845651a"
+    },
+    {
+      "path": "game/src/ui/campaign_choices.gd",
+      "sha256": "8566c8ff436b3ec00b7e97bbfac1c4a5b3277efb3fb1d85505ebfd06b96d6f7b"
+    },
+    {
+      "path": "game/src/ui/chat_line.gd",
+      "sha256": "330cc12f7564dfd21eede7e616580be78484ea0b3d289775e288e408b745e319"
+    },
+    {
+      "path": "game/src/ui/chat_overlay.gd",
+      "sha256": "86c831fd12c152912a23a0260c887b52dde0a10793f96c535ad536d482ec5d67"
+    },
+    {
+      "path": "game/src/ui/console_catalog.gd",
+      "sha256": "63c54518a7b1a5aaca43bcf1587f189f7f605038b378373168f593eb379a31f5"
+    },
+    {
+      "path": "game/src/ui/crash_report_box.gd",
+      "sha256": "bd3c9ad86731b60a71005aa4b0e94332fd44f1b86a5da45ac07c8adc1c3f7512"
+    },
+    {
+      "path": "game/src/ui/credits_panel.gd",
+      "sha256": "9ed3ac965ca2d568ef3d20096265b050c9cdc7061a2487566fac079bbfad372b"
+    },
+    {
+      "path": "game/src/ui/dialog_panel.gd",
+      "sha256": "4dcb6dabdfd86f33d3aa944e119c4074e43de6dbb258302af2926b5d84b3427b"
+    },
+    {
+      "path": "game/src/ui/difficulty_panel.gd",
+      "sha256": "142261bc7085a42ceae3869129008c3130e73c937d18f1613e6e345efaf38a43"
+    },
+    {
+      "path": "game/src/ui/enemy_bars.gd",
+      "sha256": "238dda7fc6cae9a0aa81625222598bc4a3f15aad9ddfb8e74c62d78eaab7c568"
+    },
+    {
+      "path": "game/src/ui/esc_signpost.gd",
+      "sha256": "f0f42bbfedc71dbc92332567751801417f2fe143972b6cd6cdd3bc5d1f93893c"
+    },
+    {
+      "path": "game/src/ui/flying_hp.gd",
+      "sha256": "4dafa9efd85b7e599095ff0f068c9b3935e47348b7815b722d7c6e1e2fc5c542"
+    },
+    {
+      "path": "game/src/ui/game_console.gd",
+      "sha256": "33ae28a807fd8fa02a7b41e10d09eded277d30b1d2c429abdbb4ddf552ff04c5"
+    },
+    {
+      "path": "game/src/ui/game_cursor.gd",
+      "sha256": "d07401a6852dc361a74400377aae84f2fd975a5703e04e7113442dd13f902a3d"
+    },
+    {
+      "path": "game/src/ui/game_hud.gd",
+      "sha256": "181009983c3565678ed760a8d7f3f299147f3cbf7d424129873096d3cc1c8dbc"
+    },
+    {
+      "path": "game/src/ui/game_over_notice.gd",
+      "sha256": "af8070a07ad7c9ed715f0ac80c81251f331baa75c1cbb08b679c6b21526f07a4"
+    },
+    {
+      "path": "game/src/ui/graphics_attribution.gd",
+      "sha256": "f678c35106e5e2b249855c730509f202af091ea39e4e84008443c3f218611e4b"
+    },
+    {
+      "path": "game/src/ui/graphics_check_box.gd",
+      "sha256": "ef72db3bf245c7fdc4a0ad0af06e5c6164c93300fa974a1560eebac330e539f0"
+    },
+    {
+      "path": "game/src/ui/hud_dial.gd",
+      "sha256": "3e876e5a8359158db3968c49489e90de1ff870f41a47e72e740baa5e786b8324"
+    },
+    {
+      "path": "game/src/ui/interface800.gd",
+      "sha256": "abb84fbe48b33aebf911624ec5e1932f19e521d88dc70330e6142a959f5bd883"
+    },
+    {
+      "path": "game/src/ui/interface_board.gd",
+      "sha256": "30bc48e48646274cd8b86c3b212d671b28da75500cee589c76fadbc31e67b265"
+    },
+    {
+      "path": "game/src/ui/internet_panel.gd",
+      "sha256": "949e15a6576b6ced36398fcda875bcdb02245e9ddef60454e392e7065631d09e"
+    },
+    {
+      "path": "game/src/ui/inventory_panel.gd",
+      "sha256": "209cc5998277b49aae6326d417c5b210d976c567594116572ed2b8ca0ca2720f"
+    },
+    {
+      "path": "game/src/ui/item_view.gd",
+      "sha256": "9dcc993a3d113e5e6bd9f5179790139759acbe43e5ce7842dc06309859d07d65"
+    },
+    {
+      "path": "game/src/ui/journal_panel.gd",
+      "sha256": "b5e3a4bf64219aa85e7c2d234c8cf9c6e60f1c47cbcc97bb73d099f60e9e266c"
+    },
+    {
+      "path": "game/src/ui/load_panel.gd",
+      "sha256": "2e6439eeabc0bd4d6acccd6f6e61867593106a2c0d18a5cd5307aabeefe81e3f"
+    },
+    {
+      "path": "game/src/ui/loading_screen.gd",
+      "sha256": "0a5837b63e0d37933f22e96cc50f24a36aaef01ae2a3f6659732fcf249df9abc"
+    },
+    {
+      "path": "game/src/ui/main_menu.gd",
+      "sha256": "6ca321a54b410cc1cc52bdab4fa01d950b7b285cb286763384082b0a0e20c75c"
+    },
+    {
+      "path": "game/src/ui/map_viewer.gd",
+      "sha256": "faa6d2f3747860d55f19d73fb36d71cff6a57011596f43da47d37468bf5637d4"
+    },
+    {
+      "path": "game/src/ui/menu_scene.gd",
+      "sha256": "d3d5390dffbaa9d1cceeff5d01e71ff947f6e6b45ae0a2671d9e2634cff407ec"
+    },
+    {
+      "path": "game/src/ui/mesh_screen_rect.gd",
+      "sha256": "b5cc367539d819b52526ad576ce52bdb8e86d3c2a0ae2237ec2663629de8c600"
+    },
+    {
+      "path": "game/src/ui/message_box.gd",
+      "sha256": "0bb9711aabc4bd5eccc5850084fcd4538546a81bbe1ce0ed61f5fdf5aea2f9e7"
+    },
+    {
+      "path": "game/src/ui/message_log.gd",
+      "sha256": "73c3110f67031f8168cd3f8bf15b85152227191747a3072764a0106d0ae06027"
+    },
+    {
+      "path": "game/src/ui/minimap.gd",
+      "sha256": "0fdd30128328824b7fdd3c67a2ae293d092ab26a6a9da915c8a2b6f7e55033c6"
+    },
+    {
+      "path": "game/src/ui/mod_panel.gd",
+      "sha256": "6e3f3730522db9677d0502581cd5a1e1cbe8331666c04b0851434d5d069c88d6"
+    },
+    {
+      "path": "game/src/ui/movie_player.gd",
+      "sha256": "028987965ea87f7efcde74a443f24e65d4ed339e999f23e122d763b17dab5775"
+    },
+    {
+      "path": "game/src/ui/movie_sequence.gd",
+      "sha256": "8e328f596014905afdbcea0e014210484e6832f42317185c0f04977367445866"
+    },
+    {
+      "path": "game/src/ui/mp_char_panel.gd",
+      "sha256": "089f054b794c9930247621f91a47fcf594420aba0cc4c0e45e9e5f009b69555f"
+    },
+    {
+      "path": "game/src/ui/network_panel.gd",
+      "sha256": "f662a92f6e5090559961e65f7a1b815fc65a83f9b74cdce1221c54f1a0bc8b33"
+    },
+    {
+      "path": "game/src/ui/notify_line.gd",
+      "sha256": "1af667503a9b9eb13ddd5194f9901187dd90f6e94ccf3e0b4da3355ede9b78f8"
+    },
+    {
+      "path": "game/src/ui/options_panel.gd",
+      "sha256": "c89c8fdd3acf26b3423b162e43516a8f5e585f452d60b0017f97dba5dd1b71a2"
+    },
+    {
+      "path": "game/src/ui/pad_prompts.gd",
+      "sha256": "9d75b686e1799f64073316aae61e4208f57f87a65d11f1f1dbefdf037ac11149"
+    },
+    {
+      "path": "game/src/ui/pad_wheel.gd",
+      "sha256": "618a5316adbadb33c3311ec59bbaec00851c55fa90e1fa8069c299c75a6c33e0"
+    },
+    {
+      "path": "game/src/ui/paperdoll.gd",
+      "sha256": "e0fd1817b3d73f90697e0fd8f2354644d8a48652aa51ed24f7fcec78191002fc"
+    },
+    {
+      "path": "game/src/ui/party_faces.gd",
+      "sha256": "1246d48090a751b09fd20cf48800e5e1a5d078131ac54b839a9df51bc41de5f3"
+    },
+    {
+      "path": "game/src/ui/player_list.gd",
+      "sha256": "3e5502450449b22fb68fd8e59786c790c43691242a360c1fe557e040722fcdc4"
+    },
+    {
+      "path": "game/src/ui/player_names.gd",
+      "sha256": "224dfd166ed5c892e2e0f83b8b362d0530e393d1ee95acbcce6adb09bf5de340"
+    },
+    {
+      "path": "game/src/ui/player_profile_dialog.gd",
+      "sha256": "5d363003b460941e8054726603dddcb77028728e98a01271574e4ded9d97254c"
+    },
+    {
+      "path": "game/src/ui/players_panel.gd",
+      "sha256": "0dce7ba3cad3606683dd314e4cc4b40d28d69058e312807b9b3bcc469b8f15f4"
+    },
+    {
+      "path": "game/src/ui/portable_setup.gd",
+      "sha256": "3a04fcd904f020b015e1eef4f2eb9c209595a4a7caab8edce9a521cd196ccc44"
+    },
+    {
+      "path": "game/src/ui/portrait.gd",
+      "sha256": "1ffe3e4026bb6e04b19ab56757d5225615ce292214ed7424dd16d4a4209a5b35"
+    },
+    {
+      "path": "game/src/ui/revive_overlay.gd",
+      "sha256": "0b912689fd86e062c464f8e001ee3313a04b434ae2758c6d767091febaa373bb"
+    },
+    {
+      "path": "game/src/ui/save_transfer.gd",
+      "sha256": "4bad376a70cac0f05549dd8376b83f50fd9b95b2ab48935efac9ee696a884472"
+    },
+    {
+      "path": "game/src/ui/scroll_option_button.gd",
+      "sha256": "f94f745ed25a995edaa04185a5c087400e2896dc6fae12f847a62f5a6a4068bc"
+    },
+    {
+      "path": "game/src/ui/scroll_repeat.gd",
+      "sha256": "9856f7a1c184f0881f2569ff3487967f7c14d2933ac623f28c517691e944b410"
+    },
+    {
+      "path": "game/src/ui/selection_frame.gd",
+      "sha256": "bbc8555ebd6baef44b7123d618b22057d57a5f484b6828b7fbb28e1d0716efa9"
+    },
+    {
+      "path": "game/src/ui/settings_dialog.gd",
+      "sha256": "56f06082a33407d1bc99bc49cf544bbd33365acc731d39fa4b423514aa40e049"
+    },
+    {
+      "path": "game/src/ui/setup_screen.gd",
+      "sha256": "b20f6bcc47d33814c4e6921db30eea023aa250fec675da5513a8bbab7d3acdf0"
+    },
+    {
+      "path": "game/src/ui/shader_compilation_screen.gd",
+      "sha256": "308681e241c92de46b8a8e4e667c3ba2176f77a678163ee475913d39b23a052b"
+    },
+    {
+      "path": "game/src/ui/side_quest_panel.gd",
+      "sha256": "1f46e48e3dc6a2e9be4368b617ba630cbe5b13404e53ab40958aa3317864155d"
+    },
+    {
+      "path": "game/src/ui/spell_slots.gd",
+      "sha256": "4ec6eee131f1cda6a09cefb4c4acc2a977115b2ad9f906d6ddaa668beef8d773"
+    },
+    {
+      "path": "game/src/ui/startup_screen.gd",
+      "sha256": "23b7daee1cd605e0c3dff63f34a8034fe835185f16e4575eae09e5642bce3681"
+    },
+    {
+      "path": "game/src/ui/touch_actions.gd",
+      "sha256": "17fcec9e61ad7dab905eb08fc250c0e4e1c50b57d507bd8f310c8eb5b49eaaa6"
+    },
+    {
+      "path": "game/src/ui/touch_text_edit.gd",
+      "sha256": "5a997b665eb2c29e33d90949c9f83d51927c73adbfd870c8db3aaa5d33e51506"
+    },
+    {
+      "path": "game/src/ui/training_reset_dialog.gd",
+      "sha256": "d80ab861190907f377e5555ecd71c23acb29e08744bfa810bf063332d41452d0"
+    },
+    {
+      "path": "game/src/ui/travel_map.gd",
+      "sha256": "086a5f9639471032f71612b9961b80941c59f7c04dbc5a2d828e7f2df9cc36c9"
+    },
+    {
+      "path": "game/src/ui/tutorial_panel.gd",
+      "sha256": "1d032d6f3c659d5202fc2f0b4457f80c1f317ff197b0542c60fd96de74695fd8"
+    },
+    {
+      "path": "game/src/ui/unit_panel.gd",
+      "sha256": "ade82d0fc1ad6f0612ae3e57a77b10cf34ba159e715397a24e04612a026a9aaa"
+    },
+    {
+      "path": "game/src/ui/village_name.gd",
+      "sha256": "62681450bd00e932920d28895627e4e1d6c6e6fee0d61fc61b56059276880e8b"
+    },
+    {
+      "path": "game/src/ui/weapon_bar.gd",
+      "sha256": "d2fcd123ac827e43eb474ca3f2c4a00ee43b091a5606f97165760e0fc980b6f1"
+    },
+    {
+      "path": "game/src/ui/wiki_camp_art.gd",
+      "sha256": "20baa6b1ae5cc95721a507a40472fa2a3213636836f535da23d1fc94887805e7"
+    },
+    {
+      "path": "game/src/ui/wiki_camp_constructor.gd",
+      "sha256": "bd3c589c3b8f1486a6501e6f26c5c3b5ce3448be84787aba4957cd9bd392fc4f"
+    },
+    {
+      "path": "game/src/ui/wiki_context.gd",
+      "sha256": "d3fa09eba6b6a81f083c4167d4d2eaf1d14694ae3d01c86edbefc339b3c9be52"
+    },
+    {
+      "path": "game/src/ui/wiki_equipment.gd",
+      "sha256": "5f11006a59de542c5a767e94fd7c2f702959ce1a4ee47c02bc19cfcf48ca726c"
+    },
+    {
+      "path": "game/src/ui/wiki_home.gd",
+      "sha256": "6515650c67d0acff3a73a18b643f28c10169a0292d043ed8b471077fc23b69d4"
+    },
+    {
+      "path": "game/src/ui/wiki_html.gd",
+      "sha256": "7f831af70e491e7dbef72476a916d22a5bba071b68872ef4ef5ff4fb23d5c6ef"
+    },
+    {
+      "path": "game/src/ui/wiki_library_view.gd",
+      "sha256": "ca62948d61cd5c9889c3078ed527de6539a302c76d9f7c40a5d6e2557b1e0451"
+    },
+    {
+      "path": "game/src/ui/wiki_panel.gd",
+      "sha256": "0051496456c481a835642c2f53eee27282ddbcd766340a095ead9f8ff5395e2e"
+    },
+    {
+      "path": "game/src/ui/wiki_planner.gd",
+      "sha256": "0d4beb468a61cd5005544a706f4e7f147ac3882212dc6791f478e53998b9e790"
+    },
+    {
+      "path": "game/src/ui/wiki_preview.gd",
+      "sha256": "c07a9dc6e4d1c0bd2865aa82aa6805c8edd3be83dfa3966c2ef338de5d00028d"
+    },
+    {
+      "path": "game/src/ui/wiki_results.gd",
+      "sha256": "97886cd530e6a5aa9bde5ab8d16ee405458438de0ddf959bd1028ddfd90e90ff"
+    },
+    {
+      "path": "game/src/ui/wiki_scene_preview.gd",
+      "sha256": "18e5fb34ebfeb5ac2a97e472face244030c598b0931a2671488583c0ff432472"
+    },
+    {
+      "path": "game/src/ui/wiki_workbench.gd",
+      "sha256": "86a68e67858af781192d3519ad7b1d771c0fe496cad445bf1a3b8d36d9db8c3b"
+    },
+    {
+      "path": "game/src/ui/world_labels.gd",
+      "sha256": "4691d9b4b77d4ffe4ba8136f333c77cdebfaeda35cf6e624e31d591d1e567a95"
+    },
+    {
+      "path": "game/src/ui/zone_objectives.gd",
+      "sha256": "72b1cba9de1dd9776c5d9baec3fa4f87014e4956d77cb628a97a796d894f3cba"
+    }
+  ]
+}

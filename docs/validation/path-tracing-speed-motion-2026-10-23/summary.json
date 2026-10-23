@@ -1,0 +1,311 @@
+{
+  "baseline_commit": "58ab5287d4e5217c540d58ba4b6fed55d4e6a283",
+  "work_directory": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-speed-motion-20261023",
+  "physical_gpu": {
+    "index": 1,
+    "model": "NVIDIA GeForce RTX 3090 Ti",
+    "uuid": "GPU-0eee028e-b998-532f-095b-e936c7f6191d",
+    "pci": "00000000:0A:00.0",
+    "driver": "580.178.04"
+  },
+  "display": {
+    "display": ":97",
+    "virtual_size": [
+      2880,
+      1800
+    ],
+    "mode": "private GPU-backed Xorg NoScanout"
+  },
+  "profile_settings": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "runs": [
+    {
+      "suite": "path_trace_performance",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 51.45,
+      "errors": [
+        "ERROR: An error occurred while trying to get the screen refresh rate."
+      ],
+      "tag": "baseline-vulkan-medium",
+      "exit": 0,
+      "summary": [
+        "PASS benchmark selects at least one case",
+        "PASS benchmark prepares path-2-medium",
+        "PASS benchmark prepares path-2-medium"
+      ]
+    },
+    {
+      "suite": "path_trace_performance",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "seconds": 44.4,
+      "errors": [],
+      "tag": "baseline-dx12-medium",
+      "exit": 0,
+      "summary": [
+        "PASS benchmark selects at least one case",
+        "PASS benchmark prepares path-2-medium",
+        "PASS benchmark prepares path-2-medium"
+      ]
+    },
+    {
+      "suite": "path_trace_resolution",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 65.15,
+      "errors": [
+        "ERROR: An error occurred while trying to get the screen refresh rate."
+      ],
+      "tag": "resolution-vulkan-01",
+      "exit": 0,
+      "summary": [
+        "PASS odd-window: scaled GPU buffers contain finite lit receivers",
+        "PASS switching to scene RT still prepares its pipeline",
+        "PASS scene RT retains window-relative quality at a reduced render scale"
+      ]
+    },
+    {
+      "suite": "path_trace_resolution_performance",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 61.04,
+      "errors": [
+        "ERROR: An error occurred while trying to get the screen refresh rate."
+      ],
+      "tag": "resolution-only-vulkan-bench",
+      "exit": 0,
+      "summary": [
+        "PASS resolution A/B binds the requested real GPU image size",
+        "PASS resolution A/B retains the same acceleration structures",
+        "PASS resolution A/B binds the requested real GPU image size"
+      ]
+    },
+    {
+      "suite": "path_trace_resolution_performance",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 61.4,
+      "errors": [
+        "ERROR: An error occurred while trying to get the screen refresh rate."
+      ],
+      "tag": "candidate-vulkan-bench",
+      "exit": 0,
+      "summary": [
+        "PASS resolution A/B binds the requested real GPU image size",
+        "PASS resolution A/B retains the same acceleration structures",
+        "PASS resolution A/B binds the requested real GPU image size"
+      ]
+    },
+    {
+      "suite": "path_trace_resolution_performance",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 72.31,
+      "errors": [
+        "ERROR: An error occurred while trying to get the screen refresh rate."
+      ],
+      "tag": "candidate-vulkan-1440",
+      "exit": 0,
+      "summary": [
+        "PASS resolution A/B binds the requested real GPU image size",
+        "PASS resolution A/B retains the same acceleration structures",
+        "PASS resolution A/B binds the requested real GPU image size"
+      ]
+    },
+    {
+      "suite": "path_trace_resolution_performance",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "seconds": 53.01,
+      "errors": [],
+      "tag": "candidate-dx12-1440-ready",
+      "exit": 0,
+      "summary": [
+        "PASS resolution A/B binds the requested real GPU image size",
+        "PASS benchmark quality 0 round 1: SDK stays ready in the requested mode throughout sampling",
+        "PASS benchmark quality 0 round 1: measured successful SDK upscaling evaluations"
+      ]
+    },
+    {
+      "suite": "path_trace_resolution",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "seconds": 74.82,
+      "errors": [],
+      "tag": "resolution-dx12-ready",
+      "exit": 0,
+      "summary": [
+        "PASS odd-window: scaled GPU buffers contain finite lit receivers",
+        "PASS switching to scene RT still prepares its pipeline",
+        "PASS scene RT retains window-relative quality at a reduced render scale"
+      ]
+    },
+    {
+      "suite": "path_trace_motion",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 8.97,
+      "errors": [
+        "ERROR: An error occurred while trying to get the screen refresh rate."
+      ],
+      "tag": "motion-vulkan-01",
+      "exit": 0,
+      "summary": [
+        "PASS resize replaces identity history and resets confidence",
+        "PASS teardown releases motion and identity resources",
+        "SCENE_RT_DEVICE 55 checks 0 failures"
+      ]
+    },
+    {
+      "suite": "path_trace_motion",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "seconds": 14.68,
+      "errors": [],
+      "tag": "motion-dx12",
+      "exit": 0,
+      "summary": [
+        "PASS resize replaces identity history and resets confidence",
+        "PASS teardown releases motion and identity resources",
+        "SCENE_RT_DEVICE 55 checks 0 failures"
+      ]
+    },
+    {
+      "suite": "path_trace_glossy",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 9.87,
+      "errors": [
+        "ERROR: An error occurred while trying to get the screen refresh rate."
+      ],
+      "tag": "glossy-vulkan",
+      "exit": 0,
+      "summary": [
+        "PASS native stationary glossy energy agrees with independent hemisphere integration",
+        "PASS native stationary glossy confidence reaches eight frames",
+        "SCENE_RT_DEVICE 31 checks 0 failures"
+      ]
+    },
+    {
+      "suite": "path_trace_variance",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 10.01,
+      "errors": [
+        "ERROR: An error occurred while trying to get the screen refresh rate."
+      ],
+      "tag": "variance-vulkan",
+      "exit": 0,
+      "summary": [
+        "PASS resize replaces variance images with the lighting targets",
+        "PASS teardown releases variance history",
+        "SCENE_RT_DEVICE 38 checks 0 failures"
+      ]
+    },
+    {
+      "suite": "path_trace_device",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 11.82,
+      "errors": [
+        "ERROR: An error occurred while trying to get the screen refresh rate."
+      ],
+      "tag": "device-vulkan",
+      "exit": 0,
+      "summary": [
+        "PASS resizing reallocates path targets",
+        "PASS path targets are released",
+        "SCENE_RT_DEVICE 17 checks 0 failures"
+      ]
+    },
+    {
+      "suite": "scene_raytrace_options",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 21.88,
+      "errors": [
+        "ERROR: An error occurred while trying to get the screen refresh rate."
+      ],
+      "tag": "options-vulkan",
+      "exit": 0,
+      "summary": [
+        "PASS translated RT help opens de4",
+        "PASS RT help stays inside window de4(800, 600)",
+        "SCENE_RT_OPTIONS 270 checks 0 failures"
+      ]
+    },
+    {
+      "suite": "path_trace_fsr",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "seconds": 145.32,
+      "errors": [],
+      "tag": "fsr-dx12",
+      "exit": 0,
+      "summary": [
+        "PASS rt-and-fg-resumed: path tracing remains active",
+        "PASS rt-and-fg-resumed: PT follows the FSR render resolution",
+        "PASS rt-and-fg-resumed: actual PT images resize with FSR"
+      ]
+    },
+    {
+      "suite": "path_trace_stability",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 96.63,
+      "errors": [
+        "ERROR: An error occurred while trying to get the screen refresh rate."
+      ],
+      "tag": "live-vulkan",
+      "exit": 0,
+      "summary": [
+        "PASS ordinary animation or movement submits live pose/instance updates",
+        "PASS live test observes replaced scene and device snapshots",
+        "PT_STABILITY_DONE 31 checks 0 failures"
+      ]
+    }
+  ],
+  "source_sha256": {
+    "game/src/ei/game_data.gd": "42d8ec4d61a47fe97771a3aa58f13bb760f45bff7e976211646a4badc46685b4",
+    "game/src/ei/remake_text.gd": "3cce18c6255ca305d9fd0b239807b372cb660b5409cecab12c6616861f559e15",
+    "game/src/game/fx/path_trace_device.gd": "e11eeed41c67e239e4489b72b8fb8d48cddf157ba8ee87dab2eaf2aa18cb9392",
+    "game/src/game/fx/scene_raytrace.gd": "3bcfc5aa7a54cd9cee8402491f43840b6357a7b53f2e34ee0a2588509d79a8fd",
+    "game/src/game/fx/scene_raytrace_device.gd": "f9194ba7454f96f573abb1945a32d31098725ae6a307694cb85d0f185adea202",
+    "game/src/game/fx/shaders/path_trace.hlsl": "d300e1883f63c209a629b801cc88c4f1b1909c263f9d9a9388fb7dcff1e77ed0",
+    "game/src/game/fx/shaders/path_trace_build.json": "7040bc58a4b60b3b7362241fc3d06ab8a9466356a3699f150899c376e19f89dd",
+    "game/src/game/fx/shaders/path_trace_filter.glsl": "eb8c1156097712663348eb3c2b1b7740c919a1465d9b8eec8760cd3a3fd9d6b3",
+    "game/src/game/fx/shaders/path_trace_raygen.dxil": "595e17f006685dd44bfe771ea4adef6690f6bbd9a31232c42eed58149107f3b6",
+    "game/src/game/fx/shaders/path_trace_raygen.spv": "c81629b74490ecb0b203a7fe071a048c7e8fbc585a26f9a471f65552f13ef1e3",
+    "game/src/game/fx/shaders/path_trace_raygen_deep.dxil": "31c1c838e132b1679df6e701fea9a3cb488c47759658dfbf8a89e4841788a9fa",
+    "game/src/game/fx/shaders/path_trace_raygen_deep.spv": "289ad09600bd8ade8d0796f16d55207d692d5b7c82e55f18eef949dfb91684ac",
+    "game/src/game/fx/shaders/path_trace_raygen_deep_no_emitters.dxil": "6d56d92a5a0231757b82a4217731ae64c6c978ac1f105bb45cf8068b044b4953",
+    "game/src/game/fx/shaders/path_trace_raygen_deep_no_emitters.spv": "b88923771807e8d5d0789324f84ec938edcdbbe56547c9db6d5bdecd09dde1bc",
+    "game/src/game/fx/shaders/path_trace_raygen_no_emitters.dxil": "0100653e12ed2268997635cb3f9ea76b00c3839909b08fd786213233a02e75e9",
+    "game/src/game/fx/shaders/path_trace_raygen_no_emitters.spv": "0ae7302cd2dfa53ffcc16541fef32f3414c6f9adfdb6057cba114c146e44823a",
+    "tools/tests/path_trace_fsr.gd": "72fc0b33516c8a8d56997607814408c8bdca29bcdddf259a76b55605010cc794",
+    "tools/tests/path_trace_quality.gd": "0778e4e215c7d1fc9d561ef18f1a40ed4b3d74ea46f62d37f3371d7d878640e7",
+    "tools/tests/path_trace_variance.gd": "c1c4d88e0c090de5965f97847b4f76cc5596f065585a6b03ad2a41dc6e2aa802",
+    "tools/tests/path_trace_motion.gd": "05e56c2077b3697af4e3d19f8147ce7674aa93b45cb8bc4f9713fe84f12b6f54",
+    "tools/tests/path_trace_resolution.gd": "46ce1453e173cf15ff9be70e1ebb718014b1f07b9d00d5c6fb4c5c27b57ece81",
+    "tools/tests/path_trace_resolution_performance.gd": "4aabdb58b0fa37becd25b5b2a3d6c11e12496ffd9badbf2e46d166be65e1962b"
+  },
+  "build_sha256": {
+    "candidate-linux/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "candidate-linux/CursedLands.pck": "cf2608795212332756999384a3c5448b1c96ac192812fea1758c002f87dd4944",
+    "candidate-windows/CursedLands.exe": "3fdf36babfcbae0b3584aed85e1d52e4e537d3033c9128689cc0593a9ef80fd4",
+    "candidate-windows/CursedLands.pck": "cf2608795212332756999384a3c5448b1c96ac192812fea1758c002f87dd4944"
+  },
+  "excluded_sdk_benchmarks": {
+    "runs": [
+      "candidate-dx12-bench",
+      "candidate-dx12-1440"
+    ],
+    "reason": "Measured before FSR SDK shaders completed: zero successful upscaling evaluations. Replaced by candidate-dx12-1440-ready."
+  }
+}

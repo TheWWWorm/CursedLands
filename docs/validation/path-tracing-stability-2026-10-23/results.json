@@ -1,0 +1,827 @@
+{
+  "date": "2026-10-23",
+  "baseline": {
+    "version": "1.24.0",
+    "source_commit": "490a77ed2ada148b7b7dc4a89a0ef793cad5ad4d",
+    "files": {
+      "CursedLands.exe": "843d2e2818e8c4acce48e35a08a946dd9570b61f0c5156befcd1687b1ca86453",
+      "CursedLands.pck": "fa668a7e9932a15f484811316e0862f8378188f66a4da09b9eb142ab5d4f3565"
+    },
+    "qualified_engine_template_sha256": "918ca9e047c310f4351461adb2d652d406c02d014b965e1bbccee334ab1fde8c",
+    "published_zip_sha256": "faac6461a5094a748833ced420fb1f305c7d3cf1a9395a2dd982b0a111121ce5"
+  },
+  "candidate": {
+    "version": "1.24.1-pt-diagnostics.1",
+    "published": false,
+    "source_commit": "490a77ed2ada148b7b7dc4a89a0ef793cad5ad4d",
+    "scene_fix_sha256": "f4b74bd7e28f82d61ae979c6d74779f223d906ede47e472f88c293b4ca2d3bf2",
+    "user_directory": "Cursed Lands PT Diagnostics",
+    "note": "Unreleased diagnostic candidate: exact v1.24 game source plus animated-unit admission fix, version and isolated user-data settings. Initial paired builds use original release templates.",
+    "engine_source_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "engine_patches": [
+      {
+        "name": "render-thread-shutdown.patch",
+        "sha256": "0d7dc8b88c8708df9948002477f7bf14d9cf6e718251b0dc798606c5572b712e"
+      },
+      {
+        "name": "queued-image-snapshot.patch",
+        "sha256": "e747f95b3d324582130e1e0ba24a3f17e2a3a2da350474fca61e4970243a4fe3"
+      },
+      {
+        "name": "unobserved-pose.patch",
+        "sha256": "fdef4bafc6d2c9a94ef628fd692b7845fd9ed0e1ffd168b21a6a0c8e1ea45978"
+      },
+      {
+        "name": "preserve-character-track-caches.patch",
+        "sha256": "5b938580ef002448d35f0c1535dcde2021032f6eb1385be56815f157aa99a3b8"
+      },
+      {
+        "name": "prepare-character-track-caches.patch",
+        "sha256": "693f6eac8fee284b4493a8eb49c7bf9a2426d4e0c8a9f2ef3f96d4147c0ce1bb"
+      },
+      {
+        "name": "cache-unobserved-track-eligibility.patch",
+        "sha256": "788b24561c8f377f1f4f8aea4a33b05d9b21f31b6bc1772699156131a80173b8"
+      },
+      {
+        "name": "mobile-shader-recompile-lock.patch",
+        "sha256": "02bc97dd57f9b3388d71837b30b036e814ae5bf6e6fca3b3cf3948d260c746b6"
+      },
+      {
+        "name": "forward-shader-recompile-lifetime.patch",
+        "sha256": "6620cefedded50733fa65e71164dc8918c8a0ac02387d54252aedf6f185b701e"
+      },
+      {
+        "name": "far-dof-sharp-guard.patch",
+        "sha256": "c6070bfbfbf5e36014d37d2b58a74ae8ff156202aa063134cebd0b21610e7286"
+      },
+      {
+        "name": "sky-subpass-alpha.patch",
+        "sha256": "a2ba63fac3d1ec8804f96bf3cdeb45b7f2c1597e1ac410f1739df812d82f3a67"
+      },
+      {
+        "name": "worker-thread-language-shutdown.patch",
+        "sha256": "dc402e5bdc3b595d3dc50886a144da55d6a7d199dc2efaf348df394bd4b5321e"
+      },
+      {
+        "name": "far-dof-reference.patch",
+        "sha256": "9c906ae637c9df620f1976d7b6c3bfe6aed4e236c91fcf27b40afeb8bacf3954"
+      },
+      {
+        "name": "forward-shadow-blend-guard.patch",
+        "sha256": "7ce40d66ba714b49dfcc30dfe97b7e6f35ae49163a039605e0096fb5b72a8af4"
+      },
+      {
+        "name": "cache-missing-animation-targets.patch",
+        "sha256": "0e81cdd2011a274ecd4e5f394469fa9914b82458477108a6713fe55a44357a99"
+      },
+      {
+        "name": "boot-window-title.patch",
+        "sha256": "d08b703f48c7d9bbd8c68d35cbbf99d763ffc5570b9fbf251ffc8358ad87012f"
+      },
+      {
+        "name": "cancelled-tooltip-timers.patch",
+        "sha256": "7081440b096eeb53085a07565509ba813c8c57033e767160e7a93279d647738d"
+      },
+      {
+        "name": "water-raytracing-uniform-stages.patch",
+        "sha256": "c72b0256283803d482e71aaf629401af1ab11b28d74c440f8ac0ae41e665558a"
+      },
+      {
+        "name": "experimental-fsr.patch",
+        "sha256": "c02a1046bf88a070c786966473ea0ad1f339a871e7c927d7c25e34826d1efd5f"
+      },
+      {
+        "name": "water-raytracing-d3d12.patch",
+        "sha256": "7e9d08e3a08f051a277f72f881e2372be51d3f8788c4e97343990f09fc3e0320"
+      },
+      {
+        "name": "d3d12-device-diagnostics.patch",
+        "sha256": "77b3d5c9bffa014cb9bbdfca2ff38738c6646ed59f5c2aac696a758ddeaa4e58"
+      }
+    ],
+    "export": {
+      "command": [
+        "/home/llm2x/.local/bin/godot-4",
+        "--headless",
+        "--path",
+        "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/candidate-stage",
+        "--export-release",
+        "Windows",
+        "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/CursedLands-1.24.1-pt-diagnostics.1-windows-x86_64/CursedLands.exe"
+      ],
+      "exit": 0,
+      "errors": [],
+      "template_sha256": "c818089ee3e79504e07db319a39a73b4932e3c1518de084fb6be9aeeec15f08f"
+    },
+    "files": {
+      "CursedLands.exe": "0f40de3d536304a8c0832a37581916161a276087323337d392b88774db115e79",
+      "CursedLands.pck": "898a184804baf3b878e8b3dee9a777a4ad5dd2d142f3008fa71881c958978b13"
+    },
+    "source_tree_comparison": {
+      "baseline": "/home/llm2x/Documents/EI/local/scratchpad/release-1.24.0-20261022/release/desktop-stage",
+      "candidate": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/candidate-stage",
+      "baseline_files": 1447,
+      "candidate_files": 1447,
+      "changed": [
+        "src/game/fx/water_raytrace_scene.gd",
+        "project.godot",
+        "export_presets.cfg"
+      ],
+      "added": [],
+      "removed": [],
+      "excluded": ".godot import cache"
+    },
+    "source_fixture_hashes": {
+      "path_trace_stability.gd": "0406a69f7c240209f40dd4eb23a1e00921cb7713ecaf74896fc9a849ed2e6ed6",
+      "path_trace_topology.gd": "83f5b38a70eb92957c4ac86b229c864cf5dd4f93219ce1cdc7e8763e0386a6fc"
+    },
+    "launcher_hashes": {
+      "Prepare-PT-Diagnostics.ps1": "46e723405ab3f8a964fd4e6f57b7a326818756c1cc1c82caadf1f031ba77b496",
+      "Run-PT-GPU-Validation.cmd": "d0af719a2d283fa434bcfe57345c4d46570de17b67dab594fdaf2472a4ad7e05",
+      "Run-PT-Diagnostics.cmd": "a0a5c5ec59b591f875c6649543c8d0c41defbe5b636a25677b17473d7453b6be",
+      "PT-Diagnostics-README.txt": "d8191e77120e2d21d19cd3c6aa49259feba761f3ef0d9a3de75cbfb1b9d8b851"
+    }
+  },
+  "qualification": {
+    "physical_gpu": "GPU 1, NVIDIA GeForce RTX 3090 Ti",
+    "windows_runtime": "Wine with VKD3D-Proton on Linux; not native Windows",
+    "linux_runtime": "Native Linux Vulkan",
+    "native_windows_qualified": false,
+    "reported_crash_confirmed_fixed": false,
+    "actual_player_ingos_save_tested": false,
+    "generated_ingos_save_roundtrip_tested": true,
+    "native_frontend_worker_loading_handoff_tested": false,
+    "launcher_static_review": true,
+    "launcher_powershell_runtime_tested": false,
+    "gpu_based_validation_exercised": false,
+    "device_removal_fault_injection_tested": false,
+    "performance_comparison": false,
+    "display": "Private NoScanout Xorg :97; final 4352x2448 monitor contains a 3840x2160 game window.",
+    "profile": {
+      "isolated": true,
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    }
+  },
+  "baseline_membership_discrepancy_samples": 29,
+  "tests": [
+    {
+      "tag": "release124-live-dx12-01",
+      "interpretation": "Invalid initial Wine prefix; game did not start. Excluded.",
+      "raw_directory": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/checks/release124-live-dx12-01",
+      "game_exit": 53,
+      "wall_seconds": 0.54,
+      "engine_errors": [],
+      "crash_signatures": []
+    },
+    {
+      "tag": "release124-live-dx12-02",
+      "interpretation": "Preliminary fixture: activation wait too short and negative RefCounted IDs incorrectly rejected. Excluded.",
+      "raw_directory": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/checks/release124-live-dx12-02",
+      "game_exit": 1,
+      "wall_seconds": 70.24,
+      "engine_errors": [
+        "FAIL live PT becomes active in gz1g",
+        "FAIL both campaign zones rendered active PT",
+        "FAIL visible live actors submit instance changes across multiple frames",
+        "FAIL ordinary animation or movement submits live pose/instance updates",
+        "FAIL live test observes replaced scene and device snapshots"
+      ],
+      "crash_signatures": [],
+      "status": "failed",
+      "checks": 7,
+      "failures": [
+        "live PT becomes active in gz1g",
+        "both campaign zones rendered active PT",
+        "visible live actors submit instance changes across multiple frames",
+        "ordinary animation or movement submits live pose/instance updates",
+        "live test observes replaced scene and device snapshots"
+      ],
+      "config": {
+        "next_zone": "bz8k",
+        "path_mode": 2,
+        "phase_seconds": 6.0,
+        "quality": 1,
+        "start_zone": "gz1g",
+        "timeout_seconds": 175.0
+      },
+      "active_frames": 0,
+      "active_zones": [],
+      "instance_update_frames": 0,
+      "pose_update_frames": 0,
+      "live_update_frames": 0,
+      "resolution_reapplications": null,
+      "generated_save": null,
+      "last_phase": "before-cleanup",
+      "fixture_seconds": 52.001371
+    },
+    {
+      "tag": "release124-live-dx12-03-low1440",
+      "interpretation": "Preliminary fixture: actual output 1280x720 and signed-ID error. Excluded as a 1440p test.",
+      "raw_directory": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/checks/release124-live-dx12-03-low1440",
+      "game_exit": 1,
+      "wall_seconds": 83.75,
+      "engine_errors": [
+        "FAIL live PT becomes active in gz1g",
+        "FAIL both campaign zones rendered active PT",
+        "FAIL visible live actors submit instance changes across multiple frames",
+        "FAIL ordinary animation or movement submits live pose/instance updates",
+        "FAIL live test observes replaced scene and device snapshots"
+      ],
+      "crash_signatures": [],
+      "status": "failed",
+      "checks": 8,
+      "failures": [
+        "live PT becomes active in gz1g",
+        "both campaign zones rendered active PT",
+        "visible live actors submit instance changes across multiple frames",
+        "ordinary animation or movement submits live pose/instance updates",
+        "live test observes replaced scene and device snapshots"
+      ],
+      "config": {
+        "next_zone": "bz8k",
+        "path_mode": 1,
+        "phase_seconds": 6.0,
+        "quality": 0,
+        "resolution": [
+          2560,
+          1440
+        ],
+        "start_zone": "gz1g",
+        "timeout_seconds": 175.0
+      },
+      "active_frames": 84,
+      "active_zones": [
+        "gz1g"
+      ],
+      "instance_update_frames": 0,
+      "pose_update_frames": 0,
+      "live_update_frames": 0,
+      "resolution_reapplications": null,
+      "generated_save": null,
+      "last_phase": "before-cleanup",
+      "fixture_seconds": 67.495623
+    },
+    {
+      "tag": "release124-live-dx12-04-low1440",
+      "interpretation": "Preliminary run affected by undersized virtual monitor and repeated scene rebuilding. Not a passing test.",
+      "raw_directory": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/checks/release124-live-dx12-04-low1440",
+      "game_exit": 1,
+      "wall_seconds": 82.0,
+      "engine_errors": [
+        "FAIL live PT becomes active in gz1g",
+        "FAIL both campaign zones rendered active PT",
+        "FAIL visible live actors submit instance changes across multiple frames",
+        "FAIL ordinary animation or movement submits live pose/instance updates",
+        "FAIL live test observes replaced scene and device snapshots"
+      ],
+      "crash_signatures": [],
+      "status": "failed",
+      "checks": 9,
+      "failures": [
+        "live PT becomes active in gz1g",
+        "both campaign zones rendered active PT",
+        "visible live actors submit instance changes across multiple frames",
+        "ordinary animation or movement submits live pose/instance updates",
+        "live test observes replaced scene and device snapshots"
+      ],
+      "config": {
+        "next_zone": "bz8k",
+        "path_mode": 1,
+        "phase_seconds": 6.0,
+        "quality": 0,
+        "resolution": [
+          2560,
+          1440
+        ],
+        "start_zone": "gz1g",
+        "timeout_seconds": 175.0
+      },
+      "active_frames": 0,
+      "active_zones": [],
+      "instance_update_frames": 0,
+      "pose_update_frames": 0,
+      "live_update_frames": 0,
+      "resolution_reapplications": null,
+      "generated_save": null,
+      "last_phase": "before-cleanup",
+      "fixture_seconds": 66.05246
+    },
+    {
+      "tag": "release124-live-dx12-05-topology",
+      "interpretation": "Baseline evidence of idle animation changing per-mesh scene membership. No active PT frame within the 75-second activation wait. Not a crash reproduction.",
+      "raw_directory": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/checks/release124-live-dx12-05-topology",
+      "game_exit": 1,
+      "wall_seconds": 92.59,
+      "engine_errors": [
+        "FAIL live PT becomes active in gz1g",
+        "FAIL both campaign zones rendered active PT",
+        "FAIL visible live actors submit instance changes across multiple frames",
+        "FAIL ordinary animation or movement submits live pose/instance updates",
+        "FAIL live test observes replaced scene and device snapshots"
+      ],
+      "crash_signatures": [],
+      "status": "failed",
+      "checks": 9,
+      "failures": [
+        "live PT becomes active in gz1g",
+        "both campaign zones rendered active PT",
+        "visible live actors submit instance changes across multiple frames",
+        "ordinary animation or movement submits live pose/instance updates",
+        "live test observes replaced scene and device snapshots"
+      ],
+      "config": {
+        "next_zone": "bz8k",
+        "path_mode": 1,
+        "phase_seconds": 3.0,
+        "quality": 0,
+        "resolution": [
+          1280,
+          720
+        ],
+        "start_zone": "gz1g",
+        "timeout_seconds": 175.0,
+        "topology_diagnostics": true
+      },
+      "active_frames": 0,
+      "active_zones": [],
+      "instance_update_frames": 0,
+      "pose_update_frames": 0,
+      "live_update_frames": 0,
+      "resolution_reapplications": null,
+      "generated_save": null,
+      "last_phase": "before-cleanup",
+      "fixture_seconds": 75.256926,
+      "preserved_evidence": "evidence/release124-live-dx12-05-topology"
+    },
+    {
+      "tag": "topology-release124-negative",
+      "interpretation": "Negative control: 21 expected failures on the unchanged release; the old per-mesh boundary control is reproduced.",
+      "raw_directory": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/checks/topology-release124-negative",
+      "game_exit": 1,
+      "wall_seconds": 5.04,
+      "engine_errors": [
+        "FAIL whole figure includes hidden parts beyond the per-mesh boundary",
+        "FAIL idle swing across 96 metres preserves the complete scene snapshot",
+        "FAIL repeated boundary pose 1 does not rebuild",
+        "FAIL repeated boundary pose 3 does not rebuild",
+        "FAIL repeated boundary pose 5 does not rebuild",
+        "FAIL repeated boundary pose 7 does not rebuild",
+        "FAIL repeated boundary pose 9 does not rebuild",
+        "FAIL repeated boundary pose 11 does not rebuild",
+        "FAIL both figure parts pack without exceeding the unchanged budgets",
+        "FAIL revealing a retained hidden part uses instance updates",
+        "FAIL retained whole unit remains admitted at 119.5 metres",
+        "FAIL retained whole unit remains admitted at 120.5 metres",
+        "FAIL retained whole unit remains admitted at 127.5 metres",
+        "FAIL retained whole unit remains admitted at 128.0 metres",
+        "FAIL new unit entry is detected at the original 120-metre root radius",
+        "FAIL entry admits the complete figure",
+        "FAIL equipment mesh replacement still invalidates the snapshot",
+        "FAIL same-resource material value edits still invalidate the snapshot",
+        "FAIL material resource replacement still invalidates the snapshot",
+        "FAIL new equipment outside the old per-part boundary is detected",
+        "FAIL removal of an existing hidden part is detected"
+      ],
+      "crash_signatures": [],
+      "checks": 48,
+      "failures": [
+        "whole figure includes hidden parts beyond the per-mesh boundary",
+        "idle swing across 96 metres preserves the complete scene snapshot",
+        "repeated boundary pose 1 does not rebuild",
+        "repeated boundary pose 3 does not rebuild",
+        "repeated boundary pose 5 does not rebuild",
+        "repeated boundary pose 7 does not rebuild",
+        "repeated boundary pose 9 does not rebuild",
+        "repeated boundary pose 11 does not rebuild",
+        "both figure parts pack without exceeding the unchanged budgets",
+        "revealing a retained hidden part uses instance updates",
+        "retained whole unit remains admitted at 119.5 metres",
+        "retained whole unit remains admitted at 120.5 metres",
+        "retained whole unit remains admitted at 127.5 metres",
+        "retained whole unit remains admitted at 128.0 metres",
+        "new unit entry is detected at the original 120-metre root radius",
+        "entry admits the complete figure",
+        "equipment mesh replacement still invalidates the snapshot",
+        "same-resource material value edits still invalidate the snapshot",
+        "material resource replacement still invalidates the snapshot",
+        "new equipment outside the old per-part boundary is detected",
+        "removal of an existing hidden part is detected"
+      ],
+      "legacy_boundary_changed": true,
+      "preserved_evidence": "evidence/topology-release124-negative"
+    },
+    {
+      "tag": "topology-fixed",
+      "interpretation": "All 48 focused assertions pass on the scene fix with the original Linux release engine.",
+      "raw_directory": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/checks/topology-fixed",
+      "game_exit": 0,
+      "wall_seconds": 5.02,
+      "engine_errors": [],
+      "crash_signatures": [],
+      "checks": 48,
+      "failures": [],
+      "legacy_boundary_changed": true,
+      "preserved_evidence": "evidence/topology-fixed"
+    },
+    {
+      "tag": "fixed-game-dx12-06-low1440",
+      "interpretation": "Stable scene membership but gather exceeded the preliminary 45-second wait with an undersized virtual monitor. Excluded.",
+      "raw_directory": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/checks/fixed-game-dx12-06-low1440",
+      "game_exit": 1,
+      "wall_seconds": 84.3,
+      "engine_errors": [
+        "FAIL live PT becomes active in gz1g",
+        "FAIL both campaign zones rendered active PT",
+        "FAIL visible live actors submit instance changes across multiple frames",
+        "FAIL ordinary animation or movement submits live pose/instance updates",
+        "FAIL live test observes replaced scene and device snapshots"
+      ],
+      "crash_signatures": [],
+      "status": "failed",
+      "checks": 9,
+      "failures": [
+        "live PT becomes active in gz1g",
+        "both campaign zones rendered active PT",
+        "visible live actors submit instance changes across multiple frames",
+        "ordinary animation or movement submits live pose/instance updates",
+        "live test observes replaced scene and device snapshots"
+      ],
+      "config": {
+        "next_zone": "bz8k",
+        "path_mode": 1,
+        "phase_seconds": 3.0,
+        "quality": 0,
+        "resolution": [
+          2560,
+          1440
+        ],
+        "start_zone": "gz1g",
+        "timeout_seconds": 175.0,
+        "topology_diagnostics": true
+      },
+      "active_frames": 0,
+      "active_zones": [],
+      "instance_update_frames": 0,
+      "pose_update_frames": 0,
+      "live_update_frames": 0,
+      "resolution_reapplications": null,
+      "generated_save": null,
+      "last_phase": "before-cleanup",
+      "fixture_seconds": 67.601408
+    },
+    {
+      "tag": "fixed-game-dx12-07-low1440",
+      "interpretation": "Final paired test: original Windows release engine plus game scene fix. Actual 2560x1440, Low, two bounces. 31 assertions pass, clean game exit and no engine errors.",
+      "raw_directory": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/checks/fixed-game-dx12-07-low1440",
+      "game_exit": 0,
+      "wall_seconds": 147.47,
+      "engine_errors": [],
+      "crash_signatures": [],
+      "status": "passed",
+      "checks": 31,
+      "failures": [],
+      "config": {
+        "next_zone": "bz8k",
+        "path_mode": 1,
+        "phase_seconds": 3.0,
+        "quality": 0,
+        "resolution": [
+          2560,
+          1440
+        ],
+        "start_zone": "gz1g",
+        "timeout_seconds": 300.0,
+        "topology_diagnostics": true
+      },
+      "active_frames": 1017,
+      "active_zones": [
+        "gz1g",
+        "bz8k"
+      ],
+      "instance_update_frames": 1006,
+      "pose_update_frames": 8,
+      "live_update_frames": 1006,
+      "resolution_reapplications": 2,
+      "generated_save": {
+        "loaded": true,
+        "path": "C:/users/llm2x/AppData/Roaming/Cursed Lands PT Diagnostics/saves/pt-stability-bz8k-1792742693-32.sav",
+        "pt_active_after_load": true,
+        "saved": true,
+        "slot": "pt-stability-bz8k-1792742693-32",
+        "source": "generated-by-live-fixture",
+        "thumbnail_written": true,
+        "zone": "bz8k"
+      },
+      "last_phase": "before-cleanup",
+      "fixture_seconds": 129.197568,
+      "preserved_evidence": "evidence/fixed-game-dx12-07-low1440"
+    },
+    {
+      "tag": "diagnostic-dx12-08-low4k",
+      "interpretation": "Preliminary diagnostic engine: 31 assertions pass, but 1741 resolution reapplications caused by exact-size virtual monitor. Debug layer unavailability produced a generic startup ERROR before its fallback warning. Superseded by run 10.",
+      "raw_directory": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/checks/diagnostic-dx12-08-low4k",
+      "game_exit": 0,
+      "wall_seconds": 212.34,
+      "engine_errors": [
+        "ERROR: Condition \"!((HRESULT)(res) >= 0)\" is true. Returning: ERR_QUERY_FAILED"
+      ],
+      "crash_signatures": [],
+      "status": "passed",
+      "checks": 31,
+      "failures": [],
+      "config": {
+        "next_zone": "bz8k",
+        "path_mode": 1,
+        "phase_seconds": 3.0,
+        "quality": 0,
+        "resolution": [
+          3840,
+          2160
+        ],
+        "start_zone": "gz1g",
+        "timeout_seconds": 300.0,
+        "topology_diagnostics": true
+      },
+      "active_frames": 294,
+      "active_zones": [
+        "gz1g",
+        "bz8k"
+      ],
+      "instance_update_frames": 283,
+      "pose_update_frames": 8,
+      "live_update_frames": 283,
+      "resolution_reapplications": 1741,
+      "generated_save": {
+        "loaded": true,
+        "path": "C:/users/llm2x/AppData/Roaming/Cursed Lands PT Diagnostics/saves/pt-stability-bz8k-1792742938-32.sav",
+        "pt_active_after_load": true,
+        "saved": true,
+        "slot": "pt-stability-bz8k-1792742938-32",
+        "source": "generated-by-live-fixture",
+        "thumbnail_written": true,
+        "zone": "bz8k"
+      },
+      "last_phase": "before-cleanup",
+      "fixture_seconds": 196.283935
+    },
+    {
+      "tag": "fixed-game-vulkan-09-low1440",
+      "interpretation": "31 gameplay assertions pass, game exit 0. Harness flags one known NoScanout X11 refresh-rate query error. Functional pass with an environment error, not a clean harness pass.",
+      "raw_directory": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/checks/fixed-game-vulkan-09-low1440",
+      "game_exit": 0,
+      "wall_seconds": 93.09,
+      "engine_errors": [
+        "ERROR: An error occurred while trying to get the screen refresh rate."
+      ],
+      "crash_signatures": [],
+      "status": "passed",
+      "checks": 31,
+      "failures": [],
+      "config": {
+        "next_zone": "bz8k",
+        "path_mode": 1,
+        "phase_seconds": 3.0,
+        "quality": 0,
+        "resolution": [
+          2560,
+          1440
+        ],
+        "start_zone": "gz1g",
+        "timeout_seconds": 300.0,
+        "topology_diagnostics": true
+      },
+      "active_frames": 1706,
+      "active_zones": [
+        "gz1g",
+        "bz8k"
+      ],
+      "instance_update_frames": 1695,
+      "pose_update_frames": 8,
+      "live_update_frames": 1695,
+      "resolution_reapplications": 2,
+      "generated_save": {
+        "loaded": true,
+        "path": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/checks/fixed-game-vulkan-09-low1440/profile/data/Cursed Lands PT Diagnostics/saves/pt-stability-bz8k-1792743276-163552.sav",
+        "pt_active_after_load": true,
+        "saved": true,
+        "slot": "pt-stability-bz8k-1792743276-163552",
+        "source": "generated-by-live-fixture",
+        "thumbnail_written": true,
+        "zone": "bz8k"
+      },
+      "last_phase": "before-cleanup",
+      "fixture_seconds": 83.858982,
+      "preserved_evidence": "evidence/fixed-game-vulkan-09-low1440"
+    },
+    {
+      "tag": "diagnostic-dx12-10-low4k",
+      "interpretation": "Final diagnostic engine: actual 3840x2160, Low, two bounces; 31 assertions pass, clean game exit and no engine errors. Only two initial resolution applications; no ongoing resize loop.",
+      "raw_directory": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/checks/diagnostic-dx12-10-low4k",
+      "game_exit": 0,
+      "wall_seconds": 113.15,
+      "engine_errors": [],
+      "crash_signatures": [],
+      "status": "passed",
+      "checks": 31,
+      "failures": [],
+      "config": {
+        "next_zone": "bz8k",
+        "path_mode": 1,
+        "phase_seconds": 3.0,
+        "quality": 0,
+        "resolution": [
+          3840,
+          2160
+        ],
+        "start_zone": "gz1g",
+        "timeout_seconds": 300.0,
+        "topology_diagnostics": true
+      },
+      "active_frames": 1253,
+      "active_zones": [
+        "gz1g",
+        "bz8k"
+      ],
+      "instance_update_frames": 1242,
+      "pose_update_frames": 8,
+      "live_update_frames": 1242,
+      "resolution_reapplications": 2,
+      "generated_save": {
+        "loaded": true,
+        "path": "C:/users/llm2x/AppData/Roaming/Cursed Lands PT Diagnostics/saves/pt-stability-bz8k-1792743534-32.sav",
+        "pt_active_after_load": true,
+        "saved": true,
+        "slot": "pt-stability-bz8k-1792743534-32",
+        "source": "generated-by-live-fixture",
+        "thumbnail_written": true,
+        "zone": "bz8k"
+      },
+      "last_phase": "before-cleanup",
+      "fixture_seconds": 99.11885,
+      "preserved_evidence": "evidence/diagnostic-dx12-10-low4k"
+    }
+  ],
+  "icon_check": {
+    "exe_sha256": "0f40de3d536304a8c0832a37581916161a276087323337d392b88774db115e79",
+    "source_sha256": "263ed821115751d14cf733ce36ae0c960cd28401efd108b63f8813ccdd882971",
+    "resource_icon_count": 6,
+    "images": [
+      {
+        "resource_id": [
+          3,
+          1,
+          1033
+        ],
+        "size": [
+          16,
+          16
+        ],
+        "pixels_equal": true
+      },
+      {
+        "resource_id": [
+          3,
+          2,
+          1033
+        ],
+        "size": [
+          32,
+          32
+        ],
+        "pixels_equal": true
+      },
+      {
+        "resource_id": [
+          3,
+          3,
+          1033
+        ],
+        "size": [
+          48,
+          48
+        ],
+        "pixels_equal": true
+      },
+      {
+        "resource_id": [
+          3,
+          4,
+          1033
+        ],
+        "size": [
+          64,
+          64
+        ],
+        "pixels_equal": true
+      },
+      {
+        "resource_id": [
+          3,
+          5,
+          1033
+        ],
+        "size": [
+          128,
+          128
+        ],
+        "pixels_equal": true
+      },
+      {
+        "resource_id": [
+          3,
+          6,
+          1033
+        ],
+        "size": [
+          256,
+          256
+        ],
+        "pixels_equal": true
+      }
+    ],
+    "note": "All six Godot-exported icon frames match the approved source ICO pixel-for-pixel."
+  },
+  "runtime_dependencies_and_notices": [
+    {
+      "file": "NATIVE_ANDROID_NOTICES.txt",
+      "matches_release": true
+    },
+    {
+      "file": "NATIVE_ARCHIVE_NOTICES.txt",
+      "matches_release": true
+    },
+    {
+      "file": "NATIVE_LUA_NOTICES.txt",
+      "matches_release": true
+    },
+    {
+      "file": "NATIVE_NAVIGATION_NOTICES.txt",
+      "matches_release": true
+    },
+    {
+      "file": "amd_fidelityfx_framegeneration_dx12.dll",
+      "matches_release": true
+    },
+    {
+      "file": "amd_fidelityfx_loader_dx12.dll",
+      "matches_release": true
+    },
+    {
+      "file": "amd_fidelityfx_upscaler_dx12.dll",
+      "matches_release": true
+    },
+    {
+      "file": "libinstaller_lzma.dll",
+      "matches_release": true
+    },
+    {
+      "file": "libmod_archive.dll",
+      "matches_release": true
+    },
+    {
+      "file": "libterrain_search.dll",
+      "matches_release": true
+    },
+    {
+      "file": "licenses/AMD-FidelityFX/3rdpartynotice.md",
+      "matches_release": true
+    },
+    {
+      "file": "licenses/AMD-FidelityFX/license.md",
+      "matches_release": true
+    },
+    {
+      "file": "licenses/LGPL-2.1.txt",
+      "matches_release": true
+    },
+    {
+      "file": "licenses/Microsoft-DirectX/LICENSE-CODE.txt",
+      "matches_release": true
+    },
+    {
+      "file": "licenses/Microsoft-DirectX/LICENSE.txt",
+      "matches_release": true
+    },
+    {
+      "file": "src/native/bin/libmod_lua.dll",
+      "matches_release": true
+    }
+  ],
+  "cleanup": {
+    "owned_xorg_terminated": true,
+    "owned_games_remaining": [],
+    "temporary_xauthority_removed": true,
+    "unrelated_gpu_processes_left_running": true
+  },
+  "primary_references": [
+    "https://learn.microsoft.com/en-us/windows/win32/direct3d12/use-dred",
+    "https://learn.microsoft.com/en-us/windows/win32/direct3d12/using-d3d12-debug-layer-gpu-based-validation",
+    "https://learn.microsoft.com/en-us/windows/win32/api/d3d12/nf-d3d12-id3d12fence-getcompletedvalue",
+    "https://developer.nvidia.com/blog/best-practices-using-nvidia-rtx-ray-tracing/"
+  ]
+}

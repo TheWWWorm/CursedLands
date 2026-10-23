@@ -17,6 +17,10 @@ layout(rgba16f,set=0,binding=11) uniform writeonly image2D result_material;
 // A negative sign records a fully dark, well-supported current neighbourhood.
 layout(rg16f,set=0,binding=13) uniform readonly image2D previous_noise;
 layout(rg16f,set=0,binding=14) uniform writeonly image2D result_noise;
+layout(r16f,set=0,binding=15) uniform readonly image2D previous_identity;
+layout(r16f,set=0,binding=16) uniform writeonly image2D result_identity;
+struct Motion {vec4 position[3];vec4 normal[3];};
+layout(std430,set=0,binding=17) readonly buffer MotionBuffer {Motion motion[];};
 layout(std140,set=0,binding=12) uniform Frame {
     mat4 inv_projection;mat4 camera_world;mat4 previous_view_projection;mat4 previous_view;
     vec4 sun;vec4 sun_direction;vec4 sky;vec4 settings;vec4 camera;vec4 center_radius;
@@ -101,6 +105,8 @@ void main() {
     int centre=(int(gl_LocalInvocationID.y)+2)*12+int(gl_LocalInvocationID.x)+2;
     vec4 guide=progressive?imageLoad(raw_guide,p):tile_guide[centre];
     vec4 material=progressive?imageLoad(raw_material,p):tile_material[centre];
+    float identity=imageLoad(raw_diffuse,p).a;
+    imageStore(result_identity,p,vec4(identity,0.0,0.0,0.0));
     imageStore(result_guide,p,guide);imageStore(result_material,p,material);
     if(guide.w<=0.0) {
         imageStore(result_diffuse,p,vec4(0.0));imageStore(result_specular,p,vec4(0.0));
@@ -155,9 +161,25 @@ void main() {
     // cannot trigger this, and the previous sign travels through guide checks.
     bool ddark=dcount>=20&&dpeak<0.00001,sdark=scount>=20&&speak<0.00001;
     float age=1.0,specular_age=1.0;
-    vec4 previous=frame.previous_view_projection*vec4(world,1.0);
+    uint instance=(packHalf2x16(vec2(identity,0.0))&65535u)-0x3c00u;
+    bool valid_instance=identity>=1.0&&instance<uint(motion.length());
+    vec3 old_position=world,old_normal=guide.xyz;
+    bool valid_motion=false;
+    if(valid_instance) {
+        valid_motion=motion[instance].normal[0].w>0.5;
+        if(motion[instance].normal[1].w>0.5) {
+            vec4 position=vec4(world,1.0);
+            old_position=vec3(dot(motion[instance].position[0],position),
+                dot(motion[instance].position[1],position),dot(motion[instance].position[2],position));
+            // Inverse transpose of current->previous, prepared once per
+            // placement. Rotation, nonuniform scale and shear remain valid.
+            old_normal=normalize(vec3(dot(motion[instance].normal[0].xyz,guide.xyz),
+                dot(motion[instance].normal[1].xyz,guide.xyz),dot(motion[instance].normal[2].xyz,guide.xyz)));
+        }
+    }
+    vec4 previous=frame.previous_view_projection*vec4(old_position,1.0);
     vec2 uv=vec2(previous.x,-previous.y)/previous.w*0.5+0.5;
-    if(frame.camera.z>0.5&&(!progressive||frame.path.z>0.5)&&previous.w>0.0&&
+    if(valid_motion&&frame.camera.z>0.5&&(!progressive||frame.path.z>0.5)&&previous.w>0.0&&
         all(greaterThanEqual(uv,vec2(0.0)))&&all(lessThan(uv,vec2(1.0)))) {
         // An unchanged progressive camera uses the identical pixel exactly;
         // repeated subpixel interpolation would blur a converging still image.
@@ -167,7 +189,7 @@ void main() {
         float specular_confidence=0.0,specular_new_weight=0.0;
         float old_dvariance=0.0,old_svariance=0.0;
         float old_ddark=0.0,old_sdark=0.0;
-        vec3 view_normal=(mat3(frame.previous_view)*guide.xyz);
+        vec3 view_normal=(mat3(frame.previous_view)*old_normal);
         vec3 old_eye=-(transpose(mat3(frame.previous_view))*frame.previous_view[3].xyz);
         vec3 old_parallel_view=vec3(frame.previous_view[0][2],frame.previous_view[1][2],frame.previous_view[2][2]);
         float reach=max(0.1,footprint*2.5/max(abs(view_normal.z),0.1));
@@ -176,13 +198,14 @@ void main() {
             if(any(lessThan(q,ivec2(0)))||any(greaterThanEqual(q,size)))continue;
             float w=(x==0?1.0-blend.x:blend.x)*(y==0?1.0-blend.y:blend.y);
             if(w<=0.0)continue;
+            if(imageLoad(previous_identity,q).r!=identity)continue;
             vec4 g=imageLoad(previous_guide,q),m=imageLoad(previous_material,q);
             vec2 old_surface=surface_at(m.w);
-            if(g.w<=0.0||dot(g.xyz,guide.xyz)<=0.96||any(greaterThanEqual(abs(old_surface-surface),vec2(0.05)))||length(m.rgb-material.rgb)>=0.15)continue;
-            vec3 old_world=previous_position(q,g.w,size),delta=old_world-world;
+            if(g.w<=0.0||dot(g.xyz,old_normal)<=0.96||any(greaterThanEqual(abs(old_surface-surface),vec2(0.05)))||length(m.rgb-material.rgb)>=0.15)continue;
+            vec3 old_world=previous_position(q,g.w,size),delta=old_world-old_position;
             // Compare surfaces in world space. Adjacent pixels on a slope
             // legitimately have different depths; unrelated layers still fail.
-            if(abs(dot(delta,guide.xyz))>plane_tolerance||length(delta)>reach)continue;
+            if(abs(dot(delta,old_normal))>plane_tolerance||length(delta)>reach)continue;
             vec2 sigma=imageLoad(previous_noise,q).rg;
             bvec2 was_dark=lessThan(sigma,vec2(0.0));
             sigma=vec2(finite_sigma(sigma.x),finite_sigma(sigma.y));

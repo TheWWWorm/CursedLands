@@ -1,0 +1,386 @@
+{
+  "checkpoint_date": "2026-10-23",
+  "timezone": "Europe/Warsaw",
+  "baseline_commit": "9a3a93ec46e53f0ed8ce6d1667f87948e31109c8",
+  "scope": "Three original world-prop atlases share authored normal/roughness/metalness data between raster and path hits.",
+  "backend_scope": {
+    "vulkan": "Native Linux export, RTX 3090",
+    "d3d12": "Windows export through Wine/VKD3D, RTX 3090",
+    "opengl3": "Focused production object and alpha-to-coverage raster shaders; no ray tracing"
+  },
+  "validation": {
+    "runs_file": "runs.json",
+    "successful_assertion_executions": 1225,
+    "runs": [
+      {
+        "id": "vulkan-device",
+        "checks": 47,
+        "exit": 0,
+        "result": "vulkan-device.json"
+      },
+      {
+        "id": "dx12-device",
+        "checks": 47,
+        "exit": 0,
+        "result": "dx12-device.json"
+      },
+      {
+        "id": "vulkan-timed-live",
+        "checks": 23,
+        "exit": 0,
+        "result": "vulkan-timed-live.json"
+      },
+      {
+        "id": "dx12-timed-live",
+        "checks": 23,
+        "exit": 0,
+        "result": "dx12-timed-live.json"
+      },
+      {
+        "id": "vulkan-visual",
+        "checks": 19,
+        "exit": 0,
+        "result": "vulkan-visual.json"
+      },
+      {
+        "id": "dx12-visual",
+        "checks": 19,
+        "exit": 0,
+        "result": "dx12-visual.json"
+      },
+      {
+        "id": "vulkan-terrain",
+        "checks": 69,
+        "exit": 0,
+        "result": "vulkan-terrain.json"
+      },
+      {
+        "id": "vulkan-foliage",
+        "checks": 13,
+        "exit": 0,
+        "result": "vulkan-foliage.json"
+      },
+      {
+        "id": "vulkan-equipment",
+        "checks": 16,
+        "exit": 0,
+        "result": "vulkan-equipment.json"
+      },
+      {
+        "id": "vulkan-shaders-warm",
+        "checks": 470,
+        "exit": 0,
+        "result": null
+      },
+      {
+        "id": "vulkan-shaders-cold",
+        "checks": 470,
+        "exit": 0,
+        "result": null
+      },
+      {
+        "id": "opengl-objects",
+        "checks": 9,
+        "exit": 0,
+        "result": "opengl-objects.json"
+      }
+    ],
+    "material_shader_variants_per_run": 144,
+    "material_shader_cache_runs": [
+      "cold",
+      "warm"
+    ],
+    "focused_opengl_draws": 4,
+    "backend_binaries_verified": 18,
+    "spirv_stages_validated": 9,
+    "map_pixel_and_provenance_check": "passed",
+    "fixture_revision_note": "The v11 visual captures additionally disable rain and input and skip timed samples. Production code and maps are identical to v10; the fixture hashes below identify the final checkpoint."
+  },
+  "performance": {
+    "qualified": false,
+    "reason": "Another independent game benchmark used the same GPU during the sampled windows. These values cannot establish a performance change.",
+    "additional_limit": "The timed fixture did not disable animated rain; the final visual-only fixture does. The second GPU could not present through the current desktop.",
+    "required_followup": "Quiet-machine interleaved comparison and an unmapped-scene control.",
+    "observations": "Local process observations are reduced to presence booleans; unrelated process identities and paths are omitted.",
+    "windows": [
+      {
+        "backend": "vulkan",
+        "pass": 0,
+        "mapped": false,
+        "start_unix": 1792706791.40882,
+        "end_unix": 1792706792.16204,
+        "rt_gpu_ms_unqualified": {
+          "median": 4.893984,
+          "n": 119,
+          "p95": 6.429888
+        },
+        "observations_with_2s_margin": [
+          {
+            "at_unix": 1792706789.8623962,
+            "gpu0": "0, 83 %, 1890 MHz, 308.23 W",
+            "other_game_present": false
+          },
+          {
+            "at_unix": 1792706792.2915769,
+            "gpu0": "0, 86 %, 1920 MHz, 345.84 W",
+            "other_game_present": true
+          }
+        ]
+      },
+      {
+        "backend": "vulkan",
+        "pass": 1,
+        "mapped": true,
+        "start_unix": 1792706799.34109,
+        "end_unix": 1792706800.09251,
+        "rt_gpu_ms_unqualified": {
+          "median": 4.654496,
+          "n": 119,
+          "p95": 6.077056
+        },
+        "observations_with_2s_margin": [
+          {
+            "at_unix": 1792706798.5674145,
+            "gpu0": "0, 97 %, 1935 MHz, 349.91 W",
+            "other_game_present": true
+          },
+          {
+            "at_unix": 1792706800.650125,
+            "gpu0": "0, 95 %, 1950 MHz, 285.15 W",
+            "other_game_present": true
+          }
+        ]
+      },
+      {
+        "backend": "vulkan",
+        "pass": 2,
+        "mapped": true,
+        "start_unix": 1792706804.163,
+        "end_unix": 1792706804.87019,
+        "rt_gpu_ms_unqualified": {
+          "median": 4.633632,
+          "n": 119,
+          "p95": 6.230208
+        },
+        "observations_with_2s_margin": [
+          {
+            "at_unix": 1792706802.7463958,
+            "gpu0": "0, 88 %, 1935 MHz, 347.14 W",
+            "other_game_present": true
+          },
+          {
+            "at_unix": 1792706804.891702,
+            "gpu0": "0, 35 %, 1920 MHz, 329.46 W",
+            "other_game_present": true
+          }
+        ]
+      },
+      {
+        "backend": "vulkan",
+        "pass": 3,
+        "mapped": false,
+        "start_unix": 1792706810.87168,
+        "end_unix": 1792706811.64166,
+        "rt_gpu_ms_unqualified": {
+          "median": 4.344384,
+          "n": 119,
+          "p95": 5.837312
+        },
+        "observations_with_2s_margin": [
+          {
+            "at_unix": 1792706809.0942166,
+            "gpu0": "0, 42 %, 1920 MHz, 270.14 W",
+            "other_game_present": true
+          },
+          {
+            "at_unix": 1792706811.1964374,
+            "gpu0": "0, 95 %, 1920 MHz, 347.88 W",
+            "other_game_present": true
+          },
+          {
+            "at_unix": 1792706813.3071187,
+            "gpu0": "0, 100 %, 1905 MHz, 296.98 W",
+            "other_game_present": true
+          }
+        ]
+      },
+      {
+        "backend": "dx12",
+        "pass": 0,
+        "mapped": false,
+        "start_unix": 1792706888.062,
+        "end_unix": 1792706889.023,
+        "rt_gpu_ms_unqualified": {
+          "median": 6.155008,
+          "n": 119,
+          "p95": 7.747584
+        },
+        "observations_with_2s_margin": [
+          {
+            "at_unix": 1792706887.0652122,
+            "gpu0": "0, 99 %, 1965 MHz, 342.20 W",
+            "other_game_present": true
+          },
+          {
+            "at_unix": 1792706889.167804,
+            "gpu0": "0, 99 %, 1950 MHz, 323.84 W",
+            "other_game_present": true
+          }
+        ]
+      },
+      {
+        "backend": "dx12",
+        "pass": 1,
+        "mapped": true,
+        "start_unix": 1792706897.685,
+        "end_unix": 1792706898.674,
+        "rt_gpu_ms_unqualified": {
+          "median": 5.9776,
+          "n": 119,
+          "p95": 7.539712
+        },
+        "observations_with_2s_margin": [
+          {
+            "at_unix": 1792706897.5166197,
+            "gpu0": "0, 96 %, 1950 MHz, 338.02 W",
+            "other_game_present": true
+          },
+          {
+            "at_unix": 1792706899.6131597,
+            "gpu0": "0, 41 %, 1950 MHz, 274.97 W",
+            "other_game_present": true
+          }
+        ]
+      },
+      {
+        "backend": "dx12",
+        "pass": 2,
+        "mapped": true,
+        "start_unix": 1792706902.693,
+        "end_unix": 1792706903.637,
+        "rt_gpu_ms_unqualified": {
+          "median": 5.801216,
+          "n": 119,
+          "p95": 7.260928
+        },
+        "observations_with_2s_margin": [
+          {
+            "at_unix": 1792706901.697609,
+            "gpu0": "0, 95 %, 1950 MHz, 340.68 W",
+            "other_game_present": true
+          },
+          {
+            "at_unix": 1792706903.7826235,
+            "gpu0": "0, 87 %, 1950 MHz, 334.20 W",
+            "other_game_present": true
+          }
+        ]
+      },
+      {
+        "backend": "dx12",
+        "pass": 3,
+        "mapped": false,
+        "start_unix": 1792706912.553,
+        "end_unix": 1792706913.498,
+        "rt_gpu_ms_unqualified": {
+          "median": 5.76256,
+          "n": 119,
+          "p95": 7.414784
+        },
+        "observations_with_2s_margin": [
+          {
+            "at_unix": 1792706912.1415215,
+            "gpu0": "0, 99 %, 1950 MHz, 339.12 W",
+            "other_game_present": true
+          },
+          {
+            "at_unix": 1792706914.2264025,
+            "gpu0": "0, 97 %, 1950 MHz, 318.89 W",
+            "other_game_present": true
+          }
+        ]
+      }
+    ]
+  },
+  "excluded_diagnostic_trials": [
+    "An early material shader run completed 470 assertions but exited with SIGSEGV after clean-exit output while an export was being rewritten. No root cause was established. Final cold and warm runs against the fixed package both exited zero.",
+    "The broad OpenGL material suite reached its 300-second harness timeout during slow compilation of unrelated terrain/contact shaders. Only the focused changed-object OpenGL fixture is qualified here.",
+    "GPU 1 presentation attempts failed; they are excluded from rendering and performance results."
+  ],
+  "images": [
+    {
+      "file": "vulkan-props-legacy.png",
+      "sha256": "0f40b6ee92156f2882c6f5e1e3749737d0121507b4defaa1a8cc1abcbcae07f7",
+      "local_run": "surface-detail-v11-visual-vulkan"
+    },
+    {
+      "file": "vulkan-props-authored.png",
+      "sha256": "3cc737d35fe2afda82045543695a57982b125d27548e82513de6f6639a2e5f80",
+      "local_run": "surface-detail-v11-visual-vulkan"
+    },
+    {
+      "file": "vulkan-close-nast6-legacy.png",
+      "sha256": "29bd086b9da33f5189ac526fa845e883b36deff18adfd1f466aff43d22d44aa0",
+      "local_run": "surface-detail-v11-visual-vulkan"
+    },
+    {
+      "file": "vulkan-close-nast6-authored.png",
+      "sha256": "8a7d263559e8b0b9ada7205a6647d99fc2fc86f61ca7e06ba34fb4d40e8f61ac",
+      "local_run": "surface-detail-v11-visual-vulkan"
+    },
+    {
+      "file": "vulkan-close-stst13-legacy.png",
+      "sha256": "f8aabf2823f4797d31be4f40fcda643481a60805d0370f2f5ef713cd2ed512bd",
+      "local_run": "surface-detail-v11-visual-vulkan"
+    },
+    {
+      "file": "vulkan-close-stst13-authored.png",
+      "sha256": "bee031de4f71774c3d30a4456d3030b0d41b59e8926262f3eda93f042894c9ac",
+      "local_run": "surface-detail-v11-visual-vulkan"
+    },
+    {
+      "file": "dx12-props-legacy.png",
+      "sha256": "838e51fb0451d30bd25908534df889763eceefadbe195257903874b6af67b2be",
+      "local_run": "surface-detail-v11-visual-dx12"
+    },
+    {
+      "file": "dx12-props-authored.png",
+      "sha256": "7c1986ba7bbf015d61086126d970f97c9435e3ecf8c6d787b98b69b658edc26a",
+      "local_run": "surface-detail-v11-visual-dx12"
+    }
+  ],
+  "source_sha256": {
+    "game/src/ei/figure.gd": "413b0ca95ae087311d54bf2f12722797384f15f8844f688efcd3858f8cfd300d",
+    "game/src/game/surface_detail.gd": "aafbe0d00b9e38216df7aab63192e47ed401b1a0b1ba7195557d63ea6ba390de",
+    "game/src/game/surface_detail.gd.uid": "b2f91aa55736dcd94c13df92b96e4b9106fe84b462df3dcbcc8f71f29dfa6c38",
+    "game/src/game/fx/scene_raytrace.gd": "4cbd81e634fdee29c155a4886ad03a7f209ccc612a8614feb083a5e0862e0818",
+    "game/src/game/fx/water_raytrace_scene.gd": "ee6c49090329c7150d39196dee86665246f5881557205ac593bd10d8fa3f38e2",
+    "game/src/game/fx/water_raytrace_device.gd": "e1f6c5c901e9cd37f8d7a8674df06d8593639fbe9394126c6af89aff1045a74a",
+    "game/src/game/fx/shaders/path_trace.hlsl": "c678a5b6c348e40ef3acc333897002de4ac3c5d6694be6f0b1bd675ee3410437",
+    "game/src/game/fx/shaders/path_trace_build.json": "37e2a579d816bd2a22b25e067825f6fb111d0a196e67d1042db3dc7c1a47ead6",
+    "tools/build_surface_detail_maps.py": "fe6396b226950cf150fad097430c88c6252ccfbe0d11554fe2aa8c994591799c",
+    "tools/tests/path_trace_surface_detail.gd": "71c5320da0d2e5f82061cae5a0457cec8ceb0c3ffcfd7a043759ca59f2c68491",
+    "tools/tests/path_trace_surface_detail_live.gd": "9bd07bcf90f27ba3997a13c1c70c0a46b2016f6a46bac8333b7222e6b21e5529",
+    "tools/tests/surface_detail_inventory.gd": "963c3919b99dbcdacfdd3ab5506e25aead9ff078da929ae4c099655ff1053e0b",
+    "tools/tests/surface_detail_raster.gd": "3b3e9687c0a598b8f60b6e1033c92fa037e407261ec016893e4062fd5a49b61f",
+    "game/assets/materials/surface-detail/bridge00.png": "7a96f4818a4d1d675f100aef1e386f6f9e8a1827ae3c8a224027d6118a051251",
+    "game/assets/materials/surface-detail/bridge00.png.import": "1af74fa4418f2478a99c64ac43e5f3a28894951b40951e8007e0cb5d3970e063",
+    "game/assets/materials/surface-detail/columnruins01.png": "e4da0da58bcbdc66f0d79769c2575c99418f5a03d307be97055f8a22ea112696",
+    "game/assets/materials/surface-detail/columnruins01.png.import": "792296a3e903ab874471d8dbee21092432fd0ab9df1eef8dc9904b07aba847a5",
+    "game/assets/materials/surface-detail/provenance.json": "b016a49876202495158369529e52f3cd5efd049ad572ee606acc074e7af486bf",
+    "game/assets/materials/surface-detail/stone03.png": "5c0efeccf0d861864c96a29a3ec6a5a36ba51f8574ebab3b40a983247eb325b8",
+    "game/assets/materials/surface-detail/stone03.png.import": "76178d5b2fff2f7c9651a0e58bf70faf556fa17019620690f81ea6c2bd7bff51"
+  },
+  "exports_sha256": {
+    "preview-linux/CursedLands.x86_64": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+    "preview-linux/CursedLands.pck": "8bca6fd66add34e2c2151eb1e61073cccd8695e03c67dc83d2770f366afb048c",
+    "preview-windows/CursedLands.exe": "3fdf36babfcbae0b3584aed85e1d52e4e537d3033c9128689cc0593a9ef80fd4",
+    "preview-windows/CursedLands.pck": "8bca6fd66add34e2c2151eb1e61073cccd8695e03c67dc83d2770f366afb048c"
+  },
+  "remaining_work": [
+    "Authored campaign lighting",
+    "Flickering-light temporal history",
+    "Color-art cleanup and broader surface coverage",
+    "Clean performance qualification"
+  ]
+}

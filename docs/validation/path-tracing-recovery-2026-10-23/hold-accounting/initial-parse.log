@@ -1,0 +1,6 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+SCRIPT ERROR: Parse Error: Used tab character for indentation instead of space as used before in the file.
+          at: GDScript::reload (res://replay.gd:9)
+ERROR: Failed to load script "res://replay.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)

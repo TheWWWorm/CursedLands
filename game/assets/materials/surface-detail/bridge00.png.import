@@ -1,0 +1,21 @@
+[remap]
+importer="texture"
+type="CompressedTexture2D"
+path="res://.godot/imported/bridge00.png-1b4e4148f78b39260d35cf229a27dee7.ctex"
+metadata={"vram_texture": false}
+
+[deps]
+source_file="res://assets/materials/surface-detail/bridge00.png"
+dest_files=["res://.godot/imported/bridge00.png-1b4e4148f78b39260d35cf229a27dee7.ctex"]
+
+[params]
+compress/mode=0
+compress/normal_map=2
+compress/channel_pack=0
+mipmaps/generate=true
+roughness/mode=0
+process/fix_alpha_border=false
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+detect_3d/compress_to=0

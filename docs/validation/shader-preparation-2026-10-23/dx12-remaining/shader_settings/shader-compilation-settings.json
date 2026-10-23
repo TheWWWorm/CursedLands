@@ -1,0 +1,233 @@
+{
+	"checks": 44,
+	"covered_notifications": 7,
+	"device": "NVIDIA GeForce RTX 3090",
+	"driver": "d3d12",
+	"events": [
+		{
+			"background_max_error": 0.0,
+			"background_min_alpha": 1.0,
+			"case": "apply",
+			"covered": true,
+			"file": "settings-before-apply.png",
+			"hint": "Esc: skip the test",
+			"readable": true,
+			"revision": 1,
+			"screen_active": true,
+			"text_samples": [
+				442,
+				369,
+				158,
+				107
+			],
+			"title": "Applying settings"
+		},
+		{
+			"background_max_error": 0.0,
+			"background_min_alpha": 1.0,
+			"case": "options-notification",
+			"covered": true,
+			"notification": 1,
+			"readable": true,
+			"screen_active": true,
+			"text_samples": [
+				442,
+				369,
+				158,
+				107
+			]
+		},
+		{
+			"case": "sampling-negative-control",
+			"sample_frames": 4,
+			"samples_under_cover": 0,
+			"wall_frames": 4
+		},
+		{
+			"case": "late-sampling-negative-control",
+			"sample_frames": 6,
+			"samples_under_cover": 0,
+			"wall_frames": 4
+		},
+		{
+			"background_max_error": 0.0,
+			"background_min_alpha": 1.0,
+			"case": "options-notification",
+			"covered": true,
+			"notification": 2,
+			"readable": true,
+			"screen_active": true,
+			"text_samples": [
+				442,
+				369,
+				330,
+				107
+			]
+		},
+		{
+			"background_max_error": 0.0,
+			"background_min_alpha": 1.0,
+			"case": "apply",
+			"covered": true,
+			"hint": "Esc: skip the test",
+			"readable": true,
+			"revision": 3,
+			"screen_active": true,
+			"text_samples": [
+				442,
+				369,
+				158,
+				107
+			],
+			"title": "Applying settings"
+		},
+		{
+			"background_max_error": 0.0,
+			"background_min_alpha": 1.0,
+			"case": "options-notification",
+			"covered": true,
+			"notification": 3,
+			"readable": true,
+			"screen_active": true,
+			"text_samples": [
+				442,
+				369,
+				158,
+				107
+			]
+		},
+		{
+			"background_max_error": 0.0,
+			"background_min_alpha": 1.0,
+			"case": "apply",
+			"covered": true,
+			"hint": "Esc: skip the test",
+			"readable": true,
+			"revision": 4,
+			"screen_active": true,
+			"text_samples": [
+				442,
+				369,
+				158,
+				107
+			],
+			"title": "Applying settings"
+		},
+		{
+			"background_max_error": 0.0,
+			"background_min_alpha": 1.0,
+			"case": "options-notification",
+			"covered": true,
+			"notification": 4,
+			"readable": true,
+			"screen_active": true,
+			"text_samples": [
+				442,
+				369,
+				158,
+				107
+			]
+		},
+		{
+			"background_max_error": 0.0,
+			"background_min_alpha": 1.0,
+			"case": "apply",
+			"covered": true,
+			"hint": "Esc: skip the test",
+			"readable": true,
+			"revision": 5,
+			"screen_active": true,
+			"text_samples": [
+				442,
+				369,
+				158,
+				107
+			],
+			"title": "Applying settings"
+		},
+		{
+			"background_max_error": 0.0,
+			"background_min_alpha": 1.0,
+			"case": "options-notification",
+			"covered": true,
+			"notification": 5,
+			"readable": true,
+			"screen_active": true,
+			"text_samples": [
+				442,
+				369,
+				158,
+				107
+			]
+		},
+		{
+			"background_max_error": 0.0,
+			"background_min_alpha": 1.0,
+			"case": "apply",
+			"covered": true,
+			"hint": "Esc: skip the test",
+			"readable": true,
+			"revision": 6,
+			"screen_active": true,
+			"text_samples": [
+				442,
+				369,
+				158,
+				107
+			],
+			"title": "Applying settings"
+		},
+		{
+			"background_max_error": 0.0,
+			"background_min_alpha": 1.0,
+			"case": "options-notification",
+			"covered": true,
+			"notification": 6,
+			"readable": true,
+			"screen_active": true,
+			"text_samples": [
+				442,
+				369,
+				158,
+				107
+			]
+		},
+		{
+			"background_max_error": 0.0,
+			"background_min_alpha": 1.0,
+			"case": "apply",
+			"covered": true,
+			"hint": "Esc: skip the test",
+			"readable": true,
+			"revision": 7,
+			"screen_active": true,
+			"text_samples": [
+				442,
+				369,
+				158,
+				107
+			],
+			"title": "Applying settings"
+		},
+		{
+			"background_max_error": 0.0,
+			"background_min_alpha": 1.0,
+			"case": "options-notification",
+			"covered": true,
+			"notification": 7,
+			"readable": true,
+			"screen_active": true,
+			"text_samples": [
+				442,
+				369,
+				158,
+				107
+			]
+		}
+	],
+	"failures": [],
+	"note": "Production GfxDetect apply/cancel/sample and watchdog entry points. Terrain work is instrumented; explicit held UI owner is a negative control, not shader compilation evidence.",
+	"notifications": 7,
+	"profile": "C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands",
+	"status": "passed"
+}

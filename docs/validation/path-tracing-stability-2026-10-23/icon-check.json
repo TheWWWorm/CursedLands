@@ -1,0 +1,80 @@
+{
+  "exe_sha256": "0f40de3d536304a8c0832a37581916161a276087323337d392b88774db115e79",
+  "source_sha256": "263ed821115751d14cf733ce36ae0c960cd28401efd108b63f8813ccdd882971",
+  "resource_icon_count": 6,
+  "images": [
+    {
+      "resource_id": [
+        3,
+        1,
+        1033
+      ],
+      "size": [
+        16,
+        16
+      ],
+      "pixels_equal": true
+    },
+    {
+      "resource_id": [
+        3,
+        2,
+        1033
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "pixels_equal": true
+    },
+    {
+      "resource_id": [
+        3,
+        3,
+        1033
+      ],
+      "size": [
+        48,
+        48
+      ],
+      "pixels_equal": true
+    },
+    {
+      "resource_id": [
+        3,
+        4,
+        1033
+      ],
+      "size": [
+        64,
+        64
+      ],
+      "pixels_equal": true
+    },
+    {
+      "resource_id": [
+        3,
+        5,
+        1033
+      ],
+      "size": [
+        128,
+        128
+      ],
+      "pixels_equal": true
+    },
+    {
+      "resource_id": [
+        3,
+        6,
+        1033
+      ],
+      "size": [
+        256,
+        256
+      ],
+      "pixels_equal": true
+    }
+  ],
+  "note": "All six Godot-exported icon frames match the approved source ICO pixel-for-pixel."
+}

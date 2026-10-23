@@ -1,0 +1,50 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+Vulkan 1.4.312 - Forward+ - Using Device #1: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.
+However, bear in mind that at the moment it can lead to project crashes or instability.
+So, unless you want to test the engine, set the "rendering/driver/threads/thread_model" project setting to 'Safe'.
+     at: setup2 (main/main.cpp:3523)
+
+ERROR: An error occurred while trying to get the screen refresh rate.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1892)
+[trace 13:18:54 +6877ms] session 6546e07bc42b: 1.23.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090 Ti, forward_plus / vulkan
+PT_QUALIFICATION_RUNTIME {"adapter":"NVIDIA GeForce RTX 3090 Ti","display":"X11","driver":"vulkan","engine":{"build":"custom_build","hash":"unknown","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (custom_build)","timestamp":0},"fixture":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03/fixtures/path_trace_detached_live.gd","fsr":{"api":false,"engine":false,"fg3":false,"fg4":false,"sr3":false,"sr4":false},"method":"forward_plus","passed":true,"pid":235389,"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"pt_supported":true,"render_thread":{"actual_separate":true,"expected_separate":true,"main_id":1,"passed":true,"project_model":2,"render_id":5,"requested":"project"},"require_sdk":false,"user_data":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03-profile/detached_live/data/godot/app_userdata/Cursed Lands","vendor":"NVIDIA"}
+[trace 13:18:55 +7603ms] zone load gz3g (entrance 1)
+PERFORMANCE {"buffer_bytes":5080236.0,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":4,"focus":"in","frame_limit":60,"interval_fps":5.50855685450387,"interval_s":0.726143,"msaa_3d":0,"nodes":786.0,"objects":4473.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=3 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":0.749,"pid":235389,"primitives":0.0,"process_ms":0.205,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":526.0,"screen_space_aa":2,"static_bytes":null,"taa":false,"texture_bytes":7138304.0,"time_scale":1.0,"uptime_s":7.60424,"video_allocated_bytes":17461760.0,"vsync":0,"window":[1280,720],"world_count":0,"worlds":[],"zone":"gz3g (loading)"}
+[trace 13:19:04 +16832ms] navigation prepared 6 classes in 513 ms
+[trace 13:19:10 +22878ms] shader warm-up: 24 of 24 materials, 3676 ms (zone's first picture 795 ms)
+[trace 13:19:10 +22892ms] zone ready gz3g
+PERFORMANCE {"buffer_bytes":40238206.0,"cache_entries":{"camera_materials":0,"figure_materials":3,"figure_meshes":1181,"figure_models":52,"object_textures":28,"unit_textures":32,"wound_jobs":0,"wound_layers":0},"draw_calls":3092.0,"drawn_frames":0,"focus":"in","frame_limit":60,"interval_fps":null,"interval_s":15.288413,"msaa_3d":0,"nodes":16097.0,"objects":34612.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=3 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":0.749,"pid":235389,"primitives":279622.0,"process_ms":0.205,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":527.0,"screen_space_aa":2,"static_bytes":null,"taa":false,"texture_bytes":285230592.0,"time_scale":1.0,"uptime_s":22.892819,"video_allocated_bytes":346866592.0,"vsync":0,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":9,"lights":4,"magic_endings":0,"missiles":0},"instance":504809656705,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":214,"visible":true,"zone":"gz3g"}],"zone":"gz3g"}
+ARTIFACT_CAMERA [X: (-0.923879, 0.0, 0.382684), Y: (0.089418, 0.972318, 0.215874), Z: (-0.372091, 0.233661, -0.898305), O: (157.8552, 9.927353, -239.7018)]
+PASS original human figure loads in the campaign
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpArrayLength is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpArrayLength is not supported yet.
+PASS campaign prepares before combat detachment
+PASS ordinary combat severing registers an original detached arm
+PERFORMANCE {"buffer_bytes":45255054.0,"cache_entries":{"camera_materials":0,"figure_materials":3,"figure_meshes":1181,"figure_models":52,"object_textures":28,"unit_textures":32,"wound_jobs":0,"wound_layers":0},"draw_calls":114.0,"drawn_frames":352,"focus":"in","frame_limit":60,"interval_fps":31.3640427110544,"interval_s":11.223043,"msaa_3d":0,"nodes":16093.0,"objects":48395.0,"options":"hd_textures=0 materials=1 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=1 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=3 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":1.634,"pid":235389,"primitives":124875.0,"process_ms":104.772,"reason":"interval","recent_fps":48.0,"render_scale":1.0,"renderer":"forward_plus","resources":527.0,"screen_space_aa":2,"static_bytes":null,"taa":false,"texture_bytes":285695488.0,"time_scale":1.0,"uptime_s":34.116053,"video_allocated_bytes":386623616.0,"vsync":0,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":9,"lights":4,"magic_endings":0,"missiles":0},"instance":504809656705,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":215,"visible":true,"zone":"gz3g"}],"zone":"gz3g"}
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpArrayLength is not supported yet.
+PASS combat geometry reaches a replacement campaign snapshot
+PASS native scene retains original detached figure placements
+PASS detached original shader materials keep receiver, shadow and indirect masks
+PASS native primary rays hit detached original mesh pixels: 3688
+PASS moving detached native geometry stays current without rebuilding: 0
+PASS moving detached native geometry stays current without rebuilding: 1
+PASS moving detached native geometry stays current without rebuilding: 2
+PASS moving detached native geometry stays current without rebuilding: 3
+PASS hidden detached geometry disappears from native primary rays
+PASS revealed detached geometry returns without rebuilding
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpArrayLength is not supported yet.
+PASS expired detached geometry is removed by a replacement snapshot
+PASS expiry releases the campaign's dynamic geometry registry
+PATH_DETACHED_LIVE 15 checks 0 failures
+[trace 13:19:29 +41232ms] clean exit

@@ -1,0 +1,34 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+Vulkan 1.4.312 - Forward+ - Using Device #1: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.
+However, bear in mind that at the moment it can lead to project crashes or instability.
+So, unless you want to test the engine, set the "rendering/driver/threads/thread_model" project setting to 'Safe'.
+     at: setup2 (main/main.cpp:3523)
+
+ERROR: An error occurred while trying to get the screen refresh rate.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1892)
+[trace 15:38:50 +6251ms] session 57a4124035ac: 1.24.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090 Ti, forward_plus / vulkan
+PT_QUALIFICATION_RUNTIME {"adapter":"NVIDIA GeForce RTX 3090 Ti","display":"X11","driver":"vulkan","engine":{"build":"custom_build","hash":"unknown","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (custom_build)","timestamp":0},"fixture":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/final-vulkan-01/fixtures/shader_compilation_arena.gd","fsr":{"api":false,"engine":false,"fg3":false,"fg4":false,"sr3":false,"sr4":false},"method":"forward_plus","passed":true,"pid":435592,"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"pt_supported":true,"render_thread":{"actual_separate":true,"expected_separate":true,"main_id":1,"passed":true,"project_model":2,"render_id":5,"requested":"project"},"require_sdk":false,"user_data":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/final-vulkan-01-profile/shader_arena/data/godot/app_userdata/Cursed Lands","vendor":"NVIDIA"}
+PASS real arena shader warmup is enabled
+PASS the ordinary battle gate waits for initial shader preparation
+PASS opaque root cover is presented before the arena's first 3D draw
+PASS arena-before-first-draw: rendered image is readable
+PASS arena-before-first-draw: screenshot saved
+PASS arena-before-first-draw: actual preparation message is opaque and legible
+PASS arena-materials-in-progress: rendered image is readable
+PASS arena-materials-in-progress: screenshot saved
+PASS arena-materials-in-progress: actual preparation message is opaque and legible
+PASS arena-materials-completed: rendered image is readable
+PASS arena-materials-completed: screenshot saved
+PASS arena-materials-completed: actual preparation message is opaque and legible
+PASS arena preparation and final settling finish
+PASS actual initial, intermediate and completed progress frames are captured
+PASS all actual arena materials reach the completed denominator
+FAIL every material completion follows a real SubViewport draw beneath the cover
+PASS the shared battle gate remains closed through progress and final settling
+PASS the original arena viewport update mode is restored
+PASS shader preparation does not start combat
+PASS shader completion preserves the original animation picking readiness gate
+PASS a fresh arena preparation starts through the normal gate

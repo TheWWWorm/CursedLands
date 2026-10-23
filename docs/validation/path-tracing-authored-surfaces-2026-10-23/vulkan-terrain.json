@@ -1,0 +1,87 @@
+{
+  "checks": 69,
+  "failures": [],
+  "results": {
+    "atlas-2-tile-3": {
+      "mean_error": 0.0,
+      "peak_error": 0.0
+    },
+    "atlas-3-tile-8": {
+      "mean_error": 0.0,
+      "peak_error": 0.0
+    },
+    "atlas-8-tile-63": {
+      "mean_error": 0.0,
+      "peak_error": 0.0
+    },
+    "cliff": {
+      "mean_error": 8.89808126965409e-05,
+      "peak_error": 0.000244140625
+    },
+    "cliff-coarse-mip": {
+      "mean_error": 0.000133220966045673,
+      "peak_error": 0.000244140625
+    },
+    "cliff-relief": {
+      "samples": 1590,
+      "tilted": 1590,
+      "valid": true
+    },
+    "coarse-padded-mip": {
+      "mean_error": 0.000152587890625,
+      "peak_error": 0.000244140625
+    },
+    "coarse-unpadded-mip": {
+      "mean_error": 7.89348895733173e-05,
+      "peak_error": 0.000244140625
+    },
+    "junction": {
+      "mean_error": 1.34354117531447e-07,
+      "peak_error": 6.103515625e-05
+    },
+    "junction-coarse-mip": {
+      "mean_error": 7.54136305588942e-05,
+      "peak_error": 0.000244140625
+    },
+    "land-grid-(16, 3)-last-cell": {
+      "mean_error": 0.0,
+      "peak_error": 0.0
+    },
+    "land-grid-(17, 3)-last-cell": {
+      "mean_error": 0.0,
+      "peak_error": 0.0
+    },
+    "land-grid-(256, 256)-last-cell": {
+      "mean_error": 0.0,
+      "peak_error": 0.0
+    },
+    "pair": {
+      "mean_error": 7.67737814465409e-08,
+      "peak_error": 0.0001220703125
+    },
+    "pair-coarse-mip": {
+      "mean_error": 3.9980961726262e-05,
+      "peak_error": 0.000244140625
+    },
+    "rotation-0": {
+      "mean_error": 0.0,
+      "peak_error": 0.0
+    },
+    "rotation-1": {
+      "mean_error": 0.0,
+      "peak_error": 0.0
+    },
+    "rotation-2": {
+      "mean_error": 0.0,
+      "peak_error": 0.0
+    },
+    "rotation-3": {
+      "mean_error": 0.0,
+      "peak_error": 0.0
+    },
+    "shifted-authored-tile": {
+      "mean_error": 0.0,
+      "peak_error": 0.0
+    }
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "exit_code": 0,
+  "pid": 235389,
+  "wall_seconds": 42.144589157000155,
+  "stopped": "",
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: An error occurred while trying to get the screen refresh rate."
+  ],
+  "gpu_uuids_observed": [
+    "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0.088617591000002,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": false,
+    "live_members_after_cleanup": []
+  },
+  "suite": "detached_live",
+  "checks": 15,
+  "fixture_failures": [],
+  "validation_errors": [],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "display": "X11",
+    "driver": "vulkan",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03/fixtures/path_trace_detached_live.gd",
+    "fsr": {
+      "api": false,
+      "engine": false,
+      "fg3": false,
+      "fg4": false,
+      "sr3": false,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 235389,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": true,
+      "expected_separate": true,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 2,
+      "render_id": 5,
+      "requested": "project"
+    },
+    "require_sdk": false,
+    "user_data": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03-profile/detached_live/data/godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "path-detached-live.json",
+  "passed": true,
+  "artifacts": {
+    "campaign-detached-expired.png": "bc12eb33257445aed7634cf0a7b384f113e7cbeab082d2fc5571e91551edd2c7",
+    "campaign-detached-moving.png": "cd14846f470d395d98f9cb74038d815ba684486a1a8d97a86435abdcb27c2bd3",
+    "campaign-detached-visible.png": "2145d0546ed059a20abfc59bf6cb7754f5355954008b2438ec90e3568da2c655",
+    "command.json": "e314be3dd2557ea651e61d10a742b748f1395dd5711f0e40cf3d3fdd750f5a9f",
+    "gpu.jsonl": "b2b2081259ef5002a0b649b3d022b20451c2e57f6d42cc6abd788b12168972da",
+    "path-detached-live.json": "871b9709d12d915a16f1ce4e06d5da47326b2dac3932c44cb9f9ff83a94c8ebc",
+    "qualification-runtime.json": "ef7bf5899e5e4356bde32773b441bac71af527a4a4c146c3d9802c6ba7ce83ff",
+    "run.log": "f8c63a3a647d70e6a9ad684225918d581cd8b80572b1032e908cbfb92640fb72"
+  }
+}

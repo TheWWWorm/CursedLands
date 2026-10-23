@@ -1,0 +1,224 @@
+[
+  {
+    "run": "candidate-vulkan-bench",
+    "display": [
+      1280,
+      720
+    ],
+    "quality": 0,
+    "upscaler": "FSR 2 Quality",
+    "old_window_grid": {
+      "pt_size": [
+        640,
+        360
+      ],
+      "rt_gpu_ms": 0.694256,
+      "frame_ms": 4.964,
+      "main_gpu_ms": 0.8254999816417694,
+      "controller_cpu_ms": 0.6445000000000001
+    },
+    "new_render_grid": {
+      "pt_size": [
+        429,
+        241
+      ],
+      "rt_gpu_ms": 0.454752,
+      "frame_ms": 4.8260000000000005,
+      "main_gpu_ms": 1.0150000154972054,
+      "controller_cpu_ms": 0.6635
+    },
+    "pt_ms_reduction_percent": 34.49793736028208,
+    "frame_ms_reduction_percent": 2.7800161160354553,
+    "image_comparison": {
+      "energy_ratio": 1.00212901207822,
+      "mean_absolute_error": 0.00520832791370673,
+      "reference_mean": 0.265151136012809,
+      "scaled_mean": 0.265715645983933
+    }
+  },
+  {
+    "run": "candidate-vulkan-bench",
+    "display": [
+      1280,
+      720
+    ],
+    "quality": 1,
+    "upscaler": "FSR 2 Quality",
+    "old_window_grid": {
+      "pt_size": [
+        960,
+        540
+      ],
+      "rt_gpu_ms": 3.373552,
+      "frame_ms": 4.843,
+      "main_gpu_ms": 0.800999999046326,
+      "controller_cpu_ms": 0.6245
+    },
+    "new_render_grid": {
+      "pt_size": [
+        643,
+        362
+      ],
+      "rt_gpu_ms": 1.602992,
+      "frame_ms": 4.795,
+      "main_gpu_ms": 0.801499992609024,
+      "controller_cpu_ms": 0.6565000000000001
+    },
+    "pt_ms_reduction_percent": 52.483554425721024,
+    "frame_ms_reduction_percent": 0.9911212058641317,
+    "image_comparison": {
+      "energy_ratio": 1.00224422704276,
+      "mean_absolute_error": 0.00514412045928928,
+      "reference_mean": 0.264569385890468,
+      "scaled_mean": 0.265163139660969
+    }
+  },
+  {
+    "run": "candidate-vulkan-1440",
+    "display": [
+      2560,
+      1440
+    ],
+    "quality": 0,
+    "upscaler": "FSR 2 Quality",
+    "old_window_grid": {
+      "pt_size": [
+        1280,
+        720
+      ],
+      "rt_gpu_ms": 2.454608,
+      "frame_ms": 5.1114999999999995,
+      "main_gpu_ms": 1.682999968528745,
+      "controller_cpu_ms": 0.6719999999999999
+    },
+    "new_render_grid": {
+      "pt_size": [
+        858,
+        482
+      ],
+      "rt_gpu_ms": 1.165472,
+      "frame_ms": 6.4765,
+      "main_gpu_ms": 1.678000032901765,
+      "controller_cpu_ms": 0.8745
+    },
+    "pt_ms_reduction_percent": 52.51901729318897,
+    "frame_ms_reduction_percent": -26.70448987577032,
+    "image_comparison": {
+      "energy_ratio": 1.00120237572431,
+      "mean_absolute_error": 0.00430006348971235,
+      "reference_mean": 0.293206719000991,
+      "scaled_mean": 0.293559263642121
+    }
+  },
+  {
+    "run": "candidate-vulkan-1440",
+    "display": [
+      2560,
+      1440
+    ],
+    "quality": 1,
+    "upscaler": "FSR 2 Quality",
+    "old_window_grid": {
+      "pt_size": [
+        1920,
+        1080
+      ],
+      "rt_gpu_ms": 13.037296000000001,
+      "frame_ms": 14.8565,
+      "main_gpu_ms": 1.69500005245209,
+      "controller_cpu_ms": 0.8385
+    },
+    "new_render_grid": {
+      "pt_size": [
+        1286,
+        723
+      ],
+      "rt_gpu_ms": 5.945392,
+      "frame_ms": 8.2555,
+      "main_gpu_ms": 1.684499979019165,
+      "controller_cpu_ms": 0.8075
+    },
+    "pt_ms_reduction_percent": 54.39704674957139,
+    "frame_ms_reduction_percent": 44.431730219096025,
+    "image_comparison": {
+      "energy_ratio": 1.00059635579764,
+      "mean_absolute_error": 0.00389912486386196,
+      "reference_mean": 0.292932206341029,
+      "scaled_mean": 0.293106898160595
+    }
+  },
+  {
+    "run": "candidate-dx12-1440-ready",
+    "display": [
+      2560,
+      1440
+    ],
+    "quality": 0,
+    "upscaler": "FSR 3.1 Quality",
+    "old_window_grid": {
+      "pt_size": [
+        1280,
+        720
+      ],
+      "rt_gpu_ms": 3.173376,
+      "frame_ms": 7.479,
+      "main_gpu_ms": 1.9169999957084651,
+      "controller_cpu_ms": 0.6725000000000001
+    },
+    "new_render_grid": {
+      "pt_size": [
+        853,
+        480
+      ],
+      "rt_gpu_ms": 1.603072,
+      "frame_ms": 8.435500000000001,
+      "main_gpu_ms": 1.91600000858307,
+      "controller_cpu_ms": 0.7444999999999999
+    },
+    "pt_ms_reduction_percent": 49.483704420780896,
+    "frame_ms_reduction_percent": -12.789142933547271,
+    "image_comparison": {
+      "energy_ratio": 1.0018825606045,
+      "mean_absolute_error": 0.00485226761091067,
+      "reference_mean": 0.293182377833792,
+      "scaled_mean": 0.293734311428236
+    }
+  },
+  {
+    "run": "candidate-dx12-1440-ready",
+    "display": [
+      2560,
+      1440
+    ],
+    "quality": 1,
+    "upscaler": "FSR 3.1 Quality",
+    "old_window_grid": {
+      "pt_size": [
+        1920,
+        1080
+      ],
+      "rt_gpu_ms": 17.111424,
+      "frame_ms": 19.5765,
+      "main_gpu_ms": 1.99650001525879,
+      "controller_cpu_ms": 0.8465
+    },
+    "new_render_grid": {
+      "pt_size": [
+        1280,
+        720
+      ],
+      "rt_gpu_ms": 7.741056,
+      "frame_ms": 10.866,
+      "main_gpu_ms": 1.930499970912935,
+      "controller_cpu_ms": 0.776
+    },
+    "pt_ms_reduction_percent": 54.76088956711025,
+    "frame_ms_reduction_percent": 44.494674737568005,
+    "image_comparison": {
+      "energy_ratio": 1.00112347449227,
+      "mean_absolute_error": 0.0037046803241458,
+      "reference_mean": 0.292839127548057,
+      "scaled_mean": 0.293168124838197
+    }
+  }
+]

@@ -1,0 +1,200 @@
+{
+  "camera": "[X: (0.970143, 0.0, -0.242536), Y: (-0.041722, 0.985093, -0.166886), Z: (0.23892, 0.172022, 0.955681), O: (157.528, 13.02872, -199.6804)]",
+  "checks": 23,
+  "close_differences": [
+    {
+      "changed_normal_pixels": 66837,
+      "displayed_surface_difference": 0.0198982191306841
+    },
+    {
+      "changed_normal_pixels": 13567,
+      "displayed_surface_difference": 0.0078133648463568
+    }
+  ],
+  "device": "NVIDIA GeForce RTX 3090",
+  "driver": "d3d12",
+  "failures": [],
+  "image_difference": 0.00310791450367595,
+  "layer_counts": [
+    74,
+    77,
+    77,
+    74
+  ],
+  "runs": [
+    {
+      "controller_cpu_ms": {
+        "median": 0.948,
+        "n": 119,
+        "p95": 1.342
+      },
+      "gpu_stages_ms": {},
+      "mapped": false,
+      "rt_gpu_ms": {
+        "median": 6.155008,
+        "n": 119,
+        "p95": 7.747584
+      },
+      "sample_ended_unix": 1792706889.023,
+      "sample_started_unix": 1792706888.062,
+      "stats": {
+        "accumulation_frames": 8,
+        "active": true,
+        "emissive_candidates": 0,
+        "emissive_triangles": 0,
+        "geometries": 2281,
+        "gi_samples": 0,
+        "instances": 2531,
+        "lights": 4,
+        "path_bounces": 4,
+        "path_samples": 2,
+        "path_tracing": true,
+        "quality": 1,
+        "shadow_samples": 0,
+        "size": [
+          960,
+          540
+        ],
+        "supported": true,
+        "terrain_material_build_us": 22579,
+        "terrain_material_bytes": 883028,
+        "terrain_material_triangles": 58241,
+        "triangles": 174508,
+        "updated_instances": 0,
+        "updated_poses": 0
+      }
+    },
+    {
+      "controller_cpu_ms": {
+        "median": 1.048,
+        "n": 119,
+        "p95": 1.635
+      },
+      "gpu_stages_ms": {},
+      "mapped": true,
+      "rt_gpu_ms": {
+        "median": 5.9776,
+        "n": 119,
+        "p95": 7.539712
+      },
+      "sample_ended_unix": 1792706898.674,
+      "sample_started_unix": 1792706897.685,
+      "stats": {
+        "accumulation_frames": 8,
+        "active": true,
+        "emissive_candidates": 0,
+        "emissive_triangles": 0,
+        "geometries": 2281,
+        "gi_samples": 0,
+        "instances": 2531,
+        "lights": 4,
+        "path_bounces": 4,
+        "path_samples": 2,
+        "path_tracing": true,
+        "quality": 1,
+        "shadow_samples": 0,
+        "size": [
+          960,
+          540
+        ],
+        "supported": true,
+        "terrain_material_build_us": 23586,
+        "terrain_material_bytes": 883028,
+        "terrain_material_triangles": 58241,
+        "triangles": 174508,
+        "updated_instances": 0,
+        "updated_poses": 0
+      }
+    },
+    {
+      "controller_cpu_ms": {
+        "median": 0.898,
+        "n": 119,
+        "p95": 1.159
+      },
+      "gpu_stages_ms": {},
+      "mapped": true,
+      "rt_gpu_ms": {
+        "median": 5.801216,
+        "n": 119,
+        "p95": 7.260928
+      },
+      "sample_ended_unix": 1792706903.637,
+      "sample_started_unix": 1792706902.693,
+      "stats": {
+        "accumulation_frames": 8,
+        "active": true,
+        "emissive_candidates": 0,
+        "emissive_triangles": 0,
+        "geometries": 2281,
+        "gi_samples": 0,
+        "instances": 2531,
+        "lights": 4,
+        "path_bounces": 4,
+        "path_samples": 2,
+        "path_tracing": true,
+        "quality": 1,
+        "shadow_samples": 0,
+        "size": [
+          960,
+          540
+        ],
+        "supported": true,
+        "terrain_material_build_us": 23586,
+        "terrain_material_bytes": 883028,
+        "terrain_material_triangles": 58241,
+        "triangles": 174508,
+        "updated_instances": 0,
+        "updated_poses": 0
+      }
+    },
+    {
+      "controller_cpu_ms": {
+        "median": 0.921,
+        "n": 119,
+        "p95": 1.585
+      },
+      "gpu_stages_ms": {},
+      "mapped": false,
+      "rt_gpu_ms": {
+        "median": 5.76256,
+        "n": 119,
+        "p95": 7.414784
+      },
+      "sample_ended_unix": 1792706913.498,
+      "sample_started_unix": 1792706912.553,
+      "stats": {
+        "accumulation_frames": 8,
+        "active": true,
+        "emissive_candidates": 0,
+        "emissive_triangles": 0,
+        "geometries": 2281,
+        "gi_samples": 0,
+        "instances": 2531,
+        "lights": 4,
+        "path_bounces": 4,
+        "path_samples": 2,
+        "path_tracing": true,
+        "quality": 1,
+        "shadow_samples": 0,
+        "size": [
+          960,
+          540
+        ],
+        "supported": true,
+        "terrain_material_build_us": 21047,
+        "terrain_material_bytes": 883028,
+        "terrain_material_triangles": 58241,
+        "triangles": 174508,
+        "updated_instances": 0,
+        "updated_poses": 0
+      }
+    }
+  ],
+  "templates": [
+    "stbr1",
+    "nast6",
+    "stst13"
+  ],
+  "viewport": "(1280.0, 720.0)"
+}

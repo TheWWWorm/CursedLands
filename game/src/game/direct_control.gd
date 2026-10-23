@@ -159,12 +159,19 @@ func leader() -> GameUnit:
 
 
 func usable(allow_aim_wheel := false) -> bool:
-	if not active() or leader() == null or not game.rig._window_focused or game.rig.held \
+	if ShaderCompilationScreen.active() or not active() or leader() == null or not game.rig._window_focused or game.rig.held \
 		or transitioning() or game.session.movie_active() or game.hud.blocks_camera(): return false
 	var f := field()
 	if f and (f.cursor_mode or (f.wheel.visible and not (allow_aim_wheel and f._keyboard_aim))): return false
 	var focus := get_viewport().gui_get_focus_owner()
 	return not (focus is LineEdit or focus is TextEdit)
+
+
+func suspend_for_shader_preparation() -> void:
+	_fire = false
+	_neutral = true
+	stop_move()
+	_capture(false)
 
 
 func transitioning() -> bool:

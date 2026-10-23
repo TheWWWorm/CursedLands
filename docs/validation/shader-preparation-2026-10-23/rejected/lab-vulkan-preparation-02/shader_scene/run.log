@@ -1,0 +1,42 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+Vulkan 1.4.312 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090
+WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.
+However, bear in mind that at the moment it can lead to project crashes or instability.
+So, unless you want to test the engine, set the "rendering/driver/threads/thread_model" project setting to 'Safe'.
+     at: setup2 (main/main.cpp:3523)
+
+ERROR: Parameter "monitors" is null.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)
+[trace 16:12:47 +5826ms] session dd233c27b8f7: 1.24.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090, forward_plus / vulkan
+PT_QUALIFICATION_RUNTIME {"adapter":"NVIDIA GeForce RTX 3090","display":"X11","driver":"vulkan","engine":{"build":"custom_build","hash":"unknown","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (custom_build)","timestamp":0},"fixture":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-vulkan-preparation-02/fixtures/shader_compilation_scene.gd","fsr":{"api":false,"engine":false,"fg3":false,"fg4":false,"sr3":false,"sr4":false},"method":"forward_plus","passed":true,"pid":498819,"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"pt_supported":true,"render_thread":{"actual_separate":true,"expected_separate":true,"main_id":1,"passed":true,"project_model":2,"render_id":5,"requested":"project"},"require_sdk":false,"user_data":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-vulkan-preparation-02-profile/shader_scene/data/godot/app_userdata/Cursed Lands","vendor":"NVIDIA"}
+[trace 16:12:48 +6982ms] zone load gz3g (entrance 1)
+PERFORMANCE {"buffer_bytes":7177388.0,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":2.0,"drawn_frames":1969,"focus":"in","frame_limit":60,"interval_fps":1703.42423741702,"interval_s":1.155907,"msaa_3d":0,"nodes":786.0,"objects":4498.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=3 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":0.695,"pid":498819,"primitives":16.0,"process_ms":0.179,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":532.0,"screen_space_aa":2,"static_bytes":null,"taa":false,"texture_bytes":7400960.0,"time_scale":1.0,"uptime_s":6.983033,"video_allocated_bytes":22705152.0,"vsync":0,"window":[1280,720],"world_count":0,"worlds":[],"zone":"gz3g (loading)"}
+[trace 16:12:56 +14924ms] navigation prepared 6 classes in 455 ms
+[trace 16:13:01 +20112ms] shader warm-up: 24 of 24 materials, 3122 ms (zone's first picture 665 ms)
+[trace 16:13:01 +20126ms] zone ready gz3g
+PERFORMANCE {"buffer_bytes":42335358.0,"cache_entries":{"camera_materials":0,"figure_materials":3,"figure_meshes":1181,"figure_models":52,"object_textures":28,"unit_textures":32,"wound_jobs":0,"wound_layers":0},"draw_calls":10.0,"drawn_frames":0,"focus":"in","frame_limit":60,"interval_fps":null,"interval_s":13.14307,"msaa_3d":0,"nodes":16098.0,"objects":34662.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=3 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":0.695,"pid":498819,"primitives":160.0,"process_ms":0.179,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":533.0,"screen_space_aa":2,"static_bytes":null,"taa":false,"texture_bytes":286017024.0,"time_scale":1.0,"uptime_s":20.126261,"video_allocated_bytes":351847328.0,"vsync":0,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":9,"lights":4,"magic_endings":0,"missiles":0},"instance":512627839386,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":214,"visible":true,"zone":"gz3g"}],"zone":"gz3g"}
+ARTIFACT_CAMERA [X: (-0.923879, 0.0, 0.382684), Y: (0.089418, 0.972318, 0.215874), Z: (-0.372091, 0.233661, -0.898305), O: (157.8552, 9.927353, -239.7018)]
+PASS initial material preparation: canceled scene preparation releases the shared cover
+PASS scene/PT controller continues during a screen-owned pause
+PASS initial-path: preparation cover has actual rendered pixels
+PASS initial-path: preparation covers the campaign view
+PASS initial-path: preparation capture saved
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpArrayLength is not supported yet.
+PASS initial-path: real output is bound and the compilation cover settles within its deadline
+PASS initial-path: explicit requests alone create a scene preparation owner
+PASS initial-path: controller progresses while its visible single-player cover owns the pause
+PASS initial PT request reports actual geometry, pipeline and first-frame stages
+PASS render preparation rejects an unrendered request even when old output remains ready
+PASS same-device deep PT keeps its cover pending despite valid shallow output
+PASS stale request and wrong-device acknowledgments cannot release the current cover
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS same-device-deep: real output is bound and the compilation cover settles within its deadline
+PASS same-device-deep: explicit requests alone create a scene preparation owner
+FAIL same-device-deep: controller progresses while its visible single-player cover owns the pause
+PASS deep PT lazily selects its real variant while retaining the device and acceleration structures
+PASS quality-resize: preparation cover has actual rendered pixels
+PASS quality-resize: preparation covers the campaign view
+PASS quality-resize: preparation capture saved

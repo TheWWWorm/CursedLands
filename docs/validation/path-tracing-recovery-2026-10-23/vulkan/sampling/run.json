@@ -1,0 +1,101 @@
+{
+  "exit_code": 0,
+  "pid": 241948,
+  "wall_seconds": 11.806774964999931,
+  "stopped": "",
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: An error occurred while trying to get the screen refresh rate."
+  ],
+  "gpu_uuids_observed": [
+    "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0.09114211300038733,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": false,
+    "live_members_after_cleanup": []
+  },
+  "suite": "sampling",
+  "checks": 67,
+  "fixture_failures": [],
+  "validation_errors": [],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "display": "X11",
+    "driver": "vulkan",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03/fixtures/path_trace_sampling.gd",
+    "fsr": {
+      "api": false,
+      "engine": false,
+      "fg3": false,
+      "fg4": false,
+      "sr3": false,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 241948,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": true,
+      "expected_separate": true,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 2,
+      "render_id": 5,
+      "requested": "project"
+    },
+    "require_sdk": false,
+    "user_data": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03-profile/sampling/data/godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "path-sampling.json",
+  "passed": true,
+  "artifacts": {
+    "command.json": "ddbb3ddea6e2dc2c02b72153e4928542c77d11a40013401d2c59dd677094e768",
+    "counter-limit.png": "a58ca057ea9f3b5098050f3dda87f9b33276ef63404f1061abb208df9fad66ba",
+    "counter-repeat.png": "a58ca057ea9f3b5098050f3dda87f9b33276ef63404f1061abb208df9fad66ba",
+    "counter-wrap.png": "ec9e4f269375f5cfe0af908bfe5f42003a9fe3741fc4ce500a738f8c829991e5",
+    "emitter-1-spp-16.png": "4b0949c038b378e674944d115a5c9cbea030dd760acacf00d1b7b9bc960f74a1",
+    "emitter-2-spp-16.png": "13a7e7d93a9edcfc3e12cd62d8372a9e5d8be11a8815480dd8bcee22bf272345",
+    "emitter-4-spp-16.png": "604076545135acd442ffed4b78426fda5be4fe0ec1f5aa9799802956e0ea99b6",
+    "gpu.jsonl": "d8789006b414a5122091f09087a23430a9a01dc9a720f1c0f894069933943b34",
+    "metal-1-spp-16.png": "747eda3e7fa44cf7074c0f63353b8d3c5d9c3b1c2265c664d6b29dfee5cb98aa",
+    "metal-2-spp-16.png": "341b193100344712e3d9bee92cda06f6de05ff76e62c48366eea6fb2d0c09a58",
+    "metal-4-spp-16.png": "2e01990e298a0dca8e76ba506a517ee1d59e954ab60ed641a7c273e6b8d54335",
+    "metal-offset-16.png": "c344ac07a5d40af34e3868d2a455da0235691c6db6cb5bc0f9db4b4d8490e805",
+    "path-sampling.json": "91c23085fda0e2ac3e3f82101c5a553956100899a2c4c535087b6862d3d298a5",
+    "purpose-base.png": "e4dafa97f973075c4442381f19fb0a8d5b031f5be33eb5f50078414a314a15c4",
+    "purpose-unused-light.png": "e4dafa97f973075c4442381f19fb0a8d5b031f5be33eb5f50078414a314a15c4",
+    "qualification-runtime.json": "4e378bf18f5322ee6695425583d59324d3e2d5807ca71034c9ad27b3d6d1e3ce",
+    "run.log": "72fc11e95bd09c221cad22bd9d31655a9ba68c0238c5ab6b6022c45156050f62",
+    "scene-device-results.json": "dd1b1673e2a45298a6fe8694d39f2f05d8828f6fd5f05bf24983b0d7ac9e8873",
+    "shadow-1-spp-16.png": "17434cba1124720d2c69fa0b1c692fb70e05b61f0831e6dd7bca60f264835242",
+    "shadow-2-spp-16.png": "dc067c717bbfd0fb4f1764abccdec3f5639d5cf50294df7c8736277e5fdd3feb",
+    "shadow-4-spp-16.png": "36e25b1fab5bfee2f610cedd6dcb6876f685cdbf03d3cf010a96b6cffd963b82"
+  }
+}

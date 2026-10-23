@@ -2,6 +2,7 @@ extends RefCounted
 ## CPU-owned scene description. Geometry is shared by rigid instances; only
 ## transforms, visibility and changed blend-shape vertices cross each frame.
 const RADIUS := 96.0
+const UNIT_HYSTERESIS := 8.0
 const MAX_TRIANGLES := 320000
 const MAX_TEXTURES := 192
 const MAX_INSTANCES := 4096
@@ -19,6 +20,7 @@ var _opaque_textures: Array[bool] = []
 var _mesh_cache := {}
 var _nodes := {}
 var _mesh_roots := {}
+var _unit_roots := {}
 var _groups := {}
 var _morph_geometries: Array[int] = []
 var _terrain: EITerrain
@@ -46,22 +48,38 @@ func begin(terrain: EITerrain, position: Vector3, plane: float) -> void:
 		if child is EITerrainSector and _near(child.global_transform*child.get_aabb()):
 			pending.append({"node":weakref(child),"land":true})
 	var materials := {}
-	for mesh: MeshInstance3D in _scene_meshes():
+	for mesh: MeshInstance3D in _scene_meshes(true):
 		pending.append({"node":weakref(mesh),"land":false})
 		_nodes[mesh.get_instance_id()] = _mesh_version(mesh,materials)
 
-func _scene_meshes() -> Array[MeshInstance3D]:
+func _scene_meshes(remember_units := false) -> Array[MeshInstance3D]:
 	var found: Array[MeshInstance3D] = []
 	var world := _terrain.game_world()
 	if world == null: return found
-	for root: Node3D in world.objects.values()+world.units.values():
+	var roots: Array = world.objects.values()+world.units.values()
+	# Combat effects such as detached limbs own real figure meshes without
+	# becoming gameplay objects or units. Explicit opt-in avoids scanning the
+	# whole tree, collecting particles, or retaining another loaded world's
+	# geometry. The SceneTree removes freed roots from the group automatically.
+	if world.is_inside_tree():
+		for root: Node in world.get_tree().get_nodes_in_group(GameWorld.RAYTRACE_GEOMETRY_GROUP):
+			if root is Node3D and world.is_ancestor_of(root) and root.get_world_3d()==world.get_world_3d() and not roots.has(root):
+				roots.append(root)
+	for root: Node3D in roots:
 		if not is_instance_valid(root): continue
+		var dynamic := root is GameUnit or root.is_in_group(GameWorld.RAYTRACE_GEOMETRY_GROUP)
+		var radius := RADIUS+24.0
+		if dynamic and _unit_roots.has(root.get_instance_id()): radius+=UNIT_HYSTERESIS
 		# Include hidden parts, too: visibility is a live instance mask, and a
 		# fogged creature must not require a fresh mesh build when revealed.
-		if root.global_position.distance_squared_to(center) > pow(RADIUS+24.0,2): continue
+		if root.global_position.distance_squared_to(center) > radius*radius: continue
+		if dynamic and remember_units: _unit_roots[root.get_instance_id()]=true
 		for mesh: MeshInstance3D in root.find_children("*","MeshInstance3D",true,false):
 			if mesh.mesh == null or mesh is EIObjectWater: continue
-			if not _near(mesh.global_transform*mesh.get_aabb(),false): continue
+			# Admit an animated figure as a whole. Idle limbs crossing the 96 m
+			# boundary only need instance updates, not a new scene/AS every poll.
+			# Root hysteresis keeps a retained figure stable near its entry edge.
+			if not dynamic and not _near(mesh.global_transform*mesh.get_aabb(),false): continue
 			var supported := false
 			for surface in mesh.mesh.get_surface_count():
 				var mat := mesh.get_active_material(surface)
@@ -69,7 +87,7 @@ func _scene_meshes() -> Array[MeshInstance3D]:
 					supported = true; break
 			if supported:
 				found.append(mesh)
-				_mesh_roots[mesh.get_instance_id()] = weakref(root)
+				if remember_units: _mesh_roots[mesh.get_instance_id()] = weakref(root)
 	return found
 
 func _material_version(material: Material) -> Array:
@@ -77,7 +95,10 @@ func _material_version(material: Material) -> Array:
 		var texture: Texture2D = material.get_shader_parameter("albedo_tex") as Texture2D
 		return [material.shader.get_instance_id() if material.shader else 0,texture.get_instance_id() if texture else 0,
 			material.get_shader_parameter("ei_material_diffuse"),material.get_shader_parameter("ei_material_emissive"),
-			material.get_shader_parameter("surface_profile"),material.get_shader_parameter("foliage_mask")]
+			material.get_shader_parameter("surface_profile"),material.get_shader_parameter("foliage_mask"),
+			material.get_shader_parameter("surface_tex") if path_materials else null,
+			material.get_shader_parameter("surface_detail_tex") if path_materials else null,
+			material.get_shader_parameter("surface_detail_enabled") if path_materials else null]
 	if material is BaseMaterial3D:
 		return [material.albedo_texture.get_instance_id() if material.albedo_texture else 0,material.albedo_color,
 			material.transparency,material.alpha_scissor_threshold,material.emission_enabled,material.emission,
@@ -119,6 +140,15 @@ func topology_changed() -> bool:
 	var materials := {}
 	for mesh: MeshInstance3D in _scene_meshes(): current[mesh.get_instance_id()] = _mesh_version(mesh,materials)
 	return current != _nodes
+
+## Retain only inexpensive source watches after a failed/empty gather. The
+## controller can retry when real inputs change without keeping copied images
+## or repeatedly repacking an unchanged over-budget scene.
+func discard_geometry() -> void:
+	vertices=PackedFloat32Array();images.clear();geometries.clear();instances.clear()
+	pending.clear();_textures.clear();_opaque_textures.clear();_mesh_cache.clear()
+	_mesh_roots.clear();_groups.clear();_morph_geometries.clear()
+	_kernel=null;_watching=false;_cursor=0
 
 func _near(bounds: AABB, clip_plane := true) -> bool:
 	var p := center.clamp(bounds.position,bounds.end)
@@ -238,6 +268,16 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 		var mask: Texture2D = material.get_shader_parameter("foliage_mask") as Texture2D
 		if mask != null: foliage_layer = _layer(mask)
 	var base_layer := -1 if land else _layer(texture)
+	# Unit redress already composes a linear highlight/roughness/metalness map.
+	# Keep the authored regions and mip footprint at every path hit. Reuse the
+	# raw array only for materials with a map; ordinary surfaces add no fetch.
+	var surface_layer := -1
+	var detail_layer := -1
+	if path_materials and Gfx.on("gfx_materials") and material is ShaderMaterial:
+		var mask: Texture2D = material.get_shader_parameter("surface_tex") as Texture2D
+		if mask != null: surface_layer = _layer(mask)
+		var detail: Texture2D = material.get_shader_parameter("surface_detail_tex") as Texture2D
+		if detail!=null and material.get_shader_parameter("surface_detail_enabled")==true:detail_layer=_layer(detail)
 	var opaque := cutoff <= 0.0 or (base_layer >= 0 and _opaque_textures[base_layer] and diffuse.w >= cutoff)
 	if _kernel != null:
 		var atlas := {}
@@ -249,7 +289,7 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 		var count: int = packed.vertices.size()/16
 		if count == 0: return -1
 		geometries.append({"offset":vertices.size()/16,"count":count,"indices":packed.indices,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material),"relief":surface_relief(material,land),"terrain":land,"foliage_layer":foliage_layer,
-			"leaf_light":Gfx.on("gfx_foliage_light"),"bark_relief":Gfx.on("gfx_materials"),"emissive":emission!=Vector3.ZERO})
+			"leaf_light":Gfx.on("gfx_foliage_light"),"bark_relief":Gfx.on("gfx_materials"),"emissive":emission!=Vector3.ZERO,"surface_layer":surface_layer,"detail_layer":detail_layer})
 		vertices.append_array(packed.vertices); triangles += count/3
 		return geometries.size()-1
 	var start := vertices.size()/16
@@ -273,7 +313,7 @@ func _append(arrays: Array, transform: Transform3D, material: Material, land: bo
 	var count := vertices.size()/16-start
 	if count == 0: return -1
 	geometries.append({"offset":start,"count":count,"indices":used,"opaque":opaque,"cutoff":cutoff,"standard":standard,"surface":surface_profile(material),"relief":surface_relief(material,land),"terrain":land,"foliage_layer":foliage_layer,
-			"leaf_light":Gfx.on("gfx_foliage_light"),"bark_relief":Gfx.on("gfx_materials"),"emissive":emission!=Vector3.ZERO})
+		"leaf_light":Gfx.on("gfx_foliage_light"),"bark_relief":Gfx.on("gfx_materials"),"emissive":emission!=Vector3.ZERO,"surface_layer":surface_layer,"detail_layer":detail_layer})
 	return geometries.size()-1
 
 ## Plain values only: the render thread never dereferences a scene node.

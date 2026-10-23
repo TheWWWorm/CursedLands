@@ -279,11 +279,15 @@ func _release(a: String) -> void:
 
 ## Every held action released (focus lost, the pad unplugged, another pad
 ## taking over): no button or stick stays stuck.
-func release_all() -> void:
+func release_all(cancel_taps := false) -> void:
 	for a in _down.keys():
+		if cancel_taps: _held[a] = true
 		_release(a)
 	_axes.clear()
 	_trig.clear()
+	if cancel_taps:
+		_back_pending_ms = -1
+		_held.clear()
 
 
 func _process(dt: float) -> void:

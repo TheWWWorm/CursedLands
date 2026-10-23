@@ -1,0 +1,562 @@
+[
+  {
+    "backend": "vulkan",
+    "bounces": 2,
+    "quality": "Medium",
+    "samples_per_pixel": 2,
+    "trace_size": [
+      960,
+      540
+    ],
+    "frame_ms": {
+      "reference": 4.773,
+      "current": 4.787,
+      "delta": 0.014000000000000234,
+      "delta_percent": 0.29331657238633735,
+      "per_pass_medians": {
+        "reference": [
+          4.83,
+          4.538,
+          4.716,
+          5.404
+        ],
+        "current": [
+          4.92,
+          4.654,
+          4.638,
+          5.516
+        ]
+      }
+    },
+    "rt_gpu_ms": {
+      "reference": 3.0650079999999997,
+      "current": 3.039456,
+      "delta": -0.025551999999999797,
+      "delta_percent": -0.8336682971137321,
+      "per_pass_medians": {
+        "reference": [
+          3.017632,
+          3.064896,
+          3.06512,
+          3.084416
+        ],
+        "current": [
+          2.984128,
+          3.039104,
+          3.040096,
+          3.039808
+        ]
+      }
+    },
+    "controller_cpu_ms": {
+      "reference": 0.601,
+      "current": 0.616,
+      "delta": 0.015000000000000013,
+      "delta_percent": 2.4958402662229595,
+      "per_pass_medians": {
+        "reference": [
+          0.62,
+          0.546,
+          0.582,
+          0.703
+        ],
+        "current": [
+          0.639,
+          0.555,
+          0.593,
+          0.672
+        ]
+      }
+    }
+  },
+  {
+    "backend": "vulkan",
+    "bounces": 2,
+    "quality": "High",
+    "samples_per_pixel": 4,
+    "trace_size": [
+      1280,
+      720
+    ],
+    "frame_ms": {
+      "reference": 11.666,
+      "current": 11.466000000000001,
+      "delta": -0.1999999999999993,
+      "delta_percent": -1.714383679067366,
+      "per_pass_medians": {
+        "reference": [
+          11.577,
+          11.701,
+          11.639,
+          11.693
+        ],
+        "current": [
+          11.208,
+          11.5,
+          11.432,
+          11.511
+        ]
+      }
+    },
+    "rt_gpu_ms": {
+      "reference": 10.83176,
+      "current": 10.57872,
+      "delta": -0.2530399999999986,
+      "delta_percent": -2.3360931187544676,
+      "per_pass_medians": {
+        "reference": [
+          10.672576,
+          10.829472,
+          10.834048,
+          10.888032
+        ],
+        "current": [
+          10.418432,
+          10.577888,
+          10.579552,
+          10.615904
+        ]
+      }
+    },
+    "controller_cpu_ms": {
+      "reference": 0.7545,
+      "current": 0.726,
+      "delta": -0.02849999999999997,
+      "delta_percent": -3.77733598409542,
+      "per_pass_medians": {
+        "reference": [
+          0.751,
+          0.806,
+          0.758,
+          0.696
+        ],
+        "current": [
+          0.769,
+          0.672,
+          0.725,
+          0.727
+        ]
+      }
+    }
+  },
+  {
+    "backend": "vulkan",
+    "bounces": 4,
+    "quality": "Medium",
+    "samples_per_pixel": 2,
+    "trace_size": [
+      960,
+      540
+    ],
+    "frame_ms": {
+      "reference": 5.1745,
+      "current": 5.1165,
+      "delta": -0.05799999999999983,
+      "delta_percent": -1.1208812445646865,
+      "per_pass_medians": {
+        "reference": [
+          5.325,
+          4.478,
+          5.273,
+          5.076
+        ],
+        "current": [
+          5.248,
+          4.985,
+          5.371,
+          4.759
+        ]
+      }
+    },
+    "rt_gpu_ms": {
+      "reference": 3.422688,
+      "current": 3.4292,
+      "delta": 0.006511999999999851,
+      "delta_percent": 0.19025981918303625,
+      "per_pass_medians": {
+        "reference": [
+          3.371264,
+          3.422816,
+          3.42256,
+          3.445504
+        ],
+        "current": [
+          3.389152,
+          3.419552,
+          3.438848,
+          3.462848
+        ]
+      }
+    },
+    "controller_cpu_ms": {
+      "reference": 0.6605,
+      "current": 0.6579999999999999,
+      "delta": -0.0025000000000000577,
+      "delta_percent": -0.37850113550341735,
+      "per_pass_medians": {
+        "reference": [
+          0.728,
+          0.519,
+          0.689,
+          0.632
+        ],
+        "current": [
+          0.725,
+          0.563,
+          0.697,
+          0.619
+        ]
+      }
+    }
+  },
+  {
+    "backend": "vulkan",
+    "bounces": 4,
+    "quality": "High",
+    "samples_per_pixel": 4,
+    "trace_size": [
+      1280,
+      720
+    ],
+    "frame_ms": {
+      "reference": 12.4665,
+      "current": 12.414,
+      "delta": -0.05250000000000021,
+      "delta_percent": -0.42112862471423984,
+      "per_pass_medians": {
+        "reference": [
+          12.507,
+          12.415,
+          12.49,
+          12.443
+        ],
+        "current": [
+          12.429,
+          12.443,
+          12.399,
+          12.366
+        ]
+      }
+    },
+    "rt_gpu_ms": {
+      "reference": 11.579312,
+      "current": 11.508735999999999,
+      "delta": -0.07057600000000086,
+      "delta_percent": -0.6095008062655283,
+      "per_pass_medians": {
+        "reference": [
+          11.512704,
+          11.577216,
+          11.581408,
+          11.582464
+        ],
+        "current": [
+          11.456576,
+          11.49424,
+          11.523232,
+          11.598944
+        ]
+      }
+    },
+    "controller_cpu_ms": {
+      "reference": 0.737,
+      "current": 0.754,
+      "delta": 0.017000000000000015,
+      "delta_percent": 2.3066485753052923,
+      "per_pass_medians": {
+        "reference": [
+          0.809,
+          0.713,
+          0.723,
+          0.751
+        ],
+        "current": [
+          0.786,
+          0.722,
+          0.716,
+          0.823
+        ]
+      }
+    }
+  },
+  {
+    "backend": "dx12",
+    "bounces": 2,
+    "quality": "Medium",
+    "samples_per_pixel": 2,
+    "trace_size": [
+      960,
+      540
+    ],
+    "frame_ms": {
+      "reference": 7.7055,
+      "current": 7.464,
+      "delta": -0.24149999999999938,
+      "delta_percent": -3.134124975666719,
+      "per_pass_medians": {
+        "reference": [
+          6.698,
+          7.733,
+          7.678,
+          8.11
+        ],
+        "current": [
+          7.054,
+          7.615,
+          7.313,
+          8.034
+        ]
+      }
+    },
+    "rt_gpu_ms": {
+      "reference": 4.259328,
+      "current": 4.093568,
+      "delta": -0.16575999999999969,
+      "delta_percent": -3.8916937131866725,
+      "per_pass_medians": {
+        "reference": [
+          4.253952,
+          4.250624,
+          4.264704,
+          4.290048
+        ],
+        "current": [
+          4.095232,
+          4.091904,
+          4.086528,
+          4.131328
+        ]
+      }
+    },
+    "controller_cpu_ms": {
+      "reference": 0.688,
+      "current": 0.667,
+      "delta": -0.020999999999999908,
+      "delta_percent": -3.052325581395332,
+      "per_pass_medians": {
+        "reference": [
+          0.607,
+          0.681,
+          0.695,
+          0.733
+        ],
+        "current": [
+          0.639,
+          0.688,
+          0.646,
+          0.721
+        ]
+      }
+    }
+  },
+  {
+    "backend": "dx12",
+    "bounces": 2,
+    "quality": "High",
+    "samples_per_pixel": 4,
+    "trace_size": [
+      1280,
+      720
+    ],
+    "frame_ms": {
+      "reference": 16.2715,
+      "current": 15.785499999999999,
+      "delta": -0.48600000000000065,
+      "delta_percent": -2.9868174415388915,
+      "per_pass_medians": {
+        "reference": [
+          16.302,
+          16.204,
+          16.241,
+          16.316
+        ],
+        "current": [
+          15.73,
+          15.855,
+          15.841,
+          15.706
+        ]
+      }
+    },
+    "rt_gpu_ms": {
+      "reference": 14.9184,
+      "current": 14.438528000000002,
+      "delta": -0.4798719999999985,
+      "delta_percent": -3.2166452166452086,
+      "per_pass_medians": {
+        "reference": [
+          14.76224,
+          14.89152,
+          14.94528,
+          14.94528
+        ],
+        "current": [
+          14.367744,
+          14.494464,
+          14.516992,
+          14.382592
+        ]
+      }
+    },
+    "controller_cpu_ms": {
+      "reference": 0.6775,
+      "current": 0.668,
+      "delta": -0.009499999999999953,
+      "delta_percent": -1.4022140221402135,
+      "per_pass_medians": {
+        "reference": [
+          0.682,
+          0.68,
+          0.675,
+          0.644
+        ],
+        "current": [
+          0.649,
+          0.661,
+          0.687,
+          0.675
+        ]
+      }
+    }
+  },
+  {
+    "backend": "dx12",
+    "bounces": 4,
+    "quality": "Medium",
+    "samples_per_pixel": 2,
+    "trace_size": [
+      960,
+      540
+    ],
+    "frame_ms": {
+      "reference": 7.234500000000001,
+      "current": 7.463,
+      "delta": 0.22849999999999948,
+      "delta_percent": 3.158476743382388,
+      "per_pass_medians": {
+        "reference": [
+          7.173,
+          7.296,
+          7.736,
+          7.158
+        ],
+        "current": [
+          7.832,
+          6.922,
+          7.094,
+          7.902
+        ]
+      }
+    },
+    "rt_gpu_ms": {
+      "reference": 4.812416,
+      "current": 4.5990400000000005,
+      "delta": -0.21337599999999934,
+      "delta_percent": -4.433864404074783,
+      "per_pass_medians": {
+        "reference": [
+          4.78336,
+          4.819456,
+          4.875776,
+          4.805376
+        ],
+        "current": [
+          4.582144,
+          4.613632,
+          4.584448,
+          4.654592
+        ]
+      }
+    },
+    "controller_cpu_ms": {
+      "reference": 0.649,
+      "current": 0.6695,
+      "delta": 0.020499999999999963,
+      "delta_percent": 3.158705701078568,
+      "per_pass_medians": {
+        "reference": [
+          0.656,
+          0.642,
+          0.657,
+          0.636
+        ],
+        "current": [
+          0.693,
+          0.609,
+          0.646,
+          0.702
+        ]
+      }
+    }
+  },
+  {
+    "backend": "dx12",
+    "bounces": 4,
+    "quality": "High",
+    "samples_per_pixel": 4,
+    "trace_size": [
+      1280,
+      720
+    ],
+    "frame_ms": {
+      "reference": 17.461,
+      "current": 16.8245,
+      "delta": -0.6364999999999981,
+      "delta_percent": -3.6452665941240414,
+      "per_pass_medians": {
+        "reference": [
+          17.463,
+          17.167,
+          17.611,
+          17.459
+        ],
+        "current": [
+          16.717,
+          16.761,
+          16.899,
+          16.888
+        ]
+      }
+    },
+    "rt_gpu_ms": {
+      "reference": 16.155008000000002,
+      "current": 15.509888,
+      "delta": -0.6451200000000021,
+      "delta_percent": -3.9933127857318396,
+      "per_pass_medians": {
+        "reference": [
+          16.107008,
+          15.92704,
+          16.268288,
+          16.203008
+        ],
+        "current": [
+          15.405568,
+          15.45344,
+          15.56864,
+          15.566336
+        ]
+      }
+    },
+    "controller_cpu_ms": {
+      "reference": 0.6745000000000001,
+      "current": 0.6805000000000001,
+      "delta": 0.006000000000000005,
+      "delta_percent": 0.8895478131949686,
+      "per_pass_medians": {
+        "reference": [
+          0.768,
+          0.673,
+          0.676,
+          0.645
+        ],
+        "current": [
+          0.653,
+          0.686,
+          0.696,
+          0.675
+        ]
+      }
+    }
+  }
+]

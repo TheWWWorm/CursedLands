@@ -1,0 +1,588 @@
+{
+  "checks": 18,
+  "device": "NVIDIA GeForce RTX 3090",
+  "driver": "vulkan",
+  "failures": [],
+  "note": "Frozen river, detailed materials, identical raygen, controller, scene and images. Alternating saved/current program identified by reference_files, 120 samples after 40 warmup frames.",
+  "reference_files": {
+    "dxil": "fc2fc79bd4f8193c4d56372c19510ff1cf90859102f5cb3b6a2382a2776a6078",
+    "library": "path_trace_closest_hit_terrain",
+    "spirv": "9d1e9e2f21dca8e0dcade80073bcc3ba7df243e7dda1b1e06bf491945145f142"
+  },
+  "runs": [
+    {
+      "controller_cpu_ms": {
+        "median": 0.619,
+        "n": 120,
+        "p95": 0.799
+      },
+      "end_unix": 1792712889.4617,
+      "frame_ms": {
+        "median": 6.002,
+        "n": 120,
+        "p95": 8.339
+      },
+      "gpu_stages_ms": {
+        "copies": {
+          "median": 0.047104,
+          "n": 120,
+          "p95": 0.586752
+        },
+        "rays": {
+          "median": 4.268864,
+          "n": 120,
+          "p95": 5.269728
+        },
+        "reconstruction": {
+          "median": 0.202496,
+          "n": 120,
+          "p95": 0.93088
+        }
+      },
+      "mode": 2,
+      "quality": 1,
+      "reference": true,
+      "round": 0,
+      "rt_gpu_ms": {
+        "median": 4.608768,
+        "n": 120,
+        "p95": 5.922976
+      },
+      "start_unix": 1792712888.71096,
+      "stats": {
+        "accumulation_frames": 8.0,
+        "active": true,
+        "emissive_candidates": 0,
+        "emissive_triangles": 0,
+        "geometries": 1285,
+        "gi_samples": 0,
+        "history_limit": 8.0,
+        "history_reused": true,
+        "instances": 1420,
+        "light_history_limited": false,
+        "lights": 1,
+        "path_bounces": 4,
+        "path_samples": 2,
+        "path_tracing": true,
+        "quality": 1,
+        "shadow_samples": 0,
+        "size": [
+          960,
+          540
+        ],
+        "supported": true,
+        "terrain_material_build_us": 18983,
+        "terrain_material_bytes": 649028,
+        "terrain_material_triangles": 56145,
+        "triangles": 116008,
+        "updated_instances": 0,
+        "updated_poses": 0
+      },
+      "other_game_overlap_observed": true,
+      "monitor_samples": 3
+    },
+    {
+      "controller_cpu_ms": {
+        "median": 0.634,
+        "n": 120,
+        "p95": 0.855
+      },
+      "end_unix": 1792712890.51131,
+      "frame_ms": {
+        "median": 6.271,
+        "n": 120,
+        "p95": 8.822
+      },
+      "gpu_stages_ms": {
+        "copies": {
+          "median": 0.047104,
+          "n": 120,
+          "p95": 0.446464
+        },
+        "rays": {
+          "median": 4.364672,
+          "n": 120,
+          "p95": 5.621664
+        },
+        "reconstruction": {
+          "median": 0.201728,
+          "n": 120,
+          "p95": 1.101792
+        }
+      },
+      "mode": 2,
+      "quality": 1,
+      "reference": false,
+      "round": 0,
+      "rt_gpu_ms": {
+        "median": 4.844,
+        "n": 120,
+        "p95": 6.06512
+      },
+      "start_unix": 1792712889.7289,
+      "stats": {
+        "accumulation_frames": 8.0,
+        "active": true,
+        "emissive_candidates": 0,
+        "emissive_triangles": 0,
+        "geometries": 1285,
+        "gi_samples": 0,
+        "history_limit": 8.0,
+        "history_reused": true,
+        "instances": 1420,
+        "light_history_limited": false,
+        "lights": 1,
+        "path_bounces": 4,
+        "path_samples": 2,
+        "path_tracing": true,
+        "quality": 1,
+        "shadow_samples": 0,
+        "size": [
+          960,
+          540
+        ],
+        "supported": true,
+        "terrain_material_build_us": 18983,
+        "terrain_material_bytes": 649028,
+        "terrain_material_triangles": 56145,
+        "triangles": 116008,
+        "updated_instances": 0,
+        "updated_poses": 0
+      },
+      "other_game_overlap_observed": true,
+      "monitor_samples": 3
+    },
+    {
+      "controller_cpu_ms": {
+        "median": 0.743,
+        "n": 120,
+        "p95": 0.997
+      },
+      "end_unix": 1792712893.46291,
+      "frame_ms": {
+        "median": 17.872,
+        "n": 120,
+        "p95": 19.818
+      },
+      "gpu_stages_ms": {
+        "copies": {
+          "median": 0.08192,
+          "n": 120,
+          "p95": 0.099328
+        },
+        "rays": {
+          "median": 15.86032,
+          "n": 120,
+          "p95": 17.39472
+        },
+        "reconstruction": {
+          "median": 0.34816,
+          "n": 120,
+          "p95": 0.944128
+        }
+      },
+      "mode": 2,
+      "quality": 2,
+      "reference": false,
+      "round": 0,
+      "rt_gpu_ms": {
+        "median": 16.418688,
+        "n": 120,
+        "p95": 17.839136
+      },
+      "start_unix": 1792712891.31889,
+      "stats": {
+        "accumulation_frames": 8.0,
+        "active": true,
+        "emissive_candidates": 0,
+        "emissive_triangles": 0,
+        "geometries": 1285,
+        "gi_samples": 0,
+        "history_limit": 8.0,
+        "history_reused": true,
+        "instances": 1420,
+        "light_history_limited": false,
+        "lights": 1,
+        "path_bounces": 4,
+        "path_samples": 4,
+        "path_tracing": true,
+        "quality": 2,
+        "shadow_samples": 0,
+        "size": [
+          1280,
+          720
+        ],
+        "supported": true,
+        "terrain_material_build_us": 18983,
+        "terrain_material_bytes": 649028,
+        "terrain_material_triangles": 56145,
+        "triangles": 116008,
+        "updated_instances": 0,
+        "updated_poses": 0
+      },
+      "other_game_overlap_observed": true,
+      "monitor_samples": 5
+    },
+    {
+      "controller_cpu_ms": {
+        "median": 0.718,
+        "n": 120,
+        "p95": 0.924
+      },
+      "end_unix": 1792712896.43751,
+      "frame_ms": {
+        "median": 18.053,
+        "n": 120,
+        "p95": 20.651
+      },
+      "gpu_stages_ms": {
+        "copies": {
+          "median": 0.08192,
+          "n": 120,
+          "p95": 0.11264
+        },
+        "rays": {
+          "median": 16.253056,
+          "n": 120,
+          "p95": 18.158336
+        },
+        "reconstruction": {
+          "median": 0.350208,
+          "n": 120,
+          "p95": 0.997376
+        }
+      },
+      "mode": 2,
+      "quality": 2,
+      "reference": true,
+      "round": 0,
+      "rt_gpu_ms": {
+        "median": 16.783552,
+        "n": 120,
+        "p95": 18.774592
+      },
+      "start_unix": 1792712894.2575,
+      "stats": {
+        "accumulation_frames": 8.0,
+        "active": true,
+        "emissive_candidates": 0,
+        "emissive_triangles": 0,
+        "geometries": 1285,
+        "gi_samples": 0,
+        "history_limit": 8.0,
+        "history_reused": true,
+        "instances": 1420,
+        "light_history_limited": false,
+        "lights": 1,
+        "path_bounces": 4,
+        "path_samples": 4,
+        "path_tracing": true,
+        "quality": 2,
+        "shadow_samples": 0,
+        "size": [
+          1280,
+          720
+        ],
+        "supported": true,
+        "terrain_material_build_us": 18983,
+        "terrain_material_bytes": 649028,
+        "terrain_material_triangles": 56145,
+        "triangles": 116008,
+        "updated_instances": 0,
+        "updated_poses": 0
+      },
+      "other_game_overlap_observed": true,
+      "monitor_samples": 4
+    },
+    {
+      "controller_cpu_ms": {
+        "median": 0.725,
+        "n": 120,
+        "p95": 0.929
+      },
+      "end_unix": 1792712899.41623,
+      "frame_ms": {
+        "median": 18.239,
+        "n": 120,
+        "p95": 19.887
+      },
+      "gpu_stages_ms": {
+        "copies": {
+          "median": 0.08192,
+          "n": 120,
+          "p95": 0.090112
+        },
+        "rays": {
+          "median": 16.4384,
+          "n": 120,
+          "p95": 17.975968
+        },
+        "reconstruction": {
+          "median": 0.350208,
+          "n": 120,
+          "p95": 1.083392
+        }
+      },
+      "mode": 2,
+      "quality": 2,
+      "reference": true,
+      "round": 1,
+      "rt_gpu_ms": {
+        "median": 16.943488,
+        "n": 120,
+        "p95": 18.413216
+      },
+      "start_unix": 1792712897.22921,
+      "stats": {
+        "accumulation_frames": 8.0,
+        "active": true,
+        "emissive_candidates": 0,
+        "emissive_triangles": 0,
+        "geometries": 1285,
+        "gi_samples": 0,
+        "history_limit": 8.0,
+        "history_reused": true,
+        "instances": 1420,
+        "light_history_limited": false,
+        "lights": 1,
+        "path_bounces": 4,
+        "path_samples": 4,
+        "path_tracing": true,
+        "quality": 2,
+        "shadow_samples": 0,
+        "size": [
+          1280,
+          720
+        ],
+        "supported": true,
+        "terrain_material_build_us": 18983,
+        "terrain_material_bytes": 649028,
+        "terrain_material_triangles": 56145,
+        "triangles": 116008,
+        "updated_instances": 0,
+        "updated_poses": 0
+      },
+      "other_game_overlap_observed": true,
+      "monitor_samples": 5
+    },
+    {
+      "controller_cpu_ms": {
+        "median": 0.725,
+        "n": 120,
+        "p95": 0.958
+      },
+      "end_unix": 1792712902.37287,
+      "frame_ms": {
+        "median": 18.092,
+        "n": 120,
+        "p95": 20.011
+      },
+      "gpu_stages_ms": {
+        "copies": {
+          "median": 0.082752,
+          "n": 120,
+          "p95": 0.090112
+        },
+        "rays": {
+          "median": 16.311744,
+          "n": 120,
+          "p95": 17.859008
+        },
+        "reconstruction": {
+          "median": 0.350208,
+          "n": 120,
+          "p95": 0.884736
+        }
+      },
+      "mode": 2,
+      "quality": 2,
+      "reference": false,
+      "round": 1,
+      "rt_gpu_ms": {
+        "median": 16.801984,
+        "n": 120,
+        "p95": 18.29184
+      },
+      "start_unix": 1792712900.20995,
+      "stats": {
+        "accumulation_frames": 8.0,
+        "active": true,
+        "emissive_candidates": 0,
+        "emissive_triangles": 0,
+        "geometries": 1285,
+        "gi_samples": 0,
+        "history_limit": 8.0,
+        "history_reused": true,
+        "instances": 1420,
+        "light_history_limited": false,
+        "lights": 1,
+        "path_bounces": 4,
+        "path_samples": 4,
+        "path_tracing": true,
+        "quality": 2,
+        "shadow_samples": 0,
+        "size": [
+          1280,
+          720
+        ],
+        "supported": true,
+        "terrain_material_build_us": 18983,
+        "terrain_material_bytes": 649028,
+        "terrain_material_triangles": 56145,
+        "triangles": 116008,
+        "updated_instances": 0,
+        "updated_poses": 0
+      },
+      "other_game_overlap_observed": true,
+      "monitor_samples": 4
+    },
+    {
+      "controller_cpu_ms": {
+        "median": 0.622,
+        "n": 120,
+        "p95": 0.828
+      },
+      "end_unix": 1792712903.47083,
+      "frame_ms": {
+        "median": 6.257,
+        "n": 120,
+        "p95": 8.448
+      },
+      "gpu_stages_ms": {
+        "copies": {
+          "median": 0.04608,
+          "n": 120,
+          "p95": 0.0512
+        },
+        "rays": {
+          "median": 4.481184,
+          "n": 120,
+          "p95": 5.571168
+        },
+        "reconstruction": {
+          "median": 0.203776,
+          "n": 120,
+          "p95": 0.940128
+        }
+      },
+      "mode": 2,
+      "quality": 1,
+      "reference": false,
+      "round": 1,
+      "rt_gpu_ms": {
+        "median": 4.804992,
+        "n": 120,
+        "p95": 5.821408
+      },
+      "start_unix": 1792712902.70564,
+      "stats": {
+        "accumulation_frames": 8.0,
+        "active": true,
+        "emissive_candidates": 0,
+        "emissive_triangles": 0,
+        "geometries": 1285,
+        "gi_samples": 0,
+        "history_limit": 8.0,
+        "history_reused": true,
+        "instances": 1420,
+        "light_history_limited": false,
+        "lights": 1,
+        "path_bounces": 4,
+        "path_samples": 2,
+        "path_tracing": true,
+        "quality": 1,
+        "shadow_samples": 0,
+        "size": [
+          960,
+          540
+        ],
+        "supported": true,
+        "terrain_material_build_us": 18983,
+        "terrain_material_bytes": 649028,
+        "terrain_material_triangles": 56145,
+        "triangles": 116008,
+        "updated_instances": 0,
+        "updated_poses": 0
+      },
+      "other_game_overlap_observed": true,
+      "monitor_samples": 3
+    },
+    {
+      "controller_cpu_ms": {
+        "median": 0.604,
+        "n": 120,
+        "p95": 0.839
+      },
+      "end_unix": 1792712904.49585,
+      "frame_ms": {
+        "median": 6.145,
+        "n": 120,
+        "p95": 8.315
+      },
+      "gpu_stages_ms": {
+        "copies": {
+          "median": 0.046944,
+          "n": 120,
+          "p95": 0.052224
+        },
+        "rays": {
+          "median": 4.474592,
+          "n": 120,
+          "p95": 5.331552
+        },
+        "reconstruction": {
+          "median": 0.203776,
+          "n": 120,
+          "p95": 0.953344
+        }
+      },
+      "mode": 2,
+      "quality": 1,
+      "reference": true,
+      "round": 1,
+      "rt_gpu_ms": {
+        "median": 4.899072,
+        "n": 120,
+        "p95": 5.811552
+      },
+      "start_unix": 1792712903.74286,
+      "stats": {
+        "accumulation_frames": 8.0,
+        "active": true,
+        "emissive_candidates": 0,
+        "emissive_triangles": 0,
+        "geometries": 1285,
+        "gi_samples": 0,
+        "history_limit": 8.0,
+        "history_reused": true,
+        "instances": 1420,
+        "light_history_limited": false,
+        "lights": 1,
+        "path_bounces": 4,
+        "path_samples": 2,
+        "path_tracing": true,
+        "quality": 1,
+        "shadow_samples": 0,
+        "size": [
+          960,
+          540
+        ],
+        "supported": true,
+        "terrain_material_build_us": 18983,
+        "terrain_material_bytes": 649028,
+        "terrain_material_triangles": 56145,
+        "triangles": 116008,
+        "updated_instances": 0,
+        "updated_poses": 0
+      },
+      "other_game_overlap_observed": true,
+      "monitor_samples": 3
+    }
+  ],
+  "viewport": [
+    1280,
+    720
+  ],
+  "performance_qualified": false,
+  "exclusion_reason": "Another Godot process was present throughout the timing windows; retain functional checks but exclude performance claims."
+}

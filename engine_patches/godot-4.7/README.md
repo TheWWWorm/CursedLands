@@ -20,6 +20,17 @@ the Windows executable; a new PCK alone cannot enable DX12 ray tracing. The game
 ships matching DXIL/SPIR-V shaders built from one HLSL source. See the water guide
 for compiler pinning, limitations, and the DX12/Vulkan regression fixtures.
 
+`d3d12-device-diagnostics.patch` is an optional diagnostic/hardening patch
+applied after the DXR patch. `EI_D3D12_DIAGNOSTICS=1` enables DRED before device
+creation and records debug-layer warnings, device-removal reasons and available
+GPU fault evidence. `EI_D3D12_GPU_VALIDATION=1` additionally enables GPU-based
+validation; it is separate because it changes shader execution cost. Missing
+Windows Graphics Tools/DRED support is reported. Synchronization failures stop
+before unconfirmed GPU work can be recycled; this is not device recovery.
+The normal rendering path does not enable the diagnostic layers. A rebuilt
+Windows executable is required. See the [PT stability investigation](../../docs/validation/path-tracing-stability-2026-10-23/README.md)
+for the tested scope and the native Windows qualification gap.
+
 1. `render-thread-shutdown.patch`
 2. `queued-image-snapshot.patch`
 3. `unobserved-pose.patch`

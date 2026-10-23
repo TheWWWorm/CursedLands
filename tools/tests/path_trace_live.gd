@@ -8,10 +8,12 @@ func run() -> void:
 	await get_tree().create_timer(2.0,true,false,true).timeout
 	var rt: Node=game.get_node("SceneRaytrace")
 	var original:=await capture("river-conventional")
+	check(not Gfx.path_trace_active and game._env.tonemap_mode==Environment.TONE_MAPPER_LINEAR,"conventional campaign retains original exposure")
 	GameData.options.pt_mode=1;GameData.options.q_rt_lighting=1;Gfx.apply_env(game._env)
 	check(await ready_scene(rt),"path tracing prepares with both old RT toggles off")
 	if rt.stats.get("active",false):
 		check(rt.device is PathDevice,"main view uses the multi-bounce pipeline")
+		check(Gfx.path_trace_active and game._env.tonemap_mode==Environment.TONE_MAPPER_AGX,"working path output enables the HDR display profile")
 		check(rt.stats.path_tracing and rt.stats.path_bounces==2,"two-bounce mode reaches the runtime")
 		await get_tree().create_timer(2.0,true,false,true).timeout
 		var two:=await capture("river-path-2")
@@ -38,6 +40,7 @@ func run() -> void:
 		check(rt.stats.size==[640,360] and rt.stats.accumulation_frames<=5,"quality resize resets accumulation and follows window dimensions")
 		GameData.options.pt_mode=0;Gfx.apply_env(game._env);await frames(20)
 		check(rt.device==null and not rt.stats.active,"turning path tracing off releases its resources")
+		check(not Gfx.path_trace_active and game._env.tonemap_mode==Environment.TONE_MAPPER_LINEAR and game._env.tonemap_exposure==1,"turning path tracing off restores original display and exposure")
 		var restored:=await capture("river-restored")
 		check(mean_difference(original,restored)<0.005,"turning off restores the original lighting image")
 	FileAccess.open(out.path_join("path-live.json"),FileAccess.WRITE).store_string(JSON.stringify({"checks":checks,"failures":failures,"stats":rt.stats},"\t"))

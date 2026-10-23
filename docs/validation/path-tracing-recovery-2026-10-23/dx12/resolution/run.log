@@ -1,0 +1,500 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+Failed to enable screen_keep_on.
+warn:  CreateDXGIFactory2: Ignoring flags
+warn:  Skipping CPU adapter: llvmpipe (LLVM 20.1.2, 256 bits)
+warn:  DXGI: Found monitors not associated with any adapter, using fallback
+warn:  DxgiAdapter::QueryInterface: Unknown interface query
+warn:  f0db4c7f-fe5a-42a2-bd62-f2a6cf6fc83e
+6687.594:01fc:0200:warn:vkd3d-proton:openvr_instance_extensions: Failed to open VR registry key, status 2.
+6687.594:01fc:0200:warn:vkd3d-proton:openxr_vulkan_extensions: wineopenxr.dll is missing required symbols.
+6687.594:01fc:0200:info:vkd3d-proton:vkd3d_instance_apply_application_workarounds: Program name: "CursedLands.exe" (hash: 33c38cdfc18b2417)
+6687.594:01fc:0200:info:vkd3d-proton:vkd3d_instance_deduce_config_flags_from_environment: shader_cache is used, global_pipeline_cache is enforced.
+6687.594:01fc:0200:info:vkd3d-proton:vkd3d_config_flags_init_once: VKD3D_CONFIG=''.
+6687.598:01fc:0200:warn:vkd3d-proton:vkd3d_check_extensions: Optional user instance extension "VK_KHR_surface_maintenance1" is not supported.
+6687.599:01fc:0200:info:vkd3d-proton:vkd3d_get_vk_version: vkd3d-proton - applicationVersion: 3.0.1.
+6687.599:01fc:0200:info:vkd3d-proton:vkd3d_instance_init: vkd3d-proton - build: 3b10bd7a7ec6a73.
+6687.624:01fc:0200:warn:vkd3d-proton:openvr_device_extensions: Failed to open VR registry key, status 2.
+6687.624:01fc:0200:warn:vkd3d-proton:openxr_vulkan_extensions: wineopenxr.dll is missing required symbols.
+6687.624:01fc:0200:info:vkd3d-proton:d3d12_device_create: Forcing singleton device due to RenderDoc being enabled.
+6687.663:01fc:0200:warn:vkd3d-proton:vkd3d_check_extensions: Optional user device extension "VK_KHR_swapchain_maintenance1" is not supported.
+6687.666:01fc:0200:warn:vkd3d-proton:vkd3d_physical_device_info_apply_workarounds: Disabling present_id2, wait2 and timing on pre-595 NV drivers.
+6687.666:01fc:0200:info:vkd3d-proton:vkd3d_init_device_caps: Not all relevant pipeline stages are supported by EXT_dgc. Skipping.
+6687.666:01fc:0200:warn:vkd3d-proton:vkd3d_supports_minimum_coopmat_caps: Missing sufficient features to expose WMMA.
+6688.253:01fc:0200:warn:vkd3d-proton:d3d12_device_create_vkd3d_queues: Could not allocate an out of band queue for queue family 2. All out of band work will happen on the in band queue.
+6688.254:01fc:0200:warn:vkd3d-proton:d3d12_device_create_vkd3d_queues: Could not allocate an out of band queue for queue family 3. All out of band work will happen on the in band queue.
+6688.259:01fc:0200:info:vkd3d-proton:vkd3d_memory_info_decide_hvv_usage: Topology: Device heaps are split. Assuming small BAR situation.
+6688.259:01fc:0200:info:vkd3d-proton:vkd3d_memory_info_upload_hvv_memory_properties: Topology: HVV usage is not allowed, using HOST_COHERENT for UPLOAD.
+6688.259:01fc:0200:info:vkd3d-proton:vkd3d_bindless_state_get_bindless_flags: Device supports VK_EXT_mutable_descriptor_type.
+6688.259:01fc:0200:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+6688.259:01fc:0200:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+6688.259:01fc:0200:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+6688.401:01fc:0200:info:vkd3d-proton:d3d12_device_caps_init_shader_model: Enabling support for SM 6.6.
+6688.401:01fc:0200:fixme:vkd3d-proton:d3d12_device_caps_init_feature_options1: TotalLaneCount = 8064, may be inaccurate.
+6688.401:01fc:0200:info:vkd3d-proton:d3d12_device_determine_ray_tracing_tier: DXR support enabled.
+6688.401:01fc:0200:info:vkd3d-proton:d3d12_device_determine_ray_tracing_tier: DXR 1.1 support enabled.
+6688.401:01fc:0200:info:vkd3d-proton:d3d12_device_caps_init_feature_level: DX Ultimate supported!
+6688.401:01fc:0200:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\home\llm2x\Documents\EI\local\scratchpad\water-raytracing-20261021\dx12-quality\pt-stability-20261023\qualification-dx12-final-03\vkd3d-proton.CursedLands.exe.cache.
+6688.401:01fc:0200:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\home\llm2x\Documents\EI\local\scratchpad\water-raytracing-20261021\dx12-quality\pt-stability-20261023\qualification-dx12-final-03\vkd3d-proton.CursedLands.exe.cache.
+6688.401:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Performing async setup of stream archive ...
+6688.402:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_merge: No write cache exists. No need to merge any disk caches.
+6688.402:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Merging pipeline libraries took 0.240 ms.
+6688.402:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Mapping read-only cache took 0.185 ms.
+6688.402:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Parsing stream archive took 0.054 ms.
+6688.402:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Done performing async setup of stream archive.
+warn:  DXGI: Found monitors not associated with any adapter, using fallback
+FidelityFX provider: 3.1.5
+FidelityFX provider: 2.3.4
+FidelityFX provider: 3.1.6
+6688.677:01fc:0200:warn:vkd3d-proton:d3d12_device_CheckFeatureSupport: Assuming device does not support tile based rendering.
+D3D12 12_0 - Forward+ - Using Device #1: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+6689.953:01fc:0200:fixme:vkd3d-proton:vkd3d_texture_view_desc_fixup: Remapping 2D to 2D_ARRAY. Needs Vulkan spec tightening to match D3D12 properly.
+
+6691.963:01fc:0200:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+6691.963:01fc:0200:info:vkd3d-proton:dxgi_vk_swap_chain_init: Creating swapchain (1280 x 720), BufferCount = 3.
+6691.973:01fc:0200:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Enabling frame latency handles.
+6691.973:01fc:0200:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Ensure maximum latency of 3 frames with KHR_present_wait.
+6691.976:01fc:0200:info:vkd3d-proton:dxgi_vk_swap_chain_init_sleep_state: Timer interval is 1.0 ms.
+err:   readMonitorEdidFromKey: Failed to get EDID reg key size
+err:   DXGI: Failed to parse display metadata + colorimetry info, using blank.
+6691.980:01fc:0200:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+warn:  DXGI: MakeWindowAssociation: Ignoring flags
+6692.090:01fc:024c:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+WARNING: Failed to get SDR white level for adapterId: 0x00000000000006E0, id: 0
+   at: _get_sdr_white_level_for_hmonitor (platform/windows/display_server_windows.cpp:1708)
+[trace 13:32:54 +10369ms] session 6565dfbb2cb1: 1.23.0, Windows 10.0.19043, NVIDIA NVIDIA GeForce RTX 3090 Ti, forward_plus / d3d12
+PT_QUALIFICATION_RUNTIME {"adapter":"NVIDIA GeForce RTX 3090 Ti","display":"Windows","driver":"d3d12","engine":{"build":"custom_build","hash":"unknown","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (custom_build)","timestamp":0},"fixture":"Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-dx12-final-03/fixtures/path_trace_resolution.gd","fsr":{"api":true,"engine":true,"fg3":true,"fg4":false,"sr3":true,"sr4":false},"method":"forward_plus","passed":true,"pid":508,"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"pt_supported":true,"render_thread":{"actual_separate":false,"expected_separate":false,"main_id":1,"passed":true,"project_model":1,"render_id":1,"requested":"project"},"require_sdk":true,"user_data":"C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands","vendor":"NVIDIA"}
+PASS trace sizing contract [(1280.0, 720.0), 0, 1.0, (640, 360)]
+PASS trace sizing contract [(1280.0, 720.0), 1, 1.0, (960, 540)]
+PASS trace sizing contract [(1280.0, 720.0), 2, 1.0, (1280, 720)]
+PASS trace sizing contract [(1280.0, 720.0), 0, 0.66666666666667, (427, 240)]
+PASS trace sizing contract [(1280.0, 720.0), 2, 0.66666666666667, (853, 480)]
+PASS trace sizing contract [(1279.0, 719.0), 1, 0.5, (479, 269)]
+PASS trace sizing contract [(720.0, 1280.0), 2, 0.5, (360, 640)]
+PASS trace sizing contract [(1280.0, 720.0), 1, 1.25, (1200, 675)]
+PASS trace sizing contract [(0.0, 0.0), 0, 0.5, (2, 2)]
+[trace 13:32:55 +11290ms] zone load gz3g (entrance 1)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":60,"interval_fps":null,"interval_s":0.919659,"msaa_3d":2,"nodes":787.0,"objects":4530.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=3 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":null,"pid":508,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":528.0,"screen_space_aa":2,"static_bytes":null,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":11.291335,"video_allocated_bytes":null,"vsync":1,"window":[1280,720],"world_count":0,"worlds":[],"zone":"gz3g (loading)"}
+[trace 13:33:03 +19152ms] navigation prepared 6 classes in 504 ms
+[trace 13:33:04 +19660ms] shader warm-up: 24 of 24 materials, 5 ms (zone's first picture 113 ms), drawn with the first frame
+[trace 13:33:04 +19661ms] zone ready gz3g
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":3,"figure_meshes":1181,"figure_models":52,"object_textures":28,"unit_textures":32,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":60,"interval_fps":null,"interval_s":8.374702,"msaa_3d":2,"nodes":16097.0,"objects":34650.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=3 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":null,"pid":508,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":529.0,"screen_space_aa":2,"static_bytes":null,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":19.666202,"video_allocated_bytes":null,"vsync":1,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":9,"lights":4,"magic_endings":0,"missiles":0},"instance":506806145164,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":214,"visible":true,"zone":"gz3g"}],"zone":"gz3g"}
+6708.434:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6708.434:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6708.456:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6708.456:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6708.456:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+6708.457:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6708.488:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6708.508:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6708.529:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6708.557:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.469:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.479:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.479:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.480:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.490:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.521:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.522:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.575:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.583:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.591:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.620:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.647:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.728:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.731:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.763:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.792:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.794:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.795:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.796:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.805:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.807:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6709.820:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6710.528:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6710.541:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6710.607:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6710.607:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6710.707:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6710.726:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6710.757:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6710.770:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6710.773:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6710.895:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6710.914:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6710.946:01fc:0200:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6711.265:01fc:024c:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+6711.326:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6711.329:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6711.330:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6711.332:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6711.333:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6711.353:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6711.375:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6711.394:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6711.395:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6711.407:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6711.425:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6711.445:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6711.452:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6711.504:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6711.996:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6712.414:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6712.831:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6712.832:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6713.465:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6713.466:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6713.467:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6713.469:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6713.470:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6713.917:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.328:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.771:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.771:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.828:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.909:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.909:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.910:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.910:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.910:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.910:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.910:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.910:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.910:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.910:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.912:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.912:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.912:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.913:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.913:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6714.913:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6715.097:01fc:0200:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+6715.098:01fc:0200:info:vkd3d-proton:dxgi_vk_swap_chain_init: Creating swapchain (1280 x 720), BufferCount = 3.
+6715.098:01fc:0200:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Enabling frame latency handles.
+6715.098:01fc:0200:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Ensure maximum latency of 3 frames with KHR_present_wait.
+6715.101:01fc:0200:info:vkd3d-proton:dxgi_vk_swap_chain_init_sleep_state: Timer interval is 1.0 ms.
+6715.103:01fc:0200:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+warn:  DXGI: MakeWindowAssociation: Ignoring flags
+6715.177:01fc:0268:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+6715.192:01fc:0268:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+6715.328:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+ARTIFACT_CAMERA [X: (-0.923879, 0.0, 0.382684), Y: (0.089418, 0.972318, 0.215874), Z: (-0.372091, 0.233661, -0.898305), O: (157.8552, 9.927353, -239.7018)]
+6715.690:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6716.049:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6716.049:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6718.792:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 135). It seems like application has stopped creating new PSOs for the time being.
+6719.984:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6719.984:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6719.984:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6720.046:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+6720.047:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6720.052:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6720.098:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6721.098:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 8). It seems like application has stopped creating new PSOs for the time being.
+6721.576:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+6721.576:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6721.603:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6721.680:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6721.680:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6721.682:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+PERFORMANCE {"buffer_bytes":46029550.0,"cache_entries":{"camera_materials":0,"figure_materials":3,"figure_meshes":1181,"figure_models":52,"object_textures":28,"unit_textures":32,"wound_jobs":0,"wound_layers":0},"draw_calls":2012.0,"drawn_frames":35,"focus":"in","frame_limit":0,"interval_fps":2.26000768531756,"interval_s":15.486673,"msaa_3d":0,"nodes":16049.0,"objects":39007.0,"options":"hd_textures=0 materials=1 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=1 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=1 firelight=0 torch_glow=0 lava_light=0 foliage_light=1 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=3 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":1.512,"pid":508,"primitives":341267.0,"process_ms":12.651,"reason":"interval","recent_fps":13.0,"render_scale":1.0,"renderer":"forward_plus","resources":529.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":162776064.0,"time_scale":1.0,"uptime_s":35.153138,"video_allocated_bytes":237680384.0,"vsync":0,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":9,"lights":4,"magic_endings":0,"missiles":0},"instance":506806145164,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":214,"visible":true,"zone":"gz3g"}],"zone":"gz3g"}
+6723.150:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6723.150:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6727.273:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 39). It seems like application has stopped creating new PSOs for the time being.
+PASS resolution fixture prepares the real campaign PT snapshot
+PASS native-low: production PT remains active
+PASS native-low: controller agrees with actual raster resolution and quality
+PASS native-low: reported render size agrees with the compositor
+PASS native-low: real GPU guide and lighting textures match
+PASS native-low: quality retains its sample count
+PASS native-low: scaled GPU buffers contain finite lit receivers
+PASS native-low: scaling retains acceleration structures
+PASS native-low: output handles stay stable across reallocations
+PASS native-low: PT keeps the unjittered camera projection
+PASS native-medium: production PT remains active
+PASS native-medium: controller agrees with actual raster resolution and quality
+PASS native-medium: reported render size agrees with the compositor
+PASS native-medium: real GPU guide and lighting textures match
+PASS native-medium: quality retains its sample count
+PASS native-medium: scaled GPU buffers contain finite lit receivers
+PASS native-medium: scaling retains acceleration structures
+PASS native-medium: output handles stay stable across reallocations
+PASS native-medium: PT keeps the unjittered camera projection
+PASS native-high: production PT remains active
+PASS native-high: controller agrees with actual raster resolution and quality
+PASS native-high: reported render size agrees with the compositor
+PASS native-high: real GPU guide and lighting textures match
+PASS native-high: quality retains its sample count
+PASS native-high: scaled GPU buffers contain finite lit receivers
+PASS native-high: scaling retains acceleration structures
+PASS native-high: output handles stay stable across reallocations
+PASS native-high: PT keeps the unjittered camera projection
+PASS render-half: production PT remains active
+PASS render-half: controller agrees with actual raster resolution and quality
+PASS render-half: reported render size agrees with the compositor
+PASS render-half: real GPU guide and lighting textures match
+PASS render-half: quality retains its sample count
+PASS render-half: scaled GPU buffers contain finite lit receivers
+PASS render-half: scaling retains acceleration structures
+PASS render-half: output handles stay stable across reallocations
+PASS render-half: PT keeps the unjittered camera projection
+PASS supersampled: production PT remains active
+PASS supersampled: controller agrees with actual raster resolution and quality
+PASS supersampled: reported render size agrees with the compositor
+PASS supersampled: real GPU guide and lighting textures match
+PASS supersampled: quality retains its sample count
+PASS supersampled: scaled GPU buffers contain finite lit receivers
+PASS supersampled: scaling retains acceleration structures
+PASS supersampled: output handles stay stable across reallocations
+PASS supersampled: PT keeps the unjittered camera projection
+6761.131:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6761.131:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6761.144:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6761.145:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6762.781:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+6762.781:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6762.805:01fc:020c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6762.813:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6762.902:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6762.918:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6763.024:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6763.957:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6763.979:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6764.024:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 42). It seems like application has stopped creating new PSOs for the time being.
+6764.045:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6764.099:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+6764.099:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6764.120:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6764.122:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6764.172:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6764.186:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6764.230:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6764.238:01fc:0210:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6764.262:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6764.303:01fc:0214:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+6764.306:01fc:0208:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+PERFORMANCE {"buffer_bytes":95730350.0,"cache_entries":{"camera_materials":0,"figure_materials":3,"figure_meshes":1181,"figure_models":52,"object_textures":28,"unit_textures":32,"wound_jobs":0,"wound_layers":0},"draw_calls":2224.0,"drawn_frames":510,"focus":"in","frame_limit":0,"interval_fps":11.83602812231,"interval_s":43.088779,"msaa_3d":0,"nodes":16049.0,"objects":43882.0,"options":"hd_textures=0 materials=1 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=1 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=1 firelight=0 torch_glow=0 lava_light=0 foliage_light=1 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=5 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=3 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":1.431,"pid":508,"primitives":341327.0,"process_ms":30981.104,"reason":"interval","recent_fps":58.0,"render_scale":0.670000016689301,"renderer":"forward_plus","resources":529.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":628642816.0,"time_scale":1.0,"uptime_s":78.242189,"video_allocated_bytes":789317376.0,"vsync":0,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":9,"lights":4,"magic_endings":0,"missiles":0},"instance":506806145164,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":214,"visible":true,"zone":"gz3g"}],"zone":"gz3g"}
+PASS fsr2-low: production PT remains active
+PASS fsr2-low: controller agrees with actual raster resolution and quality
+PASS fsr2-low: reported render size agrees with the compositor
+PASS fsr2-low: real GPU guide and lighting textures match
+PASS fsr2-low: quality retains its sample count
+PASS fsr2-low: scaled GPU buffers contain finite lit receivers
+PASS fsr2-low: scaling retains acceleration structures
+PASS fsr2-low: output handles stay stable across reallocations
+PASS fsr2-low: PT keeps the unjittered camera projection
+PASS fsr2-low: temporal raster jitter is active beside the stable PT lattice
+PASS fsr2-medium: production PT remains active
+PASS fsr2-medium: controller agrees with actual raster resolution and quality
+PASS fsr2-medium: reported render size agrees with the compositor
+PASS fsr2-medium: real GPU guide and lighting textures match
+PASS fsr2-medium: quality retains its sample count
+PASS fsr2-medium: scaled GPU buffers contain finite lit receivers
+PASS fsr2-medium: scaling retains acceleration structures
+PASS fsr2-medium: output handles stay stable across reallocations
+PASS fsr2-medium: PT keeps the unjittered camera projection
+PASS fsr2-medium: temporal raster jitter is active beside the stable PT lattice
+PASS fsr2-high: production PT remains active
+PASS fsr2-high: controller agrees with actual raster resolution and quality
+PASS fsr2-high: reported render size agrees with the compositor
+PASS fsr2-high: real GPU guide and lighting textures match
+PASS fsr2-high: quality retains its sample count
+PASS fsr2-high: scaled GPU buffers contain finite lit receivers
+PASS fsr2-high: scaling retains acceleration structures
+PASS fsr2-high: output handles stay stable across reallocations
+PASS fsr2-high: PT keeps the unjittered camera projection
+PASS fsr2-high: temporal raster jitter is active beside the stable PT lattice
+6767.882:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 24). It seems like application has stopped creating new PSOs for the time being.
+6768.046:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+warn:  CreateDXGIFactory2: Ignoring flags
+warn:  DXGI: Found monitors not associated with any adapter, using fallback
+6768.122:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.122:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.122:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.122:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.122:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.122:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.122:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.122:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.122:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.122:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.122:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.122:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.122:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.122:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.129:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.129:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.129:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.129:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.129:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.129:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.129:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.129:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.129:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.667:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.667:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6768.667:01fc:0278:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+PASS fsr31-native: SDK provider, active mode and successful upscaling settle before measurement
+PATH_RESOLUTION_SDK_READY {"after":{"compiled":true,"fg3_supported":true,"fg4_supported":false,"frame_generation_active":false,"frame_generation_context_creations":0,"frame_generation_create_ms":0.0,"frame_generation_dispatches":0,"frame_generation_initializing":false,"frame_generation_provider":"","game_presents":766,"generated_frames":0,"initialized":true,"last_error":0,"prepare_max_ms":0.028,"present_count_available":true,"presented_frames":766,"requested_quality":0,"requested_upscaling":1,"sr3_supported":true,"sr4_supported":false,"temporal_shaders_initializing":false,"upscale_evaluations":3,"upscaler_context_creations":1,"upscaler_create_ms":554.281,"upscaler_initializing":false,"upscaler_max_dispatch_ms":0.223,"upscaler_provider":"3.1.5","viewport_mode":6,"viewport_scale":1.0},"before":{"compiled":true,"fg3_supported":true,"fg4_supported":false,"frame_generation_active":false,"frame_generation_context_creations":0,"frame_generation_create_ms":0.0,"frame_generation_dispatches":0,"frame_generation_initializing":false,"frame_generation_provider":"","game_presents":686,"generated_frames":0,"initialized":true,"last_error":0,"prepare_max_ms":0.0,"present_count_available":true,"presented_frames":686,"requested_quality":0,"requested_upscaling":1,"sr3_supported":true,"sr4_supported":false,"temporal_shaders_initializing":false,"upscale_evaluations":0,"upscaler_context_creations":0,"upscaler_create_ms":0.0,"upscaler_initializing":false,"upscaler_max_dispatch_ms":0.0,"upscaler_provider":"","viewport_mode":6,"viewport_scale":1.0},"case":"fsr31-native","ready":true,"rendered_frames":80,"wait_ms":671}
+PASS fsr31-native: SDK stays ready in the requested mode throughout sampling
+PASS fsr31-native: measured successful SDK upscaling evaluations
+PASS fsr31-native: production PT remains active
+PASS fsr31-native: controller agrees with actual raster resolution and quality
+PASS fsr31-native: reported render size agrees with the compositor
+PASS fsr31-native: real GPU guide and lighting textures match
+PASS fsr31-native: quality retains its sample count
+PASS fsr31-native: scaled GPU buffers contain finite lit receivers
+PASS fsr31-native: scaling retains acceleration structures
+PASS fsr31-native: output handles stay stable across reallocations
+PASS fsr31-native: PT keeps the unjittered camera projection
+PASS fsr31-native: temporal raster jitter is active beside the stable PT lattice
+warn:  CreateDXGIFactory2: Ignoring flags
+warn:  DXGI: Found monitors not associated with any adapter, using fallback
+6769.414:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.414:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.414:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.414:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.414:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.414:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.414:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.414:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.414:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.414:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.414:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.414:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.414:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.414:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.422:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.422:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.422:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.422:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.422:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.422:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.422:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.422:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.422:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.667:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 27). It seems like application has stopped creating new PSOs for the time being.
+6769.967:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.967:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6769.967:01fc:027c:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+PASS fsr31-quality: SDK provider, active mode and successful upscaling settle before measurement
+PATH_RESOLUTION_SDK_READY {"after":{"compiled":true,"fg3_supported":true,"fg4_supported":false,"frame_generation_active":false,"frame_generation_context_creations":0,"frame_generation_create_ms":0.0,"frame_generation_dispatches":0,"frame_generation_initializing":false,"frame_generation_provider":"","game_presents":890,"generated_frames":0,"initialized":true,"last_error":0,"prepare_max_ms":0.028,"present_count_available":true,"presented_frames":890,"requested_quality":1,"requested_upscaling":1,"sr3_supported":true,"sr4_supported":false,"temporal_shaders_initializing":false,"upscale_evaluations":53,"upscaler_context_creations":2,"upscaler_create_ms":560.335,"upscaler_initializing":false,"upscaler_max_dispatch_ms":0.26,"upscaler_provider":"3.1.5","viewport_mode":6,"viewport_scale":0.666666686534882},"before":{"compiled":true,"fg3_supported":true,"fg4_supported":false,"frame_generation_active":false,"frame_generation_context_creations":0,"frame_generation_create_ms":0.0,"frame_generation_dispatches":0,"frame_generation_initializing":false,"frame_generation_provider":"","game_presents":813,"generated_frames":0,"initialized":true,"last_error":0,"prepare_max_ms":0.028,"present_count_available":true,"presented_frames":813,"requested_quality":1,"requested_upscaling":1,"sr3_supported":true,"sr4_supported":false,"temporal_shaders_initializing":false,"upscale_evaluations":50,"upscaler_context_creations":1,"upscaler_create_ms":554.281,"upscaler_initializing":false,"upscaler_max_dispatch_ms":0.223,"upscaler_provider":"3.1.5","viewport_mode":6,"viewport_scale":0.666666686534882},"case":"fsr31-quality","ready":true,"rendered_frames":77,"wait_ms":626}
+PASS fsr31-quality: SDK stays ready in the requested mode throughout sampling
+PASS fsr31-quality: measured successful SDK upscaling evaluations
+PASS fsr31-quality: production PT remains active
+PASS fsr31-quality: controller agrees with actual raster resolution and quality
+PASS fsr31-quality: reported render size agrees with the compositor
+PASS fsr31-quality: real GPU guide and lighting textures match
+PASS fsr31-quality: quality retains its sample count
+PASS fsr31-quality: scaled GPU buffers contain finite lit receivers
+PASS fsr31-quality: scaling retains acceleration structures
+PASS fsr31-quality: output handles stay stable across reallocations
+PASS fsr31-quality: PT keeps the unjittered camera projection
+PASS fsr31-quality: temporal raster jitter is active beside the stable PT lattice
+warn:  CreateDXGIFactory2: Ignoring flags
+warn:  DXGI: Found monitors not associated with any adapter, using fallback
+6770.722:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.722:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.722:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.722:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.722:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.722:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.722:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.722:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.722:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.722:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.722:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.722:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.722:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.722:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.729:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.729:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.729:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.729:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.729:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.729:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.729:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.729:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6770.729:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6771.258:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6771.258:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6771.258:01fc:0280:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+PASS fsr31-balanced: SDK provider, active mode and successful upscaling settle before measurement
+PATH_RESOLUTION_SDK_READY {"after":{"compiled":true,"fg3_supported":true,"fg4_supported":false,"frame_generation_active":false,"frame_generation_context_creations":0,"frame_generation_create_ms":0.0,"frame_generation_dispatches":0,"frame_generation_initializing":false,"frame_generation_provider":"","game_presents":1005,"generated_frames":0,"initialized":true,"last_error":0,"prepare_max_ms":0.041,"present_count_available":true,"presented_frames":1005,"requested_quality":2,"requested_upscaling":1,"sr3_supported":true,"sr4_supported":false,"temporal_shaders_initializing":false,"upscale_evaluations":103,"upscaler_context_creations":3,"upscaler_create_ms":543.04,"upscaler_initializing":false,"upscaler_max_dispatch_ms":0.313,"upscaler_provider":"3.1.5","viewport_mode":6,"viewport_scale":0.588235318660736},"before":{"compiled":true,"fg3_supported":true,"fg4_supported":false,"frame_generation_active":false,"frame_generation_context_creations":0,"frame_generation_create_ms":0.0,"frame_generation_dispatches":0,"frame_generation_initializing":false,"frame_generation_provider":"","game_presents":937,"generated_frames":0,"initialized":true,"last_error":0,"prepare_max_ms":0.028,"present_count_available":true,"presented_frames":937,"requested_quality":2,"requested_upscaling":1,"sr3_supported":true,"sr4_supported":false,"temporal_shaders_initializing":false,"upscale_evaluations":100,"upscaler_context_creations":2,"upscaler_create_ms":560.335,"upscaler_initializing":false,"upscaler_max_dispatch_ms":0.26,"upscaler_provider":"3.1.5","viewport_mode":6,"viewport_scale":0.588235318660736},"case":"fsr31-balanced","ready":true,"rendered_frames":68,"wait_ms":622}
+PASS fsr31-balanced: SDK stays ready in the requested mode throughout sampling
+PASS fsr31-balanced: measured successful SDK upscaling evaluations
+PASS fsr31-balanced: production PT remains active
+PASS fsr31-balanced: controller agrees with actual raster resolution and quality
+PASS fsr31-balanced: reported render size agrees with the compositor
+PASS fsr31-balanced: real GPU guide and lighting textures match
+PASS fsr31-balanced: quality retains its sample count
+PASS fsr31-balanced: scaled GPU buffers contain finite lit receivers
+PASS fsr31-balanced: scaling retains acceleration structures
+PASS fsr31-balanced: output handles stay stable across reallocations
+PASS fsr31-balanced: PT keeps the unjittered camera projection
+PASS fsr31-balanced: temporal raster jitter is active beside the stable PT lattice
+warn:  CreateDXGIFactory2: Ignoring flags
+warn:  DXGI: Found monitors not associated with any adapter, using fallback
+6772.035:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.035:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.035:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.035:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.035:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.035:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.035:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.035:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.035:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.035:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.035:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.035:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.035:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.035:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.043:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.043:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.043:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.043:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.043:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.043:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.043:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.043:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.043:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.568:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.568:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+6772.568:01fc:0284:warn:vkd3d-proton:d3d12_resource_SetName: FSR resource detected. Forcing retained GPU reference to work around broken integration code in either game or UE5.
+PASS fsr31-performance: SDK provider, active mode and successful upscaling settle before measurement
+PATH_RESOLUTION_SDK_READY {"after":{"compiled":true,"fg3_supported":true,"fg4_supported":false,"frame_generation_active":false,"frame_generation_context_creations":0,"frame_generation_create_ms":0.0,"frame_generation_dispatches":0,"frame_generation_initializing":false,"frame_generation_provider":"","game_presents":1131,"generated_frames":0,"initialized":true,"last_error":0,"prepare_max_ms":0.041,"present_count_available":true,"presented_frames":1131,"requested_quality":3,"requested_upscaling":1,"sr3_supported":true,"sr4_supported":false,"temporal_shaders_initializing":false,"upscale_evaluations":153,"upscaler_context_creations":4,"upscaler_create_ms":542.298,"upscaler_initializing":false,"upscaler_max_dispatch_ms":0.313,"upscaler_provider":"3.1.5","viewport_mode":6,"viewport_scale":0.5},"before":{"compiled":true,"fg3_supported":true,"fg4_supported":false,"frame_generation_active":false,"frame_generation_context_creations":0,"frame_generation_create_ms":0.0,"frame_generation_dispatches":0,"frame_generation_initializing":false,"frame_generation_provider":"","game_presents":1052,"generated_frames":0,"initialized":true,"last_error":0,"prepare_max_ms":0.041,"present_count_available":true,"presented_frames":1052,"requested_quality":3,"requested_upscaling":1,"sr3_supported":true,"sr4_supported":false,"temporal_shaders_initializing":false,"upscale_evaluations":150,"upscaler_context_creations":3,"upscaler_create_ms":543.04,"upscaler_initializing":false,"upscaler_max_dispatch_ms":0.313,"upscaler_provider":"3.1.5","viewport_mode":6,"viewport_scale":0.5},"case":"fsr31-performance","ready":true,"rendered_frames":79,"wait_ms":611}
+PASS fsr31-performance: SDK stays ready in the requested mode throughout sampling
+PASS fsr31-performance: measured successful SDK upscaling evaluations
+PASS fsr31-performance: production PT remains active
+PASS fsr31-performance: controller agrees with actual raster resolution and quality
+PASS fsr31-performance: reported render size agrees with the compositor
+PASS fsr31-performance: real GPU guide and lighting textures match
+PASS fsr31-performance: quality retains its sample count
+PASS fsr31-performance: scaled GPU buffers contain finite lit receivers
+PASS fsr31-performance: scaling retains acceleration structures
+PASS fsr31-performance: output handles stay stable across reallocations
+PASS fsr31-performance: PT keeps the unjittered camera projection
+PASS fsr31-performance: temporal raster jitter is active beside the stable PT lattice
+PASS render-resolution PT retains the same scene lighting under matched FSR2 raster settings: { "mean_absolute_error": 0.00507712558585, "reference_mean": 0.26464219730182, "scaled_mean": 0.26496694037829, "energy_ratio": 1.00122710240384 }
+PASS responsive scaled PT reprojects through camera motion
+PASS scaled stationary scene accumulates progressively
+PASS render-scale change restarts progressive accumulation
+PASS progressive-rescaled: production PT remains active
+PASS progressive-rescaled: controller agrees with actual raster resolution and quality
+PASS progressive-rescaled: reported render size agrees with the compositor
+PASS progressive-rescaled: real GPU guide and lighting textures match
+PASS progressive-rescaled: quality retains its sample count
+PASS progressive-rescaled: scaled GPU buffers contain finite lit receivers
+6775.852:01fc:0200:info:vkd3d-proton:dxgi_vk_swap_chain_ChangeProperties: Reallocating swapchain (961 x 541), BufferCount = 3.
+6775.861:01fc:0268:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+PASS odd-size window resize restarts progressive accumulation
+PASS odd-window: production PT remains active
+PASS odd-window: controller agrees with actual raster resolution and quality
+PASS odd-window: reported render size agrees with the compositor
+PASS odd-window: real GPU guide and lighting textures match
+PASS odd-window: quality retains its sample count
+PASS odd-window: scaled GPU buffers contain finite lit receivers
+6779.497:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+PASS switching to scene RT still prepares its pipeline
+PASS scene RT retains window-relative quality at a reduced render scale
+[trace 13:34:17 +92616ms] clean exit
+6780.497:01fc:021c:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 11). It seems like application has stopped creating new PSOs for the time being.

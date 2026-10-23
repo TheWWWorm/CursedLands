@@ -47,6 +47,8 @@ static var _quad: QuadMesh
 static var _lightning: ImmediateMesh
 static var _mms := {}   # kind -> MultiMesh
 static var _formats := {} # vertex format -> zero-area mesh of that exact format
+static var _progress_serial := 0
+var _progress_owner: StringName
 
 
 static func active() -> bool:
@@ -63,6 +65,10 @@ static func run(game: Game) -> void:
 	var cam := game.rig.camera
 	if cam == null or not cam.is_inside_tree():
 		return
+	_progress_serial += 1
+	var progress_owner := StringName("materials:%d" % _progress_serial)
+	var progress := ShaderCompilationScreen.begin(game.get_tree(), progress_owner, ShaderCompilationScreen.SCENE)
+	if progress: progress.present()
 	var ambient := game.get_node_or_null("AmbientLife")
 	if ambient: ambient.prepare_world()
 	if game.world.ground_marks: game.world.ground_marks.prepare_footprints()
@@ -126,8 +132,11 @@ static func run(game: Game) -> void:
 	# VisionFog: its overlay is a MultiMesh of plain transforms.
 	_add(items, seen, VisionFog.material(), env, INSTANCED)
 	if items.is_empty():
+		ShaderCompilationScreen.end(progress_owner)
 		return
+	ShaderCompilationScreen.update(progress_owner, ShaderCompilationScreen.SCENE, 0, items.size())
 	var w := ShaderWarmup.new()
+	w._progress_owner = progress_owner
 	w.name = "ShaderWarmup"
 	cam.add_child(w)
 	w.position = Vector3(0, 0, -maxf(DIST, cam.near * 4.0))
@@ -147,10 +156,9 @@ static func run(game: Game) -> void:
 		var shown: Array[Node] = []
 		for j in range(i, n):
 			shown.append_array(w._show(items[j][1], items[j][2], items[j][3]))
-			_warmed[items[j][0]] = true
 			if items[j][1] is BaseMaterial3D:
 				_keep.append(_shader_holder(items[j][1]))
-		last_count += n - i
+		var start := i
 		i = n
 		if forced:
 			_push(cam, w)
@@ -158,6 +166,12 @@ static func run(game: Game) -> void:
 			# With a rendering worker, queue submission alone does not measure
 			# compilation time or honor the loading budget. Wait only here.
 			RenderingServer.force_sync()
+			# Count only batches whose draw has completed. A submitted shader
+			# or a pipeline-counter increment is not compilation completion.
+			for j in range(start, n): _warmed[items[j][0]] = true
+			last_count += n - start
+			ShaderCompilationScreen.update(progress_owner, ShaderCompilationScreen.MATERIALS, last_count, items.size())
+			if progress: progress.present()
 			for c in shown:
 				c.queue_free()   # freed at the frame's end; hidden for the next batch
 				(c as Node3D).visible = false
@@ -171,8 +185,24 @@ static func run(game: Game) -> void:
 		last_count, items.size(), last_ms, first_ms, "" if forced else ", drawn with the first frame"])
 	if forced:
 		w.queue_free()
+		ShaderCompilationScreen.end(progress_owner)
 	else:
-		w._free_after(2)
+		w._finish_deferred(items)
+
+
+func _finish_deferred(items: Array) -> void:
+	for i in 2:
+		await get_tree().process_frame
+		await RenderingServer.frame_post_draw
+	for item: Array in items: _warmed[item[0]] = true
+	last_count = items.size()
+	ShaderCompilationScreen.update(_progress_owner, ShaderCompilationScreen.MATERIALS, last_count, items.size())
+	ShaderCompilationScreen.end(_progress_owner)
+	queue_free()
+
+
+func _exit_tree() -> void:
+	if not _progress_owner.is_empty(): ShaderCompilationScreen.end(_progress_owner)
 
 
 ## QuestBird.prepare at the local hero (the bird's first flight is there),
@@ -501,8 +531,27 @@ func _free_after(frames: int) -> void:
 ## Autochess has a SubViewport and no campaign loading path. Prepare the
 ## same effect/mesh pipelines in small batches before its shared battle bell.
 static func arena(field: ArenaPveField) -> void:
-	if not active(): return
+	if not active() or not is_instance_valid(field) or not field.is_inside_tree(): return
 	var tree := field.get_tree()
+	_progress_serial += 1
+	var progress_owner := StringName("materials:arena:%d" % _progress_serial)
+	var previous_update := field.view.render_target_update_mode
+	var exited := _arena_end.bind(weakref(field.view), progress_owner, previous_update)
+	field.tree_exiting.connect(exited, CONNECT_ONE_SHOT)
+	var progress := ShaderCompilationScreen.begin(tree, progress_owner, ShaderCompilationScreen.SCENE)
+	# The root's canvas-only present does not suppress an arena SubViewport.
+	# Present the cover before admitting new materials, then restore ordinary
+	# 3D rendering for every preparation batch beneath it.
+	field.view.render_target_update_mode = SubViewport.UPDATE_DISABLED
+	if progress: progress.present()
+	await _arena_frame(tree)
+	if not is_instance_valid(field):
+		exited.call()
+		return
+	if not field.is_inside_tree() or field.is_queued_for_deletion():
+		exited.call()
+		return
+	if is_instance_valid(field.view): field.view.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	var items := []; var seen := {}
 	var env := "arena:"+str([field._environment.fog_enabled,field._environment.volumetric_fog_enabled,
 		field._sun_light.shadow_enabled,Gfx.on("gfx_firelight"),GameData.option("q_msaa")])
@@ -510,21 +559,29 @@ static func arena(field: ArenaPveField) -> void:
 		var material:=ShaderMaterial.new();material.shader=ParticleFx._shader(additive,false,false)
 		_add(items,seen,material,env,PARTICLE)
 		await _arena_frame(tree)
-		if not is_instance_valid(field): return
+		if not is_instance_valid(field) or not field.is_inside_tree() or field.is_queued_for_deletion():
+			exited.call()
+			return
 	for make: Callable in [func():return FxLightning._strip_mat(false),FxLightning._glow_mat]:
 		var material: Material = make.call()
 		_add(items,seen,material,env,MESH,_zero_lightning())
 		await _arena_frame(tree)
-		if not is_instance_valid(field): return
+		if not is_instance_valid(field) or not field.is_inside_tree() or field.is_queued_for_deletion():
+			exited.call()
+			return
 	_add(items,seen,Projectile.material(),env,MESH,_zero_format(Projectile.shaft_mesh()))
 	await _arena_frame(tree)
-	if not is_instance_valid(field): return
+	if not is_instance_valid(field) or not field.is_inside_tree() or field.is_queued_for_deletion():
+		exited.call()
+		return
 	if Gfx.on("gfx_torch_glow"):
 		# A temporary MeshInstance followed by immediate free synchronizes the
 		# rendering worker. Warm its material without allocating an instance.
 		_add(items,seen,Gfx.torch_halo_material(Color.WHITE),env,MESH)
 		await _arena_frame(tree)
-		if not is_instance_valid(field): return
+		if not is_instance_valid(field) or not field.is_inside_tree() or field.is_queued_for_deletion():
+			exited.call()
+			return
 	# Courtyards are independent branches. Collect a board per frame instead
 	# of inspecting thousands of figure surfaces in a single transition frame.
 	for branch: Node in field.stage.get_children():
@@ -532,22 +589,70 @@ static func arena(field: ArenaPveField) -> void:
 			for variant: Array in _zone_materials(branch):
 				_add(items,seen,variant[0],env,variant[1],variant[2])
 			await _arena_frame(tree)
-			if not is_instance_valid(field): return
-	if items.is_empty(): return
-	var warmer:=ShaderWarmup.new();field.camera.add_child(warmer)
-	warmer.position=Vector3(0,0,-maxf(DIST,field.camera.near*4))
-	warmer._make_groups()
-	for item: Array in items:
-		if not is_instance_valid(field): return
-		var shown:=warmer._show(item[1],item[2],item[3])
-		_warmed[item[0]]=true
-		if item[1] is BaseMaterial3D: _keep.append(_shader_holder(item[1]))
-		await field.get_tree().process_frame
-		await RenderingServer.frame_post_draw
-		for node: Node3D in shown: node.hide();node.queue_free()
-	warmer.queue_free()
+			if not is_instance_valid(field) or not field.is_inside_tree() or field.is_queued_for_deletion():
+				exited.call()
+				return
+	if not items.is_empty():
+		ShaderCompilationScreen.update(progress_owner, ShaderCompilationScreen.MATERIALS, 0, items.size())
+		var warmer:=ShaderWarmup.new();field.camera.add_child(warmer)
+		warmer._progress_owner = progress_owner
+		warmer.position=Vector3(0,0,-maxf(DIST,field.camera.near*4))
+		warmer._make_groups()
+		var completed := 0
+		for item: Array in items:
+			var shown:=warmer._show(item[1],item[2],item[3])
+			if item[1] is BaseMaterial3D: _keep.append(_shader_holder(item[1]))
+			await _arena_frame(tree, field.view)
+			if not is_instance_valid(field) or not field.is_inside_tree() or field.is_queued_for_deletion():
+				exited.call()
+				return
+			# Only a completed ordinary draw admits a prepared material. This
+			# also keeps the SubViewport's shader/pipeline work out of the bell.
+			_warmed[item[0]]=true
+			completed += 1
+			ShaderCompilationScreen.update(progress_owner, ShaderCompilationScreen.MATERIALS, completed, items.size())
+			for node: Node3D in shown: node.hide();node.queue_free()
+		# Present the completed denominator before changing to final settling.
+		await _arena_frame(tree)
+		if is_instance_valid(warmer): warmer.queue_free()
+	exited.call()
+	if is_instance_valid(field) and field.tree_exiting.is_connected(exited): field.tree_exiting.disconnect(exited)
+	# prepare_battle_presentation keeps its existing _warming/picking gate;
+	# do not let the shared bell start behind the screen's final draw fence.
+	while ShaderCompilationScreen.active():
+		await _arena_frame(tree)
+		if not is_instance_valid(field) or not field.is_inside_tree() or field.is_queued_for_deletion(): return
 
 
-static func _arena_frame(tree: SceneTree) -> void:
+static func _arena_frame(tree: SceneTree, view: SubViewport = null) -> void:
 	await tree.process_frame
-	await RenderingServer.frame_post_draw
+	while true:
+		await RenderingServer.frame_pre_draw
+		if not is_instance_valid(view) or not view.is_inside_tree(): break
+		# A different preparation owner can present only the canvas. That
+		# must not admit this batch before its arena viewport actually draws.
+		if not view.disable_3d and view.render_target_update_mode != SubViewport.UPDATE_DISABLED: break
+	# On Separate, frame_post_draw is deferred and may belong to an older
+	# draw. Queue this fence after the observed draw has been submitted, and
+	# resume only after its rendering command has finished on either model.
+	var fence := ArenaDrawFence.new()
+	ArenaDrawFence.submit.call_deferred(fence)
+	await fence.completed
+
+
+class ArenaDrawFence extends RefCounted:
+	signal completed
+	static func submit(fence: ArenaDrawFence) -> void:
+		RenderingServer.call_on_render_thread(recorded.bind(fence))
+	static func recorded(fence: ArenaDrawFence) -> void:
+		finish.call_deferred(fence)
+	static func finish(fence: ArenaDrawFence) -> void:
+		fence.completed.emit()
+
+
+static func _arena_end(view_reference: WeakRef, owner: StringName, update_mode: int) -> void:
+	# The exit signal owns only a weak viewport reference and a unique token;
+	# an abandoned arena cannot retain its viewport or close a successor's hold.
+	var view := view_reference.get_ref() as SubViewport
+	if is_instance_valid(view): view.render_target_update_mode = update_mode
+	ShaderCompilationScreen.end(owner)

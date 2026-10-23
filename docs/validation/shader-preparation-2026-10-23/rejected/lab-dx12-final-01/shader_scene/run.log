@@ -1,0 +1,262 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+Failed to enable screen_keep_on.
+warn:  CreateDXGIFactory2: Ignoring flags
+warn:  DXGI: Found monitors not associated with any adapter, using fallback
+warn:  DxgiAdapter::QueryInterface: Unknown interface query
+warn:  f0db4c7f-fe5a-42a2-bd62-f2a6cf6fc83e
+16479.915:068c:0690:warn:vkd3d-proton:openvr_instance_extensions: Failed to open VR registry key, status 2.
+16479.915:068c:0690:warn:vkd3d-proton:openxr_vulkan_extensions: wineopenxr.dll is missing required symbols.
+16479.915:068c:0690:info:vkd3d-proton:vkd3d_instance_apply_application_workarounds: Program name: "CursedLands.exe" (hash: 33c38cdfc18b2417)
+16479.916:068c:0690:info:vkd3d-proton:vkd3d_instance_deduce_config_flags_from_environment: shader_cache is used, global_pipeline_cache is enforced.
+16479.916:068c:0690:info:vkd3d-proton:vkd3d_config_flags_init_once: VKD3D_CONFIG=''.
+16479.916:068c:0690:warn:vkd3d-proton:vkd3d_check_extensions: Optional user instance extension "VK_KHR_surface_maintenance1" is not supported.
+16479.916:068c:0690:info:vkd3d-proton:vkd3d_get_vk_version: vkd3d-proton - applicationVersion: 3.0.1.
+16479.916:068c:0690:info:vkd3d-proton:vkd3d_instance_init: vkd3d-proton - build: 3b10bd7a7ec6a73.
+16479.924:068c:0690:warn:vkd3d-proton:openvr_device_extensions: Failed to open VR registry key, status 2.
+16479.924:068c:0690:warn:vkd3d-proton:openxr_vulkan_extensions: wineopenxr.dll is missing required symbols.
+16479.924:068c:0690:info:vkd3d-proton:d3d12_device_create: Forcing singleton device due to RenderDoc being enabled.
+16479.951:068c:0690:warn:vkd3d-proton:vkd3d_check_extensions: Optional user device extension "VK_KHR_swapchain_maintenance1" is not supported.
+16479.953:068c:0690:warn:vkd3d-proton:vkd3d_physical_device_info_apply_workarounds: Disabling present_id2, wait2 and timing on pre-595 NV drivers.
+16479.953:068c:0690:info:vkd3d-proton:vkd3d_init_device_caps: Not all relevant pipeline stages are supported by EXT_dgc. Skipping.
+16479.953:068c:0690:warn:vkd3d-proton:vkd3d_supports_minimum_coopmat_caps: Missing sufficient features to expose WMMA.
+16480.481:068c:0690:warn:vkd3d-proton:d3d12_device_create_vkd3d_queues: Could not allocate an out of band queue for queue family 2. All out of band work will happen on the in band queue.
+16480.482:068c:0690:warn:vkd3d-proton:d3d12_device_create_vkd3d_queues: Could not allocate an out of band queue for queue family 3. All out of band work will happen on the in band queue.
+16480.486:068c:0690:info:vkd3d-proton:vkd3d_memory_info_decide_hvv_usage: Topology: Device heaps are split. Assuming small BAR situation.
+16480.486:068c:0690:info:vkd3d-proton:vkd3d_memory_info_upload_hvv_memory_properties: Topology: HVV usage is not allowed, using HOST_COHERENT for UPLOAD.
+16480.486:068c:0690:info:vkd3d-proton:vkd3d_bindless_state_get_bindless_flags: Device supports VK_EXT_mutable_descriptor_type.
+16480.486:068c:0690:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+16480.486:068c:0690:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+16480.486:068c:0690:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+16480.605:068c:0690:info:vkd3d-proton:d3d12_device_caps_init_shader_model: Enabling support for SM 6.6.
+16480.605:068c:0690:fixme:vkd3d-proton:d3d12_device_caps_init_feature_options1: TotalLaneCount = 8064, may be inaccurate.
+16480.605:068c:0690:info:vkd3d-proton:d3d12_device_determine_ray_tracing_tier: DXR support enabled.
+16480.605:068c:0690:info:vkd3d-proton:d3d12_device_determine_ray_tracing_tier: DXR 1.1 support enabled.
+16480.605:068c:0690:info:vkd3d-proton:d3d12_device_caps_init_feature_level: DX Ultimate supported!
+16480.605:068c:0690:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\home\llm2x\Documents\EI\local\scratchpad\water-raytracing-20261021\dx12-quality\shader-progress-20261023\lab-dx12-final-01-profile\shader_scene\cache\vkd3d-proton.CursedLands.exe.cache.
+16480.605:068c:0690:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\home\llm2x\Documents\EI\local\scratchpad\water-raytracing-20261021\dx12-quality\shader-progress-20261023\lab-dx12-final-01-profile\shader_scene\cache\vkd3d-proton.CursedLands.exe.cache.
+16480.606:068c:06ac:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Performing async setup of stream archive ...
+16480.606:068c:06ac:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_merge: No write cache exists. No need to merge any disk caches.
+16480.606:068c:06ac:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Merging pipeline libraries took 0.263 ms.
+16480.606:068c:06ac:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Failed to map read-only cache: Z:\home\llm2x\Documents\EI\local\scratchpad\water-raytracing-20261021\dx12-quality\shader-progress-20261023\lab-dx12-final-01-profile\shader_scene\cache\vkd3d-proton.CursedLands.exe.cache.
+16480.606:068c:06ac:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Done performing async setup of stream archive.
+warn:  DXGI: Found monitors not associated with any adapter, using fallback
+FidelityFX provider: 3.1.5
+FidelityFX provider: 2.3.4
+FidelityFX provider: 3.1.6
+16480.839:068c:0690:warn:vkd3d-proton:d3d12_device_CheckFeatureSupport: Assuming device does not support tile based rendering.
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+16480.967:068c:06ac:err:vkd3d-proton:vkd3d_pipeline_library_disk_cache_notify_blob_insert: Failed to open stream archive write file exclusively: Z:\home\llm2x\Documents\EI\local\scratchpad\water-raytracing-20261021\dx12-quality\shader-progress-20261023\lab-dx12-final-01-profile\shader_scene\cache\vkd3d-proton.CursedLands.exe.cache.write.
+16480.967:068c:06ac:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+16481.860:068c:0690:fixme:vkd3d-proton:vkd3d_texture_view_desc_fixup: Remapping 2D to 2D_ARRAY. Needs Vulkan spec tightening to match D3D12 properly.
+
+16483.550:068c:0690:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+16483.550:068c:0690:info:vkd3d-proton:dxgi_vk_swap_chain_init: Creating swapchain (1280 x 720), BufferCount = 3.
+16483.558:068c:0690:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Enabling frame latency handles.
+16483.558:068c:0690:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Ensure maximum latency of 3 frames with KHR_present_wait.
+16483.561:068c:0690:info:vkd3d-proton:dxgi_vk_swap_chain_init_sleep_state: Timer interval is 1.0 ms.
+err:   readMonitorEdidFromKey: Failed to get EDID reg key size
+err:   DXGI: Failed to parse display metadata + colorimetry info, using blank.
+16483.563:068c:0690:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+warn:  DXGI: MakeWindowAssociation: Ignoring flags
+16483.667:068c:06dc:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+WARNING: Failed to get SDR white level for adapterId: 0x00000000000006E0, id: 0
+   at: _get_sdr_white_level_for_hmonitor (platform/windows/display_server_windows.cpp:1708)
+16484.612:068c:06ac:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 196). It seems like application has stopped creating new PSOs for the time being.
+[trace 16:16:05 +8250ms] session a56737f1d6c5: 1.24.0, Windows 10.0.19043, NVIDIA NVIDIA GeForce RTX 3090 Ti, forward_plus / d3d12
+PT_QUALIFICATION_RUNTIME {"adapter":"NVIDIA GeForce RTX 3090 Ti","display":"Windows","driver":"d3d12","engine":{"build":"custom_build","hash":"unknown","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (custom_build)","timestamp":0},"fixture":"Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-final-01/fixtures/shader_compilation_scene.gd","fsr":{"api":true,"engine":true,"fg3":true,"fg4":false,"sr3":true,"sr4":false},"method":"forward_plus","passed":true,"pid":1676,"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"pt_supported":true,"render_thread":{"actual_separate":false,"expected_separate":false,"main_id":1,"passed":true,"project_model":1,"render_id":1,"requested":"project"},"require_sdk":true,"user_data":"C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands","vendor":"NVIDIA"}
+[trace 16:16:06 +8982ms] zone load gz3g (entrance 1)
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":60,"interval_fps":null,"interval_s":0.730338,"msaa_3d":2,"nodes":785.0,"objects":4539.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=3 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":null,"pid":1676,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":532.0,"screen_space_aa":2,"static_bytes":null,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":8.983001,"video_allocated_bytes":null,"vsync":1,"window":[1280,720],"world_count":0,"worlds":[],"zone":"gz3g (loading)"}
+[trace 16:16:12 +15341ms] navigation prepared 6 classes in 433 ms
+[trace 16:16:13 +15783ms] shader warm-up: 0 of 24 materials, 5 ms (zone's first picture 123 ms), drawn with the first frame
+[trace 16:16:13 +15784ms] zone ready gz3g
+PERFORMANCE {"buffer_bytes":null,"cache_entries":{"camera_materials":0,"figure_materials":3,"figure_meshes":1181,"figure_models":52,"object_textures":28,"unit_textures":32,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":0,"focus":"in","frame_limit":60,"interval_fps":null,"interval_s":6.801324,"msaa_3d":2,"nodes":16095.0,"objects":34664.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=3 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":null,"pid":1676,"primitives":0.0,"process_ms":null,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":533.0,"screen_space_aa":2,"static_bytes":null,"taa":false,"texture_bytes":null,"time_scale":1.0,"uptime_s":15.784457,"video_allocated_bytes":null,"vsync":1,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":9,"lights":4,"magic_endings":0,"missiles":0},"instance":511470211515,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":214,"visible":true,"zone":"gz3g"}],"zone":"gz3g"}
+16496.646:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16496.646:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16496.665:068c:06ac:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+16496.665:068c:06a4:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16496.666:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16496.666:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16496.696:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16496.701:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16496.727:068c:06a4:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16496.749:068c:06a4:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.483:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.490:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.490:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.490:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.506:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.533:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.533:068c:06a4:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.577:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.586:068c:06a4:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.593:068c:06a4:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.614:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.635:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.690:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.690:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.696:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.741:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.742:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.744:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.745:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.746:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.748:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16497.759:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16498.317:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16498.327:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16498.404:068c:06a4:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16498.404:068c:06a4:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16498.466:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16498.492:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16498.492:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16498.492:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16498.495:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16498.617:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16498.630:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16498.659:068c:0690:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16498.959:068c:06dc:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+16499.017:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16499.019:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16499.020:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16499.022:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16499.023:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16499.028:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16499.039:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16499.041:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16499.057:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16499.058:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16499.062:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16499.075:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16499.075:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16499.106:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16499.489:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16499.837:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16500.168:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16500.168:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16500.647:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16500.648:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16500.649:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16500.650:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16500.650:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16500.990:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.313:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.645:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.645:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.690:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.748:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.749:068c:06a4:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.749:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.749:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.749:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.749:068c:06a4:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.749:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.749:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.749:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.749:068c:06a4:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.750:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.751:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.751:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.751:068c:06a4:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.751:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.751:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16501.866:068c:0690:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+16501.867:068c:0690:info:vkd3d-proton:dxgi_vk_swap_chain_init: Creating swapchain (1280 x 720), BufferCount = 3.
+16501.867:068c:0690:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Enabling frame latency handles.
+16501.867:068c:0690:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Ensure maximum latency of 3 frames with KHR_present_wait.
+16501.868:068c:0690:info:vkd3d-proton:dxgi_vk_swap_chain_init_sleep_state: Timer interval is 1.0 ms.
+16501.869:068c:0690:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+warn:  DXGI: MakeWindowAssociation: Ignoring flags
+16501.922:068c:06f8:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+16501.934:068c:06f8:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+16502.084:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+ARTIFACT_CAMERA [X: (-0.923879, 0.0, 0.382684), Y: (0.089418, 0.972318, 0.215874), Z: (-0.372091, 0.233661, -0.898305), O: (157.8552, 9.927353, -239.7018)]
+16502.374:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16502.653:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16502.653:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+PASS initial material preparation: canceled scene preparation releases the shared cover
+PASS scene/PT controller continues during a screen-owned pause
+16504.992:068c:06ac:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 133). It seems like application has stopped creating new PSOs for the time being.
+16506.405:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16506.405:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16506.405:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16506.460:068c:06ac:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+16506.460:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16506.467:068c:06a4:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16506.502:068c:06a4:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16507.502:068c:06ac:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 7). It seems like application has stopped creating new PSOs for the time being.
+16507.592:068c:06ac:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+16507.592:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16507.614:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16507.677:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16507.677:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16507.677:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16508.811:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16508.811:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+PASS initial-path: preparation cover has actual rendered pixels
+PASS initial-path: preparation covers the campaign view
+PASS initial-path: preparation capture saved
+16512.525:068c:06ac:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 37). It seems like application has stopped creating new PSOs for the time being.
+16513.745:068c:06ac:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+PERFORMANCE {"buffer_bytes":81909422.0,"cache_entries":{"camera_materials":0,"figure_materials":3,"figure_meshes":1181,"figure_models":52,"object_textures":28,"unit_textures":32,"wound_jobs":0,"wound_layers":0},"draw_calls":2018.0,"drawn_frames":261,"focus":"in","frame_limit":0,"interval_fps":14.3062449609541,"interval_s":18.243781,"msaa_3d":0,"nodes":16048.0,"objects":43877.0,"options":"hd_textures=0 materials=1 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=1 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=1 firelight=0 torch_glow=0 lava_light=0 foliage_light=1 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=3 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":true,"physics_ms":0.037,"pid":1676,"primitives":341435.0,"process_ms":30.273,"reason":"interval","recent_fps":83.0,"render_scale":1.0,"renderer":"forward_plus","resources":533.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":301998080.0,"time_scale":1.0,"uptime_s":34.02842,"video_allocated_bytes":451602688.0,"vsync":0,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":9,"lights":4,"magic_endings":0,"missiles":0},"instance":511470211515,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":214,"visible":true,"zone":"gz3g"}],"zone":"gz3g"}
+PASS initial-path: real output is bound and the compilation cover settles within its deadline
+PASS initial-path: explicit requests alone create a scene preparation owner
+PASS initial-path: controller progresses while its visible single-player cover owns the pause
+PASS initial PT request reports actual geometry, pipeline and first-frame stages
+PASS render preparation rejects an unrendered request even when old output remains ready
+PASS same-device deep PT keeps its cover pending despite valid shallow output
+PASS stale request and wrong-device acknowledgments cannot release the current cover
+PASS same-device-deep: preparation cover has actual rendered pixels
+PASS same-device-deep: preparation covers the campaign view
+PASS same-device-deep: preparation capture saved
+PASS same-device-deep: real output is bound and the compilation cover settles within its deadline
+PASS same-device-deep: explicit requests alone create a scene preparation owner
+PASS same-device-deep: controller progresses while its visible single-player cover owns the pause
+PASS deep PT lazily selects its real variant while retaining the device and acceleration structures
+PASS quality-resize: preparation cover has actual rendered pixels
+PASS quality-resize: preparation covers the campaign view
+PASS quality-resize: preparation capture saved
+16514.745:068c:06ac:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 3). It seems like application has stopped creating new PSOs for the time being.
+PASS quality-resize: real output is bound and the compilation cover settles within its deadline
+PASS quality-resize: explicit requests alone create a scene preparation owner
+PASS quality-resize: controller progresses while its visible single-player cover owns the pause
+PASS quality apply waits for real resized output while retaining the scene
+[trace 16:16:32 +35089ms] option render_scale = 0
+PASS explicit-render-scale: preparation cover has actual rendered pixels
+PASS explicit-render-scale: preparation covers the campaign view
+PASS explicit-render-scale: preparation capture saved
+PASS explicit-render-scale: real output is bound and the compilation cover settles within its deadline
+PASS explicit-render-scale: explicit requests alone create a scene preparation owner
+PASS explicit-render-scale: controller progresses while its visible single-player cover owns the pause
+PASS graphics settings revision covers a real PT resize without changing its mode key
+[trace 16:16:42 +45186ms] option gfx_materials = 0
+PASS explicit-material-topology: preparation cover has actual rendered pixels
+PASS explicit-material-topology: preparation covers the campaign view
+PASS explicit-material-topology: preparation capture saved
+16526.950:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16526.950:068c:06a4:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16526.965:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16526.965:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16526.966:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16526.983:068c:06ac:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Pipeline cache marked dirty. Flush is scheduled.
+16526.986:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16527.928:068c:06a4:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16527.947:068c:06a4:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16528.021:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16528.021:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16528.021:068c:06a4:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16528.021:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16528.021:068c:06a0:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16528.021:068c:069c:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16528.042:068c:0698:warn:vkd3d-proton:d3d12_pipeline_state_init_graphics_create_info: Ignoring sample quality 4294967295.
+16532.053:068c:06ac:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Flushing disk cache (wakeup counter since last flush = 38). It seems like application has stopped creating new PSOs for the time being.
+PASS explicit-material-topology: real output is bound and the compilation cover settles within its deadline
+PASS explicit-material-topology: explicit requests alone create a scene preparation owner
+PASS explicit-material-topology: controller progresses while its visible single-player cover owns the pause
+PASS explicit material apply survives same-frame topology retirement and waits for the new real scene
+PASS routine-recenter: real output is bound and the compilation cover settles within its deadline
+PASS routine-recenter: explicit requests alone create a scene preparation owner
+PASS routine camera recenter does not reopen a shader-preparation request
+PASS failure case begins an explicit quality request
+PASS injected active pipeline failure releases the preparation owner and enters fallback
+FAIL automatic-retry: real output is bound and the compilation cover settles within its deadline
+PASS automatic-retry: explicit requests alone create a scene preparation owner

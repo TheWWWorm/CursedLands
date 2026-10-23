@@ -1,0 +1,131 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+Vulkan 1.4.312 - Forward+ - Using Device #1: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.
+However, bear in mind that at the moment it can lead to project crashes or instability.
+So, unless you want to test the engine, set the "rendering/driver/threads/thread_model" project setting to 'Safe'.
+     at: setup2 (main/main.cpp:3523)
+
+ERROR: An error occurred while trying to get the screen refresh rate.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1892)
+[trace 13:16:34 +6803ms] session c45175aaa835: 1.23.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090 Ti, forward_plus / vulkan
+PT_QUALIFICATION_RUNTIME {"adapter":"NVIDIA GeForce RTX 3090 Ti","display":"X11","driver":"vulkan","engine":{"build":"custom_build","hash":"unknown","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (custom_build)","timestamp":0},"fixture":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03/fixtures/path_trace_resolution.gd","fsr":{"api":false,"engine":false,"fg3":false,"fg4":false,"sr3":false,"sr4":false},"method":"forward_plus","passed":true,"pid":231396,"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"pt_supported":true,"render_thread":{"actual_separate":true,"expected_separate":true,"main_id":1,"passed":true,"project_model":2,"render_id":5,"requested":"project"},"require_sdk":false,"user_data":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03-profile/resolution/data/godot/app_userdata/Cursed Lands","vendor":"NVIDIA"}
+PASS trace sizing contract [(1280.0, 720.0), 0, 1.0, (640, 360)]
+PASS trace sizing contract [(1280.0, 720.0), 1, 1.0, (960, 540)]
+PASS trace sizing contract [(1280.0, 720.0), 2, 1.0, (1280, 720)]
+PASS trace sizing contract [(1280.0, 720.0), 0, 0.66666666666667, (427, 240)]
+PASS trace sizing contract [(1280.0, 720.0), 2, 0.66666666666667, (853, 480)]
+PASS trace sizing contract [(1279.0, 719.0), 1, 0.5, (479, 269)]
+PASS trace sizing contract [(720.0, 1280.0), 2, 0.5, (360, 640)]
+PASS trace sizing contract [(1280.0, 720.0), 1, 1.25, (1200, 675)]
+PASS trace sizing contract [(0.0, 0.0), 0, 0.5, (2, 2)]
+[trace 13:16:35 +7580ms] zone load gz3g (entrance 1)
+PERFORMANCE {"buffer_bytes":5080236.0,"cache_entries":{"camera_materials":0,"figure_materials":2,"figure_meshes":12,"figure_models":1,"object_textures":4,"unit_textures":0,"wound_jobs":0,"wound_layers":0},"draw_calls":0.0,"drawn_frames":273,"focus":"in","frame_limit":60,"interval_fps":351.516478139667,"interval_s":0.776635,"msaa_3d":0,"nodes":786.0,"objects":4480.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=3 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":0.655,"pid":231396,"primitives":0.0,"process_ms":0.181,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":528.0,"screen_space_aa":2,"static_bytes":null,"taa":false,"texture_bytes":7138304.0,"time_scale":1.0,"uptime_s":7.580866,"video_allocated_bytes":17461760.0,"vsync":0,"window":[1280,720],"world_count":0,"worlds":[],"zone":"gz3g (loading)"}
+[trace 13:16:44 +16447ms] navigation prepared 6 classes in 464 ms
+[trace 13:16:49 +21925ms] shader warm-up: 24 of 24 materials, 3430 ms (zone's first picture 679 ms)
+[trace 13:16:49 +21941ms] zone ready gz3g
+PERFORMANCE {"buffer_bytes":40238206.0,"cache_entries":{"camera_materials":0,"figure_materials":3,"figure_meshes":1181,"figure_models":52,"object_textures":28,"unit_textures":32,"wound_jobs":0,"wound_layers":0},"draw_calls":3092.0,"drawn_frames":0,"focus":"in","frame_limit":60,"interval_fps":null,"interval_s":14.360731,"msaa_3d":0,"nodes":16097.0,"objects":34618.0,"options":"hd_textures=0 materials=0 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=0 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=0 firelight=0 torch_glow=0 lava_light=0 foliage_light=0 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=4 display_mode=0 resolution=3 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":0.655,"pid":231396,"primitives":279622.0,"process_ms":0.181,"reason":"scene","recent_fps":1.0,"render_scale":1.0,"renderer":"forward_plus","resources":529.0,"screen_space_aa":2,"static_bytes":null,"taa":false,"texture_bytes":285230592.0,"time_scale":1.0,"uptime_s":21.941738,"video_allocated_bytes":346866592.0,"vsync":0,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":9,"lights":4,"magic_endings":0,"missiles":0},"instance":507158466952,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":214,"visible":true,"zone":"gz3g"}],"zone":"gz3g"}
+ARTIFACT_CAMERA [X: (-0.923879, 0.0, 0.382684), Y: (0.089418, 0.972318, 0.215874), Z: (-0.372091, 0.233661, -0.898305), O: (157.8552, 9.927353, -239.7018)]
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+OpArrayLength is not supported yet.
+PASS resolution fixture prepares the real campaign PT snapshot
+PASS native-low: production PT remains active
+PASS native-low: controller agrees with actual raster resolution and quality
+PASS native-low: reported render size agrees with the compositor
+PASS native-low: real GPU guide and lighting textures match
+PASS native-low: quality retains its sample count
+PASS native-low: scaled GPU buffers contain finite lit receivers
+PASS native-low: scaling retains acceleration structures
+PASS native-low: output handles stay stable across reallocations
+PASS native-low: PT keeps the unjittered camera projection
+PASS native-medium: production PT remains active
+PASS native-medium: controller agrees with actual raster resolution and quality
+PASS native-medium: reported render size agrees with the compositor
+PASS native-medium: real GPU guide and lighting textures match
+PASS native-medium: quality retains its sample count
+PASS native-medium: scaled GPU buffers contain finite lit receivers
+PASS native-medium: scaling retains acceleration structures
+PASS native-medium: output handles stay stable across reallocations
+PASS native-medium: PT keeps the unjittered camera projection
+PASS native-high: production PT remains active
+PASS native-high: controller agrees with actual raster resolution and quality
+PASS native-high: reported render size agrees with the compositor
+PASS native-high: real GPU guide and lighting textures match
+PASS native-high: quality retains its sample count
+PASS native-high: scaled GPU buffers contain finite lit receivers
+PASS native-high: scaling retains acceleration structures
+PASS native-high: output handles stay stable across reallocations
+PASS native-high: PT keeps the unjittered camera projection
+PASS render-half: production PT remains active
+PASS render-half: controller agrees with actual raster resolution and quality
+PASS render-half: reported render size agrees with the compositor
+PASS render-half: real GPU guide and lighting textures match
+PASS render-half: quality retains its sample count
+PASS render-half: scaled GPU buffers contain finite lit receivers
+PASS render-half: scaling retains acceleration structures
+PASS render-half: output handles stay stable across reallocations
+PASS render-half: PT keeps the unjittered camera projection
+PERFORMANCE {"buffer_bytes":69892158.0,"cache_entries":{"camera_materials":0,"figure_materials":3,"figure_meshes":1181,"figure_models":52,"object_textures":28,"unit_textures":32,"wound_jobs":0,"wound_layers":0},"draw_calls":2012.0,"drawn_frames":363,"focus":"in","frame_limit":0,"interval_fps":29.3250630731212,"interval_s":12.37849,"msaa_3d":0,"nodes":16046.0,"objects":43826.0,"options":"hd_textures=0 materials=1 sharp_units=0 detailed_heads=0 sky=1 far_view=0 terrain=1 wind=0 grass=0 biome_cover=0 vegetation_interaction=0 soft_ground=0 ground_contact=0 terrain_cliffs=1 firelight=0 torch_glow=0 lava_light=0 foliage_light=1 volumetric=0 ssao=0 contact_shadows=0 bloom=0 depth_of_field=0 water=1 water_reflections=0 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=0 heat_haze=0 soft_particles=0 lit_particles=0 severed_limbs=0 rain_puddles=0 q_aa=0 q_shadows=0 q_aniso=4 render_scale=5 display_mode=0 resolution=3 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":1.494,"pid":231396,"primitives":341333.0,"process_ms":330.694,"reason":"interval","recent_fps":55.0,"render_scale":1.25,"renderer":"forward_plus","resources":529.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":384824832.0,"time_scale":1.0,"uptime_s":34.320393,"video_allocated_bytes":516345760.0,"vsync":0,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"effects":{"bolts":0,"delayed":0,"emitters":9,"lights":4,"magic_endings":0,"missiles":0},"instance":507158466952,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":1,"time":0.0,"units":214,"visible":true,"zone":"gz3g"}],"zone":"gz3g"}
+PASS supersampled: production PT remains active
+PASS supersampled: controller agrees with actual raster resolution and quality
+PASS supersampled: reported render size agrees with the compositor
+PASS supersampled: real GPU guide and lighting textures match
+PASS supersampled: quality retains its sample count
+PASS supersampled: scaled GPU buffers contain finite lit receivers
+PASS supersampled: scaling retains acceleration structures
+PASS supersampled: output handles stay stable across reallocations
+PASS supersampled: PT keeps the unjittered camera projection
+PASS fsr2-low: production PT remains active
+PASS fsr2-low: controller agrees with actual raster resolution and quality
+PASS fsr2-low: reported render size agrees with the compositor
+PASS fsr2-low: real GPU guide and lighting textures match
+PASS fsr2-low: quality retains its sample count
+PASS fsr2-low: scaled GPU buffers contain finite lit receivers
+PASS fsr2-low: scaling retains acceleration structures
+PASS fsr2-low: output handles stay stable across reallocations
+PASS fsr2-low: PT keeps the unjittered camera projection
+PASS fsr2-low: temporal raster jitter is active beside the stable PT lattice
+PASS fsr2-medium: production PT remains active
+PASS fsr2-medium: controller agrees with actual raster resolution and quality
+PASS fsr2-medium: reported render size agrees with the compositor
+PASS fsr2-medium: real GPU guide and lighting textures match
+PASS fsr2-medium: quality retains its sample count
+PASS fsr2-medium: scaled GPU buffers contain finite lit receivers
+PASS fsr2-medium: scaling retains acceleration structures
+PASS fsr2-medium: output handles stay stable across reallocations
+PASS fsr2-medium: PT keeps the unjittered camera projection
+PASS fsr2-medium: temporal raster jitter is active beside the stable PT lattice
+PASS fsr2-high: production PT remains active
+PASS fsr2-high: controller agrees with actual raster resolution and quality
+PASS fsr2-high: reported render size agrees with the compositor
+PASS fsr2-high: real GPU guide and lighting textures match
+PASS fsr2-high: quality retains its sample count
+PASS fsr2-high: scaled GPU buffers contain finite lit receivers
+PASS fsr2-high: scaling retains acceleration structures
+PASS fsr2-high: output handles stay stable across reallocations
+PASS fsr2-high: PT keeps the unjittered camera projection
+PASS fsr2-high: temporal raster jitter is active beside the stable PT lattice
+PASS render-resolution PT retains the same scene lighting under matched FSR2 raster settings: { "mean_absolute_error": 0.00490324181705, "reference_mean": 0.26464055384703, "scaled_mean": 0.26500596433259, "energy_ratio": 1.00138078038399 }
+PASS responsive scaled PT reprojects through camera motion
+PASS scaled stationary scene accumulates progressively
+PASS render-scale change restarts progressive accumulation
+PASS progressive-rescaled: production PT remains active
+PASS progressive-rescaled: controller agrees with actual raster resolution and quality
+PASS progressive-rescaled: reported render size agrees with the compositor
+PASS progressive-rescaled: real GPU guide and lighting textures match
+PASS progressive-rescaled: quality retains its sample count
+PASS progressive-rescaled: scaled GPU buffers contain finite lit receivers
+PASS odd-size window resize restarts progressive accumulation
+PASS odd-window: production PT remains active
+PASS odd-window: controller agrees with actual raster resolution and quality
+PASS odd-window: reported render size agrees with the compositor
+PASS odd-window: real GPU guide and lighting textures match
+PASS odd-window: quality retains its sample count
+PASS odd-window: scaled GPU buffers contain finite lit receivers
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS switching to scene RT still prepares its pipeline
+PASS scene RT retains window-relative quality at a reduced render scale
+[trace 13:17:23 +55699ms] clean exit

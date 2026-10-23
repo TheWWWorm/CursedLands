@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "/home/llm2x/.local/bin/godot-4",
+    "--headless",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/hold-accounting",
+    "--script",
+    "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/hold-accounting/replay.gd"
+  ],
+  "fixture": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/repo/tools/tests/path_trace_sustained.gd",
+  "fixture_sha256": "e17d3398cafd74a71b05972094a3c976947c9caf6c1886d975cd66a70c81cc6d",
+  "extracted_start_line": 145,
+  "extracted_end_line": 161,
+  "exit_code": 0,
+  "replay_sha256": "b9140429e28fcf3b48bc9c127d2ac15c45395ec08c0926fb154df0bd2602fccb"
+}

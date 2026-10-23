@@ -1,0 +1,155 @@
+{
+	"audit_shader_pack_sha256": "",
+	"detailed_materials": true,
+	"device": "NVIDIA GeForce RTX 3090 Ti",
+	"driver": "vulkan",
+	"leaf_backlighting": true,
+	"note": "Frozen river, hidden units, water reflections and frame generation off, responsive history. Loading/builds excluded. RT GPU includes ray dispatch, reconstruction and copies; excludes AS updates. Main viewport GPU excludes RT dispatch.",
+	"runs": [
+		{
+			"case": "path-2-medium",
+			"controller_cpu_ms": {
+				"median": 0.772,
+				"n": 90,
+				"p95": 0.933
+			},
+			"frame_ms": {
+				"median": 5.283,
+				"n": 90,
+				"p95": 8.085
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.043072,
+					"n": 90,
+					"p95": 0.044032
+				},
+				"rays": {
+					"median": 2.892928,
+					"n": 90,
+					"p95": 2.911648
+				},
+				"reconstruction": {
+					"median": 0.191488,
+					"n": 90,
+					"p95": 0.192512
+				}
+			},
+			"main_gpu_ms": {
+				"median": 0.788999974727631,
+				"n": 90,
+				"p95": 0.797999978065491
+			},
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 3.128576,
+				"n": 90,
+				"p95": 3.147168
+			},
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 22160,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		},
+		{
+			"case": "path-2-medium",
+			"controller_cpu_ms": {
+				"median": 0.913,
+				"n": 90,
+				"p95": 1.202
+			},
+			"frame_ms": {
+				"median": 6.524,
+				"n": 90,
+				"p95": 9.834
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.043968,
+					"n": 90,
+					"p95": 0.044032
+				},
+				"rays": {
+					"median": 2.894048,
+					"n": 90,
+					"p95": 2.913536
+				},
+				"reconstruction": {
+					"median": 0.191488,
+					"n": 90,
+					"p95": 0.192512
+				}
+			},
+			"main_gpu_ms": {
+				"median": 0.788999974727631,
+				"n": 90,
+				"p95": 0.796999990940094
+			},
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 3.129344,
+				"n": 90,
+				"p95": 3.149056
+			},
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"supported": true,
+				"terrain_material_build_us": 22160,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0
+			}
+		}
+	],
+	"terrain_cliffs": true,
+	"viewport": [
+		1280,
+		720
+	]
+}

@@ -1,0 +1,17 @@
+[
+  "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/fixed-game-linux/CursedLands.x86_64",
+  "--render-thread",
+  "safe",
+  "--audio-driver",
+  "Dummy",
+  "--gpu-index",
+  "1",
+  "--headless",
+  "--",
+  "--ei-path=/home/llm2x/Documents/EI/inspection/extracted/app",
+  "--no-movies",
+  "--tool=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/fixtures-linux/path_trace_topology.gd",
+  "--audit-out=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/checks/topology-fixed",
+  "--mod-tests",
+  "--examples=/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/fixed-game-linux/mods"
+]

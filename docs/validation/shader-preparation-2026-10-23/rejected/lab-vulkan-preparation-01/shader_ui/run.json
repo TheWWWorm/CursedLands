@@ -1,0 +1,45 @@
+{
+  "exit_code": -15,
+  "pid": 469461,
+  "wall_seconds": 6.618059378000908,
+  "stopped": "runtime error",
+  "errors": [
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "allowed_diagnostics": [],
+  "gpu_uuids_observed": [
+    "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": true,
+    "live_members_after_cleanup": []
+  },
+  "suite": "shader_ui",
+  "checks": null,
+  "fixture_failures": null,
+  "validation_errors": [
+    "Cannot read shader-compilation-screen.json: [Errno 2] No such file or directory: '/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-vulkan-preparation-01/shader_ui/shader-compilation-screen.json'",
+    "Cannot read qualification-runtime.json: [Errno 2] No such file or directory: '/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-vulkan-preparation-01/shader_ui/qualification-runtime.json'",
+    "Fixture did not report positive checks and an empty failures list",
+    "Runtime did not confirm PT hardware and all mandated test settings",
+    "Runtime renderer does not match the requested hardware backend",
+    "Runtime did not confirm the requested render-thread model with actual callback thread IDs",
+    "Runtime adapter name differs from the requested physical GPU",
+    "Runtime user-data directory differs from the isolated test profile"
+  ],
+  "runtime": {},
+  "report": "shader-compilation-screen.json",
+  "passed": false,
+  "artifacts": {
+    "command.json": "e8bacfa7d6189afce306b5daf34969b9abe96491ad9bb04665a39b45ee74a0e1",
+    "gpu.jsonl": "29db1c7cd7dd999c5d2daf53a3c6787efc7d27fa05979a318574760390f9f74b",
+    "run.log": "e5278f3554fd1502ac4ac06bbc7a6432d89da031585b3ca53ed0e45fc6429ba8"
+  }
+}

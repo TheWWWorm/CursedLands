@@ -1,0 +1,78 @@
+{
+	"checks": 12,
+	"failures": [],
+	"results": [
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": false,
+			"normal_sign": 1.0,
+			"width": 640
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": true,
+			"normal_sign": 1.0,
+			"width": 640
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": false,
+			"normal_sign": 1.0,
+			"width": 960
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": true,
+			"normal_sign": 1.0,
+			"width": 960
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": false,
+			"normal_sign": 1.0,
+			"width": 1280
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": true,
+			"normal_sign": 1.0,
+			"width": 1280
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": false,
+			"normal_sign": -1.0,
+			"width": 640
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": true,
+			"normal_sign": -1.0,
+			"width": 640
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": false,
+			"normal_sign": -1.0,
+			"width": 960
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": true,
+			"normal_sign": -1.0,
+			"width": 960
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": false,
+			"normal_sign": -1.0,
+			"width": 1280
+		},
+		{
+			"correct_fraction": 1.0,
+			"depth_edge": true,
+			"normal_sign": -1.0,
+			"width": 1280
+		}
+	]
+}

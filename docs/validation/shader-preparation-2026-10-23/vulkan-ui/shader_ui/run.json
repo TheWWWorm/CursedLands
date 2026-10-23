@@ -1,0 +1,109 @@
+{
+  "exit_code": 0,
+  "pid": 496121,
+  "wall_seconds": 8.015500236000662,
+  "stopped": "",
+  "errors": [],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null.\n   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+  ],
+  "gpu_uuids_observed": [
+    "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0.10878151599899866,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": false,
+    "live_members_after_cleanup": []
+  },
+  "suite": "shader_ui",
+  "checks": 354,
+  "fixture_failures": [],
+  "validation_errors": [],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090",
+    "display": "X11",
+    "driver": "vulkan",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-vulkan-preparation-02/fixtures/shader_compilation_screen.gd",
+    "fsr": {
+      "api": false,
+      "engine": false,
+      "fg3": false,
+      "fg4": false,
+      "sr3": false,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 496121,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": true,
+      "expected_separate": true,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 2,
+      "render_id": 5,
+      "requested": "project"
+    },
+    "require_sdk": false,
+    "user_data": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-vulkan-preparation-02-profile/shader_ui/data/godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "shader-compilation-screen.json",
+  "passed": true,
+  "artifacts": {
+    "command.json": "cd8c5de0696aeb342426ad1b3e0eb57b8e4236f8f28e5520c4b9d82fb5946c92",
+    "de-1280x720-2.png": "7667ea56c78ff351f58861c510aad54d28cab7dea761f8a46fd33f6898dce6d5",
+    "de-1280x720-3.png": "6de5d78de16fc1eff70b9f43d99df99cae93e6d160cde5beaa9fcb8829875338",
+    "de-1280x720-7.png": "a632b940c9ed71dce77640d4d78aa4ce159668b4a27e3796288f94fceecb8032",
+    "de-1280x720-materials.png": "fe8f138374cfef8d2642c3677597bb2936dace5297e30b306a5a9869722e4d93",
+    "de-640x480-2.png": "ca2c8256a6765ca1c95fda96545b24823dd837ac132e62b1ceb9667a14a50425",
+    "de-640x480-3.png": "8b2116b91897f45122f1477449bcd515646f1c4a9e7b0f0bdfecdf626594e04b",
+    "de-640x480-7.png": "d7b8c0c241ccb22249f246f9e9af5d79bca26ddbf9aab2e8a6fc41133c7f8c44",
+    "de-640x480-materials.png": "a4e96f056ea52913926c6ecef9983e98e2a60639694895c9e546b45cc90f318d",
+    "en-1280x720-2.png": "77cba0af09ba5ef3ecb495f5e074904e62d1e87bc81d061f4cf7e2fd6c20f65b",
+    "en-1280x720-3.png": "5d76997eafcfa18e35a12e4bfbeb28cf858a634c3efb68d33f22df0b832c4335",
+    "en-1280x720-7.png": "b2dc6585e39a234a95dd75b864192613ac9fecfd95ad90b3c11a010285b1ac8a",
+    "en-1280x720-materials.png": "1594e9b1c65b8ee919ba96a285c25a91b0be073892c1a4e1fe21f12a2be9ff07",
+    "en-640x480-2.png": "da7a39db6304a64e303318a3fe83a863c8270fb0b2181d230459f24b66ee1104",
+    "en-640x480-3.png": "7e68906c614cae86fdc42f104cabc62b3597bc7ba2c42de6ab5f471ebdb3a692",
+    "en-640x480-7.png": "01b5494d7c5f4f222ac0df0685674e614cdc54c441df846d1ee3987a57accf0e",
+    "en-640x480-materials.png": "682093bcd7fbfad438f0da793eea7c59d2a895b994f3e1a405e222e1970950f9",
+    "gpu.jsonl": "27b5528f580d6d7aef5d64f1d8b48d3458135b67eb361d15ad695ddab0bb7eed",
+    "qualification-runtime.json": "ca49dc20d43092576e5f51ea3beb9249ad0a10ed2305cf9319e400c713f49aaa",
+    "ru-1280x720-2.png": "eff9689f472503661b6cb7c0d5afd872f663b2f63ba621f54e72c469a2c18ce6",
+    "ru-1280x720-3.png": "99e6c26437b92e3bc6e6482d167ea3e71b38c52700d44d1e5e4c69d0e00e5c4e",
+    "ru-1280x720-7.png": "1e8545b19e554c0f1b701583ab1bee7428d3f6e1639ec9b9fc0693d5ae232801",
+    "ru-1280x720-materials.png": "dcbf1eb82fb5fe89bb2a6dfa2ca8db30a5c790130b050c9e2eb940b9e9682ffb",
+    "ru-640x480-2.png": "c08ce97523ff5b98cc332d6a1d746fef2c804e467ea2ea981f199149608a9f78",
+    "ru-640x480-3.png": "6ffb7b44dfad574680fdb5a7c160e713bea200ed143672e1e19011c9700d3e9a",
+    "ru-640x480-7.png": "5848a4863986bb682d631f513354246e308c8d44df738923e8ff77910ab1968c",
+    "ru-640x480-materials.png": "120c58a7d6c24e3028cafb41c464a63bd22723bba161d89a8d45624d67f67047",
+    "run.log": "044a6b486b81a48202adeea5186c5b66994850a0b73469f447fa26628fd83016",
+    "shader-compilation-screen.json": "7e6bd4cd400dfc007d2b0ed01a5191fc90f807ee6f2c46883fa56e5cae13b895"
+  }
+}

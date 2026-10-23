@@ -567,7 +567,7 @@ func _notification(what: int) -> void:
 
 
 func _input_blocked() -> bool:
-	if held or not _window_focused:
+	if held or not _window_focused or ShaderCompilationScreen.active():
 		return true
 	var focus := get_viewport().gui_get_focus_owner()
 	if focus is LineEdit or focus is TextEdit:
@@ -707,6 +707,9 @@ func _shake_tick(delta: float, add: bool) -> void:
 
 
 func _process(delta: float) -> void:
+	if ShaderCompilationScreen.active():
+		_suspend_motion()
+		return
 	if get_parent() is Game and get_parent().direct and get_parent().direct.active():
 		get_parent().direct.apply_camera(delta)
 		return

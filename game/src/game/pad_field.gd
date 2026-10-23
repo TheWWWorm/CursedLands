@@ -103,7 +103,7 @@ func _exit_tree() -> void:
 
 ## The field takes the pad: a zone is up, no screen or panel is over it.
 func takes_input() -> bool:
-	if game == null or game.world == null or game.hud == null or not PadInput.enabled():
+	if ShaderCompilationScreen.active() or game == null or game.world == null or game.hud == null or not PadInput.enabled():
 		return false
 	if game.session == null or game.session.world == null:
 		return false
