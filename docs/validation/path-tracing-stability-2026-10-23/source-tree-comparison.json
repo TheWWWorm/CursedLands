@@ -1,0 +1,14 @@
+{
+  "baseline": "/home/llm2x/Documents/EI/local/scratchpad/release-1.24.0-20261022/release/desktop-stage",
+  "candidate": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/stability-20261023/candidate-stage",
+  "baseline_files": 1447,
+  "candidate_files": 1447,
+  "changed": [
+    "src/game/fx/water_raytrace_scene.gd",
+    "project.godot",
+    "export_presets.cfg"
+  ],
+  "added": [],
+  "removed": [],
+  "excluded": ".godot import cache"
+}

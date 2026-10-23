@@ -1,0 +1,27 @@
+{
+	"checks": 48,
+	"failures": [
+		"whole figure includes hidden parts beyond the per-mesh boundary",
+		"idle swing across 96 metres preserves the complete scene snapshot",
+		"repeated boundary pose 1 does not rebuild",
+		"repeated boundary pose 3 does not rebuild",
+		"repeated boundary pose 5 does not rebuild",
+		"repeated boundary pose 7 does not rebuild",
+		"repeated boundary pose 9 does not rebuild",
+		"repeated boundary pose 11 does not rebuild",
+		"both figure parts pack without exceeding the unchanged budgets",
+		"revealing a retained hidden part uses instance updates",
+		"retained whole unit remains admitted at 119.5 metres",
+		"retained whole unit remains admitted at 120.5 metres",
+		"retained whole unit remains admitted at 127.5 metres",
+		"retained whole unit remains admitted at 128.0 metres",
+		"new unit entry is detected at the original 120-metre root radius",
+		"entry admits the complete figure",
+		"equipment mesh replacement still invalidates the snapshot",
+		"same-resource material value edits still invalidate the snapshot",
+		"material resource replacement still invalidates the snapshot",
+		"new equipment outside the old per-part boundary is detected",
+		"removal of an existing hidden part is detected"
+	],
+	"legacy_boundary_changed": true
+}

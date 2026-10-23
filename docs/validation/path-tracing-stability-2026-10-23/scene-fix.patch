@@ -1,0 +1,54 @@
+diff --git a/game/src/game/fx/water_raytrace_scene.gd b/game/src/game/fx/water_raytrace_scene.gd
+index 884a0a49..9b585103 100644
+--- a/game/src/game/fx/water_raytrace_scene.gd
++++ b/game/src/game/fx/water_raytrace_scene.gd
+@@ -2,6 +2,7 @@ extends RefCounted
+ ## CPU-owned scene description. Geometry is shared by rigid instances; only
+ ## transforms, visibility and changed blend-shape vertices cross each frame.
+ const RADIUS := 96.0
++const UNIT_HYSTERESIS := 8.0
+ const MAX_TRIANGLES := 320000
+ const MAX_TEXTURES := 192
+ const MAX_INSTANCES := 4096
+@@ -19,6 +20,7 @@ var _opaque_textures: Array[bool] = []
+ var _mesh_cache := {}
+ var _nodes := {}
+ var _mesh_roots := {}
++var _unit_roots := {}
+ var _groups := {}
+ var _morph_geometries: Array[int] = []
+ var _terrain: EITerrain
+@@ -46,22 +48,29 @@ func begin(terrain: EITerrain, position: Vector3, plane: float) -> void:
+ 		if child is EITerrainSector and _near(child.global_transform*child.get_aabb()):
+ 			pending.append({"node":weakref(child),"land":true})
+ 	var materials := {}
+-	for mesh: MeshInstance3D in _scene_meshes():
++	for mesh: MeshInstance3D in _scene_meshes(true):
+ 		pending.append({"node":weakref(mesh),"land":false})
+ 		_nodes[mesh.get_instance_id()] = _mesh_version(mesh,materials)
+ 
+-func _scene_meshes() -> Array[MeshInstance3D]:
++func _scene_meshes(remember_units := false) -> Array[MeshInstance3D]:
+ 	var found: Array[MeshInstance3D] = []
+ 	var world := _terrain.game_world()
+ 	if world == null: return found
+ 	for root: Node3D in world.objects.values()+world.units.values():
+ 		if not is_instance_valid(root): continue
++		var unit := root is GameUnit
++		var radius := RADIUS+24.0
++		if unit and _unit_roots.has(root.get_instance_id()): radius+=UNIT_HYSTERESIS
+ 		# Include hidden parts, too: visibility is a live instance mask, and a
+ 		# fogged creature must not require a fresh mesh build when revealed.
+-		if root.global_position.distance_squared_to(center) > pow(RADIUS+24.0,2): continue
++		if root.global_position.distance_squared_to(center) > radius*radius: continue
++		if unit and remember_units: _unit_roots[root.get_instance_id()]=true
+ 		for mesh: MeshInstance3D in root.find_children("*","MeshInstance3D",true,false):
+ 			if mesh.mesh == null or mesh is EIObjectWater: continue
+-			if not _near(mesh.global_transform*mesh.get_aabb(),false): continue
++			# Admit an animated figure as a whole. Idle limbs crossing the 96 m
++			# boundary only need instance updates, not a new scene/AS every poll.
++			# Root hysteresis keeps a retained figure stable near its entry edge.
++			if not unit and not _near(mesh.global_transform*mesh.get_aabb(),false): continue
+ 			var supported := false
+ 			for surface in mesh.mesh.get_surface_count():
+ 				var mat := mesh.get_active_material(surface)
