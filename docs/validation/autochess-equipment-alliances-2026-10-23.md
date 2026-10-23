@@ -126,6 +126,23 @@ The nine-board worker test checks execution parity and clocks; it is not a claim
 about rendered frame rates. Rendered validation here used Linux OpenGL; no new
 Windows, macOS or Android package was built as part of this source change.
 
+## Follow-up bot and balance verification
+
+After the item artwork and compact assignment UI changes, the gameplay sources
+remain unchanged from the expansion commit. Fresh CPU-only checks passed:
+`compact-items-verify-bot-planner` (21), `compact-items-verify-bot-formation`
+(107), and `compact-items-verify-equipment` (51), for 179 checks in total.
+These cover item selection and carrier suitability, reward ownership, upgrade
+purchases, and legal positioning with measured native creature bodies.
+
+`compact-items-verify-composition` reran the 24 equal-cost native fights: mixed
+and assault each won nine, casters won six, and screened casters won none. Every
+outcome and duration matches the earlier probe; all fights ended by defeat.
+This composition probe does not equip items. The equipment-inclusive evidence
+remains the four complete tournaments above, and the Mage/Spirit composition
+watchpoint remains open. The isolated profiles and fresh logs are under the
+same task `runs/` directory.
+
 ## Reproduce
 
 Use the game tool entry point with a valid original-data path and an isolated

@@ -6,6 +6,8 @@ signal item_selected(uid: int)
 signal rewards_requested
 signal stash_requested
 signal cancel_requested
+const COLUMNS := 4
+const GAP := 4
 var run: ArenaRun
 var selected_uid := 0
 var editable := false
@@ -21,13 +23,14 @@ var _heading: Label
 
 func _ready() -> void:
 	name = "EquipmentTray"
-	add_theme_constant_override("separation", 6)
+	size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	add_theme_constant_override("separation", GAP)
 	var row := HBoxContainer.new()
 	add_child(row)
 	_heading = Label.new()
 	_heading.text = RemakeText.t("Items")
 	_heading.add_theme_font_override("font", preload("res://fonts/LiberationSerif-Regular.ttf"))
-	_heading.add_theme_font_size_override("font_size", 21)
+	_heading.add_theme_font_size_override("font_size", 19)
 	_heading.add_theme_color_override("font_color", ArenaCreatureCard.GOLD)
 	ArenaCreatureCard.outline(_heading)
 	_heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -45,9 +48,9 @@ func _ready() -> void:
 	scroll.follow_focus = true
 	add_child(scroll)
 	grid = GridContainer.new()
-	grid.columns = 4
-	grid.add_theme_constant_override("h_separation", 6)
-	grid.add_theme_constant_override("v_separation", 6)
+	grid.columns = COLUMNS
+	grid.add_theme_constant_override("h_separation", GAP)
+	grid.add_theme_constant_override("v_separation", GAP)
 	scroll.add_child(grid)
 	_empty = Label.new()
 	_empty.text = RemakeText.t("No items yet")
@@ -56,24 +59,29 @@ func _ready() -> void:
 	ArenaCreatureCard.outline(_empty)
 	add_child(_empty)
 	_actions = HBoxContainer.new()
-	_actions.add_theme_constant_override("separation", 6)
+	_actions.add_theme_constant_override("separation", GAP)
 	add_child(_actions)
 	stash = Button.new()
 	stash.name = "ReturnItemToStash"
 	stash.text = RemakeText.t("Return to stash")
 	stash.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	stash.add_theme_font_size_override("font_size", 13)
-	stash.custom_minimum_size.y = 32
+	stash.custom_minimum_size.y = 28
 	stash.set_meta("arena_help", RemakeText.t("Drop here to return the item to your stash."))
 	stash.pressed.connect(func(): stash_requested.emit())
 	_actions.add_child(stash)
 	cancel = Button.new()
 	cancel.text = "×"
-	cancel.custom_minimum_size = Vector2(32, 32)
+	cancel.custom_minimum_size = Vector2(28, 28)
 	cancel.accessibility_name = RemakeText.t("Cancel assignment")
 	cancel.set_meta("arena_help", RemakeText.t("Cancel assignment") + " · " + RemakeText.t("Escape"))
 	cancel.pressed.connect(func(): cancel_requested.emit())
 	_actions.add_child(cancel)
+	for button in [stash, cancel]:
+		for state in ["normal", "hover", "pressed", "focus"]:
+			var fill := Color("172322") if state == "normal" else Color("2e3a31")
+			var edge := Color("63716c") if state == "normal" else ArenaCreatureCard.GOLD
+			button.add_theme_stylebox_override(state, ArenaCreatureCard.style(fill, edge, Vector2(8, 4)))
 	synchronize()
 
 func synchronize() -> void:
@@ -115,9 +123,14 @@ func synchronize() -> void:
 	limit_height(150)
 
 func limit_height(maximum: float) -> void:
-	var overhead := 32.0 + (38.0 if _actions.visible else 0.0)
-	var rows := ceili(float(buttons.size()) / 4.0)
-	scroll.custom_minimum_size.y = minf(maxf(50, maximum - overhead), maxf(50, rows * 56.0 - 6.0))
+	var available := maximum - minimum_height() + ArenaItemSlot.TRAY_SIZE
+	var rows := maxi(1, ceili(float(buttons.size()) / COLUMNS))
+	var visible_rows := clampi(floori((available + GAP) / (ArenaItemSlot.TRAY_SIZE + GAP)), 1, rows)
+	# Scroll whole rows, so the stash control never cuts through item pictures.
+	scroll.custom_minimum_size.y = visible_rows * (ArenaItemSlot.TRAY_SIZE + GAP) - GAP
+
+func minimum_height() -> float:
+	return _heading.get_parent().get_combined_minimum_size().y + GAP + ArenaItemSlot.TRAY_SIZE + (_actions.get_combined_minimum_size().y + GAP if _actions.visible else 0.0)
 
 func focus_item(uid: int) -> void:
 	if buttons.has(uid): buttons[uid].grab_focus()

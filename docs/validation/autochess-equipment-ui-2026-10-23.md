@@ -32,6 +32,36 @@ Field badges avoid every visible creature's HP and star rectangle, including
 neighboring creatures. Reward cards isolate background input and keep focus
 inside the modal. Opening and closing them restores the tray's editing state.
 
+## Compact assignment controls
+
+The follow-up size refinement uses 40 px tray slots (previously 50), 34 px
+assignment targets (44), 28 px equipped badges (32), and a 44 px drag preview
+(74). The preview sits beside the pointer, keeping the drop target visible.
+The tray takes only its required width, with 4 px gaps and a 28 px return row.
+Scrolling reserves complete icon rows above that control. Reward cards and item
+description text retain their readable sizes. Empty targets and the return row
+appear only during assignment; equipped badges remain visible afterward.
+
+The current source passed 173 checks on isolated GPU Lab virtual displays,
+submitted with automatic GPU scheduling and the X11/Dummy audio drivers:
+
+| Evidence run | Language/window | Checks | GPU Lab job |
+| --- | --- | ---: | --- |
+| `compact-items-en-720` | English, 1280 × 720 | 28 | `521c519789d74a59` |
+| `compact-items-de-720` | German, 1280 × 720 | 28 | `631f301894a349dc` |
+| `compact-items-ru-720` | Russian, 1280 × 720 | 28 | `814b0a66707a4451` |
+| `compact-items-de-1080` | German, 1920 × 1080 | 28 | `4706c1cb372047a9` |
+| `compact-items-input-en` | English, 1280 × 720 | 61 | `b5008346bb494459` |
+
+Visual review confirmed readable translated return controls, complete visible
+item rows, smaller targets and badges, and clearance around HP and stars. The
+61 interaction checks include native drags, returning to stash, swapping,
+cancellation, keyboard navigation and combat inspection. All fixtures exited
+successfully without captured UI errors. Startup diagnostics on the virtual
+displays include the existing OpenGL antialiasing warning and a null-monitor
+refresh-rate query from crash-report metadata, before the fixture begins.
+Complete GPU job metadata and combined logs are retained beside each profile.
+
 ## Rendered interaction checks
 
 `tools/tests/arena_equipment_ui.gd` ran against native game assets in Godot 4.7,

@@ -3,6 +3,10 @@ extends Button
 ## A focusable circular relic or empty creature slot. Drag release is not a click.
 
 signal activated
+const TRAY_SIZE := 40.0
+const TARGET_SIZE := 34.0
+const BADGE_SIZE := 28.0
+const DRAG_SIZE := 44.0
 var kind := "":
 	set(value):
 		kind = value
@@ -27,7 +31,7 @@ var _art: ArenaItemEmblem
 var _drag_started := false
 
 func _init() -> void:
-	custom_minimum_size = Vector2(50, 50)
+	custom_minimum_size = Vector2.ONE * TRAY_SIZE
 
 func _ready() -> void:
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
@@ -68,8 +72,9 @@ func _get_drag_data(at: Vector2) -> Variant:
 	_drag_started = true
 	var preview := ArenaItemEmblem.new()
 	preview.kind = String(data.kind)
-	preview.custom_minimum_size = Vector2(74, 74)
-	preview.position = Vector2(-37, -37)
+	preview.custom_minimum_size = Vector2.ONE * DRAG_SIZE
+	# Keep the pointer and drop target visible while carrying the item.
+	preview.position = Vector2(12, 12)
 	set_drag_preview(preview)
 	return data
 

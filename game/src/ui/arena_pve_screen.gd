@@ -754,14 +754,14 @@ func _build_army() -> void:
 				item_slot.receive_drop = _drop_item_on_creature.bind(uid)
 			item_slot.kind = run.item_for(uid)
 			item_slot.visible = _item_uid > 0 or not item_slot.kind.is_empty()
-			item_slot.custom_minimum_size = Vector2(44, 44) if _item_uid > 0 else Vector2(32, 32)
+			item_slot.custom_minimum_size = Vector2.ONE * (ArenaItemSlot.TARGET_SIZE if _item_uid > 0 else ArenaItemSlot.BADGE_SIZE)
 			item_slot.set_anchors_and_offsets_preset(Control.PRESET_CENTER if _item_uid > 0 else Control.PRESET_TOP_RIGHT)
 			if _item_uid > 0:
-				item_slot.offset_left = -22; item_slot.offset_right = 22
-				item_slot.offset_top = -22; item_slot.offset_bottom = 22
+				item_slot.offset_left = -ArenaItemSlot.TARGET_SIZE / 2; item_slot.offset_right = ArenaItemSlot.TARGET_SIZE / 2
+				item_slot.offset_top = -ArenaItemSlot.TARGET_SIZE / 2; item_slot.offset_bottom = ArenaItemSlot.TARGET_SIZE / 2
 			else:
-				item_slot.offset_left = -34; item_slot.offset_right = -2
-				item_slot.offset_top = 0; item_slot.offset_bottom = 32
+				item_slot.offset_left = -ArenaItemSlot.BADGE_SIZE - 2; item_slot.offset_right = -2
+				item_slot.offset_top = 0; item_slot.offset_bottom = ArenaItemSlot.BADGE_SIZE
 			item_slot.make_drag = Callable()
 			for item: Dictionary in run.items:
 				if int(item.unit_uid) == uid: item_slot.make_drag = _begin_item_drag.bind(int(item.uid)); break
@@ -1460,7 +1460,7 @@ func _process(dt: float) -> void:
 		var alliance_height := _alliance_panel.get_combined_minimum_size().y if _alliance_panel.visible else 0.0
 		var scout_height := _scout_bar.size.y + 12 if _scout_bar.visible else 0.0
 		var available := _bench_panel.position.y - _battle_sidebar.position.y - alliance_height - scout_height - 40
-		var tray_minimum := 120.0 if _item_uid > 0 else 82.0
+		var tray_minimum := _item_tray.minimum_height()
 		var reserve_damage := 92.0 if available >= tray_minimum + 92 else 0.0
 		_item_tray.limit_height(clampf(available - reserve_damage, tray_minimum, 150))
 		var tray_height := _item_tray.get_combined_minimum_size().y + 12
@@ -2158,8 +2158,8 @@ func _update_item_targets() -> void:
 			slot.name = "CreatureItemTarget%d" % uid
 			slot.set_meta("item_target_uid", uid)
 			field.overlay.add_child(slot)
-			slot.custom_minimum_size = Vector2(44, 44)
-			slot.size = Vector2(44, 44)
+			slot.custom_minimum_size = Vector2.ONE * ArenaItemSlot.TARGET_SIZE
+			slot.size = Vector2.ONE * ArenaItemSlot.TARGET_SIZE
 			slot.activated.connect(func():
 				if _item_uid > 0: _equip_item(_item_uid, uid)
 				elif _can_edit_equipment():
@@ -2169,7 +2169,7 @@ func _update_item_targets() -> void:
 			slot.receive_drop = _drop_item_on_creature.bind(uid)
 			_item_targets[uid] = slot
 		slot.kind = item_kind
-		slot.custom_minimum_size = Vector2(44, 44) if _item_uid > 0 else Vector2(32, 32)
+		slot.custom_minimum_size = Vector2.ONE * (ArenaItemSlot.TARGET_SIZE if _item_uid > 0 else ArenaItemSlot.BADGE_SIZE)
 		slot.size = slot.custom_minimum_size
 		slot.scale = Vector2.ONE * _ui_scale
 		var at := _item_badge_position(field.health_anchor(unit), slot.size * _ui_scale, occupied)
@@ -2196,7 +2196,7 @@ func _update_item_targets() -> void:
 
 
 func _item_badge_position(anchor: Vector2, extent: Vector2, occupied: Array[Rect2]) -> Vector2:
-	var offsets := [Vector2(-22, 12)] if _item_uid > 0 else [Vector2(52, 8)]
+	var offsets := [Vector2(-ArenaItemSlot.TARGET_SIZE / 2, 12)] if _item_uid > 0 else [Vector2(52, 8)]
 	offsets.append_array([Vector2(-84, 8), Vector2(8, 12), Vector2(-40, 12), Vector2(52, 44), Vector2(-84, 44), Vector2(-16, 50), Vector2(52, -38), Vector2(-84, -38)])
 	for offset: Vector2 in offsets:
 		var rectangle := Rect2(anchor + offset * _ui_scale, extent)
