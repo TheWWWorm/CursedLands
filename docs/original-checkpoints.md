@@ -1,102 +1,196 @@
 # Quest checkpoints from original saves
 
-`tools/parity/checkpoints.py` compares whole quest steps with the original
-game. A checkpoint is two saves of the original made in the same zone, one
-before and one after a single player action (for example an F5 quicksave
-before and after a conversation), plus that action. The remake starts from the
-original's "before" state, performs the action and must end with the same
-script variables as the original's "after" save.
+`tools/parity/checkpoints.py` compares recorded quest steps with the original
+game. Each reference contains the original's before/after state and the
+operation performed between them. The remake restores the declared before
+fixture, performs that operation and must match the independently recorded
+original result. Expected results are never passed to the remake process.
 
-This complements the [original-engine comparison suite](original-parity.md),
-which checks bounded routines instruction by instruction. Checkpoints check
-the result of a quest step as a whole: which conditions fired, which
-conversation and quest variables changed and to what.
+This complements the [bounded original-engine comparisons](original-parity.md)
+and the [gameplay regression suite](gameplay-testing.md). The latter also checks
+passability, missing prerequisites, save/load and duplicate rewards. Matching an
+original bug is not proof that a quest is passable: the Portal cellar regression
+has a documented, intentional compatibility repair.
+
+## Run the LiA quest checks
+
+Use an owned base game and a Lost in Astral installation with official patches
+**1.01, then 1.02** applied. The remake contains the corresponding compatibility
+corrections. New native references identify the executable that produced them;
+the 1.02 reference hash is
+`9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12`.
+
+```sh
+BASE_GAME=/path/to/EvilIslands \
+ASTRAL_GAME=/path/to/patched-LostInAstral \
+GODOT=/path/to/godot-4 PYTHON=/path/to/parity-venv/bin/python \
+  tools/parity/run_lia_quests.sh /path/to/NEW-evidence-directory
+```
+
+This runs all `lia_kel_` gameplay cases, the interaction-callback regression,
+and every `lia_` native checkpoint. Each native checkpoint is replayed twice in
+fresh profiles. The directory must not exist: previous evidence is never
+silently replaced. The gameplay report and native checkpoint report have
+separate results and scopes. A nonzero exit means a failed check or capture.
+
+Run only selected original checkpoints:
+
+```sh
+python tools/parity/checkpoints.py run \
+  --astral-dir /path/to/patched-LostInAstral --godot /path/to/godot-4 \
+  --name lia_portal --work-dir /path/to/NEW-checkpoint-evidence
+```
+
+Each run retains the exact selected references, source and asset hashes, logs,
+JSON results, isolated profiles and remake before/after saves. Its
+`reproduce.sh /path/to/NEW-directory` repeats the retained reference selection
+against the selected source checkout. `--game-source` selects another remake
+`game/` tree. `--repeat 1` is useful for diagnosis but does not verify
+repeatability. All test profiles leave the cursor free, show FPS and mute SFX,
+stream and voice audio; the engine also uses the Dummy audio driver.
 
 ## Reading original saves
 
-`tools/parity/original_save.py` reads a save slot (`saves\saveq`,
-`saves\savea`, ...). It unpacks the files with the original executable's own
-decoder, run in Unicorn, and verifies each file's checksum. From the slot it
-reports the zone, the party's heroes and money, and the GS variables, both as
-the zone was entered (`scenario.sav`) and live (`mission.sav`). Lost in Astral
-saves use the same format.
+`tools/parity/original_save.py` reads a save slot (`saves/saveq`,
+`saves/savea`, ...). It unpacks the files with the verified **base-game**
+executable's decoder in Unicorn and verifies each checksum. It reports zone,
+party names, money, and GS variables at zone entry (`scenario.sav`) and live
+(`mission.sav`). Lost in Astral uses the same save format. The decoder executable
+is distinct from the executable that actually ran the recorded game.
 
 ```sh
 .venv-parity/bin/python tools/parity/original_save.py \
-  --game-exe /path/to/EvilIslands/game.exe /path/to/EvilIslands/saves/saveq
+  --game-exe /path/to/EvilIslands/game.exe /path/to/LostInAstral/saves/saveq
 ```
 
-The item containers and the unit stats block are read but not interpreted yet.
+Item containers and unit-stat blocks are not fully interpreted. Inventory,
+archived parties and physical object state needed by an action must be recorded
+as explicit fixtures and independently observed through native probes. These
+are bounded before-state reconstructions, not universal native-save imports.
 
 ## Record a checkpoint
 
-1. In the original, enter the zone and set up the situation. Quicksave (F5)
-   immediately before the action and copy `saves\saveq` aside as the
-   "before" slot. A save from earlier, such as the zone-entry autosave, also
-   captures whatever the zone's scripts did since; it is not a clean "before".
-2. Perform one action. Quicksave again and copy the slot as "after". Close the
-   console first: with the console open, F5 goes to the console and nothing is
-   saved.
-3. Record it:
+1. Prepare the original in an isolated installation/profile. Record every cheat
+   or prerequisite supplied. Quicksave immediately before the action and copy
+   `saves/saveq` to a retained `before/` directory.
+2. Perform the action, allow its watchers to run, then save/copy `after/`.
+   Close the console before F5 and verify the save changed. Confirm the game was
+   running: an inadvertently paused engine can change a lever without running
+   its quest trigger.
+3. Decode both slots, inspect the actual outcome and record the reference:
 
 ```sh
 .venv-parity/bin/python tools/parity/checkpoints.py make \
   --game-exe /path/to/EvilIslands/game.exe \
+  --source-exe /path/to/patched-LostInAstral/game.exe \
+  --campaign lost_in_astral \
   --before /path/to/before --after /path/to/after \
-  --name bz2g_airy_estera --note "Airy: About Estera" \
-  --step "talk daughter b.daughter.z0_3"
+  --name lia_example --note "Describe the actual recorded action and cheats" \
+  --fixture /path/to/fixture.json --probes /path/to/probes.json \
+  --step 'use 2261640'
 ```
 
-The checkpoint is written to `tools/parity/checkpoints/<name>.json`. It holds
-only variable names and values, never game files.
+The new reference is `tools/parity/checkpoints/<name>.json`; an existing file
+is not overwritten. It contains values, actions and SHA256 provenance for the
+actual runtime, decoder and original save files, never proprietary game files.
+Keep the raw original saves, patch manifest, screenshots and action notes in
+local evidence storage. A change to an expected result requires new original
+evidence; a remake failure alone is never a reason to change the oracle.
 
-Supported steps:
-
-| Step | Meaning |
+| Step | Execution |
 | --- | --- |
-| `talk <npc> <topic var>` | Click the NPC, pick the topic, skip the walk with Space and play the conversation to its end. |
-| `use <id>` | Order the first hero to use the lever, switch, chest or door with this map object id (the id the zone's scripts use) and wait until it is used. |
-| `enter <zone>` | Enter the zone (the original's `LeaveToZone`). Must be the first step; later steps then start from the zone as entered, which is how to record a sequence such as a lever puzzle from a clean state; the "before" save is in the previous zone and the entry check is skipped, since the delta then includes the zone's entry. |
+| `talk <npc> <topic>` | Open the ordinary NPC topic list, select the topic and finish the conversation. |
+| `use <object-id>` | Issue the ordinary use command and wait for the mechanism state to change. |
+| `enter <zone>` | First step only; restore the before variables in the destination and include its entry script in the measured delta. This is a cheat entry, not a travel-route test. |
+| `leave <exit-id> <zone>` | Teleport the party to the exit, require availability and normal confirmation, then execute the normal transfer and verify the destination. |
+| `script <expression>` | Execute the same explicit original-console operation. State clearly when this bypasses physical interaction or combat. |
+| `wait <seconds>` | Advance simulation for the recorded watcher delay, at most 300 seconds per step. |
+| `reload` | Save and reload the remake before continuing; use for continuation checks whose original result is independently recorded. |
 
-### Zone-entry sweeps
+`--step` can be repeated. `--settle` controls initial fixture settling (default
+2.2 seconds, or 20 for entry checkpoints); `--after-settle` defaults to 2 seconds.
+Use `--script-transition` when a recorded dialogue or script intentionally
+changes zones; the original after-save destination is still required to match.
 
-`checkpoints.py sweep <dir>` records one `enter` checkpoint per folder of a
-sweep (`NN_<zone>/before`, `NN_<zone>/after`): a quicksave, the console's
-`LeaveToZone`, about 20 s in the zone (arrival conversations played through)
-and a second quicksave. A zone the original has visited before is restored
-from its save and runs the original's absence simulation, while the remake
-enters it fresh, so an entry checkpoint is exact only for a first visit.
+An example fixture shape:
 
-### Probing the original's state
-
-The console runs statements, not expressions, and closes the last
-parenthesis itself. To read a value, store it in a GS variable and quicksave:
-
-```
-#0) GSSetVar(0,"dbgalive4501",Not(IsDead(GetObject(4501)))
-```
-
-`original_save.py` then shows `dbgalive4501` in the live variables. A
-variable set to 0 is not written to the save, so store a value that is 1 for
-the answer of interest.
-
-## Run the checkpoints
-
-```sh
-.venv-parity/bin/python tools/parity/checkpoints.py run \
-  --game-dir /path/to/EvilIslands [--astral-dir /path/to/LostInAstral] \
-  [--name airy] [--out report.json] [--keep]
+```json
+{
+  "money": 500,
+  "quest_items": ["AmbushKey04"],
+  "party_name": "Checkpoint",
+  "party": [{"name": "Hero", "prototype": "Hero3"}],
+  "world_time": 12.1,
+  "setup": ["GodMode(0,1)"],
+  "setup_steps": [{"wait": 2}, {"script": "SwitchLeverState(GetObject(1712),1)"}]
+}
 ```
 
-Each checkpoint runs `tools/tests/original_checkpoint.gd` in an isolated
-profile. The run checks two things:
+Only supply physical prerequisites that the original before save already has.
+Never grant the fragment or set the completion flag whose outcome is being
+tested. `setup` expressions and `setup_steps` run after map entry, before the
+baseline check. For chapter transitions, `parties` maps archived party names to
+member arrays, and `active_party` selects the initial party before map entry.
+These can replace the single `party`/`party_name` fixture.
 
-- **entry**: after entering the zone with the "before" variables, the remake's
-  variables equal the original's "before" save;
-- **delta**: the action changes exactly the variables the original's action
-  changed, to the same values.
+The native engine's active inventory and stored named-party inventory can
+differ after console grants. If the tested script uses `AddLoot` or `CopyLoot`,
+record the same inventory synchronization before both baselines, for example
+a real same-zone transition. Do not infer the archived bag from `HaveItem`
+alone. Likewise, use the native no-argument `RecalcMercBriefings()` when an
+explicitly prepared roster needs its generic topics recalculated; supplying
+an extra player argument does not execute that original command.
 
-Clock and zone-bookkeeping variables (`gtime`, `zt.*`, `zs.*`, which the
-original engine writes when a zone is left) are excluded. Exit status: 0 all match,
-1 differences, 2 setup or run errors. `--keep` keeps each run's profile and
-log.
+## Native observations and comparisons
+
+The original console runs statements. Store a read-only expression in a unique
+GS variable before **each** save, then declare it in `probes.json`:
+
+```json
+{"cp_fragment": "HaveItem(0,101)", "cp_torch": "GetLeverState(GetObject(2261640))"}
+```
+
+For example the console statement for the first probe is:
+
+```
+#0) GSSetVar(0,"cp_fragment",HaveItem(0,101)
+```
+
+The original closes the last parenthesis. Native zero-valued GS variables may
+be omitted from saves; the recorder explicitly interprets the named probe as
+zero. Probe variables are removed from the ordinary GS comparison and their
+expressions run independently in the remake. Money is always observed.
+Probes must be read-only, including every nested call; random draws and state
+mutations are rejected. `money` is reserved for the independently decoded
+native purse. An unknown explicit script operation also fails the replay.
+
+The native recording helper can round-trip `cp_capture_nonce` to prove that
+the console is accepting commands and a fresh save was read. Declare that
+exact diagnostic with `--recording-only-var cp_capture_nonce`; the omission
+is retained in `provenance.recording_only_vars`. No other `cp_*` variable is
+silently excluded, and a diagnostic cannot also be a gameplay probe.
+
+The report checks:
+
+- Entry: the prepared remake state matches the original before variables and
+  observations. Entry checkpoints omit this comparison because their before
+  save is in another zone.
+- Delta: exactly the same non-clock GS variables change to the same values.
+- Observations: money, quest items, mechanism states and other declared native
+  measurements match; a missing observation is a failure, even when zero.
+- Destination, failed assertions, engine errors and complete output markers.
+- Repeatability across fresh profiles, excluding clock/bookkeeping fields.
+
+Only `gtime`, `zt.*` and `zs.*` are excluded. In particular **quest flags and
+`z.<destination>` exit gates are compared**. Exit status is 0 for all matches,
+1 for differences, and 2 for setup/capture errors. Runtime errors, duplicate
+results and empty/partial captures cannot pass.
+
+The legacy `sweep` subcommand still imports first-entry zone sweeps. Its older
+schema has no new executable/probe provenance; it must not be described as a
+patched-1.02 reference without a fresh recording. A previously visited native
+zone includes persisted actor/lever state, so do not treat it as a fresh-entry
+fixture without reconstructing and checking that state.
+
+The [LiA qualification report](validation/lia-kel-checkpoints-2026-10-23.md)
+lists coverage, intentional passability repairs and remaining differences.

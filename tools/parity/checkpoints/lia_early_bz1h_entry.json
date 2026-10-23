@@ -1,0 +1,53 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "bz1h",
+ "fixture": {
+  "money": 0
+ },
+ "from_zone": "gz1g",
+ "note": "Patched-original first slave-camp entry from a fresh campaign; travel cheat skips the preceding story.",
+ "observations_after": {
+  "money": 0
+ },
+ "observations_before": {
+  "money": 0
+ },
+ "probes": {},
+ "provenance": {
+  "after": {
+   "info.sav": "7ed2e55b93fa3759a2081f837ba3ae12e5bbc31872649ac2cc6bb29dfeca5784",
+   "mission.sav": "741ae8000a32317f91f198704eca937429b147ffdec681f949919fc8e04ff860",
+   "scenario.sav": "6d0a78dfe8f81891da918bf92c3456b88af30b083e090fedd3338eba99777792",
+   "shot.sav": "7f4400d2c32cf0469f5a9cf598ebe7af6483fd9134126c8aaf66a1b3b10d788f"
+  },
+  "before": {
+   "info.sav": "c210e609ea249164228bc792dd208b997e3d6e4bacdc980b1ae7482ee3cc34f0",
+   "mission.sav": "790129db8309452e57b041e649b84e3ae6f4cc76aeaad1eb0d7c2ade676dd223",
+   "scenario.sav": "b77330d78d18c61adc7b518cc72d8b5aa243e55322c83eec81ab2ab16e18be32",
+   "shot.sav": "5cd74a35d135660592813830249b77a13807706e504d472573653b47432b4062"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12"
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "enter": "bz1h"
+  }
+ ],
+ "vars_after": {
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc2.n1_2": 2.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0
+ },
+ "vars_before": {},
+ "zone": "bz1h"
+}

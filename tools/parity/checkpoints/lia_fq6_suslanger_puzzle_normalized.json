@@ -1,0 +1,224 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz4h",
+ "fixture": {
+  "active_party": "FragmentProof1",
+  "money": 0,
+  "parties": {
+   "FragmentProof1": [
+    {
+     "name": "Hero",
+     "prototype": "Hero3"
+    },
+    {
+     "name": "merc2",
+     "prototype": "merc2"
+    }
+   ]
+  },
+  "setup": [
+   "GodMode(0,1)",
+   "RecalcMercBriefings()"
+  ]
+ },
+ "from_zone": "gz4h",
+ "note": "Prepared accepted fq6 with clean unique Hero3+Kel party. Three physical lever-state cheats exercise the actual ordered native puzzle watcher and chest reveal. No outcome flags assigned. Native RecalcMercBriefings() executed before baseline to normalize stale generic mercenary-topic flags; recorded as fixture setup.",
+ "observations_after": {
+  "cp_lever1": 1.0,
+  "cp_lever2": 1.0,
+  "cp_lever3": 1.0,
+  "cp_mercs": 1.0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_lever1": 0,
+  "cp_lever2": 0,
+  "cp_lever3": 0,
+  "cp_mercs": 1.0,
+  "money": 0
+ },
+ "probes": {
+  "cp_lever1": "GetLeverState(GetObject(16426))",
+  "cp_lever2": "GetLeverState(GetObject(1047355))",
+  "cp_lever3": "GetLeverState(GetObject(1088298))",
+  "cp_mercs": "GetMercsNumber(0)"
+ },
+ "provenance": {
+  "after": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "bz5h.sav": "84d9f6c9df86bd925e54a96d077aa193d845951617f41fff4dc0629c598b1751",
+   "gz1d1.sav": "ab9737167f218c8d678d5365b8b5ea01dc1d9e143693b0f570e071153093ab5b",
+   "gz1h.sav": "d94edbf23e5733ed52fe209ca0a74febabfa7d64da2340baca50d08d7734f16f",
+   "info.sav": "1a3a14608d4c9e24b86e1e3630f86ab0b32f11db8ac9fdc738dd4546736b2e98",
+   "mission.sav": "9a006ce1e0348502894b6056e69cc3299da3d5a023ca95f7131ce2c0622e5312",
+   "scenario.sav": "e5764f0a56d49dfcfe30255025c5511d1e65a58fc23ed42b1d75b268630764e7",
+   "shot.sav": "a1edd949ceaab1d12e7eb0bd648f30787772f9b85cbaecdf8a84c618cb812fa6"
+  },
+  "before": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "bz5h.sav": "84d9f6c9df86bd925e54a96d077aa193d845951617f41fff4dc0629c598b1751",
+   "gz1d1.sav": "ab9737167f218c8d678d5365b8b5ea01dc1d9e143693b0f570e071153093ab5b",
+   "gz1h.sav": "d94edbf23e5733ed52fe209ca0a74febabfa7d64da2340baca50d08d7734f16f",
+   "info.sav": "0cabfb1dc0ae89bd76aff000132d4b9bef4040d95bafc81cb5bbfe9741a24c60",
+   "mission.sav": "524f51592530246f6ddd44797e70c2ccc2393b8310b0f5b37f1658018cac5306",
+   "scenario.sav": "ff9c9a4036273a430e4c79a666f4a9c30f36c721b9cf8d9bf9e2c93aff72a3d3",
+   "shot.sav": "da75492d69a16f49cd99bb28a97f57b6930d89bbeedf3756fe2d55387d2625b4"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "script": "SwitchLeverState(GetObject(1088298),1)"
+  },
+  {
+   "wait": "2"
+  },
+  {
+   "script": "SwitchLeverState(GetObject(16426),1)"
+  },
+  {
+   "wait": "2"
+  },
+  {
+   "script": "SwitchLeverState(GetObject(1047355),1)"
+  },
+  {
+   "wait": "2"
+  }
+ ],
+ "vars_after": {
+  "CaveLever": 5000.0,
+  "b.NSheriff.buy_1": 1.0,
+  "b.NSheriff.buy_ax_01": 3.0,
+  "b.NSheriff.buy_ax_01f": 3.0,
+  "b.NSheriff.buy_ax_02": 3.0,
+  "b.NSheriff.buy_ax_02f": 3.0,
+  "b.NSheriff.buy_ax_03": 3.0,
+  "b.NSheriff.buy_ax_03f": 3.0,
+  "b.NSheriff.buy_bw_01": 3.0,
+  "b.NSheriff.buy_bw_01f": 3.0,
+  "b.NSheriff.buy_bw_02": 3.0,
+  "b.NSheriff.buy_bw_02f": 3.0,
+  "b.NSheriff.buy_bw_03": 3.0,
+  "b.NSheriff.buy_bw_03f": 3.0,
+  "b.NSheriff.buy_cb_01": 3.0,
+  "b.NSheriff.buy_cb_01f": 3.0,
+  "b.NSheriff.buy_cb_02": 3.0,
+  "b.NSheriff.buy_cb_02f": 3.0,
+  "b.NSheriff.buy_cb_03": 3.0,
+  "b.NSheriff.buy_cb_03f": 3.0,
+  "b.NSheriff.buy_dg_01": 3.0,
+  "b.NSheriff.buy_dg_01f": 3.0,
+  "b.NSheriff.buy_dg_02": 3.0,
+  "b.NSheriff.buy_dg_02f": 3.0,
+  "b.NSheriff.buy_dg_03": 3.0,
+  "b.NSheriff.buy_dg_03f": 3.0,
+  "b.NSheriff.buy_hm_01": 3.0,
+  "b.NSheriff.buy_hm_01f": 3.0,
+  "b.NSheriff.buy_hm_02": 3.0,
+  "b.NSheriff.buy_hm_02f": 3.0,
+  "b.NSheriff.buy_hm_03": 3.0,
+  "b.NSheriff.buy_hm_03f": 3.0,
+  "b.NSheriff.buy_sp_01": 3.0,
+  "b.NSheriff.buy_sp_01f": 3.0,
+  "b.NSheriff.buy_sp_02": 3.0,
+  "b.NSheriff.buy_sp_02f": 3.0,
+  "b.NSheriff.buy_sp_03": 3.0,
+  "b.NSheriff.buy_sp_03f": 3.0,
+  "b.NSheriff.buy_sw_01": 3.0,
+  "b.NSheriff.buy_sw_01f": 3.0,
+  "b.NSheriff.buy_sw_02": 3.0,
+  "b.NSheriff.buy_sw_02f": 3.0,
+  "b.NSheriff.buy_sw_03": 3.0,
+  "b.NSheriff.buy_sw_03f": 3.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "b.skelet.fq6": 2.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z1d1": 1.0
+ },
+ "vars_before": {
+  "b.NSheriff.buy_1": 1.0,
+  "b.NSheriff.buy_ax_01": 3.0,
+  "b.NSheriff.buy_ax_01f": 3.0,
+  "b.NSheriff.buy_ax_02": 3.0,
+  "b.NSheriff.buy_ax_02f": 3.0,
+  "b.NSheriff.buy_ax_03": 3.0,
+  "b.NSheriff.buy_ax_03f": 3.0,
+  "b.NSheriff.buy_bw_01": 3.0,
+  "b.NSheriff.buy_bw_01f": 3.0,
+  "b.NSheriff.buy_bw_02": 3.0,
+  "b.NSheriff.buy_bw_02f": 3.0,
+  "b.NSheriff.buy_bw_03": 3.0,
+  "b.NSheriff.buy_bw_03f": 3.0,
+  "b.NSheriff.buy_cb_01": 3.0,
+  "b.NSheriff.buy_cb_01f": 3.0,
+  "b.NSheriff.buy_cb_02": 3.0,
+  "b.NSheriff.buy_cb_02f": 3.0,
+  "b.NSheriff.buy_cb_03": 3.0,
+  "b.NSheriff.buy_cb_03f": 3.0,
+  "b.NSheriff.buy_dg_01": 3.0,
+  "b.NSheriff.buy_dg_01f": 3.0,
+  "b.NSheriff.buy_dg_02": 3.0,
+  "b.NSheriff.buy_dg_02f": 3.0,
+  "b.NSheriff.buy_dg_03": 3.0,
+  "b.NSheriff.buy_dg_03f": 3.0,
+  "b.NSheriff.buy_hm_01": 3.0,
+  "b.NSheriff.buy_hm_01f": 3.0,
+  "b.NSheriff.buy_hm_02": 3.0,
+  "b.NSheriff.buy_hm_02f": 3.0,
+  "b.NSheriff.buy_hm_03": 3.0,
+  "b.NSheriff.buy_hm_03f": 3.0,
+  "b.NSheriff.buy_sp_01": 3.0,
+  "b.NSheriff.buy_sp_01f": 3.0,
+  "b.NSheriff.buy_sp_02": 3.0,
+  "b.NSheriff.buy_sp_02f": 3.0,
+  "b.NSheriff.buy_sp_03": 3.0,
+  "b.NSheriff.buy_sp_03f": 3.0,
+  "b.NSheriff.buy_sw_01": 3.0,
+  "b.NSheriff.buy_sw_01f": 3.0,
+  "b.NSheriff.buy_sw_02": 3.0,
+  "b.NSheriff.buy_sw_02f": 3.0,
+  "b.NSheriff.buy_sw_03": 3.0,
+  "b.NSheriff.buy_sw_03f": 3.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "b.skelet.fq6": 2.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z1d1": 1.0
+ },
+ "zone": "gz4h"
+}

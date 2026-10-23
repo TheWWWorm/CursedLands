@@ -249,6 +249,8 @@ func _fill(id: String, opts: Array) -> void:
 		var o := _option(n)
 		var ok := not o.is_empty() if mode == "travel" \
 			else not is_equal_approx(s.state.get_var(0, "z." + String(ex.to).to_lower()), 1.0)
+		if mode != "travel" and id == s.zone_id and s.world != null and s.lmp.is_empty():
+			ok = s._exit_is_open(n)
 		var e := {"n": n, "at": _zone_point(c), "dir": _edge_dir(c), "ok": ok,
 			"hours": float(o.get("hours", 0.0))}
 		if mode == "travel" and e.ok and e.hours < best:

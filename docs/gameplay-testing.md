@@ -1,7 +1,7 @@
 # Gameplay regression suite
 
-`tools/parity/gameplay.py` runs 312 registered test configurations across 19
-areas, using 241 scripts. It combines existing regression programs with item,
+`tools/parity/gameplay.py` runs 334 registered test configurations across 19
+areas, using 258 scripts. It combines existing regression programs with item,
 effect, theft, crafting, side-quest, localization and travel boundary tests.
 A registration selects a script, campaign
 and arguments; some scripts are exercised in both campaigns or in several
@@ -12,12 +12,18 @@ These are **remake regressions**. With `--with-original`, the runner also runs
 the independent [original-executable suite](original-parity.md).
 The reports keep those two kinds of evidence separate.
 
+The [LiA quest checkpoint command](original-checkpoints.md#run-the-lia-quest-checks)
+combines ten focused gameplay programs with independently recorded patched-original
+saves. It covers the prologue, early Portal and torch cellar, all three Rod of
+Life fragments, chapter handoffs, Кель's death and rescue, missing prerequisites,
+and save/reload continuation. Repeated `--case` filters combine selections.
+
 ## Run
 
 Requirements: Linux, Python 3.11+, Godot 4.7, and owned base-game and Lost in
 Astral installations. The regression runner itself uses only Python's standard
-library. The 50 rendered configurations also require an explicitly selected
-private X display, such as Xvfb; the other 262 run headlessly.
+library. The 58 rendered configurations also require an explicitly selected
+private X display, such as Xvfb; the other 276 run headlessly.
 The optional original comparison additionally requires
 `tools/parity/requirements.txt` in the Python environment.
 
@@ -92,15 +98,15 @@ asset roots, and each process confirms the campaign it actually loaded.
 
 | Area | Programs | Examples |
 |---|---:|---|
-| Quests | 39 | Predicates, triggers, traps, numeric precision, wait timing and old/new save continuity in both campaigns, area save compatibility, quest items, rewards, actor removal, group levers, chapter transitions, captivity and escape, Catacombs, dragon timers and all 28 installed base side-quest archives |
+| Quests | 48 | Predicates, triggers, traps, numeric precision, wait timing and old/new save continuity in both campaigns, area save compatibility, quest items, rewards, actor removal, group levers, chapter transitions, captivity and escape, Catacombs, dragon timers, all 28 installed base side-quest archives, and the LiA prologue/three-fragment/Kel-rescue route |
 | Creatures | 12 | AI sleep/wake eligibility, senses, reaction recipients, witnessed attacks, hostility snapshots, authored creature spell damage, actor lifetime, peasant help and registry queries |
 | Animation | 18 | Attack clips across both campaigns' creatures, gait continuity, moving attacks/casts, rendered first-person shadows, initial and loaded paused poses, original dialogue poses on peers and attack stance |
 | Effects | 14 | Model attachment points and projectile origins in both campaigns, delayed effects, pause/lifetime/teardown, repeated spells, healing, fire and tornado particle kernels, exact duration boundaries and overlapping status expiry |
 | Stealth | 8 | Invisibility, silence, pursuit, remembered targets, loopback peers, perception, partial visibility, theft completion/cancellation, quest pockets and personal hostility |
-| Commands | 22 | Combat inputs, priority/replacement, held actions, interactions, retries with packet loss/reordering, spell shortcuts, bow release, first-person selection, touch picking and travel confirmation/cancellation |
+| Commands | 25 | Combat inputs, priority/replacement, held actions, interactions, retries with packet loss/reordering, spell shortcuts, bow release, first-person selection, touch picking and travel confirmation/cancellation |
 | Pathing | 14 | Turn refinement, topology, ray boundaries, relocation, route previews, narrow passages, client placement, lift capacity, direct movement and campaign-map reveal |
 | Spells | 8 | Stamina waits and regeneration, single acknowledgements, training requirements on host/guest, execution-time revalidation, paused construction transactions, seeded shop generation in both campaigns |
-| Inventory | 26 | Repair, exchanges, duplicate copies, private purses, stale stock, equipment/runes, nine crafting recipes per campaign, belt/spell capacities, recruitment, network loot, real camp UI and persistence |
+| Inventory | 29 | Repair, exchanges, duplicate copies, private purses, stale stock, equipment/runes, nine crafting recipes per campaign, belt/spell capacities, recruitment, network loot, real camp UI and persistence |
 | Progression | 5 | Training purchase orders, refunds and rank limits, guest training, XP distribution, downed companion XP and revival |
 | Party | 3 | Wounded pets, disconnected ownership, companion/pet chapter substitution, travel, save/load and revival camera |
 | Persistence | 14 | Hostility, wounds, stamina, commands, actor references, frozen clock, casts, taming, pets, potions, wall effects, profile seeds and network save choices |
@@ -110,7 +116,7 @@ asset roots, and each process confirms the campaign it actually loaded.
 | Co-op | 48 | Fresh heroes, malformed origins, classes/roles, ownership, renaming/reconnect, personal/shared checkpoints, chapter state, solo return and network world transfers |
 | Settings | 20 | Profiles, controls, camera, graphics presets, audio routing/echo, EN/RU/DE choices and every remake translation's format arguments |
 | Interface | 19 | Buff icons, loading progress/cover, tooltip lifetime, side-quest scrolling and localized quest/wiki text |
-| Arena | 22 | Recruitment, economy, alliances, deployment, shop, round settlement, saves, health/damage, species, standings, tournament and bot planning |
+| Arena | 29 | Recruitment, economy, alliances, deployment, shop, round settlement, saves, health/damage, species, standings, tournament and bot planning |
 
 An assertion count is a count of checks, **not games played or unique
 features**. Large parameter sweeps contribute many checks. Several optimized

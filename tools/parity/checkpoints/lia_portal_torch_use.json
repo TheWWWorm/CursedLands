@@ -1,0 +1,85 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz1h",
+ "fixture": {
+  "money": 0,
+  "setup": [
+   "GodMode(0,1)",
+   "SetCPFast(GetUnitOfPlayer(0,0),90,66,0)"
+  ]
+ },
+ "from_zone": "gz1h",
+ "note": "Click original wall torch. Earlier q01h/q02h and fortune prerequisites prepared; z.gz1h=1 reproduces travel flag. Teleport used to reach torch, then normal click to activate. Before actor positioned by SetCP(90,66,0); native incidental guard combat may shift actor slightly. Initial earlier-story prerequisites set explicitly: q.gz1h.q01h=2,q.gz1h.q02h=2,b.skelet.fq2=2,z.gz1d1=1,z.gz1h=1.",
+ "observations_after": {
+  "cp_torch": 1.0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_torch": 0,
+  "money": 0
+ },
+ "probes": {
+  "cp_torch": "GetLeverState(GetObject(2261640))"
+ },
+ "provenance": {
+  "after": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "info.sav": "98e7f0e371dd10986d3dd13bfac239ef8cf472a6a7018ecb0a654da1c19a7b27",
+   "mission.sav": "aaa36afa1da5202573f126d4b018ec3b3f06e5e4876ee7b5dfb8e9eb349e3bd9",
+   "scenario.sav": "6ca1f43a360e192cb13ab5ec08fd9b41b537df7aaf5da9bec37392b555d3584a",
+   "shot.sav": "3b82e57234e14c4c96821be35db0bc8d4180dce1eadd4eda833f102614b47a88"
+  },
+  "before": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "info.sav": "4626e345dfc1eb7df4af6e0271c53c28ee5ad7b9f78716ce03211f09e0fac918",
+   "mission.sav": "e2ef4adb09a1a3204303cd70e6191ae1e6849315c2ea814b57c248f778c058a3",
+   "scenario.sav": "0f29c29f0a89be6eff0361911f2945a728c508a83e2cbd92f8a14199fabc8744",
+   "shot.sav": "14b28ada09a42cb5acef8e0fe5738ac9c3137b72b9dc55ff24ba73036353f830"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12"
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "use": "2261640"
+  }
+ ],
+ "vars_after": {
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc2.n1_2": 2.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 1.0
+ },
+ "vars_before": {
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc2.n1_2": 2.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "z.gz1d1": 1.0,
+  "z.gz1h": 1.0
+ },
+ "zone": "gz1h"
+}

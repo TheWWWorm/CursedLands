@@ -31,7 +31,8 @@
         "coop/coop_fresh_start_guards",
         "coop/coop_fresh_start_guards_astral",
         "persistence/profile_save_seed",
-        "settings/player_profile"
+        "settings/player_profile",
+        "quests/lia_kel_prologue"
       ],
       "scope": "Fresh and pre-start joins, campaign identity, Unicode names and incompatible save rejection.",
       "remaining": "First-run asset discovery, every intro movie and every legacy player save are not covered."
@@ -273,7 +274,13 @@
         "commands/direct_interactions",
         "quests/catacomb_mechanisms",
         "quests/catacomb_group_lever",
-        "pathing/catacomb_capacity_net"
+        "pathing/catacomb_capacity_net",
+        "commands/use_callback_orders",
+        "quests/lia_kel_torch_cellar",
+        "quests/lia_kel_suslanger",
+        "quests/lia_kel_gipat",
+        "quests/lia_kel_ingos",
+        "quests/lia_kel_prologue"
       ],
       "scope": "Usability, targeting, synchronized mechanisms, lift capacity, traversal and persistence.",
       "remaining": "Every mechanism in every campaign map is not covered."
@@ -284,14 +291,20 @@
       "commands": [
         "interact",
         "topic",
-        "dialog_done"
+        "dialog_done",
+        "dialog_skip"
       ],
       "tests": [
         "dialogue/authored_village_talk",
         "dialogue/gipat_captive_dialogue",
         "dialogue/nalo_rescue_entry",
         "dialogue/shaina_disguise_entry",
-        "dialogue/dialogue_highlights"
+        "dialogue/dialogue_highlights",
+        "quests/lia_kel_early_story",
+        "quests/lia_kel_prologue",
+        "quests/lia_kel_departures",
+        "quests/lia_kel_handoffs",
+        "quests/lia_kel_rescue"
       ],
       "scope": "Approach/staging, original topics, route completion and peer cues.",
       "remaining": "All dialogue branches, voice synchronization and every cinematic are not covered."
@@ -324,7 +337,11 @@
         "quests/lia_tomb_exit",
         "quests/island_return",
         "commands/travel_command_lifecycle",
-        "commands/travel_command_lifecycle_astral"
+        "commands/travel_command_lifecycle_astral",
+        "quests/lia_kel_torch_cellar",
+        "quests/lia_kel_prologue",
+        "quests/lia_kel_departures",
+        "quests/lia_kel_handoffs"
       ],
       "scope": "Campaign/peer destination state, reveal policy, tomb exit and island return. Direct exit confirmation/cancel, stale routes, death, owner permissions and once-only travel-time checks.",
       "remaining": "Not every entrance/exit pair is walked. Command-boundary fixtures record the final load; other transfer fixtures perform real world loads."
@@ -360,7 +377,13 @@
         "persistence/load_spell_boundary",
         "quests/script_parity_boundaries",
         "persistence/town_save_continuation",
-        "persistence/town_save_continuation_astral"
+        "persistence/town_save_continuation_astral",
+        "quests/lia_kel_early_story",
+        "quests/lia_kel_torch_cellar",
+        "quests/lia_kel_rescue",
+        "quests/lia_kel_prologue",
+        "quests/lia_kel_departures",
+        "quests/lia_kel_handoffs"
       ],
       "scope": "Authority, load generations, actor/effect references, spell consumption and menu choices.",
       "remaining": "Corrupt-file UI, disk-full handling and migration from all historical releases remain gaps."
@@ -387,7 +410,16 @@
         "quests/campaign_clock_astral",
         "quests/campaign_clock_coop_astral",
         "persistence/town_save_continuation",
-        "persistence/town_save_continuation_astral"
+        "persistence/town_save_continuation_astral",
+        "quests/lia_kel_early_story",
+        "quests/lia_kel_torch_cellar",
+        "quests/lia_kel_suslanger",
+        "quests/lia_kel_gipat",
+        "quests/lia_kel_ingos",
+        "quests/lia_kel_rescue",
+        "quests/lia_kel_prologue",
+        "quests/lia_kel_departures",
+        "quests/lia_kel_handoffs"
       ],
       "scope": "Native scripts, prerequisites, quest items, traps, repeated visits, captivity and chapter transition fixtures.",
       "remaining": "No exhaustive quest graph or uninterrupted full campaign playthrough."
@@ -473,7 +505,11 @@
         "party/pet_waiting",
         "coop/coop_party_switch",
         "inventory/recruited_equipment_net_astral",
-        "coop/coop_solo_return_dependents"
+        "coop/coop_solo_return_dependents",
+        "quests/lia_kel_rescue",
+        "quests/lia_kel_prologue",
+        "quests/lia_kel_departures",
+        "quests/lia_kel_handoffs"
       ],
       "scope": "Equipment transfer, chapter roster changes, owner disconnect, pet identity and saved dependents.",
       "remaining": "No ordinary shop-available charm feature is implied by internal taming tests."

@@ -383,9 +383,7 @@ func _over_open_exit(p: Vector2) -> bool:
 		_exit_hover_n = session._exit_at(g) if g != null else -1
 	if _exit_hover_n < 0:
 		return false
-	var to := String(session.world.zone.exits[_exit_hover_n].get("to", "none"))
-	var key := LmpMode.exit_var(to) if not session.lmp.is_empty() else "z." + to.to_lower()
-	return session.state.get_var(0, key) != 1.0
+	return session._exit_is_open(_exit_hover_n)
 
 
 ## The aim armed for the next click (index into AIM_ORDER), −1 none: by the
@@ -737,6 +735,11 @@ func attach_world(w: GameWorld) -> void:
 	var pfx := ParticleFx.of(w)
 	pfx.gs_var = func(k: String) -> float:
 		return session.state.get_var(0, k) if session != null and session.state != null else 0.0
+	# Retained LMP worlds keep emitting while another world is installed in
+	# Session. Their existing GS-key lookup belongs to each emitter's map.
+	pfx.exit_open = Callable()
+	if session.lmp.is_empty():
+		pfx.exit_open = func(n: int) -> bool: return session._exit_is_open(n)
 	pfx.setup_zone()   # zone exit stars and torch fires (every peer)
 	GroundMarks.of(w)   # footprints and blood marks (every peer)
 	quest_lights.on_world(w)   # existing OBJ_QUEST_INFO, including a late join

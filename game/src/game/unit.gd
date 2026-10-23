@@ -1913,13 +1913,15 @@ func _do_use(dt: float) -> void:
 			_keep_clip(clip)
 			action = "revive:%s:%d" % [clip, int(el / hold * Revive.PROGRESS_STEPS)]
 			return
-		_use_done()
+		if not _use_done():
+			return
 		ph = 3
 	if ph == 1:
 		var clip := String(order.clip)
 		order.phase = 2
 		if clip == "":
-			_use_done()
+			if not _use_done():
+				return
 			order = {}
 			_set_action("idle")
 			return
@@ -1932,7 +1934,8 @@ func _do_use(dt: float) -> void:
 		_anim_lock = hit
 		return
 	if ph == 2:
-		_use_done()
+		if not _use_done():
+			return
 		order.phase = 3
 		_anim_lock = float(order.rest)
 		if _anim_lock > 0.0:
@@ -1958,11 +1961,15 @@ func _keep_clip(clip: String) -> void:
 		model.play(clip, 0.1, true)
 
 
-func _use_done() -> void:
+func _use_done() -> bool:
+	var active_order := order
 	var cb = order.get("done")
 	order.erase("done")
 	if cb is Callable and (cb as Callable).is_valid():
 		(cb as Callable).call()
+	# The interaction can issue another order, remove the actor or change
+	# parties. Its replacement owns the next tick, including its animation.
+	return is_same(order, active_order) and order.get("type", "") == "use"
 
 
 ## The stance change clip from one animation state to another (as

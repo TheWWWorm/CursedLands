@@ -29,6 +29,14 @@ def capture(summary="EXAMPLE 3 checks 0 failures", **changes):
 
 
 class GameplayResults(unittest.TestCase):
+    def test_repeated_case_filters_keep_every_requested_group(self):
+        result = subprocess.run([sys.executable, str(HERE / "gameplay.py"), "--list",
+            "--case", "quests/lia_tomb_exit", "--case", "commands/travel_command_lifecycle"],
+            check=True, capture_output=True, text=True)
+        selected = {line.split()[0] for line in result.stdout.splitlines()}
+        self.assertEqual(selected, {"quests/lia_tomb_exit", "commands/travel_command_lifecycle",
+                                   "commands/travel_command_lifecycle_astral"})
+
     def test_supported_summary_formats(self):
         for tail in ("3 checks 0 failures", "3 checks 0 failures; fast_us=12",
                      "3 checks 0 failures { \"route\": [] }",

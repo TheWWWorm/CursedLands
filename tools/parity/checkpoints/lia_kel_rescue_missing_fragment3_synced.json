@@ -1,0 +1,251 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "bz31j",
+ "fixture": {
+  "active_party": "Jigran2",
+  "money": 0,
+  "parties": {
+   "Jigran2": [
+    {
+     "name": "Hero",
+     "prototype": "Hero3"
+    }
+   ],
+   "Jigran5": [
+    {
+     "name": "merc2",
+     "prototype": "merc2"
+    }
+   ]
+  },
+  "quest_items": [
+   "Kel1",
+   "Kel2"
+  ],
+  "setup": [
+   "GodMode(0,1)"
+  ],
+  "setup_steps": [
+   {
+    "script": "LeaveToZone(0,\"bz31j\",0)"
+   },
+   {
+    "wait": 3
+   },
+   {
+    "script": "RecalcMercBriefings()"
+   }
+  ]
+ },
+ "from_zone": "bz31j",
+ "note": "Reloads native pre-rescue slot and erases only fragment 3 before baseline. Actual Deva brief_345 dialogue tests missing-piece branch. Original must not offer resurrection or restore Kel; no result variables assigned. Before the baseline, reenter bz31j to synchronize prepared active quest inventory into the Jigran2 named-party snapshot; this is required because native AddLoot reads saved source-party inventory. Normalize generic mercenary topics with no-argument RecalcMercBriefings().",
+ "observations_after": {
+  "cp_item101": 1.0,
+  "cp_item102": 1.0,
+  "cp_item103": 0,
+  "cp_mercs": 0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_item101": 1.0,
+  "cp_item102": 1.0,
+  "cp_item103": 0,
+  "cp_mercs": 0,
+  "money": 0
+ },
+ "probes": {
+  "cp_item101": "HaveItem(0,101)",
+  "cp_item102": "HaveItem(0,102)",
+  "cp_item103": "HaveItem(0,103)",
+  "cp_mercs": "GetMercsNumber(0)"
+ },
+ "provenance": {
+  "after": {
+   "bz31j.sav": "11adf89fbe17cf30f9692bf2f0924c02d3592828d8c99ecccca5ac02162dddbf",
+   "info.sav": "781175fa9f32008cabc69cd962ad4a8a913b5ed7d1717b8cf3c8894c4701ef8b",
+   "mission.sav": "3d17795a8198b0d68f43e0b449cdf0783dba993918f423cda80a7e57613f4497",
+   "scenario.sav": "493a488dbca51d33954d74d850b78bbfbad18d055f73d5c3ebd0f2a258ad05ec",
+   "shot.sav": "65b667337ebaadf06084f87f9c86faf06cb19da697f9b631e732ba205d1101a8"
+  },
+  "before": {
+   "bz31j.sav": "c627708f1954f0442836c7f46913d319ed7a08bc2710b2390d31aaffe78e7399",
+   "info.sav": "b3ce64ce0a379e3969072006bdf2b1032df90fec056e61076083b8a1148b86dc",
+   "mission.sav": "66dfcac0cdaa4bd4f157a0e884f431b66b42415240fe04e9e44a2b9fb18b5c4b",
+   "scenario.sav": "9179bb99ee34eee2327ef0c9d5c8cd3f884a3fb03466d4a91f2056d546fe0dac",
+   "shot.sav": "0a2bfa5edeaeec8e02da4f972f62bf3dba09dbec1c5e87a489e1b17a26792838"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12"
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "talk": "Deva",
+   "topic": "b.Deva.brief_345"
+  },
+  {
+   "wait": "3"
+  }
+ ],
+ "vars_after": {
+  "CaveLever": 5000.0,
+  "b.Deva.brief_345": 3.0,
+  "b.Haburu.fq19": 2.0,
+  "b.NSheriff.buy_1": 1.0,
+  "b.NSheriff.buy_ax_01": 3.0,
+  "b.NSheriff.buy_ax_01f": 3.0,
+  "b.NSheriff.buy_ax_02": 3.0,
+  "b.NSheriff.buy_ax_02f": 3.0,
+  "b.NSheriff.buy_ax_03": 3.0,
+  "b.NSheriff.buy_ax_03f": 3.0,
+  "b.NSheriff.buy_bw_01": 3.0,
+  "b.NSheriff.buy_bw_01f": 3.0,
+  "b.NSheriff.buy_bw_02": 3.0,
+  "b.NSheriff.buy_bw_02f": 3.0,
+  "b.NSheriff.buy_bw_03": 3.0,
+  "b.NSheriff.buy_bw_03f": 3.0,
+  "b.NSheriff.buy_cb_01": 3.0,
+  "b.NSheriff.buy_cb_01f": 3.0,
+  "b.NSheriff.buy_cb_02": 3.0,
+  "b.NSheriff.buy_cb_02f": 3.0,
+  "b.NSheriff.buy_cb_03": 3.0,
+  "b.NSheriff.buy_cb_03f": 3.0,
+  "b.NSheriff.buy_dg_01": 3.0,
+  "b.NSheriff.buy_dg_01f": 3.0,
+  "b.NSheriff.buy_dg_02": 3.0,
+  "b.NSheriff.buy_dg_02f": 3.0,
+  "b.NSheriff.buy_dg_03": 3.0,
+  "b.NSheriff.buy_dg_03f": 3.0,
+  "b.NSheriff.buy_hm_01": 3.0,
+  "b.NSheriff.buy_hm_01f": 3.0,
+  "b.NSheriff.buy_hm_02": 3.0,
+  "b.NSheriff.buy_hm_02f": 3.0,
+  "b.NSheriff.buy_hm_03": 3.0,
+  "b.NSheriff.buy_hm_03f": 3.0,
+  "b.NSheriff.buy_sp_01": 3.0,
+  "b.NSheriff.buy_sp_01f": 3.0,
+  "b.NSheriff.buy_sp_02": 3.0,
+  "b.NSheriff.buy_sp_02f": 3.0,
+  "b.NSheriff.buy_sp_03": 3.0,
+  "b.NSheriff.buy_sp_03f": 3.0,
+  "b.NSheriff.buy_sw_01": 3.0,
+  "b.NSheriff.buy_sw_01f": 3.0,
+  "b.NSheriff.buy_sw_02": 3.0,
+  "b.NSheriff.buy_sw_02f": 3.0,
+  "b.NSheriff.buy_sw_03": 3.0,
+  "b.NSheriff.buy_sw_03f": 3.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "b.skelet.fq6": 2.0,
+  "b.spletnica.fq13": 2.0,
+  "cp_lever1": 1.0,
+  "cp_lever2": 1.0,
+  "cp_lever3": 1.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz11d1.fq13": 2.0,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz24k.fq19": 2.0,
+  "q.gz35j.q17j": 2.0,
+  "q.gz4h.fq6": 2.0,
+  "start_zone11dun1": 1.0,
+  "start_zone24": 1.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z1d1": 1.0,
+  "zone11dun1_cr4": 1.0,
+  "zone24_digger_time": 9.0
+ },
+ "vars_before": {
+  "CaveLever": 5000.0,
+  "b.Deva.brief_345": 1.0,
+  "b.Haburu.fq19": 2.0,
+  "b.NSheriff.buy_1": 1.0,
+  "b.NSheriff.buy_ax_01": 3.0,
+  "b.NSheriff.buy_ax_01f": 3.0,
+  "b.NSheriff.buy_ax_02": 3.0,
+  "b.NSheriff.buy_ax_02f": 3.0,
+  "b.NSheriff.buy_ax_03": 3.0,
+  "b.NSheriff.buy_ax_03f": 3.0,
+  "b.NSheriff.buy_bw_01": 3.0,
+  "b.NSheriff.buy_bw_01f": 3.0,
+  "b.NSheriff.buy_bw_02": 3.0,
+  "b.NSheriff.buy_bw_02f": 3.0,
+  "b.NSheriff.buy_bw_03": 3.0,
+  "b.NSheriff.buy_bw_03f": 3.0,
+  "b.NSheriff.buy_cb_01": 3.0,
+  "b.NSheriff.buy_cb_01f": 3.0,
+  "b.NSheriff.buy_cb_02": 3.0,
+  "b.NSheriff.buy_cb_02f": 3.0,
+  "b.NSheriff.buy_cb_03": 3.0,
+  "b.NSheriff.buy_cb_03f": 3.0,
+  "b.NSheriff.buy_dg_01": 3.0,
+  "b.NSheriff.buy_dg_01f": 3.0,
+  "b.NSheriff.buy_dg_02": 3.0,
+  "b.NSheriff.buy_dg_02f": 3.0,
+  "b.NSheriff.buy_dg_03": 3.0,
+  "b.NSheriff.buy_dg_03f": 3.0,
+  "b.NSheriff.buy_hm_01": 3.0,
+  "b.NSheriff.buy_hm_01f": 3.0,
+  "b.NSheriff.buy_hm_02": 3.0,
+  "b.NSheriff.buy_hm_02f": 3.0,
+  "b.NSheriff.buy_hm_03": 3.0,
+  "b.NSheriff.buy_hm_03f": 3.0,
+  "b.NSheriff.buy_sp_01": 3.0,
+  "b.NSheriff.buy_sp_01f": 3.0,
+  "b.NSheriff.buy_sp_02": 3.0,
+  "b.NSheriff.buy_sp_02f": 3.0,
+  "b.NSheriff.buy_sp_03": 3.0,
+  "b.NSheriff.buy_sp_03f": 3.0,
+  "b.NSheriff.buy_sw_01": 3.0,
+  "b.NSheriff.buy_sw_01f": 3.0,
+  "b.NSheriff.buy_sw_02": 3.0,
+  "b.NSheriff.buy_sw_02f": 3.0,
+  "b.NSheriff.buy_sw_03": 3.0,
+  "b.NSheriff.buy_sw_03f": 3.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "b.skelet.fq6": 2.0,
+  "b.spletnica.fq13": 2.0,
+  "cp_lever1": 1.0,
+  "cp_lever2": 1.0,
+  "cp_lever3": 1.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz11d1.fq13": 2.0,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz24k.fq19": 2.0,
+  "q.gz35j.q17j": 2.0,
+  "q.gz4h.fq6": 2.0,
+  "start_zone11dun1": 1.0,
+  "start_zone24": 1.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z1d1": 1.0,
+  "zone11dun1_cr4": 1.0,
+  "zone24_digger_time": 9.0
+ },
+ "zone": "bz31j"
+}

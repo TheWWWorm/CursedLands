@@ -1,0 +1,110 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz1h",
+ "fixture": {
+  "active_party": "ExitProof",
+  "money": 0,
+  "parties": {
+   "ExitProof": [
+    {
+     "name": "Hero",
+     "prototype": "Hero3"
+    }
+   ]
+  },
+  "setup": [
+   "GodMode(0,1)",
+   "RecalcMercBriefings()",
+   "SetCP(GetUnitOfPlayer(0,0),24.8,84,0)"
+  ]
+ },
+ "from_zone": "gz1d1",
+ "note": "Actual ordinary cellar exit2 transfer from original z.gz1h=2. Prepared Hero-only unique party, god mode, and teleport beside ladder. Measured native action selects Hero, clicks exit ground at370,345, shows original leave confirmation, confirms300,375 and arrives gz1h through entrance7. No LeaveToZone script used for measured action.",
+ "observations_after": {
+  "cp_mercs": 0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_mercs": 0,
+  "money": 0
+ },
+ "probes": {
+  "cp_mercs": "GetMercsNumber(0)"
+ },
+ "provenance": {
+  "after": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "gz1d1.sav": "d1e1c0053010469035a4db553b13151b6860cd320193b9a233508efb94b8e6d2",
+   "gz1h.sav": "91de91e3c6d77cae60677eaba35c712fb05ff5d22233164e323d7531e3edea58",
+   "info.sav": "cc2f1c1895c24deca40c2692e51ba12d3646669aa5dab596bb6a1b9f435bc3a4",
+   "mission.sav": "b8191fc66624f5b8b0574936655da57e85f0f562c968d46e681f95040ba0c12a",
+   "scenario.sav": "73a40c6e624d9d651465d38a25623e90a3318959a992318463d8128f4d45c803",
+   "shot.sav": "63f73781560c62b1c02986ecfab8acaccff06ef9ed84f16710ce35046629cbd1"
+  },
+  "before": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "gz1h.sav": "91de91e3c6d77cae60677eaba35c712fb05ff5d22233164e323d7531e3edea58",
+   "info.sav": "ddb57fc4933d36ac9a0a9891c6bc8545ad8406d0ab35fbd92c22292f4068f9ef",
+   "mission.sav": "8e37f170e774c804fd1a53cbd559cc6d9f7cc136fbee9ad29e6ff0a854ac63f8",
+   "scenario.sav": "73ef8c3b46eae7096ff584edcfeba53d2cb81cd4afcf46274033febe30132ddd",
+   "shot.sav": "25acdb46f36afbd3c783d64aad2a6dcff66762234ce92e75b09e04f23d1985d7"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "destination": "gz1h",
+   "leave": "2"
+  }
+ ],
+ "vars_after": {
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc2.n1_2": 2.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z1d1": 1.0
+ },
+ "vars_before": {
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc2.n1_2": 2.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_torch": 1.0,
+  "cp_x": 20.9950008392334,
+  "cp_y": 19.5049991607666,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 2.0,
+  "z1d1": 1.0
+ },
+ "zone": "gz1d1"
+}

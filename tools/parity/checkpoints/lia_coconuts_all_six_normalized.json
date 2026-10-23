@@ -1,0 +1,139 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz1h",
+ "fixture": {
+  "active_party": "EarlyProof",
+  "money": 0,
+  "parties": {
+   "EarlyProof": [
+    {
+     "name": "Hero",
+     "prototype": "Hero3"
+    },
+    {
+     "name": "merc2",
+     "prototype": "merc2"
+    }
+   ]
+  },
+  "setup": [
+   "GodMode(0,1)",
+   "RecalcMercBriefings()"
+  ]
+ },
+ "from_zone": "gz1h",
+ "note": "Six actual original fruit objects activated through physical state cheats. Watches six fruit flags and collective q4h completion; this completion gates first fortune. No fruit or quest outcome vars assigned. Native RecalcMercBriefings() executed before baseline to normalize stale generic mercenary-topic flags; recorded as fixture setup.",
+ "observations_after": {
+  "cp_mercs": 1.0,
+  "money": 0
+ },
+ "observations_before": {
+  "cp_mercs": 1.0,
+  "money": 0
+ },
+ "probes": {
+  "cp_mercs": "GetMercsNumber(0)"
+ },
+ "provenance": {
+  "after": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "info.sav": "2b30e075414818b6cba866609bef04b1623a29b6a14bdd2f88573eb019efc603",
+   "mission.sav": "738c72016275a8ca48a47fd02406e2ba7ad4f0b48aa5a83ffb8b961bf253a83d",
+   "scenario.sav": "f0e44cf02981c62b58eaf8d6f67d0c57ad1be17d69529135bec82b88dc11d0e0",
+   "shot.sav": "a7b3606e200fb4b82105ccf19b9398fa459246f2aba5e8478a30246991f73c67"
+  },
+  "before": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "info.sav": "7d8f1f9c570b6d985f760220992e34076a1d916de1c4f15aa8045f51d632425f",
+   "mission.sav": "2cc74092da3735823eca96d46eb27729c625693fd6051aaaab96cb189bd59f51",
+   "scenario.sav": "115c0fa36c352e045a0f693f330d4100caf58c0dc2858c8f38384d39e0049f1c",
+   "shot.sav": "1cd2677506b63a37a01c8c0fd9d7cc142f11dceb6931ab3125d9e7bf021cec2f"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12",
+  "recording_only_vars": [
+   "cp_capture_nonce"
+  ]
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "script": "SwitchLeverState(GetObject(110401),1)"
+  },
+  {
+   "wait": "0.5"
+  },
+  {
+   "script": "SwitchLeverState(GetObject(110402),1)"
+  },
+  {
+   "wait": "0.5"
+  },
+  {
+   "script": "SwitchLeverState(GetObject(110403),1)"
+  },
+  {
+   "wait": "0.5"
+  },
+  {
+   "script": "SwitchLeverState(GetObject(110404),1)"
+  },
+  {
+   "wait": "0.5"
+  },
+  {
+   "script": "SwitchLeverState(GetObject(110405),1)"
+  },
+  {
+   "wait": "0.5"
+  },
+  {
+   "script": "SwitchLeverState(GetObject(110406),1)"
+  },
+  {
+   "wait": "0.5"
+  }
+ ],
+ "vars_after": {
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "fruit1": 2.0,
+  "fruit2": 2.0,
+  "fruit3": 2.0,
+  "fruit4": 2.0,
+  "fruit5": 2.0,
+  "fruit6": 2.0,
+  "q.gz1h.fq2": 2.0,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "q.gz1h.q4h": 2.0,
+  "z.gz1d1": 1.0,
+  "z.gz1h": 1.0
+ },
+ "vars_before": {
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "q.gz1h.fq2": 2.0,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "z.gz1d1": 1.0,
+  "z.gz1h": 1.0
+ },
+ "zone": "gz1h"
+}

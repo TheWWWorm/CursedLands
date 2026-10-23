@@ -1,0 +1,84 @@
+{
+ "campaign": "lost_in_astral",
+ "expected_zone": "gz1d1",
+ "fixture": {
+  "money": 0,
+  "setup": [
+   "GodMode(0,1)"
+  ]
+ },
+ "from_zone": "gz1h",
+ "note": "Original first cellar entry after actual torch use. Direct travel cheat; arrival autosave reloaded then immediate GodMode to survive rats. No quest outcomes assigned. Entry entrance1.",
+ "observations_after": {
+  "money": 0
+ },
+ "observations_before": {
+  "money": 0
+ },
+ "probes": {},
+ "provenance": {
+  "after": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "gz1h.sav": "91de91e3c6d77cae60677eaba35c712fb05ff5d22233164e323d7531e3edea58",
+   "info.sav": "8774ae045a4c222b5d9788d3a682a5aba4714f9648fffd0e7551eb2866f1ce77",
+   "mission.sav": "b881c267556c00d6b2f01f9da439ad36eacd3e99de19d11be68c08ae77aee950",
+   "scenario.sav": "de9bb0c3c2d1a63c1b5a0c290e4af508c88877f9b29e1672acd8aff8c993ff27",
+   "shot.sav": "e800ef0a057a707e63524a255366889b4a0cd18d3996ed5a9d71cd86bafd049f"
+  },
+  "before": {
+   "bz1h.sav": "add59eea9981b1f8ecd029ab6204873c8d5beac64537c13e7a72f81154a0b383",
+   "info.sav": "c4853c2665816eb202258a59de65d0c2b911373a0ed6e5079e4b759d1e67b5c1",
+   "mission.sav": "4abaacd6c5f87e5fe5a055933229f408f779fdb4a85533e53da570c63d9c09c6",
+   "scenario.sav": "22d193984b6dab2579cf6c9567c509cf4f29ae4ecf9bf2e45e0486d449c2709f",
+   "shot.sav": "10a62a27269ded3d56cc8a404a3343600d4a6c6260eb8f25a1759bada96ec9e8"
+  },
+  "decoder_executable_sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8",
+  "original_executable_sha256": "9ecd475f5776681b8ffe1a8bb05cf67fe7adcceb62d0949135261ed7d3616c12"
+ },
+ "schema": 2,
+ "steps": [
+  {
+   "enter": "gz1d1"
+  }
+ ],
+ "vars_after": {
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc2.n1_2": 2.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_torch": 1.0,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 1.0,
+  "z1d1": 1.0
+ },
+ "vars_before": {
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc2.n1_2": 2.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "b.skelet.fq2": 2.0,
+  "cp_torch": 1.0,
+  "q.gz1h.q01h": 2.0,
+  "q.gz1h.q02h": 2.0,
+  "z.gz1d1": 2.0,
+  "z.gz1h": 1.0
+ },
+ "zone": "gz1d1"
+}
