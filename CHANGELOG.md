@@ -1,11 +1,20 @@
 # Changelog
 
-## Unreleased
+## 1.26.0 — 2026-10-24
 
 - Preserve each scripted party's live and stored quest inventory through travel, redeployment, saves and co-op progress. Shaina retains the meteorite samples until her hand-in, and Kel's rescue restores the stored Rod fragments as in the original game.
 - Show creatures in the public web wiki with their original colour variants, as the in-game wiki does since 1.25.0: black boars, black unicorns, white wolves and horses, coloured dryads, succubi and banshees, spotted leopards and the map-authored looks of Lost in Astral creatures.
 - Add a **Cut content** section to the in-game and web wiki for each campaign. It lists original creature models, colours, creature variants and weapons and armour that the data contains but no map, trader, script or quest uses, such as the black and dark blue lizards and the unfinished beast and early ogre figures in Cursed Lands. Creatures that maps place in several colours now show each one as a version of their article with its locations, Lost in Astral creatures show the figure their maps give them, and the messenger bird has its own article.
 - Restore the Lost in Astral wiki histories for Dar-Ulgorn, Jigran, the baron, Uncle Rad and the hero, which stopped appearing after the official 1.02 journal corrections were included.
+
+- Restore saved side-quest control values when continuing a base campaign.
+- Keep shop filters and separate item/spell scroll positions when changing pages; add Shift-click transfers of complete stacks and restore transfer sounds. ([#100](https://github.com/TheWWWorm/CursedLands/issues/100), [#101](https://github.com/TheWWWorm/CursedLands/issues/101), [#102](https://github.com/TheWWWorm/CursedLands/issues/102))
+- Suppress world sounds and companion speech in shops, stop replaced acknowledgement voices, and use the original localized White Wolf quest-item names. ([#93](https://github.com/TheWWWorm/CursedLands/issues/93), [#97](https://github.com/TheWWWorm/CursedLands/issues/97), [#99](https://github.com/TheWWWorm/CursedLands/issues/99))
+- Apply single-player difficulty changes immediately and preserve them in saves. Start dialogue at normal speed with tactical pause released. Freeze weather and world audio with the simulation while order indicators expire independently. ([#90](https://github.com/TheWWWorm/CursedLands/issues/90), [#92](https://github.com/TheWWWorm/CursedLands/issues/92), [#62](https://github.com/TheWWWorm/CursedLands/issues/62))
+- Let middle-button dragging turn and tilt the camera, with Shift-middle panning. Centre the village camera on entry and shop exit while respecting follow and angle-reset choices. ([#91](https://github.com/TheWWWorm/CursedLands/issues/91), [#61](https://github.com/TheWWWorm/CursedLands/issues/61))
+- Delay shader progress overlays for work shorter than 500 ms, retain the campaign image while returning to the menu, and preserve FSR preparation across menu and tutorial transitions.
+- Fix Autochess reward focus when switching between mouse, keyboard and controller; start battles with daytime lighting and remove floating item-effect names while retaining their effects.
+- Correct Windows Direct3D 12 path-tracing barriers during save/load and preserve lighting history across ordinary daylight changes.
 
 ## 1.25.0 — 2026-10-23
 
