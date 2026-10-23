@@ -1,0 +1,86 @@
+{
+  "exit_code": 0,
+  "pid": 249254,
+  "wall_seconds": 51.692572287000075,
+  "stopped": "",
+  "errors": [],
+  "allowed_diagnostics": [],
+  "gpu_uuids_observed": [
+    "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0.0834058760001426,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": false,
+    "live_members_after_cleanup": []
+  },
+  "suite": "detached_live",
+  "checks": 15,
+  "fixture_failures": [],
+  "validation_errors": [],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "display": "Windows",
+    "driver": "d3d12",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-dx12-final-03/fixtures/path_trace_detached_live.gd",
+    "fsr": {
+      "api": true,
+      "engine": true,
+      "fg3": true,
+      "fg4": false,
+      "sr3": true,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 896,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": false,
+      "expected_separate": false,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 1,
+      "render_id": 1,
+      "requested": "project"
+    },
+    "require_sdk": true,
+    "user_data": "C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "path-detached-live.json",
+  "passed": true,
+  "artifacts": {
+    "campaign-detached-expired.png": "c633c49d010ac7baf00ea2845f7a86875297a9c5d9c3dacfe75340e1ec31658e",
+    "campaign-detached-moving.png": "1a16adaddaa098a803886d26d3e823cc401513c4b4be337eb38cad8e9516f651",
+    "campaign-detached-visible.png": "12131389dd016e4c69b0723160cf8bf67aaea9bb5be7bc2845e95b874136e2d9",
+    "command.json": "5105be458532be151a06869408abef0fb644450ecf91e535bcec8f23e7552196",
+    "gpu.jsonl": "1102843ac848b41d215d22c335da95425119fe4d9cc471d4756f1ea3bebbb9d5",
+    "path-detached-live.json": "871b9709d12d915a16f1ce4e06d5da47326b2dac3932c44cb9f9ff83a94c8ebc",
+    "qualification-runtime.json": "7010917d8bd2272a3de28f3e265f297c363e8859a0dbe1e82b38282045b63a53",
+    "run.log": "8bc0e596e6aa22f93f9437743d68c1c3f1b9059a076241673309129c606ded90"
+  }
+}

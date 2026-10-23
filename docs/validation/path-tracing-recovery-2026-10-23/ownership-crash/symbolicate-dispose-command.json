@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "gdb",
+    "-q",
+    "-nx",
+    "-batch",
+    "-iex",
+    "set debuginfod enabled off",
+    "-iex",
+    "set auto-load off",
+    "-x",
+    "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/checks/resolution-thread-crash-01/symbolicate-dispose.gdb",
+    "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/candidate-final-linux/CursedLands.x86_64",
+    "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/checks/resolution-thread-crash-01/crash.core"
+  ],
+  "exit_code": 0,
+  "executable_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa",
+  "build_id": "498084aefc8728f9620cf4e796c9cae53b3fd03d"
+}

@@ -1,0 +1,2 @@
+# Preserve captured diagnostics byte-for-byte; structured JSON holds the reviewable results.
+*.log -text -diff

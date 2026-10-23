@@ -1,0 +1,144 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+Failed to enable screen_keep_on.
+warn:  CreateDXGIFactory2: Ignoring flags
+warn:  Skipping CPU adapter: llvmpipe (LLVM 20.1.2, 256 bits)
+warn:  DXGI: Found monitors not associated with any adapter, using fallback
+warn:  DxgiAdapter::QueryInterface: Unknown interface query
+warn:  f0db4c7f-fe5a-42a2-bd62-f2a6cf6fc83e
+7754.067:0684:0688:warn:vkd3d-proton:openvr_instance_extensions: Failed to open VR registry key, status 2.
+7754.067:0684:0688:warn:vkd3d-proton:openxr_vulkan_extensions: wineopenxr.dll is missing required symbols.
+7754.067:0684:0688:info:vkd3d-proton:vkd3d_instance_apply_application_workarounds: Program name: "CursedLands.exe" (hash: 33c38cdfc18b2417)
+7754.067:0684:0688:info:vkd3d-proton:vkd3d_instance_deduce_config_flags_from_environment: shader_cache is used, global_pipeline_cache is enforced.
+7754.067:0684:0688:info:vkd3d-proton:vkd3d_config_flags_init_once: VKD3D_CONFIG=''.
+7754.071:0684:0688:warn:vkd3d-proton:vkd3d_check_extensions: Optional user instance extension "VK_KHR_surface_maintenance1" is not supported.
+7754.071:0684:0688:info:vkd3d-proton:vkd3d_get_vk_version: vkd3d-proton - applicationVersion: 3.0.1.
+7754.071:0684:0688:info:vkd3d-proton:vkd3d_instance_init: vkd3d-proton - build: 3b10bd7a7ec6a73.
+7754.102:0684:0688:warn:vkd3d-proton:openvr_device_extensions: Failed to open VR registry key, status 2.
+7754.102:0684:0688:warn:vkd3d-proton:openxr_vulkan_extensions: wineopenxr.dll is missing required symbols.
+7754.102:0684:0688:info:vkd3d-proton:d3d12_device_create: Forcing singleton device due to RenderDoc being enabled.
+7754.138:0684:0688:warn:vkd3d-proton:vkd3d_check_extensions: Optional user device extension "VK_KHR_swapchain_maintenance1" is not supported.
+7754.141:0684:0688:warn:vkd3d-proton:vkd3d_physical_device_info_apply_workarounds: Disabling present_id2, wait2 and timing on pre-595 NV drivers.
+7754.141:0684:0688:info:vkd3d-proton:vkd3d_init_device_caps: Not all relevant pipeline stages are supported by EXT_dgc. Skipping.
+7754.141:0684:0688:warn:vkd3d-proton:vkd3d_supports_minimum_coopmat_caps: Missing sufficient features to expose WMMA.
+7754.751:0684:0688:warn:vkd3d-proton:d3d12_device_create_vkd3d_queues: Could not allocate an out of band queue for queue family 2. All out of band work will happen on the in band queue.
+7754.751:0684:0688:warn:vkd3d-proton:d3d12_device_create_vkd3d_queues: Could not allocate an out of band queue for queue family 3. All out of band work will happen on the in band queue.
+7754.756:0684:0688:info:vkd3d-proton:vkd3d_memory_info_decide_hvv_usage: Topology: Device heaps are split. Assuming small BAR situation.
+7754.756:0684:0688:info:vkd3d-proton:vkd3d_memory_info_upload_hvv_memory_properties: Topology: HVV usage is not allowed, using HOST_COHERENT for UPLOAD.
+7754.756:0684:0688:info:vkd3d-proton:vkd3d_bindless_state_get_bindless_flags: Device supports VK_EXT_mutable_descriptor_type.
+7754.756:0684:0688:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+7754.756:0684:0688:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+7754.756:0684:0688:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+7754.885:0684:0688:info:vkd3d-proton:d3d12_device_caps_init_shader_model: Enabling support for SM 6.6.
+7754.885:0684:0688:fixme:vkd3d-proton:d3d12_device_caps_init_feature_options1: TotalLaneCount = 8064, may be inaccurate.
+7754.885:0684:0688:info:vkd3d-proton:d3d12_device_determine_ray_tracing_tier: DXR support enabled.
+7754.885:0684:0688:info:vkd3d-proton:d3d12_device_determine_ray_tracing_tier: DXR 1.1 support enabled.
+7754.885:0684:0688:info:vkd3d-proton:d3d12_device_caps_init_feature_level: DX Ultimate supported!
+7754.885:0684:0688:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\home\llm2x\Documents\EI\local\scratchpad\water-raytracing-20261021\dx12-quality\pt-stability-20261023\qualification-dx12-final-03\vkd3d-proton.CursedLands.exe.cache.
+7754.885:0684:0688:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\home\llm2x\Documents\EI\local\scratchpad\water-raytracing-20261021\dx12-quality\pt-stability-20261023\qualification-dx12-final-03\vkd3d-proton.CursedLands.exe.cache.
+7754.886:0684:06a4:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Performing async setup of stream archive ...
+7754.886:0684:06a4:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_merge: No write cache exists. No need to merge any disk caches.
+7754.886:0684:06a4:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Merging pipeline libraries took 0.321 ms.
+7754.887:0684:06a4:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Mapping read-only cache took 0.218 ms.
+7754.887:0684:06a4:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Parsing stream archive took 0.319 ms.
+7754.887:0684:06a4:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Done performing async setup of stream archive.
+warn:  DXGI: Found monitors not associated with any adapter, using fallback
+FidelityFX provider: 3.1.5
+FidelityFX provider: 2.3.4
+FidelityFX provider: 3.1.6
+7755.141:0684:0688:warn:vkd3d-proton:d3d12_device_CheckFeatureSupport: Assuming device does not support tile based rendering.
+D3D12 12_0 - Forward+ - Using Device #1: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+7756.229:0684:0688:fixme:vkd3d-proton:vkd3d_texture_view_desc_fixup: Remapping 2D to 2D_ARRAY. Needs Vulkan spec tightening to match D3D12 properly.
+
+7757.996:0684:0688:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+7757.996:0684:0688:info:vkd3d-proton:dxgi_vk_swap_chain_init: Creating swapchain (1280 x 720), BufferCount = 3.
+7758.003:0684:0688:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Enabling frame latency handles.
+7758.003:0684:0688:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Ensure maximum latency of 3 frames with KHR_present_wait.
+7758.004:0684:0688:info:vkd3d-proton:dxgi_vk_swap_chain_init_sleep_state: Timer interval is 1.0 ms.
+err:   readMonitorEdidFromKey: Failed to get EDID reg key size
+err:   DXGI: Failed to parse display metadata + colorimetry info, using blank.
+7758.006:0684:0688:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+warn:  DXGI: MakeWindowAssociation: Ignoring flags
+7758.100:0684:06d4:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+WARNING: Failed to get SDR white level for adapterId: 0x00000000000006E0, id: 0
+   at: _get_sdr_white_level_for_hmonitor (platform/windows/display_server_windows.cpp:1708)
+[trace 13:50:40 +8925ms] session f5460c18265e: 1.23.0, Windows 10.0.19043, NVIDIA NVIDIA GeForce RTX 3090 Ti, forward_plus / d3d12
+PT_QUALIFICATION_RUNTIME {"adapter":"NVIDIA GeForce RTX 3090 Ti","display":"Windows","driver":"d3d12","engine":{"build":"custom_build","hash":"unknown","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (custom_build)","timestamp":0},"fixture":"Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-dx12-final-03/fixtures/path_trace_sampling.gd","fsr":{"api":true,"engine":true,"fg3":true,"fg4":false,"sr3":true,"sr4":false},"method":"forward_plus","passed":true,"pid":1668,"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"pt_supported":true,"render_thread":{"actual_separate":false,"expected_separate":false,"main_id":1,"passed":true,"project_model":1,"render_id":1,"requested":"project"},"require_sdk":true,"user_data":"C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands","vendor":"NVIDIA"}
+PASS sampling attribution and license are included in the exported package
+PASS qualified native path sampling device
+PASS build grazing metal sampling fixture
+7763.854:0684:06d4:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+PASS metal-1-spp: finite raw lighting agrees with the reference at 1 frames
+7763.905:0684:0688:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+7763.905:0684:0688:info:vkd3d-proton:dxgi_vk_swap_chain_init: Creating swapchain (1280 x 720), BufferCount = 3.
+7763.905:0684:0688:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Enabling frame latency handles.
+7763.905:0684:0688:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Ensure maximum latency of 3 frames with KHR_present_wait.
+7763.907:0684:0688:info:vkd3d-proton:dxgi_vk_swap_chain_init_sleep_state: Timer interval is 1.0 ms.
+7763.908:0684:0688:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+warn:  DXGI: MakeWindowAssociation: Ignoring flags
+7763.967:0684:06f0:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+7764.002:0684:06f0:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+PASS metal-1-spp: finite raw lighting agrees with the reference at 4 frames
+PASS metal-1-spp: finite raw lighting agrees with the reference at 16 frames
+PASS metal-1-spp: finite raw lighting agrees with the reference at 64 frames
+PASS metal-1-spp: accumulating raw paths reduces error
+PASS metal-1-spp: no strong adjacent-pixel error correlation
+PASS metal-2-spp: finite raw lighting agrees with the reference at 1 frames
+PASS metal-2-spp: finite raw lighting agrees with the reference at 4 frames
+PASS metal-2-spp: finite raw lighting agrees with the reference at 16 frames
+PASS metal-2-spp: finite raw lighting agrees with the reference at 64 frames
+PASS metal-2-spp: accumulating raw paths reduces error
+PASS metal-2-spp: no strong adjacent-pixel error correlation
+PASS metal-4-spp: finite raw lighting agrees with the reference at 1 frames
+PASS metal-4-spp: finite raw lighting agrees with the reference at 4 frames
+PASS metal-4-spp: finite raw lighting agrees with the reference at 16 frames
+PASS metal-4-spp: finite raw lighting agrees with the reference at 64 frames
+PASS metal-4-spp: accumulating raw paths reduces error
+PASS metal-4-spp: no strong adjacent-pixel error correlation
+PASS metal-offset: finite raw lighting agrees with the reference at 1 frames
+PASS metal-offset: finite raw lighting agrees with the reference at 4 frames
+PASS metal-offset: finite raw lighting agrees with the reference at 16 frames
+PASS metal-offset: accumulating raw paths reduces error
+PASS metal-offset: no strong adjacent-pixel error correlation
+PASS identical pixel/frame/sample indices reproduce the same native paths
+PASS frame-counter wrap advances to a different valid sample set
+PASS an unrelated zero-energy light preserves BSDF samples within half-float rounding
+PASS build analytical disk-sun penumbra
+PASS shadow-1-spp: finite raw lighting agrees with the reference at 1 frames
+PASS shadow-1-spp: finite raw lighting agrees with the reference at 4 frames
+PASS shadow-1-spp: finite raw lighting agrees with the reference at 16 frames
+PASS shadow-1-spp: finite raw lighting agrees with the reference at 64 frames
+PASS shadow-1-spp: accumulating raw paths reduces error
+PASS shadow-1-spp: no strong adjacent-pixel error correlation
+PASS shadow-2-spp: finite raw lighting agrees with the reference at 1 frames
+PASS shadow-2-spp: finite raw lighting agrees with the reference at 4 frames
+PASS shadow-2-spp: finite raw lighting agrees with the reference at 16 frames
+PASS shadow-2-spp: finite raw lighting agrees with the reference at 64 frames
+PASS shadow-2-spp: accumulating raw paths reduces error
+PASS shadow-2-spp: no strong adjacent-pixel error correlation
+PASS shadow-4-spp: finite raw lighting agrees with the reference at 1 frames
+PASS shadow-4-spp: finite raw lighting agrees with the reference at 4 frames
+PASS shadow-4-spp: finite raw lighting agrees with the reference at 16 frames
+PASS shadow-4-spp: finite raw lighting agrees with the reference at 64 frames
+PASS shadow-4-spp: accumulating raw paths reduces error
+PASS shadow-4-spp: no strong adjacent-pixel error correlation
+PASS build small area-emitter sampling fixture
+PASS emitter-1-spp: finite raw lighting agrees with the reference at 1 frames
+PASS emitter-1-spp: finite raw lighting agrees with the reference at 4 frames
+PASS emitter-1-spp: finite raw lighting agrees with the reference at 16 frames
+PASS emitter-1-spp: finite raw lighting agrees with the reference at 64 frames
+PASS emitter-1-spp: accumulating raw paths reduces error
+PASS emitter-1-spp: no strong adjacent-pixel error correlation
+PASS emitter-2-spp: finite raw lighting agrees with the reference at 1 frames
+PASS emitter-2-spp: finite raw lighting agrees with the reference at 4 frames
+PASS emitter-2-spp: finite raw lighting agrees with the reference at 16 frames
+PASS emitter-2-spp: finite raw lighting agrees with the reference at 64 frames
+PASS emitter-2-spp: accumulating raw paths reduces error
+PASS emitter-2-spp: no strong adjacent-pixel error correlation
+PASS emitter-4-spp: finite raw lighting agrees with the reference at 1 frames
+PASS emitter-4-spp: finite raw lighting agrees with the reference at 4 frames
+PASS emitter-4-spp: finite raw lighting agrees with the reference at 16 frames
+PASS emitter-4-spp: finite raw lighting agrees with the reference at 64 frames
+PASS emitter-4-spp: accumulating raw paths reduces error
+PASS emitter-4-spp: no strong adjacent-pixel error correlation
+SCENE_RT_DEVICE 67 checks 0 failures
+[trace 13:50:46 +15069ms] clean exit

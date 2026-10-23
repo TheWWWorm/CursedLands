@@ -1,0 +1,84 @@
+{
+  "exit_code": 0,
+  "pid": 270922,
+  "wall_seconds": 11.958702349000305,
+  "stopped": "",
+  "errors": [],
+  "allowed_diagnostics": [],
+  "gpu_uuids_observed": [
+    "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0.07744228100000328,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": false,
+    "live_members_after_cleanup": []
+  },
+  "suite": "light_history",
+  "checks": 36,
+  "fixture_failures": [],
+  "validation_errors": [],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "display": "Windows",
+    "driver": "d3d12",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-dx12-final-03/fixtures/path_trace_light_history.gd",
+    "fsr": {
+      "api": true,
+      "engine": true,
+      "fg3": true,
+      "fg4": false,
+      "sr3": true,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 932,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": false,
+      "expected_separate": false,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 1,
+      "render_id": 1,
+      "requested": "project"
+    },
+    "require_sdk": true,
+    "user_data": "C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "path-light-history.json",
+  "passed": true,
+  "artifacts": {
+    "command.json": "c39c28529944306bb897d1b634fe8d40cb17430ea55227640b3cfa71dcdc3efa",
+    "gpu.jsonl": "047a54716274056af862644b2b33606b3a23ceac4fbbdf0e6bc32ecad73cad57",
+    "path-light-history.json": "c1d0567bd974c0fcff8f218fee18e5612b5f50c12f4c3668f82bf9562df14808",
+    "qualification-runtime.json": "35a1c79cc96a241e72b1984b0024ba867f302387573ad8bf2ed8fa68e4d4362c",
+    "run.log": "2fc6383d30eb9b67b89aa6aee71c9b3696462456c0f0212a787f71eb6869a6df",
+    "scene-device-results.json": "d856d5110606d4a7488b49401f9bf7c037e3f817e051022017225e35fa137e92"
+  }
+}

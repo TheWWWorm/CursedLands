@@ -1,0 +1,87 @@
+{
+  "exit_code": 0,
+  "pid": 503636,
+  "wall_seconds": 18.028330822002317,
+  "stopped": "",
+  "errors": [],
+  "allowed_diagnostics": [],
+  "gpu_uuids_observed": [
+    "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0.09350503599853255,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": false,
+    "live_members_after_cleanup": []
+  },
+  "suite": "shader_arena",
+  "checks": 24,
+  "fixture_failures": [],
+  "validation_errors": [],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "display": "Windows",
+    "driver": "d3d12",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-final-01/fixtures/shader_compilation_arena.gd",
+    "fsr": {
+      "api": true,
+      "engine": true,
+      "fg3": true,
+      "fg4": false,
+      "sr3": true,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 1552,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": false,
+      "expected_separate": false,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 1,
+      "render_id": 1,
+      "requested": "project"
+    },
+    "require_sdk": true,
+    "user_data": "C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "shader-compilation-arena.json",
+  "passed": true,
+  "artifacts": {
+    "CursedLands_dxgi.log": "52dad93115db637716a0ba91543b32a3f12ee67810cd021f62ca32c0545cb9ef",
+    "arena-before-first-draw.png": "826faefecf74ce25492011301789b2fafcb14ef2beb94c2a46b1729fa9586ff6",
+    "arena-materials-completed.png": "e15a8e6af594a9af152febba74b68db4b10bba65b4b4189d2774a43f7691033c",
+    "arena-materials-in-progress.png": "85e71b5b16bf862bfe7efe93e1f5fe538771b0e12f79218ac3d5fed60c9fe9b5",
+    "command.json": "f7f3112e4cf098325552bfed93e6d280408bbcddfc8f3d17447f440c2c267f1b",
+    "gpu.jsonl": "2587cf247e762ea8ae3bf2c55d5410e3098b1c83e6daef3122cc0cec72159727",
+    "qualification-runtime.json": "7ab05373c29f8986b82e3469ed8168be6dbdac6b83db5f35b497bb2ea78b6d34",
+    "run.log": "7c36699d0ea26654e9378c8af7015d5991823d4bad08a5d9da16957538510a14",
+    "shader-compilation-arena.json": "47a6302b5c2e224376623602df618a05a3f79873a05739c86eab136e6d5bf9c6"
+  }
+}

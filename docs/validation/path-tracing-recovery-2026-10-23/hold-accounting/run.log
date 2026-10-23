@@ -1,0 +1,13 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+PASS duplicate callback preserves uninterrupted interval
+PASS duplicate callback earns no rendering credit and no fallback time
+PASS duplicate callback is explicitly observable
+PASS 288 duplicate callbacks cannot manufacture rendering time or reset the interval
+PASS next actual frame continues the existing interval
+PASS real mismatch resets even without a new counted frame
+PASS device replacement resets the interval
+PASS generation replacement resets the interval
+PASS five-second stall earns at most 100ms for one actual frame
+PASS credit cap scales only with actual frame count
+{"checks":10,"failures":[],"note":"Executes the exact extracted current fixture accounting block under a headless Godot SceneTree; no GPU fixture or production code is run.","status":"passed"}

@@ -1,0 +1,158 @@
+{
+  "exit_code": 0,
+  "pid": 479767,
+  "wall_seconds": 809.6758693680003,
+  "stopped": "",
+  "errors": [],
+  "allowed_diagnostics": [],
+  "gpu_uuids_observed": [
+    "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0.1728729900005419,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": false,
+    "live_members_after_cleanup": []
+  },
+  "host_rss_trend": {
+    "available": true,
+    "passed": true,
+    "baseline_bytes": 3505430528,
+    "final_bytes": 3548090368,
+    "growth_bytes": 42659840,
+    "budget_bytes": 876357632.0,
+    "slope_bytes_per_cycle": 10664960.0,
+    "samples": [
+      {
+        "cycle": 1,
+        "fixture_unix": 1792764283.842,
+        "sample_unix": 1792764283.3323307,
+        "distance_seconds": 0.509669303894043,
+        "bytes_by_pid": {
+          "479767": 3459829760
+        },
+        "bytes": 3459829760
+      },
+      {
+        "cycle": 2,
+        "fixture_unix": 1792764388.426,
+        "sample_unix": 1792764389.1764328,
+        "distance_seconds": 0.7504327297210693,
+        "bytes_by_pid": {
+          "479767": 3505430528
+        },
+        "bytes": 3505430528
+      },
+      {
+        "cycle": 3,
+        "fixture_unix": 1792764495.529,
+        "sample_unix": 1792764495.101236,
+        "distance_seconds": 0.4277639389038086,
+        "bytes_by_pid": {
+          "479767": 3521036288
+        },
+        "bytes": 3521036288
+      },
+      {
+        "cycle": 4,
+        "fixture_unix": 1792764601.251,
+        "sample_unix": 1792764600.1795087,
+        "distance_seconds": 1.0714912414550781,
+        "bytes_by_pid": {
+          "479767": 3530244096
+        },
+        "bytes": 3530244096
+      },
+      {
+        "cycle": 5,
+        "fixture_unix": 1792764711.612,
+        "sample_unix": 1792764710.6072357,
+        "distance_seconds": 1.0047643184661865,
+        "bytes_by_pid": {
+          "479767": 3534012416
+        },
+        "bytes": 3534012416
+      },
+      {
+        "cycle": 6,
+        "fixture_unix": 1792764824.515,
+        "sample_unix": 1792764823.632893,
+        "distance_seconds": 0.8821070194244385,
+        "bytes_by_pid": {
+          "479767": 3548090368
+        },
+        "bytes": 3548090368
+      }
+    ],
+    "scope": "RSS of the same actual GPU-owning process set; shared/resident pages, not private allocation accounting"
+  },
+  "suite": "sustained",
+  "checks": 389,
+  "fixture_failures": [],
+  "validation_errors": [],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "display": "Windows",
+    "driver": "d3d12",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-final-01/fixtures/path_trace_sustained.gd",
+    "fsr": {
+      "api": true,
+      "engine": true,
+      "fg3": true,
+      "fg4": false,
+      "sr3": true,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 1116,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": false,
+      "expected_separate": false,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 1,
+      "render_id": 1,
+      "requested": "project"
+    },
+    "require_sdk": true,
+    "user_data": "C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "path-sustained-results.json",
+  "passed": true,
+  "artifacts": {
+    "CursedLands_dxgi.log": "6b91f837b9fbe11515fcd162f7bcf0b08fd7efdb86fc90369fa6d135e4709892",
+    "command.json": "6fddd40d27431719c1a2cdae973030cf54ec1791c9d9ceae09ccf8434a989c09",
+    "gpu.jsonl": "6ef0b2d4aab9ed445b96de7c204066f75fd1e775199b1fe517242d834c6986d7",
+    "path-stability-progress.jsonl": "519d9251b6ffe6076c907509ee77d1524499dff4efa25d4e52d29c04a452a3da",
+    "path-stability-results.json": "6f6951a82cae23ca42b1cfdeff54c8aed3574b8df4d79d617caaa65fd803eca9",
+    "path-sustained-results.json": "2191e0508d9e978308403bf30c96cc22909a940956615ae65da7bed86c73dfae",
+    "qualification-runtime.json": "e20d53ddcb62c6801432a7e554a2f02e2f1134ca5bc71dc26e15e3f5fecc8bc0",
+    "run.log": "8c33ca4705abdf174c1f86b1078cd89ccb8bb15fa85f72ab932b65b0723dc88e"
+  }
+}

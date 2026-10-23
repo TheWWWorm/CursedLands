@@ -1,0 +1,46 @@
+test_actual_render_thread_must_match_project_or_explicit_override (test_path_trace_qualification.QualificationTests.test_actual_render_thread_must_match_project_or_explicit_override) ... ok
+test_clean_process_with_gpu_evidence_finishes (test_path_trace_qualification.QualificationTests.test_clean_process_with_gpu_evidence_finishes) ... {"event": "started", "pid": 477295, "output": "/tmp/tmpzrhpprls"}
+ok
+test_controller_completeness_tracks_named_handoffs (test_path_trace_qualification.QualificationTests.test_controller_completeness_tracks_named_handoffs) ... ok
+test_descendant_grace_does_not_extend_the_suite_deadline (test_path_trace_qualification.QualificationTests.test_descendant_grace_does_not_extend_the_suite_deadline) ... {"event": "started", "pid": 477296, "output": "/tmp/tmpi8t_z28z"}
+ok
+test_end_to_end_isolation_manifest_and_fail_fast (test_path_trace_qualification.QualificationTests.test_end_to_end_isolation_manifest_and_fail_fast) ... PT qualification failed: Invalid or protected --env key: DXVK_FILTER_DEVICE_NAME
+PT qualification failed: Invalid or protected --env key: DRI_PRIME
+PT qualification failed: Invalid or protected --env key: NVIDIA_VISIBLE_DEVICES
+PT qualification failed: Invalid or protected --env key: MESA_VK_DEVICE_SELECT_FORCE_DEFAULT_DEVICE
+PT qualification failed: Invalid or protected --env key: __NV_PRIME_RENDER_OFFLOAD
+PT qualification failed: Invalid or protected --env key: MESA_VK_DEVICE_SELECT
+PT qualification failed: Invalid or protected --env key: VK_ICD_FILENAMES
+PT qualification failed: Invalid or protected --env key: VK_DRIVER_FILES
+PT qualification failed: Invalid or protected --env key: VKD3D_FILTER_DEVICE_NAME
+PT qualification failed: Invalid or protected --env key: __GLX_VENDOR_LIBRARY_NAME
+PT qualification failed: Invalid or protected --env key: CUDA_VISIBLE_DEVICES
+ok
+test_existing_player_or_test_profile_is_never_overwritten (test_path_trace_qualification.QualificationTests.test_existing_player_or_test_profile_is_never_overwritten) ... ok
+test_exited_unreaped_children_are_not_live_workload (test_path_trace_qualification.QualificationTests.test_exited_unreaped_children_are_not_live_workload) ... {"event": "started", "pid": 477394, "output": "/tmp/tmpopzvpalk"}
+ok
+test_gpu_xml_uses_graphics_processes_and_uuid_not_names (test_path_trace_qualification.QualificationTests.test_gpu_xml_uses_graphics_processes_and_uuid_not_names) ... ok
+test_inherited_service_display_and_gpu_environment_are_preserved (test_path_trace_qualification.QualificationTests.test_inherited_service_display_and_gpu_environment_are_preserved) ... ok
+test_lifecycle_requires_actual_ordered_dispatch_and_resource_release (test_path_trace_qualification.QualificationTests.test_lifecycle_requires_actual_ordered_dispatch_and_resource_release) ... ok
+test_missing_gpu_observation_cannot_pass (test_path_trace_qualification.QualificationTests.test_missing_gpu_observation_cannot_pass) ... {"event": "started", "pid": 477403, "output": "/tmp/tmpn9hedxku"}
+ok
+test_ordinary_descendant_may_finish_cleanly_within_shared_deadline (test_path_trace_qualification.QualificationTests.test_ordinary_descendant_may_finish_cleanly_within_shared_deadline) ... {"event": "started", "pid": 477404, "output": "/tmp/tmp8mmxi_2a"}
+ok
+test_partial_benchmark_and_unready_sdk_fail_even_with_zero_failures (test_path_trace_qualification.QualificationTests.test_partial_benchmark_and_unready_sdk_fail_even_with_zero_failures) ... ok
+test_recursive_runtime_library_mutation_changes_frozen_inputs (test_path_trace_qualification.QualificationTests.test_recursive_runtime_library_mutation_changes_frozen_inputs) ... ok
+test_rss_correlates_same_state_cycles_and_rejects_growth_or_missing_evidence (test_path_trace_qualification.QualificationTests.test_rss_correlates_same_state_cycles_and_rejects_growth_or_missing_evidence) ... ok
+test_runtime_script_failure_stops_process (test_path_trace_qualification.QualificationTests.test_runtime_script_failure_stops_process) ... {"event": "started", "pid": 477416, "output": "/tmp/tmpxvrlr9c2"}
+ok
+test_stress_requires_every_save_and_actual_sdk_phases (test_path_trace_qualification.QualificationTests.test_stress_requires_every_save_and_actual_sdk_phases) ... ok
+test_wall_deadline_includes_hung_teardown (test_path_trace_qualification.QualificationTests.test_wall_deadline_includes_hung_teardown) ... {"event": "started", "pid": 477417, "output": "/tmp/tmpj4i5z2u5"}
+ok
+test_wrong_physical_gpu_stops_process (test_path_trace_qualification.QualificationTests.test_wrong_physical_gpu_stops_process) ... {"event": "started", "pid": 477439, "output": "/tmp/tmpntlz8hla"}
+ok
+test_x11_allowance_is_exact_and_never_masks_script_or_gpu_errors (test_path_trace_qualification.QualificationTests.test_x11_allowance_is_exact_and_never_masks_script_or_gpu_errors) ... ok
+test_zero_exit_parent_with_live_descendant_fails_and_cleans_only_its_group (test_path_trace_qualification.QualificationTests.test_zero_exit_parent_with_live_descendant_fails_and_cleans_only_its_group) ... {"event": "started", "pid": 477441, "output": "/tmp/tmpe8kpeux1"}
+ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 5.617s
+
+OK

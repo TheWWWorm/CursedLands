@@ -1,0 +1,699 @@
+[
+  {
+    "entrances": [
+      1,
+      2
+    ],
+    "map": "zone1",
+    "sky": null,
+    "torches": [
+      {
+        "nid": 1844,
+        "offset": "(-0.7, -0.5, 2.1)",
+        "position": "(190.517, 141.208, 0.0)",
+        "strength": 0.400000005960464,
+        "template": "stto6"
+      },
+      {
+        "nid": 1845,
+        "offset": "(0.8, 0.08, 2.15)",
+        "position": "(177.621, 129.968, 0.0)",
+        "strength": 0.5,
+        "template": "stto6"
+      },
+      {
+        "nid": 1846,
+        "offset": "(0.8, 0.08, 2.15)",
+        "position": "(206.88, 125.346, 0.0)",
+        "strength": 0.5,
+        "template": "stto6"
+      },
+      {
+        "nid": 2003,
+        "offset": "(0.1, 0.0, 0.5)",
+        "position": "(192.198, 125.248, 0.0)",
+        "strength": 0.400000005960464,
+        "template": "stto5"
+      },
+      {
+        "nid": 2004,
+        "offset": "(0.1, 0.0, 0.5)",
+        "position": "(133.29, 153.037, -0.05)",
+        "strength": 0.5,
+        "template": "stto5"
+      }
+    ],
+    "zone": "gz1g"
+  },
+  {
+    "entrances": [
+      1,
+      2,
+      3
+    ],
+    "map": "zone2",
+    "sky": null,
+    "torches": [
+      {
+        "nid": 1312,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(62.5558, 146.683, 0.0)",
+        "strength": 0.400000005960464,
+        "template": "stto8"
+      }
+    ],
+    "zone": "gz2g"
+  },
+  {
+    "entrances": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "map": "zone3obr",
+    "sky": null,
+    "torches": [
+      {
+        "nid": 4875,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(209.9866, 146.01, 0.0)",
+        "strength": 0.5,
+        "template": "stto8"
+      },
+      {
+        "nid": 4876,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(128.012, 104.0609, 0.0)",
+        "strength": 0.5,
+        "template": "stto8"
+      },
+      {
+        "nid": 4877,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(175.8832, 111.9934, 0.0)",
+        "strength": 0.5,
+        "template": "stto8"
+      },
+      {
+        "nid": 4878,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(151.6989, 184.1135, 0.0)",
+        "strength": 0.5,
+        "template": "stto8"
+      }
+    ],
+    "zone": "gz3g"
+  },
+  {
+    "entrances": [
+      1,
+      2
+    ],
+    "map": "zone5_1",
+    "sky": "cave",
+    "torches": [],
+    "zone": "gz5g"
+  },
+  {
+    "entrances": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "map": "zone4",
+    "sky": null,
+    "torches": [
+      {
+        "nid": 533082,
+        "offset": "(0.0, 0.0, 3.2)",
+        "position": "(20.0, 60.0, 0.0)",
+        "strength": 0.400000005960464,
+        "template": "stto1"
+      },
+      {
+        "nid": 533083,
+        "offset": "(0.0, 0.0, 3.2)",
+        "position": "(20.0, 68.0, 0.0)",
+        "strength": 0.400000005960464,
+        "template": "stto1"
+      },
+      {
+        "nid": 533084,
+        "offset": "(0.0, 0.0, 3.2)",
+        "position": "(30.0093, 67.9486, 0.0)",
+        "strength": 0.400000005960464,
+        "template": "stto1"
+      },
+      {
+        "nid": 533085,
+        "offset": "(0.0, 0.0, 3.2)",
+        "position": "(30.0, 60.0, 0.0)",
+        "strength": 0.400000005960464,
+        "template": "stto1"
+      }
+    ],
+    "zone": "gz4g"
+  },
+  {
+    "entrances": [
+      1,
+      2,
+      3
+    ],
+    "map": "zone6",
+    "sky": null,
+    "torches": [
+      {
+        "nid": 1043,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(51.90587, 164.848, 0.0)",
+        "strength": 0.699999988079071,
+        "template": "stto5"
+      },
+      {
+        "nid": 1392,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(46.04098, 316.8893, 0.0)",
+        "strength": 0.699999988079071,
+        "template": "stto8"
+      }
+    ],
+    "zone": "gz6g"
+  },
+  {
+    "entrances": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "map": "zone7",
+    "sky": null,
+    "torches": [
+      {
+        "nid": 625182,
+        "offset": "(0.1, 0.0, 0.5)",
+        "position": "(331.466, 142.645, 0.0)",
+        "strength": 0.5,
+        "template": "stto5"
+      },
+      {
+        "nid": 625183,
+        "offset": "(0.1, 0.0, 0.5)",
+        "position": "(300.7, 154.009, 0.0)",
+        "strength": 0.5,
+        "template": "stto5"
+      },
+      {
+        "nid": 625184,
+        "offset": "(0.1, 0.0, 0.5)",
+        "position": "(54.5429, 178.673, 0.0)",
+        "strength": 0.400000005960464,
+        "template": "stto5"
+      },
+      {
+        "nid": 625185,
+        "offset": "(0.1, 0.0, 0.5)",
+        "position": "(57.3503, 175.501, 0.0)",
+        "strength": 0.5,
+        "template": "stto5"
+      },
+      {
+        "nid": 625186,
+        "offset": "(0.1, 0.0, 0.5)",
+        "position": "(58.7272, 179.581, 0.0)",
+        "strength": 0.5,
+        "template": "stto5"
+      }
+    ],
+    "zone": "gz7g"
+  },
+  {
+    "entrances": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "map": "zone8",
+    "sky": null,
+    "torches": [
+      {
+        "nid": 566,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(308.3575, 157.7888, 0.0)",
+        "strength": 0.600000023841858,
+        "template": "stto8"
+      },
+      {
+        "nid": 733,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(184.1869, 199.0909, 0.0)",
+        "strength": 0.699999988079071,
+        "template": "stto8"
+      },
+      {
+        "nid": 870,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(301.931, 302.1453, 0.0)",
+        "strength": 0.600000023841858,
+        "template": "stto8"
+      },
+      {
+        "nid": 916,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(219.2303, 294.3727, 0.0)",
+        "strength": 0.600000023841858,
+        "template": "stto8"
+      },
+      {
+        "nid": 1634,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(291.8219, 240.2405, 0.0)",
+        "strength": 0.600000023841858,
+        "template": "stto8"
+      }
+    ],
+    "zone": "gz8g"
+  },
+  {
+    "entrances": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "map": "zone9",
+    "sky": null,
+    "torches": [
+      {
+        "nid": 1980,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(29.5664, 290.521, 0.05)",
+        "strength": 0.0,
+        "template": "stto5"
+      }
+    ],
+    "zone": "gz9g"
+  },
+  {
+    "entrances": [
+      1,
+      2
+    ],
+    "map": "zone10",
+    "sky": "cave",
+    "torches": [],
+    "zone": "gz10g"
+  },
+  {
+    "entrances": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "map": "zone11",
+    "sky": "normal",
+    "torches": [
+      {
+        "nid": 3365,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(257.712, 186.033, 0.0)",
+        "strength": 0.600000023841858,
+        "template": "stto8"
+      },
+      {
+        "nid": 3428,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(140.6941, 211.2778, 0.0)",
+        "strength": 0.400000005960464,
+        "template": "stto8"
+      },
+      {
+        "nid": 3880,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(442.128, 251.846, 0.0)",
+        "strength": 0.400000005960464,
+        "template": "stto8"
+      }
+    ],
+    "zone": "gz11k"
+  },
+  {
+    "entrances": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "map": "zone12",
+    "sky": "normal",
+    "torches": [
+      {
+        "nid": 5618,
+        "offset": "(0.1, 0.0, 0.5)",
+        "position": "(106.759, 120.342, -0.05)",
+        "strength": 0.5,
+        "template": "stto5"
+      },
+      {
+        "nid": 5633,
+        "offset": "(0.1, 0.0, 0.5)",
+        "position": "(161.401, 170.14, 0.0)",
+        "strength": 0.5,
+        "template": "stto5"
+      },
+      {
+        "nid": 5900,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(228.0083, 448.4203, 0.0)",
+        "strength": 0.699999988079071,
+        "template": "stto5"
+      },
+      {
+        "nid": 5913,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(150.2534, 465.9, 0.0)",
+        "strength": 0.699999988079071,
+        "template": "stto5"
+      },
+      {
+        "nid": 5914,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(78.05579, 458.0236, 0.0)",
+        "strength": 0.699999988079071,
+        "template": "stto5"
+      },
+      {
+        "nid": 5956,
+        "offset": "(0.1, 0.0, 0.5)",
+        "position": "(116.152, 86.7421, 0.0)",
+        "strength": 0.5,
+        "template": "stto5"
+      },
+      {
+        "nid": 6136,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(178.4515, 177.8788, 0.0)",
+        "strength": 0.699999988079071,
+        "template": "stto5"
+      },
+      {
+        "nid": 6148,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(109.335, 325.8931, 0.0)",
+        "strength": 0.5,
+        "template": "stto8"
+      }
+    ],
+    "zone": "gz12k"
+  },
+  {
+    "entrances": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "map": "zone13",
+    "sky": "normal",
+    "torches": [
+      {
+        "nid": 4268,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(70.87621, 182.2222, 0.0)",
+        "strength": 0.5,
+        "template": "stto8"
+      },
+      {
+        "nid": 2690,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(119.226, 224.264, 0.0)",
+        "strength": 0.5,
+        "template": "stto8"
+      },
+      {
+        "nid": 2691,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(137.936, 246.274, 0.0)",
+        "strength": 0.400000005960464,
+        "template": "stto8"
+      },
+      {
+        "nid": 2692,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(133.2833, 243.4865, 0.0)",
+        "strength": 0.699999988079071,
+        "template": "stto8"
+      },
+      {
+        "nid": 4062,
+        "offset": "(0.0, 0.0, 0.0)",
+        "position": "(172.3654, 195.339, 0.0)",
+        "strength": 0.5,
+        "template": "stto8"
+      }
+    ],
+    "zone": "gz13k"
+  },
+  {
+    "entrances": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "map": "zone14",
+    "sky": "cave",
+    "torches": [
+      {
+        "nid": 4420,
+        "offset": "(0.0, 0.0, 2.3)",
+        "position": "(179.9853, 43.2999, 0.0)",
+        "strength": 0.5,
+        "template": "stto11"
+      },
+      {
+        "nid": 4431,
+        "offset": "(1.1, -0.4, 2.1)",
+        "position": "(143.9731, 88.25386, 0.0)",
+        "strength": 0.5,
+        "template": "stto9"
+      },
+      {
+        "nid": 4433,
+        "offset": "(1.1, -0.4, 2.1)",
+        "position": "(148.9041, 43.06386, -3.156528)",
+        "strength": 0.5,
+        "template": "stto9"
+      },
+      {
+        "nid": 4449,
+        "offset": "(0.0, 1.1, 2.1)",
+        "position": "(192.2683, 74.51103, 0.0)",
+        "strength": 0.5,
+        "template": "stto9"
+      },
+      {
+        "nid": 4507,
+        "offset": "(0.0, -0.4, 0.85)",
+        "position": "(52.82052, 149.0451, 0.0)",
+        "strength": 0.400000005960464,
+        "template": "stto2"
+      },
+      {
+        "nid": 4511,
+        "offset": "(0.0, -0.4, 0.85)",
+        "position": "(78.37257, 145.5974, 0.0)",
+        "strength": 0.400000005960464,
+        "template": "stto2"
+      },
+      {
+        "nid": 4519,
+        "offset": "(0.35, 0.15, 0.8)",
+        "position": "(67.37388, 154.8253, 0.05)",
+        "strength": 0.400000005960464,
+        "template": "stto2"
+      }
+    ],
+    "zone": "gz14k"
+  },
+  {
+    "entrances": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "map": "zone15",
+    "sky": "normal",
+    "torches": [],
+    "zone": "gz15h"
+  },
+  {
+    "entrances": [
+      1
+    ],
+    "map": "zone16",
+    "sky": "cave",
+    "torches": [
+      {
+        "nid": 16354,
+        "offset": "(0.0, 0.0, 2.5)",
+        "position": "(159.6058, 109.8524, 0.0)",
+        "strength": 0.5,
+        "template": "stto10"
+      },
+      {
+        "nid": 16355,
+        "offset": "(0.0, 0.0, 2.5)",
+        "position": "(158.5383, 103.0271, 0.0)",
+        "strength": 0.5,
+        "template": "stto10"
+      },
+      {
+        "nid": 16356,
+        "offset": "(0.0, 0.0, 2.5)",
+        "position": "(150.6804, 106.335, 0.0)",
+        "strength": 0.400000005960464,
+        "template": "stto11"
+      },
+      {
+        "nid": 16357,
+        "offset": "(0.0, 1.1, 2.0)",
+        "position": "(172.9841, 101.7939, 0.6)",
+        "strength": 0.300000011920929,
+        "template": "stto9"
+      },
+      {
+        "nid": 16358,
+        "offset": "(0.0, 1.1, 2.0)",
+        "position": "(184.3997, 117.6083, 0.6)",
+        "strength": 0.300000011920929,
+        "template": "stto9"
+      },
+      {
+        "nid": 16359,
+        "offset": "(0.0, -1.1, 2.0)",
+        "position": "(171.2371, 122.5079, 0.5)",
+        "strength": 0.300000011920929,
+        "template": "stto9"
+      },
+      {
+        "nid": 16361,
+        "offset": "(0.0, -1.1, 2.0)",
+        "position": "(205.3078, 123.298, 0.5)",
+        "strength": 0.300000011920929,
+        "template": "stto9"
+      },
+      {
+        "nid": 16362,
+        "offset": "(0.0, -1.1, 2.0)",
+        "position": "(221.261, 123.7858, 0.5)",
+        "strength": 0.300000011920929,
+        "template": "stto9"
+      },
+      {
+        "nid": 16363,
+        "offset": "(0.0, 0.0, 2.5)",
+        "position": "(179.5164, 112.5099, 0.0)",
+        "strength": 0.5,
+        "template": "stto10"
+      },
+      {
+        "nid": 16366,
+        "offset": "(0.0, 0.0, 2.5)",
+        "position": "(167.5368, 113.6662, 0.0)",
+        "strength": 0.5,
+        "template": "stto10"
+      },
+      {
+        "nid": 16369,
+        "offset": "(0.0, 0.0, 2.5)",
+        "position": "(211.9733, 52.32784, 0.0)",
+        "strength": 0.400000005960464,
+        "template": "stto11"
+      },
+      {
+        "nid": 16370,
+        "offset": "(0.0, 0.0, 2.5)",
+        "position": "(192.7353, 48.16402, 0.0)",
+        "strength": 0.400000005960464,
+        "template": "stto11"
+      },
+      {
+        "nid": 16371,
+        "offset": "(0.0, 0.0, 2.5)",
+        "position": "(194.9086, 57.77071, 0.0)",
+        "strength": 0.400000005960464,
+        "template": "stto11"
+      },
+      {
+        "nid": 16373,
+        "offset": "(0.0, 0.0, 2.7)",
+        "position": "(124.119, 43.89513, 0.0)",
+        "strength": 0.699999988079071,
+        "template": "stto10"
+      },
+      {
+        "nid": 16376,
+        "offset": "(0.0, 0.0, 2.7)",
+        "position": "(124.1098, 39.7434, 0.0)",
+        "strength": 0.699999988079071,
+        "template": "stto10"
+      }
+    ],
+    "zone": "gz16h"
+  },
+  {
+    "entrances": [
+      1,
+      2,
+      3
+    ],
+    "map": "zone17",
+    "sky": "normal",
+    "torches": [],
+    "zone": "gz17h"
+  },
+  {
+    "entrances": [
+      1,
+      2,
+      3
+    ],
+    "map": "zone18",
+    "sky": "normal",
+    "torches": [],
+    "zone": "gz18h"
+  },
+  {
+    "entrances": [
+      1,
+      2
+    ],
+    "map": "zone19",
+    "sky": "normal",
+    "torches": [],
+    "zone": "gz19h"
+  },
+  {
+    "entrances": [
+      1
+    ],
+    "map": "zone20",
+    "sky": "cave",
+    "torches": [],
+    "zone": "gz20g"
+  }
+]

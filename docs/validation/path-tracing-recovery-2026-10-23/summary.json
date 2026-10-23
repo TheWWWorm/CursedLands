@@ -1,0 +1,1416 @@
+{
+  "base_commit": "7102e779",
+  "source_commit": "3a4af9bc68474d557f4b82bd5d6dcda876407c0c",
+  "qualified": {
+    "vulkan": {
+      "resolution": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 104,
+        "seconds": 56.70334243199977,
+        "report": "vulkan/resolution/path-resolution.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "lifecycle": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 150,
+        "seconds": 11.472478780000529,
+        "report": "vulkan/lifecycle/path-lifecycle.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "controller": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 47,
+        "seconds": 52.287022171999524,
+        "report": "vulkan/controller/path-controller.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "device": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 17,
+        "seconds": 11.395775384999979,
+        "report": "vulkan/device/path-device.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "motion": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 55,
+        "seconds": 8.55613130599977,
+        "report": "vulkan/motion/path-motion.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "detached_live": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 15,
+        "seconds": 42.144589157000155,
+        "report": "vulkan/detached_live/path-detached-live.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "sustained": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 352,
+        "seconds": 436.1161478169997,
+        "report": "vulkan/sustained/path-sustained-results.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "topology": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 82,
+        "seconds": 8.17897634000019,
+        "report": "vulkan/topology/path-topology-results.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "variance": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 38,
+        "seconds": 10.013363662999836,
+        "report": "vulkan/variance/path-variance.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "quality": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 13,
+        "seconds": 8.999970705999658,
+        "report": "vulkan/quality/path-quality.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "glossy": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 31,
+        "seconds": 9.584751809000409,
+        "report": "vulkan/glossy/path-glossy.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "sampling": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 67,
+        "seconds": 11.806774964999931,
+        "report": "vulkan/sampling/path-sampling.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "contacts": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 59,
+        "seconds": 10.193989454000075,
+        "report": "vulkan/contacts/path-contacts.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "foliage": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 13,
+        "seconds": 9.450680906000343,
+        "report": "vulkan/foliage/path-foliage.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "terrain": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 69,
+        "seconds": 11.009932539999681,
+        "report": "vulkan/terrain/path-terrain.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "surface_maps": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 16,
+        "seconds": 8.675998620999962,
+        "report": "vulkan/surface_maps/path-surface-maps.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "surface_detail": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 47,
+        "seconds": 9.37870728300004,
+        "report": "vulkan/surface_detail/path-surface-detail.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "emitters": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 38,
+        "seconds": 11.108935592000307,
+        "report": "vulkan/emitters/path-emitters.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "lighting": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 14,
+        "seconds": 8.131898276999891,
+        "report": "vulkan/lighting/path-lighting.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "light_history": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 36,
+        "seconds": 8.768020311000328,
+        "report": "vulkan/light_history/path-light-history.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "daylight": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 33,
+        "seconds": 8.868181281000034,
+        "report": "vulkan/daylight/path-daylight.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "live": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 17,
+        "seconds": 38.99196195500008,
+        "report": "vulkan/live/path-live.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "outdoor": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 13,
+        "seconds": 54.128463656999884,
+        "report": "vulkan/outdoor/path-outdoor.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "cave": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 12,
+        "seconds": 37.505722631000026,
+        "report": "vulkan/cave/path-cave.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "receivers": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 12,
+        "seconds": 10.853284972999973,
+        "report": "vulkan/receivers/path-receivers.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "underwater": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 4,
+        "seconds": 8.53989763699974,
+        "report": "vulkan/underwater/path-underwater.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "water_live": {
+        "source_run": "qualification-vulkan-final-03",
+        "checks": 15,
+        "seconds": 35.636570085999665,
+        "report": "vulkan/water_live/live.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      }
+    },
+    "dx12": {
+      "device": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 17,
+        "seconds": 21.672943008999937,
+        "report": "dx12/device/path-device.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "motion": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 55,
+        "seconds": 14.892323358000795,
+        "report": "dx12/motion/path-motion.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "resolution": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 156,
+        "seconds": 95.94293384400044,
+        "report": "dx12/resolution/path-resolution.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "lifecycle": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 149,
+        "seconds": 24.194233637999787,
+        "report": "dx12/lifecycle/path-lifecycle.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "controller": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 47,
+        "seconds": 86.2695159570003,
+        "report": "dx12/controller/path-controller.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "detached_live": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 15,
+        "seconds": 51.692572287000075,
+        "report": "dx12/detached_live/path-detached-live.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "sustained": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 389,
+        "seconds": 753.925949212,
+        "report": "dx12/sustained/path-sustained-results.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "topology": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 82,
+        "seconds": 12.090188375999787,
+        "report": "dx12/topology/path-topology-results.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "variance": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 38,
+        "seconds": 13.276861642999393,
+        "report": "dx12/variance/path-variance.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "quality": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 13,
+        "seconds": 13.949724134999997,
+        "report": "dx12/quality/path-quality.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "glossy": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 31,
+        "seconds": 15.128483340000457,
+        "report": "dx12/glossy/path-glossy.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "sampling": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 67,
+        "seconds": 17.98123466800007,
+        "report": "dx12/sampling/path-sampling.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "contacts": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 59,
+        "seconds": 24.637450008000087,
+        "report": "dx12/contacts/path-contacts.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "foliage": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 13,
+        "seconds": 15.970425956999861,
+        "report": "dx12/foliage/path-foliage.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "terrain": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 69,
+        "seconds": 31.297638041000027,
+        "report": "dx12/terrain/path-terrain.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "surface_maps": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 16,
+        "seconds": 13.404406722999738,
+        "report": "dx12/surface_maps/path-surface-maps.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "surface_detail": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 47,
+        "seconds": 16.236349994999728,
+        "report": "dx12/surface_detail/path-surface-detail.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "emitters": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 38,
+        "seconds": 21.4469771389995,
+        "report": "dx12/emitters/path-emitters.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "lighting": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 14,
+        "seconds": 11.468391887999132,
+        "report": "dx12/lighting/path-lighting.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "light_history": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 36,
+        "seconds": 11.958702349000305,
+        "report": "dx12/light_history/path-light-history.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "daylight": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 33,
+        "seconds": 17.473369142999218,
+        "report": "dx12/daylight/path-daylight.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "live": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 17,
+        "seconds": 39.40886737100027,
+        "report": "dx12/live/path-live.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "outdoor": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 13,
+        "seconds": 52.11156909999954,
+        "report": "dx12/outdoor/path-outdoor.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "cave": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 12,
+        "seconds": 39.73577313900023,
+        "report": "dx12/cave/path-cave.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "receivers": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 12,
+        "seconds": 14.728349531000276,
+        "report": "dx12/receivers/path-receivers.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "underwater": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 4,
+        "seconds": 12.60914203900029,
+        "report": "dx12/underwater/path-underwater.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "water_live": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 15,
+        "seconds": 40.20145191900065,
+        "report": "dx12/water_live/live.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      },
+      "fsr": {
+        "source_run": "qualification-dx12-final-03",
+        "checks": 76,
+        "seconds": 107.44519256700005,
+        "report": "dx12/fsr/rt-fsr.json",
+        "physical_gpu_confirmed": true,
+        "gpu_uuids": [
+          "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+        ]
+      }
+    }
+  },
+  "checks": {
+    "vulkan": 1369,
+    "dx12": 1533
+  },
+  "source_files": [
+    {
+      "path": "game/src/game/fx/path_trace_device.gd",
+      "sha256": "36a921b04a166614fd943c3e6c9a63f83c8d6684e2810179db7349f6c350669f",
+      "bytes": 9637
+    },
+    {
+      "path": "game/src/game/fx/path_trace_terrain.gd",
+      "sha256": "f9a168608bddeaa278d1b8c95b123b8c60c3d0beb4d48637b6a6130e2f0968e2",
+      "bytes": 3798
+    },
+    {
+      "path": "game/src/game/fx/scene_raytrace.gd",
+      "sha256": "cd5ca732b60b6313d327566c58f03953de21fc440fbe6d45615d6e32771f259c",
+      "bytes": 22341
+    },
+    {
+      "path": "game/src/game/fx/scene_raytrace_device.gd",
+      "sha256": "a48dfa88de2086d6dd201dfb39eb8af0e024e7fbdc1f76326691289b4b36398a",
+      "bytes": 9720
+    },
+    {
+      "path": "game/src/game/fx/severed_limb.gd",
+      "sha256": "a03e6b9eb8ee992f25e0228de3a4edb8b7dd0cd15285e5e353e695abf041b879",
+      "bytes": 9449
+    },
+    {
+      "path": "game/src/game/fx/water_raytrace_device.gd",
+      "sha256": "8a61c14d568e4a53f43e042e59e62ce3d803e97b750da7e14974efc19a2c60b0",
+      "bytes": 15272
+    },
+    {
+      "path": "game/src/game/fx/water_raytrace_scene.gd",
+      "sha256": "6288b6e0b98f9e08728e0fdc7eb07ac46910e553d9ebb228997de83b8a6a3b02",
+      "bytes": 21896
+    },
+    {
+      "path": "game/src/game/fx/water_reflection.gd",
+      "sha256": "8beaf8d7d77b7e36055bfe8c767ebd64437159126cba1c184658a1a69afdd59f",
+      "bytes": 16077
+    },
+    {
+      "path": "game/src/game/world.gd",
+      "sha256": "bec9366ea9689cfe54f7968c8d381fa3c9e8a9d50c195ca0f996f8e700601c99",
+      "bytes": 45493
+    },
+    {
+      "path": "tools/tests/path_trace_alpha.gd",
+      "sha256": "8847d1fc4a3a9e999e3f350e7726d3aec499531bb5474fed0551915d5c025e58",
+      "bytes": 2318
+    },
+    {
+      "path": "tools/tests/path_trace_cave.gd",
+      "sha256": "1a248728fd7bbeb4932e5b9626a1817fdade72a4deefcd3b45f51148f003d066",
+      "bytes": 4500
+    },
+    {
+      "path": "tools/tests/path_trace_contacts.gd",
+      "sha256": "6239ae992c69a104a13bcde345dcc32930325b6caaad049dd8257816fd8159ae",
+      "bytes": 7816
+    },
+    {
+      "path": "tools/tests/path_trace_controller.gd",
+      "sha256": "0a6bdc95bb49fa51dfe7466398c36d17705f7d859e162ba77bf11a177f8d9193",
+      "bytes": 9391
+    },
+    {
+      "path": "tools/tests/path_trace_daylight.gd",
+      "sha256": "c922eb024d2dcfdf7d9495518f1ca5413215f4bafd8869f7c00a412c21196985",
+      "bytes": 7224
+    },
+    {
+      "path": "tools/tests/path_trace_daylight_live.gd",
+      "sha256": "b847d0e4b923c3ee2e44bb41ab357c82e2f4e203531e3b7d4533685deb7032ff",
+      "bytes": 3419
+    },
+    {
+      "path": "tools/tests/path_trace_detached_live.gd",
+      "sha256": "d37e826cb7220d49fa6fc14fba1f63d9b38dbadc7203fd22601e4a809fa9b28e",
+      "bytes": 6148
+    },
+    {
+      "path": "tools/tests/path_trace_device.gd",
+      "sha256": "c9f7f8232de2a24485506bcbc82eedf169b2744ee2161893bae8e0f4e1454534",
+      "bytes": 5421
+    },
+    {
+      "path": "tools/tests/path_trace_emitter_live.gd",
+      "sha256": "8fdaaa782c067b325db040f4fbdc29269e920294e1154b629fe4eab91dd94711",
+      "bytes": 3689
+    },
+    {
+      "path": "tools/tests/path_trace_emitters.gd",
+      "sha256": "846451b56fbf74b154f971c29c506f602c86a52fcc04e5e034384690cee2022a",
+      "bytes": 15739
+    },
+    {
+      "path": "tools/tests/path_trace_equipment_live.gd",
+      "sha256": "13910e3e1fe20294045d88431656939c1c4e050db80dd80b56d34b772069071d",
+      "bytes": 8616
+    },
+    {
+      "path": "tools/tests/path_trace_foliage.gd",
+      "sha256": "652cd585fb7459514f786524184866cdddac13181534fd317d01f972f92517ca",
+      "bytes": 4621
+    },
+    {
+      "path": "tools/tests/path_trace_fsr.gd",
+      "sha256": "72fc0b33516c8a8d56997607814408c8bdca29bcdddf259a76b55605010cc794",
+      "bytes": 1359
+    },
+    {
+      "path": "tools/tests/path_trace_glossy.gd",
+      "sha256": "9151aa941a7574297b063e44917627c3cd0961aa0458e9b79a6656c28e311476",
+      "bytes": 13203
+    },
+    {
+      "path": "tools/tests/path_trace_lifecycle.gd",
+      "sha256": "609b5083f626cd495cf23f63ddf4def6caeb9bb6485a6cef439b7b1033cc87fb",
+      "bytes": 18312
+    },
+    {
+      "path": "tools/tests/path_trace_light_history.gd",
+      "sha256": "4835ef8a4c7b8bdf41889b19480332a4faddab1a1d360edcf203b8330e2ef27d",
+      "bytes": 9418
+    },
+    {
+      "path": "tools/tests/path_trace_light_inventory.gd",
+      "sha256": "4efd105bc74e3f2f801675708be8737224ebba48b7dceef90e412ef7b8f80f96",
+      "bytes": 1296
+    },
+    {
+      "path": "tools/tests/path_trace_lighting.gd",
+      "sha256": "964875b31711fad189c0ea41ed0f624a7ae91b48bf76356457fbe0ace6d8d9ce",
+      "bytes": 6046
+    },
+    {
+      "path": "tools/tests/path_trace_lighting_live.gd",
+      "sha256": "7581bf4760be018595f879a068ba532fa9a1a4559fee5b59c71d0427bc350dc4",
+      "bytes": 8840
+    },
+    {
+      "path": "tools/tests/path_trace_live.gd",
+      "sha256": "1f1da181624c0a4e2a9a450214080e98870190f4850bba20c76d4b65cf011128",
+      "bytes": 3836
+    },
+    {
+      "path": "tools/tests/path_trace_material_performance.gd",
+      "sha256": "28119e1c1f769c9b8f84798b4936862407a6649b4185c1afe69453053e7c99aa",
+      "bytes": 8632
+    },
+    {
+      "path": "tools/tests/path_trace_materials.gd",
+      "sha256": "e8d2ccb42ccd904a8384f8003298cfad877b0696b1759120a43727c780cf27cb",
+      "bytes": 128
+    },
+    {
+      "path": "tools/tests/path_trace_motion.gd",
+      "sha256": "05e56c2077b3697af4e3d19f8147ce7674aa93b45cb8bc4f9713fe84f12b6f54",
+      "bytes": 11667
+    },
+    {
+      "path": "tools/tests/path_trace_optimization.gd",
+      "sha256": "04fbe171b25d543a5face5c268f0061a294bdeb1f52d17cf7b4c7c4a43b7fc07",
+      "bytes": 5928
+    },
+    {
+      "path": "tools/tests/path_trace_outdoor.gd",
+      "sha256": "6abdd98e6b085595be351e67d38ab3dfab3c2cce613eeabcd47e2dae242f5596",
+      "bytes": 2872
+    },
+    {
+      "path": "tools/tests/path_trace_performance.gd",
+      "sha256": "85323ffd4da577fd51527a1c2d4c9a3727c6289385e0dd0e41ba5e95eaf0d4c6",
+      "bytes": 4500
+    },
+    {
+      "path": "tools/tests/path_trace_qualification.gd",
+      "sha256": "181f73b37899025af6faee8e70c3daa7db7e6c4397b0b67e30b72b69d2c3d04c",
+      "bytes": 3863
+    },
+    {
+      "path": "tools/tests/path_trace_quality.gd",
+      "sha256": "0778e4e215c7d1fc9d561ef18f1a40ed4b3d74ea46f62d37f3371d7d878640e7",
+      "bytes": 11252
+    },
+    {
+      "path": "tools/tests/path_trace_raster_lighting.gd",
+      "sha256": "bcf6b0dda3a489040494b26e2e65c29e11b0745a132c2990ed2b5d24e75264c7",
+      "bytes": 4807
+    },
+    {
+      "path": "tools/tests/path_trace_receivers.gd",
+      "sha256": "1fb14393bff080a36ecbfaeba488db78f5ddd1d6ff010c290c87a3a054dfcb92",
+      "bytes": 4946
+    },
+    {
+      "path": "tools/tests/path_trace_resolution.gd",
+      "sha256": "46ce1453e173cf15ff9be70e1ebb718014b1f07b9d00d5c6fb4c5c27b57ece81",
+      "bytes": 12916
+    },
+    {
+      "path": "tools/tests/path_trace_resolution_performance.gd",
+      "sha256": "4aabdb58b0fa37becd25b5b2a3d6c11e12496ffd9badbf2e46d166be65e1962b",
+      "bytes": 4377
+    },
+    {
+      "path": "tools/tests/path_trace_sampling.gd",
+      "sha256": "87d7f6d63a2180bc657a70eb8fbd3ee8ce2e8c23bb0b7e35c8d8f1f143b51953",
+      "bytes": 8502
+    },
+    {
+      "path": "tools/tests/path_trace_stability.gd",
+      "sha256": "40db5c79dab42aeb69428bfa303ca2c99803ce22489b19689bd9bbba277f8a95",
+      "bytes": 24313
+    },
+    {
+      "path": "tools/tests/path_trace_surface_detail.gd",
+      "sha256": "71c5320da0d2e5f82061cae5a0457cec8ceb0c3ffcfd7a043759ca59f2c68491",
+      "bytes": 9629
+    },
+    {
+      "path": "tools/tests/path_trace_surface_detail_live.gd",
+      "sha256": "9bd07bcf90f27ba3997a13c1c70c0a46b2016f6a46bac8333b7222e6b21e5529",
+      "bytes": 10029
+    },
+    {
+      "path": "tools/tests/path_trace_surface_maps.gd",
+      "sha256": "14fbc5258a9e1cc3b62e9514e4f065d451f92d31e6c101476b8c2abb88fc1e73",
+      "bytes": 5854
+    },
+    {
+      "path": "tools/tests/path_trace_sustained.gd",
+      "sha256": "e17d3398cafd74a71b05972094a3c976947c9caf6c1886d975cd66a70c81cc6d",
+      "bytes": 21901
+    },
+    {
+      "path": "tools/tests/path_trace_tail_performance.gd",
+      "sha256": "2084027bb2e6304a937126a88501897154484007508a38f9101a84b2853c9fce",
+      "bytes": 3132
+    },
+    {
+      "path": "tools/tests/path_trace_terrain.gd",
+      "sha256": "a7608f01f9d9534cf045547627e8a368137d554e065c5997c5379d419b0c6113",
+      "bytes": 14169
+    },
+    {
+      "path": "tools/tests/path_trace_terrain_live.gd",
+      "sha256": "45f0373ccf19aa6a656cf20d8bf9054fbafb9231d16e2074f63b769f5e12fa2a",
+      "bytes": 5484
+    },
+    {
+      "path": "tools/tests/path_trace_topology.gd",
+      "sha256": "f0d76332e604e7f7064e1a75cf47f3f091eba25eb0aae83e95cc9e8ff9612dc6",
+      "bytes": 15685
+    },
+    {
+      "path": "tools/tests/path_trace_torch_history_live.gd",
+      "sha256": "f40323b3f1d8baac9af22ecfa8aa839a91237d908b65030c18846887433f927f",
+      "bytes": 9682
+    },
+    {
+      "path": "tools/tests/path_trace_underwater.gd",
+      "sha256": "d946398acf8801edd6d9b6bb706ee106e5fdd9c994efe2cf875f58f59cfcb25a",
+      "bytes": 3296
+    },
+    {
+      "path": "tools/tests/path_trace_variance.gd",
+      "sha256": "c1c4d88e0c090de5965f97847b4f76cc5596f065585a6b03ad2a41dc6e2aa802",
+      "bytes": 8014
+    },
+    {
+      "path": "tools/tests/path_trace_weakref_regression.gd",
+      "sha256": "0d2e6c1f1b4e1f7623ddecda53a937f954d5d72690bad47e729140829e091b28",
+      "bytes": 3346
+    },
+    {
+      "path": "tools/tests/run_path_trace_qualification.py",
+      "sha256": "ee1a276de8a7531b6231bcb8a6e392dab89b07792137545ce8eb1bc7270f669e",
+      "bytes": 38264
+    },
+    {
+      "path": "tools/tests/scene_raytrace_live.gd",
+      "sha256": "328fbe37fbc06d7dc92e21fd54a92b15428f3cbde7d87982b3b9cffec1903a1c",
+      "bytes": 4403
+    },
+    {
+      "path": "tools/tests/test_path_trace_qualification.py",
+      "sha256": "879e3d1dd2bffc8626133cf100146a5405f0136bf81a26d341ffdba07b729f00",
+      "bytes": 19231
+    },
+    {
+      "path": "tools/tests/water_raytrace_live.gd",
+      "sha256": "8962f2118a991032d463e095db19039ba190f364f562986d31a42601842b9533",
+      "bytes": 6716
+    }
+  ],
+  "production_sources": {
+    "base_commit": "7102e779aee81e677e652e1ed15033c956d0e029",
+    "stage": "candidate-owned-stage",
+    "files": [
+      {
+        "path": "game/src/game/fx/path_trace_device.gd",
+        "source_sha256": "36a921b04a166614fd943c3e6c9a63f83c8d6684e2810179db7349f6c350669f",
+        "staged_sha256": "36a921b04a166614fd943c3e6c9a63f83c8d6684e2810179db7349f6c350669f",
+        "equal": true
+      },
+      {
+        "path": "game/src/game/fx/path_trace_terrain.gd",
+        "source_sha256": "f9a168608bddeaa278d1b8c95b123b8c60c3d0beb4d48637b6a6130e2f0968e2",
+        "staged_sha256": "f9a168608bddeaa278d1b8c95b123b8c60c3d0beb4d48637b6a6130e2f0968e2",
+        "equal": true
+      },
+      {
+        "path": "game/src/game/fx/scene_raytrace.gd",
+        "source_sha256": "cd5ca732b60b6313d327566c58f03953de21fc440fbe6d45615d6e32771f259c",
+        "staged_sha256": "cd5ca732b60b6313d327566c58f03953de21fc440fbe6d45615d6e32771f259c",
+        "equal": true
+      },
+      {
+        "path": "game/src/game/fx/scene_raytrace_device.gd",
+        "source_sha256": "a48dfa88de2086d6dd201dfb39eb8af0e024e7fbdc1f76326691289b4b36398a",
+        "staged_sha256": "a48dfa88de2086d6dd201dfb39eb8af0e024e7fbdc1f76326691289b4b36398a",
+        "equal": true
+      },
+      {
+        "path": "game/src/game/fx/severed_limb.gd",
+        "source_sha256": "a03e6b9eb8ee992f25e0228de3a4edb8b7dd0cd15285e5e353e695abf041b879",
+        "staged_sha256": "a03e6b9eb8ee992f25e0228de3a4edb8b7dd0cd15285e5e353e695abf041b879",
+        "equal": true
+      },
+      {
+        "path": "game/src/game/fx/water_raytrace_device.gd",
+        "source_sha256": "8a61c14d568e4a53f43e042e59e62ce3d803e97b750da7e14974efc19a2c60b0",
+        "staged_sha256": "8a61c14d568e4a53f43e042e59e62ce3d803e97b750da7e14974efc19a2c60b0",
+        "equal": true
+      },
+      {
+        "path": "game/src/game/fx/water_raytrace_scene.gd",
+        "source_sha256": "6288b6e0b98f9e08728e0fdc7eb07ac46910e553d9ebb228997de83b8a6a3b02",
+        "staged_sha256": "6288b6e0b98f9e08728e0fdc7eb07ac46910e553d9ebb228997de83b8a6a3b02",
+        "equal": true
+      },
+      {
+        "path": "game/src/game/fx/water_reflection.gd",
+        "source_sha256": "8beaf8d7d77b7e36055bfe8c767ebd64437159126cba1c184658a1a69afdd59f",
+        "staged_sha256": "8beaf8d7d77b7e36055bfe8c767ebd64437159126cba1c184658a1a69afdd59f",
+        "equal": true
+      },
+      {
+        "path": "game/src/game/world.gd",
+        "source_sha256": "bec9366ea9689cfe54f7968c8d381fa3c9e8a9d50c195ca0f996f8e700601c99",
+        "staged_sha256": "bec9366ea9689cfe54f7968c8d381fa3c9e8a9d50c195ca0f996f8e700601c99",
+        "equal": true
+      }
+    ],
+    "source_commit": "3a4af9bc68474d557f4b82bd5d6dcda876407c0c"
+  },
+  "local_artifacts": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023",
+  "rejected_runs": [],
+  "scope": "GPU1 RTX3090Ti native Vulkan and DX12 through Wine; no native Windows or other GPU certification",
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "performance": {
+    "vulkan": {
+      "run": "qualification-vulkan-benchmark-final-03",
+      "upscaler": "FSR 2 Quality",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "rows": [
+        {
+          "quality": "Low",
+          "measurements": {
+            "window_reference": {
+              "rt_gpu_ms": {
+                "mean_of_block_medians_ms": 2.481536,
+                "block_medians_ms": [
+                  2.487328,
+                  2.475744
+                ],
+                "block_p95_ms": [
+                  2.50448,
+                  2.496352
+                ]
+              },
+              "frame_ms": {
+                "mean_of_block_medians_ms": 4.2565,
+                "block_medians_ms": [
+                  4.237,
+                  4.276
+                ],
+                "block_p95_ms": [
+                  6.982,
+                  6.055
+                ]
+              },
+              "controller_cpu_ms": {
+                "mean_of_block_medians_ms": 0.2655,
+                "block_medians_ms": [
+                  0.252,
+                  0.279
+                ],
+                "block_p95_ms": [
+                  0.51,
+                  0.361
+                ]
+              },
+              "main_gpu_ms": {
+                "mean_of_block_medians_ms": 1.70349997282028,
+                "block_medians_ms": [
+                  1.69599997997284,
+                  1.71099996566772
+                ],
+                "block_p95_ms": [
+                  1.70899999141693,
+                  1.71899998188019
+                ]
+              },
+              "trace_size": [
+                1280,
+                720
+              ]
+            },
+            "render_resolution": {
+              "rt_gpu_ms": {
+                "mean_of_block_medians_ms": 1.1841119999999998,
+                "block_medians_ms": [
+                  1.187552,
+                  1.180672
+                ],
+                "block_p95_ms": [
+                  1.239584,
+                  1.196544
+                ]
+              },
+              "frame_ms": {
+                "mean_of_block_medians_ms": 3.056,
+                "block_medians_ms": [
+                  2.999,
+                  3.113
+                ],
+                "block_p95_ms": [
+                  4.897,
+                  5.015
+                ]
+              },
+              "controller_cpu_ms": {
+                "mean_of_block_medians_ms": 0.2735,
+                "block_medians_ms": [
+                  0.225,
+                  0.322
+                ],
+                "block_p95_ms": [
+                  0.367,
+                  0.562
+                ]
+              },
+              "main_gpu_ms": {
+                "mean_of_block_medians_ms": 1.711499989032745,
+                "block_medians_ms": [
+                  1.68599998950958,
+                  1.73699998855591
+                ],
+                "block_p95_ms": [
+                  1.76999998092651,
+                  1.76300001144409
+                ]
+              },
+              "trace_size": [
+                858,
+                482
+              ]
+            }
+          },
+          "reduction_percent": {
+            "rt_gpu_ms": 52.28310207871255,
+            "frame_ms": 28.203923411253374
+          },
+          "image_comparison": {
+            "energy_ratio": 1.00139181358974,
+            "mean_absolute_error": 0.00461287842214669,
+            "reference_mean": 0.293174154953814,
+            "scaled_mean": 0.293582198726839
+          }
+        },
+        {
+          "quality": "Medium",
+          "measurements": {
+            "window_reference": {
+              "rt_gpu_ms": {
+                "mean_of_block_medians_ms": 13.300192,
+                "block_medians_ms": [
+                  13.269312,
+                  13.331072
+                ],
+                "block_p95_ms": [
+                  13.510496,
+                  14.386336
+                ]
+              },
+              "frame_ms": {
+                "mean_of_block_medians_ms": 15.241,
+                "block_medians_ms": [
+                  15.073,
+                  15.409
+                ],
+                "block_p95_ms": [
+                  18.088,
+                  19.314
+                ]
+              },
+              "controller_cpu_ms": {
+                "mean_of_block_medians_ms": 0.563,
+                "block_medians_ms": [
+                  0.537,
+                  0.589
+                ],
+                "block_p95_ms": [
+                  0.837,
+                  0.802
+                ]
+              },
+              "main_gpu_ms": {
+                "mean_of_block_medians_ms": 1.70550000667572,
+                "block_medians_ms": [
+                  1.692999958992,
+                  1.71800005435944
+                ],
+                "block_p95_ms": [
+                  1.70299994945526,
+                  2.66199994087219
+                ]
+              },
+              "trace_size": [
+                1920,
+                1080
+              ]
+            },
+            "render_resolution": {
+              "rt_gpu_ms": {
+                "mean_of_block_medians_ms": 6.079392,
+                "block_medians_ms": [
+                  6.064832,
+                  6.093952
+                ],
+                "block_p95_ms": [
+                  6.30176,
+                  6.3312
+                ]
+              },
+              "frame_ms": {
+                "mean_of_block_medians_ms": 7.9815000000000005,
+                "block_medians_ms": [
+                  7.826,
+                  8.137
+                ],
+                "block_p95_ms": [
+                  10.975,
+                  10.442
+                ]
+              },
+              "controller_cpu_ms": {
+                "mean_of_block_medians_ms": 0.301,
+                "block_medians_ms": [
+                  0.345,
+                  0.257
+                ],
+                "block_p95_ms": [
+                  0.642,
+                  0.62
+                ]
+              },
+              "main_gpu_ms": {
+                "mean_of_block_medians_ms": 1.695500016212465,
+                "block_medians_ms": [
+                  1.68400001525879,
+                  1.70700001716614
+                ],
+                "block_p95_ms": [
+                  1.69900000095367,
+                  1.96800005435944
+                ]
+              },
+              "trace_size": [
+                1286,
+                723
+              ]
+            }
+          },
+          "reduction_percent": {
+            "rt_gpu_ms": 54.29094557431953,
+            "frame_ms": 47.63138901646873
+          },
+          "image_comparison": {
+            "energy_ratio": 1.00062644968253,
+            "mean_absolute_error": 0.00384375743482501,
+            "reference_mean": 0.292918166922454,
+            "scaled_mean": 0.29310166541513
+          }
+        }
+      ],
+      "scope": "Same frozen detailed river, four bounce PT, responsive history, water reflection and frame generation off. Only PT grid changes. Two alternating rounds, 120 samples after 45 warmup frames. Main GPU excludes the separate PT pass."
+    },
+    "dx12": {
+      "run": "qualification-dx12-benchmark-final-03",
+      "upscaler": "FSR 3.1 Quality",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "rows": [
+        {
+          "quality": "Low",
+          "measurements": {
+            "window_reference": {
+              "rt_gpu_ms": {
+                "mean_of_block_medians_ms": 3.103872,
+                "block_medians_ms": [
+                  3.207936,
+                  2.999808
+                ],
+                "block_p95_ms": [
+                  3.290112,
+                  3.206144
+                ]
+              },
+              "frame_ms": {
+                "mean_of_block_medians_ms": 5.947,
+                "block_medians_ms": [
+                  6.343,
+                  5.551
+                ],
+                "block_p95_ms": [
+                  8.868,
+                  6.506
+                ]
+              },
+              "controller_cpu_ms": {
+                "mean_of_block_medians_ms": 0.4295,
+                "block_medians_ms": [
+                  0.602,
+                  0.257
+                ],
+                "block_p95_ms": [
+                  0.9,
+                  0.56
+                ]
+              },
+              "main_gpu_ms": {
+                "mean_of_block_medians_ms": 2.01399999856949,
+                "block_medians_ms": [
+                  1.92900002002716,
+                  2.09899997711182
+                ],
+                "block_p95_ms": [
+                  2.07299995422363,
+                  2.14000010490417
+                ]
+              },
+              "trace_size": [
+                1280,
+                720
+              ]
+            },
+            "render_resolution": {
+              "rt_gpu_ms": {
+                "mean_of_block_medians_ms": 1.5168,
+                "block_medians_ms": [
+                  1.618944,
+                  1.414656
+                ],
+                "block_p95_ms": [
+                  1.654784,
+                  1.64224
+                ]
+              },
+              "frame_ms": {
+                "mean_of_block_medians_ms": 4.243,
+                "block_medians_ms": [
+                  4.54,
+                  3.946
+                ],
+                "block_p95_ms": [
+                  6.706,
+                  6.239
+                ]
+              },
+              "controller_cpu_ms": {
+                "mean_of_block_medians_ms": 0.3075,
+                "block_medians_ms": [
+                  0.351,
+                  0.264
+                ],
+                "block_p95_ms": [
+                  0.617,
+                  0.543
+                ]
+              },
+              "main_gpu_ms": {
+                "mean_of_block_medians_ms": 1.927500009536745,
+                "block_medians_ms": [
+                  1.9210000038147,
+                  1.93400001525879
+                ],
+                "block_p95_ms": [
+                  1.93299996852875,
+                  1.94599997997284
+                ]
+              },
+              "trace_size": [
+                853,
+                480
+              ]
+            }
+          },
+          "reduction_percent": {
+            "rt_gpu_ms": 51.132005443523454,
+            "frame_ms": 28.653102404573726
+          },
+          "image_comparison": {
+            "energy_ratio": 1.00154871172236,
+            "mean_absolute_error": 0.00452376512680847,
+            "reference_mean": 0.2932338224839,
+            "scaled_mean": 0.293687957142172
+          }
+        },
+        {
+          "quality": "Medium",
+          "measurements": {
+            "window_reference": {
+              "rt_gpu_ms": {
+                "mean_of_block_medians_ms": 17.039232,
+                "block_medians_ms": [
+                  17.056512,
+                  17.021952
+                ],
+                "block_p95_ms": [
+                  20.452096,
+                  17.240064
+                ]
+              },
+              "frame_ms": {
+                "mean_of_block_medians_ms": 19.575499999999998,
+                "block_medians_ms": [
+                  19.639,
+                  19.512
+                ],
+                "block_p95_ms": [
+                  23.475,
+                  20.575
+                ]
+              },
+              "controller_cpu_ms": {
+                "mean_of_block_medians_ms": 0.3065,
+                "block_medians_ms": [
+                  0.341,
+                  0.272
+                ],
+                "block_p95_ms": [
+                  0.819,
+                  0.632
+                ]
+              },
+              "main_gpu_ms": {
+                "mean_of_block_medians_ms": 2.01399999856949,
+                "block_medians_ms": [
+                  2.02900004386902,
+                  1.99899995326996
+                ],
+                "block_p95_ms": [
+                  2.20099997520447,
+                  2.05200004577637
+                ]
+              },
+              "trace_size": [
+                1920,
+                1080
+              ]
+            },
+            "render_resolution": {
+              "rt_gpu_ms": {
+                "mean_of_block_medians_ms": 7.822464,
+                "block_medians_ms": [
+                  7.867904,
+                  7.777024
+                ],
+                "block_p95_ms": [
+                  8.084224,
+                  7.984384
+                ]
+              },
+              "frame_ms": {
+                "mean_of_block_medians_ms": 10.177,
+                "block_medians_ms": [
+                  10.229,
+                  10.125
+                ],
+                "block_p95_ms": [
+                  11.313,
+                  11.254
+                ]
+              },
+              "controller_cpu_ms": {
+                "mean_of_block_medians_ms": 0.28300000000000003,
+                "block_medians_ms": [
+                  0.26,
+                  0.306
+                ],
+                "block_p95_ms": [
+                  0.654,
+                  0.585
+                ]
+              },
+              "main_gpu_ms": {
+                "mean_of_block_medians_ms": 1.939999997615815,
+                "block_medians_ms": [
+                  1.93799996376038,
+                  1.94200003147125
+                ],
+                "block_p95_ms": [
+                  2.00300002098083,
+                  1.95500004291534
+                ]
+              },
+              "trace_size": [
+                1280,
+                720
+              ]
+            }
+          },
+          "reduction_percent": {
+            "rt_gpu_ms": 54.091452009104636,
+            "frame_ms": 48.01154504354933
+          },
+          "image_comparison": {
+            "energy_ratio": 1.00102054972422,
+            "mean_absolute_error": 0.00395327488225967,
+            "reference_mean": 0.292982608014571,
+            "scaled_mean": 0.29328161133438
+          }
+        }
+      ],
+      "scope": "Same frozen detailed river, four bounce PT, responsive history, water reflection and frame generation off. Only PT grid changes. Two alternating rounds, 120 samples after 45 warmup frames. Main GPU excludes the separate PT pass."
+    }
+  }
+}

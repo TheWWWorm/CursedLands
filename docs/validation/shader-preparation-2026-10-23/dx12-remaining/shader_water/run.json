@@ -1,0 +1,88 @@
+{
+  "exit_code": 0,
+  "pid": 525709,
+  "wall_seconds": 33.739452947000245,
+  "stopped": "",
+  "errors": [],
+  "allowed_diagnostics": [],
+  "gpu_uuids_observed": [
+    "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0.09301332099857973,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": false,
+    "live_members_after_cleanup": []
+  },
+  "suite": "shader_water",
+  "checks": 60,
+  "fixture_failures": [],
+  "validation_errors": [],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090",
+    "display": "Windows",
+    "driver": "d3d12",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-remaining-02/fixtures/shader_compilation_water.gd",
+    "fsr": {
+      "api": true,
+      "engine": true,
+      "fg3": true,
+      "fg4": false,
+      "sr3": true,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 376,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": false,
+      "expected_separate": false,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 1,
+      "render_id": 1,
+      "requested": "project"
+    },
+    "require_sdk": true,
+    "user_data": "C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "shader-compilation-water.json",
+  "passed": true,
+  "artifacts": {
+    "CursedLands_dxgi.log": "52dad93115db637716a0ba91543b32a3f12ee67810cd021f62ca32c0545cb9ef",
+    "command.json": "3d60bb0bbdaf9b8833a4418167aaac52caf4b4a862631bade1e568ca1980b3e7",
+    "gpu.jsonl": "3e04301272f8149f6f83e79e381aa147d7563402c72bdfa7dc75fdb57df9a76f",
+    "initial-mirror.png": "c7782e8323f82a312fcd265784a29c7ea16ac332fcea41ac16d958f014e3d7d5",
+    "initial-rt.png": "c7782e8323f82a312fcd265784a29c7ea16ac332fcea41ac16d958f014e3d7d5",
+    "mirror-explicit-settings.png": "77cba0af09ba5ef3ecb495f5e074904e62d1e87bc81d061f4cf7e2fd6c20f65b",
+    "qualification-runtime.json": "2707729b87f1f09bb86e3b47c07e7254d4940568eea68784cd74da799744b99a",
+    "rt-quality-settings.png": "77cba0af09ba5ef3ecb495f5e074904e62d1e87bc81d061f4cf7e2fd6c20f65b",
+    "run.log": "a8916143e17e09035dcb0f08e7016a391af1485ce5ceb255ac64e2f2b8024dc4",
+    "shader-compilation-water.json": "d0d45ef88f457a19e16283bbebf249dc5d04566dd693ae465492c17f1d881592"
+  }
+}

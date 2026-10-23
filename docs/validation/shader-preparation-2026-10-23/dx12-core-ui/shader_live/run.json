@@ -1,0 +1,97 @@
+{
+  "exit_code": 0,
+  "pid": 500408,
+  "wall_seconds": 98.2895917349997,
+  "stopped": "",
+  "errors": [],
+  "allowed_diagnostics": [],
+  "gpu_uuids_observed": [
+    "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0.0896542970003793,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": false,
+    "live_members_after_cleanup": []
+  },
+  "suite": "shader_live",
+  "checks": 80,
+  "fixture_failures": [],
+  "validation_errors": [],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "display": "Windows",
+    "driver": "d3d12",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-dx12-final-01/fixtures/shader_compilation_live.gd",
+    "fsr": {
+      "api": true,
+      "engine": true,
+      "fg3": true,
+      "fg4": false,
+      "sr3": true,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 1412,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": false,
+      "expected_separate": false,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 1,
+      "render_id": 1,
+      "requested": "project"
+    },
+    "require_sdk": true,
+    "user_data": "C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "shader-compilation-live.json",
+  "passed": true,
+  "artifacts": {
+    "CursedLands_dxgi.log": "d3e7cd1ed1a0b18f031cfc87cdbad221b3ad6ada05b1eb99d92cdf6bfe03c507",
+    "command.json": "5bd3bbfcb9f99bb30a01d29e52c9dad6718a83a8e553a13df1c83fdebb26263a",
+    "fsr2-pre-presented.png": "77cba0af09ba5ef3ecb495f5e074904e62d1e87bc81d061f4cf7e2fd6c20f65b",
+    "fsr2-ready.png": "d1a9a830d4eed8b979f8788ff094fe2d7f106ea7bca59bc97039794c5e13c910",
+    "fsr31-fg-phase-05.png": "f81a5dfcd59d1d69b1cef116e85a7ce9d44bd6508d710cf9325656817409dd5e",
+    "fsr31-fg-phase-06.png": "cef7a5515919942f796ade7023d3779b416f797d29226f727aeff229854cdfc9",
+    "fsr31-fg-pre-presented.png": "77cba0af09ba5ef3ecb495f5e074904e62d1e87bc81d061f4cf7e2fd6c20f65b",
+    "fsr31-phase-01.png": "66a4260624bc173af2027ea8e4d717f23fd40f3c581826a06908482c591a1aa2",
+    "fsr31-phase-02.png": "468298e49c985b233000a4e3fb86db181fa2714817daa5b84d437f54ede374e4",
+    "fsr31-phase-03.png": "01d40ef9ca801d23e9bee3af1a82c20c76c6ca8e945f64010ef427cd060366f5",
+    "fsr31-phase-04.png": "1044e14076899a26ee0f49438b8372354904120c701d692ea53f0e0021a2e0c3",
+    "fsr31-pre-presented.png": "77cba0af09ba5ef3ecb495f5e074904e62d1e87bc81d061f4cf7e2fd6c20f65b",
+    "gpu.jsonl": "e45aeae3a8ee9fff1d9913b5fa9b44d7804c9f8ce55ca74de9bdae0f43dffe95",
+    "materials-completed.png": "f57b1d1c4f9731ba3a6b11be334dabe053086e9a9bc5ae8ac68b1c958d3ae2fd",
+    "materials-in-progress.png": "6b5d0727155d19e55118ecf0b816c4fc7b28775fb166110357ea3a1ddc6eba66",
+    "qualification-runtime.json": "4d22cdb895cdb9b945f47ed941e80c29b12e94f32934b83174932be03f88ba9b",
+    "run.log": "0ed59fe5bb83f2c09cb3db95a540e00a1d2fd8d8e83e1dbf05a8bfcf13d2656d",
+    "shader-compilation-live.json": "ccc1b5e529442de3533f2f51235ea213d37a0c8fe391684c85e482680fcfb048",
+    "terrain-pre-presented.png": "77cba0af09ba5ef3ecb495f5e074904e62d1e87bc81d061f4cf7e2fd6c20f65b"
+  }
+}

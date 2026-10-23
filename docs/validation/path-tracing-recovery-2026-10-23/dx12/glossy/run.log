@@ -1,0 +1,108 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+Failed to enable screen_keep_on.
+warn:  CreateDXGIFactory2: Ignoring flags
+warn:  Skipping CPU adapter: llvmpipe (LLVM 20.1.2, 256 bits)
+warn:  DXGI: Found monitors not associated with any adapter, using fallback
+warn:  DxgiAdapter::QueryInterface: Unknown interface query
+warn:  f0db4c7f-fe5a-42a2-bd62-f2a6cf6fc83e
+7738.938:0608:060c:warn:vkd3d-proton:openvr_instance_extensions: Failed to open VR registry key, status 2.
+7738.938:0608:060c:warn:vkd3d-proton:openxr_vulkan_extensions: wineopenxr.dll is missing required symbols.
+7738.938:0608:060c:info:vkd3d-proton:vkd3d_instance_apply_application_workarounds: Program name: "CursedLands.exe" (hash: 33c38cdfc18b2417)
+7738.938:0608:060c:info:vkd3d-proton:vkd3d_instance_deduce_config_flags_from_environment: shader_cache is used, global_pipeline_cache is enforced.
+7738.938:0608:060c:info:vkd3d-proton:vkd3d_config_flags_init_once: VKD3D_CONFIG=''.
+7738.942:0608:060c:warn:vkd3d-proton:vkd3d_check_extensions: Optional user instance extension "VK_KHR_surface_maintenance1" is not supported.
+7738.942:0608:060c:info:vkd3d-proton:vkd3d_get_vk_version: vkd3d-proton - applicationVersion: 3.0.1.
+7738.942:0608:060c:info:vkd3d-proton:vkd3d_instance_init: vkd3d-proton - build: 3b10bd7a7ec6a73.
+7738.965:0608:060c:warn:vkd3d-proton:openvr_device_extensions: Failed to open VR registry key, status 2.
+7738.965:0608:060c:warn:vkd3d-proton:openxr_vulkan_extensions: wineopenxr.dll is missing required symbols.
+7738.965:0608:060c:info:vkd3d-proton:d3d12_device_create: Forcing singleton device due to RenderDoc being enabled.
+7739.001:0608:060c:warn:vkd3d-proton:vkd3d_check_extensions: Optional user device extension "VK_KHR_swapchain_maintenance1" is not supported.
+7739.003:0608:060c:warn:vkd3d-proton:vkd3d_physical_device_info_apply_workarounds: Disabling present_id2, wait2 and timing on pre-595 NV drivers.
+7739.003:0608:060c:info:vkd3d-proton:vkd3d_init_device_caps: Not all relevant pipeline stages are supported by EXT_dgc. Skipping.
+7739.003:0608:060c:warn:vkd3d-proton:vkd3d_supports_minimum_coopmat_caps: Missing sufficient features to expose WMMA.
+7739.519:0608:060c:warn:vkd3d-proton:d3d12_device_create_vkd3d_queues: Could not allocate an out of band queue for queue family 2. All out of band work will happen on the in band queue.
+7739.520:0608:060c:warn:vkd3d-proton:d3d12_device_create_vkd3d_queues: Could not allocate an out of band queue for queue family 3. All out of band work will happen on the in band queue.
+7739.524:0608:060c:info:vkd3d-proton:vkd3d_memory_info_decide_hvv_usage: Topology: Device heaps are split. Assuming small BAR situation.
+7739.524:0608:060c:info:vkd3d-proton:vkd3d_memory_info_upload_hvv_memory_properties: Topology: HVV usage is not allowed, using HOST_COHERENT for UPLOAD.
+7739.524:0608:060c:info:vkd3d-proton:vkd3d_bindless_state_get_bindless_flags: Device supports VK_EXT_mutable_descriptor_type.
+7739.525:0608:060c:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+7739.525:0608:060c:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+7739.525:0608:060c:info:vkd3d-proton:vkd3d_bindless_state_add_binding: Device supports VK_EXT_descriptor_buffer!
+7739.646:0608:060c:info:vkd3d-proton:d3d12_device_caps_init_shader_model: Enabling support for SM 6.6.
+7739.646:0608:060c:fixme:vkd3d-proton:d3d12_device_caps_init_feature_options1: TotalLaneCount = 8064, may be inaccurate.
+7739.646:0608:060c:info:vkd3d-proton:d3d12_device_determine_ray_tracing_tier: DXR support enabled.
+7739.646:0608:060c:info:vkd3d-proton:d3d12_device_determine_ray_tracing_tier: DXR 1.1 support enabled.
+7739.646:0608:060c:info:vkd3d-proton:d3d12_device_caps_init_feature_level: DX Ultimate supported!
+7739.646:0608:060c:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Remapping VKD3D_SHADER_CACHE to: Z:\home\llm2x\Documents\EI\local\scratchpad\water-raytracing-20261021\dx12-quality\pt-stability-20261023\qualification-dx12-final-03\vkd3d-proton.CursedLands.exe.cache.
+7739.646:0608:060c:info:vkd3d-proton:vkd3d_pipeline_library_init_disk_cache: Attempting to load disk cache from: Z:\home\llm2x\Documents\EI\local\scratchpad\water-raytracing-20261021\dx12-quality\pt-stability-20261023\qualification-dx12-final-03\vkd3d-proton.CursedLands.exe.cache.
+7739.649:0608:0628:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Performing async setup of stream archive ...
+7739.649:0608:0628:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_merge: No write cache exists. No need to merge any disk caches.
+7739.649:0608:0628:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Merging pipeline libraries took 0.268 ms.
+7739.649:0608:0628:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Mapping read-only cache took 0.176 ms.
+7739.649:0608:0628:info:vkd3d-proton:vkd3d_pipeline_library_disk_cache_initial_setup: Parsing stream archive took 0.293 ms.
+7739.649:0608:0628:info:vkd3d-proton:vkd3d_pipeline_library_disk_thread_main: Done performing async setup of stream archive.
+warn:  DXGI: Found monitors not associated with any adapter, using fallback
+FidelityFX provider: 3.1.5
+FidelityFX provider: 2.3.4
+FidelityFX provider: 3.1.6
+7739.888:0608:060c:warn:vkd3d-proton:d3d12_device_CheckFeatureSupport: Assuming device does not support tile based rendering.
+D3D12 12_0 - Forward+ - Using Device #1: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+7740.947:0608:060c:fixme:vkd3d-proton:vkd3d_texture_view_desc_fixup: Remapping 2D to 2D_ARRAY. Needs Vulkan spec tightening to match D3D12 properly.
+
+7742.740:0608:060c:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+7742.740:0608:060c:info:vkd3d-proton:dxgi_vk_swap_chain_init: Creating swapchain (1280 x 720), BufferCount = 3.
+7742.756:0608:060c:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Enabling frame latency handles.
+7742.757:0608:060c:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Ensure maximum latency of 3 frames with KHR_present_wait.
+7742.761:0608:060c:info:vkd3d-proton:dxgi_vk_swap_chain_init_sleep_state: Timer interval is 1.0 ms.
+err:   readMonitorEdidFromKey: Failed to get EDID reg key size
+err:   DXGI: Failed to parse display metadata + colorimetry info, using blank.
+7742.763:0608:060c:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+warn:  DXGI: MakeWindowAssociation: Ignoring flags
+7742.906:0608:0658:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+WARNING: Failed to get SDR white level for adapterId: 0x00000000000006E0, id: 0
+   at: _get_sdr_white_level_for_hmonitor (platform/windows/display_server_windows.cpp:1708)
+[trace 13:50:24 +8714ms] session dd4e9d69ed9a: 1.23.0, Windows 10.0.19043, NVIDIA NVIDIA GeForce RTX 3090 Ti, forward_plus / d3d12
+PT_QUALIFICATION_RUNTIME {"adapter":"NVIDIA GeForce RTX 3090 Ti","display":"Windows","driver":"d3d12","engine":{"build":"custom_build","hash":"unknown","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (custom_build)","timestamp":0},"fixture":"Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-dx12-final-03/fixtures/path_trace_glossy.gd","fsr":{"api":true,"engine":true,"fg3":true,"fg4":false,"sr3":true,"sr4":false},"method":"forward_plus","passed":true,"pid":1544,"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"pt_supported":true,"render_thread":{"actual_separate":false,"expected_separate":false,"main_id":1,"passed":true,"project_model":1,"render_id":1,"requested":"project"},"require_sdk":true,"user_data":"C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands","vendor":"NVIDIA"}
+PASS qualified glossy reconstruction device
+PASS build mixed-metalness material guide fixture
+7748.442:0608:0658:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+7748.465:0608:060c:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+7748.465:0608:060c:info:vkd3d-proton:dxgi_vk_swap_chain_init: Creating swapchain (1280 x 720), BufferCount = 3.
+7748.466:0608:060c:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Enabling frame latency handles.
+7748.466:0608:060c:info:vkd3d-proton:dxgi_vk_swap_chain_init_sync_objects: Ensure maximum latency of 3 frames with KHR_present_wait.
+7748.467:0608:060c:info:vkd3d-proton:dxgi_vk_swap_chain_init_sleep_state: Timer interval is 1.0 ms.
+7748.468:0608:060c:fixme:vkd3d-proton:d3d12_command_queue_init: Ignoring priority 0x64.
+warn:  DXGI: MakeWindowAssociation: Ignoring flags
+7748.527:0608:0674:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+PASS native half-float guide preserves roughness and fractional metalness (0.08, 0.0)
+PASS native half-float guide preserves roughness and fractional metalness (0.2, 0.4)
+PASS native half-float guide preserves roughness and fractional metalness (0.6, 0.2)
+PASS native half-float guide preserves roughness and fractional metalness (0.5, 0.5)
+PASS native half-float guide preserves roughness and fractional metalness (1.0, 1.0)
+PASS formerly colliding material combinations have distinct guides
+PASS stationary glossy and diffuse histories both accumulate
+PASS camera motion retains matching diffuse history
+PASS orthographic translation retains an unchanged reflection direction
+PASS smooth perspective reflections discard changed viewing directions
+PASS rough reflection lobes keep useful history during the same movement
+PASS glossy confidence recovers independently of diffuse age
+PASS invalid glossy history does not invalidate diffuse history
+PASS invalid diffuse history does not invalidate glossy history
+PASS unrelated depth layer rejects both histories
+PASS different roughness/metalness combinations reject aliased history
+PASS normal changes reject glossy history within diffuse normal tolerance
+PASS still-scene glossy history continues beyond the responsive limit
+PASS still-scene glossy confidence reaches its full 256-frame budget
+PASS still-scene camera motion resets both histories
+7748.581:0608:0674:info:vkd3d-proton:dxgi_vk_swap_chain_recreate_swapchain_in_present_task: Got 3 swapchain images.
+PASS build deterministic glossy motion fixture 0.12
+PASS native highlight measurement remains finite 0.12
+PASS moving native highlight remains within its reconstruction error budget 0.12
+PASS build deterministic glossy motion fixture 0.35
+PASS native highlight measurement remains finite 0.35
+PASS moving native highlight remains within its reconstruction error budget 0.35
+PASS stationary glossy reconstruction reduces sampling variance by at least 75 percent
+PASS native stationary glossy energy agrees with independent hemisphere integration
+PASS native stationary glossy confidence reaches eight frames
+SCENE_RT_DEVICE 31 checks 0 failures
+[trace 13:50:28 +12259ms] clean exit

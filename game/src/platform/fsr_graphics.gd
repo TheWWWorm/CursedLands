@@ -31,7 +31,10 @@ static func screen_hint(info: Dictionary) -> String:
 var _previous_fg := 0
 var _upscaling_applied := false
 var _telemetry_time := 0.0
-var _preparing_label: Label
+var _preparation_key := []
+var _preparation_pending := false
+var _preparation_sr_base := 0
+var _preparation_fg_base := 0
 var _last_allowed_usec := 0
 var _ever_active := false
 
@@ -106,20 +109,6 @@ static func apply_upscaling(vp: Viewport) -> void:
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	set_process(facts().engine and facts().api)
-	if not is_processing(): return
-	var layer := CanvasLayer.new()
-	layer.layer = 126
-	add_child(layer)
-	_preparing_label = Label.new()
-	_preparing_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	_preparing_label.offset_bottom = -8
-	_preparing_label.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	_preparing_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_preparing_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_preparing_label.add_theme_constant_override("outline_size", 4)
-	_preparing_label.add_theme_color_override("font_outline_color", Color.BLACK)
-	_preparing_label.hide()
-	layer.add_child(_preparing_label)
 
 ## Choose the view owning the current camera. A hidden/previous Game in
 ## the same group must not suspend frame generation for the visible one.
@@ -153,7 +142,9 @@ func _process(dt: float) -> void:
 	if GameData.option(FRAME_GENERATION) <= 0: gate.blockers.append("option_off")
 	var unavailable := reason(FRAME_GENERATION)
 	if not unavailable.is_empty(): gate.blockers.append("unsupported")
-	if get_tree().paused: gate.blockers.append("paused")
+	# The compilation screen pauses single-player simulation while scene
+	# rendering continues. Only that owned pause may initialize FG under cover.
+	if get_tree().paused and not ShaderCompilationScreen.owns_pause(get_tree()): gate.blockers.append("paused")
 	if not root.has_focus(): gate.blockers.append("window_unfocused")
 	var enable: bool = gate.blockers.is_empty()
 	if enable: _last_allowed_usec = Time.get_ticks_usec()
@@ -164,8 +155,7 @@ func _process(dt: float) -> void:
 		_previous_fg = version
 	var status: Dictionary = bridge().call("get_status")
 	_ever_active = _ever_active or bool(status.get("frame_generation_active",false))
-	_preparing_label.visible = (applied or enable) and (status.get("temporal_shaders_initializing", false) or status.get("upscaler_initializing", false) or status.get("frame_generation_initializing", false))
-	if _preparing_label.visible: _preparing_label.text = RemakeText.t("Preparing FSR…")
+	_update_preparation(status, applied, enable)
 	_telemetry_time += dt
 	if _telemetry_time >= 1.0:
 		_telemetry_time = 0.0
@@ -181,7 +171,42 @@ func _process(dt: float) -> void:
 		var out := FileAccess.open("user://fsr-status.json", FileAccess.WRITE)
 		if out: out.store_string(JSON.stringify(status, "\t") + "\n")
 
+
+func _update_preparation(status: Dictionary, upscaling: bool, generation: bool) -> void:
+	var root := get_tree().root
+	var camera := root.get_camera_3d()
+	var key := [upscaling, GameData.option(UPSCALING), GameData.option(QUALITY),
+		generation, GameData.option(FRAME_GENERATION), root.size, camera.get_instance_id() if camera else 0]
+	var initializing: bool = status.get("temporal_shaders_initializing", false) \
+		or (upscaling and status.get("upscaler_initializing", false)) \
+		or (generation and status.get("frame_generation_initializing", false))
+	if key != _preparation_key or (initializing and not _preparation_pending):
+		_preparation_key = key
+		_preparation_sr_base = int(status.get("upscale_evaluations", 0))
+		_preparation_fg_base = int(status.get("frame_generation_dispatches", 0))
+		_preparation_pending = (upscaling or generation) and root.get_camera_3d() != null
+	if not _preparation_pending:
+		ShaderCompilationScreen.end(&"fsr")
+		return
+	# Initially all flags are false; they can also clear briefly between
+	# shader and SDK context preparation. Actual evaluations finish the hold.
+	var ready := not initializing \
+		and (not upscaling or int(status.get("upscale_evaluations", 0)) > _preparation_sr_base) \
+		and (not generation or int(status.get("frame_generation_dispatches", 0)) > _preparation_fg_base)
+	# last_error is shared and sticky across SR/FG. A historical failure in
+	# the other effect must not end a healthy request. Capability changes
+	# already cancel the affected request through upscaling/generation above.
+	if ready:
+		_preparation_pending = false
+		ShaderCompilationScreen.end(&"fsr")
+		return
+	var phase := ShaderCompilationScreen.TEMPORAL if status.get("temporal_shaders_initializing", false) \
+		else ShaderCompilationScreen.UPSCALER if upscaling and (status.get("upscaler_initializing", false) \
+			or int(status.get("upscale_evaluations", 0)) <= _preparation_sr_base) else ShaderCompilationScreen.FRAMES
+	ShaderCompilationScreen.begin(get_tree(), &"fsr", phase)
+
 func _exit_tree() -> void:
+	ShaderCompilationScreen.end(&"fsr")
 	if _previous_fg > 0 and is_inside_tree():
 		get_tree().root.set("frame_generation", false)
 		bridge().call("set_frame_generation_version", 0)

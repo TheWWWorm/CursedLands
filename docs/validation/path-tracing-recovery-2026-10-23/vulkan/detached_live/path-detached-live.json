@@ -1,0 +1,68 @@
+{
+	"checks": 15,
+	"failures": [],
+	"observations": [
+		{
+			"instances": 4,
+			"traced_pixels": 3916,
+			"turn": 0
+		},
+		{
+			"instances": 4,
+			"traced_pixels": 4130,
+			"turn": 1
+		},
+		{
+			"instances": 4,
+			"traced_pixels": 4358,
+			"turn": 2
+		},
+		{
+			"instances": 4,
+			"traced_pixels": 4603,
+			"turn": 3
+		}
+	],
+	"stats": {
+		"accumulation_frames": 8.0,
+		"active": true,
+		"display_size": [
+			1280,
+			720
+		],
+		"emissive_candidates": 0,
+		"emissive_triangles": 0,
+		"geometries": 2329,
+		"gi_samples": 0,
+		"history_limit": 8.0,
+		"history_reused": true,
+		"instances": 2513,
+		"light_history_limited": false,
+		"lights": 2,
+		"path_bounces": 2,
+		"path_samples": 2,
+		"path_tracing": true,
+		"quality": 1,
+		"rebuilding": false,
+		"render_scale": 1.0,
+		"render_size": [
+			1280,
+			720
+		],
+		"shadow_samples": 0,
+		"size": [
+			960,
+			540
+		],
+		"snapshot_generation": 3,
+		"supported": true,
+		"terrain_material_build_us": 0,
+		"terrain_material_bytes": 64,
+		"terrain_material_triangles": 0,
+		"trace_render_scale": 1.0,
+		"triangles": 170486,
+		"updated_instances": 0,
+		"updated_poses": 0,
+		"window_resolution_reference": false
+	}
+}

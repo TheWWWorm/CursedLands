@@ -72,11 +72,26 @@ func run() -> void:
 		"gfx_foliage_light":1,"gfx_terrain_cliffs":1,"rt_shadows":0,"rt_gi":0,
 		"pt_mode":2,"pt_accumulation":0,"q_rt_lighting":1},true)
 	t.apply_gfx();Gfx.apply_env(game._env)
-	get_window().borderless=true;get_window().size=Vector2i(1280,720)
+	if OS.get_cmdline_user_args().has("--pt-unmapped-control"):
+		# The original river contains some pilot-atlas props. Explicitly
+		# disable only those maps before collecting the control snapshot;
+		# retain all other material and terrain features in both programs.
+		for mesh: MeshInstance3D in game.world.find_children("*","MeshInstance3D",true,false):
+			if mesh.mesh==null:continue
+			for surface in mesh.mesh.get_surface_count():
+				var material:=mesh.get_active_material(surface) as ShaderMaterial
+				if material!=null and material.get_shader_parameter("surface_detail_tex") is Texture2D:
+					material.set_shader_parameter("surface_detail_enabled",false)
+	get_window().min_size=Vector2i(1,1);get_window().borderless=true;get_window().size=Vector2i(1280,720)
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED);Engine.max_fps=0
 	var rt: Node=game.get_node("SceneRaytrace")
 	check(await ready_snapshot(rt),"material benchmark prepares the campaign snapshot")
 	if not rt.stats.get("active",false):get_tree().quit(1);return
+	if OS.get_cmdline_user_args().has("--pt-unmapped-control"):
+		var mapped:=0
+		for geometry: Dictionary in rt._scene.geometries:mapped+=int(geometry.get("detail_layer",-1)>=0)
+		check(mapped==0,"unmapped control contains no authored prop maps")
+		if mapped>0:get_tree().quit(1);return
 	var device: Object=rt.device;var scene_handle: RID=device._tlas
 	var hit_path: String=hit_reference.path_join(device.shader_stage_path(RenderingDevice.SHADER_STAGE_CLOSEST_HIT).get_file())
 	var reference_files:={}
@@ -96,13 +111,13 @@ func run() -> void:
 			check(rt.device==device and device._tlas==scene_handle and device._shader==selected_shader,"hit switch retains acceleration structures and requested shader")
 			if not filter_reference.is_empty():check(device._filter_pipeline==(reference_variants["filter"] if choice[2] else optimized_filter),"requested reconstruction pipeline is active")
 			gpu_samples.clear();gpu_stage_samples.clear();cpu_samples.clear();sampling=true
-			var wall:=[];var previous:=Time.get_ticks_usec()
+			var wall:=[];var previous:=Time.get_ticks_usec();var started:=Time.get_unix_time_from_system()
 			for i in 120:
 				await frames(1);var now:=Time.get_ticks_usec();wall.append((now-previous)/1000.0);previous=now
 			sampling=false
 			var row:={"mode":choice[0],"quality":choice[1],"reference":choice[2],"round":round_index,
 				"rt_gpu_ms":summary(gpu_samples.duplicate()),"gpu_stages_ms":stage_summary(),"controller_cpu_ms":summary(cpu_samples.duplicate()),
-				"frame_ms":summary(wall),"stats":rt.stats.duplicate()}
+				"frame_ms":summary(wall),"start_unix":started,"end_unix":Time.get_unix_time_from_system(),"stats":rt.stats.duplicate()}
 			runs.append(row);print("PATH_MATERIAL_BENCH ",JSON.stringify(row))
 			FileAccess.open(out.path_join("path-material-performance.json"),FileAccess.WRITE).store_string(JSON.stringify({"runs":runs,
 				"checks":checks,"failures":failures,"device":RenderingServer.get_video_adapter_name(),"driver":RenderingServer.get_current_rendering_driver_name(),"viewport":[1280,720],

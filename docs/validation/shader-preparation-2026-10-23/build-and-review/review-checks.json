@@ -1,0 +1,43 @@
+{
+  "cpu_tests": {
+    "command": "python3 -m unittest discover -s tools/tests -p test_path_trace_qualification.py -v",
+    "tests": 21,
+    "passed": true,
+    "seconds": 5.529,
+    "runner_sha256": "6079836dc3adec497c36051d8546988c691e517b83549eab2433e0dece405108",
+    "tests_sha256": "604c2a2c59612ad0223c81554d12444892c3ae015690364bba479a5f6c676f83",
+    "log": "runner-tests-pool.log"
+  },
+  "translation_check": {
+    "command": "python3 tools/check_translations.py",
+    "entries": 3061,
+    "dynamic_wiki_keys": 141,
+    "dynamic_arena_keys": 179,
+    "errors": 0
+  },
+  "manual_visual_review": {
+    "files": [
+      "final-vulkan-01/shader_ui/de-640x480-materials.png",
+      "final-vulkan-01/shader_ui/ru-640x480-materials.png",
+      "live-d3d12-01/shader_live/fsr31-phase-01.png",
+      "lab-dx12-running.png",
+      "lab-vulkan-preparation-02/shader_ui/ru-640x480-materials.png",
+      "lab-vulkan-preparation-02/shader_ui/de-640x480-materials.png",
+      "lab-dx12-final-01/shader_live/fsr31-phase-02.png"
+    ],
+    "result": "EN/RU/DE text readable and within the viewport. A GPU Lab capture also confirms the preparation canvas is presented in the real Windows game window."
+  },
+  "old_private_display_cleanup": {
+    "display": ":97",
+    "xorg_stopped": true,
+    "authority_removed": true,
+    "service_display": ":98",
+    "note": "The old private display predated the updated workstation rule. The running batch was completed; all subsequent graphical tests are queued through GPU Lab."
+  },
+  "pool_update": {
+    "native_preparation_job": "760934cdd2db4b1a",
+    "assigned_gpu": "0",
+    "policy": "auto; running DX12 retained its original GPU1 assignment"
+  },
+  "final_fixture_commit": "8dd237546ec033d3307a4239ad91012796a0b5c8"
+}

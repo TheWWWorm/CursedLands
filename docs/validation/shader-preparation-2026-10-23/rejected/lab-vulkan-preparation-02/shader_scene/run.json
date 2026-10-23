@@ -1,0 +1,93 @@
+{
+  "exit_code": -15,
+  "pid": 498819,
+  "wall_seconds": 29.79187806399932,
+  "stopped": "runtime error",
+  "errors": [
+    "FAIL same-device-deep: controller progresses while its visible single-player cover owns the pause"
+  ],
+  "allowed_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null.\n   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)"
+  ],
+  "gpu_uuids_observed": [
+    "GPU-dfdd7c2b-427a-348c-222a-1703cb8ae441"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": true,
+    "live_members_after_cleanup": []
+  },
+  "suite": "shader_scene",
+  "checks": 15,
+  "fixture_failures": [
+    "same-device-deep: controller progresses while its visible single-player cover owns the pause"
+  ],
+  "validation_errors": [
+    "Fixture did not report positive checks and an empty failures list"
+  ],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090",
+    "display": "X11",
+    "driver": "vulkan",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-vulkan-preparation-02/fixtures/shader_compilation_scene.gd",
+    "fsr": {
+      "api": false,
+      "engine": false,
+      "fg3": false,
+      "fg4": false,
+      "sr3": false,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 498819,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": true,
+      "expected_separate": true,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 2,
+      "render_id": 5,
+      "requested": "project"
+    },
+    "require_sdk": false,
+    "user_data": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/shader-progress-20261023/lab-vulkan-preparation-02-profile/shader_scene/data/godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "shader-compilation-scene.json",
+  "passed": false,
+  "artifacts": {
+    "command.json": "3b5a3d500b24f91e77034d07245345b82217777bcc993938e43828b91ddc3b99",
+    "gpu.jsonl": "3acf3114e4bc15da310edff06ec9350d76cb2d15aea0add054e21df9921cf76a",
+    "initial-path.png": "cd343d1ca5e5f6c98a1fa009709eb88115e10140b77263325a9223361fbe2ac2",
+    "qualification-runtime.json": "13f6fa31168579dbb9565258e206852f96689cd4b8bc28f51fdbcc40f82c814f",
+    "quality-resize.png": "f28c4d1be802e028cc722d940f1ac3eb665aa8c222ad45f130a196d840712a9e",
+    "run.log": "025a944e8a23c760882b1f0c7eb1ef01d9b640e4332e72764f7fbd0155f721e8",
+    "shader-compilation-scene.json": "4774922414450732d725186a66da8f644cb70c67eda5c8543af263d344c254fd"
+  }
+}

@@ -16,6 +16,20 @@ var stats := {}
 var device: Device
 var _gather: Scene
 var _scene: Scene
+# A recenter replacement remains private until it has rendered valid output.
+# The current scene keeps lighting the view while CPU/GPU preparation runs.
+var _pending_device: Device
+var _pending_scene: Scene
+var _pending_ready := false
+var _pending_stats := {}
+var _snapshot_generation := 0
+var _failure_reason := ""
+var _failure_position := Vector3.INF
+var _failure_watch: Scene
+var _retry_delay := 0.0
+var _failure_age := 0.0
+var _failure_poll := 0.0
+var _retry_attempt := 0
 var _terrain: EITerrain
 var _center := Vector3.INF
 var _ready_gpu := false
@@ -31,7 +45,20 @@ var _history_key := ""
 var _mode := ""
 var _path_mode := false
 var _path_signature := PackedByteArray()
-var _accumulation_frames := 0
+var _accumulation_frames := 0.0
+# A visible settings request owns one cover. Ordinary recenter/topology work
+# keeps this key, so cancellation and automatic recovery never reopen it.
+var _preparation_seen := ""
+var _preparation_owner: StringName = &""
+var _preparation_token := 0
+var _preparation_waiting_id := 0
+var _preparation_completed_id := 0
+var _preparation_size := Vector2i.ZERO
+var _preparation_visible_frame := -1
+# Diagnostic control for matched flicker comparisons; never freezes a light.
+var _strict_light_history := OS.get_cmdline_user_args().has("--ei-strict-light-history")
+# Diagnostic comparison against the old display-resolution PT workload.
+var _window_resolution_reference := OS.get_cmdline_user_args().has("--ei-pt-window-resolution")
 
 func _init(owner_game: Game) -> void:
 	game = owner_game; name = "SceneRaytrace"
@@ -41,9 +68,15 @@ func _ready() -> void:
 	process_priority = 101
 	Gfx.ensure_globals()
 
-static func target_size(viewport: Vector2,quality: int) -> Vector2i:
+static func internal_render_size(viewport: Vector2,render_scale: float) -> Vector2i:
+	# Godot truncates the scaled 3D dimensions before allocating its buffers.
+	# Use the viewport's applied scale, including FSR, rather than saved options.
+	return Vector2i(viewport*render_scale).max(Vector2i.ONE)
+
+static func target_size(viewport: Vector2,quality: int,render_scale := 1.0) -> Vector2i:
 	var scale: float = SCALES[clampi(quality,0,2)]
-	return Vector2i(maxi(2,roundi(viewport.x*scale)),maxi(2,roundi(viewport.y*scale)))
+	var internal := internal_render_size(viewport,render_scale)
+	return Vector2i(maxi(2,roundi(internal.x*scale)),maxi(2,roundi(internal.y*scale)))
 
 func _process(dt: float) -> void:
 	var wanted := Gfx.SceneRaytraceShader.requested()
@@ -53,84 +86,264 @@ func _process(dt: float) -> void:
 	if mode != _mode or terrain != _terrain:
 		if terrain != _terrain or path_mode!=_path_mode: _release()
 		_path_mode=path_mode
-		_mode = mode; _terrain = terrain; _failed = false; _history_key=""
+		_mode = mode; _terrain = terrain; _clear_failure(); _history_key=""
 	if not wanted or not is_instance_valid(terrain) or not terrain.is_visible_in_tree() or game.simulation_only:
-		if device != null or _gather != null: _release()
+		_preparation_seen="";_end_preparation()
+		if device != null or _gather != null or _pending_device!=null or _failure_watch!=null: _release()
 		return
-	if _failed: return
 	if not Device.supported():
+		_preparation_seen="";_end_preparation()
 		_failed = true; stats = {"active":false,"supported":false,"fallback":"unsupported"}; return
 	var camera := terrain.get_viewport().get_camera_3d()
-	if camera == null: _release(); return
+	if camera == null:
+		_preparation_seen="";_release();return
+	var visible_request := game.is_visible_in_tree() and game.is_ancestor_of(camera)
+	var request := "%s:%s:%s"%[terrain.get_instance_id(),_mode,GameData.graphics_revision]
+	var prepare := visible_request and request!=_preparation_seen
+	var terrain_preparing := ShaderCompilationScreen.terrain_pending(terrain)
+	if prepare:
+		_clear_failure();_history_key="";_poll=0.0
+	elif not visible_request:
+		_preparation_seen="";_end_preparation()
+	var may_retry := _allow_retry(camera.global_position,dt)
 	_poll -= dt
-	if _scene != null and _poll<=0.0:
+	if _scene != null and _poll<=0.0 and not terrain_preparing:
 		_poll = 1.0
 		_collect_lights(camera.global_position)
-		if _scene.topology_changed(): _release()
-	if camera.global_position.distance_to(_center)>16.0:
-		_release(); _center = camera.global_position
-		_gather = Scene.new(); _gather.lighting_camera_mask = camera.cull_mask
-		_gather.path_materials = _path_mode
-		# No water-plane clipping: ceilings, underground rooms and banks all
-		# participate in the lighting acceleration structure.
-		_gather.begin(terrain,_center,-1.0e20)
-	if _gather != null:
-		if not _gather.step(): return
-		stats = {"active":false,"supported":true,"triangles":_gather.triangles,"geometries":_gather.geometries.size(),"instances":_gather.instances.size()}
-		if _gather.failed or _gather.triangles==0:
-			_failed = true; stats["fallback"]="snapshot_budget"; _gather=null; return
-		var geometries := []; var placements := []
-		for geometry: Dictionary in _gather.geometries:
-			geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,"cutoff":geometry.cutoff,"standard":geometry.standard,"surface":geometry.surface,"relief":geometry.relief,"terrain":geometry.terrain,"foliage_layer":geometry.foliage_layer,
-				"leaf_light":geometry.leaf_light,"bark_relief":geometry.bark_relief,"emissive":geometry.emissive})
-		for entry: Dictionary in _gather.instances:
-			placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":0})
-		device = PathDevice.new() if _path_mode else Device.new()
-		if _path_mode:
-			device.terrain.collect(_gather,terrain)
-			if _gather.failed:
-				_failed=true;stats["fallback"]="snapshot_budget";device=null;_gather=null;return
-			stats["terrain_material_bytes"]=device.terrain.data.size()
-			stats["terrain_material_build_us"]=device.terrain.build_us
-			stats["terrain_material_triangles"]=device.terrain.terrain_triangles
-		device.prepared.connect(_prepared)
-		if _path_mode: device.emitter_stats.connect(_emitter_stats)
-		RenderingServer.call_on_render_thread(device.build.bind(_gather.vertices.to_byte_array(),_gather.images,geometries,placements))
-		_scene = _gather; _gather = null
-		_collect_lights(camera.global_position)
-	if not _ready_gpu: return
-	_scene.lighting_camera_mask = camera.cull_mask
+		# Incompatible mesh/material changes must not keep shading stale data.
+		if _scene.topology_changed():
+			prepare=prepare or not _preparation_owner.is_empty()
+			_release();may_retry=true
+	var building := _gather if _gather!=null else _pending_scene
+	if building!=null and (camera.global_position.distance_to(building.center)>32.0 or (prepare and terrain_preparing)):
+		_cancel_candidate()
+	# Apply-time topology invalidation may release the old device above. Start
+	# the new intent afterward so that release cannot dismiss its own cover.
+	if prepare:
+		_preparation_seen=request
+		_begin_preparation()
+	# Explicit terrain workers continue under the shared pause. Do not gather
+	# their old geometry or acknowledge its shaders before their bounded work.
+	if terrain_preparing: return
+	if _gather==null and _pending_device==null and may_retry \
+		and (device==null or camera.global_position.distance_to(_center)>16.0):
+		_begin_snapshot(terrain,camera)
+	if _gather!=null and _gather.step(): _queue_candidate(terrain,camera)
 	var quality := clampi(GameData.option("q_rt_lighting"),0,2)
-	var size := target_size(camera.get_viewport().get_visible_rect().size,quality)
-	var changes := _scene.updates()
-	var frame := _frame(camera,size,quality,not changes.instances.is_empty() or not changes.poses.is_empty())
-	RenderingServer.call_on_render_thread(device.render.bind(size,frame,changes,GameData.option("q_aniso")))
-	if device.output.get_width()>0:
-		_set_gi_active(_path_mode or GameData.option("rt_gi")>0)
-		if not _bound:
-			RenderingServer.global_shader_parameter_set(&"ei_rt_gi",device.output)
-			RenderingServer.global_shader_parameter_set(&"ei_rt_guide",device.guide)
-			RenderingServer.global_shader_parameter_set(&"ei_rt_shadow0",device.shadow0)
-			RenderingServer.global_shader_parameter_set(&"ei_rt_shadow1",device.shadow1)
-			_bound = true
-		var view_projection := camera.get_camera_projection()*Projection(camera.get_camera_transform().affine_inverse())
-		RenderingServer.global_shader_parameter_set(&"ei_rt_view_projection",view_projection)
-		RenderingServer.global_shader_parameter_set(&"ei_rt_inverse_view_projection",view_projection.inverse())
-		RenderingServer.global_shader_parameter_set(&"ei_rt_view",Projection(camera.get_camera_transform().affine_inverse()))
-		RenderingServer.global_shader_parameter_set(&"ei_rt_eye",camera.get_camera_transform().origin)
-		RenderingServer.global_shader_parameter_set(&"ei_rt_center",Vector4(_center.x,_center.y,_center.z,0))
-		RenderingServer.global_shader_parameter_set(&"ei_rt_state",Vector4(1,GameData.option("rt_shadows"),GameData.option("rt_gi"),RECEIVER_RADIUS))
-		RenderingServer.global_shader_parameter_set(&"ei_pt_active",float(_path_mode))
-		stats["active"]=true
+	var viewport := camera.get_viewport()
+	var display_size := viewport.get_visible_rect().size
+	var render_scale := viewport.scaling_3d_scale
+	var trace_scale := render_scale if _path_mode and not _window_resolution_reference else 1.0
+	# Rays and receiver lookup share the unjittered camera projection. Raster
+	# receivers project world positions into this lattice beside FSR jitter.
+	var size := target_size(display_size,quality,trace_scale)
+	if _pending_ready and _pending_device.output_ready() and _pending_device.output.get_size()==Vector2(size):
+		if _pending_scene.topology_changed():
+			var keep_cover := not _preparation_owner.is_empty()
+			_cancel_candidate()
+			if keep_cover: _begin_preparation()
+		else: _activate_candidate()
+	var frame := PackedByteArray()
+	if _ready_gpu and device!=null:
+		_scene.lighting_camera_mask = camera.cull_mask
+		var changes := _scene.updates()
+		frame = _frame(camera,size,quality,not changes.instances.is_empty() or not changes.poses.is_empty(),dt)
+		_render(device,size,frame,changes)
+		if device.output_ready():
+			_set_gi_active(_path_mode or GameData.option("rt_gi")>0)
+			_bind_outputs()
+			var view_projection := camera.get_camera_projection()*Projection(camera.get_camera_transform().affine_inverse())
+			RenderingServer.global_shader_parameter_set(&"ei_rt_view_projection",view_projection)
+			RenderingServer.global_shader_parameter_set(&"ei_rt_inverse_view_projection",view_projection.inverse())
+			RenderingServer.global_shader_parameter_set(&"ei_rt_view",Projection(camera.get_camera_transform().affine_inverse()))
+			RenderingServer.global_shader_parameter_set(&"ei_rt_eye",camera.get_camera_transform().origin)
+			RenderingServer.global_shader_parameter_set(&"ei_rt_center",Vector4(_center.x,_center.y,_center.z,0))
+			RenderingServer.global_shader_parameter_set(&"ei_rt_state",Vector4(1,GameData.option("rt_shadows"),GameData.option("rt_gi"),RECEIVER_RADIUS))
+			RenderingServer.global_shader_parameter_set(&"ei_pt_active",float(_path_mode))
+			stats["active"]=true
+		stats["updated_instances"]=changes.instances.size();stats["updated_poses"]=changes.poses.size()
+	if _pending_ready:
+		_pending_scene.lighting_camera_mask=camera.cull_mask
+		var changes := _pending_scene.updates()
+		if frame.is_empty(): frame=_frame(camera,size,quality,true,dt)
+		else: frame=frame.duplicate()
+		# First output is private and never borrows the active scene's history.
+		frame.encode_float(82*4,0.0)
+		for axis in 3: frame.encode_float((84+axis)*4,_pending_scene.center[axis])
+		_render(_pending_device,size,frame,changes)
+	stats["rebuilding"]=_gather!=null or _pending_device!=null
+	stats["snapshot_generation"]=_snapshot_generation
 	stats["size"]=[size.x,size.y]; stats["quality"]=quality
+	var render_size := internal_render_size(display_size,render_scale)
+	stats["display_size"]=[int(display_size.x),int(display_size.y)]
+	stats["render_size"]=[render_size.x,render_size.y];stats["render_scale"]=render_scale
+	stats["trace_render_scale"]=trace_scale
+	stats["window_resolution_reference"]=_path_mode and _window_resolution_reference
 	stats["gi_samples"]=GI_SAMPLES[quality] if GameData.option("rt_gi")>0 else 0
 	stats["shadow_samples"]=SHADOW_SAMPLES[quality] if GameData.option("rt_shadows")>0 else 0
-	stats["lights"]=_lights.size();stats["updated_instances"]=changes.instances.size();stats["updated_poses"]=changes.poses.size()
+	stats["lights"]=_lights.size()
 	stats["path_tracing"]=_path_mode;stats["path_bounces"]=GameData.option("pt_mode")*2 if _path_mode else 0
 	stats["path_samples"]=GI_SAMPLES[quality] if _path_mode else 0
 	stats["accumulation_frames"]=_accumulation_frames if _path_mode else 0
+	_settle_preparation(size)
 
-func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false) -> PackedByteArray:
+func _begin_preparation() -> void:
+	_end_preparation()
+	_preparation_token+=1
+	_preparation_owner=StringName("pipeline:scene:%d:%d"%[get_instance_id(),_preparation_token])
+	var phase := ShaderCompilationScreen.GEOMETRY if device==null else _pipeline_phase()
+	var screen := ShaderCompilationScreen.begin(get_tree(),_preparation_owner,phase)
+	if screen==null: _end_preparation();return
+	# Show the cover before synchronous geometry/material packing can begin.
+	screen.present()
+
+func _pipeline_phase() -> String:
+	return ShaderCompilationScreen.PATH_TRACE if _path_mode else ShaderCompilationScreen.RAYTRACE
+
+func _end_preparation() -> void:
+	if not _preparation_owner.is_empty(): ShaderCompilationScreen.end(_preparation_owner)
+	_preparation_owner=&"";_preparation_waiting_id=0;_preparation_completed_id=0
+	_preparation_size=Vector2i.ZERO;_preparation_visible_frame=-1
+
+func _render(target: Device,size: Vector2i,frame: PackedByteArray,changes: Dictionary) -> void:
+	# An active device is the visible target even while a recenter replacement
+	# builds. With no active scene, the candidate must finish privately first.
+	if _preparation_owner.is_empty() or (target!=device and device!=null):
+		Device.dispatch(target,&"render",[size,frame,changes,GameData.option("q_aniso")]);return
+	var id := target.get_instance_id()
+	if id!=_preparation_waiting_id or size!=_preparation_size:
+		_preparation_token+=1
+		_preparation_waiting_id=id;_preparation_completed_id=0
+		_preparation_size=size;_preparation_visible_frame=-1
+		ShaderCompilationScreen.update(_preparation_owner,_pipeline_phase())
+		Device.dispatch(target,&"render_preparation",[_preparation_token,size,frame,changes,GameData.option("q_aniso")])
+	else:
+		Device.dispatch(target,&"render",[size,frame,changes,GameData.option("q_aniso")])
+
+func _rendered(token: int,ok: bool,id: int) -> void:
+	# A prior settings request, resize or canceled device cannot complete the
+	# current request. The acknowledgment follows an actual successful render;
+	# output_ready alone may still describe the previous PT depth variant.
+	if _preparation_owner.is_empty() or token!=_preparation_token or id!=_preparation_waiting_id: return
+	if not ok: _end_preparation();return
+	_preparation_completed_id=id
+	ShaderCompilationScreen.update(_preparation_owner,ShaderCompilationScreen.FIRST_FRAME)
+
+func _settle_preparation(size: Vector2i) -> void:
+	if _preparation_owner.is_empty(): return
+	if device==null or device.get_instance_id()!=_preparation_completed_id \
+		or not stats.get("active",false) or not device.output_ready() \
+		or size!=_preparation_size or device.output.get_size()!=Vector2(size):
+		_preparation_visible_frame=-1;return
+	# Candidate acknowledgment can arrive before promotion. Wait for a draw
+	# after its output is bound, then let the shared screen settle its frames.
+	if _preparation_visible_frame<0: _preparation_visible_frame=Engine.get_frames_drawn()
+	elif Engine.get_frames_drawn()>_preparation_visible_frame: _end_preparation()
+
+func _begin_snapshot(terrain: EITerrain,camera: Camera3D) -> void:
+	_failed=false
+	_gather=Scene.new();_gather.lighting_camera_mask=camera.cull_mask
+	_gather.path_materials=_path_mode
+	# No water-plane clipping: ceilings and underground rooms participate.
+	_gather.begin(terrain,camera.global_position,-1.0e20)
+	if device==null: _center=camera.global_position
+
+func _queue_candidate(terrain: EITerrain,camera: Camera3D) -> void:
+	_pending_scene=_gather;_gather=null
+	_pending_stats={"active":false,"supported":true,"triangles":_pending_scene.triangles,
+		"geometries":_pending_scene.geometries.size(),"instances":_pending_scene.instances.size()}
+	if _pending_scene.failed or _pending_scene.triangles==0:
+		_reject_candidate("snapshot_budget" if _pending_scene.failed else "snapshot_empty");return
+	var geometries := []; var placements := []
+	for geometry: Dictionary in _pending_scene.geometries:
+		geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,"cutoff":geometry.cutoff,"standard":geometry.standard,"surface":geometry.surface,"relief":geometry.relief,"terrain":geometry.terrain,"foliage_layer":geometry.foliage_layer,
+			"leaf_light":geometry.leaf_light,"bark_relief":geometry.bark_relief,"emissive":geometry.emissive,"surface_layer":geometry.surface_layer,"detail_layer":geometry.detail_layer})
+	for entry: Dictionary in _pending_scene.instances:
+		placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":0})
+	_pending_device=PathDevice.new() if _path_mode else Device.new()
+	if _path_mode:
+		_pending_device.terrain.collect(_pending_scene,terrain)
+		if _pending_scene.failed: _reject_candidate("snapshot_budget");return
+		_pending_stats["terrain_material_bytes"]=_pending_device.terrain.data.size()
+		_pending_stats["terrain_material_build_us"]=_pending_device.terrain.build_us
+		_pending_stats["terrain_material_triangles"]=_pending_device.terrain.terrain_triangles
+	var id := _pending_device.get_instance_id()
+	_pending_device.prepared.connect(_prepared.bind(id))
+	_pending_device.rendered.connect(_rendered.bind(id))
+	if _path_mode: _pending_device.emitter_stats.connect(_emitter_stats.bind(id))
+	if not _preparation_owner.is_empty(): ShaderCompilationScreen.update(_preparation_owner,_pipeline_phase())
+	Device.dispatch(_pending_device,&"build",[_pending_scene.vertices.to_byte_array(),_pending_scene.images,geometries,placements])
+	_collect_lights(camera.global_position)
+
+func _bind_outputs() -> void:
+	if _bound: return
+	RenderingServer.global_shader_parameter_set(&"ei_rt_gi",device.output)
+	RenderingServer.global_shader_parameter_set(&"ei_rt_guide",device.guide)
+	RenderingServer.global_shader_parameter_set(&"ei_rt_shadow0",device.shadow0)
+	RenderingServer.global_shader_parameter_set(&"ei_rt_shadow1",device.shadow1)
+	_bound=true
+
+func _activate_candidate() -> void:
+	var previous := device
+	device=_pending_device;_scene=_pending_scene;_center=_scene.center;stats=_pending_stats
+	_pending_device=null;_pending_scene=null;_pending_ready=false;_pending_stats={}
+	_ready_gpu=true;_bound=false;_history_key="";_path_signature=PackedByteArray();_accumulation_frames=0
+	_snapshot_generation+=1;_clear_failure()
+	# Replace global bindings before retiring their previous GPU owners.
+	_bind_outputs()
+	_retire_device(previous)
+
+func _clear_failure() -> void:
+	_failed=false;_failure_reason="";_failure_watch=null;_retry_delay=0.0
+	_failure_position=Vector3.INF;_failure_age=0.0;_failure_poll=0.0;_retry_attempt=0
+	for key in ["fallback","replacement_failure","retry_attempt","retry_delay_seconds"]: stats.erase(key)
+
+func _remember_failure(reason: String,position: Vector3,watch: Scene = null) -> void:
+	_failure_reason=reason;_failure_position=position;_failure_watch=watch
+	if _failure_watch!=null: _failure_watch.discard_geometry()
+	_retry_attempt=mini(_retry_attempt+1,6);_retry_delay=minf(pow(2.0,_retry_attempt-1),30.0)
+	_failure_age=0.0;_failure_poll=0.0;_failed=device==null
+	stats["fallback" if _failed else "replacement_failure"]=reason
+	stats["retry_attempt"]=_retry_attempt;stats["retry_delay_seconds"]=_retry_delay
+
+func _allow_retry(position: Vector3,dt: float) -> bool:
+	if _failure_reason.is_empty(): return true
+	_failure_age+=maxf(dt,0.0);_retry_delay=maxf(0.0,_retry_delay-dt)
+	stats["retry_delay_seconds"]=_retry_delay
+	# Moving away from an over-budget region must not require toggling options.
+	if _failure_age>=0.5 and position.distance_to(_failure_position)>16.0: return true
+	if _retry_delay>0.0: return false
+	if _failure_reason in ["pipeline_failed","snapshot_empty"]: return true
+	_failure_poll-=dt
+	if _failure_watch!=null and _failure_poll<=0.0:
+		_failure_poll=1.0
+		return _failure_watch.topology_changed()
+	return false
+
+func _reject_candidate(reason: String) -> void:
+	var failed_scene := _pending_scene
+	var position := failed_scene.center if failed_scene!=null else _center
+	if device==null: stats=_pending_stats
+	_cancel_candidate()
+	_remember_failure(reason,position,failed_scene if reason.begins_with("snapshot_") else null)
+
+func _cancel_candidate() -> void:
+	_end_preparation()
+	_retire_device(_pending_device)
+	_pending_device=null;_pending_scene=null;_pending_ready=false;_pending_stats={};_gather=null
+
+func _retire_device(retired: Device) -> void:
+	if retired==null: return
+	var ready_callback := _prepared.bind(retired.get_instance_id())
+	if retired.prepared.is_connected(ready_callback): retired.prepared.disconnect(ready_callback)
+	var rendered_callback := _rendered.bind(retired.get_instance_id())
+	if retired.rendered.is_connected(rendered_callback): retired.rendered.disconnect(rendered_callback)
+	if retired is PathDevice:
+		var emitter_callback := _emitter_stats.bind(retired.get_instance_id())
+		if retired.emitter_stats.is_connected(emitter_callback): retired.emitter_stats.disconnect(emitter_callback)
+	Device.dispatch(retired,&"dispose")
+
+func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,delta_seconds := 1.0/60.0) -> PackedByteArray:
 	var transform := camera.get_camera_transform()
 	var view := Projection(transform.affine_inverse())
 	var projection := camera.get_camera_projection()
@@ -158,6 +371,8 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false)
 			var p := light.global_position; position = Vector4(p.x,p.y,p.z,light.omni_range)
 			colour = light.light_color.srgb_to_linear()*light.light_energy
 			colour.a = maxf(light.light_size,0.04)
+			if _path_mode:
+				colour.a = maxf(colour.a,float(light.get_meta(LocalLighting.PATH_SOURCE_RADIUS,0.0)))
 		data.append_array(PackedFloat32Array([position.x,position.y,position.z,position.w]))
 		colours.append_array(PackedFloat32Array([colour.r,colour.g,colour.b,colour.a]))
 		RenderingServer.global_shader_parameter_set(StringName("ei_rt_point%d"%i),position)
@@ -171,14 +386,26 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false)
 		signature.append_array(environment)
 		var bytes := signature.to_byte_array()
 		var stationary := history and not scene_changed and bytes==_path_signature
-		var limit := 256 if GameData.option("pt_accumulation")>0 else 8
-		_accumulation_frames=mini(_accumulation_frames+1,limit) if stationary else 1
-		# Responsive history reprojects through ordinary camera motion. Light
-		# changes invalidate both modes; still-scene history also requires an
-		# identical camera and geometry on every contributing frame.
+		var progressive := GameData.option("pt_accumulation")>0
+		var limit := 256.0 if progressive else 8.0
+		# Fire/lava flutter changes intensity every frame. Keep a short
+		# responsive history for small intensity-only changes, while moving,
+		# recoloured, resized, switched or extinguished lights still reset.
+		# Still-scene accumulation always requires exact lighting and geometry.
 		var same_lighting := bytes.slice(32*4)==_path_signature.slice(32*4)
 		var same_projection := bytes.slice(0,16*4)==_path_signature.slice(0,16*4)
-		if not same_lighting or not same_projection or (limit>8 and not stationary): data[82]=0.0
+		var flutter := not progressive and not _strict_light_history and not same_lighting \
+			and _small_local_intensity_change(bytes,_path_signature)
+		if flutter:
+			# At 60 Hz retain at most 2/3 of the previous estimate. Shorten
+			# the history in slower frames so torch response does not acquire
+			# a longer time constant when the game is under GPU pressure.
+			limit=minf(3.0,1.0/(1.0-pow(2.0/3.0,maxf(delta_seconds,0.001)*60.0)))
+		var reuse := history and same_projection and (stationary if progressive else same_lighting or flutter)
+		if not reuse: data[82]=0.0
+		_accumulation_frames=minf(_accumulation_frames+1,limit) if reuse else 1.0
+		stats["history_reused"]=reuse;stats["history_limit"]=limit
+		stats["light_history_limited"]=flutter and reuse
 		_path_signature=bytes
 		data.append_array(PackedFloat32Array([GameData.option("pt_mode")*2,limit,float(stationary),1]))
 		var inverse_previous := _previous_view_projection.inverse()
@@ -188,6 +415,29 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false)
 	_previous_view=view;_previous_view_projection=projection*view;_previous_camera=transform;_history_key=key
 	_frame_number=(_frame_number+1)%1000000
 	return data.to_byte_array()
+
+static func _small_local_intensity_change(current: PackedByteArray, previous: PackedByteArray) -> bool:
+	# Signature floats 76..103 are the seven linear RGB/source-size records.
+	# Projection is checked by the caller; ordinary camera motion reprojects.
+	# Everything else (sun, sky, region, light positions/ranges) stays exact.
+	if current.size()!=previous.size() or current.size()<104*4: return false
+	if current.slice(32*4,76*4)!=previous.slice(32*4,76*4) \
+		or current.slice(104*4)!=previous.slice(104*4): return false
+	for i in 7:
+		var offset := (76+i*4)*4
+		if current.slice(offset,offset+16)==previous.slice(offset,offset+16): continue
+		if current.decode_float(offset+12)!=previous.decode_float(offset+12): return false
+		var old := Vector3(previous.decode_float(offset),previous.decode_float(offset+4),previous.decode_float(offset+8))
+		var now := Vector3(current.decode_float(offset),current.decode_float(offset+4),current.decode_float(offset+8))
+		if not old.is_finite() or not now.is_finite(): return false
+		var old_peak := maxf(old.x,maxf(old.y,old.z));var new_peak := maxf(now.x,maxf(now.y,now.z))
+		if minf(old_peak,new_peak)<=0.0: return false
+		var ratio := new_peak/old_peak
+		if ratio<0.9 or ratio>1.1: return false
+		# Energy changes scale all three channels. A changed hue, even when
+		# equally bright, is a new source and must not leave a colour trail.
+		if (old/old_peak-now/new_peak).length_squared()>1.0e-10: return false
+	return true
 
 func _collect_lights(focus: Vector3) -> void:
 	var found := []
@@ -203,32 +453,41 @@ func _collect_lights(focus: Vector3) -> void:
 	for i in mini(found.size(),7): _lights.append(weakref(found[i][1]))
 	if previous!=_lights.map(func(w: WeakRef): return w.get_ref()): _history_key=""
 
-func _prepared(ok: bool) -> void:
-	_ready_gpu=ok
-	if not ok:
-		_release();_failed=true;stats["fallback"]="pipeline_failed"
+func _prepared(ok: bool,id: int) -> void:
+	if _pending_device!=null and _pending_device.get_instance_id()==id:
+		if ok: _pending_ready=true
+		else: _reject_candidate("pipeline_failed")
+	elif device!=null and device.get_instance_id()==id and not ok:
+		var position := _center
+		_release();_remember_failure("pipeline_failed",position)
+	# Deferred notifications from retired generations cannot affect a successor.
 
-func _emitter_stats(count: int, candidates: int) -> void:
-	stats["emissive_triangles"]=count;stats["emissive_candidates"]=candidates
+func _emitter_stats(count: int,candidates: int,id: int) -> void:
+	var target: Dictionary
+	if device!=null and device.get_instance_id()==id: target=stats
+	elif _pending_device!=null and _pending_device.get_instance_id()==id: target=_pending_stats
+	else: return
+	target["emissive_triangles"]=count;target["emissive_candidates"]=candidates
 
 func _release() -> void:
 	_set_gi_active(false)
 	RenderingServer.global_shader_parameter_set(&"ei_rt_state",Vector4.ZERO)
 	RenderingServer.global_shader_parameter_set(&"ei_pt_active",0.0)
-	stats["active"]=false;_bound=false;_ready_gpu=false;_center=Vector3.INF;_history_key=""
-	_gather=null;_scene=null;_lights.clear()
-	_path_signature=PackedByteArray();_accumulation_frames=0
+	stats["active"]=false;stats["rebuilding"]=false
+	_bound=false;_ready_gpu=false;_center=Vector3.INF;_history_key=""
+	_cancel_candidate();_clear_failure()
+	_scene=null;_lights.clear();_path_signature=PackedByteArray();_accumulation_frames=0
 	if device!=null:
 		for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1"]:
 			RenderingServer.global_shader_parameter_set(key,null)
-		device.prepared.disconnect(_prepared)
-		if device is PathDevice: device.emitter_stats.disconnect(_emitter_stats)
-		RenderingServer.call_on_render_thread(device.dispose);device=null
+		_retire_device(device);device=null
 	stats.erase("emissive_triangles");stats.erase("emissive_candidates")
 
 func _set_gi_active(active: bool) -> void:
-	if Gfx.scene_rt_gi_active==active: return
+	var path_active := active and _path_mode
+	if Gfx.scene_rt_gi_active==active and Gfx.path_trace_active==path_active: return
 	Gfx.scene_rt_gi_active=active
+	Gfx.path_trace_active=path_active
 	if is_instance_valid(game) and game._env!=null: Gfx.apply_env(game._env)
 
 func _exit_tree() -> void: _release()

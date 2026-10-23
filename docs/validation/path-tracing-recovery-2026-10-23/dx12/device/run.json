@@ -1,0 +1,88 @@
+{
+  "exit_code": 0,
+  "pid": 245870,
+  "wall_seconds": 21.672943008999937,
+  "stopped": "",
+  "errors": [],
+  "allowed_diagnostics": [],
+  "gpu_uuids_observed": [
+    "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0.08562368399998377,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": false,
+    "live_members_after_cleanup": []
+  },
+  "suite": "device",
+  "checks": 17,
+  "fixture_failures": [],
+  "validation_errors": [],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "display": "Windows",
+    "driver": "d3d12",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-dx12-final-03/fixtures/path_trace_device.gd",
+    "fsr": {
+      "api": true,
+      "engine": true,
+      "fg3": true,
+      "fg4": false,
+      "sr3": true,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 32,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": false,
+      "expected_separate": false,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 1,
+      "render_id": 1,
+      "requested": "project"
+    },
+    "require_sdk": true,
+    "user_data": "C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "path-device.json",
+  "passed": true,
+  "artifacts": {
+    "command.json": "ea2947f574154382c4638894ba77d422269cf1289384838cfc1a874887d73938",
+    "diffuse-1-bounces.png": "aca3d81c4cdaa66a5b5445146338d8f56c58127b75b6873f0ee642f9e7cdb0bb",
+    "diffuse-2-bounces.png": "8359c999806a38a87376b8dcb76cc5ede567d9e00291dc023b8abc1df7e91976",
+    "diffuse-4-bounces.png": "f8de3768fe8db9b59b37fe769e44805aec7bb42348595d7ee65db03d0dda5ad4",
+    "glossy-reflection.png": "42f7a8d60d4f80e214aad1f4e627948ebbe6271ebe64a9c88c0ab3056a1f0f6c",
+    "gpu.jsonl": "daa328a440ba2a55fbcebcfdd74312b3025f753624945ed0bc33c74e0cb8e17f",
+    "path-device.json": "e81a6385c786579829cf9ae7f05d636640e2d71e8b1c44f0c46fb89a6b0e0cf6",
+    "qualification-runtime.json": "6446cd0cfe9864532b8ad54c7c7e2f84111051d537d13a45a3c6ab8ed030c1e6",
+    "run.log": "1074feaba31b37488b4d01dd4d3c75134ff9e22c1e9b176db4eedbf90e2530ac",
+    "scene-device-results.json": "bbae65ec4b6ac430b75bbf16e4fe8f4ca1cc16170adb63c4d1264e0be24b678a"
+  }
+}

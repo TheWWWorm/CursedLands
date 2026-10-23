@@ -1,0 +1,153 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+WARNING: Failed to create wd.xic as the input method or its xim server may not have started yet.
+     at: _create_xic (platform/linuxbsd/x11/display_server_x11.cpp:6347)
+Vulkan 1.4.312 - Forward+ - Using Device #1: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.
+However, bear in mind that at the moment it can lead to project crashes or instability.
+So, unless you want to test the engine, set the "rendering/driver/threads/thread_model" project setting to 'Safe'.
+     at: setup2 (main/main.cpp:3523)
+
+ERROR: An error occurred while trying to get the screen refresh rate.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1892)
+[trace 13:28:01 +6905ms] session 39d5bf0b335e: 1.23.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090 Ti, forward_plus / vulkan
+PT_QUALIFICATION_RUNTIME {"adapter":"NVIDIA GeForce RTX 3090 Ti","display":"X11","driver":"vulkan","engine":{"build":"custom_build","hash":"unknown","hex":263936,"major":4,"minor":7,"patch":0,"status":"stable","string":"4.7-stable (custom_build)","timestamp":0},"fixture":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03/fixtures/path_trace_terrain.gd","fsr":{"api":false,"engine":false,"fg3":false,"fg4":false,"sr3":false,"sr4":false},"method":"forward_plus","passed":true,"pid":242416,"profile":{"confine_mouse":0,"show_fps":1,"volume_sfx":0,"volume_stream":0,"volume_voice":0},"pt_supported":true,"render_thread":{"actual_separate":true,"expected_separate":true,"main_id":1,"passed":true,"project_model":2,"render_id":5,"requested":"project"},"require_sdk":false,"user_data":"/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-vulkan-final-03-profile/terrain/data/godot/app_userdata/Cursed Lands","vendor":"NVIDIA"}
+PASS qualified terrain material device
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: rotation-0
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: rotation-0
+PASS traced colour matches raster sampler: rotation-0 { "mean_error": 0.0, "peak_error": 0.0 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: rotation-1
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: rotation-1
+PASS traced colour matches raster sampler: rotation-1 { "mean_error": 0.0, "peak_error": 0.0 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: rotation-2
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: rotation-2
+PASS traced colour matches raster sampler: rotation-2 { "mean_error": 0.0, "peak_error": 0.0 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: rotation-3
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: rotation-3
+PASS traced colour matches raster sampler: rotation-3 { "mean_error": 0.0, "peak_error": 0.0 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: atlas-2-tile-3
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: atlas-2-tile-3
+PASS traced colour matches raster sampler: atlas-2-tile-3 { "mean_error": 0.0, "peak_error": 0.0 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: atlas-3-tile-8
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: atlas-3-tile-8
+PASS traced colour matches raster sampler: atlas-3-tile-8 { "mean_error": 0.0, "peak_error": 0.0 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: atlas-8-tile-63
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: atlas-8-tile-63
+PASS traced colour matches raster sampler: atlas-8-tile-63 { "mean_error": 0.0, "peak_error": 0.0 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: land-grid-(16, 3)-last-cell
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: land-grid-(16, 3)-last-cell
+PASS traced colour matches raster sampler: land-grid-(16, 3)-last-cell { "mean_error": 0.0, "peak_error": 0.0 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: land-grid-(17, 3)-last-cell
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: land-grid-(17, 3)-last-cell
+PASS traced colour matches raster sampler: land-grid-(17, 3)-last-cell { "mean_error": 0.0, "peak_error": 0.0 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: land-grid-(256, 256)-last-cell
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: land-grid-(256, 256)-last-cell
+PASS traced colour matches raster sampler: land-grid-(256, 256)-last-cell { "mean_error": 0.0, "peak_error": 0.0 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: coarse-padded-mip
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: coarse-padded-mip
+PASS traced colour matches raster sampler: coarse-padded-mip { "mean_error": 0.00015258789062, "peak_error": 0.000244140625 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: coarse-unpadded-mip
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: coarse-unpadded-mip
+PASS traced colour matches raster sampler: coarse-unpadded-mip { "mean_error": 0.00007893488957, "peak_error": 0.000244140625 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: pair
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: pair
+PASS traced colour matches raster sampler: pair { "mean_error": 0.00000007677378, "peak_error": 0.0001220703125 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: pair-coarse-mip
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: pair-coarse-mip
+PASS traced colour matches raster sampler: pair-coarse-mip { "mean_error": 0.00003998096173, "peak_error": 0.000244140625 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: junction
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: junction
+PASS traced colour matches raster sampler: junction { "mean_error": 0.00000013435412, "peak_error": 0.00006103515625 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: junction-coarse-mip
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: junction-coarse-mip
+PASS traced colour matches raster sampler: junction-coarse-mip { "mean_error": 0.00007541363056, "peak_error": 0.000244140625 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: cliff
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: cliff
+PASS traced colour matches raster sampler: cliff { "mean_error": 0.0000889808127, "peak_error": 0.000244140625 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: cliff-coarse-mip
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: cliff-coarse-mip
+PASS traced colour matches raster sampler: cliff-coarse-mip { "mean_error": 0.00013322096605, "peak_error": 0.000244140625 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build terrain material: shifted-authored-tile
+OpArrayLength is not supported yet.
+PASS compile independent raster sampler: shifted-authored-tile
+PASS traced colour matches raster sampler: shifted-authored-tile { "mean_error": 0.0, "peak_error": 0.0 }
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build colour-relief control without normal detail
+OpArrayLength is not supported yet.
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build normal-detail terrain
+OpArrayLength is not supported yet.
+PASS normal texture changes the traced surface and stays outward
+PASS normal texture adds detail beyond the colour-derived relief
+PASS rock type controls traced roughness
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build grass material
+OpArrayLength is not supported yet.
+PASS grass keeps a separate roughness
+OpTypeAccelerationStructureKHR is not supported yet.
+OpIgnoreIntersectionKHR is not supported yet.
+PASS build near cliff with projected painted relief
+OpArrayLength is not supported yet.
+PASS near cliff relief keeps finite outward unit normals
+PASS projected rock texture perturbs normals without the noise normal texture
+PASS disposing PT releases its retained raster atlas
+SCENE_RT_DEVICE 69 checks 0 failures
+[trace 13:28:04 +10358ms] clean exit

@@ -2,13 +2,17 @@ extends "res://tools/tests/water_raytrace_artifact.gd"
 ## Main campaign integration, not just isolated GPU buffers.
 func ready_scene(rt: Node) -> bool:
 	# Apply is observed by the controller on its next process tick. An old
-	# active pipeline must not satisfy a wait for a replacement PT/RT mode.
+	# active pipeline must not satisfy a wait for a replacement PT/RT mode
+	# or a recenter that now keeps the previous scene visible while building.
 	await frames(2)
 	for i in 1200:
-		if rt.stats.get("active",false) or rt._failed: break
+		if rt._failed: break
+		if rt.stats.get("active",false) and not rt.stats.get("rebuilding",false) \
+			and not rt.stats.has("replacement_failure"): break
 		await frames(1)
 	await frames(16)
-	return rt.stats.get("active",false)
+	return rt.stats.get("active",false) and not rt.stats.get("rebuilding",false) \
+		and not rt.stats.has("replacement_failure")
 
 func mean_difference(a: Image,b: Image) -> float:
 	var value := 0.0;var count := 0

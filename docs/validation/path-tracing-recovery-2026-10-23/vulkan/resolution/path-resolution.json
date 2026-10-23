@@ -1,0 +1,737 @@
+{
+	"checks": 104,
+	"device": "NVIDIA GeForce RTX 3090 Ti",
+	"driver": "vulkan",
+	"failures": [],
+	"matched_fsr2_comparison": {
+		"energy_ratio": 1.00138078038399,
+		"mean_absolute_error": 0.00490324181705092,
+		"reference_mean": 0.26464055384703,
+		"scaled_mean": 0.265005964332591
+	},
+	"rows": [
+		{
+			"actual_render_size": [
+				1280,
+				720
+			],
+			"capture": "native-low.png",
+			"case": "native-low",
+			"lit_guide_samples": 1106,
+			"raster_projection_changes": 1,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"rebuilding": false,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 17693,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"trace_render_scale": 1.0,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_size": [
+				640,
+				360
+			],
+			"upscale_evaluations": 0,
+			"upscaler_after": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 0,
+				"viewport_scale": 1.0
+			},
+			"upscaler_before": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 0,
+				"viewport_scale": 1.0
+			},
+			"upscaler_status": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 0,
+				"viewport_scale": 1.0
+			}
+		},
+		{
+			"actual_render_size": [
+				1280,
+				720
+			],
+			"capture": "native-medium.png",
+			"case": "native-medium",
+			"lit_guide_samples": 2456,
+			"raster_projection_changes": 1,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"rebuilding": false,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					960,
+					540
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 17693,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"trace_render_scale": 1.0,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_size": [
+				960,
+				540
+			],
+			"upscale_evaluations": 0,
+			"upscaler_after": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 0,
+				"viewport_scale": 1.0
+			},
+			"upscaler_before": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 0,
+				"viewport_scale": 1.0
+			},
+			"upscaler_status": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 0,
+				"viewport_scale": 1.0
+			}
+		},
+		{
+			"actual_render_size": [
+				1280,
+				720
+			],
+			"capture": "native-high.png",
+			"case": "native-high",
+			"lit_guide_samples": 4404,
+			"raster_projection_changes": 1,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"rebuilding": false,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 17693,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"trace_render_scale": 1.0,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_size": [
+				1280,
+				720
+			],
+			"upscale_evaluations": 0,
+			"upscaler_after": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 0,
+				"viewport_scale": 1.0
+			},
+			"upscaler_before": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 0,
+				"viewport_scale": 1.0
+			},
+			"upscaler_status": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 0,
+				"viewport_scale": 1.0
+			}
+		},
+		{
+			"actual_render_size": [
+				640,
+				360
+			],
+			"capture": "render-half.png",
+			"case": "render-half",
+			"lit_guide_samples": 271,
+			"raster_projection_changes": 1,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"rebuilding": false,
+				"render_scale": 0.5,
+				"render_size": [
+					640,
+					360
+				],
+				"shadow_samples": 0,
+				"size": [
+					320,
+					180
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 17693,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"trace_render_scale": 0.5,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_size": [
+				320,
+				180
+			],
+			"upscale_evaluations": 0,
+			"upscaler_after": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 1,
+				"viewport_scale": 0.5
+			},
+			"upscaler_before": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 1,
+				"viewport_scale": 0.5
+			},
+			"upscaler_status": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 1,
+				"viewport_scale": 0.5
+			}
+		},
+		{
+			"actual_render_size": [
+				1600,
+				900
+			],
+			"capture": "supersampled.png",
+			"case": "supersampled",
+			"lit_guide_samples": 3834,
+			"raster_projection_changes": 1,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"rebuilding": false,
+				"render_scale": 1.25,
+				"render_size": [
+					1600,
+					900
+				],
+				"shadow_samples": 0,
+				"size": [
+					1200,
+					675
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 17693,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"trace_render_scale": 1.25,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_size": [
+				1200,
+				675
+			],
+			"upscale_evaluations": 0,
+			"upscaler_after": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 0,
+				"viewport_scale": 1.25
+			},
+			"upscaler_before": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 0,
+				"viewport_scale": 1.25
+			},
+			"upscaler_status": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 0,
+				"viewport_scale": 1.25
+			}
+		},
+		{
+			"actual_render_size": [
+				857,
+				482
+			],
+			"capture": "fsr2-low.png",
+			"case": "fsr2-low",
+			"lit_guide_samples": 486,
+			"raster_projection_changes": 48,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"rebuilding": false,
+				"render_scale": 0.670000016689301,
+				"render_size": [
+					857,
+					482
+				],
+				"shadow_samples": 0,
+				"size": [
+					429,
+					241
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 17693,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"trace_render_scale": 0.670000016689301,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_size": [
+				429,
+				241
+			],
+			"upscale_evaluations": 0,
+			"upscaler_after": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 2,
+				"viewport_scale": 0.670000016689301
+			},
+			"upscaler_before": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 2,
+				"viewport_scale": 0.670000016689301
+			},
+			"upscaler_status": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 2,
+				"viewport_scale": 0.670000016689301
+			}
+		},
+		{
+			"actual_render_size": [
+				857,
+				482
+			],
+			"capture": "fsr2-medium.png",
+			"case": "fsr2-medium",
+			"lit_guide_samples": 1102,
+			"raster_projection_changes": 95,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"rebuilding": false,
+				"render_scale": 0.670000016689301,
+				"render_size": [
+					857,
+					482
+				],
+				"shadow_samples": 0,
+				"size": [
+					643,
+					362
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 17693,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"trace_render_scale": 0.670000016689301,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_size": [
+				643,
+				362
+			],
+			"upscale_evaluations": 0,
+			"upscaler_after": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 2,
+				"viewport_scale": 0.670000016689301
+			},
+			"upscaler_before": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 2,
+				"viewport_scale": 0.670000016689301
+			},
+			"upscaler_status": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 2,
+				"viewport_scale": 0.670000016689301
+			}
+		},
+		{
+			"actual_render_size": [
+				857,
+				482
+			],
+			"capture": "fsr2-high.png",
+			"case": "fsr2-high",
+			"lit_guide_samples": 1985,
+			"raster_projection_changes": 142,
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 4,
+				"path_tracing": true,
+				"quality": 2,
+				"rebuilding": false,
+				"render_scale": 0.670000016689301,
+				"render_size": [
+					857,
+					482
+				],
+				"shadow_samples": 0,
+				"size": [
+					857,
+					482
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 17693,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"trace_render_scale": 0.670000016689301,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_size": [
+				857,
+				482
+			],
+			"upscale_evaluations": 0,
+			"upscaler_after": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 2,
+				"viewport_scale": 0.670000016689301
+			},
+			"upscaler_before": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 2,
+				"viewport_scale": 0.670000016689301
+			},
+			"upscaler_status": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 2,
+				"viewport_scale": 0.670000016689301
+			}
+		},
+		{
+			"actual_render_size": [
+				960,
+				540
+			],
+			"case": "progressive-rescaled",
+			"lit_guide_samples": 1429,
+			"raster_projection_changes": 351,
+			"stats": {
+				"accumulation_frames": 14.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 256.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"rebuilding": false,
+				"render_scale": 0.75,
+				"render_size": [
+					960,
+					540
+				],
+				"shadow_samples": 0,
+				"size": [
+					720,
+					405
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 17693,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"trace_render_scale": 0.75,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_size": [
+				720,
+				405
+			],
+			"upscaler_status": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 1,
+				"viewport_scale": 0.75
+			}
+		},
+		{
+			"actual_render_size": [
+				720,
+				405
+			],
+			"case": "odd-window",
+			"lit_guide_samples": 793,
+			"raster_projection_changes": 351,
+			"stats": {
+				"accumulation_frames": 14.0,
+				"active": true,
+				"display_size": [
+					961,
+					541
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 256.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"rebuilding": false,
+				"render_scale": 0.75,
+				"render_size": [
+					720,
+					405
+				],
+				"shadow_samples": 0,
+				"size": [
+					540,
+					304
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 17693,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"trace_render_scale": 0.75,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_size": [
+				540,
+				304
+			],
+			"upscaler_status": {
+				"requested_quality": 1,
+				"requested_upscaling": 0,
+				"viewport_mode": 1,
+				"viewport_scale": 0.75
+			}
+		}
+	],
+	"sdk_readiness": []
+}

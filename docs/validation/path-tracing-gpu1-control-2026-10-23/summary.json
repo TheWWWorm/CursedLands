@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-23",
+  "timezone": "Europe/Warsaw",
+  "device": "NVIDIA GeForce RTX 3090 Ti",
+  "physical_gpu_index": 1,
+  "pci_bus": "00000000:0A:00.0",
+  "driver": "580.178.04",
+  "display": "Private NVIDIA Xorg NoScanout, 1920x1080 framebuffer, 1280x720 client, explicit RandR monitor",
+  "performance_qualified": true,
+  "qualification_scope": "Incremental saved/current closest-hit program cost in a frozen unmapped scene; native Vulkan and Windows export through Wine/VKD3D on this GPU.",
+  "checks": 132,
+  "runs": 2,
+  "measurement_blocks": 64,
+  "frame_samples_per_block": 120,
+  "warmup_frames_per_block": 40,
+  "expected_environment_diagnostics": {
+    "vulkan": [
+      "ERROR: An error occurred while trying to get the screen refresh rate."
+    ],
+    "dx12": []
+  },
+  "external_nonzero_gpu1_activity_observed": false,
+  "telemetry_limit": "One-second sampling; dash entries mean unreported, not a proof of zero instantaneous work. Resident clients remained.",
+  "excluded_setup_trials": [
+    {
+      "tag": "gpu1-unmapped-vulkan",
+      "reason": "Initial NoScanout discovery run; monitor configuration changed during process. Excluded from reported timings."
+    },
+    {
+      "action": "Private display with a forced 60 Hz output",
+      "reason": "Driver denied modesetting permission; reverted to working NoScanout display. No measurements used."
+    }
+  ],
+  "limitations": [
+    "One frozen scene, hidden units; no full-game FPS guarantee.",
+    "No image-pixel equality check or synchronized stochastic samples.",
+    "PT timestamps include reconstruction and copies; differences are not pure branch execution cost.",
+    "Native Windows, other vendors and mapped content costs are not qualified by this control.",
+    "Different GPU from prior RTX 3090 component comparisons; do not mix absolute timing tables."
+  ],
+  "cleanup": {
+    "private_xorg_stopped": true,
+    "temporary_xauthority_removed": true,
+    "gpu1_utilization_percent_after": 0,
+    "other_processes_left_running": true
+  }
+}

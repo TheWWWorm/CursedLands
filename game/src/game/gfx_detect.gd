@@ -54,6 +54,7 @@ const MAX_STEPS := {"desktop": 6, "handheld": 5, "web": 3}
 const DEADLINE_S := 12.0
 ## Views drawn per frame in the stress mode.
 const STRESS := 2
+const PREPARATION_OWNER := &"settings:autodetect"
 const RECOVERY_NOTICE := "The previous graphics test did not finish. Your earlier settings were restored and automatic testing was skipped. You can retry Detect best settings from Options."
 const ORIGINAL_RECOVERY_NOTICE := "The previous graphics check did not finish. Original graphics are now in use and automatic checks are disabled. You can retry Detect best settings from Options."
 static var recovered_test := false
@@ -592,6 +593,10 @@ var _step := 0
 var _record_before := {}
 var _pending := {}
 var _testing := false
+var _preparation_screen: ShaderCompilationScreen
+var _preparation_input_enabled := true
+var _preparation_hint := ShaderCompilationScreen.FIRST_USE
+var _preparation_override := false
 
 
 func _ready() -> void:
@@ -662,7 +667,7 @@ func _run() -> void:
 		res = await _choose_async(start, cfg)
 	_finish_measuring()
 	if _cancelled:
-		_cancel_test()
+		await _cancel_test()
 		return
 	result = res
 	var vals := result_values(res, _base, kind)
@@ -672,12 +677,13 @@ func _run() -> void:
 	save_record(_pending)
 	_apply_live()
 	_restore_env()
+	await _wait_preparation()
 	# Applying settings can queue shader compilation / buffer work. Do not
 	# commit success before the renderer has actually presented those frames.
 	await RenderingServer.frame_post_draw
 	await RenderingServer.frame_post_draw
 	if _cancelled:
-		_cancel_test()
+		await _cancel_test()
 		return
 	GameData.save_settings()
 	save_record({"version": VERSION, "fingerprint": fingerprint(), "tier": int(res.tier),
@@ -698,11 +704,16 @@ func _cancel_test() -> void:
 	save_record(_record_before if manual else {"version": VERSION,
 		"fingerprint": fingerprint(), "tier": -1, "cancelled": 1})
 	_testing = false
+	# Restoration may recreate the original shaders too. Keep its progress
+	# visible until those frames finish, even though the test is cancelled.
+	await _wait_preparation(false)
 	_overlay.visible = false
 	_message(RemakeText.t("Graphics test skipped; the settings are unchanged."))
 
 
 func _exit_tree() -> void:
+	ShaderCompilationScreen.end(PREPARATION_OWNER)
+	_release_preparation_input()
 	if not _testing:
 		return
 	# A normal quit / scene replacement during a test is cancellation, not a
@@ -796,6 +807,12 @@ func _set_values(vals: Dictionary) -> void:
 ## The options in force at once, as Options' ✓ does (GameData.set_option)
 ## without writing the file each time.
 func _apply_live() -> void:
+	var screen := ShaderCompilationScreen.begin(get_tree(), PREPARATION_OWNER,
+		ShaderCompilationScreen.GRAPHICS, 0, 0, ShaderCompilationScreen.SETTINGS_TITLE)
+	if screen:
+		_use_preparation_input(screen)
+		screen.present()
+	GameData.graphics_revision += 1
 	GameData._apply_window()
 	if _env and is_instance_valid(_env):
 		Gfx.apply_env(_env)
@@ -805,6 +822,40 @@ func _apply_live() -> void:
 		if is_instance_valid(n) and n is EITerrain:
 			(n as EITerrain).apply_gfx()
 	GameData.options_changed.emit()
+	if screen: screen.prepare_terrain()
+	ShaderCompilationScreen.end(PREPARATION_OWNER)
+
+
+func _use_preparation_input(screen: ShaderCompilationScreen) -> void:
+	if is_instance_valid(_preparation_screen) and _preparation_screen == screen: return
+	_release_preparation_input()
+	_preparation_screen = screen
+	_preparation_input_enabled = screen.is_processing_input()
+	_preparation_hint = screen.hint
+	_preparation_override = true
+	# The detector's existing full-screen Overlay keeps Esc / B working,
+	# including preparation admitted later by an SDK or viewport resize.
+	screen.set_process_input(false)
+	screen.hint = "Esc: skip the test"
+
+
+func _release_preparation_input() -> void:
+	if not _preparation_override: return
+	if is_instance_valid(_preparation_screen):
+		_preparation_screen.set_process_input(_preparation_input_enabled)
+		_preparation_screen.hint = _preparation_hint
+	_preparation_screen = null
+	_preparation_override = false
+
+
+## Covers and their owned gameplay pause must retire before sampling the
+## live scene. Actual preparation/draw readiness supplies the wait; no timer.
+func _wait_preparation(allow_cancel := true) -> void:
+	while ShaderCompilationScreen.active():
+		_use_preparation_input(ShaderCompilationScreen._current)
+		if allow_cancel and _cancelled: return
+		await get_tree().process_frame
+	_release_preparation_input()
 
 
 func _apply_tier(t: int) -> void:
@@ -823,8 +874,10 @@ func _measure(t: int) -> float:
 	_apply_tier(t)
 	var dur: float = MEASURE_S[kind]
 	await _frames(WARM_S, 10)   # shader compiles and buffer reallocation
+	if _cancelled: return 1.0e6
 	if _mode == "probe":
 		var probe: Dictionary = await _frames(0.3, 10)
+		if _cancelled: return 1.0e6
 		var gpu := _pct(probe.gpu, 0.5)
 		_mode = "gpu" if gpu > 0.05 and not OS.get_cmdline_user_args().has("--gfx-stress") else "stress"
 		if _mode == "stress":
@@ -861,6 +914,7 @@ func _cost(s: Dictionary, p: float) -> float:
 ## Frames for at least `secs` and `min_n` frames (at most 3 s): wall-clock,
 ## GPU and CPU times in ms.
 func _frames(secs: float, min_n: int) -> Dictionary:
+	await _wait_preparation()
 	var out := {"wall": PackedFloat32Array(), "gpu": PackedFloat32Array(), "cpu": PackedFloat32Array(),
 		"process": PackedFloat32Array(), "physics": PackedFloat32Array(), "setup": PackedFloat32Array(),
 		"view_cpu": PackedFloat32Array()}
@@ -880,12 +934,25 @@ func _frames(secs: float, min_n: int) -> Dictionary:
 		var process_start := Time.get_ticks_usec()
 		var physics_ms := (process_start - int(physics_start[0])) / 1000.0 if physics_start[0] >= 0 else 0.0
 		physics_start[0] = -1
-		_sync_stress()
-		# TIME_PROCESS also includes RenderingServer.draw and is a one-second
-		# maximum, so adding viewport CPU time to it counts rendering twice.
-		# Measure the node-processing phase before draw instead.
-		if DisplayServer.get_name() != "headless":
-			await RenderingServer.frame_pre_draw
+		var interrupted := ShaderCompilationScreen.active()
+		if not interrupted:
+			_sync_stress()
+			# TIME_PROCESS also includes RenderingServer.draw and is a one-second
+			# maximum, so adding viewport CPU time to it counts rendering twice.
+			# Measure the node-processing phase before draw instead.
+			if DisplayServer.get_name() != "headless":
+				await RenderingServer.frame_pre_draw
+			interrupted = ShaderCompilationScreen.active()
+		if _cancelled: break
+		if interrupted:
+			# A late SDK/resize preparation can begin inside a timing batch.
+			# Discard that partial batch and its paused time before sampling again.
+			await _wait_preparation()
+			for key: String in out: out[key] = PackedFloat32Array()
+			t0 = Time.get_ticks_usec()
+			last = t0
+			physics_start[0] = -1
+			continue
 		var now := Time.get_ticks_usec()
 		out.wall.append((now - last) / 1000.0)
 		last = now
@@ -1129,12 +1196,9 @@ class Watchdog extends Interface800:
 	## step (so the settings still count as the detection's).
 	static func lower(rec: Dictionary, t: int) -> void:
 		var vals := GfxDetect.result_values({"tier": t, "fps": int(rec.get("fps", 0))}, GfxDetect.base_values(), GfxDetect.device_kind())
-		for k: String in vals:
-			GameData.options[k] = int(vals[k])
-		GameData.options.graphics_preset = GfxPresets.DETECTED
-		GameData.save_settings()
-		GameData._apply_window()
-		GameData.options_changed.emit()
+		var applied := vals.duplicate()
+		applied.graphics_preset = GfxPresets.DETECTED
+		GameData.set_options(applied)
 		rec.tier = t
 		rec.values = vals
 		rec.lowered = int(rec.get("lowered", 0)) + 1

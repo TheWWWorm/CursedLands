@@ -1,0 +1,1274 @@
+{
+	"checks": 34,
+	"device": "NVIDIA GeForce RTX 3090 Ti",
+	"driver": "d3d12",
+	"failures": [],
+	"image_comparisons": {
+		"0": {
+			"energy_ratio": 1.00154871172236,
+			"mean_absolute_error": 0.00452376512680847,
+			"reference_mean": 0.2932338224839,
+			"scaled_mean": 0.293687957142172
+		},
+		"1": {
+			"energy_ratio": 1.00102054972422,
+			"mean_absolute_error": 0.00395327488225967,
+			"reference_mean": 0.292982608014571,
+			"scaled_mean": 0.29328161133438
+		}
+	},
+	"note": "Same frozen detailed river, four bounce PT, responsive history, water reflection and frame generation off. Only PT grid changes. Two alternating rounds, 120 samples after 45 warmup frames. Main GPU excludes the separate PT pass.",
+	"runs": [
+		{
+			"controller_cpu_ms": {
+				"median": 0.602,
+				"n": 120,
+				"p95": 0.9
+			},
+			"frame_ms": {
+				"median": 6.343,
+				"n": 120,
+				"p95": 8.868
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.007168,
+					"n": 120,
+					"p95": 0.008192
+				},
+				"rays": {
+					"median": 2.887936,
+					"n": 120,
+					"p95": 2.972672
+				},
+				"reconstruction": {
+					"median": 0.312064,
+					"n": 120,
+					"p95": 0.313344
+				}
+			},
+			"main_gpu_ms": {
+				"median": 1.92900002002716,
+				"n": 120,
+				"p95": 2.07299995422363
+			},
+			"quality": 0,
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 3.207936,
+				"n": 120,
+				"p95": 3.290112
+			},
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"display_size": [
+					2560,
+					1440
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"rebuilding": false,
+				"render_scale": 0.666666686534882,
+				"render_size": [
+					1706,
+					960
+				],
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 17287,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"trace_render_scale": 1.0,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": true
+			},
+			"upscale_evaluations": 120,
+			"upscaler_after": {
+				"compiled": true,
+				"fg3_supported": true,
+				"fg4_supported": false,
+				"frame_generation_active": false,
+				"frame_generation_context_creations": 0,
+				"frame_generation_create_ms": 0.0,
+				"frame_generation_dispatches": 0,
+				"frame_generation_initializing": false,
+				"frame_generation_provider": "",
+				"game_presents": 17092,
+				"generated_frames": 0,
+				"initialized": true,
+				"last_error": 0,
+				"prepare_max_ms": 0.033,
+				"present_count_available": true,
+				"presented_frames": 17092,
+				"requested_quality": 1,
+				"requested_upscaling": 1,
+				"sr3_supported": true,
+				"sr4_supported": false,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 167,
+				"upscaler_context_creations": 1,
+				"upscaler_create_ms": 506.672,
+				"upscaler_initializing": false,
+				"upscaler_max_dispatch_ms": 0.198,
+				"upscaler_provider": "3.1.5",
+				"viewport_mode": 6,
+				"viewport_scale": 0.666666686534882
+			},
+			"upscaler_before": {
+				"compiled": true,
+				"fg3_supported": true,
+				"fg4_supported": false,
+				"frame_generation_active": false,
+				"frame_generation_context_creations": 0,
+				"frame_generation_create_ms": 0.0,
+				"frame_generation_dispatches": 0,
+				"frame_generation_initializing": false,
+				"frame_generation_provider": "",
+				"game_presents": 16972,
+				"generated_frames": 0,
+				"initialized": true,
+				"last_error": 0,
+				"prepare_max_ms": 0.033,
+				"present_count_available": true,
+				"presented_frames": 16972,
+				"requested_quality": 1,
+				"requested_upscaling": 1,
+				"sr3_supported": true,
+				"sr4_supported": false,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 47,
+				"upscaler_context_creations": 1,
+				"upscaler_create_ms": 506.672,
+				"upscaler_initializing": false,
+				"upscaler_max_dispatch_ms": 0.198,
+				"upscaler_provider": "3.1.5",
+				"viewport_mode": 6,
+				"viewport_scale": 0.666666686534882
+			},
+			"window_reference": true
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.351,
+				"n": 120,
+				"p95": 0.617
+			},
+			"frame_ms": {
+				"median": 4.54,
+				"n": 120,
+				"p95": 6.706
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.007168,
+					"n": 120,
+					"p95": 0.008192
+				},
+				"rays": {
+					"median": 1.46304,
+					"n": 120,
+					"p95": 1.497088
+				},
+				"reconstruction": {
+					"median": 0.14848,
+					"n": 120,
+					"p95": 0.150528
+				}
+			},
+			"main_gpu_ms": {
+				"median": 1.9210000038147,
+				"n": 120,
+				"p95": 1.93299996852875
+			},
+			"quality": 0,
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 1.618944,
+				"n": 120,
+				"p95": 1.654784
+			},
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"display_size": [
+					2560,
+					1440
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"rebuilding": false,
+				"render_scale": 0.666666686534882,
+				"render_size": [
+					1706,
+					960
+				],
+				"shadow_samples": 0,
+				"size": [
+					853,
+					480
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 17287,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"trace_render_scale": 0.666666686534882,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"upscale_evaluations": 120,
+			"upscaler_after": {
+				"compiled": true,
+				"fg3_supported": true,
+				"fg4_supported": false,
+				"frame_generation_active": false,
+				"frame_generation_context_creations": 0,
+				"frame_generation_create_ms": 0.0,
+				"frame_generation_dispatches": 0,
+				"frame_generation_initializing": false,
+				"frame_generation_provider": "",
+				"game_presents": 17257,
+				"generated_frames": 0,
+				"initialized": true,
+				"last_error": 0,
+				"prepare_max_ms": 0.033,
+				"present_count_available": true,
+				"presented_frames": 17257,
+				"requested_quality": 1,
+				"requested_upscaling": 1,
+				"sr3_supported": true,
+				"sr4_supported": false,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 332,
+				"upscaler_context_creations": 1,
+				"upscaler_create_ms": 506.672,
+				"upscaler_initializing": false,
+				"upscaler_max_dispatch_ms": 0.198,
+				"upscaler_provider": "3.1.5",
+				"viewport_mode": 6,
+				"viewport_scale": 0.666666686534882
+			},
+			"upscaler_before": {
+				"compiled": true,
+				"fg3_supported": true,
+				"fg4_supported": false,
+				"frame_generation_active": false,
+				"frame_generation_context_creations": 0,
+				"frame_generation_create_ms": 0.0,
+				"frame_generation_dispatches": 0,
+				"frame_generation_initializing": false,
+				"frame_generation_provider": "",
+				"game_presents": 17137,
+				"generated_frames": 0,
+				"initialized": true,
+				"last_error": 0,
+				"prepare_max_ms": 0.033,
+				"present_count_available": true,
+				"presented_frames": 17137,
+				"requested_quality": 1,
+				"requested_upscaling": 1,
+				"sr3_supported": true,
+				"sr4_supported": false,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 212,
+				"upscaler_context_creations": 1,
+				"upscaler_create_ms": 506.672,
+				"upscaler_initializing": false,
+				"upscaler_max_dispatch_ms": 0.198,
+				"upscaler_provider": "3.1.5",
+				"viewport_mode": 6,
+				"viewport_scale": 0.666666686534882
+			},
+			"window_reference": false
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.26,
+				"n": 120,
+				"p95": 0.654
+			},
+			"frame_ms": {
+				"median": 10.229,
+				"n": 120,
+				"p95": 11.313
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.006144,
+					"n": 120,
+					"p95": 0.008192
+				},
+				"rays": {
+					"median": 7.548928,
+					"n": 120,
+					"p95": 7.764736
+				},
+				"reconstruction": {
+					"median": 0.31232,
+					"n": 120,
+					"p95": 0.314368
+				}
+			},
+			"main_gpu_ms": {
+				"median": 1.93799996376038,
+				"n": 120,
+				"p95": 2.00300002098083
+			},
+			"quality": 1,
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 7.867904,
+				"n": 120,
+				"p95": 8.084224
+			},
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"display_size": [
+					2560,
+					1440
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"rebuilding": false,
+				"render_scale": 0.666666686534882,
+				"render_size": [
+					1706,
+					960
+				],
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 17287,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"trace_render_scale": 0.666666686534882,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"upscale_evaluations": 120,
+			"upscaler_after": {
+				"compiled": true,
+				"fg3_supported": true,
+				"fg4_supported": false,
+				"frame_generation_active": false,
+				"frame_generation_context_creations": 0,
+				"frame_generation_create_ms": 0.0,
+				"frame_generation_dispatches": 0,
+				"frame_generation_initializing": false,
+				"frame_generation_provider": "",
+				"game_presents": 17422,
+				"generated_frames": 0,
+				"initialized": true,
+				"last_error": 0,
+				"prepare_max_ms": 0.033,
+				"present_count_available": true,
+				"presented_frames": 17422,
+				"requested_quality": 1,
+				"requested_upscaling": 1,
+				"sr3_supported": true,
+				"sr4_supported": false,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 497,
+				"upscaler_context_creations": 1,
+				"upscaler_create_ms": 506.672,
+				"upscaler_initializing": false,
+				"upscaler_max_dispatch_ms": 0.198,
+				"upscaler_provider": "3.1.5",
+				"viewport_mode": 6,
+				"viewport_scale": 0.666666686534882
+			},
+			"upscaler_before": {
+				"compiled": true,
+				"fg3_supported": true,
+				"fg4_supported": false,
+				"frame_generation_active": false,
+				"frame_generation_context_creations": 0,
+				"frame_generation_create_ms": 0.0,
+				"frame_generation_dispatches": 0,
+				"frame_generation_initializing": false,
+				"frame_generation_provider": "",
+				"game_presents": 17302,
+				"generated_frames": 0,
+				"initialized": true,
+				"last_error": 0,
+				"prepare_max_ms": 0.033,
+				"present_count_available": true,
+				"presented_frames": 17302,
+				"requested_quality": 1,
+				"requested_upscaling": 1,
+				"sr3_supported": true,
+				"sr4_supported": false,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 377,
+				"upscaler_context_creations": 1,
+				"upscaler_create_ms": 506.672,
+				"upscaler_initializing": false,
+				"upscaler_max_dispatch_ms": 0.198,
+				"upscaler_provider": "3.1.5",
+				"viewport_mode": 6,
+				"viewport_scale": 0.666666686534882
+			},
+			"window_reference": false
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.341,
+				"n": 120,
+				"p95": 0.819
+			},
+			"frame_ms": {
+				"median": 19.639,
+				"n": 120,
+				"p95": 23.475
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.008192,
+					"n": 120,
+					"p95": 0.014336
+				},
+				"rays": {
+					"median": 16.3328,
+					"n": 120,
+					"p95": 16.6016
+				},
+				"reconstruction": {
+					"median": 0.678912,
+					"n": 120,
+					"p95": 3.951616
+				}
+			},
+			"main_gpu_ms": {
+				"median": 2.02900004386902,
+				"n": 120,
+				"p95": 2.20099997520447
+			},
+			"quality": 1,
+			"round": 0,
+			"rt_gpu_ms": {
+				"median": 17.056512,
+				"n": 120,
+				"p95": 20.452096
+			},
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"display_size": [
+					2560,
+					1440
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"rebuilding": false,
+				"render_scale": 0.666666686534882,
+				"render_size": [
+					1706,
+					960
+				],
+				"shadow_samples": 0,
+				"size": [
+					1920,
+					1080
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 17287,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"trace_render_scale": 1.0,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": true
+			},
+			"upscale_evaluations": 120,
+			"upscaler_after": {
+				"compiled": true,
+				"fg3_supported": true,
+				"fg4_supported": false,
+				"frame_generation_active": false,
+				"frame_generation_context_creations": 0,
+				"frame_generation_create_ms": 0.0,
+				"frame_generation_dispatches": 0,
+				"frame_generation_initializing": false,
+				"frame_generation_provider": "",
+				"game_presents": 17587,
+				"generated_frames": 0,
+				"initialized": true,
+				"last_error": 0,
+				"prepare_max_ms": 0.033,
+				"present_count_available": true,
+				"presented_frames": 17587,
+				"requested_quality": 1,
+				"requested_upscaling": 1,
+				"sr3_supported": true,
+				"sr4_supported": false,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 662,
+				"upscaler_context_creations": 1,
+				"upscaler_create_ms": 506.672,
+				"upscaler_initializing": false,
+				"upscaler_max_dispatch_ms": 0.198,
+				"upscaler_provider": "3.1.5",
+				"viewport_mode": 6,
+				"viewport_scale": 0.666666686534882
+			},
+			"upscaler_before": {
+				"compiled": true,
+				"fg3_supported": true,
+				"fg4_supported": false,
+				"frame_generation_active": false,
+				"frame_generation_context_creations": 0,
+				"frame_generation_create_ms": 0.0,
+				"frame_generation_dispatches": 0,
+				"frame_generation_initializing": false,
+				"frame_generation_provider": "",
+				"game_presents": 17467,
+				"generated_frames": 0,
+				"initialized": true,
+				"last_error": 0,
+				"prepare_max_ms": 0.033,
+				"present_count_available": true,
+				"presented_frames": 17467,
+				"requested_quality": 1,
+				"requested_upscaling": 1,
+				"sr3_supported": true,
+				"sr4_supported": false,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 542,
+				"upscaler_context_creations": 1,
+				"upscaler_create_ms": 506.672,
+				"upscaler_initializing": false,
+				"upscaler_max_dispatch_ms": 0.198,
+				"upscaler_provider": "3.1.5",
+				"viewport_mode": 6,
+				"viewport_scale": 0.666666686534882
+			},
+			"window_reference": true
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.272,
+				"n": 120,
+				"p95": 0.632
+			},
+			"frame_ms": {
+				"median": 19.512,
+				"n": 120,
+				"p95": 20.575
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.008192,
+					"n": 120,
+					"p95": 0.008192
+				},
+				"rays": {
+					"median": 16.33536,
+					"n": 120,
+					"p95": 16.556032
+				},
+				"reconstruction": {
+					"median": 0.678912,
+					"n": 120,
+					"p95": 0.679936
+				}
+			},
+			"main_gpu_ms": {
+				"median": 1.99899995326996,
+				"n": 120,
+				"p95": 2.05200004577637
+			},
+			"quality": 1,
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 17.021952,
+				"n": 120,
+				"p95": 17.240064
+			},
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"display_size": [
+					2560,
+					1440
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"rebuilding": false,
+				"render_scale": 0.666666686534882,
+				"render_size": [
+					1706,
+					960
+				],
+				"shadow_samples": 0,
+				"size": [
+					1920,
+					1080
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 17287,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"trace_render_scale": 1.0,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": true
+			},
+			"upscale_evaluations": 120,
+			"upscaler_after": {
+				"compiled": true,
+				"fg3_supported": true,
+				"fg4_supported": false,
+				"frame_generation_active": false,
+				"frame_generation_context_creations": 0,
+				"frame_generation_create_ms": 0.0,
+				"frame_generation_dispatches": 0,
+				"frame_generation_initializing": false,
+				"frame_generation_provider": "",
+				"game_presents": 17752,
+				"generated_frames": 0,
+				"initialized": true,
+				"last_error": 0,
+				"prepare_max_ms": 0.033,
+				"present_count_available": true,
+				"presented_frames": 17752,
+				"requested_quality": 1,
+				"requested_upscaling": 1,
+				"sr3_supported": true,
+				"sr4_supported": false,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 827,
+				"upscaler_context_creations": 1,
+				"upscaler_create_ms": 506.672,
+				"upscaler_initializing": false,
+				"upscaler_max_dispatch_ms": 0.198,
+				"upscaler_provider": "3.1.5",
+				"viewport_mode": 6,
+				"viewport_scale": 0.666666686534882
+			},
+			"upscaler_before": {
+				"compiled": true,
+				"fg3_supported": true,
+				"fg4_supported": false,
+				"frame_generation_active": false,
+				"frame_generation_context_creations": 0,
+				"frame_generation_create_ms": 0.0,
+				"frame_generation_dispatches": 0,
+				"frame_generation_initializing": false,
+				"frame_generation_provider": "",
+				"game_presents": 17632,
+				"generated_frames": 0,
+				"initialized": true,
+				"last_error": 0,
+				"prepare_max_ms": 0.033,
+				"present_count_available": true,
+				"presented_frames": 17632,
+				"requested_quality": 1,
+				"requested_upscaling": 1,
+				"sr3_supported": true,
+				"sr4_supported": false,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 707,
+				"upscaler_context_creations": 1,
+				"upscaler_create_ms": 506.672,
+				"upscaler_initializing": false,
+				"upscaler_max_dispatch_ms": 0.198,
+				"upscaler_provider": "3.1.5",
+				"viewport_mode": 6,
+				"viewport_scale": 0.666666686534882
+			},
+			"window_reference": true
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.306,
+				"n": 120,
+				"p95": 0.585
+			},
+			"frame_ms": {
+				"median": 10.125,
+				"n": 120,
+				"p95": 11.254
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.007168,
+					"n": 120,
+					"p95": 0.008192
+				},
+				"rays": {
+					"median": 7.453696,
+					"n": 120,
+					"p95": 7.66592
+				},
+				"reconstruction": {
+					"median": 0.31232,
+					"n": 120,
+					"p95": 0.314368
+				}
+			},
+			"main_gpu_ms": {
+				"median": 1.94200003147125,
+				"n": 120,
+				"p95": 1.95500004291534
+			},
+			"quality": 1,
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 7.777024,
+				"n": 120,
+				"p95": 7.984384
+			},
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"display_size": [
+					2560,
+					1440
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 2,
+				"path_tracing": true,
+				"quality": 1,
+				"rebuilding": false,
+				"render_scale": 0.666666686534882,
+				"render_size": [
+					1706,
+					960
+				],
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 17287,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"trace_render_scale": 0.666666686534882,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"upscale_evaluations": 120,
+			"upscaler_after": {
+				"compiled": true,
+				"fg3_supported": true,
+				"fg4_supported": false,
+				"frame_generation_active": false,
+				"frame_generation_context_creations": 0,
+				"frame_generation_create_ms": 0.0,
+				"frame_generation_dispatches": 0,
+				"frame_generation_initializing": false,
+				"frame_generation_provider": "",
+				"game_presents": 17917,
+				"generated_frames": 0,
+				"initialized": true,
+				"last_error": 0,
+				"prepare_max_ms": 0.033,
+				"present_count_available": true,
+				"presented_frames": 17917,
+				"requested_quality": 1,
+				"requested_upscaling": 1,
+				"sr3_supported": true,
+				"sr4_supported": false,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 992,
+				"upscaler_context_creations": 1,
+				"upscaler_create_ms": 506.672,
+				"upscaler_initializing": false,
+				"upscaler_max_dispatch_ms": 0.198,
+				"upscaler_provider": "3.1.5",
+				"viewport_mode": 6,
+				"viewport_scale": 0.666666686534882
+			},
+			"upscaler_before": {
+				"compiled": true,
+				"fg3_supported": true,
+				"fg4_supported": false,
+				"frame_generation_active": false,
+				"frame_generation_context_creations": 0,
+				"frame_generation_create_ms": 0.0,
+				"frame_generation_dispatches": 0,
+				"frame_generation_initializing": false,
+				"frame_generation_provider": "",
+				"game_presents": 17797,
+				"generated_frames": 0,
+				"initialized": true,
+				"last_error": 0,
+				"prepare_max_ms": 0.033,
+				"present_count_available": true,
+				"presented_frames": 17797,
+				"requested_quality": 1,
+				"requested_upscaling": 1,
+				"sr3_supported": true,
+				"sr4_supported": false,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 872,
+				"upscaler_context_creations": 1,
+				"upscaler_create_ms": 506.672,
+				"upscaler_initializing": false,
+				"upscaler_max_dispatch_ms": 0.198,
+				"upscaler_provider": "3.1.5",
+				"viewport_mode": 6,
+				"viewport_scale": 0.666666686534882
+			},
+			"window_reference": false
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.264,
+				"n": 120,
+				"p95": 0.543
+			},
+			"frame_ms": {
+				"median": 3.946,
+				"n": 120,
+				"p95": 6.239
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.007168,
+					"n": 120,
+					"p95": 0.008192
+				},
+				"rays": {
+					"median": 1.259008,
+					"n": 120,
+					"p95": 1.485312
+				},
+				"reconstruction": {
+					"median": 0.149504,
+					"n": 120,
+					"p95": 0.151552
+				}
+			},
+			"main_gpu_ms": {
+				"median": 1.93400001525879,
+				"n": 120,
+				"p95": 1.94599997997284
+			},
+			"quality": 0,
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 1.414656,
+				"n": 120,
+				"p95": 1.64224
+			},
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"display_size": [
+					2560,
+					1440
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"rebuilding": false,
+				"render_scale": 0.666666686534882,
+				"render_size": [
+					1706,
+					960
+				],
+				"shadow_samples": 0,
+				"size": [
+					853,
+					480
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 17287,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"trace_render_scale": 0.666666686534882,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"upscale_evaluations": 120,
+			"upscaler_after": {
+				"compiled": true,
+				"fg3_supported": true,
+				"fg4_supported": false,
+				"frame_generation_active": false,
+				"frame_generation_context_creations": 0,
+				"frame_generation_create_ms": 0.0,
+				"frame_generation_dispatches": 0,
+				"frame_generation_initializing": false,
+				"frame_generation_provider": "",
+				"game_presents": 18082,
+				"generated_frames": 0,
+				"initialized": true,
+				"last_error": 0,
+				"prepare_max_ms": 0.033,
+				"present_count_available": true,
+				"presented_frames": 18082,
+				"requested_quality": 1,
+				"requested_upscaling": 1,
+				"sr3_supported": true,
+				"sr4_supported": false,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 1157,
+				"upscaler_context_creations": 1,
+				"upscaler_create_ms": 506.672,
+				"upscaler_initializing": false,
+				"upscaler_max_dispatch_ms": 0.198,
+				"upscaler_provider": "3.1.5",
+				"viewport_mode": 6,
+				"viewport_scale": 0.666666686534882
+			},
+			"upscaler_before": {
+				"compiled": true,
+				"fg3_supported": true,
+				"fg4_supported": false,
+				"frame_generation_active": false,
+				"frame_generation_context_creations": 0,
+				"frame_generation_create_ms": 0.0,
+				"frame_generation_dispatches": 0,
+				"frame_generation_initializing": false,
+				"frame_generation_provider": "",
+				"game_presents": 17962,
+				"generated_frames": 0,
+				"initialized": true,
+				"last_error": 0,
+				"prepare_max_ms": 0.033,
+				"present_count_available": true,
+				"presented_frames": 17962,
+				"requested_quality": 1,
+				"requested_upscaling": 1,
+				"sr3_supported": true,
+				"sr4_supported": false,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 1037,
+				"upscaler_context_creations": 1,
+				"upscaler_create_ms": 506.672,
+				"upscaler_initializing": false,
+				"upscaler_max_dispatch_ms": 0.198,
+				"upscaler_provider": "3.1.5",
+				"viewport_mode": 6,
+				"viewport_scale": 0.666666686534882
+			},
+			"window_reference": false
+		},
+		{
+			"controller_cpu_ms": {
+				"median": 0.257,
+				"n": 120,
+				"p95": 0.56
+			},
+			"frame_ms": {
+				"median": 5.551,
+				"n": 120,
+				"p95": 6.506
+			},
+			"gpu_stages_ms": {
+				"copies": {
+					"median": 0.007168,
+					"n": 120,
+					"p95": 0.008192
+				},
+				"rays": {
+					"median": 2.679808,
+					"n": 120,
+					"p95": 2.883584
+				},
+				"reconstruction": {
+					"median": 0.313344,
+					"n": 120,
+					"p95": 0.316416
+				}
+			},
+			"main_gpu_ms": {
+				"median": 2.09899997711182,
+				"n": 120,
+				"p95": 2.14000010490417
+			},
+			"quality": 0,
+			"round": 1,
+			"rt_gpu_ms": {
+				"median": 2.999808,
+				"n": 120,
+				"p95": 3.206144
+			},
+			"stats": {
+				"accumulation_frames": 8.0,
+				"active": true,
+				"display_size": [
+					2560,
+					1440
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 2035,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 2171,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 4,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"rebuilding": false,
+				"render_scale": 0.666666686534882,
+				"render_size": [
+					1706,
+					960
+				],
+				"shadow_samples": 0,
+				"size": [
+					1280,
+					720
+				],
+				"snapshot_generation": 1,
+				"supported": true,
+				"terrain_material_build_us": 17287,
+				"terrain_material_bytes": 784132,
+				"terrain_material_triangles": 56145,
+				"trace_render_scale": 1.0,
+				"triangles": 149784,
+				"updated_instances": 0,
+				"updated_poses": 0,
+				"window_resolution_reference": true
+			},
+			"upscale_evaluations": 120,
+			"upscaler_after": {
+				"compiled": true,
+				"fg3_supported": true,
+				"fg4_supported": false,
+				"frame_generation_active": false,
+				"frame_generation_context_creations": 0,
+				"frame_generation_create_ms": 0.0,
+				"frame_generation_dispatches": 0,
+				"frame_generation_initializing": false,
+				"frame_generation_provider": "",
+				"game_presents": 18247,
+				"generated_frames": 0,
+				"initialized": true,
+				"last_error": 0,
+				"prepare_max_ms": 0.033,
+				"present_count_available": true,
+				"presented_frames": 18247,
+				"requested_quality": 1,
+				"requested_upscaling": 1,
+				"sr3_supported": true,
+				"sr4_supported": false,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 1322,
+				"upscaler_context_creations": 1,
+				"upscaler_create_ms": 506.672,
+				"upscaler_initializing": false,
+				"upscaler_max_dispatch_ms": 0.198,
+				"upscaler_provider": "3.1.5",
+				"viewport_mode": 6,
+				"viewport_scale": 0.666666686534882
+			},
+			"upscaler_before": {
+				"compiled": true,
+				"fg3_supported": true,
+				"fg4_supported": false,
+				"frame_generation_active": false,
+				"frame_generation_context_creations": 0,
+				"frame_generation_create_ms": 0.0,
+				"frame_generation_dispatches": 0,
+				"frame_generation_initializing": false,
+				"frame_generation_provider": "",
+				"game_presents": 18127,
+				"generated_frames": 0,
+				"initialized": true,
+				"last_error": 0,
+				"prepare_max_ms": 0.033,
+				"present_count_available": true,
+				"presented_frames": 18127,
+				"requested_quality": 1,
+				"requested_upscaling": 1,
+				"sr3_supported": true,
+				"sr4_supported": false,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 1202,
+				"upscaler_context_creations": 1,
+				"upscaler_create_ms": 506.672,
+				"upscaler_initializing": false,
+				"upscaler_max_dispatch_ms": 0.198,
+				"upscaler_provider": "3.1.5",
+				"viewport_mode": 6,
+				"viewport_scale": 0.666666686534882
+			},
+			"window_reference": true
+		}
+	],
+	"sdk_readiness": [
+		{
+			"after": {
+				"compiled": true,
+				"fg3_supported": true,
+				"fg4_supported": false,
+				"frame_generation_active": false,
+				"frame_generation_context_creations": 0,
+				"frame_generation_create_ms": 0.0,
+				"frame_generation_dispatches": 0,
+				"frame_generation_initializing": false,
+				"frame_generation_provider": "",
+				"game_presents": 16928,
+				"generated_frames": 0,
+				"initialized": true,
+				"last_error": 0,
+				"prepare_max_ms": 0.033,
+				"present_count_available": true,
+				"presented_frames": 16928,
+				"requested_quality": 1,
+				"requested_upscaling": 1,
+				"sr3_supported": true,
+				"sr4_supported": false,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 3,
+				"upscaler_context_creations": 1,
+				"upscaler_create_ms": 506.672,
+				"upscaler_initializing": false,
+				"upscaler_max_dispatch_ms": 0.198,
+				"upscaler_provider": "3.1.5",
+				"viewport_mode": 6,
+				"viewport_scale": 0.666666686534882
+			},
+			"before": {
+				"compiled": true,
+				"fg3_supported": true,
+				"fg4_supported": false,
+				"frame_generation_active": false,
+				"frame_generation_context_creations": 0,
+				"frame_generation_create_ms": 0.0,
+				"frame_generation_dispatches": 0,
+				"frame_generation_initializing": false,
+				"frame_generation_provider": "",
+				"game_presents": 215,
+				"generated_frames": 0,
+				"initialized": true,
+				"last_error": 0,
+				"prepare_max_ms": 0.0,
+				"present_count_available": true,
+				"presented_frames": 215,
+				"requested_quality": 1,
+				"requested_upscaling": 1,
+				"sr3_supported": true,
+				"sr4_supported": false,
+				"temporal_shaders_initializing": false,
+				"upscale_evaluations": 0,
+				"upscaler_context_creations": 0,
+				"upscaler_create_ms": 0.0,
+				"upscaler_initializing": false,
+				"upscaler_max_dispatch_ms": 0.0,
+				"upscaler_provider": "",
+				"viewport_mode": 6,
+				"viewport_scale": 0.666666686534882
+			},
+			"case": "benchmark-upscaler",
+			"ready": true,
+			"rendered_frames": 16713,
+			"wait_ms": 78912
+		}
+	],
+	"upscaler": "FSR 3.1 Quality",
+	"viewport": [
+		2560,
+		1440
+	]
+}

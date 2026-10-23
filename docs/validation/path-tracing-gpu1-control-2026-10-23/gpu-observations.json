@@ -1,0 +1,1970 @@
+[
+  {
+    "backend": "vulkan",
+    "gpu_index": 1,
+    "start_unix": 1792739095.5745106,
+    "end_unix": 1792739160.8218167,
+    "interval_seconds": 1,
+    "external_positive_activity_samples": 0,
+    "roles": {
+      "resident-compute": {
+        "records": 61,
+        "positive_sm_records": 0,
+        "positive_memory_activity_records": 0,
+        "resident_mib": {
+          "min": 7228,
+          "median": 7228,
+          "max": 7228
+        }
+      },
+      "other-graphics": {
+        "records": 183,
+        "positive_sm_records": 0,
+        "positive_memory_activity_records": 0,
+        "resident_mib": {
+          "min": 4,
+          "median": 4,
+          "max": 4
+        }
+      },
+      "private-display": {
+        "records": 61,
+        "positive_sm_records": 1,
+        "positive_memory_activity_records": 1,
+        "resident_mib": {
+          "min": 15,
+          "median": 27,
+          "max": 27
+        }
+      },
+      "benchmark": {
+        "records": 59,
+        "positive_sm_records": 47,
+        "positive_memory_activity_records": 44,
+        "resident_mib": {
+          "min": 101,
+          "median": 1030,
+          "max": 1030
+        }
+      }
+    },
+    "blocks": [
+      {
+        "round": 0,
+        "bounces": 2,
+        "quality": 1,
+        "reference": true,
+        "start_unix": 1792739113.63897,
+        "end_unix": 1792739114.25792,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 11,
+          "median": 19,
+          "max": 73
+        },
+        "graphics_mhz": {
+          "min": 1920,
+          "median": 1920,
+          "max": 2055
+        },
+        "power_w": {
+          "min": 117.25,
+          "median": 136.19,
+          "max": 288.21
+        },
+        "temperature_c": {
+          "min": 46,
+          "median": 47,
+          "max": 53
+        }
+      },
+      {
+        "round": 0,
+        "bounces": 2,
+        "quality": 1,
+        "reference": false,
+        "start_unix": 1792739114.45515,
+        "end_unix": 1792739115.1081,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 19,
+          "median": 72,
+          "max": 73
+        },
+        "graphics_mhz": {
+          "min": 1920,
+          "median": 2055,
+          "max": 2055
+        },
+        "power_w": {
+          "min": 136.19,
+          "median": 288.21,
+          "max": 315.21
+        },
+        "temperature_c": {
+          "min": 47,
+          "median": 53,
+          "max": 55
+        }
+      },
+      {
+        "round": 0,
+        "bounces": 2,
+        "quality": 2,
+        "reference": false,
+        "start_unix": 1792739115.64166,
+        "end_unix": 1792739117.00869,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 72,
+          "median": 86.5,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2040,
+          "median": 2047.5,
+          "max": 2055
+        },
+        "power_w": {
+          "min": 288.21,
+          "median": 346.53999999999996,
+          "max": 378.01
+        },
+        "temperature_c": {
+          "min": 53,
+          "median": 56.0,
+          "max": 58
+        }
+      },
+      {
+        "round": 0,
+        "bounces": 2,
+        "quality": 2,
+        "reference": true,
+        "start_unix": 1792739117.51515,
+        "end_unix": 1792739118.91335,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 100,
+          "median": 100.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2040,
+          "median": 2040.0,
+          "max": 2040
+        },
+        "power_w": {
+          "min": 341.61,
+          "median": 377.94,
+          "max": 378.23
+        },
+        "temperature_c": {
+          "min": 57,
+          "median": 58.5,
+          "max": 60
+        }
+      },
+      {
+        "round": 0,
+        "bounces": 4,
+        "quality": 1,
+        "reference": true,
+        "start_unix": 1792739119.22252,
+        "end_unix": 1792739119.90506,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 80,
+          "median": 100,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2040,
+          "median": 2040,
+          "max": 2040
+        },
+        "power_w": {
+          "min": 314.95,
+          "median": 341.61,
+          "max": 378.23
+        },
+        "temperature_c": {
+          "min": 59,
+          "median": 60,
+          "max": 60
+        }
+      },
+      {
+        "round": 0,
+        "bounces": 4,
+        "quality": 1,
+        "reference": false,
+        "start_unix": 1792739120.13139,
+        "end_unix": 1792739120.79116,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 62,
+          "median": 80,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2025,
+          "median": 2040,
+          "max": 2040
+        },
+        "power_w": {
+          "min": 314.95,
+          "median": 335.77,
+          "max": 341.61
+        },
+        "temperature_c": {
+          "min": 59,
+          "median": 60,
+          "max": 62
+        }
+      },
+      {
+        "round": 0,
+        "bounces": 4,
+        "quality": 2,
+        "reference": false,
+        "start_unix": 1792739121.37874,
+        "end_unix": 1792739122.8749,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 62,
+          "median": 87.0,
+          "max": 97
+        },
+        "graphics_mhz": {
+          "min": 2025,
+          "median": 2025.0,
+          "max": 2040
+        },
+        "power_w": {
+          "min": 314.95,
+          "median": 354.73,
+          "max": 377.8
+        },
+        "temperature_c": {
+          "min": 60,
+          "median": 62.5,
+          "max": 65
+        }
+      },
+      {
+        "round": 0,
+        "bounces": 4,
+        "quality": 2,
+        "reference": true,
+        "start_unix": 1792739123.41957,
+        "end_unix": 1792739124.95063,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 93,
+          "median": 94.5,
+          "max": 97
+        },
+        "graphics_mhz": {
+          "min": 2025,
+          "median": 2025.0,
+          "max": 2025
+        },
+        "power_w": {
+          "min": 373.69,
+          "median": 378.35,
+          "max": 379.17
+        },
+        "temperature_c": {
+          "min": 63,
+          "median": 65.5,
+          "max": 67
+        }
+      },
+      {
+        "round": 1,
+        "bounces": 4,
+        "quality": 2,
+        "reference": true,
+        "start_unix": 1792739125.49494,
+        "end_unix": 1792739126.99535,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 93,
+          "median": 95.0,
+          "max": 97
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2017.5,
+          "max": 2025
+        },
+        "power_w": {
+          "min": 375.76,
+          "median": 378.23,
+          "max": 379.17
+        },
+        "temperature_c": {
+          "min": 66,
+          "median": 67.0,
+          "max": 68
+        }
+      },
+      {
+        "round": 1,
+        "bounces": 4,
+        "quality": 2,
+        "reference": false,
+        "start_unix": 1792739127.54483,
+        "end_unix": 1792739129.05914,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 91,
+          "median": 93.5,
+          "max": 97
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010.0,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 352.59,
+          "median": 374.7,
+          "max": 377.56
+        },
+        "temperature_c": {
+          "min": 67,
+          "median": 67.5,
+          "max": 68
+        }
+      },
+      {
+        "round": 1,
+        "bounces": 4,
+        "quality": 1,
+        "reference": false,
+        "start_unix": 1792739129.3445,
+        "end_unix": 1792739129.97128,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 70,
+          "median": 91,
+          "max": 92
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 335.12,
+          "median": 352.59,
+          "max": 373.64
+        },
+        "temperature_c": {
+          "min": 67,
+          "median": 67,
+          "max": 68
+        }
+      },
+      {
+        "round": 1,
+        "bounces": 4,
+        "quality": 1,
+        "reference": true,
+        "start_unix": 1792739130.18377,
+        "end_unix": 1792739130.76165,
+        "telemetry_samples_with_one_second_margin": 2,
+        "gpu_percent": {
+          "min": 70,
+          "median": 80.5,
+          "max": 91
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010.0,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 335.12,
+          "median": 343.855,
+          "max": 352.59
+        },
+        "temperature_c": {
+          "min": 67,
+          "median": 67.0,
+          "max": 67
+        }
+      },
+      {
+        "round": 1,
+        "bounces": 2,
+        "quality": 2,
+        "reference": true,
+        "start_unix": 1792739131.31672,
+        "end_unix": 1792739132.72762,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 70,
+          "median": 84,
+          "max": 91
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 335.12,
+          "median": 357.07,
+          "max": 382.67
+        },
+        "temperature_c": {
+          "min": 67,
+          "median": 69,
+          "max": 70
+        }
+      },
+      {
+        "round": 1,
+        "bounces": 2,
+        "quality": 2,
+        "reference": false,
+        "start_unix": 1792739133.23858,
+        "end_unix": 1792739134.61982,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 91,
+          "median": 94,
+          "max": 94
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 382.67,
+          "median": 386.22,
+          "max": 389.29
+        },
+        "temperature_c": {
+          "min": 70,
+          "median": 71,
+          "max": 72
+        }
+      },
+      {
+        "round": 1,
+        "bounces": 2,
+        "quality": 1,
+        "reference": false,
+        "start_unix": 1792739134.91466,
+        "end_unix": 1792739135.49191,
+        "telemetry_samples_with_one_second_margin": 2,
+        "gpu_percent": {
+          "min": 65,
+          "median": 79.5,
+          "max": 94
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010.0,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 339.08,
+          "median": 364.185,
+          "max": 389.29
+        },
+        "temperature_c": {
+          "min": 69,
+          "median": 70.5,
+          "max": 72
+        }
+      },
+      {
+        "round": 1,
+        "bounces": 2,
+        "quality": 1,
+        "reference": true,
+        "start_unix": 1792739135.70151,
+        "end_unix": 1792739136.27313,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 65,
+          "median": 76,
+          "max": 94
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 339.08,
+          "median": 339.28,
+          "max": 389.29
+        },
+        "temperature_c": {
+          "min": 69,
+          "median": 70,
+          "max": 72
+        }
+      },
+      {
+        "round": 2,
+        "bounces": 2,
+        "quality": 1,
+        "reference": true,
+        "start_unix": 1792739136.48171,
+        "end_unix": 1792739137.08272,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 65,
+          "median": 69,
+          "max": 76
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 334.95,
+          "median": 339.08,
+          "max": 339.28
+        },
+        "temperature_c": {
+          "min": 69,
+          "median": 70,
+          "max": 70
+        }
+      },
+      {
+        "round": 2,
+        "bounces": 2,
+        "quality": 1,
+        "reference": false,
+        "start_unix": 1792739137.28738,
+        "end_unix": 1792739137.86777,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 56,
+          "median": 69,
+          "max": 76
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 334.95,
+          "median": 339.28,
+          "max": 350.63
+        },
+        "temperature_c": {
+          "min": 70,
+          "median": 70,
+          "max": 72
+        }
+      },
+      {
+        "round": 2,
+        "bounces": 2,
+        "quality": 2,
+        "reference": false,
+        "start_unix": 1792739138.41674,
+        "end_unix": 1792739139.79973,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 56,
+          "median": 84.5,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010.0,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 334.95,
+          "median": 372.71500000000003,
+          "max": 398.19
+        },
+        "temperature_c": {
+          "min": 70,
+          "median": 72.5,
+          "max": 74
+        }
+      },
+      {
+        "round": 2,
+        "bounces": 2,
+        "quality": 2,
+        "reference": true,
+        "start_unix": 1792739140.32312,
+        "end_unix": 1792739141.73536,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 100,
+          "median": 100,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 394.8,
+          "median": 398.11,
+          "max": 398.19
+        },
+        "temperature_c": {
+          "min": 73,
+          "median": 74,
+          "max": 74
+        }
+      },
+      {
+        "round": 2,
+        "bounces": 4,
+        "quality": 1,
+        "reference": true,
+        "start_unix": 1792739142.05802,
+        "end_unix": 1792739142.70456,
+        "telemetry_samples_with_one_second_margin": 2,
+        "gpu_percent": {
+          "min": 74,
+          "median": 87.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010.0,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 348.48,
+          "median": 373.295,
+          "max": 398.11
+        },
+        "temperature_c": {
+          "min": 72,
+          "median": 73.0,
+          "max": 74
+        }
+      },
+      {
+        "round": 2,
+        "bounces": 4,
+        "quality": 1,
+        "reference": false,
+        "start_unix": 1792739142.96407,
+        "end_unix": 1792739143.63077,
+        "telemetry_samples_with_one_second_margin": 2,
+        "gpu_percent": {
+          "min": 74,
+          "median": 77.0,
+          "max": 80
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010.0,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 330.27,
+          "median": 339.375,
+          "max": 348.48
+        },
+        "temperature_c": {
+          "min": 71,
+          "median": 71.5,
+          "max": 72
+        }
+      },
+      {
+        "round": 2,
+        "bounces": 4,
+        "quality": 2,
+        "reference": false,
+        "start_unix": 1792739144.21676,
+        "end_unix": 1792739145.70836,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 80,
+          "median": 100,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 330.27,
+          "median": 364.71,
+          "max": 396.08
+        },
+        "temperature_c": {
+          "min": 71,
+          "median": 74,
+          "max": 75
+        }
+      },
+      {
+        "round": 2,
+        "bounces": 4,
+        "quality": 2,
+        "reference": true,
+        "start_unix": 1792739146.26073,
+        "end_unix": 1792739147.76201,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 100,
+          "median": 100,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 396.08,
+          "median": 397.34,
+          "max": 397.64
+        },
+        "temperature_c": {
+          "min": 75,
+          "median": 75,
+          "max": 76
+        }
+      },
+      {
+        "round": 3,
+        "bounces": 4,
+        "quality": 2,
+        "reference": true,
+        "start_unix": 1792739148.31471,
+        "end_unix": 1792739149.8143,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 100,
+          "median": 100.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 1995,
+          "median": 2010.0,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 397.64,
+          "median": 399.115,
+          "max": 400.35
+        },
+        "temperature_c": {
+          "min": 76,
+          "median": 76.5,
+          "max": 77
+        }
+      },
+      {
+        "round": 3,
+        "bounces": 4,
+        "quality": 2,
+        "reference": false,
+        "start_unix": 1792739150.36513,
+        "end_unix": 1792739151.8662,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 80,
+          "median": 100.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 1995,
+          "median": 1995.0,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 367.18,
+          "median": 398.275,
+          "max": 400.35
+        },
+        "temperature_c": {
+          "min": 75,
+          "median": 77.0,
+          "max": 77
+        }
+      },
+      {
+        "round": 3,
+        "bounces": 4,
+        "quality": 1,
+        "reference": false,
+        "start_unix": 1792739152.14669,
+        "end_unix": 1792739152.75445,
+        "telemetry_samples_with_one_second_margin": 2,
+        "gpu_percent": {
+          "min": 80,
+          "median": 90.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 1995,
+          "median": 1995.0,
+          "max": 1995
+        },
+        "power_w": {
+          "min": 367.18,
+          "median": 382.08000000000004,
+          "max": 396.98
+        },
+        "temperature_c": {
+          "min": 75,
+          "median": 76.0,
+          "max": 77
+        }
+      },
+      {
+        "round": 3,
+        "bounces": 4,
+        "quality": 1,
+        "reference": true,
+        "start_unix": 1792739152.98996,
+        "end_unix": 1792739153.61333,
+        "telemetry_samples_with_one_second_margin": 2,
+        "gpu_percent": {
+          "min": 80,
+          "median": 81.0,
+          "max": 82
+        },
+        "graphics_mhz": {
+          "min": 1995,
+          "median": 1995.0,
+          "max": 1995
+        },
+        "power_w": {
+          "min": 344.72,
+          "median": 355.95000000000005,
+          "max": 367.18
+        },
+        "temperature_c": {
+          "min": 74,
+          "median": 74.5,
+          "max": 75
+        }
+      },
+      {
+        "round": 3,
+        "bounces": 2,
+        "quality": 2,
+        "reference": true,
+        "start_unix": 1792739154.16918,
+        "end_unix": 1792739155.59077,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 82,
+          "median": 100,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 1995,
+          "median": 1995,
+          "max": 1995
+        },
+        "power_w": {
+          "min": 344.72,
+          "median": 375.17,
+          "max": 399.56
+        },
+        "temperature_c": {
+          "min": 74,
+          "median": 77,
+          "max": 77
+        }
+      },
+      {
+        "round": 3,
+        "bounces": 2,
+        "quality": 2,
+        "reference": false,
+        "start_unix": 1792739156.10546,
+        "end_unix": 1792739157.50024,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 100,
+          "median": 100,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 1995,
+          "median": 1995,
+          "max": 1995
+        },
+        "power_w": {
+          "min": 399.56,
+          "median": 403.0,
+          "max": 403.65
+        },
+        "temperature_c": {
+          "min": 77,
+          "median": 78,
+          "max": 79
+        }
+      },
+      {
+        "round": 3,
+        "bounces": 2,
+        "quality": 1,
+        "reference": false,
+        "start_unix": 1792739157.78865,
+        "end_unix": 1792739158.48531,
+        "telemetry_samples_with_one_second_margin": 2,
+        "gpu_percent": {
+          "min": 70,
+          "median": 85.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 1995,
+          "median": 1995.0,
+          "max": 1995
+        },
+        "power_w": {
+          "min": 332.42,
+          "median": 368.03499999999997,
+          "max": 403.65
+        },
+        "temperature_c": {
+          "min": 74,
+          "median": 76.5,
+          "max": 79
+        }
+      },
+      {
+        "round": 3,
+        "bounces": 2,
+        "quality": 1,
+        "reference": true,
+        "start_unix": 1792739158.73505,
+        "end_unix": 1792739159.4176,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 70,
+          "median": 71,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 1995,
+          "median": 1995,
+          "max": 1995
+        },
+        "power_w": {
+          "min": 316.3,
+          "median": 332.42,
+          "max": 403.65
+        },
+        "temperature_c": {
+          "min": 74,
+          "median": 74,
+          "max": 79
+        }
+      }
+    ],
+    "raw_local_log_sha256": {
+      "processes.log": "f70aabe4fb07633eb7a20fe7ec49b99c607d2b37f505f885dba457dd7e46844b",
+      "gpu.csv": "67216cc5d4d2cbabe098378b5e178ff9c1140954dfc0e72c6681a9e77971e90c"
+    }
+  },
+  {
+    "backend": "dx12",
+    "gpu_index": 1,
+    "start_unix": 1792739304.1445115,
+    "end_unix": 1792739407.4179614,
+    "interval_seconds": 1,
+    "external_positive_activity_samples": 0,
+    "roles": {
+      "resident-compute": {
+        "records": 96,
+        "positive_sm_records": 0,
+        "positive_memory_activity_records": 0,
+        "resident_mib": {
+          "min": 7228,
+          "median": 7228.0,
+          "max": 7228
+        }
+      },
+      "other-graphics": {
+        "records": 288,
+        "positive_sm_records": 0,
+        "positive_memory_activity_records": 0,
+        "resident_mib": {
+          "min": 4,
+          "median": 4.0,
+          "max": 4
+        }
+      },
+      "private-display": {
+        "records": 96,
+        "positive_sm_records": 3,
+        "positive_memory_activity_records": 1,
+        "resident_mib": {
+          "min": 14,
+          "median": 27.0,
+          "max": 27
+        }
+      },
+      "benchmark": {
+        "records": 93,
+        "positive_sm_records": 74,
+        "positive_memory_activity_records": 69,
+        "resident_mib": {
+          "min": 52,
+          "median": 919,
+          "max": 1023
+        }
+      }
+    },
+    "blocks": [
+      {
+        "round": 0,
+        "bounces": 2,
+        "quality": 1,
+        "reference": true,
+        "start_unix": 1792739337.97,
+        "end_unix": 1792739338.806,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 0,
+          "median": 75,
+          "max": 82
+        },
+        "graphics_mhz": {
+          "min": 1920,
+          "median": 2025,
+          "max": 2025
+        },
+        "power_w": {
+          "min": 107.54,
+          "median": 151.2,
+          "max": 275.63
+        },
+        "temperature_c": {
+          "min": 46,
+          "median": 49,
+          "max": 51
+        }
+      },
+      {
+        "round": 0,
+        "bounces": 2,
+        "quality": 1,
+        "reference": false,
+        "start_unix": 1792739339.125,
+        "end_unix": 1792739340.013,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 54,
+          "median": 75,
+          "max": 82
+        },
+        "graphics_mhz": {
+          "min": 2025,
+          "median": 2025,
+          "max": 2025
+        },
+        "power_w": {
+          "min": 151.2,
+          "median": 268.25,
+          "max": 275.63
+        },
+        "temperature_c": {
+          "min": 49,
+          "median": 51,
+          "max": 52
+        }
+      },
+      {
+        "round": 0,
+        "bounces": 2,
+        "quality": 2,
+        "reference": false,
+        "start_unix": 1792739340.759,
+        "end_unix": 1792739342.648,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 54,
+          "median": 100.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2025,
+          "median": 2040.0,
+          "max": 2040
+        },
+        "power_w": {
+          "min": 268.25,
+          "median": 324.69,
+          "max": 332.89
+        },
+        "temperature_c": {
+          "min": 52,
+          "median": 54.5,
+          "max": 56
+        }
+      },
+      {
+        "round": 0,
+        "bounces": 2,
+        "quality": 2,
+        "reference": true,
+        "start_unix": 1792739343.361,
+        "end_unix": 1792739345.357,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 0,
+          "median": 100.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2040,
+          "median": 2040.0,
+          "max": 2040
+        },
+        "power_w": {
+          "min": 212.7,
+          "median": 331.505,
+          "max": 332.76
+        },
+        "temperature_c": {
+          "min": 52,
+          "median": 56.5,
+          "max": 58
+        }
+      },
+      {
+        "round": 0,
+        "bounces": 4,
+        "quality": 1,
+        "reference": true,
+        "start_unix": 1792739346.547,
+        "end_unix": 1792739347.439,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 0,
+          "median": 71,
+          "max": 84
+        },
+        "graphics_mhz": {
+          "min": 2040,
+          "median": 2040,
+          "max": 2040
+        },
+        "power_w": {
+          "min": 212.7,
+          "median": 238.02,
+          "max": 279.86
+        },
+        "temperature_c": {
+          "min": 52,
+          "median": 56,
+          "max": 57
+        }
+      },
+      {
+        "round": 0,
+        "bounces": 4,
+        "quality": 1,
+        "reference": false,
+        "start_unix": 1792739347.765,
+        "end_unix": 1792739348.74,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 71,
+          "median": 84,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2040,
+          "median": 2040,
+          "max": 2040
+        },
+        "power_w": {
+          "min": 238.02,
+          "median": 276.95,
+          "max": 279.86
+        },
+        "temperature_c": {
+          "min": 56,
+          "median": 57,
+          "max": 58
+        }
+      },
+      {
+        "round": 0,
+        "bounces": 4,
+        "quality": 2,
+        "reference": false,
+        "start_unix": 1792739349.518,
+        "end_unix": 1792739351.537,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 100,
+          "median": 100.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2025,
+          "median": 2025.0,
+          "max": 2040
+        },
+        "power_w": {
+          "min": 276.95,
+          "median": 335.51,
+          "max": 337.38
+        },
+        "temperature_c": {
+          "min": 58,
+          "median": 60.5,
+          "max": 62
+        }
+      },
+      {
+        "round": 0,
+        "bounces": 4,
+        "quality": 2,
+        "reference": true,
+        "start_unix": 1792739352.302,
+        "end_unix": 1792739354.415,
+        "telemetry_samples_with_one_second_margin": 5,
+        "gpu_percent": {
+          "min": 100,
+          "median": 100,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2025,
+          "median": 2025,
+          "max": 2025
+        },
+        "power_w": {
+          "min": 331.48,
+          "median": 334.67,
+          "max": 337.28
+        },
+        "temperature_c": {
+          "min": 61,
+          "median": 62,
+          "max": 64
+        }
+      },
+      {
+        "round": 1,
+        "bounces": 4,
+        "quality": 2,
+        "reference": true,
+        "start_unix": 1792739355.176,
+        "end_unix": 1792739357.248,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 100,
+          "median": 100.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2025,
+          "median": 2025.0,
+          "max": 2025
+        },
+        "power_w": {
+          "min": 333.0,
+          "median": 337.525,
+          "max": 339.85
+        },
+        "temperature_c": {
+          "min": 63,
+          "median": 64.0,
+          "max": 65
+        }
+      },
+      {
+        "round": 1,
+        "bounces": 4,
+        "quality": 2,
+        "reference": false,
+        "start_unix": 1792739357.993,
+        "end_unix": 1792739360.019,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 100,
+          "median": 100.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2025,
+          "median": 2025.0,
+          "max": 2025
+        },
+        "power_w": {
+          "min": 339.85,
+          "median": 344.91499999999996,
+          "max": 346.99
+        },
+        "temperature_c": {
+          "min": 65,
+          "median": 66.0,
+          "max": 67
+        }
+      },
+      {
+        "round": 1,
+        "bounces": 4,
+        "quality": 1,
+        "reference": false,
+        "start_unix": 1792739360.396,
+        "end_unix": 1792739361.251,
+        "telemetry_samples_with_one_second_margin": 2,
+        "gpu_percent": {
+          "min": 85,
+          "median": 92.5,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2025,
+          "median": 2025.0,
+          "max": 2025
+        },
+        "power_w": {
+          "min": 295.19,
+          "median": 321.09000000000003,
+          "max": 346.99
+        },
+        "temperature_c": {
+          "min": 65,
+          "median": 66.0,
+          "max": 67
+        }
+      },
+      {
+        "round": 1,
+        "bounces": 4,
+        "quality": 1,
+        "reference": true,
+        "start_unix": 1792739361.577,
+        "end_unix": 1792739362.484,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 85,
+          "median": 85,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2025,
+          "median": 2025,
+          "max": 2025
+        },
+        "power_w": {
+          "min": 295.19,
+          "median": 302.17,
+          "max": 305.76
+        },
+        "temperature_c": {
+          "min": 65,
+          "median": 65,
+          "max": 66
+        }
+      },
+      {
+        "round": 1,
+        "bounces": 2,
+        "quality": 2,
+        "reference": true,
+        "start_unix": 1792739363.238,
+        "end_unix": 1792739365.194,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 85,
+          "median": 100.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2025,
+          "median": 2025.0,
+          "max": 2025
+        },
+        "power_w": {
+          "min": 302.17,
+          "median": 326.34000000000003,
+          "max": 347.79
+        },
+        "temperature_c": {
+          "min": 65,
+          "median": 66.5,
+          "max": 68
+        }
+      },
+      {
+        "round": 1,
+        "bounces": 2,
+        "quality": 2,
+        "reference": false,
+        "start_unix": 1792739365.897,
+        "end_unix": 1792739367.806,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 69,
+          "median": 100.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2025,
+          "median": 2025.0,
+          "max": 2025
+        },
+        "power_w": {
+          "min": 331.81,
+          "median": 349.43,
+          "max": 353.22
+        },
+        "temperature_c": {
+          "min": 67,
+          "median": 68.0,
+          "max": 69
+        }
+      },
+      {
+        "round": 1,
+        "bounces": 2,
+        "quality": 1,
+        "reference": false,
+        "start_unix": 1792739368.209,
+        "end_unix": 1792739369.179,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 69,
+          "median": 72,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2025,
+          "median": 2025,
+          "max": 2025
+        },
+        "power_w": {
+          "min": 275.64,
+          "median": 331.81,
+          "max": 353.22
+        },
+        "temperature_c": {
+          "min": 66,
+          "median": 67,
+          "max": 69
+        }
+      },
+      {
+        "round": 1,
+        "bounces": 2,
+        "quality": 1,
+        "reference": true,
+        "start_unix": 1792739369.546,
+        "end_unix": 1792739370.483,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 70,
+          "median": 72,
+          "max": 72
+        },
+        "graphics_mhz": {
+          "min": 2025,
+          "median": 2025,
+          "max": 2025
+        },
+        "power_w": {
+          "min": 274.51,
+          "median": 275.64,
+          "max": 278.32
+        },
+        "temperature_c": {
+          "min": 66,
+          "median": 66,
+          "max": 66
+        }
+      },
+      {
+        "round": 2,
+        "bounces": 2,
+        "quality": 1,
+        "reference": true,
+        "start_unix": 1792739370.842,
+        "end_unix": 1792739371.8,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 70,
+          "median": 72,
+          "max": 74
+        },
+        "graphics_mhz": {
+          "min": 2025,
+          "median": 2025,
+          "max": 2025
+        },
+        "power_w": {
+          "min": 274.51,
+          "median": 278.32,
+          "max": 278.4
+        },
+        "temperature_c": {
+          "min": 66,
+          "median": 66,
+          "max": 66
+        }
+      },
+      {
+        "round": 2,
+        "bounces": 2,
+        "quality": 1,
+        "reference": false,
+        "start_unix": 1792739372.128,
+        "end_unix": 1792739373.033,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 70,
+          "median": 74,
+          "max": 75
+        },
+        "graphics_mhz": {
+          "min": 2025,
+          "median": 2025,
+          "max": 2025
+        },
+        "power_w": {
+          "min": 278.32,
+          "median": 278.4,
+          "max": 283.41
+        },
+        "temperature_c": {
+          "min": 66,
+          "median": 66,
+          "max": 66
+        }
+      },
+      {
+        "round": 2,
+        "bounces": 2,
+        "quality": 2,
+        "reference": false,
+        "start_unix": 1792739373.777,
+        "end_unix": 1792739375.694,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 75,
+          "median": 100.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2017.5,
+          "max": 2025
+        },
+        "power_w": {
+          "min": 283.41,
+          "median": 341.89,
+          "max": 352.35
+        },
+        "temperature_c": {
+          "min": 66,
+          "median": 69.5,
+          "max": 70
+        }
+      },
+      {
+        "round": 2,
+        "bounces": 2,
+        "quality": 2,
+        "reference": true,
+        "start_unix": 1792739376.409,
+        "end_unix": 1792739378.372,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 80,
+          "median": 100.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010.0,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 305.02,
+          "median": 347.275,
+          "max": 348.4
+        },
+        "temperature_c": {
+          "min": 68,
+          "median": 70.0,
+          "max": 70
+        }
+      },
+      {
+        "round": 2,
+        "bounces": 4,
+        "quality": 1,
+        "reference": true,
+        "start_unix": 1792739378.797,
+        "end_unix": 1792739379.742,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 71,
+          "median": 80,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 283.29,
+          "median": 305.02,
+          "max": 347.54
+        },
+        "temperature_c": {
+          "min": 67,
+          "median": 68,
+          "max": 70
+        }
+      },
+      {
+        "round": 2,
+        "bounces": 4,
+        "quality": 1,
+        "reference": false,
+        "start_unix": 1792739380.11,
+        "end_unix": 1792739381.025,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 71,
+          "median": 73,
+          "max": 80
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 283.29,
+          "median": 288.55,
+          "max": 305.02
+        },
+        "temperature_c": {
+          "min": 67,
+          "median": 68,
+          "max": 68
+        }
+      },
+      {
+        "round": 2,
+        "bounces": 4,
+        "quality": 2,
+        "reference": false,
+        "start_unix": 1792739381.821,
+        "end_unix": 1792739383.859,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 73,
+          "median": 100.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010.0,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 288.55,
+          "median": 339.87,
+          "max": 349.46
+        },
+        "temperature_c": {
+          "min": 68,
+          "median": 70.5,
+          "max": 71
+        }
+      },
+      {
+        "round": 2,
+        "bounces": 4,
+        "quality": 2,
+        "reference": true,
+        "start_unix": 1792739384.635,
+        "end_unix": 1792739386.752,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 100,
+          "median": 100.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010.0,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 344.69,
+          "median": 346.02,
+          "max": 349.46
+        },
+        "temperature_c": {
+          "min": 71,
+          "median": 71.0,
+          "max": 72
+        }
+      },
+      {
+        "round": 3,
+        "bounces": 4,
+        "quality": 2,
+        "reference": true,
+        "start_unix": 1792739387.523,
+        "end_unix": 1792739389.632,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 100,
+          "median": 100.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010.0,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 346.28,
+          "median": 347.21000000000004,
+          "max": 349.35
+        },
+        "temperature_c": {
+          "min": 72,
+          "median": 72.0,
+          "max": 72
+        }
+      },
+      {
+        "round": 3,
+        "bounces": 4,
+        "quality": 2,
+        "reference": false,
+        "start_unix": 1792739390.38,
+        "end_unix": 1792739392.424,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 77,
+          "median": 100.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010.0,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 307.8,
+          "median": 350.76,
+          "max": 353.68
+        },
+        "temperature_c": {
+          "min": 70,
+          "median": 72.5,
+          "max": 73
+        }
+      },
+      {
+        "round": 3,
+        "bounces": 4,
+        "quality": 1,
+        "reference": false,
+        "start_unix": 1792739392.871,
+        "end_unix": 1792739393.851,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 70,
+          "median": 77,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 281.09,
+          "median": 307.8,
+          "max": 352.17
+        },
+        "temperature_c": {
+          "min": 69,
+          "median": 70,
+          "max": 73
+        }
+      },
+      {
+        "round": 3,
+        "bounces": 4,
+        "quality": 1,
+        "reference": true,
+        "start_unix": 1792739394.221,
+        "end_unix": 1792739395.115,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 70,
+          "median": 77,
+          "max": 82
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 281.09,
+          "median": 293.9,
+          "max": 307.8
+        },
+        "temperature_c": {
+          "min": 69,
+          "median": 70,
+          "max": 70
+        }
+      },
+      {
+        "round": 3,
+        "bounces": 2,
+        "quality": 2,
+        "reference": true,
+        "start_unix": 1792739395.877,
+        "end_unix": 1792739397.836,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 82,
+          "median": 100.0,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010.0,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 293.9,
+          "median": 341.955,
+          "max": 353.39
+        },
+        "temperature_c": {
+          "min": 70,
+          "median": 73.0,
+          "max": 73
+        }
+      },
+      {
+        "round": 3,
+        "bounces": 2,
+        "quality": 2,
+        "reference": false,
+        "start_unix": 1792739398.531,
+        "end_unix": 1792739400.515,
+        "telemetry_samples_with_one_second_margin": 4,
+        "gpu_percent": {
+          "min": 43,
+          "median": 86.5,
+          "max": 100
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010.0,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 302.77,
+          "median": 347.645,
+          "max": 358.49
+        },
+        "temperature_c": {
+          "min": 70,
+          "median": 72.5,
+          "max": 74
+        }
+      },
+      {
+        "round": 3,
+        "bounces": 2,
+        "quality": 1,
+        "reference": false,
+        "start_unix": 1792739400.949,
+        "end_unix": 1792739401.956,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 43,
+          "median": 64,
+          "max": 73
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010,
+          "max": 2010
+        },
+        "power_w": {
+          "min": 271.22,
+          "median": 302.77,
+          "max": 341.9
+        },
+        "temperature_c": {
+          "min": 69,
+          "median": 70,
+          "max": 72
+        }
+      },
+      {
+        "round": 3,
+        "bounces": 2,
+        "quality": 1,
+        "reference": true,
+        "start_unix": 1792739402.348,
+        "end_unix": 1792739403.374,
+        "telemetry_samples_with_one_second_margin": 3,
+        "gpu_percent": {
+          "min": 0,
+          "median": 64,
+          "max": 67
+        },
+        "graphics_mhz": {
+          "min": 2010,
+          "median": 2010,
+          "max": 2025
+        },
+        "power_w": {
+          "min": 198.23,
+          "median": 265.07,
+          "max": 271.22
+        },
+        "temperature_c": {
+          "min": 62,
+          "median": 69,
+          "max": 69
+        }
+      }
+    ],
+    "raw_local_log_sha256": {
+      "processes.log": "1ac207035fb8cfa8526cdeae3c5645366a4bbcd066558760767cd074401fafa6",
+      "gpu.csv": "74e3cc3746db6deea673ba4d8090a5fd486ff7b1114a7ced8ad1e1f0f924755f"
+    }
+  }
+]

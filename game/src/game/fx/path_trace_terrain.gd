@@ -12,8 +12,12 @@ static func version(terrain: EITerrain) -> Array:
 	var material := terrain._land_mat
 	var normal: Texture2D = material.get_shader_parameter("detail_nm") if material else null
 	var macro: Texture2D = material.get_shader_parameter("macro_tex") if material else null
+	# Readiness alone cannot distinguish two already generated textures. Keep
+	# their identities and the sampled edge mode in the immutable snapshot.
 	return [terrain._detail_atlases,terrain._cliffs,terrain._transitions,
-		normal != null and normal.get_image() != null,macro != null and macro.get_image() != null]
+		normal,normal != null and normal.get_image() != null,
+		macro,macro != null and macro.get_image() != null,
+		material == null or material.get_shader_parameter("blend_edges") != false]
 
 func collect(scene: RefCounted, terrain: EITerrain) -> void:
 	var start := Time.get_ticks_usec()

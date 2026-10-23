@@ -1,0 +1,3202 @@
+{
+	"active_frames": 1208,
+	"active_zones": [
+		"gz1g",
+		"bz8k"
+	],
+	"checkpoints": [
+		{
+			"active": false,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": null,
+			"camera": [],
+			"controller": {},
+			"details": {},
+			"device_instance": 0,
+			"drawn_frames": 0,
+			"driver": "vulkan",
+			"elapsed_seconds": 0.000455,
+			"fallback": "",
+			"fps": 1.0,
+			"hero": [],
+			"paused": false,
+			"phase": "create-session",
+			"process_frame": 0,
+			"reason": "phase",
+			"resolution_reapplications": 1,
+			"scene_instance": 0,
+			"static_bytes": null,
+			"stats": {},
+			"texture_bytes": null,
+			"unix": 1792746068.19862,
+			"updated_instances": 0,
+			"updated_poses": 0,
+			"video_allocated_bytes": null,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 0,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 0,
+			"zone": ""
+		},
+		{
+			"active": false,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": null,
+			"camera": [],
+			"controller": {
+				"camera_current": false,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": false,
+				"requested": true,
+				"terrain_visible": false
+			},
+			"details": {
+				"destination": "gz1g"
+			},
+			"device_instance": 0,
+			"drawn_frames": 0,
+			"driver": "vulkan",
+			"elapsed_seconds": 0.655749,
+			"fallback": "",
+			"fps": 1.0,
+			"hero": [],
+			"paused": false,
+			"phase": "before-zone-load",
+			"process_frame": 0,
+			"reason": "phase",
+			"resolution_reapplications": 1,
+			"scene_instance": 0,
+			"static_bytes": null,
+			"stats": {},
+			"texture_bytes": null,
+			"unix": 1792746068.85394,
+			"updated_instances": 0,
+			"updated_poses": 0,
+			"video_allocated_bytes": null,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 0,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 0,
+			"zone": ""
+		},
+		{
+			"active": false,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": null,
+			"camera": [
+				58.5,
+				17.9581108093262,
+				-130.0
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": false,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {
+				"destination": "gz1g"
+			},
+			"device_instance": 0,
+			"drawn_frames": 0,
+			"driver": "vulkan",
+			"elapsed_seconds": 9.52145,
+			"fallback": "",
+			"fps": 1.0,
+			"hero": [
+				52.5,
+				11.9581098556519,
+				-138.0
+			],
+			"paused": false,
+			"phase": "zone-ready",
+			"process_frame": 0,
+			"reason": "phase",
+			"resolution_reapplications": 1,
+			"scene_instance": 0,
+			"static_bytes": null,
+			"stats": {},
+			"texture_bytes": null,
+			"unix": 1792746077.71997,
+			"updated_instances": 0,
+			"updated_poses": 0,
+			"video_allocated_bytes": null,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 48,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 502024638833,
+			"zone": "gz1g"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 64164374.0,
+			"camera": [
+				58.5,
+				17.9581108093262,
+				-130.0
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {},
+			"device_instance": -9223371145749704247,
+			"drawn_frames": 63,
+			"driver": "vulkan",
+			"elapsed_seconds": 34.05498,
+			"fallback": "",
+			"fps": 21.0,
+			"hero": [
+				52.5,
+				11.9581098556519,
+				-138.0
+			],
+			"paused": false,
+			"phase": "zone-ready",
+			"process_frame": 63,
+			"reason": "active-zone",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223371251379060742,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 2.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1070,
+				"gi_samples": 0,
+				"history_limit": 2.22051432401416,
+				"history_reused": true,
+				"instances": 1174,
+				"light_history_limited": true,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 14318,
+				"terrain_material_bytes": 482636,
+				"terrain_material_triangles": 43090,
+				"trace_render_scale": 1.0,
+				"triangles": 95954,
+				"updated_instances": 329,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 806565888.0,
+			"unix": 1792746102.25442,
+			"updated_instances": 329,
+			"updated_poses": 0,
+			"video_allocated_bytes": 926726688.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 48,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 502024638833,
+			"zone": "gz1g"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 64164374.0,
+			"camera": [
+				58.5,
+				17.9581108093262,
+				-130.0
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {},
+			"device_instance": -9223371145749704247,
+			"drawn_frames": 63,
+			"driver": "vulkan",
+			"elapsed_seconds": 34.055617,
+			"fallback": "",
+			"fps": 21.0,
+			"hero": [
+				52.5,
+				11.9581098556519,
+				-138.0
+			],
+			"paused": false,
+			"phase": "live-warmup",
+			"process_frame": 63,
+			"reason": "phase",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223371251379060742,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 2.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1070,
+				"gi_samples": 0,
+				"history_limit": 2.22051432401416,
+				"history_reused": true,
+				"instances": 1174,
+				"light_history_limited": true,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 14318,
+				"terrain_material_bytes": 482636,
+				"terrain_material_triangles": 43090,
+				"trace_render_scale": 1.0,
+				"triangles": 95954,
+				"updated_instances": 329,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 806565888.0,
+			"unix": 1792746102.25506,
+			"updated_instances": 329,
+			"updated_poses": 0,
+			"video_allocated_bytes": 926726688.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 48,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 502024638833,
+			"zone": "gz1g"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 64164374.0,
+			"camera": [
+				58.5,
+				17.9581108093262,
+				-130.0
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {},
+			"device_instance": -9223371145749704247,
+			"drawn_frames": 234,
+			"driver": "vulkan",
+			"elapsed_seconds": 37.070073,
+			"fallback": "",
+			"fps": 58.0,
+			"hero": [
+				52.5,
+				11.9581098556519,
+				-138.0
+			],
+			"paused": false,
+			"phase": "turn-360",
+			"process_frame": 234,
+			"reason": "phase",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223371251379060742,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 1.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1070,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": false,
+				"instances": 1174,
+				"light_history_limited": false,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 14318,
+				"terrain_material_bytes": 482636,
+				"terrain_material_triangles": 43090,
+				"trace_render_scale": 1.0,
+				"triangles": 95954,
+				"updated_instances": 299,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 806827520.0,
+			"unix": 1792746105.26963,
+			"updated_instances": 299,
+			"updated_poses": 0,
+			"video_allocated_bytes": 926988320.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 48,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 502024638833,
+			"zone": "gz1g"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 64202722.0,
+			"camera": [
+				58.5,
+				17.9581108093262,
+				-130.0
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {},
+			"device_instance": -9223371145749704247,
+			"drawn_frames": 312,
+			"driver": "vulkan",
+			"elapsed_seconds": 38.599196,
+			"fallback": "",
+			"fps": 52.0,
+			"hero": [
+				52.5,
+				11.9581098556519,
+				-138.0
+			],
+			"paused": false,
+			"phase": "turn-360",
+			"process_frame": 312,
+			"reason": "turned-180",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223371251379060742,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 1.8261893992859,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1070,
+				"gi_samples": 0,
+				"history_limit": 1.8261893992859,
+				"history_reused": true,
+				"instances": 1174,
+				"light_history_limited": true,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 14318,
+				"terrain_material_bytes": 482636,
+				"terrain_material_triangles": 43090,
+				"trace_render_scale": 1.0,
+				"triangles": 95954,
+				"updated_instances": 637,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 806827520.0,
+			"unix": 1792746106.79881,
+			"updated_instances": 637,
+			"updated_poses": 0,
+			"video_allocated_bytes": 927026672.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 48,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 502024638833,
+			"zone": "gz1g"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 64229686.0,
+			"camera": [
+				58.5,
+				17.9581108093262,
+				-130.0
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {},
+			"device_instance": -9223371145749704247,
+			"drawn_frames": 391,
+			"driver": "vulkan",
+			"elapsed_seconds": 40.074616,
+			"fallback": "",
+			"fps": 37.0,
+			"hero": [
+				52.5,
+				11.9581098556519,
+				-138.0
+			],
+			"paused": false,
+			"phase": "turn-360",
+			"process_frame": 391,
+			"reason": "turned-360",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223371251379060742,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 3.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1070,
+				"gi_samples": 0,
+				"history_limit": 3.0,
+				"history_reused": true,
+				"instances": 1174,
+				"light_history_limited": true,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 14318,
+				"terrain_material_bytes": 482636,
+				"terrain_material_triangles": 43090,
+				"trace_render_scale": 1.0,
+				"triangles": 95954,
+				"updated_instances": 110,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 806827520.0,
+			"unix": 1792746108.27428,
+			"updated_instances": 110,
+			"updated_poses": 0,
+			"video_allocated_bytes": 927053952.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 48,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 502024638833,
+			"zone": "gz1g"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 64229686.0,
+			"camera": [
+				58.5,
+				17.9581108093262,
+				-130.0
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {
+				"destination": "(55.5, 138.0)",
+				"from": [
+					52.5,
+					138.0
+				]
+			},
+			"device_instance": -9223371145749704247,
+			"drawn_frames": 391,
+			"driver": "vulkan",
+			"elapsed_seconds": 40.08202,
+			"fallback": "",
+			"fps": 37.0,
+			"hero": [
+				52.5,
+				11.9581098556519,
+				-138.0
+			],
+			"paused": false,
+			"phase": "hero-move",
+			"process_frame": 391,
+			"reason": "phase",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223371251379060742,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 3.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1070,
+				"gi_samples": 0,
+				"history_limit": 3.0,
+				"history_reused": true,
+				"instances": 1174,
+				"light_history_limited": true,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 14318,
+				"terrain_material_bytes": 482636,
+				"terrain_material_triangles": 43090,
+				"trace_render_scale": 1.0,
+				"triangles": 95954,
+				"updated_instances": 110,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 806827520.0,
+			"unix": 1792746108.28169,
+			"updated_instances": 110,
+			"updated_poses": 0,
+			"video_allocated_bytes": 927053952.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 48,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 502024638833,
+			"zone": "gz1g"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 65460878.0,
+			"camera": [
+				61.5,
+				17.9581108093262,
+				-130.0
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {
+				"camera_maximum_displacement_metres": 3.0,
+				"maximum_displacement_metres": 3.0
+			},
+			"device_instance": -9223371145749704247,
+			"drawn_frames": 668,
+			"driver": "vulkan",
+			"elapsed_seconds": 46.087536,
+			"fallback": "",
+			"fps": 56.0,
+			"hero": [
+				55.5,
+				11.9581098556519,
+				-138.0
+			],
+			"paused": false,
+			"phase": "hero-move",
+			"process_frame": 668,
+			"reason": "hero-moved",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223371251379060742,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 2.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1070,
+				"gi_samples": 0,
+				"history_limit": 2.81307512825403,
+				"history_reused": true,
+				"instances": 1174,
+				"light_history_limited": true,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 14318,
+				"terrain_material_bytes": 482636,
+				"terrain_material_triangles": 43090,
+				"trace_render_scale": 1.0,
+				"triangles": 95954,
+				"updated_instances": 195,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 806827520.0,
+			"unix": 1792746114.28743,
+			"updated_instances": 195,
+			"updated_poses": 0,
+			"video_allocated_bytes": 928284848.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 48,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 502024638833,
+			"zone": "gz1g"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 65460878.0,
+			"camera": [
+				61.5,
+				17.9581108093262,
+				-130.0
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {
+				"distance_from_snapshot_metres": 21.5198249816895,
+				"distance_metres": 18.6038398742676,
+				"old_scene": -9223371251379060742,
+				"target": [
+					79.5,
+					20.4285087585449,
+					-126.0
+				]
+			},
+			"device_instance": -9223371145749704247,
+			"drawn_frames": 668,
+			"driver": "vulkan",
+			"elapsed_seconds": 46.088491,
+			"fallback": "",
+			"fps": 56.0,
+			"hero": [
+				55.5,
+				11.9581098556519,
+				-138.0
+			],
+			"paused": false,
+			"phase": "before-recenter",
+			"process_frame": 668,
+			"reason": "phase",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223371251379060742,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 2.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1070,
+				"gi_samples": 0,
+				"history_limit": 2.81307512825403,
+				"history_reused": true,
+				"instances": 1174,
+				"light_history_limited": true,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 14318,
+				"terrain_material_bytes": 482636,
+				"terrain_material_triangles": 43090,
+				"trace_render_scale": 1.0,
+				"triangles": 95954,
+				"updated_instances": 195,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 806827520.0,
+			"unix": 1792746114.28838,
+			"updated_instances": 195,
+			"updated_poses": 0,
+			"video_allocated_bytes": 928284848.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 48,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 502024638833,
+			"zone": "gz1g"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 68839618.0,
+			"camera": [
+				79.5,
+				20.4285087585449,
+				-126.0
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {
+				"old_scene": -9223371251379060742,
+				"ready": true
+			},
+			"device_instance": -9223370021726564726,
+			"drawn_frames": 754,
+			"driver": "vulkan",
+			"elapsed_seconds": 49.39847,
+			"fallback": "",
+			"fps": 47.0,
+			"hero": [
+				55.5,
+				11.9581098556519,
+				-138.0
+			],
+			"paused": false,
+			"phase": "before-recenter",
+			"process_frame": 754,
+			"reason": "after-recenter",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223370238119095863,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 1.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 2,
+				"emissive_triangles": 2,
+				"geometries": 1192,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": false,
+				"instances": 1330,
+				"light_history_limited": false,
+				"lights": 3,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 15339,
+				"terrain_material_bytes": 534652,
+				"terrain_material_triangles": 49215,
+				"trace_render_scale": 1.0,
+				"triangles": 108958,
+				"updated_instances": 1330,
+				"updated_poses": 18,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 816633344.0,
+			"unix": 1792746117.59849,
+			"updated_instances": 1330,
+			"updated_poses": 18,
+			"video_allocated_bytes": 942662336.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 48,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 502024638833,
+			"zone": "gz1g"
+		},
+		{
+			"active": false,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 42806286.0,
+			"camera": [
+				79.5,
+				20.4285087585449,
+				-126.0
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 2,
+				"gather_instance": -9223369917036736886,
+				"gather_pending": 1349,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": false,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {
+				"distance_from_snapshot_metres": 53.6857719421387,
+				"distance_metres": 53.6857719421387,
+				"old_scene": 0,
+				"target": [
+					31.5,
+					18.9581108093262,
+					-150.0
+				]
+			},
+			"device_instance": 0,
+			"drawn_frames": 798,
+			"driver": "vulkan",
+			"elapsed_seconds": 50.400661,
+			"fallback": "",
+			"fps": 28.0,
+			"hero": [
+				55.5,
+				11.9581098556519,
+				-138.0
+			],
+			"paused": false,
+			"phase": "before-recenter",
+			"process_frame": 798,
+			"reason": "phase",
+			"resolution_reapplications": 2,
+			"scene_instance": 0,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 1.0,
+				"active": false,
+				"display_size": [
+					1280,
+					720
+				],
+				"geometries": 1192,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": false,
+				"instances": 1330,
+				"light_history_limited": false,
+				"lights": 3,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 15339,
+				"terrain_material_bytes": 534652,
+				"terrain_material_triangles": 49215,
+				"trace_render_scale": 1.0,
+				"triangles": 108958,
+				"updated_instances": 221,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 715847168.0,
+			"unix": 1792746118.60072,
+			"updated_instances": 221,
+			"updated_poses": 0,
+			"video_allocated_bytes": 805466976.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 48,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 502024638833,
+			"zone": "gz1g"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 58523150.0,
+			"camera": [
+				31.5,
+				18.9581108093262,
+				-150.0
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {
+				"old_scene": 0,
+				"ready": true
+			},
+			"device_instance": -9223369588756952895,
+			"drawn_frames": 843,
+			"driver": "vulkan",
+			"elapsed_seconds": 51.934767,
+			"fallback": "",
+			"fps": 30.0,
+			"hero": [
+				55.5,
+				11.9581098556519,
+				-138.0
+			],
+			"paused": false,
+			"phase": "before-recenter",
+			"process_frame": 843,
+			"reason": "after-recenter",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223369870412853622,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 1.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 733,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": false,
+				"instances": 793,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 12709,
+				"terrain_material_bytes": 363756,
+				"terrain_material_triangles": 30738,
+				"trace_render_scale": 1.0,
+				"triangles": 66234,
+				"updated_instances": 793,
+				"updated_poses": 8,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 798422528.0,
+			"unix": 1792746120.13488,
+			"updated_instances": 793,
+			"updated_poses": 8,
+			"video_allocated_bytes": 910066928.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 48,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 502024638833,
+			"zone": "gz1g"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 59347786.0,
+			"camera": [
+				31.5,
+				18.9581108093262,
+				-150.0
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {
+				"distance_from_snapshot_metres": 32.5576400756836,
+				"distance_metres": 32.5576400756836,
+				"old_scene": -9223369870412853622,
+				"target": [
+					55.5,
+					18.9581108093262,
+					-128.0
+				]
+			},
+			"device_instance": -9223369588756952895,
+			"drawn_frames": 883,
+			"driver": "vulkan",
+			"elapsed_seconds": 52.956681,
+			"fallback": "",
+			"fps": 33.0,
+			"hero": [
+				55.5,
+				11.9581098556519,
+				-138.0
+			],
+			"paused": false,
+			"phase": "before-recenter",
+			"process_frame": 883,
+			"reason": "phase",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223369870412853622,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 3.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 733,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": true,
+				"instances": 793,
+				"light_history_limited": false,
+				"lights": 1,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 12709,
+				"terrain_material_bytes": 363756,
+				"terrain_material_triangles": 30738,
+				"trace_render_scale": 1.0,
+				"triangles": 66234,
+				"updated_instances": 483,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 798422528.0,
+			"unix": 1792746121.15683,
+			"updated_instances": 483,
+			"updated_poses": 0,
+			"video_allocated_bytes": 910891248.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 48,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 502024638833,
+			"zone": "gz1g"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 64386318.0,
+			"camera": [
+				55.5,
+				18.9581108093262,
+				-128.0
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {
+				"old_scene": -9223369870412853622,
+				"ready": true
+			},
+			"device_instance": -9223368775129084705,
+			"drawn_frames": 955,
+			"driver": "vulkan",
+			"elapsed_seconds": 54.615023,
+			"fallback": "",
+			"fps": 51.0,
+			"hero": [
+				55.5,
+				11.9581098556519,
+				-138.0
+			],
+			"paused": false,
+			"phase": "before-recenter",
+			"process_frame": 955,
+			"reason": "after-recenter",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223368890086569791,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 1.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1009,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": false,
+				"instances": 1108,
+				"light_history_limited": false,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 14062,
+				"terrain_material_bytes": 466912,
+				"terrain_material_triangles": 42684,
+				"trace_render_scale": 1.0,
+				"triangles": 92023,
+				"updated_instances": 1108,
+				"updated_poses": 13,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 806827520.0,
+			"unix": 1792746122.81524,
+			"updated_instances": 1108,
+			"updated_poses": 13,
+			"video_allocated_bytes": 926805664.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 48,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 502024638833,
+			"zone": "gz1g"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 64368634.0,
+			"camera": [
+				55.5,
+				18.9581108093262,
+				-128.0
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {
+				"destination": "bz8k"
+			},
+			"device_instance": -9223368775129084705,
+			"drawn_frames": 1021,
+			"driver": "vulkan",
+			"elapsed_seconds": 55.61784,
+			"fallback": "",
+			"fps": 55.0,
+			"hero": [
+				55.5,
+				11.9581098556519,
+				-138.0
+			],
+			"paused": false,
+			"phase": "before-zone-load",
+			"process_frame": 1021,
+			"reason": "phase",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223368890086569791,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 2.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1009,
+				"gi_samples": 0,
+				"history_limit": 2.9651310751527,
+				"history_reused": true,
+				"instances": 1108,
+				"light_history_limited": true,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 14062,
+				"terrain_material_bytes": 466912,
+				"terrain_material_triangles": 42684,
+				"trace_render_scale": 1.0,
+				"triangles": 92023,
+				"updated_instances": 123,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 806827520.0,
+			"unix": 1792746123.81809,
+			"updated_instances": 123,
+			"updated_poses": 0,
+			"video_allocated_bytes": 926787664.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 48,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 502024638833,
+			"zone": "gz1g"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 68867982.0,
+			"camera": [
+				86.1499938964844,
+				14.5602359771729,
+				-36.25
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {
+				"destination": "bz8k"
+			},
+			"device_instance": -9223368775129084705,
+			"drawn_frames": 1021,
+			"driver": "vulkan",
+			"elapsed_seconds": 65.842297,
+			"fallback": "",
+			"fps": 55.0,
+			"hero": [
+				80.1499938964844,
+				8.56023597717285,
+				-44.25
+			],
+			"paused": false,
+			"phase": "zone-ready",
+			"process_frame": 1021,
+			"reason": "phase",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223368890086569791,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 2.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 1009,
+				"gi_samples": 0,
+				"history_limit": 2.9651310751527,
+				"history_reused": true,
+				"instances": 1108,
+				"light_history_limited": true,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 14062,
+				"terrain_material_bytes": 466912,
+				"terrain_material_triangles": 42684,
+				"trace_render_scale": 1.0,
+				"triangles": 92023,
+				"updated_instances": 123,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 1113877504.0,
+			"unix": 1792746134.04293,
+			"updated_instances": 123,
+			"updated_poses": 0,
+			"video_allocated_bytes": 1240516624.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 37,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 3358429562759,
+			"zone": "bz8k"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 61670542.0,
+			"camera": [
+				86.1499938964844,
+				14.5602359771729,
+				-36.25
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {},
+			"device_instance": -9223367556901889066,
+			"drawn_frames": 1121,
+			"driver": "vulkan",
+			"elapsed_seconds": 70.362275,
+			"fallback": "",
+			"fps": 36.0,
+			"hero": [
+				80.1499938964844,
+				8.56023597717285,
+				-44.25
+			],
+			"paused": false,
+			"phase": "zone-ready",
+			"process_frame": 1121,
+			"reason": "active-zone",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223368450036970273,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 2.8,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 900,
+				"gi_samples": 0,
+				"history_limit": 2.99829825405476,
+				"history_reused": true,
+				"instances": 1217,
+				"light_history_limited": true,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 9939,
+				"terrain_material_bytes": 343664,
+				"terrain_material_triangles": 30703,
+				"trace_render_scale": 1.0,
+				"triangles": 77643,
+				"updated_instances": 471,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 987660288.0,
+			"unix": 1792746138.56308,
+			"updated_instances": 471,
+			"updated_poses": 0,
+			"video_allocated_bytes": 1127277760.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 30,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 3358429562759,
+			"zone": "bz8k"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 61670542.0,
+			"camera": [
+				86.1499938964844,
+				14.5602359771729,
+				-36.25
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {},
+			"device_instance": -9223367556901889066,
+			"drawn_frames": 1121,
+			"driver": "vulkan",
+			"elapsed_seconds": 70.364271,
+			"fallback": "",
+			"fps": 36.0,
+			"hero": [
+				80.1499938964844,
+				8.56023597717285,
+				-44.25
+			],
+			"paused": false,
+			"phase": "turn-360",
+			"process_frame": 1121,
+			"reason": "phase",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223368450036970273,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 2.8,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 900,
+				"gi_samples": 0,
+				"history_limit": 2.99829825405476,
+				"history_reused": true,
+				"instances": 1217,
+				"light_history_limited": true,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 9939,
+				"terrain_material_bytes": 343664,
+				"terrain_material_triangles": 30703,
+				"trace_render_scale": 1.0,
+				"triangles": 77643,
+				"updated_instances": 471,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 987660288.0,
+			"unix": 1792746138.56508,
+			"updated_instances": 471,
+			"updated_poses": 0,
+			"video_allocated_bytes": 1127277760.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 30,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 3358429562759,
+			"zone": "bz8k"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 61912926.0,
+			"camera": [
+				86.1499938964844,
+				14.5602359771729,
+				-36.25
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {},
+			"device_instance": -9223367556901889066,
+			"drawn_frames": 1214,
+			"driver": "vulkan",
+			"elapsed_seconds": 71.866626,
+			"fallback": "",
+			"fps": 55.0,
+			"hero": [
+				80.1499938964844,
+				8.56023597717285,
+				-44.25
+			],
+			"paused": false,
+			"phase": "turn-360",
+			"process_frame": 1214,
+			"reason": "turned-180",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223368450036970273,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 2.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 900,
+				"gi_samples": 0,
+				"history_limit": 3.0,
+				"history_reused": true,
+				"instances": 1217,
+				"light_history_limited": true,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 9939,
+				"terrain_material_bytes": 343664,
+				"terrain_material_triangles": 30703,
+				"trace_render_scale": 1.0,
+				"triangles": 77643,
+				"updated_instances": 82,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 987660288.0,
+			"unix": 1792746140.06749,
+			"updated_instances": 82,
+			"updated_poses": 0,
+			"video_allocated_bytes": 1127520096.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 30,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 3358429562759,
+			"zone": "bz8k"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 62279006.0,
+			"camera": [
+				86.1499938964844,
+				14.5602359771729,
+				-36.25
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {},
+			"device_instance": -9223367556901889066,
+			"drawn_frames": 1307,
+			"driver": "vulkan",
+			"elapsed_seconds": 73.373174,
+			"fallback": "",
+			"fps": 75.0,
+			"hero": [
+				80.1499938964844,
+				8.56023597717285,
+				-44.25
+			],
+			"paused": false,
+			"phase": "turn-360",
+			"process_frame": 1307,
+			"reason": "turned-360",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223368450036970273,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 1.92650570021487,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 900,
+				"gi_samples": 0,
+				"history_limit": 1.92650570021487,
+				"history_reused": true,
+				"instances": 1217,
+				"light_history_limited": true,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 9939,
+				"terrain_material_bytes": 343664,
+				"terrain_material_triangles": 30703,
+				"trace_render_scale": 1.0,
+				"triangles": 77643,
+				"updated_instances": 486,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 987660288.0,
+			"unix": 1792746141.5741,
+			"updated_instances": 486,
+			"updated_poses": 0,
+			"video_allocated_bytes": 1127886160.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 30,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 3358429562759,
+			"zone": "bz8k"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 62279006.0,
+			"camera": [
+				86.1499938964844,
+				14.5602359771729,
+				-36.25
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {},
+			"device_instance": -9223367556901889066,
+			"drawn_frames": 1307,
+			"driver": "vulkan",
+			"elapsed_seconds": 73.374889,
+			"fallback": "",
+			"fps": 75.0,
+			"hero": [
+				80.1499938964844,
+				8.56023597717285,
+				-44.25
+			],
+			"paused": false,
+			"phase": "destination-live",
+			"process_frame": 1307,
+			"reason": "phase",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223368450036970273,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 1.92650570021487,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 900,
+				"gi_samples": 0,
+				"history_limit": 1.92650570021487,
+				"history_reused": true,
+				"instances": 1217,
+				"light_history_limited": true,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 9939,
+				"terrain_material_bytes": 343664,
+				"terrain_material_triangles": 30703,
+				"trace_render_scale": 1.0,
+				"triangles": 77643,
+				"updated_instances": 486,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 987660288.0,
+			"unix": 1792746141.57581,
+			"updated_instances": 486,
+			"updated_poses": 0,
+			"video_allocated_bytes": 1127886160.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 30,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 3358429562759,
+			"zone": "bz8k"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 62525150.0,
+			"camera": [
+				86.1499938964844,
+				14.5602359771729,
+				-36.25
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {
+				"loaded": false,
+				"path": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-speed-motion-20261023/checks/live-vulkan/profile/data/godot/app_userdata/Cursed Lands/saves/pt-stability-bz8k-1792746144-256869.sav",
+				"pt_active_after_load": false,
+				"saved": false,
+				"slot": "pt-stability-bz8k-1792746144-256869",
+				"source": "generated-by-live-fixture",
+				"zone": "bz8k"
+			},
+			"device_instance": -9223367556901889066,
+			"drawn_frames": 1430,
+			"driver": "vulkan",
+			"elapsed_seconds": 76.377516,
+			"fallback": "",
+			"fps": 42.0,
+			"hero": [
+				80.1499938964844,
+				8.56023597717285,
+				-44.25
+			],
+			"paused": false,
+			"phase": "before-generated-save",
+			"process_frame": 1430,
+			"reason": "phase",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223368450036970273,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 1.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 900,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": false,
+				"instances": 1217,
+				"light_history_limited": false,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 9939,
+				"terrain_material_bytes": 343664,
+				"terrain_material_triangles": 30703,
+				"trace_render_scale": 1.0,
+				"triangles": 77643,
+				"updated_instances": 466,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 987660288.0,
+			"unix": 1792746144.57855,
+			"updated_instances": 466,
+			"updated_poses": 0,
+			"video_allocated_bytes": 1128132336.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 30,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 3358429562759,
+			"zone": "bz8k"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 62525150.0,
+			"camera": [
+				86.1499938964844,
+				14.5602359771729,
+				-36.25
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {
+				"loaded": false,
+				"path": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-speed-motion-20261023/checks/live-vulkan/profile/data/godot/app_userdata/Cursed Lands/saves/pt-stability-bz8k-1792746144-256869.sav",
+				"pt_active_after_load": false,
+				"saved": true,
+				"slot": "pt-stability-bz8k-1792746144-256869",
+				"source": "generated-by-live-fixture",
+				"thumbnail_written": true,
+				"zone": "bz8k"
+			},
+			"device_instance": -9223367556901889066,
+			"drawn_frames": 1434,
+			"driver": "vulkan",
+			"elapsed_seconds": 76.502293,
+			"fallback": "",
+			"fps": 44.0,
+			"hero": [
+				80.1499938964844,
+				8.56023597717285,
+				-44.25
+			],
+			"paused": false,
+			"phase": "before-generated-save",
+			"process_frame": 1434,
+			"reason": "generated-save-written",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223368450036970273,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 1.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 900,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": false,
+				"instances": 1217,
+				"light_history_limited": false,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 9939,
+				"terrain_material_bytes": 343664,
+				"terrain_material_triangles": 30703,
+				"trace_render_scale": 1.0,
+				"triangles": 77643,
+				"updated_instances": 486,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 987791360.0,
+			"unix": 1792746144.70333,
+			"updated_instances": 486,
+			"updated_poses": 0,
+			"video_allocated_bytes": 1128263408.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 30,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 3358429562759,
+			"zone": "bz8k"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 62525150.0,
+			"camera": [
+				86.1499938964844,
+				14.5602359771729,
+				-36.25
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {
+				"old_scene": -9223368450036970273,
+				"old_world": 3358429562759,
+				"save": {
+					"loaded": false,
+					"path": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-speed-motion-20261023/checks/live-vulkan/profile/data/godot/app_userdata/Cursed Lands/saves/pt-stability-bz8k-1792746144-256869.sav",
+					"pt_active_after_load": false,
+					"saved": true,
+					"slot": "pt-stability-bz8k-1792746144-256869",
+					"source": "generated-by-live-fixture",
+					"thumbnail_written": true,
+					"zone": "bz8k"
+				}
+			},
+			"device_instance": -9223367556901889066,
+			"drawn_frames": 1434,
+			"driver": "vulkan",
+			"elapsed_seconds": 76.504482,
+			"fallback": "",
+			"fps": 44.0,
+			"hero": [
+				80.1499938964844,
+				8.56023597717285,
+				-44.25
+			],
+			"paused": false,
+			"phase": "before-generated-load",
+			"process_frame": 1434,
+			"reason": "phase",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223368450036970273,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 1.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 900,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": false,
+				"instances": 1217,
+				"light_history_limited": false,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 9939,
+				"terrain_material_bytes": 343664,
+				"terrain_material_triangles": 30703,
+				"trace_render_scale": 1.0,
+				"triangles": 77643,
+				"updated_instances": 486,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 987791360.0,
+			"unix": 1792746144.70552,
+			"updated_instances": 486,
+			"updated_poses": 0,
+			"video_allocated_bytes": 1128263408.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 30,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 3358429562759,
+			"zone": "bz8k"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 67494282.0,
+			"camera": [
+				86.1499938964844,
+				14.5602359771729,
+				-36.25
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {
+				"loaded": true,
+				"path": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-speed-motion-20261023/checks/live-vulkan/profile/data/godot/app_userdata/Cursed Lands/saves/pt-stability-bz8k-1792746144-256869.sav",
+				"pt_active_after_load": false,
+				"saved": true,
+				"slot": "pt-stability-bz8k-1792746144-256869",
+				"source": "generated-by-live-fixture",
+				"thumbnail_written": true,
+				"zone": "bz8k"
+			},
+			"device_instance": -9223367556901889066,
+			"drawn_frames": 1434,
+			"driver": "vulkan",
+			"elapsed_seconds": 81.172338,
+			"fallback": "",
+			"fps": 44.0,
+			"hero": [
+				80.1499938964844,
+				8.56023597717285,
+				-44.25
+			],
+			"paused": false,
+			"phase": "before-generated-load",
+			"process_frame": 1434,
+			"reason": "generated-load-returned",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223368450036970273,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 1.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 900,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": false,
+				"instances": 1217,
+				"light_history_limited": false,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 9939,
+				"terrain_material_bytes": 343664,
+				"terrain_material_triangles": 30703,
+				"trace_render_scale": 1.0,
+				"triangles": 77643,
+				"updated_instances": 486,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 1239531008.0,
+			"unix": 1792746149.37355,
+			"updated_instances": 486,
+			"updated_poses": 0,
+			"video_allocated_bytes": 1387859744.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 30,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 5554869110929,
+			"zone": "bz8k"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 67494282.0,
+			"camera": [
+				86.1499938964844,
+				14.5602359771729,
+				-36.25
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {
+				"loaded": true,
+				"path": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-speed-motion-20261023/checks/live-vulkan/profile/data/godot/app_userdata/Cursed Lands/saves/pt-stability-bz8k-1792746144-256869.sav",
+				"pt_active_after_load": false,
+				"saved": true,
+				"slot": "pt-stability-bz8k-1792746144-256869",
+				"source": "generated-by-live-fixture",
+				"thumbnail_written": true,
+				"zone": "bz8k"
+			},
+			"device_instance": -9223367556901889066,
+			"drawn_frames": 1434,
+			"driver": "vulkan",
+			"elapsed_seconds": 81.18295,
+			"fallback": "",
+			"fps": 44.0,
+			"hero": [
+				80.1499938964844,
+				8.56023597717285,
+				-44.25
+			],
+			"paused": false,
+			"phase": "generated-load-wait-pt",
+			"process_frame": 1434,
+			"reason": "phase",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223368450036970273,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 1.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 900,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": false,
+				"instances": 1217,
+				"light_history_limited": false,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 9939,
+				"terrain_material_bytes": 343664,
+				"terrain_material_triangles": 30703,
+				"trace_render_scale": 1.0,
+				"triangles": 77643,
+				"updated_instances": 486,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 1239531008.0,
+			"unix": 1792746149.38417,
+			"updated_instances": 486,
+			"updated_poses": 0,
+			"video_allocated_bytes": 1387859744.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 30,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 5554869110929,
+			"zone": "bz8k"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 62910462.0,
+			"camera": [
+				86.1499938964844,
+				14.5602359771729,
+				-36.25
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {
+				"loaded": true,
+				"path": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-speed-motion-20261023/checks/live-vulkan/profile/data/godot/app_userdata/Cursed Lands/saves/pt-stability-bz8k-1792746144-256869.sav",
+				"pt_active_after_load": true,
+				"saved": true,
+				"slot": "pt-stability-bz8k-1792746144-256869",
+				"source": "generated-by-live-fixture",
+				"thumbnail_written": true,
+				"zone": "bz8k"
+			},
+			"device_instance": -9223365452585999493,
+			"drawn_frames": 1544,
+			"driver": "vulkan",
+			"elapsed_seconds": 84.694514,
+			"fallback": "",
+			"fps": 37.0,
+			"hero": [
+				80.1499938964844,
+				8.56023597717285,
+				-44.25
+			],
+			"paused": false,
+			"phase": "generated-load-live",
+			"process_frame": 1544,
+			"reason": "phase",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223366344177607722,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 1.0,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 900,
+				"gi_samples": 0,
+				"history_limit": 8.0,
+				"history_reused": false,
+				"instances": 1217,
+				"light_history_limited": false,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 9749,
+				"terrain_material_bytes": 343664,
+				"terrain_material_triangles": 30703,
+				"trace_render_scale": 1.0,
+				"triangles": 77643,
+				"updated_instances": 1217,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 979402752.0,
+			"unix": 1792746152.89586,
+			"updated_instances": 1217,
+			"updated_poses": 0,
+			"video_allocated_bytes": 1123144448.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 30,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 5554869110929,
+			"zone": "bz8k"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 63995742.0,
+			"camera": [
+				86.1499938964844,
+				14.5602359771729,
+				-36.25
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {
+				"loaded": true,
+				"path": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-speed-motion-20261023/checks/live-vulkan/profile/data/godot/app_userdata/Cursed Lands/saves/pt-stability-bz8k-1792746144-256869.sav",
+				"pt_active_after_load": true,
+				"saved": true,
+				"slot": "pt-stability-bz8k-1792746144-256869",
+				"source": "generated-by-live-fixture",
+				"thumbnail_written": true,
+				"zone": "bz8k"
+			},
+			"device_instance": -9223365452585999493,
+			"drawn_frames": 1672,
+			"driver": "vulkan",
+			"elapsed_seconds": 87.7004,
+			"fallback": "",
+			"fps": 41.0,
+			"hero": [
+				80.1499938964844,
+				8.56023597717285,
+				-44.25
+			],
+			"paused": false,
+			"phase": "generated-load-live",
+			"process_frame": 1672,
+			"reason": "generated-save-roundtrip",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223366344177607722,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 2.24444834396736,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 900,
+				"gi_samples": 0,
+				"history_limit": 2.24444834396736,
+				"history_reused": true,
+				"instances": 1217,
+				"light_history_limited": true,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 9749,
+				"terrain_material_bytes": 343664,
+				"terrain_material_triangles": 30703,
+				"trace_render_scale": 1.0,
+				"triangles": 77643,
+				"updated_instances": 451,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 987791360.0,
+			"unix": 1792746155.90186,
+			"updated_instances": 451,
+			"updated_poses": 0,
+			"video_allocated_bytes": 1132618368.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 30,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 5554869110929,
+			"zone": "bz8k"
+		},
+		{
+			"active": true,
+			"adapter": "NVIDIA GeForce RTX 3090 Ti",
+			"buffer_bytes": 63995742.0,
+			"camera": [
+				86.1499938964844,
+				14.5602359771729,
+				-36.25
+			],
+			"controller": {
+				"camera_current": true,
+				"failed": false,
+				"gather_cursor": 0,
+				"gather_instance": 0,
+				"gather_pending": 0,
+				"mode": "0:0:0:1:0",
+				"processing": true,
+				"pt_mode": 1,
+				"quality": 0,
+				"ready_gpu": true,
+				"requested": true,
+				"terrain_visible": true
+			},
+			"details": {},
+			"device_instance": -9223365452585999493,
+			"drawn_frames": 1672,
+			"driver": "vulkan",
+			"elapsed_seconds": 87.702981,
+			"fallback": "",
+			"fps": 41.0,
+			"hero": [
+				80.1499938964844,
+				8.56023597717285,
+				-44.25
+			],
+			"paused": false,
+			"phase": "before-cleanup",
+			"process_frame": 1672,
+			"reason": "phase",
+			"resolution_reapplications": 2,
+			"scene_instance": -9223366344177607722,
+			"static_bytes": null,
+			"stats": {
+				"accumulation_frames": 2.24444834396736,
+				"active": true,
+				"display_size": [
+					1280,
+					720
+				],
+				"emissive_candidates": 0,
+				"emissive_triangles": 0,
+				"geometries": 900,
+				"gi_samples": 0,
+				"history_limit": 2.24444834396736,
+				"history_reused": true,
+				"instances": 1217,
+				"light_history_limited": true,
+				"lights": 2,
+				"path_bounces": 2,
+				"path_samples": 1,
+				"path_tracing": true,
+				"quality": 0,
+				"render_scale": 1.0,
+				"render_size": [
+					1280,
+					720
+				],
+				"shadow_samples": 0,
+				"size": [
+					640,
+					360
+				],
+				"supported": true,
+				"terrain_material_build_us": 9749,
+				"terrain_material_bytes": 343664,
+				"terrain_material_triangles": 30703,
+				"trace_render_scale": 1.0,
+				"triangles": 77643,
+				"updated_instances": 451,
+				"updated_poses": 0,
+				"window_resolution_reference": false
+			},
+			"texture_bytes": 987791360.0,
+			"unix": 1792746155.90444,
+			"updated_instances": 451,
+			"updated_poses": 0,
+			"video_allocated_bytes": 1132618368.0,
+			"viewport_size": [
+				1280.0,
+				720.0
+			],
+			"visible_units": 30,
+			"window_size": [
+				1280,
+				720
+			],
+			"world_instance": 5554869110929,
+			"zone": "bz8k"
+		}
+	],
+	"checks": 31,
+	"config": {
+		"next_zone": "bz8k",
+		"path_mode": 1,
+		"phase_seconds": 3.0,
+		"quality": 0,
+		"resolution": [
+			1280,
+			720
+		],
+		"start_zone": "gz1g",
+		"timeout_seconds": 260.0,
+		"topology_diagnostics": false
+	},
+	"device_instances": [
+		-9223371145749704247,
+		-9223370021726564726,
+		-9223369588756952895,
+		-9223368775129084705,
+		-9223367556901889066,
+		-9223365452585999493
+	],
+	"failures": [],
+	"generated_save": {
+		"loaded": true,
+		"path": "/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-speed-motion-20261023/checks/live-vulkan/profile/data/godot/app_userdata/Cursed Lands/saves/pt-stability-bz8k-1792746144-256869.sav",
+		"pt_active_after_load": true,
+		"saved": true,
+		"slot": "pt-stability-bz8k-1792746144-256869",
+		"source": "generated-by-live-fixture",
+		"thumbnail_written": true,
+		"zone": "bz8k"
+	},
+	"instance_update_frames": 1197,
+	"last": {
+		"active": true,
+		"adapter": "NVIDIA GeForce RTX 3090 Ti",
+		"buffer_bytes": 63995742.0,
+		"camera": [
+			86.1499938964844,
+			14.5602359771729,
+			-36.25
+		],
+		"controller": {
+			"camera_current": true,
+			"failed": false,
+			"gather_cursor": 0,
+			"gather_instance": 0,
+			"gather_pending": 0,
+			"mode": "0:0:0:1:0",
+			"processing": true,
+			"pt_mode": 1,
+			"quality": 0,
+			"ready_gpu": true,
+			"requested": true,
+			"terrain_visible": true
+		},
+		"details": {},
+		"device_instance": -9223365452585999493,
+		"drawn_frames": 1672,
+		"driver": "vulkan",
+		"elapsed_seconds": 87.702981,
+		"fallback": "",
+		"fps": 41.0,
+		"hero": [
+			80.1499938964844,
+			8.56023597717285,
+			-44.25
+		],
+		"paused": false,
+		"phase": "before-cleanup",
+		"process_frame": 1672,
+		"reason": "phase",
+		"resolution_reapplications": 2,
+		"scene_instance": -9223366344177607722,
+		"static_bytes": null,
+		"stats": {
+			"accumulation_frames": 2.24444834396736,
+			"active": true,
+			"display_size": [
+				1280,
+				720
+			],
+			"emissive_candidates": 0,
+			"emissive_triangles": 0,
+			"geometries": 900,
+			"gi_samples": 0,
+			"history_limit": 2.24444834396736,
+			"history_reused": true,
+			"instances": 1217,
+			"light_history_limited": true,
+			"lights": 2,
+			"path_bounces": 2,
+			"path_samples": 1,
+			"path_tracing": true,
+			"quality": 0,
+			"render_scale": 1.0,
+			"render_size": [
+				1280,
+				720
+			],
+			"shadow_samples": 0,
+			"size": [
+				640,
+				360
+			],
+			"supported": true,
+			"terrain_material_build_us": 9749,
+			"terrain_material_bytes": 343664,
+			"terrain_material_triangles": 30703,
+			"trace_render_scale": 1.0,
+			"triangles": 77643,
+			"updated_instances": 451,
+			"updated_poses": 0,
+			"window_resolution_reference": false
+		},
+		"texture_bytes": 987791360.0,
+		"unix": 1792746155.90444,
+		"updated_instances": 451,
+		"updated_poses": 0,
+		"video_allocated_bytes": 1132618368.0,
+		"viewport_size": [
+			1280.0,
+			720.0
+		],
+		"visible_units": 30,
+		"window_size": [
+			1280,
+			720
+		],
+		"world_instance": 5554869110929,
+		"zone": "bz8k"
+	},
+	"live_update_frames": 1197,
+	"note": "Live visible campaign actors and ordinary simulation. Camera turns/recenters and hero-relative movement. The destination save is generated by this fixture in its isolated profile, not supplied by a player; saving retains normal thumbnail capture. Memory counters are engine allocations, not total driver VRAM residency; unavailable values are null.",
+	"pose_update_frames": 8,
+	"profile": {
+		"confine_mouse": 0,
+		"show_fps": 1,
+		"volume_sfx": 0,
+		"volume_stream": 0,
+		"volume_voice": 0
+	},
+	"resolution_reapplications": 2,
+	"scene_instances": [
+		-9223371251379060742,
+		-9223370238119095863,
+		-9223369870412853622,
+		-9223368890086569791,
+		-9223368450036970273,
+		-9223366344177607722
+	],
+	"status": "passed"
+}

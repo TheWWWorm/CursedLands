@@ -313,7 +313,7 @@ const REMAKE_OPTIONS := {
 	"r_scene_rt": ["Ray-traced lighting", "Experimental shadows and indirect light for terrain, objects and characters. Requires a ray-tracing GPU with DX12 or Vulkan Forward+. Conventional lighting is used while loading and outside the nearby RT scene."],
 	"rt_shadows": ["RT shadows (test)", "Trace soft sun shadows and shadows from up to seven nearby point lights. Respects the character and object shadow switches. Other lights keep conventional shadows. Costs additional GPU time."],
 	"rt_gi": ["RT indirect light (test)", "Trace one diffuse bounce from the sun, nearby lights and emissive surfaces, with sky visibility. Replaces flat ambient light on supported nearby surfaces. Experimental: moving light can be noisy. This is not multi-bounce path tracing."],
-	"q_rt_lighting": ["RT lighting quality", "Low traces at 50 % of the game window's width and height with one sample, Medium at 75 % with two, High at 100 % with four. Depth-aware reconstruction smooths the result. Higher quality costs more GPU time. Independent of water reflection quality."],
+	"q_rt_lighting": ["RT lighting quality", "Low uses 50 % width and height with one sample, Medium 75 % with two, High 100 % with four. Path tracing follows the 3D render resolution, including Render scale and FSR; RT lighting follows the window. Depth-aware reconstruction smooths the result. Higher quality costs more GPU time. Independent of water reflection quality."],
 	"pt_mode": ["Path tracing (test)", "Trace direct light and up to two or four surface bounces, including glossy reflections. Replaces RT shadows and indirect light on supported nearby surfaces; their saved choices are preserved. Uses RT lighting quality. Water and particles keep their own rendering. Experimental and GPU intensive."],
 	"pt_accumulation": ["Path accumulation", "Responsive uses a short filtered history during play. Still scene averages up to 256 frames for cleaner stationary views; camera, geometry or lighting changes restart accumulation. Moving scenes can remain noisy. Only affects path tracing."],
 	"r_fsr": FsrGraphics.SECTION,
@@ -526,6 +526,8 @@ const GFX_DEFAULTS := {
 }
 var _gfx_rev := GFX_REV
 var options := {}
+## Explicit graphics applications, distinct from camera-driven streaming.
+var graphics_revision := 0
 ## A player preference, independent of expedition saves and undo.
 var arena_speed := 1
 var arena_mode := 0
@@ -893,6 +895,11 @@ func set_options(values: Dictionary) -> void:
 			push_warning(problem)
 			return
 	if values.is_empty(): return
+	var shader_screen: ShaderCompilationScreen
+	if ShaderCompilationScreen.graphics_change(values):
+		graphics_revision += 1
+		shader_screen = ShaderCompilationScreen.begin(get_tree(), &"settings", ShaderCompilationScreen.GRAPHICS, 0, 0, ShaderCompilationScreen.SETTINGS_TITLE)
+		if shader_screen: shader_screen.present()
 	for name: String in values:
 		var value := int(values[name])
 		options[name] = value
@@ -909,6 +916,9 @@ func set_options(values: Dictionary) -> void:
 	_apply_window()
 	save_settings()
 	options_changed.emit()
+	if shader_screen:
+		shader_screen.prepare_terrain()
+		ShaderCompilationScreen.end(&"settings")
 
 
 ## Movies retain the music slider while the ordinary game buses are muted.

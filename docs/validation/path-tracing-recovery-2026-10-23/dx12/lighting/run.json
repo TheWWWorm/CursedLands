@@ -1,0 +1,86 @@
+{
+  "exit_code": 0,
+  "pid": 270752,
+  "wall_seconds": 11.468391887999132,
+  "stopped": "",
+  "errors": [],
+  "allowed_diagnostics": [],
+  "gpu_uuids_observed": [
+    "GPU-0eee028e-b998-532f-095b-e936c7f6191d"
+  ],
+  "wrong_gpu_uuids": [],
+  "physical_gpu_confirmed": true,
+  "telemetry_errors": [],
+  "process_group_clean": true,
+  "teardown": {
+    "descendant_grace_seconds": 5.0,
+    "after_parent_exit_seconds": 0.07052089100034209,
+    "descendants_observed_after_parent_exit": [],
+    "forced_cleanup": false,
+    "live_members_after_cleanup": []
+  },
+  "suite": "lighting",
+  "checks": 14,
+  "fixture_failures": [],
+  "validation_errors": [],
+  "runtime": {
+    "adapter": "NVIDIA GeForce RTX 3090 Ti",
+    "display": "Windows",
+    "driver": "d3d12",
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "fixture": "Z:/home/llm2x/Documents/EI/local/scratchpad/water-raytracing-20261021/dx12-quality/pt-stability-20261023/qualification-dx12-final-03/fixtures/path_trace_lighting.gd",
+    "fsr": {
+      "api": true,
+      "engine": true,
+      "fg3": true,
+      "fg4": false,
+      "sr3": true,
+      "sr4": false
+    },
+    "method": "forward_plus",
+    "passed": true,
+    "pid": 812,
+    "profile": {
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "pt_supported": true,
+    "render_thread": {
+      "actual_separate": false,
+      "expected_separate": false,
+      "main_id": 1,
+      "passed": true,
+      "project_model": 1,
+      "render_id": 1,
+      "requested": "project"
+    },
+    "require_sdk": true,
+    "user_data": "C:/users/llm2x/AppData/Roaming/Godot/app_userdata/Cursed Lands",
+    "vendor": "NVIDIA"
+  },
+  "report": "path-lighting.json",
+  "passed": true,
+  "artifacts": {
+    "command.json": "6ddf47af3d3bc2c4ddcf11a28486eea31227c439779df0d6f30aabe7ad70b734",
+    "device-results.json": "41272413a2b07acdaf5b6fe6c275d78621012797ea66f54fba23cba52e1d150e",
+    "gpu.jsonl": "4a32a8cf89a31a360ec19be371974f9976ed72e151ac85a9f20725d8a8e9f16c",
+    "hdr-ramp-false.png": "1833fb20104b7b4f996b817abe096b5502d091c41edc872176847a1788289152",
+    "hdr-ramp-true.png": "9bc24acdab99c4c79c2f729992bca94d5e7a3b61ac767adaf20a2f3e10f94430",
+    "path-lighting.json": "3d9e3ef261d786e6ecdca1275e7857cdc8d4e8ee5a3e16824646d1568fe1be54",
+    "qualification-runtime.json": "9f7ab873a1080f9980052c21fae05acffcc860e30803728df05f48f53f029833",
+    "run.log": "5c5910c0ef53ebac13cc4506b22aedbcbe2951d7aa2638126265528ef4c26df9"
+  }
+}
