@@ -3109,7 +3109,7 @@ func _do_attack(dt: float) -> void:
 
 ## Closing in on an attack target (the original). The unit heads for
 ## where the target will be on arrival: round((d - reach) / closing speed)
-## ticks ahead, 2 .. 64, closing speed = own speed + the target's speed along
+## ticks ahead, 2 .. 64, closing speed = own speed − the target's speed along
 ## its heading . the line to it (per 55 ms tick, at least 0.1). It plans again
 ## once that estimate is within 16 ticks, unless its path already ends within
 ## (d + 1) x 0.1 m of the new spot. A path ending farther than the reach from
@@ -3150,7 +3150,10 @@ func _approach(t: GameUnit, d: float, reach: float, dt: float) -> void:
 			path = p
 	if path.is_empty() or world.time >= _arrive_t - 16.0 * TICK:
 		var tv := t.speed() * TICK if t._moving and not opening else 0.0
-		var closing := speed() * TICK + tv * Vector2.from_angle(t.facing).dot((t.pos - pos) / maxf(d, 0.001))
+		# The original adds the target's speed along its local +Y axis, which
+		# is the model's back (the remake's facing is its front): a target
+		# running away closes slower, one coming closer faster.
+		var closing := speed() * TICK - tv * Vector2.from_angle(t.facing).dot((t.pos - pos) / maxf(d, 0.001))
 		var ticks := clampi(roundi((d - reach) / maxf(closing, 0.1)), 2, 64)
 		var at := t.pos if opening else t.future_pos(ticks)
 		if path.is_empty() or _goal.distance_to(at) >= (d + 1.0) * 0.1:

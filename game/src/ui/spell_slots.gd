@@ -255,6 +255,11 @@ func use(i: int, now: bool) -> void:
 	var sp: String = _entries[i][0]
 	if not Spells.known_usable(_unit, sp):
 		_sound("buttons\\battle\\nomagic.wav")
+		# Remake: say why (the spell is dimmed until the hero can use it).
+		if game.hud and _unit.has_meta("hero"):
+			var lack := Spells.unmet(_unit.get_meta("hero"), _unit.max_mana, sp)
+			lack.insert(0, "%s: %s" % [Spells.title(sp), RemakeText.t("Spell requirements are not met.")])
+			game.hud.log_msg(" ".join(lack), Interface800.TEXT)
 		return
 	game.touch_aim = -1
 	game.touch_force = ""
@@ -317,11 +322,24 @@ func _draw() -> void:
 
 	_glow.queue_redraw()
 	if TouchInput.enabled and _entries.size() > _capacity():
-		var x := size.x * 0.5
-		if _first > 0:
-			draw_colored_polygon(PackedVector2Array([Vector2(x - 4, 5), Vector2(x, 1), Vector2(x + 4, 5)]), Interface800.TEXT)
-		if _first + _capacity() < _entries.size():
-			draw_colored_polygon(PackedVector2Array([Vector2(x - 4, size.y - 5), Vector2(x, size.y - 1), Vector2(x + 4, size.y - 5)]), Interface800.TEXT)
+		# The scroll bar's own arrows (Interface800.vbar), 10 × 12 at 40 per cell.
+		var bar := Interface800.tex("Scrollbar")
+		var k := size.x / 40.0
+		var a := Vector2(10, 12) * k
+		var x := (size.x - a.x) * 0.5
+		if bar and _first > 0:
+			_scroll_arrow(bar, Rect2(Vector2(x, 0), a), 176.0, 128.0)
+		if bar and _first + _capacity() < _entries.size():
+			_scroll_arrow(bar, Rect2(Vector2(x, size.y - a.y), a), 128.0, 176.0)
+
+
+## A scroll bar arrow (UV x 40..80, v from `v0` at the top to `v1`).
+func _scroll_arrow(t: Texture2D, r: Rect2, v0: float, v1: float) -> void:
+	var uv0 := Vector2(40, v0) / 256.0
+	var uv1 := Vector2(80, v1) / 256.0
+	draw_primitive(PackedVector2Array([r.position, Vector2(r.end.x, r.position.y), r.end, Vector2(r.position.x, r.end.y)]),
+		PackedColorArray([Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE]),
+		PackedVector2Array([uv0, Vector2(uv1.x, uv0.y), uv1, Vector2(uv0.x, uv1.y)]), t)
 
 
 func shortcut_label(index: int) -> String:

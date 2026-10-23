@@ -203,11 +203,13 @@ static func has(h: Dictionary, code: String) -> bool:
 
 
 ## Perks this hero could learn next (first rank or the rank after a known one).
+## Rows the database marks inactive (divination1, healing1, domination1) are
+## never offered, as in the original.
 static func available(h: Dictionary) -> Array:
 	var out := []
 	for r in GameData.db.table("perks"):
 		var code := String(r.code)
-		if has(h, code):
+		if has(h, code) or not bool(r.get("active", true)):
 			continue
 		var req := String(r.get("required_perk", "none"))
 		if req == "none" or req == "" or has(h, req):

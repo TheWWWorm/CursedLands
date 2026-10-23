@@ -404,8 +404,10 @@ func _draw_parts(c: CanvasItem, u: GameUnit) -> void:
 		var f := 0.0 if gone else clampf(float(p.cur) / maxf(float(p.max), 0.01), 0.0, 1.0)
 		var row := 126.0 if f > 2.0 / 3.0 else (133.0 if f > 1.0 / 3.0 else 140.0)
 		_bar(c, at + Vector2(25, 15), 50, f, row, Rect2(59, 119, 60, 5))
-		_text(c, Rect2(at.x, at.y, 60, 15), _txt(PART_TEXT.get(int(p.type), "string hl_torso")),
-			LOST if gone else TEXT)
+		# Centred over the bar (its frame spans at.x + 20 .. + 80), as in the
+		# original; _text draws 20 units right of its rect.
+		_text(c, Rect2(at.x - 15, at.y, 90, 15), _txt(PART_TEXT.get(int(p.type), "string hl_torso")),
+			LOST if gone else TEXT, HORIZONTAL_ALIGNMENT_CENTER)
 
 
 ## The 7 armour values (piercing .. general): natural plus the worn layers
