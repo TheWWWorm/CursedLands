@@ -8,7 +8,6 @@ func _ready() -> void:
 		keys[rule.name] = true; keys[rule.help] = true
 	for tiers: Array in ArenaAlliances.EFFECTS.values():
 		for key: String in tiers: keys[key] = true
-	for key: String in ArenaHitNumbers.EFFECT_NAMES.values(): keys[key] = true
 	for family in [28, 29]:
 		keys[ArenaRules.FAMILIES[family].name] = true
 		keys[ArenaRules.FAMILIES[family].hook] = true

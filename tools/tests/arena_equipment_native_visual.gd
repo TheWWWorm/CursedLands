@@ -139,7 +139,7 @@ func _ready() -> void:
 				if marker.state[4] == expected:
 					saw_live_marker = true
 					if unit.get_meta("arena_placement", {}).get("echo", false): saw_echo_marker = true
-		if not captured_effects and notices.size() >= 3 and not screen._hit_numbers._procs.is_empty():
+		if not captured_effects and notices.size() >= 3:
 			captured_effects = true
 			await shot("effects")
 		if not captured_echo and first_echo_uid > 0:

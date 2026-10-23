@@ -12,6 +12,7 @@ signal world_replacing
 enum Phase { DEPLOY, FIGHT, PAUSED, FINISHED }
 const LIMIT := 24
 const TIME_LIMIT := 300.0
+const DAYTIME := 14.0
 const FIELD := Rect2(2.5, 2.5, 27.0, 27.0)
 const TEAMS := [1, 2]
 
@@ -32,6 +33,7 @@ var _death_marks: Array[Dictionary] = []
 func _ready() -> void:
 	name = "ArenaMatch"
 	state = CampaignState.new()
+	state.world_time = DAYTIME
 	players = {}
 	_previous_speed = Engine.time_scale
 	catalog.rebuild()

@@ -1,0 +1,42 @@
+{
+	"checks": 9,
+	"failures": 0,
+	"samples": [
+		{
+			"field_speed": 0,
+			"frontend_time_scale": 1.0,
+			"map_open": false,
+			"movie": false,
+			"ratio": 0.936333026118184,
+			"seconds": 2.995729,
+			"shop_available": false,
+			"simulation_seconds": 2.805,
+			"speed": 1,
+			"zone": "gz3g"
+		},
+		{
+			"field_speed": 1,
+			"frontend_time_scale": 2.03703703703704,
+			"map_open": false,
+			"movie": false,
+			"ratio": 2.02975167833443,
+			"seconds": 3.034854,
+			"shop_available": false,
+			"simulation_seconds": 6.15999999999997,
+			"speed": 2,
+			"zone": "gz3g"
+		},
+		{
+			"field_speed": 0,
+			"frontend_time_scale": 1.0,
+			"map_open": false,
+			"movie": false,
+			"ratio": 1.01549185578828,
+			"seconds": 3.033013,
+			"shop_available": false,
+			"simulation_seconds": 3.07999999999998,
+			"speed": 1,
+			"zone": "gz3g"
+		}
+	]
+}

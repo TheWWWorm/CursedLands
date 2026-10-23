@@ -20,7 +20,7 @@ class CameraShell extends Game:
 class DirectCameraProbe extends DirectControl:
 	var camera_calls := 0
 	func active() -> bool: return true
-	func apply_camera(_dt: float) -> void:
+	func apply_camera(_dt: float = 0.0) -> void:
 		camera_calls+=1
 		game.rig.camera.position.x+=1.0
 
@@ -160,6 +160,7 @@ func _restore_sdk() -> void:
 	Screen.end(&"fsr")
 	FsrExperiment._preparation_key=saved_sdk.key
 	FsrExperiment._preparation_pending=saved_sdk.pending
+	FsrExperiment._preparation_started_ms=saved_sdk.started_ms
 	FsrExperiment._preparation_sr_base=saved_sdk.sr_base
 	FsrExperiment._preparation_fg_base=saved_sdk.fg_base
 	GameData.options.merge(saved_sdk.options,true)
@@ -170,6 +171,7 @@ func _sdk_preparation_contract() -> void:
 	# Invoke the real state machine with explicit synthetic SDK observations.
 	# Never change the native bridge or claim these counts are real evaluations.
 	saved_sdk={"key":FsrExperiment._preparation_key.duplicate(true),"pending":FsrExperiment._preparation_pending,
+		"started_ms":FsrExperiment._preparation_started_ms,
 		"sr_base":FsrExperiment._preparation_sr_base,"fg_base":FsrExperiment._preparation_fg_base,
 		"processing":FsrExperiment.is_processing(),"options":{"fsr_upscaling":GameData.option("fsr_upscaling"),
 			"fsr_quality":GameData.option("fsr_quality"),"fsr_frame_generation":GameData.option("fsr_frame_generation")}}
@@ -179,8 +181,12 @@ func _sdk_preparation_contract() -> void:
 	var stale := {"temporal_shaders_initializing":false,"upscaler_initializing":false,
 		"frame_generation_initializing":false,"upscale_evaluations":10,"frame_generation_dispatches":4,"last_error":37}
 	FsrExperiment._update_preparation(stale,true,false)
+	check(FsrExperiment._preparation_pending and not Screen.active(),
+		"a fresh SR request waits quietly before showing a modal cover")
+	await get_tree().create_timer(0.6, true, false, true).timeout
+	FsrExperiment._update_preparation(stale,true,false)
 	check(FsrExperiment._preparation_pending and Screen.active() and Screen._current._owners.has(&"fsr"),
-		"simulated sticky error from a previous effect cannot dismiss a fresh pending SR request")
+		"a slow SR request shows progress despite an unrelated sticky error")
 	await _frames(12)
 	FsrExperiment._update_preparation(stale,true,false)
 	check(FsrExperiment._preparation_pending and Screen.active() and Screen._current._owners.has(&"fsr"),
@@ -192,6 +198,44 @@ func _sdk_preparation_contract() -> void:
 	contracts.append({"case":"sdk-sticky-error","input_kind":"simulated-ui-contract","pending_status":stale,
 		"ready_status":ready,"native_bridge_called":false})
 	await _wait_removed("simulated-sdk-complete")
+	# Ordinary UI gates and replacement cameras do not mean new shader work.
+	GameData.options.fsr_frame_generation=1
+	FsrExperiment._update_preparation(ready,true,true)
+	var warm := ready.duplicate();warm.upscale_evaluations=12;warm.frame_generation_dispatches=5
+	FsrExperiment._update_preparation(warm,true,true)
+	check(not Screen.active(),"cached FSR activation finishing immediately never shows progress")
+	var progress_before := progress.size()
+	for i in 3:
+		FsrExperiment._update_preparation(warm,true,false)
+		check(not Screen.active(),"opening a tutorial/menu or pausing does not create a shader cover")
+		warm.upscale_evaluations+=1
+		FsrExperiment._update_preparation(warm,true,true)
+		check(not Screen.active(),"closing a tutorial/menu or resuming does not create a shader cover")
+		warm.frame_generation_dispatches+=1
+	var replacement := Camera3D.new();add_child(replacement);replacement.current=true
+	FsrExperiment._update_preparation(warm,true,true)
+	check(not Screen.active(),"a replacement load/menu camera alone does not create a shader cover")
+	replacement.queue_free();game.rig.camera.current=true
+	await _frames(3)
+	check(progress.size()==progress_before and not get_tree().paused,
+		"warm UI transitions produce no progress presentation or stolen pause")
+	var preparing := warm.duplicate();preparing.temporal_shaders_initializing=true
+	FsrExperiment._update_preparation(preparing,true,true)
+	check(not Screen.active(),"brief SDK preparation also starts quietly")
+	await get_tree().create_timer(0.6, true, false, true).timeout
+	FsrExperiment._update_preparation(preparing,true,true)
+	check(Screen.active() and Screen._current._owners.has(&"fsr"),
+		"prolonged SDK initialization status still shows progress with unchanged settings")
+	warm.upscale_evaluations+=1;warm.frame_generation_dispatches+=1
+	FsrExperiment._update_preparation(warm,true,true)
+	await _wait_removed("sdk-reinitialization-complete")
+	GameData.options.fsr_upscaling=0
+	FsrExperiment._update_preparation(warm,false,true)
+	warm.frame_generation_dispatches+=1
+	FsrExperiment._update_preparation(warm,false,true)
+	FsrExperiment._update_preparation(warm,false,false)
+	FsrExperiment._update_preparation(warm,false,true)
+	check(not Screen.active(),"standalone frame generation resumes silently after a UI gate")
 	_restore_sdk()
 
 func _exit_tree() -> void:
@@ -303,6 +347,14 @@ func _run() -> void:
 	game.rig.camera.transform=camera_before;game.direct=null;direct_probe.free()
 	_translations();RemakeText.lang="en"
 	Screen.on_progress=_observe
+	# Every producer shares the same quiet window, including without FSR.
+	for kind in ["materials:brief", "pipeline:scene:brief", "pipeline:water:brief", "settings:brief"]:
+		var short_screen := Screen.begin(get_tree(),StringName(kind),Screen.SCENE)
+		short_screen.present()
+		check(Screen.active() and not Screen.displayed(),kind+": readiness is gated without a visible flash")
+		Screen.end(StringName(kind))
+		await _wait_removed(kind)
+		check(not short_screen._shown if is_instance_valid(short_screen) else true,kind+": completed cached work stays quiet")
 	var owner: StringName=&"materials:fixture-primary"
 	_seed_cached_input()
 	var screen := Screen.begin(get_tree(),owner,Screen.MATERIALS,0,24)
@@ -310,7 +362,7 @@ func _run() -> void:
 	if screen==null:_write("failed");running=false;get_tree().quit(1);return
 	_check_cancelled_input()
 	_camera_process_guards()
-	screen.present();await _frames(4)
+	screen.present();await get_tree().create_timer(0.6,true,false,true).timeout;await _frames(4)
 	check(Screen.owns_pause(get_tree()) and get_tree().paused,"visible single-player camera owns a temporary compilation pause")
 	game.rig._window_focused=true;distance=game.rig.distance
 	game.rig._unhandled_input(_wheel())

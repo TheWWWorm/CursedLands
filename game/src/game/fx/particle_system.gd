@@ -77,6 +77,8 @@ class SimJob:
 
 
 var world: GameWorld
+var real_time := false # UI order indicators have their own clock.
+var _last_usec := Time.get_ticks_usec()
 var types := FxTypes.new()
 var wind := Vector3.ZERO     # the remake has no weather wind (stays 0)
 var wind_s := 0.0
@@ -154,6 +156,19 @@ static func of(w: GameWorld) -> ParticleFx:
 	return n
 
 
+static func for_order_marks(w: GameWorld) -> ParticleFx:
+	if w == null: return null
+	var n := w.get_node_or_null("OrderFx") as ParticleFx
+	if n == null:
+		n = ParticleFx.new()
+		n.name = "OrderFx"
+		n.world = w
+		n.real_time = true
+		n.process_mode = Node.PROCESS_MODE_ALWAYS
+		w.add_child(n)
+	return n
+
+
 func _init() -> void:
 	_rng.seed = 0x55aa1234
 	quad_mesh()
@@ -175,7 +190,7 @@ func _ready() -> void:
 
 
 func _sync_creature_fx() -> void:
-	if world == null or not world.presentation: return
+	if real_time or world == null or not world.presentation: return
 	if _creature_revision != world.units_revision:
 		_creature_revision = world.units_revision
 		var present := {}
@@ -755,6 +770,10 @@ var _point_cache := {}
 var _point_cache_active := false
 
 func _process(dt: float) -> void:
+	if real_time:
+		var now := Time.get_ticks_usec()
+		dt = minf(float(now - _last_usec) / 1000000.0, 2.0)
+		_last_usec = now
 	# Several distant bolts can sample the same animated endpoint in one
 	# effect update. Unit poses cannot advance between these synchronous
 	# samples; release every cached point before returning to the scene tree.
@@ -767,7 +786,7 @@ func _process(dt: float) -> void:
 func _advance_effects(dt: float) -> void:
 	acc += dt
 	var n := 0
-	while acc >= TICK and n < 8:
+	while acc >= TICK and n < (40 if real_time else 8):
 		acc -= TICK
 		n += 1
 	for k in n:

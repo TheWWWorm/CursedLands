@@ -1,0 +1,15 @@
+{
+	"dialogue_accelerated_scale": 2.03703703703704,
+	"dialogue_animation_after": 0.0,
+	"dialogue_animation_before": 0.0,
+	"dialogue_model_can_process": false,
+	"dialogue_paused": true,
+	"difficulty_lock": "Choose this rule before starting a game.",
+	"particles_can_process": false,
+	"sound_can_process": true,
+	"sound_ticks_while_paused": 2,
+	"village_after_follows": false,
+	"village_authored_applied": true,
+	"village_before_follows": true,
+	"world_can_process": false
+}

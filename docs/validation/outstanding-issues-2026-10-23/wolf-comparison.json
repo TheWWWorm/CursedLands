@@ -1,0 +1,1111 @@
+{
+  "wolf-matched-right-packaged": {
+    "engine": {
+      "build": "custom_build",
+      "hash": "unknown",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (custom_build)",
+      "timestamp": 0
+    },
+    "native_query": true,
+    "native_perception": true,
+    "hero_start": [
+      52,
+      237
+    ],
+    "scope": "Original authored pack, fresh hero with GodMode(0,1), crawl and defensive; hero teleported. All map scripts and world ticks retained.",
+    "start": [
+      {
+        "action": "idle",
+        "hidden": false,
+        "hp": 50.0,
+        "logic": {
+          "aggression": 0,
+          "alarm_cond": 0,
+          "alarm_raise": 0,
+          "alarm_use": 1,
+          "always_active": 0,
+          "cyclic": 1,
+          "guard_point": "(43.5108, 250.221, 0.0)",
+          "guard_points": [
+            {
+              "actions": [
+                {
+                  "action_flag": 0,
+                  "look": "(46.32983, 253.3111, 7.885309)",
+                  "turn_speed": 0.0,
+                  "wait": 3600
+                }
+              ],
+              "position": "(44.39705, 251.2125, 8.104547)"
+            }
+          ],
+          "guard_radius": 1.0,
+          "help_radius": 7.0,
+          "logic_model": 2,
+          "logic_wait": -1.0
+        },
+        "mode": "standard",
+        "name": "WhiteWolf",
+        "noticed": [],
+        "order": "",
+        "pos": [
+          44.75,
+          251.25
+        ],
+        "prototype": "WolfWhiteF4",
+        "susp_order": false,
+        "suspect": {},
+        "target": -1,
+        "uid": 3325
+      },
+      {
+        "action": "idle",
+        "hidden": false,
+        "hp": 31.0,
+        "logic": {
+          "aggression": 0,
+          "alarm_cond": 0,
+          "alarm_raise": 0,
+          "alarm_use": 1,
+          "always_active": 1,
+          "cyclic": 1,
+          "guard_point": "(43.5587, 238.22, 0.0)",
+          "guard_points": [
+            {
+              "actions": [
+                {
+                  "action_flag": 0,
+                  "look": "(43.66813, 234.4951, 6.474044)",
+                  "turn_speed": 0.0,
+                  "wait": 3600
+                }
+              ],
+              "position": "(43.70501, 236.7047, 6.765667)"
+            }
+          ],
+          "guard_radius": 5.0,
+          "help_radius": 7.0,
+          "logic_model": 2,
+          "logic_wait": -1.0
+        },
+        "mode": "standard",
+        "name": "LWolf",
+        "noticed": [],
+        "order": "",
+        "pos": [
+          43.75,
+          236.75
+        ],
+        "prototype": "WolfGreyF2",
+        "susp_order": false,
+        "suspect": {},
+        "target": -1,
+        "uid": 3326
+      },
+      {
+        "action": "idle",
+        "hidden": false,
+        "hp": 31.0,
+        "logic": {
+          "aggression": 0,
+          "alarm_cond": 0,
+          "alarm_raise": 0,
+          "alarm_use": 1,
+          "always_active": 1,
+          "cyclic": 1,
+          "guard_point": "(56.0658, 240.213, 0.0)",
+          "guard_points": [
+            {
+              "actions": [
+                {
+                  "action_flag": 0,
+                  "look": "(56.42902, 237.2654, 6.707343)",
+                  "turn_speed": 0.0,
+                  "wait": 3600
+                }
+              ],
+              "position": "(56.18642, 238.3342, 6.998966)"
+            }
+          ],
+          "guard_radius": 5.0,
+          "help_radius": 7.0,
+          "logic_model": 2,
+          "logic_wait": -1.0
+        },
+        "mode": "standard",
+        "name": "RWolf",
+        "noticed": [],
+        "order": "",
+        "pos": [
+          56.25,
+          238.75
+        ],
+        "prototype": "WolfGreyF2",
+        "susp_order": false,
+        "suspect": {},
+        "target": -1,
+        "uid": 3327
+      },
+      {
+        "action": "idle",
+        "hidden": false,
+        "hp": 31.0,
+        "logic": {
+          "aggression": 0,
+          "alarm_cond": 0,
+          "alarm_raise": 0,
+          "alarm_use": 1,
+          "always_active": 1,
+          "cyclic": 1,
+          "guard_point": "(52.3772, 241.953, 0.0)",
+          "guard_radius": 5.0,
+          "help_radius": 7.0,
+          "logic_model": 1,
+          "logic_wait": -1.0
+        },
+        "mode": "standard",
+        "name": "Grey Wolf-3328",
+        "noticed": [],
+        "order": "",
+        "pos": [
+          52.3560981750488,
+          244.671005249023
+        ],
+        "prototype": "WolfGreyF2",
+        "susp_order": false,
+        "suspect": {},
+        "target": -1,
+        "uid": 3328
+      },
+      {
+        "action": "idle",
+        "hidden": false,
+        "hp": 31.0,
+        "logic": {
+          "aggression": 0,
+          "alarm_cond": 0,
+          "alarm_raise": 0,
+          "alarm_use": 1,
+          "always_active": 1,
+          "cyclic": 1,
+          "guard_point": "(47.9898, 239.4245, 0.0)",
+          "guard_radius": 5.0,
+          "help_radius": 7.0,
+          "logic_model": 1,
+          "logic_wait": -1.0
+        },
+        "mode": "standard",
+        "name": "Grey Wolf-3329",
+        "noticed": [],
+        "order": "",
+        "pos": [
+          46.3987998962402,
+          237.04899597168
+        ],
+        "prototype": "WolfGreyF2",
+        "susp_order": false,
+        "suspect": {},
+        "target": -1,
+        "uid": 3329
+      }
+    ],
+    "final": {
+      "hero": {
+        "action": "idle",
+        "hidden": false,
+        "hp": 38.7085227966309,
+        "logic": {
+          "armors": [
+            "hadagan low shirt.wool",
+            "hadagan low pants.wool",
+            "hadagan low boots.wool",
+            "hadagan low gloves.wool"
+          ],
+          "complexion": "(0.2, 0.35, 0.9)",
+          "kind": "UNIT",
+          "name": "Zak",
+          "nid": 1500000001,
+          "parent_template": "Human Hero",
+          "player": 0,
+          "position": "(21.5, 138.5, 0.0)",
+          "prototype": "Human Hero",
+          "type": 50,
+          "weapons": [
+            "cheat dagger.bronze"
+          ]
+        },
+        "mode": "player",
+        "name": "Zak",
+        "noticed": [
+          3327,
+          3329,
+          3326,
+          3328
+        ],
+        "order": "",
+        "pos": [
+          52.0,
+          237.0
+        ],
+        "prototype": "Human Hero",
+        "susp_order": false,
+        "suspect": {},
+        "target": -1,
+        "uid": 1500000001
+      },
+      "tick": 395,
+      "wolves": [
+        {
+          "action": "idle",
+          "hidden": false,
+          "hp": 50.0,
+          "logic": {
+            "_patrol": [
+              [
+                "(44.75, 251.25)",
+                [
+                  [
+                    0.826505881421415,
+                    3600,
+                    false,
+                    0.0
+                  ]
+                ]
+              ]
+            ],
+            "aggression": 0,
+            "alarm_cond": 0,
+            "alarm_raise": 0,
+            "alarm_use": 1,
+            "always_active": 0,
+            "cyclic": 1,
+            "guard_point": "(43.5108, 250.221, 0.0)",
+            "guard_points": [
+              {
+                "actions": [
+                  {
+                    "action_flag": 0,
+                    "look": "(46.32983, 253.3111, 7.885309)",
+                    "turn_speed": 0.0,
+                    "wait": 3600
+                  }
+                ],
+                "position": "(44.39705, 251.2125, 8.104547)"
+              }
+            ],
+            "guard_radius": 1.0,
+            "help_radius": 7.0,
+            "logic_model": 2,
+            "logic_wait": -1.0
+          },
+          "mode": "standard",
+          "name": "WhiteWolf",
+          "noticed": [],
+          "order": "",
+          "pos": [
+            44.75,
+            251.25
+          ],
+          "prototype": "WolfWhiteF4",
+          "susp_order": false,
+          "suspect": {},
+          "target": -1,
+          "uid": 3325
+        },
+        {
+          "action": "attack",
+          "hidden": false,
+          "hp": 31.0,
+          "logic": {
+            "_patrol": [
+              [
+                "(43.75, 236.75)",
+                [
+                  [
+                    -1.58748400268642,
+                    3600,
+                    false,
+                    0.0
+                  ]
+                ]
+              ]
+            ],
+            "aggression": 0,
+            "alarm_cond": 0,
+            "alarm_raise": 0,
+            "alarm_use": 1,
+            "always_active": 1,
+            "cyclic": 1,
+            "guard_point": "(43.5587, 238.22, 0.0)",
+            "guard_points": [
+              {
+                "actions": [
+                  {
+                    "action_flag": 0,
+                    "look": "(43.66813, 234.4951, 6.474044)",
+                    "turn_speed": 0.0,
+                    "wait": 3600
+                  }
+                ],
+                "position": "(43.70501, 236.7047, 6.765667)"
+              }
+            ],
+            "guard_radius": 5.0,
+            "help_radius": 7.0,
+            "logic_model": 2,
+            "logic_wait": -1.0
+          },
+          "mode": "standard",
+          "name": "LWolf",
+          "noticed": [
+            1500000001
+          ],
+          "order": "attack",
+          "pos": [
+            50.4344711303711,
+            235.999725341797
+          ],
+          "prototype": "WolfGreyF2",
+          "susp_order": false,
+          "suspect": {
+            "active": true,
+            "busy": true,
+            "d": -3.0,
+            "dest": "(52.0, 237.0)",
+            "l0": 900.0,
+            "last": 11.825,
+            "look": [
+              [
+                0.985482288332942,
+                25
+              ],
+              [
+                1.86934621411605,
+                40
+              ]
+            ],
+            "m": 690.0,
+            "pos": "(52.0, 237.0)",
+            "t0": 7.97499999999998
+          },
+          "target": 1500000001,
+          "uid": 3326
+        },
+        {
+          "action": "attack",
+          "hidden": false,
+          "hp": 31.0,
+          "logic": {
+            "_patrol": [
+              [
+                "(56.25, 238.75)",
+                [
+                  [
+                    -1.34760820799615,
+                    3600,
+                    false,
+                    0.0
+                  ]
+                ]
+              ]
+            ],
+            "aggression": 0,
+            "alarm_cond": 0,
+            "alarm_raise": 0,
+            "alarm_use": 1,
+            "always_active": 1,
+            "cyclic": 1,
+            "guard_point": "(56.0658, 240.213, 0.0)",
+            "guard_points": [
+              {
+                "actions": [
+                  {
+                    "action_flag": 0,
+                    "look": "(56.42902, 237.2654, 6.707343)",
+                    "turn_speed": 0.0,
+                    "wait": 3600
+                  }
+                ],
+                "position": "(56.18642, 238.3342, 6.998966)"
+              }
+            ],
+            "guard_radius": 5.0,
+            "help_radius": 7.0,
+            "logic_model": 2,
+            "logic_wait": -1.0
+          },
+          "mode": "standard",
+          "name": "RWolf",
+          "noticed": [
+            1500000001
+          ],
+          "order": "attack",
+          "pos": [
+            53.968433380127,
+            237.234222412109
+          ],
+          "prototype": "WolfGreyF2",
+          "susp_order": false,
+          "suspect": {
+            "active": true,
+            "busy": false,
+            "d": -3.0,
+            "l0": 900.0,
+            "last": 13.365,
+            "look": [],
+            "m": 900.0,
+            "pos": "(52.0, 237.0)",
+            "t0": 13.365
+          },
+          "target": 1500000001,
+          "uid": 3327
+        },
+        {
+          "action": "attack",
+          "hidden": false,
+          "hp": 31.0,
+          "logic": {
+            "aggression": 0,
+            "alarm_cond": 0,
+            "alarm_raise": 0,
+            "alarm_use": 1,
+            "always_active": 1,
+            "cyclic": 1,
+            "guard_point": "(52.3772, 241.953, 0.0)",
+            "guard_radius": 5.0,
+            "help_radius": 7.0,
+            "logic_model": 1,
+            "logic_wait": -1.0
+          },
+          "mode": "standard",
+          "name": "Grey Wolf-3328",
+          "noticed": [
+            1500000001
+          ],
+          "order": "attack",
+          "pos": [
+            51.6782112121582,
+            238.965362548828
+          ],
+          "prototype": "WolfGreyF2",
+          "susp_order": false,
+          "suspect": {
+            "active": false,
+            "busy": false,
+            "d": -3.0,
+            "l0": 900.0,
+            "last": 13.365,
+            "look": [],
+            "m": 900.0,
+            "pos": "(52.0, 237.0)",
+            "t0": 13.365
+          },
+          "target": 1500000001,
+          "uid": 3328
+        },
+        {
+          "action": "idle",
+          "hidden": false,
+          "hp": 31.0,
+          "logic": {
+            "aggression": 0,
+            "alarm_cond": 0,
+            "alarm_raise": 0,
+            "alarm_use": 1,
+            "always_active": 1,
+            "cyclic": 1,
+            "guard_point": "(47.9898, 239.4245, 0.0)",
+            "guard_radius": 5.0,
+            "help_radius": 7.0,
+            "logic_model": 1,
+            "logic_wait": -1.0
+          },
+          "mode": "standard",
+          "name": "Grey Wolf-3329",
+          "noticed": [
+            1500000001
+          ],
+          "order": "attack",
+          "pos": [
+            49.9810447692871,
+            237.518951416016
+          ],
+          "prototype": "WolfGreyF2",
+          "susp_order": false,
+          "suspect": {
+            "active": true,
+            "busy": false,
+            "d": -3.0,
+            "l0": 900.0,
+            "last": 13.365,
+            "look": [],
+            "m": 900.0,
+            "pos": "(52.0, 237.0)",
+            "t0": 13.365
+          },
+          "target": 1500000001,
+          "uid": 3329
+        }
+      ]
+    },
+    "first_attack_tick": {
+      "3325": null,
+      "3326": 220,
+      "3327": 110,
+      "3328": 75,
+      "3329": 120
+    }
+  },
+  "wolf-matched-attack": {
+    "engine": {
+      "build": "official",
+      "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (official)",
+      "timestamp": 0
+    },
+    "native_query": true,
+    "native_perception": true,
+    "hero_start": [
+      44,
+      235
+    ],
+    "scope": "Original authored pack, fresh hero with GodMode(0,1), crawl and defensive; hero teleported. All map scripts and world ticks retained.",
+    "start": [
+      {
+        "action": "idle",
+        "hidden": false,
+        "hp": 50.0,
+        "logic": {
+          "aggression": 0,
+          "alarm_cond": 0,
+          "alarm_raise": 0,
+          "alarm_use": 1,
+          "always_active": 0,
+          "cyclic": 1,
+          "guard_point": "(43.5108, 250.221, 0.0)",
+          "guard_points": [
+            {
+              "actions": [
+                {
+                  "action_flag": 0,
+                  "look": "(46.32983, 253.3111, 7.885309)",
+                  "turn_speed": 0.0,
+                  "wait": 3600
+                }
+              ],
+              "position": "(44.39705, 251.2125, 8.104547)"
+            }
+          ],
+          "guard_radius": 1.0,
+          "help_radius": 7.0,
+          "logic_model": 2,
+          "logic_wait": -1.0
+        },
+        "mode": "standard",
+        "name": "WhiteWolf",
+        "noticed": [],
+        "order": "",
+        "pos": [
+          44.75,
+          251.25
+        ],
+        "prototype": "WolfWhiteF4",
+        "susp_order": false,
+        "suspect": {},
+        "target": -1,
+        "uid": 3325
+      },
+      {
+        "action": "idle",
+        "hidden": false,
+        "hp": 31.0,
+        "logic": {
+          "aggression": 0,
+          "alarm_cond": 0,
+          "alarm_raise": 0,
+          "alarm_use": 1,
+          "always_active": 1,
+          "cyclic": 1,
+          "guard_point": "(43.5587, 238.22, 0.0)",
+          "guard_points": [
+            {
+              "actions": [
+                {
+                  "action_flag": 0,
+                  "look": "(43.66813, 234.4951, 6.474044)",
+                  "turn_speed": 0.0,
+                  "wait": 3600
+                }
+              ],
+              "position": "(43.70501, 236.7047, 6.765667)"
+            }
+          ],
+          "guard_radius": 5.0,
+          "help_radius": 7.0,
+          "logic_model": 2,
+          "logic_wait": -1.0
+        },
+        "mode": "standard",
+        "name": "LWolf",
+        "noticed": [],
+        "order": "",
+        "pos": [
+          43.75,
+          236.75
+        ],
+        "prototype": "WolfGreyF2",
+        "susp_order": false,
+        "suspect": {},
+        "target": -1,
+        "uid": 3326
+      },
+      {
+        "action": "idle",
+        "hidden": false,
+        "hp": 31.0,
+        "logic": {
+          "aggression": 0,
+          "alarm_cond": 0,
+          "alarm_raise": 0,
+          "alarm_use": 1,
+          "always_active": 1,
+          "cyclic": 1,
+          "guard_point": "(56.0658, 240.213, 0.0)",
+          "guard_points": [
+            {
+              "actions": [
+                {
+                  "action_flag": 0,
+                  "look": "(56.42902, 237.2654, 6.707343)",
+                  "turn_speed": 0.0,
+                  "wait": 3600
+                }
+              ],
+              "position": "(56.18642, 238.3342, 6.998966)"
+            }
+          ],
+          "guard_radius": 5.0,
+          "help_radius": 7.0,
+          "logic_model": 2,
+          "logic_wait": -1.0
+        },
+        "mode": "standard",
+        "name": "RWolf",
+        "noticed": [],
+        "order": "",
+        "pos": [
+          56.25,
+          238.75
+        ],
+        "prototype": "WolfGreyF2",
+        "susp_order": false,
+        "suspect": {},
+        "target": -1,
+        "uid": 3327
+      },
+      {
+        "action": "idle",
+        "hidden": false,
+        "hp": 31.0,
+        "logic": {
+          "aggression": 0,
+          "alarm_cond": 0,
+          "alarm_raise": 0,
+          "alarm_use": 1,
+          "always_active": 1,
+          "cyclic": 1,
+          "guard_point": "(52.3772, 241.953, 0.0)",
+          "guard_radius": 5.0,
+          "help_radius": 7.0,
+          "logic_model": 1,
+          "logic_wait": -1.0
+        },
+        "mode": "standard",
+        "name": "Grey Wolf-3328",
+        "noticed": [],
+        "order": "",
+        "pos": [
+          54.2151985168457,
+          240.533996582031
+        ],
+        "prototype": "WolfGreyF2",
+        "susp_order": false,
+        "suspect": {},
+        "target": -1,
+        "uid": 3328
+      },
+      {
+        "action": "idle",
+        "hidden": false,
+        "hp": 31.0,
+        "logic": {
+          "aggression": 0,
+          "alarm_cond": 0,
+          "alarm_raise": 0,
+          "alarm_use": 1,
+          "always_active": 1,
+          "cyclic": 1,
+          "guard_point": "(47.9898, 239.4245, 0.0)",
+          "guard_radius": 5.0,
+          "help_radius": 7.0,
+          "logic_model": 1,
+          "logic_wait": -1.0
+        },
+        "mode": "standard",
+        "name": "Grey Wolf-3329",
+        "noticed": [],
+        "order": "",
+        "pos": [
+          49.945499420166,
+          239.507995605469
+        ],
+        "prototype": "WolfGreyF2",
+        "susp_order": false,
+        "suspect": {},
+        "target": -1,
+        "uid": 3329
+      }
+    ],
+    "final": {
+      "hero": {
+        "action": "idle",
+        "hidden": false,
+        "hp": 38.8504104614258,
+        "logic": {
+          "armors": [
+            "hadagan low shirt.wool",
+            "hadagan low pants.wool",
+            "hadagan low boots.wool",
+            "hadagan low gloves.wool"
+          ],
+          "complexion": "(0.2, 0.35, 0.9)",
+          "kind": "UNIT",
+          "name": "Zak",
+          "nid": 1500000001,
+          "parent_template": "Human Hero",
+          "player": 0,
+          "position": "(21.5, 138.5, 0.0)",
+          "prototype": "Human Hero",
+          "type": 50,
+          "weapons": [
+            "cheat dagger.bronze"
+          ]
+        },
+        "mode": "player",
+        "name": "Zak",
+        "noticed": [
+          3327,
+          3328,
+          3329
+        ],
+        "order": "",
+        "pos": [
+          44.0,
+          235.0
+        ],
+        "prototype": "Human Hero",
+        "susp_order": false,
+        "suspect": {},
+        "target": -1,
+        "uid": 1500000001
+      },
+      "tick": 1595,
+      "wolves": [
+        {
+          "action": "idle",
+          "hidden": false,
+          "hp": 50.0,
+          "logic": {
+            "_patrol": [
+              [
+                "(44.75, 251.25)",
+                [
+                  [
+                    0.826505881421415,
+                    3600,
+                    false,
+                    0.0
+                  ]
+                ]
+              ]
+            ],
+            "aggression": 0,
+            "alarm_cond": 0,
+            "alarm_raise": 0,
+            "alarm_use": 1,
+            "always_active": 0,
+            "cyclic": 1,
+            "guard_point": "(43.5108, 250.221, 0.0)",
+            "guard_points": [
+              {
+                "actions": [
+                  {
+                    "action_flag": 0,
+                    "look": "(46.32983, 253.3111, 7.885309)",
+                    "turn_speed": 0.0,
+                    "wait": 3600
+                  }
+                ],
+                "position": "(44.39705, 251.2125, 8.104547)"
+              }
+            ],
+            "guard_radius": 1.0,
+            "help_radius": 7.0,
+            "logic_model": 2,
+            "logic_wait": -1.0
+          },
+          "mode": "standard",
+          "name": "WhiteWolf",
+          "noticed": [],
+          "order": "",
+          "pos": [
+            44.75,
+            251.25
+          ],
+          "prototype": "WolfWhiteF4",
+          "susp_order": false,
+          "suspect": {},
+          "target": -1,
+          "uid": 3325
+        },
+        {
+          "action": "death",
+          "hidden": false,
+          "hp": -0.375634223222733,
+          "logic": {
+            "aggression": 0,
+            "alarm_cond": 0,
+            "alarm_raise": 0,
+            "alarm_use": 1,
+            "always_active": 1,
+            "cyclic": 1,
+            "guard_point": "(43.5587, 238.22, 0.0)",
+            "guard_points": [
+              {
+                "actions": [
+                  {
+                    "action_flag": 0,
+                    "look": "(43.66813, 234.4951, 6.474044)",
+                    "turn_speed": 0.0,
+                    "wait": 3600
+                  }
+                ],
+                "position": "(43.70501, 236.7047, 6.765667)"
+              }
+            ],
+            "guard_radius": 5.0,
+            "help_radius": 7.0,
+            "logic_model": 2,
+            "logic_wait": -1.0
+          },
+          "mode": "standard",
+          "name": "LWolf",
+          "noticed": [
+            1500000001,
+            3327,
+            3328,
+            3329
+          ],
+          "order": "",
+          "pos": [
+            43.75,
+            236.75
+          ],
+          "prototype": "WolfGreyF2",
+          "susp_order": false,
+          "suspect": {
+            "active": false,
+            "busy": false,
+            "d": -2.0,
+            "l0": 1000.0,
+            "last": 14.135,
+            "look": [],
+            "m": 1000.0,
+            "pos": "(44.0, 235.0)",
+            "t0": 14.135
+          },
+          "target": 1500000001,
+          "uid": 3326
+        },
+        {
+          "action": "attack",
+          "hidden": false,
+          "hp": 31.0,
+          "logic": {
+            "_patrol": [
+              [
+                "(56.25, 238.75)",
+                [
+                  [
+                    -1.34760820799615,
+                    3600,
+                    false,
+                    0.0
+                  ]
+                ]
+              ]
+            ],
+            "aggression": 0,
+            "alarm_cond": 0,
+            "alarm_raise": 0,
+            "alarm_use": 1,
+            "always_active": 1,
+            "cyclic": 1,
+            "guard_point": "(56.0658, 240.213, 0.0)",
+            "guard_points": [
+              {
+                "actions": [
+                  {
+                    "action_flag": 0,
+                    "look": "(56.42902, 237.2654, 6.707343)",
+                    "turn_speed": 0.0,
+                    "wait": 3600
+                  }
+                ],
+                "position": "(56.18642, 238.3342, 6.998966)"
+              }
+            ],
+            "guard_radius": 5.0,
+            "help_radius": 7.0,
+            "logic_model": 2,
+            "logic_wait": -1.0
+          },
+          "mode": "standard",
+          "name": "RWolf",
+          "noticed": [
+            3328,
+            3329,
+            1500000001
+          ],
+          "order": "attack",
+          "pos": [
+            43.123291015625,
+            233.130126953125
+          ],
+          "prototype": "WolfGreyF2",
+          "susp_order": false,
+          "suspect": {
+            "active": true,
+            "busy": false,
+            "d": -3.0,
+            "l0": 900.0,
+            "last": 15.5649999999999,
+            "look": [],
+            "m": 900.0,
+            "pos": "(44.0, 235.0)",
+            "t0": 15.5649999999999
+          },
+          "target": 1500000001,
+          "uid": 3327
+        },
+        {
+          "action": "idle",
+          "hidden": false,
+          "hp": 31.0,
+          "logic": {
+            "aggression": 0,
+            "alarm_cond": 0,
+            "alarm_raise": 0,
+            "alarm_use": 1,
+            "always_active": 1,
+            "cyclic": 1,
+            "guard_point": "(52.3772, 241.953, 0.0)",
+            "guard_radius": 5.0,
+            "help_radius": 7.0,
+            "logic_model": 1,
+            "logic_wait": -1.0
+          },
+          "mode": "standard",
+          "name": "Grey Wolf-3328",
+          "noticed": [
+            3327,
+            3329,
+            1500000001
+          ],
+          "order": "attack",
+          "pos": [
+            45.2896194458008,
+            233.5
+          ],
+          "prototype": "WolfGreyF2",
+          "susp_order": false,
+          "suspect": {
+            "active": true,
+            "busy": false,
+            "d": -3.0,
+            "l0": 900.0,
+            "last": 15.5649999999999,
+            "look": [],
+            "m": 900.0,
+            "pos": "(44.0, 235.0)",
+            "t0": 15.5649999999999
+          },
+          "target": 1500000001,
+          "uid": 3328
+        },
+        {
+          "action": "attack",
+          "hidden": false,
+          "hp": 31.0,
+          "logic": {
+            "aggression": 0,
+            "alarm_cond": 0,
+            "alarm_raise": 0,
+            "alarm_use": 1,
+            "always_active": 1,
+            "cyclic": 1,
+            "guard_point": "(47.9898, 239.4245, 0.0)",
+            "guard_radius": 5.0,
+            "help_radius": 7.0,
+            "logic_model": 1,
+            "logic_wait": -1.0
+          },
+          "mode": "standard",
+          "name": "Grey Wolf-3329",
+          "noticed": [
+            1500000001,
+            3327,
+            3328
+          ],
+          "order": "attack",
+          "pos": [
+            45.9547309875488,
+            235.454727172852
+          ],
+          "prototype": "WolfGreyF2",
+          "susp_order": false,
+          "suspect": {
+            "active": false,
+            "busy": false,
+            "d": -3.0,
+            "l0": 900.0,
+            "last": 15.5649999999999,
+            "look": [],
+            "m": 900.0,
+            "pos": "(44.0, 235.0)",
+            "t0": 15.5649999999999
+          },
+          "target": 1500000001,
+          "uid": 3329
+        }
+      ]
+    },
+    "first_attack_tick": {
+      "3325": null,
+      "3326": 0,
+      "3327": 100,
+      "3328": 85,
+      "3329": 5
+    }
+  }
+}

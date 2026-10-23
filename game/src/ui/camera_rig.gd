@@ -153,6 +153,7 @@ var _pan_rate := PAN_RATE
 ## Remake option: the village's authored .cam view until the player moves
 ## the camera. Kept separately so the orbit's pitch limits cannot replace it.
 var _opening_view: Variant = null
+var _zone_view_initialized := false
 ## Native slots 4–7 survive scenario.sav. Slots 6 / 7 capture village /
 ## field views before saving (FUN57a780); recall keeps the current yaw.
 var _internal_views: Array = []
@@ -233,6 +234,7 @@ func set_pose(p: Dictionary) -> bool:
 	if at.size() != 3:
 		return false
 	_opening_view = null
+	_zone_view_initialized = true
 	position = clamp_look_at(Vector3(float(at[0]), float(at[1]), float(at[2])))
 	yaw = float(p.get("yaw", yaw))
 	_stop_velocities()
@@ -329,13 +331,24 @@ func set_opening_view(view: Transform3D) -> void:
 	_apply()
 
 func village_start_view(zone: Dictionary) -> bool:
-	if GameData.option("village_start_view") != 1 or String(zone.get("type", "")) != "brief":
+	var reset := not _zone_view_initialized or GameData.option("village_start_view") == 1
+	_zone_view_initialized = true
+	if String(zone.get("type", "")) != "brief":
 		return false
-	var view: Variant = preload("res://src/ei/camera_track.gd").read_first(String(zone.get("camera", "")))
-	if view is Transform3D:
-		set_opening_view(view)
-		return true
-	return false
+	var applied := false
+	if reset:
+		var view: Variant = preload("res://src/ei/camera_track.gd").read_first(String(zone.get("camera", "")))
+		if view is Transform3D:
+			set_opening_view(view)
+			applied = true
+	# The option resets the viewing angle, not the hero-centred village
+	# presentation or the player's follow preference.
+	var g := get_parent() as Game
+	var mine := g.my_units() if g else []
+	if not mine.is_empty():
+		focus(mine[0].position)
+		follow(mine[0] if GameData.option("cam_follow") == 1 else null)
+	return applied
 
 
 ## The current zone's record when the rig shows it (Game.world), else {}.
@@ -1093,11 +1106,9 @@ func _input_modern(e: InputEvent) -> void:
 		yaw -= e.relative.x * 0.006 * sx * rs
 		_yaw_s = yaw   # mouse rotation is direct; keyboard / recenter are eased
 		_yaw_vel = 0.0
-		# Normal middle drag only orbits: no accidental pitch changes.
-		if e.alt_pressed or _drag_button == MOUSE_BUTTON_RIGHT:
-			_pitch_ofs = clampf(_pitch_ofs + e.relative.y * 0.004 * sy * rs,
-				deg_to_rad(-M_PITCH_OFS), deg_to_rad(M_PITCH_OFS))
-			_pitch_ofs_s = _pitch_ofs
+		_pitch_ofs = clampf(_pitch_ofs + e.relative.y * 0.004 * sy * rs,
+			deg_to_rad(-M_PITCH_OFS), deg_to_rad(M_PITCH_OFS))
+		_pitch_ofs_s = _pitch_ofs
 		_apply_modern()
 
 

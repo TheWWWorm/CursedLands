@@ -20,6 +20,7 @@ const NEED_SR := "The selected FSR upscaler is unavailable on this GPU or driver
 const NEED_FG := "The selected FSR frame-generation version is unavailable on this GPU, operating system or driver."
 const ENABLE_SR := "Select FSR 3.1 or FSR 4 upscaling first."
 const RENDERER_HINT := "FSR: select Forward+ (Direct3D 12), apply and restart."
+const PREPARATION_DELAY_MS := 500
 
 static func screen_hint(info: Dictionary) -> String:
 	if OS.get_name() == "Windows" and not info.get("api", false): return RENDERER_HINT
@@ -33,6 +34,7 @@ var _upscaling_applied := false
 var _telemetry_time := 0.0
 var _preparation_key := []
 var _preparation_pending := false
+var _preparation_started_ms := 0
 var _preparation_sr_base := 0
 var _preparation_fg_base := 0
 var _last_allowed_usec := 0
@@ -176,15 +178,24 @@ func _update_preparation(status: Dictionary, upscaling: bool, generation: bool) 
 	var root := get_tree().root
 	var camera := root.get_camera_3d()
 	var key := [upscaling, GameData.option(UPSCALING), GameData.option(QUALITY),
-		generation, GameData.option(FRAME_GENERATION), root.size, camera.get_instance_id() if camera else 0]
+		GameData.option(FRAME_GENERATION), root.size]
 	var initializing: bool = status.get("temporal_shaders_initializing", false) \
 		or (upscaling and status.get("upscaler_initializing", false)) \
 		or (generation and status.get("frame_generation_initializing", false))
-	if key != _preparation_key or (initializing and not _preparation_pending):
-		_preparation_key = key
+	# Menus, tutorials, focus and pause temporarily suspend FG. Camera
+	# replacement also happens on every load. None invalidates cached shaders;
+	# the SDK reports actual preparation if a new view needs more work.
+	var changed := key != _preparation_key
+	_preparation_key = key
+	if camera == null or not (upscaling or generation):
+		_preparation_pending = false
+		ShaderCompilationScreen.end(&"fsr")
+		return
+	if changed or (initializing and not _preparation_pending):
 		_preparation_sr_base = int(status.get("upscale_evaluations", 0))
 		_preparation_fg_base = int(status.get("frame_generation_dispatches", 0))
-		_preparation_pending = (upscaling or generation) and root.get_camera_3d() != null
+		_preparation_pending = true
+		_preparation_started_ms = Time.get_ticks_msec()
 	if not _preparation_pending:
 		ShaderCompilationScreen.end(&"fsr")
 		return
@@ -199,6 +210,11 @@ func _update_preparation(status: Dictionary, upscaling: bool, generation: bool) 
 	if ready:
 		_preparation_pending = false
 		ShaderCompilationScreen.end(&"fsr")
+		return
+	# Cached context restoration commonly completes in one or two frames.
+	# Keep that work silent; join an existing loading/settings cover at once,
+	# or show progress only if preparation actually takes perceptible time.
+	if not ShaderCompilationScreen.active() and Time.get_ticks_msec() - _preparation_started_ms < PREPARATION_DELAY_MS:
 		return
 	var phase := ShaderCompilationScreen.TEMPORAL if status.get("temporal_shaders_initializing", false) \
 		else ShaderCompilationScreen.UPSCALER if upscaling and (status.get("upscaler_initializing", false) \

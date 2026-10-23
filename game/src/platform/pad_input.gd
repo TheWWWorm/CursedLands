@@ -24,7 +24,7 @@ extends Node
 ## `active` is the last input device: "kbm", "pad" or "touch". Pad use hides
 ## the touch controls (a touch brings them back, TouchInput); mouse movement
 ## of 40 px or a key / mouse button returns to "kbm". Events this layer makes
-## itself (key bridge, pointer clicks) carry DEVICE_ID_EMULATION and never
+## itself carry a key-bridge marker or DEVICE_ID_EMULATION and never
 ## count as keyboard or mouse use.
 
 signal mode_changed
@@ -58,6 +58,7 @@ const BUTTONS := {"A": JOY_BUTTON_A, "B": JOY_BUTTON_B, "X": JOY_BUTTON_X, "Y": 
 const TRIGGERS := {"LT": JOY_AXIS_TRIGGER_LEFT, "RT": JOY_AXIS_TRIGGER_RIGHT}
 const DPAD := {JOY_BUTTON_DPAD_UP: "up", JOY_BUTTON_DPAD_DOWN: "down", JOY_BUTTON_DPAD_LEFT: "left",
 	JOY_BUTTON_DPAD_RIGHT: "right"}
+const KEY_BRIDGE_META := &"pad_key_bridge"
 ## Glyph file names (art/pad_glyphs/<family>_<name>.png) per button name.
 const GLYPH := {"A": "a", "B": "b", "X": "x", "Y": "y", "LB": "lb", "RB": "rb", "LT": "lt", "RT": "rt",
 	"L3": "l3", "R3": "r3", "VIEW": "view", "MENU": "menu", "TOUCHPAD": "touchpad", "SHARE": "view",
@@ -157,7 +158,7 @@ func _input(e: InputEvent) -> void:
 		else:
 			_button(e)
 		return
-	if e.device == InputEvent.DEVICE_ID_EMULATION:
+	if e.device == InputEvent.DEVICE_ID_EMULATION or e.has_meta(KEY_BRIDGE_META):
 		return
 	if e is InputEventScreenTouch or e is InputEventScreenDrag:
 		_set_active("touch")

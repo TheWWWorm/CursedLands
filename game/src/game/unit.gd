@@ -1216,12 +1216,16 @@ static func is_direct_combat_order(o: Dictionary) -> bool:
 func command(o: Dictionary, queue := false) -> void:
 	if dead:
 		return
-	if o.get("type", "") == "cast" and o.get("known_spell", false) \
-			and mana < _spell_cost(Spells.parse(String(o.spell))) and not _sandbox_mana():
-		ack(EIAcks.CANT_CAST)
-		o.stamina_notified = true
-		if o.get("target") == self:
-			stop_steering()
+	if o.get("type", "") == "cast" and o.get("known_spell", false):
+		# Only the authority knows whether this order can start. Do not play
+		# an optimistic client acknowledgement alongside its refusal.
+		if mana < _spell_cost(Spells.parse(String(o.spell))) and not _sandbox_mana():
+			ack(EIAcks.CANT_CAST)
+			o.stamina_notified = true
+			if o.get("target") == self:
+				stop_steering()
+		else:
+			ack(EIAcks.CAST)
 	# Weapon repeats may update the next swing, but cannot replace a spell
 	# already confirmed during recovery. Keep at most one trailing swing.
 	if not queue and o.get("type", "") == "direct_attack" \

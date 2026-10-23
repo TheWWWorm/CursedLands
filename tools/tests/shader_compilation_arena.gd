@@ -102,13 +102,13 @@ func capture(label: String) -> void:
 
 
 func _posted() -> void:
-	if not watching or not is_instance_valid(screen) or probe == null or not ShaderCompilationScreen.active(): return
+	if not watching or not is_instance_valid(screen) or probe == null or not ShaderCompilationScreen.displayed(): return
 	if not screen.field._warming: ready_under_cover += 1
 	if case_name != "normal" or latest.is_empty(): return
 	if not first_capture:
 		first_capture = true
-		check(probe.count() == 0 and screen.field.view.render_target_update_mode == SubViewport.UPDATE_DISABLED,
-			"opaque root cover is presented before the arena's first 3D draw")
+		check(int(latest.get("elapsed_ms",0)) >= ShaderCompilationScreen.SHOW_DELAY_MS,
+			"long preparation shows progress only after the shared quiet window")
 		capture("arena-before-first-draw")
 	elif not middle_capture and int(latest.get("completed",0)) > 0 \
 			and int(latest.get("completed",0)) < int(latest.get("total",0)):
@@ -179,10 +179,10 @@ func run() -> void:
 	for row: Dictionary in rows:
 		if row["case"] != "normal" or row.phase != ShaderCompilationScreen.MATERIALS or int(row.completed) <= completed: continue
 		count += 1
-		if int(row.scene_draws) <= previous_draws or int(row.completed) != completed+1 \
+		if int(row.scene_draws) <= previous_draws or (completed > 0 and int(row.completed) != completed+1) \
 				or int(row.viewport_mode) != SubViewport.UPDATE_ALWAYS:
 			ordering_violations.append({"previous_draws":previous_draws,"previous_completed":completed,"progress":row})
-		ordered = ordered and int(row.scene_draws) > previous_draws and int(row.completed) == completed+1
+		ordered = ordered and int(row.scene_draws) > previous_draws and (completed == 0 or int(row.completed) == completed+1)
 		viewport_live = viewport_live and int(row.viewport_mode) == SubViewport.UPDATE_ALWAYS
 		gated = gated and bool(row.warming) and bool(row.screen_active)
 		previous_draws = int(row.scene_draws)
@@ -195,6 +195,12 @@ func run() -> void:
 	check(is_zero_approx(screen.battle.world.time), "shader preparation does not start combat")
 	check(screen.field.prepare_battle_presentation() == ArenaAnimationWarmup.picking_ready(),
 		"shader completion preserves the original animation picking readiness gate")
+	case_name = "cached"
+	var before := rows.size()
+	screen.field._warm_round = ""
+	check(not screen.field.prepare_battle_presentation(), "next fight checks readiness through the ordinary gate")
+	check(await wait_ready(), "cached fight becomes ready")
+	check(rows.size() == before and not ShaderCompilationScreen.displayed(), "cached Start Fight never shows shader progress with FSR off")
 	# Cancel real work after a completed batch, then remove the actual arena.
 	# The exit signal must release its unique hold even if its waiter retires.
 	case_name = "cancel"
@@ -205,8 +211,8 @@ func run() -> void:
 	var partial := false
 	while Time.get_ticks_msec()-started < 60_000:
 		await frames()
-		partial = latest.get("case","") == "cancel" and int(latest.get("completed",0)) > 0 \
-			and int(latest.get("completed",0)) < int(latest.get("total",0))
+		var progress := ShaderCompilationScreen._current
+		partial = is_instance_valid(progress) and progress._completed > 0 and progress._completed < progress._total
 		if partial: break
 	check(partial and ShaderCompilationScreen.active(), "cancellation interrupts genuine unfinished material preparation")
 	screen.queue_free()

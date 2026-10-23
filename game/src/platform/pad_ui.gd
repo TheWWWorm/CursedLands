@@ -122,7 +122,9 @@ func wheel(up: bool) -> void:
 static func key(code: int) -> void:
 	for pressed in [true, false]:
 		var e := InputEventKey.new()
-		e.device = InputEvent.DEVICE_ID_EMULATION
+		# Keep the keyboard device ID so Godot's ui_* actions match. The
+		# marker prevents this bridge from switching the active input to KBM.
+		e.set_meta(PadInput.KEY_BRIDGE_META, true)
 		e.keycode = code
 		e.physical_keycode = code
 		e.pressed = pressed

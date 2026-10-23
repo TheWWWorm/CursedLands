@@ -4,6 +4,7 @@ extends CanvasLayer
 ## Raw canvas commands are deliberate: Control redraws are deferred and do not
 ## update inside ShaderWarmup's synchronous material loop. No new UI shader.
 
+const SHOW_DELAY_MS := 500
 const TITLE := "Compiling shaders"
 const SETTINGS_TITLE := "Applying settings"
 const SCENE_TITLE := "Preparing scene"
@@ -45,6 +46,7 @@ var _title := TITLE
 var _completed := 0
 var _total := 0
 var _started_ms := 0
+var _shown := false
 var _last_redraw_ms := 0
 var _presentations := 0
 var _finish_presentations := 0
@@ -59,6 +61,10 @@ var _terrain_work: Array[Dictionary] = []
 
 static func active() -> bool:
 	return is_instance_valid(_current) and not _current._removing
+
+
+static func displayed() -> bool:
+	return active() and _current._shown
 
 
 static func owns_pause(tree: SceneTree) -> bool:
@@ -142,7 +148,8 @@ func _select_progress() -> void:
 ## Updating a Label then force_draw would still show its previous text.
 ## Exclude the first 3D draw here so the cover reaches the screen first.
 func present() -> void:
-	if LoadingScreen.deferred() or _removing: return
+	_draw()
+	if not _shown or LoadingScreen.deferred() or _removing: return
 	var root := get_tree().root
 	var views: Array = [root]
 	views.append_array(root.find_children("*", "SubViewport", true, false))
@@ -257,6 +264,12 @@ func _cancel_input() -> void:
 func _draw() -> void:
 	if not _item.is_valid() or _removing: return
 	_last_redraw_ms = Time.get_ticks_msec()
+	# Preparation owners still enforce readiness and input gates, but short
+	# cached work never replaces the scene with a full-screen message. Do
+	# not reveal a finishing-only screen after the last owner already left.
+	if not _shown:
+		if _owners.is_empty() or _last_redraw_ms - _started_ms < SHOW_DELAY_MS: return
+		_shown = true
 	var screen := get_viewport().get_visible_rect().size
 	var width := maxf(1.0, minf(560.0, screen.x - 48.0))
 	var x := (screen.x - width) * 0.5

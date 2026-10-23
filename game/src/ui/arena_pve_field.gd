@@ -89,7 +89,7 @@ func _build_stage() -> void:
 	stage.add_child(sun)
 	# Original figure/terrain materials use native light uniforms, not just
 	# Godot's environment. A fixed afternoon keeps every run equally readable.
-	Gfx.update_original(environment.environment, sun, EILights.load_for("Ingos", false), 14.0, false)
+	Gfx.update_original(environment.environment, sun, EILights.load_for("Ingos", false), ArenaMatch.DAYTIME, false)
 	# Cold daylight over the snowy courtyard. Apply the same palette to native
 	# figures and the Godot paving, after the original-light defaults above.
 	var shade := Color(0.60, 0.64, 0.70)
@@ -345,7 +345,7 @@ func _gui_input(event: InputEvent) -> void:
 					pan_offset += Vector2(before.x-after.x,after.z-before.z)
 					pan_offset = pan_offset.clamp(Vector2(-16,-16),Vector2(16,16))
 					_update_camera()
-			else: _drag_camera(event.relative, event.alt_pressed)
+			else: _drag_camera(event.relative, true)
 			accept_event()
 			return
 	if event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:

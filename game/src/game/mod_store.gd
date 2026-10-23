@@ -122,6 +122,7 @@ static func editable(key: String, s: Node = null) -> String:
 	if s == null: s = session()
 	if s == null: return ""
 	if not s.can_manage_game(): return "Only the host can change this rule."
+	if key == "difficulty" and s.multiplayer_game: return "Network games use Normal difficulty."
 	if not s.lmp.is_empty() and key in ["revive", "sp_full_xp", "coop_full_xp", "coop_scale", "coop_share_loot", "coop_clock", "merc_travel", "start_zones"]: return "This rule applies to campaign play."
 	if s.loading_game or s.movie_active(): return "Wait for loading or the scene to finish."
 	if s.world == null: return ""

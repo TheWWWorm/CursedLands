@@ -1,0 +1,68 @@
+{
+	"camera": {
+		"at": [
+			132.514389038086,
+			7.62308883666992,
+			-193.471252441406
+		],
+		"distance": 16.971728203152,
+		"free": true,
+		"minimap_zoom": 1.0,
+		"pitch": -0.8956430347356,
+		"style": 1,
+		"tilt": 0.0349341496011341,
+		"yaw": 0.0
+	},
+	"current_zone": "gz3g",
+	"mod_config": {
+		"api": 1,
+		"campaign": "cursed_lands",
+		"name": "Test",
+		"packages": [],
+		"profile": "p71baf66bdc3f9bbeccb2b2e6",
+		"revision": 0,
+		"rules": {
+			"armor_formula": 1,
+			"auto_exit": 0,
+			"coop_clock": 1,
+			"coop_full_xp": 2,
+			"coop_scale": 2,
+			"coop_share_loot": 1,
+			"difficulty": 0,
+			"distant_ai": 0,
+			"free_run": 0,
+			"mechanism_motion": 0,
+			"merc_travel": 0,
+			"revive": 1,
+			"sandbox_invulnerable": 0,
+			"sandbox_mana": 0,
+			"sp_full_xp": 2,
+			"stamina_regen": 0,
+			"start_zones": 0,
+			"unit_fog": 1
+		},
+		"sandbox": false,
+		"values": {}
+	},
+	"play_clock": {
+		"paused": true,
+		"speed": 1
+	},
+	"quest_items": [
+		{
+			"canonical": "White wolf's head",
+			"dialog": "white wolf hide",
+			"id": "white wolf hide",
+			"normalized_text": "White wolf's head\nA trophy gained after a dangerous hunt; it will also prove that the leader of the wolfpack is really dead.\n",
+			"raw_text": ""
+		},
+		{
+			"canonical": "Wolf skin",
+			"dialog": "Wolf skin",
+			"id": "wolfskin",
+			"normalized_text": "Wolf skin\nA good trophy!\n",
+			"raw_text": "Wolf skin\nA good trophy!\n"
+		}
+	],
+	"world_time": 14.5780686442077
+}

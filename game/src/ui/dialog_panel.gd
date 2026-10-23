@@ -175,6 +175,7 @@ func _to800(p: Vector2) -> Vector2:
 # ------------------------------------------------------------------ conversations
 
 func show_briefing(e: Dictionary) -> void:
+	hud.game.session.begin_dialogue_clock()
 	_end_actor_poses()
 	_topics = {}
 	if _topic_list:
@@ -376,11 +377,6 @@ func _note2(key: String, value: String) -> void:
 
 func _item_name(spec: String) -> String:
 	var id: String = Items.from_spec(spec)[0]
-	if not Items.is_spell_piece(id) and not id.begins_with("bp:") and Items.info(id).table in ["quest_items", ""]:
-		var t := GameData.text("qitem " + id)
-		if t.is_empty():
-			t = GameData.text("questitem " + id)
-		return t.get_slice("\n", 0) if t else id
 	return Items.title(id)
 
 

@@ -474,7 +474,7 @@ const REMAKE_OPTIONS := {
 	"selection_glow": ["Selection glow", "Highlight selected characters. Auto enables the glow in classic view only. Off hides it in every view; On also shows it in third person. First person always hides the glow."],
 	"character_light": ["Character light", "Circular light around player characters. Auto enables it in classic view and disables it in third and first person. Off and On override this for every camera mode."],
 	"control_mode": ["Control mode", "Auto uses third person with a gamepad and classic controls with a mouse. Third / first person: WASD moves, mouse looks, left click attacks, E interacts, Tab releases the pointer. Gamepad: sticks move and look, RT attacks, A interacts, LT + RT opens the system wheel. Combat HUD and health bars are hidden in safe zones. Attacks can hit friendly characters outside safe zones. Attacks and spells are disabled in safe zones."],
-	"camera_style": ["Camera style", "Original: the 2000 game's camera. Modern: responsive pan, smooth zoom and terrain clearance. Middle drag turns; Alt + middle drag or right drag tilts; Shift + middle drag pans. Home centres; optional hero follow and see-through objects."],
+	"camera_style": ["Camera style", "Original: the 2000 game's camera. Modern: responsive pan, smooth zoom and terrain clearance. Middle or right drag turns and tilts; Shift + middle drag pans. Home centres; optional hero follow and see-through objects."],
 	"cam_pan_speed": ["Camera pan speed (modern)", "Speed of the modern camera's panning (keys, screen edges)."],
 	"cam_rotate_speed": ["Camera turn speed (modern)", "Speed of the modern camera's turning and tilting (drag, keys)."],
 	"cam_zoom_speed": ["Camera zoom speed (modern)", "Speed of the modern camera's zoom (wheel, keys)."],
@@ -487,7 +487,7 @@ const REMAKE_OPTIONS := {
 	"coop_scale": ["Scale monsters to player count", "Co-op host: monsters get more health and hit harder for each player beyond the first (Light +25 % health / +12.5 % damage, Normal +50 % / +25 %, Strong +100 % / +50 % per extra player). Off: as the original."],
 	"net_upnp": ["Open the port on the router", "Co-op host: asks your router to forward UDP port 27015 to this computer so friends can join over the internet (UPnP, else NAT-PMP / PCP), and shows your external IP address to give them. The forwarding is removed when you stop hosting. Off: forward the port by hand."],
 	"cam_wasd": ["WASD camera controls", "WASD: move camera; Q/E: turn; 9/0/-/=: weapons 1-4; R: Aggressive/Defensive; T: Use/Steal. Other keys stay available. Each layout has its own editable bindings on the key pages. Classic restores your previous keys. Original camera always uses Classic."],
-	"village_start_view": ["Village opening view", "Use the village's authored camera view when you enter. Moving the camera returns to your chosen camera style. Off: start at your hero."],
+	"village_start_view": ["Village opening view", "Reset the camera angle when entering a village or leaving its shop. Off: keep your viewing angle. Both modes centre on your hero and respect hero follow."],
 	"camera_rotate_left": ["Turn camera left", "Modern camera: turns the camera (Divinity: Original Sin 2 uses Delete)."],
 	"camera_rotate_right": ["Turn camera right", "Modern camera: turns the camera (Divinity: Original Sin 2 uses End)."],
 }

@@ -36,6 +36,14 @@ func key(code: Key, shift := false) -> void:
 		Input.parse_input_event(event)
 		await frames(2)
 
+func pad(button: JoyButton) -> void:
+	for pressed in [true, false]:
+		var event := InputEventJoypadButton.new()
+		event.button_index = button
+		event.pressed = pressed
+		Input.parse_input_event(event)
+		await frames(3)
+
 func texts(node: Node) -> String:
 	var result := String(node.text) if node is Label or node is Button else ""
 	for child in node.get_children(): result += "\n" + texts(child)
@@ -102,6 +110,13 @@ func _ready() -> void:
 	var bench_uid := int(screen.run.army[2].uid)
 	screen.run.bench(bench_uid)
 	await frames(12)
+	var orbit := InputEventMouseMotion.new()
+	orbit.relative = Vector2(20,15); orbit.button_mask = MOUSE_BUTTON_MASK_MIDDLE
+	screen.field._orbit = true
+	screen.field._gui_input(orbit)
+	check(screen.field.yaw != ArenaPveField.DEFAULT_YAW and screen.field.pitch_offset != 0, "middle drag rotates and tilts the Autochess camera")
+	screen.field.reset_camera()
+	check(screen.battle.state.world_time == ArenaMatch.DAYTIME and screen.battle.world.daylight() > 0.9, "Autochess starts in daytime")
 	check(screen._item_tray.visible and screen._item_tray._empty.visible, "empty tray stays on the board")
 	bounded(screen._item_tray, "empty item tray")
 	screen.run.offer_items_after(3)
@@ -109,7 +124,23 @@ func _ready() -> void:
 	await frames(12)
 	check(screen._modal_layer.visible, "new reward opens exactly three cards")
 	check(screen._equipment_panel._offer_row.get_child_count() == 3, "three reward choices")
-	check(screen._equipment_panel._offer_row.get_child(0).has_focus(), "reward keyboard focus starts at first card")
+	check(get_viewport().gui_get_focus_owner() == null, "mouse reward opens without a preselected item")
+	for card: Button in screen._equipment_panel._offer_row.get_children():
+		await move(card.get_global_rect().get_center())
+		check(card.is_hovered() and not card.has_focus(), "every reward card responds to mouse hover")
+	await key(KEY_TAB)
+	check(screen._equipment_panel._offer_row.get_child(0).has_focus(), "first navigation input focuses the first reward")
+	await key(KEY_RIGHT)
+	check(screen._equipment_panel._offer_row.get_child(1).has_focus(), "keyboard moves between rewards")
+	await move(screen._equipment_panel._offer_row.get_child(0).get_global_rect().get_center())
+	check(get_viewport().gui_get_focus_owner() == null, "mouse motion clears keyboard reward selection")
+	await pad(JOY_BUTTON_DPAD_RIGHT)
+	check(screen._equipment_panel._offer_row.get_child(0).has_focus(), "first controller input focuses the first reward")
+	await pad(JOY_BUTTON_DPAD_RIGHT)
+	check(screen._equipment_panel._offer_row.get_child(1).has_focus(), "controller moves between rewards")
+	check(PadInput.active == "pad", "controller navigation retains controller input mode")
+	await move(screen._equipment_panel._offer_row.get_child(0).get_global_rect().get_center())
+	check(get_viewport().gui_get_focus_owner() == null, "mouse motion clears controller reward selection")
 	bounded(screen._modal_panel, "reward cards")
 	var kind := String(screen.run.item_offers[0])
 	await shot("tray-%s-%d-reward" % [lang, dimensions.x])
@@ -130,7 +161,10 @@ func _ready() -> void:
 	screen.run._touch()
 	await frames(10)
 	var replacement_kind := String(screen.run.item_offers[1])
-	await click_control(screen._equipment_panel._offer_row.get_child(1))
+	await pad(JOY_BUTTON_DPAD_RIGHT)
+	await pad(JOY_BUTTON_DPAD_RIGHT)
+	await pad(JOY_BUTTON_A)
+	check(screen.run.items.size() == 2 and screen.run.items.back().kind == replacement_kind, "controller accepts exactly the highlighted reward")
 	var replacement_uid := int(screen.run.items.back().uid)
 	await click_control(screen._item_targets[first_uid])
 	check(screen.run.item_for(first_uid) == replacement_kind and screen._owned_item(item_uid).unit_uid == 0, "replacement returns former relic to stash")
