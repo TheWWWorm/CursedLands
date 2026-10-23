@@ -72,10 +72,10 @@ func type_profile(t: EITerrain, p: Vector2i) -> Vector2:
 		3: return Vector2(0.008,0.025)
 	return Vector2.ZERO
 
-func displaced(t: EITerrain, point: Vector3, key: Vector2i, tracks: bool) -> float:
-	if not Gfx.on("gfx_soft_ground"): return point.y
-	var p := Vector2(point.x,-point.z); var tile := Vector2i((p*0.5).floor())
-	if type_profile(t,tile).x==0: return point.y
+## GroundSurfaceShader.soft_surface at one original terrain vertex.
+func surface_profile(t: EITerrain, p: Vector2, height: float) -> Vector2:
+	var tile := Vector2i((p*0.5).floor())
+	if type_profile(t,tile).x==0: return Vector2.ZERO
 	var grid := p*0.5-Vector2.ONE*0.5; var base := Vector2i(grid.floor()); var f := grid-Vector2(base)
 	f = Vector2(smoothstep(0,1,f.x),smoothstep(0,1,f.y))
 	var profile := type_profile(t,base).lerp(type_profile(t,base+Vector2i.RIGHT),f.x).lerp(
@@ -88,11 +88,62 @@ func displaced(t: EITerrain, point: Vector3, key: Vector2i, tracks: bool) -> flo
 	var cell := Vector2i(p.floor()).clamp(Vector2i.ZERO,Vector2i(t.size_ei())-Vector2i.ONE)
 	var at := cell.y*int(t.size_ei().x)+cell.x
 	var water := t.water_base[at]+t._level[clampi(t.water_mat[at],0,63)]
-	profile *= mask*smoothstep(0.025,0.10,point.y-water)
+	return profile*mask*smoothstep(0.025,0.10,height-water)
+
+## The shader interpolates vertex profiles over the original (MPR-shifted)
+## triangle, so subdivided points keep their coarse neighbours' edges.
+## Returns [profile, grid coordinate] for a point on the original surface.
+func vertex_profile(t: EITerrain, p: Vector2) -> Array:
+	var origin := Vector2i(p.floor()); var rows := t.heights.size()/t.grid_w
+	for dy in range(-1,2):
+		for dx in range(-1,2):
+			var cell := origin+Vector2i(dx,dy)
+			for corners: Array in [[Vector2i.ZERO,Vector2i.RIGHT,Vector2i.DOWN],[Vector2i.ONE,Vector2i.RIGHT,Vector2i.DOWN]]:
+				var g: Array[Vector2i] = []; var at: Array[Vector2] = []; var h: Array[float] = []
+				for corner: Vector2i in corners:
+					var v := (cell+corner).clamp(Vector2i.ZERO,Vector2i(t.grid_w-1,rows-1)); var i := v.y*t.grid_w+v.x
+					g.append(v); at.append(Vector2(v)+t.land_xy[i]); h.append(t.heights[i])
+				var determinant := (at[1]-at[0]).cross(at[2]-at[0])
+				if absf(determinant)<1e-10: continue
+				var u := (p-at[0]).cross(at[2]-at[0])/determinant; var w := (at[1]-at[0]).cross(p-at[0])/determinant
+				if u< -1e-4 or w< -1e-4 or u+w>1.0001: continue
+				var weights := [1-u-w,u,w]; var profile := Vector2.ZERO; var grid := Vector2.ZERO
+				for k in 3:
+					profile += surface_profile(t,at[k],h[k])*weights[k]; grid += Vector2(g[k])*weights[k]
+				return [profile,grid]
+	return [surface_profile(t,p,0.0),p]
+
+## GroundSurfaceShader.soft_track_mask: tracks fade within 0.25 of a dense
+## tile's edge or corner where the neighbouring tile has no dense mesh.
+func track_mask(tiles: Image, grid: Vector2) -> float:
+	var dense := func(tile: Vector2i) -> bool:
+		return Rect2i(Vector2i.ZERO,tiles.get_size()).has_point(tile) and tiles.get_pixelv(tile).g>=0.5
+	var tile := Vector2i((grid*0.5).floor())
+	if not dense.call(tile): return 0.0
+	var local := grid-Vector2(tile)*2; var mask := 1.0
+	if not dense.call(tile+Vector2i(-1,0)): mask *= smoothstep(0,0.25,local.x)
+	if not dense.call(tile+Vector2i(1,0)): mask *= smoothstep(0,0.25,2-local.x)
+	if not dense.call(tile+Vector2i(0,-1)): mask *= smoothstep(0,0.25,local.y)
+	if not dense.call(tile+Vector2i(0,1)): mask *= smoothstep(0,0.25,2-local.y)
+	if not dense.call(tile+Vector2i(-1,-1)): mask *= smoothstep(0,0.25,local.length())
+	if not dense.call(tile+Vector2i(1,-1)): mask *= smoothstep(0,0.25,Vector2(2-local.x,local.y).length())
+	if not dense.call(tile+Vector2i(-1,1)): mask *= smoothstep(0,0.25,Vector2(local.x,2-local.y).length())
+	if not dense.call(tile+Vector2i(1,1)): mask *= smoothstep(0,0.25,(Vector2.ONE*2-local).length())
+	return mask
+
+func displaced(t: EITerrain, point: Vector3, _key: Vector2i, tracks: bool) -> float:
+	if not Gfx.on("gfx_soft_ground"): return point.y
+	var p := Vector2(point.x,-point.z)
+	var found := vertex_profile(t,p); var profile: Vector2 = found[0]; var grid: Vector2 = found[1]
 	var h := point.y+profile.x
 	if not tracks: return h
-	var soft := t.details.soft_ground; var rec: Dictionary = soft.sectors[key]; var img: Image = rec.image
-	var sample := (p-Vector2(key)*32)*511/32; var lo := Vector2i(sample.floor()); var blend := sample-Vector2(lo)
+	# soft_track_coord samples the field at the actual world point: the
+	# layer of the tile under it, which can be a neighbouring sector's.
+	var soft := t.details.soft_ground; var tiles: Image = soft.shared_field()._tile_image
+	var tile := Vector2i((p*0.5).floor()); var owner := Vector2i((p/32).floor())
+	if not Rect2i(Vector2i.ZERO,tiles.get_size()).has_point(tile) or tiles.get_pixelv(tile).r<0.5 or not soft.sectors.has(owner): return h
+	var img: Image = soft.sectors[owner].image
+	var sample := (p-Vector2(owner)*32)*511/32; var lo := Vector2i(sample.floor()); var blend := sample-Vector2(lo)
 	var values: Array[Color] = []
 	for offset: Vector2i in [Vector2i.ZERO,Vector2i.RIGHT,Vector2i.DOWN,Vector2i.ONE]:
 		values.append(img.get_pixelv((lo+offset).clamp(Vector2i.ZERO,Vector2i.ONE*511)))
@@ -100,7 +151,7 @@ func displaced(t: EITerrain, point: Vector3, key: Vector2i, tracks: bool) -> flo
 	var age := maxf(soft._age-value.b/maxf(value.a,1e-5),0)
 	var fade := clampf((240-age)/60,0,1)
 	var compact := value.r*fade; var bank := value.g*fade
-	return h+(bank*(1-smoothstep(0.05,0.30,compact))-compact)*profile.y
+	return h+(bank*(1-smoothstep(0.05,0.30,compact))-compact)*profile.y*track_mask(tiles,grid)
 
 func index_surface(t: EITerrain, centre: Vector2, span := 10.0) -> void:
 	_triangles.clear(); _height_cache.clear()
