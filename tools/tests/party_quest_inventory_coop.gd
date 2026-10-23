@@ -126,11 +126,26 @@ func _ready() -> void:
 	check(old != null and not Party.has_quest_inventory(old) and not Party.capture(old).has("quest_items"),"legacy context roundtrip retains absence of inventory evidence")
 	var live_before := merged.quest_items.duplicate()
 	var archives_before := merged.party_quest_items.duplicate(true)
-	var owner_before := merged.quest_party
 	Party.apply(merged,old)
-	check(merged.quest_items == live_before and merged.party_quest_items == archives_before and merged.quest_party == owner_before,"legacy context cannot clear active items or fabricate archived contents")
+	check(merged.quest_items == live_before and merged.party_quest_items == archives_before
+		and merged.quest_party == merged.current_party,"legacy context keeps live items and archives while adopting their fallback owner")
 	CoopProgress.merge(merged,{"campaign_id":merged.campaign_id,"party_context":legacy,"move":{"zone":"gz1g"},"quest_items":{"shared":false,"legacy_new":true}})
 	check(merged.quest_items == {"legacy_new":true},"legacy partial item credits keep their existing merge behavior")
+	var legacy_path := "user://party-quest-coop-legacy.sav"
+	check(merged.save(legacy_path) == OK,"legacy party checkpoint saves after its flat item credits")
+	var legacy_resume := CampaignState.load_from(legacy_path)
+	check(legacy_resume != null and legacy_resume.current_party == "A" and legacy_resume.quest_party == "A"
+		and legacy_resume.quest_items == {"legacy_new":true},"legacy checkpoint reload associates the global live bag with its adopted party")
+	if legacy_resume != null:
+		var collect := QuietSession.new(); collect.state = legacy_resume
+		collect.coop = QuietProgress.new(); collect.coop.session = collect
+		collect.coop.store_party_quest_items()
+		check(collect.state.quest_items == {"legacy_new":true} and collect.state.party_quest_items.A == {"legacy_new":true},
+			"first real collect after legacy party merge preserves the required live item")
+		check(collect.state.party_quest_items.B == archives_before.B,"legacy collection cannot overwrite the previous party's archive")
+		collect.coop.store_party_quest_items()
+		check(collect.state.quest_items == {"legacy_new":true},"repeated legacy checkpoint collection keeps the live inventory stable")
+		collect.coop.free(); collect.free()
 	for bad: Dictionary in [{"quest_items":[]},{"party_quest_items":{"A":[]}}, {"quest_party":false}, {"quest_items":{"bad":false}}]:
 		var malformed := initial.duplicate(true); malformed.merge(bad,true)
 		check(Party.read(malformed) == null,"malformed quest context is rejected: "+str(bad))
