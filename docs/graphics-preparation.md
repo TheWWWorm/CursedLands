@@ -56,11 +56,12 @@ and animation-readiness gate until the screen finishes.
 Use the frozen-export runner documented in [PT qualification](path-tracing-qualification.md):
 
 ```sh
-python3 tools/tests/run_path_trace_qualification.py \
+gpu-lab submit --cwd /absolute/repository --timeout 1800 -- \
+  python3 /absolute/repository/tools/tests/run_path_trace_qualification.py \
   --executable /build/CursedLands.x86_64 --data-root /data/EvilIslands \
   --profile-root /evidence/preparation-profile --output /evidence/preparation \
-  --driver vulkan --physical-gpu 1 --engine-gpu-index 1 \
-  --display :97 --xauthority /run/pt-display/Xauthority --suite preparation
+  --driver vulkan --physical-gpu-uuid GPU-TARGET-UUID \
+  --inherit-display --suite preparation
 ```
 
 The group includes localized layout/input/ownership contracts, actual campaign
