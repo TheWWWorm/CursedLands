@@ -1,0 +1,44 @@
+{
+  "version": "1.24.0",
+  "cache_upgrade": {
+    "passed": true,
+    "old_cache": "cursed-engine-2-895dd0cbef0e332d3385",
+    "new_cache": "cursed-engine-2-2f9c2dbea1a491210378",
+    "indexeddb_preserved": true,
+    "database_names": [
+      "/userfs",
+      "cursed-lands-data-v1"
+    ],
+    "pck_sha256": "bd558f8d96d0dc129f56901d3ed3c684ef2c2126f0cd04b5c9e873b90e1286c6",
+    "old_tab_wait_verified": true
+  },
+  "cache": {
+    "keys": [
+      "cursed-engine-2-2f9c2dbea1a491210378"
+    ],
+    "packs": {
+      "cursed-engine-2-2f9c2dbea1a491210378": "bd558f8d96d0dc129f56901d3ed3c684ef2c2126f0cd04b5c9e873b90e1286c6"
+    },
+    "worker": "activated",
+    "waiting": null,
+    "isolated": true
+  },
+  "fresh_start": {
+    "passed": true,
+    "origin": "http://127.0.0.1:30931/",
+    "actual_wasm_started": true,
+    "reached": "Original game-data installation screen (after Play on the launcher page)",
+    "error_logs": [
+      "Failed to load resource: 404 (browser favicon request; the package has no favicon.ico, as in earlier releases)"
+    ],
+    "profile": {
+      "isolated": true,
+      "confine_mouse": 0,
+      "show_fps": 1,
+      "volume_sfx": 0,
+      "volume_stream": 0,
+      "volume_voice": 0
+    },
+    "screenshot": "browser-fresh-start.png"
+  }
+}

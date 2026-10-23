@@ -25,7 +25,7 @@ boot_splash/bg_color=Color(0.0667, 0.0588, 0.0471, 1)
 run/main_scene="res://scenes/main.tscn"
 run/flush_stdout_on_print=true
 config/features=PackedStringArray("4.7")
-config/version="1.23.0"
+config/version="1.24.0"
 config/project_settings_override.android="user://renderer.cfg"
 config/project_settings_override.windows="user://renderer.cfg"
 
@@ -76,9 +76,12 @@ worker_pool/max_threads.windows=4
 
 [rendering]
 
-; Linux templates include the queued-image and render-thread shutdown fixes.
+; Separate render thread only in Linux exports (the preset's feature
+; render_thread_patched): their templates include the queued-image and
+; render-thread shutdown fixes. Source runs on stock Godot keep Safe; without
+; those fixes text drawn at new sizes can abort on the render thread.
 ; Windows uses Safe; driver recovery must not depend on experimental threading.
-driver/threads/thread_model.linux=2
+driver/threads/thread_model.render_thread_patched=2
 driver/threads/thread_model.windows=1
 
 ; Keep figure parameters resident across zone transitions.

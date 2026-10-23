@@ -1,0 +1,1416 @@
+{
+  "version": "1.24.0",
+  "date": "2026-10-22",
+  "status": "Published stable release and hosted browser deployment verified; all six public downloads match exported SHA-256 hashes.",
+  "source_commit": "490a77ed2ada148b7b7dc4a89a0ef793cad5ad4d",
+  "game_tree": "0977708f29cab56274156bc184d6a0fa4a5fe7af",
+  "merged": {
+    "main": "bbcf12e9",
+    "water_rt_and_autochess": "work/dx12-water-rt a56d4484",
+    "validation_and_fixes": "fix/validation-and-fixes-20261022 5829e099"
+  },
+  "previous_stable": "v1.23.0",
+  "protocol": {
+    "campaign": 23,
+    "autochess": 1
+  },
+  "translations": "3042 entries; 141 dynamic wiki keys; 179 dynamic arena keys; 0 errors. option_localization_matrix: 171 options, 15816 checks, 0 failures.",
+  "source_tests": {
+    "tree": "release/1.24.0 merged source, isolated dev profiles (confine_mouse=0, show_fps=1, all audio muted)",
+    "passed": {
+      "arena_deployment_motion": "ARENA_DEPLOYMENT_MOTION {\"checks\":91,\"failures\":[]}",
+      "arena_rank_appearance": "ARENA_RANK_APPEARANCE {\"checks\":1265,\"failures\":[]}",
+      "arena_rank_appearance_ui": "ARENA_RANK_APPEARANCE_UI {\"checks\":257,\"failures\":[]}",
+      "arena_scale_preservation": "ARENA_SCALE_PRESERVATION {\"checks\":36,\"failures\":[]}",
+      "board_slide_frames": "BOARD_SLIDE_FRAMES 24 checks 0 failures",
+      "camp_weapon_help": "RESULT failures=0",
+      "console_cursor": "CONSOLE_CURSOR {\"checks\":27,\"failures\":[]}",
+      "coop_loot_grants": "COOP_LOOT_GRANTS {\"checks\":28,\"failures\":0}",
+      "coop_loot_messages_ui": "COOP_LOOT_MESSAGES_UI {\"checks\":5,\"failures\":[]}",
+      "coop_loot_network": "COOP_LOOT_NETWORK {\"checks\":51,\"failures\":0}",
+      "coop_vm_solo": "COOP_VM_SOLO {\"checks\":30,\"failures\":0}",
+      "issue47_memo_equivalence": "MEMO_EQUIV failures=0",
+      "object_activity": "RESULT failures=0",
+      "object_activity_absence": "RESULT failures=0",
+      "option_localization_matrix": "OPTION_LOCALIZATION_MATRIX {\"checks\":15816,\"choice_groups\":44,\"failures\":[],\"options\":171,\"translation_keys\":2674}",
+      "pickup_messages": "PICKUP_MESSAGES {\"checks\":13,\"failures\":0,\"scenario\":\"cast\"}",
+      "rune_loot": "RUNE_LOOT 15 checks 0 failures",
+      "village_talk_coop": "STORY_COOP_TRAPS_NET 15 checks 0 failures",
+      "village_talk_order": "VILLAGE_TALK_ORDER 25 checks 0 failures",
+      "z19q3_levers": "Z19Q3_LEVERS 12 checks 0 failures",
+      "village_talk_direct (OpenGL)": "VILLAGE_TALK_DIRECT {\"checks\":24,\"failures\":[]}",
+      "mobile_screen_dropdown (OpenGL, --touch)": "MOBILE_SCREEN_DROPDOWN {\"checks\":49,\"failures\":0}"
+    },
+    "installer_import": "64 checks, 0 failures (compiled LZMA2 decoder vs. GDScript decoder on the three GOG installers)",
+    "preexisting_failures": [
+      "story_guard_escape",
+      "cave_queen_user_save",
+      "feedback_persistence",
+      "catacomb_capacity_net",
+      "mod_effects",
+      "ingos_interactions",
+      "renderer_world_lifecycle",
+      "prison_alarm_late_join",
+      "shelter_kel",
+      "story_coop_predicates",
+      "story_coop_predicates_net",
+      "snapshot_delivery"
+    ],
+    "preexisting_note": "Each fails identically with the active-object feature disabled and on the unmodified 1.23.0 tree."
+  },
+  "packaged_checks": {
+    "linux": [
+      {
+        "suite": "water_raytrace_native",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-water_raytrace_native",
+        "reports": {
+          "native.json": {
+            "checks": 271,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PASS freed unit masks its retained parts safely"
+        ]
+      },
+      {
+        "suite": "water_raytrace_device",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-water_raytrace_device",
+        "reports": {
+          "device-results.json": {
+            "checks": 25,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 25 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_lighting",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-water_raytrace_lighting",
+        "reports": {
+          "device-results.json": {
+            "checks": 48,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 48 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_materials",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-water_raytrace_materials",
+        "reports": {
+          "device-results.json": {
+            "checks": 120,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 120 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_first_person",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-water_raytrace_first_person",
+        "reports": {
+          "first-person.json": {
+            "checks": 9,
+            "failures": [],
+            "changed_pixels": 0
+          }
+        },
+        "summary": [
+          "PASS leaving first person restores the same reflection"
+        ]
+      },
+      {
+        "suite": "water_raytrace_material_live",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-water_raytrace_material_live",
+        "reports": {
+          "materials-live.json": {
+            "checks": 16,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PASS unchanged material values do not cause repeated rebuilds"
+        ]
+      },
+      {
+        "suite": "water_raytrace_live",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-water_raytrace_live",
+        "reports": {
+          "live.json": {
+            "checks": 15,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PASS changed equipment automatically rebuilds the hardware scene"
+        ]
+      },
+      {
+        "suite": "water_raytrace_artifact",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-water_raytrace_artifact",
+        "reports": {
+          "artifact.json": {
+            "checks": 19,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PASS mode-3-turn-0.025: front-facing reflections are preserved"
+        ]
+      },
+      {
+        "suite": "water_raytrace",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-water_raytrace",
+        "reports": {
+          "results.json": {
+            "checks": 29,
+            "failures": [],
+            "supported": true,
+            "renderer": "forward_plus",
+            "device": "NVIDIA GeForce RTX 3090"
+          }
+        },
+        "summary": [
+          "WATER_RT 29 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_options",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-water_raytrace_options",
+        "reports": {
+          "rt-quality-options.json": {
+            "checks": 134,
+            "failures": [],
+            "renderer": "vulkan"
+          }
+        },
+        "summary": [
+          "RT_QUALITY_OPTIONS 134 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_quality",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-water_raytrace_quality",
+        "reports": {
+          "quality-results.json": {
+            "renderer": "vulkan"
+          },
+          "device-results.json": {
+            "checks": 50,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 50 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_filtering",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-water_raytrace_filtering",
+        "reports": {
+          "device-results.json": {
+            "checks": 69,
+            "failures": []
+          },
+          "filtering.json": {
+            "checks": 69,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 69 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "scene_raytrace_device",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-scene_raytrace_device",
+        "reports": {
+          "scene-device-results.json": {
+            "checks": 17,
+            "failures": []
+          }
+        },
+        "summary": [
+          "SCENE_RT_DEVICE 17 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "scene_raytrace_alpha",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-scene_raytrace_alpha",
+        "reports": {
+          "scene-device-results.json": {
+            "checks": 9,
+            "failures": []
+          }
+        },
+        "summary": [
+          "SCENE_RT_DEVICE 9 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "scene_raytrace_live",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-scene_raytrace_live",
+        "reports": {
+          "scene-live.json": {
+            "checks": 32,
+            "failures": []
+          }
+        },
+        "summary": [
+          "SCENE_RT_LIVE 32 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "scene_raytrace_options",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-scene_raytrace_options",
+        "reports": {
+          "scene-options.json": {
+            "checks": 270,
+            "failures": []
+          }
+        },
+        "summary": [
+          "SCENE_RT_OPTIONS 270 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "path_trace_device",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-path_trace_device",
+        "reports": {
+          "path-device.json": {
+            "checks": 17,
+            "failures": []
+          },
+          "scene-device-results.json": {
+            "checks": 17,
+            "failures": []
+          }
+        },
+        "summary": [
+          "SCENE_RT_DEVICE 17 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "path_trace_alpha",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-path_trace_alpha",
+        "reports": {
+          "scene-device-results.json": {
+            "checks": 9,
+            "failures": []
+          }
+        },
+        "summary": [
+          "SCENE_RT_DEVICE 9 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "path_trace_live",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-path_trace_live",
+        "reports": {
+          "path-live.json": {
+            "checks": 14,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PATH_TRACE_LIVE 14 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "path_trace_quality",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-path_trace_quality",
+        "reports": {
+          "path-quality.json": {
+            "checks": 13,
+            "failures": []
+          },
+          "scene-device-results.json": {
+            "checks": 13,
+            "failures": []
+          }
+        },
+        "summary": [
+          "SCENE_RT_DEVICE 13 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "path_trace_receivers",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-path_trace_receivers",
+        "reports": {
+          "path-receivers.json": {
+            "checks": 12,
+            "failures": []
+          },
+          "scene-device-results.json": {
+            "checks": 12,
+            "failures": []
+          }
+        },
+        "summary": [
+          "SCENE_RT_DEVICE 12 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_lighting",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-water_raytrace_lighting-script",
+        "reports": {
+          "device-results.json": {
+            "checks": 48,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 48 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_first_person",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-water_raytrace_first_person-script",
+        "reports": {
+          "first-person.json": {
+            "checks": 9,
+            "failures": [],
+            "changed_pixels": 0
+          }
+        },
+        "summary": [
+          "PASS leaving first person restores the same reflection"
+        ]
+      },
+      {
+        "suite": "first_person_reflections",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-vulkan-first_person_reflections",
+        "reports": {},
+        "summary": [
+          "FIRST_PERSON_REFLECTIONS {\"checks\":60,\"failures\":[],\"rows\":[{\"case\":\"idle smooth=false\",\"head_pixels\":328,\"wrong_pixels\":0},{\"case\":\"run smooth=false\",\"head_pixels\":377,\"wrong_pixels\":0},{\"case\":\"attack smooth=false\",\"head_pixels\":312,\"wrong_pixels\":0},{\"case\":\"cast smooth=false\",\"head_pixels\":297,\""
+        ]
+      },
+      {
+        "suite": "graphics_presets",
+        "renderer": "headless",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-headless-graphics_presets",
+        "reports": {
+          "graphics-presets.json": {
+            "checks": 279,
+            "failures": 0
+          }
+        },
+        "summary": [
+          "GRAPHICS_PRESETS {\"checks\":279,\"failures\":0}"
+        ]
+      },
+      {
+        "suite": "water_raytrace",
+        "renderer": "opengl3",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/linux-water-fallback",
+        "reports": {
+          "results.json": {
+            "checks": 17,
+            "failures": [],
+            "supported": false,
+            "renderer": "gl_compatibility",
+            "device": "NVIDIA GeForce RTX 3090"
+          }
+        },
+        "summary": [
+          "WATER_RT 17 checks 0 failures"
+        ]
+      }
+    ],
+    "windows": [
+      {
+        "suite": "water_raytrace_native",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-water_raytrace_native",
+        "reports": {
+          "native.json": {
+            "checks": 271,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PASS freed unit masks its retained parts safely"
+        ]
+      },
+      {
+        "suite": "water_raytrace_device",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-water_raytrace_device",
+        "reports": {
+          "device-results.json": {
+            "checks": 25,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 25 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_lighting",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-water_raytrace_lighting",
+        "reports": {
+          "fsr-status.json": {},
+          "device-results.json": {
+            "checks": 48,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 48 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_materials",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-water_raytrace_materials",
+        "reports": {
+          "fsr-status.json": {},
+          "device-results.json": {
+            "checks": 120,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 120 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_first_person",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-water_raytrace_first_person",
+        "reports": {
+          "first-person.json": {
+            "checks": 9,
+            "failures": [],
+            "changed_pixels": 0
+          },
+          "fsr-status.json": {}
+        },
+        "summary": [
+          "PASS leaving first person restores the same reflection"
+        ]
+      },
+      {
+        "suite": "water_raytrace_material_live",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-water_raytrace_material_live",
+        "reports": {
+          "fsr-status.json": {},
+          "materials-live.json": {
+            "checks": 16,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PASS unchanged material values do not cause repeated rebuilds"
+        ]
+      },
+      {
+        "suite": "water_raytrace_live",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-water_raytrace_live",
+        "reports": {
+          "live.json": {
+            "checks": 15,
+            "failures": []
+          },
+          "fsr-status.json": {}
+        },
+        "summary": [
+          "PASS changed equipment automatically rebuilds the hardware scene"
+        ]
+      },
+      {
+        "suite": "water_raytrace_artifact",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-water_raytrace_artifact",
+        "reports": {
+          "fsr-status.json": {},
+          "artifact.json": {
+            "checks": 19,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PASS mode-3-turn-0.025: front-facing reflections are preserved"
+        ]
+      },
+      {
+        "suite": "water_raytrace",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-water_raytrace",
+        "reports": {
+          "fsr-status.json": {},
+          "results.json": {
+            "checks": 29,
+            "failures": [],
+            "supported": true,
+            "renderer": "forward_plus",
+            "device": "NVIDIA GeForce RTX 3090"
+          }
+        },
+        "summary": [
+          "WATER_RT 29 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_options",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-water_raytrace_options",
+        "reports": {
+          "fsr-status.json": {},
+          "rt-quality-options.json": {
+            "checks": 134,
+            "failures": [],
+            "renderer": "d3d12"
+          }
+        },
+        "summary": [
+          "RT_QUALITY_OPTIONS 134 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_quality",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-water_raytrace_quality",
+        "reports": {
+          "quality-results.json": {
+            "renderer": "d3d12"
+          },
+          "device-results.json": {
+            "checks": 50,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 50 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_filtering",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-water_raytrace_filtering",
+        "reports": {
+          "fsr-status.json": {},
+          "device-results.json": {
+            "checks": 69,
+            "failures": []
+          },
+          "filtering.json": {
+            "checks": 69,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 69 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "scene_raytrace_device",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-scene_raytrace_device",
+        "reports": {
+          "scene-device-results.json": {
+            "checks": 17,
+            "failures": []
+          }
+        },
+        "summary": [
+          "SCENE_RT_DEVICE 17 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "scene_raytrace_alpha",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-scene_raytrace_alpha",
+        "reports": {
+          "scene-device-results.json": {
+            "checks": 9,
+            "failures": []
+          }
+        },
+        "summary": [
+          "SCENE_RT_DEVICE 9 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "scene_raytrace_live",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-scene_raytrace_live",
+        "reports": {
+          "scene-live.json": {
+            "checks": 32,
+            "failures": []
+          },
+          "fsr-status.json": {}
+        },
+        "summary": [
+          "SCENE_RT_LIVE 32 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "scene_raytrace_options",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-scene_raytrace_options",
+        "reports": {
+          "scene-options.json": {
+            "checks": 270,
+            "failures": []
+          },
+          "fsr-status.json": {}
+        },
+        "summary": [
+          "SCENE_RT_OPTIONS 270 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "path_trace_device",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-path_trace_device",
+        "reports": {
+          "path-device.json": {
+            "checks": 17,
+            "failures": []
+          },
+          "fsr-status.json": {},
+          "scene-device-results.json": {
+            "checks": 17,
+            "failures": []
+          }
+        },
+        "summary": [
+          "SCENE_RT_DEVICE 17 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "path_trace_alpha",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-path_trace_alpha",
+        "reports": {
+          "scene-device-results.json": {
+            "checks": 9,
+            "failures": []
+          }
+        },
+        "summary": [
+          "SCENE_RT_DEVICE 9 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "path_trace_live",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-path_trace_live",
+        "reports": {
+          "fsr-status.json": {},
+          "path-live.json": {
+            "checks": 14,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PATH_TRACE_LIVE 14 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "path_trace_quality",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-path_trace_quality",
+        "reports": {
+          "fsr-status.json": {},
+          "path-quality.json": {
+            "checks": 13,
+            "failures": []
+          },
+          "scene-device-results.json": {
+            "checks": 13,
+            "failures": []
+          }
+        },
+        "summary": [
+          "SCENE_RT_DEVICE 13 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "path_trace_receivers",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-path_trace_receivers",
+        "reports": {
+          "fsr-status.json": {},
+          "path-receivers.json": {
+            "checks": 12,
+            "failures": []
+          },
+          "scene-device-results.json": {
+            "checks": 12,
+            "failures": []
+          }
+        },
+        "summary": [
+          "SCENE_RT_DEVICE 12 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_lighting",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-water_raytrace_lighting-script",
+        "reports": {
+          "fsr-status.json": {},
+          "device-results.json": {
+            "checks": 48,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 48 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace_first_person",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-water_raytrace_first_person-script",
+        "reports": {
+          "first-person.json": {
+            "checks": 9,
+            "failures": [],
+            "changed_pixels": 0
+          },
+          "fsr-status.json": {}
+        },
+        "summary": [
+          "PASS leaving first person restores the same reflection"
+        ]
+      },
+      {
+        "suite": "first_person_reflections",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-first_person_reflections",
+        "reports": {
+          "fsr-status.json": {}
+        },
+        "summary": [
+          "FIRST_PERSON_REFLECTIONS {\"checks\":60,\"failures\":[],\"rows\":[{\"case\":\"idle smooth=false\",\"head_pixels\":328,\"wrong_pixels\":0},{\"case\":\"run smooth=false\",\"head_pixels\":377,\"wrong_pixels\":0},{\"case\":\"attack smooth=false\",\"head_pixels\":312,\"wrong_pixels\":0},{\"case\":\"cast smooth=false\",\"head_pixels\":300,\""
+        ]
+      },
+      {
+        "suite": "graphics_presets",
+        "renderer": "headless",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-headless-graphics_presets",
+        "reports": {
+          "graphics-presets.json": {
+            "checks": 279,
+            "failures": 0
+          }
+        },
+        "summary": [
+          "GRAPHICS_PRESETS {\"checks\":279,\"failures\":0}"
+        ]
+      },
+      {
+        "suite": "water_raytrace_device",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-vulkan-water_raytrace_device",
+        "reports": {
+          "device-results.json": {
+            "checks": 25,
+            "failures": []
+          }
+        },
+        "summary": [
+          "WATER_RT_DEVICE 25 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "water_raytrace",
+        "renderer": "vulkan",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-vulkan-water_raytrace",
+        "reports": {
+          "results.json": {
+            "checks": 29,
+            "failures": [],
+            "supported": true,
+            "renderer": "forward_plus",
+            "device": "NVIDIA GeForce RTX 3090"
+          }
+        },
+        "summary": [
+          "WATER_RT 29 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "fsr_render",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-fsr_render",
+        "reports": {
+          "fsr-render.json": {
+            "checks": 191,
+            "failures": [],
+            "blocked": false,
+            "renderer": "d3d12",
+            "frame_generation_tested": true
+          }
+        },
+        "summary": [
+          "FSR_RENDER {\"blocked\":false,\"checks\":191,\"facts\":{\"api\":true,\"engine\":true,\"fg3\":true,\"fg4\":false,\"sr3\":true,\"sr4\":false},\"failures\":[],\"frame_generation_tested\":true,\"gpu\":\"NVIDIA GeForce RTX 3090\",\"renderer\":\"d3d12\",\"rows\":[{\"elapsed_ms\":1271.456,\"generated_frames\":0,\"label\":\"off\",\"presented_frame"
+        ]
+      },
+      {
+        "suite": "scene_raytrace_fsr",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-scene_raytrace_fsr",
+        "reports": {
+          "fsr-status.json": {},
+          "rt-fsr.json": {
+            "checks": 62,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PASS rt-and-fg-resumed: scene RT shadows and GI remain active"
+        ]
+      },
+      {
+        "suite": "path_trace_fsr",
+        "renderer": "d3d12",
+        "exit": 0,
+        "evidence": "release-1.24.0/checks/windows-d3d12-path_trace_fsr",
+        "reports": {
+          "fsr-status.json": {},
+          "rt-fsr.json": {
+            "checks": 62,
+            "failures": []
+          }
+        },
+        "summary": [
+          "PASS rt-and-fg-resumed: path tracing remains active"
+        ]
+      }
+    ]
+  },
+  "packaged_gameplay_note": "linux-mod_effects fails the same two checks (enable recovery provider; configured revival HP reaches the actual unit) on the published 1.23.0 Linux package (checks/baseline-1.23.0-mod_effects); it is a pre-existing failure, not a 1.24.0 regression.",
+  "packaged_gameplay": {
+    "linux": [
+      {
+        "suite": "mod_formulas",
+        "renderer": "headless",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "MOD_FORMULAS 106 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "mod_profiles",
+        "renderer": "headless",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "MOD_PROFILES {\"checks\":87,\"details\":[],\"failures\":0}"
+        ]
+      },
+      {
+        "suite": "mod_texture_packages",
+        "renderer": "headless",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "MOD_TEXTURE_PACKAGES {\"checks\":42,\"failures\":0}"
+        ]
+      },
+      {
+        "suite": "mod_effects",
+        "renderer": "headless",
+        "exit": 1,
+        "errors": 0,
+        "summary": [
+          "MOD_EFFECTS {\"checks\":11,\"failures\":2}"
+        ]
+      },
+      {
+        "suite": "xp_distribution",
+        "renderer": "headless",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "XP_DISTRIBUTION 96 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "equipment_animation_continuity",
+        "renderer": "headless",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "EQUIPMENT_ANIMATION_CONTINUITY {\"checks\":56,\"failures\":[]}"
+        ]
+      },
+      {
+        "suite": "issue_ui_controls",
+        "renderer": "headless",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "ISSUE_UI_CONTROLS {\"checks\":198,\"failures\":[]}"
+        ]
+      },
+      {
+        "suite": "local_host_permissions",
+        "renderer": "headless",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "LOCAL_HOST_PERMISSIONS 20 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "zone_speed_retention",
+        "renderer": "headless",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "ZONE_SPEED_RETENTION 65 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "coop_permissions",
+        "renderer": "headless",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "COOP_PERMISSIONS {\"checks\":31,\"failures\":0}"
+        ]
+      },
+      {
+        "suite": "mod_worker",
+        "renderer": "headless",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "MOD_WORKER {\"checks\":25,\"failures\":0}"
+        ]
+      },
+      {
+        "suite": "mod_formula_ui",
+        "renderer": "opengl3",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "MOD_FORMULA_UI 41 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "fsr_experiment",
+        "renderer": "opengl3",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "FSR_EXPERIMENT 50 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "fsr_attribution",
+        "renderer": "opengl3",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "ATTRIBUTION {\"checks\":230,\"failures\":[],\"languages\":[\"en\",\"ru\",\"de\"],\"resolutions\":[[800,600],[1280,720]]}"
+        ]
+      }
+    ],
+    "windows": [
+      {
+        "suite": "mod_formulas",
+        "renderer": "headless",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "MOD_FORMULAS 106 checks 0 failures"
+        ]
+      },
+      {
+        "suite": "issue_ui_controls",
+        "renderer": "headless",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "ISSUE_UI_CONTROLS {\"checks\":198,\"failures\":[]}"
+        ]
+      },
+      {
+        "suite": "equipment_animation_continuity",
+        "renderer": "headless",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "EQUIPMENT_ANIMATION_CONTINUITY {\"checks\":56,\"failures\":[]}"
+        ]
+      },
+      {
+        "suite": "mod_worker",
+        "renderer": "headless",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "MOD_WORKER {\"checks\":25,\"failures\":0}"
+        ]
+      },
+      {
+        "suite": "fsr_render",
+        "renderer": "d3d12",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "FSR_RENDER {\"blocked\":false,\"checks\":191,\"facts\":{\"api\":true,\"engine\":true,\"fg3\":true,\"fg4\":false,\"sr3\":true,\"sr4\":false},\"failures\":[],\"frame_generation_tested\":true,\"gpu\":\"NVIDIA GeForce RTX 3090\",\"renderer\":\"d3d12\",\"rows\":[{\"elapsed_ms\":1279.147,\"generated_frames\":0,\"label\":\"off\",\"presented_frame"
+        ]
+      },
+      {
+        "suite": "fsr_campaign",
+        "renderer": "d3d12",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "FSR_CAMPAIGN {\"blocked\":false,\"checks\":97,\"facts\":{\"api\":true,\"engine\":true,\"fg3\":true,\"fg4\":false,\"sr3\":true,\"sr4\":false},\"failures\":[],\"rows\":[{\"focused\":true,\"generated_frames\":90,\"hud_blocks_camera\":false,\"label\":\"gameplay\",\"presented_frames\":181,\"sampled_frames\":90,\"status\":{\"compiled\":true,\"fg"
+        ]
+      },
+      {
+        "suite": "fsr_attribution",
+        "renderer": "d3d12",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "ATTRIBUTION {\"checks\":232,\"failures\":[],\"languages\":[\"en\",\"ru\",\"de\"],\"resolutions\":[[800,600],[1280,720]]}"
+        ]
+      },
+      {
+        "suite": "fsr_campaign",
+        "renderer": "d3d12",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "FSR_CAMPAIGN {\"blocked\":false,\"checks\":102,\"facts\":{\"api\":true,\"engine\":true,\"fg3\":true,\"fg4\":false,\"sr3\":true,\"sr4\":false},\"failures\":[],\"rows\":[{\"focused\":true,\"generated_frames\":90,\"hud_blocks_camera\":false,\"label\":\"gameplay\",\"presented_frames\":180,\"sampled_frames\":90,\"status\":{\"compiled\":true,\"f"
+        ]
+      },
+      {
+        "suite": "scaled_menu_arena_text",
+        "renderer": "opengl3",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "SCALED_TEXT {\"checks\":32,\"failures\":[],\"language\":\"ru\"}"
+        ]
+      },
+      {
+        "suite": "scaled_menu_arena_text",
+        "renderer": "opengl3",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "SCALED_TEXT {\"checks\":32,\"failures\":[],\"language\":\"ru\"}"
+        ]
+      },
+      {
+        "suite": "scaled_menu_arena_text",
+        "renderer": "opengl3",
+        "exit": 0,
+        "errors": 0,
+        "summary": [
+          "SCALED_TEXT {\"checks\":32,\"failures\":[],\"language\":\"ru\"}"
+        ]
+      }
+    ]
+  },
+  "engines": {
+    "linux-x86_64": {
+      "version": "1.24.0",
+      "source_commit": "490a77ed2ada148b7b7dc4a89a0ef793cad5ad4d",
+      "game_tree": "0977708f29cab56274156bc184d6a0fa4a5fe7af",
+      "protocol": 23,
+      "platform": "linux-x86_64",
+      "engine_patch_count": 17,
+      "unchanged_qualified_engine": false,
+      "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88 plus common patches 1\u201316 and Vulkan RT uniform patch (1.23.0 executable reused as template)",
+      "compiled_scripts": 402,
+      "resource_count": 1283,
+      "formula_api": 1,
+      "package_api": 3,
+      "fsr_in_normal_settings": false,
+      "qualified_engine_template_sha256": "900844d32a705b811a2b940b26e813defcae21f3763687aeb9c8eb99c896ebfa"
+    },
+    "windows-x86_64": {
+      "version": "1.24.0",
+      "source_commit": "490a77ed2ada148b7b7dc4a89a0ef793cad5ad4d",
+      "game_tree": "0977708f29cab56274156bc184d6a0fa4a5fe7af",
+      "protocol": 23,
+      "platform": "windows-x86_64",
+      "engine_patch_count": 19,
+      "unchanged_qualified_engine": false,
+      "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88 plus common patches 1\u201316 and Vulkan RT uniform patch and standalone FSR patch and DXR patch",
+      "compiled_scripts": 402,
+      "resource_count": 1283,
+      "formula_api": 1,
+      "package_api": 3,
+      "fsr_in_normal_settings": true,
+      "qualified_engine_template_sha256": "918ca9e047c310f4351461adb2d652d406c02d014b965e1bbccee334ab1fde8c"
+    },
+    "macos-universal": {
+      "version": "1.24.0",
+      "source_commit": "490a77ed2ada148b7b7dc4a89a0ef793cad5ad4d",
+      "game_tree": "0977708f29cab56274156bc184d6a0fa4a5fe7af",
+      "protocol": 23,
+      "platform": "macos-universal",
+      "unsigned": true,
+      "target_os_runtime_tested": false,
+      "compiled_scripts": 402
+    }
+  },
+  "native_helper_sha256": {
+    "libterrain_search.so": "3b547a0da133029f9c4948dccc641cbdc1b9e5e275c6b01c4a7589d1006eaea5",
+    "libterrain_search.dll": "195615273fcdce04331d3631c62d3da75bd79c689e261c7c1fc73ae98236e63d"
+  },
+  "engine_templates": {
+    "windows": "Godot 4.7 5b4e0cb0 with common patches 1-16, Vulkan RT uniform stages, standalone FSR and the DXR patch (water-raytracing-20261021/dx12-quality build).",
+    "linux": "The 1.23.0 Linux executable (template with common patches 1-16 and the Vulkan RT uniform patch, debug symbols stripped) reused; the DXR patch changes only Direct3D 12 code paths.",
+    "android": "Template rebuilt from the published 1.23.0 APK after the local template file was removed; engine, classes.dex and libc++ match the recorded template hashes (release-container.json)."
+  },
+  "cross_platform": {
+    "version": "1.24.0",
+    "compiled_scripts": 402,
+    "all_compiled_scripts_byte_identical_to_desktop": true,
+    "all_five_platforms_identical": true,
+    "no_original_game_data_saves_or_private_probes": true,
+    "same_public_certificate": true,
+    "version_code": 58,
+    "debuggable": false,
+    "apk_sha256": "382654eae55f049a485409476eb0ac13b60ca6d07bc48d63507656f26f4349e8",
+    "native_libraries": {
+      "lib/arm64-v8a/libc++_shared.so": "c4c2fe5cbcb1fba0003a31fc7ab29a9bb12df6cc187ec45a806462540e83d93b",
+      "lib/arm64-v8a/libgodot_android.so": "5715b3e0ee30c9b42f724ceed1a0571d51240d6cd1d2abd6105ebe0ca44fa8bd",
+      "lib/arm64-v8a/libinstaller_lzma_android.so": "754aba0b1dac3e86bb2aa5716fb534f58b8f631960099a5877cc905cc2e72a10",
+      "lib/arm64-v8a/libmod_archive_android.so": "1cd53e6e87bc9f75cb098786b07d66d93a6a2dfec4d068c75d08043e2d9025d1",
+      "lib/arm64-v8a/libterrain_search_android.so": "db4560020be613f63e061defa86ac14555d0cd8ea8c7d0b7c72d306f306dff1a"
+    },
+    "production_template_java_unchanged": true,
+    "engine_patch_count": 16
+  },
+  "android_device": {
+    "device": "Retroid Pocket 5 (kona, USB ADB)",
+    "apk_sha256": "382654eae55f049a485409476eb0ac13b60ca6d07bc48d63507656f26f4349e8",
+    "install": "adb install -r over the existing signed installation: Success",
+    "installed_version": {
+      "versionCode": 58,
+      "versionName": "1.24.0"
+    },
+    "launch": "Reached the main menu showing \"\u0412\u0435\u0440\u0441\u0438\u044f 1.24.0\" at 60 FPS (rp5-start.png); no Godot, script or extension errors in the process log",
+    "manifest_note": "Re-exporting over a template rebuilt from the published 1.23.0 APK repeats two Godot meta-data entries and the INTERNET permission with identical values; the device installs and starts normally."
+  },
+  "branding": {
+    "windows_icon_sizes": [
+      16,
+      32,
+      48,
+      64,
+      128,
+      256
+    ],
+    "windows_icon_pixels_exact": true,
+    "windows_version": "1.24.0.0",
+    "macos_icon_exact": true,
+    "web_icons_exact": true,
+    "approved_master_sha256": "86b2cc11598f22a835a476486f8ea36a3384b6bfda03f0531369381da36cde18"
+  },
+  "browser": {
+    "version": "1.24.0",
+    "cache_upgrade": {
+      "passed": true,
+      "old_cache": "cursed-engine-2-895dd0cbef0e332d3385",
+      "new_cache": "cursed-engine-2-2f9c2dbea1a491210378",
+      "indexeddb_preserved": true,
+      "database_names": [
+        "/userfs",
+        "cursed-lands-data-v1"
+      ],
+      "pck_sha256": "bd558f8d96d0dc129f56901d3ed3c684ef2c2126f0cd04b5c9e873b90e1286c6",
+      "old_tab_wait_verified": true
+    },
+    "cache": {
+      "keys": [
+        "cursed-engine-2-2f9c2dbea1a491210378"
+      ],
+      "packs": {
+        "cursed-engine-2-2f9c2dbea1a491210378": "bd558f8d96d0dc129f56901d3ed3c684ef2c2126f0cd04b5c9e873b90e1286c6"
+      },
+      "worker": "activated",
+      "waiting": null,
+      "isolated": true
+    },
+    "fresh_start": {
+      "passed": true,
+      "origin": "http://127.0.0.1:30931/",
+      "actual_wasm_started": true,
+      "reached": "Original game-data installation screen (after Play on the launcher page)",
+      "error_logs": [
+        "Failed to load resource: 404 (browser favicon request; the package has no favicon.ico, as in earlier releases)"
+      ],
+      "profile": {
+        "isolated": true,
+        "confine_mouse": 0,
+        "show_fps": 1,
+        "volume_sfx": 0,
+        "volume_stream": 0,
+        "volume_voice": 0
+      },
+      "screenshot": "browser-fresh-start.png"
+    }
+  },
+  "limits": [
+    "Linux Vulkan tested on an NVIDIA RTX 3090. Windows Direct3D 12 (DXR) and Vulkan packages exercised under Wine/VKD3D on that host; a physical Windows system was not available.",
+    "Android installed and started to the main menu on a Retroid Pocket 5; macOS passed source/archive/branding checks without target-device runtime testing.",
+    "Ray-traced lighting and path tracing are experimental and off by default; they cost GPU time and moving scenes can remain noisy.",
+    "Pre-existing source-tree test failures that also fail without this release (listed under source_tests.preexisting_failures) were not addressed here.",
+    "Browser validation covers WebAssembly startup to the installation screen and the 1.23.0 to 1.24.0 cache upgrade with stored data preserved; it does not import original game data."
+  ],
+  "publication": {
+    "version": "1.24.0",
+    "url": "https://github.com/TheWWWorm/CursedLands/releases/tag/v1.24.0",
+    "isDraft": false,
+    "isPrerelease": false,
+    "publishedAt": "2026-10-22T20:40:27Z",
+    "tag_commit": "f9ba9dd1a3a1813a194fd89da82b10bb953fb494",
+    "release_id": 421179960,
+    "assets": [
+      {
+        "name": "CursedLands-1.24.0-android.apk",
+        "bytes": 47063964,
+        "sha256": "sha256:382654eae55f049a485409476eb0ac13b60ca6d07bc48d63507656f26f4349e8",
+        "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.24.0/CursedLands-1.24.0-android.apk"
+      },
+      {
+        "name": "CursedLands-1.24.0-linux-x86_64.tar.gz",
+        "bytes": 62375062,
+        "sha256": "sha256:9aa87a00993ce1f6332059042d742b480f775755c481ed59d2671921077d2313",
+        "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.24.0/CursedLands-1.24.0-linux-x86_64.tar.gz"
+      },
+      {
+        "name": "CursedLands-1.24.0-macos-universal.zip",
+        "bytes": 90796475,
+        "sha256": "sha256:f72bc5df14c8f5333b0097418675dcebebad827e50cd086154cb71b37b42b7d5",
+        "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.24.0/CursedLands-1.24.0-macos-universal.zip"
+      },
+      {
+        "name": "CursedLands-1.24.0-tools.zip",
+        "bytes": 73183,
+        "sha256": "sha256:239fb2d23bdee4cfffcd3f563f05f42ebf44a2a2790b63242b78d2d574696b0c",
+        "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.24.0/CursedLands-1.24.0-tools.zip"
+      },
+      {
+        "name": "CursedLands-1.24.0-web.zip",
+        "bytes": 184277751,
+        "sha256": "sha256:f98c3cca00c1344dbfcb3d7e8b6d151016a09fa72e93546d95478e2de5a1376d",
+        "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.24.0/CursedLands-1.24.0-web.zip"
+      },
+      {
+        "name": "CursedLands-1.24.0-windows-x86_64.zip",
+        "bytes": 111049409,
+        "sha256": "sha256:faac6461a5094a748833ced420fb1f305c7d3cf1a9395a2dd982b0a111121ce5",
+        "url": "https://github.com/TheWWWorm/CursedLands/releases/download/v1.24.0/CursedLands-1.24.0-windows-x86_64.zip"
+      }
+    ],
+    "all_public_downloads_sha256_verified": true
+  },
+  "deployment": {
+    "site": "https://cursedlands.wwworm.com/",
+    "commit": "f9ba9dd1a3a1813a194fd89da82b10bb953fb494",
+    "version": "1.24.0",
+    "verified_at": "2026-10-22T20:43:30Z",
+    "all_live_hashes_match": true,
+    "scope": "Every changed hosted asset, complete service-worker engine cache, build metadata and split WebAssembly parts",
+    "live_file_count": 22
+  }
+}

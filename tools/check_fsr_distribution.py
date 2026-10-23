@@ -5,6 +5,8 @@ from pathlib import Path
 import re
 import subprocess
 
+from prepare_fsr_sdk import AGILITY_CORE_SHA256, AGILITY_VERSION, digest
+
 FORBIDDEN_PATH = re.compile(
     r"dlss|streamline|(?:^|/)rtx[^/]*|nvidia-geforce|splash-(?:nvidia|graphics)|"
     r"(?:^|/)(?:sl\.[^/]+|nvngx[^/]*|_nvngx[^/]*)\.dll$", re.I)
@@ -48,6 +50,13 @@ def check_package(package):
         if path.is_file() and FORBIDDEN_PATH.search(str(path.relative_to(package))):
             raise ValueError(f"Excluded package file: {path.relative_to(package)}")
     check_template(package / "CursedLands.exe")
+    # Without the Agility runtime Godot silently falls back to the system
+    # D3D12 runtime, which can lack enhanced barriers (1.24.0 shipped so).
+    core = package / "x86_64/D3D12Core.dll"
+    if not core.is_file() or digest(core) != AGILITY_CORE_SHA256:
+        raise ValueError(f"Package lacks the verified DirectX Agility {AGILITY_VERSION} runtime: x86_64/D3D12Core.dll")
+    if not (package / "licenses/Microsoft-DirectX/LICENSE.txt").is_file():
+        raise ValueError("Package lacks the DirectX Agility license")
 
 
 if __name__ == "__main__":

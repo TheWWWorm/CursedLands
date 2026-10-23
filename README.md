@@ -12,7 +12,7 @@ This is a separate game engine, built in Godot, in the spirit of OpenMW and fher
 
 Windows and Linux x86-64 and Android ARM64 use compiled hot paths. macOS and the browser retain script implementations. Source and build instructions are in [the native guide](game/src/native/source/README.md).
 
-The current stable release is [**1.23.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.23.0), available for Windows, Linux, Android, macOS and the [browser](https://cursedlands.wwworm.com/). It adds optional experimental ray-traced water reflections on Windows/Linux with Forward+ Vulkan, including animated characters, cutout foliage and direct-light shadows, and corrects reverse-facing river reflections. See the [release notes](docs/releases/1.23.0.md), [water reflection guide](docs/integrations/water-raytracing-experiment.md), [console guide](docs/console.md), [FSR guide](docs/integrations/fsr-experiment.md) and [versioning policy](docs/versioning.md).
+The current stable release is [**1.24.0**](https://github.com/TheWWWorm/CursedLands/releases/tag/v1.24.0), available for Windows, Linux, Android, macOS and the [browser](https://cursedlands.wwworm.com/). It updates only the creatures near the party in campaign zones as the original does, fixes side quests on campaign maps, opens village topics at once, adds DX12 ray-traced water and experimental ray-traced lighting, and gives Autochess creatures their original rank palettes. See the [release notes](docs/releases/1.24.0.md), [water reflection guide](docs/integrations/water-raytracing-experiment.md), [ray-traced lighting guide](docs/integrations/scene-raytracing-experiment.md), [console guide](docs/console.md), [FSR guide](docs/integrations/fsr-experiment.md) and [versioning policy](docs/versioning.md).
 
 Browse the [**public wiki**](https://cursedlands.wwworm.com/wiki/) without game files or an account. Separate tabs cover the GOG base game and Lost in Astral: items, materials, spells, runes, creatures and mechanics in English, Russian and German.
 
@@ -218,13 +218,13 @@ Saves and settings are kept in the engine's user folder:
 
 Open the `game` folder in [Godot 4.7](https://godotengine.org/) and export with the included presets. The Windows and Linux release packages use the [patched desktop templates](engine_patches/godot-4.7/README.md).
 
-For a source run with an unmodified Godot binary, launch with
-`godot --path game --render-thread safe` (substitute your Godot executable).
-The project enables a separate render thread for the patched Linux template;
-Windows uses Safe by default. Stock Godot 4.7.2 can abort during shutdown with that mode. In an editor-launched
-run, set the active platform's **Thread Model** override to **Safe** in your local
-project settings. The source checkout keeps GDScript and shader files at LF line
-endings through `.gitattributes`, including on Windows.
+Source and editor runs use the Safe render thread model, so an unmodified
+Godot binary needs no extra options. Only Linux exports enable the separate
+render thread, through the preset's `render_thread_patched` feature, because
+the patched Linux template has the fixes that mode needs. Exporting Linux with
+stock templates therefore needs that feature removed from the preset. The
+source checkout keeps GDScript and shader files at LF line endings through
+`.gitattributes`, including on Windows.
 
 The [original-engine comparison suite](docs/original-parity.md) runs bounded
 scenarios against the original executable and the remake independently, records

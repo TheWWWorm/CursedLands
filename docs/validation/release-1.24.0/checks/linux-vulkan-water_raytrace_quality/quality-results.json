@@ -1,0 +1,29 @@
+{
+	"measurements": [
+		{
+			"case": "cutout-false-offset-0.0",
+			"four_sample_error": 0.000726699829101562,
+			"fractional_pixels": 101,
+			"single_error": 0.00209999084472656
+		},
+		{
+			"case": "cutout-false-offset-0.027",
+			"four_sample_error": 0.0006866455078125,
+			"fractional_pixels": 101,
+			"single_error": 0.00210952758789062
+		},
+		{
+			"case": "cutout-true-offset-0.0",
+			"four_sample_error": 0.00373268127441406,
+			"fractional_pixels": 354,
+			"single_error": 0.00881004333496094
+		},
+		{
+			"case": "cutout-true-offset-0.027",
+			"four_sample_error": 0.00373649597167969,
+			"fractional_pixels": 351,
+			"single_error": 0.00860595703125
+		}
+	],
+	"renderer": "vulkan"
+}

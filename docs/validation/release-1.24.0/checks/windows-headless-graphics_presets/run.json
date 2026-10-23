@@ -1,0 +1,37 @@
+{
+  "suite": "graphics_presets",
+  "platform": "windows",
+  "renderer": "headless",
+  "exit": 0,
+  "seconds": 7.27,
+  "errors": [],
+  "summary": [
+    "GRAPHICS_PRESETS {\"checks\":279,\"failures\":0}"
+  ],
+  "command": [
+    "/home/llm2x/Documents/EI/local/scratchpad/zone-speed-retention-20261019/wine-tools/root/usr/lib/wine/wine64",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.24.0-20261022/release/CursedLands-1.24.0-windows-x86_64/CursedLands.exe",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--gpu-index",
+    "0",
+    "--headless",
+    "--",
+    "--ei-path=Z:/home/llm2x/Documents/EI/inspection/extracted/app",
+    "--no-movies",
+    "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/release-1.24.0-20261022/release/fixtures-windows/graphics_presets.gd",
+    "--audit-out=Z:/home/llm2x/Documents/EI/local/scratchpad/release-1.24.0-20261022/release/checks/windows-headless-graphics_presets",
+    "--mod-tests",
+    "--examples=Z:/home/llm2x/Documents/EI/local/scratchpad/release-1.24.0-20261022/release/CursedLands-1.24.0-windows-x86_64/mods"
+  ],
+  "profile": {
+    "isolated": true,
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  }
+}

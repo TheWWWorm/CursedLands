@@ -1,0 +1,11 @@
+{
+  "device": "Retroid Pocket 5 (kona, USB ADB)",
+  "apk_sha256": "382654eae55f049a485409476eb0ac13b60ca6d07bc48d63507656f26f4349e8",
+  "install": "adb install -r over the existing signed installation: Success",
+  "installed_version": {
+    "versionCode": 58,
+    "versionName": "1.24.0"
+  },
+  "launch": "Reached the main menu showing \"\u0412\u0435\u0440\u0441\u0438\u044f 1.24.0\" at 60 FPS (rp5-start.png); no Godot, script or extension errors in the process log",
+  "manifest_note": "Re-exporting over a template rebuilt from the published 1.23.0 APK repeats two Godot meta-data entries and the INTERNET permission with identical values; the device installs and starts normally."
+}

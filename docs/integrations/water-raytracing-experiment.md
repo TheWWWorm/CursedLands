@@ -1,22 +1,21 @@
 # Water ray-tracing experiment
 
 This experimental feature adds **Options → Graphics → Water → Water reflections →
-Ray traced (test)**. The development build traces hardware rays with Direct3D 12 or Vulkan into nearby terrain
+Ray traced (test)**. It traces hardware rays with Direct3D 12 or Vulkan into nearby terrain,
 objects and animated creatures, then feeds the result into the existing water tint,
 distortion and Fresnel shading. It is an optional fourth choice; defaults,
 automatic detection and all graphics presets continue to use existing modes.
 The label, choices and help are available in English, Russian and German.
 
-The unreleased [scene lighting experiment](scene-raytracing-experiment.md) adds
+The [scene lighting experiment](scene-raytracing-experiment.md) adds
 separate main-view RT shadows and one-bounce diffuse GI using this backend.
 Its controls, quality budget and output textures are independent of water RT.
 
 ## API support
 
-The published **1.23.0** Windows and Linux executables support this experiment
-with **Forward+ (Vulkan)**. Their Direct3D 12 mode falls back to Mirror.
+Since **1.24.0**, the Windows executable also supports DXR. 1.23.0 supported
+this experiment only with **Forward+ (Vulkan)** and used Mirror in Direct3D 12.
 
-The **unreleased DX12 development build** adds DXR to the Windows executable.
 Select **Forward+ (Direct3D 12)** under Screen settings, then **Graphics → Water →
 Water reflections → Ray traced (test)**. DX12 is the primary Windows path;
 Vulkan remains supported. Both need a GPU and driver with hardware ray tracing.
@@ -158,7 +157,7 @@ not describe the new four-sample path. Compare reflection GPU time and whole-fra
 time separately: a CPU-limited scene may keep the same FPS even if RT uses less
 GPU time. RT and Mirror still differ in material fidelity.
 
-## DX12 and reflection clarity (unreleased)
+## DX12 and reflection clarity (1.24.0)
 
 DX12 is the primary Windows development target. The shared shader uses four
 spatial samples per reflection pixel at every quality level. Graphics → Water →
@@ -225,7 +224,7 @@ messages and the source-based attribution are retained in the evidence; this
 is not a clean native D3D12 debug-layer result. Native Windows and other GPU
 vendors remain unqualified.
 
-## Texture filtering follow-up (unreleased)
+## Texture filtering follow-up (1.24.0)
 
 The earlier RT shader estimated one mip level from triangle edge lengths.
 It could blur detail that should remain visible, especially with stretched
@@ -261,7 +260,7 @@ scene does not establish the cost on other GPUs or texture-heavy scenes.
 See the [filtering validation bundle](../validation/water-rt-filtering-2026-10-22/summary.json)
 for screenshots, measurements and the regression checks after merging
 `feature/autochess-rank-variants-20261021` through `c1f094ae`. These changes are
-unreleased; native Windows qualification remains outstanding. The DX12 river
+included in 1.24.0; native Windows qualification remains outstanding. The DX12 river
 fixture passed its rendering assertions, then reproduced the previously
 recorded Wine shutdown page fault after the game's clean-exit message. This
 change does not resolve that existing shutdown issue.

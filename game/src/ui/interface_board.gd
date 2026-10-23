@@ -19,6 +19,8 @@ const TAN := 0.48157462
 var _vp: SubViewport
 var _cam: Camera3D
 var _fig: Node3D
+var _shown_at := Vector3.INF   # the board position its viewport last rendered
+var _reveal_serial := 0
 
 
 static func create(model: String, skin: String, labels: String, parts: PackedStringArray,
@@ -84,6 +86,36 @@ static func _unshaded(m: StandardMaterial3D) -> StandardMaterial3D:
 	var u: StandardMaterial3D = m.duplicate()
 	u.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	return u
+
+
+func _notification(what: int) -> void:
+	if what != NOTIFICATION_VISIBILITY_CHANGED or _fig == null:
+		return
+	_reveal_serial += 1
+	if not is_visible_in_tree():
+		_shown_at = _fig.position
+		_vp.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
+		self_modulate.a = 1.0
+	elif _fig.position != _shown_at and _shown_at != Vector3.INF \
+			and DisplayServer.get_name() != "headless":
+		_reveal()
+
+
+## Reopened elsewhere (a screen's slide starts below): the viewport still holds
+## the picture of the previous opening on the first visible frame. Keep the
+## board transparent until its new position has rendered, through two draw
+## completions as the separate render thread may report the earlier draw first.
+func _reveal() -> void:
+	var serial := _reveal_serial
+	self_modulate.a = 0.0
+	# A transparent TextureRect is culled; render the hidden board explicitly.
+	_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	for i in 2:
+		await RenderingServer.frame_post_draw
+		if serial != _reveal_serial or not is_visible_in_tree():
+			return
+	self_modulate.a = 1.0
+	_vp.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
 
 
 func _process(_dt: float) -> void:

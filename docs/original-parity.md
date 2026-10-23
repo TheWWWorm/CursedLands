@@ -10,6 +10,8 @@ This suite covers **bounded subsystems**. It does not replay a whole
 Windows game session or establish campaign equivalence.
 The companion [gameplay regression suite](gameplay-testing.md) exercises quest
 scripts, creatures, animation, effects, stealth, commands and pathing.
+[Quest checkpoints](original-checkpoints.md) compare whole quest steps
+against saves made in the original game.
 
 ## Run it
 

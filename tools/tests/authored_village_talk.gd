@@ -71,7 +71,7 @@ func _ready() -> void:
 	s=ProbeSession.new(); s.state=CampaignState.new(); s.state.campaign_id=CampaignProfile.ASTRAL
 	s.zone_id="bz23k"; w=GameWorld.new(); w.zone={"id":"bz23k", "type":"brief"}; s.world=w; w.session=s
 	nav=ProbeNav.new(); w.nav=nav
-	vm=ScriptVM.new(); vm.world=w; vm.session=s; w.vm=vm
+	vm=ScriptVM.new(); vm.world=w; vm.session=s; w.vm=vm; vm.ast=ScriptParser.new()
 	b=ProbeBriefings.new(vm); vm.briefings=b
 	heroes.append(add_actor(101,0,Vector2(32.5,66),"Hero"))
 	heroes.append(add_actor(102,1,Vector2(33.5,66),"Guest"))
@@ -103,8 +103,7 @@ func _ready() -> void:
 	heroes[0].set_meta("interact",[other,0])
 	click()
 	check(topic_count()==1,"fallback click opens the ordinary topic event")
-	check(heroes[0].order.is_empty() and heroes[0].orders.size()==1 and heroes[0].orders[0].type=="wait"
-		and heroes[0].path.is_empty() and not heroes[0].has_meta("interact"),"fallback stops old movement and pending interaction")
+	check(not heroes[0].has_meta("interact"),"village click drops a pending field interaction")
 	check(b._original_village_topics.has(0),"host receives transient topic context")
 	click(1)
 	check(topic_count()==2 and s.events[-1].player==1,"guest's own click receives a guest-scoped topic list")
@@ -123,26 +122,24 @@ func _ready() -> void:
 
 	# Goodbye is local UI state. A reopen must evaluate the new command, and
 	# a subsequent walk or changed target must clear the old host-only marker.
+	# The original opens village topics at once for a reachable NPC too; the
+	# hero walks only after a topic is picked (walking staging).
 	click(); nav.route_open=true; click()
-	check(not b._original_village_topics.has(0) and heroes[0].orders[0].type=="follow" and heroes[0].has_meta("interact"),
-		"reachable reopen replaces fallback context with cancellable approach")
-	check(topic_count()==previous+1,"reachable reopen publishes no topics before arrival")
-	heroes[0].pos=npc.pos+Vector2(1,0); vm._check_interactions()
-	check(topic_count()==previous+2 and not heroes[0].has_meta("interact"),"reachable approach publishes topics only on arrival")
+	check(topic_count()==previous+2 and b._original_village_topics.has(0) \
+		and heroes[0].orders.all(func(o): return o.type != "follow") and not heroes[0].has_meta("interact"),
+		"reachable click opens topics at once without an approach")
 	select()
-	check(not b.started[-1].instant and b.started[-1].approached,"reachable conversation retains D15 in-place staging")
-	heroes[0].pos=home
+	check(not b.started[-1].instant and b.started[-1].approached,"reachable conversation uses walking staging")
 	click(); previous=topic_count()
 	s.apply_command({"t":"move", "units":[heroes[0].uid], "x":30.0, "y":60.0},0)
-	vm._check_interactions()
-	check(not heroes[0].has_meta("interact") and topic_count()==previous,"replacement movement cancels normal approach without dialogue")
-	click(); heroes[0].orders.clear(); heroes[0].order={}; heroes[0].order_failed=true; vm._check_interactions()
-	check(not heroes[0].has_meta("interact") and topic_count()==previous,"failed normal approach is cleared without instant fallback")
+	check(not b._original_village_topics.has(0) and topic_count()==previous,"movement after opening topics clears their context without dialogue")
 
 	nav.route_open=false; click(); previous=topic_count()
 	s.state.set_var(0,"b.Other.fq15",1); click(0,other)
-	check(not b._original_village_topics.has(0) and topic_count()==previous and heroes[0].has_meta("interact"),
-		"changed target clears fallback context before its ordinary approach finishes")
+	check(topic_count()==previous+1 and b._original_village_topics.get(0,[0])[0]==other.uid,
+		"changed target replaces the fallback context with its own")
+	select()
+	check(not b.started[-1].instant,"a topic picked against the replaced context cannot use Haburu's staging")
 	click(); s.apply_command({"t":"move", "units":[heroes[0].uid], "x":30.0, "y":60.0},0)
 	check(not b._original_village_topics.has(0),"movement after topic cancellation clears original context")
 	click(); select(0,"b.Haburu.unavailable")

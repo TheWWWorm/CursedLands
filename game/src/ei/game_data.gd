@@ -693,7 +693,8 @@ func open(path: String) -> String:
 	# quest items are added.
 	var lmp := EIResArchive.open_path(path.path_join("res/databaselmp.res"))
 	if lmp:
-		db.merge_missing(EIDatabase.load_from(lmp, true), "quest_items")
+		db.fallback = EIDatabase.load_from(lmp, true)
+		db.merge_missing(db.fallback, "quest_items")
 	ai_reg = EIRegFile.parse(GameFiles.read(path.path_join("config/ai.reg")))
 	ground_types.clear()
 	var aiinfo := EIResArchive.open_path(path.path_join("res/aiinfo.res"))

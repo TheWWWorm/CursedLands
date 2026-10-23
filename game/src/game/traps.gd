@@ -64,7 +64,7 @@ func restore_state(s: Dictionary) -> void:
 func tick() -> void:
 	for nid in traps:
 		var t: Dictionary = traps[nid]
-		if String(t.spell).is_empty():
+		if String(t.spell).is_empty() or not world.active_set.trap_awake(int(nid)):
 			continue
 		if int(t.interval) < 1:
 			_tick_on_entry(t)

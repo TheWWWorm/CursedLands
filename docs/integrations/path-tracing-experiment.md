@@ -1,12 +1,13 @@
-# Path-traced lighting
+# Path-traced lighting prototype (experimental)
 
-The development build adds an optional multi-bounce lighting mode for nearby
+Since 1.24.0, the Windows and Linux builds add an optional multi-bounce lighting mode for nearby
 terrain, objects and characters. It traces direct shadows, diffuse colour
 transport and rough glossy reflections through two or four surface bounces.
 It is a bounded lighting prototype: the main view still uses raster visibility,
 material composition, sky, fog, water and particles. It is not a replacement
-for the complete renderer. These notes describe the current development branch;
-individual validation reports identify the source and builds they qualify.
+for the complete renderer. It first shipped in 1.24.0. These notes also describe
+subsequent development; individual validation reports identify the source and
+builds they qualify.
 
 ## Controls
 

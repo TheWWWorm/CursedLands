@@ -65,7 +65,9 @@ func step(vm: ProbeVM, count: int) -> void:
 		vm.time+=ScriptVM.POLL
 		vm.world.time=vm.time
 		var live:=vm.instances.duplicate(); live.reverse()
+		vm._forget_conditions()   # as ScriptVM._tick does before its trigger pass
 		for inst: ScriptVM.Instance in live: vm._run(inst)
+		vm._forget_conditions()   # as ScriptVM._tick ends each pass
 		vm.instances=vm.instances.filter(func(inst):return not inst.killed or not inst.frames.is_empty())
 
 func trace(role: int, adapt: bool) -> Array:

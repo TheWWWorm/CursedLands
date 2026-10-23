@@ -1091,8 +1091,10 @@ func replay_restored(world: GameWorld) -> void:
 func store_zone(id: String, world: GameWorld) -> void:
 	if world == null or id.is_empty():
 		return
+	# "left": the campaign clock when the zone was stored, the original's
+	# zt.<zone> (base 57a21d) that its revisit simulates the absence from.
 	var z := {"dead": [], "removed": [], "units": {}, "levers": {}, "vm": {}, "loot": {}, "carried": {}, "blood_pools": {},
-		"added": world.get_meta("added_mobs", []), "detached": []}
+		"added": world.get_meta("added_mobs", []), "detached": [], "left": get_var(0, "gtime")}
 	var present := {}
 	for u: GameUnit in world.units.values():
 		if u.has_meta("hero") or is_pet(u):
@@ -1211,6 +1213,8 @@ func restore_zone(id: String, world: GameWorld) -> void:
 	var z: Dictionary = zones.get(id, {})
 	if z.is_empty():
 		return
+	# A saved zone wakes its magic traps (ObjectActivity).
+	world.active_set.restored = true
 	var removed: Array = Array(z.get("removed", [])).duplicate()
 	var looted: Array = z.get("looted", [])
 	# Party members dismissed by scripts can stay in a zone whose base .mob
@@ -1462,6 +1466,7 @@ static func load_from(path: String) -> CampaignState:
 	s.migrate_runes()
 	s.cap_belts()   # saves of builds whose belt took eight
 	TrainingRefund.migrate_state(s)
+	preload("res://src/game/script/camp_grants.gd").repair_state(s)
 	return s
 
 

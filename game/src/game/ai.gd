@@ -1625,6 +1625,10 @@ func _susp_go(u: GameUnit, s: Dictionary, at: Vector2, p: float) -> void:
 ## unit that is a diplomacy friend, a call for help at the attacker's spot
 ## (no attacker: the unit's own).
 func hit_hook(u: GameUnit, by: GameUnit) -> void:
+	# An attacked unit wakes (553f40 -> 58d5d0, ObjectActivity): a trap or
+	# a long shot reaches a frozen unit.
+	if not u.dead:
+		world.active_set.wake_unit(u)
 	if by and is_instance_valid(by):
 		if world.relation(u.faction, by.faction) != 0:
 			call_for_help(u, by.pos)
@@ -1692,7 +1696,7 @@ func tick() -> void:
 	# x the ground's StepSound (folded into GameUnit.noise), 26 ticks.
 	if _tick_n & 15 == 0 and world.authority:
 		for u: GameUnit in world.unit_rows():
-			if not u.dead and not u.hidden:
+			if not u.dead and not u.hidden and world.active_set.is_awake(u):
 				var loud := u.noise() * u.detect(3)
 				if loud > 0.0:
 					noise_event(u, loud)

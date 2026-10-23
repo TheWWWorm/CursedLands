@@ -49,6 +49,7 @@ func _ready() -> void:
 		guest.skills.science = 42
 		guest.complexion = Vector3(.3,.4,.6)
 		var old := guest.duplicate(true)
+		var host_tot := float(host.exp_total)
 		var main := actor(w,1500000001,0,host)
 		var joiner := actor(w,1500000002,1,guest)
 		var kel_record := host.duplicate(true)
@@ -70,6 +71,29 @@ func _ready() -> void:
 		check(guest[Grants.KEY].role == "hero" and kel_record[Grants.KEY].role == "kel",branch+" companion ownership does not remap role")
 		for key: String in Grants.KEL[branch]:
 			check(kel_record[Grants.KEY].effects.has(key),branch+" Kel gets authored "+key)
+		# The original GiveSkill pays for the levels in total experience.
+		var paid := func(_h: Dictionary, o: Dictionary, plan: Dictionary) -> float:
+			var sum := float(o.get("exp_total", 0.0))
+			for key: String in plan:
+				if key in ["str","dex","int"]: continue
+				var lvl := int(o.get("skills",{}).get(key,0))
+				sum += Skills.span_cost(lvl, lvl+int(plan[key]))
+			return sum
+		check(is_equal_approx(float(guest.exp_total), paid.call(guest, old, Grants.HERO[branch])),branch+" guest skill price joins total experience")
+		check(float(guest.exp) == float(old.exp),branch+" spendable experience unchanged")
+		if branch == "b":
+			# Original LiA: Kir 36 HP / 24 stamina, Kel 22 HP / 32 stamina.
+			check(float(host.exp_total) == 47.0,"b Kir total experience as the original")
+			var fresh_kel := CampaignState.npc_character({"prototype":"merc2","name":"merc2"})
+			for key: String in Grants.KEL.b: Grants.grant(fresh_kel,"b","kel",key)
+			check(float(fresh_kel.exp_total) == float(CampaignState.npc_character({"prototype":"merc2","name":"merc2"}).exp_total)+26.0,"b Kel total experience as the original")
+			check(roundi(Skills.base_pool(float(fresh_kel.exp_total),float(fresh_kel.str))) == 22,"b Kel 22 HP as the original")
+		var legacy := host.duplicate(true)
+		legacy[Grants.KEY].erase("xp")
+		var before := float(legacy.exp_total)
+		legacy.exp_total = host_tot
+		check(Grants.repair_xp(legacy) and is_equal_approx(float(legacy.exp_total),before),branch+" legacy receipt repaired once")
+		check(not Grants.repair_xp(legacy),branch+" repaired receipt stays")
 		check(s.state.heroes[2][0][Grants.KEY] == host[Grants.KEY],branch+" absent guest retains grant")
 		var finished := guest.duplicate(true)
 		vm.spawn(script,[null]); vm._run(vm.instances[-1])

@@ -1,0 +1,57 @@
+{
+ "campaign": "original",
+ "from_zone": "bz7g",
+ "note": "enter gz10g from bz7g",
+ "steps": [
+  {
+   "enter": "gz10g"
+  }
+ ],
+ "vars_after": {
+  "AnimPray": 1.0,
+  "CaveGMusic": 1.0,
+  "FTin4Zone": 1.0,
+  "Said1": 1.0,
+  "ZT1": 1.0,
+  "b.bz2g.z0": 2.0,
+  "b.daughter.z0_1": 1.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "z.bz5g": 2.0,
+  "z.gz1g_gz2g": 1.0,
+  "z.gz2g_gz3g": 1.0,
+  "z.gz4g_gz10g": 1.0
+ },
+ "vars_before": {
+  "AnimPray": 1.0,
+  "CaveGMusic": 1.0,
+  "FTin4Zone": 1.0,
+  "Said1": 1.0,
+  "ZT1": 1.0,
+  "b.bz2g.z0": 2.0,
+  "b.daughter.z0_1": 1.0,
+  "b.merc1.n11_1": 1.0,
+  "b.merc10.n11_10": 1.0,
+  "b.merc2.n11_2": 1.0,
+  "b.merc3.n11_3": 1.0,
+  "b.merc4.n11_4": 1.0,
+  "b.merc5.n11_5": 1.0,
+  "b.merc6.n11_6": 1.0,
+  "b.merc7.n11_7": 1.0,
+  "b.merc8.n11_8": 1.0,
+  "b.merc9.n11_9": 1.0,
+  "z.bz5g": 2.0,
+  "z.gz1g_gz2g": 1.0,
+  "z.gz2g_gz3g": 1.0,
+  "z.gz4g_gz10g": 1.0
+ },
+ "zone": "gz10g"
+}

@@ -66,6 +66,9 @@ class Instance:
 	## A body thread's trigger instance, which its KillScript disposes. Not
 	## saved: the original allows KillScript only in a body's first slice.
 	var owner: Instance = null
+	## Condition-sharing key prefix (ScriptVM._memo_key); "" = unshared.
+	## Trigger copies never change their parameters, so it is built once.
+	var memo_key: Variant = null
 
 
 static func create(w: GameWorld, s: Session) -> ScriptVM:
@@ -100,6 +103,7 @@ static func create(w: GameWorld, s: Session) -> ScriptVM:
 		preload("res://src/game/script/story_compat.gd").restore_tunnel_guard(vm)
 		preload("res://src/game/script/story_compat.gd").recover(vm)
 	if not quest_world.is_empty() and String(restored.get("quest", "")) != String(w.get_meta("quest_mob", "")):
+		SideQuests.prepare_levers(w, vm, String(w.get_meta("quest_mob", "")))
 		vm._start_world(quest_world, quest_src)
 	# An explicit load restores both GS flags and their waiting consumers.
 	# Deployment recalculation would erase a completed hire flag before the
@@ -192,8 +196,10 @@ func _tick(dt: float) -> void:
 	# VTriger#0#138 -> VCheck#0#108 at night.) `instances` is kept oldest
 	# first; body threads are killed instances with frames.
 	_seen_memo.clear()   # the steps above may have changed what units notice
-	var threads := instances.filter(func(x: Instance): return not x.frames.is_empty())
-	threads.reverse()
+	var threads: Array[Instance] = []
+	for i in range(instances.size() - 1, -1, -1):
+		if not instances[i].frames.is_empty():
+			threads.append(instances[i])
 	var presenting := false
 	for inst: Instance in threads:
 		_run(inst)
@@ -206,12 +212,21 @@ func _tick(dt: float) -> void:
 		# in this pass, and each Su<i> starts Su<i+1> for the next one.
 		if not qobjs.is_empty():
 			_check_quest_objectives()
-		var triggers := instances.filter(func(x: Instance): return x.frames.is_empty() and not x.killed)
-		triggers.reverse()
+		_forget_conditions()   # the objective checks above may have changed state
+		var triggers: Array[Instance] = []
+		for i in range(instances.size() - 1, -1, -1):
+			var x: Instance = instances[i]
+			if x.frames.is_empty() and not x.killed:
+				triggers.append(x)
 		for inst: Instance in triggers:
 			_run(inst)
 			if session.movie_active(): break
-	instances = instances.filter(func(x: Instance): return not (x.killed and x.frames.is_empty()))
+	_forget_conditions()
+	var kept := []
+	for x: Instance in instances:
+		if not (x.killed and x.frames.is_empty()):
+			kept.append(x)
+	instances = kept
 	if not _pending_zone.is_empty():
 		var z = _pending_zone
 		_pending_zone = []
@@ -231,10 +246,15 @@ func _poll(inst: Instance) -> void:
 	if inst.killed or time < inst.poll:
 		return
 	inst.poll = time + POLL
+	# An identical copy already found every block false in this pass.
+	if inst.memo_key is String and _idle.has(inst.memo_key):
+		return
+	var fired := false
 	for bi in inst.blocks.size():
 		var b: Dictionary = inst.blocks[bi]
-		if not _party_conditions(b.conds, inst):
+		if not _conditions(b, bi, inst):
 			continue
+		fired = true
 		inst.block_index = bi
 		if not _once_per_world(inst):
 			return
@@ -256,6 +276,74 @@ func _poll(inst: Instance) -> void:
 			instances.append(thread)
 		if inst.killed:
 			return
+	if not fired and inst.memo_key is String and not inst.memo_key.is_empty() \
+			and inst.blocks.all(func(b: Dictionary): return b.get(&"memo_safe", false)):
+		_idle[inst.memo_key] = true
+
+
+## Identical trigger copies (same script, block and parameter values) have
+## the same condition result until a body runs. The native walk evaluates
+## every copy; the original also keeps every copy a loop restarts, so gz24k's
+## Digger#0#1 gains one never-firing copy per dead digger each cycle. Thousands
+## of those are cheap natively but not in GDScript, so share one evaluation.
+## Conditions that draw random numbers are always evaluated. The parity
+## harness turns this off to record each native-equivalent evaluation.
+var condition_memo := true
+var _cond_memo := {}
+var _idle := {}   # memo keys whose every block was false in this pass
+const _IMPURE_CONDITIONS := ["Random", "RandMap"]
+
+
+func _conditions(b: Dictionary, bi: int, inst: Instance) -> bool:
+	if not condition_memo:
+		return _party_conditions(b.conds, inst)
+	if not b.has(&"memo_safe"):
+		b[&"memo_safe"] = _pure(b.conds)
+	if not b[&"memo_safe"]:
+		return _party_conditions(b.conds, inst)
+	if inst.memo_key == null:
+		inst.memo_key = _memo_key(inst)
+	if inst.memo_key.is_empty():
+		return _party_conditions(b.conds, inst)
+	var row: Dictionary = _cond_memo.get_or_add(inst.memo_key, {})
+	var hit = row.get(bi)
+	if hit != null:
+		return hit
+	var ok := _party_conditions(b.conds, inst)
+	row[bi] = ok
+	return ok
+
+
+func _forget_conditions() -> void:
+	_cond_memo.clear()
+	_idle.clear()
+
+
+static func _pure(e: Variant) -> bool:
+	if e is Array:
+		var a: Array = e
+		if a.size() >= 2 and typeof(a[0]) == TYPE_INT and a[0] == P.N_CALL and String(a[1]) in _IMPURE_CONDITIONS:
+			return false
+		for x in a:
+			if not _pure(x):
+				return false
+	return true
+
+
+func _memo_key(inst: Instance) -> String:
+	if bool(ast.scripts.get(inst.sname, {}).get("party_check", false)):
+		return ""
+	var key := inst.sname
+	for k in inst.locals:
+		var v = inst.locals[k]
+		match typeof(v):
+			TYPE_OBJECT:
+				key += "|o%d" % (v.get_instance_id() if is_instance_valid(v) else 0)
+			TYPE_NIL, TYPE_INT, TYPE_FLOAT, TYPE_STRING, TYPE_STRING_NAME, TYPE_BOOL:
+				key += "|" + var_to_str(v)
+			_:
+				return ""   # groups can change without a body running
+	return key
 
 
 ## Runs a body thread's next slice (0x4bf000's thread walk) or polls a
@@ -292,6 +380,8 @@ func _resume(inst: Instance) -> void:
 		if is_instance_valid(inst.wait_unit) and inst.wait_unit is GameUnit and ai_busy(inst.wait_unit):
 			return
 		inst.wait_unit = null
+	if not inst.frames.is_empty() and not _cond_memo.is_empty():
+		_forget_conditions()   # a body may change any condition
 	var steps := 0
 	while not inst.frames.is_empty() and steps < MAX_STEPS:
 		steps += 1
@@ -968,7 +1058,8 @@ func _call(name: String, a: Array, inst: Instance):
 				u.order = {}
 		# the original builtins 0xce / 0xcf: add to the
 		# character's strength / dexterity; 0xcd GiveSkill(unit, "melee" | "archery" |
-		# "science" |..., n) adds n levels (etc.: skill byte += n).
+		# "science" |..., n) adds n levels (etc.: skill byte += n) and their price
+		# to total experience (Skills.script_train).
 		# LiA 0xd0 GiveIntelligence adds an integer to INT
 		# then recomputes stats; unlike STR/DEX it does not change the body.
 		"GiveSkill", "GiveStrength", "GiveDexterity", "GiveIntelligence":
@@ -978,8 +1069,7 @@ func _call(name: String, a: Array, inst: Instance):
 			var hd := CampaignState.script_character(u, true)
 			if not hd.is_empty():
 				if name == "GiveSkill" and n >= 3:
-					var sk := str(v[1]).to_lower()
-					hd.get_or_add("skills", {})[sk] = Skills.level(hd, sk) + int(_num(v[2]))
+					Skills.script_train(hd, str(v[1]).to_lower(), int(_num(v[2])))
 				elif name == "GiveIntelligence" and n >= 2:
 					hd["int"] = float(hd.get("int", 20.0)) + int(_num(v[1]))
 				elif n >= 2:

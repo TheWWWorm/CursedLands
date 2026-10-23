@@ -1,0 +1,47 @@
+{
+	"checks": 29,
+	"device": "NVIDIA GeForce RTX 3090",
+	"failures": [],
+	"renderer": "forward_plus",
+	"rows": [
+		{
+			"median_ms": 33.18,
+			"mode": 0,
+			"p95_ms": 35.698,
+			"stats": {}
+		},
+		{
+			"median_ms": 36.131,
+			"mode": 2,
+			"p95_ms": 39.304,
+			"stats": {}
+		},
+		{
+			"median_ms": 36.192,
+			"mode": 3,
+			"p95_ms": 40.829,
+			"stats": {
+				"active": true,
+				"geometries": 2684,
+				"instances": 3008,
+				"lights": 4,
+				"native_scene": true,
+				"opaque_geometries": 1871,
+				"quality": 2,
+				"radius": 96.0,
+				"samples_per_pixel": 4,
+				"size": [
+					1280,
+					720
+				],
+				"supported": true,
+				"texture_anisotropy": 16,
+				"textures": 44,
+				"triangles": 189384,
+				"updated_instances": 0,
+				"updated_morphs": 0
+			}
+		}
+	],
+	"supported": true
+}

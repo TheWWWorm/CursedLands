@@ -29,6 +29,10 @@ var _emitting := false
 var _wheel_acc := 0.0
 var _scroll_owner: Control
 var _hold_owner: Control
+var _popup_finger := -1
+var _popup_start := Vector2.ZERO
+var _popup_last := Vector2.ZERO
+var _popup_scrolling := false
 
 func _ready() -> void:
 	if OS.get_cmdline_user_args().has("--renderer-probe"):
@@ -48,6 +52,7 @@ func _ready() -> void:
 	# SceneTree handles Android Back separately from window close requests.
 	# Let our deferred controller/Back guard emit the single Escape action.
 	get_tree().quit_on_go_back = false
+	get_tree().node_added.connect(_adopt_popup)
 
 func game() -> Game:
 	var main := get_tree().current_scene
@@ -77,6 +82,68 @@ func _input(event: InputEvent) -> void:
 			_release(event.index, event.position, event.canceled)
 	else:
 		_drag(event.index, event.position)
+
+## An open dropdown list is an embedded window: Godot gives it the finger
+## before any _input, and a PopupMenu ignores touches without mouse emulation.
+## Here a tap clicks the entry under it and a one-finger drag scrolls the list.
+func _adopt_popup(node: Node) -> void:
+	if not node is PopupMenu:
+		return
+	if OS.get_thread_caller_id() != OS.get_main_thread_id():
+		_adopt_popup.call_deferred(node)   # a scene built on a loading thread
+		return
+	if is_instance_valid(node) and not (node as PopupMenu).window_input.is_connected(_popup_input):
+		(node as PopupMenu).window_input.connect(_popup_input.bind(node))
+		# A list closed under a held finger must not block the next one.
+		(node as PopupMenu).popup_hide.connect(func(): _popup_finger = -1)
+
+func _popup_input(event: InputEvent, popup: PopupMenu) -> void:
+	if not (event is InputEventScreenTouch or event is InputEventScreenDrag):
+		return
+	_last_touch = Time.get_ticks_msec()
+	_mouse_run = 0.0
+	if not enabled:
+		enabled = true
+		mode_changed.emit()
+	if event is InputEventScreenTouch:
+		if event.pressed:
+			if _popup_finger >= 0:
+				return
+			_popup_finger = event.index
+			_popup_start = event.position
+			_popup_last = event.position
+			_popup_scrolling = false
+			_popup_mouse(popup, event.position)
+		elif event.index == _popup_finger:
+			_popup_finger = -1
+			if not _popup_scrolling and not event.canceled:
+				_popup_mouse(popup, event.position, true)
+				_popup_mouse(popup, event.position, false)
+	elif event.index == _popup_finger:
+		if not _popup_scrolling and event.position.distance_to(_popup_start) >= target_pixels() * 0.22:
+			_popup_scrolling = true
+		if _popup_scrolling:
+			var list := _popup_scroller(popup)
+			if list:
+				list.scroll_vertical -= roundi(event.position.y - _popup_last.y)
+		_popup_last = event.position
+
+func _popup_scroller(node: Node) -> ScrollContainer:
+	for child in node.get_children(true):
+		var found := child as ScrollContainer if child is ScrollContainer else _popup_scroller(child)
+		if found:
+			return found
+	return null
+
+## A hover (pressed == null) or a left-button press / release at a point of
+## the popup, sent through its embedder: only that path reaches the PopupMenu
+## (and an outside tap still closes it as a click would).
+func _popup_mouse(popup: PopupMenu, point: Vector2, pressed = null) -> void:
+	var at := Vector2(popup.position) + point
+	if pressed == null:
+		motion(at, Vector2.ZERO)
+	else:
+		button(at, pressed)
 
 ## A real mouse (not this node's emulation, not a browser's compatibility
 ## event right after a touch) moved 40 px: back to the desktop controls.

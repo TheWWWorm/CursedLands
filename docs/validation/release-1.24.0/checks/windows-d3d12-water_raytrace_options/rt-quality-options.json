@@ -1,0 +1,97 @@
+{
+	"checks": 134,
+	"failures": [],
+	"renderer": "d3d12",
+	"samples": [
+		{
+			"case": "applied-tier-0",
+			"geometry_samples": 119,
+			"quality": 0,
+			"samples_per_pixel": 4,
+			"size": [
+				640,
+				360
+			]
+		},
+		{
+			"case": "applied-tier-1",
+			"geometry_samples": 260,
+			"quality": 1,
+			"samples_per_pixel": 4,
+			"size": [
+				960,
+				540
+			]
+		},
+		{
+			"case": "applied-tier-2",
+			"geometry_samples": 478,
+			"quality": 2,
+			"samples_per_pixel": 4,
+			"size": [
+				1280,
+				720
+			]
+		},
+		{
+			"case": "applied-tier-0",
+			"geometry_samples": 119,
+			"quality": 0,
+			"samples_per_pixel": 4,
+			"size": [
+				640,
+				360
+			]
+		},
+		{
+			"case": "applied-tier-2",
+			"geometry_samples": 478,
+			"quality": 2,
+			"samples_per_pixel": 4,
+			"size": [
+				1280,
+				720
+			]
+		},
+		{
+			"case": "4K-tier-0",
+			"geometry_samples": 1078,
+			"quality": 0,
+			"samples_per_pixel": 4,
+			"size": [
+				1920,
+				1080
+			]
+		},
+		{
+			"case": "4K-tier-1",
+			"geometry_samples": 2452,
+			"quality": 1,
+			"samples_per_pixel": 4,
+			"size": [
+				2880,
+				1620
+			]
+		},
+		{
+			"case": "4K-tier-2",
+			"geometry_samples": 4360,
+			"quality": 2,
+			"samples_per_pixel": 4,
+			"size": [
+				3840,
+				2160
+			]
+		},
+		{
+			"case": "return-to-window",
+			"geometry_samples": 478,
+			"quality": 2,
+			"samples_per_pixel": 4,
+			"size": [
+				1280,
+				720
+			]
+		}
+	]
+}

@@ -19,6 +19,11 @@ class ProbeSession extends Session:
 class ProbeVM extends ScriptVM:
 	var seen := {}
 	var actions: Array = []
+	## Tests poll instances directly between state changes; ScriptVM._tick
+	## would clear shared condition results between those passes.
+	func _run(inst: Instance) -> void:
+		_forget_conditions()
+		super._run(inst)
 	func _sees_has(watchers: Array, target) -> bool:
 		return watchers.any(func(w):return seen.get(w,[]).has(target))
 	func _call(name: String, args: Array, inst: Instance):
@@ -77,7 +82,9 @@ func step(vm: ProbeVM, count := 1) -> void:
 	for i in count:
 		vm.time += ScriptVM.POLL
 		var list := vm.instances.duplicate(); list.reverse()
+		vm._forget_conditions()   # as ScriptVM._tick does before its trigger pass
 		for inst: ScriptVM.Instance in list: vm._run(inst)
+		vm._forget_conditions()   # as ScriptVM._tick ends each pass
 		vm.instances = vm.instances.filter(func(x):return not x.killed or not x.frames.is_empty())
 
 func actions(vm: ProbeVM, name: String) -> Array:

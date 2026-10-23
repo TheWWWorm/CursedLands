@@ -70,7 +70,9 @@ func step(vm: ProbeVM, count := 1) -> void:
 	for n in count:
 		vm.time += ScriptVM.POLL
 		var rows := vm.instances.duplicate(); rows.reverse()
+		vm._forget_conditions()   # as ScriptVM._tick does before its trigger pass
 		for inst: ScriptVM.Instance in rows: vm._run(inst)
+		vm._forget_conditions()   # as ScriptVM._tick ends each pass
 		vm.instances = vm.instances.filter(func(i): return not i.killed or not i.frames.is_empty())
 
 func hits(vm: ProbeVM, u: GameUnit) -> Array:
