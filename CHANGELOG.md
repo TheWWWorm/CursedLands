@@ -1,12 +1,26 @@
 # Changelog
 
-## Unreleased
+## 1.25.0 — 2026-10-23
 
+- Fit multiplayer character-creation kit items inside their cells when **Items inside cells** is on, turn the item under the pointer, and frame the picked weapon, belt item and spell as the shop does. ([#78](https://github.com/TheWWWorm/CursedLands/issues/78))
+- Let multiplayer character creation pick any kit spell, as the original does. A spell the hero cannot use yet stays dimmed, its help lists the missing school knowledge or stamina, and the character keeps it. In the game it remains dimmed until the hero qualifies, and trying to cast it logs what is missing. ([#79](https://github.com/TheWWWorm/CursedLands/issues/79))
+- Show the camp's hero arrows only when there is another hero to switch to. ([#81](https://github.com/TheWWWorm/CursedLands/issues/81))
+- Centre the body-part labels over their health bars in the unit panel, as in the original. ([#82](https://github.com/TheWWWorm/CursedLands/issues/82))
+- Show the full item information for kit items in multiplayer character creation. ([#83](https://github.com/TheWWWorm/CursedLands/issues/83))
+- Open the camp's Equipment and Skills/Spells screens from **View** in the multiplayer character list. Changes are saved to the character. ([#84](https://github.com/TheWWWorm/CursedLands/issues/84))
+- Fix units closing in on a moving target too fast when it runs away and too slowly when it approaches. ([#85](https://github.com/TheWWWorm/CursedLands/issues/85))
+- Use the original arrow buttons on the character-creation face rows, and the original scroll-bar arrows in the touch spell column. ([#86](https://github.com/TheWWWorm/CursedLands/issues/86))
+- Add **Skill reset button** (Options → Remake → Interface and controls, on by default). On, the camp's Skills/Spells screen shows **Reset skills…** and applies each change immediately. Off restores the original screen: choices stay pending until **Accept**, and **Cancel** or leaving the screen discards them. ([#87](https://github.com/TheWWWorm/CursedLands/issues/87))
+- List each learnable ability once. Three inactive ability rows in the original data, one of them a second "Sense Magic", were offered alongside the active ones.
+- Include the official Lost in Astral 1.01 and 1.02 corrections. Unpatched CD data, 1.01 data and patched 1.02 data all play with the corrected behaviour, without installing the Windows patches or rebuilding a data pack. The corrected quest texts are translated into Russian and German.
+- Fix Lost in Astral progression: Kel no longer returns alive to Jigran after his death scene, the cellar under the Portal no longer traps the party after the Portal's map region opens, the western route and third entrance of gz33j are kept, and older saves of the zone 35 battle reunite the enemy groups an earlier loader separated. Using an object no longer cancels an order the interaction itself gives.
+- Show a shared progress screen while graphics settings apply and shaders compile, with the current step, elapsed time and completed material batches where known, in English, Russian and German.
+- Improve **Path tracing (test)**: it follows **Render scale** and FSR resolution, replaces its scene after the camera recentres without dropping lighting, retries failed pipelines, keeps animated units in the traced scene, uses equipment and world-prop surface maps, steadies torchlight, and gives fire a calibrated display profile and finite light size. Four-bounce mode ends faint paths early to save time.
 - Keep item assignment targets beneath their creature’s health bar when nearby creatures have health labels.
 - Restore the shop's buy/sell background quadrants and the dark patterned backing in occupied inventory slots. ([#69](https://github.com/TheWWWorm/CursedLands/issues/69))
 - Fit spell, template and rune pictures inside their slot frames, and tint constructor pieces red when the party cannot use them in the current recipe. ([#70](https://github.com/TheWWWorm/CursedLands/issues/70))
 - Keep the spell constructor's Ready spells filter limited to completed spells. ([#71](https://github.com/TheWWWorm/CursedLands/issues/71))
-- Preserve the proportions of character creation, pause/options menus, dialogue and objectives on wide and tall windows, with pointer and gamepad targets following the fitted interface. ([#72](https://github.com/TheWWWorm/CursedLands/issues/72))
+- Preserve the proportions of character creation, pause/options menus, dialogue and objectives on wide and tall windows, with pointer and gamepad targets following the fitted interface. Ability lists and character-selection buttons no longer overlap their text. ([#72](https://github.com/TheWWWorm/CursedLands/issues/72), [#80](https://github.com/TheWWWorm/CursedLands/issues/80))
 - Preserve the character preview's animation and playback position when appearance or equipment changes. ([#73](https://github.com/TheWWWorm/CursedLands/issues/73))
 - Read multiplayer objective text, rewards and map-marker coordinates from the original quest archives. ([#74](https://github.com/TheWWWorm/CursedLands/issues/74))
 - Rotate selection triangles with the displayed character's facing and keep them flat above the ground beneath the character as the camera moves. ([#75](https://github.com/TheWWWorm/CursedLands/issues/75))
