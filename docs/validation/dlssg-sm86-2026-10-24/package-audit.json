@@ -1,0 +1,44 @@
+{
+  "windows-x86_64": {
+    "resource_count": 1448,
+    "compiled_scripts": 426,
+    "pck_sha256": "b46edcbc4af7135f5587bec39f302d03ec8b208d318389cdd483eb38107d74c0",
+    "exe_sha256": "0ee74a29967a1e63cee1635702f3d9c388614fd3849808c3a234df1728cde115",
+    "version": true,
+    "all_scripts_present": true,
+    "nrd_manifest_and_library_match": true,
+    "original_data_absent": true,
+    "approved_icon_pixels": [
+      [
+        16,
+        16
+      ],
+      [
+        32,
+        32
+      ],
+      [
+        48,
+        48
+      ],
+      [
+        64,
+        64
+      ],
+      [
+        128,
+        128
+      ],
+      [
+        256,
+        256
+      ]
+    ],
+    "windows_file_version": "1.28.0.0",
+    "agility_runtime_verified": true,
+    "nrd_imports": [
+      "KERNEL32.dll",
+      "msvcrt.dll"
+    ]
+  }
+}
