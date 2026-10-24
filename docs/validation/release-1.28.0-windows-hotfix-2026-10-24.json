@@ -1,0 +1,68 @@
+{
+  "release": "v1.28.0",
+  "url": "https://github.com/TheWWWorm/CursedLands/releases/tag/v1.28.0",
+  "scope": "Standard Windows package update to the existing release",
+  "published": true,
+  "isDraft": false,
+  "isPrerelease": false,
+  "verified_at": "2026-10-24T19:41:43.177032+00:00",
+  "source_commit": "4487f144dbd247f30992a2ea13fa252ebc386cdb",
+  "game_tree": "307d8755e4073fcdee7d9751bc35e953cc7c2edb",
+  "unchanged_release_tag_object": "24d72bab062d8e471ca4c1981960a696ec0d3d8f",
+  "unchanged_release_tag_commit": "926579c43e5e08cbd1e179d0da2717671bd7eb9f",
+  "version_unchanged": true,
+  "hosted_browser_unchanged": true,
+  "windows_asset": {
+    "name": "CursedLands-1.28.0-windows-x86_64.zip",
+    "previous_sha256": "808d3548b487ed1b1f2fb3780f486e641c8d86af40cd42ae5bcd4a706d4fd1d0",
+    "sha256": "f18f818844fc31b5eceea7a9abc2e3d720406a4e0f003a276c5dc9482cdeec6d",
+    "bytes": 151058769,
+    "all_archive_members_verified": 331,
+    "download_verified": true
+  },
+  "checksum_asset": {
+    "sha256": "f433c840eec353713771e9e9a0bfead606877f4d30cb0c7bbefee0f62674a59d",
+    "only_standard_windows_entry_changed": true,
+    "withdrawn_rtx30_entry_retained_as_historical_reference": true
+  },
+  "unchanged_assets": [
+    {
+      "name": "CursedLands-1.28.0-android.apk",
+      "id": "RA_kwDOU2vjg84oHR9u",
+      "sha256": "442dc04f82f147ccae658709110f70c242573450b4fc6372e51f2bb4e8a1fa1a"
+    },
+    {
+      "name": "CursedLands-1.28.0-linux-x86_64.tar.gz",
+      "id": "RA_kwDOU2vjg84oHR90",
+      "sha256": "b910360e5acfec606584977fface8450a7ffc0c27f4170964760a334def1126f"
+    },
+    {
+      "name": "CursedLands-1.28.0-macos-universal.zip",
+      "id": "RA_kwDOU2vjg84oHR9z",
+      "sha256": "1558a5ca91a3022760b544ab1a98fbf7ce52bce83d35ffeda89458b8bdd36804"
+    },
+    {
+      "name": "CursedLands-1.28.0-tools.zip",
+      "id": "RA_kwDOU2vjg84oHSDb",
+      "sha256": "779f59217d109e50e5d214813846a823617bc6a6ff793919e4b9aca4bcda960e"
+    },
+    {
+      "name": "CursedLands-1.28.0-web.zip",
+      "id": "RA_kwDOU2vjg84oHR9w",
+      "sha256": "409ed9e54bccb01544ca01649c40a328cee1048dd3acf9c43677228320301343"
+    }
+  ],
+  "withdrawn_rtx30_not_published": true,
+  "withdrawal_notice_preserved": true,
+  "distribution_checks_passed": true,
+  "release_asset_policy_checks_passed": true,
+  "native_checks": 138,
+  "native_failures": 0,
+  "native_validation": "dlss-framegen-native-2026-10-24/results.json",
+  "qualified_executable_and_pck_unchanged": true,
+  "runtime_files_sha256": {
+    "CursedLands.exe": "68737b9d2edf779585de2fb50e88b19665da1869a2801fc843054077f013d693",
+    "CursedLands.pck": "bdc21e4d9354cb5cac588f6b6c5e098d79fcc2c6d0f6892953942ca9405b96a4",
+    "x86_64/D3D12Core.dll": "560f9574372a52ab66ad95ee1222f1eb4c9f6161d8f6b7b025d89f684b07246c"
+  }
+}
