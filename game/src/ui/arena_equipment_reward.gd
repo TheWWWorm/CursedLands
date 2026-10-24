@@ -20,7 +20,7 @@ var _motion: Tween
 
 func _ready() -> void:
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	custom_minimum_size = Vector2(250, 458)
+	custom_minimum_size = Vector2(250, 370)
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	accessibility_name = RemakeText.t("Choose %s") % ArenaItems.title(kind)
 	_accent = ArenaItemEmblem.color_for(kind)
@@ -31,9 +31,9 @@ func _ready() -> void:
 	add_child(_content)
 	_content.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for side in ["left", "right", "top", "bottom"]:
-		_content.add_theme_constant_override("margin_" + side, 20)
+		_content.add_theme_constant_override("margin_" + side, 16)
 	var column := VBoxContainer.new()
-	column.add_theme_constant_override("separation", 10)
+	column.add_theme_constant_override("separation", 8)
 	_content.add_child(column)
 	var role := _label(column, (ArenaItems.tier_label(kind) + " · " + role_name(kind)).to_upper(), 12, _accent)
 	role.add_theme_font_override("font", BOLD)
@@ -41,7 +41,7 @@ func _ready() -> void:
 	art = ArenaItemEmblem.new()
 	art.kind = kind
 	art.framed = false
-	art.custom_minimum_size = Vector2(138, 138)
+	art.custom_minimum_size = Vector2(112, 112)
 	art.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	column.add_child(art)
 	var title := _label(column, ArenaItems.title(kind), 25, ArenaCreatureCard.PAPER)
@@ -60,7 +60,7 @@ func _ready() -> void:
 	description.bbcode_enabled = true
 	description.fit_content = true
 	description.scroll_active = false
-	description.custom_minimum_size.y = 132
+	description.custom_minimum_size.y = 92
 	description.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	description.add_theme_font_size_override("normal_font_size", 14)
 	description.add_theme_font_size_override("bold_font_size", 14)
@@ -90,7 +90,7 @@ func _ready() -> void:
 
 
 func _measure() -> void:
-	custom_minimum_size.y = maxf(458, _content.get_combined_minimum_size().y)
+	custom_minimum_size.y = maxf(370, _content.get_combined_minimum_size().y)
 	art.pivot_offset = art.size * 0.5
 	queue_redraw()
 
@@ -133,7 +133,7 @@ func _draw() -> void:
 				var cell := (size - at).min(Vector2(100, 100))
 				draw_texture_rect_region(_stone, Rect2(at, cell), Rect2(source.position, source.size * cell / 100.0), Color(0.55, 0.6, 0.57, 0.22))
 	# A soft pool of light presents the actual object without an icon medallion.
-	var centre := Vector2(size.x * 0.5, 111)
+	var centre := Vector2(size.x * 0.5, 91)
 	for radius in range(115, 12, -4):
 		draw_circle(centre, float(radius), Color(_accent, 0.004 + _light * 0.003))
 	var edge := _accent.lerp(Color.WHITE, _light * 0.25)

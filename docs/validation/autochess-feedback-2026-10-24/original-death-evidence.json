@@ -1,0 +1,329 @@
+{
+  "deathStrings": {
+    "evidence_id": "ev_a773aa8e44016ab5b0ddd563476c6dc97c0df38b356985c92162e27bceb9551d",
+    "subject": {
+      "name": "game.exe",
+      "digest": {
+        "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+      },
+      "format": "pe",
+      "architecture": "x86",
+      "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+    },
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "analysis_profile": {
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "parameters": {
+        "target_kind": "executable",
+        "target_format": "pe",
+        "executable_role": "application",
+        "managed": false,
+        "native_aot_metadata": {
+          "contract_revision": "rtr-9.1-x64-pe-read-only-v3",
+          "source_bytes": 134217728,
+          "work_units": 67108864,
+          "working_memory_bytes": 67108864,
+          "report_bytes": 4194304
+        },
+        "architecture": "x86",
+        "available_architectures": [
+          "x86"
+        ],
+        "import_mode": "ephemeral-source-immutable",
+        "annotation_policy": "atomic-function-entry-metadata-v1",
+        "load_image_observations": "source-mappings-entry-context-v2",
+        "function_body_evidence": "complete-inclusive-ranges-v1",
+        "function_references": "complete-body-and-entry-reference-manager-v2",
+        "string_inventory_evidence": "defined-data-coverage-v1",
+        "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+        "instruction_flow_evidence": "decoded-return-pcode-v1",
+        "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+        "no_return_repair": "returning-imports-decoded-return-v2",
+        "process_launch": "inspected-jvm-launch-support-v1",
+        "jump_table_evidence": "typed-case-default-blocks-v1",
+        "decompiler_jump_loads": true,
+        "loader": "auto-from-header",
+        "language_id": "auto-from-header",
+        "compiler_spec_id": "auto-default",
+        "analyzer_preset": "ghidra-default"
+      },
+      "digest": "4f6212bfe31448a7b96743a449e91c35890105cedd34e1d9951e9467d284e0a5"
+    },
+    "predicate_type": "rea.analysis",
+    "operation": "search_strings",
+    "parameters": {
+      "pattern": "death|dead|corpse|unmocu|curse",
+      "mode": "regex",
+      "case_sensitive": false
+    },
+    "raw_result": [
+      {
+        "address": "0x7880b0",
+        "value": " Action Death."
+      },
+      {
+        "address": "0x78b438",
+        "value": "CurseHolder"
+      },
+      {
+        "address": "0x78b444",
+        "value": "CurseStars"
+      },
+      {
+        "address": "0x78cbe0",
+        "value": "IsDead"
+      },
+      {
+        "address": "0x78cf0c",
+        "value": "UMCorpseWatcher"
+      },
+      {
+        "address": "0x78f658",
+        "value": " HL is dead"
+      },
+      {
+        "address": "0x78fa00",
+        "value": "%s\\death\\%d.wav"
+      },
+      {
+        "address": "0x78fdf0",
+        "value": " damaged to death"
+      },
+      {
+        "address": "0x791a78",
+        "value": " sees corpse of unit "
+      },
+      {
+        "address": "0x791e64",
+        "value": "CorpseWatcher"
+      }
+    ],
+    "normalized_result": [
+      {
+        "address": "0x7880b0",
+        "value": " Action Death."
+      },
+      {
+        "address": "0x78b438",
+        "value": "CurseHolder"
+      },
+      {
+        "address": "0x78b444",
+        "value": "CurseStars"
+      },
+      {
+        "address": "0x78cbe0",
+        "value": "IsDead"
+      },
+      {
+        "address": "0x78cf0c",
+        "value": "UMCorpseWatcher"
+      },
+      {
+        "address": "0x78f658",
+        "value": " HL is dead"
+      },
+      {
+        "address": "0x78fa00",
+        "value": "%s\\death\\%d.wav"
+      },
+      {
+        "address": "0x78fdf0",
+        "value": " damaged to death"
+      },
+      {
+        "address": "0x791a78",
+        "value": " sees corpse of unit "
+      },
+      {
+        "address": "0x791e64",
+        "value": "CorpseWatcher"
+      }
+    ],
+    "confidence": "observed",
+    "authority": "shipped-artifact",
+    "environment": null,
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "Only Ghidra-defined string Data is observed; packed or undefined string bytes may be absent. Completeness applies to that inventory, and an empty search does not establish that text is absent from the artifact. If an address is known, use read_bytes and xrefs to inspect bytes and references.",
+      "Regex mode uses Java Pattern semantics. Matcher or compiler stack exhaustion returns a resource constraint without closing the session; literal mode avoids regex recursion and returns complete matching values."
+    ],
+    "locations": [],
+    "evidence_links": []
+  },
+  "0x550a80": {
+    "evidence_id": "ev_64475a7113ea6431accbd1fe1d214583c88a9342575069cc9f1156ff4839a69b",
+    "subject": {
+      "name": "game.exe",
+      "digest": {
+        "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+      },
+      "format": "pe",
+      "architecture": "x86",
+      "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+    },
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "analysis_profile": {
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "parameters": {
+        "target_kind": "executable",
+        "target_format": "pe",
+        "executable_role": "application",
+        "managed": false,
+        "native_aot_metadata": {
+          "contract_revision": "rtr-9.1-x64-pe-read-only-v3",
+          "source_bytes": 134217728,
+          "work_units": 67108864,
+          "working_memory_bytes": 67108864,
+          "report_bytes": 4194304
+        },
+        "architecture": "x86",
+        "available_architectures": [
+          "x86"
+        ],
+        "import_mode": "ephemeral-source-immutable",
+        "annotation_policy": "atomic-function-entry-metadata-v1",
+        "load_image_observations": "source-mappings-entry-context-v2",
+        "function_body_evidence": "complete-inclusive-ranges-v1",
+        "function_references": "complete-body-and-entry-reference-manager-v2",
+        "string_inventory_evidence": "defined-data-coverage-v1",
+        "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+        "instruction_flow_evidence": "decoded-return-pcode-v1",
+        "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+        "no_return_repair": "returning-imports-decoded-return-v2",
+        "process_launch": "inspected-jvm-launch-support-v1",
+        "jump_table_evidence": "typed-case-default-blocks-v1",
+        "decompiler_jump_loads": true,
+        "loader": "auto-from-header",
+        "language_id": "auto-from-header",
+        "compiler_spec_id": "auto-default",
+        "analyzer_preset": "ghidra-default"
+      },
+      "digest": "4f6212bfe31448a7b96743a449e91c35890105cedd34e1d9951e9467d284e0a5"
+    },
+    "predicate_type": "rea.analysis",
+    "operation": "procedure_pseudo_code",
+    "parameters": {
+      "procedure": "0x550a80"
+    },
+    "raw_result": {
+      "value": "\nvoid FUN_00550a80(int param_1,uint param_2,char param_3,char param_4)\n\n{\n  undefined4 *puVar1;\n  undefined1 *puVar2;\n  undefined1 uVar3;\n  bool bVar4;\n  byte bVar5;\n  int iVar6;\n  uint uVar7;\n  int iVar8;\n  int in_ECX;\n  uint uVar9;\n  uint uVar10;\n  undefined1 uStack_9;\n  \n  FUN_00557b80(0,0xffffffff);\n  *(undefined4 *)(param_1 + 0x14) = 0xffffffff;\n  iVar6 = FUN_005318b0(*(undefined4 *)(*(int *)(in_ECX + 0x1c) + 0x26c));\n  if (iVar6 == 0) {\n    if (*(int *)(in_ECX + 0x28c) < 7) {\n      uVar9 = 1 << ((byte)*(int *)(in_ECX + 0x28c) & 0x1f);\n    }\n    else {\n      uVar9 = 0;\n    }\n  }\n  else {\n    bVar5 = FUN_006a07b0();\n    uVar9 = 1 << (bVar5 & 0x1f);\n  }\n  switch(*(undefined4 *)(in_ECX + 0x168)) {\n  case 0:\n    uVar7 = 0x30000;\n    break;\n  case 1:\n    uVar7 = 0x20000;\n    break;\n  case 2:\n    if ((*(char *)(in_ECX + 0x16c) == '\\0') && (*(int *)(*(int *)(in_ECX + 0x1c) + 0x10) == 0x32))\n    goto switchD_00550ae9_caseD_3;\n    uVar7 = 0x10000;\n    break;\n  default:\nswitchD_00550ae9_caseD_3:\n    uVar7 = 0;\n    break;\n  case 4:\n    uVar7 = 0x8000;\n  }\n  uVar10 = uVar9 | uVar7;\n  if (*(int *)(*(int *)(in_ECX + 0x1c) + 0x10) == 0x32) {\n    if (((param_3 != '\\0') && (iVar6 = *(int *)(in_ECX + 0x168), iVar6 != 4)) && (iVar6 != 0)) {\n      if (iVar6 == 1) {\n        if (param_4 != '\\0') {\n          uVar10 = uVar9 & 0xc03fffff | uVar7;\n          goto joined_r0x00550ba0;\n        }\n      }\n      else {\n        uVar10 = uVar10 | param_2;\n        if ((param_4 != '\\0') && ((uVar10 & 1) != 0)) {\n          uVar10 = uVar10 & 0xc03fffff;\njoined_r0x00550ba0:\n          bVar4 = DAT_007a9d34 == 0;\n          DAT_007a9d34 = DAT_007a9d34 + -1;\n          if (bVar4) {\n            DAT_007a9d34 = 0xffffffff;\n            FUN_0049ee70();\n            DAT_007a9d34 = 0xff;\n          }\n          uVar10 = uVar10 | (-(uint)((*(uint *)(&DAT_007a9d38 + DAT_007a9d34 * 4) & 1) != 0) &\n                            0x400000) + 0x400000;\n        }\n      }\n    }\n    uVar10 = uVar10 & 0xfffeffff;\n    if ((param_4 == '\\0') || (*(int *)(in_ECX + 0x168) == 0)) {\n      if (*(int *)(in_ECX + 0x168) != 0) goto LAB_00550c4a;\n      uVar10 = uVar10 | 0x6030000;\n    }\n    else if ((*(char *)(in_ECX + 0x16d) == '\\0') || (*(int *)(in_ECX + 0x168) != 2)) {\n      uVar10 = uVar10 | 0x4000000;\n    }\n    else {\n      uVar10 = uVar10 | 0x2010000;\n    }\n  }\n  else {\n    if ((param_4 != '\\0') && (param_3 == '\\0')) {\n      return;\n    }\n    if ((param_2 == 0xc00000) || (param_2 == 0x1000000)) {\nLAB_00550c4a:\n      uVar10 = uVar10 | 0x6000000;\n    }\n    else {\n      uVar10 = uVar10 | param_2 | 0x6000000;\n    }\n  }\n  if (param_3 == '\\0') {\n    uVar10 = uVar10 | 0x200000;\n  }\n  else {\n    uVar10 = uVar10 | 0x1c0000;\n  }\n  iVar6 = FUN_005301b0(uVar10,1);\n  if (param_3 == '\\0') {\n    if (*(int *)(in_ECX + 0x168) == 0) goto LAB_00550d48;\nLAB_00550ca3:\n    if (iVar6 == 0) goto LAB_00550d48;\n  }\n  else if (iVar6 == 0) {\n    iVar6 = FUN_005301b0(uVar10 & 0xfe3fffff,1);\n    goto LAB_00550ca3;\n  }\n  iVar8 = FUN_00530240(*(undefined1 *)(iVar6 + 0x10));\n  if (iVar8 == 0) {\n    _param_3 = 0;\n  }\n  else {\n    uStack_9 = (undefined1)((uint)*(undefined4 *)(iVar8 + 0x20) >> 0x18);\n    FUN_005327d0(iVar8);\n    _param_3 = __ftol();\n  }\n  uVar3 = *(undefined1 *)(iVar6 + 0x10);\n  iVar6 = *(int *)(param_1 + 8);\n  FUN_00557b80(iVar6 + 1,0xffffffff);\n  puVar1 = (undefined4 *)(*(int *)(param_1 + 4) + iVar6 * 0xc);\n  *puVar1 = CONCAT13(uStack_9,0xffff);\n  puVar1[1] = 0xffffffff;\n  puVar1[2] = 0;\n  puVar2 = (undefined1 *)(*(int *)(param_1 + 4) + -0xc + *(int *)(param_1 + 8) * 0xc);\n  *puVar2 = uVar3;\n  *(undefined4 *)(puVar2 + 4) = _param_3;\nLAB_00550d48:\n  if ((param_4 != '\\0') && (iVar6 = 0, 0 < *(int *)(param_1 + 8))) {\n    iVar8 = 0;\n    do {\n      iVar6 = iVar6 + 1;\n      *(undefined4 *)(iVar8 + 8 + *(int *)(param_1 + 4)) = 2;\n      iVar8 = iVar8 + 0xc;\n    } while (iVar6 < *(int *)(param_1 + 8));\n  }\n  return;\n}\n\n",
+      "limitations": []
+    },
+    "normalized_result": "\nvoid FUN_00550a80(int param_1,uint param_2,char param_3,char param_4)\n\n{\n  undefined4 *puVar1;\n  undefined1 *puVar2;\n  undefined1 uVar3;\n  bool bVar4;\n  byte bVar5;\n  int iVar6;\n  uint uVar7;\n  int iVar8;\n  int in_ECX;\n  uint uVar9;\n  uint uVar10;\n  undefined1 uStack_9;\n  \n  FUN_00557b80(0,0xffffffff);\n  *(undefined4 *)(param_1 + 0x14) = 0xffffffff;\n  iVar6 = FUN_005318b0(*(undefined4 *)(*(int *)(in_ECX + 0x1c) + 0x26c));\n  if (iVar6 == 0) {\n    if (*(int *)(in_ECX + 0x28c) < 7) {\n      uVar9 = 1 << ((byte)*(int *)(in_ECX + 0x28c) & 0x1f);\n    }\n    else {\n      uVar9 = 0;\n    }\n  }\n  else {\n    bVar5 = FUN_006a07b0();\n    uVar9 = 1 << (bVar5 & 0x1f);\n  }\n  switch(*(undefined4 *)(in_ECX + 0x168)) {\n  case 0:\n    uVar7 = 0x30000;\n    break;\n  case 1:\n    uVar7 = 0x20000;\n    break;\n  case 2:\n    if ((*(char *)(in_ECX + 0x16c) == '\\0') && (*(int *)(*(int *)(in_ECX + 0x1c) + 0x10) == 0x32))\n    goto switchD_00550ae9_caseD_3;\n    uVar7 = 0x10000;\n    break;\n  default:\nswitchD_00550ae9_caseD_3:\n    uVar7 = 0;\n    break;\n  case 4:\n    uVar7 = 0x8000;\n  }\n  uVar10 = uVar9 | uVar7;\n  if (*(int *)(*(int *)(in_ECX + 0x1c) + 0x10) == 0x32) {\n    if (((param_3 != '\\0') && (iVar6 = *(int *)(in_ECX + 0x168), iVar6 != 4)) && (iVar6 != 0)) {\n      if (iVar6 == 1) {\n        if (param_4 != '\\0') {\n          uVar10 = uVar9 & 0xc03fffff | uVar7;\n          goto joined_r0x00550ba0;\n        }\n      }\n      else {\n        uVar10 = uVar10 | param_2;\n        if ((param_4 != '\\0') && ((uVar10 & 1) != 0)) {\n          uVar10 = uVar10 & 0xc03fffff;\njoined_r0x00550ba0:\n          bVar4 = DAT_007a9d34 == 0;\n          DAT_007a9d34 = DAT_007a9d34 + -1;\n          if (bVar4) {\n            DAT_007a9d34 = 0xffffffff;\n            FUN_0049ee70();\n            DAT_007a9d34 = 0xff;\n          }\n          uVar10 = uVar10 | (-(uint)((*(uint *)(&DAT_007a9d38 + DAT_007a9d34 * 4) & 1) != 0) &\n                            0x400000) + 0x400000;\n        }\n      }\n    }\n    uVar10 = uVar10 & 0xfffeffff;\n    if ((param_4 == '\\0') || (*(int *)(in_ECX + 0x168) == 0)) {\n      if (*(int *)(in_ECX + 0x168) != 0) goto LAB_00550c4a;\n      uVar10 = uVar10 | 0x6030000;\n    }\n    else if ((*(char *)(in_ECX + 0x16d) == '\\0') || (*(int *)(in_ECX + 0x168) != 2)) {\n      uVar10 = uVar10 | 0x4000000;\n    }\n    else {\n      uVar10 = uVar10 | 0x2010000;\n    }\n  }\n  else {\n    if ((param_4 != '\\0') && (param_3 == '\\0')) {\n      return;\n    }\n    if ((param_2 == 0xc00000) || (param_2 == 0x1000000)) {\nLAB_00550c4a:\n      uVar10 = uVar10 | 0x6000000;\n    }\n    else {\n      uVar10 = uVar10 | param_2 | 0x6000000;\n    }\n  }\n  if (param_3 == '\\0') {\n    uVar10 = uVar10 | 0x200000;\n  }\n  else {\n    uVar10 = uVar10 | 0x1c0000;\n  }\n  iVar6 = FUN_005301b0(uVar10,1);\n  if (param_3 == '\\0') {\n    if (*(int *)(in_ECX + 0x168) == 0) goto LAB_00550d48;\nLAB_00550ca3:\n    if (iVar6 == 0) goto LAB_00550d48;\n  }\n  else if (iVar6 == 0) {\n    iVar6 = FUN_005301b0(uVar10 & 0xfe3fffff,1);\n    goto LAB_00550ca3;\n  }\n  iVar8 = FUN_00530240(*(undefined1 *)(iVar6 + 0x10));\n  if (iVar8 == 0) {\n    _param_3 = 0;\n  }\n  else {\n    uStack_9 = (undefined1)((uint)*(undefined4 *)(iVar8 + 0x20) >> 0x18);\n    FUN_005327d0(iVar8);\n    _param_3 = __ftol();\n  }\n  uVar3 = *(undefined1 *)(iVar6 + 0x10);\n  iVar6 = *(int *)(param_1 + 8);\n  FUN_00557b80(iVar6 + 1,0xffffffff);\n  puVar1 = (undefined4 *)(*(int *)(param_1 + 4) + iVar6 * 0xc);\n  *puVar1 = CONCAT13(uStack_9,0xffff);\n  puVar1[1] = 0xffffffff;\n  puVar1[2] = 0;\n  puVar2 = (undefined1 *)(*(int *)(param_1 + 4) + -0xc + *(int *)(param_1 + 8) * 0xc);\n  *puVar2 = uVar3;\n  *(undefined4 *)(puVar2 + 4) = _param_3;\nLAB_00550d48:\n  if ((param_4 != '\\0') && (iVar6 = 0, 0 < *(int *)(param_1 + 8))) {\n    iVar8 = 0;\n    do {\n      iVar6 = iVar6 + 1;\n      *(undefined4 *)(iVar8 + 8 + *(int *)(param_1 + 4)) = 2;\n      iVar8 = iVar8 + 0xc;\n    } while (iVar6 < *(int *)(param_1 + 8));\n  }\n  return;\n}\n\n",
+    "confidence": "observed",
+    "authority": "shipped-artifact",
+    "environment": null,
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+      "External functions and functions without an analyzable body return null; other decompiler failures remain explicit."
+    ],
+    "locations": [],
+    "evidence_links": []
+  },
+  "nativeDead": {
+    "evidence_id": "ev_98a6d96202fcdc2e1a6db5ad905a02b10206aaed811809697de1ebe8df206190",
+    "subject": {
+      "name": "game.exe",
+      "digest": {
+        "sha256": "d0fc0bb2acf45f0e59fae89e55c16a59848ffa89fb68feee9f298a680b660ad8"
+      },
+      "format": "pe",
+      "architecture": "x86",
+      "local_path": "/home/llm2x/Documents/EI/inspection/extracted/app/game.exe"
+    },
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "analysis_profile": {
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "parameters": {
+        "target_kind": "executable",
+        "target_format": "pe",
+        "executable_role": "application",
+        "managed": false,
+        "native_aot_metadata": {
+          "contract_revision": "rtr-9.1-x64-pe-read-only-v3",
+          "source_bytes": 134217728,
+          "work_units": 67108864,
+          "working_memory_bytes": 67108864,
+          "report_bytes": 4194304
+        },
+        "architecture": "x86",
+        "available_architectures": [
+          "x86"
+        ],
+        "import_mode": "ephemeral-source-immutable",
+        "annotation_policy": "atomic-function-entry-metadata-v1",
+        "load_image_observations": "source-mappings-entry-context-v2",
+        "function_body_evidence": "complete-inclusive-ranges-v1",
+        "function_references": "complete-body-and-entry-reference-manager-v2",
+        "string_inventory_evidence": "defined-data-coverage-v1",
+        "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+        "instruction_flow_evidence": "decoded-return-pcode-v1",
+        "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+        "no_return_repair": "returning-imports-decoded-return-v2",
+        "process_launch": "inspected-jvm-launch-support-v1",
+        "jump_table_evidence": "typed-case-default-blocks-v1",
+        "decompiler_jump_loads": true,
+        "loader": "auto-from-header",
+        "language_id": "auto-from-header",
+        "compiler_spec_id": "auto-default",
+        "analyzer_preset": "ghidra-default"
+      },
+      "digest": "4f6212bfe31448a7b96743a449e91c35890105cedd34e1d9951e9467d284e0a5"
+    },
+    "predicate_type": "rea.analysis",
+    "operation": "procedure_pseudo_code",
+    "parameters": {
+      "procedure": "0x548de0"
+    },
+    "raw_result": {
+      "value": "\nvoid FUN_00548de0(undefined **param_1,int param_2)\n\n{\n  int *piVar1;\n  char *pcVar2;\n  undefined4 uVar3;\n  char cVar4;\n  int iVar5;\n  int in_ECX;\n  undefined4 in_stack_00000018;\n  float fStack_24;\n  float fStack_20;\n  float fStack_1c;\n  undefined1 auStack_18 [12];\n  void *pvStack_c;\n  undefined1 *puStack_8;\n  undefined4 local_4;\n  \n  puStack_8 = &LAB_00720a98;\n  pvStack_c = ExceptionList;\n  local_4 = 0;\n  ExceptionList = &pvStack_c;\n  *(undefined4 *)(in_ECX + 0x164) = 3;\n  FUN_00530570();\n  if (*(int *)(in_ECX + 0x17c) != 0) {\n    FUN_0058e5d0(*(undefined4 *)(*(int *)(in_ECX + 0x17c) + 0xc));\n    piVar1 = *(int **)(in_ECX + 0x17c);\n    *(undefined4 *)(in_ECX + 0x17c) = 0;\n    if (piVar1 != (int *)0x0) {\n      (**(code **)(*piVar1 + 0x10))();\n    }\n  }\n  FUN_00556950(&param_1);\n  *(undefined4 *)(in_ECX + 0x38) = in_stack_00000018;\n  FUN_00556950(&param_1);\n  *(undefined4 *)(in_ECX + 0x38) = in_stack_00000018;\n  if (*(int *)(in_ECX + 0x38) == -1) {\n    iVar5 = FUN_00455950();\n    *(undefined4 *)(in_ECX + 0x38) = *(undefined4 *)(iVar5 + 100);\n  }\n  FUN_00546b40();\n  if (*(int *)(in_ECX + 0x2c) != 0) {\n    pcVar2 = *(char **)(in_ECX + 0x28);\n    if ((*pcVar2 != -1) || (pcVar2[1] != -1)) {\n      FUN_0052ea90(*pcVar2,CONCAT31((int3)((uint)pcVar2 >> 8),pcVar2[1]),\n                   *(undefined4 *)(in_ECX + 0x38),pcVar2[2]);\n    }\n  }\n  FUN_005b23a0();\n  iVar5 = FUN_00455950();\n  uVar3 = *(undefined4 *)(iVar5 + 100);\n  FUN_0040f560(&fStack_24);\n  FUN_00401de0(-fStack_24,-fStack_20,-fStack_1c);\n  cVar4 = FUN_005c7b00(*(int *)(in_ECX + 0x1c) + 0x1c,auStack_18,uVar3);\n  if (cVar4 != '\\0') {\n    FUN_0052e9d0();\n  }\n  FUN_00455940();\n  if (*(int *)(*(int *)(in_ECX + 0x1c) + 0x278) != 0) {\n    FUN_005c1010(*(int *)(in_ECX + 0x1c));\n    *(undefined4 *)(*(int *)(in_ECX + 0x1c) + 0x278) = 0;\n    FUN_005c0df0(*(undefined4 *)(in_ECX + 0x1c));\n    FUN_0050e9f0(7);\n  }\n  param_1 = &PTR_LAB_0073ef2c;\n  if (param_2 != 0) {\n    FUN_00700598(param_2);\n  }\n  ExceptionList = pvStack_c;\n  return;\n}\n\n",
+      "limitations": []
+    },
+    "normalized_result": "\nvoid FUN_00548de0(undefined **param_1,int param_2)\n\n{\n  int *piVar1;\n  char *pcVar2;\n  undefined4 uVar3;\n  char cVar4;\n  int iVar5;\n  int in_ECX;\n  undefined4 in_stack_00000018;\n  float fStack_24;\n  float fStack_20;\n  float fStack_1c;\n  undefined1 auStack_18 [12];\n  void *pvStack_c;\n  undefined1 *puStack_8;\n  undefined4 local_4;\n  \n  puStack_8 = &LAB_00720a98;\n  pvStack_c = ExceptionList;\n  local_4 = 0;\n  ExceptionList = &pvStack_c;\n  *(undefined4 *)(in_ECX + 0x164) = 3;\n  FUN_00530570();\n  if (*(int *)(in_ECX + 0x17c) != 0) {\n    FUN_0058e5d0(*(undefined4 *)(*(int *)(in_ECX + 0x17c) + 0xc));\n    piVar1 = *(int **)(in_ECX + 0x17c);\n    *(undefined4 *)(in_ECX + 0x17c) = 0;\n    if (piVar1 != (int *)0x0) {\n      (**(code **)(*piVar1 + 0x10))();\n    }\n  }\n  FUN_00556950(&param_1);\n  *(undefined4 *)(in_ECX + 0x38) = in_stack_00000018;\n  FUN_00556950(&param_1);\n  *(undefined4 *)(in_ECX + 0x38) = in_stack_00000018;\n  if (*(int *)(in_ECX + 0x38) == -1) {\n    iVar5 = FUN_00455950();\n    *(undefined4 *)(in_ECX + 0x38) = *(undefined4 *)(iVar5 + 100);\n  }\n  FUN_00546b40();\n  if (*(int *)(in_ECX + 0x2c) != 0) {\n    pcVar2 = *(char **)(in_ECX + 0x28);\n    if ((*pcVar2 != -1) || (pcVar2[1] != -1)) {\n      FUN_0052ea90(*pcVar2,CONCAT31((int3)((uint)pcVar2 >> 8),pcVar2[1]),\n                   *(undefined4 *)(in_ECX + 0x38),pcVar2[2]);\n    }\n  }\n  FUN_005b23a0();\n  iVar5 = FUN_00455950();\n  uVar3 = *(undefined4 *)(iVar5 + 100);\n  FUN_0040f560(&fStack_24);\n  FUN_00401de0(-fStack_24,-fStack_20,-fStack_1c);\n  cVar4 = FUN_005c7b00(*(int *)(in_ECX + 0x1c) + 0x1c,auStack_18,uVar3);\n  if (cVar4 != '\\0') {\n    FUN_0052e9d0();\n  }\n  FUN_00455940();\n  if (*(int *)(*(int *)(in_ECX + 0x1c) + 0x278) != 0) {\n    FUN_005c1010(*(int *)(in_ECX + 0x1c));\n    *(undefined4 *)(*(int *)(in_ECX + 0x1c) + 0x278) = 0;\n    FUN_005c0df0(*(undefined4 *)(in_ECX + 0x1c));\n    FUN_0050e9f0(7);\n  }\n  param_1 = &PTR_LAB_0073ef2c;\n  if (param_2 != 0) {\n    FUN_00700598(param_2);\n  }\n  ExceptionList = pvStack_c;\n  return;\n}\n\n",
+    "confidence": "observed",
+    "authority": "shipped-artifact",
+    "environment": null,
+    "limitations": [
+      "The session serves operations only after Ghidra reports default auto-analysis complete; incomplete analysis does not expose partial results.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+      "External functions and functions without an analyzable body return null; other decompiler failures remain explicit."
+    ],
+    "locations": [],
+    "evidence_links": []
+  }
+}

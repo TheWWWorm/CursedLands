@@ -212,10 +212,50 @@ blue, purple and gold, shared with creature rarity.
 
 Each creature has one equipment slot, with free reassignment during preparation
 and a shared stash. Selling or consuming a creature in evolution returns its
-item. Bonuses on the same stat add to alliance bonuses. Native healing, shield,
-poison and spell particles communicate triggered effects. The original victory
-music plays once when the local player wins the whole game. See the
+item. Equipment adds fixed amounts after alliance bonuses, so a higher-star
+carrier does not multiply an item's budget. Health, damage, armor and action
+speed update during preparation as equipment moves. Unequipped items pulse
+until assigned. Reward cards show at most two concise effects and fit at 720p
+without scrolling in English, Russian and German. Native healing, shield,
+poison and spell particles communicate triggered effects. Battles immediately
+use the original fighting tracks; the victory theme plays once when the local
+player wins the whole game. See the
 [item catalog and current rules](design/autochess-equipment-alliances.md).
+
+Before starting, players choose Zak or one of nine original companions. This
+identity is cosmetic, saved with the run and sent through the online lobby.
+Computer opponents use distinct characters from the same roster. The viewed
+board's owner appears as a transparent native bust at a 200-pixel logical height,
+cropped at the collarbones, turned inward in three-quarter view and flush with
+the screen's bottom and right edges. A 360-pixel render width reveals the arm
+and shoulder to the left without changing the face's scale or position. This
+extension draws behind reserves and passes through pointer input. A shorter
+reserve strip leaves room for the face and controls.
+Gold, health and battle controls sit between the shop and round status at the
+top; the shop narrows on smaller windows to keep these groups separate. Gold,
+income and health use the Army label's white fill and dark outline.
+Upgrading a creature or company level produces a brief smile and nod. Battle
+and match victories smile and nod; defeats frown and shake the head. Every
+expression holds for 1.8 seconds, including the final result. Native neutral,
+smile and frown textures blend over 0.28 seconds with eased transitions; an
+interrupted reaction blends from its current appearance. Switching owners,
+changing character or returning from overview acknowledges stored results
+without replaying them. Fresh results and acknowledged upgrades still react
+on the watched board, including host and guest views in online play.
+Quiet periods include occasional gentle glances, using a separate visual RNG.
+New battles restore neutral expression. The
+nine-board overview hides this single-owner portrait. Local elimination plays
+the original hero-death cue once, including results received over the network.
+
+Army and Reserves share the scalable font and dark outline. The Army hover
+target has no background. Army/level help shows the XP and shop-odds table in
+one panel beside the bust, without a second tooltip covering it. Item selection
+uses an inner circular outline; tier colors remain on the outer rim.
+
+The snow surround meets the courtyard at exactly the same quantized vertices,
+including the full overview boundary. Deformable snow tapers to zero at the join.
+The Curse retains its original airborne death cycle, then topples and settles
+onto the snow; quiet snapshots show the settled corpse immediately.
 
 Creep accuracy, avoidance and exceptional boss armor are capped
 by wave, while their native bodies, damage and spells remain. These changes apply

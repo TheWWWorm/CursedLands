@@ -2,8 +2,7 @@ class_name ArenaSnowSurround
 extends MeshInstance3D
 ## A visual continuation of the courtyard, outside its navigation and marks.
 ## One ring surrounds either the watched board or the complete 3x3 overview.
-const SEGMENTS := 64
-const MARGINS := [-0.5, 2.0, 8.0, 24.0, 64.0, 160.0, 512.0]
+const MARGINS := [0.0, 2.0, 8.0, 24.0, 64.0, 160.0, 512.0]
 const SOURCE := """
 shader_type spatial;
 #define EI_TERRAIN_LIGHT
@@ -50,28 +49,29 @@ func set_overview(overview: bool) -> void:
 	var next := 192.0 if overview else 64.0
 	if extent == next: return
 	extent = next
+	# One vertex per native metre, including the 192 m overview boundary.
+	var segments := int(extent)
 	var surface := SurfaceTool.new()
 	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for margin: float in MARGINS:
 		for side in 4:
-			for step in SEGMENTS:
-				var t := float(step) / SEGMENTS
+			for step in segments:
+				var t := float(step) / segments
 				var direction: Vector2 = [Vector2(lerpf(-1,1,t),-1), Vector2(1,lerpf(-1,1,t)),
 					Vector2(lerpf(1,-1,t),1), Vector2(-1,lerpf(1,-1,t))][side]
 				var edge := (direction + Vector2.ONE) * (extent * 0.5)
 				var point := edge + direction * margin
-				var sample := point if margin < 0 else edge
-				var local := Vector2(fposmod(sample.x,64), fposmod(sample.y,64))
+				var local := Vector2(fposmod(edge.x,64), fposmod(edge.y,64))
 				if local.x == 0 and edge.x > 0: local.x = 64
 				if local.y == 0 and edge.y > 0: local.y = 64
 				var border := floorf(ArenaTerrain.snow_height(local.x,local.y) / 8.0 * 65535.0) * (8.0 / 65535.0)
 				var drift := 3.2 + 0.7 * sin(point.x * 0.067 + point.y * 0.041) * cos(point.y * 0.083)
-				var height := lerpf(border, drift, smoothstep(0,24,margin)) + 0.008
+				var height := lerpf(border, drift, smoothstep(0,24,margin))
 				# Courtyard sectors carry the authored upward snow normal even
 				# on drifts. Match it so ring tessellation cannot draw a seam.
 				surface.set_normal(Vector3.UP)
 				surface.add_vertex(Vector3(point.x,height,-point.y))
-	var count := 4 * SEGMENTS
+	var count := 4 * segments
 	for ring in MARGINS.size() - 1:
 		for index in count:
 			var a := ring * count + index

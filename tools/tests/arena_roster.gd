@@ -39,7 +39,7 @@ func _ready()->void:
 	check(sampled.size()==14,"all fourteen opening families appear across seeds")
 	var duplicate_rate:=float(matching)/pairs
 	check(duplicate_rate<0.12,"early pairwise duplicate rate stays below twelve percent")
-	for family in ArenaRules.FAMILIES.size():
+	for family in range(ArenaRules.saved_family_count(15)):
 		check(not ArenaAlliances.traits(family).is_empty(),"every recruit participates in alliances")
 		for lang in ["en","ru","de"]:
 			RemakeText.lang=lang

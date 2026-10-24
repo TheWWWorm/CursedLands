@@ -542,6 +542,7 @@ var graphics_revision := 0
 ## A player preference, independent of expedition saves and undo.
 var arena_speed := 1
 var arena_mode := 0
+var arena_character := "hero"
 
 var _texture_cache := {}
 var _text_cache := {}
@@ -611,7 +612,8 @@ func _ready() -> void:
 		hero_class = cfg.get_value("player", "hero", hero_class)
 		difficulty = cfg.get_value("game", "difficulty", 0)
 		resolution_size = String(cfg.get_value("display", "resolution", "native"))
-	arena_mode = 1 if cfg.get_value("arena", "mode", 0) == 1 else 0
+	arena_mode = clampi(int(cfg.get_value("arena", "mode", 0)), 0, 2)
+	arena_character = ArenaCommanders.valid(str(cfg.get_value("arena", "character", "hero")))
 	arena_speed = 2 if cfg.get_value("arena", "battle_speed", 1) == 2 else 1
 	for o: Array in OPTIONS:
 		options[o[0]] = cfg.get_value("options", o[0], o[5]) if cfg.has_section("options") else o[5]
@@ -766,6 +768,9 @@ func read_file(rel: String) -> PackedByteArray:
 
 
 func load_image(name: String, authored_mips := false) -> Image:
+	if name.begins_with(ArenaExpansion.PREFIX):
+		var bytes := ArenaExpansion.asset("textures", name + ".mmp")
+		return EIMmp.decode_texture(bytes, RenderingServer.has_os_feature("s3tc")) if authored_mips else EIMmp.decode(bytes)
 	var data: PackedByteArray
 	if not textures.has(name + ".mmp") and menus and menus.has(name + ".mmp"):
 		data = menus.read(name + ".mmp")
@@ -786,10 +791,12 @@ func load_original_image(name: String) -> Image:
 
 ## A model file (.mod/.fig/.bon/.anm) from figures.res, or menus.res for the menu signposts.
 func has_figure(file: String) -> bool:
+	if file.begins_with(ArenaExpansion.PREFIX): return ArenaExpansion.has_asset("figures", file)
 	return figures.has(file) or (menus != null and menus.has(file))
 
 
 func read_figure(file: String) -> PackedByteArray:
+	if file.begins_with(ArenaExpansion.PREFIX): return ArenaExpansion.asset("figures", file)
 	if figures.has(file) or menus == null:
 		return figures.read(file)
 	return menus.read(file)
@@ -877,6 +884,7 @@ func save_settings() -> void:
 	cfg.set_value("display", "resolution", resolution_size)
 	cfg.set_value("arena", "battle_speed", arena_speed)
 	cfg.set_value("arena", "mode", arena_mode)
+	cfg.set_value("arena", "character", arena_character)
 	var old := ConfigFile.new()   # hand-edited [debug] keys (FlashLog) and GfxDetect's record survive
 	if old.load(CONFIG_PATH) == OK:
 		for sec in ["debug", "gfx_detect"]:   # GfxDetect.SECTION

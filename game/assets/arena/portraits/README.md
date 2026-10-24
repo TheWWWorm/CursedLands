@@ -1,7 +1,8 @@
 # Native creature portraits
 
-The active roster's ninety 64 × 64 transparent PNGs were rendered directly
-from the original Cursed Lands unit models, textures, equipment and rig. The
+The standard and LiA rosters' 114 transparent 64 × 64 PNGs, including retained
+legacy entries, were rendered directly from the original Cursed Lands and
+Lost in Astral unit models, textures, equipment and rig. The
 family/rank mapping is in `manifest.json`; the filename is
 `<family index>-<zero-based rank>`. Shared combat prototypes can have distinct
 rank palettes and therefore need separate portrait entries.
@@ -20,3 +21,8 @@ list. Pass `--families=9,14,19` to refresh selected families while retaining the
 other entries in an existing manifest. Appearance selection is shared with field
 models through `ArenaAppearance`; the canonical combat/save prototypes remain
 unchanged.
+
+For families 30–37, also pass `--astral-path=/absolute/path/to/LiA` to mount the
+second installation. For example, `--families=30,31,32,33,34,35,36,37` refreshes
+only the expansion portraits. Their assets use the `arena-lia/` namespace;
+standard campaign models and texture caches remain separate.

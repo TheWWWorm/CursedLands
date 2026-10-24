@@ -210,16 +210,27 @@ class LitMaterial extends ShaderMaterial:
 ## StandardMaterial3D with Lambert diffuse, roughness 1, no specular, alpha
 ## scissor 0.5 and alpha to coverage draws, lit by the preview's own light,
 ## with the unit texture fetch of option gfx_sharp_units (off: the same image).
+## Expression samples are opt-in per portrait material; other previews skip them.
 const PREVIEW_SHADER := """
 shader_type spatial;
 render_mode cull_back, diffuse_lambert, specular_disabled, alpha_to_coverage;
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D expression_smile_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D expression_frown_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform vec2 expression_weights = vec2(0.0);
+uniform bool portrait_unlit = false;
 """ + SHARP_FETCH + WOUND_FETCH + Mouth.FETCH + """
 void fragment() {
 	vec4 t = ei_unit_tex(albedo_tex, UV);
+	vec4 neutral = t;
+	if (expression_weights.x > 0.0) { t += (ei_unit_tex(expression_smile_tex, UV) - neutral) * expression_weights.x; }
+	if (expression_weights.y > 0.0) { t += (ei_unit_tex(expression_frown_tex, UV) - neutral) * expression_weights.y; }
 	t = ei_unit_mouth(t, UV);
 	if (wound_enabled) { t = ei_unit_wound(t, ei_unit_tex(wound_tex, UV)); }
-	ALBEDO = t.rgb;
+	// Interface paintings already contain highlights and shadows. Their
+	// native renderer uses a uniform tint, not the scene's vertex lighting.
+	ALBEDO = portrait_unlit ? vec3(0.0) : t.rgb;
+	EMISSION = portrait_unlit ? t.rgb : vec3(0.0);
 	ALPHA = t.a;
 	ALPHA_SCISSOR_THRESHOLD = 0.5;
 	ALPHA_ANTIALIASING_EDGE = 0.3;
@@ -310,6 +321,7 @@ var _detail: MeshInstance3D
 var _plain_head: Array[Node3D] = []
 var _head: Node3D
 var _eye_offset := Vector3(0, 0.12, 0)
+var _asset_template := ""
 var _welded_head: MeshInstance3D
 var _head_hidden := false
 var _head_visible := true
@@ -345,12 +357,14 @@ static func create(unit: Dictionary, ui_preview := false, initial_action := true
 	var tmpl: String = unit.get("template", "")
 	if tmpl.is_empty():
 		tmpl = String(race.get("mask", "")).to_lower()
-	var model := EIFigure.get_model(tmpl)
+	var asset_template := String(proto.get("_arena_assets", "")) + tmpl
+	var model := EIFigure.get_model(asset_template)
 	if model.is_empty():
 		return null
 	var m := EIUnitModel.new()
 	m.animation_rng = random
 	m.template = tmpl
+	m._asset_template = asset_template
 	m.name = tmpl
 	m.set_meta("peaceful_gear", bool(unit.get("peaceful_gear", false)) and not ui_preview)
 	m._build(model, unit, proto, race, ui_preview, initial_action)
@@ -602,7 +616,7 @@ var _cycle_pos := 0.0
 ## part's translation keys are scaled by it.
 static func height_scale(tmpl: String, h: float) -> float:
 	var arc := EIResArchive.open_path(GameData.root.path_join("res/database.res")) if GameData.root != "" else null
-	var b := arc.read(tmpl + ".adb") if arc else PackedByteArray()
+	var b := ArenaExpansion.asset("database", tmpl + ".adb") if tmpl.begins_with(ArenaExpansion.PREFIX) else arc.read(tmpl + ".adb") if arc else PackedByteArray()
 	if b.size() < 0x2c or b.decode_float(0x24) == 0.0:
 		return 1.0
 	return (h * (b.decode_float(0x28) - b.decode_float(0x20)) + b.decode_float(0x20)) / b.decode_float(0x24)
@@ -613,7 +627,7 @@ static func load_adb(tmpl: String) -> Array:
 		return _adbs[tmpl]
 	var out := []
 	var arc := EIResArchive.open_path(GameData.root.path_join("res/database.res")) if GameData.root != "" else null
-	var b := arc.read(tmpl + ".adb") if arc else PackedByteArray()
+	var b := ArenaExpansion.asset("database", tmpl + ".adb") if tmpl.begins_with(ArenaExpansion.PREFIX) else arc.read(tmpl + ".adb") if arc else PackedByteArray()
 	if b.size() >= 0x2c and b.slice(0, 3).get_string_from_ascii() == "ADB":
 		var n := b.decode_u32(4)
 		for i in n:
@@ -652,12 +666,12 @@ static var rate_scaling := true
 
 
 func _clip_records() -> Dictionary:
-	if not _by_name.has(template):
+	if not _by_name.has(_asset_template):
 		var d := {}
 		for e: Dictionary in adb:
 			d[e.name] = e
-		_by_name[template] = d
-	return _by_name[template]
+		_by_name[_asset_template] = d
+	return _by_name[_asset_template]
 
 
 func weapon_bit() -> int:
@@ -1030,6 +1044,9 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 		mesh_for[held[p]] = held[p]
 		weapon_parts[held[p]] = true
 
+	var asset_prefix := String(proto.get("_arena_assets", ""))
+	if not asset_prefix.is_empty():
+		for i in layers.size(): layers[i] = asset_prefix + layers[i]
 	var mat = _material(ui_preview, mask == "unmowi")
 	mat.albedo_texture = _compose(mask, layers)
 	if mat is LitMaterial:
@@ -1046,6 +1063,8 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 	var wmat = mat
 	var hmat = mat
 	if not secondary.is_empty():
+		if not asset_prefix.is_empty():
+			for i in secondary.size(): secondary[i] = asset_prefix + secondary[i]
 		wmat = mat.duplicate()
 		wmat.albedo_texture = _compose(mask, secondary)
 		if wmat is LitMaterial:
@@ -1063,7 +1082,7 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 			_view_neck = {"center":head, "collar":lerpf(shoulder, head.y, 0.42),
 				"radius":absf(left.x - right.x) * 0.35, "surface":0, "first":0, "count":0}
 			_view_collar = Vector3(head.x, _view_neck.collar, head.z)
-	var morphs := EIAnim.morphs(template)
+	var morphs := EIAnim.morphs(_asset_template)
 	var nodes := {}
 	var geometry_parts: Array[WeakRef] = []
 	var wisp_index := 0
@@ -1203,9 +1222,9 @@ func _build(model: Dictionary, unit: Dictionary, proto: Dictionary, race: Dictio
 			chain.insert(0, q.replace(".", "_"))
 			q = parent_of[q]
 		paths[p] = NodePath("/".join(chain))
-	adb = load_adb(template)
-	height_k = height_scale(template, complexion.z)
-	player.add_animation_library("ei", EIAnim.library(template, paths, root_part, height_k, true))
+	adb = load_adb(_asset_template)
+	height_k = height_scale(_asset_template, complexion.z)
+	player.add_animation_library("ei", EIAnim.library(_asset_template, paths, root_part, height_k, true))
 	neutral = _has_neutral()
 	movement_starts = int(race.get("type_id", 0)) == 0x32
 	pose_state = ST_NEUTRAL if neutral else ST_ATTACK
@@ -1810,6 +1829,11 @@ static func _compose(mask: String, layers: Array[String]) -> Texture2D:
 
 
 static func _load_layer(mask: String, layer: String) -> Image:
+	if layer.begins_with(ArenaExpansion.PREFIX):
+		var name := layer.trim_prefix(ArenaExpansion.PREFIX)
+		var bytes := ArenaExpansion.asset("redress", ArenaExpansion.PREFIX + mask + name + ".mmp")
+		if bytes.is_empty(): bytes = ArenaExpansion.asset("textures", layer + ".mmp")
+		return EIMmp.decode(bytes) if not bytes.is_empty() else null
 	var d := GameData.redress.read(mask + layer + ".mmp")
 	if d.is_empty():
 		d = GameData.textures.read(layer + ".mmp")

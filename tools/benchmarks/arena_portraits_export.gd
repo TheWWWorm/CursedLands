@@ -2,6 +2,11 @@ extends Node
 ## Pixelated native renders, never repainted or generatively reinterpreted.
 func _ready() -> void:
 	var output := "user://arena-portraits"
+	var expansion := false
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--astral-path="):
+			GameData.campaign_roots[CampaignProfile.ASTRAL] = arg.trim_prefix("--astral-path=")
+			expansion = ArenaExpansion.mount()
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--out="): output=arg.trim_prefix("--out=")
 	DirAccess.make_dir_recursive_absolute(output)
@@ -14,7 +19,7 @@ func _ready() -> void:
 	if not selected.is_empty() and FileAccess.file_exists(manifest_path):
 		var previous: Variant = JSON.parse_string(FileAccess.get_file_as_string(manifest_path))
 		if previous is Dictionary: manifest = previous
-	for family in ArenaRules.ACTIVE_FAMILIES:
+	for family in ArenaRules.active_families(expansion):
 		if not selected.is_empty() and family not in selected: continue
 		for rank in 3:
 			var id := ArenaRules.prototype(family,rank)
@@ -38,7 +43,7 @@ func _ready() -> void:
 			# Upper-body portraits retain native faces, clothing and weapon hilts.
 			# Full figures made small human faces unreadable in the damage list.
 			if not first:
-				var clothed := id.begins_with("human") or id.begins_with("goblin") or id.begins_with("orc")
+				var clothed: bool = family in [36, 37] or id.begins_with("human") or id.begins_with("goblin") or id.begins_with("orc")
 				var center := bounds.get_center()-Vector3(0,bounds.size.y*(0.7 if clothed else 0.25),0)
 				# Woodsfolk have a large head with the distinctive clan headdress;
 				# applying human upper-body framing reduced it to a tiny thumbnail.

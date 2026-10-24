@@ -266,6 +266,7 @@ static func tribe_icon(icon: TextureRect, key: String, represented: bool) -> voi
 static func outline(control: Control) -> void:
 	control.add_theme_color_override("font_outline_color", Color("222222"))
 	control.add_theme_constant_override("outline_size", 2)
+	if control is Button: control.add_theme_constant_override("font_outline_size", 2)
 	control.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.5))
 	control.add_theme_constant_override("shadow_offset_y", 1)
 
@@ -276,6 +277,7 @@ static func snow_ink(control: Control, color := SNOW_INK) -> void:
 	control.add_theme_font_override("font", preload("res://fonts/LiberationSans-Regular.ttf"))
 	control.add_theme_color_override("font_outline_color", Color("222222"))
 	control.add_theme_constant_override("outline_size", 2)
+	if control is Button: control.add_theme_constant_override("font_outline_size", 2)
 	control.add_theme_color_override("font_shadow_color", Color.TRANSPARENT)
 	control.add_theme_constant_override("shadow_offset_y", 0)
 

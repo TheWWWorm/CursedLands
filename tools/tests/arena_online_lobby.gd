@@ -18,12 +18,14 @@ func client(password:String)->ArenaOnlineSession:
 	return result
 func _ready()->void:
 	await frames()
+	GameData.arena_character="merc3"
 	var host:=ArenaOnlineSession.new();host.password="room-key";host.player_name="Host";add_child(host)
 	check(host.host(29820)==OK,"private host starts")
 	var wrong:=client("wrong")
 	check(await wait_for(func():return not wrong.status.is_empty()),"wrong password gets explicit rejection")
 	check(wrong.status==RemakeText.t("Incorrect password.") and host.members.size()==1,"wrong password cannot claim a seat")
 	for index in 8:
+		GameData.arena_character=ArenaCommanders.IDS[index]
 		var guest:=client("room-key")
 		check(await wait_for(func():return guest.my_seat==index+1),"human seat %d admitted"%(index+1))
 	check(host.members.size()==9,"full nine-human room")
@@ -34,6 +36,7 @@ func _ready()->void:
 	seats.sort();check(seats==range(9),"all human seats are distinct")
 	var first:=sessions[1]
 	first.close();check(await wait_for(func():return host.members.size()==8),"lobby departure releases seat")
+	GameData.arena_character="merc9"
 	var replacement:=client("room-key")
 	check(await wait_for(func():return replacement.my_seat==1),"new joiner gets the free lobby seat")
 	for guest in sessions:
@@ -42,6 +45,8 @@ func _ready()->void:
 	check(host.start_game(7191).is_empty(),"nine-human game starts")
 	host.game.set_process(false)
 	check(await wait_for(func():return replacement.started),"all peers enter the match")
+	check(host.game.run.commander=="merc3" and host.game.run.company(1).commander=="merc9", "host and guest character choices survive matchmaking")
+	check(replacement.view.commander=="merc9" and replacement.view.company(replacement.view.seats.find(0)).commander=="merc3", "guest sees correctly remapped board-owner portraits")
 	host.game.run.finish_preparation()
 	check(host.game.run.company(8).army.is_empty(),"no bot can spend for the ninth human")
 	var late:=client("room-key")

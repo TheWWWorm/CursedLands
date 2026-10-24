@@ -13,7 +13,7 @@ func _ready() -> void:
 		keys[ArenaRules.FAMILIES[family].hook] = true
 	var pattern := RegEx.new()
 	pattern.compile('RemakeText\\.t\\("([^"\\n]*)"\\)')
-	var files: Array[String] = ["res://src/ui/arena_pve_screen.gd", "res://src/game/arena_items.gd", "res://src/game/arena_run.gd"]
+	var files: Array[String] = ["res://src/ui/arena_pve_screen.gd", "res://src/game/arena_items.gd", "res://src/game/arena_run.gd", "res://src/ui/arena_online_panel.gd"]
 	# Include reward, tray, drag target and tooltip controls as the UI evolves.
 	for filename: String in DirAccess.get_files_at("res://src/ui"):
 		if filename.ends_with(".gd") and (filename.begins_with("arena_equipment_") or filename.begins_with("arena_item_")):
@@ -32,6 +32,10 @@ func _ready() -> void:
 			var index := 0 if language == "ru" else 1
 			# German legitimately shares words such as Horde and Reserve with English.
 			if translated.is_empty() or (language != "en" and (entries.size() <= index or String(entries[index]).is_empty())): failures.append(language + ": " + key)
+		for commander: String in ArenaCommanders.IDS:
+			checks += 1
+			var row: Dictionary = WikiLoreData.DATA.campaigns.cursed_lands["character/" + commander]
+			if not row.names.has(language) or ArenaCommanders.title(commander).is_empty(): failures.append(language + ": commander " + commander)
 		for kind: String in ArenaItems.RULES:
 			checks += 1
 			if ArenaItems.title(kind).is_empty() or ArenaItems.description(kind).is_empty(): failures.append(language + ": item " + kind)

@@ -14,12 +14,14 @@ const PORT := 27016
 const LAN_PORT := 27018   # 27016 is the autochess game socket / campaign discovery port
 # Equipment ownership and summoned actor state require matching builds, even
 # while an unpublished branch still carries the previous public version.
-const PROTOCOL := 3
+const PROTOCOL := 4
 const MAX_PACKET := 1048576
 const HELLO_TIMEOUT := 15.0
 const ERRORS := ["Online autochess requires the same game version and original game data.", "This online game has already started.", "This online game is full.", "Incorrect password.", "Connection to the host was lost.", "Could not connect to the host.", "Invalid online action.", "You have been eliminated. You can keep watching.", "The round changed. Try the action again.", "Wait for every player to be ready.", "Too many actions. Try again in a moment.", "The shop changed. Choose an offer again.", "The sale value changed. Select the creature again."]
 var peer: MultiplayerPeer
 var is_host := false
+var expansion := false
+var _expansion_hash := ""
 var my_seat := -1
 var members := {}
 var view := ArenaOnlineView.new()
@@ -74,6 +76,8 @@ func host_shown(port := PORT, use_websocket := false) -> Error:
 	return error
 
 func host(port := PORT, use_websocket := false) -> Error:
+	if expansion and not ArenaExpansion.mount(): return ERR_UNAVAILABLE
+	_expansion_hash = ArenaExpansion.fingerprint() if expansion else ""
 	if peer != null: return ERR_ALREADY_IN_USE
 	if OS.has_feature("web"): return ERR_UNAVAILABLE
 	if port < (0 if local_host.solo_combat else 1) or port > 65535: return ERR_INVALID_PARAMETER
@@ -84,7 +88,7 @@ func host(port := PORT, use_websocket := false) -> Error:
 	if error != OK: peer = null; return error
 	if peer is ENetMultiplayerPeer: peer.get_host().compress(ENetConnection.COMPRESS_RANGE_CODER)
 	is_host = true; my_seat = 0; host_port = peer.get_host().get_local_port() if peer is ENetMultiplayerPeer else port
-	members[1] = {"seat":0,"name":clean_name(player_name),"ready":true}
+	members[1] = {"seat":0,"name":clean_name(player_name),"ready":true,"commander":ArenaCommanders.valid(GameData.arena_character, expansion)}
 	_views[1] = 0
 	peer.peer_connected.connect(_peer_connected); peer.peer_disconnected.connect(_peer_disconnected)
 	if not local_host.solo_combat and not websocket and GameData.option("net_upnp") == 1 and not Array(OS.get_cmdline_user_args()).any(func(arg): return arg.begins_with("--tool=")): upnp.open(port)
@@ -97,9 +101,11 @@ func host(port := PORT, use_websocket := false) -> Error:
 func lan_info() -> Dictionary:
 	if not is_host or peer == null: return {}
 	return {"name":clean_name(player_name), "mode":"autochess", "players":members.size(),
-		"max":9, "pw":not password.is_empty(), "ws":websocket, "port":host_port, "in_game":started}
+		"max":9, "pw":not password.is_empty(), "ws":websocket, "port":host_port, "in_game":started, "expansion":expansion}
 
 func join(address: String) -> Error:
+	if expansion and not ArenaExpansion.mount(): return ERR_UNAVAILABLE
+	_expansion_hash = ArenaExpansion.fingerprint() if expansion else ""
 	var parsed := Session.parse_address(address, PORT)
 	websocket = String(parsed[0]).begins_with("ws://") or String(parsed[0]).begins_with("wss://")
 	if String(parsed[0]).is_empty() or int(parsed[1]) < 1 or int(parsed[1]) > 65535: return ERR_INVALID_PARAMETER
@@ -155,7 +161,7 @@ func _process(dt: float) -> void:
 		if connection == MultiplayerPeer.CONNECTION_CONNECTED and not _connected:
 			_connected = true
 			_loading_timeout(1)
-			var hello := {"t":"hello","protocol":PROTOCOL,"version":ProjectSettings.get_setting("application/config/version"),"hash":NetStatus.world_hash(),"name":clean_name(player_name),"password":password.left(64)}
+			var hello := {"t":"hello","protocol":PROTOCOL,"version":ProjectSettings.get_setting("application/config/version"),"hash":NetStatus.world_hash(),"name":clean_name(player_name),"commander":ArenaCommanders.valid(GameData.arena_character, expansion),"expansion":expansion,"content":_expansion_hash,"password":password.left(64)}
 			local_host.hello(hello)
 			_send(1, hello)
 		elif connection == MultiplayerPeer.CONNECTION_DISCONNECTED or (_elapsed > HELLO_TIMEOUT and my_seat < 0):
@@ -215,6 +221,7 @@ func _from_client(id: int, data: Dictionary) -> void:
 		if members.has(id) or not _pending.has(id): return
 		var reason := ""
 		if data.get("protocol") != PROTOCOL or data.get("version") != ProjectSettings.get_setting("application/config/version") or data.get("hash") != NetStatus.world_hash(): reason = ERRORS[0]
+		elif data.get("expansion", false) != expansion or data.get("content", "") != _expansion_hash: reason = "Choose the same autochess mode. LiA autochess requires matching Lost in Astral data on every player."
 		elif local_host.solo_combat and not data.has("owner"): reason = ERRORS[6]
 		elif started: reason = ERRORS[1]
 		elif members.size() >= 9 and not data.has("owner"): reason = ERRORS[2]
@@ -231,7 +238,7 @@ func _from_client(id: int, data: Dictionary) -> void:
 		var seats := members.values().map(func(member): return int(member.seat))
 		var seat := 0
 		while seat in seats: seat += 1
-		members[id] = {"seat":seat,"name":clean_name(data.name),"ready":false}
+		members[id] = {"seat":seat,"name":clean_name(data.name),"ready":false,"commander":ArenaCommanders.valid(str(data.get("commander", "hero")), expansion)}
 		_views[id] = seat; _pending.erase(id); _send_lobby()
 		return
 	if not members.has(id): return
@@ -294,11 +301,17 @@ func start_game(seed_value := 0) -> String:
 	if not is_host or started: return "Invalid online action."
 	if members.values().any(func(member): return not member.ready): return "Wait for every player to be ready."
 	started = true
-	game = ArenaOnlineGame.new(); add_child(game)
+	game = ArenaOnlineGame.new(); game.run.expansion = expansion; add_child(game)
 	var humans := {}
 	for member: Dictionary in members.values(): humans[int(member.seat)] = member.name
 	game.updated.connect(func(): _dirty = true)
 	game.begin(randi_range(1,99999999) if seed_value == 0 else seed_value, humans)
+	for member: Dictionary in members.values():
+		game.run.company(int(member.seat)).commander = ArenaCommanders.valid(str(member.get("commander", "hero")), expansion)
+	var chosen := members.values().map(func(member): return ArenaCommanders.character(ArenaCommanders.valid(str(member.get("commander", "hero")), expansion)))
+	var companions := (ArenaExpansion.CHARACTERS.keys() + ArenaCommanders.IDS if expansion else ArenaCommanders.IDS).filter(func(id): return id not in chosen)
+	for seat in ArenaTournamentRun.PLAYER_COUNT:
+		if not humans.has(seat): game.run.company(seat).commander = companions.pop_front()
 	_dirty = true; _send_left = 0
 	_send_lobby()
 	return ""
@@ -315,7 +328,7 @@ func _names() -> Array:
 
 func _send_lobby() -> void:
 	for id: int in members:
-		_deliver(id, {"t":"lobby","members":members.duplicate(true),"seat":int(members[id].seat),"started":started,"owner":local_host.worker and id == local_host.owner_peer})
+		_deliver(id, {"t":"lobby","members":members.duplicate(true),"seat":int(members[id].seat),"started":started,"expansion":expansion,"owner":local_host.worker and id == local_host.owner_peer})
 
 func _send(id: int, data: Dictionary, reliable := true) -> void:
 	if peer == null: return
@@ -379,7 +392,7 @@ func solo_packet(id: int, data: Dictionary) -> bool:
 	if not local_host.solo_combat or id != local_host.owner_peer: return false
 	if data.t == "solo_prepare" and data.get("snapshot") is Dictionary:
 		if game == null:
-			game = ArenaOnlineGame.new(); add_child(game)
+			game = ArenaOnlineGame.new(); game.run.expansion = expansion; add_child(game)
 			game.begin(int(data.snapshot.seed), {0:""})
 		_solo_running = false; _solo_pending.clear(); _solo_view_group = 0; _send_left = 0.0; game.set_process(false)
 		if not game.run.restore(data.snapshot):

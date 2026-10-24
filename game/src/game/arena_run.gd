@@ -7,6 +7,8 @@ signal changed
 const SAVE_PATH := "user://arena-expedition.json"
 const PROFILE_PATH := "user://arena-profile.json"
 const DEPLOY := Rect2(20, 20, 10.5, 24)
+var commander := "hero"
+var expansion := false
 var run_seed := 1
 var challenge := 0
 var starter := 0 # Legacy save/policy metadata; never grants creatures.
@@ -61,7 +63,7 @@ func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
 	last_evolutions.clear()
 	rng.seed = run_seed
 	# Deal six different starting creatures from every island.
-	var families := ArenaRules.recruit_pool(capacity())
+	var families := ArenaRules.recruit_pool(capacity(), expansion)
 	for i in range(families.size() - 1, 0, -1):
 		var other := rng.randi_range(0, i)
 		var held: int = families[i]
@@ -277,7 +279,7 @@ func purchase_error(index: int) -> String:
 	if not can_shop(): return RemakeText.t("Finish the current encounter first.")
 	if index < 0 or index >= shop.size() or int(shop[index].family) < 0: return RemakeText.t("This offer has already been recruited.")
 	var family := int(shop[index].family)
-	if family not in ArenaRules.ACTIVE_FAMILIES: return RemakeText.t("Retired from recruitment")
+	if family not in ArenaRules.active_families(expansion): return RemakeText.t("Retired from recruitment")
 	var rank := int(shop[index].get("rank", 0))
 	var cost := offer_cost(shop[index])
 	if gold < cost: return RemakeText.t("Not enough gold.")
@@ -405,7 +407,7 @@ func _roll_shop(keep_lock: bool) -> void:
 	if army.is_empty() and not shop.any(func(offer): return int(offer.family) >= 0 and offer_cost(offer) <= ArenaRules.MIN_RECRUIT_COST):
 		for i in shop.size():
 			if not shop[i].locked:
-				var affordable := ArenaRules.recruit_pool(capacity()).filter(func(family): return int(ArenaRules.FAMILIES[family].cost) <= ArenaRules.MIN_RECRUIT_COST \
+				var affordable := ArenaRules.recruit_pool(capacity(), expansion).filter(func(family): return int(ArenaRules.FAMILIES[family].cost) <= ArenaRules.MIN_RECRUIT_COST \
 					and (left.is_empty() or int(left[family]) > 0 or family == int(shop[i].family)))
 				if affordable.is_empty(): break
 				shop[i] = {"family": affordable[rng.randi_range(0, affordable.size() - 1)], "rank": 0, "locked": false}
@@ -417,7 +419,7 @@ func _roll_shop(keep_lock: bool) -> void:
 func _draw(tier: int, left: Dictionary) -> int:
 	if left.is_empty():
 		var candidates: Array[int] = []
-		for family in ArenaRules.ACTIVE_FAMILIES:
+		for family in ArenaRules.active_families(expansion):
 			if int(ArenaRules.FAMILIES[family].tier) == tier: candidates.append(family)
 		return candidates[rng.randi_range(0, candidates.size() - 1)]
 	var order: Array[int] = []
@@ -425,11 +427,11 @@ func _draw(tier: int, left: Dictionary) -> int:
 	for t in range(tier + 1, ArenaRules.POOL_COPIES.size() + 1): order.append(t)
 	for t in order:
 		var total := 0
-		for family in ArenaRules.ACTIVE_FAMILIES:
+		for family in ArenaRules.active_families(expansion):
 			if int(ArenaRules.FAMILIES[family].tier) == t: total += maxi(0, int(left[family]))
 		if total == 0: continue
 		var ticket := rng.randi_range(0, total - 1)
-		for family in ArenaRules.ACTIVE_FAMILIES:
+		for family in ArenaRules.active_families(expansion):
 			if int(ArenaRules.FAMILIES[family].tier) != t: continue
 			ticket -= maxi(0, int(left[family]))
 			if ticket < 0: return family
@@ -444,7 +446,7 @@ func shares_pool() -> bool:
 func pool_left() -> Dictionary:
 	if not shares_pool(): return {}
 	var left := {}
-	for family in ArenaRules.ACTIVE_FAMILIES: left[family] = ArenaRules.pool_size(family)
+	for family in ArenaRules.active_families(expansion): left[family] = ArenaRules.pool_size(family)
 	for company: ArenaRun in pool_companies.call():
 		for entry: Dictionary in company.army:
 			var family := int(entry.family)
@@ -724,7 +726,7 @@ func can_shop() -> bool:
 func snapshot() -> Dictionary:
 	_sync_items()
 	return {"version": ArenaRules.VERSION, "seed": str(run_seed), "rng": str(rng.state),
-		"challenge": challenge, "starter": starter, "wave": wave, "wave_limit": wave_limit, "gold": gold, "lives": lives,
+		"commander": commander, "expansion": expansion, "challenge": challenge, "starter": starter, "wave": wave, "wave_limit": wave_limit, "gold": gold, "lives": lives,
 		"stage": stage, "preparation_left": preparation_left, "army": army.duplicate(true), "shop": shop.duplicate(true),
 		"boons": boons.duplicate(), "rewards": rewards.duplicate(true), "history": history.duplicate(true),
 		"free_refresh": free_refresh,
@@ -738,6 +740,10 @@ func restore(data: Dictionary) -> bool:
 	data = data.duplicate(true)
 	# Validate before changing any live state. JSON numbers arrive as floats.
 	if not _integer(data.get("version"), 1, ArenaRules.VERSION): return false
+	if not data.get("expansion", false) is bool: return false
+	var saved_expansion: bool = data.get("expansion", false)
+	if saved_expansion and (int(data.version) < 16 or not ArenaExpansion.mounted()): return false
+	var allowed_families := ArenaRules.active_families(saved_expansion)
 	if not data.get("stage", "") in ["prepare", "fight", "result", "reward", "won", "lost"]: return false
 	for key in ["army", "shop", "boons", "rewards", "history"]:
 		if not data.get(key) is Array: return false
@@ -784,7 +790,7 @@ func restore(data: Dictionary) -> bool:
 				family = ArenaRules.migrated_family(entry.prototype)
 				entry.family = family
 				entry.prototype = ArenaRules.prototype(family, rank)
-			elif family not in ArenaRules.ACTIVE_FAMILIES and not ArenaRules.FAMILIES[family].get("retired", false): return false
+			elif family not in allowed_families and not ArenaRules.FAMILIES[family].get("retired", false): return false
 		if family < 0:
 			if entry.prototype not in ArenaRules.COMPANIONS or rank != 0: return false
 			entry.family = ArenaRules.migrated_family(entry.prototype); entry.prototype = ArenaRules.prototype(int(entry.family), 0)
@@ -844,7 +850,7 @@ func restore(data: Dictionary) -> bool:
 		if int(offer.family)>=0:
 			if int(data.version) < 13:
 				offer.family = ArenaRules.migrated_family(ArenaRules.saved_prototype(int(data.version), int(offer.family), 0))
-			elif int(offer.family) not in ArenaRules.ACTIVE_FAMILIES:
+			elif int(offer.family) not in allowed_families:
 				if int(data.version) < 15 and ArenaRules.FAMILIES[int(offer.family)].get("retired", false):
 					offer.family = -1; offer.locked = false
 				else: return false
@@ -883,6 +889,8 @@ func restore(data: Dictionary) -> bool:
 	if int(data.wave) > int(saved_limit): return false
 	if not valid_terminal(data, int(saved_limit)): return false
 	run_seed = int(data.seed); rng.seed = run_seed; rng.state = int(data.rng)
+	expansion = saved_expansion
+	commander = ArenaCommanders.valid(str(data.get("commander", "hero")), expansion)
 	challenge = int(data.challenge); starter = int(data.starter)
 	wave = int(data.wave); wave_limit = int(saved_limit); gold = int(data.gold); lives = int(data.lives)
 	stage = "prepare" if data.stage == "fight" else String(data.stage)

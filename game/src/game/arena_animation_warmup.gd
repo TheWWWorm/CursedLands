@@ -86,7 +86,7 @@ static func ready_for(prototype: String) -> bool:
 	if warmer == null or warmer.task < 0 or warmer.source != GameData.figures: return true
 	var proto := GameData.db.find("monster_prototypes", prototype)
 	var race := GameData.db.find("race_models", proto.get("base_race", ""))
-	var job: LibraryJob = warmer.pending.get(String(race.get("mask", "")).to_lower())
+	var job: LibraryJob = warmer.pending.get(String(proto.get("_arena_assets", "")) + String(race.get("mask", "")).to_lower())
 	# Staged models wait without blocking the main thread. Otherwise the
 	# first click can synchronously decode the very library being prefetched.
 	return job == null or job.published
@@ -106,7 +106,7 @@ func prepare() -> void:
 	for id: String in ids:
 		var proto := GameData.db.find("monster_prototypes",id)
 		var race := GameData.db.find("race_models",proto.get("base_race",""))
-		var template := String(race.get("mask","")).to_lower()
+		var template := String(proto.get("_arena_assets", "")) + String(race.get("mask","")).to_lower()
 		if template.is_empty(): continue
 		if not templates.has(template):
 			var model := EIFigure.get_model(template)

@@ -237,7 +237,8 @@ static func proto_face_names(proto: Dictionary, race: Dictionary, c: Vector3) ->
 	var fig := "infa%s%s%dface" % [model, build, int(proto.get("hair", 0)) + 1]
 	var sex: String = {"unhuma": "m", "unhufe": "f"}.get(model, "")
 	var tex := "face%s%02d" % [sex, int(proto.get("skin", 0))]
-	return PackedStringArray([fig, tex])
+	var prefix := String(proto.get("_arena_assets", ""))
+	return PackedStringArray([prefix + fig, prefix + tex])
 
 
 ## A face without a unit (the network character screen's face strips,

@@ -1,0 +1,1080 @@
+{
+	"purchase_cost": 54,
+	"rank": 1,
+	"rows": [
+		{
+			"a": "casters",
+			"b": "screened_casters",
+			"reason": "defeated",
+			"seconds": 30.5249999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "screened_casters",
+			"reason": "defeated",
+			"seconds": 30.4699999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "screened_casters",
+			"reason": "defeated",
+			"seconds": 27.6099999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "screened_casters",
+			"reason": "defeated",
+			"seconds": 30.4699999999999,
+			"seed": 10777,
+			"side": 1,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "mixed",
+			"reason": "defeated",
+			"seconds": 40.4249999999998,
+			"seed": 8519,
+			"side": 0,
+			"winner": "mixed"
+		},
+		{
+			"a": "casters",
+			"b": "mixed",
+			"reason": "defeated",
+			"seconds": 30.7449999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "mixed"
+		},
+		{
+			"a": "casters",
+			"b": "mixed",
+			"reason": "defeated",
+			"seconds": 37.7299999999998,
+			"seed": 10777,
+			"side": 0,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "mixed",
+			"reason": "defeated",
+			"seconds": 41.2499999999998,
+			"seed": 10777,
+			"side": 1,
+			"winner": "mixed"
+		},
+		{
+			"a": "casters",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 52.6899999999998,
+			"seed": 8519,
+			"side": 0,
+			"winner": "assault"
+		},
+		{
+			"a": "casters",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 51.9199999999998,
+			"seed": 8519,
+			"side": 1,
+			"winner": "assault"
+		},
+		{
+			"a": "casters",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 27.1699999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "assault"
+		},
+		{
+			"a": "casters",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 51.9749999999998,
+			"seed": 10777,
+			"side": 1,
+			"winner": "assault"
+		},
+		{
+			"a": "casters",
+			"b": "lia_mixed",
+			"reason": "defeated",
+			"seconds": 24.1999999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "lia_mixed"
+		},
+		{
+			"a": "casters",
+			"b": "lia_mixed",
+			"reason": "defeated",
+			"seconds": 24.3099999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "lia_mixed"
+		},
+		{
+			"a": "casters",
+			"b": "lia_mixed",
+			"reason": "defeated",
+			"seconds": 27.2249999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "lia_mixed"
+		},
+		{
+			"a": "casters",
+			"b": "lia_mixed",
+			"reason": "defeated",
+			"seconds": 26.9499999999999,
+			"seed": 10777,
+			"side": 1,
+			"winner": "lia_mixed"
+		},
+		{
+			"a": "casters",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 47.5749999999998,
+			"seed": 8519,
+			"side": 0,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 45.5399999999998,
+			"seed": 8519,
+			"side": 1,
+			"winner": "lia_hunters"
+		},
+		{
+			"a": "casters",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 47.7949999999998,
+			"seed": 10777,
+			"side": 0,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 50.7099999999998,
+			"seed": 10777,
+			"side": 1,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 26.1799999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 22.4399999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 21.6149999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "rabbit_screen"
+		},
+		{
+			"a": "casters",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 35.1449999999998,
+			"seed": 10777,
+			"side": 1,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 35.6399999999998,
+			"seed": 8519,
+			"side": 0,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 30.3599999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "casters"
+		},
+		{
+			"a": "casters",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 30.2499999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "casters",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 24.8049999999999,
+			"seed": 10777,
+			"side": 1,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "screened_casters",
+			"b": "mixed",
+			"reason": "defeated",
+			"seconds": 26.0149999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "mixed"
+		},
+		{
+			"a": "screened_casters",
+			"b": "mixed",
+			"reason": "defeated",
+			"seconds": 26.0149999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "mixed"
+		},
+		{
+			"a": "screened_casters",
+			"b": "mixed",
+			"reason": "defeated",
+			"seconds": 31.6799999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "mixed"
+		},
+		{
+			"a": "screened_casters",
+			"b": "mixed",
+			"reason": "defeated",
+			"seconds": 26.0149999999999,
+			"seed": 10777,
+			"side": 1,
+			"winner": "mixed"
+		},
+		{
+			"a": "screened_casters",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 52.9099999999998,
+			"seed": 8519,
+			"side": 0,
+			"winner": "assault"
+		},
+		{
+			"a": "screened_casters",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 45.5949999999998,
+			"seed": 8519,
+			"side": 1,
+			"winner": "assault"
+		},
+		{
+			"a": "screened_casters",
+			"b": "assault",
+			"reason": "stalemate",
+			"seconds": 43.1199999999998,
+			"seed": 10777,
+			"side": 0,
+			"winner": "draw"
+		},
+		{
+			"a": "screened_casters",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 26.4549999999999,
+			"seed": 10777,
+			"side": 1,
+			"winner": "assault"
+		},
+		{
+			"a": "screened_casters",
+			"b": "lia_mixed",
+			"reason": "defeated",
+			"seconds": 26.9499999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "lia_mixed"
+		},
+		{
+			"a": "screened_casters",
+			"b": "lia_mixed",
+			"reason": "defeated",
+			"seconds": 24.3099999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "lia_mixed"
+		},
+		{
+			"a": "screened_casters",
+			"b": "lia_mixed",
+			"reason": "defeated",
+			"seconds": 24.3099999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "lia_mixed"
+		},
+		{
+			"a": "screened_casters",
+			"b": "lia_mixed",
+			"reason": "defeated",
+			"seconds": 24.1999999999999,
+			"seed": 10777,
+			"side": 1,
+			"winner": "lia_mixed"
+		},
+		{
+			"a": "screened_casters",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 31.2399999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "lia_hunters"
+		},
+		{
+			"a": "screened_casters",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 28.8749999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "lia_hunters"
+		},
+		{
+			"a": "screened_casters",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 31.0199999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "screened_casters"
+		},
+		{
+			"a": "screened_casters",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 41.0849999999998,
+			"seed": 10777,
+			"side": 1,
+			"winner": "lia_hunters"
+		},
+		{
+			"a": "screened_casters",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 21.5599999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "rabbit_screen"
+		},
+		{
+			"a": "screened_casters",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 21.3949999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "rabbit_screen"
+		},
+		{
+			"a": "screened_casters",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 18.9199999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "rabbit_screen"
+		},
+		{
+			"a": "screened_casters",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 28.7099999999999,
+			"seed": 10777,
+			"side": 1,
+			"winner": "rabbit_screen"
+		},
+		{
+			"a": "screened_casters",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 30.3599999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "screened_casters",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 36.4099999999998,
+			"seed": 8519,
+			"side": 1,
+			"winner": "screened_casters"
+		},
+		{
+			"a": "screened_casters",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 23.1549999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "screened_casters",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 36.4099999999998,
+			"seed": 10777,
+			"side": 1,
+			"winner": "screened_casters"
+		},
+		{
+			"a": "mixed",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 31.9549999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "assault"
+		},
+		{
+			"a": "mixed",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 26.0149999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "assault"
+		},
+		{
+			"a": "mixed",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 44.9899999999998,
+			"seed": 10777,
+			"side": 0,
+			"winner": "mixed"
+		},
+		{
+			"a": "mixed",
+			"b": "assault",
+			"reason": "defeated",
+			"seconds": 44.9349999999998,
+			"seed": 10777,
+			"side": 1,
+			"winner": "assault"
+		},
+		{
+			"a": "mixed",
+			"b": "lia_mixed",
+			"reason": "defeated",
+			"seconds": 30.6349999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "mixed"
+		},
+		{
+			"a": "mixed",
+			"b": "lia_mixed",
+			"reason": "defeated",
+			"seconds": 28.1049999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "mixed"
+		},
+		{
+			"a": "mixed",
+			"b": "lia_mixed",
+			"reason": "defeated",
+			"seconds": 30.6349999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "mixed"
+		},
+		{
+			"a": "mixed",
+			"b": "lia_mixed",
+			"reason": "defeated",
+			"seconds": 43.1199999999998,
+			"seed": 10777,
+			"side": 1,
+			"winner": "lia_mixed"
+		},
+		{
+			"a": "mixed",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 26.2349999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "mixed"
+		},
+		{
+			"a": "mixed",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 30.8549999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "mixed"
+		},
+		{
+			"a": "mixed",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 34.9249999999998,
+			"seed": 10777,
+			"side": 0,
+			"winner": "mixed"
+		},
+		{
+			"a": "mixed",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 30.8549999999999,
+			"seed": 10777,
+			"side": 1,
+			"winner": "lia_hunters"
+		},
+		{
+			"a": "mixed",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 22.5499999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "mixed"
+		},
+		{
+			"a": "mixed",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 22.5499999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "mixed"
+		},
+		{
+			"a": "mixed",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 30.6349999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "mixed"
+		},
+		{
+			"a": "mixed",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 30.4699999999999,
+			"seed": 10777,
+			"side": 1,
+			"winner": "mixed"
+		},
+		{
+			"a": "mixed",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 33.9349999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "mixed",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 29.1499999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "mixed"
+		},
+		{
+			"a": "mixed",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 32.6699999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "mixed"
+		},
+		{
+			"a": "mixed",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 39.8749999999998,
+			"seed": 10777,
+			"side": 1,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "assault",
+			"b": "lia_mixed",
+			"reason": "defeated",
+			"seconds": 44.5499999999998,
+			"seed": 8519,
+			"side": 0,
+			"winner": "lia_mixed"
+		},
+		{
+			"a": "assault",
+			"b": "lia_mixed",
+			"reason": "defeated",
+			"seconds": 31.0749999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "assault"
+		},
+		{
+			"a": "assault",
+			"b": "lia_mixed",
+			"reason": "defeated",
+			"seconds": 49.8849999999998,
+			"seed": 10777,
+			"side": 0,
+			"winner": "lia_mixed"
+		},
+		{
+			"a": "assault",
+			"b": "lia_mixed",
+			"reason": "defeated",
+			"seconds": 40.6999999999998,
+			"seed": 10777,
+			"side": 1,
+			"winner": "assault"
+		},
+		{
+			"a": "assault",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 54.5599999999997,
+			"seed": 8519,
+			"side": 0,
+			"winner": "lia_hunters"
+		},
+		{
+			"a": "assault",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 47.9049999999998,
+			"seed": 8519,
+			"side": 1,
+			"winner": "assault"
+		},
+		{
+			"a": "assault",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 45.3199999999998,
+			"seed": 10777,
+			"side": 0,
+			"winner": "assault"
+		},
+		{
+			"a": "assault",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 51.9749999999998,
+			"seed": 10777,
+			"side": 1,
+			"winner": "lia_hunters"
+		},
+		{
+			"a": "assault",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 30.5799999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "assault"
+		},
+		{
+			"a": "assault",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 38.3349999999998,
+			"seed": 8519,
+			"side": 1,
+			"winner": "assault"
+		},
+		{
+			"a": "assault",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 24.5299999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "assault"
+		},
+		{
+			"a": "assault",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 42.8999999999998,
+			"seed": 10777,
+			"side": 1,
+			"winner": "rabbit_screen"
+		},
+		{
+			"a": "assault",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 53.2949999999998,
+			"seed": 8519,
+			"side": 0,
+			"winner": "assault"
+		},
+		{
+			"a": "assault",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 37.8949999999998,
+			"seed": 8519,
+			"side": 1,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "assault",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 40.5899999999998,
+			"seed": 10777,
+			"side": 0,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "assault",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 44.9349999999998,
+			"seed": 10777,
+			"side": 1,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "lia_mixed",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 33.2199999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "lia_mixed"
+		},
+		{
+			"a": "lia_mixed",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 33.7699999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "lia_mixed"
+		},
+		{
+			"a": "lia_mixed",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 36.6299999999998,
+			"seed": 10777,
+			"side": 0,
+			"winner": "lia_mixed"
+		},
+		{
+			"a": "lia_mixed",
+			"b": "lia_hunters",
+			"reason": "defeated",
+			"seconds": 46.0899999999998,
+			"seed": 10777,
+			"side": 1,
+			"winner": "lia_mixed"
+		},
+		{
+			"a": "lia_mixed",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 29.0949999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "rabbit_screen"
+		},
+		{
+			"a": "lia_mixed",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 32.1749999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "lia_mixed"
+		},
+		{
+			"a": "lia_mixed",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 31.5149999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "rabbit_screen"
+		},
+		{
+			"a": "lia_mixed",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 39.5999999999998,
+			"seed": 10777,
+			"side": 1,
+			"winner": "lia_mixed"
+		},
+		{
+			"a": "lia_mixed",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 21.2849999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "lia_mixed",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 21.1749999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "lia_mixed",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 19.0849999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "lia_mixed",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 18.6999999999999,
+			"seed": 10777,
+			"side": 1,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "lia_hunters",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 38.8299999999998,
+			"seed": 8519,
+			"side": 0,
+			"winner": "rabbit_screen"
+		},
+		{
+			"a": "lia_hunters",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 21.3399999999999,
+			"seed": 8519,
+			"side": 1,
+			"winner": "lia_hunters"
+		},
+		{
+			"a": "lia_hunters",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 30.6899999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "lia_hunters"
+		},
+		{
+			"a": "lia_hunters",
+			"b": "rabbit_screen",
+			"reason": "defeated",
+			"seconds": 29.4249999999999,
+			"seed": 10777,
+			"side": 1,
+			"winner": "lia_hunters"
+		},
+		{
+			"a": "lia_hunters",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 35.4199999999998,
+			"seed": 8519,
+			"side": 0,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "lia_hunters",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 37.3449999999998,
+			"seed": 8519,
+			"side": 1,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "lia_hunters",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 34.5399999999998,
+			"seed": 10777,
+			"side": 0,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "lia_hunters",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 32.0099999999999,
+			"seed": 10777,
+			"side": 1,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "rabbit_screen",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 27.0599999999999,
+			"seed": 8519,
+			"side": 0,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "rabbit_screen",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 39.2699999999998,
+			"seed": 8519,
+			"side": 1,
+			"winner": "rabbit_screen"
+		},
+		{
+			"a": "rabbit_screen",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 24.6399999999999,
+			"seed": 10777,
+			"side": 0,
+			"winner": "screened_plague"
+		},
+		{
+			"a": "rabbit_screen",
+			"b": "screened_plague",
+			"reason": "defeated",
+			"seconds": 36.9049999999998,
+			"seed": 10777,
+			"side": 1,
+			"winner": "screened_plague"
+		}
+	],
+	"teams": {
+		"assault": [
+			6,
+			9,
+			7,
+			14,
+			24,
+			27
+		],
+		"casters": [
+			6,
+			11,
+			13,
+			18,
+			19,
+			20
+		],
+		"lia_hunters": [
+			30,
+			31,
+			34,
+			14,
+			35,
+			27
+		],
+		"lia_mixed": [
+			36,
+			31,
+			32,
+			33,
+			35,
+			37
+		],
+		"mixed": [
+			6,
+			9,
+			11,
+			14,
+			23,
+			27
+		],
+		"rabbit_screen": [
+			32,
+			32,
+			32,
+			24,
+			24,
+			11
+		],
+		"screened_casters": [
+			0,
+			28,
+			29,
+			18,
+			19,
+			20
+		],
+		"screened_plague": [
+			0,
+			9,
+			35,
+			37,
+			37,
+			13
+		]
+	}
+}

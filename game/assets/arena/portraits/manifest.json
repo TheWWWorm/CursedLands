@@ -1219,5 +1219,335 @@
       64,
       64
     ]
+  },
+  "30:0": {
+    "appearance": {
+      "prototype": "arena-lia/fox1",
+      "texture": "fox00"
+    },
+    "family": 30,
+    "file": "30-0.png",
+    "prototype": "arena-lia/fox1",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "30:1": {
+    "appearance": {
+      "prototype": "arena-lia/fox2",
+      "texture": "fox00"
+    },
+    "family": 30,
+    "file": "30-1.png",
+    "prototype": "arena-lia/fox2",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "30:2": {
+    "appearance": {
+      "prototype": "arena-lia/fox3",
+      "texture": "fox00"
+    },
+    "family": 30,
+    "file": "30-2.png",
+    "prototype": "arena-lia/fox3",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "31:0": {
+    "appearance": {
+      "prototype": "arena-lia/leopard1",
+      "texture": "tiger02"
+    },
+    "family": 31,
+    "file": "31-0.png",
+    "prototype": "arena-lia/leopard1",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "31:1": {
+    "appearance": {
+      "prototype": "arena-lia/leopard2",
+      "texture": "tiger02"
+    },
+    "family": 31,
+    "file": "31-1.png",
+    "prototype": "arena-lia/leopard2",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "31:2": {
+    "appearance": {
+      "prototype": "arena-lia/leopard3",
+      "texture": "tiger02"
+    },
+    "family": 31,
+    "file": "31-2.png",
+    "prototype": "arena-lia/leopard3",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "32:0": {
+    "appearance": {
+      "prototype": "arena-lia/popper1",
+      "texture": "hare02"
+    },
+    "family": 32,
+    "file": "32-0.png",
+    "prototype": "arena-lia/popper1",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "32:1": {
+    "appearance": {
+      "prototype": "arena-lia/popper2",
+      "texture": "hare02"
+    },
+    "family": 32,
+    "file": "32-1.png",
+    "prototype": "arena-lia/popper2",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "32:2": {
+    "appearance": {
+      "prototype": "arena-lia/popper3",
+      "texture": "hare02"
+    },
+    "family": 32,
+    "file": "32-2.png",
+    "prototype": "arena-lia/popper3",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "33:0": {
+    "appearance": {
+      "prototype": "arena-lia/deer1",
+      "texture": "deer03"
+    },
+    "family": 33,
+    "file": "33-0.png",
+    "prototype": "arena-lia/deer1",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "33:1": {
+    "appearance": {
+      "prototype": "arena-lia/deer2",
+      "texture": "deer03"
+    },
+    "family": 33,
+    "file": "33-1.png",
+    "prototype": "arena-lia/deer2",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "33:2": {
+    "appearance": {
+      "prototype": "arena-lia/deer3",
+      "texture": "deer03"
+    },
+    "family": 33,
+    "file": "33-2.png",
+    "prototype": "arena-lia/deer3",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "34:0": {
+    "appearance": {
+      "prototype": "arena-lia/jwolf1",
+      "texture": "jwolf00"
+    },
+    "family": 34,
+    "file": "34-0.png",
+    "prototype": "arena-lia/jwolf1",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "34:1": {
+    "appearance": {
+      "prototype": "arena-lia/jwolf2",
+      "texture": "jwolf00"
+    },
+    "family": 34,
+    "file": "34-1.png",
+    "prototype": "arena-lia/jwolf2",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "34:2": {
+    "appearance": {
+      "prototype": "arena-lia/jwolf3",
+      "texture": "jwolf01"
+    },
+    "family": 34,
+    "file": "34-2.png",
+    "prototype": "arena-lia/jwolf3",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "35:0": {
+    "appearance": {
+      "prototype": "arena-lia/jun1",
+      "texture": "lizardman03"
+    },
+    "family": 35,
+    "file": "35-0.png",
+    "prototype": "arena-lia/jun1",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "35:1": {
+    "appearance": {
+      "prototype": "arena-lia/jun2",
+      "texture": "lizardman03"
+    },
+    "family": 35,
+    "file": "35-1.png",
+    "prototype": "arena-lia/jun2",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "35:2": {
+    "appearance": {
+      "prototype": "arena-lia/jun3",
+      "texture": "lizardman03"
+    },
+    "family": 35,
+    "file": "35-2.png",
+    "prototype": "arena-lia/jun3",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "36:0": {
+    "appearance": {
+      "prototype": "arena-lia/wight1"
+    },
+    "family": 36,
+    "file": "36-0.png",
+    "prototype": "arena-lia/wight1",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "36:1": {
+    "appearance": {
+      "prototype": "arena-lia/wight2"
+    },
+    "family": 36,
+    "file": "36-1.png",
+    "prototype": "arena-lia/wight2",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "36:2": {
+    "appearance": {
+      "prototype": "arena-lia/wight3"
+    },
+    "family": 36,
+    "file": "36-2.png",
+    "prototype": "arena-lia/wight3",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "37:0": {
+    "appearance": {
+      "prototype": "arena-lia/plague1"
+    },
+    "family": 37,
+    "file": "37-0.png",
+    "prototype": "arena-lia/plague1",
+    "rank": 0,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "37:1": {
+    "appearance": {
+      "prototype": "arena-lia/plague2"
+    },
+    "family": 37,
+    "file": "37-1.png",
+    "prototype": "arena-lia/plague2",
+    "rank": 1,
+    "size": [
+      64,
+      64
+    ]
+  },
+  "37:2": {
+    "appearance": {
+      "prototype": "arena-lia/plague3"
+    },
+    "family": 37,
+    "file": "37-2.png",
+    "prototype": "arena-lia/plague3",
+    "rank": 2,
+    "size": [
+      64,
+      64
+    ]
   }
 }

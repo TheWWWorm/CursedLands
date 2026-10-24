@@ -21,7 +21,7 @@ func _exit_tree() -> void:
 
 func _boot() -> void:
 	booting=true
-	connection=ArenaOnlineSession.new();add_child(connection)
+	connection=ArenaOnlineSession.new();connection.expansion=run.expansion;add_child(connection)
 	connection.solo_prepared.connect(_prepared)
 	connection.solo_result.connect(_result)
 	connection.board_received.connect(_board)

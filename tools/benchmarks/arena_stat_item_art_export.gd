@@ -1,10 +1,12 @@
 extends Node
 ## Reproducible 256px transparent icons, rendered from the original game models.
-const SOURCES := {"vitality": "dragonamulet", "blade": "long sword.iron", "haste": "gipat high boots.thin", "mail": "kania highest shirt.iron", "prism": "rightcrystal", "focus": "wand 3", "fang": "graywolfskin", "venom": "dragonpoison", "greatblade": "saber.steel", "ironheart": "elementallava00", "quicksilver": "gipat high gloves.thin", "runemail": "kania high plate.steel", "opal": "willowisp00", "staff": "wand 4", "ward": "cryptrune00", "thorn": "dragonshell00", "warhammer": "stone axe.rock", "bulwark": "kania highest plate.steel", "sage": "dcbook", "windrunner": "hadagan high boots.troll blue", "storm": "elementalice00", "guardian": "toy", "echo": "bansheerune00", "berserker": "ogrestuff", "bloodblade": "lizardclaw00", "stormheart": "beholderbigeye", "plague": "spidersting", "aegis": "golemcenterkey00", "mirror": "bansheerobe01", "archmage": "wand 6", "titan": "hadagan highest shirt.steel", "duelist": "unique sword.steel", "sunblade": "ancientsword", "worldheart": "driadidol00", "crown": "dragonwand", "starweave": "bansheerobe00", "bloodmoon": "zombie00", "thunderbolt": "palantir", "covenant": "unicornhorn00", "chronicle": "orcannals00"}
+const SOURCES := {"vitality": "dragonamulet", "blade": "long sword.iron", "haste": "gipat high boots.thin", "mail": "kania highest shirt.iron", "prism": "rightcrystal", "focus": "wand 3.iron", "fang": "graywolfskin", "venom": "dragonpoison", "greatblade": "saber.steel", "ironheart": "elementallava00", "quicksilver": "gipat high gloves.thin", "runemail": "kania high plate.steel", "opal": "willowisp00", "staff": "wand 4.steel", "ward": "cryptrune00", "thorn": "dragonshell00", "warhammer": "stone axe.rock", "bulwark": "kania highest plate.steel", "sage": "dcbook", "windrunner": "hadagan high boots.troll blue", "storm": "elementalice00", "guardian": "toy", "echo": "bansheerune00", "berserker": "ogrestuff", "bloodblade": "lizardclaw00", "stormheart": "beholderbigeye", "plague": "spidersting", "aegis": "golemcenterkey00", "mirror": "bansheerobe01", "archmage": "wand 6.malachite", "titan": "hadagan highest shirt.steel", "duelist": "unique sword.steel", "sunblade": "ancientsword", "worldheart": "driadidol00", "crown": "dragonwand", "starweave": "bansheerobe00", "bloodmoon": "zombie00", "thunderbolt": "palantir", "covenant": "unicornhorn00", "chronicle": "orcannals00"}
 var output := "user://tier-item-art/"
+var selected := PackedStringArray()
 
 func _ready() -> void:
 	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--art-items="): selected = arg.trim_prefix("--art-items=").split(",", false)
 		if arg.begins_with("--art-output="): output = arg.trim_prefix("--art-output=").trim_suffix("/") + "/"
 	DirAccess.make_dir_recursive_absolute(output)
 	for frame in 16: await get_tree().process_frame
@@ -15,7 +17,9 @@ func _ready() -> void:
 	get_tree().root.position = Vector2i.ZERO
 	RemakeText.lang = "en"
 	var manifest := {"source":"Original Cursed Lands figures.res and textures.res via Items.look and WikiPreview/ItemView", "renderer":"Godot 4.7 / OpenGL compatibility; unlit original item materials; 4x MSAA", "orientation":"Original ItemView camp orientation, zero WikiPreview turn; default fit_slot framing; no repainting or recoloring", "size":[256,256], "items":{}}
-	var keys := SOURCES.keys()
+	if not selected.is_empty() and FileAccess.file_exists(output + "manifest.json"):
+		manifest = JSON.parse_string(FileAccess.get_file_as_string(output + "manifest.json"))
+	var keys := SOURCES.keys().filter(func(kind): return selected.is_empty() or kind in selected)
 	for page in ceili(keys.size() / 8.0):
 		var sheet := Control.new()
 		add_child(sheet)
@@ -32,6 +36,9 @@ func _ready() -> void:
 			preview.position = Vector2(80 + (index % 4) * 288, 28 + (index / 4) * 350)
 			preview.size = Vector2(256, 256)
 			sheet.add_child(preview)
+			var item := Items.info(SOURCES[kind])
+			if item.table in ["weapons", "armors", "quick_items"] and str(item.row.get("material_type", "none")).to_lower() != "none" and item.mat.is_empty():
+				printerr("UNCRAFTED TEMPLATE ", kind); get_tree().quit(1); return
 			var look := Items.look(SOURCES[kind])
 			if look.has("layer") and not GameData.redress.has("unhuma" + look.layer + ".mmp"):
 				printerr("MISSING SKIN ", kind); get_tree().quit(1); return
