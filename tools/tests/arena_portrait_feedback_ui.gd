@@ -82,7 +82,8 @@ func _ready() -> void:
 func check_layout() -> void:
 	var portrait := screen._commander_portrait.get_global_rect()
 	check(is_equal_approx(portrait.end.y, get_viewport().get_visible_rect().end.y), "portrait reaches bottom edge")
-	check(portrait.size.y >= 280, "board bust is enlarged")
+	check(is_equal_approx(portrait.end.x, get_viewport().get_visible_rect().end.x), "portrait reaches right edge")
+	check(is_equal_approx(portrait.size.y / screen._ui_scale, 200), "board bust uses two thirds of the previous size")
 	check(screen._bench_scroll.get_global_rect().end.x < portrait.position.x, "shorter reserves leave room for bust")
 	check(not screen._start.get_global_rect().intersects(portrait), "battle controls clear portrait")
 	bounded(screen._actions_panel, "top economy and battle controls")

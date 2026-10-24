@@ -225,17 +225,24 @@ player wins the whole game. See the
 Before starting, players choose Zak or one of nine original companions. This
 identity is cosmetic, saved with the run and sent through the online lobby.
 Computer opponents use distinct characters from the same roster. The viewed
-board's owner appears as a large transparent native bust, cropped at the
+board's owner appears as a transparent native bust in a 200-pixel logical square, cropped at the
 collarbones, turned inward in three-quarter view and flush with the screen's
-bottom edge. A shorter reserve strip leaves room for the portrait and controls.
+bottom and right edges. A shorter reserve strip leaves room for the portrait and controls.
 Gold, health and battle controls sit between the shop and round status at the
 top; the shop narrows on smaller windows to keep these groups separate. Gold,
 income and health use the Army label's white fill and dark outline.
 Upgrading a creature or company level produces a brief smile and nod. Battle
-and match victories smile and nod; defeats frown and shake the head. New battles
-restore neutral expression unless the owner has already been eliminated. The
+and match victories smile and nod; defeats frown and shake the head. Every
+expression returns to neutral after 1.8 seconds, including the final result.
+Quiet periods include occasional gentle glances, using a separate visual RNG.
+New battles restore neutral expression. The
 nine-board overview hides this single-owner portrait. Local elimination plays
 the original hero-death cue once, including results received over the network.
+
+Army and Reserves share the scalable font and dark outline. The Army hover
+target has no background. Army/level help shows the XP and shop-odds table in
+one panel beside the bust, without a second tooltip covering it. Item selection
+uses an inner circular outline; tier colors remain on the outer rim.
 
 The snow surround meets the courtyard at exactly the same quantized vertices,
 including the full overview boundary. Deformable snow tapers to zero at the join.

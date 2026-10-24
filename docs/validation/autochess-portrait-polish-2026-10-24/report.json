@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-24",
+  "source_baseline": "35e8222a4c1531c8fab8b780dbac17293a72714f",
+  "source_sha256": {
+    "game/src/ui/arena_commander_portrait.gd": "b6209e39daefe9c0d854115517fd1268f656bb806cde0b1afe3486bdcc6f32c3",
+    "game/src/ui/arena_item_slot.gd": "508c9588ad8663b368ac27af071c7ff6d3830a0dfec730caca7885806c49c4cf",
+    "game/src/ui/arena_pve_screen.gd": "8d2bde6b2e37b8537c376ee056a60173102110bcc0bb288053d6a06b0d66e022",
+    "tools/tests/arena_portrait_feedback_ui.gd": "7cca19652beb6c9d14a51eeb9c4ba7388f30f7e00cdadfebfa18b7a28713115d",
+    "tools/tests/arena_portrait_polish_ui.gd": "6a2939a64c76539968661111e8860882c75185885d55ed895d1fa9c31515f56c"
+  },
+  "rendered_checks": [
+    {
+      "language": "en",
+      "gpu_lab_job": "5660a351e70d4ef6",
+      "checks": 62,
+      "failures": [],
+      "exit_code": 0
+    },
+    {
+      "language": "ru",
+      "gpu_lab_job": "e6195ccbfa624730",
+      "checks": 62,
+      "failures": [],
+      "exit_code": 0
+    },
+    {
+      "language": "de",
+      "gpu_lab_job": "6630a120c366470e",
+      "checks": 62,
+      "failures": [],
+      "exit_code": 0
+    }
+  ],
+  "sizes": [
+    [
+      2560,
+      1440
+    ],
+    [
+      1280,
+      720
+    ],
+    [
+      1024,
+      768
+    ],
+    [
+      1600,
+      900
+    ]
+  ],
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  },
+  "notes": [
+    "Source tests use the official editor engine; the existing TexUpscale push-constant diagnostic is filtered by the fixture. Exported custom-engine checks are recorded with the local build."
+  ],
+  "portrait_regression": {
+    "gpu_lab_job": "58d19bb33cb2400c",
+    "checks": 101,
+    "failures": [],
+    "exit_code": 0
+  }
+}

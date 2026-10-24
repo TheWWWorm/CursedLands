@@ -66,7 +66,7 @@ func _process(dt: float) -> void:
 func _draw() -> void:
 	var radius := minf(size.x, size.y) * 0.5 - 2
 	var active := selected or target_hover or has_focus() or is_hovered()
-	draw_circle(size * 0.5, radius, Color("344744") if active else Color("111b20"), true, -1, true)
+	draw_circle(size * 0.5, radius, Color("111b20"), true, -1, true)
 	if attention and not equipped:
 		# Match the mint upgrade cue in the shop; rarity keeps its own rim.
 		var strength := 0.5 + 0.5 * sin(_pulse * TAU * 0.65)
@@ -76,9 +76,9 @@ func _draw() -> void:
 		draw_circle(size * 0.5, radius, ArenaItemEmblem.color_for(kind), false, 2.5 if active else 2.0, true)
 	elif kind.is_empty():
 		draw_circle(size * 0.5, radius, Color("a0b5b7") if active else Color("687b80"), false, 1.5, true)
-	# Focus and selection use a small pointer, keeping the rarity rim unchanged.
+	# Selection follows the circular slot; the outer colored rim remains rarity.
 	if selected or has_focus() or target_hover:
-		draw_colored_polygon(PackedVector2Array([Vector2(1, 1), Vector2(9, 1), Vector2(1, 9)]), ArenaCreatureCard.PAPER)
+		draw_circle(size * 0.5, radius - 3.0, ArenaCreatureCard.PAPER, false, 1.5, true)
 	if is_instance_valid(_art): _art.visible = not kind.is_empty()
 	if kind.is_empty():
 		var center := size * 0.5

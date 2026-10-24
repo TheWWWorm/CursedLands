@@ -78,8 +78,9 @@ var _inspect_actions: VBoxContainer
 var _wave_title: Label
 var _clock: Label
 var _army_row: HBoxContainer
-var _army_title: Button
+var _army_title: Label
 var _showing_company := false
+var _company_details := false
 var _shop: HBoxContainer
 var _shop_section: VBoxContainer
 var _dock: VBoxContainer
@@ -323,7 +324,7 @@ func _ready() -> void:
 	_standing_scroll.add_child(_standing_rows)
 	_bench_panel = _unframed(_hud)
 	_bench_panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	_bench_panel.offset_left = 24; _bench_panel.offset_right = -330
+	_bench_panel.offset_left = 24; _bench_panel.offset_right = -220
 	_bench_panel.offset_top = -218; _bench_panel.offset_bottom = -44
 	_bench_panel.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	_bench_bar = HBoxContainer.new()
@@ -336,16 +337,20 @@ func _ready() -> void:
 	company_status.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	company_status.add_theme_constant_override("separation", 1)
 	_bench_bar.add_child(company_status)
-	_army_title = _button(company_status, "", func(): pass, "")
-	_army_title.mouse_default_cursor_shape = Control.CURSOR_ARROW
+	var army_heading := HBoxContainer.new()
+	army_heading.alignment = BoxContainer.ALIGNMENT_CENTER
+	army_heading.custom_minimum_size = Vector2(90, 40)
+	army_heading.add_theme_constant_override("separation", 6)
+	army_heading.set_meta("arena_company", true)
+	company_status.add_child(army_heading)
+	var flag := _icon(army_heading, preload("res://assets/arena/company.svg"))
+	flag.custom_minimum_size = Vector2(18, 18)
+	flag.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_army_title = _label(army_heading, "", 16, PAPER)
 	_army_title.set_meta("arena_company", true)
-	_army_title.add_theme_stylebox_override("normal", ArenaCreatureCard.style(Color(0, 0, 0, 0), Color(0, 0, 0, 0)))
-	_army_title.add_theme_font_size_override("font_size", 16)
-	_army_title.icon = preload("res://assets/arena/company.svg")
-	_army_title.add_theme_constant_override("icon_max_width", 18)
-	_army_title.custom_minimum_size.x = 90
 	_army_title.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	ArenaCreatureCard.snow_ink(_army_title, PAPER)
+	# Use the same scalable font as Reserves. A raster font override becomes
+	# visibly soft when the logical HUD is enlarged on high-resolution screens.
 	_reserve_count = _label(company_status, "", 13, MUTED)
 	_reserve_count.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_battle_sidebar = PanelContainer.new()
@@ -401,8 +406,8 @@ func _ready() -> void:
 	_commander_portrait = ArenaCommanderPortrait.new()
 	_hud.add_child(_commander_portrait)
 	_commander_portrait.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
-	_commander_portrait.offset_left = -312; _commander_portrait.offset_right = -12
-	_commander_portrait.offset_top = -300; _commander_portrait.offset_bottom = 0
+	_commander_portrait.offset_left = -200; _commander_portrait.offset_right = 0
+	_commander_portrait.offset_top = -200; _commander_portrait.offset_bottom = 0
 	_army_row = HBoxContainer.new()
 	_army_row.add_theme_constant_override("separation", 8)
 	_bench_scroll.add_child(_army_row)
@@ -448,7 +453,7 @@ func _ready() -> void:
 	_sell_target.icon = preload("res://assets/arena/sell.svg")
 	_sell_target.add_theme_constant_override("icon_max_width", 20)
 	_sell_target.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
-	_sell_target.offset_left = -524; _sell_target.offset_right = -330
+	_sell_target.offset_left = -414; _sell_target.offset_right = -220
 	_sell_target.offset_top = -274; _sell_target.offset_bottom = -230
 	_sell_target.hide()
 	_outcome_shade = ColorRect.new()
@@ -465,7 +470,7 @@ func _ready() -> void:
 	_outcome.add_child(_dock)
 	_message = _label(_hud, "", 13, PAPER)
 	_message.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	_message.offset_left = 24; _message.offset_right = -330
+	_message.offset_left = 24; _message.offset_right = -220
 	_message.offset_top = -26; _message.offset_bottom = -6
 	_message.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_message.add_theme_color_override("font_shadow_color", Color.BLACK)
@@ -687,6 +692,12 @@ func _refresh() -> void:
 	_train_button.tooltip_text = RemakeText.t("Level %d") % run.capacity() + "\n" + RemakeText.t("Train · %d gold") % ArenaRules.TRAINING_COST + "\n" + RemakeText.t("Gain %d XP. Company level increases army capacity and improves shop odds.") % ArenaRules.TRAINING_XP
 	if run.experience() >= ArenaRules.MAX_TRAINING: _train_button.tooltip_text = RemakeText.t("Your army is at full strength.")
 	elif not run.spending_error(ArenaRules.TRAINING_COST).is_empty(): _train_button.tooltip_text += "\n" + run.spending_error(ArenaRules.TRAINING_COST)
+	_train_button.accessibility_name = RemakeText.t("Level %d") % run.capacity()
+	_train_button.accessibility_description = _train_button.tooltip_text
+	# The company panel already supplies this help. A second pointer tooltip
+	# would cover its heading and XP values, especially on smaller screens.
+	_train_button.tooltip_text = ""
+	_train_button.remove_meta("arena_help")
 	_refresh_alliances()
 	_reserve_count.text = RemakeText.t("Reserves %d/%d") % [run.bench_count(), run.bench_limit()]
 	_sync_item_tray()
@@ -707,13 +718,8 @@ func _refresh() -> void:
 	_army_title.text = RemakeText.t("Army %d/%d") % [run.deployed_count(), run.capacity()]
 	_army_title.tooltip_text = ""
 	_army_title.remove_meta("arena_help")
-	_army_title.add_theme_color_override("icon_normal_color", Color.WHITE)
-	_army_title.disabled = landing
 
-	if _army_title.disabled:
-		_army_title.tooltip_text = ""
-		_army_title.remove_meta("arena_help")
-	_army_title.mouse_filter = Control.MOUSE_FILTER_IGNORE if _army_title.disabled else Control.MOUSE_FILTER_STOP
+	_army_title.mouse_filter = Control.MOUSE_FILTER_IGNORE if landing else Control.MOUSE_FILTER_STOP
 	if run.stage != "prepare" or landing or field.match_state != battle: field.select_creature("")
 	elif selected_uid > 0 and not run.unit(selected_uid).is_empty():
 		var entry := run.unit(selected_uid)
@@ -1133,6 +1139,7 @@ func _field_army() -> Array[Dictionary]:
 
 
 func _show_alliance(key: String) -> void:
+	_company_details = false
 	_rail.accented = false; _rail.queue_redraw()
 	_showing_company = true
 	_rail.show(); _inspector.show()
@@ -1168,19 +1175,16 @@ func _show_alliance(key: String) -> void:
 
 func _show_company() -> void:
 	if landing: return
+	_company_details = true
 	_rail.accented = false; _rail.queue_redraw()
 	_showing_company = true
 	_rail.show(); _inspector.show()
 	_clear(_inspect_box); _clear(_inspect_actions)
 	_inspect_scroll.scroll_vertical = 0
 	_wrap(_inspect_box, RemakeText.t("Level %d") % run.capacity(), 22, GOLD)
-	_wrap(_inspect_box, RemakeText.t("%d recruit lines cost 1–5 gold. Each line has one shop entry and equal odds within its tier.") % ArenaRules.ACTIVE_FAMILIES.size(), 13, PAPER)
-	_wrap(_inspect_box, RemakeText.t("Three identical one-star creatures make a two-star creature. Three two-star creatures make a three-star creature of the same species."), 13, PAPER)
-	_wrap(_inspect_box, RemakeText.t("Stars strengthen health, attacks and spells. The strongest forms are evolution-only."), 13, GOLD)
 	_wrap(_inspect_box, RemakeText.t("Army %d/%d") % [run.deployed_count(), run.capacity()], 14, PAPER)
 	if run.level_needed() > 0:
 		_wrap(_inspect_box, RemakeText.t("XP %d/%d") % [run.level_progress(), run.level_needed()], 13, PAPER)
-		_wrap(_inspect_box, RemakeText.t("Upgrade company"), 15, GOLD)
 		_wrap(_inspect_box, RemakeText.t("Buy %d XP · %d gold") % [ArenaRules.TRAINING_XP, ArenaRules.TRAINING_COST], 13, PAPER)
 		_wrap(_inspect_box, RemakeText.t("Next level: %d XP") % (run.level_needed() - run.level_progress()), 12, MUTED)
 		var error := run.spending_error(ArenaRules.TRAINING_COST)
@@ -1288,6 +1292,7 @@ func _select_world(unit: GameUnit) -> void:
 
 func _inspect(id: String, entry: Dictionary = {}) -> void:
 	if id.is_empty(): return
+	_company_details = false
 	_standings.hide()
 	_showing_company = false
 	_inspected = id
@@ -1364,6 +1369,7 @@ func _inspect(id: String, entry: Dictionary = {}) -> void:
 
 
 func _hide_inspector() -> void:
+	_company_details = false
 	_hover_key = ""
 	_hover_wait = 0.0
 	_hover_missing = 0.0
@@ -1892,10 +1898,17 @@ func _layout_hud() -> void:
 
 func _layout_inspector() -> void:
 	if not _inspect_box or not _hud: return
-	# Keep the scrollable details above both the reserve strip and the bust.
-	var bottom := _bench_panel.position.y - 8 if is_instance_valid(_bench_panel) else _hud.size.y - 188
-	if is_instance_valid(_commander_portrait) and _commander_portrait.visible:
-		bottom = minf(bottom, _commander_portrait.position.y - 8)
+	# Company help uses the full height beside the portrait. It contains the
+	# level, XP and shop table, so a short creature-detail slot would clip it.
+	var width := 400.0 if _company_details else 320.0
+	var right := 216.0 if _company_details else 16.0
+	_rail.custom_minimum_size.x = width
+	_rail.offset_left = -right - width; _rail.offset_right = -right
+	var bottom := _hud.size.y - 24.0
+	if not _company_details:
+		bottom = minf(bottom, _bench_panel.position.y - 8)
+		if is_instance_valid(_commander_portrait) and _commander_portrait.visible:
+			bottom = minf(bottom, _commander_portrait.position.y - 8)
 	var maximum := maxf(120, bottom - _rail.offset_top)
 	var content := _inspect_box.get_combined_minimum_size().y + 20
 	_rail.offset_bottom = _rail.offset_top + clampf(content, 80, maximum)
