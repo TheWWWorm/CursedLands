@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.27.0 — 2026-10-24
+
+- Expand Autochess to 40 items across five tiers, mixing raw statistics with special effects. Higher tiers unlock after rounds 3, 5, 10, 15 and 20; borders progress from none to green, blue, purple and gold.
+- Simplify four Autochess alliances to direct bonuses while keeping the Hunters and Spirits tactical effects. Offer one recruitable лесовик line; existing saved seers remain valid.
+- Add original visual effects for Autochess lifesteal, shields, lightning and other item triggers, and play the original victory music once after a tournament win.
+- Hide the item tray and creature item badges during Autochess combat, including paused battles, and restore them during preparation.
+- Keep path-traced lighting active while the camera moves and scene geometry refreshes. Filter responsive path-traced lighting to reduce noise, and align the traced snow and sand surface with the visible terrain deformation.
+- Scale simulation catch-up work with the selected speed so Fast retains its speed advantage during slower frames. ([#98](https://github.com/TheWWWorm/CursedLands/issues/98))
+- Preserve blood-pool appearance, lifetime and the matching corpse pose through saves and reloads. ([#96](https://github.com/TheWWWorm/CursedLands/issues/96))
+- Queue allied-corpse investigations behind stronger alerts, share identified threats with nearby allies and renew warnings as packmates arrive. Unseen lethal attacks do not let the victim warn its own pack. ([#95](https://github.com/TheWWWorm/CursedLands/issues/95), [#94](https://github.com/TheWWWorm/CursedLands/issues/94))
+- Project footprints, blood and scorch marks onto the actual terrain and floor surfaces, including slopes and deforming snow. ([#29](https://github.com/TheWWWorm/CursedLands/issues/29))
+- Keep the pause-menu texture hidden until its opening pose has rendered. ([#89](https://github.com/TheWWWorm/CursedLands/issues/89))
+
 ## 1.26.0 — 2026-10-24
 
 - Preserve each scripted party's live and stored quest inventory through travel, redeployment, saves and co-op progress. Shaina retains the meteorite samples until her hand-in, and Kel's rescue restores the stored Rod fragments as in the original game.
