@@ -614,7 +614,8 @@ def main(argv=None) -> int:
             user.mkdir(parents=True, exist_ok=False)
             (user / "settings.cfg").write_text(settings("1280x720"))
             thread_args = [] if args.render_thread == "project" else ["--render-thread", args.render_thread]
-            command = ([str(args.wine)] if wine else []) + [str(executable)] + thread_args + ["--audio-driver", "Dummy",
+            rate_args = [] if suite in ("resolution_performance", "spatial_performance") else ["--max-fps", "30"]
+            command = ([str(args.wine)] if wine else []) + [str(executable)] + thread_args + rate_args + ["--audio-driver", "Dummy",
                        "--gpu-index", str(args.engine_gpu_index), "--rendering-method", "forward_plus", "--rendering-driver", args.driver,
                        "--windowed", "--borderless", "--resolution", "1280x720", "--",
                        "--ei-path=" + host_path(data, wine), "--no-movies", "--mod-tests",

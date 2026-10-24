@@ -123,6 +123,14 @@ historical files intact. The final qualification manifest freezes executable,
 pack, runtime library and fixture hashes; candidate build metadata identifies
 the modified source tree. Do not use the old scratch field as candidate provenance.
 
+The first combined qualification completed its five movement/reconstruction
+suites but stalled before the lifecycle fixture's first pixel sample. That run
+was cancelled and retained separately. Instrumented lifecycle retries passed on
+both GPUs, so a deterministic renderer failure was not reproduced. The synthetic
+helper now waits for explicit GPU texture readback instead of a presentation
+event from its empty viewport. Ordinary qualification launches are capped at
+30 FPS; performance suites retain their intended uncapped behavior.
+
 ## Remaining limits and repeatable checks
 
 Dynamic footprint depressions are still approximated in ray geometry. Four real

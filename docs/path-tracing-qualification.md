@@ -41,8 +41,11 @@ valid performance comparisons. See the
 [motion and snow validation](integrations/path-tracing-motion-and-snow-2026-10-24.md)
 for captures, limits and the measured cost.
 
-On the development workstation, submit graphical runs through GPU Lab. It owns
-one accelerated virtual screen per GPU and can run one test on each concurrently.
+On the development workstation, submit graphical runs through GPU Lab. Each
+job receives an isolated virtual display; up to three ordinary jobs can share
+each GPU when load and free memory permit. This qualification runner additionally
+locks its selected GPU against other runs of the same runner; schedule those
+serially if GPU Lab assigns them to the same device.
 Leave the submission's GPU choice omitted or `auto`; pin a card only for an
 explicit device-specific comparison. Do not start
 another Xorg/Xvfb, change the desktop, or override the service's display or GPU

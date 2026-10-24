@@ -3,7 +3,9 @@ extends "res://tools/tests/path_trace_quality.gd"
 ## integrator. Real primary hits then cover identity, stop/start and rejection.
 var motion_index := 0
 var native_identity: Image
+var native_pixel: Color
 signal motion_ready
+signal native_pixel_ready
 
 func frame(history:=true,gi:=true,shadows:=true) -> PackedByteArray:
 	var bytes:=super.frame(history,gi,shadows)
@@ -95,10 +97,19 @@ func native_read() -> void:
 	native_identity=Image.create_from_data(size.x,size.y,false,Image.FORMAT_RH,device._rd.texture_get_data(device._filter_auxiliary[3],0))
 	motion_ready.emit.call_deferred()
 
+func read_native_pixel() -> void:
+	var image:=Image.create_from_data(size.x,size.y,false,Image.FORMAT_RGBAH,
+		device._rd.texture_get_data(device.output.texture_rd_rid,0))
+	native_pixel=image.get_pixel(size.x/2,size.y/2)
+	native_pixel_ready.emit.call_deferred()
+
 func native_frame(changes: Dictionary={},history:=true) -> Color:
 	RenderingServer.call_on_render_thread(device.render.bind(size,frame(history),changes))
-	await frames(2);await RenderingServer.frame_post_draw
-	return device.output.get_image().get_pixel(size.x/2,size.y/2)
+	await frames(2)
+	# This fixture has an empty viewport. Wait for actual GPU readback instead
+	# of depending on a subsequent visible frame/presentation event.
+	RenderingServer.call_on_render_thread(read_native_pixel);await native_pixel_ready
+	return native_pixel
 
 func native_sequence() -> void:
 	size=Vector2i(160,90);camera.size=8;camera.position=Vector3(0,0,6);camera.rotation=Vector3.ZERO
