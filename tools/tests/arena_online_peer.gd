@@ -4,6 +4,8 @@ var connection: ArenaOnlineSession
 var checks := 0
 var failures: Array[String] = []
 var hosting := false
+var expansion := false
+var rabbit_blasts := 0
 var finished := false
 var frames_received := 0
 var fight_frames := 0
@@ -44,7 +46,18 @@ func _ready() -> void:
 		if arg.begins_with("--peer-role="): hosting = arg.ends_with("host")
 		elif arg.begins_with("--peer-transport="): transport = arg.get_slice("=",1)
 		elif arg.begins_with("--peer-port="): port = int(arg.get_slice("=",1))
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--astral-path="):
+			GameData.campaign_roots[CampaignProfile.ASTRAL] = arg.trim_prefix("--astral-path=")
+			expansion = true
+	if expansion:
+		check(ArenaExpansion.mount(), "independent process mounts LiA")
+		GameData.arena_character = "lia_hero" if hosting else "lia_merc8"
 	connection = ArenaOnlineSession.new()
+	connection.expansion = expansion
+	connection.effects_received.connect(func(data):
+		for event: Dictionary in data.get("events", []):
+			if event.get("effect", "") == "popper_blast": rabbit_blasts += 1)
 	connection.player_name = "Host process" if hosting else "Guest process"
 	add_child(connection)
 	connection.board_received.connect(func(data):
@@ -56,7 +69,15 @@ func _ready() -> void:
 		check(await wait_for(func():return connection.members.size() == 2),"independent guest joins")
 		check(await wait_for(func():return connection.members.values().all(func(member):return member.ready)),"guest becomes ready")
 		check(connection.start_game(194731).is_empty(),"host starts tournament")
-		if connection.game: connection.game.set_process(false)
+		if connection.game:
+			connection.game.set_process(false)
+			if expansion:
+				for seat in [0, 1]:
+					var company := connection.game.run.company(seat)
+					company.army.clear()
+					for family in [32, 33, 35] if seat == 0 else [32, 34, 37]: company._recruit(family, 0, 1)
+					company.arrange()
+				connection.game._prepare(); connection._dirty = true
 	else:
 		check(connection.join(("ws://" if transport == "websocket" else "") + "127.0.0.1:%d" % port) == OK,"guest connects")
 		check(await wait_for(func():return connection.my_seat == 1),"guest has separate seat")
@@ -68,9 +89,14 @@ func _ready() -> void:
 	check(frames_received > 20 and fight_frames > 10,"live battle snapshots arrive")
 	check(connection.view.army.size() > 0,"own purchases remain in the company")
 	check(connection.view.rivals.all(func(rival):return rival.shop.is_empty()),"other players' offers stay private")
+	if expansion:
+		check(connection.view.expansion and connection.view.rivals.all(func(r): return r.expansion), "expansion mode reaches every company")
+		check(connection.view.commander == ("lia_hero" if hosting else "lia_merc8"), "native LiA identity reaches the correct seat")
+		check(connection.view.army.any(func(entry): return String(entry.prototype).begins_with(ArenaExpansion.PREFIX)), "LiA recruits survive rounds and snapshots")
+		check(rabbit_blasts > 0, "rabbit death effects arrive from the authority")
 	var report := {"role":"host" if hosting else "client","transport":transport,"checks":checks,
 		"health":connection.last_state.get("health",[]),"placements":connection.last_state.get("placements",[]),
-		"rounds":rounds_seen,"pvp_rounds":pvp_seen,"board_frames":frames_received,"fight_frames":fight_frames}
+		"expansion":expansion,"rabbit_blasts":rabbit_blasts,"rounds":rounds_seen,"pvp_rounds":pvp_seen,"board_frames":frames_received,"fight_frames":fight_frames}
 	if hosting:
 		check(await wait_for(func():return connection.members.size() == 1),"guest leaves after the sixth result")
 		check(not connection.game.run.humans.has(1),"computer takes over the departed company")

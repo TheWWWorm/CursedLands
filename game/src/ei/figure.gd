@@ -278,11 +278,11 @@ static func get_model(template: String) -> Dictionary:
 		if pkg:
 			var parts := {}
 			for entry: String in pkg.entries:
-				if entry != template:
+				if entry != template.get_file():
 					var f := _parse_fig(pkg.read(entry))
 					if not f.is_empty():
 						parts[entry] = f
-			var links := _parse_lnk(pkg.read(template))
+			var links := _parse_lnk(pkg.read(template.get_file()))
 			if links.is_empty():
 				for p: String in parts:
 					links.append([p, ""])

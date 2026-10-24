@@ -36,6 +36,11 @@ static func power(family: int, rank: int) -> float:
 		var effect:=float(parsed.effect)
 		var cast_time:=maxf(0.6,float(parsed.proto.get("actions",45.0))*GameUnit.TICK*15.0/float(values.actions))
 		damage_rate=maxf(damage_rate,maxf(effect*0.2,effect-armor)*ArenaRules.spell_target_budget(parsed)/cast_time)
+	if family == ArenaExpansion.POPPER:
+		# Price the single blast over an approach plus fuse. Two targets is
+		# an estimate, never extra damage; spread-out/ranged armies counter it.
+		var blast := float(ArenaExpansion.POPPER_DAMAGE[clampi(rank, 0, 2)])
+		damage_rate = maxf(damage_rate, maxf(blast * 0.2, blast - armor) * 2.0 / 3.0)
 	# Survival and sustained output both contribute to fighting strength.
 	# Multiplying sqrt(HP) by DPS overvalued casters so much that CPUs filled
 	# nearly every slot with them, even when those formations lost to melee.

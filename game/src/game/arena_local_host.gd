@@ -38,7 +38,7 @@ func start(port: int, use_websocket: bool, solo := false) -> Error:
 	DirAccess.make_dir_recursive_absolute(directory)
 	_config = directory.path_join("%d-%d.cfg" % [OS.get_process_id(), Time.get_ticks_usec()])
 	var config := {"token":_token, "parent":OS.get_process_id(), "port":port, "websocket":use_websocket,
-		"solo_combat":solo, "commander":GameData.arena_character, "password":session.password, "name":session.player_name, "language":RemakeText.lang,
+		"solo_combat":solo, "expansion":session.expansion, "expansion_root":DataSwitch.installed(CampaignProfile.ASTRAL) if session.expansion else "", "commander":GameData.arena_character, "password":session.password, "name":session.player_name, "language":RemakeText.lang,
 		"options":GameData.options.duplicate(true)}
 	# The visible process owns router mapping and its existing status UI.
 	config.options.net_upnp = 0
@@ -95,6 +95,10 @@ func configure(path: String) -> Dictionary:
 			or not ArenaRun._integer(config.get("port"), 0 if config.get("solo_combat", false) else 1, 65535) or not config.get("options") is Dictionary:
 		return {}
 	solo_combat = bool(config.get("solo_combat", false))
+	session.expansion = bool(config.get("expansion", false))
+	if session.expansion:
+		GameData.campaign_roots[CampaignProfile.ASTRAL] = String(config.get("expansion_root", ""))
+		if not ArenaExpansion.mount(): return {}
 	worker = true; _config = path; _token = config.token
 	parent_id = int(config.get("parent", -1)); _owner_seen = Time.get_ticks_msec()
 	GameData.arena_character = ArenaCommanders.valid(str(config.get("commander", "hero")))

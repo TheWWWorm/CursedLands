@@ -47,10 +47,11 @@ func begin(seed_value: int, chosen_starter := 0, difficulty := 0) -> void:
 	_human_result.clear(); previous_opponent = -1
 	super.begin(seed_value, chosen_starter, 0)
 	placements.resize(PLAYER_COUNT); placements.fill(0)
-	var identities := ArenaCommanders.opponents(commander)
+	var identities := ArenaCommanders.opponents(commander, expansion)
 	for index in PLAYER_COUNT - 1:
 		var rival := ArenaRun.new()
 		rival.auto_save = false
+		rival.expansion = expansion
 		rival.commander = identities[index]
 		rival.begin(1 + (run_seed * 37 + index * 7919) % 99999998)
 		rivals.append(rival); rival_health.append(100)
@@ -76,7 +77,7 @@ func _pool_holders() -> Array[ArenaRun]:
 
 func round_limit() -> int: return MAX_ROUNDS
 func life_limit() -> int: return 100
-func save_path() -> String: return TOURNAMENT_SAVE
+func save_path() -> String: return "user://arena-autochess-astral.json" if expansion else TOURNAMENT_SAVE
 func _update_profile() -> void: pass
 
 func _touch() -> void:
@@ -414,6 +415,7 @@ func _restore_companies(data: Dictionary, seats: int) -> bool:
 		if not _integer(data.rival_health[index],0,100) or not data.rivals[index] is Dictionary: return false
 		var bot := ArenaRun.new(); bot.auto_save = false
 		if not bot.restore(data.rivals[index]) or bot.stage != "prepare": return false
+		if bot.expansion != data.get("expansion", false): return false
 		if not data.rivals[index].has("commander"):
 			bot.commander = ArenaCommanders.opponents(String(data.get("commander", "hero")))[index % 8]
 		# Company waves cap at the expedition limit; migration must use the

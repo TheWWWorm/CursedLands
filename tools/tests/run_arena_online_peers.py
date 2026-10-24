@@ -12,6 +12,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--godot", required=True, type=Path)
     parser.add_argument("--data", required=True, type=Path)
+    parser.add_argument("--astral", type=Path)
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
     repo = Path(__file__).resolve().parents[2]
@@ -27,6 +28,8 @@ def main():
                 profile = output / transport / role
                 (profile / "data/godot/app_userdata/Cursed Lands").mkdir(parents=True)
                 profiles.append(profile)
+                (profile / "data/godot/app_userdata/Cursed Lands/settings.cfg").write_text(
+                    '[options]\nconfine_mouse=0\nshow_fps=1\nvolume_sfx=0\nvolume_stream=0\nvolume_voice=0\nauto_graphics=0\nfps_limit=0\n')
                 env = dict(os.environ, XDG_DATA_HOME=str(profile / "data"),
                            XDG_CONFIG_HOME=str(profile / "config"), XDG_CACHE_HOME=str(profile / "cache"))
                 cmd = [str(args.godot), "--headless", "--path", str(repo / "game"),
@@ -35,6 +38,8 @@ def main():
                        "--tool=" + str(Path(__file__).with_name("arena_online_peer.gd")),
                        "--peer-role=" + role, "--peer-transport=" + transport,
                        "--peer-port=" + str(30210 + index)]
+                if args.astral:
+                    cmd.append("--astral-path=" + str(args.astral))
                 stream = (profile / "run.log").open("w")
                 streams.append(stream)
                 processes.append(subprocess.Popen(cmd, env=env, stdout=stream, stderr=subprocess.STDOUT))

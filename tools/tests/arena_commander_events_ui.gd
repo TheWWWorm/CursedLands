@@ -1,6 +1,10 @@
 extends "arena_expansion_ui.gd"
 ## Historical versus live portrait events, smooth native faces, and real peers.
 
+var expansion := false
+var host_commander := "hero"
+var guest_commander := "merc3"
+
 class OnlineScreen extends ArenaOnlineScreen:
 	var cues: Array[String] = []
 	func _play_cue(kind: String) -> void:
@@ -31,7 +35,7 @@ func _ready() -> void:
 	OS.remove_logger(errors); TexUpscale.shutdown(); get_tree().quit(0 if failures.is_empty() else 1)
 
 func solo_switches() -> void:
-	GameData.arena_mode = 1
+	GameData.arena_mode = 2 if expansion else 1
 	screen = ArenaPveScreen.new(); add_child(screen); await frames(16)
 	screen._seed_input.text = "7191"; screen._begin(); screen.run.auto_save = false
 	Fixture.buy_company(screen.run,1); await frames(20)
@@ -92,11 +96,11 @@ func blend_frames() -> void:
 func peers(websocket: bool) -> void:
 	var tag := "websocket" if websocket else "enet"
 	var port := 29862 if websocket else 29861
-	GameData.arena_character = "hero"
-	var host := ArenaOnlineSession.new(); host.player_name = "Portrait host"; add_child(host)
+	GameData.arena_character = host_commander
+	var host := ArenaOnlineSession.new(); host.player_name = "Portrait host"; host.expansion = expansion; add_child(host)
 	check(host.host(port,websocket) == OK,tag+" host listens")
-	GameData.arena_character = "merc3"
-	var guest := ArenaOnlineSession.new(); guest.player_name = "Portrait guest"; add_child(guest)
+	GameData.arena_character = guest_commander
+	var guest := ArenaOnlineSession.new(); guest.player_name = "Portrait guest"; guest.expansion = expansion; add_child(guest)
 	check(guest.join(("ws://" if websocket else "")+"127.0.0.1:"+str(port)) == OK,tag+" guest connects")
 	check(await until(func(): return guest.my_seat == 1),tag+" guest gets its own seat")
 	guest.request("ready")
@@ -104,7 +108,7 @@ func peers(websocket: bool) -> void:
 	check(host.start_game(7191).is_empty(),tag+" game starts")
 	host.game.set_process(false)
 	check(await until(func(): return guest.started),tag+" initial state arrives")
-	check(host.game.run.commander == "hero" and host.game.run.company(1).commander == "merc3",tag+" lobby character choices survive handshake")
+	check(host.game.run.commander == host_commander and host.game.run.company(1).commander == guest_commander,tag+" lobby character choices survive handshake")
 	for company_id in 9: host.game.run.company(company_id).last_result = {"winner":company_id % 2,"wave":1}
 	host._dirty = true
 	check(await until(func(): return guest.view.last_result.get("wave",0) == 1),tag+" historical results arrive before opening board")
@@ -114,7 +118,7 @@ func peers(websocket: bool) -> void:
 		await frames(20)
 		while ShaderCompilationScreen.active(): await frames(2)
 		neutral(role+" initial state")
-		check(screen._commander_portrait.commander == ("hero" if connection == host else "merc3"),role+" portrait belongs to local seat")
+		check(screen._commander_portrait.commander == (host_commander if connection == host else guest_commander),role+" portrait belongs to local seat")
 		for player in [1,2,0,1,0]:
 			screen._show_player(player); await frames(4)
 			neutral(role+" switch "+str(player))

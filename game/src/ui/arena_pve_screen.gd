@@ -143,6 +143,8 @@ var _camera_keys := {}
 var _cursor: GameCursor
 var _commander_portrait: ArenaCommanderPortrait
 var _character_picker: OptionButton
+var _skin_row: HBoxContainer
+var _skin_picker: OptionButton
 var _character_preview: ArenaCommanderPortrait
 var _portrait_subject := ""
 var _portrait_ranks := {}
@@ -179,7 +181,11 @@ func _ready() -> void:
 		thumb.bg_color = Color("9c8a60")
 		thumb.content_margin_left = 3; thumb.content_margin_right = 3
 		theme.set_stylebox(state, "VScrollBar", thumb)
-	if not network_play and GameData.arena_mode == 1: run = ArenaTournamentRun.new()
+	if not network_play and GameData.arena_mode > 0:
+		run = ArenaTournamentRun.new()
+		run.expansion = GameData.arena_mode == 2 and ArenaExpansion.mount()
+		if GameData.arena_mode == 2 and not run.expansion: GameData.arena_mode = 1
+		GameData.arena_character = ArenaCommanders.valid(GameData.arena_character, run.expansion)
 	battle = _create_battle()
 	battle.run = run
 	add_child(battle)
@@ -940,17 +946,20 @@ func _build_landing() -> void:
 	contents.add_child(modes)
 	var mode_label := _label(modes, RemakeText.t("Mode"), 14, GOLD)
 	mode_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	for index in 2:
-		var mode_button := _button(modes, RemakeText.t("Expedition") if index == 0 else RemakeText.t("Autochess"), _switch_mode.bind(index), RemakeText.t("Survive 30 rounds. You can lose twice.") if index == 0 else RemakeText.t("Face eight computer opponents. The last player standing wins."), false)
-		mode_button.name = "ExpeditionMode" if index == 0 else "AutochessMode"
+	for index in 3:
+		var names := ["Expedition", "Autochess", "LiA autochess"]
+		var tips := ["Survive 30 rounds. You can lose twice.", "Face eight computer opponents. The last player standing wins.", "Adds Lost in Astral creatures and characters. Requires both games installed."]
+		var mode_button := _button(modes, RemakeText.t(names[index]), _switch_mode.bind(index), RemakeText.t(tips[index]), false)
+		mode_button.disabled = index == 2 and not ArenaExpansion.available()
+		mode_button.name = ["ExpeditionMode", "AutochessMode", "AstralMode"][index]
 		mode_button.toggle_mode = true
-		mode_button.set_pressed_no_signal(index == int(run is ArenaTournamentRun))
+		mode_button.set_pressed_no_signal(index == int(run is ArenaTournamentRun) + int(run.expansion))
 		mode_button.custom_minimum_size = Vector2(180, 44)
 		mode_button.size_flags_horizontal = Control.SIZE_FILL
 		mode_button.add_theme_stylebox_override("pressed", ArenaCreatureCard.style(Color("424033"), GOLD, Vector2(8,4)))
 		mode_button.add_theme_stylebox_override("normal", ArenaCreatureCard.style(Color("202726"), Color("4b5143"), Vector2(8,4)))
 
-	var title := _wrap(contents, RemakeText.t("Autochess") if run is ArenaTournamentRun else RemakeText.t("Trials of the Allods"), 46, PAPER)
+	var title := _wrap(contents, RemakeText.t("LiA autochess") if run.expansion else RemakeText.t("Autochess") if run is ArenaTournamentRun else RemakeText.t("Trials of the Allods"), 46, PAPER)
 	title.add_theme_font_override("font", _heading_font)
 	_rule(contents)
 	var columns := HBoxContainer.new()
@@ -1011,18 +1020,35 @@ func _build_landing() -> void:
 	_character_preview.custom_minimum_size = Vector2(240, 220)
 	_character_preview.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	showcase.add_child(_character_preview)
+	GameData.arena_character = ArenaCommanders.valid(GameData.arena_character, run.expansion)
 	_character_preview.show_character(GameData.arena_character)
 	_character_picker = OptionButton.new()
 	_character_picker.custom_minimum_size.y = 40
 	_character_picker.tooltip_text = RemakeText.t("Your character represents you on the board. This choice does not change your army.")
-	for id: String in ArenaCommanders.IDS: _character_picker.add_item(ArenaCommanders.title(id))
-	_character_picker.select(ArenaCommanders.IDS.find(ArenaCommanders.valid(GameData.arena_character)))
+	var character_ids := ArenaCommanders.choices(run.expansion)
+	for id: String in character_ids: _character_picker.add_item(ArenaCommanders.title(id))
+	_character_picker.select(character_ids.find(ArenaCommanders.character(GameData.arena_character)))
 	_character_picker.item_selected.connect(func(index):
-		GameData.arena_character = ArenaCommanders.IDS[index]
+		GameData.arena_character = character_ids[index]
+		_sync_skin_picker()
 		GameData.save_settings()
 		_character_preview.show_character(GameData.arena_character))
 	showcase.add_child(_character_picker)
-	var regions := _wrap(showcase, " · ".join([ArenaRules.region_name(0), ArenaRules.region_name(1), ArenaRules.region_name(2)]), 15, GOLD)
+	_skin_row = HBoxContainer.new()
+	showcase.add_child(_skin_row)
+	var skin_label := _label(_skin_row, RemakeText.t("Skin"), 16, PAPER)
+	skin_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_skin_picker = OptionButton.new()
+	_skin_picker.custom_minimum_size.y = 36
+	_skin_picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_skin_picker.tooltip_text = RemakeText.t("Choose an original story appearance. This only changes your character's look.")
+	_skin_row.add_child(_skin_picker)
+	_skin_picker.item_selected.connect(func(index):
+		GameData.arena_character = ArenaCommanders.skins(GameData.arena_character)[index]
+		GameData.save_settings()
+		_character_preview.show_character(GameData.arena_character))
+	_sync_skin_picker()
+	var regions := _wrap(showcase, RemakeText.t("Cursed Lands + Lost in Astral") if run.expansion else " · ".join([ArenaRules.region_name(0), ArenaRules.region_name(1), ArenaRules.region_name(2)]), 15, GOLD)
 	regions.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_rule(showcase)
 	var facts := _wrap(showcase, RemakeText.t("Face eight computer opponents. The last player standing wins.") if run is ArenaTournamentRun else RemakeText.t("Survive 30 rounds. You can lose twice."), 16, PAPER)
@@ -1032,10 +1058,27 @@ func _build_landing() -> void:
 	_layout_landing.call_deferred()
 
 
+func _sync_skin_picker() -> void:
+	var choices := ArenaCommanders.skins(GameData.arena_character)
+	_skin_picker.clear()
+	for id: String in choices: _skin_picker.add_item(ArenaCommanders.skin_title(id))
+	_skin_picker.select(maxi(0, choices.find(GameData.arena_character)))
+	_skin_row.visible = choices.size() > 1
+	_layout_landing.call_deferred()
+
+
 func _layout_landing() -> void:
 	if not is_instance_valid(_landing_panel): return
-	_landing_panel.size = Vector2(minf(940, _landing_layer.size.x - 48), 0)
-	_landing_panel.position = (_landing_layer.size - _landing_panel.size) / 2
+	var available := (_landing_layer.size - Vector2(48, 24)).max(Vector2.ONE)
+	if is_instance_valid(_character_preview):
+		# Make room for skin choices and translated help before shrinking text.
+		var other_height := _landing_panel.get_combined_minimum_size().y - _character_preview.custom_minimum_size.y
+		var portrait_height := clampf(available.y - other_height, 112, 220)
+		_character_preview.custom_minimum_size = Vector2(portrait_height * 240.0 / 220.0, portrait_height)
+	_landing_panel.size = Vector2(minf(940, available.x), 0)
+	var fit := minf(1.0, minf(available.x / _landing_panel.size.x, available.y / _landing_panel.size.y))
+	_landing_panel.scale = Vector2.ONE * fit
+	_landing_panel.position = (_landing_layer.size - _landing_panel.size * fit) / 2
 
 
 func _begin() -> void:
@@ -1166,7 +1209,7 @@ func _show_alliance(key: String) -> void:
 	_inspect_box.add_child(grid)
 	var company: ArenaRun = run.company(_tournament_battles.viewed_player) if is_instance_valid(_tournament_battles) else run
 	for family: int in rule.families:
-		if family not in ArenaRules.ACTIVE_FAMILIES: continue
+		if family not in ArenaRules.active_families(run.expansion): continue
 		var owned := company.army.filter(func(entry): return int(entry.family) == family)
 		var deployed := _field_army().any(func(entry): return int(entry.family) == family and entry.deployed)
 		var status := "On field" if deployed else "In reserves" if not owned.is_empty() else "Not recruited"
@@ -2538,11 +2581,13 @@ func _setup_tournament_battles() -> void:
 
 
 func _switch_mode(index: int) -> void:
-	if not landing or index == int(run is ArenaTournamentRun): return
+	if not landing or index == int(run is ArenaTournamentRun) + int(run.expansion): return
+	if index == 2 and not ArenaExpansion.mount(): return
 	_cancel_item()
 	_pending_item_choice.clear()
 	if run.changed.is_connected(_refresh): run.changed.disconnect(_refresh)
 	run = ArenaRun.new() if index == 0 else ArenaTournamentRun.new()
+	run.expansion = index == 2
 	run.auto_save = false
 	run.deployment_check = battle.recruitment_clear
 	battle.run = run

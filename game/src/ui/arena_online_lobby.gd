@@ -29,6 +29,7 @@ func _connection() -> void:
 	if connection:
 		connection.close();remove_child(connection);connection.queue_free()
 	connection=ArenaOnlineSession.new();connection.player_name=panel.player_name
+	connection.expansion = GameData.arena_mode == 2
 	connection.password=panel.password if panel.page==NetworkPanel.HOST_COOP else panel.join_password
 	add_child(connection);panel.connection=connection;panel.upnp=connection.upnp
 	connection.lobby_changed.connect(_refresh)

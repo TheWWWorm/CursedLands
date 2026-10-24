@@ -10,6 +10,8 @@ static func play(fx: ParticleFx, event: Dictionary) -> void:
 	var key := String(event.get("effect", ""))
 	var source: GameUnit = fx.world.units.get(int(event.get("source", 0)))
 	match key:
+		"popper_armed": _burst(fx, unit, "popper_fuse", 0x2000, 0.45, 0.6)
+		"popper_blast": fx.spawn(0x2002, fx.unit_point(unit, 0), 2.5)
 		"fang", "spirit":
 			if float(event.get("amount", 0.0)) > 0.0:
 				_burst(fx, unit, "heal", 0x2006, 0.4, 2.4)

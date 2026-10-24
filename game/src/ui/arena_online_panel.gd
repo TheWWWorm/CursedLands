@@ -8,6 +8,8 @@ var port_text := str(ArenaOnlineSession.PORT)
 const ONLINE_BOOK := "user://autochess-addresses.cfg"
 
 func _ready() -> void:
+	if GameData.arena_mode == 2 and not ArenaExpansion.mount(): GameData.arena_mode = 1
+	GameData.arena_character = ArenaCommanders.valid(GameData.arena_character, GameData.arena_mode == 2)
 	campaign_only = true
 	super._ready()
 	lan.discovery_port = ArenaOnlineSession.LAN_PORT
@@ -21,7 +23,7 @@ func _rebuild_save_choices() -> void: pass
 func _sync_save_choice() -> void:
 	if _save_choice: _save_choice.hide()
 func _discovery_protocol() -> int: return ArenaOnlineSession.PROTOCOL
-func _island(_g: Dictionary) -> String: return RemakeText.t("Autochess")
+func _island(g: Dictionary) -> String: return RemakeText.t("LiA autochess" if g.get("expansion", false) else "Autochess")
 func _book_game(a: String) -> Dictionary:
 	if not _lan_on(): return {}
 	var hp := Session.parse_address(a.trim_prefix("ws://").trim_prefix("wss://"), ArenaOnlineSession.PORT)
@@ -51,7 +53,10 @@ func _addr_hint() -> String:
 func _rows() -> Array:
 	var locked := hosting or joining
 	var rows := [{"id":"name","kind":"edit","label":RemakeText.t("Your name"),"value":player_name,"on":not locked,"hint":RemakeText.t("Your name in the autochess tournament.")}]
+	rows.append({"id":"arena_mode","kind":"choice","label":RemakeText.t("Mode"),"value":RemakeText.t("LiA autochess" if GameData.arena_mode == 2 else "Autochess"),"on":not locked and ArenaExpansion.available(),"hint":RemakeText.t("Adds Lost in Astral creatures and characters. Requires both games installed.")})
 	rows.append({"id":"commander","kind":"choice","label":RemakeText.t("Choose your character"),"value":ArenaCommanders.title(GameData.arena_character),"on":not locked,"hint":RemakeText.t("Your character represents you on the board. This choice does not change your army.")})
+	if ArenaCommanders.skins(GameData.arena_character).size() > 1:
+		rows.append({"id":"skin","kind":"choice","label":RemakeText.t("Skin"),"value":ArenaCommanders.skin_title(GameData.arena_character),"on":not locked,"hint":RemakeText.t("Choose an original story appearance. This only changes your character's look.")})
 	if page == JOIN_COOP:
 		rows.append({"id":"addr","kind":"edit","label":RemakeText.t("Host's address"),"value":address,"on":not locked,"hint":_addr_hint()})
 	rows.append({"id":"password","kind":"edit","label":pw_label(),"value":password if page == HOST_COOP else join_password,"on":not locked,"hint":_pw_hint(page == HOST_COOP)})
@@ -62,10 +67,24 @@ func _rows() -> Array:
 	return rows
 
 func _activate(id: String, dir := 0) -> void:
+	if id == "skin":
+		if not _row_on(id): return
+		var ids := ArenaCommanders.skins(GameData.arena_character)
+		GameData.arena_character = ids[posmod(ids.find(GameData.arena_character) + (-1 if dir < 0 else 1), ids.size())]
+		GameData.save_settings(); queue_redraw()
+		return
+	if id == "arena_mode":
+		if not _row_on(id): return
+		if GameData.arena_mode != 2 and not ArenaExpansion.mount(): return
+		GameData.arena_mode = 1 if GameData.arena_mode == 2 else 2
+		GameData.arena_character = ArenaCommanders.valid(GameData.arena_character, GameData.arena_mode == 2)
+		GameData.save_settings(); queue_redraw()
+		return
 	if id == "commander":
 		if not _row_on(id): return
-		var index := ArenaCommanders.IDS.find(ArenaCommanders.valid(GameData.arena_character))
-		GameData.arena_character = ArenaCommanders.IDS[posmod(index + (-1 if dir < 0 else 1), ArenaCommanders.IDS.size())]
+		var ids := ArenaCommanders.choices(GameData.arena_mode == 2)
+		var index := ids.find(ArenaCommanders.character(GameData.arena_character))
+		GameData.arena_character = ids[posmod(index + (-1 if dir < 0 else 1), ids.size())]
 		GameData.save_settings()
 		queue_redraw()
 		return

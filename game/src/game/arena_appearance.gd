@@ -68,7 +68,7 @@ static func _recruit(id: String, family: int, rank: int) -> bool:
 	return family >= 0 and rank >= 0 and rank < 3 and ArenaRules.prototype(family, rank) == id.to_lower()
 
 static func info(id: String, family := -1, rank := 0) -> Dictionary:
-	var result := {"prototype":id}
+	var result := ArenaExpansion.appearance(id) if id.begins_with(ArenaExpansion.PREFIX) else {"prototype":id}
 	for prefix: String in PALETTES:
 		if id.to_lower().begins_with(prefix):
 			result.texture = PALETTES[prefix]

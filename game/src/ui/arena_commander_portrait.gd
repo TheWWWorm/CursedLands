@@ -89,6 +89,7 @@ func show_character(id: String) -> void:
 	model.remove_from_group(&"detailed_heads")
 	if model._detail:
 		face = model._detail.material_override as EIUnitModel.PreviewMaterial
+		face.set_shader_parameter("portrait_unlit", true)
 		var race := GameData.db.find("race_models", String(row.base_race))
 		face_texture = Portrait.proto_face_names(row, race, Vector3.ZERO)[1]
 		face.albedo_texture = GameData.get_texture(face_texture)

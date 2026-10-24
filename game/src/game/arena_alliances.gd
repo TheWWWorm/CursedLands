@@ -3,12 +3,12 @@ extends RefCounted
 ## Automatic, overlapping traits. Unique deployed families count, not copies,
 ## stars, reserves or old camp guests. Battle behaviors are isolated to Trials actors.
 const RULES := {
-	"beast": {"name": "Beasts", "families": [0, 1, 2, 3, 5, 7, 8, 9, 16, 17, 20, 23], "thresholds": [2, 4, 6], "help": "Beasts gain 10/20/30% attack damage at 2/4/6 different Beasts."},
-	"horde": {"name": "Horde", "families": [4, 10, 13, 14, 15, 27, 28], "thresholds": [2, 4], "help": "Horde members gain 15/30% maximum health at 2/4 different Horde members."},
-	"warrior": {"name": "Warriors", "families": [0, 6, 9, 12, 14, 15, 22, 24, 28], "thresholds": [2, 4], "help": "Warriors gain 30/60% armor against physical damage at 2/4 different Warriors."},
-	"hunter": {"name": "Hunters", "families": [1, 2, 4, 7, 10, 11, 17, 27], "thresholds": [2, 4], "help": "An enemy completing a spell is marked for 3 seconds. Hunters prioritize the marked enemy when it is in reach. At 4 Hunters, all allies follow the mark."},
-	"mage": {"name": "Mages", "families": [3, 5, 13, 16, 18, 19, 21, 23, 26, 29], "thresholds": [2, 4], "help": "Mages deal 15/30% more spell damage at 2/4 different Mages."},
-	"spirit": {"name": "Spirits", "families": [6, 11, 12, 19, 20, 21, 22, 24, 25, 26, 29], "thresholds": [2, 4], "help": "The first Spirit death heals the nearest 1/2 wounded allies within 5 m for 12% of the fallen Spirit's maximum health. At 4 Spirits, it also leaves one wisp with 20% health for 6 seconds. Echoes carry no items and cannot trigger death effects."},
+	"beast": {"name": "Beasts", "families": [0, 1, 2, 3, 5, 7, 8, 9, 16, 17, 20, 23, 30, 31, 32, 34], "thresholds": [2, 4, 6], "help": "Beasts gain 10/20/30% attack damage at 2/4/6 different Beasts."},
+	"horde": {"name": "Horde", "families": [4, 10, 13, 14, 15, 27, 28, 35], "thresholds": [2, 4], "help": "Horde members gain 15/30% maximum health at 2/4 different Horde members."},
+	"warrior": {"name": "Warriors", "families": [0, 6, 9, 12, 14, 15, 22, 24, 28, 35, 36], "thresholds": [2, 4], "help": "Warriors gain 30/60% armor against physical damage at 2/4 different Warriors."},
+	"hunter": {"name": "Hunters", "families": [1, 2, 4, 7, 10, 11, 17, 27, 30, 31, 34], "thresholds": [2, 4], "help": "An enemy completing a spell is marked for 3 seconds. Hunters prioritize the marked enemy when it is in reach. At 4 Hunters, all allies follow the mark."},
+	"mage": {"name": "Mages", "families": [3, 5, 13, 16, 18, 19, 21, 23, 26, 29, 33, 37], "thresholds": [2, 4], "help": "Mages deal 15/30% more spell damage at 2/4 different Mages."},
+	"spirit": {"name": "Spirits", "families": [6, 11, 12, 19, 20, 21, 22, 24, 25, 26, 29, 33, 36, 37], "thresholds": [2, 4], "help": "The first Spirit death heals the nearest 1/2 wounded allies within 5 m for 12% of the fallen Spirit's maximum health. At 4 Spirits, it also leaves one wisp with 20% health for 6 seconds. Echoes carry no items and cannot trigger death effects."},
 }
 const EFFECTS := {
 	"beast": ["+10% attack damage", "+20% attack damage", "+30% attack damage"],

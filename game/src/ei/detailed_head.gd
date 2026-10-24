@@ -58,18 +58,17 @@ static func face_names(proto: Dictionary, race: Dictionary, c: Vector3, hair: in
 	if c == Vector3.ZERO:
 		c = GameUnit.proto_complexion(proto)
 	var build := "th" if c.x < 0.2 else ("fa" if c.x > 0.8 else "me")
-	var fig := "infa%s%s%dface" % [model, build, hair + 1]
-	var tex := "face%s%02d" % [sex, int(proto.get("skin", 0))]
+	var prefix := String(proto.get("_arena_assets", ""))
+	var fig := prefix + "infa%s%s%dface" % [model, build, hair + 1]
+	var tex := prefix + "face%s%02d" % [sex, int(proto.get("skin", 0))]
 	var face_model := EIFigure.get_model(fig)
 	if face_model.is_empty() or GameData.get_texture(tex) == null:
 		return PackedStringArray()
-	# Only the original interface-atlas heads support this replacement.
-	# Lost in Astral supplies group-4 portrait meshes with different UVs
-	# and proportions. They fit its custom portrait paintings, but not
-	# the ordinary NPC faces or the world figure's head/neck attachment.
-	# Keep the authored body head and hair for those models, including Kir.
+	# The base campaign only fits its original interface heads. Arena's
+	# selected LiA commanders are fitted against LiA bodies and paintings;
+	# their texture-group IDs (1/4) do not change the interface atlas layout.
 	for part: Dictionary in face_model.parts.values():
-		if part.get("texture_group", 0) != 8:
+		if part.get("texture_group", 0) != 8 and not proto.get("_arena_commander", false):
 			return PackedStringArray()
 	return PackedStringArray([fig, tex])
 
@@ -116,6 +115,9 @@ static func _mesh(fig: String) -> ArrayMesh:
 	for s in src.get_surface_count():
 		var arrays := src.surface_get_arrays(s)
 		var uv: PackedVector2Array = arrays[Mesh.ARRAY_TEX_UV]
+		# All interface heads use the same atlas cell, including LiA's group-1
+		# women and group-4 men. The men's negative V coordinates repeat into
+		# that cell; skipping this transform paints the neck across the face.
 		for i in uv.size():
 			uv[i] = Vector2(uv[i].x * 2.0, uv[i].y * 2.0 - 1.0)
 		arrays[Mesh.ARRAY_TEX_UV] = uv

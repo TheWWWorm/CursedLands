@@ -77,6 +77,18 @@ func stop() -> void:
 
 func tick() -> void:
 	if not active: return
+	# A rabbit's proximity fuse and its death share the same one-shot flag.
+	# The host's simulation clock owns both; client snapshots only draw FX.
+	for uid: int in rows:
+		var row: Dictionary = rows[uid]
+		if int(row.family) != ArenaExpansion.POPPER or row.get("exploded", false): continue
+		var rabbit: GameUnit = world.units.get(uid)
+		if not alive(rabbit): continue
+		if row.has("fuse"):
+			if world.time >= float(row.fuse): rabbit.die()
+		elif not _near(rabbit, false, 2.0).is_empty():
+			row.fuse = world.time + ArenaExpansion.POPPER_FUSE
+			_notice("popper_armed", rabbit, ArenaExpansion.POPPER_FUSE)
 	for uid: int in shields.keys():
 		if world.time >= float(shields[uid].until) or not alive(world.units.get(uid)): _end_shield(uid)
 	for uid: int in echoes.keys():
@@ -214,8 +226,8 @@ func after_damage(target: GameUnit, source: GameUnit, actual: float, context: Di
 			r.thorn_at = world.time + 1.0
 			_packet(target, source, float(_gear(target).reflect), 2, "thorn")
 
-func _packet(source: GameUnit, target: GameUnit, amount: float, school: int, effect: String) -> void:
-	if not alive(source) or not alive(target) or amount <= 0.0: return
+func _packet(source: GameUnit, target: GameUnit, amount: float, school: int, effect: String, death_effect := false) -> void:
+	if not is_instance_valid(source) or (not death_effect and not alive(source)) or not alive(target) or amount <= 0.0: return
 	var types := PackedFloat32Array([0, 0, 0, 0, 0, 0, 0])
 	if school < 0: types = source.stats.get("dmg_types", PackedFloat32Array([0,0,1,0,0,0,0]))
 	else: types[clampi(school, 0, 6)] = 1.0
@@ -271,6 +283,15 @@ func target_bonus(u: GameUnit, candidate: GameUnit, option: Dictionary) -> float
 
 func on_death(fallen: GameUnit, killer: GameUnit) -> void:
 	if not active or not rows.has(fallen.uid): return
+	var row: Dictionary = rows[fallen.uid]
+	if int(row.family) == ArenaExpansion.POPPER and not row.get("exploded", false):
+		row.exploded = true
+		var star := clampi(int(fallen.get_meta("arena_placement", {}).get("rank", 0)), 0, 2)
+		var blast := float(ArenaExpansion.POPPER_DAMAGE[star])
+		_notice("popper_blast", fallen, blast)
+		# Flat, bounded fire damage. No ally damage, item recursion or echoes.
+		for victim: GameUnit in _near(fallen, false, ArenaExpansion.POPPER_RADIUS).slice(0, ArenaExpansion.POPPER_TARGETS):
+			_packet(fallen, victim, blast, 3, "popper_hit", true)
 	var team := _team(fallen)
 	var level := _member(fallen, "spirit")
 	if level > 0 and not spirit_used[team]:

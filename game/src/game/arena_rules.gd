@@ -3,7 +3,7 @@ extends RefCounted
 ## Content shared by the playable expedition and its balance simulations.
 ## Original prototypes remain immutable. Budgets apply only to Trials actors.
 
-const VERSION := 15
+const VERSION := 16
 const PREPARATION_SECONDS := 60.0
 const BATTLE_SECONDS := 90.0
 const WAVE_COUNT := 30
@@ -68,6 +68,14 @@ const FAMILIES := [
 	{"name":"Cyclopes","role":"Ranged","cost":5,"tier":5,"copies":[3,3],"forms":["cyclopsa16","cyclopsa18","cyclopsa20"],"health":1.25,"damage":1.15,"armor":1,"hook":"Heavy ranged crushing damage with slow attacks."},
 	{"name":"Orc warriors","role":"Melee","cost":2,"tier":2,"copies":[3,3],"forms":["orcmalef3","orcmalef5","orcmalef7"],"health":1.05,"damage":1.0,"armor":1.05,"hook":"A sturdy axe fighter that deals slashing damage."},
 	{"name":"Woodsfolk seers","retired":true,"role":"Magic","cost":3,"tier":3,"copies":[3,3],"forms":["driadgreenm7","driadsnowm9","driaddarkm11"],"health":1.0,"damage":1.25,"armor":0.75,"hook":"Lightning magic from a protected back line."},
+	{"name":"Foxes","role":"Melee","cost":1,"tier":1,"copies":[3,3],"forms":["arena-lia/fox1","arena-lia/fox2","arena-lia/fox3"],"health":0.88,"damage":1.14,"armor":0.7,"hook":"A light hunter with quick attacks. Keep it behind a sturdier ally.","expansion":true},
+	{"name":"Leopards","role":"Melee","cost":2,"tier":2,"copies":[3,3],"forms":["arena-lia/leopard1","arena-lia/leopard2","arena-lia/leopard3"],"health":1.0,"damage":1.1,"armor":0.8,"hook":"A fast hunter that pressures exposed ranged attackers.","expansion":true},
+	{"name":"Exploding hares","role":"Melee","cost":2,"tier":2,"copies":[3,3],"forms":["arena-lia/popper1","arena-lia/popper2","arena-lia/popper3"],"health":0.6,"damage":0.15,"armor":0.6,"hook":"Explodes once on death. Near an enemy, detonates after 0.6 s. Deals 30/55/120 fire damage to up to 3 enemies within 2.5 m.","expansion":true},
+	{"name":"Undead deer","role":"Magic","cost":3,"tier":3,"copies":[3,3],"forms":["arena-lia/deer1","arena-lia/deer2","arena-lia/deer3"],"health":1.02,"damage":0.90,"armor":0.85,"hook":"An undead beast that fires acid rays from behind the frontline.","expansion":true},
+	{"name":"Jigran wolves","role":"Melee","cost":3,"tier":3,"copies":[3,3],"forms":["arena-lia/jwolf1","arena-lia/jwolf2","arena-lia/jwolf3"],"health":0.96,"damage":1.18,"armor":0.8,"hook":"A heavy hunter with strong sustained damage and a vulnerable hide.","expansion":true},
+	{"name":"Jun lizards","role":"Melee","cost":4,"tier":4,"copies":[3,3],"forms":["arena-lia/jun1","arena-lia/jun2","arena-lia/jun3"],"health":1.28,"damage":0.78,"armor":1.2,"hook":"A durable Jun guardian that holds the frontline.","expansion":true},
+	{"name":"Undead warriors","role":"Melee","cost":3,"tier":3,"copies":[3,3],"forms":["arena-lia/wight1","arena-lia/wight2","arena-lia/wight3"],"health":1.13,"damage":0.96,"armor":1.1,"hook":"An armored revenant that weakens enemies with its weapon.","expansion":true},
+	{"name":"Undead mages","role":"Magic","cost":4,"tier":4,"copies":[3,3],"forms":["arena-lia/plague1","arena-lia/plague2","arena-lia/plague3"],"health":0.9,"damage":0.72,"armor":0.8,"hook":"A fragile plague caster. Spread out to avoid its acid spells.","expansion":true},
 ]
 # Exact schema-12 contents remain available for validating and migrating saves.
 const EXPERIMENT_FORMS := [["boarredf1","trollbluef9","golemverticalf20"],["goblinf1","orcmalef5","cyclopsa20"],["wolfgreyf1","tigerwhitef10","unicornwhitem15"],["human hadagan students a10","orcfemalea5","human mercenary kania archer"],["batredm1","succubredm9","dragonbrownm16"],["toadm2","scrabmotherpoisonedf6","elementalearthf8"],["willowispm1","bansheedarkm12","dragonbluem14"],["driadsnowa7","human hadagan students m10","elementalicef15"],["evileyesimplem5","succubgreym13","dragongreenm12"],["hyenaf6","ogrehadaganf17","golemhorizontalf20"],["ratsmallf1","spiderf10","evileyeredm16"],["orcfemalem3","succubbluem10","octopushadaganm17"],["skeletonf2","bansheelightf4","shadowm20"],["driadgreena7","human hadagan citizens a1","human kania npc sorceress m11"],["doggreyf6","human kania hunter f7","human mercenary bodyguard"],["human gipath warlord f2","human kania sorceress bodyguard f9","human mercenary kania paladin"],["dragonkinbeastmenf3","ogregipatf9","trollblackslowf16"],["human gipath brigand a1","human kania ranger f9","human mercenary hadagan rogue"],["human hadagan guards m14","evileyegreenm17","ancientcursem25"],["human gipath brigand f1","human kania gang f9","human mercenary hadagan warrior"],["human kania police f8","human hadagan guards a14","human kania npc captain f14"],["zombiemalef10","undeadf17","elementallavaf12"],["human hadagan peasants a1","human gipath npc wife m3","human mercenary hadagan thief"],["human kania citizen a7","driaddarka7","human mercenary thief"],["human mercenary shaivar","driaddarkm9","human hadagan necromancer m17"],["human gipath brigand deputy f1","human kania police karansul f8","human mercenary warrior"],["human kania woodcutter f8","human kania police f10","human hadagan overseerba f14"],["human kania goldminer f7","human hadagan students f10","human gipath npc expeditor f15"],["human kania gang spear f10","human kania gang f11","human mercenary kania thief"],["human kania police a8","human hadagan overseer f14","human hadagan npc lieutenant f15"]]
@@ -343,6 +351,7 @@ static func recruit_prototype(family: int, rank: int, proto: Dictionary) -> Dict
 
 
 static func title(id: String, family := -1, rank := 0) -> String:
+	if id.begins_with(ArenaExpansion.PREFIX): return ArenaExpansion.title(id)
 	return RemakeText.t(GameUnit.unit_title(ArenaAppearance.name_prototype(id, family, rank)))
 
 
@@ -350,6 +359,7 @@ static func available() -> bool:
 	var map := EIResArchive.open_path(GameData.root.path_join("maps/zone11.mpr"))
 	if map == null or map.read("zone11.mp").size() < 38: return false
 	for family: Dictionary in FAMILIES:
+		if family.get("expansion", false): continue
 		for id: String in family.forms:
 			if GameData.db.find("monster_prototypes", id).is_empty(): return false
 	for id: String in COMPANIONS:
@@ -405,10 +415,14 @@ static func level_for_xp(xp: int) -> int:
 	return level
 
 
-static func recruit_pool(level: int) -> Array[int]:
+static func active_families(expansion := false) -> Array:
+	return ACTIVE_FAMILIES + ArenaExpansion.FAMILIES if expansion else ACTIVE_FAMILIES
+
+
+static func recruit_pool(level: int, expansion := false) -> Array[int]:
 	var pool: Array[int] = []
 	var odds: Array = SHOP_ODDS[clampi(level, 3, MAX_ARMY)]
-	for family in ACTIVE_FAMILIES:
+	for family in active_families(expansion):
 		if int(odds[int(FAMILIES[family].tier) - 1]) > 0: pool.append(family)
 	return pool
 
@@ -426,7 +440,7 @@ static func tier_price_label(tier: int) -> String:
 
 
 static func saved_family_count(version: int) -> int:
-	return LEGACY_FORMS.size() if version < 11 else EXPERIMENT_FORMS.size() if version < 13 else 28 if version == 13 else FAMILIES.size()
+	return LEGACY_FORMS.size() if version < 11 else EXPERIMENT_FORMS.size() if version < 13 else 28 if version == 13 else 30 if version < 16 else FAMILIES.size()
 
 static func saved_prototype(version: int, family: int, rank: int) -> String:
 	if version < 11: return LEGACY_FORMS[family][rank]

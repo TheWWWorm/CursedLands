@@ -1,0 +1,1450 @@
+[
+	{
+		"family": 30,
+		"name": "Foxes",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 9.76249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 11.3025,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 6.90249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 6.46249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 10.395,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 8.16749999999998,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 5.66499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 7.83749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 7.45249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 11.22,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 12.4575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 10.175,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 10.56,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 6.46249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 10.34,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 7.69999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 4.4275,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 9.07499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 9.48749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 7.39749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 4.01500000000001,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 5.5,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 9.12999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 4.2625,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 7.42499999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 5.445,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 6.15999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 2.695,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 9.32249999999998,
+				"wins": 0
+			}
+		],
+		"rank": 1
+	},
+	{
+		"family": 31,
+		"name": "Leopards",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 15.2624999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 11.1925,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 7.69999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 6.68249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 9.21249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 12.815,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 11.11,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 7.86499999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 10.2575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 15.3449999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 12.54,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 12.43,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 12.1,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 16.5824999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 17.4624999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 12.2375,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 9.65249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 8.96499999999997,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 16.9399999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 7.45249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 6.59999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 8.22249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 12.045,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 6.84749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 11.165,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 5.445,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 6.15999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 9.87249999999997,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 13.0075,
+				"wins": 2
+			}
+		],
+		"rank": 1
+	},
+	{
+		"family": 32,
+		"name": "Exploding hares",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 1.43,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 1.32,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 1.43,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 1.815,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 1.76,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 1.705,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 1.21,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 1.265,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 1.375,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 10.9725,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 1.32,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 1.815,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 1.54,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 1.925,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 7.39749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 7.67249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 3.1075,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 1.485,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 1.815,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 1.815,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 3.98750000000001,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 1.815,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 4.53749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 1.65,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 1.32,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 1.925,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 1.925,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 2.6125,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 1.265,
+				"wins": 0
+			}
+		],
+		"rank": 1
+	},
+	{
+		"family": 33,
+		"name": "Undead deer",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 9.18499999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 6.57249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 6.59999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 4.51,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 7.01249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 6.95749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 6.48999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 9.12999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 11.77,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 11.6875,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 9.15749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 7.01249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 9.10249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 12.32,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 19.6074999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 14.3275,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 9.59749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 11.7425,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 12.265,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 11.9075,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 6.57249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 8.60749999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 17.3249999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 7.36999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 9.76249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 5.445,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 8.46999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 17.1874999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 9.10249999999998,
+				"wins": 2
+			}
+		],
+		"rank": 1
+	},
+	{
+		"family": 34,
+		"name": "Jigran wolves",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 11.6875,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 11.7425,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 5.94,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 6.73749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 8.49749999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 6.57249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 1.5675,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 5.60999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 14.0525,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 8.33249999999997,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 17.1599999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 8.68999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 11.88,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 11.1375,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 18.7824999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 9.56999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 8.66249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 11.935,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 14.685,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 11.385,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 22.0549999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 8.24999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 21.8349999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 6.81999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 12.9525,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 5.445,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 8.41499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 4.97749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 5.71999999999999,
+				"wins": 2
+			}
+		],
+		"rank": 1
+	},
+	{
+		"family": 35,
+		"name": "Jun lizards",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 5.555,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 5.39,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 5.5825,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 6.24249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 8.02999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 6.04999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 5.335,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 11.055,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 13.42,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 18.9199999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 9.54249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 10.065,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 11.7425,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 28.4899999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 32.9174999999999,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 15,
+				"seconds": 28.6549999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 17.5999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 28.8474999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 21.9999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 21.0649999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 34.8149999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 16.0874999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 32.6149999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 14.575,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 22.1099999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 11.825,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 12.98,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 2.6675,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 18.8649999999999,
+				"wins": 2
+			}
+		],
+		"rank": 1
+	},
+	{
+		"family": 36,
+		"name": "Undead warriors",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 13.3925,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 9.23999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 7.56249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 6.15999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 9.89999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 5.99499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 5.47249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 7.12249999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 17.6824999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 18.5624999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 21.1199999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 10.0925,
+				"wins": 2
+			},
+			{
+				"draws": 1,
+				"family": 12,
+				"seconds": 24.1174999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 17.4349999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 31.0749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 2,
+				"family": 15,
+				"seconds": 35.5849999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 12.43,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 21.1749999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 25.4924999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 15.2899999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 27.1424999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 10.78,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 21.0924999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 9.40499999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 12.925,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 13.2,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 13.805,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 16.9399999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 11.0825,
+				"wins": 2
+			}
+		],
+		"rank": 1
+	},
+	{
+		"family": 37,
+		"name": "Undead mages",
+		"opponents": [
+			{
+				"draws": 0,
+				"family": 0,
+				"seconds": 9.43249999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 1,
+				"seconds": 7.69999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 2,
+				"seconds": 6.62749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 3,
+				"seconds": 4.5375,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 4,
+				"seconds": 7.09499999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 5,
+				"seconds": 7.03999999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 6,
+				"seconds": 6.51749999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 7,
+				"seconds": 15.8674999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 8,
+				"seconds": 16.7474999999999,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 9,
+				"seconds": 13.255,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 10,
+				"seconds": 12.87,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 11,
+				"seconds": 11.935,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 12,
+				"seconds": 11.715,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 13,
+				"seconds": 12.76,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 14,
+				"seconds": 22.4949999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 15,
+				"seconds": 16.0324999999999,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 16,
+				"seconds": 9.89999999999998,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 17,
+				"seconds": 12.7325,
+				"wins": 1
+			},
+			{
+				"draws": 0,
+				"family": 18,
+				"seconds": 12.6775,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 19,
+				"seconds": 11.935,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 20,
+				"seconds": 67.5675000000001,
+				"wins": 2
+			},
+			{
+				"draws": 0,
+				"family": 21,
+				"seconds": 8.66249999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 22,
+				"seconds": 20.7349999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 23,
+				"seconds": 7.36999999999999,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 24,
+				"seconds": 13.8325,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 25,
+				"seconds": 5.445,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 26,
+				"seconds": 8.46999999999998,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 27,
+				"seconds": 13.695,
+				"wins": 0
+			},
+			{
+				"draws": 0,
+				"family": 28,
+				"seconds": 11.66,
+				"wins": 2
+			}
+		],
+		"rank": 1
+	}
+]
