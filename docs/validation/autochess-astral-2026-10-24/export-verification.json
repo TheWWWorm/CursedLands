@@ -1,0 +1,47 @@
+[
+  {
+    "kind": "ui",
+    "job_id": "22f7817f54854bcc",
+    "status": "completed",
+    "exit_code": 0,
+    "checks": [
+      "CAPTURE astral-landing-en (1600.0, 900.0)",
+      "CAPTURE astral-landing-720-en (1280.0, 720.0)",
+      "CAPTURE astral-online-en-1 (1600.0, 900.0)",
+      "CAPTURE astral-online-en-2 (1600.0, 900.0)",
+      "CAPTURE astral-landing-ru (1600.0, 900.0)",
+      "CAPTURE astral-landing-720-ru (1280.0, 720.0)",
+      "CAPTURE astral-online-ru-1 (1600.0, 900.0)",
+      "CAPTURE astral-online-ru-2 (1600.0, 900.0)",
+      "CAPTURE astral-landing-de (1600.0, 900.0)",
+      "CAPTURE astral-landing-720-de (1280.0, 720.0)",
+      "CAPTURE astral-online-de-1 (1600.0, 900.0)",
+      "CAPTURE astral-online-de-2 (1600.0, 900.0)",
+      "CAPTURE astral-roster (1600.0, 900.0)",
+      "ARENA_ASTRAL_UI checks=158 failures=[]"
+    ],
+    "diagnostics": "dbus-daemon[3350673]: [session uid=1000 pid=3350673] Activating service name='org.a11y.Bus' requested by ':1.1' (uid=1000 pid=3350674 comm=\"/home/llm2x/Documents/EI/local/builds/CursedLands-\" label=\"unconfined\")\nWARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.\nHowever, bear in mind that at the moment it can lead to project crashes or instability.\nSo, unless you want to test the engine, set the \"rendering/driver/threads/thread_model\" project setting to 'Safe'.\n     at: setup2 (main/main.cpp:3523)\ndbus-daemon[3350673]: [session uid=1000 pid=3350673] Successfully activated service 'org.a11y.Bus'\nERROR: Parameter \"monitors\" is null.\n   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)\n"
+  },
+  {
+    "kind": "events",
+    "job_id": "25dafffc4b344adc",
+    "status": "completed",
+    "exit_code": 0,
+    "checks": [
+      "CAPTURE commander-events-enet-host (1600.0, 900.0)",
+      "CAPTURE commander-events-enet-guest (1600.0, 900.0)",
+      "CAPTURE commander-events-websocket-host (1600.0, 900.0)",
+      "CAPTURE commander-events-websocket-guest (1600.0, 900.0)",
+      "ARENA_COMMANDER_EVENTS_UI checks=213 failures=[]"
+    ],
+    "diagnostics": "dbus-daemon[3350694]: [session uid=1000 pid=3350694] Activating service name='org.a11y.Bus' requested by ':1.1' (uid=1000 pid=3350700 comm=\"/home/llm2x/Documents/EI/local/builds/CursedLands-\" label=\"unconfined\")\nWARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.\nHowever, bear in mind that at the moment it can lead to project crashes or instability.\nSo, unless you want to test the engine, set the \"rendering/driver/threads/thread_model\" project setting to 'Safe'.\n     at: setup2 (main/main.cpp:3523)\ndbus-daemon[3350694]: [session uid=1000 pid=3350694] Successfully activated service 'org.a11y.Bus'\nERROR: Parameter \"monitors\" is null.\n   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)\n"
+  },
+  {
+    "kind": "launcher",
+    "job_id": "a4dd2361caf44674",
+    "status": "completed",
+    "exit_code": 0,
+    "checks": [],
+    "diagnostics": "dbus-daemon[3350914]: [session uid=1000 pid=3350914] Activating service name='org.a11y.Bus' requested by ':1.1' (uid=1000 pid=3350915 comm=\"./CursedLands.x86_64 --display-driver x11 --max-fp\" label=\"unconfined\")\nWARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.\nHowever, bear in mind that at the moment it can lead to project crashes or instability.\nSo, unless you want to test the engine, set the \"rendering/driver/threads/thread_model\" project setting to 'Safe'.\n     at: setup2 (main/main.cpp:3523)\ndbus-daemon[3350914]: [session uid=1000 pid=3350914] Successfully activated service 'org.a11y.Bus'\nERROR: Parameter \"monitors\" is null.\n   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)\nERROR: Parent node is busy setting up children, `add_child()` failed. Consider using `add_child.call_deferred(child)` instead.\n   at: add_child (scene/main/node.cpp:1721)\nWARNING: 3 ObjectDB instances were leaked at exit (run with `--verbose` for details).\n   at: cleanup (core/object/object.cpp:2535)\n"
+  }
+]

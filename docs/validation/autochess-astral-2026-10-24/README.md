@@ -48,7 +48,7 @@ paintings; no facial markings were invented or painted over them.
 | Standard `arena_roster.gd` | 1,548 checks, zero failures |
 | `arena_astral_online.gd` | 40 checks, zero failures |
 | `arena_astral_worker.gd` | 43 checks, zero failures; nine boards match inline combat |
-| `arena_astral_ui.gd` | 152 checks, zero failures; EN/RU/DE layouts, all 21 appearances, all eight creatures |
+| `arena_astral_ui.gd` | 158 checks, zero failures; exported EN/RU/DE layouts at 720p/900p, all 21 appearances, all eight creatures |
 | Skin layout subset | 64 checks, zero failures; 1280×720 and 1600×900 EN/RU/DE |
 | `arena_astral_events_ui.gd` | 213 checks, zero failures; live and historical reactions over ENet and WebSocket |
 | Independent host/client processes | Both transports pass six rounds, including PvP rounds 4 and 6 |
@@ -67,7 +67,10 @@ not damage allies; distant kills provide a counter.
 Graphical checks ran through GPU Lab with isolated muted profiles, a free
 cursor, FPS visible and a 30 FPS limit. Source UI checks used Godot 4.7; their
 logger excludes the already-known stock-engine TexUpscale push-constant
-diagnostic. Export checks use the qualified project engine separately.
+diagnostic. The private Linux export uses the qualified project engine and
+passes all 158 UI and 213 reaction checks without that diagnostic. The virtual
+X11 display emits its known startup monitor-refresh diagnostic before fixtures
+start; no fixture runtime errors were reported.
 
 ## Balance evidence
 
@@ -108,3 +111,21 @@ Use the game tool runner with `--ei-path` pointing at base data and
 `--rank=0`, `1`, or `2`; `arena_astral_compositions.gd` uses the fixed equal-budget
 formations. The peer runner accepts `--astral /absolute/path/to/LiA`.
 Graphical fixtures require GPU Lab and the normal development profile settings.
+
+## Private Linux build
+
+Source commit `16ea8ad2`, based on 1.27.0; no public release was created.
+`CursedLands-astral-16ea8ad2-linux-x86_64.tar.gz` contains 425 compiled scripts
+and 1,467 verified PCK resources. All 59 packaged payload files match
+`BUILD-INFO.json`; all archive file hashes match the unpacked build.
+Archive SHA-256:
+`e61756f7ac5e6217df78b9ef8a5ce03e811076b1669c74cbf4c2603623982f62`.
+The launcher uses a separate profile with both installations registered and
+LiA autochess selected. Original data and test saves are not bundled.
+
+The packaged launcher was also exercised through actual pointer input: selecting
+Kir's face-wrap skin and starting a match produced a separate expansion save
+with `lia_hero:wrapped`, nine prepared companies and a running local worker.
+Both processes exited. The automated `--quit-after` shutdown reports the existing
+local-host reaper `add_child` warning while the tree is being torn down; explicit
+session closure in the multiplayer fixtures reports no runtime errors.
