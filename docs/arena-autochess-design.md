@@ -236,7 +236,12 @@ top; the shop narrows on smaller windows to keep these groups separate. Gold,
 income and health use the Army label's white fill and dark outline.
 Upgrading a creature or company level produces a brief smile and nod. Battle
 and match victories smile and nod; defeats frown and shake the head. Every
-expression returns to neutral after 1.8 seconds, including the final result.
+expression holds for 1.8 seconds, including the final result. Native neutral,
+smile and frown textures blend over 0.28 seconds with eased transitions; an
+interrupted reaction blends from its current appearance. Switching owners,
+changing character or returning from overview acknowledges stored results
+without replaying them. Fresh results and acknowledged upgrades still react
+on the watched board, including host and guest views in online play.
 Quiet periods include occasional gentle glances, using a separate visual RNG.
 New battles restore neutral expression. The
 nine-board overview hides this single-owner portrait. Local elimination plays

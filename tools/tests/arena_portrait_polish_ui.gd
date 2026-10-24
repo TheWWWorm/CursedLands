@@ -42,21 +42,21 @@ func _ready() -> void:
 	for winner in [0,1]:
 		screen.run.last_result = {"winner":winner,"wave":10+winner}
 		screen._refresh(); await frames(3)
-		check(portrait._reaction_left > 0 and portrait.face.albedo_texture == GameData.get_texture(portrait.face_texture+ ("a" if winner == 0 else "b")), "battle reaction starts immediately")
-		await get_tree().create_timer(2.1).timeout
-		check(portrait._reaction_left == 0 and portrait.face.albedo_texture == GameData.get_texture(portrait.face_texture), "battle reaction returns to neutral after a short pause")
+		check(portrait._reaction_left > 0 and portrait._expression_target == (Vector2.RIGHT if winner == 0 else Vector2.DOWN), "battle reaction starts immediately")
+		await get_tree().create_timer(2.2).timeout
+		check(portrait._reaction_left == 0 and portrait._expression_mix.is_zero_approx(), "battle reaction returns to neutral after a short pause")
 		screen._refresh(); await frames(3)
 		check(portrait._reaction_left == 0, "repeated battle result does not restart expression")
 	for place in [1,3]:
 		screen.run.placements[0] = place; screen._refresh(); await frames(3)
 		check(portrait._reaction_left > 0, "match result starts a brief reaction")
-		await get_tree().create_timer(2.1).timeout
-		check(portrait._reaction_left == 0 and portrait.face.albedo_texture == GameData.get_texture(portrait.face_texture), "final match reaction also returns to neutral")
+		await get_tree().create_timer(2.2).timeout
+		check(portrait._reaction_left == 0 and portrait._expression_mix.is_zero_approx(), "final match reaction also returns to neutral")
 		screen._refresh(); await frames(3)
 		check(portrait._reaction_left == 0, "finished match does not keep smiling or frowning")
 	screen.run.placements[0] = 0; screen.run.last_result = {}; screen._refresh()
-	portrait.celebrate_upgrade(); await get_tree().create_timer(2.1).timeout
-	check(portrait._upgrade_left == 0 and portrait.face.albedo_texture == GameData.get_texture(portrait.face_texture), "upgrade smile returns to neutral")
+	portrait.celebrate_upgrade(); await get_tree().create_timer(2.2).timeout
+	check(portrait._upgrade_left == 0 and portrait._expression_mix.is_zero_approx(), "upgrade smile returns to neutral")
 	# Observe idle at ordinary real-time speed, allowing the longest initial wait.
 	var first_pose := portrait.model._head.transform
 	var greatest_angle := 0.0

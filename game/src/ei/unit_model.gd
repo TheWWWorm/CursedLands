@@ -210,13 +210,20 @@ class LitMaterial extends ShaderMaterial:
 ## StandardMaterial3D with Lambert diffuse, roughness 1, no specular, alpha
 ## scissor 0.5 and alpha to coverage draws, lit by the preview's own light,
 ## with the unit texture fetch of option gfx_sharp_units (off: the same image).
+## Expression samples are opt-in per portrait material; other previews skip them.
 const PREVIEW_SHADER := """
 shader_type spatial;
 render_mode cull_back, diffuse_lambert, specular_disabled, alpha_to_coverage;
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D expression_smile_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D expression_frown_tex : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform vec2 expression_weights = vec2(0.0);
 """ + SHARP_FETCH + WOUND_FETCH + Mouth.FETCH + """
 void fragment() {
 	vec4 t = ei_unit_tex(albedo_tex, UV);
+	vec4 neutral = t;
+	if (expression_weights.x > 0.0) { t += (ei_unit_tex(expression_smile_tex, UV) - neutral) * expression_weights.x; }
+	if (expression_weights.y > 0.0) { t += (ei_unit_tex(expression_frown_tex, UV) - neutral) * expression_weights.y; }
 	t = ei_unit_mouth(t, UV);
 	if (wound_enabled) { t = ei_unit_wound(t, ei_unit_tex(wound_tex, UV)); }
 	ALBEDO = t.rgb;

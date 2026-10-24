@@ -2884,6 +2884,7 @@ func _update_commander() -> void:
 		return
 	var player := _tournament_battles.viewed_player if is_instance_valid(_tournament_battles) else 0
 	var company: ArenaRun = run.company(player) if run is ArenaTournamentRun else run
+	var subject := "%d:%d:%d:%s" % [run.get_instance_id(), run.run_seed, player, company.commander]
 	_commander_portrait.show_character(company.commander)
 	var result: Dictionary = company.last_result
 	# Preparation retains the previous result; starting a new battle returns
@@ -2898,10 +2899,11 @@ func _update_commander() -> void:
 		winner = 1; event = "match:lost"
 	elif champion:
 		winner = 0; event = "match:won"
-	_commander_portrait.set_result(winner, event)
+	# Scouting, returning from overview and changing character acknowledge the
+	# current result silently. Only a new event on the watched board reacts.
+	_commander_portrait.set_result(winner, event, subject == _portrait_subject)
 	# Compare acknowledged rosters, so solo purchases, online replies and
 	# computer companies use the same feedback without replaying on scouting.
-	var subject := "%d:%d:%d" % [run.get_instance_id(), run.run_seed, player]
 	var ranks := {}; var upgraded := false
 	for entry: Dictionary in company.army:
 		var uid := int(entry.uid); var rank := int(entry.rank)

@@ -19,6 +19,11 @@ var _upgrade_left := 0.0
 var _reaction_left := 0.0
 const REACTION_SECONDS := 1.8
 const GESTURE_SECONDS := 1.4
+const EXPRESSION_SECONDS := 0.28
+var _expression_mix := Vector2.ZERO
+var _expression_from := Vector2.ZERO
+var _expression_target := Vector2.ZERO
+var _expression_age := 0.0
 var _idle_rng := RandomNumberGenerator.new()
 var _glance_wait := 0.0
 var _glance_left := 0.0
@@ -59,6 +64,8 @@ func show_character(id: String) -> void:
 		view.remove_child(model); model.queue_free()
 	face = null; reaction = -2; _age = 0; _framed = false; _pose_frames = 0
 	_result_event = ""; _motion_age = 10.0; _upgrade_left = 0.0; _reaction_left = 0.0
+	_expression_mix = Vector2.ZERO; _expression_from = Vector2.ZERO; _expression_target = Vector2.ZERO
+	_expression_age = 0.0
 	# Portrait motion has its own RNG; looking around never advances game RNG.
 	_idle_rng.seed = hash(id)
 	_glance_wait = _idle_rng.randf_range(2.5, 4.5)
@@ -84,16 +91,21 @@ func show_character(id: String) -> void:
 		face = model._detail.material_override as EIUnitModel.PreviewMaterial
 		var race := GameData.db.find("race_models", String(row.base_race))
 		face_texture = Portrait.proto_face_names(row, race, Vector3.ZERO)[1]
-	_apply_expression()
+		face.albedo_texture = GameData.get_texture(face_texture)
+		for expression in [["expression_smile_tex", "a"], ["expression_frown_tex", "b"]]:
+			var texture := GameData.get_texture(face_texture + expression[1])
+			face.set_shader_parameter(expression[0], texture if texture else face.albedo_texture)
+	_apply_expression(true)
 	accessibility_name = ArenaCommanders.title(id)
 
-func set_result(winner: int, event: String = "") -> void:
-	if reaction == winner and _result_event == event: return
+func set_result(winner: int, event: String = "", animate := true) -> void:
+	if animate and reaction == winner and _result_event == event: return
 	reaction = winner; _result_event = event
-	_motion_age = 0.0 if winner in [0, 1] else 10.0
-	_reaction_left = REACTION_SECONDS if winner in [0, 1] else 0.0
+	var reacting := animate and winner in [0, 1]
+	_motion_age = 0.0 if reacting else 10.0
+	_reaction_left = REACTION_SECONDS if reacting else 0.0
 	_upgrade_left = 0.0
-	_apply_expression()
+	_apply_expression(not animate)
 
 func celebrate_upgrade() -> void:
 	_upgrade_left = REACTION_SECONDS
@@ -101,11 +113,23 @@ func celebrate_upgrade() -> void:
 	_motion_age = 0.0
 	_apply_expression()
 
-func _apply_expression() -> void:
+func _apply_expression(immediate := false) -> void:
 	if face == null: return
-	var suffix := "a" if _upgrade_left > 0.0 or (_reaction_left > 0.0 and reaction == 0) else "b" if _reaction_left > 0.0 and reaction == 1 else ""
-	var texture := GameData.get_texture(face_texture + suffix)
-	face.albedo_texture = texture if texture else GameData.get_texture(face_texture)
+	var target := Vector2.RIGHT if _upgrade_left > 0.0 or (_reaction_left > 0.0 and reaction == 0) else Vector2.DOWN if _reaction_left > 0.0 and reaction == 1 else Vector2.ZERO
+	if not immediate and target == _expression_target: return
+	# Retarget from the current blend, including an interrupted smile/frown.
+	_expression_from = _expression_mix
+	_expression_target = target
+	_expression_age = 0.0
+	if immediate:
+		_expression_mix = target
+		face.set_shader_parameter("expression_weights", _expression_mix)
+
+func _advance_expression(seconds: float) -> void:
+	if face == null or _expression_mix == _expression_target: return
+	_expression_age = minf(EXPRESSION_SECONDS, _expression_age + seconds)
+	_expression_mix = _expression_from.lerp(_expression_target, smoothstep(0.0, EXPRESSION_SECONDS, _expression_age))
+	face.set_shader_parameter("expression_weights", _expression_mix)
 
 func _process(dt: float) -> void:
 	if not is_instance_valid(model): return
@@ -122,6 +146,7 @@ func _process(dt: float) -> void:
 	if _upgrade_left > 0.0:
 		_upgrade_left = maxf(0.0, _upgrade_left - seconds)
 		if _upgrade_left == 0.0: _apply_expression()
+	_advance_expression(seconds)
 	if not _framed:
 		_pose_frames += 1
 		if _pose_frames < 4: return
