@@ -1,0 +1,79 @@
+{
+  "date": "2026-10-24",
+  "release_url": "https://github.com/TheWWWorm/CursedLands/releases/tag/v1.28.0",
+  "withdrawn_asset": "CursedLands-1.28.0-windows-x86_64-rtx30.zip",
+  "withdrawn_sha256": "0494e49d3cd1a50d896507eeaf2470aafb707bb7a75c4d89b5e0045f49319d78",
+  "reason": "Redistribution rights unresolved; owner instructed permanent withdrawal.",
+  "future_publication": "prohibited, including previews, drafts and mirrors",
+  "download_http_status": 404,
+  "all_release_assets_scan": {
+    "releases_checked": 63,
+    "matching_assets": []
+  },
+  "remaining_assets_observed": [
+    {
+      "name": "CursedLands-1.28.0-android.apk",
+      "id": 672997230,
+      "size": 49919345,
+      "digest": "sha256:442dc04f82f147ccae658709110f70c242573450b4fc6372e51f2bb4e8a1fa1a"
+    },
+    {
+      "name": "CursedLands-1.28.0-linux-x86_64.tar.gz",
+      "id": 672997236,
+      "size": 59580230,
+      "digest": "sha256:b910360e5acfec606584977fface8450a7ffc0c27f4170964760a334def1126f"
+    },
+    {
+      "name": "CursedLands-1.28.0-macos-universal.zip",
+      "id": 672997235,
+      "size": 87314129,
+      "digest": "sha256:1558a5ca91a3022760b544ab1a98fbf7ce52bce83d35ffeda89458b8bdd36804"
+    },
+    {
+      "name": "CursedLands-1.28.0-tools.zip",
+      "id": 672997595,
+      "size": 75902,
+      "digest": "sha256:779f59217d109e50e5d214813846a823617bc6a6ff793919e4b9aca4bcda960e"
+    },
+    {
+      "name": "CursedLands-1.28.0-web.zip",
+      "id": 672997232,
+      "size": 189009699,
+      "digest": "sha256:409ed9e54bccb01544ca01649c40a328cee1048dd3acf9c43677228320301343"
+    },
+    {
+      "name": "CursedLands-1.28.0-windows-x86_64.zip",
+      "id": 673126681,
+      "size": 151331031,
+      "digest": "sha256:2546c270bbd92200cb0d81aaf53d5aa7170d90182ca3dc76b00b1a33d0678d98"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "id": 672997666,
+      "size": 709,
+      "digest": "sha256:c9e4d05e197e1491e0ceecc5b2fa8d040baaf76fe50f6d82d8e3878f647ff7e9"
+    }
+  ],
+  "concurrent_asset_changes": {
+    "note": "Standard Windows was updated by separate work during withdrawal; this task did not replace it. The current download was independently checked for the withdrawn payload.",
+    "changes": [
+      {
+        "name": "CursedLands-1.28.0-windows-x86_64.zip",
+        "before_digest": "sha256:808d3548b487ed1b1f2fb3780f486e641c8d86af40cd42ae5bcd4a706d4fd1d0",
+        "after_digest": "sha256:2546c270bbd92200cb0d81aaf53d5aa7170d90182ca3dc76b00b1a33d0678d98"
+      }
+    ]
+  },
+  "tag_commit_unchanged": "926579c43e5e08cbd1e179d0da2717671bd7eb9f",
+  "checks": {
+    "unit_tests_passed": 6,
+    "remaining_staged_artifacts_passed": true,
+    "standard_windows_distribution_passed": true,
+    "actual_renamed_withdrawn_archive_rejected": true,
+    "retired_packager_disabled": true,
+    "current_public_windows_withdrawal_check_passed": true,
+    "current_public_windows_sha256": "2546c270bbd92200cb0d81aaf53d5aa7170d90182ca3dc76b00b1a33d0678d98"
+  },
+  "checksum_note": "Original SHA256SUMS.txt retained; the release notes identify the withdrawn entry.",
+  "scope": "RTX 30 mod package withdrawal; not a license clearance for other components."
+}

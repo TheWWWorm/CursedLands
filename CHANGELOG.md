@@ -2,10 +2,12 @@
 
 ## 1.28.0 — 2026-10-24
 
+**Download withdrawn (2026-10-24):** The optional RTX 30 / dlssg_for_sm86 package has been removed because its redistribution rights are unresolved. It will not be published again. The original SHA256SUMS.txt is retained for historical integrity; its RTX 30 entry refers to the withdrawn archive.
+
 - Fix Direct3D 12 device removal when Windows DLSS frame generation starts by using compatible HUD opacity textures at native and scaled output sizes.
 - Contextual hints teach one action at a time, fade after nine seconds or the relevant action, and leave gameplay running. Healing guidance follows a won fight with new damage and remaining wounds. Relevant controls are highlighted; gamepad prompts respect remapping. Full guidance and recent hints remain available in the in-game guide and the web wiki.
 - Autochess adds animated commander portraits, character and skin selection, short blended reactions, clearer equipment effects and rarity, and corrected snow boundaries. An optional Lost in Astral mode adds eight creature families and expansion commanders; all players need matching expansion data. Existing character selections migrate to distinct skins.
-- Experimental path tracing adds NRD reconstruction, history retention across compatible scene changes, staged texture uploads, shader preparation, optional 30/45/60 rendered-FPS targets, grass shadows and less bright rainy daylight. DLSS/DLAA controls and DLSS-G presentation support are integrated into the Windows renderer. The optional RTX 30-series package uses dlssg_for_sm86 0.4.0.
+- Experimental path tracing adds NRD reconstruction, history retention across compatible scene changes, staged texture uploads, shader preparation, optional 30/45/60 rendered-FPS targets, grass shadows and less bright rainy daylight. DLSS/DLAA controls and DLSS-G presentation support are integrated into the Windows renderer.
 - Restore creature combat movement and corpse-investigation behavior ([#103](https://github.com/TheWWWorm/CursedLands/issues/103)), the exhausted-running voice line ([#104](https://github.com/TheWWWorm/CursedLands/issues/104)), clean Esc-menu board openings ([#105](https://github.com/TheWWWorm/CursedLands/issues/105)), original magic-trap targeting ([#106](https://github.com/TheWWWorm/CursedLands/issues/106)), real-time UI animation at Fast speed ([#107](https://github.com/TheWWWorm/CursedLands/issues/107)), and held-Space dialogue fast-forward ([#108](https://github.com/TheWWWorm/CursedLands/issues/108)).
 - Preserve distinct script-visible runtime IDs, keep condition-cache bookkeeping out of saved scripts, handle older LiA saves without a parsed script, and allow Suslanger guard pursuit to end when the party is out of sight.
 

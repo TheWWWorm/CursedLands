@@ -7,6 +7,7 @@ import re
 import subprocess
 
 from prepare_fsr_sdk import AGILITY_CORE_SHA256, AGILITY_VERSION, digest
+from check_release_assets import check_artifact
 
 FORBIDDEN_PATH = re.compile(
     r"dlss|streamline|(?:^|/)rtx[^/]*|nvidia-geforce|splash-(?:nvidia|graphics)|"
@@ -49,6 +50,7 @@ def check_template(template, include_nvidia=False):
 
 
 def check_package(package, include_nvidia=False):
+    check_artifact(package)
     for path in package.rglob("*"):
         if not include_nvidia and path.is_file() and FORBIDDEN_PATH.search(str(path.relative_to(package))):
             raise ValueError(f"Excluded package file: {path.relative_to(package)}")

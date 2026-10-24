@@ -41,3 +41,18 @@ version in the game and build metadata.
 
 Record changes in the changelog and release notes. Keep validation evidence in a
 separate release record, including build provenance and platform limits.
+
+## Permanently withdrawn RTX 30 package
+
+The optional `dlssg_for_sm86` RTX 30 archive was withdrawn from 1.28.0 on
+2026-10-24 because redistribution rights were unresolved. It must never be
+published again, including in previews, drafts, mirrors or another package.
+Historical validation does not authorize redistribution. This withdrawal removes
+only the optional archive; it does not replace the published tag or other
+artifacts. The release notes identify the withdrawn archive's entry in the
+original checksum file.
+
+Before every release upload, run `python3 tools/check_release_assets.py ASSET...`
+on all proposed assets. This checks the archive contents and build metadata as
+well as artifact names. Any failure blocks publication. This policy check is
+not a general license clearance for other components.
