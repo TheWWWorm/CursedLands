@@ -123,6 +123,10 @@ func _gui_input(e: InputEvent) -> void:
 var _hover_board := ""
 
 
+func _owns_reveal() -> bool:
+	return true
+
+
 func _visibility_changed() -> void:
 	if _player == null: return # The first visibility notification can precede _ready.
 	if is_visible_in_tree():

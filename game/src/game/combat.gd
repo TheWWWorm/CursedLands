@@ -330,8 +330,8 @@ func wear_item(u: GameUnit, list: Array, i: int, amount: float, weapon: bool) ->
 ## Backstab: a character (hero) striking in melee from within 60 degrees of
 ## the target's back always hits; a bow / crossbow in hand
 ## clears it. So does the target's combat stance (unit
-## GameUnit.alert: set by its attack command, kept by a unit outside a party,
-## and by the AI's suspicion): zeroes the flag for such a target
+## GameUnit.alert: set by its attack command and, outside a party, by the
+## AI's Aggression, Suspection and Fear): zeroes the flag for such a target
 ## and resets the record's backstab factor to 1 — an
 ## ordinary roll against its Defence, no damage factor.
 func strike_roll(att: GameUnit, def: GameUnit) -> Dictionary:

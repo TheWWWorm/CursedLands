@@ -284,7 +284,7 @@ func _poll(inst: Instance) -> void:
 		if inst.killed:
 			return
 	if not fired and inst.memo_key is String and not inst.memo_key.is_empty() \
-			and inst.blocks.all(func(b: Dictionary): return b.get(&"memo_safe", false)):
+			and range(inst.blocks.size()).all(func(bi: int): return _block_pure(inst, bi)):
 		_idle[inst.memo_key] = true
 
 
@@ -298,15 +298,35 @@ func _poll(inst: Instance) -> void:
 var condition_memo := true
 var _cond_memo := {}
 var _idle := {}   # memo keys whose every block was false in this pass
+## Condition purity per script name: [its blocks, {block index: pure}], kept
+## here rather than in the parsed definitions so that the authored scripts
+## stay unchanged (saves, adapters and patch fingerprints compare them).
+var _memo_safe := {}
 const _IMPURE_CONDITIONS := ["Random", "RandMap"]
+
+
+## Whether block `bi`'s conditions are pure (no random draw). Cached per
+## script definition (its shared blocks array); ad hoc blocks are tested.
+func _block_pure(inst: Instance, bi: int) -> bool:
+	var b: Dictionary = inst.blocks[bi]
+	var def = ast.scripts.get(inst.sname) if ast and not inst.sname.is_empty() else null
+	if def == null or not is_same(def.get("blocks"), inst.blocks):
+		return _pure(b.conds)
+	var row = _memo_safe.get(inst.sname)
+	if row == null or not is_same(row[0], inst.blocks):
+		row = [inst.blocks, {}]
+		_memo_safe[inst.sname] = row
+	var pure = row[1].get(bi)
+	if pure == null:
+		pure = _pure(b.conds)
+		row[1][bi] = pure
+	return pure
 
 
 func _conditions(b: Dictionary, bi: int, inst: Instance) -> bool:
 	if not condition_memo:
 		return _party_conditions(b.conds, inst)
-	if not b.has(&"memo_safe"):
-		b[&"memo_safe"] = _pure(b.conds)
-	if not b[&"memo_safe"]:
+	if not _block_pure(inst, bi):
 		return _party_conditions(b.conds, inst)
 	if inst.memo_key == null:
 		inst.memo_key = _memo_key(inst)

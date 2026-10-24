@@ -178,7 +178,8 @@ func show_unit(u: GameUnit) -> void:
 
 ## Frames the head once the posed model is in the tree: the top of its
 ## bounds, seen from the front (models face EI -Y, which is Godot +Z).
-func _process(dt: float) -> void:
+func _process(frame_dt: float) -> void:
+	var dt := UiTime.real(frame_dt)   # interface animations keep real time
 	if not _mats.is_empty():
 		if get_tree().paused:
 			dt = 0.0   #  uses zero UI delta while paused.

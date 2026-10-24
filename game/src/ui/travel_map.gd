@@ -474,7 +474,8 @@ func _build_extra() -> void:
 
 # ------------------------------------------------------------------ update
 
-func _process(dt: float) -> void:
+func _process(frame_dt: float) -> void:
+	var dt := UiTime.real(frame_dt)   # interface animations keep real time
 	if _pivot == null:
 		return
 	if _extra and _extra.theme:

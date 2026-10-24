@@ -77,7 +77,11 @@ func sync_party(party: Array) -> bool:
 func trigger(lever: int, label: String) -> void:
 	var vm := host.world.vm
 	var party := vm._party_records()
-	check(party.size() == 3 and vm._story_records()[1].controller == 1, label+": real guest-owned Kel plus extra guest")
+	# Kel stays with the host as Kir's story companion, also when the record
+	# says a guest held him (the fixture's record, as in older saves).
+	var story := vm._story_records()
+	check(party.size() == 3 and story.size() == 2 and story[1].controller == 0 \
+		and party.filter(func(u: GameUnit): return u.controller == 1).size() == 1, label+": host-held story Kel plus extra guest")
 	for u: GameUnit in party:
 		u.buffs.clear(); u.refresh_max_hp(); u.hp = 1
 	check(await sync_party(party), label+": client first receives injured, unbuffed party")

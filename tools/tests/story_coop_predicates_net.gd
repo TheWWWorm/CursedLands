@@ -89,6 +89,9 @@ func _ready() -> void:
 			var point: Vector2 = guard.pos+Vector2.from_angle(angle*TAU/16)*radius
 			if not w.nav.is_walkable(point): continue
 			u.pos = point; guard.facing = (u.pos-guard.pos).angle()
+			# UnitSee reads the guard's retained perception, whose candidate list
+			# refreshes after 8-11 native ticks: let that time pass (no scripts).
+			w.time += 12*GameUnit.TICK
 			if vm._sees_has([guard],u): found = true; break
 		if found: break
 	check(found,"real guard can notice guest on a walkable map position")

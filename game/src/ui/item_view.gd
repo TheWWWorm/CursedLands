@@ -343,7 +343,8 @@ static func _unlit(mat: Material) -> Material:
 	return b
 
 
-func _process(dt: float) -> void:
+func _process(frame_dt: float) -> void:
+	var dt := UiTime.real(frame_dt)   # interface animations keep real time
 	if _pulse >= 0:
 		_phase = fmod(_phase + dt * 5.0, TAU)
 		var v := (sin(_phase) + 1.0) * 0.15 * 255.0

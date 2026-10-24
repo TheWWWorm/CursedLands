@@ -131,16 +131,17 @@ var _redraw_t := 0.0
 var _drawn_key := []
 
 func _process(_dt: float) -> void:
-	_north_lit = maxf(_north_lit - _dt, 0.0)
+	var dt := UiTime.real(_dt)   # the slide, zoom and north light keep real time
+	_north_lit = maxf(_north_lit - dt, 0.0)
 	if _held == "in":
-		zoom = minf(zoom * pow(2.5, _dt), maxf(1.0, 0.05 * _l))
+		zoom = minf(zoom * pow(2.5, dt), maxf(1.0, 0.05 * _l))
 	elif _held == "out":
-		zoom = maxf(zoom / pow(2.5, _dt), 1.0)
+		zoom = maxf(zoom / pow(2.5, dt), 1.0)
 	if _held != "" and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		_held = ""   # the release (set)
 	var goal := 1.0 if not open else 0.0
 	if _p != goal:
-		_p = clampf(_p + _dt * (1.0 if not open else -1.0) / 0.3, 0.0, 1.0)
+		_p = clampf(_p + dt * (1.0 if not open else -1.0) / 0.3, 0.0, 1.0)
 		var e := 2.0 * _p * _p if _p < 0.5 else 1.0 - 2.0 * (1.0 - _p) * (1.0 - _p)
 		_off = floorf(180.0 * e)
 		queue_redraw()

@@ -244,7 +244,8 @@ func _sound(path: String) -> void:
 		GameSound.instance.ui(path)
 
 
-func _process(dt: float) -> void:
+func _process(frame_dt: float) -> void:
+	var dt := UiTime.real(frame_dt)   # interface animations keep real time
 	# On a portrait phone the window hangs under the unit panel and the
 	# minimap (GameHUD.log_top), clipped there so its slide never covers them.
 	# Its top frame (y −5) stays inside the clip.

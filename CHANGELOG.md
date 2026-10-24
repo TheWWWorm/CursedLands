@@ -45,6 +45,17 @@
 - Apply traced ground lighting and shadows to procedural grass and ground cover.
 - Move ray tracing and path tracing options into a direct Remake submenu, with English, Russian and German labels and help.
 - Reduce overbright rainy daylight and improve path-traced surface reconstruction.
+## Unreleased
+
+- Keep magic traps from striking units, as in the original 1.06, whose trap object never selects a unit. Traps such as the gz3g idol's lightning no longer kill the party or creatures walking past. ([#106](https://github.com/TheWWWorm/CursedLands/issues/106))
+- Give creatures and NPCs the original combat flag: becoming aggressive, suspicious or afraid sets it, and returning to guard, patrol, sentry or follow clears it. While it is set they run instead of walking, so a wolf runs to a pack mate's corpse, looks round there for the original time, and crouches into its combat stance again when it next becomes alert. ([#103](https://github.com/TheWWWorm/CursedLands/issues/103))
+- Have a hero say the out-of-stamina line when running uses up the last stamina; the run request is still kept for when stamina returns. ([#104](https://github.com/TheWWWorm/CursedLands/issues/104))
+- Keep the Load, Save and Options boards from flashing their previous opening's picture when opened from the Esc menu. ([#105](https://github.com/TheWWWorm/CursedLands/issues/105))
+- Keep the cursor, portraits, dialogue, quest list, message log, minimap and menu panels at real-time speed on the Fast game speed, as in the original, which speeds up only the game itself. ([#107](https://github.com/TheWWWorm/CursedLands/issues/107))
+- Let the party escape Suslanger's gate guards again: the pursuit now ends once no guard can see the party, rather than following the guards' memory of enemies they have already met, which never fades.
+- Let zone scripts tell the party's heroes apart again. Script values hold 32-bit floating-point numbers, which rounded consecutive hero IDs to one value, so a script comparing two heroes took them for the same unit. In the prison, this broke guard roles and which hero the guards were sent after. Runtime IDs are now distinct script values.
+- Keep zone scripts unchanged while the game runs. The check that skips repeated script conditions no longer writes into the loaded scripts, so saves and joining co-op players see the authored scripts.
+- Fast-forward dialogue phrases while Space is held, as in the original. The repeat stops at the last phrase so its rewards stay readable. ([#108](https://github.com/TheWWWorm/CursedLands/issues/108))
 
 ## 1.27.0 — 2026-10-24
 

@@ -183,7 +183,8 @@ func _notification(what: int) -> void:
 		end_camera_drag(false)
 
 
-func _process(dt: float) -> void:
+func _process(frame_dt: float) -> void:
+	var dt := UiTime.real(frame_dt)   # interface animations keep real time
 	if kind.is_empty() or _owner != self:
 		return
 	var k := "cursor_camera" if _camera_drag else kind

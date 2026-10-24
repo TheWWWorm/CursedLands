@@ -19,7 +19,7 @@ const TAN := 0.48157462
 var _vp: SubViewport
 var _cam: Camera3D
 var _fig: Node3D
-var _shown_at := Vector3.INF   # the board position its viewport last rendered
+var _shown_at := Vector3.INF   # a board position its bound viewport picture has rendered
 var _reveal_serial := 0
 
 
@@ -89,38 +89,53 @@ static func _unshaded(m: StandardMaterial3D) -> StandardMaterial3D:
 
 
 func _notification(what: int) -> void:
-	if what != NOTIFICATION_VISIBILITY_CHANGED or _fig == null:
+	if what != NOTIFICATION_VISIBILITY_CHANGED or _fig == null or _owns_reveal():
 		return
 	_reveal_serial += 1
 	if not is_visible_in_tree():
-		_shown_at = _fig.position
-		_vp.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
+		# Unbind the last picture rather than relying on alpha alone: ancestor
+		# visibility notifications (a screen hidden and shown again within one
+		# frame) also arrive here and must not expose it with a stale pose.
+		texture = null
 		self_modulate.a = 1.0
-	elif _fig.position != _shown_at and _shown_at != Vector3.INF \
-			and DisplayServer.get_name() != "headless":
+		_vp.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
+	elif DisplayServer.get_name() == "headless" or _fig.position == _shown_at:
+		texture = _vp.get_texture()
+	else:
 		_reveal()
+
+
+## The Esc signpost binds its own picture after its opening clip renders.
+func _owns_reveal() -> bool:
+	return false
 
 
 ## Reopened elsewhere (a screen's slide starts below): the viewport still holds
 ## the picture of the previous opening on the first visible frame. Keep the
-## board transparent until its new position has rendered, through two draw
+## board unbound until its new position has rendered, through two draw
 ## completions as the separate render thread may report the earlier draw first.
 func _reveal() -> void:
 	var serial := _reveal_serial
-	self_modulate.a = 0.0
-	# A transparent TextureRect is culled; render the hidden board explicitly.
+	texture = null
+	# An empty TextureRect is not drawn; render the hidden board explicitly.
 	_vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	var at := _fig.position
 	for i in 2:
 		await RenderingServer.frame_post_draw
 		if serial != _reveal_serial or not is_visible_in_tree():
 			return
-	self_modulate.a = 1.0
+	# The slide moves the board every frame; the picture now holds `at` or a
+	# later pose, never the previous opening.
+	_shown_at = at
+	texture = _vp.get_texture()
 	_vp.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
 
 
 func _process(_dt: float) -> void:
 	if not is_visible_in_tree():
 		return
+	if texture != null and _fig != null and not _owns_reveal():
+		_shown_at = _fig.position
 	# Normal interface boards follow the parent's safe-area and touch-zoom
 	# mapping. The standalone Esc signpost fills its parent but fits its 4:3
 	# texture inside it; its pointer and gamepad targets use the same frame.
