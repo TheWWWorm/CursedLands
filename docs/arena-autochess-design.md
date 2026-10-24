@@ -225,9 +225,12 @@ player wins the whole game. See the
 Before starting, players choose Zak or one of nine original companions. This
 identity is cosmetic, saved with the run and sent through the online lobby.
 Computer opponents use distinct characters from the same roster. The viewed
-board's owner appears as a transparent native bust in a 200-pixel logical square, cropped at the
-collarbones, turned inward in three-quarter view and flush with the screen's
-bottom and right edges. A shorter reserve strip leaves room for the portrait and controls.
+board's owner appears as a transparent native bust at a 200-pixel logical height,
+cropped at the collarbones, turned inward in three-quarter view and flush with
+the screen's bottom and right edges. A 360-pixel render width reveals the arm
+and shoulder to the left without changing the face's scale or position. This
+extension draws behind reserves and passes through pointer input. A shorter
+reserve strip leaves room for the face and controls.
 Gold, health and battle controls sit between the shop and round status at the
 top; the shop narrows on smaller windows to keep these groups separate. Gold,
 income and health use the Army label's white fill and dark outline.

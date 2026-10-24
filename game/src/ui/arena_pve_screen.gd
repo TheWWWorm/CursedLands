@@ -405,8 +405,10 @@ func _ready() -> void:
 	bench_column.add_child(_bench_scroll)
 	_commander_portrait = ArenaCommanderPortrait.new()
 	_hud.add_child(_commander_portrait)
+	# The bust can extend beneath reserves without covering their art or input.
+	_hud.move_child(_commander_portrait, 0)
 	_commander_portrait.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
-	_commander_portrait.offset_left = -200; _commander_portrait.offset_right = 0
+	_commander_portrait.offset_left = -360; _commander_portrait.offset_right = 0
 	_commander_portrait.offset_top = -200; _commander_portrait.offset_bottom = 0
 	_army_row = HBoxContainer.new()
 	_army_row.add_theme_constant_override("separation", 8)

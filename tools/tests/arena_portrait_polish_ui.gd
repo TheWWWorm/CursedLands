@@ -23,10 +23,11 @@ func _ready() -> void:
 	while ShaderCompilationScreen.active(): await frames(2)
 	var portrait := screen._commander_portrait
 	check(portrait.get_global_rect().end.is_equal_approx(get_viewport().get_visible_rect().end), "portrait is flush with bottom and right")
-	check(is_equal_approx(portrait.size.x,200) and is_equal_approx(portrait.size.y,200), "portrait is two thirds of the previous footprint")
+	check(is_equal_approx(portrait.size.x,360) and is_equal_approx(portrait.size.y,200), "portrait keeps the smaller face with extra shoulder space")
 	check(screen._army_title.get_theme_font("font") == screen._reserve_count.get_theme_font("font"), "Army and Reserves use the same scalable font")
 	check(screen._army_title.get_theme_font("font").multichannel_signed_distance_field, "Army remains sharp when HUD scales up")
 	check(screen._army_title.get_theme_color("font_color") == screen._reserve_count.get_theme_color("font_color"), "Army and Reserves have matching white ink")
+	await portrait_shoulders()
 	await shot("polish-"+RemakeText.lang+"-board")
 	await inspect_company(screen._army_title,"army-large")
 	await inspect_company(screen._train_button,"level-large")
@@ -79,11 +80,43 @@ func inspect_company(target: Control, tag: String) -> void:
 	bounded(screen._rail,tag+" complete popup")
 	var scroll := screen._inspect_scroll.get_v_scroll_bar()
 	check(scroll.max_value <= scroll.page+1,tag+" full localized content is visible without scrolling (%s/%s)" % [scroll.max_value,scroll.page])
-	check(not screen._rail.get_global_rect().intersects(screen._commander_portrait.get_global_rect()),tag+" popup clears the portrait")
+	var face_rect := screen._commander_portrait.get_global_rect()
+	face_rect.position.x = face_rect.end.x - face_rect.size.y; face_rect.size.x = face_rect.size.y
+	check(not screen._rail.get_global_rect().intersects(face_rect),tag+" popup clears the face")
 	var last := screen._inspect_box.get_child(screen._inspect_box.get_child_count()-1) as Control
 	check(screen._inspect_scroll.get_global_rect().grow(1).encloses(last.get_global_rect()),tag+" final help paragraph is fully visible")
 	await shot("polish-"+RemakeText.lang+"-"+tag)
 	screen._hide_inspector(); await move(Vector2(450,350)); await frames(4)
+
+func portrait_shoulders() -> void:
+	var portrait := screen._commander_portrait
+	check(portrait.get_index() < screen._bench_panel.get_index(), "reserves draw in front of the shoulder")
+	check(portrait.mouse_filter == Control.MOUSE_FILTER_IGNORE and portrait.view.gui_disable_input, "portrait never takes reserve pointer input")
+	portrait.set_process(false)
+	var old_point := portrait.position + portrait.camera.unproject_position(portrait.model._head.global_position)
+	portrait.offset_left = -200; await frames(3)
+	var square_point := portrait.position + portrait.camera.unproject_position(portrait.model._head.global_position)
+	check(old_point.distance_to(square_point) < 0.1, "wider render area preserves face position and scale")
+	portrait.offset_left = -360; portrait.set_process(true); await frames(3)
+	for id: String in ArenaCommanders.IDS:
+		screen.run.commander = id; screen._refresh(); await frames(12)
+		var pixels := portrait.view.get_texture().get_image()
+		var edge_alpha := 0.0
+		for y in pixels.get_height(): edge_alpha = maxf(edge_alpha, pixels.get_pixel(0,y).a)
+		check(edge_alpha < 0.01, "full shoulder clears left render edge: "+id)
+		if id == "hero":
+			var former_edge_alpha := 0.0
+			for y in pixels.get_height(): former_edge_alpha = maxf(former_edge_alpha,pixels.get_pixel(160,y).a)
+			check(former_edge_alpha > 0.9, "Zak's arm continues through the former square crop")
+	screen.run.commander = "hero"; screen._refresh(); await frames(12)
+	var entry: Dictionary = screen.run.army[0]
+	screen._select(int(entry.uid)); await frames(3)
+	var last_slot := screen._army_row.get_child(screen._army_row.get_child_count()-1) as Control
+	check(portrait.get_global_rect().intersects(last_slot.get_global_rect()), "last reserve overlaps the expanded render area")
+	await click(last_slot.get_global_rect().get_center()); await frames(8)
+	check(not screen.run.unit(int(entry.uid)).deployed and screen.selected_uid == 0, "overlapping reserve still receives a real click")
+	await shot("polish-"+RemakeText.lang+"-shoulder-reserve")
+	screen.run.undo(); screen._refresh(); await move(Vector2(500,300)); await frames(4)
 
 func item_edges() -> void:
 	var layer := SubViewportContainer.new(); layer.position = Vector2(400,300); add_child(layer)

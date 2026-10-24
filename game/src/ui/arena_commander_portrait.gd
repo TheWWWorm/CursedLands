@@ -32,12 +32,15 @@ func _ready() -> void:
 	view = SubViewport.new()
 	view.own_world_3d = true
 	view.transparent_bg = true
+	view.gui_disable_input = true
 	view.size = Vector2i(240, 220)
 	view.msaa_3d = Viewport.MSAA_2X
 	add_child(view)
 	camera = Camera3D.new()
 	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
+	camera.keep_aspect = Camera3D.KEEP_HEIGHT
 	view.add_child(camera)
+	resized.connect(_fit_camera_width)
 	var light := DirectionalLight3D.new()
 	light.rotation_degrees = Vector3(-25, -20, 0)
 	view.add_child(light)
@@ -138,6 +141,7 @@ func _process(dt: float) -> void:
 		camera.size = height
 		camera.position = center + Vector3(0, 0, 5)
 		camera.look_at(center)
+		_fit_camera_width()
 		_framed = true
 		# Keep the torso in its neutral pose. A random full-body idle gesture
 		# can otherwise bring a hand across the face in this close crop.
@@ -152,6 +156,12 @@ func _process(dt: float) -> void:
 		var axis := Vector3.RIGHT if happy else Vector3.UP
 		# Turn at the neck, keeping the original hair and face together.
 		model._head.transform = _head_base * Transform3D(Basis.from_euler(Vector3(idle.x, idle.y, sin(_age * 0.65) * 0.008)) * Basis(axis, gesture), Vector3.ZERO)
+
+func _fit_camera_width() -> void:
+	if not is_instance_valid(camera) or size.y <= 0.0: return
+	# Keep the original square's head scale and right-edge position. Extra
+	# viewport width reveals the left shoulder beneath the reserve strip.
+	camera.h_offset = -camera.size * maxf(0.0, size.x - size.y) / (2.0 * size.y)
 
 func _idle_angles(seconds: float, reacting: bool) -> Vector2:
 	_idle_weight = move_toward(_idle_weight, 0.0 if reacting else 1.0, seconds * 5.0)
