@@ -3,6 +3,17 @@
 Do not use subagents or delegate to other agents unless the user explicitly asks.
 This preference also applies when a skill recommends parallel agent work.
 
+# Withdrawn RTX 30 package
+
+Never publish, upload, mirror, or bundle the withdrawn RTX 30 / `dlssg_for_sm86`
+package or its modified NVIDIA kernels, including in drafts or previews. The
+owner permanently withdrew it on 2026-10-24. A general request to push, publish,
+or release does not override this prohibition. Keep local historical evidence
+out of release staging. Run `python3 tools/check_release_assets.py ASSET...` on
+every proposed release asset before uploading; a failure blocks publication.
+Do not restore the disabled packaging scripts or use historical recipes to
+recreate a distributable copy. See [the withdrawal record](docs/integrations/dlssg-sm86.md).
+
 # Release notes and change logs
 
 Describe the concrete changes made in neutral terms. Do not repeat user reports,

@@ -25,8 +25,8 @@ and Windows hardware GPU scheduling. Its actual SDK capability gates the
 choice. The path suspends for menus, loading, movies, pause or focus loss.
 The FPS display uses measured presentation counters; it never assumes that
 an enabled option doubles output. The standard NVIDIA runtime does not expose
-FG on RTX 30. The optional [DLSS-G SM86 package](dlssg-sm86.md) enables native
-NVIDIA generation on Ampere through a third-party compatibility layer.
+FG on RTX 30. The former optional [DLSS-G SM86 package](dlssg-sm86.md) has
+been permanently withdrawn and must not be distributed.
 
 The engine captures HUD-less color before canvas drawing, then captures real
 canvas opacity after all HUD layers. RGB output is retained while alpha is
