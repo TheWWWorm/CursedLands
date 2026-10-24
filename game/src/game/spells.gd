@@ -1067,8 +1067,8 @@ static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: 
 		world.combat.armor_spells(u, false)
 
 
-## Host: a cast without a caster (script CastSpellPoint / CastSpellUnit,
-## magic traps), the original (spell, caster 0, , target, point):
+## Host: a cast without a caster (script CastSpellPoint / CastSpellUnit),
+## the original (spell, caster 0, , target, point):
 ## possession, link and charm (prototypes 0x15, 0x1b, 0x24) are never cast
 ## this way. A spell with one target and no filter runes (low word)
 ## is cast directly. Otherwise a point spell (flag
@@ -1079,7 +1079,7 @@ static func _spell_damage(world: GameWorld, caster: GameUnit, p: Dictionary, u: 
 ## point (dead ones are dropped), remove it, and cast at it when it passes the
 ## trace check (`_trace_ok`) and the filter; only
 ## those casts count. Ranking uses the full 3D point: a unit's feet, or z=0
-## for CastSpellPoint / a trap's point target. The range pool itself is 2D.
+## for CastSpellPoint. The range pool itself is 2D.
 ## `from_z` is the source height (scripts pass 0).
 static func cast_from(world: GameWorld, spell: String, from: Vector2, target: GameUnit, point: Vector2, from_z := 0.0) -> void:
 	var p := parse(spell)

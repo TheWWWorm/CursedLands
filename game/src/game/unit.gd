@@ -311,12 +311,14 @@ var action := "idle":
 			_action_started_at = world.time if world else 0.0
 		if _sim_state and action != value: _sim_state.update(&"action", value)
 		action = value
-## Combat stance (the original unit): set by an attack command
-## (command 3). Humans then stand, walk and idle in the
+## Combat stance (the original unit's combat flag +0x174): set by an attack
+## command (command 3). Humans then stand, walk and idle in the
 ## combat clips instead of the relaxed ones.
-## run on every command tick: command 3 (attack) sets it, any
-## other command clears it for a party unit (unit, the party, set)
-## units outside a party keep it once set.
+## 54a620, run on every new command: command 3 (attack) sets it, any
+## other command clears it for a party unit; for a unit outside a party the
+## AI motivations own it: Aggression, Suspection and Fear set it on
+## entering, their leave and the calm motivations' enter clear it (UnitAI).
+## While it is set, such a unit's walk is a run (`ai_combat_run`).
 var alert := false:
 	set(value):
 		if alert != value:
@@ -1360,6 +1362,13 @@ func race_factors(col: String, k: float) -> PackedFloat32Array:
 	return out
 
 
+## 54a620: the run byte's bit 0 for a unit outside a party whose combat
+## flag is set; 547890 / 548520 then move it at the run gait instead of
+## its walk (still subject to `cannot_run`).
+func ai_combat_run() -> bool:
+	return controller < 0 and alert and stance == STANCE_NONE
+
+
 func cannot_run() -> bool:
 	return run_refusal() != 0 or (has_meta("hero") and max_mana > 0.0 and mana <= 0.0 and not free_running())
 
@@ -1709,9 +1718,13 @@ func _tick(dt: float) -> void:
 	var started := Time.get_ticks_usec() if world.profile_simulation else 0
 	_regenerate(dt)
 	# Running characters lose max stamina / 150 per tick and
-	# walk once it is gone.
+	# walk once it is gone. Native 547890 says "out of stamina" (ack 0x1d)
+	# on the tick it runs out; the remake keeps the run request for later.
 	if has_meta("hero") and action == "run" and not _sandbox_mana() and not free_running():
+		var had_stamina := mana > 0.0
 		mana = maxf(0.0, mana - max_mana / 150.0 * dt / TICK)
+		if had_stamina and mana <= 0.0 and world.authority:
+			ack(EIAcks.OUT_OF_STAMINA)
 	_attack_cd -= dt
 	# Native54d960 compares integer ticks, including equality. Do not let
 	# repeated55ms subtraction retain a positive floating-point remainder.
@@ -2186,7 +2199,7 @@ func _do_move(dt: float) -> void:
 	if order.get("gait", false):
 		running = stance == STANCE_NONE and (gait_run or bool(order.get("run", false)))
 	else:
-		running = bool(order.get("run", true))
+		running = bool(order.get("run", true)) or ai_combat_run()
 	if path.is_empty():
 		if world.time < float(order.get("group_retry_at", -INF)):
 			_set_action("idle")
@@ -2759,7 +2772,7 @@ func _follow_order(t: GameUnit, dt: float) -> void:
 		# A party unit goes at its gait on every command.
 		running = stance == STANCE_NONE and gait_run
 	else:
-		running = false   #  run byte 0
+		running = ai_combat_run()   # run byte bit 0 only
 	if path.is_empty():
 		path = _path_to(order.walk,null,-1,float(order.get("walk_limit",1000000.0)))
 		if path.is_empty() or not path_fits(path, order.walk, float(order.get("walk_limit", 1000000.0))):

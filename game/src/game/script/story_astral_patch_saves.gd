@@ -5,14 +5,15 @@ const P := preload("res://src/game/script/script_parser.gd")
 
 
 static func stamp(vm: ScriptVM, saved: Dictionary) -> Dictionary:
-	if vm.ast.has_meta(AstralPatches.META):
+	if vm.ast != null and vm.ast.has_meta(AstralPatches.META):
 		var source: Dictionary = vm.ast.get_meta(AstralPatches.META)
 		saved.lia_patch={"revision":source.revision,"script":source.canonical}
 	return saved
 
 
 static func migrate(vm: ScriptVM, saved: Dictionary) -> Dictionary:
-	if not vm.ast.has_meta(AstralPatches.META) or saved.has("lia_patch"): return saved
+	# A VM without a parsed script (no zone script) has no edition to upgrade.
+	if vm.ast == null or not vm.ast.has_meta(AstralPatches.META) or saved.has("lia_patch"): return saved
 	var source: Dictionary = vm.ast.get_meta(AstralPatches.META)
 	var patch: Dictionary = AstralPatches.DATA.scripts[source.zone]
 	var variant: Dictionary = patch.variants.get(source.source,{})
@@ -85,7 +86,7 @@ static func _unfinished(vm: ScriptVM, quest: String) -> bool:
 
 
 static func prepare(vm: ScriptVM) -> void:
-	if not vm.ast.has_meta(AstralPatches.META):return
+	if vm.ast == null or not vm.ast.has_meta(AstralPatches.META):return
 	var source: Dictionary = vm.ast.get_meta(AstralPatches.META)
 	# CD performed this transfer in the previous hub. The destination may
 	# have no saved VM yet, so protect both first loads and restored worlds.
@@ -94,7 +95,7 @@ static func prepare(vm: ScriptVM) -> void:
 
 
 static func recover(vm: ScriptVM, saved: Dictionary) -> void:
-	if not vm.ast.has_meta(AstralPatches.META) or saved.has("lia_patch"):return
+	if vm.ast == null or not vm.ast.has_meta(AstralPatches.META) or saved.has("lia_patch"):return
 	prepare(vm)
 	var source: Dictionary = vm.ast.get_meta(AstralPatches.META)
 	var state := vm.session.state

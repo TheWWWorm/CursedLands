@@ -30,7 +30,7 @@ func reference(owner: int, uid: int) -> Dictionary:
 	return {"u":uid,"h":[owner,0]}
 
 func pending(rows: Array, intruder: Variant = null) -> Dictionary:
-	return {"globals":{"Heroes":[reference(0,1500000001),reference(1,1500000011)],"Try1":intruder},
+	return {"globals":{"Heroes":[reference(0,party[0].uid),reference(1,party[3].uid)],"Try1":intruder},
 		"instances":rows,"areas":{1:[Rect2(451,316,59,36)]}}
 
 func row_for(saved: Dictionary, name: String, owner := 1) -> Dictionary:

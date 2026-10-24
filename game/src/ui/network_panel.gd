@@ -1489,7 +1489,8 @@ func _type(c: String, back := false) -> void:
 			join_password = join_password.substr(0, join_password.length() - 1) if back else (join_password + c).substr(0, Session.PASSWORD_MAX)
 
 
-func _process(dt: float) -> void:
+func _process(frame_dt: float) -> void:
+	var dt := UiTime.real(frame_dt)   # interface animations keep real time
 	# The LAN game list asks while a join page is open (asks
 	# while the server screen is up), the address book's hosts directly.
 	var scan := visible and page in [JOIN_COOP, JOIN_LMP] and not joining and _lan_on()

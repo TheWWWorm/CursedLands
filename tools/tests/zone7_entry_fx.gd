@@ -32,7 +32,9 @@ func admitted(ast: ScriptParser) -> bool:
 	return body(ast).any(func(st):return st[0] == P.S_CALL and st[1] == WRAPPER)
 
 func definitions() -> void:
-	var original := ScriptParser.parse(raw)
+	# The baseline is the official 1.02 edition: an unpatched 1.01 source is
+	# upgraded in memory (AstralPatches) before the remake's wrapper.
+	var original := ScriptParser.parse(raw); AstralPatches.apply_script(original, "gz7g")
 	var current := ScriptParser.parse(raw); Compat.apply(current, CampaignProfile.ASTRAL, "gz7g")
 	check(admitted(current), "audited original zone7 arrival admits only the particle wrapper")
 	var normalized := current.scripts.duplicate(true)
@@ -178,7 +180,12 @@ func old_sleep() -> void:
 
 func _ready() -> void:
 	raw = EIMob.load_bytes(GameData.read_file("maps/zone7.mob")).script_text
-	check(GameData.campaign_id == CampaignProfile.ASTRAL and raw.sha256_text() == "f2a961fb14df7fc1eb1b9723376372257ec063b326c7bdbbd1423f8ab4785835", "real mounted LiA zone7 source matches the arrival audit")
+	# The audited 1.01 source, or the official 1.02 patch: both reach the same
+	# 1.02 edition, whose arrival the audit covers.
+	var edition := ScriptParser.parse(raw); AstralPatches.apply_script(edition, "gz7g")
+	check(GameData.campaign_id == CampaignProfile.ASTRAL and (raw.sha256_text() == "f2a961fb14df7fc1eb1b9723376372257ec063b326c7bdbbd1423f8ab4785835" \
+		or AstralPatches.script_fingerprint(ScriptParser.parse(raw)) == AstralPatches.DATA.scripts.gz7g.canonical) \
+		and AstralPatches.script_fingerprint(edition) == AstralPatches.DATA.scripts.gz7g.canonical, "real mounted LiA zone7 source matches the arrival audit")
 	definitions()
 	run_case(0,0,"solo")
 	run_case(3,0,"three guests")

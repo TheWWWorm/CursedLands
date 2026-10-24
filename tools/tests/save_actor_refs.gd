@@ -62,7 +62,10 @@ func _ready() -> void:
 	check(int(returned_pet.get_meta("tame_stage"))==3,"old body records do not erase existing pet identity")
 	# A restored dynamic corpse can occupy the allocator's first candidate.
 	dest.world.set_unit(1500000001,returned_pet)
-	check(dest.world.new_uid()==1500000002,"new deployment IDs skip restored dynamic actors")
+	# The next ID also stays a distinct float32 script value (World.new_uid).
+	var next:=dest.world.new_uid()
+	var f32:=func(v:int)->float:return float(PackedFloat32Array([v])[0])
+	check(next>1500000001 and f32.call(next)==float(next) and f32.call(next)!=f32.call(1500000001),"new deployment IDs skip restored dynamic actors")
 	for s:Session in [source,dest]:
 		s.world.units={};s.world.vm=null;s.world=null
 	allocations.reverse()

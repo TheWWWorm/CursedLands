@@ -1079,7 +1079,8 @@ func _gui_input(e: InputEvent) -> void:
 
 
 ## a held arrow moves dt · speed (1) · 16 units per second.
-func _process(dt: float) -> void:
+func _process(frame_dt: float) -> void:
+	var dt := UiTime.real(frame_dt)   # interface animations keep real time
 	if visible and _slide < 1.0:
 		_slide += dt / 0.5
 		_place_board()

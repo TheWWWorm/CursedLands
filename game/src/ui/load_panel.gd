@@ -495,7 +495,8 @@ func _gui_input(e: InputEvent) -> void:
 
 ## a held arrow adds dt · speed · 16 rows per second; whole rows
 ## move the view (the wheel's too).: the slide-.
-func _process(dt: float) -> void:
+func _process(frame_dt: float) -> void:
+	var dt := UiTime.real(frame_dt)   # interface animations keep real time
 	if not visible:
 		return
 	if _slide < 1.0:

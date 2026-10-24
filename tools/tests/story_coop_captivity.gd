@@ -44,13 +44,13 @@ func actor(record: Dictionary, controller: int, uid: int) -> GameUnit:
 func fixture() -> void:
 	s=QuietSession.new(); allocations.append(s); s.state=CampaignState.new(); s.state.campaign_id=CampaignProfile.ORIGINAL
 	s.world=GameWorld.new(); allocations.append(s.world); s.world.session=s; s.world.ai=UnitAI.new(s.world); s.world.zone={"id":"gz19h"}
-	s.state.ensure_hero(0,"Human Hero"); party=[actor(s.state.heroes[0][0],0,1500000001)]
+	s.state.ensure_hero(0,"Human Hero"); party=[actor(s.state.heroes[0][0],0,s.world.new_uid())]
 	for n in [2,3]:
 		var h: Dictionary=s.state.heroes[0][0].duplicate(true)
 		h.merc=n; h.unit_name="merc"+str(n); h.party=""; h.controller=1; s.state.mercs[n]=h
 		party.append(actor(h,1,ScriptVM.name_id(h.unit_name)))
 	for n in [1,2]:
-		s.state.ensure_hero(n,"Human Hero","Guest "+str(n)); party.append(actor(s.state.heroes[n][0],n,1500000010+n))
+		s.state.ensure_hero(n,"Human Hero","Guest "+str(n)); party.append(actor(s.state.heroes[n][0],n,s.world.new_uid()))
 	guard=actor({},-1,45655)
 
 func vm_for(adapt:=true) -> ProbeVM:
@@ -86,8 +86,20 @@ func _ready() -> void:
 	for n in 3:
 		var native:=trace(n,false); var updated:=trace(n,true)
 		check(not native.is_empty() and native==updated,"original role "+str(n)+" keeps complete guard order/timer trace")
-	var original:=trace(2,false)
-	for n in [3,4]: check(trace(n,true)==original,"extra guest "+str(n)+" receives original third-role pursuit cadence")
+	# The third role's dispatch times. Its targets are not compared: the
+	# native party ids name_id("merc1".."merc3") are one float32 script value,
+	# so the unadapted role checks also take the second role's branch there.
+	var cadence:=func(actions:Array)->Array:
+		var times:=[]
+		for a:Array in actions:
+			if a[0]=="sentry" and not snappedf(a[2],0.001) in times: times.append(snappedf(a[2],0.001))
+		return times
+	var original:Array=cadence.call(trace(2,false))
+	for n in [3,4]:
+		var guest:=trace(n,true)
+		check(not original.is_empty() and cadence.call(guest)==original \
+			and guest.all(func(a):return a[0]!="sentry" or a[1].point==Vector2(480,330)),
+			"extra guest "+str(n)+" receives original third-role pursuit cadence")
 	for flag in ["Pr1","Pr2"]:
 		fixture(); party[3].pos=Vector2(480,330); s.state.set_var(0,flag,1)
 		var vm:=vm_for(); vm.spawn("VCheck#0#417",[party[3]]); step(vm,12)
@@ -128,11 +140,12 @@ func _ready() -> void:
 		"changed alarm dispatch retains native definitions and the independently admitted damage registrar")
 	check(SHARED_CHECKS.all(func(name):return changed.scripts[name].get("party_check",false)),
 		"independently inspected discoveries and route stages remain available with changed alarm dispatch")
-	for row: Array in [[1500000001.0,1500000002.0,0.0],[1500000001.0,1500000001.0,1.0],
-		[1.25,1.2500001,1.0],[1.25,1.26,0.0],[party[0],party[1],0.0],[party[0],party[0],1.0],[party[0],0.0,0.0]]:
+	# Runtime hero ids (World.new_uid) stay distinct as float32 script values.
+	for row: Array in [[float(party[0].uid),float(party[3].uid),0.0],[float(party[0].uid),float(party[0].uid),1.0],
+		[1.25,1.25000001,1.0],[1.25,1.2500001,0.0],[1.25,1.26,0.0],[party[0],party[1],0.0],[party[0],party[0],1.0],[party[0],0.0,0.0]]:
 		vm.globals.lhs=row[0]; vm.globals.rhs=row[1]
 		check(vm._call("IsEqual",[[ScriptParser.N_VAR,"lhs"],[ScriptParser.N_VAR,"rhs"]],ScriptVM.Instance.new())==row[2],
-			"script equality distinguishes exact IDs/objects and retains fractional tolerance")
+			"script equality distinguishes exact IDs/objects and compares stored float32 values")
 	for v: ProbeVM in vms: v.briefings=null; v.world=null; v.session=null
 	for node: Node in allocations:
 		if node is GameWorld: node.vm=null; node.ai=null

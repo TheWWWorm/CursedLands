@@ -425,11 +425,28 @@ func adopt_prepared_unit(u: GameUnit) -> GameUnit:
 	return u
 
 
+## A runtime object's id. Scripts hold ids as float32 (GetObjectID, every
+## script value; the original names its party records name_id("merc<i>"),
+## which spreads them). Above 2^30 float32 steps by 128, so consecutive ids
+## from 1.5e9 were one script value and IsEqual(GetObjectID(a),
+## GetObjectID(b)) took any two runtime heroes for the same unit. An id is
+## therefore an exact float32 value that no other object's id rounds to.
 func new_uid() -> int:
 	_next_uid += 1
-	while units.has(_next_uid) or looted.has(_next_uid) or objects.has(_next_uid):
+	while not _script_distinct(_next_uid):
 		_next_uid += 1
 	return _next_uid
+
+
+func _script_distinct(id: int) -> bool:
+	var f := float(PackedFloat32Array([id])[0])
+	if f != float(id) or units.has(id) or looted.has(id) or objects.has(id):
+		return false
+	for taken: Dictionary in [units, looted, objects]:
+		for other in taken:
+			if float(PackedFloat32Array([int(other)])[0]) == f:
+				return false
+	return true
 
 
 func remove_unit(u: GameUnit) -> void:

@@ -162,12 +162,14 @@ func think(u: GameUnit) -> void:
 		if not u.has_meta("fear_on"):
 			_motivation_alert(u)
 			u.remove_meta("calm")
+			u.alert = true   # Fear enter (5d3650) sets the combat flag
 		u.set_meta("fear_on", true)
 		_fear_tick(u, int(ms.fear))
 		return
 	if u.has_meta("fear_on"):
 		u.remove_meta("fear_on")
 		u.remove_meta("calm")   # the look round was the Fear motivation's
+		u.alert = false   # Fear leave (5d3680)
 	if u.mode == "fear":
 		return
 	if not u.mode in AI_MODES and u.mode != "none":
@@ -184,6 +186,7 @@ func think(u: GameUnit) -> void:
 				if u.order.get("type", "") != "attack":
 					_react(u, EIAcks.NPC_AGGRESSION)
 					_motivation_alert(u)
+					u.alert = true   # Aggression enter (5d26d0)
 				u.remove_meta("calm")
 				_act(u, ch)
 				return
@@ -191,6 +194,10 @@ func think(u: GameUnit) -> void:
 	if ms.susp and _investigate(u):
 		u.remove_meta("calm")
 		return
+	# The calm motivations' enter (5d0af0; Guard, Patrol, Sentry, Follow)
+	# clears the combat flag that Aggression, Suspection and Fear set, so a
+	# unit walks and idles relaxed again once nothing holds its attention.
+	u.alert = false
 	if calm_tick(u, true):
 		return
 	match u.mode:
@@ -1573,7 +1580,7 @@ func _susp_level(s: Dictionary) -> float:
 ## The Suspection motivation's tick, run from think:
 ## entering posts AI message 5 -> reaction 0x2f "to
 ## Suspection", sets the combat stance (creature) and
-## walks to the exact point (order = 0), then looks round 1 - 4 times
+## goes to the exact point (order = 0, at the combat flag's run), then looks round 1 - 4 times
 ## (rand & 3) + 1 in random directions for 10 - 40 ticks each (
 ## ). While going to or looking at the point it loses 5 a tick
 ## within 5 m of it; idle, it picks a spot within 5 m of the point
@@ -1660,7 +1667,8 @@ func _susp_go(u: GameUnit, s: Dictionary, at: Vector2, p: float) -> void:
 		look.append([world.random_float() * TAU, world.random_int_range(10, 40)])
 	s.look = look
 	# "calm": the AI keeps thinking during the order (GameUnit), as for the
-	# calm and Fear walks.
+	# calm and Fear walks. The order's own run flag is 0 (554740); the combat
+	# flag set on entering makes the unit run (GameUnit.ai_combat_run).
 	u.command({"type": "move", "to": world.nav.nearest_walkable(at), "run": false, "calm": true, "susp": true})
 
 
@@ -1669,8 +1677,8 @@ func _susp_go(u: GameUnit, s: Dictionary, at: Vector2, p: float) -> void:
 ## unit that is a diplomacy friend, a call for help at the attacker's spot
 ## (no attacker: the unit's own).
 func hit_hook(u: GameUnit, by: GameUnit) -> void:
-	# An attacked unit wakes (553f40 -> 58d5d0, ObjectActivity): a trap or
-	# a long shot reaches a frozen unit.
+	# An attacked unit wakes (553f40 -> 58d5d0, ObjectActivity): a long
+	# shot reaches a frozen unit.
 	if not u.dead:
 		world.active_set.wake_unit(u)
 	if by and is_instance_valid(by):

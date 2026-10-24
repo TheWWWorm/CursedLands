@@ -11,8 +11,8 @@ class ObservedAI:
 		notifying=true
 		super.on_attacked(u,by)
 		notifying=false
-	func call_for_help(u: GameUnit, at: Vector2) -> void:
-		super.call_for_help(u, at)
+	func call_for_help(u: GameUnit, at: Vector2, threat: GameUnit = null) -> void:
+		super.call_for_help(u, at, threat)
 		calls.append({"time":world.time,"ai_tick":_tick_n,"from_notification":notifying,"source":u.uid,"at":[at.x,at.y],
 			"recipients":_help.filter(func(e):return e[1]==at and e[2]==26).map(func(e):return e[0].uid)})
 	func suspect(u: GameUnit, at: Vector2, level: float, delta := -2.0) -> void:

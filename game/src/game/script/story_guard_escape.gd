@@ -28,9 +28,12 @@ static func contact(vm: ScriptVM, guards: Array, target: GameUnit) -> bool:
 	# The authored gate alarm summons distant reinforcements into its area.
 	# Once the intruder leaves that area, updates require actual guard contact.
 	if _inside_gate(vm, target.pos): return true
+	# Contact is a guard sensing the intruder now (sight, cone and terrain ray),
+	# not its noticed list: as in the original (5caa00) an NPC keeps a living
+	# hostile there after losing sight, which would never let the party escape.
 	for guard in guards:
 		if is_instance_valid(guard) and guard is GameUnit and not guard.dead \
-				and vm.world.ai.player_perceive(guard).has(target.get_instance_id()): return true
+				and vm.world.ai.can_notice(guard, target, float(guard.stats.sight)): return true
 	return false
 
 static func _inside_gate(vm: ScriptVM, point: Vector2) -> bool:

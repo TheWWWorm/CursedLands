@@ -703,7 +703,12 @@ func _after_scroll() -> void:
 
 
 func _unhandled_input(e: InputEvent) -> void:
-	if not visible or not (e is InputEventKey and e.pressed and not e.echo):
+	if not visible or not (e is InputEventKey and e.pressed):
+		return
+	# A held Space fast-forwards the phrases as in the original (#108): each
+	# keyboard auto-repeat advances one phrase. The repeat stops at the last
+	# phrase so holding it does not close the dialogue and its rewards unseen.
+	if e.echo and not (e.keycode == KEY_SPACE and _mode == PLAYING and _i < _phrases.size() - 1):
 		return
 	match e.keycode:
 		KEY_SPACE:
@@ -736,7 +741,8 @@ func _unhandled_input(e: InputEvent) -> void:
 
 ## Re-frames the phrase while an actor still walks to its spot; held scroll
 ## arrows; the phrase's timer / speech end.
-func _process(dt: float) -> void:
+func _process(frame_dt: float) -> void:
+	var dt := UiTime.real(frame_dt)   # interface animations keep real time
 	if not visible or hud == null:
 		return
 	var b := _active_bar()

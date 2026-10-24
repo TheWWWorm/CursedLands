@@ -78,9 +78,9 @@ func _ready() -> void:
 		await get_tree().process_frame
 	check(moved, "the woken goblin moves")
 	check(w.active_set.trap_awake(trap), "the trap near the patrol wakes with it")
-	# The patrol leads into that trap, which now fires (as in the original
-	# once the party is near); switch the traps off for the rest.
-	for nid in w.traps.traps: w.traps.set_active(nid, false)
+	# The patrol leads into that trap. As in 1.06 it selects no unit, so
+	# nobody is hit and its countdown does not start.
+	check(int(w.traps.traps[trap].timer) == 0, "the woken trap never casts")
 	# The party leaves: once the goblin forgets it, it freezes where it is,
 	# standing rather than walking in place, and walks on when woken.
 	w.dialog_place(hero, entrance, 0.0)

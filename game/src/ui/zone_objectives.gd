@@ -426,7 +426,8 @@ func _layout() -> void:
 		label.add_theme_font_size_override("normal_font_size", _font_px())
 
 
-func _process(dt: float) -> void:
+func _process(frame_dt: float) -> void:
+	var dt := UiTime.real(frame_dt)   # interface animations keep real time
 	_t += dt
 	_list_bar.max_pos = maxf(0.0, quests.size() - ROWS)
 	if _list_bar.held >= 2:

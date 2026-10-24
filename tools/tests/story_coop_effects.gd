@@ -44,15 +44,17 @@ func fixture() -> void:
 	s.state = CampaignState.new(); s.world = GameWorld.new(); allocations.append(s.world)
 	s.world.session = s; s.world.ai = UnitAI.new(s.world)
 	s.state.ensure_hero(0, "Human Hero"); s.state.ensure_hero(1, "Human Hero", "Guest A")
-	party.append(actor(s.state.heroes[0][0], 0, 1500000001))
+	# Runtime ids come from World.new_uid, which keeps each a distinct script
+	# value (float32); consecutive ids from 1.5e9 would compare equal.
+	party.append(actor(s.state.heroes[0][0], 0, s.world.new_uid()))
 	var kel: Dictionary = s.state.heroes[0][0].duplicate(true)
 	kel.merc = 2; kel.unit_name = "merc2"; kel.party = ""; kel.controller = 1
 	s.state.mercs[2] = kel
 	party.append(actor(kel, 1, ScriptVM.name_id("merc2")))
-	party.append(actor(s.state.heroes[1][0], 1, 1500000002))
+	party.append(actor(s.state.heroes[1][0], 1, s.world.new_uid()))
 	for i in range(2, 6):
 		s.state.ensure_hero(i, "Human Hero", "Guest "+str(i))
-		party.append(actor(s.state.heroes[i][0], i, 1500000002+i))
+		party.append(actor(s.state.heroes[i][0], i, s.world.new_uid()))
 	party[4].dead = true; party[5].hidden = true; party[6].controller = -1
 	var pet := GameUnit.new(); allocations.append(pet)
 	pet.uid = 999; pet.controller = 1; pet.world = s.world; s.world.set_unit(pet.uid, pet)
@@ -78,8 +80,15 @@ func vm_for(zone: String, mob: String, adapted := true) -> ProbeVM:
 func run_script(vm: ProbeVM, name: String) -> ScriptVM.Instance:
 	vm.spawn(name, [party[0]])
 	var inst: ScriptVM.Instance = vm.instances.back()
-	vm._run(inst)
+	poll(vm, inst)
 	return inst
+
+## One poll in its own logic pass. ScriptVM.tick forgets shared condition
+## results at the start and end of each pass; these steps change levers and
+## positions between polls, as separate ticks would.
+func poll(vm: ScriptVM, inst: ScriptVM.Instance) -> void:
+	vm._forget_conditions()
+	vm._run(inst)
 
 func cast_count(vm: ProbeVM, u: GameUnit) -> int:
 	var count := 0
@@ -137,16 +146,16 @@ func traps() -> void:
 		var vm := vm_for(row[0], row[1])
 		var inst := run_script(vm, row[2])
 		party[2].pos = row[4] + Vector2(row[5]+.01, 0)
-		vm.time += 1; vm._run(inst)
+		vm.time += 1; poll(vm, inst)
 		check(vm.casts.is_empty(), row[2]+": outside range stays safe")
 		party[2].pos = row[4]; party[3].pos = row[4]+Vector2(1,0)
 		if row[3]:
-			s.world.levers[row[3]].state = 1; vm.time += 1; vm._run(inst)
+			s.world.levers[row[3]].state = 1; vm.time += 1; poll(vm, inst)
 			check(vm.casts.is_empty(), row[2]+": disarmed lever protects guests")
 			s.world.levers[row[3]].state = 0
-		vm.time += 1; vm._run(inst)
+		vm.time += 1; poll(vm, inst)
 		check(vm.casts.size() == 1 and cast_count(vm, party[2]) == 1, row[2]+": first eligible guest triggers shared shot")
-		vm.time += .5; vm._run(inst)
+		vm.time += .5; poll(vm, inst)
 		check(vm.casts.size() == 1 and inst.killed, row[2]+": second guest does not duplicate the spent shot")
 		for inactive in ["dead", "hidden", "disconnected"]:
 			party[3].pos = Vector2(2000,2000)
@@ -164,16 +173,18 @@ func traps() -> void:
 		if row[0] == "gz16g":
 			party[1].pos = Vector2(2000,2000)
 			vm = vm_for(row[0], row[1]); run_script(vm, row[2])
-			var cooldown: ScriptVM.Instance = vm.instances.back(); vm._run(cooldown)
-			check(cooldown.sname == "VCheck#0#5" and is_equal_approx(cooldown.wait_until, 25*ScriptVM.SLEEP_UNIT), "Acid trap keeps original 25-tick cooldown")
+			poll(vm, vm.instances.back())
+			# The cooldown trigger's block sleeps in its own body thread.
+			var cooldown: ScriptVM.Instance = vm.instances.back()
+			check(cooldown.sname == "VCheck#0#5" and not cooldown.frames.is_empty() and is_equal_approx(cooldown.wait_until, 25*ScriptVM.SLEEP_UNIT), "Acid trap keeps original 25-tick cooldown")
 			var saved := vm.save_state(); var resumed := vm_for(row[0], row[1]); resumed._restore(saved)
 			var restored_cooldown: ScriptVM.Instance = resumed.instances.back()
 			# Sleep counts delivered logic ticks, not a manually advanced clock.
 			for tick in 24:
-				resumed.time += ScriptVM.SLEEP_UNIT; resumed._run(restored_cooldown)
+				resumed.time += ScriptVM.SLEEP_UNIT; poll(resumed, restored_cooldown)
 			check(resumed.casts.is_empty() and resumed.instances.back() == restored_cooldown, "Acid trap cannot re-arm before tick 25")
-			resumed.time += ScriptVM.SLEEP_UNIT; resumed._run(restored_cooldown)
-			resumed.time += ScriptVM.SLEEP_UNIT; resumed._run(resumed.instances.back())
+			resumed.time += ScriptVM.SLEEP_UNIT; poll(resumed, restored_cooldown)
+			resumed.time += ScriptVM.SLEEP_UNIT; poll(resumed, resumed.instances.back())
 			check(cast_count(resumed, party[2]) == 1, "Acid trap re-arms for guest after save and cooldown")
 	# The northern boundary is independent of the radial condition.
 	for u: GameUnit in party: u.pos = Vector2(2000,2000)
@@ -193,15 +204,17 @@ func traps() -> void:
 func saved_sleep() -> void:
 	var old := vm_for("gz5h", "zone5", false)
 	s.world.levers[338771].state = 1
-	var inst := run_script(old, "Tiger#1#1")
-	check(is_equal_approx(inst.wait_until, 40*ScriptVM.SLEEP_UNIT), "Original shrine save is inside authored Sleep(40)")
+	run_script(old, "Tiger#1#1")
+	# The fired block's body thread holds the Sleep, not the trigger.
+	var inst: ScriptVM.Instance = old.instances.back()
+	check(inst.sname == "Tiger#1#1" and not inst.frames.is_empty() and is_equal_approx(inst.wait_until, 40*ScriptVM.SLEEP_UNIT), "Original shrine save is inside authored Sleep(40)")
 	var saved := old.save_state(); var now := vm_for("gz5h", "zone5")
 	now._restore(saved)
 	var sleeping: ScriptVM.Instance = now.instances.back()
 	for tick in 39:
-		now.time += ScriptVM.SLEEP_UNIT; now._run(sleeping)
+		now.time += ScriptVM.SLEEP_UNIT; poll(now, sleeping)
 	check(now.casts.is_empty() and now.instances.back() == sleeping, "Shrine cannot finish its cooldown before tick 40")
-	now.time += ScriptVM.SLEEP_UNIT; now._run(sleeping)
+	now.time += ScriptVM.SLEEP_UNIT; poll(now, sleeping)
 	check(now.casts.is_empty() and now.instances.back().sname == "Tiger#1#2", "Old sleeping save resumes cooldown without recasting rewards")
 
 func unchanged_scripts() -> void:
