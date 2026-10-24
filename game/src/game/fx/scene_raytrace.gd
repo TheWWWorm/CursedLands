@@ -61,6 +61,9 @@ var _preparation_visible_frame := -1
 var _strict_light_history := OS.get_cmdline_user_args().has("--ei-strict-light-history")
 # Diagnostic comparison against the old display-resolution PT workload.
 var _window_resolution_reference := OS.get_cmdline_user_args().has("--ei-pt-window-resolution")
+var _profile_cpu := OS.get_cmdline_user_args().has("--ei-profile-rt")
+var _ground_cache := Scene.Ground.new()
+var _source_cache := Scene.SourceCache.new()
 
 func _init(owner_game: Game) -> void:
 	game = owner_game; name = "SceneRaytrace"
@@ -81,6 +84,8 @@ static func target_size(viewport: Vector2,quality: int,render_scale := 1.0) -> V
 	return Vector2i(maxi(2,roundi(internal.x*scale)),maxi(2,roundi(internal.y*scale)))
 
 func _process(dt: float) -> void:
+	var cpu_start := Time.get_ticks_usec() if _profile_cpu else 0
+	var cpu_stage := cpu_start
 	var wanted := Gfx.SceneRaytraceShader.requested()
 	var terrain: EITerrain = game.world.terrain if game.world != null else null
 	var path_mode := GameData.option("pt_mode")>0
@@ -117,6 +122,8 @@ func _process(dt: float) -> void:
 		# a new scene is published only after its first complete frame.
 		if _scene.topology_changed():
 			_topology_pending=true
+	if _profile_cpu:
+		stats["cpu_topology_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
 	var building := _gather if _gather!=null else _pending_scene
 	if building!=null and (camera.global_position.distance_to(building.center)>32.0 or (prepare and terrain_preparing)):
 		_cancel_candidate()
@@ -131,7 +138,12 @@ func _process(dt: float) -> void:
 	if _gather==null and _pending_device==null and may_retry \
 		and (device==null or _topology_pending or camera.global_position.distance_to(_center)>16.0):
 		_begin_snapshot(terrain,camera)
-	if _gather!=null and _gather.step(): _queue_candidate(terrain,camera)
+	if _profile_cpu:
+		stats["cpu_snapshot_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
+	# Loading can use the larger preparation budget. Live travel shares the
+	# frame with rendering and simulation, while the previous scene stays lit.
+	if _gather!=null and _gather.step(1500 if device!=null else 6000): _queue_candidate(terrain,camera)
+	if _profile_cpu:stats["cpu_gather_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0
 	var quality := clampi(GameData.option("q_rt_lighting"),0,2)
 	var viewport := camera.get_viewport()
 	var display_size := viewport.get_visible_rect().size
@@ -149,7 +161,9 @@ func _process(dt: float) -> void:
 	var frame := PackedByteArray()
 	if _ready_gpu and device!=null:
 		_scene.lighting_camera_mask = camera.cull_mask
+		var update_started := Time.get_ticks_usec()
 		var changes := _scene.updates()
+		stats["cpu_update_ms"]=(Time.get_ticks_usec()-update_started)/1000.0
 		frame = _frame(camera,size,quality,not changes.instances.is_empty() or not changes.poses.is_empty(),dt)
 		_render(device,size,frame,changes)
 		if device.output_ready():
@@ -189,6 +203,7 @@ func _process(dt: float) -> void:
 	stats["path_samples"]=GI_SAMPLES[quality] if _path_mode else 0
 	stats["accumulation_frames"]=_accumulation_frames if _path_mode else 0
 	_settle_preparation(size)
+	if _profile_cpu:stats["cpu_total_ms"]=(Time.get_ticks_usec()-cpu_start)/1000.0
 
 func _begin_preparation() -> void:
 	_end_preparation()
@@ -247,6 +262,8 @@ func _settle_preparation(size: Vector2i) -> void:
 func _begin_snapshot(terrain: EITerrain,camera: Camera3D) -> void:
 	_failed=false
 	_gather=Scene.new();_gather.lighting_camera_mask=camera.cull_mask
+	_gather._ground=_ground_cache
+	_gather._sources=_source_cache
 	_gather.path_materials=_path_mode
 	# No water-plane clipping: ceilings and underground rooms participate.
 	_gather.begin(terrain,camera.global_position,-1.0e20)
@@ -540,6 +557,8 @@ func _release() -> void:
 	_bound=false;_ready_gpu=false;_center=Vector3.INF;_history_key=""
 	_cancel_candidate();_clear_failure()
 	_scene=null;_lights.clear();_path_signature=PackedByteArray();_path_cloud_signature=PackedByteArray();_accumulation_frames=0
+	_ground_cache=Scene.Ground.new()
+	_source_cache.clear();_source_cache=Scene.SourceCache.new()
 	_topology_pending=false
 	if device!=null:
 		for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1"]:

@@ -2,6 +2,7 @@ extends "res://tools/tests/path_trace_motion.gd"
 ## Real resource replacement and dispatch with controlled failure points.
 ## Faults return normal API failure results without exhausting GPU memory.
 class FaultDevice extends PathDevice:
+	func _init() -> void:nrd.available=false
 	var fail_image_in := 0
 	var fail_set_in := 0
 	var fail_compile := false
@@ -247,7 +248,7 @@ func sustained_switches() -> void:
 		check(device._owned.size()==resources,"cycle "+str(cycle)+" retains the bounded pipeline and scene resource pool")
 	check(successful,"repeated resize, emitter and bounce changes produce finite fresh histories")
 	RenderingServer.call_on_render_thread(live_image_probe);await probed
-	check(probe.live_images==18,"only the current eighteen lighting, guide, auxiliary and spatial images remain live")
+	check(probe.live_images==20,"only the current twenty lighting, guide, auxiliary and spatial images remain live")
 
 func run() -> void:
 	for arg in OS.get_cmdline_user_args():

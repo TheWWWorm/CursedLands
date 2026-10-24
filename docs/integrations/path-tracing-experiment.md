@@ -1,5 +1,7 @@
 # Path-traced lighting prototype (experimental)
 
+Current unreleased desktop Responsive reconstruction uses [NRD 4.18 REBLUR](path-tracing-nrd.md). The custom-filter details below describe Still scene and the fallback implementation.
+
 Since 1.24.0, the Windows and Linux builds add an optional multi-bounce lighting mode for nearby
 terrain, objects and characters. It traces direct shadows, diffuse colour
 transport and rough glossy reflections through two or four surface bounces.

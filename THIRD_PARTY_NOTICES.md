@@ -94,3 +94,13 @@ and recursion bounds in its string library. See
 `game/src/native/NATIVE_LUA_NOTICES.txt` and `game/src/native/mod_lua/README.md`.
 The wrapper is Apache-2.0 and uses the same godot-cpp revision and compiler
 runtime notices as the optional navigation helper above.
+
+## Optional path-tracing denoiser
+
+Windows/Linux x86-64 path tracing includes NVIDIA NRD 4.18.0 REBLUR under the
+NVIDIA RTX SDKs license, separately from the application's license. Full NRD,
+MathLib and ShaderMake notices are in `game/src/native/NATIVE_NRD_NOTICES.txt`.
+The project adapter uses the godot-cpp bindings and compiler runtime described
+under Optional compiled navigation. Pinned revisions, build commands and the
+RenderingDevice integration are documented in
+`docs/integrations/path-tracing-nrd.md`.

@@ -6,8 +6,17 @@ var terrain: EITerrain
 var tiles: Image
 var cells: Image
 var profiles := {}
+const MAX_SECTORS := 128
+var _sectors := {}
+var _source_key := []
+var cache_hits := 0
+var cache_misses := 0
+var _cache_enabled := not OS.get_cmdline_user_args().has("--ei-rt-no-ground-cache")
 
 func configure(source: EITerrain) -> void:
+	var key := [source.get_instance_id(),source._tile_tex,source._cell_tex,Gfx.on("gfx_soft_ground")]
+	if _cache_enabled and key==_source_key:return
+	_source_key=key;profiles.clear();_sectors.clear();tiles=null;cells=null
 	terrain=source
 	if not Gfx.on("gfx_soft_ground") or terrain.land_tile.is_empty() or terrain.heights.is_empty():return
 	tiles=terrain._ground_tile_image()
@@ -49,8 +58,17 @@ func profile(grid: Vector2) -> Vector2:
 		return vertex_profile(cell)*(1.0-p.x-p.y)+vertex_profile(cell+Vector2i.RIGHT)*p.x+vertex_profile(cell+Vector2i.DOWN)*p.y
 	return vertex_profile(cell+Vector2i.ONE)*(p.x+p.y-1.0)+vertex_profile(cell+Vector2i.RIGHT)*(1.0-p.y)+vertex_profile(cell+Vector2i.DOWN)*(1.0-p.x)
 
-func arrays(source: Array) -> Array:
+func arrays(source: Array,sector_id := 0) -> Array:
 	if tiles==null:return source
+	# Sector source arrays are immutable for their node's lifetime. Recenter
+	# snapshots can share the lifted arrays; they still pack/cull independently.
+	# The terrain's surface tables and soft-ground option invalidate this cache.
+	if _cache_enabled and sector_id!=0 and _sectors.has(sector_id):
+		var cached: Array=_sectors[sector_id]
+		_sectors.erase(sector_id);_sectors[sector_id]=cached;cache_hits+=1
+		return cached
+	cache_misses+=1
+	if profiles.size()>65536:profiles.clear()
 	var result:=source.duplicate()
 	var points: PackedVector3Array=source[Mesh.ARRAY_VERTEX].duplicate()
 	var uv: PackedVector2Array=source[Mesh.ARRAY_TEX_UV]
@@ -72,4 +90,7 @@ func arrays(source: Array) -> Array:
 		var grid:=(Vector2(tile)+(local+Vector2.ONE*0.5).clamp(Vector2.ZERO,Vector2.ONE))*2.0
 		points[i].y+=profile(grid).x
 	result[Mesh.ARRAY_VERTEX]=points
+	if _cache_enabled and sector_id!=0:
+		if _sectors.size()>=MAX_SECTORS:_sectors.erase(_sectors.keys()[0])
+		_sectors[sector_id]=result
 	return result

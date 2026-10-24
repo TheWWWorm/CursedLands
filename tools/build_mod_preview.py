@@ -79,6 +79,8 @@ def build(args):
         native = out / "src/native/bin"
         native.mkdir(parents=True)
         shutil.copy2(game / f"src/native/bin/libmod_lua.{extension}", native)
+        shutil.copy2(game / f"src/native/bin/libpath_nrd.{extension}", native)
+        shutil.copy2(game / "src/native/NATIVE_NRD_NOTICES.txt", out)
         for name in ["LICENSE.md", "THIRD_PARTY_NOTICES.md", "README.md", "CHANGELOG.md"]:
             shutil.copy2(source / name, out)
         shutil.copytree(source / "licenses", out / "licenses")

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.28.0-experimental.1 — unreleased
+
+- Integrate NVIDIA NRD 4.18.0 REBLUR for responsive path-traced lighting on Windows DX12 and Linux Vulkan. Preserve sharp direct highlights and retain custom reconstruction as a fallback.
+- Reuse CPU mesh and texture sources and lifted terrain sectors across nearby ray-traced scene snapshots, reducing GPU readbacks during travel.
+- Apply traced ground lighting and shadows to procedural grass and ground cover.
+- Move ray tracing and path tracing options into a direct Remake submenu, with English, Russian and German labels and help.
+- Reduce overbright rainy daylight and improve path-traced surface reconstruction.
+
 ## 1.27.0 — 2026-10-24
 
 - Expand Autochess to 40 items across five tiers, mixing raw statistics with special effects. Higher tiers unlock after rounds 3, 5, 10, 15 and 20; borders progress from none to green, blue, purple and gold.

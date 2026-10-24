@@ -27,6 +27,9 @@ varying vec2 ei_rt_flags;
 #define ei_pt_blend ei_rt_flags.y
 varying vec4 ei_rt_visibility0;
 varying vec4 ei_rt_visibility1;
+#ifdef EI_GRASS_LIGHT
+varying vec3 ei_rt_ground;
+#endif
 
 vec3 ei_rt_position(ivec2 p,float depth,ivec2 size) {
     vec2 uv=(vec2(p)+0.5)/vec2(size);
@@ -37,6 +40,47 @@ vec3 ei_rt_position(ivec2 p,float depth,ivec2 size) {
     bool orthographic=abs(ei_rt_view_projection[0][3])+abs(ei_rt_view_projection[1][3])+abs(ei_rt_view_projection[2][3])<0.001;
     return orthographic?near.xyz+forward*(depth-near_depth):ei_rt_eye+(near.xyz-ei_rt_eye)*(depth/near_depth);
 }
+
+#ifdef EI_GRASS_LIGHT
+// Procedural blades are not in the RT scene. Sample their planted root once
+// per fragment, instead of searching 29 surface pixels that cannot match a
+// raised blade. Reject walls, foreground objects and unrelated ground planes.
+bool ei_rt_ground_sample(out vec3 gi,out vec4 visibility0,out vec4 visibility1) {
+    gi=vec3(0.0);visibility0=vec4(0.0);visibility1=vec4(0.0);
+    if(ei_rt_state.x<0.5||distance(ei_rt_ground,ei_rt_center.xyz)>=ei_rt_state.w)return false;
+    vec4 clip=ei_rt_view_projection*vec4(ei_rt_ground,1.0);
+    vec2 uv=vec2(clip.x,-clip.y)/clip.w*0.5+0.5;
+    if(clip.w<=0.0||any(lessThan(uv,vec2(0.0)))||any(greaterThanEqual(uv,vec2(1.0))))return false;
+    ivec2 size=textureSize(ei_rt_guide,0);
+    vec2 pixel=uv*vec2(size)-0.5,blend=fract(pixel);
+    ivec2 base=ivec2(floor(pixel));
+    float total=0.0;
+    float depth=-(ei_rt_view*vec4(ei_rt_ground,1.0)).z;
+    for(int y=0;y<2;y++)for(int x=0;x<2;x++) {
+        ivec2 p=clamp(base+ivec2(x,y),ivec2(0),size-1);
+        vec4 guide=texelFetch(ei_rt_guide,p,0);
+        if(guide.w<=0.0||guide.y<0.35)continue;
+        vec3 delta=ei_rt_position(p,guide.w,size)-ei_rt_ground;
+        if(abs(dot(delta,guide.xyz))>0.12||length(delta)>max(0.5,depth*0.006))continue;
+        float w=(x==0?1.0-blend.x:blend.x)*(y==0?1.0-blend.y:blend.y);
+        gi+=texelFetch(ei_rt_gi,p,0).rgb*w;
+        if(ei_pt_active<=0.5) {
+            visibility0+=texelFetch(ei_rt_shadow0,p,0)*w;
+            visibility1+=texelFetch(ei_rt_shadow1,p,0)*w;
+        }
+        total+=w;
+    }
+    if(total<0.01)return false;
+    gi/=total;visibility0/=total;visibility1/=total;
+    // Grass uses the ground's diffuse illumination, never its glossy lobe.
+    if(ei_pt_active<=0.5) {
+        float fade=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,distance(ei_rt_ground,ei_rt_center.xyz));
+        gi=mix(ei_lin(ei_ambient),gi,fade);
+        visibility0=mix(vec4(1.0),visibility0,fade);visibility1=mix(vec4(1.0),visibility1,fade);
+    }
+    return true;
+}
+#endif
 
 bool ei_rt_sample(vec3 world,vec3 normal,out vec3 gi,out vec4 visibility0,out vec4 visibility1) {
     gi=vec3(0.0);visibility0=vec4(1.0);visibility1=vec4(1.0);
@@ -135,7 +179,12 @@ const CAPTURE := """
         vec3 indirect;vec4 a,b;
         vec3 world=(INV_VIEW_MATRIX*vec4(VERTEX,1.0)).xyz;
         vec3 normal=normalize((INV_VIEW_MATRIX*vec4(NORMAL,0.0)).xyz);
-        if(ei_rt_sample(world,normal,indirect,a,b)) {
+#ifdef EI_GRASS_LIGHT
+        bool matched=ei_rt_ground_sample(indirect,a,b);
+#else
+        bool matched=ei_rt_sample(world,normal,indirect,a,b);
+#endif
+        if(matched) {
             if(ei_pt_active>0.5) {
                 ei_pt_blend=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,length(world-ei_rt_center.xyz));
                 // Retain the terrain's authored underwater attenuation. The
@@ -201,6 +250,8 @@ static func applicable(code: String,lit: bool) -> bool:
 static func inject(code: String,clouds: bool) -> String:
 	var at := code.find("\nvoid ")
 	code = code.insert(at+1,COMMON)
+	if code.contains("#define EI_GRASS_LIGHT"):
+		code = Gfx._function_tail(code,"vertex","\n    ei_rt_ground=origin;\n")
 	code = Gfx._function_tail(code,"fragment",CAPTURE)
 	code = Gfx._function_tail(code,"light","\n    }\n    DIFFUSE_LIGHT=mix(DIFFUSE_LIGHT,ei_pt_previous_diffuse,ei_pt_blend);\n    SPECULAR_LIGHT=mix(SPECULAR_LIGHT,ei_pt_previous_specular,ei_pt_blend);\n    }\n")
 	return code.replace("void light() {","void light() {"+LIGHT.replace("EI_RT_CLOUD","ei_cloud_sun(world)" if clouds else "1.0"))

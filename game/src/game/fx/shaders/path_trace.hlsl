@@ -17,6 +17,9 @@
 [[vk::binding(14,0)]] Texture2DArray<float4> terrain_colours : register(t1400000);
 [[vk::binding(15,0)]] Texture2D<float4> cloud_texture : register(t1500000);
 [[vk::binding(16,0)]] SamplerState cloud_sampler : register(s1600000);
+// Secondary path distances for NRD. Keep primary placement identity intact.
+[[vk::binding(18,0),vk::image_format("rg16f")]] RWTexture2D<float2> path_distance : register(u1800000);
+[[vk::binding(19,0),vk::image_format("rgba16f")]] RWTexture2D<float4> path_direct_specular : register(u1900000);
 struct Frame {
     column_major float4x4 inv_projection;
     column_major float4x4 camera_world;
@@ -328,8 +331,10 @@ void emissive_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,ou
     diffuse=d*incoming;specular=sp*incoming;
 }
 #endif
-void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diffuse,out float3 specular) {
+void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diffuse,out float3 specular,out float2 hit_distance,out float3 direct_specular) {
     direct_light(primary,view,sampler,diffuse,specular);
+    direct_specular=specular;
+    hit_distance=0.0;
     Surface current=primary;
 #ifdef PATH_ROULETTE
     // Smooth metals expose deep-path noise directly in reflections. Retain
@@ -374,6 +379,9 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
         Surface hit=(Surface)0;hit.cone=max(0.002,current.roughness*0.02);
         RayDesc ray={surface_origin(current,direction),0.0,direction,frame.camera.w};
         TraceRay(scene,RAY_FLAG_NONE,4,0,0,0,ray,hit);
+        float segment=hit.hit>0.5?length(hit.position-current.position):60000.0;
+        hit_distance.x=min(hit_distance.x+segment,60000.0);
+        if(depth==0)hit_distance.y=segment;
         if(hit.hit<0.5) {
             float3 environment=sky_radiance(direction);
             diffuse+=weight_d*environment;specular+=weight_s*environment;break;
@@ -403,24 +411,31 @@ void main() {
     RayDesc ray={origin,frame.camera.x>0.5?0.001:frame.settings.w/max(dot(direction,forward),0.001),direction,frame.camera.y};
     TraceRay(scene,RAY_FLAG_NONE,1,0,0,0,ray,primary);
     guide_image[pixel]=float4(primary.normal,primary.hit>0.5?dot(primary.position-eye,forward):0.0);
-    indirect_image[pixel]=0.0;shadow_image0[pixel]=0.0;shadow_image1[pixel]=0.0;
+    indirect_image[pixel]=0.0;shadow_image0[pixel]=0.0;shadow_image1[pixel]=0.0;path_distance[pixel]=0.0;path_direct_specular[pixel]=0.0;
     if(primary.hit<0.5)return;
-    float3 diffuse=0.0,specular=0.0;
+    float3 diffuse=0.0,specular=0.0,direct_specular=0.0;
+    float diffuse_distance=0.0,specular_distance=65504.0;
     uint samples=clamp(uint(frame.settings.y),1u,16u);
     for(uint i=0;i<samples;i++) {
         PathSampler sampler=path_sampler(uint(frame.settings.x)*samples+i,pixel.x+pixel.y*uint(size.x));
-        float3 d,s;path_sample(primary,-direction,sampler,d,s);diffuse+=d;specular+=s;
+        float3 d,s,direct_s;float2 distance;path_sample(primary,-direction,sampler,d,s,distance,direct_s);diffuse+=d;specular+=s;direct_specular+=direct_s;
+        diffuse_distance+=distance.x;
+        // NRD's specular tracking uses the minimum valid first-bounce distance
+        // across samples. The primary camera hit must never enter this value.
+        if(distance.y>0.0)specular_distance=min(specular_distance,distance.y);
     }
     // Raw diffuse alpha is unused by lighting. Encode the stable placement ID
     // in normal FP16 bit patterns: all 4096 instances remain exact, unlike
     // storing integers above 2048 directly. The filter carries identity onward.
     indirect_image[pixel]=float4(diffuse/float(samples),f16tof32(0x3c00u+primary.instance_id));
     shadow_image0[pixel]=float4(specular/float(samples),1.0);
+    path_direct_specular[pixel]=float4(direct_specular/float(samples),0.0);
     // Every integer up to 2047 is exact in the RGBA16F guide. Separate 6/5-bit
     // fields avoid aliases such as (roughness .2, metalness .4) and (.6, .2).
     uint surface=uint(round(saturate(primary.roughness)*63.0))|
         (uint(round(saturate(primary.metalness)*31.0))<<6u);
     shadow_image1[pixel]=float4(primary.albedo,float(surface));
+    path_distance[pixel]=float2(diffuse_distance/float(samples),specular_distance==65504.0?0.0:specular_distance);
 }
 #elif defined(PATH_MISS)
 [shader("miss")]

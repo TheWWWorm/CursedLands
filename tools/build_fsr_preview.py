@@ -115,6 +115,8 @@ def build(args):
         native = out / "src/native/bin"
         native.mkdir(parents=True, exist_ok=True)
         shutil.copy2(game / "src/native/bin/libmod_lua.dll", native)
+        shutil.copy2(game / "src/native/bin/libpath_nrd.dll", native)
+        shutil.copy2(game / "src/native/NATIVE_NRD_NOTICES.txt", out)
         for name in ("mods.md", "mod-formulas.md", "versioning.md"):
             shutil.copy2(source / "docs" / name, out / "docs" / name)
         for name in ("expedition-xp", "quest-focus", "field-medicine", "quick-recovery"):

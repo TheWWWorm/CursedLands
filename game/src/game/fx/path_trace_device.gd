@@ -4,6 +4,10 @@ extends "res://src/game/fx/scene_raytrace_device.gd"
 const PATH_FILTER = preload("res://src/game/fx/shaders/path_trace_filter.glsl")
 const Emitters = preload("res://src/game/fx/path_trace_emitters.gd")
 const Terrain = preload("res://src/game/fx/path_trace_terrain.gd")
+const Nrd = preload("res://src/game/fx/path_trace_nrd.gd")
+var nrd := Nrd.new()
+var nrd_active := false
+var _nrd_failed := false
 const SPATIAL = preload("res://src/game/fx/shaders/path_trace_spatial.glsl")
 var _spatial_shader := RID()
 var _spatial_pipeline := RID()
@@ -47,6 +51,13 @@ func shader_stage_path(stage: int) -> String:
 	return super.shader_stage_path(stage)
 func frame_bytes() -> int: return 752
 func filter_spirv() -> RDShaderSPIRV: return PATH_FILTER.get_spirv()
+func raw_formats() -> Array[int]:
+	var formats := super.raw_formats();formats.append(RenderingDevice.DATA_FORMAT_R16G16_SFLOAT)
+	formats.append(RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT);return formats
+func _ray_bindings(raw: Array[RID],sampler: RID) -> Array[RDUniform]:
+	var bindings := super._ray_bindings(raw,sampler)
+	bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,18,[raw[4]]))
+	bindings.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,19,[raw[5]]));return bindings
 func filter_auxiliary_formats() -> Array[int]:
 	return [RenderingDevice.DATA_FORMAT_R16G16_SFLOAT,RenderingDevice.DATA_FORMAT_R16G16_SFLOAT,
 		RenderingDevice.DATA_FORMAT_R16_SFLOAT,RenderingDevice.DATA_FORMAT_R16_SFLOAT]
@@ -222,8 +233,27 @@ func _release_spatial() -> void:
 
 func _targets(size: Vector2i,sampler: RID) -> bool:
 	# Descriptors must retire before the textures they refer to during resize.
-	if size!=_size:_release_spatial()
+	if size!=_size:_release_spatial();nrd.release_targets()
 	return super._targets(size,sampler)
+
+func reconstruct(frame: PackedByteArray) -> bool:
+	var previous := nrd_active
+	var failed_now := false
+	nrd_active=false
+	if nrd.available and not _nrd_failed and frame.decode_float(145*4)<=8.0:
+		if not previous:nrd.reset()
+		if nrd.configure(_rd,_size,_raw,_history,_frame,_motion) and nrd.render(frame):
+			nrd_active=true
+			if _profile_stages:_rd.capture_timestamp("Scene RT reconstruct")
+			return true
+		# Disable only this device's NRD session. Reset the custom history before
+		# using its output; never interpret NRD's private history as custom history.
+		_nrd_failed=true;failed_now=true;nrd.dispose()
+		print("PT NRD unavailable; using custom reconstruction")
+	if previous or failed_now:
+		frame.encode_float(82*4,0.0)
+		if not _upload_frame(frame):return false
+	return super.reconstruct(frame)
 
 func filter_presented(frame_data: PackedByteArray) -> bool:
 	# Still-scene convergence uses the exact temporal estimate. Responsive
@@ -264,7 +294,7 @@ func filter_presented(frame_data: PackedByteArray) -> bool:
 	return true
 
 func dispose() -> void:
-	if _rd!=null:_release_ray_set();_release_spatial()
+	if _rd!=null:_release_ray_set();_release_spatial();nrd.dispose()
 	super.dispose()
 	_spatial_shader=RID();_spatial_pipeline=RID()
 	emitters = Emitters.new()
