@@ -93,7 +93,8 @@ def build(args):
         shutil.copy2(notice, out)
     for launcher in (source / "tools/windows").glob("Play-*.cmd"):
         shutil.copy2(launcher, out)
-    for relative in ("docs/integrations/fsr-experiment.md", "docs/branding/graphics-sdk-attribution.md",
+    for relative in ("docs/integrations/fsr-experiment.md", "docs/integrations/nvidia-dlss.md",
+                     "docs/integrations/path-tracing-nrd.md", "docs/branding/graphics-sdk-attribution.md",
                      "docs/branding/graphics-sdk-assets.json", f"docs/releases/{version}.md",
                      "docs/validation/fsr-only.md", "docs/validation/fsr-only.json"):
         if (source / relative).exists():
@@ -106,10 +107,10 @@ def build(args):
         shutil.copy2(record, out / "docs/validation" / record.name)
     shutil.copy2(source / "docs/releases" / (version + ".md"), out / "RELEASE-NOTES.md")
     (out / "README.txt").write_text(
-        "Cursed Lands — AMD FSR and formula mods\n\n"
-        "EN: Run CursedLands.exe. Select Forward+ (Direct3D 12) under Options > Screen > Renderer, restart if needed, then open AMD FSR. Upscaling and frame generation start Off. Import the example mods through Mods and rules.\n"
-        "RU: Запустите CursedLands.exe. Выберите Forward+ (Direct3D 12) в Настройки > Экран > Рендерер, при необходимости перезапустите игру и откройте AMD FSR. Масштабирование и генерация кадров по умолчанию выключены. Импортируйте примеры модов через Моды и правила.\n"
-        "DE: Starten Sie CursedLands.exe. Wählen Sie Forward+ (Direct3D 12) unter Optionen > Bildschirm > Renderer, starten Sie bei Bedarf neu und öffnen Sie AMD FSR. Skalierung und Frame-Generierung sind zunächst aus. Importieren Sie die Beispiel-Mods über Mods und Regeln.\n\n"
+        "Cursed Lands — graphics options and formula mods\n\n"
+        "EN: Run CursedLands.exe. Select Forward+ (Direct3D 12) under Options > Screen > Renderer, restart if needed, then choose Anti-aliasing, Upscale quality and Frame generation on Screen. SDK upscaling and frame generation start Off. Import the example mods through Mods and rules.\n"
+        "RU: Запустите CursedLands.exe. Выберите Forward+ (Direct3D 12) в Настройки > Экран > Рендерер, при необходимости перезапустите игру, затем выберите Сглаживание, Качество масштабирования и Генерация кадров в разделе Экран. Масштабирование SDK и генерация кадров по умолчанию выключены. Импортируйте примеры модов через Моды и правила.\n"
+        "DE: Starten Sie CursedLands.exe. Wählen Sie Forward+ (Direct3D 12) unter Optionen > Bildschirm > Renderer, starten Sie bei Bedarf neu und wählen Sie dann Kantenglättung, Skalierungsqualität und Frame-Generierung unter Bildschirm. SDK-Skalierung und Frame-Generierung sind zunächst aus. Importieren Sie die Beispiel-Mods über Mods und Regeln.\n\n"
         "docs/integrations/fsr-experiment.md\ndocs/mod-formulas.md\n"
         "Runtime / Библиотеки / Laufzeit: Microsoft Visual C++ v14 x64\n"
         "https://aka.ms/vc14/vc_redist.x64.exe\n", encoding="utf-8")

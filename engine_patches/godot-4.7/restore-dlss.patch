@@ -277,7 +277,7 @@ diff --git a/drivers/streamline/streamline.cpp b/drivers/streamline/streamline.c
 new file mode 100644
 --- /dev/null
 +++ b/drivers/streamline/streamline.cpp
-@@ -0,0 +1,355 @@
+@@ -0,0 +1,359 @@
 +/**************************************************************************/
 +/*  streamline.cpp                                                        */
 +/**************************************************************************/
@@ -611,6 +611,10 @@ new file mode 100644
 +	out["fg_supported"] = ctx.initialized && ctx.streamline_capabilities.dlss_g_available && !ctx.fg_failed.get();
 +	out["reflex_supported"] = ctx.initialized && ctx.streamline_capabilities.reflex_available;
 +	out["enhanced_barriers"] = ctx.enhanced_barriers;
++	out["sr_support_result"] = (uint32_t)ctx.sr_support_result;
++	out["fg_support_result"] = (uint32_t)ctx.fg_support_result;
++	out["sr_support_reason"] = StreamlineContext::result_to_string(ctx.sr_support_result);
++	out["fg_support_reason"] = StreamlineContext::result_to_string(ctx.fg_support_result);
 +	out["dlss_evaluations"] = ctx.dlss_evaluations.get();
 +	out["presented_frames"] = ctx.presented_frames.get();
 +	out["game_presents"] = ctx.game_presents.get();
@@ -710,7 +714,7 @@ diff --git a/drivers/streamline/streamline_context.cpp b/drivers/streamline/stre
 new file mode 100644
 --- /dev/null
 +++ b/drivers/streamline/streamline_context.cpp
-@@ -0,0 +1,404 @@
+@@ -0,0 +1,409 @@
 +/**************************************************************************/
 +/*  streamline_context.cpp                                                */
 +/**************************************************************************/
@@ -854,8 +858,10 @@ new file mode 100644
 +
 +static void _enumerate_support(StreamlineContext *self, sl::AdapterInfo &adapterInfo, StreamlineCapabilities &outSupport) {
 +	if (self->initialized && self->enhanced_barriers && self->slIsFeatureSupported) {
-+		outSupport.dlss_available = self->slIsFeatureSupported(sl::kFeatureDLSS, adapterInfo) == sl::Result::eOk;
-+		outSupport.dlss_g_available = self->slIsFeatureSupported(sl::kFeatureDLSS_G, adapterInfo) == sl::Result::eOk;
++		self->sr_support_result = self->slIsFeatureSupported(sl::kFeatureDLSS, adapterInfo);
++		self->fg_support_result = self->slIsFeatureSupported(sl::kFeatureDLSS_G, adapterInfo);
++		outSupport.dlss_available = self->sr_support_result == sl::Result::eOk;
++		outSupport.dlss_g_available = self->fg_support_result == sl::Result::eOk;
 +		outSupport.dlss_rr_available = self->slIsFeatureSupported(sl::kFeatureDLSS_RR, adapterInfo) == sl::Result::eOk;
 +		outSupport.reflex_available = self->slIsFeatureSupported(sl::kFeatureReflex, adapterInfo) == sl::Result::eOk;
 +		outSupport.pcl_available = self->slIsFeatureSupported(sl::kFeaturePCL, adapterInfo) == sl::Result::eOk;
@@ -1075,9 +1081,12 @@ new file mode 100644
 +	pref.projectId = "ad1270d1-4d98-4b22-9a20-3098d2c800c7";
 +	pref.flags = sl::PreferenceFlags::eDisableCLStateTracking | sl::PreferenceFlags::eUseFrameBasedResourceTagging;
 +
-+	if (bool(GLOBAL_GET("rendering/streamline/streamline_log"))) {
++	if (bool(GLOBAL_GET("rendering/streamline/streamline_log")) || OS::get_singleton()->is_stdout_verbose()) {
 +		pref.logLevel = sl::LogLevel::eVerbose;
-+		pref.showConsole = true;
++		pref.showConsole = false;
++		pref.logMessageCallback = [](sl::LogType p_type, const char *p_message) {
++			print_line("Streamline: " + String::utf8(p_message));
++		};
 +	} else {
 +		pref.logLevel = sl::LogLevel::eOff;
 +		pref.showConsole = false;
@@ -1119,7 +1128,7 @@ diff --git a/drivers/streamline/streamline_context.h b/drivers/streamline/stream
 new file mode 100644
 --- /dev/null
 +++ b/drivers/streamline/streamline_context.h
-@@ -0,0 +1,142 @@
+@@ -0,0 +1,144 @@
 +/**************************************************************************/
 +/*  streamline_context.h                                                  */
 +/**************************************************************************/
@@ -1165,6 +1174,8 @@ new file mode 100644
 +	SafeNumeric<uint64_t> game_presents;
 +	SafeNumeric<uint64_t> presented_frames{ 0 };
 +	SafeNumeric<uint32_t> last_error{ 0 };
++	sl::Result sr_support_result = sl::Result::eErrorNotInitialized;
++	sl::Result fg_support_result = sl::Result::eErrorNotInitialized;
 +	SafeNumeric<uint32_t> fg_status{ 0 };
 +	SafeNumeric<uint32_t> fg_active{ 0 };
 +	SafeNumeric<uint32_t> sr_failed{ 0 };

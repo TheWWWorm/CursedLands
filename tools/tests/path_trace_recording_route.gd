@@ -116,6 +116,7 @@ func update_view() -> void:
 
 func stage(label: String,seconds: float,predicate:=Callable()) -> void:
 	var wall:=[];var cpu:=[];var generations:=[]
+	var dlss_before:=int(RtxGraphics.bridge().call("get_status").get("dlss_evaluations",0)) if RtxGraphics.bridge()!=null else 0
 	gpu_samples.clear();sampling=true
 	var start:=Time.get_ticks_msec();var previous:=Time.get_ticks_usec();var last_track:=start-1000
 	while Time.get_ticks_msec()-start<seconds*1000:
@@ -140,6 +141,11 @@ func stage(label: String,seconds: float,predicate:=Callable()) -> void:
 		"world_time":s.world.time,"generation":rt.stats.get("snapshot_generation",0),"distance":route_distance,
 		"vram":Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED),"wound_layers":UnitWounds._wound_layers.size(),
 		"wound_jobs":UnitWounds._jobs.size(),"nrd":rt.device.get("nrd_active") if rt.device!=null else false}
+	row["sampled_frames"]=wall.size()
+	row["dlss_evaluations"]=int(row.dlss.get("dlss_evaluations",0))-dlss_before
+	if OS.get_cmdline_user_args().has("--route-dlss"):
+		check(row.dlss.get("sr_supported",false) and int(row.dlss.get("last_error",-1))==0,"DLSS remains available: "+label)
+		check(row.dlss_evaluations>=wall.size()-2,"DLSS evaluates rendered frames: "+label)
 	var marks: GroundMarks=s.world.ground_marks
 	if marks:row["marks"]={"blood":marks.blood_marks.size(),"feet":marks.foot_marks.size(),"fire":marks.fire_marks.size()}
 	route_results.append(row);print("RECORDING_STAGE ",JSON.stringify(row))
