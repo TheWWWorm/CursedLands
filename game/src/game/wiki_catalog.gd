@@ -5,7 +5,7 @@ extends RefCounted
 ## Pages are generated on demand as well-formed HTML fragments. WikiHtml renders
 ## the same fragments in the game without a platform-specific browser dependency.
 
-const CATEGORIES := ["All pages", "Characters", "Allods", "Maps", "Quests", "Items", "Spells", "Creatures", "Materials", "Runes", "Game mechanics", "Cut content"]
+const CATEGORIES := ["All pages", "Getting started", "Characters", "Allods", "Maps", "Quests", "Items", "Spells", "Creatures", "Materials", "Runes", "Game mechanics", "Cut content"]
 const DAMAGE_TYPES := ["Piercing", "Slashing", "Crushing", "Fire", "Acid", "Lightning", "General"]
 const ITEM_TYPES := {
 	"weapon_sword": "Swords", "weapon_axe": "Axes", "weapon_dagger": "Daggers",
@@ -28,6 +28,7 @@ const MECHANICS := {
 	"planning": "Build planner",
 }
 
+var public_export := false
 var entries := {}
 var ordered: Array[String] = []
 var rules := {}
@@ -65,6 +66,7 @@ func rebuild() -> void:
 	_quests.clear()
 	_quest_zones.clear()
 	_add("home", RemakeText.t("Game wiki"), "Game mechanics", "home", "")
+	refresh_guides()
 	for key: String in MECHANICS:
 		_add("mechanics/" + key, RemakeText.t(MECHANICS[key]), "Game mechanics", "mechanics", key)
 	for table: String in Items.TABLES:
@@ -536,6 +538,8 @@ func page(key: String, variant := "") -> Dictionary:
 					preview.caption = RemakeText.t("Location: %s") % entries["map/" + location.uri_encode()].title
 					break
 		"mechanics": body = _mechanics(entry.value)
+		"guide": body = TutorialGuide.article(entry.value, public_export)
+		"guide_recent": body = _recent_hints()
 		"cut", "cut_figure", "cut_palette", "figure":
 			var section := cut.page(entry)
 			body = section.body
@@ -707,6 +711,7 @@ func _home() -> String:
 		rows.append([link("category/" + category.uri_encode(), RemakeText.t(category)), str(search("", category).size())])
 	out += table_html([RemakeText.t("Contents"), RemakeText.t("Pages")], rows)
 	out += heading(RemakeText.t("Game mechanics"))
+	refresh_guides()
 	for key: String in MECHANICS: out += paragraph(link("mechanics/" + key, RemakeText.t(MECHANICS[key])), true)
 	out += paragraph(RemakeText.t("Creature pages show database prototypes. Map scripts, difficulty, equipment, temporary effects and co-op scaling can change a creature encountered in play."))
 	return out
@@ -1039,3 +1044,26 @@ static func table_html(headers: Array, rows: Array) -> String:
 		for cell in row: out += "<td>%s</td>" % cell
 		out += "</tr>"
 	return out + "</table>"
+
+
+## New encounters can arrive while the encyclopedia index is cached.
+func refresh_guides() -> void:
+	var ids := TutorialGuide.TOPICS.keys()
+	if not public_export:
+		_add("guide/recent", RemakeText.t("Recent hints"), "Getting started", "guide_recent", "")
+		if not ordered.has("guide/recent"): ordered.append("guide/recent")
+		for id in TutorialProgress.recent():
+			if not ids.has(id): ids.append(id)
+	for id: String in ids:
+		if id in TutorialGuide.CONTEXT_ONLY and (public_export or not TutorialProgress.has(id)): continue
+		if not TutorialGuide.available(id): continue
+		var key := "guide/" + id
+		_add(key, TutorialGuide.title(id), "Getting started", "guide", id)
+		if not ordered.has(key): ordered.append(key)
+
+func _recent_hints() -> String:
+	var html := ""
+	for id: String in TutorialProgress.recent():
+		var key := "guide/" + id
+		if entries.has(key): html += paragraph(link(key, TutorialGuide.title(id)), true)
+	return html if html else paragraph(RemakeText.t("No hints yet. Browse Getting started to learn at your own pace."))

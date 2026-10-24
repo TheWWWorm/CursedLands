@@ -233,7 +233,7 @@ func _named(button_name: String, pressed: bool) -> void:
 	var a := String(bindings.get(button_name, ""))
 	if a == "":
 		return
-	# A window in the "pad_dismiss" group (the tutorial) takes a press it
+	# A window in the "pad_dismiss" group takes a press it
 	# answers: it never reaches the field or the pointer, nor does its release.
 	if pressed and not _down.has(a):
 		for n in get_tree().get_nodes_in_group("pad_dismiss"):

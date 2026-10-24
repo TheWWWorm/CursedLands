@@ -320,6 +320,7 @@ const OPTION_GROUPS := ["video", "sound", "sens", "game", "select", "actions", "
 ## Labels and tips of the remake's own option rows (texts.res has none).
 const REMAKE_OPTIONS := {
 	"r_scene_rt": ["Ray tracing / Path tracing", "Ray-traced shadows, indirect light and path tracing for terrain, objects and characters. Requires a ray-tracing GPU with DX12 or Vulkan Forward+. Conventional lighting is used while loading and outside the nearby RT scene."],
+	"show_tutorial": ["Contextual hints", "Show brief hints when useful. They fade after a few seconds or the relevant action, without pausing. The guide stays available when hints are off."],
 	"rt_shadows": ["RT shadows (test)", "Trace soft sun shadows and shadows from up to seven nearby point lights. Respects the character and object shadow switches. Other lights keep conventional shadows. Costs additional GPU time."],
 	"rt_gi": ["RT indirect light (test)", "Trace one diffuse bounce from the sun, nearby lights and emissive surfaces, with sky visibility. Replaces flat ambient light on supported nearby surfaces. Experimental: moving light can be noisy. This is not multi-bounce path tracing."],
 	"q_rt_lighting": ["RT lighting quality", "Low uses 50 % width and height with one sample, Medium 75 % with two, High 100 % with four. Path tracing follows the 3D render resolution, including Render scale and FSR; RT lighting follows the window. Depth-aware reconstruction smooths the result. Higher quality costs more GPU time. Independent of water reflection quality."],

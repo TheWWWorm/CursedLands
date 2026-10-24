@@ -293,6 +293,10 @@ function home(content){
   const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text)n.textContent=text;if(cls)n.className=cls;return n;};
   content.replaceChildren(el('h1',strings.fieldGuide),el('p',strings.homeIntro,'home-intro'));
   const paths=el('div','','home-paths');
+  if(catalog.entries.some(e=>e.category==='Getting started')){
+    const a=el('a');a.href=href('guide/zt1');a.append(art({category:'Game mechanics'},72));
+    const text=el('span');text.append(el('strong',strings.gettingStarted),el('span',strings.gettingStartedHelp));a.append(text);paths.append(a);
+  }
   for(const [category,label,help] of [['Characters','meetCharacters','meetCharactersHelp'],['Allods','discoverAllods','discoverAllodsHelp'],['Items','findEquipment','findEquipmentHelp'],['Maps','exploreMaps','exploreMapsHelp'],['Quests','followQuest','followQuestHelp'],['Spells','buildSpell','buildSpellHelp']]) {
     const a=el('a');a.href=href('home');a.dataset.category=category;
     const example=catalog.entries.find(e=>e.category===category&&e.listed!==false&&e.image);

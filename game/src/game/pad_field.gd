@@ -1045,7 +1045,9 @@ func _system_entries() -> Array:
 	add.call("log", _orig("action_w_text1", "Messages"))
 	add.call("quicksave", _orig("action_quicksave", "Quick save"), "", s.can_manage_game())
 	add.call("quickload", _orig("action_quickload", "Quick load"), "", s.can_manage_game())
-	add.call("tutorial", _orig("action_tutorial_script", "Tutorial"))
+	add.call("tutorial", RemakeText.t("Help"))
+	add.call("guide", RemakeText.t("Guide"))
+	if game.hud._tutorial.visible: add.call("hide_hint", RemakeText.t("Hide hint"))
 	if s.multiplayer_game:
 		add.call("chat", RemakeText.t("Chat"))
 		if s.can_manage_game():
@@ -1306,6 +1308,8 @@ func _system(id: String) -> void:
 		"quicksave": game._key_action("quicksave")
 		"quickload": game._key_action("quickload")
 		"tutorial": game._key_action("tutorial_script")
+		"guide": hud._tutorial.open_guide()
+		"hide_hint": hud._tutorial.close()
 		"chat": hud.chat_line.open()
 		"players": hud.open_players()
 

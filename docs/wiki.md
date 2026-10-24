@@ -8,6 +8,12 @@ the pointer, it opens the wiki home page. Rebind **Wiki under pointer** under
 Existing custom keys are preserved. Escape returns to the previous screen.
 Single-player gameplay pauses while browsing; online gameplay continues.
 
+**Getting started** holds the concise tutorial lessons and original reference.
+**Recent hints** restores lessons encountered in the current campaign. Automatic
+hints stay nonblocking; opening this full guide is an explicit action. See
+[contextual tutorials](design/contextual-tutorials.md) for timing and controller
+help controls.
+
 From the home page, choose a category,
 search the localized page names, and click an entry. Each item has one page;
 its **Material / version** selector switches the statistics and model on that page.

@@ -673,7 +673,7 @@ func screen_tutorial(forced := false) -> void:
 func _unhandled_key_input(e: InputEvent) -> void:
 	if not is_visible_in_tree() or not (e is InputEventKey and e.pressed):
 		return
-	if _tutorial.visible:
+	if _tutorial.blocks_input():
 		return   # the tutorial window has the keys
 	if not e.echo and EIKeymap.event_action(e) == "tutorial_script":
 		screen_tutorial(true)   # (1)
@@ -716,7 +716,7 @@ func _sound(name: String) -> void:
 
 
 func wiki_context() -> Dictionary:
-	if _tutorial.visible: return {}
+	if _tutorial.blocks_input(): return {}
 	var p := get_local_mouse_position()
 	var hit := _hit(p)
 	if not hit.is_empty() and hit[0] == "row":

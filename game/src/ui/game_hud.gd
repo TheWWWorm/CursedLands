@@ -229,6 +229,7 @@ func _ready() -> void:
 	_side_quests.hud = self
 	_add_ui(_side_quests)
 	_tutorial = TutorialPanel.new()
+	_tutorial.hud = self
 	_add_ui(_tutorial)
 	_movie = MoviePlayer.new()
 	_movie.hud = self
@@ -619,7 +620,7 @@ func _quest_field_top() -> bool:
 	if not _field_on or _esc_open or game.session.loading_game or quests_screen != null:
 		return false
 	for panel in [_menu, _dialog, _inventory, _journal, _wiki, _side_quests, _travel,
-			_options, _save_load, _movie, _tutorial, _game_over_box, _quit_box,
+			_options, _save_load, _movie, _game_over_box, _quit_box,
 			_players_panel, _death_notice]:
 		if is_instance_valid(panel) and panel.visible:
 			return false
@@ -832,6 +833,7 @@ func _show_coop_game_over(event: Dictionary = {}) -> void:
 
 
 func _close_for_host_load(preserve_movie := false) -> void:
+	_tutorial.reset_context()
 	dismiss_death_notice()
 	if MessageBox.is_up(_item_info_box): _item_info_box.queue_free()
 	_game_over_load = false
@@ -842,7 +844,7 @@ func _close_for_host_load(preserve_movie := false) -> void:
 		_save_load.loading = false
 		_save_load._close()
 	_close_menu()
-	for p in [_dialog, _inventory, _journal, _wiki, _side_quests, _tutorial, _movie, _options]:
+	for p in [_dialog, _inventory, _journal, _wiki, _side_quests, _movie, _options]:
 		if p == _movie and preserve_movie:
 			continue
 		if is_instance_valid(p):
@@ -1247,7 +1249,7 @@ func _panel_open() -> bool:
 		return true
 	if quests_screen != null:
 		return true
-	for panel in [_inventory, _journal, _wiki, _side_quests, _tutorial, _movie, _options, _save_load,
+	for panel in [_inventory, _journal, _wiki, _side_quests, _movie, _options, _save_load,
 			_game_over_box, _quit_box, _players_panel, _item_info_box]:
 		if is_instance_valid(panel) and panel.visible:
 			return true
@@ -1333,10 +1335,10 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	# Preserve an existing direct-control binding on the same physical key.
 	if game.direct and game.direct.active() and not EIKeymap.direct_event(event).is_empty(): return
 	# These dialogs own their keys, including rebinding and text entry.
-	for panel in [_options, _save_load, _movie, _tutorial, _dialog, _players_panel, _quit_box, _game_over_box]:
+	for panel in [_options, _save_load, _movie, _dialog, _players_panel, _quit_box, _game_over_box]:
 		if is_instance_valid(panel) and panel.visible: return
 	if game.session.loading_game: return
-	if is_instance_valid(quests_screen) and quests_screen._tutorial.visible: return
+	if is_instance_valid(quests_screen) and quests_screen._tutorial.blocks_input(): return
 	if _inventory.visible and _inventory._camp.tutorial_visible(): return
 	var context := WikiContext.hovered(self)
 	if context.is_empty() and not _panel_open() and not _esc_open and get_viewport().gui_get_hovered_control() == null:

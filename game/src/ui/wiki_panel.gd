@@ -277,6 +277,7 @@ func _select_campaign(id: String) -> void:
 			result.rebuild()
 			return result)
 	catalog = _catalogs[id]
+	_source.read(func(): catalog.refresh_guides())
 	_history.clear()
 	_history_at = -1
 	current = "home"
@@ -330,6 +331,8 @@ func navigate(key: String, remember := true, variant := "") -> void:
 
 
 func _navigate(key: String, remember: bool, variant: String) -> void:
+	if catalog: catalog.refresh_guides()
+	if key.begins_with("guide/") and key != "guide/recent": TutorialProgress.record(key.trim_prefix("guide/"), "read")
 	if catalog == null or not catalog.entries.has(key): return
 	var highlight := ""
 	if catalog.entries[key].kind == "map":

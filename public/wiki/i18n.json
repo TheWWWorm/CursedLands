@@ -215,7 +215,9 @@
     "dataVersion": "Reference data: %s",
     "cutContent": "Cut content",
     "cutContentHelp": "Models, colours, creatures and equipment that exist in the data but not in the campaign.",
-    "appearance": "Appearance"
+    "appearance": "Appearance",
+    "gettingStarted": "Getting started",
+    "gettingStartedHelp": "Short lessons, controls and the full tutorial reference."
   },
   "ru": {
     "encyclopedia": "Энциклопедия",
@@ -433,7 +435,9 @@
     "dataVersion": "Версия справочных данных: %s",
     "cutContent": "Вырезанный контент",
     "cutContentHelp": "Модели, окраски, существа и снаряжение, которые есть в данных, но не в кампании.",
-    "appearance": "Облик"
+    "appearance": "Облик",
+    "gettingStarted": "Начало игры",
+    "gettingStartedHelp": "Короткие уроки, управление и полный справочник обучения."
   },
   "de": {
     "encyclopedia": "Enzyklopädie",
@@ -651,6 +655,8 @@
     "dataVersion": "Referenzdaten: %s",
     "cutContent": "Entfernte Inhalte",
     "cutContentHelp": "Modelle, Färbungen, Kreaturen und Ausrüstung, die in den Daten, aber nicht in der Kampagne vorkommen.",
-    "appearance": "Aussehen"
+    "appearance": "Aussehen",
+    "gettingStarted": "Erste Schritte",
+    "gettingStartedHelp": "Kurze Lektionen, Steuerung und die vollständige Anleitung."
   }
 }

@@ -42,6 +42,7 @@ func _ready() -> void:
 		var code := String(row.code).to_lower()
 		if GameData.text("spell " + code).strip_edges().is_empty(): unnamed_spells[code] = true
 	catalog = WikiCatalog.new()
+	catalog.public_export = true
 	catalog.rules = {"armor_formula": 0}
 	catalog.rebuild()
 	var placeholder_names := catalog._placeholder_names

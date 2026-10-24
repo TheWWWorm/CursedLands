@@ -25,7 +25,7 @@ func _ready() -> void:
 	for archive: EIResArchive in [GameData.texts_lmp, GameData.texts]:
 		if archive == null: continue
 		for key: String in archive.entries:
-			if key.get_slice(" ", 0) in ["spell", "modifier", "instr", "armor", "weapon", "qitem", "questitem", "litem", "material", "unit", "perk", "pers", "string", "matshort"]:
+			if key.get_slice(" ", 0) in ["tutorial", "tutor", "spell", "modifier", "instr", "armor", "weapon", "qitem", "questitem", "litem", "material", "unit", "perk", "pers", "string", "matshort"]:
 				text[key] = GameData.text(key)
 	var data := {"campaign": GameData.campaign_id, "language": RemakeText.lang, "used": used, "entries": catalog.entries, "texts": text}
 	var file := FileAccess.open(output, FileAccess.WRITE)
