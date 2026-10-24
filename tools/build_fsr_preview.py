@@ -121,6 +121,9 @@ def build(args):
         if (game / "src/native/path_nrd.cfg").exists():
             shutil.copy2(game / "src/native/bin/libpath_nrd.dll", native)
             shutil.copy2(game / "src/native/NATIVE_NRD_NOTICES.txt", out)
+            nrd_notices = out / "licenses/NVIDIA/NRD"
+            nrd_notices.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(game / "src/native/NATIVE_NRD_NOTICES.txt", nrd_notices)
         for name in ("mods.md", "mod-formulas.md", "versioning.md"):
             shutil.copy2(source / "docs" / name, out / "docs" / name)
         for name in ("expedition-xp", "quest-focus", "field-medicine", "quick-recovery"):

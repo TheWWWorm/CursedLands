@@ -1934,7 +1934,7 @@ diff --git a/main/main.cpp b/main/main.cpp
  	fidelityfx = memnew(FidelityFX);
  	FidelityFX::register_singleton();
  
-@@ -2682,6 +2688,18 @@
+@@ -2682,6 +2688,17 @@
  	}
  #endif
  
@@ -1944,8 +1944,7 @@ diff --git a/main/main.cpp b/main/main.cpp
 +	graphics_settings.load("user://settings.cfg");
 +	bool request_dlss = int(graphics_settings.get_value("options", "rtx_upscaling", 0)) > 0 ||
 +			OS::get_singleton()->get_cmdline_user_args().find("--experimental-rtx");
-+	if (display_driver != "headless" && rendering_method == "forward_plus" && rendering_driver == "d3d12" && request_dlss &&
-+			!OS::get_singleton()->get_cmdline_user_args().find("--experimental-fsr")) {
++	if (display_driver != "headless" && rendering_method == "forward_plus" && rendering_driver == "d3d12" && request_dlss) {
 +		Streamline::get_singleton()->emit_marker(STREAMLINE_MARKER_INITIALIZE_D3D12);
 +	}
 +	}
@@ -1953,7 +1952,7 @@ diff --git a/main/main.cpp b/main/main.cpp
  
  	if (use_custom_res) {
  		if (!force_res) {
-@@ -2969,6 +2987,10 @@
+@@ -2969,6 +2986,10 @@
  	if (fidelityfx) {
  		memdelete(fidelityfx);
  		fidelityfx = nullptr;
@@ -1964,7 +1963,7 @@ diff --git a/main/main.cpp b/main/main.cpp
  	}
  
  	EngineDebugger::deinitialize();
-@@ -4939,6 +4961,9 @@
+@@ -4939,6 +4960,9 @@
  	GodotProfileZone("Main::iteration");
  	GodotProfileZoneGroupedFirst(_profile_zone, "prepare");
  
@@ -1974,7 +1973,7 @@ diff --git a/main/main.cpp b/main/main.cpp
  
  	iterating++;
  
-@@ -5092,6 +5117,9 @@
+@@ -5092,6 +5116,9 @@
  	NavigationServer3D::get_singleton()->process(process_step * time_scale);
  #endif // NAVIGATION_3D_DISABLED
  
@@ -1984,7 +1983,7 @@ diff --git a/main/main.cpp b/main/main.cpp
  
  	GodotProfileZoneGrouped(_profile_zone, "RenderingServer::sync");
  	RenderingServer::get_singleton()->sync(); //sync if still drawing from previous frames.
-@@ -5220,6 +5248,9 @@
+@@ -5220,6 +5247,9 @@
  	}
  #endif
  
@@ -1994,7 +1993,7 @@ diff --git a/main/main.cpp b/main/main.cpp
  
  	return exit;
  }
-@@ -5360,6 +5391,10 @@
+@@ -5360,6 +5390,10 @@
  		memdelete(fidelityfx);
  		fidelityfx = nullptr;
  	}

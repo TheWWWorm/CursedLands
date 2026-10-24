@@ -37,7 +37,7 @@ func settle(frames: int) -> void:
 func sample(label: String, selection: int, moving := false) -> void:
 	GameData.options[RtxGraphics.UPSCALING] = selection
 	GameData._apply_window()
-	Engine.max_fps = 120
+	Engine.max_fps = 30
 	await settle(40)
 	var before := status()
 	var start := Time.get_ticks_usec()
