@@ -1,7 +1,7 @@
 # Gameplay regression suite
 
-`tools/parity/gameplay.py` runs 403 registered test configurations across 19
-areas, using 314 scripts. It combines existing regression programs with item,
+`tools/parity/gameplay.py` runs 404 registered test configurations across 19
+areas, using 315 scripts. It combines existing regression programs with item,
 effect, theft, crafting, side-quest, localization and travel boundary tests.
 A registration selects a script, campaign
 and arguments; some scripts are exercised in both campaigns or in several
@@ -24,7 +24,8 @@ records prepared chapter seams, native comparisons and their limits. Repeated
 
 The [focused recurring-report command](regression-checks.md) selects recent issue
 contracts and submits graphical work through GPU Lab. The October 25 changes
-registered eleven additional headless programs in this full catalog. Catalog size
+registered eleven additional gameplay programs and the performance-log check in
+this full catalog. Catalog size
 is available coverage, not a claim that every configuration was run for this patch.
 
 ## Run
@@ -32,7 +33,7 @@ is available coverage, not a claim that every configuration was run for this pat
 Requirements: Linux, Python 3.11+, Godot 4.7, and owned base-game and Lost in
 Astral installations. The regression runner itself uses only Python's standard
 library. The 58 rendered configurations also require an explicitly selected
-private X display supplied by GPU Lab; the other 345 run headlessly.
+private X display supplied by GPU Lab; the other 346 run headlessly.
 The optional original comparison additionally requires
 `tools/parity/requirements.txt` in the Python environment.
 

@@ -1,0 +1,38 @@
+{
+  "diagnostic_assertions": 42,
+  "executions": [
+    {
+      "case": "headless",
+      "log": "checks/headless.log",
+      "sha256": "949fbde414c52494a5bbdd505717f2921a41d82701312a1c2b626bce3fdb2950"
+    },
+    {
+      "case": "main-catalog",
+      "log": "checks/main-catalog.log",
+      "sha256": "99f5fd20150ace2e66ad62566a455bd3296feff47a64606f75dc6e6541be1b78"
+    },
+    {
+      "case": "rendered",
+      "log": "checks/rendered.log",
+      "sha256": "42518f9de1de09a9fa69d29fd8263efa39ad74642fb3360f9bd99f1558c2a276"
+    },
+    {
+      "case": "cost",
+      "log": "checks/cost.log",
+      "sha256": "eef02072cb814cb2cd841a629507b386b0cb50131d7950a86e59e7151f571db8"
+    }
+  ],
+  "python_tests": {
+    "gameplay_runner": 31,
+    "focused_runner": 7
+  },
+  "rendered_gpu_job": "c4c506a8cc9b493b",
+  "rendered_infrastructure_diagnostics": [
+    "ERROR: Parameter \"monitors\" is null.",
+    "ERROR: Parameter \"monitors\" is null."
+  ],
+  "production_sources": {
+    "game/src/platform/performance_log.gd": "6cdc8451ad43284a92fbc1c8b67ff41c7d46bcdde3a89a11d1a1cff15a3c638b",
+    "tools/tests/performance_log.gd": "05308a4e1656f2d98b9b1c91d260452f149d79486319c4391b773c50a749ad18"
+  }
+}

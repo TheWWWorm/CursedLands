@@ -1,0 +1,16 @@
+{
+  "batches_us_per_callback": [
+    1.13905,
+    1.14035,
+    1.14125,
+    1.1413,
+    1.1416,
+    1.1426,
+    1.1429,
+    1.1431,
+    1.14905
+  ],
+  "median_us_per_callback": 1.1416,
+  "observations": 180000,
+  "scope": "Local CPU microbenchmark, not an end-to-end FPS or target-laptop performance measurement"
+}

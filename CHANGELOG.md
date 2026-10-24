@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Include bounded frame-time and hitch statistics, camera position and rendering options in exported diagnostic logs; separate loading and background intervals.
 - Draw live attack previews toward the enemy’s current position, including running and newly revealed targets, while keeping predictive pursuit. ([#85](https://github.com/TheWWWorm/CursedLands/issues/85))
 - Keep ground deformation for snow and remove it from sand, including neighboring deformation fields and ground-cover placement.
 - Scale tutorial cards and guide/info controls with the HUD on high-resolution screens while preserving their base size.

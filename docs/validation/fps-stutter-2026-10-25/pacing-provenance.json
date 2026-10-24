@@ -1,0 +1,25 @@
+{
+  "game_commit": "c577499e",
+  "pack": {
+    "name": "all-fixes.pck",
+    "sha256": "5ae9419e6626a024bcde5c669e03fd118167c4f88a90d66e0666e64227138990"
+  },
+  "scope": "Pacing benchmark uses previously committed production changes before this diagnostic-only patch. New frame telemetry is independently tested from source.",
+  "gpu_job": "7d775bf96d6e4249",
+  "benchmark_script": "tools/benchmarks/astral_reload_pacing.gd",
+  "benchmark_sha256": "1495aba98eff7372ddf78a68ffaf4f60c2314d63cd3bbd62e3598976763b844f",
+  "fixture_script": "tools/tests/rendering_reload_fixtures.gd",
+  "fixture_sha256": "157cf9f47e1e956aea5d2157af7b745e86f4f71a98b68f9d6816e97797de3be7",
+  "settings": "pacing-config.json",
+  "engine": {
+    "name": "standard CursedLands 1.28.0 Windows release",
+    "sha256": "f949339afe15ccd5d2fc03553d8e9d9cd14d8860252b865e371357208dfd0447"
+  },
+  "fixture_saves": {
+    "descriptor-gz1h.sav": "c54b9646fe4dc7a1387d311604ef92551f39232be72079c311af3506cc2ca37d",
+    "descriptor-gz1d1.sav": "69796a84b4be2d6170335d364236c89dd955e04d0999c2a7e181f0714a3c5fc1",
+    "descriptor-bz2h.sav": "31ba30cd98d64b939aa923820d3656e99d62e4c194a7c77c284c459a8510c076",
+    "descriptor-bz5h.sav": "3056ee3d41de2fc65cb984f0883c1a8e89876b6277d7d8d47dcd992d91aff749",
+    "descriptor-gz2h.sav": "3eeee2e15df22bc7f90e6b07b12d42a7bb82e086717d8fe4ebfea4971597f737"
+  }
+}

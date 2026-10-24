@@ -359,6 +359,17 @@
       "mode": "rendered",
       "args": [],
       "min_checks": 24
+    },
+    {
+      "id": "performance_log",
+      "script": "tools/tests/performance_log.gd",
+      "summary": "PERFORMANCE_LOG_TESTS",
+      "contract": "Export brief frame stalls without mixing load/background gaps or retaining freed worlds.",
+      "issues": [],
+      "data": "base",
+      "mode": "headless",
+      "args": [],
+      "min_checks": 42
     }
   ]
 }

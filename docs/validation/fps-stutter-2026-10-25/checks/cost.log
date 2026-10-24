@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[trace 01:18:15 +5474ms] session b591417188b1: 1.28.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+PACING_COST {"batches_us_per_callback":[1.13905,1.14035,1.14125,1.1413,1.1416,1.1426,1.1429,1.1431,1.14905],"median_us_per_callback":1.1416,"observations":180000,"scope":"Local CPU microbenchmark, not an end-to-end FPS or target-laptop performance measurement"}
+[trace 01:18:15 +5888ms] clean exit

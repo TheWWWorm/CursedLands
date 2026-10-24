@@ -1,0 +1,22 @@
+[
+  "/home/llm2x/Documents/EI/local/scratchpad/outstanding-issues-20261023/wine-runtime/wine-11.20-amd64-wow64/bin/wine",
+  "/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/fps-load-pacing/runtime/CursedLands.exe",
+  "--render-thread",
+  "safe",
+  "--audio-driver",
+  "Dummy",
+  "--max-fps",
+  "30",
+  "--rendering-method",
+  "forward_plus",
+  "--rendering-driver",
+  "d3d12",
+  "--windowed",
+  "--resolution",
+  "1600x900",
+  "--",
+  "--no-movies",
+  "--ei-path=Z:/home/llm2x/Documents/EI/inspection/lost-in-astral/game",
+  "--tool=Z:/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/repo/tools/benchmarks/astral_reload_pacing.gd",
+  "--pacing-config=Z:/home/llm2x/Documents/EI/local/scratchpad/issues-110-112-20261024/fps-pacing-config.json"
+]

@@ -1,5 +1,5 @@
 extends Node
-## Make three rendering checkpoints from an explicit test save, with original maps.
+## Make rendering checkpoints from an explicit test save, with original maps.
 func _ready():
 	var seed:=""
 	for arg:String in OS.get_cmdline_user_args():
@@ -12,7 +12,7 @@ func _ready():
 	s.state=CampaignState.load_from(seed)
 	if s.state==null:get_tree().quit(2);return
 	s.state.world_time=12.0
-	for zone in ["gz1h","gz2h","bz2h"]:
+	for zone in ["gz1h","gz2h","bz2h","bz5h","gz1d1"]:
 		await s.enter_zone(zone,1,false)
 		if s.world==null or s.zone_id!=zone or s.save_game("descriptor-"+zone)!=OK:
 			printerr("FAIL rendering fixture ",zone);get_tree().quit(1);return

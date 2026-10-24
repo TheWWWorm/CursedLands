@@ -1,0 +1,20 @@
+{
+  "loads": 17,
+  "gpu": "NVIDIA GeForce RTX 3090 Ti",
+  "driver": "d3d12",
+  "native_resolution": [
+    3840,
+    2160
+  ],
+  "errors": 0,
+  "old_world_freed_every_load": true,
+  "maximum_measured_frame_ms": 35.28,
+  "frames_over_50ms": 0,
+  "frames_over_100ms": 0,
+  "new_draw_pipelines_in_measured_intervals": 0,
+  "rendering_images": [
+    "rendering/pacing-00-gz1h.png",
+    "rendering/pacing-16-gz1h.png"
+  ],
+  "run_log_sha256": "575ba4f5d33076b47b2c3f489cdd35c1d6b69c2cd2433d2626432df3df6953a8"
+}

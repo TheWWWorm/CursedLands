@@ -8372,6 +8372,24 @@
         "res/texts.res"
       ],
       "issues": []
+    },
+    {
+      "id": "settings/performance_log",
+      "category": "settings",
+      "script": "tools/tests/performance_log.gd",
+      "marker": "PERFORMANCE_LOG_TESTS",
+      "min_checks": 42,
+      "quick": true,
+      "description": "Bounded frame pacing, hitch export, scene/focus boundaries and non-retaining world diagnostics.",
+      "kind": "remake_regression",
+      "timeout": 90,
+      "args": [],
+      "campaign": "cursed_lands",
+      "required_files": [
+        "res/database.res",
+        "res/texts.res"
+      ],
+      "issues": []
     }
   ]
 }
