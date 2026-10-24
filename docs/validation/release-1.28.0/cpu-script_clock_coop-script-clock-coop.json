@@ -1,0 +1,12 @@
+{
+	"checks": 17,
+	"failures": 0,
+	"trace": [
+		{
+			"elapsed": 35.75,
+			"guest": 0.300000011920929,
+			"host": 0.300000011920929,
+			"phase": "frozen"
+		}
+	]
+}

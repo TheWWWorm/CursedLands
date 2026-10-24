@@ -1,0 +1,422 @@
+{
+	"cases": [
+		{
+			"pending": {
+				"alarms": [
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					]
+				],
+				"areas": {},
+				"briefing_queue": [],
+				"fx_auto": -1,
+				"globals": {
+					"Heroes": [
+						{
+							"h": [
+								0,
+								0
+							],
+							"u": 1500000001
+						}
+					],
+					"MC1": {
+						"o": 45622
+					},
+					"MC3": {
+						"o": 45627
+					},
+					"TCP-A": {
+						"o": 43968
+					},
+					"TCP-B": {
+						"o": 43974
+					},
+					"VSS#i#val": {
+						"h": [
+							0,
+							0
+						],
+						"u": 1500000001
+					}
+				},
+				"instances": [
+					{
+						"b": -1,
+						"f": [],
+						"i": 0,
+						"k": false,
+						"l": {
+							"this": {
+								"h": [
+									0,
+									0
+								],
+								"u": 1500000001
+							}
+						},
+						"p": 0.055,
+						"s": "VCheck#0#17",
+						"w": 0.0
+					}
+				],
+				"q_recording": "",
+				"qobjs": {},
+				"quest": "",
+				"sciences": {},
+				"script_ai": [],
+				"story_orders": [],
+				"time_fixed": false,
+				"world_done": {}
+			},
+			"root": "VTriger#0#13",
+			"spent_world_done": {
+				"VCheck#0#17": 1,
+				"VTriger#0#19": 1
+			}
+		},
+		{
+			"pending": {
+				"alarms": [
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					]
+				],
+				"areas": {},
+				"briefing_queue": [],
+				"fx_auto": -1,
+				"globals": {
+					"Heroes": [
+						{
+							"h": [
+								0,
+								0
+							],
+							"u": 1500000001
+						}
+					],
+					"MC1": {
+						"o": 45622
+					},
+					"MC3": {
+						"o": 45627
+					},
+					"TCP-A": {
+						"o": 43968
+					},
+					"TCP-B": {
+						"o": 43974
+					},
+					"VSS#i#val": {
+						"h": [
+							0,
+							0
+						],
+						"u": 1500000001
+					}
+				},
+				"instances": [
+					{
+						"b": -1,
+						"f": [],
+						"i": 0,
+						"k": false,
+						"l": {
+							"this": {
+								"h": [
+									0,
+									0
+								],
+								"u": 1500000001
+							}
+						},
+						"p": 0.055,
+						"s": "VCheck#0#295",
+						"w": 0.0
+					},
+					{
+						"b": -1,
+						"f": [],
+						"i": 0,
+						"k": false,
+						"l": {
+							"this": {
+								"h": [
+									0,
+									0
+								],
+								"u": 1500000001
+							}
+						},
+						"p": 0.055,
+						"s": "VCheck#0#300",
+						"w": 0.0
+					}
+				],
+				"q_recording": "",
+				"qobjs": {},
+				"quest": "",
+				"sciences": {},
+				"script_ai": [],
+				"story_orders": [],
+				"time_fixed": false,
+				"world_done": {}
+			},
+			"root": "VTriger#0#296",
+			"spent_world_done": {
+				"VCheck#0#295": 1,
+				"VTriger#0#298": 1
+			}
+		},
+		{
+			"pending": {
+				"alarms": [
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					]
+				],
+				"areas": {},
+				"briefing_queue": [],
+				"fx_auto": -1,
+				"globals": {
+					"Heroes": [
+						{
+							"h": [
+								0,
+								0
+							],
+							"u": 1500000001
+						}
+					],
+					"MC1": {
+						"o": 45622
+					},
+					"MC3": {
+						"o": 45627
+					},
+					"TCP-A": {
+						"o": 43968
+					},
+					"TCP-B": {
+						"o": 43974
+					},
+					"VSS#i#val": {
+						"h": [
+							0,
+							0
+						],
+						"u": 1500000001
+					}
+				},
+				"instances": [
+					{
+						"b": -1,
+						"f": [],
+						"i": 0,
+						"k": false,
+						"l": {
+							"this": {
+								"h": [
+									0,
+									0
+								],
+								"u": 1500000001
+							}
+						},
+						"p": 0.055,
+						"s": "VCheck#0#338",
+						"w": 0.0
+					},
+					{
+						"b": -1,
+						"f": [],
+						"i": 0,
+						"k": false,
+						"l": {
+							"this": {
+								"h": [
+									0,
+									0
+								],
+								"u": 1500000001
+							}
+						},
+						"p": 0.055,
+						"s": "VCheck#0#344",
+						"w": 0.0
+					},
+					{
+						"b": -1,
+						"f": [],
+						"i": 0,
+						"k": false,
+						"l": {
+							"this": {
+								"h": [
+									0,
+									0
+								],
+								"u": 1500000001
+							}
+						},
+						"p": 0.055,
+						"s": "VCheck#0#348",
+						"w": 0.0
+					},
+					{
+						"b": -1,
+						"f": [],
+						"i": 0,
+						"k": false,
+						"l": {
+							"this": {
+								"h": [
+									0,
+									0
+								],
+								"u": 1500000001
+							}
+						},
+						"p": 0.055,
+						"s": "VCheck#0#355",
+						"w": 0.0
+					},
+					{
+						"b": -1,
+						"f": [],
+						"i": 0,
+						"k": false,
+						"l": {
+							"this": {
+								"h": [
+									0,
+									0
+								],
+								"u": 1500000001
+							}
+						},
+						"p": 0.055,
+						"s": "VCheck#0#357",
+						"w": 0.0
+					},
+					{
+						"b": -1,
+						"f": [],
+						"i": 0,
+						"k": false,
+						"l": {
+							"this": {
+								"h": [
+									0,
+									0
+								],
+								"u": 1500000001
+							}
+						},
+						"p": 0.055,
+						"s": "VCheck#0#364",
+						"w": 0.0
+					}
+				],
+				"q_recording": "",
+				"qobjs": {},
+				"quest": "",
+				"sciences": {},
+				"script_ai": [],
+				"story_orders": [],
+				"time_fixed": false,
+				"world_done": {}
+			},
+			"root": "VTriger#0#333",
+			"spent_world_done": {
+				"VCheck#0#338": 1,
+				"VTriger#0#326": 1
+			}
+		}
+	],
+	"checks": 224,
+	"failures": 0,
+	"original_script_sha256": "be3563f125987345d54a84745d77d323a1ec990e52ca1db6bcd4440be210f38b",
+	"scope": "Mounted original source, prepared actors/landmarks and native registration in a focused VM fixture. The separate actual ENet fixture proves startup reachability. No rendered, route-navigation, reward-economy or performance acceptance."
+}

@@ -1,0 +1,9 @@
+{
+	"checks": 14,
+	"failures": [],
+	"readback": {
+		"layers": 19,
+		"matching": 19,
+		"mipmaps": 6
+	}
+}

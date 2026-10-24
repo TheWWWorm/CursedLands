@@ -1,7 +1,7 @@
 Cursed Lands: experimental NVIDIA DLSS frame generation on RTX 30
 
 ENGLISH
-This optional local package uses dlssg_for_sm86 0.4.0 by sdli1995 to run
+This optional experimental package uses dlssg_for_sm86 0.4.0 by sdli1995 to run
 NVIDIA DLSS-G on Ampere. It does not replace frame generation with AMD FSR.
 The game requests one generated frame per rendered frame (2x). The mod uses
 its exact consistency tier; its separate super-resolution modification is off.
@@ -14,13 +14,13 @@ Path tracing and NRD remain under Remake > Ray tracing / Path tracing.
 
 Keep winmm.dll, dlssg_sm86.ini and the entire dlssg_sm86 folder beside the EXE.
 The ordinary Windows copy can be restored by removing those three additions.
-Your settings and saves are not replaced. This package is a local experiment;
+Your settings and saves are not replaced. This package is experimental;
 native Windows and every RTX 30 model have not been qualified. Testing used
 RTX 3090-class cards through Proton 11 with a private CUDA bridge.
 On Windows use a compatible NVIDIA driver and hardware GPU scheduling.
 
 RUSSIAN / РУССКИЙ
-Этот дополнительный локальный пакет использует dlssg_for_sm86 0.4.0 автора
+Этот дополнительный экспериментальный пакет использует dlssg_for_sm86 0.4.0 автора
 sdli1995 для запуска NVIDIA DLSS-G на Ampere. Генерация кадров не заменяется
 на AMD FSR. Игра запрашивает один дополнительный кадр на каждый отрисованный
 кадр (2x). Выбран точный режим мода; его отдельная модификация масштабирования
@@ -35,13 +35,13 @@ sdli1995 для запуска NVIDIA DLSS-G на Ampere. Генерация к�
 
 Файлы winmm.dll и dlssg_sm86.ini и вся папка dlssg_sm86 должны лежать рядом
 с EXE. Для возврата к обычной версии Windows удалите эти три дополнения.
-Настройки и сохранения не заменяются. Это локальный эксперимент; работа
+Настройки и сохранения не заменяются. Это экспериментальная версия; работа
 в самой Windows и на всех моделях RTX 30 не проверена. Тесты проводились
 на картах класса RTX 3090 через Proton 11 с отдельным мостом CUDA.
 В Windows нужны совместимый драйвер NVIDIA и аппаратное планирование GPU.
 
 GERMAN / DEUTSCH
-Dieses optionale lokale Paket nutzt dlssg_for_sm86 0.4.0 von sdli1995,
+Dieses optionale experimentelle Paket nutzt dlssg_for_sm86 0.4.0 von sdli1995,
 um NVIDIA DLSS-G auf Ampere auszuführen. Es ersetzt die Frame-Generierung
 nicht durch AMD FSR. Das Spiel fordert ein zusätzliches Bild pro gerendertem
 Bild an (2x). Die exakte Qualitätsstufe des Mods ist aktiv; seine separate
@@ -57,7 +57,7 @@ Pathtracing und NRD bleiben im Raytracing-/Pathtracing-Untermenü des Remakes.
 winmm.dll, dlssg_sm86.ini und der gesamte Ordner dlssg_sm86 müssen neben der
 EXE liegen. Entfernen Sie diese drei Ergänzungen, um die normale Windows-
 Version wiederherzustellen. Einstellungen und Spielstände werden nicht
-ersetzt. Dies ist ein lokales Experiment; natives Windows und alle RTX-30-
+ersetzt. Dieses Paket ist experimentell; natives Windows und alle RTX-30-
 Modelle sind noch nicht geprüft. Getestet wurden Karten der RTX-3090-Klasse
 über Proton 11 mit einer separaten CUDA-Brücke. Unter Windows werden ein
 kompatibler NVIDIA-Treiber und hardwarebeschleunigte GPU-Planung benötigt.

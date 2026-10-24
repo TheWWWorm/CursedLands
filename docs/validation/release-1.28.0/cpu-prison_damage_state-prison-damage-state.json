@@ -1,0 +1,508 @@
+{
+	"absent_false": {
+		"first": {
+			"b": 0,
+			"f": [
+				{
+					"i": 4
+				}
+			],
+			"i": 4,
+			"k": true,
+			"l": {
+				"this": {
+					"h": [
+						1,
+						0
+					],
+					"u": 1500000002
+				}
+			},
+			"p": 0.0,
+			"s": "VTriger#0#90",
+			"sc": [
+				0,
+				60.0
+			],
+			"st": 0,
+			"w": 3.29999999999998
+		},
+		"initial": {
+			"b": 0,
+			"f": [
+				{
+					"i": 4
+				}
+			],
+			"i": 4,
+			"k": true,
+			"l": {
+				"this": {
+					"h": [
+						1,
+						0
+					],
+					"u": 1500000002
+				}
+			},
+			"p": 0.0,
+			"s": "VTriger#0#90",
+			"sc": [
+				0,
+				60.0
+			],
+			"st": 0,
+			"w": 3.3
+		},
+		"old_uid": 1500000002,
+		"return_uid": 1500000502,
+		"second": {
+			"b": 0,
+			"f": [
+				{
+					"i": 4
+				}
+			],
+			"i": 4,
+			"k": true,
+			"l": {
+				"this": {
+					"h": [
+						1,
+						0
+					],
+					"u": 1500000002
+				}
+			},
+			"p": 0.0,
+			"s": "VTriger#0#90",
+			"sc": [
+				0,
+				60.0
+			],
+			"st": 0,
+			"w": 3.29999999999996
+		},
+		"third": {
+			"b": 0,
+			"f": [
+				{
+					"i": 4
+				}
+			],
+			"i": 4,
+			"k": true,
+			"l": {
+				"this": {
+					"h": [
+						1,
+						0
+					],
+					"u": 1500000002
+				}
+			},
+			"p": 0.0,
+			"s": "VTriger#0#90",
+			"sc": [
+				0,
+				60.0
+			],
+			"st": 0,
+			"w": 3.29999999999994
+		}
+	},
+	"absent_true": {
+		"first": {
+			"b": 0,
+			"f": [
+				{
+					"i": 4
+				}
+			],
+			"i": 4,
+			"k": true,
+			"l": {
+				"this": {
+					"h": [
+						1,
+						0
+					],
+					"u": 1500000002
+				}
+			},
+			"p": 0.0,
+			"s": "VTriger#0#90",
+			"sc": [
+				0,
+				60.0
+			],
+			"st": 0,
+			"w": 3.29999999999998
+		},
+		"initial": {
+			"b": 0,
+			"f": [
+				{
+					"i": 4
+				}
+			],
+			"i": 4,
+			"k": true,
+			"l": {
+				"this": {
+					"h": [
+						1,
+						0
+					],
+					"u": 1500000002
+				}
+			},
+			"p": 0.0,
+			"s": "VTriger#0#90",
+			"sc": [
+				0,
+				60.0
+			],
+			"st": 0,
+			"w": 3.3
+		},
+		"old_uid": 1500000002,
+		"return_uid": 1500000502,
+		"second": {
+			"b": 0,
+			"f": [
+				{
+					"i": 4
+				}
+			],
+			"i": 4,
+			"k": true,
+			"l": {
+				"this": {
+					"h": [
+						1,
+						0
+					],
+					"u": 1500000002
+				}
+			},
+			"p": 0.0,
+			"s": "VTriger#0#90",
+			"sc": [
+				0,
+				60.0
+			],
+			"st": 0,
+			"w": 3.29999999999996
+		},
+		"third": {
+			"b": 0,
+			"f": [
+				{
+					"i": 4
+				}
+			],
+			"i": 4,
+			"k": true,
+			"l": {
+				"this": {
+					"h": [
+						1,
+						0
+					],
+					"u": 1500000002
+				}
+			},
+			"p": 0.0,
+			"s": "VTriger#0#90",
+			"sc": [
+				0,
+				60.0
+			],
+			"st": 0,
+			"w": 3.29999999999994
+		}
+	},
+	"candidate_trace": [
+		{
+			"amount": 0,
+			"dead": false,
+			"name": "CastSpellPoint",
+			"owner": 0,
+			"script": "VTriger#0#90",
+			"time": 0.33,
+			"uid": 1500000001
+		},
+		{
+			"amount": 1000.0,
+			"dead": false,
+			"name": "InflictDamage",
+			"owner": 0,
+			"script": "VTriger#0#90",
+			"time": 0.33,
+			"uid": 1500000001
+		},
+		{
+			"amount": 0,
+			"dead": false,
+			"name": "CastSpellPoint",
+			"owner": 1,
+			"script": "VTriger#0#90",
+			"time": 1.375,
+			"uid": 1500000002
+		},
+		{
+			"amount": 1000.0,
+			"dead": false,
+			"name": "InflictDamage",
+			"owner": 1,
+			"script": "VTriger#0#90",
+			"time": 1.375,
+			"uid": 1500000002
+		},
+		{
+			"amount": 0,
+			"dead": true,
+			"name": "CastSpellPoint",
+			"owner": 0,
+			"script": "VTriger#0#90",
+			"time": 3.74,
+			"uid": 1500000001
+		},
+		{
+			"amount": 1000.0,
+			"dead": true,
+			"name": "InflictDamage",
+			"owner": 0,
+			"script": "VTriger#0#90",
+			"time": 3.74,
+			"uid": 1500000001
+		},
+		{
+			"amount": 0,
+			"dead": false,
+			"name": "CastSpellPoint",
+			"owner": 1,
+			"script": "VTriger#0#90",
+			"time": 4.785,
+			"uid": 1500000002
+		},
+		{
+			"amount": 1000.0,
+			"dead": false,
+			"name": "InflictDamage",
+			"owner": 1,
+			"script": "VTriger#0#90",
+			"time": 4.785,
+			"uid": 1500000002
+		}
+	],
+	"checks": 172,
+	"failures": 0,
+	"native_disconnected_trace": [
+		{
+			"amount": 0,
+			"dead": false,
+			"name": "CastSpellPoint",
+			"owner": 0,
+			"script": "VTriger#0#90",
+			"time": 0.33,
+			"uid": 1500000001
+		},
+		{
+			"amount": 1000.0,
+			"dead": false,
+			"name": "InflictDamage",
+			"owner": 0,
+			"script": "VTriger#0#90",
+			"time": 0.33,
+			"uid": 1500000001
+		},
+		{
+			"amount": 0,
+			"dead": false,
+			"name": "CastSpellPoint",
+			"owner": 1,
+			"script": "VTriger#0#90",
+			"time": 1.375,
+			"uid": 1500000002
+		},
+		{
+			"amount": 1000.0,
+			"dead": false,
+			"name": "InflictDamage",
+			"owner": 1,
+			"script": "VTriger#0#90",
+			"time": 1.375,
+			"uid": 1500000002
+		},
+		{
+			"amount": 0,
+			"dead": true,
+			"name": "CastSpellPoint",
+			"owner": 0,
+			"script": "VTriger#0#90",
+			"time": 3.74,
+			"uid": 1500000001
+		},
+		{
+			"amount": 1000.0,
+			"dead": true,
+			"name": "InflictDamage",
+			"owner": 0,
+			"script": "VTriger#0#90",
+			"time": 3.74,
+			"uid": 1500000001
+		},
+		{
+			"amount": 0,
+			"dead": false,
+			"name": "CastSpellPoint",
+			"owner": -1,
+			"script": "VTriger#0#90",
+			"time": 4.785,
+			"uid": 1500000002
+		},
+		{
+			"amount": 1000.0,
+			"dead": false,
+			"name": "InflictDamage",
+			"owner": -1,
+			"script": "VTriger#0#90",
+			"time": 4.785,
+			"uid": 1500000002
+		}
+	],
+	"native_trace": [
+		{
+			"amount": 0,
+			"dead": false,
+			"name": "CastSpellPoint",
+			"owner": 0,
+			"script": "VTriger#0#90",
+			"time": 0.33,
+			"uid": 1500000001
+		},
+		{
+			"amount": 1000.0,
+			"dead": false,
+			"name": "InflictDamage",
+			"owner": 0,
+			"script": "VTriger#0#90",
+			"time": 0.33,
+			"uid": 1500000001
+		},
+		{
+			"amount": 0,
+			"dead": false,
+			"name": "CastSpellPoint",
+			"owner": 1,
+			"script": "VTriger#0#90",
+			"time": 1.375,
+			"uid": 1500000002
+		},
+		{
+			"amount": 1000.0,
+			"dead": false,
+			"name": "InflictDamage",
+			"owner": 1,
+			"script": "VTriger#0#90",
+			"time": 1.375,
+			"uid": 1500000002
+		},
+		{
+			"amount": 0,
+			"dead": true,
+			"name": "CastSpellPoint",
+			"owner": 0,
+			"script": "VTriger#0#90",
+			"time": 3.74,
+			"uid": 1500000001
+		},
+		{
+			"amount": 1000.0,
+			"dead": true,
+			"name": "InflictDamage",
+			"owner": 0,
+			"script": "VTriger#0#90",
+			"time": 3.74,
+			"uid": 1500000001
+		},
+		{
+			"amount": 0,
+			"dead": false,
+			"name": "CastSpellPoint",
+			"owner": 1,
+			"script": "VTriger#0#90",
+			"time": 4.785,
+			"uid": 1500000002
+		},
+		{
+			"amount": 1000.0,
+			"dead": false,
+			"name": "InflictDamage",
+			"owner": 1,
+			"script": "VTriger#0#90",
+			"time": 4.785,
+			"uid": 1500000002
+		}
+	],
+	"original_script_sha256": "be3563f125987345d54a84745d77d323a1ec990e52ca1db6bcd4440be210f38b",
+	"scope": "Controlled actor/lever state and recorded native damage/spell calls; original predicates, instruction frames, registration and Sleep run. Actual damage and original-startup reachability are exercised separately over ENet. No full physical route, rendering, reward-economy or performance claim.",
+	"solo": {
+		"authority_guest_sleep": {
+			"b": 0,
+			"f": [
+				{
+					"i": 4
+				}
+			],
+			"i": 4,
+			"k": true,
+			"l": {
+				"this": {
+					"h": [
+						1,
+						0
+					],
+					"u": 1500000002
+				}
+			},
+			"p": 0.0,
+			"s": "VTriger#0#90",
+			"sc": [
+				0,
+				60.0
+			],
+			"st": 0,
+			"w": 3.3
+		},
+		"projected_sleep": {
+			"b": 0,
+			"f": [
+				{
+					"i": 4
+				}
+			],
+			"i": 4,
+			"k": true,
+			"l": {
+				"this": {
+					"h": [
+						0,
+						0
+					],
+					"u": 1500000001
+				}
+			},
+			"p": 0.0,
+			"s": "VTriger#0#90",
+			"sc": [
+				0,
+				60.0
+			],
+			"st": 0,
+			"w": 3.3
+		}
+	}
+}

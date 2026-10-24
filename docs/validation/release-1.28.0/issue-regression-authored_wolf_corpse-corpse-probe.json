@@ -1,0 +1,1006 @@
+{
+	"checks": 4,
+	"failures": 0,
+	"native_perception": true,
+	"native_query": true,
+	"rows": [
+		{
+			"before": {
+				"order": "",
+				"pos": [
+					56.0657997131348,
+					240.212997436523
+				],
+				"seen_corpses": [],
+				"susp_order": false,
+				"suspect": {},
+				"uid": 3327
+			},
+			"logic": {
+				"aggression": 0,
+				"alarm_cond": 0,
+				"alarm_raise": 0,
+				"alarm_use": 1,
+				"always_active": 1,
+				"cyclic": 1,
+				"guard_point": "(56.0658, 240.213, 0.0)",
+				"guard_points": [
+					{
+						"actions": [
+							{
+								"action_flag": 0,
+								"look": "(56.42902, 237.2654, 6.707343)",
+								"turn_speed": 0.0,
+								"wait": 3600
+							}
+						],
+						"position": "(56.18642, 238.3342, 6.998966)"
+					}
+				],
+				"guard_radius": 5.0,
+				"help_radius": 7.0,
+				"logic_model": 2,
+				"logic_wait": -1.0
+			},
+			"motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			}
+		},
+		{
+			"can_notice_corpse": true,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "move",
+				"pos": [
+					56.1009407043457,
+					239.895004272461
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 0.055,
+					"look": [
+						[
+							3.56405792840423,
+							38
+						]
+					],
+					"m": 800.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 0
+		},
+		{
+			"can_notice_corpse": true,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "wait",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 0.605,
+					"look": [],
+					"m": 770.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 10
+		},
+		{
+			"can_notice_corpse": true,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "wait",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 1.1,
+					"look": [],
+					"m": 740.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 20
+		},
+		{
+			"can_notice_corpse": true,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "wait",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 1.65,
+					"look": [],
+					"m": 713.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 30
+		},
+		{
+			"can_notice_corpse": true,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "wait",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 2.255,
+					"look": [],
+					"m": 683.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 40
+		},
+		{
+			"can_notice_corpse": true,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": false,
+				"suspect": {
+					"active": true,
+					"busy": false,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 2.805,
+					"look": [],
+					"m": 635.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 50
+		},
+		{
+			"can_notice_corpse": true,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": false,
+				"suspect": {
+					"active": true,
+					"busy": false,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 3.355,
+					"look": [],
+					"m": 585.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 60
+		},
+		{
+			"can_notice_corpse": true,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": false,
+				"suspect": {
+					"active": true,
+					"busy": false,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 3.905,
+					"look": [],
+					"m": 535.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 70
+		},
+		{
+			"can_notice_corpse": true,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": false,
+				"suspect": {
+					"active": true,
+					"busy": false,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 4.4,
+					"look": [],
+					"m": 485.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 80
+		},
+		{
+			"can_notice_corpse": false,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "wait",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 4.95,
+					"look": [
+						[
+							3.37114598756756,
+							31
+						],
+						[
+							2.36730929703152,
+							26
+						],
+						[
+							2.81384151700511,
+							11
+						]
+					],
+					"m": 530.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 90
+		},
+		{
+			"can_notice_corpse": false,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "wait",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 5.5,
+					"look": [
+						[
+							3.37114598756756,
+							31
+						],
+						[
+							2.36730929703152,
+							26
+						],
+						[
+							2.81384151700511,
+							11
+						]
+					],
+					"m": 503.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 100
+		},
+		{
+			"can_notice_corpse": false,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "wait",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 6.04999999999999,
+					"look": [
+						[
+							3.37114598756756,
+							31
+						],
+						[
+							2.36730929703152,
+							26
+						],
+						[
+							2.81384151700511,
+							11
+						]
+					],
+					"m": 473.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 110
+		},
+		{
+			"can_notice_corpse": false,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "wait",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 6.59999999999999,
+					"look": [
+						[
+							3.37114598756756,
+							31
+						],
+						[
+							2.36730929703152,
+							26
+						],
+						[
+							2.81384151700511,
+							11
+						]
+					],
+					"m": 443.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 120
+		},
+		{
+			"can_notice_corpse": true,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "wait",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 7.14999999999999,
+					"look": [
+						[
+							2.36730929703152,
+							26
+						],
+						[
+							2.81384151700511,
+							11
+						]
+					],
+					"m": 413.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 130
+		},
+		{
+			"can_notice_corpse": true,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "wait",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 7.69999999999999,
+					"look": [
+						[
+							2.36730929703152,
+							26
+						],
+						[
+							2.81384151700511,
+							11
+						]
+					],
+					"m": 383.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 140
+		},
+		{
+			"can_notice_corpse": true,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "wait",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 8.24999999999998,
+					"look": [
+						[
+							2.36730929703152,
+							26
+						],
+						[
+							2.81384151700511,
+							11
+						]
+					],
+					"m": 353.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 150
+		},
+		{
+			"can_notice_corpse": false,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "wait",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 8.79999999999998,
+					"look": [
+						[
+							2.81384151700511,
+							11
+						]
+					],
+					"m": 323.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 160
+		},
+		{
+			"can_notice_corpse": false,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "wait",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 9.34999999999998,
+					"look": [
+						[
+							2.81384151700511,
+							11
+						]
+					],
+					"m": 293.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 170
+		},
+		{
+			"can_notice_corpse": false,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "wait",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 9.89999999999998,
+					"look": [
+						[
+							2.81384151700511,
+							11
+						]
+					],
+					"m": 263.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 180
+		},
+		{
+			"can_notice_corpse": true,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "wait",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 10.45,
+					"look": [],
+					"m": 233.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 190
+		},
+		{
+			"can_notice_corpse": true,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "wait",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 11.0,
+					"look": [],
+					"m": 203.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 200
+		},
+		{
+			"can_notice_corpse": true,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "wait",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 11.55,
+					"look": [],
+					"m": 173.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 210
+		},
+		{
+			"can_notice_corpse": true,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": false,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 12.1,
+					"look": [],
+					"m": 143.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 220
+		},
+		{
+			"can_notice_corpse": false,
+			"corpse_motivations": {
+				"corpse": true,
+				"fear": 0,
+				"fight": "standard",
+				"susp": true
+			},
+			"observer": {
+				"order": "wait",
+				"pos": [
+					56.25,
+					238.75
+				],
+				"seen_corpses": [
+					3326
+				],
+				"susp_order": true,
+				"suspect": {
+					"active": true,
+					"busy": true,
+					"corpse": 1019249455968,
+					"d": -3.0,
+					"dest": "(56.0658, 238.463)",
+					"l0": 800.0,
+					"last": 12.65,
+					"look": [
+						[
+							4.64668359480593,
+							20
+						],
+						[
+							5.24008810860009,
+							21
+						],
+						[
+							1.25699585789437,
+							28
+						]
+					],
+					"m": 113.0,
+					"pos": "(56.0658, 238.463)",
+					"t0": 0.055
+				},
+				"uid": 3327
+			},
+			"tick": 230
+		}
+	],
+	"scope": "Authored right-hand wolf; another pack wolf killed 1.75m in front; hero at entrance; manual 55ms ticks."
+}

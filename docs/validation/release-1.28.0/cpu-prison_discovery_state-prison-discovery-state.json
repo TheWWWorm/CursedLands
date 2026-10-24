@@ -1,0 +1,268 @@
+{
+	"cases": [
+		{
+			"pending": {
+				"alarms": [
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					]
+				],
+				"areas": {},
+				"briefing_queue": [],
+				"fx_auto": -1,
+				"globals": {
+					"HChest1": {
+						"o": 736257
+					},
+					"Heroes": [
+						{
+							"h": [
+								0,
+								0
+							],
+							"u": 1500000001
+						}
+					],
+					"VSS#i#val": {
+						"h": [
+							0,
+							0
+						],
+						"u": 1500000001
+					}
+				},
+				"instances": [
+					{
+						"b": -1,
+						"f": [],
+						"i": 0,
+						"k": false,
+						"l": {
+							"this": {
+								"h": [
+									0,
+									0
+								],
+								"u": 1500000001
+							}
+						},
+						"p": 0.055,
+						"s": "VCheck#0#265",
+						"w": 0.0
+					},
+					{
+						"b": -1,
+						"f": [],
+						"i": 0,
+						"k": false,
+						"l": {
+							"this": {
+								"h": [
+									0,
+									0
+								],
+								"u": 1500000001
+							}
+						},
+						"p": 0.055,
+						"s": "VCheck#0#269",
+						"w": 0.0
+					},
+					{
+						"b": -1,
+						"f": [],
+						"i": 0,
+						"k": false,
+						"l": {
+							"this": {
+								"h": [
+									0,
+									0
+								],
+								"u": 1500000001
+							}
+						},
+						"p": 0.055,
+						"s": "VCheck#0#271",
+						"w": 0.0
+					},
+					{
+						"b": -1,
+						"f": [],
+						"i": 0,
+						"k": false,
+						"l": {
+							"this": {
+								"h": [
+									0,
+									0
+								],
+								"u": 1500000001
+							}
+						},
+						"p": 0.055,
+						"s": "VCheck#0#258",
+						"w": 0.0
+					}
+				],
+				"q_recording": "",
+				"qobjs": {},
+				"quest": "",
+				"sciences": {},
+				"script_ai": [],
+				"story_orders": [],
+				"time_fixed": false,
+				"world_done": {}
+			},
+			"quest": "q.gz19h.qk16h",
+			"root": "VTriger#0#264",
+			"spent_world_done": {
+				"VCheck#0#265": 1,
+				"VTriger#0#273": 1
+			}
+		},
+		{
+			"pending": {
+				"alarms": [
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					],
+					[
+						false,
+						0,
+						0.0,
+						0.0
+					]
+				],
+				"areas": {},
+				"briefing_queue": [],
+				"fx_auto": -1,
+				"globals": {
+					"HChest1": {
+						"o": 736257
+					},
+					"Heroes": [
+						{
+							"h": [
+								0,
+								0
+							],
+							"u": 1500000001
+						}
+					],
+					"VSS#i#val": {
+						"h": [
+							0,
+							0
+						],
+						"u": 1500000001
+					}
+				},
+				"instances": [
+					{
+						"b": -1,
+						"f": [],
+						"i": 0,
+						"k": false,
+						"l": {
+							"this": {
+								"h": [
+									0,
+									0
+								],
+								"u": 1500000001
+							}
+						},
+						"p": 0.055,
+						"s": "VCheck#0#279",
+						"w": 0.0
+					},
+					{
+						"b": -1,
+						"f": [],
+						"i": 0,
+						"k": false,
+						"l": {
+							"this": {
+								"h": [
+									0,
+									0
+								],
+								"u": 1500000001
+							}
+						},
+						"p": 0.055,
+						"s": "VCheck#0#280",
+						"w": 0.0
+					}
+				],
+				"q_recording": "",
+				"qobjs": {},
+				"quest": "",
+				"sciences": {},
+				"script_ai": [],
+				"story_orders": [],
+				"time_fixed": false,
+				"world_done": {}
+			},
+			"quest": "q.gz19h.qk17h",
+			"root": "VTriger#0#278",
+			"spent_world_done": {
+				"VCheck#0#279": 1,
+				"VTriger#0#284": 1
+			}
+		}
+	],
+	"checks": 139,
+	"failures": 0,
+	"original_script_sha256": "be3563f125987345d54a84745d77d323a1ec990e52ca1db6bcd4440be210f38b",
+	"scope": "Original parsed source, prepared actor/chest positions and explicit native registration in a focused VM state fixture. The separate real ENet original-startup early/late controls establish actual registration reachability. No rendering, full-route or network timing claim."
+}

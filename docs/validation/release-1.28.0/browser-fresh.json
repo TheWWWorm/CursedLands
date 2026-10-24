@@ -1,0 +1,15 @@
+{
+  "version": "1.28.0",
+  "passed": true,
+  "engine_start_resolved": true,
+  "canvas_visible": true,
+  "isolated": true,
+  "original_game_data_imported": false,
+  "profile": {
+    "confine_mouse": 0,
+    "show_fps": 1,
+    "volume_sfx": 0,
+    "volume_stream": 0,
+    "volume_voice": 0
+  }
+}

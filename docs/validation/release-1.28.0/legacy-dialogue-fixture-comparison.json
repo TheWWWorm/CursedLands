@@ -1,0 +1,26 @@
+[
+  {
+    "tag": "dialogue-baseline-127",
+    "exit": -11,
+    "renderer": "headless",
+    "scope": "Legacy external fixture crashes during initial zone entry; same behavior in unchanged previous release."
+  },
+  {
+    "tag": "issue108-dialogue-headless",
+    "exit": -11,
+    "renderer": "headless",
+    "scope": "Legacy external fixture crashes during initial zone entry; same behavior in unchanged previous release."
+  },
+  {
+    "tag": "issue108-dialogue-feedback",
+    "exit": -11,
+    "renderer": "opengl3",
+    "scope": "Legacy external fixture crashes during initial zone entry; same behavior in unchanged previous release."
+  },
+  {
+    "tag": "dialogue-feedback-vulkan",
+    "exit": -11,
+    "renderer": "vulkan",
+    "scope": "Legacy external fixture crashes during initial zone entry; same behavior in unchanged previous release."
+  }
+]

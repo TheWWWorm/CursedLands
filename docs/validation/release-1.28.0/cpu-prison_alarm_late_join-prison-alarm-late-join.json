@@ -1,0 +1,1912 @@
+{
+	"arrival": "late",
+	"checks": 79,
+	"display": "headless",
+	"expected_guard_ids": [
+		1000011,
+		1000073,
+		1000074,
+		1000082,
+		1000095,
+		1000096,
+		1000097,
+		1000099
+	],
+	"failures": 0,
+	"phases": [
+		{
+			"alarm2": 0.0,
+			"alarm_mob_added": false,
+			"g1": 0.0,
+			"guard_ids": [],
+			"guest_uid": -1,
+			"guest_watchers": 0,
+			"hero_ids": [
+				1500000128
+			],
+			"instance_count": 53,
+			"label": "after_startup",
+			"registrar_count": 1,
+			"saved_guest_waits": [],
+			"vm_time": 0.88,
+			"watchers": [
+				{
+					"controller": 0,
+					"uid": 1500000128
+				}
+			],
+			"world_time": 0.88
+		},
+		{
+			"alarm2": 0.0,
+			"alarm_mob_added": false,
+			"g1": 0.0,
+			"guard_ids": [],
+			"guest_uid": 1500000256,
+			"guest_watchers": 1,
+			"hero_ids": [
+				1500000128,
+				1500000256
+			],
+			"instance_count": 65,
+			"label": "after_join",
+			"registrar_count": 1,
+			"saved_guest_waits": [
+				{
+					"b": -1,
+					"f": [],
+					"i": 0,
+					"k": false,
+					"l": {
+						"this": {
+							"h": [
+								1,
+								0
+							],
+							"u": 1500000256
+						}
+					},
+					"p": 0.0549999999999999,
+					"s": "VCheck#0#417",
+					"w": 0.0
+				}
+			],
+			"vm_time": 1.045,
+			"watchers": [
+				{
+					"controller": 0,
+					"uid": 1500000128
+				},
+				{
+					"controller": 1,
+					"uid": 1500000256
+				}
+			],
+			"world_time": 1.045
+		},
+		{
+			"alarm2": 0.0,
+			"alarm_mob_added": false,
+			"g1": 0.0,
+			"guard_ids": [],
+			"guest_uid": 1500000256,
+			"guest_watchers": 1,
+			"hero_ids": [
+				1500000128,
+				1500000256
+			],
+			"instance_count": 65,
+			"label": "after_reload",
+			"registrar_count": 1,
+			"saved_guest_waits": [
+				{
+					"b": -1,
+					"f": [],
+					"i": 0,
+					"k": false,
+					"l": {
+						"this": {
+							"h": [
+								1,
+								0
+							],
+							"u": 1500000256
+						}
+					},
+					"p": 0.055,
+					"s": "VCheck#0#417",
+					"w": 0.0
+				}
+			],
+			"vm_time": 0.165,
+			"watchers": [
+				{
+					"controller": 0,
+					"uid": 1500000128
+				},
+				{
+					"controller": 1,
+					"uid": 1500000256
+				}
+			],
+			"world_time": 0.165
+		},
+		{
+			"alarm2": 0.0,
+			"alarm_mob_added": false,
+			"g1": 0.0,
+			"guard_ids": [],
+			"guest_uid": 1500000256,
+			"guest_watchers": 1,
+			"hero_ids": [
+				1500000128,
+				1500000256
+			],
+			"instance_count": 65,
+			"label": "after_reconnect",
+			"registrar_count": 1,
+			"saved_guest_waits": [
+				{
+					"b": -1,
+					"f": [],
+					"i": 0,
+					"k": false,
+					"l": {
+						"this": {
+							"h": [
+								1,
+								0
+							],
+							"u": 1500000256
+						}
+					},
+					"p": 0.055,
+					"s": "VCheck#0#417",
+					"w": 0.0
+				}
+			],
+			"vm_time": 0.33,
+			"watchers": [
+				{
+					"controller": 0,
+					"uid": 1500000128
+				},
+				{
+					"controller": 1,
+					"uid": 1500000256
+				}
+			],
+			"world_time": 0.33
+		},
+		{
+			"alarm2": 0.0,
+			"alarm_mob_added": false,
+			"g1": 0.0,
+			"guard_ids": [],
+			"guest_uid": -1,
+			"guest_watchers": 0,
+			"hero_ids": [
+				1500000128
+			],
+			"instance_count": 65,
+			"label": "first_absent_reload",
+			"registrar_count": 1,
+			"saved_guest_waits": [
+				{
+					"b": -1,
+					"f": [],
+					"i": 0,
+					"k": false,
+					"l": {
+						"this": {
+							"h": [
+								1,
+								0
+							],
+							"u": 1500000256
+						}
+					},
+					"p": 0.0549999999999999,
+					"s": "VCheck#0#417",
+					"w": 0.0
+				}
+			],
+			"vm_time": 1.375,
+			"watchers": [
+				{
+					"controller": 0,
+					"uid": 1500000128
+				},
+				{
+					"controller": -1,
+					"uid": -1
+				}
+			],
+			"world_time": 1.375
+		},
+		{
+			"alarm2": 0.0,
+			"alarm_mob_added": false,
+			"g1": 0.0,
+			"guard_ids": [],
+			"guest_uid": -1,
+			"guest_watchers": 0,
+			"hero_ids": [
+				1500000128
+			],
+			"instance_count": 65,
+			"label": "second_absent_reload",
+			"registrar_count": 1,
+			"saved_guest_waits": [
+				{
+					"b": -1,
+					"f": [],
+					"i": 0,
+					"k": false,
+					"l": {
+						"this": {
+							"h": [
+								1,
+								0
+							],
+							"u": 1500000256
+						}
+					},
+					"p": 0.0549999999999999,
+					"s": "VCheck#0#417",
+					"w": 0.0
+				}
+			],
+			"vm_time": 1.375,
+			"watchers": [
+				{
+					"controller": 0,
+					"uid": 1500000128
+				},
+				{
+					"controller": -1,
+					"uid": -1
+				}
+			],
+			"world_time": 1.375
+		},
+		{
+			"alarm2": 0.0,
+			"alarm_mob_added": false,
+			"g1": 0.0,
+			"guard_ids": [],
+			"guest_uid": 1500000256,
+			"guest_watchers": 1,
+			"hero_ids": [
+				1500000128,
+				1500000256
+			],
+			"instance_count": 65,
+			"label": "after_absent_rejoin",
+			"registrar_count": 1,
+			"saved_guest_waits": [
+				{
+					"b": -1,
+					"f": [],
+					"i": 0,
+					"k": false,
+					"l": {
+						"this": {
+							"h": [
+								1,
+								0
+							],
+							"u": 1500000256
+						}
+					},
+					"p": 0.0549999999999999,
+					"s": "VCheck#0#417",
+					"w": 0.0
+				}
+			],
+			"vm_time": 1.54,
+			"watchers": [
+				{
+					"controller": 0,
+					"uid": 1500000128
+				},
+				{
+					"controller": 1,
+					"uid": 1500000256
+				}
+			],
+			"world_time": 1.54
+		},
+		{
+			"alarm2": 0.0,
+			"alarm_mob_added": true,
+			"g1": 3.0,
+			"guard_ids": [
+				1000082,
+				1000095,
+				1000073,
+				1000096,
+				1000074,
+				1000097,
+				1000011,
+				1000099
+			],
+			"guest_uid": 1500000256,
+			"guest_watchers": 0,
+			"hero_ids": [
+				1500000128,
+				1500000256
+			],
+			"instance_count": 66,
+			"label": "after_intrusion",
+			"registrar_count": 1,
+			"saved_guest_waits": [],
+			"vm_time": 6.21499999999999,
+			"watchers": [
+				{
+					"controller": 0,
+					"uid": 1500000128
+				}
+			],
+			"world_time": 6.21499999999999
+		},
+		{
+			"alarm2": 0.0,
+			"alarm_mob_added": true,
+			"g1": 3.0,
+			"guard_ids": [
+				1000082,
+				1000095,
+				1000073,
+				1000096,
+				1000074,
+				1000097,
+				1000011,
+				1000099
+			],
+			"guest_uid": 1500000256,
+			"guest_watchers": 1,
+			"hero_ids": [
+				1500000128,
+				1500000256
+			],
+			"instance_count": 65,
+			"label": "after_escape",
+			"registrar_count": 1,
+			"saved_guest_waits": [
+				{
+					"b": -1,
+					"f": [],
+					"i": 0,
+					"k": false,
+					"l": {
+						"this": {
+							"h": [
+								1,
+								0
+							],
+							"u": 1500000256
+						}
+					},
+					"p": 0.0549999999999997,
+					"s": "VCheck#0#417",
+					"w": 0.0
+				}
+			],
+			"vm_time": 8.68999999999998,
+			"watchers": [
+				{
+					"controller": 0,
+					"uid": 1500000128
+				},
+				{
+					"controller": 1,
+					"uid": 1500000256
+				}
+			],
+			"world_time": 8.68999999999998
+		}
+	],
+	"rejoin_identity": {
+		"after_hero_key": [
+			1,
+			0
+		],
+		"after_uid": 1500000256,
+		"before_uid": 1500000256,
+		"hero_key": [
+			1,
+			0
+		],
+		"name": "Alarm Guest"
+	},
+	"renderer": "forward_plus",
+	"scope": "Actual original startup, real ENet registration and Session save/reload/reconnect, absent reload/rejoin, real alarm entry and the original escape objective continuation with surviving guards. Controlled positions and manual VM ticks, paused AI/combat. No full prison route, physical guard navigation or rendered acceptance.",
+	"trace": [
+		{
+			"alarm_mob_added": false,
+			"assigned_guards": [],
+			"g1": 0.0,
+			"guard_count": 0,
+			"intruder_uid": -1,
+			"tick": 1,
+			"vm_time": 1.595
+		},
+		{
+			"alarm_mob_added": false,
+			"assigned_guards": [],
+			"g1": 2.0,
+			"guard_count": 0,
+			"intruder_uid": 1500000256,
+			"tick": 2,
+			"vm_time": 1.65
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [],
+			"g1": 3.0,
+			"guard_count": 0,
+			"intruder_uid": 1500000256,
+			"tick": 3,
+			"vm_time": 1.705
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [],
+			"g1": 3.0,
+			"guard_count": 0,
+			"intruder_uid": 1500000256,
+			"tick": 4,
+			"vm_time": 1.76
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [],
+			"g1": 3.0,
+			"guard_count": 0,
+			"intruder_uid": 1500000256,
+			"tick": 5,
+			"vm_time": 1.815
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 6,
+			"vm_time": 1.87
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 7,
+			"vm_time": 1.925
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 8,
+			"vm_time": 1.98
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 9,
+			"vm_time": 2.035
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 10,
+			"vm_time": 2.09
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 11,
+			"vm_time": 2.145
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 12,
+			"vm_time": 2.2
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 13,
+			"vm_time": 2.255
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 14,
+			"vm_time": 2.31
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 15,
+			"vm_time": 2.365
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 16,
+			"vm_time": 2.42
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 17,
+			"vm_time": 2.475
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 18,
+			"vm_time": 2.53
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 19,
+			"vm_time": 2.585
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 20,
+			"vm_time": 2.64
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 21,
+			"vm_time": 2.695
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 22,
+			"vm_time": 2.75
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 23,
+			"vm_time": 2.805
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 24,
+			"vm_time": 2.86
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 25,
+			"vm_time": 2.915
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 26,
+			"vm_time": 2.97
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 27,
+			"vm_time": 3.025
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 28,
+			"vm_time": 3.08
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 29,
+			"vm_time": 3.135
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 30,
+			"vm_time": 3.19
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 31,
+			"vm_time": 3.245
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 32,
+			"vm_time": 3.3
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 33,
+			"vm_time": 3.355
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 34,
+			"vm_time": 3.41
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 35,
+			"vm_time": 3.465
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 36,
+			"vm_time": 3.52
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 37,
+			"vm_time": 3.575
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 38,
+			"vm_time": 3.63
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 39,
+			"vm_time": 3.685
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 40,
+			"vm_time": 3.74
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 41,
+			"vm_time": 3.795
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 42,
+			"vm_time": 3.85
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 43,
+			"vm_time": 3.905
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 44,
+			"vm_time": 3.96
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 45,
+			"vm_time": 4.01500000000001
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 46,
+			"vm_time": 4.07
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 47,
+			"vm_time": 4.125
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 48,
+			"vm_time": 4.18
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 49,
+			"vm_time": 4.235
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 50,
+			"vm_time": 4.29
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 51,
+			"vm_time": 4.345
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 52,
+			"vm_time": 4.4
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 53,
+			"vm_time": 4.455
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 54,
+			"vm_time": 4.51
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 55,
+			"vm_time": 4.565
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 56,
+			"vm_time": 4.62
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 57,
+			"vm_time": 4.675
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 58,
+			"vm_time": 4.73
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 59,
+			"vm_time": 4.785
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 60,
+			"vm_time": 4.84
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 61,
+			"vm_time": 4.895
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 62,
+			"vm_time": 4.95
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 63,
+			"vm_time": 5.005
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 64,
+			"vm_time": 5.06
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 65,
+			"vm_time": 5.115
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 66,
+			"vm_time": 5.17
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 67,
+			"vm_time": 5.225
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 68,
+			"vm_time": 5.28
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 69,
+			"vm_time": 5.335
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 70,
+			"vm_time": 5.39
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 71,
+			"vm_time": 5.445
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 72,
+			"vm_time": 5.5
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 73,
+			"vm_time": 5.555
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 74,
+			"vm_time": 5.61
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 75,
+			"vm_time": 5.665
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 76,
+			"vm_time": 5.72
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 77,
+			"vm_time": 5.775
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 78,
+			"vm_time": 5.83
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 79,
+			"vm_time": 5.885
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 80,
+			"vm_time": 5.94
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 81,
+			"vm_time": 5.99499999999999
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 82,
+			"vm_time": 6.04999999999999
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 83,
+			"vm_time": 6.10499999999999
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 84,
+			"vm_time": 6.15999999999999
+		},
+		{
+			"alarm_mob_added": true,
+			"assigned_guards": [
+				1000011,
+				1000073,
+				1000074,
+				1000082,
+				1000095,
+				1000096,
+				1000097,
+				1000099
+			],
+			"g1": 3.0,
+			"guard_count": 8,
+			"intruder_uid": 1500000256,
+			"tick": 85,
+			"vm_time": 6.21499999999999
+		}
+	]
+}

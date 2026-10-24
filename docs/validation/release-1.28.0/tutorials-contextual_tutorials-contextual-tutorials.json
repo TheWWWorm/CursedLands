@@ -1,0 +1,29 @@
+{
+  "captures": [
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/shop-hint-en.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/shop-hint-ru.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/shop-hint-de.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/guide-de-pad.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/hint-en-800x600-mouse.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/hint-en-800x600-pad.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/hint-en-1920x1080-mouse.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/hint-en-1920x1080-pad.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/hint-en-600x960-mouse.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/hint-en-600x960-pad.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/hint-ru-800x600-mouse.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/hint-ru-800x600-pad.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/hint-ru-1920x1080-mouse.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/hint-ru-1920x1080-pad.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/hint-ru-600x960-mouse.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/hint-ru-600x960-pad.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/hint-de-800x600-mouse.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/hint-de-800x600-pad.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/hint-de-1920x1080-mouse.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/hint-de-1920x1080-pad.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/hint-de-600x960-mouse.png",
+    "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/release/checks/tutorials-contextual_tutorials/data/godot/app_userdata/Cursed Lands/hint-de-600x960-pad.png"
+  ],
+  "checks": 391,
+  "failures": [],
+  "scope": "Prepared native game contexts and synthetic input; no physical controller or novice playtest."
+}

@@ -1,0 +1,935 @@
+{
+  "version": "1.28.0",
+  "previous_stable": "v1.27.0",
+  "date": "2026-10-24",
+  "status": "Integrated release packages validated; publication evidence is recorded separately.",
+  "source_commit": "cd1130b1f9091718817b222cf66d562f77da0a4a",
+  "game_tree": "307d8755e4073fcdee7d9751bc35e953cc7c2edb",
+  "campaign_protocol": 23,
+  "autochess_protocol": 4,
+  "integrated_tips": {
+    "path_tracing": "bf10be5e059f2c38b89df8a314e1ceed7377ab52",
+    "autochess": "d9851b2e629ae65b8e59dea4c1ec32adaab24b93",
+    "contextual_tutorials": "870a06e1a3c7e88dd44558a53e2258d8c241d217",
+    "github_issues_103_108": "b06bc442fa55289a06d4b6e414f0720263a63b0f"
+  },
+  "platform_runtime": {
+    "linux-x86_64": {
+      "target_os_tested": true,
+      "status": "passed",
+      "scope": "Exported package: campaign, Autochess, EN/RU/DE UI and Vulkan NRD checks."
+    },
+    "windows-x86_64": {
+      "target_os_tested": false,
+      "status": "Proton/VKD3D passed",
+      "scope": "Exported DX12 executable: real DLSS/DLAA, FSR upscaling and generation, NRD, staged uploads, history handoff and full combat traversal. Optional dlssg_for_sm86 package separately tested."
+    },
+    "android": {
+      "target_os_tested": false,
+      "status": "signed export verified",
+      "scope": "Version code 62, unchanged app ID/certificate, non-debuggable, 435 production scripts identical; no device runtime test."
+    },
+    "macos-universal": {
+      "target_os_tested": false,
+      "status": "archive verified",
+      "scope": "Unsigned universal export, icon/version and production script parity checked; no macOS runtime test."
+    },
+    "web": {
+      "target_os_tested": true,
+      "status": "passed",
+      "scope": "Fresh engine start and upgrade from published 1.27.0 cache with IndexedDB preserved. Real localized guide articles exercised in both campaigns."
+    }
+  },
+  "packaged_checks": [
+    {
+      "suite": "story_coop_captivity",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 3.77,
+      "fixture_sha256": "e67197ff46a0d874900e5bfdcb33a66e9308f059b80795119b40c2cd6a4ea09c",
+      "tag": "cpu-story_coop_captivity",
+      "checks": 36,
+      "passed": true,
+      "summary": [
+        "STORY_COOP_CAPTIVITY 36 checks 0 failures"
+      ],
+      "run_log_sha256": "6e53a7ca8eecd970b2e51193f39296651b7c56b7c63d07a73f7f44020c20b248",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "prison_alarm_state",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 3.97,
+      "fixture_sha256": "0eac604d4d2931a8dbcc252bf2c34d214fdf2a55ee211cdf4d42d7ccbce87b98",
+      "tag": "cpu-prison_alarm_state",
+      "checks": 70,
+      "passed": true,
+      "summary": [
+        "PRISON_ALARM_STATE 70 checks 0 failures"
+      ],
+      "run_log_sha256": "2c192cbfafe32fef426569cb2b89288deb43f200bbb2e41e21fec35db8d2cdc1",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "prison_alarm_late_join",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 57.27,
+      "fixture_sha256": "6be2683bb885f6107a7cdec2bb79ae79f52235fb8861da4a521d87122a3fdee8",
+      "tag": "cpu-prison_alarm_late_join",
+      "checks": 79,
+      "passed": true,
+      "summary": [
+        "STORY_COOP_TRAPS_NET 79 checks 0 failures"
+      ],
+      "run_log_sha256": "6364380eca6852bc5a24004238d13f648e046be60b315e89ce60630d56634fe5",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "prison_damage_state",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 6.32,
+      "fixture_sha256": "a2254f5e2f7593b48769ec1015ee1458a39c685b1eb71c813c0ac9837bd33189",
+      "tag": "cpu-prison_damage_state",
+      "checks": 172,
+      "passed": true,
+      "summary": [
+        "PRISON_DAMAGE_STATE 172 checks 0 failures"
+      ],
+      "run_log_sha256": "65ed9c970a01c25cd9f064b19d97ea2d6d3d5c5fe6d8f72b7a032c8f69ca2d65",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "prison_discovery_state",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 4.62,
+      "fixture_sha256": "d225418eafb281cf6427addad1def300e9e2dc47e444a39730adae686e26d8c3",
+      "tag": "cpu-prison_discovery_state",
+      "checks": 139,
+      "passed": true,
+      "summary": [
+        "PRISON_DISCOVERY_STATE 139 checks 0 failures"
+      ],
+      "run_log_sha256": "30e248737e9f440af5608c8387f52dba59d2f081a89ceba6c4bdde8304fb5a71",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "prison_progression_state",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 5.67,
+      "fixture_sha256": "5e23f9f4aa7ea2f1d9311994b26fefc61638bc6d1128b2c50ffa46b673e44f30",
+      "tag": "cpu-prison_progression_state",
+      "checks": 224,
+      "passed": true,
+      "summary": [
+        "PRISON_PROGRESSION_STATE 224 checks 0 failures"
+      ],
+      "run_log_sha256": "5a67c577859c4702c06c84a254da17fa97964235f6a2b1fd7b7b1868bfbfa255",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "story_guard_escape",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 3.82,
+      "fixture_sha256": "3ada89fd0ab60864e7b4a8a7956106bd7b03180a38e203ac680b76bdeace1fa7",
+      "tag": "cpu-story_guard_escape",
+      "checks": 11,
+      "passed": true,
+      "summary": [
+        "STORY_GUARD_ESCAPE 11 checks 0 failures"
+      ],
+      "run_log_sha256": "713667db90ac1c8340be1a9b89e3695265507f2c93f636dd41eb327b89b7f9b4",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "patrol_escape_alerts",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 3.62,
+      "fixture_sha256": "576cbe245c4334711dce0913d7e1426942f1e74a398b5317626ea7791a7f0909",
+      "tag": "cpu-patrol_escape_alerts",
+      "checks": 14,
+      "passed": true,
+      "summary": [
+        "PATROL_ESCAPE_ALERTS 14 checks 0 failures"
+      ],
+      "run_log_sha256": "7d434378632d63fc64aa1ec22b25ba1a27250d70920a27e787d1bbbb0bd584df",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "script_parity_boundaries",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 3.63,
+      "fixture_sha256": "af0e56666f548129c29f39154cd73955e45a3f46f4c561ecae19550537547a5d",
+      "tag": "cpu-script_parity_boundaries",
+      "checks": 20,
+      "passed": true,
+      "summary": [
+        "SCRIPT_PARITY_BOUNDARIES 20 checks 0 failures"
+      ],
+      "run_log_sha256": "b8a650a938b388df7e9a390a63c927ac10354298ea90b500361fe4977bda1d7f",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "save_actor_refs",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 3.32,
+      "fixture_sha256": "873f1db9b5f9323783f64cf925ca58b5d679ae6ad2415249806b00a07c9cc679",
+      "tag": "cpu-save_actor_refs",
+      "checks": 14,
+      "passed": true,
+      "summary": [
+        "SAVE_ACTOR_REFS 14 checks 0 failures"
+      ],
+      "run_log_sha256": "6adf80c401f83959be29d1ec20a45a3c3c5a580ec2d586d867111dc3f002b9a4",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "spell_alert_encounter",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 5.88,
+      "fixture_sha256": "7398d80773fdb8eb39e2ec46f98601859c19869cdfd03cd5d1f8049e3d92de81",
+      "tag": "cpu-spell_alert_encounter",
+      "checks": 8,
+      "passed": true,
+      "summary": [
+        "SPELL_ALERT_ENCOUNTER 8 checks 0 failures"
+      ],
+      "run_log_sha256": "b66f4e2684df279feb80d796760da13cf38892f03654b7d39b45f4554032684a",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "object_activity",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 27.81,
+      "fixture_sha256": "a115e0f8e972e2202d632dc31699e72d1d65cacbabc374dbae1bef4ccfacd847",
+      "tag": "cpu-object_activity",
+      "checks": null,
+      "passed": true,
+      "summary": [],
+      "run_log_sha256": "d68e4047429202d95e24ab90a4b998b68da97ad32fb0c3521ac643792436f844",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "stamina_ack",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 7.38,
+      "fixture_sha256": "418fcc82262ac02462102f060b507274e50db1881c0b3d0e7ff678134be00c8f",
+      "tag": "cpu-stamina_ack",
+      "checks": 0,
+      "passed": true,
+      "summary": [
+        "RESULT failures=0 checks=5"
+      ],
+      "run_log_sha256": "30373714c0d1b8d55b45c69b29a028305a8a3ae2f358b0763c96234876b65b50",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "ui_real_time",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 7.63,
+      "fixture_sha256": "cb3b32aea83695c3eff3534620190dfae1b3e0637c59fdbe666560fab7f943b4",
+      "tag": "cpu-ui_real_time",
+      "checks": 0,
+      "passed": true,
+      "summary": [
+        "RESULT failures=0 checks=9"
+      ],
+      "run_log_sha256": "e5aacfa13c8732adec570a5ea052dd04a14e34a0d2c3928117866b24ed09bb26",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "arena_flat_equipment",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 5.12,
+      "fixture_sha256": "6d5e3b2ba8d13fd9df5dc31a50dd7c587cb93886a06793edf0c161cc3f081b4b",
+      "tag": "cpu-arena_flat_equipment",
+      "checks": null,
+      "passed": true,
+      "summary": [],
+      "run_log_sha256": "d9560f3a96062dd3249528ac3d01fbf789c8d874db6ebab637eb2a0d973776ac",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "arena_item_tiers",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 4.62,
+      "fixture_sha256": "aed78d91eb6ed4ac3c0bb672d451da63409d145533b69bf983d5602837e5dd4e",
+      "tag": "cpu-arena_item_tiers",
+      "checks": 166,
+      "passed": true,
+      "summary": [
+        "ARENA_ITEM_TIERS checks=166 failures=[]"
+      ],
+      "run_log_sha256": "60881d9dea50750966cb57adb52618be088d86b5aab53dee515bbaa1d32b2e85",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "arena_equipment_localization",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 3.42,
+      "fixture_sha256": "dabab339f9e1bdf190a95ee6dfeb92eb170bb6dab45c181557fa088ddd1d907f",
+      "tag": "cpu-arena_equipment_localization",
+      "checks": 357,
+      "passed": true,
+      "summary": [
+        "ARENA_EQUIPMENT_LOCALIZATION checks=357 failures=[]"
+      ],
+      "run_log_sha256": "e60cb34c395c76d3948c6d157c7bcdc858f9589c6962f2a32fcf5ff7f7dd86c6",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "arena_astral",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 5.67,
+      "fixture_sha256": "e8cfc5ee07cc31ff44b6285bfdd1dda833635515ca6c853629a6387af421970c",
+      "tag": "cpu-arena_astral",
+      "checks": 1078,
+      "passed": true,
+      "summary": [
+        "ARENA_ASTRAL checks=1078 failures=[] battle=[0,27.7199999999999,[247.424577236176,149.727543830872],{\"marked\":2,\"popper_armed\":1,\"popper_blast\":1,\"popper_hit\":2}]"
+      ],
+      "run_log_sha256": "ebe3248e063c6cca808f5669acd6b8c1f72a338137dcbff52b1806e6e18b7488",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "arena_astral_online",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 5.27,
+      "fixture_sha256": "92b5b0f1d59afd216ff78bedc1a27b1b1be517ab729355b9770462a7819ed0f7",
+      "tag": "cpu-arena_astral_online",
+      "checks": 40,
+      "passed": true,
+      "summary": [
+        "ARENA_ASTRAL_ONLINE checks=40 failures=[]"
+      ],
+      "run_log_sha256": "fd49016ec8b33e6087d860433116605af1f198759c1b05d0bfd94162a32bd565",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "raytrace_source_cache",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 6.58,
+      "fixture_sha256": "2f924e09966dee02502e6239215eaef776babf8b6accfcd8445c610dc3fab212",
+      "tag": "rendered-raytrace_source_cache",
+      "checks": 8,
+      "passed": true,
+      "summary": [
+        "RT_SOURCE_CACHE 8 checks 0 failures"
+      ],
+      "run_log_sha256": "3a670e968b796bb6e86ecd7fc48e7711f19e33f48d2ae009472d4cab6e5e5628",
+      "allowed_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "suite": "path_trace_budget",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 3.42,
+      "fixture_sha256": "36cbeb1776a91ae1e26f93180ab38daa3bfb2f3dd9a7627be2b617b6a60a76e9",
+      "tag": "cpu-path_trace_budget",
+      "checks": 11,
+      "passed": true,
+      "summary": [
+        "PATH_TRACE_BUDGET 11 checks 0 failures"
+      ],
+      "run_log_sha256": "fa28b0e2032364bd76ed8779a7c4f65066c4d7081ddaee27c4f82ec3477bb587",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "ground_mark_animation",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 8.98,
+      "fixture_sha256": "da00cc3b843e73b8e89ec7c64edc250501fd65cfdc1b59297f855f95d3b7351e",
+      "tag": "rendered-ground_mark_animation",
+      "checks": 24,
+      "passed": true,
+      "summary": [
+        "GROUND_MARK_ANIMATION 24 checks 0 failures"
+      ],
+      "run_log_sha256": "0805ad19bb7afb6d9526e38bd3834ffb4615337c3f544588adc8c54563235249",
+      "allowed_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "suite": "zone7_entry_fx",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 3.82,
+      "fixture_sha256": "37e46a40ce19329bc4dcbd9b086620951944cdfab811b60b06499b318a3cd585",
+      "tag": "cpu-zone7_entry_fx",
+      "checks": 85,
+      "passed": true,
+      "summary": [
+        "LIA_ZONE7_ENTRY_FX 85 checks 0 failures"
+      ],
+      "run_log_sha256": "6195ddf8982465af0ce83c97702fcef267da1e235b3a9591c3365793ee114168",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "story_coop_effects",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 5.12,
+      "fixture_sha256": "ff1752c6c54ef38fd63a583633a47185d956a6ecb4b93bb2ab2022ae67511877",
+      "tag": "cpu-story_coop_effects",
+      "checks": 169,
+      "passed": true,
+      "summary": [
+        "STORY_COOP_EFFECTS 169 checks 0 failures"
+      ],
+      "run_log_sha256": "cd73ebe18575e4a8a1458e260e2d5e37c2092a46b0acaccf61c470ef5e9fd2d2",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "story_coop_effects_net",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 7.73,
+      "fixture_sha256": "91a72664c5623f546bfad9ee3bb45326807fea8ea556ff2f33216902061d71f8",
+      "tag": "cpu-story_coop_effects_net",
+      "checks": 26,
+      "passed": true,
+      "summary": [
+        "STORY_COOP_EFFECTS_NET 26 checks 0 failures"
+      ],
+      "run_log_sha256": "47bad51b363fad23ed83d1e0f19e3f06181250eac4e8824198dfced507b9a001",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "story_coop_predicates",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 5.17,
+      "fixture_sha256": "583ffd829afa0600b1a3bb47163d4c2968511f225a460a33a636ab073e397cca",
+      "tag": "cpu-story_coop_predicates",
+      "checks": 101,
+      "passed": true,
+      "summary": [
+        "STORY_COOP_PREDICATES 101 checks 0 failures"
+      ],
+      "run_log_sha256": "af963237f67f833ee82093a9ef8ad9d8aafc2949899444e7e5e40b58199273da",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "story_coop_predicates_net",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 24.31,
+      "fixture_sha256": "109d7579272b91ac147724ad947cbde3b3294130a6d7a4bf87507c8f513d2493",
+      "tag": "cpu-story_coop_predicates_net",
+      "checks": 21,
+      "passed": true,
+      "summary": [
+        "STORY_COOP_PREDICATES_NET 21 checks 0 failures"
+      ],
+      "run_log_sha256": "cf373610eef769bed9300316120d7c7bfe2677b298c521f925332d683959b0df",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "story_coop_traps",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 4.57,
+      "fixture_sha256": "d6b9b542fca15138feb5b552ff53e60c67eeeade4a6dd7b6bf166e0a1924d3a6",
+      "tag": "cpu-story_coop_traps",
+      "checks": 55,
+      "passed": true,
+      "summary": [
+        "STORY_COOP_TRAPS 55 checks 0 failures"
+      ],
+      "run_log_sha256": "ec20c9037e5b6505cd555499a0dece25cade8dd718a6c5399d56ce7afa9c0e8a",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "story_coop_traps_net",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 8.63,
+      "fixture_sha256": "467645c27cbfe2ce9130f22fe4ac7d68edfdf7e57a867685e212cff480fb35d4",
+      "tag": "cpu-story_coop_traps_net",
+      "checks": 21,
+      "passed": true,
+      "summary": [
+        "STORY_COOP_TRAPS_NET 21 checks 0 failures"
+      ],
+      "run_log_sha256": "5662eb5d98de964c9fbcf531f087eec989dcc61d5a9b8dc0b6ad79459863f692",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "script_clock_coop",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 22.4,
+      "fixture_sha256": "215e61647e70c8ba9386e06a5b2f1a6d6d67be7b0c50b9f1ab2fcc97f1707393",
+      "tag": "cpu-script_clock_coop",
+      "checks": 17,
+      "passed": true,
+      "summary": [
+        "SCRIPT_CLOCK_COOP 17 checks 0 failures"
+      ],
+      "run_log_sha256": "072a33516afcae9e9f18afdd936d9aeced3e4bfb81ad9a2264f26a796a2624eb",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "contextual_tutorials",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "seconds": 73.29,
+      "fixture_sha256": "86c7d4feda22f917ff92f8c7270096e074be23a6ce8ece4ad4fd7e5311f6ed34",
+      "tag": "tutorials-contextual_tutorials",
+      "checks": 391,
+      "passed": true,
+      "summary": [
+        "CONTEXTUAL_TUTORIALS: passed"
+      ],
+      "run_log_sha256": "f0f14e07080bcef132fb5d98830a48ce7d2a879fc02e8aa09de3dfd0f74e16da",
+      "allowed_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "suite": "esc_board_frames",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "seconds": 88.5,
+      "fixture_sha256": "fec1bc793f3dde9b1760e0a22fdf2b2142b33da2a98a8229bc2f9edc6c21b6cf",
+      "tag": "tutorials-esc_board_frames",
+      "checks": 49,
+      "passed": true,
+      "summary": [
+        "ESC_BOARD_FRAMES 49 checks 0 failures"
+      ],
+      "run_log_sha256": "fc40c901d2841e85f6bac9876a62a54f6fd3a5e097afece0fbf50f115daee249",
+      "allowed_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "suite": "arena_portrait_feedback_ui",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "seconds": 59.87,
+      "fixture_sha256": "54b5f1af44f96505ef1bb344234c47809b53245a4c11f144c81cab772ee63355",
+      "tag": "fps30-arena_portrait_feedback_ui",
+      "checks": 103,
+      "passed": true,
+      "summary": [
+        "ARENA_COMMANDER_UI 103 failures=[]"
+      ],
+      "run_log_sha256": "b31daa7a4c9b15e8faa8c49b4e8777b0ba8d450e0b90a727fe3ed85adf15f698",
+      "allowed_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "suite": "arena_portrait_polish_ui",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "seconds": 78.15,
+      "fixture_sha256": "3f10b19997676b838f5896980d833e7d306e4ac7f4c987c3391f71e24a3fb084",
+      "tag": "fps30-arena_portrait_polish_ui",
+      "checks": 78,
+      "passed": true,
+      "summary": [
+        "ARENA_PORTRAIT_POLISH_UI en checks=78 failures=[]"
+      ],
+      "run_log_sha256": "3acd1f188bf8062bf39124ebbf9f2a39e26be9dc0ff1eb8f9f052d4bb0a47036",
+      "allowed_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "suite": "arena_commander_events_ui",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "seconds": 65.62,
+      "fixture_sha256": "ce80ea9b2db87a4276960e1e1c60ba9340fdd13eae83745ea1230d93bdb2b673",
+      "tag": "autochess-arena_commander_events_ui",
+      "checks": 213,
+      "passed": true,
+      "summary": [
+        "ARENA_COMMANDER_EVENTS_UI checks=213 failures=[]"
+      ],
+      "run_log_sha256": "1f97590133295829e2685084b26f410f711a54cc22356a7c98b44e12919e7127",
+      "allowed_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "suite": "arena_astral_ui",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "seconds": 123.36,
+      "fixture_sha256": "b9152e0f1e32cb62752d4a35926a47e9a76faa0e1f58017afb3aff74e8e67572",
+      "tag": "astral-ui-clean-teardown",
+      "checks": 164,
+      "passed": true,
+      "summary": [
+        "ARENA_ASTRAL_UI checks=164 failures=[]"
+      ],
+      "run_log_sha256": "5282580d433c9032b9aae185ce670dac0c00f496cfe95ebc449e7bc4fe1b3201",
+      "allowed_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "suite": "arena_astral_events_ui",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "seconds": 85.87,
+      "fixture_sha256": "70827c7f4316b3d6cc5a85279b317dccdcc90c85b9de4c7ba6493a1cc42889c8",
+      "tag": "autochess-arena_astral_events_ui",
+      "checks": 213,
+      "passed": true,
+      "summary": [
+        "ARENA_COMMANDER_EVENTS_UI checks=213 failures=[]"
+      ],
+      "run_log_sha256": "31a744861468bc4fe33fde228ee2619f7ee6e7d55111150b8961ca5fb416be95",
+      "allowed_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "suite": "arena_snow_edges",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "seconds": 5.07,
+      "fixture_sha256": "031caa7f3a9401ff8c9988c1d517a80ac4cb0cf28ec0ad06341e6b91fd365fcd",
+      "tag": "autochess-arena_snow_edges",
+      "checks": 1090,
+      "passed": true,
+      "summary": [
+        "ARENA_SNOW_EDGES 1090 checks; failures=[]"
+      ],
+      "run_log_sha256": "e0fa88168f5a2f90f5e35b70e716e616d6c412091162921448921a12a95b9d66",
+      "allowed_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "suite": "path_trace_upload_staging",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 8.38,
+      "fixture_sha256": "5c30c0b400624d0c3fc958f673f520f19ef3fe37cf5a6caf1a9fadd5795dccdc",
+      "tag": "vulkan-path_trace_upload_staging",
+      "checks": 14,
+      "passed": true,
+      "summary": [
+        "SCENE_RT_DEVICE 14 checks 0 failures"
+      ],
+      "run_log_sha256": "dc13693d7c5e2839fba3f0e51b52c4cb438fcdc754c089a10edf32ce3f31e5c4",
+      "allowed_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "suite": "path_trace_history_handoff",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 8.13,
+      "fixture_sha256": "f7986d9092ef0f259461e48471f4dff4da02f1bd926366495cdcfcefccb3c759",
+      "tag": "vulkan-path_trace_history_handoff",
+      "checks": 12,
+      "passed": true,
+      "summary": [
+        "SCENE_RT_DEVICE 12 checks 0 failures"
+      ],
+      "run_log_sha256": "e2cd6346db07d2d6b5e7c48866ff38912b0cccc62204388db13223ec76a46e11",
+      "allowed_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "suite": "path_trace_nrd_device",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 9.48,
+      "fixture_sha256": "3c2950018818bac36114d1ba29161cdb4d88c9f0af5e33f7df0ab4d771f6bfb3",
+      "tag": "vulkan-path_trace_nrd_device",
+      "checks": 19,
+      "passed": true,
+      "summary": [
+        "SCENE_RT_DEVICE 19 checks 0 failures"
+      ],
+      "run_log_sha256": "c4c05862b5002e49d3bef82cca9ad21e5b798f04c7a5ff8bb0668d7751b35ac9",
+      "allowed_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "suite": "path_trace_nrd_motion",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 8.23,
+      "fixture_sha256": "cf56d29afcbdf67a772ac5064d19b034774aa8f56cbd514aca669a590a2f5e0c",
+      "tag": "vulkan-path_trace_nrd_motion",
+      "checks": 42,
+      "passed": true,
+      "summary": [
+        "SCENE_RT_DEVICE 42 checks 0 failures"
+      ],
+      "run_log_sha256": "9187d55ea23ae2f1d13ed7371084f686344abee8095d8d79f515d88a3f034723",
+      "allowed_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "suite": "path_trace_grass_receivers",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 9.08,
+      "fixture_sha256": "01125d0f5dc187fb0833d5a63f8eb52106888326d3d2124d73b94f2ebecb7796",
+      "tag": "vulkan-path_trace_grass_receivers",
+      "checks": 8,
+      "passed": true,
+      "summary": [
+        "SCENE_RT_DEVICE 8 checks 0 failures"
+      ],
+      "run_log_sha256": "1ab0347ef204700bfdcfcdea326f52b0b25ea8458b3375b6c4ba7c3cfbe52b41",
+      "allowed_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "suite": "shader_compilation_water",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "seconds": 23.35,
+      "fixture_sha256": "3fcc78d0ead77939d22a8ba8164ca6dabd5ab4c49dce14e7ef92b8174236c976",
+      "tag": "vulkan-shader_compilation_water",
+      "checks": 67,
+      "passed": true,
+      "summary": [
+        "SHADER_COMPILATION_WATER 67 checks 0 failures"
+      ],
+      "run_log_sha256": "11828d659c1a29ad4daaded031c778618f6e11389daba25c1daad4a170c27169",
+      "allowed_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    },
+    {
+      "suite": "rtx_frame_generation",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "seconds": 81.05,
+      "fixture_sha256": "bd27c8f22c5071f62767a2de722219afd5ee194f9e921341e966098a012c4ce1",
+      "tag": "windows-framegen-rtx_frame_generation",
+      "checks": 64,
+      "passed": true,
+      "summary": [
+        "DLSS_FRAMEGEN: passed"
+      ],
+      "run_log_sha256": "214c2818506de7129b097b05c9725f5689e4389a3eafc6ee5387a99f840a1da3",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "path_trace_traversal_stalls",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "seconds": 387.84,
+      "fixture_sha256": "43d0875c9d131edf30f46e169ff837684cf15206444c5b9c082c00d6bd0cf04e",
+      "tag": "windows-route-waypoint-path_trace_traversal_stalls",
+      "checks": 148,
+      "passed": true,
+      "summary": [
+        "RECORDING_ROUTE 148 checks 0 failures"
+      ],
+      "run_log_sha256": "2a09cf513dd403a80e207739060349a5eff95a511c9ff0d05168aa80a01090f5",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "rtx_super_resolution",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "seconds": 68.48,
+      "fixture_sha256": "f27cb9d7e8d4eebc8f77b0cf0d90038e7608b000f13811ba28aac5bdf61c33c1",
+      "tag": "windows-dlss-rtx_super_resolution",
+      "checks": 58,
+      "passed": true,
+      "summary": [
+        "SR_RENDER: passed"
+      ],
+      "run_log_sha256": "194efed4e66383a0c1134fb09218fedc24535850616ac8a4374c0f29589acf75",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "fsr_screen",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "seconds": 17.39,
+      "fixture_sha256": "63d298b872cd8c45ea7d50b6c61f4a1c41f22617c4b5a8c6741c9ed16b18ec4e",
+      "tag": "windows-dlss-fsr_screen",
+      "checks": 750,
+      "passed": true,
+      "summary": [
+        "FSR_SCREEN {\"checks\":750,\"facts\":{\"api\":true,\"engine\":true,\"fg3\":false,\"fg4\":false,\"sr3\":false,\"sr4\":false},\"failures\":0}"
+      ],
+      "run_log_sha256": "b2039837d447b22188d906d24e97ceeb02a034b7c1cba0c35bc1d4247429bc33",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "fsr_render",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "seconds": 73.34,
+      "fixture_sha256": "1e39135c5b1bd9681d851f0f93e3b735ea1a7084e973cbe5ff8db1c3e046f1bc",
+      "tag": "windows-fsr-fsr_render",
+      "checks": 191,
+      "passed": true,
+      "summary": [
+        "FSR_RENDER: passed"
+      ],
+      "run_log_sha256": "b33a02230da2b7a049444fdbcab953cc4dad19e8d3b1b3f506c93c887b8a28d2",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "path_trace_upload_staging",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "seconds": 11.33,
+      "fixture_sha256": "6457184da08f9ed39da813711b6a6b4668c43853d66abf509bc2fefa9f08f348",
+      "tag": "windows-fsr-path_trace_upload_staging",
+      "checks": 14,
+      "passed": true,
+      "summary": [
+        "SCENE_RT_DEVICE 14 checks 0 failures"
+      ],
+      "run_log_sha256": "43fb1a58aa4d5154eaa2978896d72468d50311721f09b2b26523951bbdbc9d6d",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "path_trace_history_handoff",
+      "platform": "windows",
+      "renderer": "d3d12",
+      "seconds": 12.23,
+      "fixture_sha256": "8ad4c4cc1d36c311261ab3edb5eaea4e554b719cc93c636913a91ab8e0cac19f",
+      "tag": "windows-fsr-path_trace_history_handoff",
+      "checks": 12,
+      "passed": true,
+      "summary": [
+        "SCENE_RT_DEVICE 12 checks 0 failures"
+      ],
+      "run_log_sha256": "9aac5bc4c18a9f90b9a65d2e969d62b0de6b45441b35178d8d40c01d923672bd",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "creature_alerts",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 7.53,
+      "fixture_sha256": "787c32e66381ff7f91b99f07c175e8cf5b419ea376a41fbf1b755577af7e5b9a",
+      "tag": "issue-regression-creature_alerts",
+      "checks": 20,
+      "passed": true,
+      "summary": [
+        "CREATURE_ALERTS 20 checks 0 failures"
+      ],
+      "run_log_sha256": "cafd767ac6fb4f348dde4582663e9835a312ad7b45c7f8dbcbe9aaba8706f8c5",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "authored_wolf_corpse",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 11.08,
+      "fixture_sha256": "bb1fe422d9997970a2c696b8ecdd47b68364660050740f6a4b1c78e9ce38ea96",
+      "tag": "issue-regression-authored_wolf_corpse",
+      "checks": 4,
+      "passed": true,
+      "summary": [
+        "AUTHORED_WOLF_CORPSE 4 checks 0 failures"
+      ],
+      "run_log_sha256": "c525e0b1b15e625d77144ef048f205dd88f80b0f5ab2a3af36686967be6de7f1",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "dialogue_clock_coop",
+      "platform": "linux",
+      "renderer": "headless",
+      "seconds": 9.13,
+      "fixture_sha256": "98c13ea9f2d27dd1a5816c21d321116ae5e0bcec9234ae3fc996007f3dad2f33",
+      "tag": "issue-regression-dialogue_clock_coop",
+      "checks": 12,
+      "passed": true,
+      "summary": [
+        "DIALOGUE_CLOCK_COOP 12 checks 0 failures"
+      ],
+      "run_log_sha256": "364ae41995e6e20ebecad6928a164976971b4efca9826274bacb2b92565605e1",
+      "allowed_diagnostics": []
+    },
+    {
+      "suite": "dialogue_hold_space",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "seconds": 51.8,
+      "fixture_sha256": "9e4546d2de10d74eeb8a61dd3db2ba3d46f877f360fe0d2e8fcbd9dd669aa3b4",
+      "tag": "issue108-held-space-rendered",
+      "checks": 6,
+      "passed": true,
+      "summary": [
+        "DIALOGUE_HOLD_SPACE 6 checks 0 failures"
+      ],
+      "run_log_sha256": "66df57aa94f42de8a2db18fa04c99a382f23d94ebe4a312be28f8f5135505d2f",
+      "allowed_diagnostics": [
+        "ERROR: Parameter \"monitors\" is null."
+      ]
+    }
+  ],
+  "total_packaged_checks_reported": 6708,
+  "multiplayer": {
+    "transports": [
+      "enet",
+      "websocket"
+    ],
+    "checks": 60,
+    "results_match": true
+  },
+  "wiki_browser_checks": 36,
+  "compiled_scripts": 435,
+  "validation_setup_corrections": [
+    "The source-cache and ground-mark animation fixtures need rendering and were rerun under OpenGL after inappropriate headless invocations.",
+    "Older portrait fixtures count frames; uncapped initial test profiles ran too quickly. Reruns with the required 30 FPS profile passed unchanged assertions.",
+    "The Astral UI fixture now explicitly tears down its live match before quitting the root tree, allowing worker cleanup to finish. Its initial 164 assertions passed but shutdown emitted an add_child error.",
+    "The traversal waypoint at (48,82) was obstructed after combat; the actor reached (48.5,82.5), outside the 0.6m assertion. The fixture now requests that reachable waypoint and retains the same arrival tolerance.",
+    "The legacy dialogue_feedback fixture crashes in both the published 1.27.0 and integrated exported packages before zone setup. It is excluded; dialogue clock networking and a focused real-panel held-Space test are used for the changed behavior.",
+    "The held-Space fixture allows asynchronous material textures to finish and renders the dialogue before exercising input; early fixture shutdown produced texture diagnostics after all six assertions passed.",
+    "The isolated GPU Lab X11 worker emits a known null monitor-query diagnostic. Only that exact diagnostic and its stack are accepted; other errors fail validation."
+  ],
+  "superseded_attempts": {
+    "cpu-raytrace_source_cache": "rendered-raytrace_source_cache",
+    "cpu-ground_mark_animation": "rendered-ground_mark_animation",
+    "autochess-arena_portrait_feedback_ui": "fps30-arena_portrait_feedback_ui",
+    "autochess-arena_portrait_polish_ui": "fps30-arena_portrait_polish_ui",
+    "autochess-arena_astral_ui": "astral-ui-clean-teardown",
+    "windows-route-path_trace_traversal_stalls": "windows-route-waypoint-path_trace_traversal_stalls"
+  },
+  "limitations": [
+    "Path tracing and frame generation remain experimental. Proton present counts do not qualify native Windows pacing, display cadence, latency or refresh-rate behavior.",
+    "Native Windows, macOS and Android runtime execution was unavailable on this Linux workstation.",
+    "The RTX 30-series optional modification does not constitute official NVIDIA hardware support.",
+    "NVIDIA mark-placement approval is not verified by this release process; the pending status and source terms are retained in docs/branding/graphics-sdk-attribution.md.",
+    "The exact player saves for some original issue reports were unavailable; authored fixtures and current regression cases were used."
+  ]
+}

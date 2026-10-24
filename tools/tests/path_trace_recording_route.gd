@@ -110,7 +110,9 @@ func run() -> void:
 	await stage("slope-after-combat",25)
 	await milestone("slope")
 	view_mode=1;g.direct._set_view_mode(1);g.direct._update_view_model(null)
-	await walk("down-to-beach",Vector2(48,82),35)
+	# Use the reachable waypoint beside the authored slope obstacle; the
+	# original (48,82) request can stop at (48.5,82.5) after combat.
+	await walk("down-to-beach",Vector2(48.5,82.5),35)
 	await encounter(1915,"beach-boar",true)
 	await stage("beach-after-combat",25)
 	await milestone("beach")

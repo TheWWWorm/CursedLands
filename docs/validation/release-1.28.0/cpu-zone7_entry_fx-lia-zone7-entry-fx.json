@@ -1,0 +1,538 @@
+{
+	"checks": 85,
+	"evidence": [
+		{
+			"after_resume_allocator": -41,
+			"events": [
+				{
+					"a": [
+						1.0,
+						73.9499969482422,
+						206.199996948242,
+						8.0,
+						1.0,
+						"teleport"
+					],
+					"f": "CreateParticleSource",
+					"t": "fxcmd"
+				},
+				{
+					"a": [
+						2.0,
+						14.3999996185303,
+						208.0,
+						7.5,
+						1.0,
+						"teleport"
+					],
+					"f": "CreateParticleSource",
+					"t": "fxcmd"
+				}
+			],
+			"guests": 0,
+			"kel_owner": 0,
+			"label": "solo",
+			"replay": {
+				"keys": [
+					"p1",
+					"p2"
+				],
+				"replayed": [
+					{
+						"a": [
+							1.0,
+							73.9499969482422,
+							206.199996948242,
+							8.0,
+							1.0,
+							"teleport"
+						],
+						"f": "CreateParticleSource",
+						"t": "fxcmd"
+					},
+					{
+						"a": [
+							2.0,
+							14.3999996185303,
+							208.0,
+							7.5,
+							1.0,
+							"teleport"
+						],
+						"f": "CreateParticleSource",
+						"t": "fxcmd"
+					}
+				],
+				"saved_fx_auto": -41
+			},
+			"saved_allocator": -41,
+			"saved_wait": [
+				{
+					"b": 0,
+					"f": [
+						{
+							"i": 7
+						}
+					],
+					"i": 7,
+					"k": true,
+					"l": {
+						"this": null
+					},
+					"p": 0.0,
+					"s": "VCheck#0#1",
+					"sc": [
+						0,
+						20.0
+					],
+					"st": 0,
+					"w": 1.1
+				}
+			]
+		},
+		{
+			"after_resume_allocator": -44,
+			"events": [
+				{
+					"a": [
+						1.0,
+						73.9499969482422,
+						206.199996948242,
+						8.0,
+						1.0,
+						"teleport"
+					],
+					"f": "CreateParticleSource",
+					"t": "fxcmd"
+				},
+				{
+					"a": [
+						2.0,
+						14.3999996185303,
+						208.0,
+						7.5,
+						1.0,
+						"teleport"
+					],
+					"f": "CreateParticleSource",
+					"t": "fxcmd"
+				},
+				{
+					"a": [
+						-41.0,
+						78.0,
+						207.0,
+						8.0,
+						1.0,
+						"teleport"
+					],
+					"f": "CreateParticleSource",
+					"t": "fxcmd"
+				},
+				{
+					"a": [
+						-42.0,
+						79.0,
+						208.0,
+						8.0,
+						1.0,
+						"teleport"
+					],
+					"f": "CreateParticleSource",
+					"t": "fxcmd"
+				},
+				{
+					"a": [
+						-43.0,
+						80.0,
+						209.0,
+						8.0,
+						1.0,
+						"teleport"
+					],
+					"f": "CreateParticleSource",
+					"t": "fxcmd"
+				}
+			],
+			"guests": 3,
+			"kel_owner": 0,
+			"label": "three guests",
+			"replay": {
+				"keys": [
+					"p1",
+					"p2",
+					"p-41",
+					"p-42",
+					"p-43"
+				],
+				"replayed": [
+					{
+						"a": [
+							1.0,
+							73.9499969482422,
+							206.199996948242,
+							8.0,
+							1.0,
+							"teleport"
+						],
+						"f": "CreateParticleSource",
+						"t": "fxcmd"
+					},
+					{
+						"a": [
+							2.0,
+							14.3999996185303,
+							208.0,
+							7.5,
+							1.0,
+							"teleport"
+						],
+						"f": "CreateParticleSource",
+						"t": "fxcmd"
+					},
+					{
+						"a": [
+							-41.0,
+							78.0,
+							207.0,
+							8.0,
+							1.0,
+							"teleport"
+						],
+						"f": "CreateParticleSource",
+						"t": "fxcmd"
+					},
+					{
+						"a": [
+							-42.0,
+							79.0,
+							208.0,
+							8.0,
+							1.0,
+							"teleport"
+						],
+						"f": "CreateParticleSource",
+						"t": "fxcmd"
+					},
+					{
+						"a": [
+							-43.0,
+							80.0,
+							209.0,
+							8.0,
+							1.0,
+							"teleport"
+						],
+						"f": "CreateParticleSource",
+						"t": "fxcmd"
+					}
+				],
+				"saved_fx_auto": -44
+			},
+			"saved_allocator": -44,
+			"saved_wait": [
+				{
+					"b": 0,
+					"f": [
+						{
+							"i": 7
+						}
+					],
+					"i": 7,
+					"k": true,
+					"l": {
+						"this": null
+					},
+					"p": 0.0,
+					"s": "VCheck#0#1",
+					"sc": [
+						0,
+						20.0
+					],
+					"st": 0,
+					"w": 1.1
+				}
+			]
+		},
+		{
+			"after_resume_allocator": -44,
+			"events": [
+				{
+					"a": [
+						1.0,
+						73.9499969482422,
+						206.199996948242,
+						8.0,
+						1.0,
+						"teleport"
+					],
+					"f": "CreateParticleSource",
+					"t": "fxcmd"
+				},
+				{
+					"a": [
+						2.0,
+						14.3999996185303,
+						208.0,
+						7.5,
+						1.0,
+						"teleport"
+					],
+					"f": "CreateParticleSource",
+					"t": "fxcmd"
+				},
+				{
+					"a": [
+						-41.0,
+						78.0,
+						207.0,
+						8.0,
+						1.0,
+						"teleport"
+					],
+					"f": "CreateParticleSource",
+					"t": "fxcmd"
+				},
+				{
+					"a": [
+						-42.0,
+						79.0,
+						208.0,
+						8.0,
+						1.0,
+						"teleport"
+					],
+					"f": "CreateParticleSource",
+					"t": "fxcmd"
+				},
+				{
+					"a": [
+						-43.0,
+						80.0,
+						209.0,
+						8.0,
+						1.0,
+						"teleport"
+					],
+					"f": "CreateParticleSource",
+					"t": "fxcmd"
+				}
+			],
+			"guests": 3,
+			"kel_owner": 3,
+			"label": "guest-owned Kel",
+			"replay": {
+				"keys": [
+					"p1",
+					"p2",
+					"p-41",
+					"p-42",
+					"p-43"
+				],
+				"replayed": [
+					{
+						"a": [
+							1.0,
+							73.9499969482422,
+							206.199996948242,
+							8.0,
+							1.0,
+							"teleport"
+						],
+						"f": "CreateParticleSource",
+						"t": "fxcmd"
+					},
+					{
+						"a": [
+							2.0,
+							14.3999996185303,
+							208.0,
+							7.5,
+							1.0,
+							"teleport"
+						],
+						"f": "CreateParticleSource",
+						"t": "fxcmd"
+					},
+					{
+						"a": [
+							-41.0,
+							78.0,
+							207.0,
+							8.0,
+							1.0,
+							"teleport"
+						],
+						"f": "CreateParticleSource",
+						"t": "fxcmd"
+					},
+					{
+						"a": [
+							-42.0,
+							79.0,
+							208.0,
+							8.0,
+							1.0,
+							"teleport"
+						],
+						"f": "CreateParticleSource",
+						"t": "fxcmd"
+					},
+					{
+						"a": [
+							-43.0,
+							80.0,
+							209.0,
+							8.0,
+							1.0,
+							"teleport"
+						],
+						"f": "CreateParticleSource",
+						"t": "fxcmd"
+					}
+				],
+				"saved_fx_auto": -44
+			},
+			"saved_allocator": -44,
+			"saved_wait": [
+				{
+					"b": 0,
+					"f": [
+						{
+							"i": 7
+						}
+					],
+					"i": 7,
+					"k": true,
+					"l": {
+						"this": null
+					},
+					"p": 0.0,
+					"s": "VCheck#0#1",
+					"sc": [
+						0,
+						20.0
+					],
+					"st": 0,
+					"w": 1.1
+				}
+			]
+		},
+		{
+			"after_resume_allocator": -42,
+			"events": [
+				{
+					"a": [
+						1.0,
+						73.9499969482422,
+						206.199996948242,
+						8.0,
+						1.0,
+						"teleport"
+					],
+					"f": "CreateParticleSource",
+					"t": "fxcmd"
+				},
+				{
+					"a": [
+						2.0,
+						14.3999996185303,
+						208.0,
+						7.5,
+						1.0,
+						"teleport"
+					],
+					"f": "CreateParticleSource",
+					"t": "fxcmd"
+				},
+				{
+					"a": [
+						-41.0,
+						80.0,
+						209.0,
+						8.0,
+						1.0,
+						"teleport"
+					],
+					"f": "CreateParticleSource",
+					"t": "fxcmd"
+				}
+			],
+			"guests": 3,
+			"kel_owner": 1,
+			"label": "dead/hidden exclusions",
+			"replay": {
+				"keys": [
+					"p1",
+					"p2",
+					"p-41"
+				],
+				"replayed": [
+					{
+						"a": [
+							1.0,
+							73.9499969482422,
+							206.199996948242,
+							8.0,
+							1.0,
+							"teleport"
+						],
+						"f": "CreateParticleSource",
+						"t": "fxcmd"
+					},
+					{
+						"a": [
+							2.0,
+							14.3999996185303,
+							208.0,
+							7.5,
+							1.0,
+							"teleport"
+						],
+						"f": "CreateParticleSource",
+						"t": "fxcmd"
+					},
+					{
+						"a": [
+							-41.0,
+							80.0,
+							209.0,
+							8.0,
+							1.0,
+							"teleport"
+						],
+						"f": "CreateParticleSource",
+						"t": "fxcmd"
+					}
+				],
+				"saved_fx_auto": -42
+			},
+			"saved_allocator": -42,
+			"saved_wait": [
+				{
+					"b": 0,
+					"f": [
+						{
+							"i": 7
+						}
+					],
+					"i": 7,
+					"k": true,
+					"l": {
+						"this": null
+					},
+					"p": 0.0,
+					"s": "VCheck#0#1",
+					"sc": [
+						0,
+						20.0
+					],
+					"st": 0,
+					"w": 1.1
+				}
+			]
+		}
+	],
+	"failures": [],
+	"scope": "Original source/VM particle dispatch, named Gipat roster, controlled ownership/exclusion/late arrival, VM save/restore, campaign disk save/reload and normal Session replay. No rendered particle, ENet, complete chapter or performance claim."
+}

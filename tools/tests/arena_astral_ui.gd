@@ -68,6 +68,10 @@ func _ready() -> void:
 		check(ArenaPortraits.texture(ArenaRules.prototype(family,0),family,0) != null, "native damage portrait " + str(family))
 	check(screen.battle.world.unit_rows().filter(func(u):return u.faction == 1).size()==8,"all new families render on the board")
 	await shot("astral-roster")
+	# Exercise normal screen teardown while the root can still own the worker
+	# reaper, instead of destroying the whole tree with a live local match.
+	screen.queue_free(); screen = null
+	await get_tree().create_timer(5.2, true, false, true).timeout
 	check(errors.messages.is_empty(), "no runtime errors: " + str(errors.messages))
 	print("ARENA_ASTRAL_UI checks=",checks," failures=",JSON.stringify(failures))
 	OS.remove_logger(errors); TexUpscale.shutdown(); get_tree().quit(0 if failures.is_empty() else 1)

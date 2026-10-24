@@ -1,0 +1,14 @@
+{
+  "build_complete": true,
+  "path": "/home/llm2x/Documents/EI/local/scratchpad/pt-five-targets-20261024/engine/bin/godot.windows.template_release.x86_64.exe",
+  "sha256": "d2ae5a44290f1018cc667ae46b4ac8e53ab1fcd71b04ee7ffb17b90695b61c44",
+  "bytes": 94229504,
+  "patch_count": 21,
+  "engine_source": "Godot 4.7 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88; 20-patch Windows stack plus restore-dlss.patch including opacity/output corrections",
+  "compiler": "MinGW 13-posix; GCC macros 13.0.0",
+  "provenance_file": "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/repo/docs/validation/pt-five-targets-2026-10-24/engine-manifest.json",
+  "verification_file": "/home/llm2x/Documents/EI/local/scratchpad/release-1.28.0-20261024/repo/docs/validation/pt-five-targets-2026-10-24/engine-manifest.json",
+  "build_result_file": "/home/llm2x/Documents/EI/local/scratchpad/pt-five-targets-20261024/build-result.json",
+  "native_windows_runtime_tested": false,
+  "runtime_qualification": "Production template exercised under Proton; native Windows display pacing unqualified."
+}

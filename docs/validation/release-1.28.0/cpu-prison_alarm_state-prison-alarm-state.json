@@ -1,0 +1,129 @@
+{
+	"absent_wait": {
+		"first_absent_save": {
+			"b": 0,
+			"f": [
+				{
+					"i": 2
+				}
+			],
+			"i": 2,
+			"k": true,
+			"l": {
+				"this": {
+					"h": [
+						1,
+						0
+					],
+					"u": 1500000256
+				}
+			},
+			"p": 0.0,
+			"s": "VTriger#0#242",
+			"sc": [
+				0,
+				20.0
+			],
+			"st": 0,
+			"w": 1.1
+		},
+		"initial": {
+			"b": 0,
+			"f": [
+				{
+					"i": 2
+				}
+			],
+			"i": 2,
+			"k": true,
+			"l": {
+				"this": {
+					"h": [
+						1,
+						0
+					],
+					"u": 1500000256
+				}
+			},
+			"p": 0.0,
+			"s": "VTriger#0#242",
+			"sc": [
+				0,
+				20.0
+			],
+			"st": 0,
+			"w": 1.1
+		},
+		"old_uid": 1500000256,
+		"return_uid": 1500000756,
+		"second_absent_save": {
+			"b": 0,
+			"f": [
+				{
+					"i": 2
+				}
+			],
+			"i": 2,
+			"k": true,
+			"l": {
+				"this": {
+					"h": [
+						1,
+						0
+					],
+					"u": 1500000256
+				}
+			},
+			"p": 0.0,
+			"s": "VTriger#0#242",
+			"sc": [
+				0,
+				20.0
+			],
+			"st": 0,
+			"w": 1.1
+		},
+		"third_absent_save": {
+			"b": 0,
+			"f": [
+				{
+					"i": 2
+				}
+			],
+			"i": 2,
+			"k": true,
+			"l": {
+				"this": {
+					"h": [
+						1,
+						0
+					],
+					"u": 1500000256
+				}
+			},
+			"p": 0.0,
+			"s": "VTriger#0#242",
+			"sc": [
+				0,
+				20.0
+			],
+			"st": 0,
+			"w": 1.1
+		}
+	},
+	"authored_rearm": [
+		{
+			"phase": "sleep",
+			"remaining": 0.0549999999999997,
+			"time": 4.455
+		},
+		{
+			"phase": "rearmed",
+			"time": 4.565,
+			"watchers": 1
+		}
+	],
+	"checks": 70,
+	"failures": 0,
+	"scope": "Prepared actors and serialized edge cases around original native definitions; no full route, network, reinforcement or combat acceptance."
+}
