@@ -1,0 +1,13 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 03:19:49 +2694ms] session 9751d1cf1cbe: 1.27.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+SLOW_CLOCK frame_ms=125 worker=false fast/normal=2.05555555555555
+SLOW_CLOCK frame_ms=200 worker=false fast/normal=2.04137931034482
+SLOW_CLOCK frame_ms=250 worker=false fast/normal=2.04419889502762
+SLOW_CLOCK frame_ms=500 worker=false fast/normal=2.035
+SLOW_CLOCK frame_ms=125 worker=true fast/normal=2.05555555555555
+SLOW_CLOCK frame_ms=200 worker=true fast/normal=2.04137931034482
+SLOW_CLOCK frame_ms=250 worker=true fast/normal=2.04419889502762
+SLOW_CLOCK frame_ms=500 worker=true fast/normal=2.2
+WORKER_CLOCK 8279 checks 0 failures
+[trace 03:19:49 +2908ms] clean exit

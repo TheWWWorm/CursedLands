@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 03:21:38 +2771ms] session c4d37c264736: 1.27.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_ALLIANCES {"checks":616,"failures":[]}
+[trace 03:21:39 +4165ms] clean exit

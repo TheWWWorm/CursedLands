@@ -1,0 +1,25 @@
+test_add_remove_rename_records_and_missing_fields (test_legacy_mod_converter.ConversionTest.test_add_remove_rename_records_and_missing_fields) ... ok
+test_archive_names_match_runtime_byte_decoding (test_legacy_mod_converter.ConversionTest.test_archive_names_match_runtime_byte_decoding) ... ok
+test_archive_traversal_case_collision_and_truncation (test_legacy_mod_converter.ConversionTest.test_archive_traversal_case_collision_and_truncation) ... ok
+test_cp1252_record_names_and_multiplayer_target (test_legacy_mod_converter.ConversionTest.test_cp1252_record_names_and_multiplayer_target) ... ok
+test_disabled_legacy_settings_and_author_email (test_legacy_mod_converter.ConversionTest.test_disabled_legacy_settings_and_author_email) ... ok
+test_dll_dependency_blocks_package_even_without_binary (test_legacy_mod_converter.ConversionTest.test_dll_dependency_blocks_package_even_without_binary) ... ok
+test_documentation_and_report_only (test_legacy_mod_converter.ConversionTest.test_documentation_and_report_only) ... ok
+test_existing_output_is_not_overwritten (test_legacy_mod_converter.ConversionTest.test_existing_output_is_not_overwritten) ... ok
+test_links_and_case_colliding_input_files (test_legacy_mod_converter.ConversionTest.test_links_and_case_colliding_input_files) ... ok
+test_maps_settings_and_new_assets_are_reported (test_legacy_mod_converter.ConversionTest.test_maps_settings_and_new_assets_are_reported) ... ok
+test_multiple_distinct_archives_and_conflicting_precedence (test_legacy_mod_converter.ConversionTest.test_multiple_distinct_archives_and_conflicting_precedence) ... ok
+test_native_file_cannot_hide_as_readme (test_legacy_mod_converter.ConversionTest.test_native_file_cannot_hide_as_readme) ... ok
+test_nonfinite_and_out_of_range_numeric_values (test_legacy_mod_converter.ConversionTest.test_nonfinite_and_out_of_range_numeric_values) ... ok
+test_oversized_pack_still_reports_later_unsupported_content (test_legacy_mod_converter.ConversionTest.test_oversized_pack_still_reports_later_unsupported_content) ... ok
+test_package_delta_and_inputs_unchanged (test_legacy_mod_converter.ConversionTest.test_package_delta_and_inputs_unchanged) ... ok
+test_redress_delta_preserves_source_archives (test_legacy_mod_converter.ConversionTest.test_redress_delta_preserves_source_archives) ... ok
+test_registry_remapping_and_modes (test_legacy_mod_converter.ConversionTest.test_registry_remapping_and_modes) ... ok
+test_schema_matches_engine_contract (test_legacy_mod_converter.ConversionTest.test_schema_matches_engine_contract) ... ok
+test_unsafe_registry_path (test_legacy_mod_converter.ConversionTest.test_unsafe_registry_path) ... ok
+test_unsupported_edit_blocks_otherwise_supported_patch (test_legacy_mod_converter.ConversionTest.test_unsupported_edit_blocks_otherwise_supported_patch) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.038s
+
+OK

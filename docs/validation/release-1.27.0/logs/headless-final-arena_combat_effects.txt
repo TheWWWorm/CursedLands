@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 03:21:42 +2712ms] session 604ff064641c: 1.27.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_COMBAT_EFFECTS checks=31 failures=[] battle=[0,16.1149999999999,[365.137056716919,295.011882003784],{"echo":2,"guardian":2,"spirit":4,"spirit_echo":2,"storm":1,"ward":2}]
+[trace 03:21:44 +4994ms] clean exit

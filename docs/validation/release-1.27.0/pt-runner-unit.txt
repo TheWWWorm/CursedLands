@@ -1,0 +1,29 @@
+..{"event": "started", "pid": 1754740, "output": "/tmp/tmpuxtk4g8y"}
+..{"event": "started", "pid": 1754741, "output": "/tmp/tmpv15vv6c3"}
+.PT qualification failed: Invalid or protected --env key: DXVK_FILTER_DEVICE_NAME
+PT qualification failed: Invalid or protected --env key: __NV_PRIME_RENDER_OFFLOAD
+PT qualification failed: Invalid or protected --env key: VK_ICD_FILENAMES
+PT qualification failed: Invalid or protected --env key: VK_DRIVER_FILES
+PT qualification failed: Invalid or protected --env key: VKD3D_FILTER_DEVICE_NAME
+PT qualification failed: Invalid or protected --env key: MESA_VK_DEVICE_SELECT_FORCE_DEFAULT_DEVICE
+PT qualification failed: Invalid or protected --env key: NVIDIA_VISIBLE_DEVICES
+PT qualification failed: Invalid or protected --env key: CUDA_VISIBLE_DEVICES
+PT qualification failed: Invalid or protected --env key: MESA_VK_DEVICE_SELECT
+PT qualification failed: Invalid or protected --env key: __GLX_VENDOR_LIBRARY_NAME
+PT qualification failed: Invalid or protected --env key: DRI_PRIME
+PT qualification failed: GPU Lab must assign one physical UUID through CUDA_VISIBLE_DEVICES
+PT qualification failed: GPU Lab must assign one physical UUID through CUDA_VISIBLE_DEVICES
+PT qualification failed: Requested physical GPU is absent from nvidia-smi
+PT qualification failed: GPU Lab must assign one physical UUID through CUDA_VISIBLE_DEVICES
+..{"event": "started", "pid": 1754853, "output": "/tmp/tmptjyvc43i"}
+....{"event": "started", "pid": 1754874, "output": "/tmp/tmpev1lmcph"}
+.{"event": "started", "pid": 1754888, "output": "/tmp/tmp1uw2vrns"}
+....{"event": "started", "pid": 1754890, "output": "/tmp/tmp3eiyy7kt"}
+...{"event": "started", "pid": 1754902, "output": "/tmp/tmpj_ttax6y"}
+.{"event": "started", "pid": 1754903, "output": "/tmp/tmphpypaph4"}
+..{"event": "started", "pid": 1754905, "output": "/tmp/tmp3v9hggv4"}
+.
+----------------------------------------------------------------------
+Ran 23 tests in 5.381s
+
+OK

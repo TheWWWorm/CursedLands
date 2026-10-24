@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 03:21:51 +2788ms] session 7ad1b4d389f7: 1.27.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_ROSTER {"checks":1548,"failures":[]}
+[trace 03:21:51 +3128ms] clean exit

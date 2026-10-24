@@ -1,0 +1,5 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+
+[trace 03:21:33 +2852ms] session 7384397784bb: 1.27.0, Linux 24.04 (Ubuntu 24.04.5 LTS),  , forward_plus / vulkan
+ARENA_ITEM_TIERS checks=165 failures=[]
+[trace 03:21:34 +4273ms] clean exit

@@ -1,0 +1,17 @@
+Godot Engine v4.7.stable.custom_build - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3090 Ti
+
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+ERROR: Parameter "monitors" is null.
+   at: screen_get_refresh_rate (platform/linuxbsd/x11/display_server_x11.cpp:1858)
+[trace 03:23:19 +3754ms] session 31e1e527474d: 1.27.0, Linux 24.04 (Ubuntu 24.04.5 LTS), NVIDIA NVIDIA GeForce RTX 3090 Ti, gl_compatibility / opengl3
+CAPTURE item-tiers-de-tray (1280.0, 720.0)
+PERFORMANCE {"buffer_bytes":46581114.0,"cache_entries":{"camera_materials":0,"figure_materials":0,"figure_meshes":202,"figure_models":45,"object_textures":5,"unit_textures":7,"wound_jobs":0,"wound_layers":0},"draw_calls":680.0,"drawn_frames":71,"focus":"in","frame_limit":30,"interval_fps":2.5831328555435,"interval_s":27.486004,"msaa_3d":0,"nodes":1038.0,"objects":7151.0,"options":"hd_textures=1 materials=1 sharp_units=1 detailed_heads=1 sky=1 far_view=1 terrain=1 wind=1 grass=1 biome_cover=0 vegetation_interaction=0 soft_ground=1 ground_contact=0 terrain_cliffs=1 firelight=1 torch_glow=1 lava_light=1 foliage_light=1 volumetric=1 ssao=1 contact_shadows=1 bloom=1 depth_of_field=0 water=1 water_reflections=2 water_interaction=0 water_caustics=0 water_current=0 water_waves=0 waterfalls=0 ambient_wildlife=0 ambient_particles=0 clouds=0 cloud_shadows=0 cloud_reflections=0 weather_mist=0 weather_surfaces=1 heat_haze=1 soft_particles=1 lit_particles=1 severed_limbs=1 rain_puddles=0 q_aa=1 q_shadows=2 q_aniso=4 render_scale=4 display_mode=0 resolution=0 fps_limit=0 vsync=0 auto_graphics=0","orphan_nodes":null,"paused":false,"physics_ms":20.324,"pid":1765916,"primitives":241952.0,"process_ms":254.288,"reason":"interval","recent_fps":23.0,"render_scale":1.0,"renderer":"gl_compatibility","resources":599.0,"screen_space_aa":0,"static_bytes":null,"taa":false,"texture_bytes":253100102.0,"time_scale":1.0,"uptime_s":31.24079,"video_allocated_bytes":299681216.0,"vsync":0,"window":[1280,720],"world_count":1,"worlds":[{"authority":true,"instance":583243142180,"logic_debt_s":0.0,"looted":0,"pending_inputs":0,"presentation":true,"process_mode":4,"time":0.0,"units":4,"visible":true,"zone":""}],"zone":"(menu)"}
+CAPTURE item-tiers-de-1 (1280.0, 720.0)
+CAPTURE item-tiers-de-2 (1280.0, 720.0)
+CAPTURE item-tiers-de-3 (1280.0, 720.0)
+CAPTURE item-tiers-de-4 (1280.0, 720.0)
+CAPTURE item-tiers-de-5 (1280.0, 720.0)
+ARENA_ITEM_TIERS_UI de checks=264 failures=[]
+[trace 03:23:54 +38558ms] clean exit

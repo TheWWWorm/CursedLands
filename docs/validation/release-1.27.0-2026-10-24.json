@@ -1,0 +1,484 @@
+{
+  "version": "1.27.0",
+  "previous_stable": "v1.26.0",
+  "date": "2026-10-24",
+  "status": "Release candidate packages validated; publication is recorded separately.",
+  "source_commit": "4f31af72c3505c35c9bae651c68357bd75a21bca",
+  "game_tree": "666af4ee5fe4897d7e2e4f28620c119ab3260fb5",
+  "campaign_protocol": 23,
+  "autochess_protocol": 3,
+  "source_changes": [
+    "6063d4c2: tiered Autochess items, alliance bonuses, effects and victory music",
+    "e0644151: path-tracing motion, responsive reconstruction and terrain alignment",
+    "15214b38: six campaign issue fixes and combat equipment visibility"
+  ],
+  "platform_runtime": {
+    "linux-x86_64": {
+      "target_os_tested": true,
+      "status": "passed",
+      "scope": "Actual exported package: 30 campaign, Autochess and Vulkan suites; translated UI and save/worker regressions."
+    },
+    "windows-x86_64": {
+      "target_os_tested": false,
+      "status": "Wine/VKD3D passed",
+      "scope": "Actual exported DX12 executable and pack: 307 motion, camera, noise, history, snow and resource checks. Native Windows not run."
+    },
+    "android": {
+      "target_os_tested": false,
+      "status": "signed export verified",
+      "scope": "Version code 61, same app ID/signing certificate and byte-identical production scripts; no device runtime test."
+    },
+    "macos-universal": {
+      "target_os_tested": false,
+      "status": "archive verified",
+      "scope": "Unsigned universal export, icon/version and production script parity checked; no macOS runtime test."
+    },
+    "web": {
+      "target_os_tested": true,
+      "status": "passed",
+      "scope": "Fresh engine start without original data and upgrade from the published 1.26.0 service worker; IndexedDB sentinels preserved byte for byte."
+    }
+  },
+  "packaged_checks": [
+    {
+      "tag": "headless-worker_clock",
+      "suite": "worker_clock",
+      "platform": "linux",
+      "renderer": "headless",
+      "checks": 8279,
+      "passed": true,
+      "seconds": 3.17,
+      "summary": [
+        "WORKER_CLOCK 8279 checks 0 failures"
+      ],
+      "fixture_sha256": "c36fc1a5fbbd5e71b42aa1055c7496d48e0d06809398637c4c279a675968e74e",
+      "run_log_sha256": "67adc3089f0cad185e978fabf8d73dc02b06c3c8d4538e311254710fe373ae02"
+    },
+    {
+      "tag": "headless-pack_alert_recovery",
+      "suite": "pack_alert_recovery",
+      "platform": "linux",
+      "renderer": "headless",
+      "checks": 14,
+      "passed": true,
+      "seconds": 8.78,
+      "summary": [
+        "PACK_ALERT_RECOVERY 14 checks 0 failures"
+      ],
+      "fixture_sha256": "197f1ccaf127b8aa00af66d94b734e04bcf2dd20170a34a0def915dc7fd484ec",
+      "run_log_sha256": "f19b1e2e5fd0a7a52e5f12606bb65faef174a115da2c422c23af3d4a3bdd0896"
+    },
+    {
+      "tag": "headless-authored_wolf_corpse",
+      "suite": "authored_wolf_corpse",
+      "platform": "linux",
+      "renderer": "headless",
+      "checks": 4,
+      "passed": true,
+      "seconds": 11.74,
+      "summary": [
+        "AUTHORED_WOLF_CORPSE 4 checks 0 failures"
+      ],
+      "fixture_sha256": "bb1fe422d9997970a2c696b8ecdd47b68364660050740f6a4b1c78e9ce38ea96",
+      "run_log_sha256": "326944c73b59dc8878a132cfdca75260b8a0d1428d915f315ed1f2563ceaaf6a"
+    },
+    {
+      "tag": "headless-creature_alerts",
+      "suite": "creature_alerts",
+      "platform": "linux",
+      "renderer": "headless",
+      "checks": 20,
+      "passed": true,
+      "seconds": 7.83,
+      "summary": [
+        "CREATURE_ALERTS 20 checks 0 failures"
+      ],
+      "fixture_sha256": "787c32e66381ff7f91b99f07c175e8cf5b419ea376a41fbf1b755577af7e5b9a",
+      "run_log_sha256": "39eeec72393bf1aad22613966b99350513c2905845f50cd542092525ec57bbfa"
+    },
+    {
+      "tag": "headless-final-arena_item_tiers",
+      "suite": "arena_item_tiers",
+      "platform": "linux",
+      "renderer": "headless",
+      "checks": 165,
+      "passed": true,
+      "seconds": 4.57,
+      "summary": [
+        "ARENA_ITEM_TIERS checks=165 failures=[]"
+      ],
+      "fixture_sha256": "d5402a277fd9b5f7189952d3f1b8d4ad73840818b350811f7194fc673f03c480",
+      "run_log_sha256": "19cf488299ca2cd23101d2444c6267ec7c189e3c2df1e1d5446f0dded991e9b1"
+    },
+    {
+      "tag": "headless-final-arena_alliances",
+      "suite": "arena_alliances",
+      "platform": "linux",
+      "renderer": "headless",
+      "checks": 616,
+      "passed": true,
+      "seconds": 4.47,
+      "summary": [
+        "ARENA_ALLIANCES {\"checks\":616,\"failures\":[]}"
+      ],
+      "fixture_sha256": "2a474911d02a2a921d82154ad51484a0eb22d6a5c972eb4c574bfd44e7b95073",
+      "run_log_sha256": "9ddea2fe43fcaeedc40fefdb021c8706195a77dada6611ccec137ed5621e6429"
+    },
+    {
+      "tag": "headless-final-arena_combat_effects",
+      "suite": "arena_combat_effects",
+      "platform": "linux",
+      "renderer": "headless",
+      "checks": 31,
+      "passed": true,
+      "seconds": 5.27,
+      "summary": [
+        "ARENA_COMBAT_EFFECTS checks=31 failures=[] battle=[0,16.1149999999999,[365.137056716919,295.011882003784],{\"echo\":2,\"guardian\":2,\"spirit\":4,\"spirit_echo\":2,\"storm\":1,\"ward\":2}]"
+      ],
+      "fixture_sha256": "4219436c7cc73a0ad6c2d63e597468c71a25d361fb5f6a41d7267b56e847d078",
+      "run_log_sha256": "f14f225ce2a90b645395cdd0bb2500678c8d1f8a69981554408c1892cebc8d5e"
+    },
+    {
+      "tag": "headless-final-arena_equipment",
+      "suite": "arena_equipment",
+      "platform": "linux",
+      "renderer": "headless",
+      "checks": 51,
+      "passed": true,
+      "seconds": 3.17,
+      "summary": [
+        "ARENA_EQUIPMENT {\"checks\":51,\"failures\":[]}"
+      ],
+      "fixture_sha256": "661579eba838bf0099acb8068156e212b0b2eeee44f1b78a5e04e6f73452cd38",
+      "run_log_sha256": "5c11616b35f354d950d756e9970c00845f6d4f04f699d7dfa3e406eb76aaf064"
+    },
+    {
+      "tag": "headless-final-arena_roster",
+      "suite": "arena_roster",
+      "platform": "linux",
+      "renderer": "headless",
+      "checks": 1548,
+      "passed": true,
+      "seconds": 3.42,
+      "summary": [
+        "ARENA_ROSTER {\"checks\":1548,\"failures\":[]}"
+      ],
+      "fixture_sha256": "e0e0717d87f90afee1d3319fcdd1ffb4e41af646ee2078ac7d720d601825529f",
+      "run_log_sha256": "1f2c46dc932d5638ce80937f1a91181f04707222b7193284170e5ad215e8ae92"
+    },
+    {
+      "tag": "headless-final-arena_opponent_alliances",
+      "suite": "arena_opponent_alliances",
+      "platform": "linux",
+      "renderer": "headless",
+      "checks": 12,
+      "passed": true,
+      "seconds": 4.12,
+      "summary": [
+        "ARENA_OPPONENT_ALLIANCES 12 checks; failures=[]"
+      ],
+      "fixture_sha256": "b25d6261278006e4bf54144e26ba0f89bca6183308b9f6a9323f7a70aa7099fb",
+      "run_log_sha256": "29a4e120ff755dd923cc7fffcc967587dc2a071467d649ca83a09200cb3fc6bf"
+    },
+    {
+      "tag": "headless-final-arena_bot_equipment_formation",
+      "suite": "arena_bot_equipment_formation",
+      "platform": "linux",
+      "renderer": "headless",
+      "checks": 108,
+      "passed": true,
+      "seconds": 4.37,
+      "summary": [
+        "ARENA_BOT_EQUIPMENT_FORMATION {\"checks\":108,\"failures\":[]}"
+      ],
+      "fixture_sha256": "5454077c8d7593c5f46f26b956ed7d95a5e6f30e128f07edf11426097f51230e",
+      "run_log_sha256": "5bbf2cd868b86e6502f3b55ff4516d2739d770a5b226b9b9419d3fece1cbb2ca"
+    },
+    {
+      "tag": "headless-final-arena_equipment_localization",
+      "suite": "arena_equipment_localization",
+      "platform": "linux",
+      "renderer": "headless",
+      "checks": 327,
+      "passed": true,
+      "seconds": 3.32,
+      "summary": [
+        "ARENA_EQUIPMENT_LOCALIZATION checks=327 failures=[]"
+      ],
+      "fixture_sha256": "9acddd0dfbfbf99a176b2571a1ffa4be617eebc90e3acbd535deca081be319e3",
+      "run_log_sha256": "f398b81d570ab4970dd66173e94e8b37145361f865375b1b41212eaac009a212"
+    },
+    {
+      "tag": "ui-equipment-final-en",
+      "suite": "arena_equipment_ui",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "checks": 89,
+      "passed": true,
+      "seconds": 40.29,
+      "summary": [
+        "ARENA_EQUIPMENT_UI en (1280, 720) 89 checks; failures=[]"
+      ],
+      "fixture_sha256": "3c19765bfe4b170dc7e7483269375d384efd099d801a40f8b4799858e7c79ad2",
+      "run_log_sha256": "f9965dd18dab0ce366014ca90242b3482206a133f4c7b183f98eccbddb95689f"
+    },
+    {
+      "tag": "ui-tiers-final-en",
+      "suite": "arena_item_tiers_ui",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "checks": 264,
+      "passed": true,
+      "seconds": 43.09,
+      "summary": [
+        "ARENA_ITEM_TIERS_UI en checks=264 failures=[]"
+      ],
+      "fixture_sha256": "aefa75231aa757070f8bfb09757ac1712e6d07205a2441f4d87f16dbde43b4cd",
+      "run_log_sha256": "575f4696aa662fe8b76db04dea9199cc53b4652b54e70881a441123f5b29bad4"
+    },
+    {
+      "tag": "ui-equipment-final-ru",
+      "suite": "arena_equipment_ui",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "checks": 89,
+      "passed": true,
+      "seconds": 37.27,
+      "summary": [
+        "ARENA_EQUIPMENT_UI ru (1280, 720) 89 checks; failures=[]"
+      ],
+      "fixture_sha256": "3c19765bfe4b170dc7e7483269375d384efd099d801a40f8b4799858e7c79ad2",
+      "run_log_sha256": "6a5ccc31b7cf5d38c10caef6adc9f0c106c487d4642d834cc7c51a6509d0a138"
+    },
+    {
+      "tag": "ui-tiers-final-ru",
+      "suite": "arena_item_tiers_ui",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "checks": 264,
+      "passed": true,
+      "seconds": 41.23,
+      "summary": [
+        "ARENA_ITEM_TIERS_UI ru checks=264 failures=[]"
+      ],
+      "fixture_sha256": "aefa75231aa757070f8bfb09757ac1712e6d07205a2441f4d87f16dbde43b4cd",
+      "run_log_sha256": "82d08fb45702f7e966f8f11f262c7ca27bb921964214c152eebbbdb1f38ea3e8"
+    },
+    {
+      "tag": "ui-equipment-final-de",
+      "suite": "arena_equipment_ui",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "checks": 89,
+      "passed": true,
+      "seconds": 37.52,
+      "summary": [
+        "ARENA_EQUIPMENT_UI de (1024, 768) 89 checks; failures=[]"
+      ],
+      "fixture_sha256": "3c19765bfe4b170dc7e7483269375d384efd099d801a40f8b4799858e7c79ad2",
+      "run_log_sha256": "1ba69a700512046765e9b437f11fd657eed5bce514dc353b3ef6d11c911efdbc"
+    },
+    {
+      "tag": "ui-tiers-final-de",
+      "suite": "arena_item_tiers_ui",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "checks": 264,
+      "passed": true,
+      "seconds": 38.97,
+      "summary": [
+        "ARENA_ITEM_TIERS_UI de checks=264 failures=[]"
+      ],
+      "fixture_sha256": "aefa75231aa757070f8bfb09757ac1712e6d07205a2441f4d87f16dbde43b4cd",
+      "run_log_sha256": "df52a5ba87691db2b6b0c913f5f9561cdede41604007b9de2fbec79ce054a0ad"
+    },
+    {
+      "tag": "ui-item-fx-final",
+      "suite": "arena_item_feedback",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "checks": 21,
+      "passed": true,
+      "seconds": 34.88,
+      "summary": [
+        "ARENA_ITEM_FEEDBACK checks=21 failures=[]"
+      ],
+      "fixture_sha256": "3dce31e5d6a6d7d548b245d7d85771865a80acf3bd2caf5e730b006113826a64",
+      "run_log_sha256": "dda74e3c9cf63a13afc0b4a1cc79abf97dbed38a6a505fe7bdb30dcfc5deea76"
+    },
+    {
+      "tag": "campaign-blood_pool_save",
+      "suite": "blood_pool_save",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "checks": 18,
+      "passed": true,
+      "seconds": 31.72,
+      "summary": [
+        "BLOOD_POOL_SAVE 18 checks 0 failures"
+      ],
+      "fixture_sha256": "a86bdcf3b808131149c1b46666b4cbd753cee4e0ff23ea9b9ab858cf15e4da33",
+      "run_log_sha256": "a5b64820bbf2f265cfa9f47cdeaf75b237a1560af76dcaeadab0037a0b643d47"
+    },
+    {
+      "tag": "campaign-worker-blood-final",
+      "suite": "worker_blood_pool_save",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "checks": 10,
+      "passed": true,
+      "seconds": 31.97,
+      "summary": [
+        "WORKER_BLOOD_POOL_SAVE 10 checks 0 failures"
+      ],
+      "fixture_sha256": "e1e1609d67b2ba66cc86aa243827424afaf87479f425a7df39ca912c5668be4e",
+      "run_log_sha256": "3832f4c47f8cd01e70a159e3ff4a5301ec1dec11df9df9a45e7e1c56f4746d50"
+    },
+    {
+      "tag": "campaign-pause_menu_ingame_frames",
+      "suite": "pause_menu_ingame_frames",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "checks": 2,
+      "passed": true,
+      "seconds": 75.29,
+      "summary": [
+        "PAUSE_MENU_INGAME 2 checks 0 failures"
+      ],
+      "fixture_sha256": "027d33daf9bba5a443ff790edc1f8f82ce493340040b261db49dbb2329dcde00",
+      "run_log_sha256": "47c3f43844bd4cd44b4bcb858adc625519e0867f3bef222943ee444711945330"
+    },
+    {
+      "tag": "campaign-ground_mark_receivers",
+      "suite": "ground_mark_receivers",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "checks": 13,
+      "passed": true,
+      "seconds": 10.83,
+      "summary": [
+        "GROUND_MARK_RECEIVERS checks=13 failures=0"
+      ],
+      "fixture_sha256": "ef6dea23c6ca8d3a17fb0d04408feae25d5a6b9de47449a029e13f0c9c701e67",
+      "run_log_sha256": "dd4ab4b38821941970bdd4137ca71ba78a762fac6d9b4538f8cfe1297c8fdb0e"
+    },
+    {
+      "tag": "campaign-ground_mark_soft_surface",
+      "suite": "ground_mark_soft_surface",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "checks": 3,
+      "passed": true,
+      "seconds": 10.98,
+      "summary": [
+        "SOFT_PROJECTED_MARKS 3 checks 0 failures"
+      ],
+      "fixture_sha256": "dcdbc2f020b814daa47512fbfe5adbd37823cbb14f22eed29e5ad1cfb13cda9f",
+      "run_log_sha256": "ed523eb20f15c6bebc6dd8faf2d61762bee991820d713ec3cf9b9e38a98d7ea7"
+    },
+    {
+      "tag": "campaign-footprint_running_scene",
+      "suite": "footprint_running_scene",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "checks": 14,
+      "passed": true,
+      "seconds": 10.68,
+      "summary": [
+        "FOOTPRINT_RUNNING_SCENE checks=14 failures=0 generated=93"
+      ],
+      "fixture_sha256": "cb3a7431aaa900b645565bf1cbd12583c89a53ecb773cbbbeba408cccd58aacc",
+      "run_log_sha256": "a70c3a5e348fe85b2f0c5ce92980fc7b3feb1afa6e2ed6ad1766b604da72fd9a"
+    },
+    {
+      "tag": "campaign-saved-speed",
+      "suite": "local_host_resume_rate",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "checks": 15,
+      "passed": true,
+      "seconds": 54.31,
+      "summary": [
+        "LOCAL_HOST_SIMULATION_RATE 15 checks 0 failures"
+      ],
+      "fixture_sha256": "f5767583cb4466de25750f64d7251daab181d666fc6f41eab59e3d814c03b416",
+      "run_log_sha256": "f230f542dee025d70e8246758ec26cfedee7273d1040d8ce069699f78df5b178"
+    },
+    {
+      "tag": "arena-ground-gl-final",
+      "suite": "arena_ground_ink",
+      "platform": "linux",
+      "renderer": "opengl3",
+      "checks": 5,
+      "passed": true,
+      "seconds": 34.57,
+      "summary": [
+        "ARENA_GROUND_INK 5 checks; pixels=14183 failures=[]"
+      ],
+      "fixture_sha256": "59be70aad68a5c31d40f6db4aba72066fa0130157e05093deddfc64304842760",
+      "run_log_sha256": "8808e20f014abf4d63aae8a67090ff44845845c858ce64ff896fa310d0929dd9"
+    },
+    {
+      "tag": "vulkan-water_raytrace_live",
+      "suite": "water_raytrace_live",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "checks": null,
+      "passed": true,
+      "seconds": 30.97,
+      "summary": [
+        "PASS changed equipment automatically rebuilds the hardware scene"
+      ],
+      "fixture_sha256": "f7d43bc23026a468f1c8c649196947da3fd87f12564d724a835323a3f856c822",
+      "run_log_sha256": "0c46b337ea419c6c745924202fff91e8d6a3ee11a2574abe0a51f6669550dcf0"
+    },
+    {
+      "tag": "vulkan-path_trace_motion",
+      "suite": "path_trace_motion",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "checks": 55,
+      "passed": true,
+      "seconds": 8.23,
+      "summary": [
+        "SCENE_RT_DEVICE 55 checks 0 failures"
+      ],
+      "fixture_sha256": "9b13982152ea9df5315a016e7fe5183d1e08f8550a42dc2d7c56ee2d469ed412",
+      "run_log_sha256": "f1ed55a7ea375cd0aaa811774e68ad3312ea61b25ac0be8b3814bd4b1c20468a"
+    },
+    {
+      "tag": "vulkan-path_trace_lifecycle",
+      "suite": "path_trace_lifecycle",
+      "platform": "linux",
+      "renderer": "vulkan",
+      "checks": 167,
+      "passed": true,
+      "seconds": 10.38,
+      "summary": [
+        "SCENE_RT_DEVICE 167 checks 0 failures"
+      ],
+      "fixture_sha256": "e3cd9620aec251292a377b9dafb11dc3308dd7285516e38be49a923b1865ebb7",
+      "run_log_sha256": "241cc47ee349c2dc3e65141ffb2947d2ceac3fdf1589981a876042a21fe32b6b"
+    }
+  ],
+  "windows_checks": 307,
+  "windows_inputs_unchanged": true,
+  "compiled_scripts": 422,
+  "validation_setup_corrections": [
+    "The packaged test copier now includes benchmark helpers used by Autochess fixtures. An initial missing-helper invocation was stopped and rerun.",
+    "The worker blood test was rerun with its required generated save input.",
+    "The arena ink fixture specifically checks the OpenGL fallback and was rerun with OpenGL instead of Vulkan.",
+    "Diagnostic parsing now distinguishes checks=N failures=0/[] from N failures. Raw accepted logs are retained."
+  ],
+  "limitations": [
+    "Path tracing remains experimental; small footprint/material details are tracked in the PT integration report.",
+    "Native Windows, macOS and Android runtime execution is not part of this release validation.",
+    "Historical blood pools absent from older saves cannot be reconstructed.",
+    "The exact intermittent historical footprint and pause-menu reports were not reproduced; structural fixes, current renderer comparisons and repeated rendered checks are documented in the issue validation report."
+  ],
+  "prior_evidence": [
+    "docs/validation/remaining-issues-2026-10-24/README.md",
+    "docs/validation/autochess-balance-2026-10-24.md",
+    "docs/integrations/path-tracing-motion-and-snow-2026-10-24.md"
+  ]
+}
