@@ -20,6 +20,9 @@
 // Secondary path distances for NRD. Keep primary placement identity intact.
 [[vk::binding(18,0),vk::image_format("rg16f")]] RWTexture2D<float2> path_distance : register(u1800000);
 [[vk::binding(19,0),vk::image_format("rgba16f")]] RWTexture2D<float4> path_direct_specular : register(u1900000);
+// Direct sunlight only, before albedo. Nearby raster grass can remove the
+// part its detailed blade shadows block without darkening indirect light.
+[[vk::binding(20,0),vk::image_format("rgba16f")]] RWTexture2D<float4> path_direct_sun : register(u2000000);
 struct Frame {
     column_major float4x4 inv_projection;
     column_major float4x4 camera_world;
@@ -233,8 +236,8 @@ float cloud_visibility(float3 position) {
     float density=smoothstep(frame.cloud_state.x-0.14,frame.cloud_state.x+0.14,coarse*0.75+detail*0.25);
     return 1.0-density*frame.cloud_state.y;
 }
-void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular) {
-    diffuse=0.0;specular=0.0;
+void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out float3 specular,out float3 sunlight) {
+    diffuse=0.0;specular=0.0;sunlight=0.0;
     for(uint i=0;i<8;i++) {
         float3 direction,colour;float reach;
         if(i==0) {
@@ -257,6 +260,7 @@ void direct_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,out 
         // them to the radiance scale used by the normalized BRDF.
         float3 incoming=colour*(PI*cosine*visibility(s,direction,reach,i==0));
         diffuse+=d*incoming;specular+=sp*incoming;
+        if(i==0)sunlight=d*incoming;
     }
 }
 #ifndef PATH_NO_EMITTERS
@@ -331,8 +335,8 @@ void emissive_light(Surface s,float3 v,PathSampler sampler,out float3 diffuse,ou
     diffuse=d*incoming;specular=sp*incoming;
 }
 #endif
-void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diffuse,out float3 specular,out float2 hit_distance,out float3 direct_specular) {
-    direct_light(primary,view,sampler,diffuse,specular);
+void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diffuse,out float3 specular,out float2 hit_distance,out float3 direct_specular,out float3 sunlight) {
+    direct_light(primary,view,sampler,diffuse,specular,sunlight);
     direct_specular=specular;
     hit_distance=0.0;
     Surface current=primary;
@@ -386,9 +390,9 @@ void path_sample(Surface primary,float3 view,PathSampler sampler,out float3 diff
             float3 environment=sky_radiance(direction);
             diffuse+=weight_d*environment;specular+=weight_s*environment;break;
         }
-        float3 direct_d,direct_s;
+        float3 direct_d,direct_s,unused_sun;
         sampler.vertex=depth+1u;
-        direct_light(hit,-direction,sampler,direct_d,direct_s);
+        direct_light(hit,-direction,sampler,direct_d,direct_s,unused_sun);
         float emission_weight=1.0;
 #ifndef PATH_NO_EMITTERS
         emission_weight=mis_weight(pdf,emitter_hit_pdf(hit,ray.Origin));
@@ -411,14 +415,14 @@ void main() {
     RayDesc ray={origin,frame.camera.x>0.5?0.001:frame.settings.w/max(dot(direction,forward),0.001),direction,frame.camera.y};
     TraceRay(scene,RAY_FLAG_NONE,1,0,0,0,ray,primary);
     guide_image[pixel]=float4(primary.normal,primary.hit>0.5?dot(primary.position-eye,forward):0.0);
-    indirect_image[pixel]=0.0;shadow_image0[pixel]=0.0;shadow_image1[pixel]=0.0;path_distance[pixel]=0.0;path_direct_specular[pixel]=0.0;
+    indirect_image[pixel]=0.0;shadow_image0[pixel]=0.0;shadow_image1[pixel]=0.0;path_distance[pixel]=0.0;path_direct_specular[pixel]=0.0;path_direct_sun[pixel]=0.0;
     if(primary.hit<0.5)return;
-    float3 diffuse=0.0,specular=0.0,direct_specular=0.0;
+    float3 diffuse=0.0,specular=0.0,direct_specular=0.0,sunlight=0.0;
     float diffuse_distance=0.0,specular_distance=65504.0;
     uint samples=clamp(uint(frame.settings.y),1u,16u);
     for(uint i=0;i<samples;i++) {
         PathSampler sampler=path_sampler(uint(frame.settings.x)*samples+i,pixel.x+pixel.y*uint(size.x));
-        float3 d,s,direct_s;float2 distance;path_sample(primary,-direction,sampler,d,s,distance,direct_s);diffuse+=d;specular+=s;direct_specular+=direct_s;
+        float3 d,s,direct_s,direct_sun;float2 distance;path_sample(primary,-direction,sampler,d,s,distance,direct_s,direct_sun);diffuse+=d;specular+=s;direct_specular+=direct_s;sunlight+=direct_sun;
         diffuse_distance+=distance.x;
         // NRD's specular tracking uses the minimum valid first-bounce distance
         // across samples. The primary camera hit must never enter this value.
@@ -430,6 +434,7 @@ void main() {
     indirect_image[pixel]=float4(diffuse/float(samples),f16tof32(0x3c00u+primary.instance_id));
     shadow_image0[pixel]=float4(specular/float(samples),1.0);
     path_direct_specular[pixel]=float4(direct_specular/float(samples),0.0);
+    path_direct_sun[pixel]=float4(sunlight/float(samples),0.0);
     // Every integer up to 2047 is exact in the RGBA16F guide. Separate 6/5-bit
     // fields avoid aliases such as (roughness .2, metalness .4) and (.6, .2).
     uint surface=uint(round(saturate(primary.roughness)*63.0))|

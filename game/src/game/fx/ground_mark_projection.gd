@@ -101,6 +101,22 @@ func create(mark: GroundMarks.Mark) -> void:
 	bind(material)
 	place(mark)
 
+## Ground marks first appear when a unit walks or bleeds. Warm the same
+## colored, two-UV vertex layout while the zone's loading cover is visible.
+func warmup_variant() -> Array:
+	var material := ShaderMaterial.new()
+	material.shader = shader
+	bind(material)
+	var arrays := []; arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = PackedVector3Array([Vector3.ZERO,Vector3.ZERO,Vector3.ZERO])
+	arrays[Mesh.ARRAY_NORMAL] = PackedVector3Array([Vector3.UP,Vector3.UP,Vector3.UP])
+	arrays[Mesh.ARRAY_TEX_UV] = PackedVector2Array([Vector2.ZERO,Vector2.ZERO,Vector2.ZERO])
+	arrays[Mesh.ARRAY_TEX_UV2] = arrays[Mesh.ARRAY_TEX_UV]
+	arrays[Mesh.ARRAY_COLOR] = PackedColorArray([Color.WHITE,Color.WHITE,Color.WHITE])
+	var mesh := ArrayMesh.new()
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
+	return [material,mesh]
+
 func bind(material: ShaderMaterial) -> void:
 	surface.bind(material, true)
 	var terrain := world.terrain

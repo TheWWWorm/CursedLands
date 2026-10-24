@@ -283,7 +283,7 @@ diff --git a/drivers/streamline/streamline.cpp b/drivers/streamline/streamline.c
 new file mode 100644
 --- /dev/null
 +++ b/drivers/streamline/streamline.cpp
-@@ -0,0 +1,373 @@
+@@ -0,0 +1,378 @@
 +/**************************************************************************/
 +/*  streamline.cpp                                                        */
 +/**************************************************************************/
@@ -642,6 +642,11 @@ new file mode 100644
 +	out["frame_generation_active"] = ctx.fg_active.get() != 0;
 +	out["last_error"] = ctx.last_error.get();
 +	out["frame_generation_status"] = ctx.fg_status.get();
++	out["frame_generation_ui_alpha_frames"] = ctx.ui_alpha_frames.get();
++	out["frame_generation_ui_alpha_texture"] = RID::from_uint64(ctx.ui_alpha_texture.get());
++	out["frame_generation_input_size"] = Vector2i(ctx.fg_input_width.get(),ctx.fg_input_height.get());
++	out["frame_generation_output_size"] = Vector2i(ctx.fg_output_width.get(),ctx.fg_output_height.get());
++	out["frame_generation_size_supported"] = ctx.fg_size_supported.get()!=0;
 +#endif
 +	return out;
 +}
@@ -1149,7 +1154,7 @@ diff --git a/drivers/streamline/streamline_context.h b/drivers/streamline/stream
 new file mode 100644
 --- /dev/null
 +++ b/drivers/streamline/streamline_context.h
-@@ -0,0 +1,145 @@
+@@ -0,0 +1,148 @@
 +/**************************************************************************/
 +/*  streamline_context.h                                                  */
 +/**************************************************************************/
@@ -1192,6 +1197,9 @@ new file mode 100644
 +	bool initialized = false;
 +	bool enhanced_barriers = false;
 +	SafeNumeric<uint64_t> dlss_evaluations{ 0 };
++	SafeNumeric<uint64_t> ui_alpha_frames{ 0 };
++	SafeNumeric<uint64_t> ui_alpha_texture{ 0 };
++	SafeNumeric<uint32_t> fg_input_width{ 0 }, fg_input_height{ 0 }, fg_output_width{ 0 }, fg_output_height{ 0 }, fg_size_supported{ 0 };
 +	SafeNumeric<uint64_t> game_presents;
 +	SafeNumeric<uint64_t> presented_frames{ 0 };
 +	SafeNumeric<uint32_t> last_error{ 0 };
@@ -2063,7 +2071,7 @@ diff --git a/servers/rendering/renderer_rd/effects/dlss.cpp b/servers/rendering/
 new file mode 100644
 --- /dev/null
 +++ b/servers/rendering/renderer_rd/effects/dlss.cpp
-@@ -0,0 +1,461 @@
+@@ -0,0 +1,625 @@
 +/**************************************************************************/
 +/*  dlss.cpp                                                              */
 +/**************************************************************************/
@@ -2123,6 +2131,13 @@ new file mode 100644
 +	bool evaluated = false;
 +	bool first_frame = true;
 +	RID hudless;
++	RID ui_alpha;
++	RID presented_hudless;
++	RID presented_alpha;
++	RID frame_color;
++	RID frame_alpha;
++	Size2i present_size;
++	RID prepared_color;
 +
 +	DLSSContextInner();
 +	virtual ~DLSSContextInner();
@@ -2181,6 +2196,7 @@ new file mode 100644
 +}; // end class
 +}; // end namespace RendererRD
 +
++static HashMap<RID, DLSSContextInner *> g_dlss_prepared;
 +static Vector<unsigned int> g_dlss_freeViewportIndices;
 +static unsigned int g_dlss_viewportIndex = 1;
 +
@@ -2189,11 +2205,23 @@ new file mode 100644
 +	RD::get_singleton()->_flush_and_stall_for_all_frames();
 +	auto &ctx = StreamlineContext::get();
 +	if (ctx.initialized) {
-+		if (ctx.dlssg_viewport == viewport) { ctx.dlssg_disable(); }
++		if (ctx.dlssg_viewport == viewport) {
++			ctx.dlssg_disable();
++		}
 +		ctx.slFreeResources(sl::kFeatureDLSS_G, viewport);
 +		ctx.slFreeResources(sl::kFeatureDLSS, viewport);
 +	}
-+	if (hudless.is_valid()) { RD::get_singleton()->free_rid(hudless); }
++	if (prepared_color.is_valid()) {
++		g_dlss_prepared.erase(prepared_color);
++	}
++	if (ctx.ui_alpha_texture.get() == frame_alpha.get_id()) {
++		ctx.ui_alpha_texture.set(0);
++	}
++	for (RID texture : { hudless, ui_alpha, presented_hudless, presented_alpha }) {
++		if (texture.is_valid()) {
++			RD::get_singleton()->free_rid(texture);
++		}
++	}
 +	g_dlss_freeViewportIndices.push_back((unsigned int)viewport);
 +}
 +
@@ -2212,11 +2240,31 @@ new file mode 100644
 +	shaders.mvec_decode_shader.initialize(modes, "");
 +	shaders.mvec_decode_version = shaders.mvec_decode_shader.version_create();
 +	shaders.mvec_decode_pipeline = RD::get_singleton()->compute_pipeline_create(shaders.mvec_decode_shader.version_get_shader(shaders.mvec_decode_version, 0));
++	Vector<String> ui_modes;
++	ui_modes.push_back("\n");
++	ui_modes.push_back("\n#define USE_HDR\n");
++	shaders.ui_alpha_shader.initialize(ui_modes, "");
++	shaders.present_inputs_shader.initialize(ui_modes, "");
++	shaders.ui_alpha_version = shaders.ui_alpha_shader.version_create();
++	shaders.present_inputs_version = shaders.present_inputs_shader.version_create();
++	for (int i = 0; i < 2; i++) {
++		shaders.ui_alpha_pipeline[i] = RD::get_singleton()->compute_pipeline_create(shaders.ui_alpha_shader.version_get_shader(shaders.ui_alpha_version, i));
++		shaders.present_inputs_pipeline[i] = RD::get_singleton()->compute_pipeline_create(shaders.present_inputs_shader.version_get_shader(shaders.present_inputs_version, i));
++	}
++	RD::SamplerState sampler;
++	sampler.min_filter = RD::SAMPLER_FILTER_LINEAR;
++	sampler.mag_filter = RD::SAMPLER_FILTER_LINEAR;
++	sampler.repeat_u = RD::SAMPLER_REPEAT_MODE_CLAMP_TO_EDGE;
++	sampler.repeat_v = RD::SAMPLER_REPEAT_MODE_CLAMP_TO_EDGE;
++	shaders.ui_sampler = RD::get_singleton()->sampler_create(sampler);
 +}
 +
 +DLSSEffect::~DLSSEffect() {
 +	// Deinitialize motion vector decode
 +	shaders.mvec_decode_shader.version_free(shaders.mvec_decode_version);
++	shaders.ui_alpha_shader.version_free(shaders.ui_alpha_version);
++	shaders.present_inputs_shader.version_free(shaders.present_inputs_version);
++	RD::get_singleton()->free_rid(shaders.ui_sampler);
 +}
 +
 +DLSSContext *DLSSEffect::create_context(Size2i p_internal_size, Size2i p_target_size) {
@@ -2426,7 +2474,9 @@ new file mode 100644
 +	auto *context = static_cast<DLSSContextInner *>(p_context);
 +	auto &ctx = StreamlineContext::get();
 +	if (!context || !context->last_parameters.dlss_g || ctx.fg_failed.get() ||
-+			!ctx.streamline_capabilities.dlss_g_available || !ctx.streamline_capabilities.reflex_available) { return; }
++			!ctx.streamline_capabilities.dlss_g_available || !ctx.streamline_capabilities.reflex_available) {
++		return;
++	}
 +	RD *rd = RD::get_singleton();
 +	if (!context->hudless.is_valid()) {
 +		RD::TextureFormat format = rd->texture_get_format(p_color);
@@ -2435,26 +2485,146 @@ new file mode 100644
 +	}
 +	RD::TextureFormat format = rd->texture_get_format(p_color);
 +	rd->texture_copy(p_color, context->hudless, Vector3(), Vector3(), Vector3(format.width, format.height, 1), 0, 0, 0, 0);
-+	RD::CallbackResource resources[3];
-+	resources[0].rid = context->hudless;
-+	resources[1].rid = context->last_parameters.depth;
-+	resources[2].rid = context->last_parameters.velocity;
-+	for (int i = 0; i < 3; i++) { resources[i].usage = RD::CALLBACK_RESOURCE_USAGE_GENERAL; }
-+	rd->driver_callback_add(_frame_generation_graph_callback, context, VectorView<RD::CallbackResource>(resources, 3));
++	if (!context->ui_alpha.is_valid()) {
++		format.format = RD::DATA_FORMAT_R8_UNORM;
++		format.shareable_formats.clear();
++		format.usage_bits = RD::TEXTURE_USAGE_STORAGE_BIT | RD::TEXTURE_USAGE_SAMPLING_BIT | RD::TEXTURE_USAGE_CAN_COPY_FROM_BIT;
++		context->ui_alpha = rd->texture_create(format, RD::TextureView());
++	}
++	if (!context->hudless.is_valid() || !context->ui_alpha.is_valid()) {
++		ctx.dlssg_disable();
++		ctx.fg_failed.set(1);
++		return;
++	}
++	context->prepared_color = p_color;
++	g_dlss_prepared[p_color] = context;
++	_ui_alpha(context, p_color, true);
++}
++
++void DLSSEffect::_ui_alpha(DLSSContext *p_context, RID p_color, bool p_clear) {
++	auto *context = static_cast<DLSSContextInner *>(p_context);
++	RD *rd = RD::get_singleton();
++	auto format = rd->texture_get_format(p_color);
++	int mode = format.format == RD::DATA_FORMAT_R16G16B16A16_SFLOAT ? 1 : 0;
++	RID shader = shaders.ui_alpha_shader.version_get_shader(shaders.ui_alpha_version, mode);
++	RD::Uniform color(RD::UNIFORM_TYPE_IMAGE, 0, p_color);
++	RD::Uniform alpha(RD::UNIFORM_TYPE_IMAGE, 1, context->ui_alpha);
++	RID set = UniformSetCacheRD::get_singleton()->get_cache(shader, 0, color, alpha);
++	struct {
++		int32_t width, height, clear, pad;
++	} params{ int32_t(format.width), int32_t(format.height), p_clear ? 1 : 0, 0 };
++	auto list = rd->compute_list_begin();
++	rd->compute_list_bind_compute_pipeline(list, shaders.ui_alpha_pipeline[mode]);
++	rd->compute_list_bind_uniform_set(list, set, 0);
++	rd->compute_list_set_push_constant(list, &params, sizeof(params));
++	rd->compute_list_dispatch(list, (format.width + 7) / 8, (format.height + 7) / 8, 1);
++	rd->compute_list_end();
++}
++
++void DLSSEffect::_present_inputs(DLSSContext *p_context) {
++	auto *context = static_cast<DLSSContextInner *>(p_context);
++	RD *rd = RD::get_singleton();
++	int mode = rd->texture_get_format(context->hudless).format == RD::DATA_FORMAT_R16G16B16A16_SFLOAT ? 1 : 0;
++	RID shader = shaders.present_inputs_shader.version_get_shader(shaders.present_inputs_version, mode);
++	RD::Uniform color(RD::UNIFORM_TYPE_SAMPLER_WITH_TEXTURE, 0, shaders.ui_sampler);
++	color.append_id(context->hudless);
++	RD::Uniform alpha(RD::UNIFORM_TYPE_SAMPLER_WITH_TEXTURE, 1, shaders.ui_sampler);
++	alpha.append_id(context->ui_alpha);
++	RD::Uniform out_color(RD::UNIFORM_TYPE_IMAGE, 2, context->presented_hudless);
++	RD::Uniform out_alpha(RD::UNIFORM_TYPE_IMAGE, 3, context->presented_alpha);
++	RID set = UniformSetCacheRD::get_singleton()->get_cache(shader, 0, color, alpha, out_color, out_alpha);
++	struct {
++		int32_t width, height, pad0, pad1;
++	} params{ context->present_size.x, context->present_size.y, 0, 0 };
++	auto list = rd->compute_list_begin();
++	rd->compute_list_bind_compute_pipeline(list, shaders.present_inputs_pipeline[mode]);
++	rd->compute_list_bind_uniform_set(list, set, 0);
++	rd->compute_list_set_push_constant(list, &params, sizeof(params));
++	rd->compute_list_dispatch(list, (params.width + 7) / 8, (params.height + 7) / 8, 1);
++	rd->compute_list_end();
++}
++
++// The final compositor knows the actual swapchain extent. Capture alpha only
++// after every CanvasLayer, restore the opaque window, and tag at this boundary.
++void DLSSEffect::finish_frame_generation(RID p_color, Size2i p_size, Rect2 p_src, Rect2 p_dst) {
++	auto found = g_dlss_prepared.find(p_color);
++	if (found == g_dlss_prepared.end()) {
++		return;
++	}
++	auto *context = found->value;
++	g_dlss_prepared.erase(p_color);
++	context->prepared_color = RID();
++	auto *effect = context->last_effect;
++	auto &ctx = StreamlineContext::get();
++	RD *rd = RD::get_singleton();
++	effect->_ui_alpha(context, p_color, false);
++	auto format = rd->texture_get_format(context->hudless);
++	ctx.fg_input_width.set(format.width);
++	ctx.fg_input_height.set(format.height);
++	ctx.fg_output_width.set(p_size.x);
++	ctx.fg_output_height.set(p_size.y);
++	bool full = p_size.x > 0 && p_size.y > 0 && p_dst == Rect2(Vector2(), p_size) && p_src == Rect2(0, 0, 1, 1);
++	ctx.fg_size_supported.set(full ? 1 : 0);
++	if (!full) {
++		ctx.dlssg_disable();
++		return;
++	}
++	context->frame_color = context->hudless;
++	context->frame_alpha = context->ui_alpha;
++	if (p_size != Size2i(format.width, format.height)) {
++		if (context->present_size != p_size) {
++			ctx.dlssg_disable();
++			rd->_flush_and_stall_for_all_frames();
++			for (RID texture : { context->presented_hudless, context->presented_alpha }) {
++				if (texture.is_valid()) {
++					rd->free_rid(texture);
++				}
++			}
++			format.width = p_size.x;
++			format.height = p_size.y;
++			format.shareable_formats.clear();
++			format.usage_bits = RD::TEXTURE_USAGE_STORAGE_BIT | RD::TEXTURE_USAGE_SAMPLING_BIT | RD::TEXTURE_USAGE_CAN_COPY_FROM_BIT;
++			context->presented_hudless = rd->texture_create(format, RD::TextureView());
++			format.format = RD::DATA_FORMAT_R8_UNORM;
++			context->presented_alpha = rd->texture_create(format, RD::TextureView());
++			context->present_size = p_size;
++		}
++		if (!context->presented_hudless.is_valid() || !context->presented_alpha.is_valid()) {
++			ctx.dlssg_disable();
++			ctx.fg_failed.set(1);
++			return;
++		}
++		effect->_present_inputs(context);
++		context->frame_color = context->presented_hudless;
++		context->frame_alpha = context->presented_alpha;
++	}
++	RD::CallbackResource resources[4];
++	RID inputs[] = { context->frame_color, context->last_parameters.depth, context->last_parameters.velocity, context->frame_alpha };
++	for (int i = 0; i < 4; i++) {
++		resources[i].rid = inputs[i];
++		resources[i].usage = RD::CALLBACK_RESOURCE_USAGE_GENERAL;
++	}
++	rd->driver_callback_add(_frame_generation_graph_callback, context, VectorView<RD::CallbackResource>(resources, 4));
++	ctx.ui_alpha_texture.set(context->frame_alpha.get_id());
++	ctx.ui_alpha_frames.increment();
 +}
 +
 +void DLSSEffect::_frame_generation_graph_callback(RenderingDeviceDriver *p_driver, RDD::CommandBufferID p_command_buffer, void *p_userdata) {
 +	auto *context = static_cast<DLSSContextInner *>(p_userdata);
 +	auto &ctx = StreamlineContext::get();
 +	if (!context->evaluated || !ctx.last_token || !ctx.slDLSSGSetOptions || !ctx.slDLSSGGetState ||
-+			ctx.sr_failed.get() || ctx.fg_failed.get() || ctx.dlssg_delay > 0) { return; }
++			ctx.sr_failed.get() || ctx.fg_failed.get() || ctx.dlssg_delay > 0) {
++		return;
++	}
 +	RD *rd = RD::get_singleton();
 +	if (ctx.dlssg_viewport != context->viewport) {
 +		// Check limits only when enabling a viewport. During active generation,
 +		// GetState is sampled once at the real present boundary for telemetry.
 +		sl::DLSSGState state;
-+		if (!ctx.check(ctx.slDLSSGGetState(context->viewport, state, nullptr), true)) { return; }
-+		RD::TextureFormat size = rd->texture_get_format(context->hudless);
++		if (!ctx.check(ctx.slDLSSGGetState(context->viewport, state, nullptr), true)) {
++			return;
++		}
++		RD::TextureFormat size = rd->texture_get_format(context->frame_color);
 +		if (state.numFramesToGenerateMax < 1 || size.width < state.minWidthOrHeight || size.height < state.minWidthOrHeight) {
 +			ctx.dlssg_disable();
 +			return;
@@ -2467,12 +2637,12 @@ new file mode 100644
 +		ctx.reflex_set_options(reflex);
 +	}
 +	void *commands = p_driver->command_buffer_get_native_handle(p_command_buffer);
-+	RID textures[] = { context->hudless, context->last_parameters.depth, context->last_parameters.velocity };
-+	sl::BufferType types[] = { sl::kBufferTypeHUDLessColor, sl::kBufferTypeDepth, sl::kBufferTypeMotionVectors };
-+	sl::Resource resources[3];
-+	sl::ResourceTag tags[3];
-+	sl::Extent extents[3];
-+	for (int i = 0; i < 3; i++) {
++	RID textures[] = { context->frame_color, context->last_parameters.depth, context->last_parameters.velocity, context->frame_alpha };
++	sl::BufferType types[] = { sl::kBufferTypeHUDLessColor, sl::kBufferTypeDepth, sl::kBufferTypeMotionVectors, sl::kBufferTypeUIAlpha };
++	sl::Resource resources[4];
++	sl::ResourceTag tags[4];
++	sl::Extent extents[4];
++	for (int i = 0; i < 4; i++) {
 +		RD::TextureFormat format = rd->texture_get_format(textures[i]);
 +		resources[i] = sl::Resource(sl::ResourceType::eTex2d, (void *)rd->get_driver_resource(RD::DRIVER_RESOURCE_TEXTURE, textures[i]), 0);
 +		resources[i].width = format.width;
@@ -2481,12 +2651,13 @@ new file mode 100644
 +		extents[i] = { 0, 0, format.width, format.height };
 +		tags[i] = sl::ResourceTag(&resources[i], types[i], sl::ResourceLifecycle::eValidUntilPresent, &extents[i]);
 +	}
-+	if (!ctx.check(ctx.slSetTagForFrame(*ctx.last_token, context->viewport, tags, 3, commands), true)) { return; }
++	if (!ctx.check(ctx.slSetTagForFrame(*ctx.last_token, context->viewport, tags, 4, commands), true)) { return; }
 +	if (ctx.dlssg_viewport != context->viewport) {
 +		ctx.dlssg_disable();
 +		sl::DLSSGOptions options;
 +		options.mode = sl::DLSSGMode::eOn;
 +		options.numFramesToGenerate = 1;
++		options.enableUserInterfaceRecomposition = sl::Boolean::eTrue;
 +		options.flags = sl::DLSSGFlags::eEnableFullscreenMenuDetection;
 +		if (!ctx.check(ctx.slDLSSGSetOptions(context->viewport, options), true)) { return; }
 +		ctx.dlssg_viewport = context->viewport;
@@ -2519,6 +2690,7 @@ new file mode 100644
 +}
 +void DLSSEffect::upscale(const DLSSContext::Parameters &p_params) {}
 +void DLSSEffect::prepare_frame_generation(DLSSContext *p_context, RID p_color) {}
++void DLSSEffect::finish_frame_generation(RID, Size2i, Rect2, Rect2) {}
 +bool DLSSEffect::is_ready(DLSSContext *p_context) {
 +	return false;
 +}
@@ -2529,7 +2701,7 @@ diff --git a/servers/rendering/renderer_rd/effects/dlss.h b/servers/rendering/re
 new file mode 100644
 --- /dev/null
 +++ b/servers/rendering/renderer_rd/effects/dlss.h
-@@ -0,0 +1,100 @@
+@@ -0,0 +1,111 @@
 +/**************************************************************************/
 +/*  dlss.h                                                                */
 +/**************************************************************************/
@@ -2563,7 +2735,8 @@ new file mode 100644
 +#pragma once
 +
 +#include "servers/rendering/renderer_rd/shader_rd.h"
-+
++#include "servers/rendering/renderer_rd/shaders/effects/dlss_present_inputs.glsl.gen.h"
++#include "servers/rendering/renderer_rd/shaders/effects/dlss_ui_alpha.glsl.gen.h"
 +#include "servers/rendering/renderer_rd/shaders/effects/motion_vector_decode.glsl.gen.h"
 +
 +namespace RendererRD {
@@ -2614,6 +2787,13 @@ new file mode 100644
 +		MotionVectorDecodeShaderRD mvec_decode_shader;
 +		RID mvec_decode_version;
 +		RID mvec_decode_pipeline;
++		DlssUiAlphaShaderRD ui_alpha_shader;
++		DlssPresentInputsShaderRD present_inputs_shader;
++		RID ui_alpha_version;
++		RID present_inputs_version;
++		RID ui_alpha_pipeline[2];
++		RID present_inputs_pipeline[2];
++		RID ui_sampler;
 +	} shaders;
 +
 +	DLSSEffect();
@@ -2621,11 +2801,14 @@ new file mode 100644
 +	DLSSContext *create_context(Size2i p_internal_size, Size2i p_target_size);
 +	void upscale(const DLSSContext::Parameters &p_params);
 +	void prepare_frame_generation(DLSSContext *p_context, RID p_color);
++	static void finish_frame_generation(RID p_color, Size2i p_size, Rect2 p_src, Rect2 p_dst);
 +	bool is_ready(DLSSContext *context);
 +
 +private:
 +	static void _frame_generation_graph_callback(RenderingDeviceDriver *p_driver, RDD::CommandBufferID p_command_buffer, void *p_userdata);
 +	void _upscale_internal(RDD::CommandBufferID cmdid, const DLSSContext::Parameters &p_params);
++	void _ui_alpha(DLSSContext *p_context, RID p_color, bool p_clear);
++	void _present_inputs(DLSSContext *p_context);
 +	static void _upscale_internal_graph_callback(RenderingDeviceDriver *p_driver, RDD::CommandBufferID p_command_buffer, void *p_userdata);
 +};
 +
@@ -2807,7 +2990,7 @@ diff --git a/servers/rendering/renderer_rd/forward_clustered/render_forward_clus
 diff --git a/servers/rendering/renderer_rd/renderer_compositor_rd.cpp b/servers/rendering/renderer_rd/renderer_compositor_rd.cpp
 --- a/servers/rendering/renderer_rd/renderer_compositor_rd.cpp
 +++ b/servers/rendering/renderer_rd/renderer_compositor_rd.cpp
-@@ -35,6 +35,9 @@
+@@ -35,9 +35,16 @@
  #include "core/io/dir_access.h"
  #include "core/os/os.h"
  #include "servers/display/display_server.h"
@@ -2817,7 +3000,28 @@ diff --git a/servers/rendering/renderer_rd/renderer_compositor_rd.cpp b/servers/
  #include "servers/rendering/renderer_rd/forward_clustered/render_forward_clustered.h"
  #include "servers/rendering/renderer_rd/forward_mobile/render_forward_mobile.h"
  #include "servers/rendering/rendering_server_types.h"
-@@ -130,9 +133,12 @@
++
++#ifdef STREAMLINE_ENABLED
++#include "effects/dlss.h"
++#endif
+ 
+ void RendererCompositorRD::blit_render_targets_to_screen(DisplayServerEnums::WindowID p_screen, const RenderingServerTypes::BlitToScreen *p_render_targets, int p_amount) {
+ 	Error err = RD::get_singleton()->screen_prepare_for_drawing(p_screen);
+@@ -46,6 +53,13 @@
+ 		return;
+ 	}
+ 
++#ifdef STREAMLINE_ENABLED
++	for (int i = 0; i < p_amount; i++) {
++		RendererRD::DLSSEffect::finish_frame_generation(texture_storage->render_target_get_rd_texture(p_render_targets[i].render_target),
++				Size2i(RD::get_singleton()->screen_get_width(p_screen), RD::get_singleton()->screen_get_height(p_screen)),
++				p_render_targets[i].src_rect, p_render_targets[i].dst_rect);
++	}
++#endif
+ 	BlitPipelines blit_pipelines = _get_blit_pipelines_for_format(RD::get_singleton()->screen_get_framebuffer_format(p_screen));
+ 
+ 	RD::DrawListID draw_list = RD::get_singleton()->draw_list_begin_for_screen(p_screen);
+@@ -130,9 +144,12 @@
  
  	canvas->set_time(time);
  	scene->set_time(time, frame_step);
@@ -2842,6 +3046,70 @@ diff --git a/servers/rendering/renderer_rd/renderer_scene_render_rd.cpp b/server
  	SpatialUpscaler *spatial_upscaler = nullptr;
  	if (can_use_effects) {
  		if (scale_mode == RSE::VIEWPORT_SCALING_3D_MODE_FSR) {
+diff --git a/servers/rendering/renderer_rd/shaders/effects/dlss_present_inputs.glsl b/servers/rendering/renderer_rd/shaders/effects/dlss_present_inputs.glsl
+new file mode 100644
+--- /dev/null
++++ b/servers/rendering/renderer_rd/shaders/effects/dlss_present_inputs.glsl
+@@ -0,0 +1,26 @@
++#[compute]
++#version 450
++#VERSION_DEFINES
++layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
++layout(set = 0, binding = 0) uniform sampler2D hudless;
++layout(set = 0, binding = 1) uniform sampler2D ui_alpha;
++#ifdef USE_HDR
++layout(rgba16f, set = 0, binding = 2) uniform restrict writeonly image2D result_hudless;
++#else
++layout(rgba8, set = 0, binding = 2) uniform restrict writeonly image2D result_hudless;
++#endif
++layout(r8, set = 0, binding = 3) uniform restrict writeonly image2D result_alpha;
++layout(push_constant, std430) uniform Params {
++	ivec2 size;
++	ivec2 pad;
++}
++params;
++void main() {
++	ivec2 p = ivec2(gl_GlobalInvocationID.xy);
++	if (any(greaterThanEqual(p, params.size))) {
++		return;
++	}
++	vec2 uv = (vec2(p) + 0.5) / vec2(params.size);
++	imageStore(result_hudless, p, textureLod(hudless, uv, 0.0));
++	imageStore(result_alpha, p, vec4(textureLod(ui_alpha, uv, 0.0).r));
++}
+diff --git a/servers/rendering/renderer_rd/shaders/effects/dlss_ui_alpha.glsl b/servers/rendering/renderer_rd/shaders/effects/dlss_ui_alpha.glsl
+new file mode 100644
+--- /dev/null
++++ b/servers/rendering/renderer_rd/shaders/effects/dlss_ui_alpha.glsl
+@@ -0,0 +1,28 @@
++#[compute]
++#version 450
++#VERSION_DEFINES
++layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
++#ifdef USE_HDR
++layout(rgba16f, set = 0, binding = 0) uniform restrict image2D composed;
++#else
++layout(rgba8, set = 0, binding = 0) uniform restrict image2D composed;
++#endif
++layout(r8, set = 0, binding = 1) uniform restrict writeonly image2D ui_alpha;
++layout(push_constant, std430) uniform Params {
++	ivec2 size;
++	int clear;
++	int pad;
++}
++params;
++void main() {
++	ivec2 p = ivec2(gl_GlobalInvocationID.xy);
++	if (any(greaterThanEqual(p, params.size))) {
++		return;
++	}
++	vec4 c = imageLoad(composed, p);
++	imageStore(ui_alpha, p, vec4(params.clear != 0 ? 0.0 : clamp(c.a, 0.0, 1.0)));
++	// RGB is bit-preserved through the same UNORM/FP16 representation. Canvas
++	// blending accumulates real coverage in alpha; restore opaque output after.
++	c.a = params.clear != 0 ? 0.0 : 1.0;
++	imageStore(composed, p, c);
++}
 diff --git a/servers/rendering/renderer_rd/shaders/effects/motion_vector_decode.glsl b/servers/rendering/renderer_rd/shaders/effects/motion_vector_decode.glsl
 new file mode 100644
 --- /dev/null

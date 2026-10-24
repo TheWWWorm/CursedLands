@@ -202,11 +202,11 @@ func step(budget_us := 6000) -> bool:
 								_morph_geometries.append(geometry)
 								geometries[geometry].morph = {"node":weakref(node),"mesh":mesh.mesh,"surface":surface,
 									"arrays":source.arrays,"shapes":source.shapes,"weights":[]}
-					_add_instance(node,geometry,node.global_transform)
+					_add_instance(node,geometry,node.global_transform,surface)
 		if Time.get_ticks_usec() >= deadline: break
 	return failed or _cursor >= pending.size()
 
-func _add_instance(node: Node3D, geometry: int, transform: Transform3D) -> void:
+func _add_instance(node: Node3D, geometry: int, transform: Transform3D, surface := -1) -> void:
 	if geometry < 0: return
 	_watching = false
 	if instances.size() >= MAX_INSTANCES: failed = true; return
@@ -215,7 +215,25 @@ func _add_instance(node: Node3D, geometry: int, transform: Transform3D) -> void:
 	if not _groups.has(key): _groups[key] = {"node":weakref(root),"indices":[],"visible":-1}
 	_groups[key].indices.append(instances.size())
 	instances.append({"geometry":geometry,"node":weakref(node),"mesh":node.mesh if node is MeshInstance3D else null,
-		"terrain":node is EITerrainSector,"transform":transform,"mask":-1})
+		"surface":surface,"terrain":node is EITerrainSector,"transform":transform,"mask":-1})
+
+func history_matches(previous: RefCounted) -> PackedInt32Array:
+	var matches := PackedInt32Array();matches.resize(instances.size());matches.fill(-1)
+	if previous==null or _detail_options!=previous._detail_options or _soft_ground!=previous._soft_ground or _terrain_version!=previous._terrain_version:return matches
+	var old := {}
+	for i in previous.instances.size():
+		var entry: Dictionary=previous.instances[i];var node: Node3D=entry.node.get_ref()
+		if is_instance_valid(node):old["%d:%d"%[node.get_instance_id(),entry.surface]]=i
+	for i in instances.size():
+		var entry: Dictionary=instances[i];var node: Node3D=entry.node.get_ref()
+		if not is_instance_valid(node) or geometries[entry.geometry].has("morph"):continue
+		var key := "%d:%d"%[node.get_instance_id(),entry.surface]
+		if not old.has(key):continue
+		var before: Dictionary=previous.instances[old[key]]
+		if entry.mesh!=before.mesh:continue
+		if _nodes.get(node.get_instance_id())!=previous._nodes.get(node.get_instance_id()):continue
+		matches[i]=old[key]
+	return matches
 
 func _layer(texture: Texture2D, atlas := -1) -> int:
 	var key := "terrain:%d"%atlas if atlas >= 0 else str(texture.get_instance_id()) if texture else "white"

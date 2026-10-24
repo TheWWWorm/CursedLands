@@ -16,7 +16,9 @@ Streamline 2.14.16 headers. It preserves the FSR enum value and the corrected
 DXR barriers. Agility-created devices are upgraded through Streamline instead
 of bypassing the Agility device factory. The saved DLSS request chooses the
 presentation owner before creating devices; changing AMD/NVIDIA owner requires
-a restart. Headless workers do not initialize Streamline. See the
+a restart. Headless workers do not initialize Streamline. The final compositor
+provides a HUD opacity mask and output-sized FG inputs, with a guard for
+unsupported presentation rectangles. See the
 [restored integration](../../docs/integrations/nvidia-dlss.md).
 
 `water-raytracing-uniform-stages.patch` is an optional Vulkan experiment applied

@@ -28,6 +28,7 @@ var _pack := RID()
 var _resolve := RID()
 var _last_time := 0
 var _restart := true
+var _input_frame := RID()
 
 func _init() -> void:
 	# Device construction is on the main thread; load once before render-thread
@@ -83,7 +84,8 @@ func _descriptor(program: Dictionary,index: int,uniforms: Array[RDUniform]) -> R
 func configure(rd: RenderingDevice,size: Vector2i,raw: Array[RID],outputs: Array[RID],frame: RID,motion: RID) -> bool:
 	if not available:return false
 	_rd=rd
-	if _size==size:return true
+	if _size==size:
+		return true if _input_frame==frame else rebind(raw,outputs,frame,motion)
 	release_targets()
 	_native=ClassDB.instantiate("PathNrd")
 	_description=_native.describe()
@@ -112,6 +114,19 @@ func configure(rd: RenderingDevice,size: Vector2i,raw: Array[RID],outputs: Array
 	if not _textures.all(func(rid: RID):return rid.is_valid()):return false
 	var pack := _program("pack");var resolve := _program("resolve")
 	if pack.is_empty() or resolve.is_empty():return false
+	_size=size;_restart=true
+	return rebind(raw,outputs,frame,motion)
+
+## Only the application boundary changes when a region is replaced. Keep
+## NRD's native frame index, permanent pools and internal descriptors alive.
+func rebind(raw: Array[RID],outputs: Array[RID],frame: RID,motion: RID) -> bool:
+	for rid in [_pack,_resolve]:
+		if rid.is_valid():
+			for key in _sets.keys():
+				if _sets[key]==rid:_sets.erase(key)
+			if _rd.uniform_set_is_valid(rid):_rd.free_rid(rid)
+	var types: Dictionary=_description.resources
+	var pack: Dictionary=_programs.pack;var resolve: Dictionary=_programs.resolve
 	var inputs: Array[RDUniform]=[]
 	for i in 5:inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_TEXTURE,i,raw[i]))
 	inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER,5,motion))
@@ -126,7 +141,7 @@ func configure(rd: RenderingDevice,size: Vector2i,raw: Array[RID],outputs: Array
 	for i in 4:inputs.append(_uniform(RenderingDevice.UNIFORM_TYPE_IMAGE,9+i,outputs[i]))
 	_resolve=_descriptor(resolve,0,inputs)
 	if not _pack.is_valid() or not _resolve.is_valid():return false
-	_size=size;_restart=true;return true
+	_input_frame=frame;return true
 
 func _matrix(data: PackedByteArray,start: int) -> Projection:
 	var result := Projection()
@@ -223,7 +238,7 @@ func release_targets() -> void:
 	for rid in _textures+_buffers:
 		if rid.is_valid():_rd.free_rid(rid)
 	_textures.clear();_buffers.clear();_external.clear();_permanent.clear();_transient.clear()
-	_native=null;_size=Vector2i.ZERO;_pack=RID();_resolve=RID();_restart=true;_last_time=0
+	_native=null;_size=Vector2i.ZERO;_pack=RID();_resolve=RID();_input_frame=RID();_restart=true;_last_time=0
 
 func dispose() -> void:
 	release_targets()

@@ -146,6 +146,14 @@ func _exit_tree() -> void:
 		world.ground_marks = null
 
 
+func warmup_variant() -> Array:
+	if world == null or world.terrain == null or world.terrain is ArenaWinterTerrain \
+			or (GameData.option("footprints") == 0 and GameData.option("marks") == 0):
+		return []
+	if _projection == null: _projection = GroundMarkProjection.new(world)
+	return _projection.warmup_variant()
+
+
 ## The prints.db row [alpha, life, fade] of a ground type. The original takes the
 ## "alt" set while world is set (0 / 1 / 2, a mob spawn condition
 ## never set in the export); the remake always uses "normal".

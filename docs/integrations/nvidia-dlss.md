@@ -1,6 +1,6 @@
 # Restored NVIDIA DLSS
 
-The local `1.28.0-experimental.4` preview restores the prior Streamline 2.14.16
+The local `1.28.0-experimental.5` preview restores the prior Streamline 2.14.16
 integration onto the current patched Godot 4.7 renderer. It retains NRD 4.18
 REBLUR, the DXR barrier fixes, scene caching, terrain-sector tracing, grass
 lighting and the animated blood-mark performance fix. DLSS Super Resolution
@@ -27,6 +27,14 @@ The FPS display uses measured presentation counters; it never assumes that
 an enabled option doubles output. The standard NVIDIA runtime does not expose
 FG on RTX 30. The optional [DLSS-G SM86 package](dlssg-sm86.md) enables native
 NVIDIA generation on Ampere through a third-party compatibility layer.
+
+The engine captures HUD-less color before canvas drawing, then captures real
+canvas opacity after all HUD layers. RGB output is retained while alpha is
+restored for normal presentation. The final compositor tags HUD-less color and
+UI alpha at the actual swapchain size; a scaled full-window viewport is
+resampled consistently. Equal-size output uses the original buffers directly.
+Cropped, letterboxed and multi-window layouts are not qualified; incompatible
+mappings suspend FG while ordinary rendering continues.
 
 The AMD and NVIDIA SDKs have exclusive presentation ownership. A NVIDIA
 selection clears AMD upscaling/FG requests; selecting ordinary/AMD AA clears
@@ -87,6 +95,8 @@ No NVIDIA notification or approval request is sent by these build tools.
 The package is local and unpublished; native Windows, RTX 40/50 frame
 generation, HDR, XR and multi-window output remain separate qualification.
 
-The [validation report](../validation/dlss-restoration-2026-10-24.md) records
+The [PT and presentation validation](../validation/pt-five-targets-2026-10-24.md)
+records current traversal, HUD opacity, output-size checks and the remaining
+native Windows pacing capture. The [restoration report](../validation/dlss-restoration-2026-10-24.md) records
 the exported binary hashes, actual SDK evaluations, traversal measurements,
 settings checks and attribution captures.

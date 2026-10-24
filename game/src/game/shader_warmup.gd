@@ -121,6 +121,10 @@ static func run(game: Game) -> void:
 	_add(items, seen, Projectile.material(), env, MESH, _zero_format(Projectile.shaft_mesh()))
 	for m: Material in _effect_materials(game):
 		_add(items, seen, m, env, MESH)
+	if game.world.ground_marks:
+		var ground_mark := game.world.ground_marks.warmup_variant()
+		if not ground_mark.is_empty():
+			_add(items, seen, ground_mark[0], env, MESH, ground_mark[1])
 	if game.world.terrain and game.world.terrain.details and game.world.terrain.details._material:
 		var grass := game.world.terrain.details
 		_multimesh(GRASS).mesh = grass._mesh

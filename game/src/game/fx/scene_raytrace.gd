@@ -4,6 +4,7 @@ extends Node
 const Device = preload("res://src/game/fx/scene_raytrace_device.gd")
 const PathDevice = preload("res://src/game/fx/path_trace_device.gd")
 const PathSky = preload("res://src/game/fx/path_trace_sky.gd")
+const Budget = preload("res://src/game/fx/path_trace_budget.gd")
 const Scene = preload("res://src/game/fx/water_raytrace_scene.gd")
 const SCALES := [0.5,0.75,1.0]
 const GI_SAMPLES := [1,2,4]
@@ -22,6 +23,9 @@ var _pending_device: Device
 var _pending_scene: Scene
 var _pending_ready := false
 var _pending_stats := {}
+var _pending_stage := -1
+var _pending_geometries := []
+var _pending_placements := []
 var _snapshot_generation := 0
 var _topology_pending := false
 var _failure_reason := ""
@@ -64,6 +68,10 @@ var _window_resolution_reference := OS.get_cmdline_user_args().has("--ei-pt-wind
 var _profile_cpu := OS.get_cmdline_user_args().has("--ei-profile-rt")
 var _ground_cache := Scene.Ground.new()
 var _source_cache := Scene.SourceCache.new()
+var _programs := Device.Programs.new()
+var _handoff_updates := false
+var _budget := Budget.new()
+var _budget_clock := 0
 
 func _init(owner_game: Game) -> void:
 	game = owner_game; name = "SceneRaytrace"
@@ -142,7 +150,10 @@ func _process(dt: float) -> void:
 		stats["cpu_snapshot_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0;cpu_stage=Time.get_ticks_usec()
 	# Loading can use the larger preparation budget. Live travel shares the
 	# frame with rendering and simulation, while the previous scene stays lit.
-	if _gather!=null and _gather.step(1500 if device!=null else 6000): _queue_candidate(terrain,camera)
+	if _gather!=null and _gather.step(1500 if device!=null else 6000): _queue_candidate()
+	if _pending_stage>=0:
+		_prepare_candidate(terrain,camera)
+	elif _pending_device!=null and not _pending_ready:Device.dispatch(_pending_device,&"build_step")
 	if _profile_cpu:stats["cpu_gather_ms"]=(Time.get_ticks_usec()-cpu_stage)/1000.0
 	var quality := clampi(GameData.option("q_rt_lighting"),0,2)
 	var viewport := camera.get_viewport()
@@ -152,6 +163,19 @@ func _process(dt: float) -> void:
 	# Rays and receiver lookup share the unjittered camera projection. Raster
 	# receivers project world positions into this lattice beside FSR jitter.
 	var size := target_size(display_size,quality,trace_scale)
+	_budget.configure(GameData.option("pt_target_fps") if _path_mode and GameData.option("pt_accumulation")==0 else 0)
+	var now := Time.get_ticks_usec()
+	var seconds := (now-_budget_clock)/1000000.0 if _budget_clock>0 else 0.0
+	_budget_clock=now
+	if _budget.target>0:
+		RenderingServer.viewport_set_measure_render_time(viewport.get_viewport_rid(),true)
+		if device!=null:
+			device.measure_budget=true
+			var raster_ms := RenderingServer.viewport_get_measured_render_time_gpu(viewport.get_viewport_rid())
+			_budget.observe(device.gpu_frame,seconds,raster_ms+device.gpu_ms,device.gpu_ms,
+				get_tree().paused or _gather!=null or _pending_device!=null or not _preparation_owner.is_empty() or not device.output_ready())
+		size=_budget.size(size)
+	elif device!=null:device.measure_budget=false
 	if _pending_ready and _pending_device.output_ready() and _pending_device.output.get_size()==Vector2(size):
 		if _pending_scene.topology_changed():
 			var keep_cover := not _preparation_owner.is_empty()
@@ -162,7 +186,8 @@ func _process(dt: float) -> void:
 	if _ready_gpu and device!=null:
 		_scene.lighting_camera_mask = camera.cull_mask
 		var update_started := Time.get_ticks_usec()
-		var changes := _scene.updates()
+		var changes := _scene.updates(_handoff_updates)
+		_handoff_updates=false
 		stats["cpu_update_ms"]=(Time.get_ticks_usec()-update_started)/1000.0
 		frame = _frame(camera,size,quality,not changes.instances.is_empty() or not changes.poses.is_empty(),dt)
 		_render(device,size,frame,changes)
@@ -196,12 +221,20 @@ func _process(dt: float) -> void:
 	stats["render_size"]=[render_size.x,render_size.y];stats["render_scale"]=render_scale
 	stats["trace_render_scale"]=trace_scale
 	stats["window_resolution_reference"]=_path_mode and _window_resolution_reference
+	stats["adaptive_target_fps"]=_budget.target;stats["adaptive_scale"]=_budget.scale
+	stats["adaptive_changes"]=_budget.changes;stats["adaptive_gpu_ms"]=_budget.gpu_ms
 	stats["gi_samples"]=GI_SAMPLES[quality] if GameData.option("rt_gi")>0 else 0
 	stats["shadow_samples"]=SHADOW_SAMPLES[quality] if GameData.option("rt_shadows")>0 else 0
 	stats["lights"]=_lights.size()
 	stats["path_tracing"]=_path_mode;stats["path_bounces"]=GameData.option("pt_mode")*2 if _path_mode else 0
 	stats["path_samples"]=GI_SAMPLES[quality] if _path_mode else 0
 	stats["accumulation_frames"]=_accumulation_frames if _path_mode else 0
+	stats["program_compilations"]=_programs.compilations
+	stats["program_cache_hits"]=_programs.hits
+	if device!=null:stats["build_timings"]=device.build_timings.duplicate()
+	if device is PathDevice:
+		stats["history_handoffs"]=device.history_handoffs
+		stats["history_matched_surfaces"]=device.history_matched_surfaces
 	_settle_preparation(size)
 	if _profile_cpu:stats["cpu_total_ms"]=(Time.get_ticks_usec()-cpu_start)/1000.0
 
@@ -269,32 +302,50 @@ func _begin_snapshot(terrain: EITerrain,camera: Camera3D) -> void:
 	_gather.begin(terrain,camera.global_position,-1.0e20)
 	if device==null: _center=camera.global_position
 
-func _queue_candidate(terrain: EITerrain,camera: Camera3D) -> void:
+func _queue_candidate() -> void:
 	_pending_scene=_gather;_gather=null
 	_pending_stats={"active":false,"supported":true,"triangles":_pending_scene.triangles,
 		"geometries":_pending_scene.geometries.size(),"instances":_pending_scene.instances.size()}
 	if _pending_scene.failed or _pending_scene.triangles==0:
 		_reject_candidate("snapshot_budget" if _pending_scene.failed else "snapshot_empty");return
-	var geometries := []; var placements := []
-	for geometry: Dictionary in _pending_scene.geometries:
-		geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,"cutoff":geometry.cutoff,"standard":geometry.standard,"surface":geometry.surface,"relief":geometry.relief,"terrain":geometry.terrain,"foliage_layer":geometry.foliage_layer,
-			"leaf_light":geometry.leaf_light,"bark_relief":geometry.bark_relief,"emissive":geometry.emissive,"surface_layer":geometry.surface_layer,"detail_layer":geometry.detail_layer})
-	for entry: Dictionary in _pending_scene.instances:
-		placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":0})
 	_pending_device=PathDevice.new() if _path_mode else Device.new()
-	if _path_mode:
-		_pending_device.terrain.collect(_pending_scene,terrain)
-		if _pending_scene.failed: _reject_candidate("snapshot_budget");return
-		_pending_stats["terrain_material_bytes"]=_pending_device.terrain.data.size()
-		_pending_stats["terrain_material_build_us"]=_pending_device.terrain.build_us
-		_pending_stats["terrain_material_triangles"]=_pending_device.terrain.terrain_triangles
+	_pending_device.programs=_programs
+	_pending_device.incremental_build=device!=null
+	if _path_mode:_pending_device.defer_nrd=device is PathDevice and device.nrd_active
 	var id := _pending_device.get_instance_id()
 	_pending_device.prepared.connect(_prepared.bind(id))
 	_pending_device.rendered.connect(_rendered.bind(id))
 	if _path_mode: _pending_device.emitter_stats.connect(_emitter_stats.bind(id))
 	if not _preparation_owner.is_empty(): ShaderCompilationScreen.update(_preparation_owner,_pipeline_phase())
-	Device.dispatch(_pending_device,&"build",[_pending_scene.vertices.to_byte_array(),_pending_scene.images,geometries,placements])
-	_collect_lights(camera.global_position)
+	_pending_stage=0
+
+## Packing placements, terrain material metadata and native resource creation
+## used to land in the same 50–60 ms frame after the bounded gather completed.
+## Keep the old scene visible while these independent stages take separate
+## frames. The candidate is still revalidated before its atomic promotion.
+func _prepare_candidate(terrain: EITerrain,camera: Camera3D) -> void:
+	match _pending_stage:
+		0:
+			var initial := _pending_scene.updates(true)
+			_pending_device.initial_poses=initial.poses
+			for geometry: Dictionary in _pending_scene.geometries:
+				_pending_geometries.append({"offset":geometry.offset,"count":geometry.count,"opaque":geometry.opaque,"cutoff":geometry.cutoff,"standard":geometry.standard,"surface":geometry.surface,"relief":geometry.relief,"terrain":geometry.terrain,"foliage_layer":geometry.foliage_layer,
+					"leaf_light":geometry.leaf_light,"bark_relief":geometry.bark_relief,"emissive":geometry.emissive,"surface_layer":geometry.surface_layer,"detail_layer":geometry.detail_layer})
+			for entry: Dictionary in _pending_scene.instances:
+				_pending_placements.append({"geometry":entry.geometry,"transform":entry.transform,"mask":entry.mask})
+			_pending_stage=1
+		1:
+			if _path_mode:
+				_pending_device.terrain.collect(_pending_scene,terrain)
+				if _pending_scene.failed: _reject_candidate("snapshot_budget");return
+				_pending_stats["terrain_material_bytes"]=_pending_device.terrain.data.size()
+				_pending_stats["terrain_material_build_us"]=_pending_device.terrain.build_us
+				_pending_stats["terrain_material_triangles"]=_pending_device.terrain.terrain_triangles
+			_pending_stage=2
+		2:
+			Device.dispatch(_pending_device,&"build",[_pending_scene.vertices.to_byte_array(),_pending_scene.images,_pending_geometries,_pending_placements])
+			_pending_geometries=[];_pending_placements=[];_pending_stage=-1
+			_collect_lights(camera.global_position)
 
 func _bind_outputs() -> void:
 	if _bound: return
@@ -302,13 +353,20 @@ func _bind_outputs() -> void:
 	RenderingServer.global_shader_parameter_set(&"ei_rt_guide",device.guide)
 	RenderingServer.global_shader_parameter_set(&"ei_rt_shadow0",device.shadow0)
 	RenderingServer.global_shader_parameter_set(&"ei_rt_shadow1",device.shadow1)
+	RenderingServer.global_shader_parameter_set(&"ei_pt_direct_sun",device.direct_sun if device is PathDevice else null)
 	_bound=true
 
 func _activate_candidate() -> void:
 	var previous := device
+	var preserve := previous is PathDevice and _pending_device is PathDevice and GameData.option("pt_accumulation")==0
+	if preserve:
+		Device.dispatch(_pending_device,&"adopt_history",[previous,_pending_scene.history_matches(_scene)])
+		_handoff_updates=true
+	elif _pending_device is PathDevice:_pending_device.defer_nrd=false
 	device=_pending_device;_scene=_pending_scene;_center=_scene.center;stats=_pending_stats
 	_pending_device=null;_pending_scene=null;_pending_ready=false;_pending_stats={}
-	_ready_gpu=true;_bound=false;_history_key="";_path_signature=PackedByteArray();_accumulation_frames=0
+	_ready_gpu=true;_bound=false
+	if not preserve:_history_key="";_path_signature=PackedByteArray();_accumulation_frames=0
 	_snapshot_generation+=1;_clear_failure()
 	_topology_pending=false
 	# Replace global bindings before retiring their previous GPU owners.
@@ -353,6 +411,7 @@ func _cancel_candidate() -> void:
 	_end_preparation()
 	_retire_device(_pending_device)
 	_pending_device=null;_pending_scene=null;_pending_ready=false;_pending_stats={};_gather=null
+	_pending_stage=-1;_pending_geometries=[];_pending_placements=[]
 
 func _retire_device(retired: Device) -> void:
 	if retired==null: return
@@ -427,6 +486,10 @@ func _frame(camera: Camera3D,size: Vector2i,quality: int,scene_changed := false,
 		# camera, projection, lighting and scene. Never retain moving shadows.
 		var signature := data.slice(0,32)
 		signature.append_array(data.slice(64,76));signature.append_array(data.slice(84,144))
+		# The bounded trace region is an acceleration detail, not a light.
+		# NRD rejects newly visible geometry by depth/normal and confidence.
+		if GameData.option("pt_accumulation")==0:
+			for i in range(44,48):signature[i]=0.0
 		signature.append_array(environment)
 		var bytes := signature.to_byte_array()
 		var clouds := _path_cloud_frame()
@@ -561,9 +624,12 @@ func _release() -> void:
 	_source_cache.clear();_source_cache=Scene.SourceCache.new()
 	_topology_pending=false
 	if device!=null:
-		for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1"]:
+		for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1",&"ei_pt_direct_sun"]:
 			RenderingServer.global_shader_parameter_set(key,null)
 		_retire_device(device);device=null
+	Device.dispatch(_programs,&"dispose");_programs=Device.Programs.new()
+	_handoff_updates=false
+	_budget=Budget.new();_budget_clock=0
 	stats.erase("emissive_triangles");stats.erase("emissive_candidates")
 
 func _set_gi_active(active: bool) -> void:

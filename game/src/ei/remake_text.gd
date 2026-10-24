@@ -51,6 +51,11 @@ static func tl(list: Array) -> Array:
 
 ## English → [Russian, German].
 const TEXTS := {
+	"PT rendered frame target": ["Целевая частота кадров PT", "PT-Zielbildrate"],
+	"30 FPS": ["30 кадр/с", "30 FPS"],
+	"45 FPS": ["45 кадр/с", "45 FPS"],
+	"60 FPS": ["60 кадр/с", "60 FPS"],
+	"Gradually adjusts path-tracing resolution between 65 % and 100 % of the selected RT lighting quality to approach this frame rate. Counts rendered frames before frame generation. Responds to sustained GPU load and ignores loading stalls. Quality returns slowly when there is room. Only available with Responsive accumulation; cannot guarantee the target.": ["Постепенно меняет разрешение трассировки путей от 65 % до 100 % выбранного качества RT-освещения, стремясь к этой частоте кадров. Учитывает отрисованные кадры до генерации кадров. Реагирует на длительную нагрузку на видеокарту и игнорирует задержки загрузки. При наличии запаса качество медленно повышается. Доступно только при накоплении «Быстрый отклик»; достижение цели не гарантируется.", "Passt die Auflösung der Pfadverfolgung schrittweise zwischen 65 % und 100 % der gewählten RT-Lichtqualität an, um diese Bildrate anzustreben. Zählt gerenderte Bilder vor der Bildgenerierung. Reagiert auf anhaltende GPU-Last und ignoriert Ladepausen. Bei Leistungsreserven steigt die Qualität langsam wieder. Nur mit reaktionsschneller Akkumulation verfügbar; die Zielbildrate ist nicht garantiert."],
 	"The graphics technology changes after restarting. Restart the game now?": ["Графическая технология изменится после перезапуска. Перезапустить игру сейчас?", "Die Grafiktechnologie wird nach einem Neustart geändert. Spiel jetzt neu starten?"],
 	"The graphics technology changes after restarting. Restart now? Progress since the last save will be lost.": ["Графическая технология изменится после перезапуска. Перезапустить сейчас? Прогресс после последнего сохранения будет потерян.", "Die Grafiktechnologie wird nach einem Neustart geändert. Jetzt neu starten? Fortschritte seit dem letzten Speichern gehen verloren."],
 

@@ -13,6 +13,8 @@ global uniform sampler2D ei_rt_gi : filter_nearest, repeat_disable;
 global uniform sampler2D ei_rt_guide : filter_nearest, repeat_disable;
 global uniform sampler2D ei_rt_shadow0 : filter_nearest, repeat_disable;
 global uniform sampler2D ei_rt_shadow1 : filter_nearest, repeat_disable;
+global uniform sampler2D ei_pt_direct_sun : filter_nearest, repeat_disable;
+global uniform float ei_pt_grass_shadows;
 global uniform vec4 ei_rt_point0;
 global uniform vec4 ei_rt_point1;
 global uniform vec4 ei_rt_point2;
@@ -56,6 +58,7 @@ bool ei_rt_ground_sample(out vec3 gi,out vec4 visibility0,out vec4 visibility1) 
     ivec2 base=ivec2(floor(pixel));
     float total=0.0;
     float depth=-(ei_rt_view*vec4(ei_rt_ground,1.0)).z;
+    float nearby=ei_pt_grass_shadows*(1.0-smoothstep(18.0,24.0,distance(ei_rt_ground,ei_rt_eye)));
     for(int y=0;y<2;y++)for(int x=0;x<2;x++) {
         ivec2 p=clamp(base+ivec2(x,y),ivec2(0),size-1);
         vec4 guide=texelFetch(ei_rt_guide,p,0);
@@ -67,11 +70,14 @@ bool ei_rt_ground_sample(out vec3 gi,out vec4 visibility0,out vec4 visibility1) 
         if(ei_pt_active<=0.5) {
             visibility0+=texelFetch(ei_rt_shadow0,p,0)*w;
             visibility1+=texelFetch(ei_rt_shadow1,p,0)*w;
+        } else if(nearby>0.0) {
+            visibility0.rgb+=texelFetch(ei_pt_direct_sun,p,0).rgb*w*nearby;
         }
         total+=w;
     }
     if(total<0.01)return false;
     gi/=total;visibility0/=total;visibility1/=total;
+    if(ei_pt_active>0.5)visibility0.rgb=clamp(visibility0.rgb,vec3(0.0),gi);
     // Grass uses the ground's diffuse illumination, never its glossy lobe.
     if(ei_pt_active<=0.5) {
         float fade=1.0-smoothstep(ei_rt_state.w-12.0,ei_rt_state.w,distance(ei_rt_ground,ei_rt_center.xyz));
@@ -190,7 +196,14 @@ const CAPTURE := """
                 // Retain the terrain's authored underwater attenuation. The
                 // combined PT signal has no individual light direction, so
                 // use the same diffuse-depth factor as the ambient path.
+#ifdef EI_GRASS_LIGHT
+                // Keep indirect light in PT. The native double-sided grass
+                // caster resolves detailed sunlight occlusion in light().
+                ei_rt_visibility0=a;
+                vec3 reflected=ALBEDO*ei_material_diffuse.rgb*(indirect-a.rgb)*max(1.0-ei_k,0.0);
+#else
                 vec3 reflected=(ALBEDO*ei_material_diffuse.rgb*indirect+a.rgb)*max(1.0-ei_k,0.0);
+#endif
                 EMISSION+=(reflected+ei_lin(ei_srgb(ALBEDO)*ei_e))*ei_pt_blend;
             } else {
                 ei_rt_valid=1.0;ei_rt_visibility0=a;ei_rt_visibility1=b;
@@ -202,6 +215,11 @@ const CAPTURE := """
 """
 
 const LIGHT := """
+#ifdef EI_GRASS_LIGHT
+    if(ei_pt_blend>0.0 && LIGHT_IS_DIRECTIONAL && abs(SPECULAR_AMOUNT-0.371)<0.002) {
+        DIFFUSE_LIGHT+=ei_rt_visibility0.rgb*ei_material_diffuse.rgb*ATTENUATION*ei_pt_blend*max(1.0-ei_k,0.0);
+    }
+#endif
     // A fully traced receiver already supplied all lighting in fragment().
     // The fade band and unmatched/distant receivers still need raster light.
     if(ei_pt_blend<1.0) {
@@ -263,7 +281,9 @@ static func globals() -> void:
 		RenderingServer.global_shader_parameter_add(key,RenderingServer.GLOBAL_VAR_TYPE_MAT4,Projection())
 	RenderingServer.global_shader_parameter_add(&"ei_rt_eye",RenderingServer.GLOBAL_VAR_TYPE_VEC3,Vector3.ZERO)
 	RenderingServer.global_shader_parameter_add(&"ei_pt_active",RenderingServer.GLOBAL_VAR_TYPE_FLOAT,0.0)
-	for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1"]:
+	for key in [&"ei_rt_gi",&"ei_rt_guide",&"ei_rt_shadow0",&"ei_rt_shadow1",&"ei_pt_direct_sun"]:
 		RenderingServer.global_shader_parameter_add(key,RenderingServer.GLOBAL_VAR_TYPE_SAMPLER2D,null)
+	RenderingServer.global_shader_parameter_add(&"ei_pt_grass_shadows",RenderingServer.GLOBAL_VAR_TYPE_FLOAT,
+		0.0 if OS.get_cmdline_user_args().has("--ei-pt-no-grass-shadows") else 1.0)
 	for i in 7:
 		RenderingServer.global_shader_parameter_add(StringName("ei_rt_point%d"%i),RenderingServer.GLOBAL_VAR_TYPE_VEC4,Vector4.ZERO)

@@ -15,6 +15,11 @@ var inactive_frames:=0
 var inactive_nrd_frames:=0
 var began:=0
 var dlss_fg:=false
+var output_size:=Vector2i.ZERO
+var combat_target:=-1
+var heal_until:=0
+var last_heal:=0
+var combat_heals:=0
 
 func create_session() -> Session:
 	return Session.new()
@@ -38,6 +43,8 @@ func run() -> void:
 		"autosave":0,"show_tutorial":0,"net_upnp":0,"net_lan":0,"net_directory":0},true)
 	GameData.options.rtx_upscaling=2 if dlss else 0
 	GameData.options.rtx_frame_generation=1 if dlss_fg else 0
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--route-adaptive="):GameData.options.pt_target_fps=int(arg.trim_prefix("--route-adaptive="))
 	if dlss:check(RtxGraphics.facts().sr,"DLSS SDK available before traversal")
 	if dlss_fg:check(dlss and RtxGraphics.facts().fg and RtxGraphics.facts().reflex,"native NVIDIA frame generation available before traversal")
 	if not failures.is_empty():await finish();return
@@ -64,7 +71,18 @@ func run() -> void:
 	if map:map.flip_y();map.save_png(out.path_join("map.png"))
 	if inventory:await finish();return
 	GameData.resolution_size="3840x2160"
-	get_window().borderless=true;get_window().size=resolution
+	if OS.get_cmdline_user_args().has("--route-fit-output"):
+		output_size=Vector2i(2560,1440)
+		GameData.resolution_size="2560x1440"
+		GameData.options.resolution=maxi(0,GameData.resolutions().find(output_size))
+		GameData._window_gen+=1
+		get_window().wrap_controls=false
+		get_window().min_size=Vector2i.ONE
+		get_window().mode=Window.MODE_WINDOWED
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		get_window().content_scale_mode=Window.CONTENT_SCALE_MODE_VIEWPORT
+		get_window().content_scale_size=resolution
+	get_window().borderless=output_size==Vector2i.ZERO;get_window().size=resolution if output_size==Vector2i.ZERO else output_size
 	Gfx.apply_quality(get_viewport())
 	g.direct._set_view_mode(3);g.direct.heading=0;g.direct.tilt=-0.12;g.direct.apply_camera()
 	rt=g.get_node("SceneRaytrace")
@@ -73,12 +91,14 @@ func run() -> void:
 	if dlss:
 		check(RtxGraphics.sr_active(),"DLSS survives campaign loading and forced redraws")
 	if not failures.is_empty():await finish();return
-	get_window().size=resolution;await frames(20)
+	get_window().size=resolution if output_size==Vector2i.ZERO else output_size;await frames(20)
 	check(rt.stats.get("display_size",[])==[3840,2160],"route renders at recorded 4K resolution")
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED);Engine.max_fps=0
 	last_pos=h.pos;began=Time.get_ticks_msec()
 	await stage("ruins-held",10)
 	await walk("east-opening",Vector2(60,139),25)
+	if OS.get_cmdline_user_args().has("--route-opening-only"):
+		await finish();return
 	await walk("downhill-path",Vector2(66,125),25)
 	g.set_speed(2)
 	await encounter(1804,"wolf",true)
@@ -130,7 +150,15 @@ func stage(label: String,seconds: float,predicate:=Callable()) -> void:
 	gpu_samples.clear();sampling=true
 	var start:=Time.get_ticks_msec();var previous:=Time.get_ticks_usec();var last_track:=start-1000
 	while Time.get_ticks_msec()-start<seconds*1000:
+		if output_size!=Vector2i.ZERO and get_window().size!=output_size:get_window().size=output_size
 		update_view();await frames(1)
+		if combat_target>=0 and not h.dead:
+			var combat_time:=Time.get_ticks_msec()
+			if heal_until>0 and combat_time>=heal_until:
+				heal_until=0;s.submit({"t":"attack","units":[h.uid],"target":combat_target,"run":false})
+			elif heal_until==0 and h.hp<h.max_hp*0.45 and combat_time-last_heal>6000:
+				s.submit({"t":"cast","unit":h.uid,"target":h.uid,"spell":"healing{}"})
+				last_heal=combat_time;heal_until=combat_time+2000;combat_heals+=1
 		var now:=Time.get_ticks_usec();wall.append((now-previous)/1000.0);previous=now
 		if dlss_fg and RtxGraphics.bridge().call("get_status").get("frame_generation_active",false):fg_active_frames+=1
 		cpu.append(Performance.get_monitor(Performance.TIME_PROCESS)*1000)
@@ -150,7 +178,12 @@ func stage(label: String,seconds: float,predicate:=Callable()) -> void:
 	var row:={"dlss":RtxGraphics.bridge().call("get_status") if RtxGraphics.bridge()!=null else {},"phase":label,"seconds":(Time.get_ticks_msec()-start)/1000.0,"frame_ms":summary(wall),
 		"process_ms":summary(cpu),"rt_gpu_ms":summary(gpu_samples.duplicate()),"hp":h.hp,"pos":[h.pos.x,h.pos.y],
 		"world_time":s.world.time,"generation":rt.stats.get("snapshot_generation",0),"distance":route_distance,
-		"vram":Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED),"wound_layers":UnitWounds._wound_layers.size(),
+		"vram":Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED),"adaptive_scale":rt.stats.get("adaptive_scale",1.0),
+		"window":get_window().size,"actual_window":DisplayServer.window_get_size(),"viewport":get_viewport().get_visible_rect().size,
+		"combat_heals":combat_heals,
+		"adaptive_gpu_ms":rt.stats.get("adaptive_gpu_ms",0.0),"adaptive_changes":rt.stats.get("adaptive_changes",0),
+		"history_handoffs":rt.stats.get("history_handoffs",0),"history_matched_surfaces":rt.stats.get("history_matched_surfaces",0),
+		"wound_layers":UnitWounds._wound_layers.size(),
 		"wound_jobs":UnitWounds._jobs.size(),"nrd":rt.device.get("nrd_active") if rt.device!=null else false}
 	row["sampled_frames"]=wall.size()
 	row["dlss_evaluations"]=int(row.dlss.get("dlss_evaluations",0))-dlss_before
@@ -183,9 +216,11 @@ func encounter(uid: int,label: String,loot: bool) -> void:
 	if not is_instance_valid(enemy):return
 	look_goal=enemy.pos
 	s.submit({"t":"attack","units":[h.uid],"target":uid,"run":false})
+	combat_target=uid;heal_until=0
 	await stage("fight-"+label,40,func():
 		var target: GameUnit=s.world.units.get(uid)
 		return target==null or target.dead)
+	combat_target=-1;heal_until=0
 	check(is_instance_valid(enemy) and enemy.dead,"normal combat defeats "+label)
 	if loot and is_instance_valid(enemy) and enemy.dead:
 		s.submit({"t":"loot","units":[h.uid],"target":uid,"run":false})

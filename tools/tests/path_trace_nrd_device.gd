@@ -61,6 +61,11 @@ func run() -> void:
 		for channel in 3:ceiling[vertex*16+12+channel]=0.0
 	await render_many(1,{"poses":[{"geometry":1,"data":ceiling.to_byte_array()}]})
 	check(mean(device.output).r<0.001,"lighting reset removes extinguished emission immediately")
+	sun_energy=1.0;sun_direction=Vector3.UP
+	await render_many(3)
+	check(sample(device.direct_sun,Vector3(0,0,0)).r<0.01,"direct-sun output respects the traced roof shadow")
+	check(sample(device.direct_sun,Vector3(1.5,0,0)).r>0.1,"direct-sun output carries unoccluded sunlight for nearby grass")
+	sun_energy=0.0
 	var failing:=FailingNrd.new()
 	RenderingServer.call_on_render_thread(replace_nrd.bind(failing));await replaced
 	sky_energy=0.2;await render_many(12)

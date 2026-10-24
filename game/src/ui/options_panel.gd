@@ -381,12 +381,13 @@ func _show_group(g: int) -> void:
 			"choices": choices}
 		if name == "q_water_rt_quality":
 			_rows[int(o[4])].disabled = int(_values.get("gfx_water", 0)) == 0 or int(_values.get("gfx_water_reflections", 0)) != 3
-		if name in ["rt_shadows","rt_gi","q_rt_lighting","pt_mode","pt_accumulation"]:
+		if name in ["rt_shadows","rt_gi","q_rt_lighting","pt_mode","pt_accumulation","pt_target_fps"]:
 			var available := preload("res://src/game/fx/scene_raytrace_device.gd").supported()
 			var path_mode := int(_values.get("pt_mode",0))>0
-			_rows[int(o[4])].disabled = (not available and (name in ["q_rt_lighting","pt_accumulation"] or int(_values.get(name,0))==0)) \
+			_rows[int(o[4])].disabled = (not available and (name in ["q_rt_lighting","pt_accumulation","pt_target_fps"] or int(_values.get(name,0))==0)) \
 				or (name=="q_rt_lighting" and not path_mode and int(_values.get("rt_shadows",0))==0 and int(_values.get("rt_gi",0))==0) \
-				or (name in ["rt_shadows","rt_gi"] and path_mode) or (name=="pt_accumulation" and not path_mode)
+				or (name in ["rt_shadows","rt_gi"] and path_mode) or (name in ["pt_accumulation","pt_target_fps"] and not path_mode) \
+				or (name=="pt_target_fps" and int(_values.get("pt_accumulation",0))>0)
 			if not available: _rows[int(o[4])].tip += "\n\n"+RemakeText.t(preload("res://src/game/fx/scene_raytrace.gd").REASON)
 		if name in ["resolution","render_scale"]: _rows[int(o[4])].kind = "dropdown"
 		if name == "q_aa":
@@ -682,7 +683,7 @@ func _set_value(name: String, v: int) -> void:
 	if name in LIVE:   # volumes, gamma ramp, stereo at once
 		GameData.set_option(name, v)
 	if name in FsrGraphics.OPTIONS or (_group == WATER_GROUP and name in ["gfx_water", "gfx_water_reflections", "graphics_preset"]) \
-			or (_group == SCENE_RT_GROUP and name in ["rt_shadows","rt_gi","pt_mode"]):
+			or (_group == SCENE_RT_GROUP and name in ["rt_shadows","rt_gi","pt_mode","pt_accumulation"]):
 		var selected := _sel
 		_show_group(_group)
 		_sel = selected

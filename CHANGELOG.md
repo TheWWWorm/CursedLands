@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.28.0-experimental.5 (local preview)
+
+- Warm projected ground-mark materials during loading and reuse immutable ray pipelines across region replacements. Prepare replacement acceleration structures in bounded steps.
+- Transfer NRD history between compatible regions and reject changed or deformed surfaces independently.
+- Add an optional rendered-frame target for responsive PT with gradual, bounded resolution changes and EN/RU/DE controls.
+- Apply nearby grass shadow-map occlusion to traced direct sunlight while retaining indirect illumination.
+- Supply DLSS-G with actual HUD opacity and presentation-sized inputs; retain normal rendering for unsupported cropped mappings.
+
 ## 1.28.0-experimental.4 (local preview)
 
 - Add an optional dlssg_for_sm86 0.4.0 package for native NVIDIA frame

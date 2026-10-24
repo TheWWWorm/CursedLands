@@ -47,6 +47,33 @@ func run() -> void:
 	var dark:=capture.get_pixelv(Vector2i(camera.unproject_position(Vector3(-1,0.6,0))))
 	var bright:=capture.get_pixelv(Vector2i(camera.unproject_position(Vector3(1,0.6,0))))
 	check(bright.r>dark.r+0.25,"raised grass inherits the traced dark and lit ground roots")
+	# Separate traced indirect light from direct sun, then let the existing
+	# local shadow map shade only that sun component on raised blades.
+	light.fill(Color(0.8,0.8,0.8,1));light_texture.update(light)
+	var direct_image:=Image.create(640,360,false,Image.FORMAT_RGBAF);direct_image.fill(Color(0.6,0.6,0.6,1))
+	var direct_texture:=ImageTexture.create_from_image(direct_image)
+	RenderingServer.global_shader_parameter_set(&"ei_pt_direct_sun",direct_texture)
+	var sun:=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-90,0,0)
+	sun.shadow_enabled=true;sun.light_specular=0.371;sun.directional_shadow_max_distance=30;add_child(sun)
+	var canopy:=MeshInstance3D.new();var canopy_mesh:=QuadMesh.new();canopy_mesh.size=Vector2(1.6,1.6)
+	canopy.mesh=canopy_mesh;canopy.rotation_degrees.x=-90;canopy.position=Vector3(-1,2,0)
+	canopy.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_SHADOWS_ONLY;add_child(canopy)
+	await frames(20);await RenderingServer.frame_post_draw
+	capture=get_viewport().get_texture().get_image();capture.save_png(out.path_join("grass-local-sun-shadow.png"))
+	dark=capture.get_pixelv(Vector2i(camera.unproject_position(Vector3(-1,0.6,0))))
+	bright=capture.get_pixelv(Vector2i(camera.unproject_position(Vector3(1,0.6,0))))
+	check(bright.r>dark.r+0.15,"nearby grass receives additional local sun occlusion")
+	check(dark.r>0.1,"local grass shadow preserves traced indirect illumination")
+	RenderingServer.global_shader_parameter_set(&"ei_pt_grass_shadows",0.0)
+	await frames(12);await RenderingServer.frame_post_draw
+	var disabled:=get_viewport().get_texture().get_image()
+	var unshadowed:=disabled.get_pixelv(Vector2i(camera.unproject_position(Vector3(-1,0.6,0))))
+	check(unshadowed.r>dark.r+0.15,"bounded grass shadow path changes the occluded blade")
+	check(absf(unshadowed.r-bright.r)<0.06,"unoccluded grass retains its original traced lighting")
+	FileAccess.open(out.path_join("grass-local-shadow.json"),FileAccess.WRITE).store_string(JSON.stringify({"shadowed":dark,"lit":bright,"disabled":unshadowed}))
+	RenderingServer.global_shader_parameter_set(&"ei_pt_grass_shadows",1.0)
+	RenderingServer.global_shader_parameter_set(&"ei_pt_direct_sun",null)
+	canopy.queue_free();sun.queue_free();await frames(4)
 	# Production lookup must reject a vertical foreground face at the root.
 	var debug:=Shader.new();debug.code=Gfx._function_tail(shader.code.replace("render_mode ","render_mode unshaded, fog_disabled, "),"fragment","\n vec3 audit_light;vec4 audit_a,audit_b;bool valid=ei_rt_ground_sample(audit_light,audit_a,audit_b);ALBEDO=valid?vec3(0,1,0):vec3(1,0,0);EMISSION=vec3(0);\n")
 	for node: MeshInstance3D in objects:node.material_override.shader=debug

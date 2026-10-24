@@ -5,6 +5,20 @@ const FILTER = preload("res://src/game/fx/shaders/scene_raytrace_filter.glsl")
 # Extra timestamp boundaries are diagnostic only; normal frames retain the
 # existing whole-pass bracket without intermediate query overhead.
 var _profile_stages := OS.get_cmdline_user_args().has("--ei-profile-rt")
+var measure_budget := false
+var gpu_frame := -1
+var gpu_ms := 0.0
+
+func _measure_budget() -> void:
+	var current := _rd.get_captured_timestamps_frame()
+	if current==gpu_frame:return
+	var begin := -1;var elapsed := 0
+	for i in _rd.get_captured_timestamps_count():
+		var label := _rd.get_captured_timestamp_name(i)
+		if label=="Scene RT begin":begin=_rd.get_captured_timestamp_gpu_time(i)
+		elif label=="Scene RT end" and begin>=0:
+			elapsed+=_rd.get_captured_timestamp_gpu_time(i)-begin;begin=-1
+	if elapsed>0:gpu_frame=current;gpu_ms=elapsed/1000000.0
 
 var guide := Texture2DRD.new()
 var shadow0 := Texture2DRD.new()
@@ -34,6 +48,8 @@ func raw_formats() -> Array[int]:
 ## bindings 13 onward and are copied together with the stable lighting outputs.
 func filter_auxiliary_formats() -> Array[int]: return []
 func extra_filter_uniforms() -> Array[RDUniform]: return []
+func published_targets() -> Array[RID]:
+	return [output.texture_rd_rid,guide.texture_rd_rid,shadow0.texture_rd_rid,shadow1.texture_rd_rid]
 ## A new device becomes display-ready only after a complete successful render.
 ## History resets and private resizes keep its prior published image ready.
 func output_ready() -> bool:
@@ -112,7 +128,7 @@ func _targets(size: Vector2i, sampler: RID) -> bool:
 			_rd.free_rid(filter_set);_free_targets(raw+history+auxiliary);return false
 		var old_targets := _filter_sets+_raw+_history+_filter_auxiliary
 		if _set.is_valid(): old_targets.push_front(_set)
-		var published: Array[RID] = [output.texture_rd_rid,guide.texture_rd_rid,shadow0.texture_rd_rid,shadow1.texture_rd_rid]
+		var published := published_targets()
 		for rid in published:
 			if rid.is_valid() and old_targets.has(rid):
 				old_targets.erase(rid);_retired_outputs.append(rid)
@@ -120,7 +136,7 @@ func _targets(size: Vector2i, sampler: RID) -> bool:
 		_filter_sets=[filter_set];_set=ray_set;_sampler=sampler;_size=size
 		_history_valid=false
 		# Unpublished work images and descriptors are no longer needed. The
-		# four public images stay valid through upload/dispatch/copy failures.
+		# public images stay valid through upload/dispatch/copy failures.
 		_free_targets(old_targets)
 	elif not _set.is_valid() or sampler != _sampler:
 		var ray_set := _target_set(_ray_bindings(_raw,sampler),_shader)
@@ -167,6 +183,7 @@ func reconstruct(frame: PackedByteArray) -> bool:
 
 func render(size: Vector2i, frame: PackedByteArray, changes: Dictionary = {}, texture_filter := 4) -> void:
 	if _closed or not _ready or size.x<2 or size.y<2 or frame.size()!=frame_bytes(): return
+	if measure_budget:_measure_budget()
 	if not update_scene(changes): _history_valid=false;_published_valid=false;return
 	if not _targets(size,_samplers[clampi(texture_filter,0,_samplers.size()-1)]):
 		_render_failed();return

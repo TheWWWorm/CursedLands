@@ -1,8 +1,9 @@
 # NRD reconstruction and travel performance
 
 The local 1.28.0 previews integrate NVIDIA NRD 4.18.0 REBLUR_DIFFUSE_SPECULAR
-into the existing Windows DX12 and Linux Vulkan path tracer. The qualified
-Godot engine binaries are unchanged. The published 1.27.0 release is unchanged.
+into the existing Windows DX12 and Linux Vulkan path tracer. NRD itself does not require
+an engine change; the combined Windows preview also includes the separate DLSS
+engine integration. Published 1.27.0 artifacts remain unchanged.
 
 ## Renderer boundary
 
@@ -21,9 +22,11 @@ sun/point-light specular highlights are restored after denoising: their known
 lighting direction must not inherit an unrelated secondary reflection's blur
 or motion. Diffuse light, including soft shadows, remains denoised.
 
-History responds to real lighting changes and resets on camera cuts, resize,
-geometry replacement and explicit mode changes. Newly visible/deformed surfaces
-receive zero confidence. Sky pixels are cleared explicitly. Public output
+History responds to real lighting changes and resets on camera cuts, resize
+and explicit mode changes. Compatible responsive region replacements transfer
+the same NRD instance and permanent textures, rebinding only boundary inputs.
+Stable mesh/material surfaces retain their last visible transforms and history.
+Changed, newly visible and deformed surfaces receive zero confidence. Sky pixels are cleared explicitly. Public output
 textures retain stable handles; replacement pools are private until complete.
 Still scene retains the custom exact progressive accumulator. Unsupported or
 failed NRD initialization falls back to the existing custom reconstruction.
@@ -44,7 +47,12 @@ Godot's surface-array getter reads vertex, attribute and index buffers back
 from the GPU. Repeating this for hundreds of retained meshes while PT renders
 serializes scene gathering with GPU work. Neighboring snapshots now reuse
 those source arrays and images. Mutable image updates invalidate cached pixels.
-The cache releases on scene/RT teardown.
+The cache releases on scene/RT teardown. Immutable ray shaders and pipelines
+also remain shared for that controller lifetime. Replacement geometry builds
+at most 16 acceleration structures or approximately 1.5 ms of build submission
+per step, then builds its top-level structure. The previous region continues
+to render until its replacement has produced a valid image. Resource creation
+and single native driver operations can still exceed that submission budget.
 
 Scene snapshots also share a bounded cache of immutable terrain sectors with
 the same snow/sand lift used by raster rendering. Rebuilding a nearby RT region
@@ -60,12 +68,28 @@ Procedural grass and ground cover inherit traced diffuse light at their planted
 roots. A four-tap lookup checks the ground normal, plane and distance before
 accepting light. It rejects foreground walls and avoids searching 29 pixels
 for a raised blade absent from the acceleration structure. Ground specular
-highlights are not copied onto grass. This is a ground-light approximation,
-not individual ray-traced grass-blade geometry or self-shadowing.
+highlights are not copied onto grass. A separate direct-sun output lets the
+existing local grass shadow map attenuate sunlight without darkening traced
+indirect illumination. This applies fully within 18 metres of the camera and
+fades out by 24 metres. It adds no grass geometry or extra rays to the RT scene.
+Ground-mark shaders and their exact vertex layout are warmed during loading
+before the first walking or blood mark is drawn.
 
 The options are directly under Remake → Ray tracing / Path tracing. Keyboard
 return navigation, pending settings, Apply/Cancel and EN/RU/DE labels and help
 are preserved. Game setup, game files and exported reports remain reachable.
+
+## Rendered-frame target
+
+**PT rendered frame target** is available in responsive accumulation, with Off,
+30, 45 and 60 FPS choices. Off preserves exact manual quality. The controller
+measures completed PT and viewport GPU work, never generated display frames.
+It changes the PT lattice in 5% steps between 65% and 100% of the selected RT
+quality. Half-second median windows, cooldowns and six seconds of recovery
+headroom limit oscillation. Loading, pause, replacement preparation and long
+CPU frames do not request a quality reduction. A target cannot guarantee a
+frame rate when simulation, raster rendering or the minimum PT resolution is
+the limiting cost. Samples and bounce count remain manually selected.
 
 ## Rebuilding
 
@@ -104,4 +128,5 @@ effect settings, live simulation and repeated camera travel/recentering. GPU
 readback is kept outside measured segments. Results are workstation evidence;
 they do not substitute for a test on the reported RTX 4090 Laptop GPU.
 
-Measured results and runtime hashes: [2026-10-24 validation](../validation/path-tracing-nrd-2026-10-24.md).
+Measured results and runtime hashes: [travel, history and presentation validation](../validation/pt-five-targets-2026-10-24.md)
+and the [original NRD integration validation](../validation/path-tracing-nrd-2026-10-24.md).
